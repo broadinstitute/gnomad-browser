@@ -2,31 +2,29 @@ import {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLInt,
-  GraphQLString,
+  // GraphQLString,
+  GraphQLList,
 } from 'graphql'
 
-let counter = 42
+const data = [
+  { counter: 42 },
+  { counter: 43 },
+  { counter: 44 },
+]
 
+const counterType = new GraphQLObjectType ({
+  name: 'Counter',
+  fields: () => ({
+    counter: { type: GraphQLInt },
+  }),
+})
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
-      counter: {
-        type: GraphQLInt,
-        resolve: () => counter,
-      },
-      message: {
-        type: GraphQLString,
-        resolve: () => 'Hello!',
-      },
-    }),
-  }),
-  mutation: new GraphQLObjectType({
-    name: 'Mutation',
-    fields: () => ({
-      incrementCounter: {
-        type: GraphQLInt,
-        resolve: () => ++counter,
+      data: {
+        type: new GraphQLList(counterType),
+        resolve: () => data,
       },
     }),
   }),
