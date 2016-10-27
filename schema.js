@@ -1,33 +1,38 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLInt,
-  // GraphQLString,
+  // GraphQLInt,
+  GraphQLString,
   GraphQLList,
 } from 'graphql'
 
-const data = [
-  { counter: 42 },
-  { counter: 43 },
-  { counter: 44 },
-]
-
-const counterType = new GraphQLObjectType ({
-  name: 'Counter',
-  fields: () => ({
-    counter: { type: GraphQLInt },
-  }),
-})
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'Query',
+const Schema = (db) => {
+  const variantType = new GraphQLObjectType({
+    name: 'Variant',
     fields: () => ({
-      data: {
-        type: new GraphQLList(counterType),
-        resolve: () => data,
-      },
+      _id: { type: GraphQLString },
+      variant_id: { type: GraphQLString },
+      allele_freq: { type: GraphQLString },
     }),
-  }),
-})
+  })
+  const schema = new GraphQLSchema({
+    query: new GraphQLObjectType({
+      name: 'Query',
+      fields: () => ({
+        variants: {
+          type: new GraphQLList(variantType),
+          resolve: () => db.collection('variants').find({
+            genes: 'ENSG00000184731',
+          }, {
+            _id: 1,
+            variant_id: 1,
+            allele_freq: 1,
+          }).toArray(),
+        },
+      }),
+    }),
+  })
+  return schema
+}
 
-export default schema
+export default Schema

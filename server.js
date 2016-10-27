@@ -7,14 +7,14 @@ import schema from './schema'
 const app = express()
 let db
 
-app.use('/graph', GraphQLHTTP({
-  schema,
-  graphiql: true,
-}))
-
 MongoClient.connect(process.env.MONGO_URL, (error, database) => {
   if (error) throw error
   db = database
+  app.use('/graph', GraphQLHTTP({
+    schema: schema(db),
+    graphiql: true,
+  }))
+
   app.listen(8080, () => console.log('Listening on 8080'))
 })
 
