@@ -5,13 +5,15 @@ import {
   GraphQLString,
 } from 'graphql'
 
+let counter = 42
+
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
       counter: {
         type: GraphQLInt,
-        resolve: () => 42,
+        resolve: () => counter,
       },
       message: {
         type: GraphQLString,
@@ -19,15 +21,15 @@ const schema = new GraphQLSchema({
       },
     }),
   }),
-  // mutation: new GraphQLObjectType({
-  //   name: 'Mutation',
-  //   fields: () => ({
-  //     incrementCounter: {
-  //       type: GraphQLInt,
-  //       resolve: () => ++counter,
-  //     },
-  //   }),
-  // }),
+  mutation: new GraphQLObjectType({
+    name: 'Mutation',
+    fields: () => ({
+      incrementCounter: {
+        type: GraphQLInt,
+        resolve: () => ++counter,
+      },
+    }),
+  }),
 })
 
 export default schema
