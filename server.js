@@ -10,8 +10,9 @@ const app = express();
   try {
     const db = await MongoClient.connect(process.env.MONGO_URL)
     app.use('/graph', GraphQLHTTP({
-      schema: gnomadSchema(db),
+      schema: gnomadSchema,
       graphiql: true,
+      context: { db },
     }))
     app.listen(8080, () => console.log('Listening on 8080'))
   } catch (error) {

@@ -28,5 +28,5 @@ const geneType = new GraphQLObjectType({
 
 export default geneType
 
-export const geneLookUp = db =>
-  db.collection('genes').findOne({ gene_id: 'ENSG00000155657' })
+export const geneLookUp = (db, gene_id) =>
+  db.collection('genes').findOne({ gene_id })
