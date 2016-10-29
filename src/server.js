@@ -1,3 +1,5 @@
+import 'babel-core/register'
+import 'babel-polyfill'
 import express from 'express'
 import { MongoClient } from 'mongodb'
 import GraphQLHTTP from 'express-graphql'
