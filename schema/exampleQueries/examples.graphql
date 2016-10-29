@@ -1,0 +1,41 @@
+{
+  gene (gene_id: "${geneId}") {
+    gene_id
+    gene_name
+    variants_in_gene {
+      chrom
+      pos
+      ref
+      alt
+      variant_id
+      allele_num
+      allele_freq
+      allele_count
+    }
+    exac_coverage {
+      pos
+      mean
+    }
+    transcript {
+      exons {
+        feature_type
+        start
+        stop
+      }
+    }
+  }
+}
+
+{
+  gene (gene_id: "${geneId}") {
+    gene_id
+    gene_name
+    transcript {
+      exons {
+        feature_type
+        start
+        stop
+      }
+    }
+  }
+}

@@ -1,10 +1,12 @@
 import express from 'express'
 import { MongoClient } from 'mongodb'
 import GraphQLHTTP from 'express-graphql'
+import cors from 'cors'
 
 import gnomadSchema from './schema'
 
-const app = express();
+const app = express()
+app.use(cors());
 
 (async () => {
   try {

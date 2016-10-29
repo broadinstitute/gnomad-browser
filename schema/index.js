@@ -1,20 +1,22 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
-  // GraphQLInt,
+  GraphQLInt,
   GraphQLString,
   GraphQLList,
   GraphQLNonNull,
 } from 'graphql'
 
-import GeneType, { geneLookUp } from './types/gene'
-import VariantType, { lookUpVariantsByGeneId } from './types/variant'
+import geneType, { lookUpGeneByGeneId } from './types/gene'
+import variantsType, { lookUpVariantsByGeneId } from './types/variant'
+import coverageType, { lookUpCoverageByStartStop } from './types/coverage'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
   fields: () => ({
-    variants: {
-      type: new GraphQLList(VariantType),
+    variantsByGeneId: {
+      description: 'List of variants and their data',
+      type: new GraphQLList(variantsType),
       args: {
         gene_id: { type: new GraphQLNonNull(GraphQLString) },
       },
@@ -23,12 +25,22 @@ const rootType = new GraphQLObjectType({
     },
     gene: {
       description: 'Information about a gene',
-      type: GeneType,
+      type: geneType,
       args: {
         gene_id: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) =>
-        geneLookUp(ctx.db, args.gene_id),
+        lookUpGeneByGeneId(ctx.db, args.gene_id),
+    },
+    exome_coverage: {
+      description: 'Coverage statistics for exomes',
+      type: new GraphQLList(coverageType),
+      args: {
+        start: { type: new GraphQLNonNull(GraphQLInt) },
+        stop: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (obj, args, ctx) =>
+        lookUpCoverageByStartStop(ctx.db, 'exome_coverage', args.xstart, args.xstop),
     },
   }),
 })

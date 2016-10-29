@@ -6,13 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel server.js -o server.babel.js",
+    "build-server": "babel -d ./build ./server -s",
+    "clean": "rm -rf build && mkdir build",
     "start": "MONGO_URL=mongodb://localhost:27017/exac babel-node server.js",
-    "dev": "nodemon --exec MONGO_URL=mongodb://localhost:27017/exac babel-node server.js"
+    "dev": "nodemon --exec MONGO_URL=mongodb://localhost:27017/exac babel-node server.js --max_old_space_size=4096"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.1",
     "express": "^4.14.0",
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
