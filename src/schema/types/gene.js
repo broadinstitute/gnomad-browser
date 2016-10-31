@@ -10,6 +10,7 @@ import {
 import coverageType, { lookUpCoverageByStartStop } from './coverage'
 import variantType, { lookUpVariantsByGeneId } from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
+import exonType, { lookUpExonsByStartStop } from './exon'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -43,6 +44,10 @@ const geneType = new GraphQLObjectType({
       type: transcriptType,
       resolve: (obj, args, ctx) =>
         lookupTranscriptsByTranscriptId(ctx.db, obj.canonical_transcript),
+    },
+    exons: {
+      type: new GraphQLList(exonType),
+      resolve: (obj, args, ctx) => lookUpExonsByStartStop(ctx.db, obj.start, obj.stop),
     },
   }),
 })

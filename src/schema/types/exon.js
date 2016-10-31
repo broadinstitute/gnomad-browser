@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable quote-props */
 
 import {
   GraphQLObjectType,
@@ -27,3 +28,6 @@ export default exonType
 
 export const lookUpExonsByTranscriptId = (db, transcript_id) =>
   db.collection('exons').find({ transcript_id }).toArray()
+
+export const lookUpExonsByStartStop = (db, start, stop) =>
+  db.collection('exons').find({ start: { '$gte': Number(start), '$lte': Number(stop) } }).toArray()
