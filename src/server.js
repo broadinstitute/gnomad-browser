@@ -18,7 +18,8 @@ app.use(cors());
       graphiql: true,
       context: { db },
     }))
-    app.listen(8080, () => console.log('Listening on 8080'))
+    app.listen(process.env.GRAPHQL_PORT, () =>
+      console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
   } catch (error) {
     console.log(error)
   }
