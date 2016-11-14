@@ -30,15 +30,25 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLInt },
     xstart: { type: GraphQLString },
     gene_name: { type: GraphQLString },
-    exac_coverage: {
+    exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
         lookUpCoverageByStartStop(ctx.db, 'exome_coverage', obj.xstart, obj.xstop),
     },
-    variants_in_gene: {
+    genome_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) =>
+        lookUpCoverageByStartStop(ctx.db, 'genome_coverage', obj.xstart, obj.xstop),
+    },
+    exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-        lookUpVariantsByGeneId(ctx.db, obj.gene_id),
+        lookUpVariantsByGeneId(ctx.db, 'variants', obj.gene_id),
+    },
+    genome_variants: {
+      type: new GraphQLList(variantType),
+      resolve: (obj, args, ctx) =>
+        lookUpVariantsByGeneId(ctx.db, 'gnomadVariants2', obj.gene_id),
     },
     transcript: {
       type: transcriptType,
@@ -51,7 +61,6 @@ const geneType = new GraphQLObjectType({
     },
   }),
 })
-
 
 export default geneType
 

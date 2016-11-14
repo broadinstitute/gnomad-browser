@@ -58,5 +58,5 @@ const variantType = new GraphQLObjectType({
 
 export default variantType
 
-export const lookUpVariantsByGeneId = (db, gene_id) =>
-  db.collection('variants').find({ genes: gene_id }).toArray()
+export const lookUpVariantsByGeneId = (db, collection, gene_id) =>
+  db.collection(collection).find({ genes: gene_id }).toArray()

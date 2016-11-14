@@ -1,8 +1,10 @@
 {
-  gene (gene_id: "${geneId}") {
+  gene(gene_id: "ENSG00000186951") {
     gene_id
     gene_name
-    variants_in_gene {
+    start
+    stop
+    exome_variants {
       chrom
       pos
       ref
@@ -12,24 +14,24 @@
       allele_freq
       allele_count
     }
-    exac_coverage {
+    exome_coverage {
       pos
       mean
     }
-    transcript {
-      exons {
-        feature_type
-        start
-        stop
-      }
+    genome_variants {
+      chrom
+      pos
+      ref
+      alt
+      variant_id
+      allele_num
+      allele_freq
+      allele_count
     }
-  }
-}
-
-{
-  gene (gene_id: "${geneId}") {
-    gene_id
-    gene_name
+    exome_coverage {
+      pos
+      mean
+    }
     transcript {
       exons {
         feature_type
