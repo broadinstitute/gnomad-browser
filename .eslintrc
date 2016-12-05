@@ -17,6 +17,7 @@
     "func-names": 0,
     "no-multi-str": 0,
     "spaced-comment": 0,
+    "camelcase": 0,
     // "no-multiple-empty-lines": 0,
     // "generator-star-spacing": [2, {"before": false, "after": true}],
      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]

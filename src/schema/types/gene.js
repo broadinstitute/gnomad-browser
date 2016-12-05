@@ -43,7 +43,7 @@ const geneType = new GraphQLObjectType({
     exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-        lookUpVariantsByGeneId(ctx.db, 'variants', obj.gene_id),
+          lookUpVariantsByGeneId(ctx.db, 'variants', obj.gene_id),
     },
     genome_variants: {
       type: new GraphQLList(variantType),

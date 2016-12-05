@@ -9,20 +9,24 @@
     "build-server": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
     "start": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=12000 build/server.js",
-    "dev": "nodemon --exec GRAPHQL_PORT=8080 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
+    "dev": "nodemon --exec GRAPHQL_PORT=8006 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
-    "prod": "node --max_old_space_size=12000 build/server.js"
+    "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.1",
+    "expect": "^1.20.2",
     "express": "^4.14.0",
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
+    "graphql-tester": "0.0.5",
+    "mocha": "^3.1.2",
     "mongodb": "^2.2.11",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "ramda": "^0.22.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
