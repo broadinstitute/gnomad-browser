@@ -315,6 +315,50 @@ To retrieve a single variant, specify the variant ID or RSID and the data source
 
 ### Fetching data with Python
 
+```python
+!pip install requests
+import requests
+
+query = """{
+  lookup_variant_rsid(rsid: "rs185392267", data: "exac") {
+    _id
+    ac_female
+    ac_male
+    allele_count
+    allele_freq
+    allele_num
+    alt
+    an_female
+    an_male
+    chrom
+    filter
+    genes
+    genotype_depths
+    genotype_qualities
+    hom_count
+    orig_alt_alleles
+    pos
+    ref
+    rsid
+    site_quality
+    transcripts
+    variant_id
+    xpos
+    xstart
+    xstop
+  }
+}"""
+
+headers = { "content-type": "application/graphql" }
+response = requests.post('http://gnomad.broadinstitute.org/graph', data=query, headers=headers)
+print response.text
+```
+
+Should result in:
+
+```text
+{"data":{"lookup_variant_rsid":{"_id":"57e07a3b29736f6befc3415c","ac_female":"1","ac_male":"0","allele_count":1,"allele_freq":0.000008265692417053776,"allele_num":120982,"alt":"T","an_female":53794,"an_male":67188,"chrom":"1","filter":"PASS","genes":["ENSG00000169174"],"genotype_depths":"2.5,12,7.5,182,12.5,295,17.5,447,22.5,33369,27.5,15616,32.5,3571,37.5,1164,42.5,926,47.5,899,52.5,941,57.5,891,62.5,714,67.5,531,72.5,398,77.5,237,82.5,153,87.5,104,92.5,67,97.5,187,2.5,0,7.5,0,12.5,0,17.5,0,22.5,0,27.5,0,32.5,0,37.5,1,42.5,0,47.5,0,52.5,0,57.5,0,62.5,0,67.5,0,72.5,0,77.5,0,82.5,0,87.5,0,92.5,0,97.5,0","genotype_qualities":"2.5,6,7.5,14,12.5,13,17.5,10,22.5,308,27.5,155,32.5,184,37.5,194,42.5,98,47.5,173,52.5,129,57.5,78,62.5,44430,67.5,4801,72.5,1164,77.5,1139,82.5,688,87.5,307,92.5,412,97.5,6401,2.5,0,7.5,0,12.5,0,17.5,0,22.5,0,27.5,0,32.5,0,37.5,0,42.5,0,47.5,0,52.5,0,57.5,0,62.5,0,67.5,0,72.5,0,77.5,0,82.5,0,87.5,0,92.5,0,97.5,1","hom_count":0,"orig_alt_alleles":["1-55509594-C-T"],"pos":55509594,"ref":"C","rsid":"rs185392267","site_quality":4619,"transcripts":["ENST00000543384","ENST00000302118","ENST00000452118"],"variant_id":"1-55509594-C-T","xpos":1055509594,"xstart":1055509594,"xstop":1055509594}}}
+```
 ### Fetching data with R
 
 ### Fetching data with JavaScript
