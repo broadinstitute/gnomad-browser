@@ -7,9 +7,9 @@ import {
   GraphQLList,
 } from 'graphql'
 
-// import coverageType, { lookUpCoverageByStartStop } from './coverage'
-// import variantType, { lookUpVariantsByGeneId } from './variant'
-import exonType, { lookUpExonsByTranscriptId } from './exon'
+// import coverageType, { lookupCoverageByStartStop } from './coverage'
+import variantType, { lookupVariantsByTranscriptId } from './variant'
+import exonType, { lookupExonsByTranscriptId } from './exon'
 
 
 const transcriptType = new GraphQLObjectType({
@@ -24,14 +24,24 @@ const transcriptType = new GraphQLObjectType({
     chrom: { type: GraphQLInt },
     gene_id: { type: GraphQLInt },
     xstop: { type: GraphQLInt },
+    exome_variants: {
+      type: new GraphQLList(variantType),
+      resolve: (obj, args, ctx) =>
+          lookupVariantsByTranscriptId(ctx.db, 'variants', obj.transcript_id),
+    },
+    genome_variants: {
+      type: new GraphQLList(variantType),
+      resolve: (obj, args, ctx) =>
+        lookupVariantsByTranscriptId(ctx.db, 'gnomadVariants2', obj.transcript_id),
+    },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookUpExonsByTranscriptId(ctx.db, obj.transcript_id),
+      resolve: (obj, args, ctx) => lookupExonsByTranscriptId(ctx.db, obj.transcript_id),
     },
   }),
 })
 
 export default transcriptType
 
-export const lookupTranscriptsByTranscriptId = (db, transcript_id) =>
+export const lookupTranscriptById = (db, transcript_id) =>
   db.collection('transcripts').findOne({ transcript_id })

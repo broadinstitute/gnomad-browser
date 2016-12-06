@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable quote-props */
 
 import {
   GraphQLObjectType,
@@ -58,5 +59,13 @@ const variantType = new GraphQLObjectType({
 
 export default variantType
 
-export const lookUpVariantsByGeneId = (db, collection, gene_id) =>
+export const lookupVariantsByGeneId = (db, collection, gene_id) =>
   db.collection(collection).find({ genes: gene_id }).toArray()
+
+export const lookupVariantsByTranscriptId = (db, collection, transcript_id) =>
+  db.collection(collection).find({ transcripts: transcript_id }).toArray()
+
+export const lookupVariantsByStartStop = (db, collection, xstart, xstop) =>
+  db.collection(collection).find(
+    { xpos: { '$lte': Number(xstart), '$gte': Number(xstop) } }
+  ).toArray()

@@ -1,4 +1,38 @@
 {
+  lookup_by_region_bounds(xstart: 1055530526, xstop: 1055505222) {
+    xstart
+    xstop
+		exome_variants {
+		  _id
+		  ac_female
+		  ac_male
+		  allele_count
+		  allele_freq
+		  allele_num
+		  alt
+		  an_female
+		  an_male
+		  chrom
+		  filter
+		  genes
+		  genotype_depths
+		  genotype_qualities
+		  hom_count
+		  orig_alt_alleles
+		  pos
+		  ref
+		  rsid
+		  site_quality
+		  transcripts
+		  variant_id
+		  xpos
+		  xstart
+		  xstop
+		}
+  }
+}
+
+{
   gene(gene_id: "ENSG00000186951") {
     gene_id
     gene_name

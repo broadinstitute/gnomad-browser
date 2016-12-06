@@ -26,8 +26,8 @@ const exonType = new GraphQLObjectType({
 
 export default exonType
 
-export const lookUpExonsByTranscriptId = (db, transcript_id) =>
+export const lookupExonsByTranscriptId = (db, transcript_id) =>
   db.collection('exons').find({ transcript_id }).toArray()
 
-export const lookUpExonsByStartStop = (db, start, stop) =>
+export const lookupExonsByStartStop = (db, start, stop) =>
   db.collection('exons').find({ start: { '$gte': Number(start), '$lte': Number(stop) } }).toArray()

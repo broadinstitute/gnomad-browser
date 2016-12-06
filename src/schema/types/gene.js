@@ -7,10 +7,10 @@ import {
   GraphQLList,
 } from 'graphql'
 
-import coverageType, { lookUpCoverageByStartStop } from './coverage'
-import variantType, { lookUpVariantsByGeneId } from './variant'
+import coverageType, { lookupCoverageByStartStop } from './coverage'
+import variantType, { lookupVariantsByGeneId } from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
-import exonType, { lookUpExonsByStartStop } from './exon'
+import exonType, { lookupExonsByStartStop } from './exon'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -33,22 +33,22 @@ const geneType = new GraphQLObjectType({
     exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
-        lookUpCoverageByStartStop(ctx.db, 'exome_coverage', obj.xstart, obj.xstop),
+        lookupCoverageByStartStop(ctx.db, 'exome_coverage', obj.xstart, obj.xstop),
     },
     genome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
-        lookUpCoverageByStartStop(ctx.db, 'genome_coverage', obj.xstart, obj.xstop),
+        lookupCoverageByStartStop(ctx.db, 'genome_coverage', obj.xstart, obj.xstop),
     },
     exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-          lookUpVariantsByGeneId(ctx.db, 'variants', obj.gene_id),
+          lookupVariantsByGeneId(ctx.db, 'variants', obj.gene_id),
     },
     genome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-        lookUpVariantsByGeneId(ctx.db, 'gnomadVariants2', obj.gene_id),
+        lookupVariantsByGeneId(ctx.db, 'gnomadVariants2', obj.gene_id),
     },
     transcript: {
       type: transcriptType,
@@ -57,12 +57,15 @@ const geneType = new GraphQLObjectType({
     },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookUpExonsByStartStop(ctx.db, obj.start, obj.stop),
+      resolve: (obj, args, ctx) => lookupExonsByStartStop(ctx.db, obj.start, obj.stop),
     },
   }),
 })
 
 export default geneType
 
-export const lookUpGeneByGeneId = (db, gene_id) =>
+export const lookupGeneByGeneId = (db, gene_id) =>
   db.collection('genes').findOne({ gene_id })
+
+export const lookupGeneByName = (db, gene_name) =>
+  db.collection('genes').findOne({ gene_name })
