@@ -59,6 +59,21 @@ const variantType = new GraphQLObjectType({
 
 export default variantType
 
+export const lookupVariant = (db, source, variant_id) => {
+  const collection = source === 'exac' ? 'variants' : 'gnomadVariants2'
+  const [chrom, pos, ref, alt] = variant_id.split('-')
+  return db.collection(collection).findOne({
+    xpos: chrom + pos,
+    ref,
+    alt,
+  })
+}
+
+export const lookupVariantRsid = (db, source, rsid) => {
+  const collection = source === 'exac' ? 'variants' : 'gnomadVariants2'
+  return db.collection(collection).findOne({ rsid })
+}
+
 export const lookupVariantsByGeneId = (db, collection, gene_id) =>
   db.collection(collection).find({ genes: gene_id }).toArray()
 

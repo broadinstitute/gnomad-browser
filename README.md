@@ -282,7 +282,36 @@ In general, take advantage of the Documentation Explorer and autocomplete functi
 
 ### Query by variant
 
+To retrieve a single variant, specify the variant ID or RSID and the data source. If retrieving a lot of variants, please query by other criteria such as gene or region if possible.
+
+```graphql
+{
+  lookup_variant_id(variant_id: "1-55516888-G-GA", data: "exac")
+}
+```
+```graphql
+{
+  lookup_variant_rsid(variant_id: "rs185392267", data: "gnomad")
+}
+```
+
 ### Query by region
+
+
+```graphql
+{
+  lookup_by_region_bounds(xstart: 1055530526, xstop: 1055505222) {
+    xstart
+    xstop
+		exome_variants {
+		  allele_count
+		  allele_freq
+		  allele_num
+		  variant_id
+		}
+  }
+}
+```
 
 ### Fetching data with Python
 

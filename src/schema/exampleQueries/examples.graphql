@@ -75,3 +75,33 @@
     }
   }
 }
+
+{
+  Lookup_variant_id(variant_id: "1-55516888-g-ga", data: "exac"){
+    _id
+    ac_female
+    ac_male
+    allele_count
+    allele_freq
+    allele_num
+    alt
+    an_female
+    an_male
+    chrom
+    filter
+    genes
+    genotype_depths
+    genotype_qualities
+    hom_count
+    orig_alt_alleles
+    pos
+    ref
+    rsid
+    site_quality
+    transcripts
+    variant_id
+    xpos
+    xstart
+    xstop
+  }
+}

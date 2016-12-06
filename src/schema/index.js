@@ -12,10 +12,16 @@ import geneType, {
   lookupGeneByName,
 } from './types/gene'
 
-import transcriptType, { lookupTranscriptById } from './types/transcript'
+import transcriptType, {
+  lookupTranscriptById,
+} from './types/transcript'
+
+import variantType, {
+  lookupVariant,
+  lookupVariantRsid,
+} from './types/variant'
+
 import regionType from './types/region'
-// import variantsType from './types/variant'
-// import coverageType from './types/coverage'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -62,6 +68,34 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         xstop: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve: (obj, args) => ({ xstart: args.xstart, xstop: args.xstop }),
+    },
+    lookup_variant_id: {
+      description: 'Look up a single variant by variant ID. Example: 1-55516888-G-GA.',
+      type: variantType,
+      args: {
+        variant_id: { type: new GraphQLNonNull(GraphQLString) },
+        data: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: 'exac or gnomad',
+        },
+      },
+      resolve: (obj, args, ctx) => {
+        return lookupVariant(ctx.db, args.data, args.variant_id)
+      },
+    },
+    lookup_variant_rsid: {
+      description: 'Look up a single variant by RSID. Example: rs185392267.',
+      type: variantType,
+      args: {
+        rsid: { type: new GraphQLNonNull(GraphQLString) },
+        data: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: 'exac or gnomad',
+        },
+      },
+      resolve: (obj, args, ctx) => {
+        return lookupVariantRsid(ctx.db, args.data, args.rsid)
+      },
     },
   }),
 })
