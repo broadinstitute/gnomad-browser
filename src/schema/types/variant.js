@@ -10,7 +10,7 @@ import {
 } from 'graphql'
 
 import vepType from './vep'
-// import populationType from './populations'
+import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
 
 const variantType = new GraphQLObjectType({
@@ -40,9 +40,9 @@ const variantType = new GraphQLObjectType({
     // indel: { type: GraphQLString }, // TODO: add this
     // major_consequence: { type: GraphQLString }, // TODO: add this
     orig_alt_alleles: { type: new GraphQLList(GraphQLString) },
-    // pop_acs: { type: populationType },
-    // pop_ans: { type: populationType },
-    // pop_homs: { type: populationType },
+    pop_acs: { type: populationType },
+    pop_ans: { type: populationType },
+    pop_homs: { type: populationType },
     pos: { type: GraphQLInt },
     quality_metrics: { type: qualityMetricsType },
     ref: { type: GraphQLString },

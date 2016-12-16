@@ -9,14 +9,14 @@ import {
 const populationType = new GraphQLObjectType({
   name: 'Populations',
   fields: () => ({
-    'European (Non-Finnish)': { type: GraphQLInt },
-    'East Asian': { type: GraphQLInt },
-    'Other': { type: GraphQLInt },
-    'African': { type: GraphQLInt },
-    'Latino': { type: GraphQLInt },
-    'South Asian': { type: GraphQLInt },
-    'European (Finnish)': { type: GraphQLInt },
-    'Ashkenazi Jewish': { type: GraphQLInt },
+    'european_non_finnish': { type: GraphQLInt },
+    'east_asian': { type: GraphQLInt },
+    'other': { type: GraphQLInt },
+    'african': { type: GraphQLInt },
+    'latino': { type: GraphQLInt },
+    'south_asian': { type: GraphQLInt },
+    'european_finnish': { type: GraphQLInt },
+    'ashkenazi_jewish': { type: GraphQLInt },
   }),
 })
 
