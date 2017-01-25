@@ -29,7 +29,7 @@ const rootType = new GraphQLObjectType({
 The fields below allow for different ways to look up gnomAD data. Click on the the Gene, Variant, or Region types to see more information.
   `,
   fields: () => ({
-    lookup_by_gene_id: {
+    gene_id: {
       description: 'Look up variant data by gene ID. Example: ENSG00000169174.',
       type: geneType,
       args: {
@@ -40,7 +40,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         return lookupGeneByGeneId(ctx.db, args.gene_id)
       },
     },
-    lookup_by_gene_name: {
+    gene_name: {
       description: 'Look up variant data by gene name. Example: PCSK9.',
       type: geneType,
       args: {
@@ -49,7 +49,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       resolve: (obj, args, ctx) =>
         lookupGeneByName(ctx.db, args.gene_name),
     },
-    lookup_by_transcript_id: {
+    transcript_id: {
       description: 'Look up variant data by transcript ID. Example: ENST00000407236.',
       type: transcriptType,
       args: {
@@ -60,7 +60,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         return lookupTranscriptById(ctx.db, args.transcript_id)
       },
     },
-    lookup_by_region_bounds: {
+    region_bounds: {
       description: 'Look up variant data by start/stop. Example: (xstart: 1055530526, xstop: 1055505222).',
       type: regionType,
       args: {
@@ -69,7 +69,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args) => ({ xstart: args.xstart, xstop: args.xstop }),
     },
-    lookup_variant_id: {
+    variant_id: {
       description: 'Look up a single variant by variant ID. Example: 1-55516888-G-GA.',
       type: variantType,
       args: {
@@ -83,7 +83,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         return lookupVariant(ctx.db, args.data, args.variant_id)
       },
     },
-    lookup_variant_rsid: {
+    variant_rsid: {
       description: 'Look up a single variant by RSID. Example: rs185392267.',
       type: variantType,
       args: {

@@ -15,10 +15,10 @@ To get started with gnomAD data, open the interactive query building editor at [
 Click the `Docs` button in the top right-hand corner to open up the **Documentation Explorer**. GraphQL is self-documenting, so the fields and data described in this section are always up-to-date. Browsing through the Documentation Explorer is the best way to understand how to query data and learn which types of data are available to retrieve. You can think of the GraphQL data model as a graph (duh!), where we start at the root and start exploring the branches. Under `ROOT TYPES`, click on `query: Root` and you will shown the different ways to start building queries.
 
 ```graphql
-lookup_by_gene_id(gene_id: String!): Gene
-lookup_by_gene_name(gene_name: String!): Gene
-lookup_by_transcript_id(transcript_id: String!): Transcript
-lookup_by_region_bounds(xstart: Int!xstop: Int!): Region
+gene_id(gene_id: String!): Gene
+gene_name(gene_name: String!): Gene
+transcript_id(transcript_id: String!): Transcript
+region_bounds(xstart: Int!xstop: Int!): Region
 ```
 
 Here, you can discover the different ways to start querying and we will go through a few examples.
@@ -26,27 +26,27 @@ Here, you can discover the different ways to start querying and we will go throu
 ### Query by gene
 
 Let's start by building a query that retrieves all the exome and genome variants
-in a given gene using the `lookup_by_gene_name` field.
+in a given gene using the `gene_name` field.
 
 ```graphql
-lookup_by_gene_name(gene_id: String!): Gene
+gene_name(gene_id: String!): Gene
 ```
 
 This field takes one argument called `gene_id` that is of type `String`. The `!` means this argument is required. The `: Gene` means this field will return an object of type `Gene`, which is going to have its own fields. Essentially, we are retrieving data are grouped by a given gene.
 
-The GraphiQL editor has auto completion and informative error checking. In the blank left panel, start by typing curly braces `{  }` and then `control-shift`. You should see autocomplete fields pop up. Select `lookup_by_gene_name` from the autocomplete menu, and this should now autocomplete to `{  lookup_by_gene_name }`. Notice the squiggly red underline. This means the interpreter is complaining about something. Hover over the exception to see what is wrong.
+The GraphiQL editor has auto completion and informative error checking. In the blank left panel, start by typing curly braces `{  }` and then `control-shift`. You should see autocomplete fields pop up. Select `gene_name` from the autocomplete menu, and this should now autocomplete to `{  gene_name }`. Notice the squiggly red underline. This means the interpreter is complaining about something. Hover over the exception to see what is wrong.
 
 The field wants an argument and type `Gene` requires a subfield, so modify the query:
 
 ```graphql
-{ lookup_by_gene_name(gene_name: "PCSK9") }
+{ gene_name(gene_name: "PCSK9") }
 ```
 
 Press the Play button at the top of the screen or type `shift-enter`.  You should see more fields populate the query. Press the `Prettify` button to make the query look a bit nicer.
 
 ```graphql
 {
-  lookup_by_gene_name(gene_name: "PCSK9") {
+  gene_name(gene_name: "PCSK9") {
     _id
     omim_description
     stop
@@ -71,7 +71,7 @@ All of the top level fields of the `Gene` type have automatically been added. Al
 ```json
 {
   "data": {
-    "lookup_by_gene_name": {
+    "gene_name": {
       "_id": "5814af9729736fbf482e46da",
       "omim_description": " PROPROTEIN CONVERTASE, SUBTILISIN/KEXIN-TYPE, 9; PCSK9",
       "stop": "55530526",
@@ -99,7 +99,7 @@ All of the top level fields of the `Gene` type have automatically been added. Al
 In the Documentation Explorer where it says:
 
 ```graphql
-lookup_by_gene_name(gene_name: String!): Gene
+gene_name(gene_name: String!): Gene
 ```
 
  Click the `Gene` type. You will see all the fields available to include in this query:
@@ -132,7 +132,7 @@ Notice how some of the fields have not automatically filled in such as `exome_va
 
 ```graphql
 {
-  lookup_by_gene_name(gene_name: "PCSK9") {
+  gene_name(gene_name: "PCSK9") {
     _id
     omim_description
     stop
@@ -183,7 +183,7 @@ On the right-hand side of the page, a lot of data was returned from this query. 
 
 ```graphql
 {
-  lookup_by_gene_name(gene_name: "PCSK9") {
+  gene_name(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -201,7 +201,7 @@ The JSON object response will look like:
 ```json
 {
   "data": {
-    "lookup_by_gene_name": {
+    "gene_name": {
       "gene_name": "PCSK9",
       "exome_variants": [
         {
@@ -236,7 +236,7 @@ Let's say you are interested in some of the VEP annotations for each variant, th
 
 ```graphql
 {
-  lookup_by_gene_name(gene_name: "PCSK9") {
+  gene_name(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -300,7 +300,7 @@ To retrieve a single variant, specify the variant ID or RSID and the data source
 
 ```graphql
 {
-  lookup_by_region_bounds(xstart: 1055530526, xstop: 1055505222) {
+  region_bounds(xstart: 1055530526, xstop: 1055505222) {
     xstart
     xstop
 		exome_variants {
@@ -321,7 +321,7 @@ import pandas
 import ast
 
 query = """{
-  lookup_by_gene_name(gene_name: "PCSK9") {
+  gene_name(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -336,7 +336,7 @@ query = """{
 headers = { "content-type": "application/graphql" }
 response = requests.post('http://gnomad.broadinstitute.org/graph', data=query, headers=headers)
 parse = ast.literal_eval(response.text)
-data = parse['data']['lookup_by_gene_name']['exome_variants']
+data = parse['data']['gene_name']['exome_variants']
 df = pandas.DataFrame.from_dict(data)
 print df
 ```
@@ -366,7 +366,7 @@ const API_URL = `gnomad.broadinstitute.org/graph`
 const geneName = `PCSK9`
 const query = `
   {
-    lookup_by_gene_name(gene_id: "${geneName}") {
+    gene_name(gene_id: "${geneName}") {
       gene_id
       gene_name
       start
