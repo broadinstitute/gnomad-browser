@@ -1,6 +1,6 @@
 ```graph
 {
-  lookup_by_region_bounds(xstart: 1055530526, xstop: 1055505222) {
+  region_bounds(xstart: 1055530526, xstop: 1055505222) {
     xstart
     xstop
 		exome_variants {

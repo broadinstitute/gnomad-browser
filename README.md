@@ -286,12 +286,12 @@ To retrieve a single variant, specify the variant ID or RSID and the data source
 
 ```graphql
 {
-  lookup_variant_id(variant_id: "1-55516888-G-GA", data: "exac")
+  variant_id(variant_id: "1-55516888-G-GA", data: "exac")
 }
 ```
 ```graphql
 {
-  lookup_variant_rsid(variant_id: "rs185392267", data: "gnomad")
+  variant_rsid(variant_id: "rs185392267", data: "gnomad")
 }
 ```
 
