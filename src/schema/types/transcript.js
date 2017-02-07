@@ -43,5 +43,5 @@ const transcriptType = new GraphQLObjectType({
 
 export default transcriptType
 
-export const lookupTranscriptById = (db, transcript_id) =>
+export const lookupTranscriptsByTranscriptId = (db, transcript_id) =>
   db.collection('transcripts').findOne({ transcript_id })
