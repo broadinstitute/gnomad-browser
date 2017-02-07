@@ -22,7 +22,7 @@ const transcriptType = new GraphQLObjectType({
     stop: { type: GraphQLInt },
     xstart: { type: GraphQLInt },
     chrom: { type: GraphQLInt },
-    gene_id: { type: GraphQLInt },
+    gene_id: { type: GraphQLString },
     xstop: { type: GraphQLInt },
     exome_variants: {
       type: new GraphQLList(variantType),

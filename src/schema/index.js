@@ -13,7 +13,7 @@ import geneType, {
 } from './types/gene'
 
 import transcriptType, {
-  lookupTranscriptById,
+  lookupTranscriptsByTranscriptId,
 } from './types/transcript'
 
 import variantType, {
@@ -57,7 +57,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args, ctx) => {
         console.log(ctx)
-        return lookupTranscriptById(ctx.db, args.transcript_id)
+        return lookupTranscriptsByTranscriptId(ctx.db, args.transcript_id)
       },
     },
     region_bounds: {
