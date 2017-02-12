@@ -11,7 +11,8 @@
     "start": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=12000 build/server.js",
     "dev": "nodemon --exec GRAPHQL_PORT=8006 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
-    "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js"
+    "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js",
+    "docker": "GRAPHQL_PORT=80 MONGO_URL=mongodb://gnomad-mongo:27017/exac node build/server.js"
   },
   "keywords": [],
   "author": "",
