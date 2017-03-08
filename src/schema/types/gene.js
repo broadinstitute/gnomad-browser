@@ -12,6 +12,8 @@ import variantType, { lookupVariantsByGeneId } from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
 import exonType, { lookupExonsByStartStop } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
+import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
+import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -74,6 +76,16 @@ const geneType = new GraphQLObjectType({
       type: constraintType,
       resolve: (obj, args, ctx) =>
         lookUpConstraintByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
+    },
+    exacv1_cnvs_gene: {
+      type: new GraphQLList(cnvsGene),
+      resolve: (obj, args, ctx) =>
+        lookUpCnvsGeneByGeneName(ctx.database.exacv1, obj.gene_id),
+    },
+    exacv1_cnvs_exons: {
+      type: new GraphQLList(cnvsExons),
+      resolve: (obj, args, ctx) =>
+        lookUpCnvsExonsByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
   }),
 })
