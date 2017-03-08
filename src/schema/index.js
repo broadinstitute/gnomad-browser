@@ -37,7 +37,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args, ctx) => {
         console.log(ctx)
-        return lookupGeneByGeneId(ctx.db, args.gene_id)
+        return lookupGeneByGeneId(ctx.database.gnomad, args.gene_id)
       },
     },
     gene_name: {
@@ -47,7 +47,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         gene_name: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) =>
-        lookupGeneByName(ctx.db, args.gene_name),
+        lookupGeneByName(ctx.database.gnomad, args.gene_name),
     },
     transcript_id: {
       description: 'Look up variant data by transcript ID. Example: ENST00000407236.',
@@ -57,7 +57,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args, ctx) => {
         console.log(ctx)
-        return lookupTranscriptsByTranscriptId(ctx.db, args.transcript_id)
+        return lookupTranscriptsByTranscriptId(ctx.database.gnomad, args.transcript_id)
       },
     },
     region_bounds: {
@@ -80,7 +80,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         },
       },
       resolve: (obj, args, ctx) => {
-        return lookupVariant(ctx.db, args.data, args.variant_id)
+        return lookupVariant(ctx.database.gnomad, args.data, args.variant_id)
       },
     },
     variant_rsid: {
@@ -94,7 +94,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         },
       },
       resolve: (obj, args, ctx) => {
-        return lookupVariantRsid(ctx.db, args.data, args.rsid)
+        return lookupVariantRsid(ctx.database.gnomad, args.data, args.rsid)
       },
     },
   }),

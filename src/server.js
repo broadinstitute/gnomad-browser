@@ -12,11 +12,15 @@ app.use(cors());
 
 (async () => {
   try {
-    const db = await MongoClient.connect(process.env.MONGO_URL)
+    const gnomad = await MongoClient.connect(process.env.GNOMAD_MONGO_URL)
+    const exacv1 = await MongoClient.connect(process.env.EXACV1_MONGO_URL)
     app.use('/', GraphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
-      context: { db },
+      context: { database: {
+        gnomad,
+        exacv1,
+      }},
     }))
     app.listen(process.env.GRAPHQL_PORT, () =>
       console.log(`Listening on ${process.env.GRAPHQL_PORT}`))

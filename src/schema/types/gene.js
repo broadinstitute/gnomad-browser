@@ -11,6 +11,7 @@ import coverageType, { lookupCoverageByStartStop } from './coverage'
 import variantType, { lookupVariantsByGeneId } from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
 import exonType, { lookupExonsByStartStop } from './exon'
+import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -33,31 +34,46 @@ const geneType = new GraphQLObjectType({
     exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
-        lookupCoverageByStartStop(ctx.db, 'exome_coverage', obj.xstart, obj.xstop),
+        lookupCoverageByStartStop(ctx.database.gnomad, 'exome_coverage', obj.xstart, obj.xstop),
     },
     genome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
-        lookupCoverageByStartStop(ctx.db, 'genome_coverage', obj.xstart, obj.xstop),
+        lookupCoverageByStartStop(ctx.database.gnomad, 'genome_coverage', obj.xstart, obj.xstop),
+    },
+    exacv1_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) =>
+        lookupCoverageByStartStop(ctx.database.exacv1, 'base_coverage', obj.xstart, obj.xstop),
     },
     exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-          lookupVariantsByGeneId(ctx.db, 'exome_variants', obj.gene_id),
+          lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id),
     },
     genome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-        lookupVariantsByGeneId(ctx.db, 'genome_variants', obj.gene_id),
+        lookupVariantsByGeneId(ctx.database.gnomad, 'genome_variants', obj.gene_id),
+    },
+    exacv1_variants: {
+      type: new GraphQLList(variantType),
+      resolve: (obj, args, ctx) =>
+        lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id),
     },
     transcript: {
       type: transcriptType,
       resolve: (obj, args, ctx) =>
-        lookupTranscriptsByTranscriptId(ctx.db, obj.canonical_transcript),
+        lookupTranscriptsByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
     },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookupExonsByStartStop(ctx.db, obj.start, obj.stop),
+      resolve: (obj, args, ctx) => lookupExonsByStartStop(ctx.database.gnomad, obj.start, obj.stop),
+    },
+    exacv1_constraint: {
+      type: constraintType,
+      resolve: (obj, args, ctx) =>
+        lookUpConstraintByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
   }),
 })

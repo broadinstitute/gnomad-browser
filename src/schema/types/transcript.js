@@ -27,16 +27,16 @@ const transcriptType = new GraphQLObjectType({
     exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-          lookupVariantsByTranscriptId(ctx.db, 'variants', obj.transcript_id),
+          lookupVariantsByTranscriptId(ctx.database.gnomad, 'exome_variants', obj.transcript_id),
     },
     genome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
-        lookupVariantsByTranscriptId(ctx.db, 'gnomadVariants2', obj.transcript_id),
+        lookupVariantsByTranscriptId(ctx.database.gnomad, 'genome_variants', obj.transcript_id),
     },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookupExonsByTranscriptId(ctx.db, obj.transcript_id),
+      resolve: (obj, args, ctx) => lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
   }),
 })
