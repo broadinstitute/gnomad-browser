@@ -7,11 +7,13 @@ import {
   GraphQLFloat,
   GraphQLString,
   GraphQLList,
+  GraphQLBoolean,
 } from 'graphql'
 
 import vepType from './vep'
 import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
+import mnpType from './mnp'
 
 const variantType = new GraphQLObjectType({
   name: 'Variant',
@@ -54,6 +56,8 @@ const variantType = new GraphQLObjectType({
     xpos: { type: GraphQLInt },
     xstart: { type: GraphQLInt },
     xstop: { type: GraphQLInt },
+    has_mnp: { type: GraphQLBoolean },
+    mnps: { type: new GraphQLList(mnpType) },
   }),
 })
 
