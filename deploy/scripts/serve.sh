@@ -11,4 +11,4 @@ kubectl config use-context gke_exac-gnomad_us-east1-d_gnomad-serving-cluster
 kubectl create -f deploy/config/gnomad-graphql-rc.json
 kubectl expose rc gnomad-graphql-rc --type="LoadBalancer"
 # --load-balancer-ip=35.185.33.81
-kubectl autoscale rc gnomad-graphql-rc --min=1 --max=2 --cpu-percent=80
+kubectl autoscale rc gnomad-graphql-rc --min=5 --max=20 --cpu-percent=80

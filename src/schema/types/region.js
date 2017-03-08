@@ -32,8 +32,7 @@ const regionType = new GraphQLObjectType({
         console.log('hello!')
         console.log(lookupVariantsByStartStop(ctx.db, 'variants', obj.xstart, obj.xstop))
         return lookupVariantsByStartStop(ctx.db, 'variants', obj.xstart, obj.xstop)
-      }
-
+      },
     },
     genome_variants: {
       type: new GraphQLList(variantType),

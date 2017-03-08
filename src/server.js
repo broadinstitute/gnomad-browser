@@ -13,7 +13,7 @@ app.use(cors());
 (async () => {
   try {
     const db = await MongoClient.connect(process.env.MONGO_URL)
-    app.use('/graph', GraphQLHTTP({
+    app.use('/', GraphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
       context: { db },
