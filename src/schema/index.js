@@ -3,7 +3,7 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  // GraphQLList,
+  GraphQLList,
   GraphQLNonNull,
 } from 'graphql'
 
@@ -29,27 +29,24 @@ const rootType = new GraphQLObjectType({
 The fields below allow for different ways to look up gnomAD data. Click on the the Gene, Variant, or Region types to see more information.
   `,
   fields: () => ({
-    gene_id: {
-      description: 'Look up variant data by gene ID. Example: ENSG00000169174.',
-      type: geneType,
-      args: {
-        gene_id: { type: new GraphQLNonNull(GraphQLString) },
-      },
-      resolve: (obj, args, ctx) => {
-        console.log(ctx)
-        return lookupGeneByGeneId(ctx.database.gnomad, args.gene_id)
-      },
-    },
-    gene_name: {
+    gene: {
       description: 'Look up variant data by gene name. Example: PCSK9.',
       type: geneType,
       args: {
-        gene_name: { type: new GraphQLNonNull(GraphQLString) },
+        gene_name: { type: GraphQLString },
+        gene_id: { type: GraphQLString },
       },
-      resolve: (obj, args, ctx) =>
-        lookupGeneByName(ctx.database.gnomad, args.gene_name),
+      resolve: (obj, args, ctx) => {
+        if (args.gene_name) {
+          return lookupGeneByName(ctx.database.gnomad, args.gene_name)
+        }
+        if (args.gene_id) {
+          return lookupGeneByGeneId(ctx.database.gnomad, args.gene_id)
+        }
+        return 'No lookup found'
+      },
     },
-    transcript_id: {
+    transcript: {
       description: 'Look up variant data by transcript ID. Example: ENST00000407236.',
       type: transcriptType,
       args: {
@@ -60,7 +57,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         return lookupTranscriptsByTranscriptId(ctx.database.gnomad, args.transcript_id)
       },
     },
-    region_bounds: {
+    region: {
       description: 'Look up variant data by start/stop. Example: (xstart: 1055530526, xstop: 1055505222).',
       type: regionType,
       args: {
@@ -69,33 +66,18 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args) => ({ xstart: args.xstart, xstop: args.xstop }),
     },
-    variant_id: {
-      description: 'Look up a single variant by variant ID. Example: 1-55516888-G-GA.',
+    variant: {
+      description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
       type: variantType,
       args: {
-        variant_id: { type: new GraphQLNonNull(GraphQLString) },
-        data: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: 'exac or gnomad',
+        id: { type: GraphQLString },
+        rsid: { type: GraphQLString },
+        source: {
+          type: GraphQLString,
+          description: 'Please specify genome, exome, or exacv1',
         },
       },
-      resolve: (obj, args, ctx) => {
-        return lookupVariant(ctx.database.gnomad, args.data, args.variant_id)
-      },
-    },
-    variant_rsid: {
-      description: 'Look up a single variant by RSID. Example: rs185392267.',
-      type: variantType,
-      args: {
-        rsid: { type: new GraphQLNonNull(GraphQLString) },
-        data: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: 'exac or gnomad',
-        },
-      },
-      resolve: (obj, args, ctx) => {
-        return lookupVariantRsid(ctx.database.gnomad, args.data, args.rsid)
-      },
+      resolve: (obj, args, ctx) => lookupVariant(ctx.database.gnomad, 'exome_variants', args.id),
     },
   }),
 })

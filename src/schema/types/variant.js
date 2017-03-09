@@ -29,8 +29,8 @@ const variantType = new GraphQLObjectType({
     allele_freq: { type: GraphQLFloat },
     allele_num: { type: GraphQLInt },
     alt: { type: GraphQLString },
-    an_female: { type: GraphQLInt }, // TODO: should be Int
-    an_male: { type: GraphQLInt }, // TODO: should be Int
+    an_female: { type: GraphQLString }, // TODO: should be Int
+    an_male: { type: GraphQLString }, // TODO: should be Int
     // category: { type: GraphQLString },
     chrom: { type: GraphQLString }, // TODO: should be Int?
     filter: { type: GraphQLString },
@@ -53,9 +53,9 @@ const variantType = new GraphQLObjectType({
     transcripts: { type: new GraphQLList(GraphQLString) },
     variant_id: { type: GraphQLString },
     vep_annotations: { type: new GraphQLList(vepType) },
-    xpos: { type: GraphQLInt },
-    xstart: { type: GraphQLInt },
-    xstop: { type: GraphQLInt },
+    xpos: { type: GraphQLFloat },
+    xstart: { type: GraphQLFloat },
+    xstop: { type: GraphQLFloat },
     has_mnp: { type: GraphQLBoolean },
     mnps: { type: new GraphQLList(mnpType) },
   }),
@@ -63,18 +63,24 @@ const variantType = new GraphQLObjectType({
 
 export default variantType
 
-export const lookupVariant = (db, source, variant_id) => {
-  const collection = source === 'exac' ? 'exome_variants' : 'genome_variants'
-  const [chrom, pos, ref, alt] = variant_id.split('-')
-  return db.collection(collection).findOne({
-    xpos: chrom + pos,
-    ref,
-    alt,
-  })
+const getXpos = (chr, pos) => {
+  const autosomes = Array.from(new Array(22), (x, i) => `chr${i + 1}`)
+  const chromosomes = [...autosomes, 'chrX', 'chrY', 'chrM']
+  const chromosomeCodes = chromosomes.reduce((acc, chrom, i) => {
+    return { ...acc, [chrom]: i + 1 }
+  }, {})
+  const chrStart = chromosomeCodes[`chr${chr}`] * 1e9
+  const xpos = chrStart + Number(pos)
+  return xpos
 }
 
-export const lookupVariantRsid = (db, source, rsid) => {
-  const collection = source === 'exac' ? 'exome_variants' : 'genome_variants'
+export const lookupVariant = (db, collection, variant_id) => {
+  const [chrom, pos, ref, alt] = variant_id.split('-')
+  const xpos = getXpos(chrom, pos)
+  return db.collection(collection).findOne({ xpos, ref, alt })
+}
+
+export const lookupVariantRsid = (db, collection, rsid) => {
   return db.collection(collection).findOne({ rsid })
 }
 

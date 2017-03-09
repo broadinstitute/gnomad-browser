@@ -5,6 +5,7 @@ import {
   GraphQLInt,
   GraphQLString,
   GraphQLList,
+  GraphQLFloat,
 } from 'graphql'
 
 import coverageType, { lookupCoverageByStartStop } from './coverage'
@@ -30,8 +31,8 @@ const geneType = new GraphQLObjectType({
     other_names: { type: new GraphQLList(GraphQLString) },
     canonical_transcript: { type: GraphQLString },
     start: { type: GraphQLInt },
-    xstop: { type: GraphQLInt },
-    xstart: { type: GraphQLString },
+    xstop: { type: GraphQLFloat },
+    xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
     exome_coverage: {
       type: new GraphQLList(coverageType),
