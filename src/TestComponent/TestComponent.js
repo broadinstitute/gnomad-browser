@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react'
 const TestComponent = ({ name, geneId }) => (
   <div>
     <h3>Hello {name}</h3>
-    <p>This is definitely working!!</p>
     <p>The gene is {geneId}</p>
   </div>
 )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { fetchGene, test } from 'utilities'  // eslint-disable-line
 
-import TestComponent from './TestComponent'
+import RegionViewer from './RegionViewer'
 import css from './styles.css'
 
 class TestComponentDemo extends Component {
@@ -14,9 +14,10 @@ class TestComponentDemo extends Component {
   }
 
   fetchData = () => {
-    fetchGene('PPARA').then((data) => {
-      this.setState({ geneId: data.gene_id })
+    fetchGene('PCSK9').then((data) => {
+      this.setState({ data })
       this.setState({ hasData: true })
+      this.forceUpdate()
     })
   }
 
@@ -24,10 +25,15 @@ class TestComponentDemo extends Component {
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
     }
-    const { geneId } = this.state
+    const { start, stop } = this.state.data
     return (
       <div>
-        <TestComponent name={test()} geneId={geneId} />
+        <RegionViewer
+          width={800}
+          css={css}
+          start={start}
+          stop={Number(stop)}
+        />
       </div>
     )
   }

@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm-run-all --parallel build:*",
-    "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --ignore *.example.js,*.test.js",
+    "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --ignore demo,*.example.js,*.test.js",
     "build:umd": "cross-env NODE_ENV=production webpack --config webpack.config.umd.js",
     "prebuild": "rimraf dist",
     "demo": "cross-env NODE_ENV=development webpack-dev-server --hot --config webpack.config.js"
