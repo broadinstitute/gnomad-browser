@@ -94,3 +94,21 @@ export const lookupVariantsByStartStop = (db, collection, xstart, xstop) =>
   db.collection(collection).find(
     { xpos: { '$lte': Number(xstart), '$gte': Number(xstop) } }
   ).toArray()
+
+export const variantResolver = (obj, args, ctx) => {  // eslint-disable-line
+  let database
+  let collection
+  if (args.source === 'genome' || args.source === 'exome') {
+    database = ctx.database.gnomad
+    collection = args.source === 'genome' ? 'genome_variants' : 'exome_variants'
+  } else {
+    database = ctx.database.exacv1
+    collection = 'variants'
+  }
+  if (args.id) {
+    return lookupVariant(database, collection, args.id)
+  } else if (args.rsid) {
+    return lookupVariantRsid(database, collection, args.rsid)
+  }
+}
+

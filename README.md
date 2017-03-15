@@ -10,15 +10,15 @@ Please note that this resource is under development and the query methods and da
 
 To get comfortable building queries, check out the [official introductory guide](http://graphql.org/learn/queries/) and follow along by executing the queries yourself using the [Star Wars GraphiQL API](https://graphql-swapi.parseapp.com/). It may be useful to spend a few minutes doing that before proceeding.
 
-To get started with gnomAD data, open the interactive query building editor at [gnomad.broadinstitute.org/graph](http://gnomad.broadinstitute.org:8000/graph). You should see two panels side-by-side. Build queries in the left panel and the results will be displayed in the right panel.
+To get started with gnomAD data, open the interactive query building editor at [gnomad-api.broadinstitute.org](http://gnomad-api.broadinstitute.org/). You should see two panels side-by-side. Build queries in the left panel and the results will be displayed in the right panel.
 
 Click the `Docs` button in the top right-hand corner to open up the **Documentation Explorer**. GraphQL is self-documenting, so the fields and data described in this section are always up-to-date. Browsing through the Documentation Explorer is the best way to understand how to query data and learn which types of data are available to retrieve. You can think of the GraphQL data model as a graph (duh!), where we start at the root and start exploring the branches. Under `ROOT TYPES`, click on `query: Root` and you will shown the different ways to start building queries.
 
 ```graphql
-gene_id(gene_id: String!): Gene
-gene_name(gene_name: String!): Gene
-transcript_id(transcript_id: String!): Transcript
-region_bounds(xstart: Int!xstop: Int!): Region
+gene(gene_name: String, gene_id: String): Gene
+transcript(transcript_id: String!): Transcript
+region(xstart: Int!, xstop: Int!): Region
+variant(id: String, rsid: String, source: String): Variant
 ```
 
 Here, you can discover the different ways to start querying and we will go through a few examples.
@@ -29,24 +29,24 @@ Let's start by building a query that retrieves all the exome and genome variants
 in a given gene using the `gene_name` field.
 
 ```graphql
-gene_name(gene_id: String!): Gene
+gene(gene_name: String!): Gene
 ```
 
-This field takes one argument called `gene_id` that is of type `String`. The `!` means this argument is required. The `: Gene` means this field will return an object of type `Gene`, which is going to have its own fields. Essentially, we are retrieving data are grouped by a given gene.
+This field takes one argument called `gene_name` that is of type `String`. The `!` means this argument is required. The `: Gene` means this field will return an object of type `Gene`, which is going to have its own fields. Essentially, we are retrieving data are grouped by a given gene.
 
-The GraphiQL editor has auto completion and informative error checking. In the blank left panel, start by typing curly braces `{  }` and then `control-shift`. You should see autocomplete fields pop up. Select `gene_name` from the autocomplete menu, and this should now autocomplete to `{  gene_name }`. Notice the squiggly red underline. This means the interpreter is complaining about something. Hover over the exception to see what is wrong.
+The GraphiQL editor has auto completion and informative error checking. In the blank left panel, start by typing curly braces `{  }` and then `control-space`. You should see autocomplete fields pop up. Select `gene_name` from the autocomplete menu, and this should now autocomplete to `{  gene }`. Notice the squiggly red underline. This means the interpreter is complaining about something. Hover over the exception to see what is wrong.
 
 The field wants an argument and type `Gene` requires a subfield, so modify the query:
 
 ```graphql
-{ gene_name(gene_name: "PCSK9") }
+{ gene(gene_name: "PCSK9") }
 ```
 
-Press the Play button at the top of the screen or type `shift-enter`.  You should see more fields populate the query. Press the `Prettify` button to make the query look a bit nicer.
+Press the Play button at the top of the screen or type `command-enter`.  You should see more fields populate the query. Press the `Prettify` button to make the query look a bit nicer.
 
 ```graphql
 {
-  gene_name(gene_name: "PCSK9") {
+  gene(gene_name: "PCSK9") {
     _id
     omim_description
     stop
@@ -71,8 +71,8 @@ All of the top level fields of the `Gene` type have automatically been added. Al
 ```json
 {
   "data": {
-    "gene_name": {
-      "_id": "5814af9729736fbf482e46da",
+    "gene": {
+      "_id": "589d0f0145a280002122dee6",
       "omim_description": " PROPROTEIN CONVERTASE, SUBTILISIN/KEXIN-TYPE, 9; PCSK9",
       "stop": "55530526",
       "gene_id": "ENSG00000169174",
@@ -89,7 +89,7 @@ All of the top level fields of the `Gene` type have automatically been added. Al
       "canonical_transcript": "ENST00000302118",
       "start": 55505222,
       "xstop": 1055530526,
-      "xstart": "1055505222",
+      "xstart": 1055505222,
       "gene_name": "PCSK9"
     }
   }
@@ -118,7 +118,7 @@ other_names: [String]
 canonical_transcript: String
 start: Int
 xstop: Int
-xstart: String
+xstart: Int
 gene_name: String
 exome_coverage: [Coverage]
 genome_coverage: [Coverage]
@@ -132,7 +132,7 @@ Notice how some of the fields have not automatically filled in such as `exome_va
 
 ```graphql
 {
-  gene_name(gene_name: "PCSK9") {
+  gene(gene_name: "PCSK9") {
     _id
     omim_description
     stop
@@ -183,7 +183,7 @@ On the right-hand side of the page, a lot of data was returned from this query. 
 
 ```graphql
 {
-  gene_name(gene_name: "PCSK9") {
+  gene(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -236,7 +236,7 @@ Let's say you are interested in some of the VEP annotations for each variant, th
 
 ```graphql
 {
-  gene_name(gene_name: "PCSK9") {
+  gene(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -286,12 +286,12 @@ To retrieve a single variant, specify the variant ID or RSID and the data source
 
 ```graphql
 {
-  variant_id(variant_id: "1-55516888-G-GA", data: "exac")
+  variant(id: "1-55516888-G-GA", source: "exomes")
 }
 ```
 ```graphql
 {
-  variant_rsid(variant_id: "rs185392267", data: "gnomad")
+  variant(rsid: "rs185392267", source: "genomes")
 }
 ```
 
@@ -300,15 +300,15 @@ To retrieve a single variant, specify the variant ID or RSID and the data source
 
 ```graphql
 {
-  region_bounds(xstart: 1055530526, xstop: 1055505222) {
+  region(xstart: 1055530526, xstop: 1055505222) {
     xstart
     xstop
-		exome_variants {
-		  allele_count
-		  allele_freq
-		  allele_num
-		  variant_id
-		}
+    exome_variants {
+      allele_count
+      allele_freq
+      allele_num
+			variant_id
+    }
   }
 }
 ```
@@ -321,7 +321,7 @@ import pandas
 import ast
 
 query = """{
-  gene_name(gene_name: "PCSK9") {
+  gene(gene_name: "PCSK9") {
     gene_name
     exome_variants {
       allele_count
@@ -334,7 +334,7 @@ query = """{
 }"""
 
 headers = { "content-type": "application/graphql" }
-response = requests.post('http://gnomad.broadinstitute.org/graph', data=query, headers=headers)
+response = requests.post('http://gnomad-api.broadinstitute.org/', data=query, headers=headers)
 parse = ast.literal_eval(response.text)
 data = parse['data']['gene_name']['exome_variants']
 df = pandas.DataFrame.from_dict(data)
@@ -362,11 +362,11 @@ allele_count  allele_freq  allele_num                        filter  \
 This could be useful for building web applications that consume gnomAD data. To fetch data in JavaScript, you could write something that looks like this:
 
 ```javascript
-const API_URL = `gnomad.broadinstitute.org/graph`
+const API_URL = `http://gnomad-api.broadinstitute.org/`
 const geneName = `PCSK9`
 const query = `
   {
-    gene_name(gene_id: "${geneName}") {
+    gene(gene_id: "${geneName}") {
       gene_id
       gene_name
       start

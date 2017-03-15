@@ -3,7 +3,6 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLList,
   GraphQLNonNull,
 } from 'graphql'
 
@@ -17,8 +16,7 @@ import transcriptType, {
 } from './types/transcript'
 
 import variantType, {
-  lookupVariant,
-  lookupVariantRsid,
+  variantResolver,
 } from './types/variant'
 
 import regionType from './types/region'
@@ -77,7 +75,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
           description: 'Please specify genome, exome, or exacv1',
         },
       },
-      resolve: (obj, args, ctx) => lookupVariant(ctx.database.gnomad, 'exome_variants', args.id),
+      resolve: variantResolver,
     },
   }),
 })
