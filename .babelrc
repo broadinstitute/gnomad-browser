@@ -1,6 +1,7 @@
 {
-  "presets": ["env", "react"],
+  "presets": ["env", "react", "babel-preset-stage-2"],
   "plugins": [
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    [ "babel-plugin-webpack-alias", { "config": "./webpack.config.js" } ]
   ]
 }
