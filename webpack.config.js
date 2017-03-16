@@ -70,7 +70,7 @@ const webpackConfig = {
     publicPath: '/static/js',
     port: 8010,
     historyApiFallback: true,
-    // quiet: true,
+    quiet: true,
   },
 }
 

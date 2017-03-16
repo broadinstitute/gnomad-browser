@@ -24,6 +24,14 @@ const geneQuery = geneName => `
       gene_name
       start
       stop
+      exome_coverage {
+        pos
+        mean
+      }
+      genome_coverage {
+        pos
+        mean
+      }
       transcript {
         exons {
           feature_type
@@ -34,4 +42,4 @@ const geneQuery = geneName => `
     }
   }
 `
-fetchData(geneQuery('PPARA'), 'PPARA-transcript.json')
+fetchData(geneQuery('PCSK9'), 'PCSK9-transcript.json')

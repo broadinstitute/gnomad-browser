@@ -1,6 +1,6 @@
 import expect from 'expect'
 import R from 'ramda'
-import ppara from 'data/PPARA-transcript.json'
+import ppara from 'data/PPARA-transcript.json'  // eslint-disable-line
 
 import {
   filterRegions,

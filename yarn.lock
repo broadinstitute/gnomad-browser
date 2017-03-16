@@ -1590,7 +1590,7 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-d3-array@1:
+d3-array@1, d3-array@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.1.1.tgz#a01abe63a25ffb91d3423c3c6d051b4d36bc8a09"
 
@@ -1612,6 +1612,10 @@ d3-interpolate@1:
   dependencies:
     d3-color "1"
 
+d3-path@1, d3-path@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.5.tgz#241eb1849bd9e9e8021c0d0a799f8a0e8e441764"
+
 d3-scale@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-1.0.5.tgz#418506f0fb18eb052b385e196398acc2a4134858"
@@ -1623,6 +1627,12 @@ d3-scale@1.0.5:
     d3-interpolate "1"
     d3-time "1"
     d3-time-format "2"
+
+d3-shape@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.0.6.tgz#b09e305cf0c7c6b9a98c90e6b42f62dac4bcfd5b"
+  dependencies:
+    d3-path "1"
 
 d3-time-format@2:
   version "2.0.5"

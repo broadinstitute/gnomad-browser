@@ -3,3 +3,4 @@ build
 dist
 .DS_Store
 npm-debug.log
+test/data/*.json

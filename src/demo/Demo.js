@@ -5,6 +5,7 @@ import RegionViewerDemo from '../RegionViewer/RegionViewer.example'
 
 const Demo = () =>
   <div>
+    <h1>lalalaaaaa</h1>
     <TestComponentDemo />
     <RegionViewerDemo />
   </div>

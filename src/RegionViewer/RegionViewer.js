@@ -1,50 +1,77 @@
 import React, { PropTypes, Component } from 'react'
+import {
+  calculateOffsetRegions,
+  calculatePositionOffset,
+  calculateXScale,
+} from 'utilities/calculateOffsets'  // eslint-disable-line
 
 class RegionViewer extends Component {
+
   static propTypes = {
-    children: PropTypes.array.isRequired,
+    children: PropTypes.object.isRequired,
     css: PropTypes.object.isRequired,
-    width: PropTypes.number.isRequired,
-    start: PropTypes.number.isRequired,
-    stop: PropTypes.number.isRequired,
+    regions: PropTypes.array.isRequired,
   }
 
   state = {
-    width: this.props.width,
+    width: 800,
+    leftPanelWidth: 50,
+    rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
+    padding: 50,
+    ready: false,
   }
 
-  expand = () => this.setState({ width: 1000 })
+  updatePlotSettings = () => {
+    const { featuresToDisplay, padding, width } = this.state
+    const { regions } = this.props
+    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
+    const positionOffset = calculatePositionOffset(offsetRegions)
+    const xScale = calculateXScale(width, offsetRegions)
+    this.setState({
+      offsetRegions,
+      positionOffset,
+      xScale,
+      ready: true,
+    })
+  }
+
+  expand = () => this.setState({ width: 800 })
 
   contract = () => this.setState({ width: 400 })
 
   zoom = () => {
-    console.log(this.state.width)
-    if (this.state.width === 1000) {
+    const { width } = this.state
+    if (width === 800) {
       this.contract()
     } else {
       this.expand()
     }
-    this.forceUpdate()
   }
 
-  renderChildren = () => {
+  renderChildren = (childProps) => {
     return React.Children.map(this.props.children, (child) => {
-      const cloned = React.cloneElement(child, {
-        // xScale: this.xScale(),
-        width: this.state.width,
-      })
-      return cloned
+      return React.cloneElement(child, childProps)
     })
   }
 
   render() {
-    const { css, start, stop } = this.props
-    const { width } = this.state
+    const { css } = this.props
+    const { featuresToDisplay, padding, width, leftPanelWidth } = this.state
+    const { regions } = this.props
+    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
+    const positionOffset = calculatePositionOffset(offsetRegions)
+    const xScale = calculateXScale(width, offsetRegions)
+    const childProps = {
+      leftPanelWidth,
+      positionOffset,
+      xScale,
+      width,
+    }
     return (
       <div className={css.regionViewer}>
-        <div style={{ width, height: 300 }} className={css.regionArea}>
-          {this.renderChildren()}
+        <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
+          {this.renderChildren(childProps)}
         </div>
         <button
           className={css.button}
@@ -52,10 +79,8 @@ class RegionViewer extends Component {
             this.zoom()
           }
         >
-          Expand
+          Expand!!!
         </button>
-        <p>Start: {start}</p>
-        <p>Stop: {stop}</p>
       </div>
     )
   }

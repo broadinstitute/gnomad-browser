@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-const Track = ({ width }) => {
+const Track = ({ width = 10 }) => {
   return (
     <div style={{ width: width - 400, border: '1px solid red' }}>
       <p>Test component, width {width}!</p>
@@ -8,6 +8,6 @@ const Track = ({ width }) => {
   )
 }
 Track.propTypes = {
-  width: PropTypes.number.isRequired,
+  width: PropTypes.number,
 }
 export default Track

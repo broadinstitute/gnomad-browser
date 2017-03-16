@@ -1,0 +1,22 @@
+.coverageTrack {
+  display: flex;
+
+}
+
+.coverageYAxis {
+  width: 50px; /* Set by Redux */
+}
+
+.coverageArea {
+
+}
+
+.ylabel {
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.yticktext {
+  font-size: 8px;
+  text-anchor: end;
+}

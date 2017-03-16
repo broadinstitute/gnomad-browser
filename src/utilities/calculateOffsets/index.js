@@ -109,7 +109,7 @@ export const calculateOffsetRegions = (
   // R.tap(console.log),
 )(regions)
 
-export const positionOffset = R.curry((regions, position) => {
+export const calculatePositionOffset = R.curry((regions, position) => {
   let result = 0
   for (let i = 0; i < regions.length; i++) {
     if (position >= regions[i].start && position <= regions[i].stop) {
@@ -122,7 +122,7 @@ export const positionOffset = R.curry((regions, position) => {
   return result
 })
 
-export const xScale = (width, offsetRegions) => {
+export const calculateXScale = (width, offsetRegions) => {
   return scaleLinear()
     .domain([
       offsetRegions[0].start,

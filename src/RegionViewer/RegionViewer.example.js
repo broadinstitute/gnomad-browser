@@ -1,9 +1,11 @@
+/* eslint-disable camelcase */
+
 import React, { Component } from 'react'
 import { fetchGene, test } from 'utilities'  // eslint-disable-line
-
-import Track from '../Tracks'
+import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
 import RegionViewer from './RegionViewer'
+import CoverageTrack from '../Tracks/CoverageTrack'
 import css from './styles.css'
 
 class TestComponentDemo extends Component {
@@ -27,16 +29,20 @@ class TestComponentDemo extends Component {
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
     }
-    const { start, stop } = this.state.data
+    // const { transcript: { exons }, exome_coverage, genome_coverage } = this.state.data
+    const { transcript: { exons }, exome_coverage, genome_coverage } = data.gene
     return (
       <div>
         <RegionViewer
-          width={800}
           css={css}
-          start={start}
-          stop={Number(stop)}
+          width={800}
+          regions={exons}
         >
-          <Track />
+          <CoverageTrack
+            height={200}
+            exomeCoverage={exome_coverage}
+            genomeCoverage={genome_coverage}
+          />
         </RegionViewer>
       </div>
     )

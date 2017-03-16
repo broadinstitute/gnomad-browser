@@ -1,8 +1,14 @@
 .regionViewer {
   border: 1px solid #000;
-
 }
 
 .regionArea {
-  border: 1px solid purple;
+  flex-direction: column;
+  border: 1px solid green;
+}
+
+.button {
+  width: 100px;
+  margin-top: 10px;
+  background-color: none;
 }
