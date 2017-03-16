@@ -61,7 +61,8 @@ const webpackConfig = {
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
-      utilities: path.resolve(__dirname, 'src/demo/utilities'),
+      utilities: path.resolve(__dirname, 'src/utilities'),
+      data: path.resolve(__dirname, 'test/data'),
     },
   },
   devServer: {

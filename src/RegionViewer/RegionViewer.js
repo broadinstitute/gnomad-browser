@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react'
 
 class RegionViewer extends Component {
   static propTypes = {
+    children: PropTypes.array.isRequired,
     css: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
     start: PropTypes.number.isRequired,
@@ -10,6 +11,7 @@ class RegionViewer extends Component {
 
   state = {
     width: this.props.width,
+    featuresToDisplay: ['CDS'],
   }
 
   expand = () => this.setState({ width: 1000 })
@@ -26,12 +28,24 @@ class RegionViewer extends Component {
     this.forceUpdate()
   }
 
+  renderChildren = () => {
+    return React.Children.map(this.props.children, (child) => {
+      const cloned = React.cloneElement(child, {
+        // xScale: this.xScale(),
+        width: this.state.width,
+      })
+      return cloned
+    })
+  }
+
   render() {
     const { css, start, stop } = this.props
     const { width } = this.state
     return (
       <div className={css.regionViewer}>
-        <div style={{ width, height: 300 }} className={css.regionArea} />
+        <div style={{ width, height: 300 }} className={css.regionArea}>
+          {this.renderChildren()}
+        </div>
         <button
           className={css.button}
           onClick={() =>

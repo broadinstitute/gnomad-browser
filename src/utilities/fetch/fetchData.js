@@ -31,9 +31,9 @@ export const fetchGene = geneName => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then(data => resolve(data.data.gene))
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
-        resolve(error)
+        reject(error)
       })
   })
 }

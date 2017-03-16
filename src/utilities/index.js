@@ -1,4 +1,4 @@
 export {
   fetchGene,
   test,
-} from './fetchData'
+} from './fetch/fetchData'

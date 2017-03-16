@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { fetchGene, test } from 'utilities'  // eslint-disable-line
 
+import Track from '../Tracks'
+
 import RegionViewer from './RegionViewer'
 import css from './styles.css'
 
@@ -33,7 +35,9 @@ class TestComponentDemo extends Component {
           css={css}
           start={start}
           stop={Number(stop)}
-        />
+        >
+          <Track />
+        </RegionViewer>
       </div>
     )
   }
