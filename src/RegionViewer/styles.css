@@ -1,10 +1,12 @@
 .regionViewer {
-  border: 1px solid #000;
+  border: 0 solid #000;
+  padding-left: 10px;
+  padding-bottom: 10px;
 }
 
 .regionArea {
   flex-direction: column;
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
 
 .button {

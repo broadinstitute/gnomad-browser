@@ -1,9 +1,14 @@
 import React, { PropTypes, Component } from 'react'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import Slider from 'material-ui/Slider'
+
 import {
   calculateOffsetRegions,
   calculatePositionOffset,
   calculateXScale,
 } from 'utilities/calculateOffsets'  // eslint-disable-line
+
+injectTapEventPlugin()
 
 class RegionViewer extends Component {
 
@@ -22,31 +27,9 @@ class RegionViewer extends Component {
     ready: false,
   }
 
-  updatePlotSettings = () => {
-    const { featuresToDisplay, padding, width } = this.state
-    const { regions } = this.props
-    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
-    const positionOffset = calculatePositionOffset(offsetRegions)
-    const xScale = calculateXScale(width, offsetRegions)
-    this.setState({
-      offsetRegions,
-      positionOffset,
-      xScale,
-      ready: true,
-    })
-  }
-
-  expand = () => this.setState({ width: 800 })
-
-  contract = () => this.setState({ width: 400 })
-
-  zoom = () => {
-    const { width } = this.state
-    if (width === 800) {
-      this.contract()
-    } else {
-      this.expand()
-    }
+  setWidth = (event, newValue) => {
+    const newWidth = 800 * newValue
+    this.setState({ width: newWidth })
   }
 
   renderChildren = (childProps) => {
@@ -70,17 +53,16 @@ class RegionViewer extends Component {
     }
     return (
       <div className={css.regionViewer}>
+        <p>Zoom</p>
+        <Slider
+          style={{
+            width: 400,
+          }}
+          onChange={this.setWidth}
+        />
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}
         </div>
-        <button
-          className={css.button}
-          onClick={() =>
-            this.zoom()
-          }
-        >
-          Expand!!!
-        </button>
       </div>
     )
   }

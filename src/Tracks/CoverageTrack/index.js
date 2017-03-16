@@ -38,7 +38,6 @@ const CoverageTrack = ({
     })
     .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y(base => yScale(base.mean))
-  console.log(css)
 
   return (
     <div className={css.coverageTrack}>
