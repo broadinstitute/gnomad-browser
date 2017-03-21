@@ -21,6 +21,8 @@ import variantType, {
 
 import regionType from './types/region'
 
+import metaMetaDataType from './types/metametadata'
+
 const rootType = new GraphQLObjectType({
   name: 'Root',
   description: `
@@ -76,6 +78,10 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         },
       },
       resolve: variantResolver,
+    },
+    schz_metadata: {
+      type: metaMetaDataType,
+      resolve: (obj, args, ctx) => ctx.database.sczMockDb.getSczMetaData(),
     },
   }),
 })

@@ -40,6 +40,39 @@ const exampleVariant = (populations, studies) => ({
 
 const metaDb = {
   meta_schizophrenia: {
+    metaMetaData: {
+      meta_file_format_version: '0.99',
+      analytic_pipeline: 'RICOPILI',
+      analytic_pipeline_version: '2016_12_1',
+      sharing: 'Limited, only people who have signed 23andMe DTA',
+      title: 'PGC primary MDD analysis',
+      date: '31 Jan 2017 13:26 CET',
+      analysts: ['Stephan Ripke', 'Charite', 'Berlin'],
+      contact: 'Mark Daly, MGH',
+      genome_build: 'GRCh37/hg19',
+      imputation_reference: '1000 Genomes Project, phase 3',
+      chromosomes: [
+        '1', '2', '3', '4', '5', '6', '7',
+        '8', '9', '10', '11', '12', '13', '14',
+        '15', '16', '17', '18', '19', '20', '21',
+        '22', 'X', 'Y', 'XY',
+      ],
+      case_definition: 'SCZ',
+      control_definition: 'no SCZ, no BIP',
+      diagnosis_definition: 'Includes register and self-report data',
+      number_of_cohorts: 5,
+      study_cohort_ids: [
+        'mdd_boma_eur mdd_cof3_eur',
+        'mdd_col3_eur mdd_edi2_eur',
+        'mdd_gens_eur mdd_gep3_eur',
+      ],
+      // population_definitions: {
+      //   european_non_finnish: 'non-Finish European',
+      //   east_asian: 'east_asian',
+      // },
+      final_number_of_cases: 16326,
+      final_number_of_controls: 23456,
+    },
     variants: [
       exampleVariant(
         ['Taiwanese', 'Swedish', 'Ashkenazi Jewish'],
@@ -61,6 +94,10 @@ const getSczVariants = () => new Promise((resolve, reject) =>
   resolve(metaDb.meta_schizophrenia.variants)
 )
 
-const sczMockDb = { getSczVariants }
+const getSczMetaData = () => new Promise((resolve, reject) =>
+  resolve(metaDb.meta_schizophrenia.metaMetaData)
+)
+
+const sczMockDb = { getSczVariants, getSczMetaData }
 
 export default sczMockDb
