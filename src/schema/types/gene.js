@@ -15,6 +15,7 @@ import exonType, { lookupExonsByStartStop } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
+import metaVariantType from './metavariant'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -63,6 +64,11 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
         lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id),
+    },
+    meta_schizophrenia_variants: {
+      type: new GraphQLList(metaVariantType),
+      resolve: (obj, args, ctx) =>
+        ctx.database.sczMockDb.getSczVariants(),
     },
     transcript: {
       type: transcriptType,

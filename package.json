@@ -9,7 +9,7 @@
     "build-server": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
     "start": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=12000 build/server.js",
-    "dev": "nodemon --exec GRAPHQL_PORT=8006 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
+    "dev": "nodemon --exec GRAPHQL_PORT=8006 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js",
     "docker": "node build/server.js"

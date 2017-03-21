@@ -7,6 +7,8 @@ import cors from 'cors'
 
 import gnomadSchema from './schema'
 
+import sczMockDb from './mockdata/meta'
+
 const app = express()
 app.use(cors());
 
@@ -17,10 +19,13 @@ app.use(cors());
     app.use('/', GraphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
-      context: { database: {
-        gnomad,
-        exacv1,
-      }},
+      context: {
+        database: {
+          gnomad,
+          exacv1,
+          sczMockDb,
+        },
+      },
     }))
     app.listen(process.env.GRAPHQL_PORT, () =>
       console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
