@@ -1,10 +1,10 @@
 :root{
   /*table dimensions*/
   --tableHeight: 335px;
-  --tableWidth: 625px;
+  --tableWidth: 800px;
 
   /*column widths*/
-  --positionWidth: 110px;
+  --positionWidth: 130px;
   --consequenceWidth: 100px;
   --filterWidth: 0px;
   --annotationWidth: 0px;
@@ -51,14 +51,14 @@
 
 .cell th, td {
   height: 20px;
-  font-size: 10px;
+  font-size: 12px;
   overflow: hidden;
 }
 
 .header {
   composes: cell;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 12px;
   text-align: center;
   padding-bottom: 3px;
 }
@@ -146,7 +146,7 @@ button:hover {
 
 .data {
   composes: cell;
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 
 .row {

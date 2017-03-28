@@ -158,7 +158,7 @@ const VariantsTable = ({
   return (
     <Table
       rowClassName={css.row}
-      width={625}
+      width={800}
       height={350}
       headerHeight={20}
       rowHeight={30}
@@ -169,7 +169,7 @@ const VariantsTable = ({
       <Column
         label={'Variant'}
         dataKey={'variantData'}
-        width={200}
+        width={250}
         cellRenderer={({
           cellData: {
             chrom,
@@ -209,7 +209,7 @@ const VariantsTable = ({
       <Column
         label={'N'}
         dataKey={'variantData'}
-        width={70}
+        width={145}
         className={css.carrierData}
         cellRenderer={({
           cellData: {
@@ -231,7 +231,7 @@ const VariantsTable = ({
       <Column
         label={'allele_num'}
         dataKey={'variantData'}
-        width={80}
+        width={120}
         className={css.totalData}
         cellRenderer={({
           cellData: {
@@ -275,7 +275,7 @@ const VariantsTable = ({
       <Column
         label={'hom_count'}
         dataKey={'variantData'}
-        width={50}
+        width={100}
         className={css.homozygotesData}
         cellRenderer={({
           cellData: {
