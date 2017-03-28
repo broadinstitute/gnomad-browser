@@ -19,8 +19,8 @@ const CoverageTrack = ({
   const genomeColor = 'rgba(115, 171, 61,  1)'
 
   const yScale = scaleLinear()
-  .domain([0, 100])
-  .range([200, 0])
+    .domain([0, 100])
+    .range([200, 0])
 
   const exomeCoverageArea = area()
     .defined((base) => {
@@ -75,7 +75,7 @@ const CoverageTrack = ({
                   strokeWidth={1}
                   key={`coverage-y-axis-${tick}`}
                 />
-              </g>
+              </g>,
             )}
           </g>
         </svg>
@@ -101,10 +101,10 @@ const CoverageTrack = ({
 }
 CoverageTrack.propTypes = {
   height: PropTypes.number.isRequired,
-  width: PropTypes.number,
-  leftPanelWidth: PropTypes.number,
-  xScale: PropTypes.func,
-  positionOffset: PropTypes.func,
+  width: PropTypes.number, // eslint-disable-line
+  leftPanelWidth: PropTypes.number, // eslint-disable-line
+  xScale: PropTypes.func, // eslint-disable-line
+  positionOffset: PropTypes.func,  // eslint-disable-line
   exomeCoverage: PropTypes.array.isRequired,
   genomeCoverage: PropTypes.array.isRequired,
 }

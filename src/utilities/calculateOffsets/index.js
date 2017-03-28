@@ -15,7 +15,7 @@ const FEATURES_TO_DISPLAY = [
 export const filterRegions = R.curry((featureList, regions) =>
   regions.filter(
     region => R.contains(region.feature_type, featureList),
-  )
+  ),
 )
 
 export const addPadding = R.curry((padding, regions) =>

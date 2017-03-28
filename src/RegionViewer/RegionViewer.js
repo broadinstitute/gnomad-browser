@@ -13,7 +13,7 @@ injectTapEventPlugin()
 class RegionViewer extends Component {
 
   static propTypes = {
-    children: PropTypes.object.isRequired,
+    children: PropTypes.array.isRequired,
     css: PropTypes.object.isRequired,
     regions: PropTypes.array.isRequired,
   }
@@ -50,6 +50,7 @@ class RegionViewer extends Component {
       positionOffset,
       xScale,
       width,
+      offsetRegions,
     }
     return (
       <div className={css.regionViewer}>

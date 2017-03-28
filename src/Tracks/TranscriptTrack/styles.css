@@ -1,0 +1,15 @@
+.track {
+  display: flex;
+  /*border: 1px solid #000;*/
+}
+
+.yAxis {
+  width: 50px; /* Set by Redux */
+  /*border: 1px solid blue;*/
+}
+
+.yLabel {
+  font-size: 10px;
+}
+
+.data {}

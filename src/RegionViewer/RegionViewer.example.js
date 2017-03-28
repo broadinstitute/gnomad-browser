@@ -6,6 +6,7 @@ import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
 import RegionViewer from './RegionViewer'
 import CoverageTrack from '../Tracks/CoverageTrack'
+import TranscriptTrack from '../Tracks/TranscriptTrack'
 import css from './styles.css'
 
 class TestComponentDemo extends Component {
@@ -42,6 +43,10 @@ class TestComponentDemo extends Component {
             height={200}
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
+          />
+          <TranscriptTrack
+            title={'Transcript'}
+            height={200}
           />
         </RegionViewer>
       </div>
