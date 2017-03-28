@@ -36,6 +36,7 @@ export const fetchGene = geneName => {
         allele_num
         allele_freq
         allele_count
+        hom_count
       }
       genome_variants {
         chrom
@@ -46,6 +47,7 @@ export const fetchGene = geneName => {
         allele_num
         allele_freq
         allele_count
+        hom_count
       }
   }
 }`

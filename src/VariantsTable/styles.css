@@ -1,0 +1,361 @@
+:root{
+  /*table dimensions*/
+  --tableHeight: 335px;
+  --tableWidth: 625px;
+
+  /*column widths*/
+  --positionWidth: 110px;
+  --consequenceWidth: 100px;
+  --filterWidth: 0px;
+  --annotationWidth: 0px;
+  --changeWidth: 150px;
+  --flagsWidth: 0px;
+  --carriersWidth: 47px;
+  --totalWidth:  55px;
+  --frequencyWidth: 67px;
+  --homozygotesWidth: 37px;
+}
+
+.table {
+  width: var(--tableWidth);
+
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  composes: table;
+}
+
+.tableBody {
+  width: var(--tableWidth);
+  height: var(--tableHeight);
+  background-color: #FAFAFA;
+}
+
+.tableBody tr {
+  cursor: pointer;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.tableBody tr:hover {
+  background-color: #EEEEEE;
+}
+
+.pane {
+  max-height: var(--tableHeight);
+  max-width: var(--tableWidth);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+}
+
+.cell th, td {
+  height: 20px;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+.header {
+  composes: cell;
+  text-transform: uppercase;
+  font-size: 10px;
+  text-align: center;
+  padding-bottom: 3px;
+}
+
+.button {
+  width: 80px;
+  /*text-transform: uppercase;*/
+  font-weight: bold;
+  background: none;
+  box-shadow: none;
+  /*border-radius: 4px;*/
+  /*border: 1px solid #000;*/
+  border: none;
+}
+
+button:hover {
+  background: #EEEEEE;
+}
+
+.columnName {
+  composes: header;
+  padding-top: 7px;
+  border-bottom: 2px solid black;
+}
+
+.positionColumnName {
+  composes: columnName;
+  width: var(--positionWidth);
+}
+
+.consequenceColumnName {
+  composes: columnName;
+  width: var(--consequenceWidth);
+}
+
+.filterColumnName {
+  composes: columnName;
+  width: var(--filterWidth);
+}
+
+.annotationColumnName {
+  composes: columnName;
+  width: var(--annotationWidth);
+}
+.changeColumnName {
+  composes: columnName;
+  width: var(--changeWidth);
+}
+
+.flagsColumnName {
+  composes: columnName;
+  width: var(--flagsWidth);
+}
+
+.carrierColumnName {
+  composes: columnName;
+  width: var(--carriersWidth);
+}
+
+.totalColumnName {
+  composes: columnName;
+  width: var(--totalWidth);
+}
+
+.frequencyColumnName {
+  composes: columnName;
+  width: var(--frequencyWidth);
+}
+
+.homozygotesColumnName {
+  composes: columnName;
+  width: var(--homozygotesWidth);
+}
+
+
+.category {
+  composes: header;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.empty {
+  composes: header;
+}
+
+.data {
+  composes: cell;
+  font-size: 10px !important;
+}
+
+.row {
+  cursor: pointer;
+  border-bottom: 1px solid #E0E0E0;
+  height: 20px;
+}
+
+.stringData {
+  composes: data;
+  text-align: left;
+
+}
+
+.numberData {
+  composes: data;
+  text-align: center;
+}
+
+.positionData {
+  composes: stringData;
+  display: flex;
+  width: var(--positionWidth);
+  max-width: var(--positionWidth);
+}
+
+/*.positionData.highlight {
+  background-color: #E0E0E0;
+}*/
+
+
+.consequenceData {
+  composes: stringData;
+  width: var(--consequenceWidth);
+}
+
+.consequenceLabel {
+  font-size: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  /*border: 1px solid #000;*/
+  background-color: #EEEEEE;
+  border: 1px solid #E0E0E0;
+  width: 60%;
+  white-space: pre-wrap;
+
+}
+
+.filterData {
+  composes: stringData;
+  width: var(--filterWidth);
+}
+
+.annotationData {
+  composes: stringData;
+  width: var(--annotationWidth);
+}
+.changeData {
+  composes: stringData;
+  width: var(--changeWidth);
+}
+
+.flagsData {
+  composes: stringData;
+  width: var(--flagsWidth);
+}
+
+.carrierData {
+  composes: numberData;
+  width: var(--carriersWidth);
+}
+
+.totalData {
+  composes: numberData;
+  width: var(--totalWidth);
+}
+
+.frequencyData {
+  composes: numberData;
+  width: var(--frequencyWidth);
+}
+
+.homozygotesData {
+  composes: numberData;
+  width: var(--homozygotesWidth);
+}
+
+
+.highlight {
+  height:  14px;
+  /*border: 1px solid black;*/
+  border-radius: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
+  display: inline-block;
+}
+
+.chromosome {
+  composes: highlight;
+  /*background-color: #C8E6C9;*/
+
+}
+
+.pos {
+  composes: highlight;
+  /*background-color: #FFF3E0;*/
+}
+
+.ref {
+  composes: highlight;
+  /*background-color: #FFCDD2;*/
+}
+
+.alt {
+  composes: highlight;
+  /*background-color: #BBDEFB;*/
+}
+
+.consequence {
+  width: 80px;
+}
+
+.residueChange {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.residue {
+  border: 1px solid #000;
+  background-color: #FFF3E0;
+  border-radius: 20px;
+  padding-left: 3px;
+  margin-left: 3px;
+  padding-right: 3px;
+  margin-right: 3px;
+}
+
+.bpSilent {
+  background-color: #F5F5F5;
+  padding-left: 3px;
+  margin-left: 3px;
+  padding-right: 3px;
+  margin-right: 3px;
+}
+
+.refSilent {
+  background-color: #FFEBEE;
+  padding-left: 3px;
+  margin-left: 3px;
+  padding-right: 3px;
+  margin-right: 3px;
+}
+.altSilent {
+  background-color: #E3F2FD;
+  padding-left: 3px;
+  margin-left: 3px;
+  padding-right: 3px;
+  margin-right: 3px;
+}
+.none {
+  padding-left: 40px;
+}
+
+.stop {
+  composes: altSilent;
+  color: white;
+  background-color: #0D47A1;
+}
+
+.dup {
+  composes: altSilent;
+  text-transform: uppercase;
+  background-color: #81C784;
+}
+
+.dataIndicators {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.dataIndicator {
+  padding: 2px 3px 2px 3px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #000;
+  color: #FFFFFF;
+}
+
+.dataIndicatorExac {
+  composes: dataIndicator;
+  margin-right: auto;
+  background-color: #4682b4;
+}
+.dataIndicatorGnomad{
+  composes: dataIndicator;
+  background-color: rgba(115, 171, 61, 1);
+
+}
+.dataIndicatorExacFiltered {
+  composes: dataIndicatorExac;
+  background-color: rgba(70, 130, 180, 0.4);
+  border: 1px dashed #000;
+
+}
+.dataIndicatorGnomadFiltered{
+  composes: dataIndicatorGnomad;
+  background-color:rgba(115, 171, 61, 0.4);
+  border: 1px dashed #000;
+}

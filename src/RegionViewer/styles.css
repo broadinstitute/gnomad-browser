@@ -1,3 +1,9 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .regionViewer {
   border: 0 solid #000;
   padding-left: 10px;

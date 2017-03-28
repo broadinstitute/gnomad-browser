@@ -8,6 +8,7 @@ import RegionViewer from './RegionViewer'
 import CoverageTrack from '../Tracks/CoverageTrack'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
+import VariantsTable from '../VariantsTable'
 
 import css from './styles.css'
 
@@ -43,7 +44,7 @@ class TestComponentDemo extends Component {
       genome_variants,
     } = this.state.data
     return (
-      <div>
+      <div className={css.page}>
         <RegionViewer
           css={css}
           width={800}
@@ -69,6 +70,9 @@ class TestComponentDemo extends Component {
             variants={genome_variants}
           />
         </RegionViewer>
+        <VariantsTable
+          variantsData={exome_variants}
+        />
       </div>
     )
   }
