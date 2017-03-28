@@ -64,29 +64,29 @@ export const assignAttributes = R.map(region => {
   if (region.feature_type === 'CDS') {
     return {
       ...region,
-      color: 'green',
-      thickness: '10px',
+      color: '#FF9600',
+      thickness: '30px',
     }
   }
   if (region.feature_type === 'exon') {
     return {
       ...region,
       color: '',
-      thickness: '3px',
+      thickness: '30px',
     }
   }
   if (region.feature_type === 'start_pad') {
     return {
       ...region,
-      color: '#FFEB3B',
-      thickness: '1px',
+      color: '#FF0242',
+      thickness: '5px',
     }
   }
   if (region.feature_type === 'end_pad') {
     return {
       ...region,
-      color: '#827717',
-      thickness: '1px',
+      color: '#B0FF11',
+      thickness: '5px',
     }
   }
   return {

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import React, { PropTypes } from 'react'
 
 import css from './styles.css'

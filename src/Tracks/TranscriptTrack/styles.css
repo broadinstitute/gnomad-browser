@@ -1,5 +1,8 @@
 .track {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  /*border: 1px solid #000;*/
   /*border: 1px solid #000;*/
 }
 
@@ -9,7 +12,10 @@
 }
 
 .yLabel {
-  font-size: 10px;
+  font-size: 11px;
+  /*border: 1px solid #000;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
 }
 
 .data {}
