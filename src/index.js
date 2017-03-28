@@ -1,5 +1,15 @@
 export {
   TestComponent,
-  TestComponent as default,
 } from './TestComponent'
 
+// export {
+//   RegionViewer,
+// } from './RegionViewer'
+//
+// export {
+//   Track,
+// } from './Tracks'
+//
+// export {
+//   CoverageTrack,
+// } from './Tracks/CoverageTrack'

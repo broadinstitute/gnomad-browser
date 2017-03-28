@@ -53,7 +53,7 @@ class RegionViewer extends Component {
     }
     return (
       <div className={css.regionViewer}>
-        <p>Zoom</p>
+        <p>Zoom!</p>
         <Slider
           style={{
             width: 400,
