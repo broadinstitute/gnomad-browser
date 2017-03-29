@@ -25,7 +25,7 @@ class TestComponentDemo extends Component {
   }
 
   fetchData = () => {
-    fetchGene('ZNF658').then((data) => {
+    fetchGene('CD33').then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
       this.forceUpdate()

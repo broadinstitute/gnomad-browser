@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react'
+import R from 'ramda'
+
 import { area, line } from 'd3-shape'
 import { range } from 'd3-array'
 import { path } from 'd3-path'
@@ -14,20 +16,47 @@ const CoverageTrack = ({
   positionOffset,
   exomeCoverage,
   genomeCoverage,
+  // offsetRegions,
 }) => {
   const exomeColor = 'rgba(70, 130, 180, 1)'
   const genomeColor = 'rgba(115, 171, 61,  1)'
 
+  const scaleCoverage = (xScale, coverage) => {
+    const coverageScaled = coverage.map((base) => {
+      const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
+      if (newPosition !== undefined) {
+        return ({
+          mean: base.mean,
+          scaledPosition: newPosition,
+        })
+      }
+      return null
+    })
+    const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
+    const dict = downSampled.reduce((acc, base) => {
+      const { scaledPosition } = base
+      return {
+        ...acc,
+        [scaledPosition]: base.mean,
+      }
+    }, {})
+    const [min, max] = xScale.range()
+    const final = range(min, max).map((i) => {
+      if (dict[i]) {
+        return { scaledPosition: i, mean: dict[i] }
+      }
+      return { scaledPosition: i, mean: 0 }
+    })
+    return final
+  }
+
+  scaleCoverage(xScale, exomeCoverage)
   const yScale = scaleLinear()
     .domain([0, 100])
     .range([200, 0])
 
   const exomeCoverageArea = area()
-    .defined((base) => {
-      return !isNaN(base.mean)
-        && positionOffset(base.pos).offsetPosition !== undefined
-    })
-    .x(base => xScale(positionOffset(base.pos).offsetPosition))
+    .x(base => base.scaledPosition)
     .y0(_ => height)  // eslint-disable-line
     .y1(base => yScale(base.mean))
 
@@ -86,7 +115,10 @@ const CoverageTrack = ({
           height={height}
         >
           <g className={css.coverage}>
-            <path d={exomeCoverageArea(exomeCoverage)} fill={exomeColor} />
+            <path
+              d={exomeCoverageArea(scaleCoverage(xScale, exomeCoverage))}
+              fill={exomeColor}
+            />
             <path
               d={genomeCoverageLine(genomeCoverage)}
               fill={'none'}

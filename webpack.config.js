@@ -71,6 +71,7 @@ const webpackConfig = {
     port: 8010,
     historyApiFallback: true,
     quiet: true,
+    clientLogLevel: "none",
   },
 }
 
