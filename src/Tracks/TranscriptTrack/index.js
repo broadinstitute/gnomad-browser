@@ -56,7 +56,6 @@ const TranscriptTrack = ({
   xScale,
   title,
 }) => {
-  console.log('1', title)
   return (
     <div className={css.track}>
       <div className={css.yAxis}>

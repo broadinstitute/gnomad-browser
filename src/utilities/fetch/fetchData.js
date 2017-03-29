@@ -7,7 +7,7 @@ export const test = () => 'this is a test'
 export const fetchGene = geneName => {
   const query = `
   {
-    gene(gene_name: "CD33") {
+    gene(gene_name: "${geneName}") {
       gene_id
       gene_name
       start
@@ -25,6 +25,7 @@ export const fetchGene = geneName => {
           feature_type
           start
           stop
+          strand
         }
       }
       exome_variants {

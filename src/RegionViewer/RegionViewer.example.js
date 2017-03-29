@@ -25,8 +25,7 @@ class TestComponentDemo extends Component {
   }
 
   fetchData = () => {
-    fetchGene('CD33').then((data) => {
-      console.log(data)
+    fetchGene('ZNF658').then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
       this.forceUpdate()
@@ -34,7 +33,6 @@ class TestComponentDemo extends Component {
   }
 
   render() {
-    console.log(this.state)
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
     }

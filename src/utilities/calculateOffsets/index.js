@@ -18,12 +18,27 @@ export const filterRegions = R.curry((featureList, regions) =>
   ),
 )
 
+export const flipOrderIfNegativeStrand = regions => {
+  if (R.all(region => region.strand === '-', regions)) {
+    return R.reverse(regions)
+  } else if (R.all(region => region.strand === '+', regions)) {
+    return regions
+  }
+  throw Error('There is mix of (+) and (-) strands...')
+}
+
 export const calculateRegionDistances = regions =>
   regions.map((region, i) => {
     if (i === 0) {
       return {
         ...region,
         previousRegionDistance: 0,
+      }
+    }
+    if (region.strand === '-') {
+      return {
+        ...region,
+        previousRegionDistance: region.start - regions[i - 1].stop,
       }
     }
     return {
@@ -48,11 +63,11 @@ export const addPadding = R.curry((padding, regions) => {
     }
     if (i === 0) {
       return [
-        { ...region },
+        region,
         endPad,
       ]
     }
-    // check if padding greater than distance between exons
+    // check if total padding greater than distance between exons
     if (region.previousRegionDistance < padding * 2) {
       return [
         ...R.init(acc), // remove previous end_pad
@@ -61,14 +76,14 @@ export const addPadding = R.curry((padding, regions) => {
           start: region.start - region.previousRegionDistance,
           stop: region.start - 1,
         },
-        { ...region },
+        region,
         endPad,
       ]
     }
     return [
       ...acc,
       startPad,
-      { ...region },
+      region,
       endPad,
     ]
   }, [])
@@ -128,6 +143,7 @@ export const calculateOffsetRegions = (
   regions,
 ) => R.pipe(
   filterRegions(featuresToDisplay),
+  flipOrderIfNegativeStrand,
   calculateRegionDistances,
   addPadding(padding),
   calculateOffset,

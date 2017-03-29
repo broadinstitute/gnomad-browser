@@ -45,7 +45,6 @@ const PositionTableTrack = ({
   xScale,
   title,
 }) => {
-  console.log('1', offsetRegions)
   return (
     <div className={css.track}>
       <div className={css.yAxis}>
@@ -64,30 +63,34 @@ const PositionTableTrack = ({
         />
         <div className={css.positionValues}>
           <table className={css.positionValuesTable} style={{width: "100%"}}>
-            <tr>
-              <th>index</th>
-              <th>feature_type</th>
-              <th>start</th>
-              <th>stop</th>
-              <th>size</th>
-              <th>previous region distance</th>
-              <th>offset</th>
-              <th>start scaled</th>
-              <th>stop stop scaled</th>
-            </tr>
-            {offsetRegions.map((region, i) =>
-              <tr style={{backgroundColor: region.color}} key={`${i}-row`}>
-                <td>{i}</td>
-                <td>{region.feature_type}</td>
-                <td>{region.start}</td>
-                <td>{region.stop}</td>
-                <td>{region.stop - region.start}</td>
-                <td>{region.previousRegionDistance}</td>
-                <td>{region.offset}</td>
-                <td>{xScale(region.start - region.offset).toPrecision(3)}</td>
-                <td>{xScale(region.stop - region.offset).toPrecision(3)}</td>
+            <thead>
+              <tr>
+                <th>index</th>
+                <th>feature_type</th>
+                <th>start</th>
+                <th>stop</th>
+                <th>size</th>
+                <th>previous region distance</th>
+                <th>offset</th>
+                <th>start scaled</th>
+                <th>stop stop scaled</th>
               </tr>
-            )}
+            </thead>
+            <tbody>
+              {offsetRegions.map((region, i) =>
+                <tr style={{backgroundColor: region.color}} key={`${i}-row`}>
+                  <td>{i}</td>
+                  <td>{region.feature_type}</td>
+                  <td>{region.start}</td>
+                  <td>{region.stop}</td>
+                  <td>{region.stop - region.start}</td>
+                  <td>{region.previousRegionDistance}</td>
+                  <td>{region.offset}</td>
+                  <td>{xScale(region.start - region.offset).toPrecision(3)}</td>
+                  <td>{xScale(region.stop - region.offset).toPrecision(3)}</td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
       </div>
