@@ -33,7 +33,7 @@ class RegionViewer extends Component {
   }
 
   setPadding = (event, newValue) => {
-    const padding = 800 * newValue
+    const padding = Math.floor(2000 * newValue)
     this.setState({ padding })
   }
 
@@ -62,7 +62,7 @@ class RegionViewer extends Component {
         <p>Exon padding {this.state.padding.toPrecision(3)} bp</p>
         <Slider
           style={{
-            width: 400,
+            width: 800,
           }}
           onChange={this.setPadding}
         />

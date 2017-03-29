@@ -32,16 +32,15 @@ export const calculateRegionDistances = regions =>
     }
   })
 
-export const addPadding = R.curry((padding, regions) =>
-  regions.reduce((acc, region, i) => {
-    let startPad
-    if (i !== 0) {
-      startPad = {
-        feature_type: 'start_pad',
-        start: region.start - padding,
-        stop: region.start - 1,
-      }
+export const addPadding = R.curry((padding, regions) => {
+  if (padding === 0) return regions
+  return regions.reduce((acc, region, i) => {
+    const startPad = {
+      feature_type: 'start_pad',
+      start: region.start - padding,
+      stop: region.start - 1,
     }
+
     const endPad = {
       feature_type: 'end_pad',
       start: region.stop + 1,
@@ -72,7 +71,8 @@ export const addPadding = R.curry((padding, regions) =>
       { ...region },
       endPad,
     ]
-  }, []))
+  }, [])
+})
 
 export const calculateOffset = R.curry((regions) =>
   regions.reduce((acc, region, i) => {

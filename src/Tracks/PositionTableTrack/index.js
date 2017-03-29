@@ -69,6 +69,7 @@ const PositionTableTrack = ({
               <th>feature_type</th>
               <th>start</th>
               <th>stop</th>
+              <th>size</th>
               <th>previous region distance</th>
               <th>offset</th>
               <th>start scaled</th>
@@ -80,6 +81,7 @@ const PositionTableTrack = ({
                 <td>{region.feature_type}</td>
                 <td>{region.start}</td>
                 <td>{region.stop}</td>
+                <td>{region.stop - region.start}</td>
                 <td>{region.previousRegionDistance}</td>
                 <td>{region.offset}</td>
                 <td>{xScale(region.start - region.offset).toPrecision(3)}</td>

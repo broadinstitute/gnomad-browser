@@ -5,6 +5,7 @@ import { fetchGene, test } from 'utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
 import RegionViewer from './RegionViewer'
+
 import CoverageTrack from '../Tracks/CoverageTrack'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
