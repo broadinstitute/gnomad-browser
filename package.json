@@ -1,7 +1,7 @@
 {
   "name": "react-gnomad",
   "version": "0.0.1",
-  "description": "A component library for variant browsers",
+  "description": "A React component library for building variant browsers",
   "main": "dist/es/index.js",
   "repository": "https://github.com/macarthur-lab/react-gnomad",
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
