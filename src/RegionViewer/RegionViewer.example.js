@@ -8,6 +8,8 @@ import RegionViewer from './RegionViewer'
 import CoverageTrack from '../Tracks/CoverageTrack'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
+import PositionTableTrack from '../Tracks/PositionTableTrack'
+
 import VariantsTable from '../VariantsTable'
 
 import css from './styles.css'
@@ -68,6 +70,10 @@ class TestComponentDemo extends Component {
             title={'Genome variants'}
             height={50}
             variants={genome_variants}
+          />
+          <PositionTableTrack
+            title={'Exon positions'}
+            height={100}
           />
         </RegionViewer>
         <VariantsTable

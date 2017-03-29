@@ -23,13 +23,18 @@ class RegionViewer extends Component {
     leftPanelWidth: 50,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
-    padding: 50,
+    padding: 150,
     ready: false,
   }
 
   setWidth = (event, newValue) => {
     const newWidth = 800 * newValue
     this.setState({ width: newWidth })
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = 800 * newValue
+    this.setState({ padding })
   }
 
   renderChildren = (childProps) => {
@@ -54,12 +59,12 @@ class RegionViewer extends Component {
     }
     return (
       <div className={css.regionViewer}>
-        <p>Zoom!</p>
+        <p>Exon padding</p>
         <Slider
           style={{
             width: 400,
           }}
-          onChange={this.setWidth}
+          onChange={this.setPadding}
         />
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}

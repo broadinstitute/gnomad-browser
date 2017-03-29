@@ -159,7 +159,7 @@ const VariantsTable = ({
     <Table
       rowClassName={css.row}
       width={800}
-      height={350}
+      height={650}
       headerHeight={20}
       rowHeight={30}
       rowCount={list.size}

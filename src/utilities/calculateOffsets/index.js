@@ -40,6 +40,12 @@ export const addPadding = R.curry((padding, regions) =>
         endPad,
       ]
     }
+    if (padding > (region.start - acc[i - 1].stop)) {
+      return [
+        ...acc,
+        { ...region },
+      ]
+    }
     return [
       ...acc,
       startPad,
@@ -64,7 +70,7 @@ export const assignAttributes = R.map(region => {
   if (region.feature_type === 'CDS') {
     return {
       ...region,
-      color: '#FF9600',
+      color: '#FFB33D',
       thickness: '30px',
     }
   }
@@ -78,14 +84,14 @@ export const assignAttributes = R.map(region => {
   if (region.feature_type === 'start_pad') {
     return {
       ...region,
-      color: '#FF0242',
+      color: '#28BCCC',
       thickness: '5px',
     }
   }
   if (region.feature_type === 'end_pad') {
     return {
       ...region,
-      color: '#B0FF11',
+      color: '#BEEB9F',
       thickness: '5px',
     }
   }

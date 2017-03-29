@@ -30,15 +30,13 @@ const VariantData = ({
           return  // eslint-disable-line
         }
         return ( // eslint-disable-line
-          <rect
-            className={css.rectangle}
-            x={xScale(calc.offsetPosition)}
-            y={Math.floor(Math.random() * height)}
-            width={3}
-            height={3}
+          <circle
+            className={css.point}
+            cx={xScale(calc.offsetPosition)}
+            cy={Math.floor(Math.random() * height)}
+            r={2}
             fill={calc.color}
-            stroke={calc.color}
-            key={`${i}-rectangle`}
+            key={`${i}-point`}
           />
           )
       })}
