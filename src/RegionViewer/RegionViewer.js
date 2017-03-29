@@ -59,7 +59,7 @@ class RegionViewer extends Component {
     }
     return (
       <div className={css.regionViewer}>
-        <p>Exon padding</p>
+        <p>Exon padding {this.state.padding.toPrecision(3)} bp</p>
         <Slider
           style={{
             width: 400,

@@ -18,6 +18,20 @@ export const filterRegions = R.curry((featureList, regions) =>
   ),
 )
 
+export const calculateRegionDistances = regions =>
+  regions.map((region, i) => {
+    if (i === 0) {
+      return {
+        ...region,
+        previousRegionDistance: 0,
+      }
+    }
+    return {
+      ...region,
+      previousRegionDistance: region.start - regions[i - 1].stop,
+    }
+  })
+
 export const addPadding = R.curry((padding, regions) =>
   regions.reduce((acc, region, i) => {
     let startPad
@@ -35,15 +49,21 @@ export const addPadding = R.curry((padding, regions) =>
     }
     if (i === 0) {
       return [
-        ...acc,
         { ...region },
         endPad,
       ]
     }
-    if (padding > (region.start - acc[i - 1].stop)) {
+    // check if padding greater than distance between exons
+    if (region.previousRegionDistance < padding * 2) {
       return [
-        ...acc,
+        ...R.init(acc), // remove previous end_pad
+        {
+          feature_type: 'start_pad',
+          start: region.start - region.previousRegionDistance,
+          stop: region.start - 1,
+        },
         { ...region },
+        endPad,
       ]
     }
     return [
@@ -107,12 +127,11 @@ export const calculateOffsetRegions = (
   padding = 50,
   regions,
 ) => R.pipe(
-  // R.tap(console.log),
   filterRegions(featuresToDisplay),
+  calculateRegionDistances,
   addPadding(padding),
   calculateOffset,
   assignAttributes,
-  // R.tap(console.log),
 )(regions)
 
 export const calculatePositionOffset = R.curry((regions, position) => {

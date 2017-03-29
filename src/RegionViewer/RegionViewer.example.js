@@ -57,10 +57,6 @@ class TestComponentDemo extends Component {
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
-          <TranscriptTrack
-            title={'Transcript'}
-            height={100}
-          />
           <VariantTrack
             title={'Exome variants'}
             height={50}
@@ -71,9 +67,13 @@ class TestComponentDemo extends Component {
             height={50}
             variants={genome_variants}
           />
+          <TranscriptTrack
+            title={'Transcript'}
+            height={50}
+          />
           <PositionTableTrack
-            title={'Exon positions'}
-            height={100}
+            title={'Region positions'}
+            height={50}
           />
         </RegionViewer>
         <VariantsTable
