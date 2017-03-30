@@ -28,6 +28,16 @@ export const fetchAllByGeneName = geneName => {
           strand
         }
       }
+      exons {
+        _id
+        start
+        transcript_id
+        feature_type
+        strand
+        stop
+        chrom
+        gene_id
+      }
       exome_variants {
         chrom
         pos

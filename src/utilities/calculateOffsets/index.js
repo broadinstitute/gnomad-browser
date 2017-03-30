@@ -165,6 +165,7 @@ export const calculatePositionOffset = R.curry((regions, position) => {
 })
 
 export const calculateXScale = (width, offsetRegions) => {
+  console.log(offsetRegions)
   return scaleLinear()
     .domain([
       offsetRegions[0].start,

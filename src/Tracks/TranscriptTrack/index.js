@@ -1,5 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
+import R from 'ramda'
+
+import {
+  filterRegions,
+} from 'utilities/calculateOffsets'  // eslint-disable-line
+
+import {
+  groupExonsByTranscript,
+} from 'utilities/transcriptTools'  // eslint-disable-line
 
 import css from './styles.css'
 
@@ -48,6 +57,49 @@ const Transcripts = ({
   </svg>
 )
 
+const TranscriptMulti = ({
+  width,
+  height,
+  regions,
+  xScale,
+  positionOffset,
+}) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+    >
+      <rect
+        className={css.border}
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill={'white'}
+        stroke={'none'}
+      />
+    {regions.map((region, i) => {
+      // console.log(positionOffset(region.start))
+      const start = positionOffset(region.start)
+      const stop = positionOffset(region.stop)
+      return (
+        <line
+          className={css.rectangle}
+          x1={xScale(start.offsetPosition)}
+          x2={xScale(stop.offsetPosition)}
+          y1={height / 2}
+          y2={height / 2}
+          stroke={start.color}
+          strokeWidth={20}
+          key={`${i}-rectangle`}
+        />
+        )
+    }
+      )}
+    </svg>
+  )
+}
+
 const TranscriptTrack = ({
   width,
   height,
@@ -55,7 +107,38 @@ const TranscriptTrack = ({
   offsetRegions,
   xScale,
   title,
+  geneExons,
+  positionOffset,
 }) => {
+  let allTranscripts
+  if (geneExons) {
+    const transcriptsGrouped = groupExonsByTranscript(geneExons)
+    console.log(transcriptsGrouped)
+    allTranscripts =  (
+      <div className={css.track}>
+        <div className={css.data}>
+          {Object.keys(transcriptsGrouped).map(transcript => {
+            const transcriptExonsFiltered =
+              filterRegions(['CDS'], transcriptsGrouped[transcript])
+            if (R.isEmpty(transcriptExonsFiltered)) {
+              return
+            }
+            console.log(transcriptExonsFiltered)
+            return (
+              <TranscriptMulti
+                key={`transcript-${transcript}`}
+                width={width}
+                height={height}
+                regions={transcriptExonsFiltered}
+                xScale={xScale}
+                positionOffset={positionOffset}
+              />
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
   return (
     <div className={css.track}>
       <div className={css.yAxis}>
@@ -72,6 +155,7 @@ const TranscriptTrack = ({
           offsetRegions={offsetRegions}
           xScale={xScale}
         />
+      {allTranscripts}
       </div>
     </div>
   )

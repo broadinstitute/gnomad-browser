@@ -22,6 +22,18 @@ const geneQuery = geneName => `{
       gene_id
       gene_name
       canonical_transcript
+      transcript {
+        exons {
+          _id
+          start
+          transcript_id
+          feature_type
+          strand
+          stop
+          chrom
+          gene_id
+        }
+      }
       exons {
         _id
         start

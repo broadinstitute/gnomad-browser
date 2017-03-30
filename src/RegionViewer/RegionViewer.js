@@ -13,7 +13,6 @@ injectTapEventPlugin()
 class RegionViewer extends Component {
 
   static propTypes = {
-    children: PropTypes.array.isRequired,
     css: PropTypes.object.isRequired,
     regions: PropTypes.array.isRequired,
   }

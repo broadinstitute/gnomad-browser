@@ -25,7 +25,7 @@ class RegionViewerFullExample extends Component {
   }
 
   fetchData = () => {
-    fetchAllByGeneName('CD33').then((data) => {
+    fetchAllByGeneName('ZNF658').then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
       this.forceUpdate()
@@ -44,6 +44,7 @@ class RegionViewerFullExample extends Component {
       exome_variants,
       genome_variants,
     } = this.state.data
+    const geneExons = this.state.data.exons
     return (
       <div className={css.page}>
         <RegionViewer
@@ -57,8 +58,9 @@ class RegionViewerFullExample extends Component {
             genomeCoverage={genome_coverage}
           />
           <TranscriptTrack
-            title={''}
+            title={'Transcripts'}
             height={50}
+            geneExons={geneExons}
           />
           <VariantTrack
             title={'Exome variants'}

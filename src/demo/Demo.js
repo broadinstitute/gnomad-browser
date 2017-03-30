@@ -10,6 +10,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import RegionViewerFull from '../RegionViewer/RegionViewerFull.example'
 import RegionTableDemo from '../RegionViewer/RegionTable.example'
+import TranscriptFlipOutDemo from '../RegionViewer/TranscriptFlipOut.example'
 
 import css from './styles.css'
 
@@ -55,6 +56,15 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>Region viewer</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/transcript-flip-out'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Transcripts</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -69,6 +79,7 @@ const Demo = () =>
         <Route exact path={'/'} render={() => <h1>gnomAD component demos</h1>} />
         <Route exact path={'/region-table'} component={RegionTableDemo} />
         <Route exact path={'/region-viewer-full'} component={RegionViewerFull} />
+        <Route exact path={'/transcript-flip-out'} component={TranscriptFlipOutDemo} />
       </div>
     </div>
   </Router>
