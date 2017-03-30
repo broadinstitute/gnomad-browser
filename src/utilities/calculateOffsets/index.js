@@ -95,51 +95,43 @@ export const calculateOffset = R.curry((regions) =>
     ]
   }, []))
 
-export const assignAttributes = R.map(region => {
-  if (region.feature_type === 'CDS') {
+const defaultAttributeConfig = {
+  CDS: {
+    color: '#FFB33D',
+    thickness: '30px',
+  },
+  start_pad: {
+    color: '#28BCCC',
+    thickness: '5px',
+  },
+  end_pad: {
+    color: '#BEEB9F',
+    thickness: '5px',
+  },
+  intron: {
+    color: '#FF9559',
+    thickness: '5px',
+  },
+  default: {
+    color: '#grey',
+    thickness: '5px',
+  },
+}
+
+export const assignAttributes = R.curry((attributeConfig, regions) => {
+  return regions.map(region => {
+    const { feature_type } = region
     return {
       ...region,
-      color: '#FFB33D',
-      thickness: '30px',
+      color: attributeConfig[feature_type].color,
+      thickness: attributeConfig[feature_type].thickness,
     }
-  }
-  if (region.feature_type === 'exon') {
-    return {
-      ...region,
-      color: '',
-      thickness: '30px',
-    }
-  }
-  if (region.feature_type === 'start_pad') {
-    return {
-      ...region,
-      color: '#28BCCC',
-      thickness: '5px',
-    }
-  }
-  if (region.feature_type === 'end_pad') {
-    return {
-      ...region,
-      color: '#BEEB9F',
-      thickness: '5px',
-    }
-  }
-  if (region.feature_type === 'intron') {
-    return {
-      ...region,
-      color: '#FF9559',
-      thickness: '15px',
-    }
-  }
-  return {
-    ...region,
-    color: 'grey',
-    thickness: '1px',
-  }
+  })
 })
 
 export const calculateOffsetRegions = (
   featuresToDisplay = FEATURES_TO_DISPLAY,
+  attributeConfig = defaultAttributeConfig,
   padding = 50,
   regions,
 ) => R.pipe(
@@ -148,7 +140,7 @@ export const calculateOffsetRegions = (
   calculateRegionDistances,
   addPadding(padding),
   calculateOffset,
-  assignAttributes,
+  assignAttributes(attributeConfig),
 )(regions)
 
 export const calculatePositionOffset = R.curry((regions, position) => {

@@ -80,6 +80,16 @@ export const fetchTranscriptsByGeneName = geneName => {
       gene_name
       start
       stop
+      exons {
+        _id
+        start
+        transcript_id
+        feature_type
+        strand
+        stop
+        chrom
+        gene_id
+      }
       transcript {
         exons {
           feature_type

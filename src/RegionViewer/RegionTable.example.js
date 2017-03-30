@@ -36,6 +36,28 @@ class RegionTableExample extends Component {
     const {
       transcript: { exons },
     } = this.state.data
+    const attributeConfig = {
+      CDS: {
+        color: '#FFB33D',
+        thickness: '30px',
+      },
+      start_pad: {
+        color: '#28BCCC',
+        thickness: '5px',
+      },
+      end_pad: {
+        color: '#BEEB9F',
+        thickness: '5px',
+      },
+      intron: {
+        color: '#FF9559',
+        thickness: '5px',
+      },
+      default: {
+        color: '#grey',
+        thickness: '5px',
+      },
+    }
     console.log(exons)
     return (
       <div className={css.page}>
@@ -43,6 +65,7 @@ class RegionTableExample extends Component {
           css={css}
           width={800}
           regions={exons}
+          attributeConfig={attributeConfig}
         >
           <TranscriptTrack
             title={''}

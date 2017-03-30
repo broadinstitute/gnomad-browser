@@ -26,13 +26,13 @@ class RegionTableExample extends Component {
   }
 
   fetchData = () => {
-    // fetchTranscriptsByGeneName('MYH7').then((data) => {
-    //   this.setState({ data })
-    //   this.setState({ hasData: true })
-    //   this.forceUpdate()
-    // })
-    this.setState({ data: testData.gene })
-    this.setState({ hasData: true })
+    fetchTranscriptsByGeneName('BRCA2').then((data) => {
+      this.setState({ data })
+      this.setState({ hasData: true })
+      this.forceUpdate()
+    })
+    // this.setState({ data: testData.gene })
+    // this.setState({ hasData: true })
   }
 
   render() {
@@ -41,12 +41,35 @@ class RegionTableExample extends Component {
     }
     const geneExons = this.state.data.exons
     const canonicalExons = this.state.data.transcript.exons
+    const attributeConfig = {
+      CDS: {
+        color: '#424242',
+        thickness: '30px',
+      },
+      start_pad: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      end_pad: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      intron: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      default: {
+        color: '#grey',
+        thickness: '5px',
+      },
+    }
     return (
       <div className={css.page}>
         <RegionViewer
           css={css}
           width={800}
           regions={canonicalExons}
+          regionAttributes={attributeConfig}
         >
           <TranscriptTrack
             title={''}

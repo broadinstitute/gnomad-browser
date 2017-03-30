@@ -15,6 +15,7 @@ class RegionViewer extends Component {
   static propTypes = {
     css: PropTypes.object.isRequired,
     regions: PropTypes.array.isRequired,
+    regionAttributes: PropTypes.object,
   }
 
   state = {
@@ -45,8 +46,13 @@ class RegionViewer extends Component {
   render() {
     const { css } = this.props
     const { featuresToDisplay, padding, width, leftPanelWidth } = this.state
-    const { regions } = this.props
-    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
+    const { regions, regionAttributes } = this.props
+    const offsetRegions = calculateOffsetRegions(
+      featuresToDisplay,
+      regionAttributes,
+      padding,
+      regions,
+    )
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)
     const childProps = {

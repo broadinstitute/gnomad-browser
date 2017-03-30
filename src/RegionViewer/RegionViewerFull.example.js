@@ -45,12 +45,35 @@ class RegionViewerFullExample extends Component {
       genome_variants,
     } = this.state.data
     const geneExons = this.state.data.exons
+    const regionAttributesConfig = {
+      CDS: {
+        color: '#424242',
+        thickness: '30px',
+      },
+      start_pad: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      end_pad: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      intron: {
+        color: '#e0e0e0',
+        thickness: '5px',
+      },
+      default: {
+        color: '#grey',
+        thickness: '5px',
+      },
+    }
     return (
       <div className={css.page}>
         <RegionViewer
           css={css}
           width={800}
           regions={exons}
+          regionAttributes={regionAttributesConfig}
         >
           <CoverageTrack
             height={200}
