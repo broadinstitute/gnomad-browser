@@ -17,10 +17,8 @@ const exonType = new GraphQLObjectType({
     feature_type: { type: GraphQLString },
     strand: { type: GraphQLString },
     stop: { type: GraphQLInt },
-    xstart: { type: GraphQLInt },
     chrom: { type: GraphQLString },
     gene_id: { type: GraphQLString },
-    xstop: { type: GraphQLInt },
   }),
 })
 
@@ -31,3 +29,6 @@ export const lookupExonsByTranscriptId = (db, transcript_id) =>
 
 export const lookupExonsByStartStop = (db, start, stop) =>
   db.collection('exons').find({ start: { '$gte': Number(start), '$lte': Number(stop) } }).toArray()
+
+export const lookupExonsByGeneId = (db, gene_id) =>
+  db.collection('exons').find({ gene_id }).toArray()

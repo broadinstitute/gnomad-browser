@@ -11,7 +11,7 @@ import {
 import coverageType, { lookupCoverageByStartStop } from './coverage'
 import variantType, { lookupVariantsByGeneId } from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
-import exonType, { lookupExonsByStartStop } from './exon'
+import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
@@ -77,7 +77,7 @@ const geneType = new GraphQLObjectType({
     },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookupExonsByStartStop(ctx.database.gnomad, obj.start, obj.stop),
+      resolve: (obj, args, ctx) => lookupExonsByGeneId(ctx.database.gnomad, obj.gene_id),
     },
     exacv1_constraint: {
       type: constraintType,

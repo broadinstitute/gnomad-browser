@@ -36,7 +36,8 @@ const transcriptType = new GraphQLObjectType({
     },
     exons: {
       type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
+      resolve: (obj, args, ctx) =>
+       lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
   }),
 })
