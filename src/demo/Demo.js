@@ -33,6 +33,7 @@ class DrawerSimpleExample extends React.Component {
             activeClassName={css.active}
             exact
             to={'/'}
+            onClick={this.handleToggle}
           >
             <MenuItem>Home</MenuItem>
           </NavLink>
@@ -41,16 +42,18 @@ class DrawerSimpleExample extends React.Component {
             activeClassName={css.active}
             exact
             to={'/region-table'}
+            onClick={this.handleToggle}
           >
-            <MenuItem>Region viewer</MenuItem>
+            <MenuItem>Region table</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
             to={'/region-viewer-full'}
+            onClick={this.handleToggle}
           >
-            <MenuItem>Region table</MenuItem>
+            <MenuItem>Region viewer</MenuItem>
           </NavLink>
         </Drawer>
       </div>

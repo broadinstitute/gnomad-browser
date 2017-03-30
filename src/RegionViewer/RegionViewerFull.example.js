@@ -56,6 +56,10 @@ class RegionViewerFullExample extends Component {
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
+          <TranscriptTrack
+            title={''}
+            height={50}
+          />
           <VariantTrack
             title={'Exome variants'}
             height={50}
@@ -66,18 +70,7 @@ class RegionViewerFullExample extends Component {
             height={50}
             variants={genome_variants}
           />
-          <TranscriptTrack
-            title={''}
-            height={50}
-          />
-          <PositionTableTrack
-            title={''}
-            height={50}
-          />
         </RegionViewer>
-        <VariantsTable
-          variantsData={exome_variants}
-        />
       </div>
     )
   }
