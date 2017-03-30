@@ -25,7 +25,7 @@ class TestComponentDemo extends Component {
   }
 
   fetchData = () => {
-    fetchGene('CD33').then((data) => {
+    fetchGene('MYH7').then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
       this.forceUpdate()
@@ -51,12 +51,12 @@ class TestComponentDemo extends Component {
           width={800}
           regions={exons}
         >
-          <CoverageTrack
+          {/*<CoverageTrack
             height={200}
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
-          <VariantTrack
+        <VariantTrack
             title={'Exome variants'}
             height={50}
             variants={exome_variants}
@@ -65,19 +65,19 @@ class TestComponentDemo extends Component {
             title={'Genome variants'}
             height={50}
             variants={genome_variants}
-          />
+          />*/}
           <TranscriptTrack
-            title={'Transcript'}
+            title={''}
             height={50}
           />
           <PositionTableTrack
-            title={'Region positions'}
+            title={''}
             height={50}
           />
         </RegionViewer>
-        <VariantsTable
+        {/*<VariantsTable
           variantsData={exome_variants}
-        />
+        />*/}
       </div>
     )
   }

@@ -35,12 +35,6 @@ export const calculateRegionDistances = regions =>
         previousRegionDistance: 0,
       }
     }
-    if (region.strand === '-') {
-      return {
-        ...region,
-        previousRegionDistance: region.start - regions[i - 1].stop,
-      }
-    }
     return {
       ...region,
       previousRegionDistance: region.start - regions[i - 1].stop,
@@ -72,7 +66,7 @@ export const addPadding = R.curry((padding, regions) => {
       return [
         ...R.init(acc), // remove previous end_pad
         {
-          feature_type: 'start_pad',
+          feature_type: 'intron',
           start: region.start - region.previousRegionDistance,
           stop: region.start - 1,
         },
@@ -128,6 +122,13 @@ export const assignAttributes = R.map(region => {
       ...region,
       color: '#BEEB9F',
       thickness: '5px',
+    }
+  }
+  if (region.feature_type === 'intron') {
+    return {
+      ...region,
+      color: '#FF9559',
+      thickness: '15px',
     }
   }
   return {

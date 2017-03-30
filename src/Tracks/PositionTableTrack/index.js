@@ -25,7 +25,7 @@ const Positions = ({
   >
     {offsetRegions.map((region, i) => (
       <text
-        className={css.rectangle}
+        className={css.text}
         x={xScale(region.start - region.offset)}
         y={height / 2}
         key={`${i}-text`}

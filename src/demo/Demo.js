@@ -4,9 +4,11 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 import RegionViewerDemo from '../RegionViewer/RegionViewer.example'
 
+import css from './styles.css'
+
 const Demo = () =>
-  <div>
-    <h1>Demo...!</h1>
+  <div className={css.demoArea}>
+    <h1>Demo area</h1>
     <RegionViewerDemo />
   </div>
 

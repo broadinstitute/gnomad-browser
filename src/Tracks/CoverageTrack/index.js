@@ -16,7 +16,6 @@ const CoverageTrack = ({
   positionOffset,
   exomeCoverage,
   genomeCoverage,
-  // offsetRegions,
 }) => {
   const exomeColor = 'rgba(70, 130, 180, 1)'
   const genomeColor = 'rgba(115, 171, 61,  1)'
@@ -34,7 +33,7 @@ const CoverageTrack = ({
     })
     const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
     const dict = downSampled.reduce((acc, base) => {
-      const { scaledPosition } = base
+      const { scaledPosition } = baseno
       return {
         ...acc,
         [scaledPosition]: base.mean,
