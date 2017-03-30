@@ -4,7 +4,7 @@ const API_URL = process.env.API_URL
 
 export const test = () => 'this is a test'
 
-export const fetchGene = geneName => {
+export const fetchAllByGeneName = geneName => {
   const query = `
   {
     gene(gene_name: "${geneName}") {
@@ -49,6 +49,34 @@ export const fetchGene = geneName => {
         allele_freq
         allele_count
         hom_count
+      }
+  }
+}`
+  return new Promise((resolve, reject) => {
+    fetch(API_URL)(query)
+      .then(data => resolve(data.data.gene))
+      .catch((error) => {
+        console.log(error)
+        reject(error)
+      })
+  })
+}
+
+export const fetchTranscriptsByGeneName = geneName => {
+  const query = `
+  {
+    gene(gene_name: "${geneName}") {
+      gene_id
+      gene_name
+      start
+      stop
+      transcript {
+        exons {
+          feature_type
+          start
+          stop
+          strand
+        }
       }
   }
 }`

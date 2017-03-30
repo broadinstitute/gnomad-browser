@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
-import { fetchGene, test } from 'utilities'  // eslint-disable-line
+import { fetchAllByGeneName, test } from 'utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
 import RegionViewer from './RegionViewer'
@@ -15,7 +15,7 @@ import VariantsTable from '../VariantsTable'
 
 import css from './styles.css'
 
-class TestComponentDemo extends Component {
+class RegionViewerFullExample extends Component {
   state = {
     hasData: false,
   }
@@ -25,7 +25,7 @@ class TestComponentDemo extends Component {
   }
 
   fetchData = () => {
-    fetchGene('MYH7').then((data) => {
+    fetchAllByGeneName('CD33').then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
       this.forceUpdate()
@@ -51,12 +51,12 @@ class TestComponentDemo extends Component {
           width={800}
           regions={exons}
         >
-          {/*<CoverageTrack
+          <CoverageTrack
             height={200}
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
-        <VariantTrack
+          <VariantTrack
             title={'Exome variants'}
             height={50}
             variants={exome_variants}
@@ -65,7 +65,7 @@ class TestComponentDemo extends Component {
             title={'Genome variants'}
             height={50}
             variants={genome_variants}
-          />*/}
+          />
           <TranscriptTrack
             title={''}
             height={50}
@@ -75,12 +75,12 @@ class TestComponentDemo extends Component {
             height={50}
           />
         </RegionViewer>
-        {/*<VariantsTable
+        <VariantsTable
           variantsData={exome_variants}
-        />*/}
+        />
       </div>
     )
   }
 }
 
-export default TestComponentDemo
+export default RegionViewerFullExample

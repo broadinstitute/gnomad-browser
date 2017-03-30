@@ -1,4 +1,5 @@
 export {
-  fetchGene,
+  fetchAllByGeneName,
+  fetchTranscriptsByGeneName,
   test,
 } from './fetch/fetchData'

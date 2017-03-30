@@ -33,7 +33,7 @@ const CoverageTrack = ({
     })
     const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
     const dict = downSampled.reduce((acc, base) => {
-      const { scaledPosition } = baseno
+      const { scaledPosition } = base
       return {
         ...acc,
         [scaledPosition]: base.mean,

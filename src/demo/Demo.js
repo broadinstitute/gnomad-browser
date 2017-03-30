@@ -8,7 +8,8 @@ import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import RegionViewerDemo from '../RegionViewer/RegionViewer.example'
+import RegionViewerFull from '../RegionViewer/RegionViewerFull.example'
+import RegionTableDemo from '../RegionViewer/RegionTable.example'
 
 import css from './styles.css'
 
@@ -41,6 +42,14 @@ class DrawerSimpleExample extends React.Component {
             exact
             to={'/region-table'}
           >
+            <MenuItem>Region viewer</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/region-viewer-full'}
+          >
             <MenuItem>Region table</MenuItem>
           </NavLink>
         </Drawer>
@@ -55,7 +64,8 @@ const Demo = () =>
       <DrawerSimpleExample />
       <div className={css.demoArea}>
         <Route exact path={'/'} render={() => <h1>gnomAD component demos</h1>} />
-        <Route exact path={'/region-table'} component={RegionViewerDemo} />
+        <Route exact path={'/region-table'} component={RegionTableDemo} />
+        <Route exact path={'/region-viewer-full'} component={RegionViewerFull} />
       </div>
     </div>
   </Router>
