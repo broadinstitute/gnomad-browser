@@ -83,19 +83,19 @@ class RegionViewerFullExample extends Component {
     const geneExons = this.state.data.exons
     const regionAttributesConfig = {
       CDS: {
-        color: '#424242',
+        color: '#212121',
         thickness: '30px',
       },
       start_pad: {
-        color: '#e0e0e0',
+        color: '#BDBDBD',
         thickness: '5px',
       },
       end_pad: {
-        color: '#e0e0e0',
+        color: '#BDBDBD',
         thickness: '5px',
       },
       intron: {
-        color: '#e0e0e0',
+        color: '#BDBDBD',
         thickness: '5px',
       },
       default: {
@@ -117,17 +117,17 @@ class RegionViewerFullExample extends Component {
             genomeCoverage={genome_coverage}
           />
           <VariantTrack
-            title={'Exome variants'}
+            title={'exome variant density'}
             height={50}
             variants={exome_variants}
           />
           <VariantTrack
-            title={'Genome variants'}
+            title={'genome variant density'}
             height={50}
             variants={genome_variants}
           />
           <TranscriptTrack
-            title={'Transcripts'}
+            title={''}
             height={10}
             geneExons={geneExons}
           />

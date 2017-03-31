@@ -12,6 +12,7 @@
 }
 
 .yLabel {
+  width: 50px; /* Set by Redux */
   font-size: 11px;
   /*border: 1px solid #000;*/
   /*align-items: center;*/
