@@ -33,7 +33,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.js$/,
-        exclude: [/node_modules/],
+        exclude: [/node_modules/, path.resolve(__dirname, 'src/RegionViewer/get-test-data.js')],
         use: 'babel-loader',
       },
       {

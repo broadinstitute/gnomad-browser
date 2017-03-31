@@ -15,6 +15,36 @@ import VariantsTable from '../VariantsTable'
 
 import css from './styles.css'
 
+const testGenes = [
+  'PCSK9',
+  'ZNF658',
+  'MYH9',
+  'FMR1',
+  'BRCA2',
+  'CFTR',
+  'FBN1',
+  'TP53',
+  'SCN5A',
+  'MYH7',
+  'MYBPC3',
+  'ARSF',
+  'CD33',
+]
+
+// import testData from 'data/region-viewer-full-PCSK9.json'
+// import testData from 'data/region-viewer-full-ZNF658.json'
+// import testData from 'data/region-viewer-full-MYH9.json'
+// import testData from 'data/region-viewer-full-FMR1.json'
+// import testData from 'data/region-viewer-full-BRCA2.json'
+// import testData from 'data/region-viewer-full-CFTR.json'
+// import testData from 'data/region-viewer-full-FBN1.json'
+import testData from 'data/region-viewer-full-TP53.json'
+// import testData from 'data/region-viewer-full-SCN5A.json'
+// import testData from 'data/region-viewer-full-MYH7.json'
+// import testData from 'data/region-viewer-full-MYBPC3.json'
+// import testData from 'data/region-viewer-full-ARSF.json'
+// import testData from 'data/region-viewer-full-CD33.json'
+
 class RegionViewerFullExample extends Component {
   state = {
     hasData: false,
@@ -25,10 +55,16 @@ class RegionViewerFullExample extends Component {
   }
 
   fetchData = () => {
-    fetchAllByGeneName('ZNF658').then((data) => {
-      this.setState({ data })
-      this.setState({ hasData: true })
-      this.forceUpdate()
+    // fetchAllByGeneName('TP53').then((data) => {
+    //   this.setState({ data })
+    //   this.setState({ hasData: true })
+    //   this.forceUpdate()
+    // })
+    // const gene = 'data/region-viewer-full-PCSK9.json'
+    this.setState({
+      // data: testData.gene,
+      data: testData.gene,
+      hasData: true
     })
   }
 
@@ -80,11 +116,6 @@ class RegionViewerFullExample extends Component {
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
-          <TranscriptTrack
-            title={'Transcripts'}
-            height={50}
-            geneExons={geneExons}
-          />
           <VariantTrack
             title={'Exome variants'}
             height={50}
@@ -94,6 +125,11 @@ class RegionViewerFullExample extends Component {
             title={'Genome variants'}
             height={50}
             variants={genome_variants}
+          />
+          <TranscriptTrack
+            title={'Transcripts'}
+            height={10}
+            geneExons={geneExons}
           />
         </RegionViewer>
       </div>

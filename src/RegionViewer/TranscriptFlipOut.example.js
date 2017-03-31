@@ -1,17 +1,15 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react'
-
 import R from 'ramda'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 
 import {
   fetchTranscriptsByGeneName,
-  test,
 } from 'utilities'  // eslint-disable-line
 
 import testData from 'data/transcript-tools-CD33.json'  // eslint-disable-line
-
 import RegionViewer from './RegionViewer'
-
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 
 import css from './styles.css'
@@ -19,20 +17,46 @@ import css from './styles.css'
 class RegionTableExample extends Component {
   state = {
     hasData: false,
+    currentGene: 'TP53',
+    testGenes: [
+      'PCSK9',
+      'ZNF658',
+      'MYH9',
+      'FMR1',
+      'BRCA2',
+      'CFTR',
+      'FBN1',
+      'TP53',
+      'SCN5A',
+      'MYH7',
+      'MYBPC3',
+      'ARSF',
+      'CD33',
+      'DMD',
+      'TTN',
+    ],
   }
 
   componentDidMount() {
     this.fetchData()
   }
 
+  componentDidUpdate(_, previousState) {
+    if (previousState.currentGene !== this.state.currentGene) {
+      this.fetchData()
+    }
+  }
+
   fetchData = () => {
-    fetchTranscriptsByGeneName('BRCA2').then((data) => {
+    fetchTranscriptsByGeneName(this.state.currentGene).then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
-      this.forceUpdate()
     })
-    // this.setState({ data: testData.gene })
-    // this.setState({ hasData: true })
+  }
+
+  handleChange = (event, index, value) => {
+    console.log(value)
+    this.setState({ currentGene: value })
   }
 
   render() {
@@ -65,6 +89,13 @@ class RegionTableExample extends Component {
     }
     return (
       <div className={css.page}>
+        <div>
+          <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
+            {this.state.testGenes.map(gene =>
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
+            )}
+          </DropDownMenu>
+        </div>
         <RegionViewer
           css={css}
           width={800}

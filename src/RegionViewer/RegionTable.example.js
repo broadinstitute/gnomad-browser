@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
+
 import { fetchTranscriptsByGeneName, test } from 'utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
@@ -14,18 +17,45 @@ import css from './styles.css'
 class RegionTableExample extends Component {
   state = {
     hasData: false,
+    currentGene: 'TP53',
+    testGenes: [
+      'PCSK9',
+      'ZNF658',
+      'MYH9',
+      'FMR1',
+      'BRCA2',
+      'CFTR',
+      'FBN1',
+      'TP53',
+      'SCN5A',
+      'MYH7',
+      'MYBPC3',
+      'ARSF',
+      'CD33',
+      'DMD',
+      'TTN',
+    ],
   }
-
   componentDidMount() {
     this.fetchData()
   }
 
+  componentDidUpdate(_, previousState) {
+    if (previousState.currentGene !== this.state.currentGene) {
+      this.fetchData()
+    }
+  }
+
   fetchData = () => {
-    fetchTranscriptsByGeneName('CD33').then((data) => {
+    fetchTranscriptsByGeneName(this.state.currentGene).then((data) => {
       this.setState({ data })
       this.setState({ hasData: true })
-      this.forceUpdate()
     })
+  }
+
+  handleChange = (event, index, value) => {
+    console.log(value)
+    this.setState({ currentGene: value })
   }
 
   render() {
@@ -38,11 +68,11 @@ class RegionTableExample extends Component {
     } = this.state.data
     const attributeConfig = {
       CDS: {
-        color: '#FFB33D',
+        color: '#28BCCC',
         thickness: '30px',
       },
       start_pad: {
-        color: '#28BCCC',
+        color: '#FFB33D',
         thickness: '5px',
       },
       end_pad: {
@@ -61,11 +91,18 @@ class RegionTableExample extends Component {
     console.log(exons)
     return (
       <div className={css.page}>
+        <div>
+          <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
+            {this.state.testGenes.map(gene =>
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
+            )}
+          </DropDownMenu>
+        </div>
         <RegionViewer
           css={css}
           width={800}
           regions={exons}
-          attributeConfig={attributeConfig}
+          regionAttributes={attributeConfig}
         >
           <TranscriptTrack
             title={''}

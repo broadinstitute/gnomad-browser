@@ -79,7 +79,6 @@ const TranscriptMulti = ({
         stroke={'none'}
       />
     {regions.map((region, i) => {
-      // console.log(positionOffset(region.start))
       const start = positionOffset(region.start)
       const stop = positionOffset(region.stop)
       return (
@@ -91,7 +90,7 @@ const TranscriptMulti = ({
           y2={height / 2}
           stroke={start.color}
           strokeWidth={20}
-          key={`${i}-rectangle`}
+          key={`${i}-rectangle2`}
         />
         )
     }
@@ -113,7 +112,6 @@ const TranscriptTrack = ({
   let allTranscripts
   if (geneExons) {
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
-    console.log(transcriptsGrouped)
     allTranscripts =  (
       <div className={css.track}>
         <div className={css.data}>
@@ -123,7 +121,6 @@ const TranscriptTrack = ({
             if (R.isEmpty(transcriptExonsFiltered)) {
               return
             }
-            console.log(transcriptExonsFiltered)
             return (
               <TranscriptMulti
                 key={`transcript-${transcript}`}

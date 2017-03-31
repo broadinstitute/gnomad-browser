@@ -51,19 +51,19 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/region-viewer-full'}
+            to={'/transcript-flip-out'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Region viewer</MenuItem>
+            <MenuItem>Multiple transcripts</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/transcript-flip-out'}
+            to={'/region-viewer-full'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Transcripts</MenuItem>
+            <MenuItem>With coverage/variants</MenuItem>
           </NavLink>
         </Drawer>
       </div>

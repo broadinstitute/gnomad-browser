@@ -4,7 +4,7 @@ const API_URL = process.env.API_URL
 
 export const test = () => 'this is a test'
 
-export const fetchAllByGeneName = geneName => {
+export const fetchAllByGeneName = (geneName) => {
   const query = `
   {
     gene(gene_name: "${geneName}") {
@@ -72,7 +72,7 @@ export const fetchAllByGeneName = geneName => {
   })
 }
 
-export const fetchTranscriptsByGeneName = geneName => {
+export const fetchTranscriptsByGeneName = (geneName) => {
   const query = `
   {
     gene(gene_name: "${geneName}") {
