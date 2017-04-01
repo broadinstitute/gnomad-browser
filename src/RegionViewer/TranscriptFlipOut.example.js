@@ -8,6 +8,10 @@ import {
   fetchTranscriptsByGeneName,
 } from 'utilities'  // eslint-disable-line
 
+import {
+  groupExonsByTranscript,
+} from 'utilities/transcriptTools'  // eslint-disable-line
+
 import testData from 'data/transcript-tools-CD33.json'  // eslint-disable-line
 import RegionViewer from './RegionViewer'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
@@ -87,6 +91,7 @@ class RegionTableExample extends Component {
         thickness: '5px',
       },
     }
+    const transcriptsGrouped = groupExonsByTranscript(geneExons)
     return (
       <div className={css.page}>
         <div>
@@ -104,7 +109,7 @@ class RegionTableExample extends Component {
         >
           <TranscriptTrack
             title={''}
-            geneExons={geneExons}
+            transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
         </RegionViewer>

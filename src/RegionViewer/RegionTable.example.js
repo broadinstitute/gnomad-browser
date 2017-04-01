@@ -87,6 +87,7 @@ class RegionTableExample extends Component {
         thickness: '5px',
       },
     }
+
     return (
       <div className={css.page}>
         <div>
