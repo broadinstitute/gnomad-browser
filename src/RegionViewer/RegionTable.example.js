@@ -62,7 +62,6 @@ class RegionTableExample extends Component {
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
     }
-    // const { transcript: { exons }, exome_coverage, genome_coverage } = this.state.data
     const {
       transcript: { exons },
     } = this.state.data
@@ -88,7 +87,6 @@ class RegionTableExample extends Component {
         thickness: '5px',
       },
     }
-    console.log(exons)
     return (
       <div className={css.page}>
         <div>
@@ -100,7 +98,7 @@ class RegionTableExample extends Component {
         </div>
         <RegionViewer
           css={css}
-          width={800}
+          width={1100}
           regions={exons}
           regionAttributes={attributeConfig}
         >

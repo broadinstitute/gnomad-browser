@@ -19,7 +19,6 @@ class RegionViewer extends Component {
   }
 
   state = {
-    width: 800,
     leftPanelWidth: 50,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
@@ -45,8 +44,8 @@ class RegionViewer extends Component {
 
   render() {
     const { css } = this.props
-    const { featuresToDisplay, padding, width, leftPanelWidth } = this.state
-    const { regions, regionAttributes } = this.props
+    const { featuresToDisplay, padding, leftPanelWidth } = this.state
+    const { regions, regionAttributes, width } = this.props
     const offsetRegions = calculateOffsetRegions(
       featuresToDisplay,
       regionAttributes,

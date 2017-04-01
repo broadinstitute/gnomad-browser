@@ -107,7 +107,7 @@ class RegionViewerFullExample extends Component {
       <div className={css.page}>
         <RegionViewer
           css={css}
-          width={800}
+          width={1100}
           regions={exons}
           regionAttributes={regionAttributesConfig}
         >

@@ -98,14 +98,14 @@ class RegionTableExample extends Component {
         </div>
         <RegionViewer
           css={css}
-          width={800}
+          width={1100}
           regions={canonicalExons}
           regionAttributes={attributeConfig}
         >
           <TranscriptTrack
             title={''}
             geneExons={geneExons}
-            height={50}
+            height={30}
           />
         </RegionViewer>
       </div>
