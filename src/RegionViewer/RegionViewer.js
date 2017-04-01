@@ -19,7 +19,7 @@ class RegionViewer extends Component {
   }
 
   state = {
-    leftPanelWidth: 50,
+    leftPanelWidth: 150,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
     padding: 150,
@@ -34,6 +34,10 @@ class RegionViewer extends Component {
   setPadding = (event, newValue) => {
     const padding = Math.floor(2000 * newValue)
     this.setState({ padding })
+  }
+  setLeftPanelWidth = (event, newValue) => {
+    const leftPanelWidth = Math.floor(400 * newValue)
+    this.setState({ leftPanelWidth })
   }
 
   renderChildren = (childProps) => {
@@ -69,6 +73,13 @@ class RegionViewer extends Component {
             width: 800,
           }}
           onChange={this.setPadding}
+        />
+      <p>Left Panel {this.state.leftPanelWidth} bp</p>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setLeftPanelWidth}
         />
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}

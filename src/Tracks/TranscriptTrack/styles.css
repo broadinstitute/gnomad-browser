@@ -1,22 +1,40 @@
 .track {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  /*border: 1px solid #000;*/
-  /*border: 1px solid #000;*/
+  /*border: 1px solid orange;*/
 }
 
-.yAxis {
-  width: 50px; /* Set by Redux */
+.transcriptContainer {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  /*border: 1px solid green;*/
+}
+
+.transcriptLeftAxis {
+  display: flex;
+  width: 100%; /* Set by Redux */
   /*border: 1px solid blue;*/
 }
 
-.yLabel {
-  width: 50px; /* Set by Redux */
+.transcriptName {
+  display: flex;
+  width: 80%; /* Set by Redux */
   font-size: 11px;
-  /*border: 1px solid #000;*/
+  /*border: 1px solid brown;*/
   /*align-items: center;*/
   /*justify-content: center;*/
 }
 
-.data {}
+.transcriptData {
+  display: flex;
+  justify-content: center;
+  /*border: 1px solid red;*/
+}
+
+.transcriptsGrouped {
+  display: flex;
+  flex-direction: column;
+}

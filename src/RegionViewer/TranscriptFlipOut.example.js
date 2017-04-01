@@ -105,7 +105,7 @@ class RegionTableExample extends Component {
           <TranscriptTrack
             title={''}
             geneExons={geneExons}
-            height={30}
+            height={15}
           />
         </RegionViewer>
       </div>

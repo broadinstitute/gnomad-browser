@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import R from 'ramda'
 
 import {
@@ -12,52 +12,22 @@ import {
 
 import css from './styles.css'
 
-const Axis = ({ height, title, width }) => {
-  return <div className={css.yLabel}>{title}</div>
+const TranscriptAxis = ({ title, leftPanelWidth }) => {
+  return (
+    <div style={{ width: leftPanelWidth }} className={css.transcriptLeftAxis}>
+      <div className={css.transcriptName}>
+        {title}
+      </div>
+    </div>
+  )
 }
 
-Axis.propTypes = {
-  height: PropTypes.number.isRequired,
+TranscriptAxis.propTypes = {
   title: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
+  leftPanelWidth: PropTypes.number.isRequired,
 }
 
-const Transcripts = ({
-  width,
-  height,
-  offsetRegions,
-  xScale,
-}) => (
-  <svg
-    width={width}
-    height={height}
-  >
-    <rect
-      className={css.border}
-      x={0}
-      y={0}
-      width={width}
-      height={height}
-      fill={'white'}
-      stroke={'none'}
-    />
-    {offsetRegions.map((region, i) => (
-      <line
-        className={css.rectangle}
-        x1={xScale(region.start - region.offset)}
-        x2={xScale(region.stop - region.offset)}
-        y1={height / 2}
-        y2={height / 2}
-        stroke={region.color}
-        strokeWidth={region.thickness}
-        key={`${i}-rectangle`}
-      />
-      )
-    )}
-  </svg>
-)
-
-const TranscriptMulti = ({
+const TranscriptDrawing = ({
   width,
   height,
   regions,
@@ -92,77 +62,96 @@ const TranscriptMulti = ({
           strokeWidth={20}
           key={`${i}-rectangle2`}
         />
-        )
-    }
-      )}
+      )
+    })}
     </svg>
   )
 }
 
-const TranscriptTrack = ({
+const Transcript = ({
   width,
   height,
   leftPanelWidth,
-  offsetRegions,
+  regions,
   xScale,
   title,
-  geneExons,
   positionOffset,
 }) => {
-  let allTranscripts
-  if (geneExons) {
-    const transcriptsGrouped = groupExonsByTranscript(geneExons)
-    allTranscripts =  (
-      <div className={css.track}>
-        <div className={css.data}>
-          {Object.keys(transcriptsGrouped).map(transcript => {
-            const transcriptExonsFiltered =
-              filterRegions(['CDS'], transcriptsGrouped[transcript])
-            if (R.isEmpty(transcriptExonsFiltered)) {
-              return
-            }
-            return (
-              <TranscriptMulti
-                key={`transcript-${transcript}`}
-                width={width}
-                height={height}
-                regions={transcriptExonsFiltered}
-                xScale={xScale}
-                positionOffset={positionOffset}
-              />
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
   return (
-    <div className={css.track}>
-      <div className={css.yAxis}>
-        <Axis
-          height={height}
-          width={leftPanelWidth}
-          title={title}
-        />
-      </div>
-      <div className={css.data}>
-        <Transcripts
+    <div className={css.transcriptContainer}>
+      <TranscriptAxis
+        leftPanelWidth={leftPanelWidth}
+        title={title}
+      />
+      <div className={css.transcriptData}>
+        <TranscriptDrawing
           width={width}
           height={height}
-          offsetRegions={offsetRegions}
+          regions={regions}
           xScale={xScale}
+          positionOffset={positionOffset}
         />
-      {allTranscripts}
       </div>
     </div>
   )
 }
-TranscriptTrack.propTypes = {
+Transcript.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   leftPanelWidth: PropTypes.number, // eslint-disable-line
   xScale: PropTypes.func, // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
+}
+
+const TranscriptGroup = ({
+  geneExons,
+  ...rest
+}) => {
+  const transcriptsGrouped = groupExonsByTranscript(geneExons)
+  const transcriptGroup = (
+    <div className={css.transcriptsGrouped}>
+      {Object.keys(transcriptsGrouped).map((transcript) => {
+        const transcriptExonsFiltered =
+          filterRegions(['CDS'], transcriptsGrouped[transcript])
+        if (R.isEmpty(transcriptExonsFiltered)) {
+          return
+        }
+        return <Transcript regions={transcriptExonsFiltered} {...rest} />
+      })}
+    </div>
+  )
+  return <div>{transcriptGroup}</div>
+}
+TranscriptGroup.propTypes = {
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number, // eslint-disable-line
+  leftPanelWidth: PropTypes.number, // eslint-disable-line
+  xScale: PropTypes.func, // eslint-disable-line
+  positionOffset: PropTypes.func,  // eslint-disable-line
+}
+
+class TranscriptTrack extends Component {
+
+  static PropTypes = {
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number, // eslint-disable-line
+    leftPanelWidth: PropTypes.number, // eslint-disable-line
+    xScale: PropTypes.func, // eslint-disable-line
+    positionOffset: PropTypes.func,  // eslint-disable-line
+  }
+
+  render() {
+    let transcriptGroup
+    if (this.props.geneExons) {
+      transcriptGroup = <TranscriptGroup geneExons={this.props.geneExons} {...this.props} />
+    }
+    return (
+      <div className={css.track}>
+        <Transcript regions={this.props.offsetRegions} {...this.props} />
+        {transcriptGroup}
+      </div>
+    )
+  }
 }
 
 export default TranscriptTrack
