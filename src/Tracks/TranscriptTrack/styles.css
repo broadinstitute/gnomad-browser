@@ -8,8 +8,8 @@
 .transcriptContainer {
   display: flex;
   flex-direction: row;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  padding-bottom: 3px;
+  padding-top: 3px;
   /*border: 1px solid green;*/
 }
 
@@ -21,8 +21,8 @@
 
 .transcriptName {
   display: flex;
-  width: 80%; /* Set by Redux */
-  font-size: 11px;
+  width: 100%; /* Set by Redux */
+  /*font-size: 12px;*/
   /*border: 1px solid brown;*/
   /*align-items: center;*/
   /*justify-content: center;*/

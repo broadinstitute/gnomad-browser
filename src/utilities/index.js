@@ -4,3 +4,7 @@ export {
   fetchTestData,
   test,
 } from './fetch/fetchData'
+
+export {
+  groupExonsByTranscript,
+} from './transcriptTools'

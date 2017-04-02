@@ -113,6 +113,14 @@ const CoverageTrack = ({
           width={width}
           height={height}
         >
+          <line
+            x1={0}
+            x2={width}
+            y1={height}
+            y2={height}
+            stroke={'black'}
+            strokeWidth={1}
+          />
           <g className={css.coverage}>
             <path
               d={exomeCoverageArea(scaleCoverage(xScale, exomeCoverage))}

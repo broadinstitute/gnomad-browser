@@ -19,7 +19,7 @@ class RegionViewer extends Component {
   }
 
   state = {
-    leftPanelWidth: 150,
+    leftPanelWidth: 100,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
     padding: 150,
@@ -75,12 +75,12 @@ class RegionViewer extends Component {
           onChange={this.setPadding}
         />
       <p>Left Panel {this.state.leftPanelWidth} bp</p>
-        <Slider
+        {/*<Slider
           style={{
             width: 800,
           }}
           onChange={this.setLeftPanelWidth}
-        />
+        />*/}
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}
         </div>

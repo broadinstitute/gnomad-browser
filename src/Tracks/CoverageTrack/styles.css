@@ -1,10 +1,10 @@
 .coverageTrack {
   display: flex;
-
 }
 
 .coverageYAxis {
-  width: 50px; /* Set by Redux */
+  display: flex;
+  justify-content: flex-end;
 }
 
 .coverageArea {

@@ -108,7 +108,6 @@ class RegionTableExample extends Component {
           regionAttributes={attributeConfig}
         >
           <TranscriptTrack
-            title={''}
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />

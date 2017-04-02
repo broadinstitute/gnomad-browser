@@ -12,6 +12,23 @@ Axis.propTypes = {
   width: PropTypes.number.isRequired,
 }
 
+const VariantAxis = ({ title, leftPanelWidth }) => {
+  return (
+    <div
+      style={{ width: leftPanelWidth }}
+      className={css.variantLeftAxis}
+    >
+      <div className={css.variantAxisName} style={{ fontSize: 12 }}>
+        {title}
+      </div>
+    </div>
+  )
+}
+VariantAxis.propTypes = {
+  title: PropTypes.string.isRequired,
+  leftPanelWidth: PropTypes.number.isRequired,
+}
+
 const VariantData = ({
   width,
   height,
@@ -55,13 +72,11 @@ const VariantTrack = ({
 }) => {
   return (
     <div className={css.track}>
-      <div className={css.yAxis}>
-        <Axis
-          height={height}
-          width={leftPanelWidth}
-          title={title}
-        />
-      </div>
+      <VariantAxis
+        height={height}
+        leftPanelWidth={leftPanelWidth}
+        title={title}
+      />
       <div className={css.data}>
         <VariantData
           width={width}

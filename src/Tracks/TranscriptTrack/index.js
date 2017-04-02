@@ -2,6 +2,7 @@
 import React, { PropTypes, Component } from 'react'
 import { Motion, spring } from 'react-motion'
 import FlatButton from 'material-ui/FlatButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
 
 import R from 'ramda'
 
@@ -11,16 +12,20 @@ import {
 
 import css from './styles.css'
 
-const TranscriptAxis = ({ title, leftPanelWidth }) => {
+const TranscriptAxis = ({
+  title,
+  leftPanelWidth,
+  fontSize,
+  expandTranscriptButton,
+}) => {
   return (
     <div style={{ width: leftPanelWidth }} className={css.transcriptLeftAxis}>
-      <div className={css.transcriptName}>
-        {title}
+      <div style={{ fontSize }} className={css.transcriptName}>
+        {expandTranscriptButton || title}
       </div>
     </div>
   )
 }
-
 TranscriptAxis.propTypes = {
   title: PropTypes.string.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
@@ -75,19 +80,52 @@ const Transcript = ({
   xScale,
   title,
   positionOffset,
+  isMaster,
+  fanOut,
   motionHeight,
+  paddingTop,
+  paddingBottom,
+  fontSize,
+  opacity,
 }) => {
   let localHeight
-  if (motionHeight) {
+  if (motionHeight !== undefined) {
     localHeight = motionHeight
   } else {
     localHeight = height
   }
+  let expandTranscriptButton
+  if (isMaster) {
+    localHeight = 40
+    paddingTop = 2
+    paddingBottom = 2
+    expandTranscriptButton = (
+      <FlatButton style={{
+          height: localHeight,
+          fontSize: 8,
+          // paddingTop: 2,
+          // paddingBottom: 2,
+        }}
+        icon={<ContentAdd />}
+        onClick={fanOut}
+      />
+    )
+  }
   return (
-    <div className={css.transcriptContainer}>
+    <div
+      style={{
+        height: localHeight,
+        paddingTop,
+        paddingBottom,
+        opacity,
+       }}
+       className={css.transcriptContainer}
+      >
       <TranscriptAxis
         leftPanelWidth={leftPanelWidth}
         title={title}
+        fontSize={fontSize}
+        expandTranscriptButton={expandTranscriptButton}
       />
       <div className={css.transcriptData}>
         <TranscriptDrawing
@@ -128,10 +166,25 @@ const TranscriptGroup = ({
           finalTranscriptStyles(index) : initialTranscriptStyles()
         return (
           <Motion style={style} key={index}>
-            {({ top }) => {
-              console.log(top)
-              console.log(fanOutButtonOpen)
-              return <Transcript motionHeight={top} regions={transcriptExonsFiltered} {...rest} />
+            {({
+              top,
+              paddingTop,
+              paddingBottom,
+              fontSize,
+              opacity,
+            }) => {
+              return (
+                <Transcript
+                  title={transcript}
+                  motionHeight={top}
+                  paddingTop={paddingTop}
+                  paddingBottom={paddingBottom}
+                  fontSize={fontSize}
+                  opacity={opacity}
+                  regions={transcriptExonsFiltered}
+                  {...rest}
+                />
+              )
             }}
           </Motion>
         )
@@ -168,7 +221,7 @@ class TranscriptTrack extends Component {
   }
 
   fanOut = () => {
-    if (!this.state.fanOutButtonOpen ){
+    if (!this.state.fanOutButtonOpen){
       this.setState({ fanOutButtonOpen: true })
     } else {
       this.setState({ fanOutButtonOpen: false })
@@ -176,13 +229,21 @@ class TranscriptTrack extends Component {
   }
 
   initialTranscriptStyles = () => ({
-    top: spring(2, this.config),
+    top: spring(0, this.config),
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontSize: 0,
+    opacity: 1,
   })
 
   finalTranscriptStyles = (childIndex) => {
-    const deltaY = (childIndex + 1) * 5
+    const deltaY = (childIndex + 1) * 2
     return {
-      top: spring(deltaY, this.config),
+      top: spring(this.props.height, this.config),
+      paddingTop: 2,
+      paddingBottom: 2,
+      fontSize: 11,
+      opacity: 1,
     }
   }
 
@@ -201,8 +262,11 @@ class TranscriptTrack extends Component {
     }
     return (
       <div className={css.track}>
-        <FlatButton label="Show all transcripts" onClick={this.fanOut} />
-        <Transcript regions={this.props.offsetRegions} {...this.props} />
+        <Transcript
+          isMaster fanOut={this.fanOut}
+          regions={this.props.offsetRegions}
+          {...this.props}
+        />
         {transcriptGroup}
       </div>
     )

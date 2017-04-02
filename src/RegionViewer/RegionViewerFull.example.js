@@ -1,7 +1,12 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
-import { fetchAllByGeneName, test } from 'utilities'  // eslint-disable-line
+import {
+  fetchAllByGeneName,
+  groupExonsByTranscript,
+} from 'utilities'
+
+ // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
 import RegionViewer from './RegionViewer'
@@ -81,6 +86,7 @@ class RegionViewerFullExample extends Component {
       genome_variants,
     } = this.state.data
     const geneExons = this.state.data.exons
+    const transcriptsGrouped = groupExonsByTranscript(geneExons)
     const regionAttributesConfig = {
       CDS: {
         color: '#212121',
@@ -107,7 +113,7 @@ class RegionViewerFullExample extends Component {
       <div className={css.page}>
         <RegionViewer
           css={css}
-          width={1100}
+          width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}
         >
@@ -117,19 +123,18 @@ class RegionViewerFullExample extends Component {
             genomeCoverage={genome_coverage}
           />
           <VariantTrack
-            title={'exome variant density'}
-            height={50}
+            title={'Exome variants'}
+            height={25}
             variants={exome_variants}
           />
           <VariantTrack
-            title={'genome variant density'}
-            height={50}
+            title={'Genome variants'}
+            height={25}
             variants={genome_variants}
           />
           <TranscriptTrack
-            title={''}
             height={10}
-            geneExons={geneExons}
+            transcriptsGrouped={transcriptsGrouped}
           />
         </RegionViewer>
       </div>

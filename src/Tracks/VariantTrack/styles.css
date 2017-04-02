@@ -1,18 +1,11 @@
 .track {
   display: flex;
-  /*border: 1px solid grey;*/
+  align-items: center;
+  /*border: 1px solid blue;*/
   margin-top: 5px;
 }
 
-.yAxis {
-  width: 50px; /* Set by Redux */
-  /*border: 1px solid #000;*/
-}
-
-.yLabel {
+.variantAxisName {
   font-size: 11px;
-}
-
-.data {
-  
+  /*border: 1px solid green;*/
 }
