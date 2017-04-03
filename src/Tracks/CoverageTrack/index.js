@@ -9,6 +9,7 @@ import { scaleLinear } from 'd3-scale'
 import css from './styles.css'
 
 const CoverageTrack = ({
+  title,
   width,
   height,
   leftPanelWidth,
@@ -67,6 +68,17 @@ const CoverageTrack = ({
     .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y(base => yScale(base.mean))
 
+  let genomeCov
+  if (genomeCoverage) {
+    genomeCov = (
+      <path
+        d={genomeCoverageLine(genomeCoverage)}
+        fill={'none'}
+        stroke={genomeColor}
+        strokeWidth={4}
+      />
+    )
+  }
   return (
     <div className={css.coverageTrack}>
       <div
@@ -82,7 +94,7 @@ const CoverageTrack = ({
             y={height / 2}
             transform={`rotate(270 10 ${height / 2})`}
           >
-            Coverage
+            {title}
           </text>
           <g>
             {range(0, 190, 10).map(tick =>
@@ -126,12 +138,7 @@ const CoverageTrack = ({
               d={exomeCoverageArea(scaleCoverage(xScale, exomeCoverage))}
               fill={exomeColor}
             />
-            <path
-              d={genomeCoverageLine(genomeCoverage)}
-              fill={'none'}
-              stroke={genomeColor}
-              strokeWidth={4}
-            />
+            {genomeCov}
           </g>
         </svg>
       </div>
@@ -144,8 +151,8 @@ CoverageTrack.propTypes = {
   leftPanelWidth: PropTypes.number, // eslint-disable-line
   xScale: PropTypes.func, // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
-  exomeCoverage: PropTypes.array.isRequired,
-  genomeCoverage: PropTypes.array.isRequired,
+  exomeCoverage: PropTypes.array,
+  genomeCoverage: PropTypes.array,
 }
 
 export default CoverageTrack

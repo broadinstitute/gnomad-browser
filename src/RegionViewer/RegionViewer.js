@@ -64,6 +64,7 @@ class RegionViewer extends Component {
       xScale,
       width,
       offsetRegions,
+      regionAttributes,
     }
     return (
       <div className={css.regionViewer}>
@@ -74,8 +75,8 @@ class RegionViewer extends Component {
           }}
           onChange={this.setPadding}
         />
-      <p>Left Panel {this.state.leftPanelWidth} bp</p>
-        {/*<Slider
+      {/*<p>Left Panel {this.state.leftPanelWidth} bp</p>
+        <Slider
           style={{
             width: 800,
           }}

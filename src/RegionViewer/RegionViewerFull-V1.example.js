@@ -43,7 +43,7 @@ const testGenes = [
 // import testData from 'data/region-viewer-full-BRCA2.json'
 // import testData from 'data/region-viewer-full-CFTR.json'
 // import testData from 'data/region-viewer-full-FBN1.json'
-import testData from 'data/region-viewer-full-TP53.json'
+import testData from 'data/region-viewer-full-TP53-V1.json'
 // import testData from 'data/region-viewer-full-SCN5A.json'
 // import testData from 'data/region-viewer-full-MYH7.json'
 // import testData from 'data/region-viewer-full-MYBPC3.json'
@@ -84,6 +84,8 @@ class RegionViewerFullExample extends Component {
       genome_coverage,
       exome_variants,
       genome_variants,
+      exacv1_coverage,
+      exacv1_variants,
     } = this.state.data
     const geneExons = this.state.data.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
@@ -118,19 +120,34 @@ class RegionViewerFullExample extends Component {
           regionAttributes={regionAttributesConfig}
         >
           <CoverageTrack
+            title={'gnomAD coverage'}
             height={200}
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
           <VariantTrack
-            title={'Exome variants'}
+            title={'gnomAD exome variants'}
             height={25}
             variants={exome_variants}
           />
           <VariantTrack
-            title={'Genome variants'}
+            title={'gnomAD genome variants'}
             height={25}
             variants={genome_variants}
+          />
+          <TranscriptTrack
+            height={10}
+            transcriptsGrouped={transcriptsGrouped}
+          />
+          <CoverageTrack
+            title={'ExACv1 coverage'}
+            height={200}
+            exomeCoverage={exacv1_coverage}
+          />
+          <VariantTrack
+            title={'ExACv1 variants'}
+            height={25}
+            variants={exacv1_variants}
           />
           <TranscriptTrack
             height={10}

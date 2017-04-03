@@ -37,6 +37,7 @@ const TranscriptDrawing = ({
   regions,
   xScale,
   positionOffset,
+  isMaster,
 }) => {
   return (
     <svg
@@ -52,9 +53,24 @@ const TranscriptDrawing = ({
         fill={'white'}
         stroke={'none'}
       />
+      <line
+        className={css.rectangle}
+        x1={0}
+        x2={width}
+        y1={height / 2}
+        y2={height / 2}
+        stroke={'#BDBDBD'}
+        strokeWidth={2}
+      />
       {regions.map((region, i) => {
         const start = positionOffset(region.start)
         const stop = positionOffset(region.stop)
+        let localThickness
+        if (isMaster) {
+          localThickness = region.thickness
+        } else {
+          localThickness = 10
+        }
         return (
           <line
             className={css.rectangle}
@@ -63,7 +79,7 @@ const TranscriptDrawing = ({
             y1={height / 2}
             y2={height / 2}
             stroke={start.color}
-            strokeWidth={20}
+            strokeWidth={localThickness}
             key={`${i}-rectangle2`}
           />
         )
@@ -134,6 +150,7 @@ const Transcript = ({
           regions={regions}
           xScale={xScale}
           positionOffset={positionOffset}
+          isMaster={isMaster}
         />
       </div>
     </div>

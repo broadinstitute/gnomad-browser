@@ -1,6 +1,9 @@
 // import { fetchTestData } from 'utilities'
 import R from 'ramda'
 import config from 'config'
+import fs from 'fs'
+import path from 'path'
+import fetch from 'graphql-fetch'
 
 const API_URL = config.get('API_URL')
 const TEST_DATA_DIRECTORY = config.get('TEST_DATA_DIRECTORY')
@@ -60,6 +63,21 @@ const geneQuery = geneName => `
       allele_count
       hom_count
     }
+    exacv1_coverage {
+      pos
+      mean
+    }
+    exacv1_variants {
+      chrom
+      pos
+      ref
+      alt
+      variant_id
+      allele_num
+      allele_freq
+      allele_count
+      hom_count
+    }
 }}
 `
 export const testGenes = [
@@ -97,7 +115,7 @@ export const fetchTestData = (
 
 const fetchAll = (geneList) => {
   const gene = R.head(geneList)
-  fetchTestData(geneQuery(gene), `region-viewer-full-${gene}.json`)
+  fetchTestData(geneQuery(gene), `region-viewer-full-${gene}-v1.json`)
     .then(_ => fetchAll(R.tail(geneList)))
 }
 
