@@ -12,6 +12,7 @@ import RegionViewerFull from '../RegionViewer/RegionViewerFull.example'
 import RegionViewerFullV1 from '../RegionViewer/RegionViewerFull-V1.example'
 import RegionTableDemo from '../RegionViewer/RegionTable.example'
 import TranscriptFlipOutDemo from '../RegionViewer/TranscriptFlipOut.example'
+import VDSPage from '../VDS'
 
 import css from './styles.css'
 
@@ -75,6 +76,15 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>With coverage/variants v1</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/vds'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>VDS</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -91,6 +101,7 @@ const Demo = () =>
         <Route exact path={'/region-viewer-full'} component={RegionViewerFull} />
         <Route exact path={'/region-viewer-full-v1'} component={RegionViewerFullV1} />
         <Route exact path={'/transcript-flip-out'} component={TranscriptFlipOutDemo} />
+        <Route exact path={'/vds'} component={VDSPage} />
       </div>
     </div>
   </Router>

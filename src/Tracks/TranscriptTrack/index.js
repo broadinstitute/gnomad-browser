@@ -27,7 +27,7 @@ const TranscriptAxis = ({
   )
 }
 TranscriptAxis.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
