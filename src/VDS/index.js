@@ -21,10 +21,11 @@ import LoadingTrack from '../Tracks/LoadingTrack'
 
 import css from './styles.css'
 
-const API_URL = 'http://localhost:8004/graphql'
+const API_URL = 'http://localhost:8020/graphql'
 
 const fetchVariantsFromHail = (geneName) => {
-  const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { gene_name exome_variants { start info { CSQ GQ_HIST_ALT GQ_HIST_ALL DP_HIST_ALL BaseQRankSum ClippingRankSum FS InbreedingCoeff MQ MQRankSum QD ReadPosRankSum SOR VQSLOD AN AN_AFR AN_AMR AN_ASJ AN_EAS AN_FIN AN_NFE AN_OTH AN_SAS}}}}", "variables": {"geneName": "${geneName}"}}`
+  // const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { gene_name exome_variants { start info { CSQ GQ_HIST_ALT GQ_HIST_ALL DP_HIST_ALL BaseQRankSum ClippingRankSum FS InbreedingCoeff MQ MQRankSum QD ReadPosRankSum SOR VQSLOD AN AN_AFR AN_AMR AN_ASJ AN_EAS AN_FIN AN_NFE AN_OTH AN_SAS}}}}", "variables": {"geneName": "${geneName}"}}`
+  const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { exome_variants { start }}}", "variables": {"geneName": "${geneName}"}}`
 
   const header = new Headers({
     'Access-Control-Allow-Origin': '*',
@@ -51,7 +52,7 @@ class VDSPage extends Component {
   state = {
     hasData: false,
     variantsFetched: false,
-    currentGene: 'SRY',
+    currentGene: 'PCSK9',
     testGenes: [
       'PCSK9',
       'ZNF658',
