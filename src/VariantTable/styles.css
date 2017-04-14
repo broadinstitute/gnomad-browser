@@ -22,6 +22,12 @@
   border-collapse: collapse;
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .tableHeader {
   composes: table;
 }

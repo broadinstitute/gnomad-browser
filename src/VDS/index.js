@@ -25,7 +25,7 @@ const API_URL = 'http://localhost:8020/graphql'
 
 const fetchVariantsFromHail = (geneName) => {
   // const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { gene_name exome_variants { start info { CSQ GQ_HIST_ALT GQ_HIST_ALL DP_HIST_ALL BaseQRankSum ClippingRankSum FS InbreedingCoeff MQ MQRankSum QD ReadPosRankSum SOR VQSLOD AN AN_AFR AN_AMR AN_ASJ AN_EAS AN_FIN AN_NFE AN_OTH AN_SAS}}}}", "variables": {"geneName": "${geneName}"}}`
-  const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { exome_variants { start }}}", "variables": {"geneName": "${geneName}"}}`
+  const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { genome_variants { start consequence } exome_variants { start }}}", "variables": {"geneName": "${geneName}"}}`
 
   const header = new Headers({
     'Access-Control-Allow-Origin': '*',
@@ -135,17 +135,47 @@ class VDSPage extends Component {
       },
     }
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
-
-    let variantsComponent = <LoadingTrack height={25} />
+    let variantsComponent0 = <LoadingTrack height={25} />
+    let variantsComponent1 = <LoadingTrack height={25} />
+    let variantsComponent2 = <LoadingTrack height={25} />
+    let variantsComponent3 = <LoadingTrack height={25} />
     if (this.state.variantsFetched) {
-      const variants = this.state.variantData.exome_variants
-      const variantsRdy = variants.map(v => ({ ...v, pos: v.start }))
-      variantsComponent = (
-        <VariantTrack
-          title={'VDS variants'}
-          height={25}
-          variants={variantsRdy}
-        />
+      const exome_variants = this.state.variantData.exome_variants
+      const genome_variants = this.state.variantData.genome_variants
+      const exomeVariantsRdy = exome_variants.map(v => ({ ...v, pos: v.start }))
+      const genomeVariantsRdy = genome_variants
+        .map(v => ({ ...v, pos: v.start }))
+      const missense = genomeVariantsRdy
+        .filter(v => v.consequence === 'missense_variant')
+      const frame = genomeVariantsRdy
+        .filter(v => v.consequence === 'frameshift_variant')
+      variantsComponent0 = (
+          <VariantTrack
+            title={'VDS exome variants'}
+            height={25}
+            variants={exomeVariantsRdy}
+          />
+      )
+      variantsComponent1 = (
+          <VariantTrack
+            title={'VDS genome variants'}
+            height={25}
+            variants={genomeVariantsRdy}
+          />
+      )
+      variantsComponent2 = (
+          <VariantTrack
+            title={'Missense variants'}
+            height={25}
+            variants={missense}
+          />
+      )
+      variantsComponent3 = (
+          <VariantTrack
+            title={'Frameshift variants'}
+            height={25}
+            variants={frame}
+          />
       )
     }
 
@@ -164,7 +194,10 @@ class VDSPage extends Component {
           regions={canonicalExons}
           regionAttributes={attributeConfig}
         >
-          {variantsComponent}
+          {variantsComponent0}
+          {variantsComponent1}
+          {variantsComponent2}
+          {variantsComponent3}
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}

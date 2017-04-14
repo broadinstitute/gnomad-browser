@@ -9,12 +9,13 @@ import {
  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from './RegionViewer'
-
+import RegionViewer from '../RegionViewer'
 import CoverageTrack from '../Tracks/CoverageTrack'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
-import PositionTableTrack from '../Tracks/PositionTableTrack'
+
+
+import VariantTable from './index'
 
 import css from './styles.css'
 
@@ -48,7 +49,7 @@ import testData from 'data/region-viewer-full-TP53.json'
 // import testData from 'data/region-viewer-full-ARSF.json'
 // import testData from 'data/region-viewer-full-CD33.json'
 
-class RegionViewerFullExample extends Component {
+class VariantTableFullExample extends Component {
   state = {
     hasData: false,
   }
@@ -135,9 +136,10 @@ class RegionViewerFullExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
           />
         </RegionViewer>
+        <VariantTable variantsData={exome_variants} />
       </div>
     )
   }
 }
 
-export default RegionViewerFullExample
+export default VariantTableFullExample

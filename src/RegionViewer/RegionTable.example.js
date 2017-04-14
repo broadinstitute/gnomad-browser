@@ -34,6 +34,7 @@ class RegionTableExample extends Component {
       'CD33',
       'DMD',
       'TTN',
+      'USH2A'
     ],
   }
   componentDidMount() {

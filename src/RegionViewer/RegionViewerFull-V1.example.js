@@ -16,8 +16,6 @@ import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
 import PositionTableTrack from '../Tracks/PositionTableTrack'
 
-import VariantsTable from '../VariantsTable'
-
 import css from './styles.css'
 
 const testGenes = [
