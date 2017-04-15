@@ -19,9 +19,10 @@ const NigiriTrack = ({
   padding,
   domainMax,
   coverage,
+  coverageColour,
   junctions,
 }) => {
-  const coverageColor = '#004D7F'
+  const coverageColor = coverageColour
 
   const scaleCoverage = (xScale, coverage) => {
     const coverageScaled = coverage.map((base) => {
@@ -119,7 +120,7 @@ const NigiriTrack = ({
           key={`${junction.series}-${start.xpos}-${stop.xpos}-${junction.reading}`}
           d={nigiriJunctionLine(junction.positions)}
           fill={'none'}
-          stroke={'red'}
+          stroke={coverageColour}
           strokeWidth={4}
         />
         <rect

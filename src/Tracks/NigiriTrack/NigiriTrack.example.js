@@ -48,19 +48,19 @@ class NigiriTrackExample extends Component {
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     const regionAttributesConfig = {
       CDS: {
-        color: '#5397C4',
+        color: '#9B988F',
         thickness: '30px',
       },
       start_pad: {
-        color: '#FF8E0A',
+        color: '#e0e0e0',
         thickness: '3px',
       },
       end_pad: {
-        color: '#F5FF12',
+        color: '#e0e0e0',
         thickness: '3px',
       },
       intron: {
-        color: '#00CCFF',
+        color: '#e0e0e0',
         thickness: '3px',
       },
       default: {
@@ -118,12 +118,14 @@ class NigiriTrackExample extends Component {
             height={200}
             domainMax={750}
             coverage={coverage_control}
+            coverageColour={'#004D7F'}
             junctions={junctions_control}
           />
           <NigiriTrack
             height={200}
             domainMax={2000}
             coverage={coverage_patient}
+            coverageColour={'#FF0001'}
             junctions={junctions_patient}
           />
           <TranscriptTrack
