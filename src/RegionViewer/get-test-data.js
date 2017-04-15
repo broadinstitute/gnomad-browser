@@ -81,22 +81,23 @@ const geneQuery = geneName => `
 }}
 `
 export const testGenes = [
-  'PCSK9',
-  // 'DMD',
-  'ZNF658',
-  'MYH9',
-  'FMR1',
-  // 'BRCA1',
-  'BRCA2',
-  'CFTR',
-  'FBN1',
-  'TP53',
-  'SCN5A',
-  'MYH7',
-  'MYBPC3',
-  // 'TTN',
-  'ARSF',
-  'CD33',
+  // 'PCSK9',
+  // // 'DMD',
+  // 'ZNF658',
+  // 'MYH9',
+  // 'FMR1',
+  // // 'BRCA1',
+  // 'BRCA2',
+  // 'CFTR',
+  // 'FBN1',
+  // 'TP53',
+  // 'SCN5A',
+  // 'MYH7',
+  // 'MYBPC3',
+  // // 'TTN',
+  // 'ARSF',
+  // 'CD33',
+  'CAPN3'
 ]
 
 export const fetchTestData = (

@@ -37,6 +37,11 @@ const webpackConfig = {
         use: 'babel-loader',
       },
       {
+        test: /\.csv$/,
+        exclude: /node_modules/,
+        use: 'dsv-loader',
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',

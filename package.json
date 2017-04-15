@@ -62,6 +62,7 @@
     "d3-path": "1.0.5",
     "d3-scale": "1.0.5",
     "d3-shape": "1.0.6",
+    "dsv-loader": "2.0.0",
     "global": "^4.3.1",
     "googleapis": "^18.0.0",
     "immutable": "3.8.1",

@@ -5,3 +5,6 @@ dist
 npm-debug.log
 test/data/*.json
 test/data/*.txt
+test/data/*.csv
+test/data/*.tsv
+test/data/*.swp
