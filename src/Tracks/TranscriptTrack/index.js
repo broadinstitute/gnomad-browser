@@ -71,18 +71,22 @@ const TranscriptDrawing = ({
         } else {
           localThickness = 10
         }
-        return (
-          <line
-            className={css.rectangle}
-            x1={xScale(start.offsetPosition)}
-            x2={xScale(stop.offsetPosition)}
-            y1={height / 2}
-            y2={height / 2}
-            stroke={start.color}
-            strokeWidth={localThickness}
-            key={`${i}-rectangle2`}
-          />
-        )
+        // console.log(start)
+        // console.log(stop)
+        if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
+          return (
+            <line
+              className={css.rectangle}
+              x1={xScale(start.offsetPosition)}
+              x2={xScale(stop.offsetPosition)}
+              y1={height / 2}
+              y2={height / 2}
+              stroke={start.color}
+              strokeWidth={localThickness}
+              key={`${i}-rectangle2`}
+            />
+          )
+        }
       })}
     </svg>
   )

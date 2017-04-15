@@ -93,6 +93,7 @@ class RegionViewer extends Component {
       width,
       offsetRegions,
       regionAttributes,
+      padding,
     }
     return (
       <div className={css.regionViewer}>

@@ -19,8 +19,8 @@ export const filterRegions = R.curry((featureList, regions) =>
 )
 
 export const applyExonSubset = R.curry((exonSubset, regions) => {
-  const [start, stop] = exonSubset
-  if (start && stop) {
+  if (exonSubset) {
+    const [start, stop] = exonSubset
     return regions.slice(start, stop)
   }
   return regions

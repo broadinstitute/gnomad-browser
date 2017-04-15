@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
+import R from 'ramda'
 import {
   groupExonsByTranscript,
 } from 'utilities'
@@ -8,6 +9,7 @@ import {
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
 import NigiriTrack from './index'
+import PositionTableTrack from '../PositionTableTrack'
 
 
 import css from './styles.css'
@@ -42,26 +44,23 @@ class NigiriTrackExample extends Component {
     const {
       transcript: { exons },
     } = this.state.geneData
-    console.log(exons)
     const geneExons = this.state.geneData.exons
-    console.log(geneExons)
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
-    console.log(transcriptsGrouped)
     const regionAttributesConfig = {
       CDS: {
-        color: '#212121',
+        color: '#5397C4',
         thickness: '30px',
       },
       start_pad: {
-        color: '#BDBDBD',
+        color: '#FF8E0A',
         thickness: '3px',
       },
       end_pad: {
-        color: '#BDBDBD',
+        color: '#F5FF12',
         thickness: '3px',
       },
       intron: {
-        color: '#BDBDBD',
+        color: '#00CCFF',
         thickness: '3px',
       },
       default: {
@@ -69,26 +68,51 @@ class NigiriTrackExample extends Component {
         thickness: '3px',
       },
     }
-    const coverage_control = this.state.coverage.map(base =>
-      ({ pos: Number(base.pos), reading: Number(base.series1) }))
-    const coverage_patient = this.state.coverage.map(base =>
-      ({ pos: Number(base.pos), reading: Number(base.series2) }))
 
-    const junctions_control = this.state.junctions.map(base =>
-      ({ pos: Number(base.pos), reading: Number(base.series1) }))
-    const junctions_patient = this.state.junctions.map(base =>
-      ({ pos: Number(base.pos), reading: Number(base.series2) }))
+    const junctionSelection = ['578', '1514', '181']
 
-    // console.log(this.state.coverage)
+    const prepareJunctionSeries = (seriesName, junctions) =>
+      junctions.map((junction) => {
+        const start = Number(junction.junc_start)
+        const stop = Number(junction.junc_end)
+        const mid = Math.floor(((start + stop) / 2))
+
+        return ({
+          series: seriesName,
+          positions: [
+            { pos: start },
+            { pos: mid },
+            { pos: stop },
+          ],
+          reading: junction[seriesName],
+        })
+      })
+     .filter(junction => junction.reading !== 'None')
+     .filter(junction =>
+       R.contains(junction.reading, junctionSelection))
+     .map(junction =>
+       ({ ...junction, reading: Number(junction.reading) }))
+
+    const junctions_control = prepareJunctionSeries('series1', this.state.junctions)
+    const junctions_patient = prepareJunctionSeries('series2', this.state.junctions)
+
+    const coverage_control = this.state.coverage
+      .map(base => ({ pos: Number(base.pos), reading: Number(base.series1) }))
+    const coverage_patient = this.state.coverage
+      .filter(base => base.series1 !== 'None')
+      .map(base => ({ pos: Number(base.pos), reading: Number(base.series2) }))
+
     // console.log(this.state.junctions)
+    // console.log(junctions_control)
+    // console.log(junctions_patient)
     return (
       <div className={css.page}>
         <RegionViewer
           css={css}
           width={1000}
           regions={exons}
-          exonSubset={[4, 7]}
           regionAttributes={regionAttributesConfig}
+          exonSubset={[5, 7]}
         >
           <NigiriTrack
             height={200}
@@ -103,8 +127,12 @@ class NigiriTrackExample extends Component {
             junctions={junctions_patient}
           />
           <TranscriptTrack
-            height={10}
-            transcriptsGrouped={transcriptsGrouped}
+              height={10}
+              transcriptsGrouped={transcriptsGrouped}
+            />
+          <PositionTableTrack
+            title={''}
+            height={50}
           />
         </RegionViewer>
       </div>

@@ -1,7 +1,8 @@
+/* eslint-disable no-shadow */
 import React, { PropTypes } from 'react'
 import R from 'ramda'
 
-import { area, line } from 'd3-shape'
+import { area, line, curveCatmullRom } from 'd3-shape'
 import { range } from 'd3-array'
 import { path } from 'd3-path'
 import { scaleLinear } from 'd3-scale'
@@ -15,18 +16,16 @@ const NigiriTrack = ({
   leftPanelWidth,
   xScale,
   positionOffset,
+  padding,
   domainMax,
   coverage,
   junctions,
 }) => {
-  // console.log(coverage)
-  const coverageColor = '#001B42'
+  const coverageColor = '#004D7F'
 
   const scaleCoverage = (xScale, coverage) => {
     const coverageScaled = coverage.map((base) => {
-      // console.log(base.pos)
       const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
-      // console.log(newPosition)
       if (newPosition !== undefined || newPosition !== NaN) {
         return ({
           reading: base.reading,
@@ -53,7 +52,6 @@ const NigiriTrack = ({
     return final
   }
 
-
   const yScale = scaleLinear()
     .domain([0, domainMax])
     .range([200, 0])
@@ -63,27 +61,90 @@ const NigiriTrack = ({
     .y0(_ => height)  // eslint-disable-line
     .y1(base => yScale(base.reading))
 
-  // const genomeCoverageLine = line()
-  //   .defined((base) => {
-  //     return !isNaN(base.mean)
-  //       && positionOffset(base.pos).offsetPosition !== undefined
-  //   })
-  //   .x(base => xScale(positionOffset(base.pos).offsetPosition))
-  //   .y(base => yScale(base.mean))
+  const calculateJunctionPositions = (junctions) => {
+    const nigiriLabelSpacing = 50
 
-  // let genomeCov
-  // if (genomeCoverage) {
-  //   genomeCov = (
-  //     <path
-  //       d={genomeCoverageLine(genomeCoverage)}
-  //       fill={'none'}
-  //       stroke={genomeColor}
-  //       strokeWidth={4}
-  //     />
-  //   )
-  // }
-  // console.log(coverageArea(scaleCoverage(xScale, coverage)))
-  // console.log(scaleCoverage(xScale, coverage))
+    return junctions.map((junction, i) => {
+      const [start, mid, stop] = junction.positions
+
+      const startOffset = positionOffset(start.pos)
+      const stopOffset = positionOffset(stop.pos)
+
+      const startScaled = xScale(startOffset.offsetPosition)
+      const stopScaled = xScale(stopOffset.offsetPosition)
+
+      const mid1Scaled = ((startScaled + stopScaled) / 2) - nigiriLabelSpacing
+      const mid2Scaled = ((startScaled + stopScaled) / 2) + nigiriLabelSpacing
+
+      const startJunction = {
+        xpos: startScaled,
+        ypos: 0,
+      }
+      const midpoint1 = {
+        xpos: mid1Scaled,
+        ypos: 300 * (i + 1),
+      }
+      const midpoint2 = {
+        xpos: mid2Scaled,
+        ypos: 300 * (i + 1),
+      }
+      const stopJunction = {
+        xpos: stopScaled,
+        ypos: 0,
+      }
+
+      return {
+        ...junction,
+        positions: [startJunction, midpoint1, midpoint2, stopJunction],
+      }
+    })
+  }
+
+  const nigiriJunctionPath = (junction) => {
+    const nigiriJunctionLine = line()
+      .defined((junction) => {
+        return junction.xpos !== undefined
+      })
+      .x((junction) => {
+        return junction.xpos
+      })
+      .y(junction => yScale(junction.ypos))
+      .curve(curveCatmullRom.alpha(1))
+
+    const [start, mid1, mid2, stop] = junction.positions
+
+    return (
+      <g>
+        <path
+          key={`${junction.series}-${start.xpos}-${stop.xpos}-${junction.reading}`}
+          d={nigiriJunctionLine(junction.positions)}
+          fill={'none'}
+          stroke={'red'}
+          strokeWidth={4}
+        />
+        <rect
+          x={mid1.xpos + 25}
+          y={yScale(mid1.ypos + 60)}
+          width={50}
+          fill={'white'}
+          height={30}
+          strokeWidth={1}
+          stroke={'white'}
+        />
+        <text
+          x={mid1.xpos + 50}
+          y={yScale(mid1.ypos)}
+          style={{ textAnchor: 'middle' }}
+        >
+          {junction.reading}
+        </text>
+      </g>
+    )
+  }
+
+  const junctionPaths = calculateJunctionPositions(junctions)
+    .map(junction => nigiriJunctionPath(junction))
+
   return (
     <div className={css.coverageTrack}>
       <div
@@ -143,7 +204,7 @@ const NigiriTrack = ({
               d={coverageArea(scaleCoverage(xScale, coverage))}
               fill={coverageColor}
             />
-            {/*genomeCov*/}
+            {junctionPaths}
           </g>
         </svg>
       </div>
