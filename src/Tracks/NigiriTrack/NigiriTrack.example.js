@@ -42,8 +42,11 @@ class NigiriTrackExample extends Component {
     const {
       transcript: { exons },
     } = this.state.geneData
+    console.log(exons)
     const geneExons = this.state.geneData.exons
+    console.log(geneExons)
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
+    console.log(transcriptsGrouped)
     const regionAttributesConfig = {
       CDS: {
         color: '#212121',
@@ -84,6 +87,7 @@ class NigiriTrackExample extends Component {
           css={css}
           width={1000}
           regions={exons}
+          exonSubset={[4, 7]}
           regionAttributes={regionAttributesConfig}
         >
           <NigiriTrack

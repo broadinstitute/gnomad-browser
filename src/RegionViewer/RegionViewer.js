@@ -16,6 +16,33 @@ class RegionViewer extends Component {
     css: PropTypes.object.isRequired,
     regions: PropTypes.array.isRequired,
     regionAttributes: PropTypes.object,
+    exonSubset: PropTypes.array,
+  }
+
+  defaultProps = {
+    exonSubset: null,
+    regionAttributes: {
+      CDS: {
+        color: '#212121',
+        thickness: '30px',
+      },
+      start_pad: {
+        color: '#BDBDBD',
+        thickness: '3px',
+      },
+      end_pad: {
+        color: '#BDBDBD',
+        thickness: '3px',
+      },
+      intron: {
+        color: '#BDBDBD',
+        thickness: '3px',
+      },
+      default: {
+        color: '#grey',
+        thickness: '3px',
+      },
+    },
   }
 
   state = {
@@ -49,12 +76,13 @@ class RegionViewer extends Component {
   render() {
     const { css } = this.props
     const { featuresToDisplay, padding, leftPanelWidth } = this.state
-    const { regions, regionAttributes, width } = this.props
+    const { regions, regionAttributes, width, exonSubset } = this.props
     const offsetRegions = calculateOffsetRegions(
       featuresToDisplay,
       regionAttributes,
       padding,
       regions,
+      exonSubset,
     )
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)

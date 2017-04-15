@@ -7,6 +7,7 @@ import {
   calculateOffset,
   assignAttributes,
   addPadding,
+  applyExonSubset,
 } from './index'
 
 describe('ppara data', () => {
@@ -32,6 +33,18 @@ describe('filterRegions', () => {
         R.all(feature => feature === 'CDS'),
       )(filterRegions(['CDS'], regions)),
     ).toBe(true)
+  })
+})
+
+describe('applyExonSubset', () => {
+  const regions = ppara.gene.transcript.exons
+  it('returns a subset of exons, given an array', () => {
+    const func = R.pipe(
+        filterRegions(['CDS']),
+        applyExonSubset([2, 5]),
+      )
+    const result = func(regions)
+    expect(result.length).toBe(3)
   })
 })
 
