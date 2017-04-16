@@ -5,16 +5,102 @@ import css from './styles.css'
 
 const getHeader = field => <th key={`${field.title}-header-cell`}>{field.title}</th>
 
+const abstractCellStyle = {
+  paddingLeft: 20,
+  paddingRight: 20,
+}
+
+const normalCellStyles = {
+  string: {
+    ...abstractCellStyle,
+  },
+  integer: {
+    ...abstractCellStyle,
+  },
+  float: {
+    ...abstractCellStyle,
+  },
+}
+
+const specialCellStyles = {
+  filter: {
+    ...normalCellStyles.string,
+  },
+}
+
+const tableCellStyles = {
+  ...normalCellStyles,
+  ...specialCellStyles,
+}
+
+const getFilterBackgroundColor = filter => {
+  switch (filter) {
+    case 'PASS':
+      return '#85C77D'
+    default:
+      return '#F1FF87'
+  }
+}
+const formatFitler = filters => filters.split('|').map(filter =>
+  <span
+    style={{
+      border: '1px solid #000',
+      marginLeft: 10,
+      padding: '1px 2px 1px 2px',
+      backgroundColor: getFilterBackgroundColor(filter),
+    }}
+  >
+    {filter}
+  </span>
+)
+
 const getDataCell = (dataKey, cellDataType, dataRow, i) => {
   switch (cellDataType) {
     case 'string':
-      return <td key={`cell-${dataKey}-${i}`}>{dataRow[dataKey]}</td>
+      return (
+        <td
+          style={tableCellStyles[cellDataType]}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {dataRow[dataKey]}
+        </td>
+      )
     case 'float':
-      return <td key={`cell-${dataKey}-${i}`}>{dataRow[dataKey].toPrecision(3)}</td>
+      return (
+        <td
+          style={tableCellStyles[cellDataType]}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {dataRow[dataKey].toPrecision(3)}
+        </td>
+      )
     case 'integer':
-      return <td key={`cell-${dataKey}-${i}`}>{dataRow[dataKey]}</td>
+      return (
+        <td
+          style={tableCellStyles[cellDataType]}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {dataRow[dataKey]}
+        </td>
+      )
+    case 'filter':
+      return (
+        <td
+          style={tableCellStyles[cellDataType]}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatFitler(dataRow[dataKey])}
+        </td>
+      )
     default:
-      return <td key={`cell-${dataKey}-${i}`}>{dataRow[dataKey]}</td>
+      return (
+        <td
+          style={tableCellStyles[cellDataType]}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {dataRow[dataKey]}
+        </td>
+      )
   }
 }
 
@@ -22,7 +108,7 @@ const getDataRow = (tableConfig, dataRow, i) => {
   const cells = tableConfig.fields.map((field, i) =>
     getDataCell(field.dataKey, field.dataType, dataRow, i))
   return (
-    <tr style={{backgroundColor: '#C5CCDC' }}  key={`row-${i}`}>
+    <tr style={{ backgroundColor: '#e0e0e0' }} key={`row-${i}`}>
       {cells}
     </tr>
   )
