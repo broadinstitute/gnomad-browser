@@ -14,6 +14,7 @@ import RegionViewerFullV1 from '../RegionViewer/RegionViewerFull-V1.example'
 import RegionTableDemo from '../RegionViewer/RegionTable.example'
 import TranscriptFlipOutDemo from '../RegionViewer/TranscriptFlipOut.example'
 import NigiriDemo from '../Tracks/NigiriTrack/NigiriTrack.example.js'
+import GenericTableTrackDemo from '../Tracks/GenericTableTrack/GenericTableTrack.example.js'
 import VDSPage from '../VDS'
 
 import css from './styles.css'
@@ -117,6 +118,15 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>VDS tracks</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/generic-table'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Generic table track</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -135,6 +145,7 @@ const Demo = () =>
         <Route exact path={'/region-viewer-full-v1'} component={RegionViewerFullV1} />
         <Route exact path={'/transcript-flip-out'} component={TranscriptFlipOutDemo} />
         <Route exact path={'/nigiri'} component={NigiriDemo} />
+        <Route exact path={'/generic-table'} component={GenericTableTrackDemo} />
         <Route exact path={'/vds'} component={VDSPage} />
         <Route
           exact

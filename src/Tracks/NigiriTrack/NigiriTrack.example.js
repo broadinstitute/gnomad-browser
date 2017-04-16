@@ -2,21 +2,19 @@
 
 import React, { Component } from 'react'
 import R from 'ramda'
-import {
-  groupExonsByTranscript,
-} from 'utilities'
+
+import { groupExonsByTranscript } from 'utilities'
 
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
 import NigiriTrack from './index'
 import PositionTableTrack from '../PositionTableTrack'
 
-
-import css from './styles.css'
-
 import testGene from 'data/region-viewer-full-CAPN3-v1.json'
 import testCoverage from 'data/sashimi-15-42681621-42685368.coverage.csv'
 import testJunctions from 'data/sashimi-15-42681621-42685368.junctions.csv'
+
+import css from './styles.css'
 
 class NigiriTrackExample extends Component {
   state = {
@@ -102,9 +100,6 @@ class NigiriTrackExample extends Component {
       .filter(base => base.series1 !== 'None')
       .map(base => ({ pos: Number(base.pos), reading: Number(base.series2) }))
 
-    // console.log(this.state.junctions)
-    // console.log(junctions_control)
-    // console.log(junctions_patient)
     return (
       <div className={css.page}>
         <RegionViewer
@@ -112,7 +107,7 @@ class NigiriTrackExample extends Component {
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}
-          exonSubset={[5, 7]}
+          exonSubset={[4, 7]}
         >
           <NigiriTrack
             height={200}
