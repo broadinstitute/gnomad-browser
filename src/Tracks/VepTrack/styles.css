@@ -10,11 +10,6 @@
   display: column;
 }
 
-.genericTableTrack {
-  display: block;
-  overflow-x: auto;
-}
-
 .genericTable td {
   padding-left: 40px;
 }

@@ -51,7 +51,7 @@ const VariantData = ({
             className={css.point}
             cx={xScale(calc.offsetPosition)}
             cy={Math.floor(Math.random() * height)}
-            r={1}
+            r={2}
             fill={calc.color}
             key={`${i}-point`}
           />

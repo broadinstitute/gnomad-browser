@@ -15,7 +15,9 @@ import RegionTableDemo from '../RegionViewer/RegionTable.example'
 import TranscriptFlipOutDemo from '../RegionViewer/TranscriptFlipOut.example'
 import NigiriDemo from '../Tracks/NigiriTrack/NigiriTrack.example.js'
 import GenericTableTrackDemo from '../Tracks/GenericTableTrack/GenericTableTrack.example.js'
-import VDSPage from '../VDS'
+import ClinvarVariantsDemo from '../Tracks/GenericTableTrack/ClinVar.example.js'
+import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
+import VDSPage from '../VDS/index.js'
 
 import css from './styles.css'
 
@@ -127,6 +129,24 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>Generic table track</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/vep'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>VEP track</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/clinvar'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Clinvar VDS</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -147,6 +167,8 @@ const Demo = () =>
         <Route exact path={'/nigiri'} component={NigiriDemo} />
         <Route exact path={'/generic-table'} component={GenericTableTrackDemo} />
         <Route exact path={'/vds'} component={VDSPage} />
+        <Route exact path={'/vep'} component={VepTrackDemo} />
+        <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />
         <Route
           exact
           path={'/graphiql'}

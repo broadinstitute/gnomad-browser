@@ -116,7 +116,6 @@ const getDataRow = (tableConfig, dataRow, i) => {
 
 const PositionTableTrack = ({
   title,
-  width,
   height,
   tableConfig,
   tableData,
@@ -126,15 +125,9 @@ const PositionTableTrack = ({
 
   return (
     <div className={css.track}>
-      <div style={{ width }}>
+      <div>
         <h3>{title}</h3>
-        <table
-          className={css.genericTableTrack}
-          style={{
-            width: '100%',
-            height,
-          }}
-        >
+        <table className={css.genericTableTrack} style={{ width: '100%' }}>
           <thead>
             <tr>
               {headers}

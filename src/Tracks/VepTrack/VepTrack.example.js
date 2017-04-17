@@ -7,6 +7,8 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 
 import { groupExonsByTranscript } from 'utilities'
+import { processVariantsList } from 'utilities/exalt/process'
+
 
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
@@ -54,6 +56,67 @@ export const genericTableFetch = (geneName, dataset) => {
         allele_count
         allele_num
         allele_freq
+        vep_annotations {
+          TSL
+          ancestral
+          SYMBOL
+          EAS_MAF
+          Feature
+          Codons
+          MOTIF_NAME
+          DOMAINS
+          SIFT
+          VARIANT_CLASS
+          CDS_position
+          CCDS
+          Allele
+          PolyPhen
+          MOTIF_SCORE_CHANGE
+          IMPACT
+          HGVSp
+          ENSP
+          LoF
+          INTRON
+          Existing_variation
+          HGVSc
+          LoF_filter
+          MOTIF_POS
+          HIGH_INF_POS
+          AA_MAF
+          LoF_flags
+          AFR_MAF
+          UNIPARC
+          cDNA_position
+          PUBMED
+          ALLELE_NUM
+          Feature_type
+          GMAF
+          HGNC_ID
+          PHENO
+          LoF_info
+          SWISSPROT
+          EXON
+          EUR_MAF
+          Consequence
+          Protein_position
+          Gene
+          STRAND
+          DISTANCE
+          EA_MAF
+          SYMBOL_SOURCE
+          Amino_acids
+          TREMBL
+          CLIN_SIG
+          SAS_MAF
+          MINIMISED
+          HGVS_OFFSET
+          ASN_MAF
+          BIOTYPE
+          context
+          SOMATIC
+          AMR_MAF
+          CANONICAL
+        }
       }
     }
   }`
@@ -138,7 +201,8 @@ class GenericTableTrackExample extends Component {
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
 
     const canonicalExons = this.state.geneData.transcript.exons
-
+    const variantsProcessed = processVariantsList(variants)
+    console.log(variantsProcessed)
     const regionAttributesConfig = {
       CDS: {
         color: '#9B988F',
@@ -166,6 +230,7 @@ class GenericTableTrackExample extends Component {
       fields: [
         { dataKey: 'variant_id', title: 'Variant ID', dataType: 'string' },
         { dataKey: 'rsid', title: 'RSID', dataType: 'string' },
+        { dataKey: 'consequence', title: 'Consequence', dataType: 'string' },
         { dataKey: 'filter', title: 'Filter', dataType: 'filter' },
         { dataKey: 'allele_count', title: 'AC', dataType: 'integer' },
         { dataKey: 'allele_num', title: 'AN', dataType: 'integer' },
@@ -196,7 +261,7 @@ class GenericTableTrackExample extends Component {
           <VariantTrack
             title={'Exome variants'}
             height={25}
-            variants={variants}
+            variants={variantsProcessed}
           />
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
@@ -206,7 +271,7 @@ class GenericTableTrackExample extends Component {
             title={`Twenty ${this.state.currentDataset} ${gene_name} variants`}
             height={200}
             tableConfig={tableDataConfig}
-            tableData={R.take(20, variants)}
+            tableData={R.take(20, variantsProcessed)}
           />
         </RegionViewer>
       </div>
