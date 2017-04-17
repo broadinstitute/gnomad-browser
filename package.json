@@ -13,7 +13,7 @@
     "prebuild": "rimraf dist",
     "demo": "cross-env NODE_ENV=development webpack-dev-server --hot --config webpack.config.js",
     "demo:cold": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
-    "test:data": "babel-node src/RegionViewer/get-test-data.js",
+    "test:data": "babel-node src/Tracks/GenericTableTrack/get-test-data.js",
     "test": "mocha",
     "test:watch": "mocha --watch"
   },

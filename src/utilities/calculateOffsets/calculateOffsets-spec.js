@@ -92,9 +92,31 @@ describe('assignAttributes', () => {
   const regions = ppara.gene.transcript.exons
   const filteredRegions = filterRegions(['CDS'], regions)
   const offsetRegions = calculateOffset(filteredRegions)
+  const defaultAttributeConfig = {
+    CDS: {
+      color: '#FFB33D',
+      thickness: '30px',
+    },
+    start_pad: {
+      color: '#28BCCC',
+      thickness: '5px',
+    },
+    end_pad: {
+      color: '#BEEB9F',
+      thickness: '5px',
+    },
+    intron: {
+      color: '#FF9559',
+      thickness: '5px',
+    },
+    default: {
+      color: '#grey',
+      thickness: '5px',
+    },
+  }
   it('has keys', () => {
     expect(
-      Object.keys(assignAttributes(offsetRegions)[0]),
+      Object.keys(assignAttributes(defaultAttributeConfig, offsetRegions)[0]),
     ).toEqual(['feature_type', 'start', 'stop', 'offset', 'color', 'thickness'])
   })
 })

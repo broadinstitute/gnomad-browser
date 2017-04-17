@@ -35,6 +35,7 @@ const VariantData = ({
   variants,
   xScale,
   positionOffset,
+  color,
 }) => {
   return (
     <svg
@@ -52,7 +53,7 @@ const VariantData = ({
             cx={xScale(calc.offsetPosition)}
             cy={Math.floor(Math.random() * height)}
             r={2}
-            fill={calc.color}
+            fill={color || calc.color}
             key={`${i}-point`}
           />
           )
@@ -69,6 +70,7 @@ const VariantTrack = ({
   xScale,
   positionOffset,
   title,
+  color,
 }) => {
   return (
     <div className={css.track}>
@@ -84,6 +86,7 @@ const VariantTrack = ({
           variants={variants}
           positionOffset={positionOffset}
           xScale={xScale}
+          color={color}
         />
       </div>
     </div>
@@ -96,6 +99,7 @@ VariantTrack.propTypes = {
   xScale: PropTypes.func,  // eslint-disable-line
   variants: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  color: PropTypes.string,
 }
 
 export default VariantTrack

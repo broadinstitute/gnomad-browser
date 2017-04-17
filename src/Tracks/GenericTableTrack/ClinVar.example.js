@@ -8,6 +8,8 @@ import MenuItem from 'material-ui/MenuItem'
 
 import { groupExonsByTranscript } from 'utilities'
 
+// import { getClinicalSignificances } from './getAnnotations-spec'
+
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
 import VariantTrack from '../VariantTrack'
@@ -229,10 +231,17 @@ class GenericTableTrackExample extends Component {
       },
     }
 
+    const getClinicalSignificances = R.pipe(
+      R.path(['info', 'CLINICAL_SIGNIFICANCE']),
+      significance => significance.split('|'),
+    )
+
+
     const formatClinVarVariant = v => ({
       variant_id: `${v.contig}-${v.start}-${v.ref}-${v.alt.split('/')[1]}`,
       pos: v.start,
       ...v.info,
+      significances: getClinicalSignificances(v),
     })
 
     const formatClinVarVariants = variants => variants.map(formatClinVarVariant)
@@ -268,7 +277,26 @@ class GenericTableTrackExample extends Component {
     }
 
     const clinvarVariantsFormatted = formatClinVarVariants(clinvar_variants)
-    console.log(clinvarVariantsFormatted)
+
+    const significanceCategories = [
+      { annotation: 'Pathogenic', colour: '#FF2B00' },
+      { annotation: 'Likely_pathogenic', colour: '#E88000' },
+      { annotation: 'Uncertain_significance', colour: '#FFD300' },
+      { annotation: 'Likely_benign', colour: '#A1E80C' },
+      { annotation: 'Benign', colour: '#0DFF3C' },
+      { annotation: 'not_provided', colour: '#9B988F' },
+    ]
+
+    const significanceTracks = significanceCategories.map(significance => (
+      <VariantTrack
+        title={significance.annotation.replace('_', ' ')}
+        height={25}
+        color={significance.colour}
+        variants={clinvarVariantsFormatted.filter(variant =>
+           R.contains(significance.annotation, variant.significances))
+         }
+      />
+    ))
 
     return (
       <div className={css.page}>
@@ -291,15 +319,16 @@ class GenericTableTrackExample extends Component {
           regionAttributes={regionAttributesConfig}
         >
           <VariantTrack
-            title={'Exome variants'}
+            title={this.state.currentDataset}
             height={25}
             variants={variants}
           />
           <VariantTrack
-            title={'Clinvar variants'}
+            title={'All clinvar variants'}
             height={25}
             variants={clinvarVariantsFormatted}
           />
+          {significanceTracks}
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}
