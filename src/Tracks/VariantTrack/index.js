@@ -36,13 +36,20 @@ const VariantData = ({
   xScale,
   positionOffset,
   color,
+  circleRadius,
+  circleStroke,
+  circleStrokeWidth,
 }) => {
+  const yPad = 3
+  const max = height - yPad
+  const min = yPad
   return (
     <svg
       width={width}
       height={height}
     >
       {variants.map((variant, i) => {
+        const yPosition = Math.floor((Math.random() * (max - min)) + min)
         const calc = positionOffset(variant.pos)
         if (calc === 0) {
           return  // eslint-disable-line
@@ -51,9 +58,11 @@ const VariantData = ({
           <circle
             className={css.point}
             cx={xScale(calc.offsetPosition)}
-            cy={Math.floor(Math.random() * height)}
-            r={2}
+            cy={yPosition}
+            r={circleRadius || 2}
             fill={color || calc.color}
+            strokeWidth={circleStrokeWidth || 0}
+            stroke={circleStroke || 0}
             key={`${i}-point`}
           />
           )
@@ -71,6 +80,9 @@ const VariantTrack = ({
   positionOffset,
   title,
   color,
+  circleRadius,
+  circleStroke,
+  circleStrokeWidth,
 }) => {
   return (
     <div className={css.track}>
@@ -87,6 +99,9 @@ const VariantTrack = ({
           positionOffset={positionOffset}
           xScale={xScale}
           color={color}
+          circleRadius={circleRadius}
+          circleStroke={circleStroke}
+          circleStrokeWidth={circleStrokeWidth}
         />
       </div>
     </div>
@@ -100,6 +115,9 @@ VariantTrack.propTypes = {
   variants: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   color: PropTypes.string,
+  circleRadius: PropTypes.number,
+  circleStroke: PropTypes.string,
+  circleStrokeWidth: PropTypes.number,
 }
 
 export default VariantTrack

@@ -126,12 +126,12 @@ const PositionTableTrack = ({
 
   return (
     <div className={css.track}>
-      <div style={{ width }}>
+      <div style={{ width: 1100 }}>
         <h3>{title}</h3>
         <table
           className={css.genericTableTrack}
           style={{
-            width: '100%',
+            // width: '100%',
             height,
           }}
         >

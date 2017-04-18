@@ -11,6 +11,7 @@
 }
 
 .genericTableTrack {
+  width: 1100px;
   display: block;
   overflow-x: auto;
 }

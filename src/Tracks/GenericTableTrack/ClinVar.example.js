@@ -20,6 +20,9 @@ import css from './styles.css'
 const API_URL = process.env.API_URL
 const VDS_URL = 'http://localhost:8004/graphql'
 
+const circleRadius = 3
+const circleStrokeWidth = 1
+
 export const clinVarFetch = (geneName) => {
   const query = `
   {
@@ -65,7 +68,6 @@ export const clinVarFetch = (geneName) => {
   return new Promise((resolve, reject) => {
     fetch(VDS_URL)(query)
       .then((data) => {
-        console.log(data)
         resolve(data.data.gene)
       })
       .catch((error) => {
@@ -116,11 +118,9 @@ export const genericTableFetch = (geneName, dataset) => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then((data) => {
-        console.log(data)
         resolve(data.data.gene)
       })
       .catch((error) => {
-        console.log(error)
         reject(error)
       })
   })
@@ -128,8 +128,9 @@ export const genericTableFetch = (geneName, dataset) => {
 
 class GenericTableTrackExample extends Component {
   state = {
-    hasData: false,
-    currentGene: 'BRCA2',
+    hasGnomadData: false,
+    hasClinvarData: false,
+    currentGene: 'CFTR',
     currentDataset: 'exacv1',
     testGenes: [
       'PCSK9',
@@ -171,18 +172,19 @@ class GenericTableTrackExample extends Component {
   }
 
   fetchClinVarData = () => {
+    console.log('fetching clinvar')
     clinVarFetch(this.state.currentGene, this.state.currentDataset).then((data) => {
-      console.log(data)
+      console.log('fetched clinvar', data)
       this.setState({ clinvarData: data })
-      this.setState({ hasData: true })
+      this.setState({ hasClinvarData: true })
     })
   }
 
   fetchGnomadData = () => {
     genericTableFetch(this.state.currentGene, this.state.currentDataset).then((data) => {
-      console.log(data)
+      console.log('fetched gnomad', data)
       this.setState({ gnomadData: data })
-      this.setState({ hasData: true })
+      this.setState({ hasGnomadData: true })
     })
   }
 
@@ -197,7 +199,7 @@ class GenericTableTrackExample extends Component {
   }
 
   render() {
-    if (!this.state.hasData) {
+    if (!this.state.hasClinvarData || !this.state.hasGnomadData ) {
       return <p className={css.cool}>Loading!</p>
     }
 
@@ -210,7 +212,7 @@ class GenericTableTrackExample extends Component {
 
     const regionAttributesConfig = {
       CDS: {
-        color: '#9B988F',
+        color: 'black',
         thickness: '30px',
       },
       start_pad: {
@@ -292,6 +294,9 @@ class GenericTableTrackExample extends Component {
         title={significance.annotation.replace('_', ' ')}
         height={25}
         color={significance.colour}
+        circleRadius={circleRadius}
+        circleStroke={'black'}
+        circleStrokeWidth={circleStrokeWidth}
         variants={clinvarVariantsFormatted.filter(variant =>
            R.contains(significance.annotation, variant.significances))
          }
@@ -321,11 +326,19 @@ class GenericTableTrackExample extends Component {
           <VariantTrack
             title={this.state.currentDataset}
             height={25}
+            color={'grey'}
+            circleRadius={circleRadius}
+            circleStroke={'black'}
+            circleStrokeWidth={circleStrokeWidth}
             variants={variants}
           />
           <VariantTrack
             title={'All clinvar variants'}
             height={25}
+            color={'grey'}
+            circleRadius={circleRadius}
+            circleStroke={'black'}
+            circleStrokeWidth={circleStrokeWidth}
             variants={clinvarVariantsFormatted}
           />
           {significanceTracks}
