@@ -19,8 +19,6 @@ import css from './styles.css'
 
 const API_URL = process.env.API_URL
 
-// import testData from 'data/region-viewer-full-TP53-V1.json'
-
 export const genericTableFetch = (geneName, dataset) => {
   const query = `
   {
@@ -123,11 +121,11 @@ export const genericTableFetch = (geneName, dataset) => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then((data) => {
-        console.log(data)
+        // console.log(data)
         resolve(data.data.gene)
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         reject(error)
       })
   })
@@ -135,6 +133,8 @@ export const genericTableFetch = (geneName, dataset) => {
 
 class GenericTableTrackExample extends Component {
   state = {
+    circleRadius: 3,
+    circleStrokeWidth: 1,
     hasData: false,
     currentGene: 'BRCA2',
     currentDataset: 'exacv1',
@@ -154,6 +154,8 @@ class GenericTableTrackExample extends Component {
       'CD33',
       'DMD',
       'TTN',
+      'ARID1B',
+      'CHD7',
     ],
     datasets: [
       'exacv1',
@@ -175,20 +177,28 @@ class GenericTableTrackExample extends Component {
 
   fetchData = () => {
     genericTableFetch(this.state.currentGene, this.state.currentDataset).then((data) => {
-      console.log(data)
+      // console.log(data)
       this.setState({ geneData: data })
       this.setState({ hasData: true })
     })
   }
 
   handleChange = (event, index, value) => {
-    console.log(value)
+    // console.log(value)
     this.setState({ currentGene: value })
   }
 
   handleDatasetChange = (event, index, value) => {
-    console.log(value)
+    // console.log(value)
     this.setState({ currentDataset: value })
+  }
+
+  handleCircleRadiusChange = (event, index, value) => {
+    this.setState({ circleRadius: value })
+  }
+
+  handleCircleStrokeWidthChange = (event, index, value) => {
+    this.setState({ circleStrokeWidth: value })
   }
 
   render() {
@@ -202,10 +212,10 @@ class GenericTableTrackExample extends Component {
 
     const canonicalExons = this.state.geneData.transcript.exons
     const variantsProcessed = processVariantsList(variants)
-    console.log(variantsProcessed)
+    // console.log('proc var', variantsProcessed)
     const regionAttributesConfig = {
       CDS: {
-        color: '#9B988F',
+        color: '#757575',
         thickness: '30px',
       },
       start_pad: {
@@ -238,17 +248,87 @@ class GenericTableTrackExample extends Component {
       ],
     }
 
+    const consequenceCategories = [
+      { annotation: 'transcript_ablation', colour: '#ed2024' },
+      { annotation: 'splice_acceptor_variant', colour: '#f26424' },
+      { annotation: 'splice_donor_variant', colour: '#f26424' },
+      { annotation: 'stop_gained', colour: '#ed2024' },
+      { annotation: 'frameshift_variant', colour: '#85489c' },
+      // { annotation: 'stop_lost', colour: '#ed2024' },
+      // { annotation: 'start_lost', colour: '#fedc00' },
+      // { annotation: 'initiator_codon_variant', colour: '#fff' },
+      { annotation: 'transcript_amplification', colour: '#f177ae' },
+      { annotation: 'inframe_insertion', colour: '#f177ae' },
+      { annotation: 'inframe_deletion', colour: '#f177ae' },
+      { annotation: 'missense_variant', colour: '#fedc00' },
+      // { annotation: 'protein_altering_variant', colour: '#ed2089' },
+      { annotation: 'splice_region_variant', colour: '#f68a5d' },
+      // { annotation: 'incomplete_terminal_codon_variant', colour: '#b9529f' },
+      // { annotation: 'stop_retained_variant', colour: '#8fc73e' },
+      { annotation: 'synonymous_variant', colour: '#8fc73e' },
+      // { annotation: 'coding_sequence_variant', colour: '#4f9743' },
+      // { annotation: 'mature_miRNA_variant', colour: '#4f9743' },
+      // { annotation: '5_prime_UTR_variant', colour: '#85cbd3' },
+      // { annotation: '3_prime_UTR_variant', colour: '#85cbd3' },
+      // { annotation: 'non_coding_transcript_exon_variant', colour: '#5aba47' },
+      // { annotation: 'non_coding_exon_variant', colour: '#fff' },
+      { annotation: 'intron_variant', colour: '#0064a6' },
+      // { annotation: 'NMD_transcript_variant', colour: '#f05223' },
+      // { annotation: 'non_coding_transcript_variant', colour: '#5aba47' },
+      // { annotation: 'nc_transcript_variant', colour: '#fff' },
+      // { annotation: 'upstream_gene_variant', colour: '#acbdd3' },
+      // { annotation: 'downstream_gene_variant', colour: '#acbdd3' },
+      // { annotation: 'TFBS_ablation', colour: '#af302f' },
+      // { annotation: 'TFBS_amplification', colour: '#af302f' },
+      // { annotation: 'TF_binding_site_variant', colour: '#af302f' },
+      // { annotation: 'regulatory_region_ablation', colour: '#af302f' },
+      // { annotation: 'regulatory_region_amplification', colour: '#af302f' },
+      // { annotation: 'feature_elongation', colour: '#8a8a8a' },
+      // { annotation: 'regulatory_region_variant', colour: '#af302f' },
+      // { annotation: 'feature_truncation', colour: '#8a8a8a' },
+      // { annotation: 'intergenic_variant', colour: '#8a8a8a' },
+    ]
+
+    const consequenceTracks = consequenceCategories.map(consequence => (
+      <VariantTrack
+        title={consequence.annotation.replace('_', ' ')}
+        height={25}
+        color={consequence.colour}
+        circleRadius={this.state.circleRadius}
+        circleStroke={'black'}
+        circleStrokeWidth={this.state.circleStrokeWidth}
+        variants={variantsProcessed.filter(variant =>
+           R.contains(consequence.annotation, variant.consequence))
+         }
+      />
+    ))
+
     return (
       <div className={css.page}>
-        <div>
+        <h1>Annotation demo</h1>
+        <div className={css.menus}>
+          <p>Gene</p>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
               <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
+          <p>Dataset</p>
           <DropDownMenu value={this.state.currentDataset} onChange={this.handleDatasetChange}>
             {this.state.datasets.map(dataset =>
               <MenuItem key={`${dataset}-menu`} value={dataset} primaryText={dataset} />,
+            )}
+          </DropDownMenu>
+          <p>Variant radius</p>
+          <DropDownMenu value={this.state.circleRadius} onChange={this.handleCircleRadiusChange}>
+            {[1, 2, 3, 4, 5].map(circleRadius =>
+              <MenuItem key={`${circleRadius}-menu`} value={circleRadius} primaryText={circleRadius} />,
+            )}
+          </DropDownMenu>
+          <p>Variant stroke</p>
+          <DropDownMenu value={this.state.circleStrokeWidth} onChange={this.handleCircleStrokeWidthChange}>
+            {[0, 1, 2].map(circleStrokeWidth =>
+              <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
             )}
           </DropDownMenu>
         </div>
@@ -259,10 +339,14 @@ class GenericTableTrackExample extends Component {
           regionAttributes={regionAttributesConfig}
         >
           <VariantTrack
-            title={'Exome variants'}
+            title={this.state.currentDataset}
             height={25}
+            circleRadius={this.state.circleRadius}
+            circleStroke={'black'}
+            circleStrokeWidth={this.state.circleStrokeWidth}
             variants={variantsProcessed}
           />
+          {consequenceTracks}
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}

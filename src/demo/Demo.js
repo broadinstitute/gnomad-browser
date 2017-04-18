@@ -61,15 +61,6 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/variant-table'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>Variant table</MenuItem>
-          </NavLink>
-          <NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
             to={'/region-table'}
             onClick={this.handleToggle}
           >

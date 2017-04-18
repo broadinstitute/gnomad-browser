@@ -91,6 +91,7 @@ class RegionTableExample extends Component {
 
     return (
       <div className={css.page}>
+        <h1>Region viewer demo</h1>
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>

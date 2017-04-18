@@ -17,3 +17,8 @@
 .text {
   font-size: 10px;
 }
+
+.menus {
+  display: flex;
+  flex-direction: row;
+}
