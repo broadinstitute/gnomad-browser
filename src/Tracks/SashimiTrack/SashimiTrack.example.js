@@ -7,7 +7,7 @@ import { groupExonsByTranscript } from 'utilities'
 
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
-import NigiriTrack from './index'
+import SashimiTrack from './index'
 import PositionTableTrack from '../PositionTableTrack'
 
 import testGene from 'data/region-viewer-full-CAPN3-v1.json'
@@ -16,7 +16,7 @@ import testJunctions from 'data/sashimi-15-42681621-42685368.junctions.csv'
 
 import css from './styles.css'
 
-class NigiriTrackExample extends Component {
+class SashimiTrackExample extends Component {
   state = {
     hasData: false,
   }
@@ -109,14 +109,14 @@ class NigiriTrackExample extends Component {
           regionAttributes={regionAttributesConfig}
           exonSubset={[4, 7]}
         >
-          <NigiriTrack
+          <SashimiTrack
             height={200}
             domainMax={750}
             coverage={coverage_control}
             coverageColour={'#004D7F'}
             junctions={junctions_control}
           />
-          <NigiriTrack
+          <SashimiTrack
             height={200}
             domainMax={2000}
             coverage={coverage_patient}
@@ -137,4 +137,4 @@ class NigiriTrackExample extends Component {
   }
 }
 
-export default NigiriTrackExample
+export default SashimiTrackExample

@@ -9,7 +9,7 @@ import { scaleLinear } from 'd3-scale'
 
 import css from './styles.css'
 
-const NigiriTrack = ({
+const SashimiTrack = ({
   title,
   width,
   height,
@@ -63,7 +63,7 @@ const NigiriTrack = ({
     .y1(base => yScale(base.reading))
 
   const calculateJunctionPositions = (junctions) => {
-    const nigiriLabelSpacing = 50
+    const sashimiLabelSpacing = 50
 
     return junctions.map((junction, i) => {
       const [start, mid, stop] = junction.positions
@@ -74,8 +74,8 @@ const NigiriTrack = ({
       const startScaled = xScale(startOffset.offsetPosition)
       const stopScaled = xScale(stopOffset.offsetPosition)
 
-      const mid1Scaled = ((startScaled + stopScaled) / 2) - nigiriLabelSpacing
-      const mid2Scaled = ((startScaled + stopScaled) / 2) + nigiriLabelSpacing
+      const mid1Scaled = ((startScaled + stopScaled) / 2) - sashimiLabelSpacing
+      const mid2Scaled = ((startScaled + stopScaled) / 2) + sashimiLabelSpacing
 
       const startJunction = {
         xpos: startScaled,
@@ -101,8 +101,8 @@ const NigiriTrack = ({
     })
   }
 
-  const nigiriJunctionPath = (junction) => {
-    const nigiriJunctionLine = line()
+  const sashimiJunctionPath = (junction) => {
+    const sashimiJunctionLine = line()
       .defined((junction) => {
         return junction.xpos !== undefined
       })
@@ -118,7 +118,7 @@ const NigiriTrack = ({
       <g>
         <path
           key={`${junction.series}-${start.xpos}-${stop.xpos}-${junction.reading}`}
-          d={nigiriJunctionLine(junction.positions)}
+          d={sashimiJunctionLine(junction.positions)}
           fill={'none'}
           stroke={coverageColour}
           strokeWidth={4}
@@ -144,7 +144,7 @@ const NigiriTrack = ({
   }
 
   const junctionPaths = calculateJunctionPositions(junctions)
-    .map(junction => nigiriJunctionPath(junction))
+    .map(junction => sashimiJunctionPath(junction))
 
   return (
     <div className={css.coverageTrack}>
@@ -212,7 +212,7 @@ const NigiriTrack = ({
     </div>
   )
 }
-NigiriTrack.propTypes = {
+SashimiTrack.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   leftPanelWidth: PropTypes.number, // eslint-disable-line
@@ -222,4 +222,4 @@ NigiriTrack.propTypes = {
   junctions: PropTypes.array.isRequired,
 }
 
-export default NigiriTrack
+export default SashimiTrack

@@ -13,7 +13,7 @@ import VariantTableFullDemo from '../VariantTable/VariantTable.example'
 import RegionViewerFullV1 from '../RegionViewer/RegionViewerFull-V1.example'
 import RegionTableDemo from '../RegionViewer/RegionTable.example'
 import TranscriptFlipOutDemo from '../RegionViewer/TranscriptFlipOut.example'
-import NigiriDemo from '../Tracks/NigiriTrack/NigiriTrack.example.js'
+import SashimiDemo from '../Tracks/SashimiTrack/SashimiTrack.example.js'
 import GenericTableTrackDemo from '../Tracks/GenericTableTrack/GenericTableTrack.example.js'
 import ClinvarVariantsDemo from '../Tracks/GenericTableTrack/ClinVar.example.js'
 import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
@@ -21,7 +21,9 @@ import VDSPage from '../VDS/index.js'
 
 import css from './styles.css'
 
-const vdsGraphiqlURL = 'http://localhost:8020/?query=query%20test%20%7B%0A%20%20gene(gene_name%3A%20%22ZFY%22)%20%7B%0A%20%20%20%20gene_name%0A%20%20%20%20gene_id%0A%20%20%20%20chrom%0A%20%20%20%20start%0A%20%20%20%20stop%0A%20%20%20%20exome_variants%20%7B%0A%20%20%20%20%20%20contig%0A%20%20%20%20%20%20start%0A%20%20%20%20%20%20ref%0A%20%20%20%20%20%20alt%0A%20%20%20%20%20%20rsid%0A%20%20%20%20%20%20qual%0A%20%20%20%20%20%20pass%0A%20%20%20%20%20%20info%20%7B%0A%20%20%20%20%20%20%20%20CSQ%0A%20%20%20%20%20%20%20%20GQ_HIST_ALT%0A%20%20%20%20%20%20%20%20GQ_HIST_ALL%0A%20%20%20%20%20%20%20%20DP_HIST_ALL%0A%20%20%20%20%20%20%20%20DP_HIST_ALT%0A%20%20%20%20%20%20%20%20AC%0A%20%20%20%20%20%20%20%20AC_AFR%0A%20%20%20%20%20%20%20%20AC_AMR%0A%20%20%20%20%20%20%20%20AC_ASJ%0A%20%20%20%20%20%20%20%20AF_OTH%0A%20%20%20%20%20%20%20%20AF_SAS%0A%20%20%20%20%20%20%20%20BaseQRankSum%0A%20%20%20%20%20%20%20%20ClippingRankSum%0A%20%20%20%20%20%20%20%20FS%0A%20%20%20%20%20%20%20%20InbreedingCoeff%0A%20%20%20%20%20%20%20%20MQ%0A%20%20%20%20%20%20%20%20MQRankSum%0A%20%20%20%20%20%20%20%20QD%0A%20%20%20%20%20%20%20%20ReadPosRankSum%0A%20%20%20%20%20%20%20%20SOR%0A%20%20%20%20%20%20%20%20VQSLOD%0A%20%20%20%20%20%20%20%20AN%0A%20%20%20%20%20%20%20%20AN_AFR%0A%20%20%20%20%20%20%20%20AN_OTH%0A%20%20%20%20%20%20%20%20AN_SAS%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20vep%20%7B%0A%20%20%20%20%20%20%20%20variant_class%0A%20%20%20%20%20%20%20%20ancestral%0A%20%20%20%20%20%20%20%20assembly_name%0A%20%20%20%20%20%20%20%20input%0A%20%20%20%20%20%20%20%20most_severe_consequence%0A%20%20%20%20%20%20%20%20assembly_name%0A%20%20%20%20%20%20%20%20context%0A%20%20%20%20%20%20%20%20input%0A%20%20%20%20%20%20%20%20intergenic_consequences%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A&operationName=test'
+// const vdsGraphiqlURL = 'http://localhost:8004/?query=query%20test%20%7B%0A%20%20gene(gene_name%3A%20%22ZFY%22)%20%7B%0A%20%20%20%20gene_name%0A%20%20%20%20gene_id%0A%20%20%20%20chrom%0A%20%20%20%20start%0A%20%20%20%20stop%0A%20%20%20%20exome_variants%20%7B%0A%20%20%20%20%20%20contig%0A%20%20%20%20%20%20start%0A%20%20%20%20%20%20ref%0A%20%20%20%20%20%20alt%0A%20%20%20%20%20%20rsid%0A%20%20%20%20%20%20qual%0A%20%20%20%20%20%20pass%0A%20%20%20%20%20%20info%20%7B%0A%20%20%20%20%20%20%20%20CSQ%0A%20%20%20%20%20%20%20%20GQ_HIST_ALT%0A%20%20%20%20%20%20%20%20GQ_HIST_ALL%0A%20%20%20%20%20%20%20%20DP_HIST_ALL%0A%20%20%20%20%20%20%20%20DP_HIST_ALT%0A%20%20%20%20%20%20%20%20AC%0A%20%20%20%20%20%20%20%20AC_AFR%0A%20%20%20%20%20%20%20%20AC_AMR%0A%20%20%20%20%20%20%20%20AC_ASJ%0A%20%20%20%20%20%20%20%20AF_OTH%0A%20%20%20%20%20%20%20%20AF_SAS%0A%20%20%20%20%20%20%20%20BaseQRankSum%0A%20%20%20%20%20%20%20%20ClippingRankSum%0A%20%20%20%20%20%20%20%20FS%0A%20%20%20%20%20%20%20%20InbreedingCoeff%0A%20%20%20%20%20%20%20%20MQ%0A%20%20%20%20%20%20%20%20MQRankSum%0A%20%20%20%20%20%20%20%20QD%0A%20%20%20%20%20%20%20%20ReadPosRankSum%0A%20%20%20%20%20%20%20%20SOR%0A%20%20%20%20%20%20%20%20VQSLOD%0A%20%20%20%20%20%20%20%20AN%0A%20%20%20%20%20%20%20%20AN_AFR%0A%20%20%20%20%20%20%20%20AN_OTH%0A%20%20%20%20%20%20%20%20AN_SAS%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20vep%20%7B%0A%20%20%20%20%20%20%20%20variant_class%0A%20%20%20%20%20%20%20%20ancestral%0A%20%20%20%20%20%20%20%20assembly_name%0A%20%20%20%20%20%20%20%20input%0A%20%20%20%20%20%20%20%20most_severe_consequence%0A%20%20%20%20%20%20%20%20assembly_name%0A%20%20%20%20%20%20%20%20context%0A%20%20%20%20%20%20%20%20input%0A%20%20%20%20%20%20%20%20intergenic_consequences%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A&operationName=test'
+
+const vdsGraphiqlURL = 'http://localhost:8004'
 
 class DrawerSimpleExample extends React.Component {
 
@@ -97,10 +99,10 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/nigiri'}
+            to={'/sashimi'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Nigiri plot</MenuItem>
+            <MenuItem>Sashimi plot</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
@@ -155,7 +157,7 @@ const Demo = () =>
         <Route exact path={'/region-viewer-full'} component={RegionViewerFull} />
         <Route exact path={'/region-viewer-full-v1'} component={RegionViewerFullV1} />
         <Route exact path={'/transcript-flip-out'} component={TranscriptFlipOutDemo} />
-        <Route exact path={'/nigiri'} component={NigiriDemo} />
+        <Route exact path={'/sashimi'} component={SashimiDemo} />
         <Route exact path={'/generic-table'} component={GenericTableTrackDemo} />
         <Route exact path={'/vds'} component={VDSPage} />
         <Route exact path={'/vep'} component={VepTrackDemo} />
