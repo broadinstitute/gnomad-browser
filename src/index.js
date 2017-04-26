@@ -2,13 +2,13 @@ import React from 'react'
 import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 
-import Component from './Component'
+import RegionTableExample from './Component'
 
 const mount = document.getElementById('root')
 
 render(
   <AppContainer>
-    <Component />
+    <RegionTableExample />
   </AppContainer>,
   mount,
 )
