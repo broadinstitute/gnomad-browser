@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm-run-all --parallel build:*",
-    "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --ignore demo,*.example.js,*.test.js",
+    "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore demo,*.example.js,*.test.js,*get-test-data.js,*spec.js,",
     "build:umd": "cross-env NODE_ENV=production webpack --config webpack.config.umd.js",
     "prebuild": "rimraf dist",
     "demo": "cross-env NODE_ENV=development webpack-dev-server --hot --config webpack.config.js",
@@ -75,6 +75,7 @@
     "react-motion": "0.4.7",
     "react-router-dom": "4.0.0",
     "react-tap-event-plugin": "2.0.1",
-    "react-virtualized": "9.4.0"
+    "react-virtualized": "9.4.0",
+    "svg-inline-loader": "0.7.1"
   }
 }

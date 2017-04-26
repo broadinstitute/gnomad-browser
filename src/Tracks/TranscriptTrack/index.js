@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes, Component } from 'react'
 import { Motion, spring } from 'react-motion'
-import FlatButton from 'material-ui/FlatButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
+// import FlatButton from 'material-ui/FlatButton'
+// import ContentAdd from 'material-ui/svg-icons/content/add'
 
 import R from 'ramda'
+
+import TranscriptFlipOutButton from './TranscriptFlipOutButton'
 
 import {
   filterRegions,
@@ -120,13 +122,9 @@ const Transcript = ({
     paddingTop = 2
     paddingBottom = 2
     expandTranscriptButton = (
-      <FlatButton style={{
-          height: localHeight,
-          fontSize: 8,
-          // paddingTop: 2,
-          // paddingBottom: 2,
-        }}
-        icon={<ContentAdd />}
+      <TranscriptFlipOutButton
+        localHeight={localHeight}
+        leftPanelWidth={leftPanelWidth}
         onClick={fanOut}
       />
     )

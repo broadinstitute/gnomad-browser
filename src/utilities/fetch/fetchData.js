@@ -72,7 +72,7 @@ export const fetchAllByGeneName = (geneName) => {
   })
 }
 
-export const fetchTranscriptsByGeneName = (geneName) => {
+export const fetchTranscriptsByGeneName = (geneName, url = API_URL) => {
   const query = `
   {
     gene(gene_name: "${geneName}") {
@@ -101,7 +101,7 @@ export const fetchTranscriptsByGeneName = (geneName) => {
   }
 }`
   return new Promise((resolve, reject) => {
-    fetch(API_URL)(query)
+    fetch(url)(query)
       .then(data => resolve(data.data.gene))
       .catch((error) => {
         console.log(error)

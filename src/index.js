@@ -1,14 +1,25 @@
+import TranscriptTrack from './Tracks/TranscriptTrack'
+
 export {
   TestComponent,
 } from './TestComponent'
 
-// export {
-//   RegionViewer,
-// } from './RegionViewer'
-//
-// export {
-//   Track,
-// } from './Tracks'
+export {
+  fetchAllByGeneName,
+  fetchTranscriptsByGeneName,
+  fetchTestData,
+  test,
+  groupExonsByTranscript,
+} from './utilities'
+
+export {
+  RegionViewer,
+} from './RegionViewer'
+
+export {
+  TranscriptTrack,
+}
+
 //
 // export {
 //   CoverageTrack,

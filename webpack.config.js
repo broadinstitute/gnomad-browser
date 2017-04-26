@@ -37,6 +37,11 @@ const webpackConfig = {
         use: 'babel-loader',
       },
       {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        use: 'svg-inline-loader',
+      },
+      {
         test: /\.csv$/,
         exclude: /node_modules/,
         use: 'dsv-loader',

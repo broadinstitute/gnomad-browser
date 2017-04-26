@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import Slider from 'material-ui/Slider'
 
 import {
   calculateOffsetRegions,
@@ -98,19 +97,6 @@ class RegionViewer extends Component {
     return (
       <div className={css.regionViewer}>
         <p>Exon padding {this.state.padding.toPrecision(3)} bp</p>
-        <Slider
-          style={{
-            width: 800,
-          }}
-          onChange={this.setPadding}
-        />
-      {/*<p>Left Panel {this.state.leftPanelWidth} bp</p>
-        <Slider
-          style={{
-            width: 800,
-          }}
-          onChange={this.setLeftPanelWidth}
-        />*/}
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}
         </div>
