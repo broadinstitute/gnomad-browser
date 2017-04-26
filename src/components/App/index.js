@@ -2,19 +2,20 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import ConnectedComponent from '../Connected'
-import Component from '../Component'
+import TopBar from '../TopBar'
+import GenePage from '../GenePage'
 
 import css from './styles.css'
 
 const App = () => (
   <div className={css.app}>
-    <h1>Welcome to the app</h1>
     <div>
-      <Route path="/browser" component={Component} />
-      <Route path="browser/gene/:gene" component={Component} />
-      <Route path="browser/variant/:variant" component={Component} />
-      <Route path="browser/rsid/:rsid" component={Component} />
-      <Route path="browser/gene-name/:geneName" component={Component} />
+      <TopBar />
+      <Route exact path="/" component={GenePage} />
+      <Route path="/gene/:gene" component={GenePage} />
+      <Route path="/variant/:variant" component={GenePage} />
+      <Route path="/rsid/:rsid" component={GenePage} />
+      <Route path="/gene-name/:geneName" component={GenePage} />
       <Route path="/connected" component={ConnectedComponent} />
     </div>
   </div>
