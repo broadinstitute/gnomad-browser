@@ -11,6 +11,13 @@ export const updateMessage = (message) => {
   }
 }
 
+export const setCurrentGene = (geneName) => {
+  return {
+    type: types.SET_CURRENT_GENE,
+    geneName,
+  }
+}
+
 export const requestGeneData = currentGene => ({
   type: types.REQUEST_GENE_DATA,
   currentGene,

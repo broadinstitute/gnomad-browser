@@ -11,12 +11,14 @@ const App = () => (
   <div className={css.app}>
     <div>
       <TopBar />
-      <Route exact path="/" component={GenePage} />
-      <Route path="/gene/:gene" component={GenePage} />
-      <Route path="/variant/:variant" component={GenePage} />
-      <Route path="/rsid/:rsid" component={GenePage} />
-      <Route path="/gene-name/:geneName" component={GenePage} />
-      <Route path="/connected" component={ConnectedComponent} />
+      <div className={css.mainPanel}>
+        <Route exact path="/" component={GenePage} />
+        <Route path="/gene/:gene" component={GenePage} />
+        <Route path="/variant/:variant" component={GenePage} />
+        <Route path="/rsid/:rsid" component={GenePage} />
+        <Route path="/gene-name/:geneName" component={GenePage} />
+        <Route path="/connected" component={ConnectedComponent} />
+      </div>
     </div>
   </div>
 )

@@ -1,7 +1,10 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchVariantsIfNeeded } from '../../actions'
+import GeneSettings from '../GeneSettings'
+import GeneRegion from '../Regions'
+
+import * as actions from '../../actions'
 import { getGene } from '../../reducers'
 
 import css from './styles.css'
@@ -12,6 +15,11 @@ class GenePage extends Component {
     currentGene: PropTypes.string.isRequired,
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
+    setCurrentGene: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    gene: null,
   }
 
   componentDidMount() {
@@ -19,15 +27,13 @@ class GenePage extends Component {
       dispatch,
       currentGene,
     } = this.props
-    console.log('mount', currentGene)
-    dispatch(fetchVariantsIfNeeded(currentGene))
+    dispatch(actions.fetchVariantsIfNeeded(currentGene))
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.currentGene !== nextProps.currentGene) {
       const { dispatch } = this.props
-      console.log(this.props.currentGene)
-      dispatch(fetchVariantsIfNeeded(nextProps.currentGene))
+      dispatch(actions.fetchVariantsIfNeeded(nextProps.currentGene))
     }
   }
 
@@ -39,8 +45,15 @@ class GenePage extends Component {
     const { currentGene } = this.props
     return (
       <div className={css.browser}>
+        <GeneSettings
+          currentGene={currentGene}
+          setCurrentGene={this.props.setCurrentGene}
+        />
         <h1>{currentGene}</h1>
         {gene.gene_id}
+        <GeneRegion
+          gene={gene}
+        />
       </div>
     )
   }
@@ -48,7 +61,6 @@ class GenePage extends Component {
 
 const mapStateToProps = (state) => {
   const { selections: { currentGene }, genes: { isFetching } } = state
-  console.log(state)
   return {
     currentGene,
     isFetching,
@@ -59,6 +71,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
+    setCurrentGene: geneName => dispatch(actions.setCurrentGene(geneName)),
   }
 }
 
