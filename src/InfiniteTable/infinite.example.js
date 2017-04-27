@@ -94,7 +94,7 @@ class InfiniteTableExample extends Component {
     currentGene: 'PCSK9',
     currentDataset: 'genome',
     fetchingWindow: 2000,
-    padding: 150,
+    padding: 2000,
     testGenes: [
       'PCSK9',
       'ZNF658',

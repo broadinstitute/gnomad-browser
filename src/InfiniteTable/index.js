@@ -60,48 +60,48 @@ const getDataCell = (dataKey, cellDataType, dataRow, i) => {
   switch (cellDataType) {
     case 'string':
       return (
-        <td
+        <div
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
           {dataRow[dataKey]}
-        </td>
+        </div>
       )
     case 'float':
       return (
-        <td
+        <div
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
           {dataRow[dataKey].toPrecision(3)}
-        </td>
+        </div>
       )
     case 'integer':
       return (
-        <td
+        <div
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
           {dataRow[dataKey]}
-        </td>
+        </div>
       )
     case 'filter':
       return (
-        <td
+        <div
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
           {formatFitler(dataRow[dataKey])}
-        </td>
+        </div>
       )
     default:
       return (
-        <td
+        <div
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
           {dataRow[dataKey]}
-        </td>
+        </div>
       )
   }
 }
@@ -110,9 +110,9 @@ const getDataRow = (tableConfig, dataRow, i) => {
   const cells = tableConfig.fields.map((field, i) =>
     getDataCell(field.dataKey, field.dataType, dataRow, i))
   return (
-    <tr style={{ backgroundColor: '#e0e0e0' }} key={`row-${i}`}>
+    <div className={css.row} style={{ backgroundColor: '#e0e0e0' }} key={`row-${i}`}>
       {cells}
-    </tr>
+    </div>
   )
 }
 
@@ -124,14 +124,16 @@ const InfiniteTable = ({
   tableData,
   loadMoreRows,
 }) => {
-  const headers = tableConfig.fields.map(field => getHeader(field))
-  const rows = tableData.map((rowData, i) => getDataRow(tableConfig, rowData, i))
+  // const headers = tableConfig.fields.map(field => getHeader(field))
+  // const rows = tableData.map((rowData, i) => getDataRow(tableConfig, rowData, i))
 
-  const remoteRowCount = 2500
+  const remoteRowCount = 10000
 
-  const variantIdList = R.pluck('variant_id', tableData)
+  // const variantIdList = R.pluck('variant_id', tableData)
+  // console.log(tableData)
+  // console.log(tableConfig)
 
-  const isRowLoaded = ({ index }) => !!variantIdList[index + 1000]
+  const isRowLoaded = ({ index }) => !!tableData[index + 1000]
 
   const rowRenderer = ({ key, index, style }) => {
     return (
@@ -139,7 +141,7 @@ const InfiniteTable = ({
         key={key}
         style={style}
       >
-        {variantIdList[index]}
+        {getDataRow(tableConfig, tableData[index], index)}
       </div>
     )
   }
@@ -155,33 +157,17 @@ const InfiniteTable = ({
         >
           {({ onRowsRendered, registerChild }) => (
             <List
-              height={500}
+              height={1000}
               onRowsRendered={onRowsRendered}
               ref={registerChild}
               rowCount={remoteRowCount}
-              rowHeight={20}
+              rowHeight={30}
               rowRenderer={rowRenderer}
-              overscanRowCount={1000}
-              width={300}
+              overscanRowCount={100}
+              width={1000}
             />
           )}
         </InfiniteLoader>
-        {/*<table
-          className={css.genericTableTrack}
-          style={{
-            width,
-            height,
-          }}
-        >
-          <thead>
-            <tr>
-              {headers}
-            </tr>
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </table>*/}
       </div>
     </div>
   )
