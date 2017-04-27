@@ -12,7 +12,7 @@ import { groupExonsByTranscript } from 'utilities'
 import RegionViewer from '../RegionViewer'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
-import GenericTableTrack from '../Tracks/GenericTableTrack'
+import InfiniteTable from './index'
 
 import css from './styles.css'
 
@@ -93,7 +93,7 @@ class InfiniteTableExample extends Component {
     hasData: false,
     currentGene: 'PCSK9',
     currentDataset: 'genome',
-    fetchingWindow: 500,
+    fetchingWindow: 2000,
     padding: 150,
     testGenes: [
       'PCSK9',
@@ -271,10 +271,11 @@ class InfiniteTableExample extends Component {
             )}
           </DropDownMenu>
         </div>
-        <button onClick={() => {
-          console.log('retrieving variants')
-          this.fetchMoreData()
-        }}
+        <button
+          onClick={() => {
+            console.log('retrieving variants')
+            this.fetchMoreData()
+          }}
         >
           More variants
         </button>
@@ -303,13 +304,15 @@ class InfiniteTableExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
-          <GenericTableTrack
-            title={`${this.state.currentDataset} ${gene_name} variants`}
-            height={500}
-            tableConfig={tableDataConfig}
-            tableData={variants}
-          />
         </RegionViewer>
+        <InfiniteTable
+          title={`${this.state.currentDataset} ${gene_name} variants`}
+          height={500}
+          width={1000}
+          tableConfig={tableDataConfig}
+          tableData={variants}
+          loadMoreRows={this.fetchMoreData}
+        />
       </div>
     )
   }
