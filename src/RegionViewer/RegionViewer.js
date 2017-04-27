@@ -15,6 +15,7 @@ class RegionViewer extends Component {
     css: PropTypes.object.isRequired,
     regions: PropTypes.array.isRequired,
     regionAttributes: PropTypes.object,
+    padding: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
   }
 
@@ -48,7 +49,6 @@ class RegionViewer extends Component {
     leftPanelWidth: 100,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
-    padding: 150,
     ready: false,
   }
 
@@ -57,10 +57,6 @@ class RegionViewer extends Component {
     this.setState({ width: newWidth })
   }
 
-  setPadding = (event, newValue) => {
-    const padding = Math.floor(2000 * newValue)
-    this.setState({ padding })
-  }
   setLeftPanelWidth = (event, newValue) => {
     const leftPanelWidth = Math.floor(400 * newValue)
     this.setState({ leftPanelWidth })
@@ -74,8 +70,14 @@ class RegionViewer extends Component {
 
   render() {
     const { css } = this.props
-    const { featuresToDisplay, padding, leftPanelWidth } = this.state
-    const { regions, regionAttributes, width, exonSubset } = this.props
+    const { featuresToDisplay, leftPanelWidth } = this.state
+    const {
+      regions,
+      regionAttributes,
+      width,
+      exonSubset,
+      padding,
+    } = this.props
     const offsetRegions = calculateOffsetRegions(
       featuresToDisplay,
       regionAttributes,
@@ -96,7 +98,7 @@ class RegionViewer extends Component {
     }
     return (
       <div className={css.regionViewer}>
-        <p>Exon padding {this.state.padding.toPrecision(3)} bp</p>
+        <p>Exon padding {padding.toPrecision(3)} bp</p>
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}
         </div>

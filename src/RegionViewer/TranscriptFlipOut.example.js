@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Slider from 'material-ui/Slider'
 
 import {
   fetchTranscriptsByGeneName,
@@ -22,6 +23,7 @@ class RegionTableExample extends Component {
   state = {
     hasData: false,
     currentGene: 'TP53',
+    padding: 150,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -49,6 +51,11 @@ class RegionTableExample extends Component {
     if (previousState.currentGene !== this.state.currentGene) {
       this.fetchData()
     }
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
   }
 
   fetchData = () => {
@@ -97,15 +104,22 @@ class RegionTableExample extends Component {
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
         </div>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1100}
           regions={canonicalExons}
           regionAttributes={attributeConfig}
+          padding={this.state.padding}
         >
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}

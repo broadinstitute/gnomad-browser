@@ -5,6 +5,7 @@ import R from 'ramda'
 import fetch from 'graphql-fetch'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Slider from 'material-ui/Slider'
 
 import { groupExonsByTranscript } from 'utilities'
 
@@ -93,6 +94,7 @@ class InfiniteTableExample extends Component {
     currentGene: 'PCSK9',
     currentDataset: 'genome',
     fetchingWindow: 500,
+    padding: 150,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -185,6 +187,11 @@ class InfiniteTableExample extends Component {
     this.setState({ circleStrokeWidth: value })
   }
 
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
+  }
+
   render() {
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
@@ -271,11 +278,18 @@ class InfiniteTableExample extends Component {
         >
           More variants
         </button>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1000}
           regions={canonicalExons}
           regionAttributes={regionAttributesConfig}
+          padding={this.state.padding}
         >
           <VariantTrack
             title={this.state.currentDataset}

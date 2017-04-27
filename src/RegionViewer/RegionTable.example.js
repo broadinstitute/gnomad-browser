@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Slider from 'material-ui/Slider'
 
 import { fetchTranscriptsByGeneName, test } from 'utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
@@ -18,6 +19,7 @@ class RegionTableExample extends Component {
   state = {
     hasData: false,
     currentGene: 'TP53',
+    padding: 150,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -59,6 +61,11 @@ class RegionTableExample extends Component {
     this.setState({ currentGene: value })
   }
 
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
+  }
+
   render() {
     if (!this.state.hasData) {
       return <p className={css.cool}>Loading!</p>
@@ -92,6 +99,12 @@ class RegionTableExample extends Component {
     return (
       <div className={css.page}>
         <h1>Region viewer demo</h1>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
@@ -104,6 +117,7 @@ class RegionTableExample extends Component {
           width={1100}
           regions={exons}
           regionAttributes={attributeConfig}
+          padding={this.state.padding}
         >
           <TranscriptTrack
             title={''}

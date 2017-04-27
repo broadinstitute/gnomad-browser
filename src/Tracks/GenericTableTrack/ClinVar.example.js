@@ -5,6 +5,7 @@ import R from 'ramda'
 import fetch from 'graphql-fetch'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Slider from 'material-ui/Slider'
 
 import { groupExonsByTranscript } from 'utilities'
 
@@ -132,6 +133,7 @@ class GenericTableTrackExample extends Component {
     hasClinvarData: false,
     currentGene: 'CFTR',
     currentDataset: 'exacv1',
+    padding: 150,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -142,7 +144,6 @@ class GenericTableTrackExample extends Component {
       'FBN1',
       'TP53',
       'SCN5A',
-      'MYH7',
       'MYBPC3',
       'ARSF',
       'CD33',
@@ -196,6 +197,11 @@ class GenericTableTrackExample extends Component {
   handleDatasetChange = (event, index, value) => {
     console.log(value)
     this.setState({ currentDataset: value })
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
   }
 
   render() {
@@ -317,11 +323,18 @@ class GenericTableTrackExample extends Component {
             )}
           </DropDownMenu>
         </div>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1000}
           regions={canonicalExons}
           regionAttributes={regionAttributesConfig}
+          padding={this.state.padding}
         >
           <VariantTrack
             title={this.state.currentDataset}

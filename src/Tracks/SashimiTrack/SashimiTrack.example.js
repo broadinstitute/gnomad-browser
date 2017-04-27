@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import R from 'ramda'
+import Slider from 'material-ui/Slider'
 
 import { groupExonsByTranscript } from 'utilities'
 
@@ -19,6 +20,7 @@ import css from './styles.css'
 class SashimiTrackExample extends Component {
   state = {
     hasData: false,
+    padding: 1000,
   }
 
   componentDidMount() {
@@ -32,6 +34,11 @@ class SashimiTrackExample extends Component {
       junctions: testJunctions,
       hasData: true,
     })
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
   }
 
   render() {
@@ -102,12 +109,19 @@ class SashimiTrackExample extends Component {
 
     return (
       <div className={css.page}>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}
           exonSubset={[4, 7]}
+          padding={this.state.padding}
         >
           <SashimiTrack
             height={200}

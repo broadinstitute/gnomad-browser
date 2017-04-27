@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
+import Slider from 'material-ui/Slider'
+
 import {
   fetchAllByGeneName,
   groupExonsByTranscript,
@@ -51,6 +53,7 @@ import testData from 'data/region-viewer-full-BRCA2.json'
 class RegionViewerFullExample extends Component {
   state = {
     hasData: false,
+    padding: 150,
   }
 
   componentDidMount() {
@@ -69,6 +72,11 @@ class RegionViewerFullExample extends Component {
       data: testData.gene,
       hasData: true
     })
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
   }
 
   render() {
@@ -109,11 +117,18 @@ class RegionViewerFullExample extends Component {
     }
     return (
       <div className={css.page}>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}
+          padding={this.state.padding}
         >
           <CoverageTrack
             height={200}
