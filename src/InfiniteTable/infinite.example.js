@@ -88,8 +88,8 @@ export const regionFetch = (dataset, xstart, xstop) => {
 
 class InfiniteTableExample extends Component {
   state = {
-    circleRadius: 3,
-    circleStrokeWidth: 1,
+    circleRadius: 1,
+    circleStrokeWidth: 0,
     hasData: false,
     currentGene: 'PCSK9',
     currentDataset: 'genome',
@@ -230,12 +230,12 @@ class InfiniteTableExample extends Component {
 
     const tableDataConfig = {
       fields: [
-        { dataKey: 'variant_id', title: 'Variant ID', dataType: 'string' },
-        { dataKey: 'rsid', title: 'RSID', dataType: 'string' },
-        { dataKey: 'filter', title: 'Filter', dataType: 'filter' },
-        { dataKey: 'allele_count', title: 'AC', dataType: 'integer' },
-        { dataKey: 'allele_num', title: 'AN', dataType: 'integer' },
-        { dataKey: 'allele_freq', title: 'AF', dataType: 'float' },
+        { dataKey: 'variant_id', title: 'Variant ID', dataType: 'variantId', width: 200 },
+        { dataKey: 'rsid', title: 'RSID', dataType: 'string', width: 100 },
+        { dataKey: 'filter', title: 'Filter', dataType: 'filter', width: 100 },
+        { dataKey: 'allele_count', title: 'AC', dataType: 'integer', width: 100 },
+        { dataKey: 'allele_num', title: 'AN', dataType: 'integer', width: 100 },
+        { dataKey: 'allele_freq', title: 'AF', dataType: 'float', width: 100 },
       ],
     }
 
@@ -273,7 +273,6 @@ class InfiniteTableExample extends Component {
         </div>
         <button
           onClick={() => {
-            console.log('retrieving variants')
             this.fetchMoreData()
           }}
         >
@@ -306,8 +305,8 @@ class InfiniteTableExample extends Component {
           />
         </RegionViewer>
         <InfiniteTable
-          title={`${this.state.currentDataset} ${gene_name} variants`}
-          height={500}
+          title={`${variants.length} ${this.state.currentDataset} ${gene_name} variants`}
+          height={700}
           width={1000}
           tableConfig={tableDataConfig}
           tableData={variants}
