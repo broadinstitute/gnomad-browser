@@ -77,7 +77,6 @@ export const regionFetch = (dataset, xstart, xstop) => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then((data) => {
-        console.log(data)
         resolve(data.data.region)
       })
       .catch((error) => {
@@ -93,7 +92,7 @@ class InfiniteTableExample extends Component {
     hasData: false,
     currentGene: 'PCSK9',
     currentDataset: 'genome',
-    fetchingWindow: 2000,
+    fetchingWindow: 1000,
     padding: 2000,
     testGenes: [
       'PCSK9',
@@ -203,7 +202,6 @@ class InfiniteTableExample extends Component {
 
     const { variants } = this.state.variantData
     console.log(variants.length)
-    console.log(this.state)
 
     const regionAttributesConfig = {
       CDS: {

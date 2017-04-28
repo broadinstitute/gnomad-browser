@@ -145,6 +145,15 @@ const getDataRow = (tableConfig, dataRow, i) => {
     getDataCell(field, dataRow, i))
   return (
     <div className={css.row} key={`row-${i}`}>
+      <div
+        style={{
+          ...abstractCellStyle,
+          width: 10,
+        }}
+        key={`cell-index-${i}`}
+      >
+        {i}
+      </div>
       {cells}
     </div>
   )
@@ -196,6 +205,17 @@ const InfiniteTable = ({
       <div style={{ width: 1100 }}>
         <h3>{title}</h3>
         <div className={css.headers}>
+          <div
+            key={`index-header-cell`}
+            style={{
+              ...abstractCellStyle,
+              marginBottom: 5,
+              width: 10,
+              borderBottom: '1px solid #000',
+            }}
+          >
+            ix
+          </div>
           {headers}
         </div>
         <InfiniteLoader
@@ -211,7 +231,7 @@ const InfiniteTable = ({
               rowCount={remoteRowCount}
               rowHeight={30}
               rowRenderer={rowRenderer}
-              overscanRowCount={100}
+              overscanRowCount={20}
               width={width}
             />
           )}
