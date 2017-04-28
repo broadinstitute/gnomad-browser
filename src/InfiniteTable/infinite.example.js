@@ -97,6 +97,9 @@ class InfiniteTableExample extends Component {
     padding: 2000,
     totalVariantCount: 2500,
     fetchFrequency: 2000,
+    latestFetch: 0,
+    totalTime: 0,
+    timer: 0,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -154,6 +157,9 @@ class InfiniteTableExample extends Component {
 
   fetchMoreData = () => {
     if (this.state.isFetching) return
+    let time = 0
+    const increment = () => { time += 1 }
+    const timer = setInterval(increment, 1)
     this.setState({ isFetching: true })
     const newStart = this.state.currentStop
     const newStop = this.state.currentStop + this.state.fetchingWindow
@@ -167,6 +173,9 @@ class InfiniteTableExample extends Component {
           isFetching: false,
           currentStart: newStart,
           currentStop: newStop,
+          timer: time,
+          totalTime: window.totalTime,
+          latestFetch: variantData.variants.length,
           variantData: {
             variants: [
               ...this.state.variantData.variants,
@@ -174,6 +183,7 @@ class InfiniteTableExample extends Component {
             ],
           },
         })
+        clearInterval(timer)
       })
   }
 
@@ -182,12 +192,21 @@ class InfiniteTableExample extends Component {
   }
 
   fetchMoreDataUntilDone = () => {
+    window.totalTime = 0
     const interval = setInterval(this.fetchMoreData, this.state.fetchFrequency)
-    this.setState({ interval })
+    const totalTimer =
+      setInterval(() => { window.totalTime += 1 }, 1)
+    this.setState({
+      interval,
+      totalTimer,
+    })
   }
 
   stopFetching = () => {
-    this.setState({ interval: clearInterval(this.state.interval) })
+    this.setState({
+      interval: clearInterval(this.state.interval),
+      totalTimer: clearInterval(this.state.totalTimer),
+    })
   }
 
   handleChange = (event, index, value) => {
@@ -208,6 +227,14 @@ class InfiniteTableExample extends Component {
     this.setState({ circleStrokeWidth: value })
   }
 
+  handleFetchWindowChange = (event, index, value) => {
+    this.setState({ fetchingWindow: value })
+  }
+
+  reset = () => {
+    this.fetchData()
+  }
+
   setPadding = (event, newValue) => {
     const padding = Math.floor(2000 * newValue)
     this.setState({ padding })
@@ -223,7 +250,6 @@ class InfiniteTableExample extends Component {
     const canonicalExons = this.state.geneData.transcript.exons
 
     const { variants } = this.state.variantData
-    console.log(variants.length)
 
     const regionAttributesConfig = {
       CDS: {
@@ -290,13 +316,25 @@ class InfiniteTableExample extends Component {
               <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
             )}
           </DropDownMenu>
-          <p>fetch freq</p>
+          <p>fetch freq (ms)</p>
           <DropDownMenu
             value={this.state.fetchFrequency}
             onChange={this.handleFetchFrequencyChange}
           >
-            {[100, 500, 1000, 1500, 2000].map(frequency =>
+            {[1, 10, 50, 100, 500, 1000, 1500, 2000].map(frequency =>
               <MenuItem key={`${frequency}-menu`} value={frequency} primaryText={frequency} />,
+            )}
+          </DropDownMenu>
+          <p>fetch window (bp)</p>
+          <DropDownMenu
+            value={this.state.fetchingWindow}
+            onChange={this.handleFetchWindowChange}
+          >
+            {[10, 50, 100, 500, 1000, 1500, 2000,
+              5000, 10000, 15000, 20000, 25000, 30000,
+              35000, 40000, 50000, 60000, 70000, 80000,
+            ].map(window =>
+              <MenuItem key={`${window}-menu`} value={window} primaryText={window} />,
             )}
           </DropDownMenu>
         </div>
@@ -320,6 +358,13 @@ class InfiniteTableExample extends Component {
           }}
         >
           Stop fetching
+        </button>
+        <button
+          onClick={() => {
+            this.reset()
+          }}
+        >
+          Reset
         </button>
         <Slider
           style={{
@@ -348,7 +393,7 @@ class InfiniteTableExample extends Component {
           />
         </RegionViewer>
         <InfiniteTable
-          title={`${variants.length} ${this.state.currentDataset} ${gene_name} variants`}
+          title={`${variants.length} ${this.state.currentDataset} ${gene_name} variants, latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
           height={700}
           width={1100}
           tableConfig={tableDataConfig}
@@ -362,3 +407,4 @@ class InfiniteTableExample extends Component {
 }
 
 export default InfiniteTableExample
+// , total time: ${Math.floor(this.state.totalTime / 1000)} seconds

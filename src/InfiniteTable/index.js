@@ -229,7 +229,7 @@ const InfiniteTable = ({
               rowCount={remoteRowCount}
               rowHeight={30}
               rowRenderer={rowRenderer}
-              overscanRowCount={20}
+              overscanRowCount={60}
               width={width}
             />
           )}
