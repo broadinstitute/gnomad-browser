@@ -92,8 +92,11 @@ class InfiniteTableExample extends Component {
     hasData: false,
     currentGene: 'PCSK9',
     currentDataset: 'genome',
-    fetchingWindow: 1000,
+    isFetching: false,
+    fetchingWindow: 2000,
     padding: 2000,
+    totalVariantCount: 2500,
+    fetchFrequency: 2000,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -127,6 +130,9 @@ class InfiniteTableExample extends Component {
       previousState.currentDataset !== this.state.currentDataset) {
       this.fetchData()
     }
+    // if (this.state.variantData.variants.length >= this.state.totalVariantCount) {
+    //   this.state.interval = null
+    // }
   }
 
   fetchData = () => {
@@ -147,6 +153,8 @@ class InfiniteTableExample extends Component {
   }
 
   fetchMoreData = () => {
+    if (this.state.isFetching) return
+    this.setState({ isFetching: true })
     const newStart = this.state.currentStop
     const newStop = this.state.currentStop + this.state.fetchingWindow
     regionFetch(
@@ -156,6 +164,7 @@ class InfiniteTableExample extends Component {
     )
       .then((variantData) => {
         this.setState({
+          isFetching: false,
           currentStart: newStart,
           currentStop: newStop,
           variantData: {
@@ -166,6 +175,19 @@ class InfiniteTableExample extends Component {
           },
         })
       })
+  }
+
+  handleFetchFrequencyChange = (event, index, value) => {
+    this.setState({ fetchFrequency: value })
+  }
+
+  fetchMoreDataUntilDone = () => {
+    const interval = setInterval(this.fetchMoreData, this.state.fetchFrequency)
+    this.setState({ interval })
+  }
+
+  stopFetching = () => {
+    this.setState({ interval: clearInterval(this.state.interval) })
   }
 
   handleChange = (event, index, value) => {
@@ -205,19 +227,19 @@ class InfiniteTableExample extends Component {
 
     const regionAttributesConfig = {
       CDS: {
-        color: '#757575',
+        color: 'black',
         thickness: '30px',
       },
       start_pad: {
-        color: '#e0e0e0',
+        color: '#757575',
         thickness: '3px',
       },
       end_pad: {
-        color: '#e0e0e0',
+        color: '#757575',
         thickness: '3px',
       },
       intron: {
-        color: '#e0e0e0',
+        color: '#757575',
         thickness: '3px',
       },
       default: {
@@ -268,6 +290,15 @@ class InfiniteTableExample extends Component {
               <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
             )}
           </DropDownMenu>
+          <p>fetch freq</p>
+          <DropDownMenu
+            value={this.state.fetchFrequency}
+            onChange={this.handleFetchFrequencyChange}
+          >
+            {[100, 500, 1000, 1500, 2000].map(frequency =>
+              <MenuItem key={`${frequency}-menu`} value={frequency} primaryText={frequency} />,
+            )}
+          </DropDownMenu>
         </div>
         <button
           onClick={() => {
@@ -275,6 +306,20 @@ class InfiniteTableExample extends Component {
           }}
         >
           More variants
+        </button>
+        <button
+          onClick={() => {
+            this.fetchMoreDataUntilDone()
+          }}
+        >
+          Fetch all
+        </button>
+        <button
+          onClick={() => {
+            this.stopFetching()
+          }}
+        >
+          Stop fetching
         </button>
         <Slider
           style={{
@@ -291,7 +336,7 @@ class InfiniteTableExample extends Component {
         >
           <VariantTrack
             title={this.state.currentDataset}
-            height={25}
+            height={200}
             circleRadius={this.state.circleRadius}
             circleStroke={'black'}
             circleStrokeWidth={this.state.circleStrokeWidth}
@@ -305,9 +350,10 @@ class InfiniteTableExample extends Component {
         <InfiniteTable
           title={`${variants.length} ${this.state.currentDataset} ${gene_name} variants`}
           height={700}
-          width={1000}
+          width={1100}
           tableConfig={tableDataConfig}
           tableData={variants}
+          remoteRowCount={this.state.totalVariantCount}
           loadMoreRows={this.fetchMoreData}
         />
       </div>

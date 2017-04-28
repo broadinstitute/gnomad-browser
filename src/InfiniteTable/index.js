@@ -181,11 +181,9 @@ const InfiniteTable = ({
   tableConfig,
   tableData,
   loadMoreRows,
+  remoteRowCount,
 }) => {
   const headers = tableConfig.fields.map(field => getHeaderCell(field))
-  const rows = tableData.map((rowData, i) => getDataRow(tableConfig, rowData, i))
-
-  const remoteRowCount = 10000
 
   const isRowLoaded = ({ index }) => !!tableData[index + 1000]
 
@@ -225,7 +223,7 @@ const InfiniteTable = ({
         >
           {({ onRowsRendered, registerChild }) => (
             <List
-              height={1000}
+              height={height}
               onRowsRendered={onRowsRendered}
               ref={registerChild}
               rowCount={remoteRowCount}
