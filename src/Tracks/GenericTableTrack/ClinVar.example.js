@@ -300,9 +300,9 @@ class GenericTableTrackExample extends Component {
         title={significance.annotation.replace('_', ' ')}
         height={25}
         color={significance.colour}
-        circleRadius={circleRadius}
-        circleStroke={'black'}
-        circleStrokeWidth={circleStrokeWidth}
+        markerRadius={circleRadius}
+        markerStroke={'black'}
+        markerStrokeWidth={circleStrokeWidth}
         variants={clinvarVariantsFormatted.filter(variant =>
            R.contains(significance.annotation, variant.significances))
          }
@@ -340,18 +340,18 @@ class GenericTableTrackExample extends Component {
             title={this.state.currentDataset}
             height={25}
             color={'grey'}
-            circleRadius={circleRadius}
-            circleStroke={'black'}
-            circleStrokeWidth={circleStrokeWidth}
+            markerRadius={circleRadius}
+            markerStroke={'black'}
+            markerStrokeWidth={circleStrokeWidth}
             variants={variants}
           />
           <VariantTrack
             title={'All clinvar variants'}
             height={25}
             color={'grey'}
-            circleRadius={circleRadius}
-            circleStroke={'black'}
-            circleStrokeWidth={circleStrokeWidth}
+            markerRadius={circleRadius}
+            markerStroke={'black'}
+            markerStrokeWidth={circleStrokeWidth}
             variants={clinvarVariantsFormatted}
           />
           {significanceTracks}

@@ -19,6 +19,7 @@ import ClinvarVariantsDemo from '../Tracks/GenericTableTrack/ClinVar.example.js'
 import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
 import VDSPage from '../VDS/index.js'
 import InfiniteDemo from '../InfiniteTable/infinite.example.js'
+import VariantDemo from '../Tracks/VariantTrack/VariantTrack.example.js'
 
 import css from './styles.css'
 
@@ -148,6 +149,15 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>Infinite table</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/variant-track'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Variant track</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -171,6 +181,7 @@ const Demo = () =>
         <Route exact path={'/vep'} component={VepTrackDemo} />
         <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />
         <Route exact path={'/infinite'} component={InfiniteDemo} />
+        <Route exact path={'/variant-track'} component={VariantDemo} />
         <Route
           exact
           path={'/graphiql'}

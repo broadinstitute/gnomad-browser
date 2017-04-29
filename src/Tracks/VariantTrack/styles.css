@@ -9,3 +9,8 @@
   font-size: 11px;
   /*border: 1px solid green;*/
 }
+
+.menus {
+  display: flex;
+  flex-direction: row;
+}

@@ -5,6 +5,7 @@ import R from 'ramda'
 import fetch from 'graphql-fetch'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Slider from 'material-ui/Slider'
 
 import { groupExonsByTranscript } from 'utilities'
 
@@ -60,11 +61,9 @@ export const genericTableFetch = (geneName, dataset) => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then((data) => {
-        console.log(data)
         resolve(data.data.gene)
       })
       .catch((error) => {
-        console.log(error)
         reject(error)
       })
   })
@@ -75,6 +74,7 @@ class GenericTableTrackExample extends Component {
     hasData: false,
     currentGene: 'BRCA2',
     currentDataset: 'exacv1',
+    padding: 150,
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -112,20 +112,22 @@ class GenericTableTrackExample extends Component {
 
   fetchData = () => {
     genericTableFetch(this.state.currentGene, this.state.currentDataset).then((data) => {
-      console.log(data)
       this.setState({ geneData: data })
       this.setState({ hasData: true })
     })
   }
 
   handleChange = (event, index, value) => {
-    console.log(value)
     this.setState({ currentGene: value })
   }
 
   handleDatasetChange = (event, index, value) => {
-    console.log(value)
     this.setState({ currentDataset: value })
+  }
+
+  setPadding = (event, newValue) => {
+    const padding = Math.floor(2000 * newValue)
+    this.setState({ padding })
   }
 
   render() {
@@ -187,16 +189,24 @@ class GenericTableTrackExample extends Component {
             )}
           </DropDownMenu>
         </div>
+        <Slider
+          style={{
+            width: 800,
+          }}
+          onChange={this.setPadding}
+        />
         <RegionViewer
           css={css}
           width={1000}
           regions={canonicalExons}
           regionAttributes={regionAttributesConfig}
+          padding={this.state.padding}
         >
           <VariantTrack
             title={'Exome variants'}
             height={25}
             variants={variants}
+            trackKey={'exome_variants'}
           />
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}

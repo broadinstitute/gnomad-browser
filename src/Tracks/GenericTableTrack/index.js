@@ -33,7 +33,7 @@ const tableCellStyles = {
   ...specialCellStyles,
 }
 
-const getFilterBackgroundColor = filter => {
+const getFilterBackgroundColor = (filter) => {
   switch (filter) {
     case 'PASS':
       return '#85C77D'
@@ -41,8 +41,9 @@ const getFilterBackgroundColor = filter => {
       return '#F1FF87'
   }
 }
-const formatFitler = filters => filters.split('|').map(filter =>
+const formatFitler = (filters, index) => filters.split('|').map(filter => (
   <span
+    key={`${filter}${index}`}
     style={{
       border: '1px solid #000',
       marginLeft: 10,
@@ -52,7 +53,7 @@ const formatFitler = filters => filters.split('|').map(filter =>
   >
     {filter}
   </span>
-)
+))
 
 const getDataCell = (dataKey, cellDataType, dataRow, i) => {
   switch (cellDataType) {
@@ -89,7 +90,7 @@ const getDataCell = (dataKey, cellDataType, dataRow, i) => {
           style={tableCellStyles[cellDataType]}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatFitler(dataRow[dataKey])}
+          {formatFitler(dataRow[dataKey], i)}
         </td>
       )
     default:
@@ -114,7 +115,7 @@ const getDataRow = (tableConfig, dataRow, i) => {
   )
 }
 
-const PositionTableTrack = ({
+const GenericTableTrack = ({
   title,
   width,
   height,
@@ -148,7 +149,7 @@ const PositionTableTrack = ({
     </div>
   )
 }
-PositionTableTrack.propTypes = {
+GenericTableTrack.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   leftPanelWidth: PropTypes.number, // eslint-disable-line
@@ -158,4 +159,4 @@ PositionTableTrack.propTypes = {
   tableData: PropTypes.array.isRequired,
 }
 
-export default PositionTableTrack
+export default GenericTableTrack

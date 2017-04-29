@@ -3,13 +3,11 @@ import React, { PropTypes } from 'react'
 
 import css from './styles.css'
 
-const Axis = ({ height, title, width }) => {
+const Axis = ({ title }) => {
   return <div className={css.yLabel}>{title}</div>
 }
 Axis.propTypes = {
-  height: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 const VariantAxis = ({ title, leftPanelWidth }) => {
@@ -29,60 +27,89 @@ VariantAxis.propTypes = {
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
-const VariantData = ({
-  width,
-  height,
-  variants,
-  xScale,
-  positionOffset,
-  color,
-  circleRadius,
-  circleStroke,
-  circleStrokeWidth,
-}) => {
+const setYPosition = (height, ySetting) => {
   const yPad = 3
   const max = height - yPad
   const min = yPad
+  switch (ySetting) {
+    case 'random':
+      return Math.floor((Math.random() * (max - min)) + min)
+    case 'center':
+      return Math.floor((max + min) / 2)
+    default:
+      return Math.floor((Math.random() * (max - min)) + min)
+  }
+}
+
+const VariantCircle = ({
+  index,
+  xScale,
+  offsetPosition,
+  yPosition,
+  color,
+  markerRadius,
+  markerStroke,
+  markerStrokeWidth,
+}) => {
   return (
-    <svg
-      width={width}
-      height={height}
-    >
-      {variants.map((variant, i) => {
-        const yPosition = Math.floor((Math.random() * (max - min)) + min)
-        const calc = positionOffset(variant.pos)
-        if (calc === 0) {
-          return  // eslint-disable-line
-        }
-        return ( // eslint-disable-line
-          <circle
-            className={css.point}
-            cx={xScale(calc.offsetPosition)}
-            cy={yPosition}
-            r={circleRadius || 2}
-            fill={color || calc.color}
-            strokeWidth={circleStrokeWidth || 0}
-            stroke={circleStroke || 0}
-            key={`${i}-point`}
-          />
-          )
-      })}
-    </svg>
+    <circle
+      className={css.point}
+      cx={xScale(offsetPosition)}
+      cy={yPosition}
+      r={markerRadius || 2}
+      fill={color}
+      strokeWidth={markerStrokeWidth || 0}
+      stroke={markerStroke || 0}
+    />
   )
 }
 
+const VariantTick = ({
+  index,
+  xScale,
+  offsetPosition,
+  yPosition,
+  color,
+  markerRadius,
+  markerStroke,
+  markerStrokeWidth,
+}) => {
+  return (
+    <rect
+      className={css.rect}
+      x={xScale(offsetPosition)}
+      y={yPosition}
+      width={markerRadius}
+      height={markerRadius * 2}
+      fill={color}
+      strokeWidth={markerStrokeWidth || 0}
+      stroke={markerStroke || 0}
+    />
+  )
+}
+
+const getVariantMarker = (props) => {
+  const { markerType, markerKey, ...rest } = props
+  switch (markerType) {
+    case 'circle':
+      return <VariantCircle key={markerKey} {...rest} />
+    case 'tick':
+      return <VariantTick key={markerKey} {...rest} />
+    default:
+      return <VariantTick key={markerKey} {...rest} />
+  }
+}
+
 const VariantTrack = ({
+  title,
   width,
   height,
   leftPanelWidth,
   variants,
-  xScale,
   positionOffset,
-  title,
-  color,
-  circleRadius,
-  circleStroke,
-  circleStrokeWidth,
+  markerType,
+  yPositionSetting,
+  ...rest
 }) => {
   return (
     <div className={css.track}>
@@ -92,17 +119,28 @@ const VariantTrack = ({
         title={title}
       />
       <div className={css.data}>
-        <VariantData
+        <svg
           width={width}
           height={height}
-          variants={variants}
-          positionOffset={positionOffset}
-          xScale={xScale}
-          color={color}
-          circleRadius={circleRadius}
-          circleStroke={circleStroke}
-          circleStrokeWidth={circleStrokeWidth}
-        />
+        >
+          {variants.map((variant, index) => {
+            const yPosition = setYPosition(height, yPositionSetting)
+            const regionViewerAttributes = positionOffset(variant.pos)
+            const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
+            if (regionViewerAttributes === 0) {
+              return  // eslint-disable-line
+            }
+            const childProps = {
+              index,
+              ...regionViewerAttributes,
+              ...rest,
+              markerType,
+              markerKey,
+              yPosition,
+            }
+            return getVariantMarker(childProps)
+          })}
+        </svg>
       </div>
     </div>
   )
@@ -115,9 +153,14 @@ VariantTrack.propTypes = {
   variants: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   color: PropTypes.string,
-  circleRadius: PropTypes.number,
-  circleStroke: PropTypes.string,
-  circleStrokeWidth: PropTypes.number,
+  markerType: PropTypes.string,
+  markerRadius: PropTypes.number,
+  markerStroke: PropTypes.string,
+  markerStrokeWidth: PropTypes.number,
+}
+VariantTrack.defaultProps = {
+  markerType: 'circle',
+  yPositionSetting: 'random',
 }
 
 export default VariantTrack

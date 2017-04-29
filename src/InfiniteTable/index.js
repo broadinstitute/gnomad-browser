@@ -47,19 +47,19 @@ const getFilterBackgroundColor = (filter) => {
       return '#F1FF87'
   }
 }
-const formatFitler = filters => filters.split('|').map(filter =>
+const formatFitler = (filters, index) => filters.split('|').map(filter => (
   <span
+    key={`${filter}${index}`}
     style={{
       border: '1px solid #000',
       marginLeft: 10,
       padding: '1px 2px 1px 2px',
-      fontSize: 12,
       backgroundColor: getFilterBackgroundColor(filter),
     }}
   >
     {filter}
   </span>
-)
+))
 
 const formatVariantId = (variantId) => {
   let [chrom, pos, ref, alt] = variantId.split('-')
@@ -70,7 +70,7 @@ const formatVariantId = (variantId) => {
     ref = `${ref.slice(0,6)}...`
   }
   return (
-    <span>
+    <span key={`variantId`}>
       {chrom}:{pos} {ref} / {alt}
     </span>
   )
@@ -116,7 +116,7 @@ const getDataCell = (field, dataRow, i) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatFitler(dataRow[dataKey])}
+          {formatFitler(dataRow[dataKey], i)}
         </div>
       )
     case 'variantId':

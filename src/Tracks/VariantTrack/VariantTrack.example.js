@@ -13,8 +13,7 @@ import { processVariantsList } from 'utilities/exalt/process'
 
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../TranscriptTrack'
-import VariantTrack from '../VariantTrack'
-import GenericTableTrack from './index'
+import VariantTrack from './index'
 
 import css from './styles.css'
 
@@ -132,14 +131,15 @@ export const genericTableFetch = (geneName, dataset) => {
   })
 }
 
-class GenericTableTrackExample extends Component {
+class VariantTrackExample extends Component {
   state = {
-    circleRadius: 3,
+    circleRadius: 5,
     circleStrokeWidth: 1,
     hasData: false,
     currentGene: 'BRCA2',
     currentDataset: 'exacv1',
     padding: 150,
+    markerType: 'tick',
     testGenes: [
       'PCSK9',
       'ZNF658',
@@ -222,7 +222,6 @@ class GenericTableTrackExample extends Component {
       'IL1RAPL1',
       'NR0B1',
       'GK',
-      'DMD',
       'CYBB',
       'NYX',
       'NDP',
@@ -295,6 +294,10 @@ class GenericTableTrackExample extends Component {
     this.setState({ circleStrokeWidth: value })
   }
 
+  handleMarkerTypeChange = (event, index, value) => {
+    this.setState({ markerType: value })
+  }
+
   setPadding = (event, newValue) => {
     const padding = Math.floor(2000 * newValue)
     this.setState({ padding })
@@ -353,46 +356,15 @@ class GenericTableTrackExample extends Component {
       { annotation: 'splice_donor_variant', colour: '#f26424' },
       { annotation: 'stop_gained', colour: '#ed2024' },
       { annotation: 'frameshift_variant', colour: '#85489c' },
-      // { annotation: 'stop_lost', colour: '#ed2024' },
-      // { annotation: 'start_lost', colour: '#fedc00' },
-      // { annotation: 'initiator_codon_variant', colour: '#fff' },
-      { annotation: 'transcript_amplification', colour: '#f177ae' },
-      { annotation: 'inframe_insertion', colour: '#f177ae' },
-      { annotation: 'inframe_deletion', colour: '#f177ae' },
-      { annotation: 'missense_variant', colour: '#fedc00' },
-      // { annotation: 'protein_altering_variant', colour: '#ed2089' },
-      { annotation: 'splice_region_variant', colour: '#f68a5d' },
-      // { annotation: 'incomplete_terminal_codon_variant', colour: '#b9529f' },
-      // { annotation: 'stop_retained_variant', colour: '#8fc73e' },
-      { annotation: 'synonymous_variant', colour: '#8fc73e' },
-      // { annotation: 'coding_sequence_variant', colour: '#4f9743' },
-      // { annotation: 'mature_miRNA_variant', colour: '#4f9743' },
-      // { annotation: '5_prime_UTR_variant', colour: '#85cbd3' },
-      // { annotation: '3_prime_UTR_variant', colour: '#85cbd3' },
-      // { annotation: 'non_coding_transcript_exon_variant', colour: '#5aba47' },
-      // { annotation: 'non_coding_exon_variant', colour: '#fff' },
-      { annotation: 'intron_variant', colour: '#0064a6' },
-      // { annotation: 'NMD_transcript_variant', colour: '#f05223' },
-      // { annotation: 'non_coding_transcript_variant', colour: '#5aba47' },
-      // { annotation: 'nc_transcript_variant', colour: '#fff' },
-      // { annotation: 'upstream_gene_variant', colour: '#acbdd3' },
-      // { annotation: 'downstream_gene_variant', colour: '#acbdd3' },
-      // { annotation: 'TFBS_ablation', colour: '#af302f' },
-      // { annotation: 'TFBS_amplification', colour: '#af302f' },
-      // { annotation: 'TF_binding_site_variant', colour: '#af302f' },
-      // { annotation: 'regulatory_region_ablation', colour: '#af302f' },
-      // { annotation: 'regulatory_region_amplification', colour: '#af302f' },
-      // { annotation: 'feature_elongation', colour: '#8a8a8a' },
-      // { annotation: 'regulatory_region_variant', colour: '#af302f' },
-      // { annotation: 'feature_truncation', colour: '#8a8a8a' },
-      // { annotation: 'intergenic_variant', colour: '#8a8a8a' },
     ]
 
-    const consequenceTracks = consequenceCategories.map(consequence => (
+    const consequenceTracks = consequenceCategories.map((consequence, index) => (
       <VariantTrack
+        key={`${consequence.annotation}-${index}`}
         title={consequence.annotation.replace('_', ' ')}
         height={25}
         color={consequence.colour}
+        markerType={this.state.markerType}
         markerRadius={this.state.circleRadius}
         markerStroke={'black'}
         markerStrokeWidth={this.state.circleStrokeWidth}
@@ -404,12 +376,12 @@ class GenericTableTrackExample extends Component {
 
     return (
       <div className={css.page}>
-        <h1>Annotation demo</h1>
+        <h1>Variant track demo</h1>
         <div className={css.menus}>
           <p>Gene</p>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
-            {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
+            {this.state.testGenes.map((gene, i) =>
+              <MenuItem key={`${gene}-menu-${i}`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
           <p>Dataset</p>
@@ -430,6 +402,12 @@ class GenericTableTrackExample extends Component {
               <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
             )}
           </DropDownMenu>
+          <p>markerType</p>
+          <DropDownMenu value={this.state.markerType} onChange={this.handleMarkerTypeChange}>
+            {['circle', 'tick'].map(markerType =>
+              <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
+            )}
+          </DropDownMenu>
         </div>
         <Slider
           style={{
@@ -444,29 +422,15 @@ class GenericTableTrackExample extends Component {
           regionAttributes={regionAttributesConfig}
           padding={this.state.padding}
         >
-          <VariantTrack
-            title={this.state.currentDataset}
-            height={25}
-            markerRadius={this.state.circleRadius}
-            markerStroke={'black'}
-            markerStrokeWidth={this.state.circleStrokeWidth}
-            variants={variantsProcessed}
-          />
-          {consequenceTracks}
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
-          <GenericTableTrack
-            title={`Twenty ${this.state.currentDataset} ${gene_name} variants`}
-            height={200}
-            tableConfig={tableDataConfig}
-            tableData={R.take(20, variantsProcessed)}
-          />
+          {consequenceTracks}
         </RegionViewer>
       </div>
     )
   }
 }
 
-export default GenericTableTrackExample
+export default VariantTrackExample

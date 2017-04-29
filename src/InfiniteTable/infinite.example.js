@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
-import R from 'ramda'
+// import R from 'ramda'
 import fetch from 'graphql-fetch'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
@@ -63,7 +63,16 @@ export const regionFetch = (dataset, xstart, xstop) => {
   const query = `
   {
     region(xstart: ${xstart}, xstop: ${xstop}) {
-      variants: ${dataset}_variants {
+      exome_variants {
+        variant_id
+        pos
+        rsid
+        filter
+        allele_count
+        allele_num
+        allele_freq
+      }
+      genome_variants {
         variant_id
         pos
         rsid
@@ -95,8 +104,8 @@ class InfiniteTableExample extends Component {
     isFetching: false,
     fetchingWindow: 2000,
     padding: 2000,
-    totalVariantCount: 2500,
-    fetchFrequency: 2000,
+    totalVariantCount: 20000,
+    fetchFrequency: 10,
     latestFetch: 0,
     totalTime: 0,
     timer: 0,
@@ -138,11 +147,36 @@ class InfiniteTableExample extends Component {
     // }
   }
 
+  updateGeneSettings = (gene) => {
+    switch (gene) {
+      case 'TTN':
+        return {
+          circleRadius: 1,
+          circleStrokeWidth: 0,
+          fetchingWindow: 1000,
+        }
+      default:
+        return {
+          circleRadius: 3,
+          circleStrokeWidth: 1,
+          fetchingWindow: 2000,
+        }
+    }
+  }
+
   fetchData = () => {
     geneFetch(this.state.currentGene, this.state.currentDataset).then((geneData) => {
       const regionStart = geneData.xstart
       const regionStop = geneData.xstart + this.state.fetchingWindow
+      const {
+        circleRadius,
+        circleStrokeWidth,
+        fetchingWindow,
+      } = this.updateGeneSettings(this.state.currentGene)
       this.setState({
+        fetchingWindow,
+        circleRadius,
+        circleStrokeWidth,
         currentStart: regionStart,
         currentStop: regionStop,
       })
@@ -175,11 +209,15 @@ class InfiniteTableExample extends Component {
           currentStop: newStop,
           timer: time,
           totalTime: window.totalTime,
-          latestFetch: variantData.variants.length,
+          latestFetch: variantData.exome_variants.length + variantData.genome_variants.length,
           variantData: {
-            variants: [
-              ...this.state.variantData.variants,
-              ...variantData.variants,
+            exome_variants: [
+              ...this.state.variantData.exome_variants,
+              ...variantData.exome_variants,
+            ],
+            genome_variants: [
+              ...this.state.variantData.genome_variants,
+              ...variantData.genome_variants,
             ],
           },
         })
@@ -248,8 +286,9 @@ class InfiniteTableExample extends Component {
     const geneExons = this.state.geneData.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     const canonicalExons = this.state.geneData.transcript.exons
-
-    const { variants } = this.state.variantData
+    console.log(this.state.variantData)
+    const { exome_variants } = this.state.variantData
+    const { genome_variants } = this.state.variantData
 
     const regionAttributesConfig = {
       CDS: {
@@ -295,12 +334,12 @@ class InfiniteTableExample extends Component {
               <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
-          <p>Dataset</p>
+          {/*<p>Dataset</p>
           <DropDownMenu value={this.state.currentDataset} onChange={this.handleDatasetChange}>
             {this.state.datasets.map(dataset =>
               <MenuItem key={`${dataset}-menu`} value={dataset} primaryText={dataset} />,
             )}
-          </DropDownMenu>
+          </DropDownMenu>*/}
           <p>Variant radius</p>
           <DropDownMenu value={this.state.circleRadius} onChange={this.handleCircleRadiusChange}>
             {[1, 2, 3, 4, 5].map(circleRadius =>
@@ -380,12 +419,22 @@ class InfiniteTableExample extends Component {
           padding={this.state.padding}
         >
           <VariantTrack
-            title={this.state.currentDataset}
+            title={'exome variants'}
             height={200}
-            circleRadius={this.state.circleRadius}
-            circleStroke={'black'}
-            circleStrokeWidth={this.state.circleStrokeWidth}
-            variants={variants}
+            markerRadius={this.state.circleRadius}
+            markerStroke={'black'}
+            markerStrokeWidth={this.state.circleStrokeWidth}
+            variants={exome_variants}
+            trackKey={'exome_variants'}
+          />
+          <VariantTrack
+            title={'genome variants'}
+            height={200}
+            markerRadius={this.state.circleRadius}
+            markerStroke={'black'}
+            markerStrokeWidth={this.state.circleStrokeWidth}
+            variants={genome_variants}
+            trackKey={'exome_variants'}
           />
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
@@ -393,11 +442,11 @@ class InfiniteTableExample extends Component {
           />
         </RegionViewer>
         <InfiniteTable
-          title={`${variants.length} ${this.state.currentDataset} ${gene_name} variants, latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
+          title={`${genome_variants.length} ${this.state.currentDataset} ${gene_name} variants, latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
           height={700}
           width={1100}
           tableConfig={tableDataConfig}
-          tableData={variants}
+          tableData={genome_variants}
           remoteRowCount={this.state.totalVariantCount}
           loadMoreRows={this.fetchMoreData}
         />
