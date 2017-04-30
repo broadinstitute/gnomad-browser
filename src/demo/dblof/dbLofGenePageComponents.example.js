@@ -3,9 +3,11 @@
 import React, { Component } from 'react'
 import R from 'ramda'
 import fetch from 'graphql-fetch'
+
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
+import RefreshIndicator from 'material-ui/RefreshIndicator'
 
 import { groupExonsByTranscript, combineDataForTable } from 'utilities'
 import { processVariantsList } from 'utilities/exalt/process'
@@ -169,14 +171,18 @@ class dbLofGenePageComponents extends Component {
   }
 
   fetchData = () => {
+    this.setState({ isFetching: true })
     consequenceFetch(
       this.state.currentGene,
       this.state.datasets,
       this.state.consequence,
     ).then((data) => {
       // console.log(data)
-      this.setState({ geneData: data })
-      this.setState({ hasData: true })
+      this.setState({
+        geneData: data,
+        hasData: true,
+        isFetching: false,
+      })
     })
   }
 
@@ -208,9 +214,46 @@ class dbLofGenePageComponents extends Component {
   }
 
   render() {
-    if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
-    }
+    const refreshIndicatorPage = (
+      <div
+        style={{
+          position: 'relative',
+          width: 100,
+        }}
+      >
+        <RefreshIndicator
+          size={100}
+          left={50}
+          top={200}
+          status={'loading'}
+          style={{
+            position: 'relative',
+          }}
+        />
+      </div>
+    )
+
+    const refreshIndicatorSmall = (
+      <div
+        style={{
+          display: 'flex',
+          position: 'relative',
+          width: 100,
+        }}
+      >
+        <RefreshIndicator
+          size={40}
+          left={10}
+          top={0}
+          status={'loading'}
+          style={{
+            position: 'relative',
+          }}
+        />
+      </div>
+    )
+
+    if (!this.state.hasData) return refreshIndicatorPage
 
     const { gene_name, genome_variants, exome_variants } = this.state.geneData
 
@@ -342,6 +385,7 @@ class dbLofGenePageComponents extends Component {
               <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
             )}
           </DropDownMenu>
+          {this.state.isFetching && refreshIndicatorSmall}
         </div>
         <Slider
           style={{

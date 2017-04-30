@@ -3,9 +3,11 @@
 import React, { Component } from 'react'
 // import R from 'ramda'
 import fetch from 'graphql-fetch'
+
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
+import RefreshIndicator from 'material-ui/RefreshIndicator'
 
 import { groupExonsByTranscript } from 'utilities'
 
@@ -323,6 +325,18 @@ class InfiniteTableExample extends Component {
       ],
     }
 
+    const refreshStyle = {
+      container: {
+        display: 'flex',
+        position: 'relative',
+        width: 100,
+      },
+      refresh: {
+        display: 'inline-block',
+        position: 'relative',
+      },
+    }
+
     return (
       <div className={css.page}>
         <h1>Infinite scrolling demo</h1>
@@ -375,6 +389,16 @@ class InfiniteTableExample extends Component {
               <MenuItem key={`${window}-menu`} value={window} primaryText={window} />,
             )}
           </DropDownMenu>
+          {this.state.isFetching && (
+            <div style={refreshStyle.container}>
+              <RefreshIndicator
+                size={40}
+                left={10}
+                top={0}
+                status="loading"
+                style={refreshStyle.refresh}
+              />
+            </div>)}
         </div>
         <button
           onClick={() => {
