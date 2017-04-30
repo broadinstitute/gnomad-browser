@@ -27,20 +27,6 @@ VariantAxis.propTypes = {
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
-const setYPosition = (height, ySetting) => {
-  const yPad = 3
-  const max = height - yPad
-  const min = yPad
-  switch (ySetting) {
-    case 'random':
-      return Math.floor((Math.random() * (max - min)) + min)
-    case 'center':
-      return Math.floor((max + min) / 2)
-    default:
-      return Math.floor((Math.random() * (max - min)) + min)
-  }
-}
-
 const VariantCircle = ({
   index,
   xScale,
@@ -97,6 +83,20 @@ const getVariantMarker = (props) => {
       return <VariantTick key={markerKey} {...rest} />
     default:
       return <VariantTick key={markerKey} {...rest} />
+  }
+}
+
+const setYPosition = (height, ySetting) => {
+  const yPad = 3
+  const max = height - yPad
+  const min = yPad
+  switch (ySetting) {
+    case 'random':
+      return Math.floor((Math.random() * (max - min)) + min)
+    case 'center':
+      return Math.floor((max + min) / 2)
+    default:
+      return Math.floor((Math.random() * (max - min)) + min)
   }
 }
 

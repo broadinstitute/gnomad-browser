@@ -286,7 +286,6 @@ class InfiniteTableExample extends Component {
     const geneExons = this.state.geneData.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     const canonicalExons = this.state.geneData.transcript.exons
-    console.log(this.state.variantData)
     const { exome_variants } = this.state.variantData
     const { genome_variants } = this.state.variantData
 
@@ -425,7 +424,6 @@ class InfiniteTableExample extends Component {
             markerStroke={'black'}
             markerStrokeWidth={this.state.circleStrokeWidth}
             variants={exome_variants}
-            trackKey={'exome_variants'}
           />
           <VariantTrack
             title={'genome variants'}
@@ -434,7 +432,6 @@ class InfiniteTableExample extends Component {
             markerStroke={'black'}
             markerStrokeWidth={this.state.circleStrokeWidth}
             variants={genome_variants}
-            trackKey={'exome_variants'}
           />
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
