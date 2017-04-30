@@ -8,3 +8,8 @@ export {
 export {
   groupExonsByTranscript,
 } from './transcriptTools'
+
+export {
+  combineVariantData,
+  combineDataForTable,
+} from './combineVariants'

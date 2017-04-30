@@ -1,14 +1,9 @@
 import {
-  filterAndCombineData,
+  combineVariantData,
   combineDataForTable,
- } from './combineDataForTable'
-
-import {
-  combineDataForVariantPage,
- } from './combineForVariantPage'
+} from './combineVariantData'
 
 export {
-  filterAndCombineData,
+  combineVariantData,
   combineDataForTable,
-  combineDataForVariantPage,
 }

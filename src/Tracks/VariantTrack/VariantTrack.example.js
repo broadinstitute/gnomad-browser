@@ -7,7 +7,7 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 
-import { groupExonsByTranscript } from 'utilities'
+import { groupExonsByTranscript, combineDataForTable } from 'utilities'
 import { processVariantsList } from 'utilities/exalt/process'
 
 import RegionViewer from '../../RegionViewer'
@@ -20,7 +20,82 @@ import css from './styles.css'
 
 const API_URL = process.env.API_URL
 
-export const genericTableFetch = (geneName, dataset) => {
+const vepFields = `{
+  TSL
+  ancestral
+  SYMBOL
+  EAS_MAF
+  Feature
+  Codons
+  MOTIF_NAME
+  DOMAINS
+  SIFT
+  VARIANT_CLASS
+  CDS_position
+  CCDS
+  Allele
+  PolyPhen
+  MOTIF_SCORE_CHANGE
+  IMPACT
+  HGVSp
+  ENSP
+  LoF
+  INTRON
+  Existing_variation
+  HGVSc
+  LoF_filter
+  MOTIF_POS
+  HIGH_INF_POS
+  AA_MAF
+  LoF_flags
+  AFR_MAF
+  UNIPARC
+  cDNA_position
+  PUBMED
+  ALLELE_NUM
+  Feature_type
+  GMAF
+  HGNC_ID
+  PHENO
+  LoF_info
+  SWISSPROT
+  EXON
+  EUR_MAF
+  Consequence
+  Protein_position
+  Gene
+  STRAND
+  DISTANCE
+  EA_MAF
+  SYMBOL_SOURCE
+  Amino_acids
+  TREMBL
+  CLIN_SIG
+  SAS_MAF
+  MINIMISED
+  HGVS_OFFSET
+  ASN_MAF
+  BIOTYPE
+  context
+  SOMATIC
+  AMR_MAF
+  CANONICAL
+}`
+
+export const consequenceFetch = (geneName, datasets, consequence) => {
+  const variantsQuery = datasets.map(dataset => `
+    ${dataset}_variants(consequence: "${consequence}") {
+      variant_id
+      pos
+      rsid
+      filter
+      allele_count
+      allele_num
+      allele_freq
+      vep_annotations ${vepFields}
+    }
+  `)
+
   const query = `
   {
     gene(gene_name: "${geneName}") {
@@ -47,76 +122,7 @@ export const genericTableFetch = (geneName, dataset) => {
           gene_id
         }
       }
-      variants: ${dataset}_variants(consequence: "lof") {
-        variant_id
-        pos
-        rsid
-        filter
-        allele_count
-        allele_num
-        allele_freq
-        vep_annotations {
-          TSL
-          ancestral
-          SYMBOL
-          EAS_MAF
-          Feature
-          Codons
-          MOTIF_NAME
-          DOMAINS
-          SIFT
-          VARIANT_CLASS
-          CDS_position
-          CCDS
-          Allele
-          PolyPhen
-          MOTIF_SCORE_CHANGE
-          IMPACT
-          HGVSp
-          ENSP
-          LoF
-          INTRON
-          Existing_variation
-          HGVSc
-          LoF_filter
-          MOTIF_POS
-          HIGH_INF_POS
-          AA_MAF
-          LoF_flags
-          AFR_MAF
-          UNIPARC
-          cDNA_position
-          PUBMED
-          ALLELE_NUM
-          Feature_type
-          GMAF
-          HGNC_ID
-          PHENO
-          LoF_info
-          SWISSPROT
-          EXON
-          EUR_MAF
-          Consequence
-          Protein_position
-          Gene
-          STRAND
-          DISTANCE
-          EA_MAF
-          SYMBOL_SOURCE
-          Amino_acids
-          TREMBL
-          CLIN_SIG
-          SAS_MAF
-          MINIMISED
-          HGVS_OFFSET
-          ASN_MAF
-          BIOTYPE
-          context
-          SOMATIC
-          AMR_MAF
-          CANONICAL
-        }
-      }
+      ${variantsQuery.join(' ')}
     }
   }`
   return new Promise((resolve, reject) => {
@@ -142,8 +148,9 @@ class VariantTrackExample extends Component {
     padding: 75,
     markerType: 'tick',
     testGenes: TEST_GENES,
+    consequence: 'lof',
     datasets: [
-      'exacv1',
+      // 'exacv1',
       'exome',
       'genome',
     ],
@@ -161,7 +168,11 @@ class VariantTrackExample extends Component {
   }
 
   fetchData = () => {
-    genericTableFetch(this.state.currentGene, this.state.currentDataset).then((data) => {
+    consequenceFetch(
+      this.state.currentGene,
+      this.state.datasets,
+      this.state.consequence,
+    ).then((data) => {
       // console.log(data)
       this.setState({ geneData: data })
       this.setState({ hasData: true })
@@ -200,12 +211,41 @@ class VariantTrackExample extends Component {
       return <p className={css.cool}>Loading!</p>
     }
 
-    const { gene_name, variants } = this.state.geneData
+    const { gene_name, genome_variants, exome_variants } = this.state.geneData
+
+    const combineFields = {
+      constantFields: [
+        'chrom',
+        'pos',
+        'rsid',
+        'vep_annotations',
+        'variant_id',
+      ],
+      sumFields: [
+        'allele_count',
+        'allele_num',
+      ],
+      nestedSumFields: [],
+      uniqueFields: ['allele_count', 'allele_num', 'filter'],
+    }
+
+    const addDatasetLabel = (variants, label) => variants.map(v => ({ ...v, dataset: label }))
+
+    const combinedVariants = combineDataForTable(
+      [
+        ...addDatasetLabel(genome_variants, 'genome'),
+        ...addDatasetLabel(exome_variants, 'exome'),
+      ],
+      combineFields,
+    )
+
+    console.log(combinedVariants)
+
     const geneExons = this.state.geneData.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
 
     const canonicalExons = this.state.geneData.transcript.exons
-    const variantsProcessed = processVariantsList(variants)
+    const variantsProcessed = processVariantsList(combinedVariants)
     // console.log('proc var', variantsProcessed)
     const regionAttributesConfig = {
       CDS: {

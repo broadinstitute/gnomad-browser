@@ -2,7 +2,6 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable consistent-return */
 
-
 import R from 'ramda'
 
 const add = (next, variant, field) => {
@@ -18,7 +17,7 @@ const addNested = (next, variant, field) => {
   if (!next[field]) return variant[field]
   return keys.reduce((acc, key) => ({
     ...acc,
-    [key]: next[field][key] + variant[field][key]
+    [key]: next[field][key] + variant[field][key],
   }), {})
 }
 
@@ -34,7 +33,7 @@ const addNested = (next, variant, field) => {
  * @returns {object} variantsCombined indexed by variant_id
 */
 
-const combineVariantData = R.curry((fields, variants) => R.reduce((acc, variant) => {
+export const combineVariantData = R.curry((fields, variants) => R.reduce((acc, variant) => {
   const { variant_id } = variant
   const next = { ...acc[variant_id] }
   fields.constantFields.forEach(field =>
@@ -51,11 +50,11 @@ const combineVariantData = R.curry((fields, variants) => R.reduce((acc, variant)
   }
   next[variant.dataset] = fields.uniqueFields.reduce((acc, field) => ({
     ...acc,
-    [field]: variant[field]
+    [field]: variant[field],
   }), {})
   next.all = fields.uniqueFields.reduce((acc, field) => ({
     ...acc,
-    [field]: next[field]
+    [field]: next[field],
   }), {})
   return {
     ...acc,
@@ -63,4 +62,35 @@ const combineVariantData = R.curry((fields, variants) => R.reduce((acc, variant)
   }
 }, {})(variants))
 
-export default combineVariantData
+const convertToList = mergedVariants => Object.keys(mergedVariants).map(v => mergedVariants[v])
+
+const addQualityResults = R.map((variant) => {
+  const results = variant.datasets.slice(1, variant.datasets.length).map(dataset => ({
+    dataset,
+    filter: variant[dataset].filter,
+  }))
+  const resultList = R.pluck('filter', results)
+  let pass
+  if (R.all(result => result === 'PASS', resultList)) {
+    pass = 'all'
+  } else if ((R.none(result => result === 'PASS', resultList))) {
+    pass = 'none'
+  } else {
+    pass = results.find(result => result.filter === 'PASS').dataset
+  }
+  return {
+    ...variant,
+    pass,
+  }
+})
+
+export const combineDataForTable = (
+  variants,
+  fields,
+) => {
+  return R.pipe(
+    combineVariantData(fields),
+    convertToList,
+    addQualityResults,
+  )(variants)
+}
