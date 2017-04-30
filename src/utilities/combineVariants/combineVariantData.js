@@ -62,7 +62,8 @@ export const combineVariantData = R.curry((fields, variants) => R.reduce((acc, v
   }
 }, {})(variants))
 
-const convertToList = mergedVariants => Object.keys(mergedVariants).map(v => mergedVariants[v])
+const convertToList = mergedVariants =>
+  Object.keys(mergedVariants).map(v => mergedVariants[v]).sort((a, b) => a.pos - b.pos)
 
 const addQualityResults = R.map((variant) => {
   const results = variant.datasets.slice(1, variant.datasets.length).map(dataset => ({

@@ -95,6 +95,7 @@ export const consequenceFetch = (geneName, datasets, consequence) => {
       allele_count
       allele_num
       allele_freq
+      hom_count
       vep_annotations ${vepFields}
     }
   `)
@@ -268,9 +269,10 @@ class dbLofGenePageComponents extends Component {
       sumFields: [
         'allele_count',
         'allele_num',
+        'hom_count',
       ],
       nestedSumFields: [],
-      uniqueFields: ['allele_count', 'allele_num', 'filter'],
+      uniqueFields: ['allele_count', 'allele_num', 'hom_count', 'filter'],
     }
 
     const addDatasetLabel = (variants, label) => variants.map(v => ({ ...v, dataset: label }))
@@ -317,12 +319,14 @@ class dbLofGenePageComponents extends Component {
     const tableDataConfig = {
       fields: [
         { dataKey: 'variant_id', title: 'Variant ID', dataType: 'variantId', width: 200 },
+        { dataKey: 'datasets', title: 'Source', dataType: 'datasets', width: 75 },
         // { dataKey: 'rsid', title: 'RSID', dataType: 'string', width: 100 },
         { dataKey: 'consequence', title: 'Consequence', dataType: 'string', width: 200 },
         // { dataKey: 'filter', title: 'Filter', dataType: 'filter', width: 100 },
         { dataKey: 'allele_count', title: 'AC', dataType: 'integer', width: 50 },
         { dataKey: 'allele_num', title: 'AN', dataType: 'integer', width: 75 },
         { dataKey: 'allele_freq', title: 'AF', dataType: 'float', width: 75 },
+        { dataKey: 'hom_count', title: 'Hom', dataType: 'integer', width: 75 },
       ],
     }
 

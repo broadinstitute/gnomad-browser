@@ -32,12 +32,48 @@ const specialCellStyles = {
   variantId: {
     ...normalCellStyles.string,
   },
+  datasets: {
+    ...normalCellStyles.string,
+  },
 }
 
 const tableCellStyles = {
   ...normalCellStyles,
   ...specialCellStyles,
 }
+
+const datasetConfig = {
+  exome: { color: 'rgba(70, 130, 180, 0.9)', abbreviation: 'E', border: '1px solid #000' },
+  exomeFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E', border: '1px dashed #000' },
+  genome: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G', border: '1px solid #000' },
+  genomeFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G', border: '1px dashed #000' },
+}
+const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
+  if (dataset === 'all') return
+  const { filter } = dataRow[dataset]
+  let border
+  let backgroundColor
+  if (filter !== 'PASS') {
+    border = datasetConfig[`${dataset}Filtered`].border
+    backgroundColor = datasetConfig[`${dataset}Filtered`].color
+  } else {
+    border = datasetConfig[dataset].border
+    backgroundColor = datasetConfig[dataset].color
+  }
+  return (
+    <span
+      key={`${dataset}${index}`}
+      style={{
+        border,
+        marginLeft: 10,
+        padding: '1px 4px 1px 4px',
+        backgroundColor,
+      }}
+    >
+      {datasetConfig[dataset].abbreviation}
+    </span>
+  )
+})
 
 const getFilterBackgroundColor = (filter) => {
   switch (filter) {
@@ -126,6 +162,15 @@ const getDataCell = (field, dataRow, i) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatVariantId(dataRow[dataKey])}
+        </div>
+      )
+    case 'datasets':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatDatasets(dataRow)}
         </div>
       )
     default:
