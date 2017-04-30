@@ -9,7 +9,9 @@ import {
 } from 'graphql'
 
 import coverageType, { lookupCoverageByStartStop } from './coverage'
-import variantType, { lookupVariantsByGeneId } from './variant'
+import variantType, {
+  lookupVariantsByGeneId,
+} from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
@@ -52,18 +54,21 @@ const geneType = new GraphQLObjectType({
     },
     exome_variants: {
       type: new GraphQLList(variantType),
+      args: { consequence: { type: GraphQLString } },
       resolve: (obj, args, ctx) =>
-          lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id),
+          lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id, args.consequence),
     },
     genome_variants: {
       type: new GraphQLList(variantType),
+      args: { consequence: { type: GraphQLString } },
       resolve: (obj, args, ctx) =>
-        lookupVariantsByGeneId(ctx.database.gnomad, 'genome_variants', obj.gene_id),
+        lookupVariantsByGeneId(ctx.database.gnomad, 'genome_variants', obj.gene_id, args.consequence),
     },
     exacv1_variants: {
       type: new GraphQLList(variantType),
+      args: { consequence: { type: GraphQLString } },
       resolve: (obj, args, ctx) =>
-        lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id),
+        lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id, args.consequence),
     },
     meta_schizophrenia_variants: {
       type: new GraphQLList(metaVariantType),

@@ -15,6 +15,8 @@ import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
 import mnpType from './mnp'
 
+import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
+
 const variantType = new GraphQLObjectType({
   name: 'Variant',
   fields: () => ({
@@ -29,6 +31,7 @@ const variantType = new GraphQLObjectType({
     allele_freq: { type: GraphQLFloat },
     allele_num: { type: GraphQLInt },
     alt: { type: GraphQLString },
+
     an_female: { type: GraphQLString }, // TODO: should be Int
     an_male: { type: GraphQLString }, // TODO: should be Int
     // category: { type: GraphQLString },
@@ -84,15 +87,28 @@ export const lookupVariantRsid = (db, collection, rsid) => {
   return db.collection(collection).findOne({ rsid })
 }
 
-export const lookupVariantsByGeneId = (db, collection, gene_id) =>
-  db.collection(collection).find({ genes: gene_id }).toArray()
+export const lookupVariantsByGeneId = (db, collection, gene_id, consequence) => {
+  if (consequence) {
+    return db.collection(collection).find({
+      genes: gene_id,
+      vep_annotations: {
+        '$elemMatch': {
+          'Consequence': {
+            '$in': CATEGORY_DEFINITIONS[consequence],
+          },
+        },
+      },
+    }).toArray()
+  }
+  return db.collection(collection).find({ genes: gene_id }).toArray()
+}
 
 export const lookupVariantsByTranscriptId = (db, collection, transcript_id) =>
   db.collection(collection).find({ transcripts: transcript_id }).toArray()
 
 export const lookupVariantsByStartStop = (db, collection, xstart, xstop) =>
   db.collection(collection).find(
-    { xpos: { '$lte': Number(xstart), '$gte': Number(xstop) } }
+    { xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }
   ).toArray()
 
 export const variantResolver = (obj, args, ctx) => {  // eslint-disable-line
@@ -101,7 +117,7 @@ export const variantResolver = (obj, args, ctx) => {  // eslint-disable-line
   if (args.source === 'genome' || args.source === 'exome') {
     database = ctx.database.gnomad
     collection = args.source === 'genome' ? 'genome_variants' : 'exome_variants'
-  } else {
+  } else if (args.source === 'exacv1') {
     database = ctx.database.exacv1
     collection = 'variants'
   }

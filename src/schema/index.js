@@ -1,7 +1,7 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLInt,
+  GraphQLFloat,
   GraphQLString,
   GraphQLNonNull,
 } from 'graphql'
@@ -35,6 +35,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
+        filter: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_name) {
@@ -61,8 +62,8 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up variant data by start/stop. Example: (xstart: 1055530526, xstop: 1055505222).',
       type: regionType,
       args: {
-        xstart: { type: new GraphQLNonNull(GraphQLInt) },
-        xstop: { type: new GraphQLNonNull(GraphQLInt) },
+        xstart: { type: new GraphQLNonNull(GraphQLFloat) },
+        xstop: { type: new GraphQLNonNull(GraphQLFloat) },
       },
       resolve: (obj, args) => ({ xstart: args.xstart, xstop: args.xstop }),
     },
