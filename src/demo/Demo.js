@@ -19,7 +19,7 @@ import ClinvarVariantsDemo from '../Tracks/GenericTableTrack/ClinVar.example.js'
 import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
 import VDSPage from '../VDS/index.js'
 import InfiniteDemo from '../InfiniteTable/infinite.example.js'
-import VariantDemo from '../Tracks/VariantTrack/VariantTrack.example.js'
+import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example.js'
 
 import css from './styles.css'
 
@@ -153,10 +153,10 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/variant-track'}
+            to={'/db-lof-gene-page-components'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Variant track</MenuItem>
+            <MenuItem>dbLoF gene page components</MenuItem>
           </NavLink>
         </Drawer>
       </div>
@@ -181,7 +181,7 @@ const Demo = () =>
         <Route exact path={'/vep'} component={VepTrackDemo} />
         <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />
         <Route exact path={'/infinite'} component={InfiniteDemo} />
-        <Route exact path={'/variant-track'} component={VariantDemo} />
+        <Route exact path={'/db-lof-gene-page-components'} component={DbLofGenePageDemo} />
         <Route
           exact
           path={'/graphiql'}

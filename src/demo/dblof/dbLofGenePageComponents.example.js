@@ -11,8 +11,9 @@ import { groupExonsByTranscript, combineDataForTable } from 'utilities'
 import { processVariantsList } from 'utilities/exalt/process'
 
 import RegionViewer from '../../RegionViewer'
-import TranscriptTrack from '../TranscriptTrack'
-import VariantTrack from './index'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import VariantTrack from '../../Tracks/VariantTrack'
+import InfiniteTable from '../../InfiniteTable'
 
 import { TEST_GENES } from '../../constants'
 
@@ -138,7 +139,7 @@ export const consequenceFetch = (geneName, datasets, consequence) => {
   })
 }
 
-class VariantTrackExample extends Component {
+class dbLofGenePageComponents extends Component {
   state = {
     circleRadius: 5,
     circleStrokeWidth: 1,
@@ -272,13 +273,13 @@ class VariantTrackExample extends Component {
 
     const tableDataConfig = {
       fields: [
-        { dataKey: 'variant_id', title: 'Variant ID', dataType: 'string' },
-        { dataKey: 'rsid', title: 'RSID', dataType: 'string' },
-        { dataKey: 'consequence', title: 'Consequence', dataType: 'string' },
-        { dataKey: 'filter', title: 'Filter', dataType: 'filter' },
-        { dataKey: 'allele_count', title: 'AC', dataType: 'integer' },
-        { dataKey: 'allele_num', title: 'AN', dataType: 'integer' },
-        { dataKey: 'allele_freq', title: 'AF', dataType: 'float' },
+        { dataKey: 'variant_id', title: 'Variant ID', dataType: 'variantId', width: 200 },
+        // { dataKey: 'rsid', title: 'RSID', dataType: 'string', width: 100 },
+        { dataKey: 'consequence', title: 'Consequence', dataType: 'string', width: 200 },
+        // { dataKey: 'filter', title: 'Filter', dataType: 'filter', width: 100 },
+        { dataKey: 'allele_count', title: 'AC', dataType: 'integer', width: 50 },
+        { dataKey: 'allele_num', title: 'AN', dataType: 'integer', width: 75 },
+        { dataKey: 'allele_freq', title: 'AF', dataType: 'float', width: 75 },
       ],
     }
 
@@ -309,7 +310,7 @@ class VariantTrackExample extends Component {
 
     return (
       <div className={css.page}>
-        <h1>Variant track demo</h1>
+        <h1>dbLof gene page components</h1>
         <div className={css.menus}>
           <p>Gene</p>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
@@ -361,9 +362,17 @@ class VariantTrackExample extends Component {
           />
           {consequenceTracks}
         </RegionViewer>
+        <InfiniteTable
+          title={`lof variants`}
+          height={700}
+          width={1100}
+          tableConfig={tableDataConfig}
+          tableData={variantsProcessed}
+          remoteRowCount={variantsProcessed.length}
+        />
       </div>
     )
   }
 }
 
-export default VariantTrackExample
+export default dbLofGenePageComponents

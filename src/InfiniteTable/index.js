@@ -140,20 +140,25 @@ const getDataCell = (field, dataRow, i) => {
   }
 }
 
-const getDataRow = (tableConfig, dataRow, i) => {
+const getDataRow = (tableConfig, dataRow, i, showIndex) => {
   const cells = tableConfig.fields.map((field, i) =>
     getDataCell(field, dataRow, i))
+
+  const indexCell = (
+    <div
+      style={{
+        ...abstractCellStyle,
+        width: 10,
+      }}
+      key={`cell-index-${i}`}
+    >
+      {i}
+    </div>
+  )
+
   return (
     <div className={css.row} key={`row-${i}`}>
-      <div
-        style={{
-          ...abstractCellStyle,
-          width: 10,
-        }}
-        key={`cell-index-${i}`}
-      >
-        {i}
-      </div>
+      {showIndex && indexCell}
       {cells}
     </div>
   )
@@ -180,12 +185,15 @@ const InfiniteTable = ({
   height,
   tableConfig,
   tableData,
+  loadLookAhead,
   loadMoreRows,
   remoteRowCount,
+  overscan,
+  showIndex,
 }) => {
   const headers = tableConfig.fields.map(field => getHeaderCell(field))
 
-  const isRowLoaded = ({ index }) => !!tableData[index + 1000]
+  const isRowLoaded = ({ index }) => !!tableData[index + loadLookAhead]
 
   const rowRenderer = ({ key, index, style }) => {
     return (
@@ -193,27 +201,31 @@ const InfiniteTable = ({
         key={key}
         style={style}
       >
-        {getDataRow(tableConfig, tableData[index], index)}
+        {getDataRow(tableConfig, tableData[index], index, showIndex)}
       </div>
     )
   }
+
+  const indexHeader = (
+    <div
+      key={'index-header-cell'}
+      style={{
+        ...abstractCellStyle,
+        marginBottom: 5,
+        width: 10,
+        borderBottom: '1px solid #000',
+      }}
+    >
+      ix
+    </div>
+  )
 
   return (
     <div className={css.track}>
       <div style={{ width: 1100 }}>
         <h3>{title}</h3>
         <div className={css.headers}>
-          <div
-            key={`index-header-cell`}
-            style={{
-              ...abstractCellStyle,
-              marginBottom: 5,
-              width: 10,
-              borderBottom: '1px solid #000',
-            }}
-          >
-            ix
-          </div>
+          {showIndex && indexHeader}
           {headers}
         </div>
         <InfiniteLoader
@@ -229,7 +241,7 @@ const InfiniteTable = ({
               rowCount={remoteRowCount}
               rowHeight={30}
               rowRenderer={rowRenderer}
-              overscanRowCount={60}
+              overscanRowCount={overscan}
               width={width}
             />
           )}
@@ -243,7 +255,15 @@ InfiniteTable.propTypes = {
   width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
   tableData: PropTypes.array.isRequired,
-  loadMoreRows: PropTypes.func.isRequired,
+  loadMoreRows: PropTypes.func,
+  overscan: PropTypes.number,
+  showIndex: PropTypes.bool,
+}
+InfiniteTable.defaultProps = {
+  loadMoreRows: () => { },
+  overscan: 100,
+  loadLookAhead: 0,
+  showIndex: false,
 }
 
 export default InfiniteTable
