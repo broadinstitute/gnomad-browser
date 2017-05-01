@@ -8,6 +8,7 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 import RefreshIndicator from 'material-ui/RefreshIndicator'
+import Checkbox from 'material-ui/Checkbox'
 
 import { groupExonsByTranscript, combineDataForTable } from 'utilities'
 import { processVariantsList } from 'utilities/exalt/process'
@@ -155,6 +156,7 @@ class dbLofGenePageComponents extends Component {
     testGenes: TEST_GENES,
     consequence: 'lof',
     variantYPosition: 'center',
+    tracksSplit: false,
     datasets: [
       // 'exacv1',
       'exome',
@@ -223,6 +225,10 @@ class dbLofGenePageComponents extends Component {
   setTrackHeight = (event, newValue) => {
     const trackHeight = Math.floor(300 * newValue)
     this.setState({ trackHeight })
+  }
+
+  handleSplitConsequences = (event, isInputChecked) => {
+    this.setState({ tracksSplit: isInputChecked })
   }
 
   render() {
@@ -341,10 +347,10 @@ class dbLofGenePageComponents extends Component {
 
     const consequenceCategories = [
       // { annotation: 'transcript_ablation', colour: '#ed2024' },
-      { annotation: 'splice_acceptor_variant', colour: '#f26424' },
-      { annotation: 'splice_donor_variant', colour: '#f26424' },
-      { annotation: 'stop_gained', colour: '#ed2024' },
-      { annotation: 'frameshift_variant', colour: '#85489c' },
+      { annotation: 'splice_acceptor_variant', colour: '#757575' },
+      { annotation: 'splice_donor_variant', colour: '#757575' },
+      { annotation: 'stop_gained', colour: '#757575' },
+      { annotation: 'frameshift_variant', colour: '#757575' },
     ]
 
     const markerConfigCircle = {
@@ -376,7 +382,7 @@ class dbLofGenePageComponents extends Component {
       af: markerConfigAF,
     }
 
-    const consequenceTracks = consequenceCategories.map((consequence, index) => {
+    const splitTracks = consequenceCategories.map((consequence, index) => {
       return (
         <VariantTrack
           key={`${consequence.annotation}-${index}`}
@@ -390,6 +396,17 @@ class dbLofGenePageComponents extends Component {
         />
       )
     })
+
+    const singleTrack = (
+      <VariantTrack
+        key={'lof-combined'}
+        title={'vep lof'}
+        height={this.state.trackHeight}
+        color={'#757575'}
+        markerConfig={markerConfig[this.state.markerType]}
+        variants={variantsProcessed}
+      />
+    )
 
     console.log(variantsProcessed)
 
@@ -435,6 +452,11 @@ class dbLofGenePageComponents extends Component {
               <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
             )}
           </DropDownMenu>
+          <Checkbox
+            label="Split consequences"
+            onCheck={this.handleSplitConsequences}
+            style={{ display: 'flex', width: 200, height: 25 }}
+          />
           <p>Track height</p>
           <Slider
             style={{
@@ -461,11 +483,11 @@ class dbLofGenePageComponents extends Component {
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
-          {consequenceTracks}
+        {this.state.tracksSplit ? splitTracks : singleTrack}
         </RegionViewer>
         <InfiniteTable
-          title={`lof variants`}
-          height={700}
+          title={'lof variants'}
+          height={600}
           width={1100}
           tableConfig={tableDataConfig}
           tableData={variantsProcessed}
