@@ -391,6 +391,8 @@ class dbLofGenePageComponents extends Component {
       )
     })
 
+    console.log(variantsProcessed)
+
     return (
       <div className={css.page}>
         <h1>dbLof gene page components</h1>

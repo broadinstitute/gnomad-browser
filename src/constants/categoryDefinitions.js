@@ -34,7 +34,7 @@ var csq_order = [
   'intergenic_variant',
   'intron_variant',
   'splice_region_variant',
-  ''
+  'upstream_gene_variant',
 ]
 
 const CATEGORY_DEFINITIONS = {

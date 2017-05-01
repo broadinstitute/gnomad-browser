@@ -17,6 +17,8 @@ export const POPULATIONS = [
   'European (Finnish)',
 ]
 
+import { CATEGORY_DEFINITIONS } from '../../constants'
+
 const isChange = R.test(/:[c]./)
 const isProtein = R.test(/:[p]./)
 
@@ -158,10 +160,21 @@ export const maximumObjectProperty = R.pipe(
   R.head,
 )
 
+// :: { k: v } -> k with max v
+export const getMostSevereConsequence = (consequences) => {
+  const { all } = CATEGORY_DEFINITIONS
+  const mostSevereIndex = Object.keys(consequences).reduce((acc, consequence) => {
+    const severity = all.indexOf(consequence)
+    if (severity < acc && severity !== -1) return severity
+    return acc
+  }, all.length)
+  return all[mostSevereIndex]
+}
+
 // :: Variant -> String
 export const getMaximumConsequence = R.pipe(
   getConsequences,
-  maximumObjectProperty,
+  getMostSevereConsequence,
 )
 
 // :: Variant -> { Object }

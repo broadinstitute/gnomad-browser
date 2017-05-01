@@ -123,7 +123,6 @@ class InfiniteTableExample extends Component {
     showTracks: false,
     fetchTimes: [],
     variantCounts: [],
-    cumulativeVariantCounts: [],
     totalTimes: [],
     datasets: [
       'exacv1',
@@ -209,10 +208,6 @@ class InfiniteTableExample extends Component {
           totalTime: this.state.totalTime + 1,
           latestFetch: totalVariantCount,
           variantCounts: [...this.state.variantCounts, totalVariantCount],
-          cumulativeVariantCounts: [
-            ...this.state.cumulativeVariantCounts,
-            this.state.cumulativeVariantCounts + totalVariantCount,
-          ],
           fetchTimes: [...this.state.fetchTimes, time],
           totalTimes: [...this.state.totalTimes, this.state.totalTime],
           variantData: {
@@ -253,12 +248,10 @@ class InfiniteTableExample extends Component {
   }
 
   handleChange = (event, index, value) => {
-    // console.log(value)
     this.setState({ currentGene: value })
   }
 
   handleDatasetChange = (event, index, value) => {
-    // console.log(value)
     this.setState({ currentDataset: value })
   }
 
@@ -283,7 +276,6 @@ class InfiniteTableExample extends Component {
   }
 
   handleShowTracks = (event, isInputChecked) => {
-    console.log(isInputChecked)
     this.setState({ showTracks: isInputChecked })
   }
 
@@ -439,20 +431,20 @@ class InfiniteTableExample extends Component {
 
     const variantTracks = [
       <VariantTrack
+        key={'track1'}
         title={'exome variants'}
         height={this.state.trackHeight}
         markerConfig={markerConfig[this.state.markerType]}
         variants={exome_variants}
       />,
       <VariantTrack
+        key={'track2'}
         title={'genome variants'}
         height={this.state.trackHeight}
         markerConfig={markerConfig[this.state.markerType]}
         variants={genome_variants}
       />,
     ]
-
-    console.log(this.state)
 
     return (
       <div className={css.page}>
@@ -535,18 +527,10 @@ class InfiniteTableExample extends Component {
           datay={this.state.variantCounts}
           ytitle={'Number of variants'}
           xtitle={'Fetch attempt'}
-          width={1000}
+          xticks={false}
+          width={1100}
           height={300}
         />
-      {/*<LineGraph
-          title={'Number of variants per fetch'}
-          datax={this.state.totalTimes}
-          datay={this.state.cumulativeVariantCounts}
-          ytitle={'Number of variants'}
-          xtitle={'Fetch attempt'}
-          width={1000}
-          height={300}
-        />*/}
         <button
           onClick={() => {
             this.fetchMoreData()
@@ -595,7 +579,7 @@ class InfiniteTableExample extends Component {
           />
         </RegionViewer>
         <InfiniteTable
-          title={`${genome_variants.length} ${this.state.currentDataset} ${gene_name} variants, latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
+          title={`${genome_variants.length + exome_variants.length} latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
           height={700}
           width={1100}
           tableConfig={tableDataConfig}

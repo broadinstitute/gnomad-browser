@@ -18,8 +18,9 @@ const BarGraph = ({
   xtitle,
   width,
   height,
+  xticks,
 }) => {
-  const padding = 30
+  const padding = 50
 
   const yscale = scaleLinear()
     .domain([0, max(datay) + (max(datay) * 0.2)])
@@ -60,11 +61,11 @@ const BarGraph = ({
   const Ylabel = () => (
     <text
       className={css.ylabel}
-      x={10}
+      x={5}
       y={height / 2}
       transform={`rotate(270 10 ${height / 2})`}
     >
-      Number of fruits
+      {ytitle}
     </text>
   )
   const Xlabel = () => (
@@ -73,7 +74,7 @@ const BarGraph = ({
       x={width / 2}
       y={height - 5}
     >
-      {ytitle}
+      {xtitle}
     </text>
   )
   const Yaxis = () => (
@@ -126,7 +127,7 @@ const BarGraph = ({
       <g>
         {datax.map((x, i) => {
           return (
-            <g key={x}>
+            <g key={`xtick-${x}-${i}`}>
               <line
                 x1={padding + xscale(i)}
                 x2={padding + xscale(i)}
@@ -139,7 +140,7 @@ const BarGraph = ({
                 x={padding + xscale(i)}
                 y={height - padding + 10}
               >
-                {x}
+                {xticks && x}
               </text>
             </g>
           )
@@ -158,7 +159,7 @@ const BarGraph = ({
           height={yscale(value)}
           fill={'#0D47A1'}
           stroke={'black'}
-          key={value}
+          key={`bar-${value}-${i}`}
         />
       ))}
     </g>
