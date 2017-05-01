@@ -29,7 +29,6 @@ export default [
   'EBP',
   'EFNB1',
   'FLNA',
-  'FMR1',
   'GRIA3',
   'LAMP2',
   'NSDHL',
@@ -104,7 +103,5 @@ export default [
   'PGK1',
   'KAL1',
   'CHM',
-  'CNKSR2',
   'TBX22',
-  'WDR45',
 ]

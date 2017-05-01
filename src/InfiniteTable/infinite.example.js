@@ -8,13 +8,18 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 import RefreshIndicator from 'material-ui/RefreshIndicator'
+import Checkbox from 'material-ui/Checkbox'
 
 import { groupExonsByTranscript } from 'utilities'
+
+import { TEST_GENES } from '../constants'
 
 import RegionViewer from '../RegionViewer'
 import TranscriptTrack from '../Tracks/TranscriptTrack'
 import VariantTrack from '../Tracks/VariantTrack'
 import InfiniteTable from './index'
+import BarGraph from '../Plots/BarGraph'
+import LineGraph from '../Plots/LineGraph'
 
 import css from './styles.css'
 
@@ -98,8 +103,8 @@ export const regionFetch = (dataset, xstart, xstop) => {
 
 class InfiniteTableExample extends Component {
   state = {
-    circleRadius: 1,
-    circleStrokeWidth: 0,
+    markerWidth: 1,
+    markerStrokeWidth: 0,
     hasData: false,
     currentGene: 'PCSK9',
     currentDataset: 'genome',
@@ -111,23 +116,15 @@ class InfiniteTableExample extends Component {
     latestFetch: 0,
     totalTime: 0,
     timer: 0,
-    testGenes: [
-      'PCSK9',
-      'ZNF658',
-      'MYH9',
-      'MYH7',
-      'FMR1',
-      'BRCA2',
-      'CFTR',
-      'FBN1',
-      'TP53',
-      'SCN5A',
-      'MYBPC3',
-      'ARSF',
-      'CD33',
-      'DMD',
-      'TTN',
-    ],
+    markerType: 'circle',
+    variantYPosition: 'random',
+    trackHeight: 200,
+    testGenes: TEST_GENES,
+    showTracks: false,
+    fetchTimes: [],
+    variantCounts: [],
+    cumulativeVariantCounts: [],
+    totalTimes: [],
     datasets: [
       'exacv1',
       'exome',
@@ -144,23 +141,20 @@ class InfiniteTableExample extends Component {
       previousState.currentDataset !== this.state.currentDataset) {
       this.fetchData()
     }
-    // if (this.state.variantData.variants.length >= this.state.totalVariantCount) {
-    //   this.state.interval = null
-    // }
   }
 
   updateGeneSettings = (gene) => {
     switch (gene) {
       case 'TTN':
         return {
-          circleRadius: 1,
-          circleStrokeWidth: 0,
+          markerWidth: 1,
+          markerStrokeWidth: 0,
           fetchingWindow: 1000,
         }
       default:
         return {
-          circleRadius: 3,
-          circleStrokeWidth: 1,
+          markerWidth: 3,
+          markerStrokeWidth: 1,
           fetchingWindow: 2000,
         }
     }
@@ -171,14 +165,14 @@ class InfiniteTableExample extends Component {
       const regionStart = geneData.xstart
       const regionStop = geneData.xstart + this.state.fetchingWindow
       const {
-        circleRadius,
-        circleStrokeWidth,
+        markerWidth,
+        markerStrokeWidth,
         fetchingWindow,
       } = this.updateGeneSettings(this.state.currentGene)
       this.setState({
         fetchingWindow,
-        circleRadius,
-        circleStrokeWidth,
+        markerWidth,
+        markerStrokeWidth,
         currentStart: regionStart,
         currentStop: regionStop,
       })
@@ -205,21 +199,30 @@ class InfiniteTableExample extends Component {
       newStop,
     )
       .then((variantData) => {
+        const { exome_variants, genome_variants } = variantData
+        const totalVariantCount = exome_variants.length + genome_variants.length
         this.setState({
           isFetching: false,
           currentStart: newStart,
           currentStop: newStop,
           timer: time,
-          totalTime: window.totalTime,
-          latestFetch: variantData.exome_variants.length + variantData.genome_variants.length,
+          totalTime: this.state.totalTime + 1,
+          latestFetch: totalVariantCount,
+          variantCounts: [...this.state.variantCounts, totalVariantCount],
+          cumulativeVariantCounts: [
+            ...this.state.cumulativeVariantCounts,
+            this.state.cumulativeVariantCounts + totalVariantCount,
+          ],
+          fetchTimes: [...this.state.fetchTimes, time],
+          totalTimes: [...this.state.totalTimes, this.state.totalTime],
           variantData: {
             exome_variants: [
               ...this.state.variantData.exome_variants,
-              ...variantData.exome_variants,
+              ...exome_variants,
             ],
             genome_variants: [
               ...this.state.variantData.genome_variants,
-              ...variantData.genome_variants,
+              ...genome_variants,
             ],
           },
         })
@@ -232,13 +235,13 @@ class InfiniteTableExample extends Component {
   }
 
   fetchMoreDataUntilDone = () => {
-    window.totalTime = 0
+    // window.totalTime = 0
     const interval = setInterval(this.fetchMoreData, this.state.fetchFrequency)
-    const totalTimer =
-      setInterval(() => { window.totalTime += 1 }, 1)
+    // const totalTimer =
+    //   setInterval(() => { window.totalTime += 1 }, 1)
     this.setState({
       interval,
-      totalTimer,
+      // totalTimer,
     })
   }
 
@@ -259,20 +262,42 @@ class InfiniteTableExample extends Component {
     this.setState({ currentDataset: value })
   }
 
-  handleCircleRadiusChange = (event, index, value) => {
-    this.setState({ circleRadius: value })
+  handlMarkerWidthChange = (event, index, value) => {
+    this.setState({ markerWidth: value })
   }
 
-  handleCircleStrokeWidthChange = (event, index, value) => {
-    this.setState({ circleStrokeWidth: value })
+  handleMarkerStrokeWidthChange = (event, index, value) => {
+    this.setState({ markerStrokeWidth: value })
+  }
+
+  handleMarkerTypeChange = (event, index, value) => {
+    this.setState({ markerType: value })
+  }
+
+  handleVariantYChange = (event, index, value) => {
+    this.setState({ variantYPosition: value })
   }
 
   handleFetchWindowChange = (event, index, value) => {
     this.setState({ fetchingWindow: value })
   }
 
+  handleShowTracks = (event, isInputChecked) => {
+    console.log(isInputChecked)
+    this.setState({ showTracks: isInputChecked })
+  }
+
   reset = () => {
+    this.setState({
+      variantCounts: [],
+      fetchTimes: [],
+     })
     this.fetchData()
+  }
+
+  setTrackHeight = (event, newValue) => {
+    const trackHeight = Math.floor(500 * newValue)
+    this.setState({ trackHeight })
   }
 
   setPadding = (event, newValue) => {
@@ -281,9 +306,47 @@ class InfiniteTableExample extends Component {
   }
 
   render() {
-    if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
-    }
+    const refreshIndicatorPage = (
+      <div
+        style={{
+          position: 'relative',
+          width: 100,
+        }}
+      >
+        <RefreshIndicator
+          size={100}
+          left={50}
+          top={200}
+          status={'loading'}
+          style={{
+            position: 'relative',
+          }}
+        />
+      </div>
+    )
+
+    const refreshIndicatorSmall = (
+      <div
+        style={{
+          display: 'flex',
+          position: 'relative',
+          width: 100,
+        }}
+      >
+        <RefreshIndicator
+          size={40}
+          left={10}
+          top={0}
+          status={'loading'}
+          style={{
+            position: 'relative',
+          }}
+        />
+      </div>
+    )
+
+    if (!this.state.hasData) return refreshIndicatorPage
+
     const { gene_name } = this.state.geneData
     const geneExons = this.state.geneData.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
@@ -337,6 +400,60 @@ class InfiniteTableExample extends Component {
       },
     }
 
+    const consequenceCategories = [
+      // { annotation: 'transcript_ablation', colour: '#ed2024' },
+      { annotation: 'splice_acceptor_variant', colour: '#f26424' },
+      { annotation: 'splice_donor_variant', colour: '#f26424' },
+      { annotation: 'stop_gained', colour: '#ed2024' },
+      { annotation: 'frameshift_variant', colour: '#85489c' },
+    ]
+
+    const markerConfigCircle = {
+      markerType: 'circle',
+      circleRadius: this.state.markerWidth,
+      circleStroke: 'black',
+      circleStrokeWidth: this.state.markerStrokeWidth,
+      yPositionSetting: this.state.variantYPosition,
+    }
+
+    const markerConfigTick = {
+      markerType: 'tick',
+      tickHeight: 3,
+      tickWidth: this.state.markerWidth,
+      tickStroke: 'black',
+      tickStrokeWidth: this.state.markerStrokeWidth,
+      yPositionSetting: this.state.variantYPosition,
+    }
+
+    const markerConfigAF = {
+      ...markerConfigCircle,
+      markerType: 'af',
+
+    }
+
+    const markerConfig = {
+      circle: markerConfigCircle,
+      tick: markerConfigTick,
+      af: markerConfigAF,
+    }
+
+    const variantTracks = [
+      <VariantTrack
+        title={'exome variants'}
+        height={this.state.trackHeight}
+        markerConfig={markerConfig[this.state.markerType]}
+        variants={exome_variants}
+      />,
+      <VariantTrack
+        title={'genome variants'}
+        height={this.state.trackHeight}
+        markerConfig={markerConfig[this.state.markerType]}
+        variants={genome_variants}
+      />,
+    ]
+
+    console.log(this.state)
+
     return (
       <div className={css.page}>
         <h1>Infinite scrolling demo</h1>
@@ -345,27 +462,6 @@ class InfiniteTableExample extends Component {
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
               <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
-            )}
-          </DropDownMenu>
-          {/*<p>Dataset</p>
-          <DropDownMenu value={this.state.currentDataset} onChange={this.handleDatasetChange}>
-            {this.state.datasets.map(dataset =>
-              <MenuItem key={`${dataset}-menu`} value={dataset} primaryText={dataset} />,
-            )}
-          </DropDownMenu>*/}
-          <p>Variant radius</p>
-          <DropDownMenu value={this.state.circleRadius} onChange={this.handleCircleRadiusChange}>
-            {[1, 2, 3, 4, 5].map(circleRadius =>
-              <MenuItem key={`${circleRadius}-menu`} value={circleRadius} primaryText={circleRadius} />,
-            )}
-          </DropDownMenu>
-          <p>Variant stroke</p>
-          <DropDownMenu
-            value={this.state.circleStrokeWidth}
-            onChange={this.handleCircleStrokeWidthChange}
-          >
-            {[0, 1, 2].map(circleStrokeWidth =>
-              <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
             )}
           </DropDownMenu>
           <p>fetch freq (ms)</p>
@@ -389,17 +485,68 @@ class InfiniteTableExample extends Component {
               <MenuItem key={`${window}-menu`} value={window} primaryText={window} />,
             )}
           </DropDownMenu>
-          {this.state.isFetching && (
-            <div style={refreshStyle.container}>
-              <RefreshIndicator
-                size={40}
-                left={10}
-                top={0}
-                status="loading"
-                style={refreshStyle.refresh}
-              />
-            </div>)}
+          <Checkbox
+            label="Variant traacks"
+            onCheck={this.handleShowTracks}
+            style={{
+              block: {
+                maxWidth: 250,
+              },
+            }}
+          />
+        {/* this.state.isFetching && refreshIndicatorSmall */}
         </div>
+        <div className={css.menus}>
+          <p>markerType</p>
+          <DropDownMenu value={this.state.markerType} onChange={this.handleMarkerTypeChange}>
+            {['circle', 'tick', 'af'].map(markerType =>
+              <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
+            )}
+          </DropDownMenu>
+          <p>Variant width</p>
+          <DropDownMenu value={this.state.markerWidth} onChange={this.handlMarkerWidthChange}>
+            {[1, 2, 3, 4, 5].map(markerWidth =>
+              <MenuItem key={`${markerWidth}-menu`} value={markerWidth} primaryText={markerWidth} />,
+            )}
+          </DropDownMenu>
+          <p>Variant stroke</p>
+          <DropDownMenu value={this.state.markerStrokeWidth} onChange={this.handleMarkerStrokeWidthChange}>
+            {[0, 1, 2].map(markerStrokeWidth =>
+              <MenuItem key={`${markerStrokeWidth}-menu`} value={markerStrokeWidth} primaryText={markerStrokeWidth} />,
+            )}
+          </DropDownMenu>
+          <p>Variant position</p>
+          <DropDownMenu value={this.state.variantYPosition} onChange={this.handleVariantYChange}>
+            {['random', 'center'].map(yPositionSetting =>
+              <MenuItem key={`${yPositionSetting}-menu`} value={yPositionSetting} primaryText={yPositionSetting} />,
+            )}
+          </DropDownMenu>
+          <p>Track height</p>
+          <Slider
+            style={{
+              width: 100,
+            }}
+            onChange={this.setTrackHeight}
+          />
+        </div>
+        <BarGraph
+          title={'Number of variants per fetch'}
+          datax={this.state.fetchTimes}
+          datay={this.state.variantCounts}
+          ytitle={'Number of variants'}
+          xtitle={'Fetch attempt'}
+          width={1000}
+          height={300}
+        />
+      {/*<LineGraph
+          title={'Number of variants per fetch'}
+          datax={this.state.totalTimes}
+          datay={this.state.cumulativeVariantCounts}
+          ytitle={'Number of variants'}
+          xtitle={'Fetch attempt'}
+          width={1000}
+          height={300}
+        />*/}
         <button
           onClick={() => {
             this.fetchMoreData()
@@ -441,22 +588,7 @@ class InfiniteTableExample extends Component {
           regionAttributes={regionAttributesConfig}
           padding={this.state.padding}
         >
-          <VariantTrack
-            title={'exome variants'}
-            height={200}
-            markerRadius={this.state.circleRadius}
-            markerStroke={'black'}
-            markerStrokeWidth={this.state.circleStrokeWidth}
-            variants={exome_variants}
-          />
-          <VariantTrack
-            title={'genome variants'}
-            height={200}
-            markerRadius={this.state.circleRadius}
-            markerStroke={'black'}
-            markerStrokeWidth={this.state.circleStrokeWidth}
-            variants={genome_variants}
-          />
+          {this.state.showTracks && variantTracks}
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}

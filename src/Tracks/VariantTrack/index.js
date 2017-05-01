@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
+import { scaleLog } from 'd3-scale'
 
 import css from './styles.css'
 
@@ -27,49 +28,79 @@ VariantAxis.propTypes = {
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
-const VariantCircle = ({
-  index,
+const VariantAlleleFrequency = ({
   xScale,
   offsetPosition,
   yPosition,
   color,
-  markerRadius,
-  markerStroke,
-  markerStrokeWidth,
+  // circleRadius,
+  circleStroke,
+  circleStrokeWidth,
+  variant,
+}) => {
+  const afScale =
+    scaleLog()
+      .domain([
+        0.00000660,
+        0.0001,
+      ])
+      .range([3, 7])
+
+  return (
+    <circle
+      className={css.point}
+      cx={xScale(offsetPosition)}
+      cy={yPosition}
+      r={afScale(variant.allele_freq)}
+      fill={color}
+      strokeWidth={circleStrokeWidth || 0}
+      stroke={circleStroke || 0}
+    />
+  )
+}
+
+const VariantCircle = ({
+  xScale,
+  offsetPosition,
+  yPosition,
+  color,
+  circleRadius,
+  circleStroke,
+  circleStrokeWidth,
 }) => {
   return (
     <circle
       className={css.point}
       cx={xScale(offsetPosition)}
       cy={yPosition}
-      r={markerRadius || 2}
+      r={circleRadius || 2}
       fill={color}
-      strokeWidth={markerStrokeWidth || 0}
-      stroke={markerStroke || 0}
+      strokeWidth={circleStrokeWidth || 0}
+      stroke={circleStroke || 0}
     />
   )
 }
 
 const VariantTick = ({
-  index,
   xScale,
   offsetPosition,
   yPosition,
   color,
-  markerRadius,
-  markerStroke,
-  markerStrokeWidth,
+  tickHeight,
+  tickWidth,
+  tickStroke,
+  tickStrokeWidth,
 }) => {
   return (
     <rect
       className={css.rect}
       x={xScale(offsetPosition)}
       y={yPosition}
-      width={markerRadius}
-      height={markerRadius * 2}
+      width={tickWidth}
+      height={tickHeight * 2}
       fill={color}
-      strokeWidth={markerStrokeWidth || 0}
-      stroke={markerStroke || 0}
+      strokeWidth={tickStrokeWidth || 0}
+      stroke={tickStroke || 0}
     />
   )
 }
@@ -77,6 +108,8 @@ const VariantTick = ({
 const getVariantMarker = (props) => {
   const { markerType, markerKey, ...rest } = props
   switch (markerType) {
+    case 'af':
+      return <VariantAlleleFrequency key={markerKey} {...rest} />
     case 'circle':
       return <VariantCircle key={markerKey} {...rest} />
     case 'tick':
@@ -87,7 +120,7 @@ const getVariantMarker = (props) => {
 }
 
 const setYPosition = (height, ySetting) => {
-  const yPad = 3
+  const yPad = 10
   const max = height - yPad
   const min = yPad
   switch (ySetting) {
@@ -107,8 +140,7 @@ const VariantTrack = ({
   leftPanelWidth,
   variants,
   positionOffset,
-  markerType,
-  yPositionSetting,
+  markerConfig,
   ...rest
 }) => {
   return (
@@ -124,19 +156,19 @@ const VariantTrack = ({
           height={height}
         >
           {variants.map((variant, index) => {
+            const { markerType, yPositionSetting } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
-            if (regionViewerAttributes === 0) {
-              return  // eslint-disable-line
-            }
+            if (regionViewerAttributes === 0) return  // eslint-disable-line
             const childProps = {
               index,
               ...regionViewerAttributes,
               ...rest,
-              markerType,
+              ...markerConfig,
               markerKey,
               yPosition,
+              variant,
             }
             return getVariantMarker(childProps)
           })}
@@ -153,14 +185,16 @@ VariantTrack.propTypes = {
   variants: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   color: PropTypes.string,
-  markerType: PropTypes.string,
-  markerRadius: PropTypes.number,
-  markerStroke: PropTypes.string,
-  markerStrokeWidth: PropTypes.number,
+  markerConfig: PropTypes.object,
 }
 VariantTrack.defaultProps = {
-  markerType: 'circle',
-  yPositionSetting: 'random',
+  markerConfig: {
+    type: 'circle',
+    radius: 3,
+    stroke: 'black',
+    strokeWidth: 1,
+    yPositionSetting: 'random',
+  },
 }
 
 export default VariantTrack

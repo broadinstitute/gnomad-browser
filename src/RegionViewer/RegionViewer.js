@@ -64,7 +64,9 @@ class RegionViewer extends Component {
 
   renderChildren = (childProps) => {
     return React.Children.map(this.props.children, (child) => {
-      return React.cloneElement(child, childProps)
+      if (child) {
+        return React.cloneElement(child, childProps)
+      }
     })
   }
 

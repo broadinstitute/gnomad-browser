@@ -144,15 +144,17 @@ export const consequenceFetch = (geneName, datasets, consequence) => {
 
 class dbLofGenePageComponents extends Component {
   state = {
-    circleRadius: 5,
-    circleStrokeWidth: 1,
+    markerWidth: 5,
+    markerStrokeWidth: 1,
     hasData: false,
+    trackHeight: 25,
     currentGene: 'BRCA2',
     currentDataset: 'genome',
     padding: 75,
-    markerType: 'tick',
+    markerType: 'af',
     testGenes: TEST_GENES,
     consequence: 'lof',
+    variantYPosition: 'center',
     datasets: [
       // 'exacv1',
       'exome',
@@ -197,21 +199,30 @@ class dbLofGenePageComponents extends Component {
     this.setState({ currentDataset: value })
   }
 
-  handleCircleRadiusChange = (event, index, value) => {
-    this.setState({ circleRadius: value })
+  handlMarkerWidthChange = (event, index, value) => {
+    this.setState({ markerWidth: value })
   }
 
-  handleCircleStrokeWidthChange = (event, index, value) => {
-    this.setState({ circleStrokeWidth: value })
+  handleMarkerStrokeWidthChange = (event, index, value) => {
+    this.setState({ markerStrokeWidth: value })
   }
 
   handleMarkerTypeChange = (event, index, value) => {
     this.setState({ markerType: value })
   }
 
+  handleVariantYChange = (event, index, value) => {
+    this.setState({ variantYPosition: value })
+  }
+
   setPadding = (event, newValue) => {
     const padding = Math.floor(2000 * newValue)
     this.setState({ padding })
+  }
+
+  setTrackHeight = (event, newValue) => {
+    const trackHeight = Math.floor(300 * newValue)
+    this.setState({ trackHeight })
   }
 
   render() {
@@ -285,14 +296,12 @@ class dbLofGenePageComponents extends Component {
       combineFields,
     )
 
-    console.log(combinedVariants)
 
     const geneExons = this.state.geneData.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
 
     const canonicalExons = this.state.geneData.transcript.exons
     const variantsProcessed = processVariantsList(combinedVariants)
-    // console.log('proc var', variantsProcessed)
     const regionAttributesConfig = {
       CDS: {
         color: '#757575',
@@ -338,22 +347,49 @@ class dbLofGenePageComponents extends Component {
       { annotation: 'frameshift_variant', colour: '#85489c' },
     ]
 
-    const consequenceTracks = consequenceCategories.map((consequence, index) => (
-      <VariantTrack
-        key={`${consequence.annotation}-${index}`}
-        title={consequence.annotation.replace('_', ' ')}
-        height={25}
-        color={consequence.colour}
-        markerType={this.state.markerType}
-        markerRadius={this.state.circleRadius}
-        markerStroke={'black'}
-        markerStrokeWidth={this.state.circleStrokeWidth}
-        yPositionSetting={'center'}
-        variants={variantsProcessed.filter(variant =>
-           R.contains(consequence.annotation, variant.consequence))
-         }
-      />
-    ))
+    const markerConfigCircle = {
+      markerType: 'circle',
+      circleRadius: this.state.markerWidth,
+      circleStroke: 'black',
+      circleStrokeWidth: this.state.markerStrokeWidth,
+      yPositionSetting: this.state.variantYPosition,
+    }
+
+    const markerConfigTick = {
+      markerType: 'tick',
+      tickHeight: 3,
+      tickWidth: this.state.markerWidth,
+      tickStroke: 'black',
+      tickStrokeWidth: this.state.markerStrokeWidth,
+      yPositionSetting: this.state.variantYPosition,
+    }
+
+    const markerConfigAF = {
+      ...markerConfigCircle,
+      markerType: 'af',
+
+    }
+
+    const markerConfig = {
+      circle: markerConfigCircle,
+      tick: markerConfigTick,
+      af: markerConfigAF,
+    }
+
+    const consequenceTracks = consequenceCategories.map((consequence, index) => {
+      return (
+        <VariantTrack
+          key={`${consequence.annotation}-${index}`}
+          title={consequence.annotation.replace('_', ' ')}
+          height={this.state.trackHeight}
+          color={consequence.colour}
+          markerConfig={markerConfig[this.state.markerType]}
+          variants={variantsProcessed.filter(variant =>
+             R.contains(consequence.annotation, variant.consequence))
+           }
+        />
+      )
+    })
 
     return (
       <div className={css.page}>
@@ -371,24 +407,39 @@ class dbLofGenePageComponents extends Component {
               <MenuItem key={`${dataset}-menu`} value={dataset} primaryText={dataset} />,
             )}
           </DropDownMenu>
-          <p>Variant radius</p>
-          <DropDownMenu value={this.state.circleRadius} onChange={this.handleCircleRadiusChange}>
-            {[1, 2, 3, 4, 5].map(circleRadius =>
-              <MenuItem key={`${circleRadius}-menu`} value={circleRadius} primaryText={circleRadius} />,
+          <p>Variant width</p>
+          <DropDownMenu value={this.state.markerWidth} onChange={this.handlMarkerWidthChange}>
+            {[1, 2, 3, 4, 5].map(markerWidth =>
+              <MenuItem key={`${markerWidth}-menu`} value={markerWidth} primaryText={markerWidth} />,
             )}
           </DropDownMenu>
           <p>Variant stroke</p>
-          <DropDownMenu value={this.state.circleStrokeWidth} onChange={this.handleCircleStrokeWidthChange}>
-            {[0, 1, 2].map(circleStrokeWidth =>
-              <MenuItem key={`${circleStrokeWidth}-menu`} value={circleStrokeWidth} primaryText={circleStrokeWidth} />,
+          <DropDownMenu value={this.state.markerStrokeWidth} onChange={this.handleMarkerStrokeWidthChange}>
+            {[0, 1, 2].map(markerStrokeWidth =>
+              <MenuItem key={`${markerStrokeWidth}-menu`} value={markerStrokeWidth} primaryText={markerStrokeWidth} />,
             )}
           </DropDownMenu>
+          <p>Variant position</p>
+          <DropDownMenu value={this.state.variantYPosition} onChange={this.handleVariantYChange}>
+            {['random', 'center'].map(yPositionSetting =>
+              <MenuItem key={`${yPositionSetting}-menu`} value={yPositionSetting} primaryText={yPositionSetting} />,
+            )}
+          </DropDownMenu>
+        </div>
+        <div className={css.menus}>
           <p>markerType</p>
           <DropDownMenu value={this.state.markerType} onChange={this.handleMarkerTypeChange}>
-            {['circle', 'tick'].map(markerType =>
+            {['circle', 'tick', 'af'].map(markerType =>
               <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
             )}
           </DropDownMenu>
+          <p>Track height</p>
+          <Slider
+            style={{
+              width: 100,
+            }}
+            onChange={this.setTrackHeight}
+          />
           {this.state.isFetching && refreshIndicatorSmall}
         </div>
         <Slider
