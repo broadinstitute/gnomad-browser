@@ -37,14 +37,15 @@ const VariantAlleleFrequency = ({
   circleStroke,
   circleStrokeWidth,
   variant,
+  afMax,
 }) => {
   const afScale =
     scaleLog()
       .domain([
         0.00000660,
-        0.0001,
+        afMax,
       ])
-      .range([3, 7])
+      .range([3, 6])
 
   return (
     <circle
@@ -133,6 +134,11 @@ const setYPosition = (height, ySetting) => {
   }
 }
 
+const lofColors = {
+  HC: '#FF583F',
+  LC: '#F0C94D',
+}
+
 const VariantTrack = ({
   title,
   width,
@@ -141,6 +147,7 @@ const VariantTrack = ({
   variants,
   positionOffset,
   markerConfig,
+  color,
   ...rest
 }) => {
   return (
@@ -156,16 +163,18 @@ const VariantTrack = ({
           height={height}
         >
           {variants.map((variant, index) => {
-            const { markerType, yPositionSetting } = markerConfig
+            const { markerType, yPositionSetting, fillColor } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
+            const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
             if (regionViewerAttributes === 0) return  // eslint-disable-line
             const childProps = {
               index,
               ...regionViewerAttributes,
               ...rest,
               ...markerConfig,
+              color: localColor,
               markerKey,
               yPosition,
               variant,
@@ -194,6 +203,7 @@ VariantTrack.defaultProps = {
     stroke: 'black',
     strokeWidth: 1,
     yPositionSetting: 'random',
+    fillColor: null,
   },
 }
 

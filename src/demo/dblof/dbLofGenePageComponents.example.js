@@ -148,7 +148,7 @@ class dbLofGenePageComponents extends Component {
     markerWidth: 5,
     markerStrokeWidth: 1,
     hasData: false,
-    trackHeight: 25,
+    trackHeight: 30,
     currentGene: 'BRCA2',
     currentDataset: 'genome',
     padding: 75,
@@ -157,6 +157,7 @@ class dbLofGenePageComponents extends Component {
     consequence: 'lof',
     variantYPosition: 'center',
     tracksSplit: false,
+    afMax: 0.00005,
     datasets: [
       // 'exacv1',
       'exome',
@@ -215,6 +216,10 @@ class dbLofGenePageComponents extends Component {
 
   handleVariantYChange = (event, index, value) => {
     this.setState({ variantYPosition: value })
+  }
+
+  handleAfMaxChange = (event, index, value) => {
+    this.setState({ afMax: value })
   }
 
   setPadding = (event, newValue) => {
@@ -360,6 +365,7 @@ class dbLofGenePageComponents extends Component {
       circleStroke: 'black',
       circleStrokeWidth: this.state.markerStrokeWidth,
       yPositionSetting: this.state.variantYPosition,
+      fillColor: 'lof',
     }
 
     const markerConfigTick = {
@@ -369,11 +375,14 @@ class dbLofGenePageComponents extends Component {
       tickStroke: 'black',
       tickStrokeWidth: this.state.markerStrokeWidth,
       yPositionSetting: this.state.variantYPosition,
+      fillColor: 'lof',
     }
 
     const markerConfigAF = {
       ...markerConfigCircle,
       markerType: 'af',
+      fillColor: 'lof',
+      afMax: this.state.afMax,
 
     }
 
@@ -421,12 +430,6 @@ class dbLofGenePageComponents extends Component {
               <MenuItem key={`${gene}-menu-${i}`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
-          <p>Dataset</p>
-          <DropDownMenu value={this.state.currentDataset} onChange={this.handleDatasetChange}>
-            {this.state.datasets.map(dataset =>
-              <MenuItem key={`${dataset}-menu`} value={dataset} primaryText={dataset} />,
-            )}
-          </DropDownMenu>
           <p>Variant width</p>
           <DropDownMenu value={this.state.markerWidth} onChange={this.handlMarkerWidthChange}>
             {[1, 2, 3, 4, 5].map(markerWidth =>
@@ -458,6 +461,12 @@ class dbLofGenePageComponents extends Component {
             onCheck={this.handleSplitConsequences}
             style={{ display: 'flex', width: 200, height: 25 }}
           />
+          <p>AF domain max</p>
+          <DropDownMenu value={this.state.afMax} onChange={this.handleAfMaxChange}>
+            {[1, 0.1, 0.01, 0.001, 0.0001, 0.00005, 0.00001].map(afmax =>
+              <MenuItem key={`${afmax}-menu`} value={afmax} primaryText={afmax} />,
+            )}
+          </DropDownMenu>
           <p>Track height</p>
           <Slider
             style={{
@@ -465,14 +474,15 @@ class dbLofGenePageComponents extends Component {
             }}
             onChange={this.setTrackHeight}
           />
+          <p>Exon padding</p>
+          <Slider
+            style={{
+              width: 100,
+            }}
+            onChange={this.setPadding}
+          />
           {this.state.isFetching && refreshIndicatorSmall}
         </div>
-        <Slider
-          style={{
-            width: 800,
-          }}
-          onChange={this.setPadding}
-        />
         <RegionViewer
           css={css}
           width={1000}
