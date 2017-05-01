@@ -96,6 +96,20 @@ const formatFitler = (filters, index) => filters.split('|').map(filter => (
     {filter}
   </span>
 ))
+//
+// const formatLoF = (lofs, index) => lofs.map(lof => (
+//   <span
+//     key={`${lof.annotation}${index}`}
+//     style={{
+//       border: '1px solid #000',
+//       marginLeft: 10,
+//       padding: '1px 2px 1px 2px',
+//       // backgroundColor: ,
+//     }}
+//   >
+//     {lof.annotation || ''}
+//   </span>
+// ))
 
 const formatVariantId = (variantId) => {
   let [chrom, pos, ref, alt] = variantId.split('-')
@@ -171,6 +185,15 @@ const getDataCell = (field, dataRow, i) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatDatasets(dataRow)}
+        </div>
+      )
+    case 'lof':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatLoF(dataRow)}
         </div>
       )
     default:

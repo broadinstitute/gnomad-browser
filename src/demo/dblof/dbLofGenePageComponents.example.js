@@ -337,6 +337,7 @@ class dbLofGenePageComponents extends Component {
         { dataKey: 'datasets', title: 'Source', dataType: 'datasets', width: 75 },
         // { dataKey: 'rsid', title: 'RSID', dataType: 'string', width: 100 },
         { dataKey: 'consequence', title: 'Consequence', dataType: 'string', width: 200 },
+        { dataKey: 'first_lof_flag', title: 'LoF', dataType: 'string', width: 10 },
         // { dataKey: 'filter', title: 'Filter', dataType: 'filter', width: 100 },
         { dataKey: 'allele_count', title: 'AC', dataType: 'integer', width: 50 },
         { dataKey: 'allele_num', title: 'AN', dataType: 'integer', width: 75 },

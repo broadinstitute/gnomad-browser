@@ -329,6 +329,8 @@ export const processVariant = (variant) => {
     clinSig: processAnnotations('CLIN_SIG', variant),
     pubMedIds: extractPubMedIdList(variant),
     hasPubMed: hasPubMed(variant),
+    lof_flags: processAnnotations('LoF', variant),
+    first_lof_flag: R.head(processAnnotations('LoF', variant)).annotation,
   }
 }
 
