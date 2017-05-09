@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 import store from './store/store'
-import App from './components/App'
+import App from './ClientApp'
 
 const muiTheme = getMuiTheme({
   palette: {

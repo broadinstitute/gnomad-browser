@@ -42,6 +42,7 @@ const GeneRegion = ({ gene }) => {
       <RegionViewer
         css={css}
         width={1100}
+        padding={75}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
       >

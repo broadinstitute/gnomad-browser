@@ -1,15 +1,12 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import GeneSettings from '../GeneSettings'
-import GeneRegion from '../Regions'
-
 import * as actions from '../../actions'
 import { getGene } from '../../reducers'
 
 import css from './styles.css'
 
-class GenePage extends Component {
+const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     currentGene: PropTypes.string.isRequired,
@@ -38,24 +35,7 @@ class GenePage extends Component {
   }
 
   render() {
-    const { isFetching, gene } = this.props
-    if (isFetching || !gene) {
-      return <div>Loading...</div>
-    }
-    const { currentGene } = this.props
-    return (
-      <div className={css.browser}>
-        <GeneSettings
-          currentGene={currentGene}
-          setCurrentGene={this.props.setCurrentGene}
-        />
-        <h1>{currentGene}</h1>
-        {gene.gene_id}
-        <GeneRegion
-          gene={gene}
-        />
-      </div>
-    )
+    return <ComposedComponent {...this.props} />
   }
 }
 
@@ -75,4 +55,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GenePage)
+const GenePageHOC = ComposedComponent =>
+  connect(mapStateToProps, mapDispatchToProps)(GenePageContainer(ComposedComponent))
+
+export default GenePageHOC
