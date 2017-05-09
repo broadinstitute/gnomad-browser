@@ -118,7 +118,7 @@ class InfiniteTableExample extends Component {
     timer: 0,
     markerType: 'circle',
     variantYPosition: 'random',
-    trackHeight: 200,
+    trackHeight: 100,
     testGenes: TEST_GENES,
     showTracks: false,
     fetchTimes: [],
@@ -529,7 +529,7 @@ class InfiniteTableExample extends Component {
           xtitle={'Fetch attempt'}
           xticks={false}
           width={1100}
-          height={300}
+          height={200}
         />
         <button
           onClick={() => {
@@ -580,7 +580,7 @@ class InfiniteTableExample extends Component {
         </RegionViewer>
         <InfiniteTable
           title={`${genome_variants.length + exome_variants.length} latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}
-          height={700}
+          height={400}
           width={1100}
           tableConfig={tableDataConfig}
           tableData={genome_variants}

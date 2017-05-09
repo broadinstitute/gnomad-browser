@@ -21,7 +21,7 @@ import LoadingTrack from '../Tracks/LoadingTrack'
 
 import css from './styles.css'
 
-const API_URL = 'http://localhost:8020/graphql'
+const API_URL = 'http://localhost:8012/graphql'
 
 const fetchVariantsFromHail = (geneName) => {
   // const query = `{"query": "query test($geneName: String!) {gene(gene_name: $geneName) { gene_name exome_variants { start info { CSQ GQ_HIST_ALT GQ_HIST_ALL DP_HIST_ALL BaseQRankSum ClippingRankSum FS InbreedingCoeff MQ MQRankSum QD ReadPosRankSum SOR VQSLOD AN AN_AFR AN_AMR AN_ASJ AN_EAS AN_FIN AN_NFE AN_OTH AN_SAS}}}}", "variables": {"geneName": "${geneName}"}}`
@@ -134,6 +134,21 @@ class VDSPage extends Component {
         thickness: '5px',
       },
     }
+    const markerConfigCircle = {
+      markerType: 'circle',
+      circleRadius: 3,
+      circleStroke: 'black',
+      circleStrokeWidth: 1,
+      yPositionSetting: 'random',
+      fillColor: 'lof',
+    }
+    const markerConfigAll = {
+      ...markerConfigCircle,
+      markerType: 'circle',
+      fillColor: '#757575',
+      yPositionSetting: 'random',
+      afMax: 0.005,
+    }
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     let variantsComponent0 = <LoadingTrack height={25} />
     let variantsComponent1 = <LoadingTrack height={25} />
@@ -151,30 +166,34 @@ class VDSPage extends Component {
         .filter(v => v.consequence === 'frameshift_variant')
       variantsComponent0 = (
           <VariantTrack
-            title={'VDS exome variants'}
-            height={25}
+            title={'all exome variants'}
+            height={70}
             variants={exomeVariantsRdy}
+            markerConfig={markerConfigAll}
           />
       )
       variantsComponent1 = (
           <VariantTrack
-            title={'VDS genome variants'}
-            height={25}
+            title={'all genome variants'}
+            height={70}
             variants={genomeVariantsRdy}
+            markerConfig={markerConfigAll}
           />
       )
       variantsComponent2 = (
           <VariantTrack
             title={'Missense variants'}
-            height={25}
+            height={70}
             variants={missense}
+            markerConfig={markerConfigAll}
           />
       )
       variantsComponent3 = (
           <VariantTrack
             title={'Frameshift variants'}
-            height={25}
+            height={70}
             variants={frame}
+            markerConfig={markerConfigAll}
           />
       )
     }
@@ -192,6 +211,7 @@ class VDSPage extends Component {
           css={css}
           width={1100}
           regions={canonicalExons}
+          padding={80}
           regionAttributes={attributeConfig}
         >
           {variantsComponent0}

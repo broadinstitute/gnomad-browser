@@ -20,6 +20,7 @@ import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
 import VDSPage from '../VDS/index.js'
 import InfiniteDemo from '../InfiniteTable/infinite.example.js'
 import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example.js'
+import SchizophreniaDemo from './schizophrenia/schizophrenia.example.js'
 
 import css from './styles.css'
 
@@ -158,6 +159,15 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>dbLoF gene page components</MenuItem>
           </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/schizophrenia'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Schizophrenia meta-analysis</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -182,6 +192,7 @@ const Demo = () =>
         <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />
         <Route exact path={'/infinite'} component={InfiniteDemo} />
         <Route exact path={'/db-lof-gene-page-components'} component={DbLofGenePageDemo} />
+        <Route exact path={'/schizophrenia'} component={SchizophreniaDemo} />
         <Route
           exact
           path={'/graphiql'}

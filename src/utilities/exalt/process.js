@@ -315,6 +315,10 @@ export const processVariant = (variant) => {
   const annotations = getAnnotations(variant)
   // console.log(extractPubMedIdList(variant))
   // console.log(hasPubMed(variant))
+  let lof = 'None'
+  if (R.head(processAnnotations('LoF', variant))) {
+    lof = R.head(processAnnotations('LoF', variant)).annotation
+  }
   return {
     ...variant,
     // populationData: reshapePopulationData(variant).data,
@@ -330,7 +334,7 @@ export const processVariant = (variant) => {
     pubMedIds: extractPubMedIdList(variant),
     hasPubMed: hasPubMed(variant),
     lof_flags: processAnnotations('LoF', variant),
-    first_lof_flag: R.head(processAnnotations('LoF', variant)).annotation,
+    first_lof_flag: lof,
   }
 }
 
