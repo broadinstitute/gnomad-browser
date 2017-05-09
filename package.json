@@ -1,13 +1,17 @@
 {
-  "name": "gnomad-framework",
+  "name": "react-gnomad-framework",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/es/index.js",
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --hot --config webpack.config.js"
+    "start": "webpack-dev-server --hot --config webpack.config.js",
+    "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore example"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "babel-cli": "6.24.0",
     "babel-core": "6.24.0",
@@ -18,6 +22,7 @@
     "babel-preset-env": "1.2.1",
     "babel-preset-react": "6.23.0",
     "babel-preset-stage-2": "6.24.1",
+    "cross-env": "4.0.0",
     "css-loader": "0.27.3",
     "eslint": "3.17.1",
     "eslint-config-airbnb": "14.1.0",
