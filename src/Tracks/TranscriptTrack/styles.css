@@ -34,7 +34,35 @@
   /*border: 1px solid red;*/
 }
 
+.transcriptTrackBackground {
+  fill: white;
+}
+
+.transcriptTrackLine {
+  stroke: #BDBDBD;
+}
+
 .transcriptsGrouped {
   display: flex;
   flex-direction: column;
+}
+
+.transcriptFlipOutButtonContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border: 1px blue #000;
+}
+
+.transcriptFlipOutButton {
+  font-size: 22px;
+  background-color: #ffffff;
+  border: 0;
+}
+
+.transcriptFlipOutButton:hover {
+  font-size: 22px;
+  background-color: #E0E0E0;
+  border: 0;
 }

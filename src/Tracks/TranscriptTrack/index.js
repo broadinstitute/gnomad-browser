@@ -6,15 +6,16 @@ import { Motion, spring } from 'react-motion'
 
 import R from 'ramda'
 
-import TranscriptFlipOutButton from './TranscriptFlipOutButton'
+import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
 import {
   filterRegions,
 } from 'utilities/calculateOffsets'  // eslint-disable-line
 
-import css from './styles.css'
+import defaultStyles from './styles.css'
 
 const TranscriptAxis = ({
+  css,
   title,
   leftPanelWidth,
   fontSize,
@@ -34,6 +35,7 @@ TranscriptAxis.propTypes = {
 }
 
 const TranscriptDrawing = ({
+  css,
   width,
   height,
   regions,
@@ -47,21 +49,19 @@ const TranscriptDrawing = ({
       height={height}
     >
       <rect
-        className={css.border}
+        className={css.transcriptTrackBackground}
         x={0}
         y={0}
         width={width}
         height={height}
-        fill={'white'}
         stroke={'none'}
       />
       <line
-        className={css.rectangle}
+        className={css.transcriptTrackLine}
         x1={0}
         x2={width}
         y1={height / 2}
         y2={height / 2}
-        stroke={'#BDBDBD'}
         strokeWidth={2}
       />
       {regions.map((region, i) => {
@@ -73,8 +73,6 @@ const TranscriptDrawing = ({
         } else {
           localThickness = 10
         }
-        // console.log(start)
-        // console.log(stop)
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (
             <line
@@ -95,6 +93,7 @@ const TranscriptDrawing = ({
 }
 
 const Transcript = ({
+  css,
   width,
   height,
   leftPanelWidth,
@@ -123,6 +122,7 @@ const Transcript = ({
     paddingBottom = 2
     expandTranscriptButton = (
       <TranscriptFlipOutButton
+        css={css}
         localHeight={localHeight}
         leftPanelWidth={leftPanelWidth}
         onClick={fanOut}
@@ -140,6 +140,7 @@ const Transcript = ({
        className={css.transcriptContainer}
       >
       <TranscriptAxis
+        css={css}
         leftPanelWidth={leftPanelWidth}
         title={title}
         fontSize={fontSize}
@@ -147,6 +148,7 @@ const Transcript = ({
       />
       <div className={css.transcriptData}>
         <TranscriptDrawing
+          css={css}
           width={width}
           height={localHeight}
           regions={regions}
@@ -167,6 +169,7 @@ Transcript.propTypes = {
 }
 
 const TranscriptGroup = ({
+  css,
   transcriptsGrouped,
   fanOutButtonOpen,
   initialTranscriptStyles,
@@ -194,6 +197,7 @@ const TranscriptGroup = ({
             }) => {
               return (
                 <Transcript
+                  css={css}
                   title={transcript}
                   motionHeight={top}
                   paddingTop={paddingTop}
@@ -223,6 +227,7 @@ TranscriptGroup.propTypes = {
 class TranscriptTrack extends Component {
 
   static PropTypes = {
+    css: PropTypes.object,
     height: PropTypes.number.isRequired,
     width: PropTypes.number, // eslint-disable-line
     leftPanelWidth: PropTypes.number, // eslint-disable-line
@@ -240,7 +245,7 @@ class TranscriptTrack extends Component {
   }
 
   fanOut = () => {
-    if (!this.state.fanOutButtonOpen){
+    if (!this.state.fanOutButtonOpen) {
       this.setState({ fanOutButtonOpen: true })
     } else {
       this.setState({ fanOutButtonOpen: false })
@@ -280,7 +285,7 @@ class TranscriptTrack extends Component {
       )
     }
     return (
-      <div className={css.track}>
+      <div className={this.props.css.track}>
         <Transcript
           isMaster fanOut={this.fanOut}
           regions={this.props.offsetRegions}
@@ -290,6 +295,10 @@ class TranscriptTrack extends Component {
       </div>
     )
   }
+}
+
+TranscriptTrack.defaultProps = {
+  css: defaultStyles,
 }
 
 export default TranscriptTrack

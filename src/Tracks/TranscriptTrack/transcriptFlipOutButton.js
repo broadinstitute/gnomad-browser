@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 // import fewerTranscripts from './transcript-flip-out-less.svg'
 // import moreTranscripts from './transcript-flip-out-more.svg'
-import css from './styles.css'
 
 const fewerTranscripts = (
   <svg>
@@ -30,7 +29,7 @@ const moreTranscripts = (
   </svg>
 )
 
-const TranscriptFlipOutButton = ({ localHeight, leftPanelWidth, onClick }) => {
+const TranscriptFlipOutButton = ({ css, localHeight, leftPanelWidth, onClick }) => {
   return (
     <div className={css.transcriptFlipOutButtonContainer}>
       <button
@@ -47,6 +46,7 @@ const TranscriptFlipOutButton = ({ localHeight, leftPanelWidth, onClick }) => {
   )
 }
 TranscriptFlipOutButton.propTypes = {
+  css: PropTypes.object.isRequired,
   localHeight: PropTypes.number.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
