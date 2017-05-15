@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import TopBar from './AppTopBar'
-import AppGenePage from './AppGenePage'
+import TopBar from './TopBar'
+import GenePage from './GenePage'
 
 import css from './styles.css'
 
@@ -11,11 +11,11 @@ const App = () => (
     <div>
       <TopBar />
       <div className={css.mainPanel}>
-        <Route exact path="/" component={AppGenePage} />
-        <Route path="/gene/:gene" component={AppGenePage} />
-        <Route path="/variant/:variant" component={AppGenePage} />
-        <Route path="/rsid/:rsid" component={AppGenePage} />
-        <Route path="/gene-name/:geneName" component={AppGenePage} />
+        <Route exact path="/" component={GenePage} />
+        <Route path="/gene/:gene" component={GenePage} />
+        <Route path="/variant/:variant" component={GenePage} />
+        <Route path="/rsid/:rsid" component={GenePage} />
+        <Route path="/gene-name/:geneName" component={GenePage} />
       </div>
     </div>
   </div>

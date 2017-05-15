@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 
 import GenePageHOC from '../../../containers/GenePage'
 
-import GeneSettings from '../AppGeneSettings'
-import GeneRegion from '../AppRegionViewer'
+import GeneSettings from '../GeneSettings'
+import GeneRegion from '../RegionViewer'
 
 import css from './styles.css'
 
