@@ -1,0 +1,76 @@
+@import "../config.css";
+
+.regionViewer {
+  display: flex;
+  flex-direction: column;
+  border: 0 solid #000;
+  align-items: center;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.regionArea {
+  flex-direction: column;
+  /*border: 1px solid var(--secondaryColor);*/
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transcriptContainer {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+.transcriptLeftAxis {
+  display: flex;
+  width: 100%;
+}
+
+.transcriptName {
+  display: flex;
+  width: 100%;
+}
+
+.transcriptTrackBackground {
+  fill: var(--backgroundColor);
+}
+
+.transcriptTrackLine {
+  stroke: var(--primaryColor);
+}
+
+.transcriptData {
+  display: flex;
+  justify-content: center;
+}
+
+.transcriptsGrouped {
+  display: flex;
+  flex-direction: column;
+}
+
+.transcriptFlipOutButtonContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  /*border: 1px blue #000;*/
+}
+
+.transcriptFlipOutButton {
+  font-size: 22px;
+  background-color: var(--backgroundColor);
+  border: 0;
+}
+
+.transcriptFlipOutButton:hover {
+  font-size: 22px;
+  background-color: var(--secondaryColor);
+  border: 0;
+}

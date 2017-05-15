@@ -1,3 +1,5 @@
+@import "../config.css";
+
 .topBar {
   display: flex;
   flex-direction: row;
@@ -6,10 +8,11 @@
   padding-left: 20px;
   padding-top: 10px;
   border-bottom: 1px solid #000;
-  /*background-color: #B3E5FC;*/
+  background-color: var(--backgroundColor);
 }
 
 .logo {
+  color: var(--primaryColor);
   font-size: 25px;
   font-weight: bold;
 }

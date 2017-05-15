@@ -1,0 +1,7 @@
+@import "../config.css";
+
+.genePage {
+  /*border: 1px solid var(--secondaryColor);*/
+  background-color: var(--backgroundColor);
+  color: var(--primaryColor);
+}

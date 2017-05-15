@@ -7,6 +7,8 @@ import GeneRegion from '../RegionViewer'
 
 import css from './styles.css'
 
+console.log(css)
+
 const AppGenePage = ({
   currentGene,
   setCurrentGene,
@@ -17,7 +19,7 @@ const AppGenePage = ({
     return <div>Loading...!</div>
   }
   return (
-    <div className={css.browser}>
+    <div className={css.genePage}>
       <GeneSettings
         currentGene={currentGene}
         setCurrentGene={setCurrentGene}

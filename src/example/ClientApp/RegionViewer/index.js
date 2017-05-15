@@ -8,21 +8,23 @@ import {
 
 import css from './styles.css'
 
+console.log(css)
+
 const attributeConfig = {
   CDS: {
-    color: '#424242',
+    color: '#375D81',
     thickness: '30px',
   },
   start_pad: {
-    color: '#e0e0e0',
+    color: '#183152',
     thickness: '5px',
   },
   end_pad: {
-    color: '#e0e0e0',
+    color: '#183152',
     thickness: '5px',
   },
   intron: {
-    color: '#e0e0e0',
+    color: '#183152',
     thickness: '5px',
   },
   default: {
@@ -47,8 +49,9 @@ const GeneRegion = ({ gene }) => {
         regionAttributes={attributeConfig}
       >
         <TranscriptTrack
+          css={css}
           transcriptsGrouped={transcriptsGrouped}
-          height={15}
+          height={20}
         />
       </RegionViewer>
     </div>
