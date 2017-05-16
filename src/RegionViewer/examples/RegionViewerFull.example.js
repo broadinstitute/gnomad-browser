@@ -11,14 +11,14 @@ import {
  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from './RegionViewer'
+import RegionViewer from '../RegionViewer'
 
-import CoverageTrack from '../Tracks/CoverageTrack'
-import TranscriptTrack from '../Tracks/TranscriptTrack'
-import VariantTrack from '../Tracks/VariantTrack'
-import PositionTableTrack from '../Tracks/PositionTableTrack'
+import CoverageTrack from '../../Tracks/CoverageTrack'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import VariantTrack from '../../Tracks/VariantTrack'
+import PositionTableTrack from '../../Tracks/PositionTableTrack'
 
-import css from './styles.css'
+import examplePageStyles from './styles.css'
 
 const testGenes = [
   'PCSK9',
@@ -81,7 +81,7 @@ class RegionViewerFullExample extends Component {
 
   render() {
     if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
+      return <p>Loading!</p>
     }
     // const { transcript: { exons }, exome_coverage, genome_coverage } = this.state.data
     const {
@@ -116,7 +116,7 @@ class RegionViewerFullExample extends Component {
       },
     }
     return (
-      <div className={css.page}>
+      <div className={examplePageStyles.page}>
         <Slider
           style={{
             width: 800,
@@ -124,7 +124,6 @@ class RegionViewerFullExample extends Component {
           onChange={this.setPadding}
         />
         <RegionViewer
-          css={css}
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}

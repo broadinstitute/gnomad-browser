@@ -71,7 +71,7 @@ const TranscriptDrawing = ({
         if (isMaster) {
           localThickness = region.thickness
         } else {
-          localThickness = 10
+          localThickness = 13
         }
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (

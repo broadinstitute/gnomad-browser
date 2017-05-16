@@ -14,10 +14,10 @@ import {
 } from 'utilities/transcriptTools'  // eslint-disable-line
 
 import testData from 'data/transcript-tools-CD33.json'  // eslint-disable-line
-import RegionViewer from './RegionViewer'
-import TranscriptTrack from '../Tracks/TranscriptTrack'
+import RegionViewer from '../RegionViewer'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
 
-import css from './styles.css'
+import examplePageStyles from './styles.css'
 
 class RegionTableExample extends Component {
   state = {
@@ -72,7 +72,7 @@ class RegionTableExample extends Component {
 
   render() {
     if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
+      return <p>Loading!</p>
     }
     const geneExons = this.state.data.exons
     const canonicalExons = this.state.data.transcript.exons
@@ -100,7 +100,7 @@ class RegionTableExample extends Component {
     }
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     return (
-      <div className={css.page}>
+      <div className={examplePageStyles.page}>
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
@@ -115,7 +115,6 @@ class RegionTableExample extends Component {
           onChange={this.setPadding}
         />
         <RegionViewer
-          css={css}
           width={1100}
           regions={canonicalExons}
           regionAttributes={attributeConfig}

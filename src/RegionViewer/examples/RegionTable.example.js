@@ -8,12 +8,12 @@ import Slider from 'material-ui/Slider'
 import { fetchTranscriptsByGeneName, test } from 'utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from './RegionViewer'
+import RegionViewer from '../RegionViewer'
 
-import TranscriptTrack from '../Tracks/TranscriptTrack'
-import PositionTableTrack from '../Tracks/PositionTableTrack'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import PositionTableTrack from '../../Tracks/PositionTableTrack'
 
-import css from './styles.css'
+import examplePageStyles from './styles.css'
 
 class RegionTableExample extends Component {
   state = {
@@ -36,7 +36,7 @@ class RegionTableExample extends Component {
       'CD33',
       'DMD',
       'TTN',
-      'USH2A'
+      'USH2A',
     ],
   }
   componentDidMount() {
@@ -68,7 +68,7 @@ class RegionTableExample extends Component {
 
   render() {
     if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
+      return <p>Loading!</p>
     }
     const {
       transcript: { exons },
@@ -97,7 +97,7 @@ class RegionTableExample extends Component {
     }
 
     return (
-      <div className={css.page}>
+      <div className={examplePageStylesexamplePageStyles.page}>
         <h1>Region viewer demo</h1>
         <Slider
           style={{
@@ -113,7 +113,6 @@ class RegionTableExample extends Component {
           </DropDownMenu>
         </div>
         <RegionViewer
-          css={css}
           width={1100}
           regions={exons}
           regionAttributes={attributeConfig}

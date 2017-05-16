@@ -7,40 +7,50 @@ import {
   calculateXScale,
 } from 'utilities/calculateOffsets'  // eslint-disable-line
 
+import defaultStyles from './styles.css'
+
 injectTapEventPlugin()
+
+const {
+  exonColor,
+  paddingColor,
+  masterExonThickness,
+  masterPaddingThickness,
+} = defaultStyles
 
 class RegionViewer extends Component {
 
   static propTypes = {
-    css: PropTypes.object.isRequired,
+    css: PropTypes.object,
     regions: PropTypes.array.isRequired,
     regionAttributes: PropTypes.object,
     padding: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
   }
 
-  defaultProps = {
+  static defaultProps = {
+    css: defaultStyles,
     exonSubset: null,
     regionAttributes: {
       CDS: {
-        color: '#212121',
-        thickness: '30px',
+        color: exonColor,
+        thickness: masterExonThickness,
       },
       start_pad: {
-        color: '#BDBDBD',
-        thickness: '3px',
+        color: paddingColor,
+        thickness: masterPaddingThickness,
       },
       end_pad: {
-        color: '#BDBDBD',
-        thickness: '3px',
+        color: paddingColor,
+        thickness: masterPaddingThickness,
       },
       intron: {
-        color: '#BDBDBD',
-        thickness: '3px',
+        color: paddingColor,
+        thickness: masterPaddingThickness,
       },
       default: {
-        color: '#grey',
-        thickness: '3px',
+        color: 'grey',
+        thickness: masterPaddingThickness,
       },
     },
   }
