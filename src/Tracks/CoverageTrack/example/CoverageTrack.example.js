@@ -35,19 +35,19 @@ const testGenes = [
   'CD33',
 ]
 
-// import testData from 'data/region-viewer-full-PCSK9.json'
-// import testData from 'data/region-viewer-full-ZNF658.json'
-// import testData from 'data/region-viewer-full-MYH9.json'
-// import testData from 'data/region-viewer-full-FMR1.json'
-import testData from 'data/region-viewer-full-BRCA2.json'
-// import testData from 'data/region-viewer-full-CFTR.json'
-// import testData from 'data/region-viewer-full-FBN1.json'
-// import testData from 'data/region-viewer-full-TP53.json'
-// import testData from 'data/region-viewer-full-SCN5A.json'
-// import testData from 'data/region-viewer-full-MYH7.json'
-// import testData from 'data/region-viewer-full-MYBPC3.json'
-// import testData from 'data/region-viewer-full-ARSF.json'
-// import testData from 'data/region-viewer-full-CD33.json'
+// import testData from 'data/region-viewer-full-PCSK9-v1.json'
+// import testData from 'data/region-viewer-full-ZNF658-v1.json'
+// import testData from 'data/region-viewer-full-MYH9-v1.json'
+// import testData from 'data/region-viewer-full-FMR1-v1.json'
+import testData from 'data/region-viewer-full-BRCA2-v1.json'
+// import testData from 'data/region-viewer-full-CFTR-v1.json'
+// import testData from 'data/region-viewer-full-FBN1-v1.json'
+// import testData from 'data/region-viewer-full-TP53-v1.json'
+// import testData from 'data/region-viewer-full-SCN5A-v1.json'
+// import testData from 'data/region-viewer-full-MYH7-v1.json'
+// import testData from 'data/region-viewer-full-MYBPC3-v1.json'
+// import testData from 'data/region-viewer-full-ARSF-v1.json'
+// import testData from 'data/region-viewer-full-CD33-v1.json'
 
 class RegionViewerFullExample extends Component {
   state = {
@@ -87,8 +87,7 @@ class RegionViewerFullExample extends Component {
       transcript: { exons },
       exome_coverage,
       genome_coverage,
-      exome_variants,
-      genome_variants,
+      exacv1_coverage,
     } = this.state.data
     const geneExons = this.state.data.exons
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
@@ -114,6 +113,33 @@ class RegionViewerFullExample extends Component {
         thickness: '3px',
       },
     }
+    const dataConfig = {
+
+      datasets: [
+        // {
+        //   name: 'exacv1',
+        //   data: exacv1_coverage,
+        //   type: 'area',
+        //   color: 'yellow',
+        //   opacity: 0.5,
+        // },
+        {
+          name: 'exome',
+          data: exome_coverage,
+          type: 'area',
+          color: 'rgba(70, 130, 180, 1)',
+          opacity: 0.5,
+        },
+        {
+          name: 'genome',
+          data: genome_coverage,
+          type: 'area',
+          color: 'rgba(115, 171, 61,  1)',
+          strokeWidth: 4,
+          opacity: 0.5,
+        },
+      ]
+    }
     return (
       <div className={examplePageStyles.page}>
         <Slider
@@ -129,20 +155,10 @@ class RegionViewerFullExample extends Component {
           padding={this.state.padding}
         >
           <CoverageTrack
+            title={'Coverage'}
             height={200}
-            exomeCoverage={exome_coverage}
-            genomeCoverage={genome_coverage}
+            dataConfig={dataConfig}
           />
-        {/*<VariantTrack
-            title={'Exome variants'}
-            height={25}
-            variants={exome_variants}
-          />
-          <VariantTrack
-            title={'Genome variants'}
-            height={25}
-            variants={genome_variants}
-          />*/}
           <TranscriptTrack
             height={10}
             transcriptsGrouped={transcriptsGrouped}

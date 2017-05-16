@@ -15,12 +15,8 @@ const CoverageTrack = ({
   leftPanelWidth,
   xScale,
   positionOffset,
-  exomeCoverage,
-  genomeCoverage,
+  dataConfig,
 }) => {
-  const exomeColor = 'rgba(70, 130, 180, 1)'
-  const genomeColor = 'rgba(115, 171, 61,  1)'
-
   const scaleCoverage = (xScale, coverage) => {
     const coverageScaled = coverage.map((base) => {
       const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
@@ -32,7 +28,9 @@ const CoverageTrack = ({
       }
       return null
     })
+
     const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
+
     const dict = downSampled.reduce((acc, base) => {
       const { scaledPosition } = base
       return {
@@ -50,17 +48,16 @@ const CoverageTrack = ({
     return final
   }
 
-  scaleCoverage(xScale, exomeCoverage)
   const yScale = scaleLinear()
     .domain([0, 100])
     .range([200, 0])
 
-  const exomeCoverageArea = area()
+  const dataArea = area()
     .x(base => base.scaledPosition)
     .y0(_ => height)  // eslint-disable-line
     .y1(base => yScale(base.mean))
 
-  const genomeCoverageLine = line()
+  const dataLine = line()
     .defined((base) => {
       return !isNaN(base.mean)
         && positionOffset(base.pos).offsetPosition !== undefined
@@ -68,17 +65,40 @@ const CoverageTrack = ({
     .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y(base => yScale(base.mean))
 
-  let genomeCov
-  if (genomeCoverage) {
-    genomeCov = (
+  const renderArea = (dataset) => {
+    return (
       <path
-        d={genomeCoverageLine(genomeCoverage)}
-        fill={'none'}
-        stroke={genomeColor}
-        strokeWidth={4}
+        key={`cov-series-${dataset.name}`}
+        d={dataArea(scaleCoverage(xScale, dataset.data))}
+        fill={dataset.color}
+        opacity={dataset.opacity}
       />
     )
   }
+  const renderLine = (dataset) => {
+    return (
+      <path
+        key={`cov-series-${dataset.name}`}
+        d={dataLine(dataset.data)}
+        fill={'none'}
+        stroke={dataset.color}
+        opacity={dataset.opacity}
+        strokeWidth={dataset.strokeWidth}
+      />
+    )
+  }
+
+  const plots = dataConfig.datasets.map((dataset) => {
+    switch (dataset.type) {
+      case 'area':
+        return renderArea(dataset)
+      case 'line':
+        return renderLine(dataset)
+      default:
+        return renderArea(dataset)
+    }
+  })
+
   return (
     <div className={css.coverageTrack}>
       <div
@@ -134,11 +154,7 @@ const CoverageTrack = ({
             strokeWidth={1}
           />
           <g className={css.coverage}>
-            <path
-              d={exomeCoverageArea(scaleCoverage(xScale, exomeCoverage))}
-              fill={exomeColor}
-            />
-            {genomeCov}
+            {plots}
           </g>
         </svg>
       </div>
@@ -146,13 +162,16 @@ const CoverageTrack = ({
   )
 }
 CoverageTrack.propTypes = {
+  title: PropTypes.string,
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   leftPanelWidth: PropTypes.number, // eslint-disable-line
   xScale: PropTypes.func, // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
-  exomeCoverage: PropTypes.array,
-  genomeCoverage: PropTypes.array,
+  dataConfig: PropTypes.object.isRequired,
+}
+CoverageTrack.defaultProps = {
+  title: '',
 }
 
 export default CoverageTrack
