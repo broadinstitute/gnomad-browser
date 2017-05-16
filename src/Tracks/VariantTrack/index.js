@@ -106,8 +106,7 @@ const VariantTick = ({
   )
 }
 
-const getVariantMarker = (props) => {
-  const { markerType, markerKey, ...rest } = props
+const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
   switch (markerType) {
     case 'af':
       return <VariantAlleleFrequency key={markerKey} {...rest} />
@@ -116,7 +115,7 @@ const getVariantMarker = (props) => {
     case 'tick':
       return <VariantTick key={markerKey} {...rest} />
     default:
-      return <VariantTick key={markerKey} {...rest} />
+      return <VariantCircle key={markerKey} {...rest} />
   }
 }
 
@@ -162,9 +161,7 @@ const VariantTrack = ({
           width={width}
           height={height}
         >
-          console.log(markerConfig)
           {variants.map((variant, index) => {
-            // console.log(variant, )
             const { markerType, yPositionSetting, fillColor } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)
@@ -189,18 +186,19 @@ const VariantTrack = ({
   )
 }
 VariantTrack.propTypes = {
+  title: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
+  variants: PropTypes.array.isRequired,
   width: PropTypes.number,  // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
   xScale: PropTypes.func,  // eslint-disable-line
-  variants: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
   color: PropTypes.string,
   markerConfig: PropTypes.object,
 }
 VariantTrack.defaultProps = {
+  color: 'grey',
   markerConfig: {
-    type: 'circle',
+    markerType: 'circle',
     radius: 3,
     stroke: 'black',
     strokeWidth: 1,

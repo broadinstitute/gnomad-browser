@@ -35,7 +35,7 @@ const testGenes = [
 // import testData from 'data/region-viewer-full-ZNF658.json'
 // import testData from 'data/region-viewer-full-MYH9.json'
 // import testData from 'data/region-viewer-full-FMR1.json'
-import testData from 'data/region-viewer-full-BRCA2.json'
+import testData from 'data/region-viewer-full-BRCA2-v1.json'
 // import testData from 'data/region-viewer-full-CFTR.json'
 // import testData from 'data/region-viewer-full-FBN1.json'
 // import testData from 'data/region-viewer-full-TP53-V1.json'

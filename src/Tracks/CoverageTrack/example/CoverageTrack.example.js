@@ -15,7 +15,7 @@ import RegionViewer from '../../../RegionViewer'
 
 import CoverageTrack from '../index'
 import TranscriptTrack from '../../TranscriptTrack'
-import VariantTrack from '../../VariantTrack'
+// import VariantTrack from '../../VariantTrack'
 
 import examplePageStyles from './CoverageTrack.example.css'
 
@@ -133,7 +133,7 @@ class RegionViewerFullExample extends Component {
             exomeCoverage={exome_coverage}
             genomeCoverage={genome_coverage}
           />
-          <VariantTrack
+        {/*<VariantTrack
             title={'Exome variants'}
             height={25}
             variants={exome_variants}
@@ -142,7 +142,7 @@ class RegionViewerFullExample extends Component {
             title={'Genome variants'}
             height={25}
             variants={genome_variants}
-          />
+          />*/}
           <TranscriptTrack
             height={10}
             transcriptsGrouped={transcriptsGrouped}
