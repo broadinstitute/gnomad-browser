@@ -13,3 +13,7 @@ export {
   combineVariantData,
   combineDataForTable,
 } from './combineVariants'
+
+export {
+  getMaxMeanFromCoverageDatasets,
+} from './plotting'

@@ -15,7 +15,6 @@ import RegionViewer from '../../../RegionViewer'
 
 import CoverageTrack from '../index'
 import TranscriptTrack from '../../TranscriptTrack'
-// import VariantTrack from '../../VariantTrack'
 
 import examplePageStyles from './CoverageTrack.example.css'
 
@@ -35,11 +34,11 @@ const testGenes = [
   'CD33',
 ]
 
-// import testData from 'data/region-viewer-full-PCSK9-v1.json'
+import testData from 'data/region-viewer-full-PCSK9-v1.json'
 // import testData from 'data/region-viewer-full-ZNF658-v1.json'
 // import testData from 'data/region-viewer-full-MYH9-v1.json'
 // import testData from 'data/region-viewer-full-FMR1-v1.json'
-import testData from 'data/region-viewer-full-BRCA2-v1.json'
+// import testData from 'data/region-viewer-full-BRCA2-v1.json'
 // import testData from 'data/region-viewer-full-CFTR-v1.json'
 // import testData from 'data/region-viewer-full-FBN1-v1.json'
 // import testData from 'data/region-viewer-full-TP53-v1.json'
@@ -114,7 +113,6 @@ class RegionViewerFullExample extends Component {
       },
     }
     const dataConfig = {
-
       datasets: [
         // {
         //   name: 'exacv1',
@@ -138,7 +136,7 @@ class RegionViewerFullExample extends Component {
           strokeWidth: 4,
           opacity: 0.5,
         },
-      ]
+      ],
     }
     return (
       <div className={examplePageStyles.page}>
@@ -156,8 +154,10 @@ class RegionViewerFullExample extends Component {
         >
           <CoverageTrack
             title={'Coverage'}
-            height={200}
+            height={120}
             dataConfig={dataConfig}
+            yTickNumber={11}
+            yMax={110}
           />
           <TranscriptTrack
             height={10}

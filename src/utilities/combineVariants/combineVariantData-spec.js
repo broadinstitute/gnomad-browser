@@ -13,7 +13,7 @@ import {
 
 // import { VARIANTS_TABLE_FIELDS } from '../../src/constants'
 
-const API_URL = config.get('GNOMAD_API_URL')
+const API_URL = config.get('API_URL')
 xdescribe('combineVariantData', () => {
   const geneId = 'ENSG00000186951'
   const URL = `${API_URL}/gene/${geneId}`

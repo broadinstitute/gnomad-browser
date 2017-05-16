@@ -6,6 +6,8 @@ import { range } from 'd3-array'
 import { path } from 'd3-path'
 import { scaleLinear } from 'd3-scale'
 
+import { getMaxMeanFromCoverageDatasets } from 'utilities/plotting'
+
 import css from './styles.css'
 
 const CoverageTrack = ({
@@ -16,6 +18,8 @@ const CoverageTrack = ({
   xScale,
   positionOffset,
   dataConfig,
+  yTickNumber,
+  yMax,
 }) => {
   const scaleCoverage = (xScale, coverage) => {
     const coverageScaled = coverage.map((base) => {
@@ -48,9 +52,11 @@ const CoverageTrack = ({
     return final
   }
 
+  const dataYDomainMax = yMax || getMaxMeanFromCoverageDatasets(dataConfig)
+
   const yScale = scaleLinear()
-    .domain([0, 100])
-    .range([200, 0])
+    .domain([0, dataYDomainMax])
+    .range([height, 0])
 
   const dataArea = area()
     .x(base => base.scaledPosition)
@@ -99,6 +105,11 @@ const CoverageTrack = ({
     }
   })
 
+  const [yScaleDomainMin, yScaleDomainMax] = yScale.domain()
+  const [yScaleRangeMax, yScaleRangeMin] = yScale.range()
+
+  const incrementSize = Math.floor(yScaleDomainMax / yTickNumber)
+
   return (
     <div className={css.coverageTrack}>
       <div
@@ -107,30 +118,37 @@ const CoverageTrack = ({
           width: leftPanelWidth,
         }}
       >
-        <svg width={50} height={height}>
+        <svg width={50} height={yScaleRangeMax}>
           <text
             className={css.ylabel}
             x={10}
-            y={height / 2}
-            transform={`rotate(270 10 ${height / 2})`}
+            y={yScaleRangeMax / 2}
+            transform={`rotate(270 10 ${yScaleRangeMax / 2})`}
           >
             {title}
           </text>
           <g>
-            {range(0, 190, 10).map(tick =>
+            <text
+              className={css.yticktext}
+              x={40}
+              y={yScaleRangeMax}
+            >
+              0
+            </text>
+            {R.tail(range(yScaleDomainMin, yScaleDomainMax, incrementSize)).map(tick =>
               <g key={`ytick-${tick}`}>
                 <text
                   className={css.yticktext}
                   x={40}
-                  y={height - tick}
+                  y={yScaleRangeMax - yScale(tick) + 2}
                 >
-                  {tick / 2}
+                  {yScaleDomainMax - tick}
                 </text>
                 <line
-                  x1={45}
-                  x2={50}
-                  y1={height - tick}
-                  y2={height - tick}
+                  x1={42}
+                  x2={48}
+                  y1={yScaleRangeMax - yScale(tick)}
+                  y2={yScaleRangeMax - yScale(tick)}
                   stroke={'black'}
                   strokeWidth={1}
                   key={`coverage-y-axis-${tick}`}
@@ -148,8 +166,8 @@ const CoverageTrack = ({
           <line
             x1={0}
             x2={width}
-            y1={height}
-            y2={height}
+            y1={yScaleRangeMax}
+            y2={yScaleRangeMax}
             stroke={'black'}
             strokeWidth={1}
           />
@@ -169,9 +187,13 @@ CoverageTrack.propTypes = {
   xScale: PropTypes.func, // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
   dataConfig: PropTypes.object.isRequired,
+  yTickNumber: PropTypes.number,
+  yMax: PropTypes.number,
 }
 CoverageTrack.defaultProps = {
   title: '',
+  yTickNumber: 5,
+  yMax: null,
 }
 
 export default CoverageTrack

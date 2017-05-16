@@ -12,7 +12,7 @@ export const getClinicalSignificances = R.pipe(
 export const uniqueSignificances = R.pipe(
   R.map(getClinicalSignificances),
   R.flatten,
-  R.uniq
+  R.uniq,
 )
 
 describe('clinvar parsing', () => {
@@ -79,7 +79,5 @@ describe('clinvar parsing', () => {
       ...variant,
       significances: getClinicalSignificances(variant),
     }))
-
-    variant.filter(variant => )
   })
 })
