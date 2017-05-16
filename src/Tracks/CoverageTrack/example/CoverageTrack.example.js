@@ -11,14 +11,13 @@ import {
  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from '../RegionViewer'
+import RegionViewer from '../../../RegionViewer'
 
-import CoverageTrack from '../../Tracks/CoverageTrack'
-import TranscriptTrack from '../../Tracks/TranscriptTrack'
-import VariantTrack from '../../Tracks/VariantTrack'
-import PositionTableTrack from '../../Tracks/PositionTableTrack'
+import CoverageTrack from '../index'
+import TranscriptTrack from '../../TranscriptTrack'
+import VariantTrack from '../../VariantTrack'
 
-import examplePageStyles from './styles.css'
+import examplePageStyles from './CoverageTrack.example.css'
 
 const testGenes = [
   'PCSK9',
@@ -70,7 +69,7 @@ class RegionViewerFullExample extends Component {
     this.setState({
       // data: testData.gene,
       data: testData.gene,
-      hasData: true
+      hasData: true,
     })
   }
 

@@ -12,11 +12,11 @@ import { groupExonsByTranscript } from 'utilities'
 // import { getClinicalSignificances } from './getAnnotations-spec'
 
 import RegionViewer from '../../RegionViewer'
-import TranscriptTrack from '../TranscriptTrack'
-import VariantTrack from '../VariantTrack'
-import GenericTableTrack from './index'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import VariantTrack from '../../Tracks/VariantTrack'
+import TableTrack from '../../Tracks/TableTrack'
 
-import css from './styles.css'
+import css from './ClinVar.example.css'
 
 const API_URL = process.env.API_URL
 const VDS_URL = 'http://localhost:8004/graphql'
@@ -127,7 +127,7 @@ export const genericTableFetch = (geneName, dataset) => {
   })
 }
 
-class GenericTableTrackExample extends Component {
+class ClinvarExample extends Component {
   state = {
     hasGnomadData: false,
     hasClinvarData: false,
@@ -205,7 +205,7 @@ class GenericTableTrackExample extends Component {
   }
 
   render() {
-    if (!this.state.hasClinvarData || !this.state.hasGnomadData ) {
+    if (!this.state.hasClinvarData || !this.state.hasGnomadData) {
       return <p className={css.cool}>Loading!</p>
     }
 
@@ -297,12 +297,10 @@ class GenericTableTrackExample extends Component {
 
     const significanceTracks = significanceCategories.map(significance => (
       <VariantTrack
+        key={`${significance.annotation}-track`}
         title={significance.annotation.replace('_', ' ')}
         height={25}
         color={significance.colour}
-        markerRadius={circleRadius}
-        markerStroke={'black'}
-        markerStrokeWidth={circleStrokeWidth}
         variants={clinvarVariantsFormatted.filter(variant =>
            R.contains(significance.annotation, variant.significances))
          }
@@ -340,18 +338,12 @@ class GenericTableTrackExample extends Component {
             title={this.state.currentDataset}
             height={25}
             color={'grey'}
-            markerRadius={circleRadius}
-            markerStroke={'black'}
-            markerStrokeWidth={circleStrokeWidth}
             variants={variants}
           />
           <VariantTrack
             title={'All clinvar variants'}
             height={25}
             color={'grey'}
-            markerRadius={circleRadius}
-            markerStroke={'black'}
-            markerStrokeWidth={circleStrokeWidth}
             variants={clinvarVariantsFormatted}
           />
           {significanceTracks}
@@ -359,11 +351,12 @@ class GenericTableTrackExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
-          <GenericTableTrack
+          <TableTrack
             title={`Clinvar variants for ${gene_name}`}
-            height={800}
+            height={400}
+            width={1100}
             tableConfig={tableDataConfig}
-            tableData={R.take(100, clinvarVariantsFormatted)}
+            tableData={R.take(20, clinvarVariantsFormatted)}
           />
         </RegionViewer>
       </div>
@@ -371,4 +364,4 @@ class GenericTableTrackExample extends Component {
   }
 }
 
-export default GenericTableTrackExample
+export default ClinvarExample

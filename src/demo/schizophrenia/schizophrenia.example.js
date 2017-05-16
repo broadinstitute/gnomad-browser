@@ -16,7 +16,7 @@ import { processVariantsList } from 'utilities/exalt/process'
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../../Tracks/TranscriptTrack'
 import VariantTrack from '../../Tracks/VariantTrack'
-import InfiniteTable from '../../InfiniteTable'
+import VariantTable from '../../VariantTable'
 
 import { TEST_GENES } from '../../constants'
 
@@ -703,7 +703,7 @@ class dbLofGenePageComponents extends Component {
           {allTrack}
         </RegionViewer>
         <p>{`${variantsProcessed.length} latest fetch: ${this.state.latestFetch} variants in  ${this.state.timer} ms`}</p>
-        <InfiniteTable
+        <VariantTable
           title={''}
           height={400}
           width={1100}

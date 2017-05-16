@@ -16,7 +16,7 @@ import { processVariantsList } from 'utilities/exalt/process'
 import RegionViewer from '../../RegionViewer'
 import TranscriptTrack from '../../Tracks/TranscriptTrack'
 import VariantTrack from '../../Tracks/VariantTrack'
-import InfiniteTable from '../../InfiniteTable'
+import VariantTable from '../../VariantTable'
 
 import { TEST_GENES } from '../../constants'
 
@@ -496,7 +496,7 @@ class dbLofGenePageComponents extends Component {
           />
         {this.state.tracksSplit ? splitTracks : singleTrack}
         </RegionViewer>
-        <InfiniteTable
+        <VariantTable
           title={'lof variants'}
           height={400}
           width={1100}

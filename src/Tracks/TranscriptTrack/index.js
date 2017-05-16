@@ -71,7 +71,7 @@ const TranscriptDrawing = ({
         if (isMaster) {
           localThickness = region.thickness
         } else {
-          localThickness = 13
+          localThickness = css.flipOutExonThickness
         }
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (

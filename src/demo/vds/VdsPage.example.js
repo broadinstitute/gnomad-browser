@@ -13,13 +13,12 @@ import {
   groupExonsByTranscript,
 } from 'utilities/transcriptTools'  // eslint-disable-line
 
-import RegionViewer from '../RegionViewer'
+import RegionViewer from '../../RegionViewer'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import VariantTrack from '../../Tracks/VariantTrack'
+import LoadingTrack from '../../Tracks/LoadingTrack'
 
-import TranscriptTrack from '../Tracks/TranscriptTrack'
-import VariantTrack from '../Tracks/VariantTrack'
-import LoadingTrack from '../Tracks/LoadingTrack'
-
-import css from './styles.css'
+import css from './VdsPage.example.css'
 
 const API_URL = 'http://localhost:8012/graphql'
 
@@ -165,36 +164,36 @@ class VDSPage extends Component {
       const frame = genomeVariantsRdy
         .filter(v => v.consequence === 'frameshift_variant')
       variantsComponent0 = (
-          <VariantTrack
-            title={'all exome variants'}
-            height={70}
-            variants={exomeVariantsRdy}
-            markerConfig={markerConfigAll}
-          />
+        <VariantTrack
+          title={'all exome variants'}
+          height={70}
+          variants={exomeVariantsRdy}
+          markerConfig={markerConfigAll}
+        />
       )
       variantsComponent1 = (
-          <VariantTrack
-            title={'all genome variants'}
-            height={70}
-            variants={genomeVariantsRdy}
-            markerConfig={markerConfigAll}
-          />
+        <VariantTrack
+          title={'all genome variants'}
+          height={70}
+          variants={genomeVariantsRdy}
+          markerConfig={markerConfigAll}
+        />
       )
       variantsComponent2 = (
-          <VariantTrack
-            title={'Missense variants'}
-            height={70}
-            variants={missense}
-            markerConfig={markerConfigAll}
-          />
+        <VariantTrack
+          title={'Missense variants'}
+          height={70}
+          variants={missense}
+          markerConfig={markerConfigAll}
+        />
       )
       variantsComponent3 = (
-          <VariantTrack
-            title={'Frameshift variants'}
-            height={70}
-            variants={frame}
-            markerConfig={markerConfigAll}
-          />
+        <VariantTrack
+          title={'Frameshift variants'}
+          height={70}
+          variants={frame}
+          markerConfig={markerConfigAll}
+        />
       )
     }
 

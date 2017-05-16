@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React from 'react'
 
 import { BrowserRouter as Router, NavLink, Route } from 'react-router-dom'
@@ -8,19 +9,27 @@ import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import RegionViewerFull from '../RegionViewer/examples/RegionViewerFull.example'
-import VariantTableFullDemo from '../VariantTable/VariantTable.example'
-import RegionViewerFullV1 from '../RegionViewer/examples/RegionViewerFull-V1.example'
-import RegionTableDemo from '../RegionViewer/examples/RegionTable.example'
-import TranscriptFlipOutDemo from '../RegionViewer/examples/TranscriptFlipOut.example'
-import SashimiDemo from '../Tracks/SashimiTrack/SashimiTrack.example.js'
-import GenericTableTrackDemo from '../Tracks/GenericTableTrack/GenericTableTrack.example.js'
-import ClinvarVariantsDemo from '../Tracks/GenericTableTrack/ClinVar.example.js'
-import VepTrackDemo from '../Tracks/VepTrack/VepTrack.example.js'
-import VDSPage from '../VDS/index.js'
-import InfiniteDemo from '../InfiniteTable/infinite.example.js'
-import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example.js'
-import SchizophreniaDemo from './schizophrenia/schizophrenia.example.js'
+/**
+ * Components
+ */
+import RegionViewerDemo from '../RegionViewer/example/RegionTable.example'
+
+import CoverageTrackDemo from '../Tracks/CoverageTrack/example/CoverageTrack.example'
+import CoverageTrackMultiDemo from '../Tracks/CoverageTrack/example_multi/CoverageTrackMulti.example'
+import TranscriptTrackDemo from '../Tracks/TranscriptTrack/example/TranscriptTrack.example'
+import SashimiTrackDemo from '../Tracks/SashimiTrack/SashimiTrack.example'
+import TableTrackDemo from '../Tracks/TableTrack/TableTrack.example'
+
+import VariantTableDemo from '../VariantTable/VariantTable.example'
+
+/**
+ * Composite demos
+ */
+// import ClinvarVariantsDemo from './clinvar/ClinVar.example'
+// import VepTrackDemo from './vep/Vep.example'
+// import VDSPage from './vds/VdsPage.example'
+import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example'
+import SchizophreniaDemo from './schizophrenia/schizophrenia.example'
 
 import css from './styles.css'
 
@@ -64,91 +73,64 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/region-table'}
+            to={'/region-viewer'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Region table</MenuItem>
+            <MenuItem>Region viewer</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/transcript-flip-out'}
+            to={'/transcript-track'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Multiple transcripts</MenuItem>
+            <MenuItem>Transcript track</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/region-viewer-full'}
+            to={'/coverage-track'}
             onClick={this.handleToggle}
           >
-            <MenuItem>With coverage/variants</MenuItem>
+            <MenuItem>Coverage track</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/region-viewer-full-v1'}
+            to={'/multi-coverage-track'}
             onClick={this.handleToggle}
           >
-            <MenuItem>With coverage/variants v1</MenuItem>
+            <MenuItem>Multi-coverage</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/sashimi'}
+            to={'/sashimi-track'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Sashimi plot</MenuItem>
+            <MenuItem>Sashimi track</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/vds'}
+            to={'/table-track'}
             onClick={this.handleToggle}
           >
-            <MenuItem>VDS tracks</MenuItem>
+            <MenuItem>Table track</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/generic-table'}
+            to={'/variant-table'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Generic table track</MenuItem>
-          </NavLink>
-          <NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
-            to={'/vep'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>VEP track</MenuItem>
-          </NavLink>
-          <NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
-            to={'/clinvar'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>Clinvar VDS</MenuItem>
-          </NavLink>
-          <NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
-            to={'/infinite'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>Infinite table</MenuItem>
+            <MenuItem>Variant table</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
@@ -168,6 +150,33 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>Schizophrenia meta-analysis</MenuItem>
           </NavLink>
+          {/*<NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/vds'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>VDS tracks</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/vep'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>VEP track</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/clinvar'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Clinvar VDS</MenuItem>
+          </NavLink>*/}
         </Drawer>
       </div>
     )
@@ -180,19 +189,18 @@ const Demo = () =>
       <DrawerSimpleExample />
       <div className={css.demoArea}>
         <Route exact path={'/'} render={() => <h1>gnomAD component demos</h1>} />
-        <Route exact path={'/variant-table'} component={VariantTableFullDemo} />
-        <Route exact path={'/region-table'} component={RegionTableDemo} />
-        <Route exact path={'/region-viewer-full'} component={RegionViewerFull} />
-        <Route exact path={'/region-viewer-full-v1'} component={RegionViewerFullV1} />
-        <Route exact path={'/transcript-flip-out'} component={TranscriptFlipOutDemo} />
-        <Route exact path={'/sashimi'} component={SashimiDemo} />
-        <Route exact path={'/generic-table'} component={GenericTableTrackDemo} />
-        <Route exact path={'/vds'} component={VDSPage} />
-        <Route exact path={'/vep'} component={VepTrackDemo} />
-        <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />
-        <Route exact path={'/infinite'} component={InfiniteDemo} />
+        <Route exact path={'/region-viewer'} component={RegionViewerDemo} />
+        <Route exact path={'/coverage-track'} component={CoverageTrackDemo} />
+        <Route exact path={'/multi-coverage-track'} component={CoverageTrackMultiDemo} />
+        <Route exact path={'/transcript-track'} component={TranscriptTrackDemo} />
+        <Route exact path={'/sashimi-track'} component={SashimiTrackDemo} />
+        <Route exact path={'/table-track'} component={TableTrackDemo} />
+        <Route exact path={'/variant-table'} component={VariantTableDemo} />
         <Route exact path={'/db-lof-gene-page-components'} component={DbLofGenePageDemo} />
         <Route exact path={'/schizophrenia'} component={SchizophreniaDemo} />
+        {/*<Route exact path={'/vds'} component={VDSPage} />
+        <Route exact path={'/vep'} component={VepTrackDemo} />
+        <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />*/}
         <Route
           exact
           path={'/graphiql'}

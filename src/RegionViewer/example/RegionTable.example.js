@@ -13,7 +13,7 @@ import RegionViewer from '../RegionViewer'
 import TranscriptTrack from '../../Tracks/TranscriptTrack'
 import PositionTableTrack from '../../Tracks/PositionTableTrack'
 
-import examplePageStyles from './styles.css'
+import examplePageStyles from './RegionTable.example.css'
 
 class RegionTableExample extends Component {
   state = {
@@ -97,7 +97,7 @@ class RegionTableExample extends Component {
     }
 
     return (
-      <div className={examplePageStylesexamplePageStyles.page}>
+      <div className={examplePageStyles.page}>
         <h1>Region viewer demo</h1>
         <Slider
           style={{
@@ -108,7 +108,7 @@ class RegionTableExample extends Component {
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
             )}
           </DropDownMenu>
         </div>

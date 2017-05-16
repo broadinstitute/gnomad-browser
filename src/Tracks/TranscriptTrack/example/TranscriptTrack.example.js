@@ -14,10 +14,10 @@ import {
 } from 'utilities/transcriptTools'  // eslint-disable-line
 
 import testData from 'data/transcript-tools-CD33.json'  // eslint-disable-line
-import RegionViewer from '../RegionViewer'
-import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import RegionViewer from '../../../RegionViewer'
+import TranscriptTrack from '../index'
 
-import examplePageStyles from './styles.css'
+import examplePageStyles from './TranscriptTrack.example.css'
 
 class RegionTableExample extends Component {
   state = {

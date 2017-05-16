@@ -12,11 +12,11 @@ import { processVariantsList } from 'utilities/exalt/process'
 
 
 import RegionViewer from '../../RegionViewer'
-import TranscriptTrack from '../TranscriptTrack'
-import VariantTrack from '../VariantTrack'
-import GenericTableTrack from './index'
+import TranscriptTrack from '../../Tracks/TranscriptTrack'
+import TableTrack from '../../Tracks/TableTrack'
+import VariantTrack from '../../Tracks/VariantTrack'
 
-import css from './styles.css'
+import css from './Vep.example.css'
 
 const API_URL = process.env.API_URL
 
@@ -457,7 +457,7 @@ class GenericTableTrackExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
             height={15}
           />
-          <GenericTableTrack
+          <TableTrack
             title={`Twenty ${this.state.currentDataset} ${gene_name} variants`}
             height={200}
             tableConfig={tableDataConfig}

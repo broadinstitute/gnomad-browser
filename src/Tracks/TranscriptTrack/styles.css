@@ -42,6 +42,8 @@
   stroke: #BDBDBD;
 }
 
+@value flipOutExonThickness: 13px;
+
 .transcriptsGrouped {
   display: flex;
   flex-direction: column;

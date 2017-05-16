@@ -162,7 +162,9 @@ const VariantTrack = ({
           width={width}
           height={height}
         >
+          console.log(markerConfig)
           {variants.map((variant, index) => {
+            // console.log(variant, )
             const { markerType, yPositionSetting, fillColor } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)

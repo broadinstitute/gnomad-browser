@@ -10,27 +10,16 @@
   display: column;
 }
 
+.genericTableTrack {
+  width: 1100px;
+  display: block;
+  overflow-x: auto;
+}
+
 .genericTable td {
   padding-left: 40px;
 }
 
 .text {
   font-size: 10px;
-}
-
-.menus {
-  display: flex;
-  flex-direction: row;
-}
-
-.headers {
-  display: flex;
-  flex-direction: row;
-  font-weight: bold;
-  /*border: 1px solid #000;*/
-}
-
-.row {
-  display: flex;
-  /*border: 1px solid blue;*/
 }
