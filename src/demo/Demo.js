@@ -29,11 +29,45 @@ import VariantTableDemo from '../VariantTable/VariantTable.example'
 // import VepTrackDemo from './vep/Vep.example'
 // import VDSPage from './vds/VdsPage.example'
 import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example'
-import SchizophreniaDemo from './schizophrenia/schizophrenia.example'
+import CompositeDemo from './composite/Composite.example'
 
 import css from './styles.css'
 
 const vdsGraphiqlURL = 'http://localhost:8004'
+
+class DrawerOpenRightExample extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+  }
+
+  handleToggle = () => this.setState({open: !this.state.open});
+
+  render() {
+    return (
+      <div>
+        <RaisedButton
+          label="Quick links"
+          onTouchTap={this.handleToggle}
+        />
+        <Drawer width={200} openSecondary={true} open={this.state.open} >
+          <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
+          <MenuItem><a target="_blank" href="https://app.google.stackdriver.com/monitoring/1041370/matts-metrics-dashboard?project=exac-gnomad">GKE monitoring</a></MenuItem>
+          <MenuItem><a target="_blank" href="https://console.cloud.google.com/logs/viewer?project=exac-gnomad&minLogLevel=0&expandAll=false&resource=container%2Fcluster_name%2Fgnomad-serving-cluster%2Fnamespace_id%2Fdefault">GKE logs</a></MenuItem>
+          <MenuItem><a target="_blank" href="https://console.cloud.google.com/storage/browser/gnomad-browser/?project=exac-gnomad">Google storage</a></MenuItem>
+          <MenuItem><a target="_blank" href="https://console.cloud.google.com/kubernetes/clusters/details/us-east1-d/spark-cluster?project=exac-gnomad">GKE container console</a></MenuItem>
+          <MenuItem><a target="_blank" href="http://localhost:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/workload?namespace=default">Kubernetes dashboard</a></MenuItem>
+          <MenuItem><a target="_blank" href="http://localhost:8007/kubernetes#/topology/default">Cluster topology</a></MenuItem>
+          <MenuItem><a target="_blank" href="http://localhost:8008">Spark UI</a></MenuItem>
+          <MenuItem><a target="_blank" href="http://localhost:8012">Zeppelin notebook</a></MenuItem>
+          <MenuItem><a target="_blank" href="http://gnomad-api.broadinstitute.org">gnomAD GraphiQL</a></MenuItem>
+          <MenuItem><a target="_blank" href={vdsGraphiqlURL}>VDS GraphiQL</a></MenuItem>
+        </Drawer>
+      </div>
+    );
+  }
+}
 
 class DrawerSimpleExample extends React.Component {
 
@@ -59,16 +93,6 @@ class DrawerSimpleExample extends React.Component {
           >
             <MenuItem>Home</MenuItem>
           </NavLink>
-          <MenuItem><a target="_blank" href="https://app.google.stackdriver.com/monitoring/1041370/matts-metrics-dashboard?project=exac-gnomad">GKE monitoring</a></MenuItem>
-          <MenuItem><a target="_blank" href="https://console.cloud.google.com/logs/viewer?project=exac-gnomad&minLogLevel=0&expandAll=false&resource=container%2Fcluster_name%2Fgnomad-serving-cluster%2Fnamespace_id%2Fdefault">GKE logs</a></MenuItem>
-          <MenuItem><a target="_blank" href="https://console.cloud.google.com/storage/browser/gnomad-browser/?project=exac-gnomad">Google storage</a></MenuItem>
-          <MenuItem><a target="_blank" href="https://console.cloud.google.com/kubernetes/clusters/details/us-east1-d/spark-cluster?project=exac-gnomad">GKE container console</a></MenuItem>
-          <MenuItem><a target="_blank" href="http://localhost:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/workload?namespace=default">Kubernetes dashboard</a></MenuItem>
-          <MenuItem><a target="_blank" href="http://localhost:8007/kubernetes#/topology/default">Cluster topology</a></MenuItem>
-          <MenuItem><a target="_blank" href="http://localhost:8008">Spark UI</a></MenuItem>
-          <MenuItem><a target="_blank" href="http://localhost:8012">Zeppelin notebook</a></MenuItem>
-          <MenuItem><a target="_blank" href="http://gnomad-api.broadinstitute.org">gnomAD GraphiQL</a></MenuItem>
-          <MenuItem><a target="_blank" href={vdsGraphiqlURL}>VDS GraphiQL</a></MenuItem>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
@@ -136,19 +160,19 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/db-lof-gene-page-components'}
+            to={'/composite'}
             onClick={this.handleToggle}
           >
-            <MenuItem>dbLoF gene page components</MenuItem>
+            <MenuItem>Composite</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/schizophrenia'}
+            to={'/db-lof-gene-page-components'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Schizophrenia meta-analysis</MenuItem>
+            <MenuItem>dbLoF gene page components</MenuItem>
           </NavLink>
           {/*<NavLink
             className={css.navlink}
@@ -186,9 +210,27 @@ class DrawerSimpleExample extends React.Component {
 const Demo = () =>
   <Router>
     <div>
-      <DrawerSimpleExample />
+      <div className={css.menus}>
+        <DrawerSimpleExample />
+        <h1 className={css.title}>react gnomad</h1>
+        <DrawerOpenRightExample />
+      </div>
       <div className={css.demoArea}>
-        <Route exact path={'/'} render={() => <h1>gnomAD component demos</h1>} />
+        <Route exact path={'/'} render={() => {
+            return (
+              <div className={css.homePage}>
+                <p className={css.subtitle}>react-gnomad is JavaScript library for visualizing genomic data</p>
+                <div className={css.features}>
+                  <p>Build web portals to share your results</p>
+                  <p>Create ad hoc data interactive anlaysis tools</p>
+                  <p>High performance with very large datasets such as gnomAD</p>
+                  <p>Plot data by genomic coordinate along gene models</p>
+                  <p>Filter/split/view data by annotation</p>
+                  <p>Combine multiple variant datasets on the fly</p>
+                </div>
+              </div>
+            )
+          }} />
         <Route exact path={'/region-viewer'} component={RegionViewerDemo} />
         <Route exact path={'/coverage-track'} component={CoverageTrackDemo} />
         <Route exact path={'/multi-coverage-track'} component={CoverageTrackMultiDemo} />
@@ -197,7 +239,7 @@ const Demo = () =>
         <Route exact path={'/table-track'} component={TableTrackDemo} />
         <Route exact path={'/variant-table'} component={VariantTableDemo} />
         <Route exact path={'/db-lof-gene-page-components'} component={DbLofGenePageDemo} />
-        <Route exact path={'/schizophrenia'} component={SchizophreniaDemo} />
+        <Route exact path={'/composite'} component={CompositeDemo} />
         {/*<Route exact path={'/vds'} component={VDSPage} />
         <Route exact path={'/vep'} component={VepTrackDemo} />
         <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />*/}

@@ -1,4 +1,5 @@
 import TranscriptTrack from './Tracks/TranscriptTrack'
+import CoverageTrack from './Tracks/CoverageTrack'
 
 export {
   TestComponent,
@@ -18,9 +19,5 @@ export {
 
 export {
   TranscriptTrack,
+  CoverageTrack,
 }
-
-//
-// export {
-//   CoverageTrack,
-// } from './Tracks/CoverageTrack'

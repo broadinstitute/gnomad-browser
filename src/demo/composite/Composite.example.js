@@ -20,7 +20,7 @@ import VariantTable from '../../VariantTable'
 
 import { TEST_GENES } from '../../constants'
 
-import css from './styles.css'
+import css from './Composite.example.css'
 
 const API_URL = process.env.API_URL
 
@@ -180,7 +180,7 @@ const combineFields = {
   uniqueFields: ['allele_count', 'allele_num', 'hom_count', 'filter'],
 }
 
-class dbLofGenePageComponents extends Component {
+class Composite extends Component {
   state = {
     markerWidth: 5,
     markerStrokeWidth: 1,
@@ -575,7 +575,7 @@ class dbLofGenePageComponents extends Component {
 
     return (
       <div className={css.page}>
-        <h1>schizophrenia meta-analysis gene page prototypes</h1>
+        <h1>Infinite + combined datasets + annotations</h1>
         <div className={css.menus}>
           <p>Gene</p>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
@@ -719,4 +719,4 @@ class dbLofGenePageComponents extends Component {
   }
 }
 
-export default dbLofGenePageComponents
+export default Composite

@@ -4,7 +4,7 @@ const API_URL = process.env.API_URL
 
 export const test = () => 'this is a test'
 
-export const fetchAllByGeneName = (geneName) => {
+export const fetchAllByGeneName = (geneName, url = API_URL) => {
   const query = `
   {
     gene(gene_name: "${geneName}") {
@@ -63,7 +63,7 @@ export const fetchAllByGeneName = (geneName) => {
   }
 }`
   return new Promise((resolve, reject) => {
-    fetch(API_URL)(query)
+    fetch(url)(query)
       .then(data => resolve(data.data.gene))
       .catch((error) => {
         console.log(error)
