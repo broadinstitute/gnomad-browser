@@ -258,6 +258,7 @@ const VariantTable = ({
   remoteRowCount,
   overscan,
   showIndex,
+  scrollToRow,
 }) => {
   const headers = tableConfig.fields.map(field => getHeaderCell(field))
 
@@ -287,7 +288,7 @@ const VariantTable = ({
       ix
     </div>
   )
-
+  console.log(`scrolling to index ${scrollToRow}`)
   return (
     <div className={css.track}>
       <div style={{ width: 1100 }}>
@@ -311,6 +312,7 @@ const VariantTable = ({
               rowRenderer={rowRenderer}
               overscanRowCount={overscan}
               width={width}
+              scrollToIndex={scrollToRow}
             />
           )}
         </InfiniteLoader>
@@ -326,12 +328,14 @@ VariantTable.propTypes = {
   loadMoreRows: PropTypes.func,
   overscan: PropTypes.number,
   showIndex: PropTypes.bool,
+  scrollToRow: PropTypes.number,
 }
 VariantTable.defaultProps = {
   loadMoreRows: () => { },
   overscan: 100,
   loadLookAhead: 0,
   showIndex: false,
+  scrollToRow: 10,
 }
 
 export default VariantTable

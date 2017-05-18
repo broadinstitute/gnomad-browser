@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import fetch from 'graphql-fetch'
 
+import ReactCursorPosition from 'react-cursor-position'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
@@ -180,6 +181,28 @@ const combineFields = {
   uniqueFields: ['allele_count', 'allele_num', 'hom_count', 'filter'],
 }
 
+const onCursorMove = ({ isPositionOutside, position: { x, y } }) => {
+  console.log(`x: ${x}, y: ${y}`)
+}
+
+const onCursorClick = ({ x, y }) => {
+  console.log(`clicked x: ${x}, y: ${y}`)
+}
+
+const PositionLabel = ({ position: { x, y } = 0, isActive, isPositionOutside }) => {
+  return (
+    <div
+      className={css.positionLabel}
+      onClick={e => onCursorClick({ x, y })}
+    >
+      {`x: ${x}`}<br />
+      {`y: ${y}`}<br />
+      {`isActive: ${isActive}`}<br />
+      {`isOutside: ${isPositionOutside ? 'true' : 'false'}`}
+    </div>
+  )
+}
+
 class Composite extends Component {
   state = {
     markerWidth: 5,
@@ -205,6 +228,7 @@ class Composite extends Component {
     variantCounts: [],
     totalTimes: [],
     afMax: 0.001,
+    tablePosition: 100,
     datasets: [
       // 'exacv1',
       'exome',
@@ -401,6 +425,11 @@ class Composite extends Component {
 
   handleSplitConsequences = (event, isInputChecked) => {
     this.setState({ tracksSplit: isInputChecked })
+  }
+
+  onCursorClick = ({ x, y }) => {
+    console.log(`clicked x: ${x}, y: ${y}`)
+    this.setState({ tablePosition: Math.floor(x) })
   }
 
   render() {
@@ -636,6 +665,11 @@ class Composite extends Component {
           />
           {this.state.isFetching && refreshIndicatorSmall}
         </div>
+        {/*<ReactCursorPosition
+          onPositionChanged={onCursorMove}
+        >
+          <PositionLabel />
+        </ReactCursorPosition>*/}
         <button
           onClick={() => {
             this.fetchMoreData()
@@ -665,7 +699,6 @@ class Composite extends Component {
           Reset
         </button>
         <div className={css.menus}>
-
           <p>fetch freq (ms)</p>
           <DropDownMenu
             value={this.state.fetchFrequency}
@@ -694,10 +727,12 @@ class Composite extends Component {
           regions={canonicalExons}
           regionAttributes={regionAttributesConfig}
           padding={this.state.padding}
+          onRegionClick={onCursorClick}
         >
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}
+            onTranscriptClick={this.onCursorClick}
           />
           {splitTracks}
           {allTrack}
@@ -710,9 +745,11 @@ class Composite extends Component {
           tableConfig={tableDataConfig}
           tableData={variantsProcessed}
           overscan={60}
+          showIndex
           loadLookAhead={1000}
           remoteRowCount={this.state.totalVariantCount}
           loadMoreRows={this.fetchMoreData}
+          scrollToRow={this.state.tablePosition}
         />
       </div>
     )

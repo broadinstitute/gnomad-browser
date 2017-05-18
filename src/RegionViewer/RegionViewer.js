@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import ReactCursorPosition from 'react-cursor-position'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {
@@ -26,11 +27,13 @@ class RegionViewer extends Component {
     regionAttributes: PropTypes.object,
     padding: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
+    onRegionClick: PropTypes.func,
   }
 
   static defaultProps = {
     css: defaultStyles,
     exonSubset: null,
+    onRegionClick: () => {},
     regionAttributes: {
       CDS: {
         color: exonColor,
@@ -112,7 +115,9 @@ class RegionViewer extends Component {
       <div className={css.regionViewer}>
         <p>Exon padding {padding.toPrecision(3)} bp</p>
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
-          {this.renderChildren(childProps)}
+          <ReactCursorPosition>
+            {this.renderChildren(childProps)}
+          </ReactCursorPosition>
         </div>
       </div>
     )

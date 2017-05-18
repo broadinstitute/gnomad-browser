@@ -38,11 +38,11 @@ const vdsGraphiqlURL = 'http://localhost:8004'
 class DrawerOpenRightExample extends React.Component {
 
   constructor(props) {
-    super(props);
-    this.state = {open: false};
+    super(props)
+    this.state = { open: false }
   }
 
-  handleToggle = () => this.setState({open: !this.state.open});
+  handleToggle = () => this.setState({ open: !this.state.open })
 
   render() {
     return (
@@ -51,7 +51,7 @@ class DrawerOpenRightExample extends React.Component {
           label="Quick links"
           onTouchTap={this.handleToggle}
         />
-        <Drawer width={200} openSecondary={true} open={this.state.open} >
+        <Drawer width={ 200 } openSecondary={ true } open={ this.state.open } >
           <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
           <MenuItem><a target="_blank" href="https://app.google.stackdriver.com/monitoring/1041370/matts-metrics-dashboard?project=exac-gnomad">GKE monitoring</a></MenuItem>
           <MenuItem><a target="_blank" href="https://console.cloud.google.com/logs/viewer?project=exac-gnomad&minLogLevel=0&expandAll=false&resource=container%2Fcluster_name%2Fgnomad-serving-cluster%2Fnamespace_id%2Fdefault">GKE logs</a></MenuItem>
@@ -65,7 +65,7 @@ class DrawerOpenRightExample extends React.Component {
           <MenuItem><a target="_blank" href={vdsGraphiqlURL}>VDS GraphiQL</a></MenuItem>
         </Drawer>
       </div>
-    );
+    )
   }
 }
 

@@ -273,6 +273,7 @@ class TranscriptTrack extends Component {
 
   render() {
     let transcriptGroup
+    // console.log(this.props.position)
     if (this.props.transcriptsGrouped) {
       transcriptGroup = (
         <TranscriptGroup
@@ -284,8 +285,12 @@ class TranscriptTrack extends Component {
         />
       )
     }
+    console.log(this.props.xScale.invert(this.props.position.x - 100))
     return (
-      <div className={this.props.css.track}>
+      <div
+        className={this.props.css.track}
+        onClick={e => this.props.onTranscriptClick(this.props.position)}
+      >
         <Transcript
           isMaster fanOut={this.fanOut}
           regions={this.props.offsetRegions}
