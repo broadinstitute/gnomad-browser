@@ -285,11 +285,9 @@ class TranscriptTrack extends Component {
         />
       )
     }
-    console.log(this.props.xScale.invert(this.props.position.x - 100))
     return (
       <div
         className={this.props.css.track}
-        onClick={e => this.props.onTranscriptClick(this.props.position)}
       >
         <Transcript
           isMaster fanOut={this.fanOut}

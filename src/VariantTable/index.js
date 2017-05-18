@@ -288,7 +288,7 @@ const VariantTable = ({
       ix
     </div>
   )
-  console.log(`scrolling to index ${scrollToRow}`)
+  console.log(scrollToRow)
   return (
     <div className={css.track}>
       <div style={{ width: 1100 }}>

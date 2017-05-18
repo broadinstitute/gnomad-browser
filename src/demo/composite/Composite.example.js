@@ -4,17 +4,18 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import fetch from 'graphql-fetch'
 
-import ReactCursorPosition from 'react-cursor-position'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 import RefreshIndicator from 'material-ui/RefreshIndicator'
 import Checkbox from 'material-ui/Checkbox'
+import { range } from 'd3-array'
 
-import { groupExonsByTranscript, combineDataForTable } from 'utilities'
+import { groupExonsByTranscript, combineDataForTable, getXpos } from 'utilities'
 import { processVariantsList } from 'utilities/exalt/process'
 
 import RegionViewer from '../../RegionViewer'
+import NavigatorTrack from '../../Tracks/NavigatorTrack'
 import TranscriptTrack from '../../Tracks/TranscriptTrack'
 import VariantTrack from '../../Tracks/VariantTrack'
 import VariantTable from '../../VariantTable'
@@ -32,6 +33,7 @@ export const geneFetch = (geneName) => {
       gene_name
       xstart
       xstop
+      chrom
       exons {
         _id
         start
@@ -135,6 +137,7 @@ export const regionFetch = (datasets, xstart, xstop) => {
       chrom
       variant_id
       pos
+      xpos
       rsid
       filter
       allele_count
@@ -154,11 +157,9 @@ export const regionFetch = (datasets, xstart, xstop) => {
   return new Promise((resolve, reject) => {
     fetch(API_URL)(query)
       .then((data) => {
-        // console.log(data)
         resolve(data.data.region)
       })
       .catch((error) => {
-        // console.log(error)
         reject(error)
       })
   })
@@ -189,20 +190,6 @@ const onCursorClick = ({ x, y }) => {
   console.log(`clicked x: ${x}, y: ${y}`)
 }
 
-const PositionLabel = ({ position: { x, y } = 0, isActive, isPositionOutside }) => {
-  return (
-    <div
-      className={css.positionLabel}
-      onClick={e => onCursorClick({ x, y })}
-    >
-      {`x: ${x}`}<br />
-      {`y: ${y}`}<br />
-      {`isActive: ${isActive}`}<br />
-      {`isOutside: ${isPositionOutside ? 'true' : 'false'}`}
-    </div>
-  )
-}
-
 class Composite extends Component {
   state = {
     markerWidth: 5,
@@ -229,6 +216,7 @@ class Composite extends Component {
     totalTimes: [],
     afMax: 0.001,
     tablePosition: 100,
+    positionsWithData: [],
     datasets: [
       // 'exacv1',
       'exome',
@@ -242,7 +230,8 @@ class Composite extends Component {
 
   componentDidUpdate(_, previousState) {
     if (previousState.currentGene !== this.state.currentGene ||
-      previousState.currentDataset !== this.state.currentDataset) {
+      previousState.currentDataset !== this.state.currentDataset
+    ) {
       this.fetchData()
     }
   }
@@ -274,6 +263,7 @@ class Composite extends Component {
         fetchingWindow,
       } = this.updateGeneSettings(this.state.currentGene)
       this.setState({
+        geneData,
         fetchingWindow,
         markerWidth,
         markerStrokeWidth,
@@ -297,6 +287,12 @@ class Composite extends Component {
           this.setState({ geneData })
           this.setState({ variantsProcessed })
           this.setState({ hasData: true })
+          this.setState({
+            positionsWithData: [
+              ...this.state.positionsWithData,
+              ...range(regionStart, regionStop),
+            ].sort((a, b) => b - a),
+          })
         })
     })
   }
@@ -338,8 +334,71 @@ class Composite extends Component {
           variantCounts: [...this.state.variantCounts, totalVariantCount],
           fetchTimes: [...this.state.fetchTimes, time],
           totalTimes: [...this.state.totalTimes, this.state.totalTime],
-          variantsProcessed: [...this.state.variantsProcessed, ...variantsProcessed]
+          variantsProcessed: [
+            ...this.state.variantsProcessed,
+            ...variantsProcessed,
+          ].sort((a, b) => b.pos - a.pos),
+          positionsWithData: [
+            ...this.state.positionsWithData,
+            ...range(newStart, newStop),
+          ], // .sort((a, b) => b - a),
+        })
+        this.forceUpdate()
+        clearInterval(timer)
+      })
+  }
 
+  fetchFromPositionClick = (chrom, position) => {
+    if (this.state.isFetching) return
+    let time = 0
+    const increment = () => { time += 1 }
+    const timer = setInterval(increment, 1)
+    this.setState({ isFetching: true })
+    const xpos = getXpos(chrom, position)
+
+    regionFetch(
+      this.state.datasets,
+      xpos - 1000,
+      xpos + 1000,
+    )
+      .then((variantData) => {
+        const { exome_variants, genome_variants } = variantData
+        const addDatasetLabel = (variants, label) => variants.map(v => ({ ...v, dataset: label }))
+
+        const combinedVariants = combineDataForTable(
+          [
+            ...addDatasetLabel(genome_variants, 'genome'),
+            ...addDatasetLabel(exome_variants, 'exome'),
+          ],
+          combineFields,
+        )
+
+        const variantsProcessed = processVariantsList(combinedVariants)
+
+        const allVariants = [
+          ...this.state.variantsProcessed,
+          ...variantsProcessed,
+        ].sort((a, b) => b.pos - a.pos)
+
+        const totalVariantCount = exome_variants.length + genome_variants.length
+        const tablePosition = this.getTableIndexByPosition(position, allVariants)
+        console.log('position', position)
+        console.log('all variants', allVariants)
+        console.log('table position:', tablePosition)
+        this.setState({
+          isFetching: false,
+          timer: time,
+          totalTime: this.state.totalTime + 1,
+          latestFetch: totalVariantCount,
+          variantCounts: [...this.state.variantCounts, totalVariantCount],
+          fetchTimes: [...this.state.fetchTimes, time],
+          totalTimes: [...this.state.totalTimes, this.state.totalTime],
+          variantsProcessed: allVariants,
+          positionsWithData: [
+            ...this.state.positionsWithData,
+            ...range(xpos, xpos + 1000),
+          ], //.sort((a, b) => b - a),
+          tablePosition,
         })
         clearInterval(timer)
       })
@@ -409,7 +468,7 @@ class Composite extends Component {
     this.setState({
       variantCounts: [],
       fetchTimes: [],
-     })
+    })
     this.fetchData()
   }
 
@@ -427,9 +486,21 @@ class Composite extends Component {
     this.setState({ tracksSplit: isInputChecked })
   }
 
-  onCursorClick = ({ x, y }) => {
-    console.log(`clicked x: ${x}, y: ${y}`)
-    this.setState({ tablePosition: Math.floor(x) })
+  getTableIndexByPosition = (position, variants) =>
+    variants.findIndex((variant, i) => {
+      if (variants[i + 1]) {
+        return position >= variant.pos && position <= variants[i + 1].pos
+      }
+      return variants.length - 1
+    })
+
+  updateCurrentTableindex = (position) => {
+    this.setState({ tablePosition: this.getTableIndexByPosition(position) })
+  }
+
+  onCursorClick = (position) => {
+    const { chrom } = this.state.geneData
+    this.fetchFromPositionClick(chrom, position)
   }
 
   render() {
@@ -601,7 +672,6 @@ class Composite extends Component {
           !R.contains(cats, v.consequence))}
       />
     )
-
     return (
       <div className={css.page}>
         <h1>Infinite + combined datasets + annotations</h1>
@@ -665,11 +735,6 @@ class Composite extends Component {
           />
           {this.state.isFetching && refreshIndicatorSmall}
         </div>
-        {/*<ReactCursorPosition
-          onPositionChanged={onCursorMove}
-        >
-          <PositionLabel />
-        </ReactCursorPosition>*/}
         <button
           onClick={() => {
             this.fetchMoreData()
@@ -729,10 +794,14 @@ class Composite extends Component {
           padding={this.state.padding}
           onRegionClick={onCursorClick}
         >
+          <NavigatorTrack
+            title={'Navigator'}
+            height={50}
+            onNavigatorClick={this.onCursorClick}
+          />
           <TranscriptTrack
             transcriptsGrouped={transcriptsGrouped}
             height={15}
-            onTranscriptClick={this.onCursorClick}
           />
           {splitTracks}
           {allTrack}

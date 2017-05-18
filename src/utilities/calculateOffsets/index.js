@@ -166,14 +166,13 @@ export const calculatePositionOffset = R.curry((regions, position) => {
   return result
 })
 
-export const invertPositionOffset = R.curry((regions, position) => {
+export const invertPositionOffset = R.curry((regions, xScale, scaledPosition) => {
   let result = 0
   for (let i = 0; i < regions.length; i++) {
-    if (position >= regions[i].start && position <= regions[i].stop) {
-      result = {
-        offsetPosition: position - regions[i].offset,
-        color: regions[i].color,
-      }
+    if (scaledPosition >= xScale(regions[i].start - regions[i].offset)
+      && scaledPosition <= xScale(regions[i].stop - regions[i].offset)
+    ) {
+      result = Math.floor(xScale.invert(scaledPosition) + regions[i].offset)
     }
   }
   return result

@@ -17,3 +17,7 @@ export {
 export {
   getMaxMeanFromCoverageDatasets,
 } from './plotting'
+
+export {
+  getXpos
+} from './variant'

@@ -1,0 +1,28 @@
+.track {
+  display: flex;
+  align-items: center;
+  border: 1px solid blue;
+}
+
+.loadingAxisName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 11px;
+  border: 1px solid green;
+}
+
+.cursorPosition { }
+
+.areaClick {
+  border: 1px solid yellow;
+}
+
+.navigatorRect {
+  fill: #DAEDE2;
+  stroke: red;
+}
+
+.positionWindowRect {
+  fill: #EA2E49;
+}

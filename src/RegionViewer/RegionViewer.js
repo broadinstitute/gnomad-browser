@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react'
-import ReactCursorPosition from 'react-cursor-position'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {
   calculateOffsetRegions,
   calculatePositionOffset,
+  invertPositionOffset,
   calculateXScale,
 } from 'utilities/calculateOffsets'  // eslint-disable-line
 
@@ -93,6 +93,7 @@ class RegionViewer extends Component {
       exonSubset,
       padding,
     } = this.props
+
     const offsetRegions = calculateOffsetRegions(
       featuresToDisplay,
       regionAttributes,
@@ -100,24 +101,27 @@ class RegionViewer extends Component {
       regions,
       exonSubset,
     )
+
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)
+    const invertOffset = invertPositionOffset(offsetRegions, xScale)
+
     const childProps = {
       leftPanelWidth,
       positionOffset,
+      invertOffset,
       xScale,
       width,
       offsetRegions,
       regionAttributes,
       padding,
     }
+
     return (
       <div className={css.regionViewer}>
         <p>Exon padding {padding.toPrecision(3)} bp</p>
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
-          <ReactCursorPosition>
-            {this.renderChildren(childProps)}
-          </ReactCursorPosition>
+          {this.renderChildren(childProps)}
         </div>
       </div>
     )
