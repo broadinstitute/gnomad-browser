@@ -291,7 +291,7 @@ class Composite extends Component {
             positionsWithData: [
               ...this.state.positionsWithData,
               ...range(regionStart, regionStop),
-            ].sort((a, b) => b - a),
+            ].sort((a, b) => a - b),
           })
         })
     })
@@ -337,11 +337,11 @@ class Composite extends Component {
           variantsProcessed: [
             ...this.state.variantsProcessed,
             ...variantsProcessed,
-          ].sort((a, b) => b.pos - a.pos),
+          ].sort((a, b) => a.pos - b.pos),
           positionsWithData: [
             ...this.state.positionsWithData,
             ...range(newStart, newStop),
-          ], // .sort((a, b) => b - a),
+          ].sort((a, b) => a - b),
         })
         this.forceUpdate()
         clearInterval(timer)
@@ -358,8 +358,8 @@ class Composite extends Component {
 
     regionFetch(
       this.state.datasets,
-      xpos - 1000,
-      xpos + 1000,
+      xpos - 10,
+      xpos + 10,
     )
       .then((variantData) => {
         const { exome_variants, genome_variants } = variantData
@@ -397,7 +397,7 @@ class Composite extends Component {
           positionsWithData: [
             ...this.state.positionsWithData,
             ...range(xpos, xpos + 1000),
-          ], //.sort((a, b) => b - a),
+          ].sort((a, b) => a - b),
           tablePosition,
         })
         clearInterval(timer)
@@ -504,6 +504,7 @@ class Composite extends Component {
   }
 
   render() {
+    console.log(this.state.positionsWithData)
     const refreshIndicatorPage = (
       <div
         style={{
