@@ -73,4 +73,29 @@ describe.only('getPositionsToFetch', () => {
       1055505504,
     ])
   })
+  it('handles discontinuous position list', () => {
+    const discontinuousPositionList = [
+      1055505222,
+      1055505223,
+      1055505224,
+      1055505230,
+      1055505231,
+      1055505232,
+      1055505236,
+      1055505237,
+    ]
+    const position = 1055505231
+    const padding = 5
+    expect(
+      getPositionsToFetch(position, padding, discontinuousPositionList),
+    ).toEqual([
+      1055505226,
+      1055505227,
+      1055505228,
+      1055505229,
+      1055505233,
+      1055505234,
+      1055505235,
+    ])
+  })
 })

@@ -169,6 +169,7 @@ const combineFields = {
   constantFields: [
     'chrom',
     'pos',
+    'xpos',
     'rsid',
     'vep_annotations',
     'variant_id',
@@ -323,6 +324,10 @@ class Composite extends Component {
         )
 
         const variantsProcessed = processVariantsList(combinedVariants)
+
+        const newVariants = variantsProcessed.filter(v =>
+          !R.contains(v.xpos, this.state.positionsWithData))
+
         const totalVariantCount = exome_variants.length + genome_variants.length
         this.setState({
           isFetching: false,
@@ -336,7 +341,7 @@ class Composite extends Component {
           totalTimes: [...this.state.totalTimes, this.state.totalTime],
           variantsProcessed: [
             ...this.state.variantsProcessed,
-            ...variantsProcessed,
+            ...newVariants,
           ].sort((a, b) => a.pos - b.pos),
           positionsWithData: [
             ...this.state.positionsWithData,
@@ -358,8 +363,8 @@ class Composite extends Component {
 
     regionFetch(
       this.state.datasets,
-      xpos - 10,
-      xpos + 10,
+      xpos - 200,
+      xpos + 200,
     )
       .then((variantData) => {
         const { exome_variants, genome_variants } = variantData
@@ -375,16 +380,17 @@ class Composite extends Component {
 
         const variantsProcessed = processVariantsList(combinedVariants)
 
+        const newVariants = variantsProcessed.filter(v => {
+          return !R.contains(v.xpos, this.state.positionsWithData)
+        })
+
         const allVariants = [
           ...this.state.variantsProcessed,
-          ...variantsProcessed,
-        ].sort((a, b) => b.pos - a.pos)
+          ...newVariants,
+        ].sort((a, b) => a.pos - b.pos)
 
         const totalVariantCount = exome_variants.length + genome_variants.length
         const tablePosition = this.getTableIndexByPosition(position, allVariants)
-        console.log('position', position)
-        console.log('all variants', allVariants)
-        console.log('table position:', tablePosition)
         this.setState({
           isFetching: false,
           timer: time,
@@ -394,9 +400,10 @@ class Composite extends Component {
           fetchTimes: [...this.state.fetchTimes, time],
           totalTimes: [...this.state.totalTimes, this.state.totalTime],
           variantsProcessed: allVariants,
+
           positionsWithData: [
             ...this.state.positionsWithData,
-            ...range(xpos, xpos + 1000),
+            ...range(xpos - 200, xpos + 200),
           ].sort((a, b) => a - b),
           tablePosition,
         })
@@ -504,7 +511,6 @@ class Composite extends Component {
   }
 
   render() {
-    console.log(this.state.positionsWithData)
     const refreshIndicatorPage = (
       <div
         style={{
