@@ -4,6 +4,7 @@ import GenePageHOC from '../../../containers/GenePage'
 
 import GeneSettings from '../GeneSettings'
 import GeneRegion from '../RegionViewer'
+import GnomadVariantTable from '../Table'
 
 import {
   groupExonsByTranscript,
@@ -16,10 +17,13 @@ const AppGenePage = ({
   setCurrentGene,
   gene,
   isFetching,
+  variants,
+  hasVariants,
 }) => {
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
+  console.log(variants)
   return (
     <div className={css.genePage}>
       <GeneSettings
@@ -31,6 +35,8 @@ const AppGenePage = ({
       <GeneRegion
         gene={gene}
       />
+    {hasVariants &&
+      <GnomadVariantTable variants={variants} />}
     </div>
   )
 }

@@ -8,7 +8,6 @@ import regions, * as fromRegions from './regions'
 import * as types from '../constants/actionTypes'
 
 const message = (state = 'Hello', action) => {
-  console.log(action.type)
   switch (action.type) {
     case types.UPDATE_MESSAGE:
       return action.message
@@ -35,3 +34,7 @@ export const getGene = (state, geneName) =>
 
 export const getVariant = (state, variantId) =>
   fromVariants.getVariant(state.variants, variantId)
+
+export const getAllVariantsAsArray = state =>
+  fromVariants.getAllVariantsAsArray(state.variants)
+

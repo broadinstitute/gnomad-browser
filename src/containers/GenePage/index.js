@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../../actions'
-import { getGene } from '../../reducers'
+import { getGene, getAllVariantsAsArray } from '../../reducers'
 
 import css from './styles.css'
 
@@ -45,6 +45,9 @@ const mapStateToProps = (state) => {
     currentGene,
     isFetching,
     gene: getGene(state, currentGene),
+    variants: getAllVariantsAsArray(state),
+    hasVariants: state.variants.status.hasData,
+    fetchingVariants: state.variants.status.isFetching,
   }
 }
 

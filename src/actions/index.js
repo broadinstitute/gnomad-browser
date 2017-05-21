@@ -3,17 +3,18 @@ import fetch from 'graphql-fetch'
 import * as utils from 'react-gnomad'
 import * as types from '../constants/actionTypes'
 
-// const API_URL = 'http://gnomad-api.broadinstitute.org/'
-
+const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
 const API_URL = 'http://localhost:8006'
 
-const fetchMinimalGenePage = (geneName, url = API_URL) => {
+const fetchMinimalGenePage = (geneName, url = LOCAL_API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
       gene_name
       start
       stop
+      xstart
+      xstop
       minimal_gnomad_variants {
         pos
         allele_freq
@@ -51,14 +52,38 @@ const fetchMinimalGenePage = (geneName, url = API_URL) => {
     fetch(url)(query)
       .then(data => resolve(data.data.gene))
       .catch((error) => {
-        console.log(error)
+        reject(error)
+      })
+  })
+}
+
+const regionFetch = (xstart, xstop) => {
+  const query = `
+  {
+    region(xstart: ${xstart}, xstop: ${xstop}) {
+      variants: exome_variants {
+        variant_id
+        pos
+        rsid
+        filter
+        allele_count
+        allele_num
+        allele_freq
+      }
+    }
+  }`
+  return new Promise((resolve, reject) => {
+    fetch('http://gnomad-api.broadinstitute.org/')(query)
+      .then((data) => {
+        resolve(data.data.region)
+      })
+      .catch((error) => {
         reject(error)
       })
   })
 }
 
 export const updateMessage = (message) => {
-  console.log(message)
   return {
     type: types.UPDATE_MESSAGE,
     message,
@@ -83,13 +108,30 @@ export const receiveGeneData = (currentGene, geneData) => ({
   geneData,
 })
 
+export const requestRegionData = (regionStartXpos, regionStopXpos) => ({
+  type: types.REQUEST_REGION_DATA,
+  regionStartXpos,
+  regionStopXpos,
+})
+
+export const receiveRegionData = regionData => ({
+  type: types.RECEIVE_REGION_DATA,
+  regionData,
+})
+
 export const fetchPageDataByGeneName = (geneName) => {
-  console.log(geneName)
   return (dispatch) => {
     dispatch(requestGeneData(geneName))
-    // utils.fetchAllByGeneName(geneName, API_URL)
     fetchMinimalGenePage(geneName, API_URL)
-      .then(geneData => dispatch(receiveGeneData(geneName, geneData)))
+      .then((geneData) => {
+        dispatch(receiveGeneData(geneName, geneData))
+        dispatch(requestRegionData(geneData.xstart, geneData.xstop))
+        regionFetch(geneData.xstart, geneData.xstart + 5000)
+          .then((regionData) => {
+            dispatch(receiveRegionData(regionData))
+          })
+      }
+    )
   }
 }
 
@@ -111,3 +153,17 @@ export const fetchVariantsIfNeeded = (currentGene) => {
     }
   }
 }
+
+//
+// export const shouldFetchRegion = (state, start, stop) => {
+//
+// }
+//
+// export const fetchRegionIfNeeded = (regionStartXpos, regionStopXpos) => {
+//   return (dispatch, getState) => {  // eslint-disable-line
+//     const toFetch = shouldFetchRegion(getState(), regionStartXpos, regionStopXpos)
+//     if (toFetch !== []) {
+//       return dispatch(fetchPageDataByGeneName(toFetch))
+//     }
+//   }
+// }
