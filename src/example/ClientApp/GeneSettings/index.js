@@ -29,7 +29,7 @@ const GeneSettings = ({ currentGene, setCurrentGene }) => {
   console.log(currentGene)
   return (
     <div className={css.geneSettings}>
-      {testGenes.map(gene => <a href="#" onClick={() =>
+      {testGenes.map(gene => <a href="#" key={`${gene}-link`} onClick={() =>
          handleDropdownChange(gene)}>{gene} </a>)}
     </div>
   )

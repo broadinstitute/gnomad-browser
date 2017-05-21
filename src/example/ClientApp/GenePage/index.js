@@ -5,9 +5,11 @@ import GenePageHOC from '../../../containers/GenePage'
 import GeneSettings from '../GeneSettings'
 import GeneRegion from '../RegionViewer'
 
-import css from './styles.css'
+import {
+  groupExonsByTranscript,
+} from 'react-gnomad'
 
-console.log(css)
+import css from './styles.css'
 
 const AppGenePage = ({
   currentGene,

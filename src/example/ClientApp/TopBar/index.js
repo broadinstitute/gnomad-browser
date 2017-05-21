@@ -5,7 +5,7 @@ const TopBar = () => {
   return (
     <div className={css.topBar}>
       <div className={css.logo}>
-        Variant browser
+        Cool portal
       </div>
     </div>
   )

@@ -1,7 +1,61 @@
+import fetch from 'graphql-fetch'
+
 import * as utils from 'react-gnomad'
 import * as types from '../constants/actionTypes'
 
-const API_URL = 'http://gnomad-api.broadinstitute.org/'
+// const API_URL = 'http://gnomad-api.broadinstitute.org/'
+
+const API_URL = 'http://localhost:8006'
+
+const fetchMinimalGenePage = (geneName, url = API_URL) => {
+  const query = `{
+    gene(gene_name: "${geneName}") {
+      gene_id
+      gene_name
+      start
+      stop
+      minimal_gnomad_variants {
+        pos
+        allele_freq
+        consequence
+      }
+      exome_coverage {
+        pos
+        mean
+      }
+      genome_coverage {
+        pos
+        mean
+      }
+      transcript {
+        exons {
+          feature_type
+          start
+          stop
+          strand
+        }
+      }
+      exons {
+        _id
+        start
+        transcript_id
+        feature_type
+        strand
+        stop
+        chrom
+        gene_id
+      }
+  }
+}`
+  return new Promise((resolve, reject) => {
+    fetch(url)(query)
+      .then(data => resolve(data.data.gene))
+      .catch((error) => {
+        console.log(error)
+        reject(error)
+      })
+  })
+}
 
 export const updateMessage = (message) => {
   console.log(message)
@@ -33,7 +87,8 @@ export const fetchPageDataByGeneName = (geneName) => {
   console.log(geneName)
   return (dispatch) => {
     dispatch(requestGeneData(geneName))
-    utils.fetchTranscriptsByGeneName(geneName, API_URL)
+    // utils.fetchAllByGeneName(geneName, API_URL)
+    fetchMinimalGenePage(geneName, API_URL)
       .then(geneData => dispatch(receiveGeneData(geneName, geneData)))
   }
 }
