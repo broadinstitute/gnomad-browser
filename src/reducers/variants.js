@@ -11,7 +11,7 @@ const status = (state = {
 }, action) => {
   switch (action.type) {
     case types.REQUEST_REGION_DATA:
-      return { ...state, isFetching: true }
+      return { ...state, isFetching: true, hasData: false }
     case types.RECEIVE_REGION_DATA:
       return { ...state, isFetching: false, hasData: true }
     default:

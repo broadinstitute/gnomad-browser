@@ -11,6 +11,8 @@ const fetchMinimalGenePage = (geneName, url = LOCAL_API_URL) => {
     gene(gene_name: "${geneName}") {
       gene_id
       gene_name
+      omim_accession
+      full_gene_name
       start
       stop
       xstart
@@ -69,6 +71,7 @@ const regionFetch = (xstart, xstop) => {
         allele_count
         allele_num
         allele_freq
+        hom_count
       }
     }
   }`

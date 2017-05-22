@@ -3,7 +3,7 @@
 :export {
   exonColor: var(--exonColor);
   paddingColor: var(--paddingColor);
-  masterExonThickness: 40px;
+  masterExonThickness: 20px;
   masterPaddingThickness: 3px;
   flipOutExonThickness: 25px;
   flipOutPaddingThickness: 5px;
@@ -27,6 +27,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 0;
 }
 
 .transcriptContainer {

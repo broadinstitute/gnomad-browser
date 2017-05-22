@@ -1,0 +1,25 @@
+.geneInfo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.geneDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 400px;
+}
+
+.geneAttributes {
+  display: flex;
+  flex-direction: column;
+}
+
+.constraint {
+  display: flex;
+  flex-direction: column;
+}
+
+

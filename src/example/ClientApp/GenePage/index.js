@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 
 import GenePageHOC from '../../../containers/GenePage'
-
+import GeneInfo from '../GeneInfo'
 import GeneSettings from '../GeneSettings'
 import GeneRegion from '../RegionViewer'
 import GnomadVariantTable from '../Table'
@@ -30,8 +30,9 @@ const AppGenePage = ({
         currentGene={currentGene}
         setCurrentGene={setCurrentGene}
       />
-      <h1>{currentGene}</h1>
-      {gene.gene_id}
+    <div className={css.summary}>
+      <GeneInfo gene={gene} />
+    </div>
       <GeneRegion
         gene={gene}
       />
