@@ -90,8 +90,9 @@ const GnomadVariantTable = ({
   return (
     <div className={css.component}>
       <VariantTable
+        css={css}
         title={''}
-        height={700}
+        height={400}
         width={calculatedWidth}
         tableConfig={tableDataConfig}
         tableData={sortedVariants}

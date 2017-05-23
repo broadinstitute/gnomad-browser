@@ -6,6 +6,12 @@
   /*box-sizing: border-box;*/
 }
 
+*:focus {
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
 .app {
   display: flex;inspector
   flex-direction: column;
@@ -41,5 +47,5 @@ h1 {
 
 .mainPanel {
   padding-left: 50px;
-  padding-top: 50px;
+  padding-top: 10px;
 }

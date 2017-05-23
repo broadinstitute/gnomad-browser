@@ -76,7 +76,7 @@
 
 .transcriptFlipOutButton {
   font-size: 22px;
-  color: var(--secondaryColor);
+  color: var(--primaryColor);
   background-color: var(--backgroundColor);
   border-radius: 5%;
   border: 0;
@@ -85,7 +85,7 @@
 .transcriptFlipOutButton:hover {
   font-size: 22px;
   color: var(--backgroundColor);
-  background-color: var(--secondaryColor);
+  background-color: var(--primaryColor);
   border-radius: 5%;
   border: 0;
 }

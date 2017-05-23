@@ -57,7 +57,7 @@ const markerConfigLoF = {
   circleStrokeWidth: 1,
   yPositionSetting: 'random',
   fillColor: 'red',
-  afMax: 0.0001,
+  afMax: 0.001,
 }
 
 const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
@@ -68,7 +68,7 @@ const consequenceCategories = [
   { annotation: 'missense', groups: missense, colour: '#757575' },
 ]
 
-const factor = 20
+const factor = 50
 
 const GeneRegion = ({ gene }) => {
   const geneExons = gene.exons
@@ -81,20 +81,20 @@ const GeneRegion = ({ gene }) => {
     let rowHeight
     const filteredVariants = minimal_gnomad_variants.filter(variant =>
       R.contains(variant.consequence, consequence.groups))
-      if (filteredVariants.length / factor < 15) {
-        rowHeight = 15
-      } else {
-        rowHeight = filteredVariants.length / factor
-      }
-      return (
-        <VariantTrack
-          key={`${consequence.annotation}-${index}`}
-          title={`${consequence.annotation} (${filteredVariants.length})`}
-          height={rowHeight}
-          markerConfig={markerConfigLoF}
-          variants={filteredVariants}
-        />
-      )
+    if (filteredVariants.length / factor < 20) {
+      rowHeight = 20
+    } else {
+      rowHeight = filteredVariants.length / factor
+    }
+    return (
+      <VariantTrack
+        key={`${consequence.annotation}-${index}`}
+        title={`${consequence.annotation} (${filteredVariants.length})`}
+        height={rowHeight}
+        markerConfig={markerConfigLoF}
+        variants={filteredVariants}
+      />
+    )
   })
 
   const markerConfigOther = {
@@ -111,8 +111,8 @@ const GeneRegion = ({ gene }) => {
     !R.contains(v.consequence, [...lof, ...missense]))
 
   let otherHeight
-  if (otherVariants.length / factor < 15) {
-    otherHeight = 15
+  if (otherVariants.length / factor < 20) {
+    otherHeight = 20
   } else {
     otherHeight = otherVariants.length / factor
   }
@@ -178,7 +178,6 @@ const GeneRegion = ({ gene }) => {
         regionAttributes={attributeConfig}
       >
         <CoverageTrack
-          css={css}
           title={'Coverage'}
           height={120}
           dataConfig={coverageConfig}
