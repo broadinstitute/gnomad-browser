@@ -39,6 +39,19 @@ const VariantAlleleFrequency = ({
   variant,
   afMax,
 }) => {
+  if (variant.allele_freq === 0) {
+    return (
+      <circle
+        className={css.point}
+        cx={xScale(offsetPosition)}
+        cy={yPosition}
+        r={1}
+        fill={'white'}
+        strokeWidth={circleStrokeWidth || 0}
+        stroke={circleStroke || 0}
+      />
+    )
+  }
   const afScale =
     scaleLog()
       .domain([

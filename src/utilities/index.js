@@ -21,3 +21,7 @@ export {
 export {
   getXpos
 } from './variant'
+
+export {
+  processVariantsList
+} from './exalt/process'

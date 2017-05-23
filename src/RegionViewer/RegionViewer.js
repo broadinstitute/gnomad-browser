@@ -119,7 +119,7 @@ class RegionViewer extends Component {
 
     return (
       <div className={css.regionViewer}>
-        <p>Exon padding {padding.toPrecision(3)} bp</p>
+        {/*<p>Exon padding {padding.toPrecision(3)} bp</p>*/}
         <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
           {this.renderChildren(childProps)}
         </div>

@@ -112,20 +112,22 @@ class RegionViewerFullExample extends Component {
         thickness: '3px',
       },
     }
-    const dataConfig = {
+    const coverageConfig = {
       datasets: [
         // {
         //   name: 'exacv1',
         //   data: exacv1_coverage,
-        //   type: 'area',
-        //   color: 'yellow',
-        //   opacity: 0.5,
+        //   type: 'line',
+        //   color: 'red',
+        //   opacity: 1,
+        //   strokeWidth: 2,
         // },
         {
           name: 'exome',
           data: exome_coverage,
           type: 'area',
           color: 'rgba(70, 130, 180, 1)',
+          strokeWidth: 2,
           opacity: 0.5,
         },
         {
@@ -133,7 +135,7 @@ class RegionViewerFullExample extends Component {
           data: genome_coverage,
           type: 'area',
           color: 'rgba(115, 171, 61,  1)',
-          strokeWidth: 4,
+          strokeWidth: 2,
           opacity: 0.5,
         },
       ],
@@ -155,7 +157,7 @@ class RegionViewerFullExample extends Component {
           <CoverageTrack
             title={'Coverage'}
             height={120}
-            dataConfig={dataConfig}
+            dataConfig={coverageConfig}
             yTickNumber={11}
             yMax={110}
           />

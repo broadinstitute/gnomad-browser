@@ -96,31 +96,31 @@ const formatFitler = (filters, index) => filters.split('|').map(filter => (
     {filter}
   </span>
 ))
-//
-// const formatLoF = (lofs, index) => lofs.map(lof => (
-//   <span
-//     key={`${lof.annotation}${index}`}
-//     style={{
-//       border: '1px solid #000',
-//       marginLeft: 10,
-//       padding: '1px 2px 1px 2px',
-//       // backgroundColor: ,
-//     }}
-//   >
-//     {lof.annotation || ''}
-//   </span>
-// ))
+
+const formatLoF = (lofs, index) => lofs.map(lof => (
+  <span
+    key={`${lof.annotation}${index}`}
+    style={{
+      border: '1px solid #000',
+      marginLeft: 10,
+      padding: '1px 2px 1px 2px',
+      // backgroundColor: ,
+    }}
+  >
+    {lof.annotation || ''}
+  </span>
+))
 
 const formatVariantId = (variantId) => {
   let [chrom, pos, ref, alt] = variantId.split('-')
   if (alt.length > 6) {
-    alt = `${alt.slice(0,6)}...`
+    alt = `${alt.slice(0, 6)}...`
   }
   if (ref.length > 6) {
-    ref = `${ref.slice(0,6)}...`
+    ref = `${ref.slice(0, 6)}...`
   }
   return (
-    <span key={`variantId`}>
+    <span key={`variant-id-${variantId}`}>
       {chrom}:{pos} {ref} / {alt}
     </span>
   )
@@ -131,6 +131,8 @@ const getDataCell = (field, dataRow, i) => {
   const cellStyle = {
     ...tableCellStyles[dataType],
     width,
+    maxWidth: width,
+    minWidth: width,
   }
   switch (dataType) {
     case 'string':
@@ -235,6 +237,7 @@ const getDataRow = (tableConfig, dataRow, i, showIndex) => {
 const getHeaderCell = field => (
   <div
     key={`${field.title}-header-cell`}
+    onClick={e => field.onHeaderClick(field.dataKey)}
     style={{
       ...abstractCellStyle,
       marginBottom: 5,
@@ -289,8 +292,8 @@ const VariantTable = ({
     </div>
   )
   return (
-    <div className={css.track}>
-      <div style={{ width: 1100 }}>
+    <div className={css.variantTable}>
+      <div style={{ width }}>
         <h3>{title}</h3>
         <div className={css.headers}>
           {showIndex && indexHeader}

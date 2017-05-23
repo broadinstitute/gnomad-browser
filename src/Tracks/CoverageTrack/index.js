@@ -8,9 +8,10 @@ import { scaleLinear } from 'd3-scale'
 
 import { getMaxMeanFromCoverageDatasets } from 'utilities/plotting'
 
-import css from './styles.css'
+import defaultStyles from './styles.css'
 
 const CoverageTrack = ({
+  css,
   title,
   width,
   height,
@@ -74,7 +75,7 @@ const CoverageTrack = ({
   const renderArea = (dataset) => {
     return (
       <path
-        key={`cov-series-${dataset.name}`}
+        key={`cov-series-${dataset.name}-area`}
         d={dataArea(scaleCoverage(xScale, dataset.data))}
         fill={dataset.color}
         opacity={dataset.opacity}
@@ -84,11 +85,11 @@ const CoverageTrack = ({
   const renderLine = (dataset) => {
     return (
       <path
-        key={`cov-series-${dataset.name}`}
+        key={`cov-series-${dataset.name}-line`}
         d={dataLine(dataset.data)}
         fill={'none'}
         stroke={dataset.color}
-        opacity={dataset.opacity}
+        opacity={1}
         strokeWidth={dataset.strokeWidth}
       />
     )
@@ -100,6 +101,13 @@ const CoverageTrack = ({
         return renderArea(dataset)
       case 'line':
         return renderLine(dataset)
+      case 'line-area':
+        return (
+          <g>
+            {renderArea(dataset)}
+            {renderLine(dataset)}
+          </g>
+        )
       default:
         return renderArea(dataset)
     }
@@ -145,6 +153,7 @@ const CoverageTrack = ({
                   {yScaleDomainMax - tick}
                 </text>
                 <line
+                  className={css.ytickline}
                   x1={42}
                   x2={48}
                   y1={yScaleRangeMax - yScale(tick)}
@@ -180,6 +189,7 @@ const CoverageTrack = ({
   )
 }
 CoverageTrack.propTypes = {
+  css: PropTypes.object,
   title: PropTypes.string,
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
@@ -192,6 +202,7 @@ CoverageTrack.propTypes = {
 }
 CoverageTrack.defaultProps = {
   title: '',
+  css: defaultStyles,
   yTickNumber: 5,
   yMax: null,
 }
