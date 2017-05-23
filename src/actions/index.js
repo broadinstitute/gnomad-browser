@@ -134,11 +134,11 @@ export const fetchPageDataByGeneName = (geneName) => {
     fetchMinimalGenePage(geneName, API_URL)
       .then((geneData) => {
         dispatch(receiveGeneData(geneName, geneData))
-        dispatch(requestRegionData(geneData.xstart, geneData.xstop))
-        regionFetch(geneData.xstart, geneData.xstart + 5000)
-          .then((regionData) => {
-            dispatch(receiveRegionData(regionData))
-          })
+        // dispatch(requestRegionData(geneData.xstart, geneData.xstop))
+        // regionFetch(geneData.xstart, geneData.xstart + 5000)
+        //   .then((regionData) => {
+        //     dispatch(receiveRegionData(regionData))
+        //   })
       }
     )
   }
@@ -163,16 +163,9 @@ export const fetchVariantsIfNeeded = (currentGene) => {
   }
 }
 
-//
-// export const shouldFetchRegion = (state, start, stop) => {
-//
-// }
-//
-// export const fetchRegionIfNeeded = (regionStartXpos, regionStopXpos) => {
-//   return (dispatch, getState) => {  // eslint-disable-line
-//     const toFetch = shouldFetchRegion(getState(), regionStartXpos, regionStopXpos)
-//     if (toFetch !== []) {
-//       return dispatch(fetchPageDataByGeneName(toFetch))
-//     }
-//   }
-// }
+export const setVariantSort = (key) => {
+  return {
+    type: types.SET_VARIANT_SORT,
+    key,
+  }
+}

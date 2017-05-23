@@ -14,7 +14,9 @@ import css from './styles.css'
 
 const AppGenePage = ({
   currentGene,
+  variantSort,
   setCurrentGene,
+  setVariantSort,
   gene,
   isFetching,
   variants,
@@ -30,13 +32,17 @@ const AppGenePage = ({
         currentGene={currentGene}
         setCurrentGene={setCurrentGene}
       />
-    <div className={css.summary}>
-      <GeneInfo gene={gene} />
-    </div>
+      <div className={css.summary}>
+        <GeneInfo gene={gene} />
+      </div>
       <GeneRegion
         gene={gene}
       />
-      <GnomadVariantTable variants={gene.minimal_gnomad_variants} />
+      <GnomadVariantTable
+        variants={gene.minimal_gnomad_variants}
+        variantSort={variantSort}
+        setVariantSort={setVariantSort}
+      />
     </div>
   )
 }
@@ -44,6 +50,8 @@ const AppGenePage = ({
 AppGenePage.propTypes = {
   currentGene: PropTypes.string.isRequired,
   gene: PropTypes.object,
+  variantSort: PropTypes.object.isRequired,
+  setVariantSort: PropTypes.func.isRequired,
 }
 
 export default GenePageHOC(AppGenePage)

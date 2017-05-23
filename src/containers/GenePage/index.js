@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
@@ -13,6 +14,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     setCurrentGene: PropTypes.func.isRequired,
+    setVariantSort: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -43,6 +45,7 @@ const mapStateToProps = (state) => {
   const { selections: { currentGene }, genes: { isFetching } } = state
   return {
     currentGene,
+    variantSort: state.selections.variantSort,
     isFetching,
     gene: getGene(state, currentGene),
     variants: getAllVariantsAsArray(state),
@@ -50,11 +53,11 @@ const mapStateToProps = (state) => {
     fetchingVariants: state.variants.status.isFetching,
   }
 }
-
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
     setCurrentGene: geneName => dispatch(actions.setCurrentGene(geneName)),
+    setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
   }
 }
 

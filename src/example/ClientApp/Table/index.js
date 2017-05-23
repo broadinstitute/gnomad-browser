@@ -5,13 +5,21 @@ import {
   VariantTable,
 } from 'react-gnomad'
 
-import { processVariantsList } from 'react-gnomad'
-
 import css from './styles.css'
 
-const onHeaderClick = console.log
+const sortVariants = (variants, { key, ascending }) => (
+  ascending ?
+  variants.sort((a, b) => a[key] - b[key]) :
+  variants.sort((a, b) => b[key] - a[key])
+)
 
-const GnomadVariantTable = ({ variants }) => {
+const GnomadVariantTable = ({
+  variants,
+  variantSort,
+  setVariantSort,
+}) => {
+  const sortedVariants = sortVariants(variants, variantSort)
+
   const tableDataConfig = {
     fields: [
       {
@@ -19,56 +27,56 @@ const GnomadVariantTable = ({ variants }) => {
         title: 'Variant ID',
         dataType: 'variantId',
         width: 150,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'rsid',
         title: 'RSID',
         dataType: 'string',
         width: 100,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
-      {
-        dataKey: 'filter',
-        title: 'Filter',
-        dataType: 'filter',
-        width: 100,
-        onHeaderClick,
-      },
+      // {
+      //   dataKey: 'filter',
+      //   title: 'Filter',
+      //   dataType: 'filter',
+      //   width: 100,
+      //   onHeaderClick: setVariantSort,
+      // },
       {
         dataKey: 'consequence',
         title: 'Consequence',
         dataType: 'string',
         width: 120,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_count',
         title: 'AC',
         dataType: 'integer',
         width: 80,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_num',
         title: 'AN',
         dataType: 'integer',
         width: 80,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_freq',
         title: 'AF',
         dataType: 'float',
         width: 80,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'hom_count',
         title: 'Hom',
         dataType: 'integer',
         width: 40,
-        onHeaderClick,
+        onHeaderClick: setVariantSort,
       },
     ],
   }
@@ -86,7 +94,7 @@ const GnomadVariantTable = ({ variants }) => {
         height={700}
         width={calculatedWidth}
         tableConfig={tableDataConfig}
-        tableData={variants}
+        tableData={sortedVariants}
         remoteRowCount={variants.length}
         loadMoreRows={() => {}}
         overscan={60}
@@ -97,5 +105,7 @@ const GnomadVariantTable = ({ variants }) => {
 }
 GnomadVariantTable.propTypes = {
   variants: PropTypes.array.isRequired,
+  variantSort: PropTypes.object.isRequired,
+  setVariantSort: PropTypes.func.isRequired,
 }
 export default GnomadVariantTable
