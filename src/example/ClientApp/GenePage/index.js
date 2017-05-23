@@ -36,8 +36,7 @@ const AppGenePage = ({
       <GeneRegion
         gene={gene}
       />
-    {hasVariants &&
-      <GnomadVariantTable variants={variants} />}
+      <GnomadVariantTable variants={gene.minimal_gnomad_variants} />
     </div>
   )
 }

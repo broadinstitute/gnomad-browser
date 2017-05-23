@@ -19,7 +19,13 @@ const fetchMinimalGenePage = (geneName, url = LOCAL_API_URL) => {
       xstop
       minimal_gnomad_variants {
         pos
+        variant_id
+        rsid
+        filter
+        allele_num
+        allele_count
         allele_freq
+        hom_count
         consequence
       }
       exome_coverage {

@@ -68,7 +68,7 @@ const consequenceCategories = [
   { annotation: 'missense', groups: missense, colour: '#757575' },
 ]
 
-const factor = 40
+const factor = 20
 
 const GeneRegion = ({ gene }) => {
   const geneExons = gene.exons
@@ -104,7 +104,7 @@ const GeneRegion = ({ gene }) => {
     circleStrokeWidth: 1,
     yPositionSetting: 'random',
     fillColor: '#757575',
-    afMax: 0.0001,
+    afMax: 0.001,
   }
 
   const otherVariants = minimal_gnomad_variants.filter(v =>
@@ -178,6 +178,7 @@ const GeneRegion = ({ gene }) => {
         regionAttributes={attributeConfig}
       >
         <CoverageTrack
+          css={css}
           title={'Coverage'}
           height={120}
           dataConfig={coverageConfig}
