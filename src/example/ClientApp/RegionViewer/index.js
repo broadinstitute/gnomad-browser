@@ -7,6 +7,7 @@ import {
   TranscriptTrack,
   CoverageTrack,
   VariantTrack,
+  NavigatorTrack,
 } from 'react-gnomad'
 
 import css from './styles.css'
@@ -167,7 +168,7 @@ const GeneRegion = ({ gene }) => {
       },
     ],
   }
-
+  // const navPos = minimal_gnomad_variants[visibleInTable[0]].pos
   return (
     <div className={css.geneRegion}>
       <RegionViewer
@@ -191,6 +192,12 @@ const GeneRegion = ({ gene }) => {
         />
         {splitTracks}
         {allTrack}
+        {/*<NavigatorTrack
+          title={'Navigator'}
+          height={20}
+          currentPos={navPos}
+          onNavigatorClick={() => {}}
+        />*/}
       </RegionViewer>
     </div>
   )

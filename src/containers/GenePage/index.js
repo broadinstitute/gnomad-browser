@@ -5,16 +5,13 @@ import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import { getGene, getAllVariantsAsArray } from '../../reducers'
 
-import css from './styles.css'
-
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     currentGene: PropTypes.string.isRequired,
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     setCurrentGene: PropTypes.func.isRequired,
-    setVariantSort: PropTypes.func.isRequired,
+    fetchVariantsIfNeeded: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -22,17 +19,14 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 
   componentDidMount() {
-    const {
-      dispatch,
-      currentGene,
-    } = this.props
-    dispatch(actions.fetchVariantsIfNeeded(currentGene))
+    const { currentGene, fetchVariantsIfNeeded } = this.props
+    fetchVariantsIfNeeded(currentGene)
   }
 
   componentWillReceiveProps(nextProps) {
+    const { fetchVariantsIfNeeded } = this.props
     if (this.props.currentGene !== nextProps.currentGene) {
-      const { dispatch } = this.props
-      dispatch(actions.fetchVariantsIfNeeded(nextProps.currentGene))
+      fetchVariantsIfNeeded(nextProps.currentGene)
     }
   }
 
@@ -42,22 +36,21 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 }
 
 const mapStateToProps = (state) => {
-  const { selections: { currentGene }, genes: { isFetching } } = state
+  const {
+    selections: { currentGene },
+    genes: { isFetching },
+
+  } = state
   return {
     currentGene,
-    variantSort: state.selections.variantSort,
     isFetching,
     gene: getGene(state, currentGene),
-    variants: getAllVariantsAsArray(state),
-    hasVariants: state.variants.status.hasData,
-    fetchingVariants: state.variants.status.isFetching,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
+    fetchVariantsIfNeeded: currentGene => dispatch(actions.fetchVariantsIfNeeded(currentGene)),
     setCurrentGene: geneName => dispatch(actions.setCurrentGene(geneName)),
-    setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
   }
 }
 

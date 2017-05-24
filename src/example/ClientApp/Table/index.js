@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react'
-import R from 'ramda'
-
+import { connect } from 'react-redux'
+// import R from 'ramda'
 import {
   VariantTable,
 } from 'react-gnomad'
+
+import { getGene } from '../../../reducers'
+import * as actions from '../../../actions'
 
 import css from './styles.css'
 
@@ -17,7 +20,13 @@ const GnomadVariantTable = ({
   variants,
   variantSort,
   setVariantSort,
+  setVisibleInTable,
 }) => {
+  const broadcastCurrentIndex = (index) => {
+    const frame = [index - 28, index - 13]
+    setVisibleInTable(frame)
+  }
+
   const sortedVariants = sortVariants(variants, variantSort)
 
   const tableDataConfig = {
@@ -81,7 +90,7 @@ const GnomadVariantTable = ({
     ],
   }
 
-  const scrollBarWidth = 20
+  const scrollBarWidth = 40
   const paddingWidth = tableDataConfig.fields.length * 40
   const cellContentWidth = tableDataConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
@@ -98,8 +107,9 @@ const GnomadVariantTable = ({
         tableData={sortedVariants}
         remoteRowCount={variants.length}
         loadMoreRows={() => {}}
-        overscan={60}
+        overscan={200}
         loadLookAhead={1000}
+        broadcastCurrentIndex={broadcastCurrentIndex}
       />
     </div>
   )
@@ -108,5 +118,21 @@ GnomadVariantTable.propTypes = {
   variants: PropTypes.array.isRequired,
   variantSort: PropTypes.object.isRequired,
   setVariantSort: PropTypes.func.isRequired,
+  setVisibleInTable: PropTypes.func.isRequired,
 }
-export default GnomadVariantTable
+
+const mapStateToProps = (state) => {
+  return {
+    variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
+    variantSort: state.table.variantSort,
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
+    setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable)

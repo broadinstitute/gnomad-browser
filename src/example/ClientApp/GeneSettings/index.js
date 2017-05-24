@@ -26,7 +26,6 @@ const GeneSettings = ({ currentGene, setCurrentGene }) => {
     setCurrentGene(gene)
   }
 
-  console.log(currentGene)
   return (
     <div className={css.geneSettings}>
       {testGenes.map(gene => <a href="#" key={`${gene}-link`} onClick={() =>

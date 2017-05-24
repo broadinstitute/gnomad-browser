@@ -169,3 +169,10 @@ export const setVariantSort = (key) => {
     key,
   }
 }
+
+export const setVisibleInTable = (range) => {
+  return {
+    type: types.SET_VISIBLE_IN_TABLE,
+    range,
+  }
+}

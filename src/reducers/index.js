@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import selections from './selections'
+import table from './table'
 import genes, * as fromGenes from './genes'
 import variants, * as fromVariants from './variants'
 import regions, * as fromRegions from './regions'
@@ -22,6 +23,7 @@ const app = combineReducers({
   genes,
   variants,
   message,
+  table,
 })
 
 export default app

@@ -10,21 +10,8 @@ const currentGene = (state = 'BRCA2', action) => {
   }
 }
 
-const variantSort = (state = { key: 'pos', ascending: true }, action) => {
-  switch (action.type) {
-    case types.SET_VARIANT_SORT:
-      if (action.key === state.key) {
-        return { ...state, ascending: !state.ascending }
-      }
-      return { ...state, key: action.key }
-    default:
-      return state
-  }
-}
-
 const selections = combineReducers({
   currentGene,
-  variantSort,
 })
 
 export default selections
