@@ -3,7 +3,6 @@
 import { combineReducers } from 'redux'
 
 import * as types from '../constants/actionTypes'
-import variant from './variant'
 
 const status = (state = {
   isFetching: false,
@@ -19,13 +18,11 @@ const status = (state = {
   }
 }
 
-const byVariantId = (state = {}, action) => {
+const byVariantId = (state = {}, action, datasetId) => {
   switch (action.type) {
-    case types.REQUEST_REGION_DATA:
-      // hack
-      return {}
-    case types.RECEIVE_REGION_DATA:
-      const { variants } = action.regionData
+    case types.RECEIVE_GENE_DATA:
+      console.log(datasetId)
+      const variants = action.geneData[datasetId]
       const byId = variants.reduce((acc, v) => ({
         ...acc,
         [v.variant_id]: { ...v },
@@ -34,26 +31,46 @@ const byVariantId = (state = {}, action) => {
         ...state,
         ...byId,
       }
-    case 'RECEIVE_VARIANT':
+
+    default:
+      return state
+  }
+}
+
+const allVariantIds = (state = [], action, datasetId) => {
+  switch (action.type) {
+    case types.RECEIVE_GENE_DATA:
+      return [
+        ...state,
+        ...action.geneData[datasetId].map(v => v.variant_id),
+      ]
+    default:
+      return state
+  }
+}
+
+const dataset = (state = {}, action, datasetId) => {
+  switch (action.type) {
+    case types.RECEIVE_GENE_DATA:
       return {
         ...state,
-        [action.variantId]: variant(state[action.variantId], action),
+        byVariantId: byVariantId(state[byVariantId], action, datasetId),
+        allVariantIds: allVariantIds(state[allVariantIds], action, datasetId),
       }
     default:
       return state
   }
 }
 
-const allVariantIds = (state = [], action) => {
+const variantsByDataset = (state = {}, action) => {
   switch (action.type) {
-    case types.REQUEST_REGION_DATA:
-      // hack
-      return []
-    case types.RECEIVE_REGION_DATA:
-      const { variants } = action.regionData
-      return variants.map(v => v.variant_id)
-    case 'RECEIVE_VARIANT':
-      return [...state, action.variantId]
+    case types.RECEIVE_GENE_DATA:
+      const { datasets } = action
+      return {
+        ...state,
+        ...datasets.reduce((acc, datasetId) =>
+          ({ [datasetId]: dataset(state[datasetId], action, datasetId) }), {}),
+      }
     default:
       return state
   }
@@ -61,8 +78,7 @@ const allVariantIds = (state = [], action) => {
 
 const variants = combineReducers({
   status,
-  byVariantId,
-  allVariantIds,
+  variantsByDataset,
 })
 
 export default variants

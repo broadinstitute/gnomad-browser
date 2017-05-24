@@ -5,24 +5,16 @@ import table from './table'
 import genes, * as fromGenes from './genes'
 import variants, * as fromVariants from './variants'
 import regions, * as fromRegions from './regions'
+import coverage from './coverage'
 
 import * as types from '../constants/actionTypes'
-
-const message = (state = 'Hello', action) => {
-  switch (action.type) {
-    case types.UPDATE_MESSAGE:
-      return action.message
-    default:
-      return state
-  }
-}
 
 const app = combineReducers({
   selections,
   regions,
   genes,
+  coverage,
   variants,
-  message,
   table,
 })
 

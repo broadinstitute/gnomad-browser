@@ -92,13 +92,6 @@ const regionFetch = (xstart, xstop) => {
   })
 }
 
-export const updateMessage = (message) => {
-  return {
-    type: types.UPDATE_MESSAGE,
-    message,
-  }
-}
-
 export const setCurrentGene = (geneName) => {
   return {
     type: types.SET_CURRENT_GENE,
@@ -114,6 +107,7 @@ export const requestGeneData = currentGene => ({
 export const receiveGeneData = (currentGene, geneData) => ({
   type: types.RECEIVE_GENE_DATA,
   geneName: currentGene,
+  datasets: ['minimal_gnomad_variants'],
   geneData,
 })
 
