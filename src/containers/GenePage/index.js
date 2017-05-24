@@ -47,7 +47,8 @@ const mapStateToProps = (state) => {
   const gene = getGene(state, currentGene)
   let minimal_gnomad_variants
   if (gene) {
-    minimal_gnomad_variants = getVariantsInGeneForDataset(state, currentGene, 'minimal_gnomad_variants')
+    minimal_gnomad_variants = gene.minimal_gnomad_variants
+    // minimal_gnomad_variants = getVariantsInGeneForDataset(state, currentGene, 'minimal_gnomad_variants')
   }
   return {
     currentGene,

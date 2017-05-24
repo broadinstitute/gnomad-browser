@@ -5,7 +5,7 @@ import {
   VariantTable,
 } from 'react-gnomad'
 
-import { getVariantsInGeneForDataset } from '../../../reducers'
+import { getGene } from '../../../reducers'
 import * as actions from '../../../actions'
 
 import css from './styles.css'
@@ -123,7 +123,8 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    variants: getVariantsInGeneForDataset(state, state.selections.currentGene, 'minimal_gnomad_variants'),
+    // variants: getVariantsInGeneForDataset(state, state.selections.currentGene, 'minimal_gnomad_variants'),
+    variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
     variantSort: state.table.variantSort,
   }
 }

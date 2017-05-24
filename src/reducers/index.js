@@ -11,10 +11,10 @@ import * as types from '../constants/actionTypes'
 
 const app = combineReducers({
   selections,
-  regions,
+  // regions,
   genes,
-  coverage,
-  variants,
+  // coverage,
+  // variants,
   table,
 })
 
@@ -39,3 +39,11 @@ export const getVariantsInGeneForDataset = (state, geneName, datasetId) => {
   }
   return fromVariants.getDatasetVariants(state.variants, variantIds, datasetId)
 }
+
+// export const getVariantsInGeneForDataset = (state, geneName, datasetId) => {
+//   const variantIds = fromGenes.getAllVariantsInGeneForDataset(state.genes, geneName, datasetId)
+//   if (geneName == 'TTN') {
+//     return state.variants.variantsByDataSet[datasetId].byVariantId
+//   }
+//   return fromVariants.getDatasetVariants(state.variants, variantIds, datasetId)
+// }
