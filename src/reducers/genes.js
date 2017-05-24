@@ -1,3 +1,4 @@
+import R from 'ramda'
 import { combineReducers } from 'redux'
 
 import * as geneTypes from '../constants/actionTypes'
@@ -29,7 +30,7 @@ const byGeneName = (state = {}, action) => {
 const allGeneNames = (state = [], action) => {
   switch (action.type) {
     case geneTypes.RECEIVE_GENE_DATA:
-      return [...state, action.geneName]
+      return R.uniq([...state, action.geneName])
     default:
       return state
   }
@@ -44,3 +45,8 @@ const genes = combineReducers({
 export default genes
 
 export const getGene = (state, geneName) => state.byGeneName[geneName]
+
+export const getAllVariantsInGeneForDataset = (state, geneName, datasetId) => {
+  return state.byGeneName[geneName].variantIdsByDataset[datasetId]
+}
+

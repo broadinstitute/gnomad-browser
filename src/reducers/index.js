@@ -32,3 +32,10 @@ export const getVariant = (state, variantId) =>
 export const getAllVariantsAsArray = state =>
   fromVariants.getAllVariantsAsArray(state.variants)
 
+export const getVariantsInGeneForDataset = (state, geneName, datasetId) => {
+  const variantIds = fromGenes.getAllVariantsInGeneForDataset(state.genes, geneName, datasetId)
+  if (geneName == 'TTN') {
+    return state.variants.variantsByDataSet[datasetId].byVariantId
+  }
+  return fromVariants.getDatasetVariants(state.variants, variantIds, datasetId)
+}

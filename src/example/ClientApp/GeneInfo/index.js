@@ -3,20 +3,19 @@
 import React, { PropTypes } from 'react'
 import css from './styles.css'
 
-const GeneInfo = ({ gene }) => {
+const GeneInfo = ({ gene, variantCount }) => {
   const {
     gene_name,
     gene_id,
     full_gene_name,
     omim_accession,
-    minimal_gnomad_variants,
   } = gene
   return (
     <div className={css.geneInfo}>
       <h1>{gene_name}</h1>
       <div className={css.geneDetails}>
         <div className={css.geneAttributes}>
-          <div>Number of variants: {minimal_gnomad_variants.length}</div>
+          <div>Number of variants: {variantCount}</div>
           <div>Full name: {full_gene_name}</div>
           <div>Gene ID: {gene_id}</div>
           <div>OMIM accession: {omim_accession}</div>

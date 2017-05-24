@@ -5,7 +5,7 @@ import {
   VariantTable,
 } from 'react-gnomad'
 
-import { getGene } from '../../../reducers'
+import { getVariantsInGeneForDataset } from '../../../reducers'
 import * as actions from '../../../actions'
 
 import css from './styles.css'
@@ -24,7 +24,7 @@ const GnomadVariantTable = ({
 }) => {
   const broadcastCurrentIndex = (index) => {
     const frame = [index - 28, index - 13]
-    setVisibleInTable(frame)
+    // setVisibleInTable(frame)
   }
 
   const sortedVariants = sortVariants(variants, variantSort)
@@ -118,20 +118,19 @@ GnomadVariantTable.propTypes = {
   variants: PropTypes.array.isRequired,
   variantSort: PropTypes.object.isRequired,
   setVariantSort: PropTypes.func.isRequired,
-  setVisibleInTable: PropTypes.func.isRequired,
+  // setVisibleInTable: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
-    variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
+    variants: getVariantsInGeneForDataset(state, state.selections.currentGene, 'minimal_gnomad_variants'),
     variantSort: state.table.variantSort,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
     setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
-    setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
+    // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
   }
 }
 

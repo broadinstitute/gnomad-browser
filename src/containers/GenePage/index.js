@@ -3,7 +3,11 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../../actions'
-import { getGene, getAllVariantsAsArray } from '../../reducers'
+import {
+  getGene,
+  getAllVariantsAsArray,
+  getVariantsInGeneForDataset,
+} from '../../reducers'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -39,12 +43,17 @@ const mapStateToProps = (state) => {
   const {
     selections: { currentGene },
     genes: { isFetching },
-
   } = state
+  const gene = getGene(state, currentGene)
+  let minimal_gnomad_variants
+  if (gene) {
+    minimal_gnomad_variants = getVariantsInGeneForDataset(state, currentGene, 'minimal_gnomad_variants')
+  }
   return {
     currentGene,
     isFetching,
-    gene: getGene(state, currentGene),
+    gene,
+    minimal_gnomad_variants,
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -21,6 +21,7 @@
     "no-plusplus": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/no-mutable-exports": 0,
+    "no-case-declarations": 0,
     },
   "parserOptions": {
         "ecmaFeatures": {

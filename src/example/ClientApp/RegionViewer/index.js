@@ -10,6 +10,8 @@ import {
   NavigatorTrack,
 } from 'react-gnomad'
 
+import { getVariantsInGeneForDataset } from '../../../reducers'
+
 import css from './styles.css'
 
 const {
@@ -71,11 +73,12 @@ const consequenceCategories = [
 
 const factor = 50
 
-const GeneRegion = ({ gene }) => {
+const GeneRegion = ({ gene, minimal_gnomad_variants }) => {
   const geneExons = gene.exons
   const canonicalExons = gene.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
-  const { exome_coverage, genome_coverage, minimal_gnomad_variants } = gene
+  const { exome_coverage, genome_coverage } = gene
+
   const cats = consequenceCategories.map(c => c.annotation)
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
@@ -204,5 +207,6 @@ const GeneRegion = ({ gene }) => {
 }
 GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
+  minimal_gnomad_variants: PropTypes.array.isRequired,
 }
 export default GeneRegion

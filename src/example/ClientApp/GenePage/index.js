@@ -17,6 +17,7 @@ const AppGenePage = ({
   setCurrentGene,
   gene,
   isFetching,
+  minimal_gnomad_variants,
 }) => {
   if (isFetching || !gene) {
     return <div>Loading...!</div>
@@ -28,10 +29,14 @@ const AppGenePage = ({
         setCurrentGene={setCurrentGene}
       />
       <div className={css.summary}>
-        <GeneInfo gene={gene} />
+        <GeneInfo
+          gene={gene}
+          variantCount={minimal_gnomad_variants.length}
+        />
       </div>
       <GeneRegion
         gene={gene}
+        minimal_gnomad_variants={minimal_gnomad_variants}
       />
       <GnomadVariantTable />
     </div>

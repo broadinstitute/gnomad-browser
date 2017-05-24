@@ -104,12 +104,15 @@ export const requestGeneData = currentGene => ({
   currentGene,
 })
 
-export const receiveGeneData = (currentGene, geneData) => ({
-  type: types.RECEIVE_GENE_DATA,
-  geneName: currentGene,
-  datasets: ['minimal_gnomad_variants'],
-  geneData,
-})
+export const receiveGeneData = (currentGene, geneData) => {
+  console.log('recieved data')
+  return {
+    type: types.RECEIVE_GENE_DATA,
+    geneName: currentGene,
+    datasets: ['minimal_gnomad_variants'],
+    geneData,
+  }
+}
 
 export const requestRegionData = (regionStartXpos, regionStopXpos) => ({
   type: types.REQUEST_REGION_DATA,

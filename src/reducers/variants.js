@@ -21,7 +21,6 @@ const status = (state = {
 const byVariantId = (state = {}, action, datasetId) => {
   switch (action.type) {
     case types.RECEIVE_GENE_DATA:
-      console.log(datasetId)
       const variants = action.geneData[datasetId]
       const byId = variants.reduce((acc, v) => ({
         ...acc,
@@ -86,5 +85,7 @@ export default variants
 export const getVariant = (state, variantId) =>
   state.byVariantId[variantId]
 
-export const getAllVariantsAsArray = state =>
-  state.allVariantIds.map(id => state.byVariantId[id])
+export const getDatasetVariants = (state, variantsList, datasetId) => {
+  return variantsList.map(id => state.variantsByDataset[datasetId].byVariantId[id])
+}
+
