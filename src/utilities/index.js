@@ -19,7 +19,8 @@ export {
 } from './plotting'
 
 export {
-  getXpos
+  getXpos,
+  getTableIndexByPosition,
 } from './variant'
 
 export {

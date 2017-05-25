@@ -15,6 +15,14 @@
   flex-direction: row;
 }
 
+.point {
+  fill: white;
+}
+
 .point:hover {
   fill: yellow;
+}
+
+.activeVariantPoint {
+  fill: red;
 }

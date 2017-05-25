@@ -18,6 +18,7 @@ const VariantTable = ({
   overscan,
   showIndex,
   scrollToRow,
+  onRowClick,
 }) => {
 
   const abstractCellStyle = {
@@ -242,7 +243,11 @@ const VariantTable = ({
     )
 
     return (
-      <div className={css.row} key={`row-${i}`}>
+      <div
+        className={css.row}
+        onClick={e => onRowClick(dataRow['variant_id'])}
+        key={`row-${i}`}
+      >
         {showIndex && indexCell}
         {cells}
       </div>
@@ -341,6 +346,7 @@ VariantTable.propTypes = {
   overscan: PropTypes.number,
   showIndex: PropTypes.bool,
   scrollToRow: PropTypes.number,
+  onRowClick: PropTypes.func,
 }
 VariantTable.defaultProps = {
   css: defaultStyles,
@@ -349,6 +355,7 @@ VariantTable.defaultProps = {
   loadLookAhead: 0,
   showIndex: false,
   scrollToRow: 10,
+  setCurrentVariant: () => { },
 }
 
 export default VariantTable

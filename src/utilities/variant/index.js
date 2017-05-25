@@ -23,3 +23,11 @@ export const getPositionsToFetch = (
   const [_, fetchThese] = R.partition((pos => R.contains(pos, positionsWithData)), toTest)
   return fetchThese
 }
+
+export const getTableIndexByPosition = (position, variants) =>
+  variants.findIndex((variant, i) => {
+    if (variants[i + 1]) {
+      return position >= variant.pos && position <= variants[i + 1].pos
+    }
+    return variants.length - 1
+  })

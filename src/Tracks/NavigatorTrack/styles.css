@@ -18,11 +18,16 @@
   border: 1px solid yellow;
 }
 
-.navigatorRect {
+.navigatorContainerRect {
   fill: #DAEDE2;
   stroke: red;
 }
 
-.positionWindowRect {
+.cursorPositionRect {
   fill: #EA2E49;
 }
+
+.tablePositionRect {
+  fill: green;
+}
+

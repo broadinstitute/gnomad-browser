@@ -1,6 +1,7 @@
 import TranscriptTrack from './Tracks/TranscriptTrack'
 import CoverageTrack from './Tracks/CoverageTrack'
 import VariantTrack from './Tracks/VariantTrack'
+import NavigatorTrack from './Tracks/NavigatorTrack'
 import VariantTable from './VariantTable'
 
 export {
@@ -21,6 +22,7 @@ export {
   test,
   groupExonsByTranscript,
   processVariantsList,
+  getTableIndexByPosition,
 } from './utilities'
 
 export {
@@ -32,4 +34,5 @@ export {
   CoverageTrack,
   VariantTrack,
   VariantTable,
+  NavigatorTrack,
 }

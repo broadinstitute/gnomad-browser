@@ -2,16 +2,16 @@
 import React, { PropTypes } from 'react'
 import { scaleLog } from 'd3-scale'
 
-import css from './styles.css'
+import defaultStyles from './styles.css'
 
-const Axis = ({ title }) => {
+const Axis = ({ title, css }) => {
   return <div className={css.yLabel}>{title}</div>
 }
 Axis.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
-const VariantAxis = ({ title, leftPanelWidth }) => {
+const VariantAxis = ({ title, leftPanelWidth, css }) => {
   return (
     <div
       style={{ width: leftPanelWidth }}
@@ -29,6 +29,7 @@ VariantAxis.propTypes = {
 }
 
 const VariantAlleleFrequency = ({
+  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -37,7 +38,7 @@ const VariantAlleleFrequency = ({
   circleStroke,
   circleStrokeWidth,
   variant,
-  afMax,
+  afScale,
 }) => {
   if (variant.allele_freq === 0) {
     return (
@@ -52,14 +53,6 @@ const VariantAlleleFrequency = ({
       />
     )
   }
-  const afScale =
-    scaleLog()
-      .domain([
-        0.00000660,
-        afMax,
-      ])
-      .range([3, 6])
-
   return (
     <circle
       className={css.point}
@@ -74,6 +67,7 @@ const VariantAlleleFrequency = ({
 }
 
 const VariantCircle = ({
+  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -90,12 +84,13 @@ const VariantCircle = ({
       r={circleRadius || 2}
       fill={color}
       strokeWidth={circleStrokeWidth || 0}
-      stroke={circleStroke || 0}
+      stroke={circleStroke || 0}the
     />
   )
 }
 
 const VariantTick = ({
+  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -152,6 +147,7 @@ const lofColors = {
 }
 
 const VariantTrack = ({
+  css,
   title,
   width,
   height,
@@ -165,6 +161,7 @@ const VariantTrack = ({
   return (
     <div className={css.track}>
       <VariantAxis
+        css={css}
         height={height}
         leftPanelWidth={leftPanelWidth}
         title={title}
@@ -175,13 +172,25 @@ const VariantTrack = ({
           height={height}
         >
           {variants.map((variant, index) => {
-            const { markerType, yPositionSetting, fillColor } = markerConfig
+            const { markerType,
+              yPositionSetting,
+              fillColor,
+              afMax,
+            } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
             const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
             if (regionViewerAttributes === 0) return  // eslint-disable-line
+            const afScale =
+              scaleLog()
+                .domain([
+                  0.00000660,
+                  afMax,
+                ])
+                .range([3, 6])
             const childProps = {
+              css,
               index,
               ...regionViewerAttributes,
               ...rest,
@@ -190,6 +199,7 @@ const VariantTrack = ({
               markerKey,
               yPosition,
               variant,
+              afScale,
             }
             return getVariantMarker(childProps)
           })}
@@ -199,6 +209,7 @@ const VariantTrack = ({
   )
 }
 VariantTrack.propTypes = {
+  css: PropTypes.object,
   title: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
   variants: PropTypes.array.isRequired,
@@ -207,8 +218,10 @@ VariantTrack.propTypes = {
   xScale: PropTypes.func,  // eslint-disable-line
   color: PropTypes.string,
   markerConfig: PropTypes.object,
+  activeVariant: PropTypes.string,
 }
 VariantTrack.defaultProps = {
+  css: defaultStyles,
   color: 'grey',
   markerConfig: {
     markerType: 'circle',

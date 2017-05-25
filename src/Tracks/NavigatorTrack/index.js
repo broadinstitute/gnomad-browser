@@ -51,7 +51,7 @@ const ClickArea = ({
   width,
   invertOffset,
   xScale,
-  position,
+  position, // from ReactCursorPosition
   isActive,
   isPositionOutside,
   onNavigatorClick,
@@ -65,15 +65,22 @@ const ClickArea = ({
       onClick={e => onNavigatorClick(invertOffset(position.x))}
     >
       <rect
-        className={css.navigatorRect}
+        className={css.navigatorContainerRect}
         x={0}
         y={0}
         width={width}
         height={height}
       />
       <rect
-        className={css.positionWindowRect}
+        className={css.cursorPositionRect}
         x={position.x - 15}
+        y={0}
+        width={30}
+        height={height}
+      />
+      <rect
+        className={css.tablePositionRect}
+        x={0}
         y={0}
         width={30}
         height={height}
