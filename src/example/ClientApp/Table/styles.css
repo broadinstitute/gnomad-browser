@@ -36,7 +36,7 @@
 .row {
   display: flex;
   /*border: 1px solid blue;*/
-  background-color: #FBFAFE;
+  background-color: var(--rowBackGroundColor);
 }
 
 .row:hover {

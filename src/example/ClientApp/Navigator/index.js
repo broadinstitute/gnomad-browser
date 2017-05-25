@@ -7,19 +7,23 @@ import css from './styles.css'
 const Navigator = ({ currentNavigatorPosition, onNavigatorClick, ownProps }) => {
   return (
     <NavigatorTrack
+      css={css}
       title={'Navigator'}
       height={20}
       onNavigatorClick={onNavigatorClick}
+      scrollSync={currentNavigatorPosition}
       {...ownProps}
     />
   )
 }
 Navigator.propTypes = {
-    setNavigationPosition: PropTypes.func.isRequired,
+    currentNavigatorPosition: PropTypes.number.isRequired,
+    onNavigatorClick: PropTypes.func.isRequired,
+    ownProps: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  position: state.selections.currentNavigatorPosition,
+  currentNavigatorPosition: state.selections.currentNavigatorPosition,
   ownProps,
 })
 

@@ -1,17 +1,18 @@
-:root {
+/*:root {
   --backgroundColor: #FAFAFA;
   --primaryColor: #375D81;
   --secondaryColor: #91AA9D;
   --exonColor: #375D81;
   --paddingColor: #183152;
   --rowHoverColor: #E8EAF6;
-}
+}*/
 
-/*:root {
+:root {
   --backgroundColor: #1E1E20;
   --primaryColor: #D9CB9E;
   --secondaryColor: #DC3522;
   --exonColor: #475453;
   --paddingColor: #5A5E5C;
-  --rowHoverColor: #E8EAF6;
-}*/
+  --rowHoverColor: #183152;
+  --rowBackGroundColor: #1E1E20;
+}
