@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
-import R from 'ramda'
+// import R from 'ramda'
 
-import css from './styles.css'
+import defaultStyles from './styles.css'
 
-const NavigatorAxis = ({ title, height, leftPanelWidth }) => {
+const NavigatorAxis = ({ css, title, height, leftPanelWidth }) => {
   return (
     <div
       style={{ width: leftPanelWidth }}
@@ -27,42 +27,27 @@ NavigatorAxis.propTypes = {
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
-// const PositionLabel = (
-//   { position: { x, y } = 0,
-//   isActive,
-//   isPositionOutside },
-//   onNavigatorClick,
-// ) => {
-//   return (
-//     <div
-//       className={css.positionLabel}
-//       onClick={e => onNavigatorClick({ x, y })}
-//     >
-//       {`x: ${x}`}<br />
-//       {`y: ${y}`}<br />
-//       {`isActive: ${isActive}`}<br />
-//       {`isOutside: ${isPositionOutside ? 'true' : 'false'}`}
-//     </div>
-//   )
-// }
-
 const ClickArea = ({
+  css,
   height,
   width,
+  positionOffset,
   invertOffset,
   xScale,
-  position, // from ReactCursorPosition
-  isActive,
-  isPositionOutside,
+  position, // active mouse position from ReactCursorPosition
+  scrollSync, // position in from table
   onNavigatorClick,
-  positionsWithData,
 }) => {
+  const tablePosition = xScale(
+    positionOffset(scrollSync).offsetPosition,
+  )
+
   return (
     <svg
       className={css.areaClick}
       width={width}
       height={height}
-      onClick={e => onNavigatorClick(invertOffset(position.x))}
+      onClick={_ => onNavigatorClick(invertOffset(position.x))}
     >
       <rect
         className={css.navigatorContainerRect}
@@ -80,7 +65,7 @@ const ClickArea = ({
       />
       <rect
         className={css.tablePositionRect}
-        x={0}
+        x={tablePosition - 15}
         y={0}
         width={30}
         height={height}
@@ -90,9 +75,11 @@ const ClickArea = ({
 }
 
 const NavigatorTrack = (props) => {
+  const { css } = props
   return (
     <div className={css.track}>
       <NavigatorAxis
+        css={css}
         title={props.title}
         height={props.height}
         leftPanelWidth={props.leftPanelWidth}
@@ -106,6 +93,9 @@ const NavigatorTrack = (props) => {
 NavigatorTrack.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number,  // eslint-disable-line
+}
+NavigatorTrack.defaultProps = {
+  css: defaultStyles,
 }
 
 export default NavigatorTrack

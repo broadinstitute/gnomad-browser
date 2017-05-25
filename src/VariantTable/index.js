@@ -103,6 +103,7 @@ const VariantTable = ({
     <span
       key={`${filter}${index}`}
       style={{
+        color: 'black',
         border: '1px solid #000',
         marginLeft: 10,
         padding: '1px 2px 1px 2px',
