@@ -3,7 +3,8 @@
   --primaryColor: #375D81;
   --secondaryColor: #91AA9D;
   --exonColor: #375D81;
-  --paddingColor: #183152
+  --paddingColor: #183152;
+  --rowHoverColor: #E8EAF6;
 }
 
 /*:root {

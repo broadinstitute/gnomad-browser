@@ -39,6 +39,13 @@
   background-color: #FBFAFE;
 }
 
+.row:hover {
+  display: flex;
+  /*border: 1px solid blue;*/
+  cursor: pointer;
+  background-color: var(--rowHoverColor);
+}
+
 .headerButtonContainer {
   display: flex;
   align-items: center;
@@ -62,6 +69,7 @@
 
 .headerButton:hover {
   font-weight: bold;
+  cursor: pointer;
   color: var(--backgroundColor);
   background-color: var(--primaryColor);
   border-radius: 3px;
