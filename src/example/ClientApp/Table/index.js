@@ -35,56 +35,70 @@ const GnomadVariantTable = ({
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
-        width: 150,
+        width: 125,
+        onHeaderClick: setVariantSort,
+      },
+      {
+        dataKey: 'filters',
+        title: 'Filters',
+        dataType: 'filter',
+        width: 70,
         onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'rsid',
         title: 'RSID',
         dataType: 'string',
+        width: 70,
+        onHeaderClick: setVariantSort,
+      },
+      {
+        dataKey: 'hgvsp',
+        title: 'HGVSp',
+        dataType: 'string',
         width: 100,
         onHeaderClick: setVariantSort,
       },
-      // {
-      //   dataKey: 'filter',
-      //   title: 'Filter',
-      //   dataType: 'filter',
-      //   width: 100,
-      //   onHeaderClick: setVariantSort,
-      // },
+      {
+        dataKey: 'hgvsc',
+        title: 'HGVSc',
+        dataType: 'string',
+        width: 100,
+        onHeaderClick: setVariantSort,
+      },
       {
         dataKey: 'consequence',
         title: 'Consequence',
         dataType: 'string',
-        width: 120,
+        width: 100,
         onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_count',
         title: 'AC',
         dataType: 'integer',
-        width: 80,
+        width: 40,
         onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_num',
         title: 'AN',
         dataType: 'integer',
-        width: 80,
+        width: 40,
         onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'allele_freq',
         title: 'AF',
         dataType: 'float',
-        width: 80,
+        width: 40,
         onHeaderClick: setVariantSort,
       },
       {
         dataKey: 'hom_count',
         title: 'Hom',
         dataType: 'integer',
-        width: 40,
+        width: 20,
         onHeaderClick: setVariantSort,
       },
     ],
@@ -107,7 +121,7 @@ const GnomadVariantTable = ({
         tableData={sortedVariants}
         remoteRowCount={variants.length}
         loadMoreRows={() => {}}
-        overscan={200}
+        overscan={10}
         loadLookAhead={1000}
         broadcastCurrentIndex={broadcastCurrentIndex}
       />
