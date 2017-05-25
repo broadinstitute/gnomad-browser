@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // import R from 'ramda'
 import {
   VariantTable,
+  getTableIndexByPosition,
 } from 'react-gnomad'
 
 import { getGene } from '../../../reducers'
@@ -20,7 +21,9 @@ const GnomadVariantTable = ({
   variants,
   variantSort,
   setVariantSort,
-  setVisibleInTable,
+  // setVisibleInTable,
+  setCurrentVariant,
+  currentNavigatorPosition,
 }) => {
   const broadcastCurrentIndex = (index) => {
     const frame = [index - 28, index - 13]
@@ -110,6 +113,11 @@ const GnomadVariantTable = ({
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
 
+  const tablePosition = getTableIndexByPosition(
+    currentNavigatorPosition,
+    sortedVariants,
+  )
+
   return (
     <div className={css.component}>
       <VariantTable
@@ -124,6 +132,8 @@ const GnomadVariantTable = ({
         overscan={10}
         loadLookAhead={1000}
         broadcastCurrentIndex={broadcastCurrentIndex}
+        onRowClick={setCurrentVariant}
+        scrollToRow={tablePosition}
       />
     </div>
   )
@@ -132,19 +142,22 @@ GnomadVariantTable.propTypes = {
   variants: PropTypes.array.isRequired,
   variantSort: PropTypes.object.isRequired,
   setVariantSort: PropTypes.func.isRequired,
+  setCurrentVariant: PropTypes.func.isRequired,
+  currentNavigatorPosition: PropTypes.number.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
-    // variants: getVariantsInGeneForDataset(state, state.selections.currentGene, 'minimal_gnomad_variants'),
     variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
     variantSort: state.table.variantSort,
+    currentNavigatorPosition: state.selections.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
+    setCurrentVariant: variantId => dispatch(actions.setCurrentVariant(variantId)),
     // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
   }
 }

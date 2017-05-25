@@ -7,8 +7,9 @@ import {
   TranscriptTrack,
   CoverageTrack,
   VariantTrack,
-  NavigatorTrack,
 } from 'react-gnomad'
+
+import Navigator from '../Navigator'
 
 import { getVariantsInGeneForDataset } from '../../../reducers'
 
@@ -44,15 +45,6 @@ const attributeConfig = {
   },
 }
 
-// const consequenceCategories = [
-//   // { annotation: 'transcript_ablation', colour: '#ed2024' },
-//   { annotation: 'splice_acceptor_variant', colour: '#757575' },
-//   { annotation: 'splice_donor_variant', colour: '#757575' },
-//   { annotation: 'stop_gained', colour: '#757575' },
-//   { annotation: 'frameshift_variant', colour: '#757575' },
-//   { annotation: 'missense_variant', colour: '#757575' },
-// ]
-
 const markerConfigLoF = {
   markerType: 'af',
   circleRadius: 3,
@@ -73,7 +65,22 @@ const consequenceCategories = [
 
 const factor = 50
 
-const GeneRegion = ({ gene, minimal_gnomad_variants }) => {
+const getTableIndexByPosition = (position, variants) =>
+  variants.findIndex((variant, i) => {
+    if (variants[i + 1]) {
+      return position >= variant.pos && position <= variants[i + 1].pos
+    }
+    return variants.length - 1
+  })
+
+const onCursorClick = (position) => {
+  console.log(`clicked ${getTableIndexByPosition}`)
+}
+
+const GeneRegion = ({
+  gene,
+  minimal_gnomad_variants,
+}) => {
   const geneExons = gene.exons
   const canonicalExons = gene.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
@@ -195,12 +202,7 @@ const GeneRegion = ({ gene, minimal_gnomad_variants }) => {
         />
         {splitTracks}
         {allTrack}
-        {/*<NavigatorTrack
-          title={'Navigator'}
-          height={20}
-          currentPos={navPos}
-          onNavigatorClick={() => {}}
-        />*/}
+        <Navigator />
       </RegionViewer>
     </div>
   )

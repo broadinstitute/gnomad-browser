@@ -103,6 +103,18 @@ export const setCurrentGene = (geneName) => {
   }
 }
 
+export const setCurrentVariant = (variantId) => {
+  return {
+    type: types.SET_CURRENT_VARIANT,
+    variantId,
+  }
+}
+
+export const setNavigationPosition = navigationPosition => ({
+  type: types.SET_NAVIGATION_POSITION,
+  navigationPosition,
+})
+
 export const requestGeneData = currentGene => ({
   type: types.REQUEST_GENE_DATA,
   currentGene,
