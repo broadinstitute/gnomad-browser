@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { throttle } from 'throttle-debounce'
 import { connect } from 'react-redux'
 // import R from 'ramda'
 import {
@@ -24,6 +25,7 @@ const GnomadVariantTable = ({
   // setVisibleInTable,
   setCurrentVariant,
   currentNavigatorPosition,
+  setNavigationPosition,
 }) => {
   const broadcastCurrentIndex = (index) => {
     const frame = [index - 28, index - 13]
@@ -118,6 +120,10 @@ const GnomadVariantTable = ({
     sortedVariants,
   )
 
+  const onScrollCallback = (tableIndex) => {
+    setNavigationPosition(sortedVariants[tableIndex].pos)
+  }
+
   return (
     <div className={css.component}>
       <VariantTable
@@ -134,6 +140,7 @@ const GnomadVariantTable = ({
         broadcastCurrentIndex={broadcastCurrentIndex}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
+        scrollCallback={onScrollCallback}
       />
     </div>
   )
@@ -144,6 +151,7 @@ GnomadVariantTable.propTypes = {
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
+  setNavigationPosition: PropTypes.func.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -158,6 +166,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
     setCurrentVariant: variantId => dispatch(actions.setCurrentVariant(variantId)),
+    setNavigationPosition: index => dispatch(actions.setNavigationPosition(index)),
     // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
   }
 }

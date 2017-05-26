@@ -3185,6 +3185,10 @@ lodash.cond@^4.3.0:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.cond/-/lodash.cond-4.5.2.tgz#f471a1da486be60f6ab955d17115523dd1d255d5"
 
+lodash.debounce@^4.0.0:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+
 lodash.memoize@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -3209,6 +3213,12 @@ lodash.templatesettings@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.templatesettings/-/lodash.templatesettings-4.1.0.tgz#2b4d4e95ba440d915ff08bc899e4553666713316"
   dependencies:
     lodash._reinterpolate "~3.0.0"
+
+lodash.throttle@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.0.1.tgz#b3211662ee9d82f56903d0731262aaaa873a6330"
+  dependencies:
+    lodash.debounce "^4.0.0"
 
 lodash.throttle@^4.1.1:
   version "4.1.1"
@@ -4677,6 +4687,12 @@ redux-logger@3.0.1:
   dependencies:
     deep-diff "0.3.4"
 
+redux-throttle@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/redux-throttle/-/redux-throttle-0.1.1.tgz#43070573f0331d12ae16fae6572ad9d7fcb761ae"
+  dependencies:
+    lodash.throttle "4.0.1"
+
 redux-thunk@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
@@ -5336,6 +5352,10 @@ tar@~2.2.1:
 text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
+
+throttle-debounce@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-1.0.1.tgz#dad0fe130f9daf3719fdea33dc36a8e6ba7f30b5"
 
 through2@^0.6.1, through2@^0.6.3, through2@~0.6.1:
   version "0.6.5"

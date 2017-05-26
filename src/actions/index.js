@@ -113,6 +113,9 @@ export const setCurrentVariant = (variantId) => {
 export const setNavigationPosition = navigationPosition => ({
   type: types.SET_NAVIGATION_POSITION,
   navigationPosition,
+  meta: {
+    throttle: true
+  },
 })
 
 export const requestGeneData = currentGene => ({
