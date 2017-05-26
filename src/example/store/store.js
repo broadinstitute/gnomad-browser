@@ -6,10 +6,10 @@ import rootReducer from '../../reducers'
 
 const logger = createLogger()
 
-const defaultWait = 200
+const defaultWait = 400
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
   leading: true,
-  trailing: false
+  trailing: false,
 }
 
 const store = createStore(

@@ -27,9 +27,19 @@
 
 .cursorPositionRect {
   fill: var(--secondaryColor);
+  stroke: black;
+  stroke-width: 1px;
+  cursor: pointer;
 }
 
 .tablePositionRect {
   fill: var(--rowHoverColor);
+  stroke: black;
+  stroke-width: 1px;
+
 }
 
+.xTickText {
+  text-anchor: middle;
+  font-size: 10px;
+}

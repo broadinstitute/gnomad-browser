@@ -9,7 +9,7 @@ const Navigator = ({ currentNavigatorPosition, onNavigatorClick, ownProps }) => 
     <NavigatorTrack
       css={css}
       title={'Navigator'}
-      height={20}
+      height={50}
       onNavigatorClick={onNavigatorClick}
       scrollSync={currentNavigatorPosition}
       {...ownProps}
