@@ -19,6 +19,7 @@ const VariantTable = ({
   showIndex,
   scrollToRow,
   onRowClick,
+  scrollCallback,
 }) => {
 
   const abstractCellStyle = {
@@ -280,9 +281,12 @@ const VariantTable = ({
 
   const headers = tableConfig.fields.map(field => getHeaderCell(field))
 
-  const isRowLoaded = ({ index }) => !!tableData[index + loadLookAhead]
+  const isRowLoaded = ({ index }) => {
+    return !!tableData[index + loadLookAhead]
+  }
 
   const rowRenderer = ({ key, index, style }) => {
+    scrollCallback(index)
     return (
       <div
         key={key}
@@ -348,6 +352,7 @@ VariantTable.propTypes = {
   showIndex: PropTypes.bool,
   scrollToRow: PropTypes.number,
   onRowClick: PropTypes.func,
+  scrollCallback: PropTypes.func,
 }
 VariantTable.defaultProps = {
   css: defaultStyles,
@@ -357,6 +362,7 @@ VariantTable.defaultProps = {
   showIndex: false,
   scrollToRow: 10,
   setCurrentVariant: () => { },
+  scrollCallback: () => {},
 }
 
 export default VariantTable
