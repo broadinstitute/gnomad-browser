@@ -110,13 +110,30 @@ export const setCurrentVariant = (variantId) => {
   }
 }
 
-export const setNavigationPosition = navigationPosition => ({
-  type: types.SET_NAVIGATION_POSITION,
-  navigationPosition,
+export const setNavigatorPosition = navigatorPosition => ({
+  type: types.SET_CURRENT_NAVIGATOR_POSITION,
+  navigatorPosition,
   meta: {
     throttle: true
   },
 })
+
+export const setCurrentTableIndex = tableIndex => ({
+  type: types.SET_CURRENT_TABLE_INDEX,
+  tableIndex,
+  meta: {
+    throttle: true
+  },
+})
+
+export const onNavigatorClick = (tableIndex, position) => {
+  console.log(tableIndex, position)
+  return (dispatch) => {
+    dispatch(setNavigatorPosition(position))
+    dispatch(setCurrentTableIndex(tableIndex))
+  }
+}
+
 
 export const requestGeneData = currentGene => ({
   type: types.REQUEST_GENE_DATA,

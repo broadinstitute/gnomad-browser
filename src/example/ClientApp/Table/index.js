@@ -25,13 +25,8 @@ const GnomadVariantTable = ({
   // setVisibleInTable,
   setCurrentVariant,
   currentNavigatorPosition,
-  setNavigationPosition,
+  setCurrentTableIndex,
 }) => {
-  const broadcastCurrentIndex = (index) => {
-    const frame = [index - 28, index - 13]
-    // setVisibleInTable(frame)
-  }
-
   const sortedVariants = sortVariants(variants, variantSort)
 
   const tableDataConfig = {
@@ -120,10 +115,6 @@ const GnomadVariantTable = ({
     sortedVariants,
   )
 
-  const onScrollCallback = (tableIndex) => {
-    setNavigationPosition(sortedVariants[tableIndex].pos)
-  }
-
   return (
     <div className={css.component}>
       <VariantTable
@@ -137,10 +128,9 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={10}
         loadLookAhead={1000}
-        broadcastCurrentIndex={broadcastCurrentIndex}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
-        scrollCallback={onScrollCallback}
+        scrollCallback={setCurrentTableIndex}
       />
     </div>
   )
@@ -151,7 +141,7 @@ GnomadVariantTable.propTypes = {
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
-  setNavigationPosition: PropTypes.func.isRequired,
+  setCurrentTableIndex: PropTypes.func.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -166,7 +156,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
     setCurrentVariant: variantId => dispatch(actions.setCurrentVariant(variantId)),
-    setNavigationPosition: index => dispatch(actions.setNavigationPosition(index)),
+    setCurrentTableIndex: index => dispatch(actions.setCurrentTableIndex(index)),
     // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
   }
 }

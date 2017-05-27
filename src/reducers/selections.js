@@ -3,7 +3,7 @@ import * as types from '../constants/actionTypes'
 
 const currentGene = (state = 'BRCA2', action) => {
   switch (action.type) {
-    case 'SET_CURRENT_GENE':
+    case types.SET_CURRENT_GENE:
       return action.geneName
     default:
       return state
@@ -12,7 +12,7 @@ const currentGene = (state = 'BRCA2', action) => {
 
 const currentVariant = (state = '', action) => {
   switch (action.type) {
-    case 'SET_CURRENT_VARIANT':
+    case types.SET_CURRENT_VARIANT:
       return action.variantId
     default:
       return state
@@ -21,8 +21,17 @@ const currentVariant = (state = '', action) => {
 
 const currentNavigatorPosition = (state = 0, action) => {
   switch (action.type) {
-    case 'SET_NAVIGATION_POSITION':
-      return action.navigationPosition
+    case types.SET_CURRENT_NAVIGATOR_POSITION:
+      return action.navigatorPosition
+    default:
+      return state
+  }
+}
+
+const currentTableIndex = (state = 0, action) => {
+  switch (action.type) {
+    case types.SET_CURRENT_TABLE_INDEX:
+      return action.tableIndex
     default:
       return state
   }
@@ -30,6 +39,7 @@ const currentNavigatorPosition = (state = 0, action) => {
 
 const selections = combineReducers({
   currentNavigatorPosition,
+  currentTableIndex,
   currentVariant,
   currentGene,
 })
