@@ -84,7 +84,7 @@ const VariantCircle = ({
       r={circleRadius || 2}
       fill={color}
       strokeWidth={circleStrokeWidth || 0}
-      stroke={circleStroke || 0}the
+      stroke={circleStroke || 0}
     />
   )
 }

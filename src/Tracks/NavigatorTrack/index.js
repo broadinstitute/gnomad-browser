@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
+import R from 'ramda'
+import { getTableIndexByPosition } from 'utilities'
 import { range } from 'd3-array'
 // import R from 'ramda'
 
@@ -38,17 +40,50 @@ const ClickArea = ({
   position, // active mouse position from ReactCursorPosition
   isPositionOutside, // from ReactCursorPosition
   scrollSync, // position in from table
+  currentNavigatorPosition,
   onNavigatorClick,
+  variants,
+  currentVariant,
+  variantSort,
 }) => {
-  const tablePosition = xScale(positionOffset(scrollSync).offsetPosition)
-  const navigatorBoxPadding = 5
+  const sortVariants = (variants, { key, ascending }) => (
+    ascending ?
+    variants.sort((a, b) => a[key] - b[key]) :
+    variants.sort((a, b) => b[key] - a[key])
+  )
+  const sortedVariants = sortVariants(variants, variantSort)
 
+  const currentlyVisibleVariants = sortedVariants.slice(scrollSync, scrollSync + 15)
+
+  const tablePositionStart = R.head(currentlyVisibleVariants).pos
+  const tablePositionStop = R.last(currentlyVisibleVariants).pos
+
+  const tableRectPadding = 10
+  const tableRectStart = xScale(positionOffset(tablePositionStart).offsetPosition) - tableRectPadding
+  const tableRectStop = xScale(positionOffset(tablePositionStop).offsetPosition)
+  const tableRectWidth = tableRectStop - tableRectStart + tableRectPadding
+  const variantPositions = currentlyVisibleVariants.map(v => ({
+    x: xScale(positionOffset(v.pos).offsetPosition),
+    color: v.variant_id === currentVariant ? 'yellow' : 'red',
+  }))
+
+  const variantMarks = variantPositions.map((v, i) => (
+    <circle
+      key={`variant-${v}-${i}`}
+      cx={v.x}
+      cy={height / 3}
+      r={3}
+      fill={v.color}
+      strokeWidth={1}
+      stroke={'black'}
+    />
+  ))
   const PositionMarks = () => {
-    const tickHeight = 2
+    const tickHeight = 3
     const numberOfTicks = 10
     const textRotationDegrees = 0
     const textXOffsetFromTick = 0
-    const textYOffsetFromTick = 5
+    const textYOffsetFromTick = 7
     const tickPositions = range(0, width, width / numberOfTicks)
     const tickGenomePositions = tickPositions.map(t => ({ x: t, label: invertOffset(t) }))
 
@@ -58,8 +93,8 @@ const ClickArea = ({
           className={css.xTickLine}
           x1={x}
           x2={x}
-          y1={height}
-          y2={height - tickHeight}
+          y1={height - 2}
+          y2={height - 2 - tickHeight}
           stroke={'black'}
           strokeWidth={1}
         />
@@ -74,31 +109,55 @@ const ClickArea = ({
       </g>
     )
 
-    const axisTicksDrawing = tickGenomePositions.map(({ x, label }) => tickDrawing(x, label))
+    const axisTicksDrawing = R.tail(tickGenomePositions.map(({ x, label }) => tickDrawing(x, label)))
 
     return (
       <g>
         <line
           className={css.xAxisLine}
-          x1={0}
-          x2={width}
-          y1={height}
+          x1={0 + 2}
+          x2={width - 2}
+          y1={height - 1}
+          y2={height - 1}
+          stroke={'black'}
+          strokeWidth={1}
+        />
+        <line
+          className={css.yAxisLine}
+          x1={1}
+          x2={1}
+          y1={height - 7}
           y2={height}
           stroke={'black'}
           strokeWidth={1}
-          key={'position-x-axis'}
+        />
+        <line
+          className={css.yAxisLine}
+          x1={width - 1}
+          x2={width - 1}
+          y1={height - 7}
+          y2={height}
+          stroke={'black'}
+          strokeWidth={1}
         />
         {axisTicksDrawing}
       </g>
     )
   }
 
+  const navigatorBoxBottomPadding = 20
+  const navigatorBoxTopPadding = 2
+// onClick={_ => onNavigatorClick(invertOffset(position.x))}
   return (
     <svg
       className={css.areaClick}
       width={width}
       height={height}
-      onClick={_ => onNavigatorClick(invertOffset(position.x))}
+      onClick={_ => {
+        const genomePos = invertOffset(position.x)
+        const tableIndex = getTableIndexByPosition(genomePos, variants)
+        onNavigatorClick(tableIndex, genomePos)
+      }}
     >
       <rect
         className={css.navigatorContainerRect}
@@ -109,19 +168,22 @@ const ClickArea = ({
       />
       <rect
         className={css.tablePositionRect}
-        x={tablePosition - 15}
-        y={0}
-        width={30}
-        height={height - navigatorBoxPadding}
+        x={tableRectStart}
+        y={0 + navigatorBoxTopPadding}
+        width={tableRectWidth}
+        height={height - navigatorBoxBottomPadding}
+        strokeDasharray={'5, 5'}
       />
       {!isPositionOutside &&
       <rect
         className={css.cursorPositionRect}
         x={position.x - 15}
-        y={0}
+        y={0 + navigatorBoxTopPadding}
         width={30}
-        height={height - navigatorBoxPadding}
+        height={height - navigatorBoxBottomPadding}
+        strokeDasharray={'5, 5'}
       />}
+      {variantMarks}
       <PositionMarks />
     </svg>
   )

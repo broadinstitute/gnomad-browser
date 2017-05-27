@@ -248,6 +248,7 @@ const VariantTable = ({
       <div
         className={css.row}
         onClick={e => onRowClick(dataRow['variant_id'])}
+        onMouseEnter={e => onRowClick(dataRow['variant_id'])}
         key={`row-${i}`}
       >
         {showIndex && indexCell}
@@ -352,6 +353,7 @@ VariantTable.propTypes = {
   showIndex: PropTypes.bool,
   scrollToRow: PropTypes.number,
   onRowClick: PropTypes.func,
+  // onRowHover: PropTypes.func,
   scrollCallback: PropTypes.func,
 }
 VariantTable.defaultProps = {
