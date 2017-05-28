@@ -80,6 +80,7 @@ const onCursorClick = (position) => {
 const GeneRegion = ({
   gene,
   minimal_gnomad_variants,
+  exonPadding,
 }) => {
   const geneExons = gene.exons
   const canonicalExons = gene.transcript.exons
@@ -184,7 +185,7 @@ const GeneRegion = ({
       <RegionViewer
         css={css}
         width={1150}
-        padding={75}
+        padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
       >

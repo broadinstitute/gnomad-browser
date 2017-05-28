@@ -8,6 +8,8 @@ const variantSort = (state = { key: 'pos', ascending: true }, action) => {
         return { ...state, ascending: !state.ascending }
       }
       return { ...state, key: action.key }
+    case types.ORDER_VARIANTS_BY_POSITION:
+      return { ...state, key: 'pos', ascending: true }
     default:
       return state
   }

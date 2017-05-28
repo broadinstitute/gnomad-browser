@@ -37,11 +37,21 @@ const currentTableIndex = (state = 0, action) => {
   }
 }
 
+const exonPadding = (state = 75, action) => {
+  switch (action.type) {
+    case types.SET_EXON_PADDING:
+      return action.padding
+    default:
+      return state
+  }
+}
+
 const selections = combineReducers({
   currentNavigatorPosition,
   currentTableIndex,
   currentVariant,
   currentGene,
+  exonPadding,
 })
 
 export default selections

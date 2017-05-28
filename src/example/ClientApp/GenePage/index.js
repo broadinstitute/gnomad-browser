@@ -18,6 +18,8 @@ const AppGenePage = ({
   gene,
   isFetching,
   minimal_gnomad_variants,
+  exonPadding,
+  setExonPadding,
 }) => {
   if (isFetching || !gene) {
     return <div>Loading...!</div>
@@ -27,6 +29,7 @@ const AppGenePage = ({
       <GeneSettings
         currentGene={currentGene}
         setCurrentGene={setCurrentGene}
+        setExonPadding={setExonPadding}
       />
       <div className={css.summary}>
         <GeneInfo
@@ -37,6 +40,7 @@ const AppGenePage = ({
       <GeneRegion
         gene={gene}
         minimal_gnomad_variants={minimal_gnomad_variants}
+        exonPadding={exonPadding}
       />
       <GnomadVariantTable />
     </div>

@@ -16,6 +16,8 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     isFetching: PropTypes.bool.isRequired,
     setCurrentGene: PropTypes.func.isRequired,
     fetchVariantsIfNeeded: PropTypes.func.isRequired,
+    setExonPadding: PropTypes.func.isRequired,
+    exonPadding: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
@@ -41,7 +43,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
 const mapStateToProps = (state) => {
   const {
-    selections: { currentGene },
+    selections: { currentGene, exonPadding },
     genes: { isFetching },
 
   } = state
@@ -56,12 +58,14 @@ const mapStateToProps = (state) => {
     isFetching,
     gene,
     minimal_gnomad_variants,
+    exonPadding,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchVariantsIfNeeded: currentGene => dispatch(actions.fetchVariantsIfNeeded(currentGene)),
     setCurrentGene: geneName => dispatch(actions.setCurrentGene(geneName)),
+    setExonPadding: padding => dispatch(actions.setExonPadding(padding)),
   }
 }
 
