@@ -28,7 +28,15 @@ const visibleInTable = (state = [0, 15], action) => {
   }
 }
 
+const variantFilter = (state = 'missense_variant', action) => {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 const table = combineReducers({
+  variantFilter,
   variantSort,
   visibleInTable,
 })

@@ -20,10 +20,12 @@ const AppGenePage = ({
   minimal_gnomad_variants,
   exonPadding,
   setExonPadding,
+  visibleVariants,
 }) => {
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
+  console.log(visibleVariants)
   return (
     <div className={css.genePage}>
       <GeneSettings

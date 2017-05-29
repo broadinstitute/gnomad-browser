@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import {
   getGene,
+  getVisibleVariants,
   getAllVariantsAsArray,
   getVariantsInGeneForDataset,
 } from '../../reducers'
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => {
     gene,
     minimal_gnomad_variants,
     exonPadding,
+    visibleVariants: getVisibleVariants(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

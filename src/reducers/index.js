@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { createSelector } from 'reselect'
 
 import selections from './selections'
 import table from './table'
@@ -34,11 +35,42 @@ export const getAllVariantsAsArray = state =>
 
 export const getVariantsInGeneForDataset = (state, geneName, datasetId) => {
   const variantIds = fromGenes.getAllVariantsInGeneForDataset(state.genes, geneName, datasetId)
-  if (geneName == 'TTN') {
+  if (geneName === 'TTN') {
     return state.variants.variantsByDataSet[datasetId].byVariantId
   }
   return fromVariants.getDatasetVariants(state.variants, variantIds, datasetId)
 }
+
+const sortVariants = (variants, { key, ascending }) => (
+  ascending ?
+  variants.sort((a, b) => a[key] - b[key]) :
+  variants.sort((a, b) => b[key] - a[key])
+)
+
+const getCurrentGene = state => state.selections.currentGene
+
+const getGenes = state => state.genes.byGeneName
+
+const getVariantSort = state => state.table.variantSort
+
+const getVariantFilter = state => state.table.variantFilter
+
+export const getVisibleVariants = createSelector(
+  [getCurrentGene, getGenes, getVariantSort, getVariantFilter],
+  (currentGene, genesList, variantSort, variantFilter) => {
+    console.log(variantFilter)
+    if (genesList[currentGene]) {
+      if (variantFilter === 'all') {
+        return genesList[currentGene].minimal_gnomad_variants
+      }
+      const filtered = genesList[currentGene].minimal_gnomad_variants.filter((v) => {
+        return v.consequence === variantFilter
+      })
+      // return sortVariants(filtered, variantSort)
+      return filtered
+    }
+  },
+)
 
 // export const getVariantsInGeneForDataset = (state, geneName, datasetId) => {
 //   const variantIds = fromGenes.getAllVariantsInGeneForDataset(state.genes, geneName, datasetId)
