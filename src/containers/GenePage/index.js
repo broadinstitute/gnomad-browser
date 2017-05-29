@@ -3,12 +3,11 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../../actions'
+
 import {
   getGene,
   getVisibleVariants,
-  getAllVariantsAsArray,
-  getVariantsInGeneForDataset,
-} from '../../reducers'
+} from '../../selectors'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -17,6 +16,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     isFetching: PropTypes.bool.isRequired,
     setCurrentGene: PropTypes.func.isRequired,
     fetchVariantsIfNeeded: PropTypes.func.isRequired,
+    visibleVariants: PropTypes.array.isRequired,
     setExonPadding: PropTypes.func.isRequired,
     exonPadding: PropTypes.number.isRequired,
   }
@@ -42,27 +42,14 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 }
 
-const mapStateToProps = (state) => {
-  const {
-    selections: { currentGene, exonPadding },
-    genes: { isFetching },
+const mapStateToProps = state => ({
+  currentGene: state.selections.currentGene,
+  isFetching: state.genes.isFetching,
+  gene: getGene(state),
+  exonPadding: state.selections.exonPadding,
+  visibleVariants: getVisibleVariants(state),
+})
 
-  } = state
-  const gene = getGene(state, currentGene)
-  let minimal_gnomad_variants
-  if (gene) {
-    minimal_gnomad_variants = gene.minimal_gnomad_variants
-
-  }
-  return {
-    currentGene,
-    isFetching,
-    gene,
-    minimal_gnomad_variants,
-    exonPadding,
-    visibleVariants: getVisibleVariants(state),
-  }
-}
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchVariantsIfNeeded: currentGene => dispatch(actions.fetchVariantsIfNeeded(currentGene)),

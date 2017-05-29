@@ -7,7 +7,7 @@ import {
   getTableIndexByPosition,
 } from 'react-gnomad'
 
-import { getGene } from '../../../reducers'
+import { getVisibleVariants } from '../../../selectors'
 import * as actions from '../../../actions'
 
 import css from './styles.css'
@@ -19,15 +19,14 @@ const sortVariants = (variants, { key, ascending }) => (
 )
 
 const GnomadVariantTable = ({
-  variants,
+  visibleVariants,
   variantSort,
   setVariantSort,
-  // setVisibleInTable,
   setCurrentVariant,
   currentNavigatorPosition,
   setCurrentTableIndex,
 }) => {
-  const sortedVariants = sortVariants(variants, variantSort)
+  const sortedVariants = sortVariants(visibleVariants, variantSort)
 
   const tableDataConfig = {
     fields: [
@@ -124,7 +123,7 @@ const GnomadVariantTable = ({
         width={calculatedWidth}
         tableConfig={tableDataConfig}
         tableData={sortedVariants}
-        remoteRowCount={variants.length}
+        remoteRowCount={visibleVariants.length}
         loadMoreRows={() => {}}
         overscan={10}
         loadLookAhead={1000}
@@ -136,7 +135,7 @@ const GnomadVariantTable = ({
   )
 }
 GnomadVariantTable.propTypes = {
-  variants: PropTypes.array.isRequired,
+  visibleVariants: PropTypes.array.isRequired,
   variantSort: PropTypes.object.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
@@ -147,7 +146,7 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
+    visibleVariants: getVisibleVariants(state),
     variantSort: state.table.variantSort,
     currentNavigatorPosition: state.selections.currentNavigatorPosition,
   }

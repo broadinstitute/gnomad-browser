@@ -1,8 +1,13 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { NavigatorTrack } from 'react-gnomad'
-import { getGene } from '../../../reducers'
+
+import {
+  getVisibleVariants,
+} from '../../../selectors'
+
 import * as actions from '../../../actions'
+
 import css from './styles.css'
 
 const Navigator = ({
@@ -14,7 +19,6 @@ const Navigator = ({
   variantSort,
   ownProps,
 }) => {
-  // const activeVariants =
   return (
     <NavigatorTrack
       css={css}
@@ -33,6 +37,8 @@ const Navigator = ({
 Navigator.propTypes = {
   currentTableIndex: PropTypes.number.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
+  currentVariant: PropTypes.string.isRequired,
+  variantSort: PropTypes.object.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
   variants: PropTypes.array.isRequired,
   ownProps: PropTypes.object.isRequired,
@@ -43,7 +49,7 @@ const mapStateToProps = (state, ownProps) => ({
   currentNavigatorPosition: state.selections.currentNavigatorPosition,
   currentVariant: state.selections.currentVariant,
   variantSort: state.table.variantSort,
-  variants: getGene(state, state.selections.currentGene).minimal_gnomad_variants,
+  variants: getVisibleVariants(state),
   ownProps,
 })
 

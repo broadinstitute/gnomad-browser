@@ -6,7 +6,7 @@ import * as types from '../constants/actionTypes'
 const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
 const API_URL = 'http://localhost:8006'
 
-const fetchMinimalGenePage = (geneName, url = LOCAL_API_URL) => {
+const fetchGenePage = (geneName, url = LOCAL_API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -163,7 +163,7 @@ export const receiveRegionData = regionData => ({
 export const fetchPageDataByGeneName = (geneName) => {
   return (dispatch) => {
     dispatch(requestGeneData(geneName))
-    fetchMinimalGenePage(geneName, API_URL)
+    fetchGenePage(geneName, API_URL)
       .then((geneData) => {
         dispatch(receiveGeneData(geneName, geneData))
       }

@@ -11,8 +11,6 @@ import {
 
 import Navigator from '../Navigator'
 
-import { getVariantsInGeneForDataset } from '../../../reducers'
-
 import css from './styles.css'
 
 const {
@@ -65,21 +63,9 @@ const consequenceCategories = [
 
 const factor = 50
 
-const getTableIndexByPosition = (position, variants) =>
-  variants.findIndex((variant, i) => {
-    if (variants[i + 1]) {
-      return position >= variant.pos && position <= variants[i + 1].pos
-    }
-    return variants.length - 1
-  })
-
-const onCursorClick = (position) => {
-  console.log(`clicked ${getTableIndexByPosition}`)
-}
-
 const GeneRegion = ({
   gene,
-  minimal_gnomad_variants,
+  visibleVariants,
   exonPadding,
 }) => {
   const geneExons = gene.exons
@@ -87,11 +73,10 @@ const GeneRegion = ({
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
   const { exome_coverage, genome_coverage } = gene
 
-  const cats = consequenceCategories.map(c => c.annotation)
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
-    const filteredVariants = minimal_gnomad_variants.filter(variant =>
+    const filteredVariants = visibleVariants.filter(variant =>
       R.contains(variant.consequence, consequence.groups))
     if (filteredVariants.length / factor < 20) {
       rowHeight = 20
@@ -119,7 +104,7 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
-  const otherVariants = minimal_gnomad_variants.filter(v =>
+  const otherVariants = visibleVariants.filter(v =>
     !R.contains(v.consequence, [...lof, ...missense]))
 
   let otherHeight
@@ -179,7 +164,6 @@ const GeneRegion = ({
       },
     ],
   }
-  // const navPos = minimal_gnomad_variants[visibleInTable[0]].pos
   return (
     <div className={css.geneRegion}>
       <RegionViewer
@@ -210,6 +194,7 @@ const GeneRegion = ({
 }
 GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
-  minimal_gnomad_variants: PropTypes.array.isRequired,
+  visibleVariants: PropTypes.array.isRequired,
+  exonPadding: PropTypes.number.isRequired,
 }
 export default GeneRegion

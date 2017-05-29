@@ -6,10 +6,6 @@ import GeneSettings from '../GeneSettings'
 import GeneRegion from '../RegionViewer'
 import GnomadVariantTable from '../Table'
 
-import {
-  groupExonsByTranscript,
-} from 'react-gnomad'
-
 import css from './styles.css'
 
 const AppGenePage = ({
@@ -17,11 +13,11 @@ const AppGenePage = ({
   setCurrentGene,
   gene,
   isFetching,
-  minimal_gnomad_variants,
+  visibleVariants,
   exonPadding,
   setExonPadding,
-  visibleVariants,
 }) => {
+  console.log(isFetching, gene)
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
@@ -36,12 +32,12 @@ const AppGenePage = ({
       <div className={css.summary}>
         <GeneInfo
           gene={gene}
-          variantCount={minimal_gnomad_variants.length}
+          variantCount={visibleVariants.length}
         />
       </div>
       <GeneRegion
         gene={gene}
-        minimal_gnomad_variants={minimal_gnomad_variants}
+        visibleVariants={visibleVariants}
         exonPadding={exonPadding}
       />
       <GnomadVariantTable />
@@ -52,6 +48,11 @@ const AppGenePage = ({
 AppGenePage.propTypes = {
   currentGene: PropTypes.string.isRequired,
   gene: PropTypes.object,
+  setCurrentGene: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  visibleVariants: PropTypes.array.isRequired,
+  exonPadding: PropTypes.number.isRequired,
+  setExonPadding: PropTypes.func.isRequired,
 }
 
 export default GenePageHOC(AppGenePage)
