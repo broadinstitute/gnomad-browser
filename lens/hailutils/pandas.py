@@ -49,3 +49,40 @@ def make_variant_table(hc, interval_string, vds, split_multi=False):
     df = kt.to_pandas()
     print df.columns
     return df
+
+def split_hgvs(hgvs):
+  if hgvs:
+    return hgvs.split(':')[1]
+  else:
+    return None
+
+def format_filters(filters):
+  if filters == []:
+    return 'PASS'
+  else:
+    return '|'.join(filters)
+
+def format_df_for_loading(df):
+  df['variant_id'] = df['variant_id'].map(lambda id: id.replace('/', '-'))
+  df['filters'] = (df['filters'] + df['as_filter_status']).map(set).map(list)
+  df['filters'] = df['filters'].map(format_filters)
+  df['hgvsp'] = df['hgvsp'].map(split_hgvs)
+  df['hgvsc'] = df['hgvsc'].map(split_hgvs)
+  columns = [
+      'pos',
+      'variant_id',
+      'rsid',
+      'pass',
+      'filters',
+      'consequence',
+      'lof',
+      'allele_count',
+      'allele_num',
+      'allele_freq',
+      'hom_count',
+      'hgvsp',
+      'hgvsc',
+      'gene_name',
+  ]
+  print(df[columns])
+  return df[columns]

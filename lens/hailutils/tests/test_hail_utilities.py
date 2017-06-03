@@ -5,6 +5,7 @@
 from __future__ import print_function
 import lens
 from lens import TEST_AWESOME
+from lens import hailutils
 # from lens.hail_utilies import get_hail_context
 
 VDS_PATH = '/Users/msolomon/data/gnomad/170520_gnomad_data/exomes/gnomad.exomes.r2.0.1.sites.vds'
