@@ -14,4 +14,3 @@ def get_hail_context():
 def test(vds_path):
     """Get hail context and load vds."""
     return 'hello'
-

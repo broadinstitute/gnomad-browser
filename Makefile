@@ -1,4 +1,6 @@
-TEST_DIRECTORY := lens/graphql/tests
+GRAPHQL_TEST_DIRECTORY := lens/graphql/tests
+HAILUTILS_TEST_DIRECTORY := lens/hail/tests
+
 WATCH_DIRECTORY := lens
 
 init:
@@ -7,6 +9,10 @@ init:
 test:
 	pytest tests
 
-watch:
-	watch "clear && pytest $(TEST_DIRECTORY) -v --capture=sys" $(WATCH_DIRECTORY) \
+graph:
+	watch "clear && pytest $(GRAPHQL_TEST_DIRECTORY) -v --capture=sys" $(WATCH_DIRECTORY) \
+	--ignoreDotFiles
+
+hail:
+	watch "clear && pytest $(HAILUTILS_TEST_DIRECTORY) -v --capture=sys" $(WATCH_DIRECTORY) \
 	--ignoreDotFiles

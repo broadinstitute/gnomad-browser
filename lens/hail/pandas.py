@@ -19,7 +19,7 @@ def make_df(hc, intervals, vds, split_multi=False):
         'rsid = va.rsid',
         'pass = va.pass',
         'filters = va.filters',
-        'as_filter_status = va.info.AS_FilterStatus[0oading
+        'as_filter_status = va.info.AS_FilterStatus[0]',
         'consequence = va.vep.most_severe_consequence',
         'lof = va.vep.transcript_consequences[0].lof',
         'allele_count = va.info.AC[0]',
@@ -27,7 +27,7 @@ def make_df(hc, intervals, vds, split_multi=False):
         'allele_freq = va.info.AF[0]',
         'hom_count = va.info.Hom[0]',
         # 'amino_acids = va.vep.transcript_consequences[0].amino_acids',
-        'hgvsp = va.vep.transcript_consequences[0].ongo',
+        'hgvsp = va.vep.transcript_consequences[0].hgvsp',
         'hgvsc = va.vep.transcript_consequences[0].hgvsc'
     ], [], [])
 

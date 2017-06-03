@@ -7,7 +7,7 @@ import pymongo
 
 from lens.constants import TEST_GENES
 from lens.graphql import get_gene_intervals
-from lens.hailutils.pandas import make_df, format_df_for_loading
+from lens.hail.pandas import make_df, format_df_for_loading
 
 def load_variants(hc, vds, genes=TEST_GENES):
     db = pymongo.MongoClient('localhost', 27017)['exac']
@@ -24,4 +24,4 @@ def load_variants(hc, vds, genes=TEST_GENES):
           db['hailtest'].insert_many(records)
 
 if __name__ == '__main__':
-    print 'awwyiss'
+    print('awwyiss')

@@ -90,3 +90,5 @@ ENV/
 .ropeproject
 
 spark-warehouse
+
+resources/*
