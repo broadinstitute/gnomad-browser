@@ -1,26 +1,18 @@
-# #!/usr/bin/env python
-#
-# """Tests for hail utils."""
-#
+# # #!/usr/bin/env python
+# #
+# """Test hail api!"""
+# #
 # from hail import HailContext
-# from lens.hail.pandas import make_df
-# from lens.graphql import get_gene_intervals
-# from lens.constants import GNOMAD_VDS_PATH
+# from hail.expr import TStruct
+# from lens.constants import TEST_VDS_PATH
 #
-# HAIL_CONTEXT = HailContext()
-# INTERVALS = get_gene_intervals('BRCA2')
-# VDS = HAIL_CONTEXT.read(GNOMAD_VDS_PATH)
-#
-# make_df(HAIL_CONTEXT, INTERVALS, VDS)
-#
-#
-# print(lens.TEST_AWESOME)
-#
-# assert lens.TEST_AWESOME == 'yissss'
-# # assert VDS == 'hello'
-# # assert lens.get_hail_context(VDS_PATH) == 'yissss'
-# # print(VDS.variant_schema())
-#
-#
-#
-# # hail_context.stop()
+# def test_variant_dataset():
+#     """docstring."""
+#     HAIL_CONTEXT = HailContext()
+#     VDS = HAIL_CONTEXT.read(TEST_VDS_PATH)
+#     assert isinstance(VDS.variant_schema, TStruct)
+#     assert VDS.variant_schema.__str__().split('\n')[0] == 'Struct {'
+#     samples, variants = VDS.count()
+#     assert variants == 2519L
+#     assert samples == 0
+#     HAIL_CONTEXT.stop()

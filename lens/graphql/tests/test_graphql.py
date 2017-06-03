@@ -9,5 +9,3 @@ def test_get_gene_intervals():
     intervals = get_gene_intervals('BRCA2')
     assert len(intervals) == 26
     assert intervals[0] == '13:32890599-32890665'
-
-

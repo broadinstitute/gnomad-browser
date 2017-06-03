@@ -15,4 +15,5 @@ graph:
 
 hail:
 	watch "clear && pytest $(HAILUTILS_TEST_DIRECTORY) -v --capture=sys" $(WATCH_DIRECTORY) \
+	--ignoreDirectoryPattern=/__pycache__/ \
 	--ignoreDotFiles
