@@ -5,15 +5,13 @@
 import hail
 from hail.representation import Interval
 
-def make_df(hc, intervals, vds, split_multi=False):
-    intervals_parsed = map(Interval.parse, intervals)
-    variants_in_interval = vds.filter_intervals(intervals_parsed)
-    print 'Before splitting %s' % variants_in_interval.count_variants()
+def make_df(vds, split_multi=False):
+    print 'Before splitting %s' % vds.count_variants()
     if split_multi is True:
-        variants_in_interval = variants_in_interval.split_multi()
-        print 'After splitting: %s' % variants_in_interval.count_variants()
+        vds = vds.split_multi()
+        print 'After splitting: %s' % vds.count_variants()
 
-    kt = variants_in_interval.make_table([
+    kt = vds.make_table([
         'pos = v.start',
         'variant_id = v.contig + "-" + v.start + "-" + v.altAlleles[0]',
         'rsid = va.rsid',
