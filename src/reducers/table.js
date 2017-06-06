@@ -28,7 +28,7 @@ const visibleInTable = (state = [0, 15], action) => {
   }
 }
 
-const variantFilter = (state = 'missense_variant', action) => {
+const variantFilter = (state = 'all', action) => {
   switch (action.type) {
     default:
       return state
