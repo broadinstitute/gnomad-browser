@@ -2,7 +2,7 @@
 
 """GraphQL integration tests"""
 
-from lens.graphql import get_gene_intervals
+from portage.graphql import get_gene_intervals
 
 def test_get_gene_intervals():
     """Fetch gene intervals from gnomad api."""

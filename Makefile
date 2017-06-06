@@ -1,10 +1,13 @@
-GRAPHQL_TEST_DIRECTORY := lens/graphql/tests
-HAILUTILS_TEST_DIRECTORY := lens/hail/tests
+GRAPHQL_TEST_DIRECTORY := portage/graphql/tests
+HAILUTILS_TEST_DIRECTORY := portage/hail/tests
 
-WATCH_DIRECTORY := lens
+WATCH_DIRECTORY := portage
 
 init:
 	pip install -r requirements.txt
+
+clean:
+	find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
 test:
 	pytest tests
