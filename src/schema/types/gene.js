@@ -18,6 +18,7 @@ import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 import metaVariantType from './metavariant'
+import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -57,6 +58,11 @@ const geneType = new GraphQLObjectType({
       args: { consequence: { type: GraphQLString } },
       resolve: (obj, args, ctx) =>
           lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id, args.consequence),
+    },
+    minimal_gnomad_variants: {
+      type: new GraphQLList(minimalVariantType),
+      resolve: (obj, args, ctx) =>
+          lookupMinimalVariants(ctx.database.gnomad, 'hailtest', obj.gene_name),
     },
     genome_variants: {
       type: new GraphQLList(variantType),
