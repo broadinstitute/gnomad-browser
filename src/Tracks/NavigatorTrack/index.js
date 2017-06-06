@@ -55,6 +55,8 @@ const ClickArea = ({
 
   const currentlyVisibleVariants = sortedVariants.slice(scrollSync, scrollSync + 15)
 
+  console.log(currentlyVisibleVariants)
+
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 
@@ -62,21 +64,35 @@ const ClickArea = ({
   const tableRectStart = xScale(positionOffset(tablePositionStart).offsetPosition) - tableRectPadding
   const tableRectStop = xScale(positionOffset(tablePositionStop).offsetPosition)
   const tableRectWidth = tableRectStop - tableRectStart + tableRectPadding
+
   const variantPositions = currentlyVisibleVariants.map(v => ({
     x: xScale(positionOffset(v.pos).offsetPosition),
+    variant_id: v.variant_id,
     color: v.variant_id === currentVariant ? 'yellow' : 'red',
   }))
 
   const variantMarks = variantPositions.map((v, i) => (
-    <circle
-      key={`variant-${v}-${i}`}
-      cx={v.x}
-      cy={height / 3}
-      r={3}
-      fill={v.color}
-      strokeWidth={1}
-      stroke={'black'}
-    />
+    <g>
+      {v.variant_id === currentVariant && <circle
+        key={'variant-active-circle'}
+        cx={v.x}
+        cy={height / 3}
+        r={10}
+        fill={'rgba(0,0,0,0)'}
+        strokeWidth={1}
+        stroke={'black'}
+        strokeDasharray={'3, 3'}
+      />}
+      <circle
+        key={`variant-${v}-${i}`}
+        cx={v.x}
+        cy={height / 3}
+        r={5}
+        fill={v.color}
+        strokeWidth={1}
+        stroke={'black'}
+      />
+    </g>
   ))
   const PositionMarks = () => {
     const tickHeight = 3
@@ -147,7 +163,7 @@ const ClickArea = ({
 
   const navigatorBoxBottomPadding = 20
   const navigatorBoxTopPadding = 2
-// onClick={_ => onNavigatorClick(invertOffset(position.x))}
+
   return (
     <svg
       className={css.areaClick}
@@ -166,6 +182,8 @@ const ClickArea = ({
         width={width}
         height={height}
       />
+
+      {variantSort.key === 'pos' &&
       <rect
         className={css.tablePositionRect}
         x={tableRectStart}
@@ -173,7 +191,8 @@ const ClickArea = ({
         width={tableRectWidth}
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
-      />
+      />}
+
       {!isPositionOutside &&
       <rect
         className={css.cursorPositionRect}
