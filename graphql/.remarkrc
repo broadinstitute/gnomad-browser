@@ -1,0 +1,15 @@
+{
+ "plugins": {
+   "remark-lint": {
+     "no-multiple-toplevel-headings": false,
+     "list-item-indent": false,
+     "maximum-line-length": false,
+     "code-block-style": "fenced",
+     "no-file-name-irregular-characters": false,
+     "maximum-heading-length": false,
+     "no-heading-punctuation": false,
+     "no-shortcut-reference-link": false,
+     "no-undefined-references": false
+   }
+ }
+}
