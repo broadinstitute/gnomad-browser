@@ -1,0 +1,23 @@
+:export {
+  exonColor: #212121;
+  paddingColor: #BDBDBD;
+  masterExonThickness: 25px;
+  masterPaddingThickness: 5px;
+  flipOutExonThickness: 25px;
+  flipOutPaddingThickness: 5px;
+}
+
+.regionViewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  /*border: 0 solid #000;*/
+}
+
+.regionArea {
+  flex-direction: column;
+  /*border: 1px solid green;*/
+}
+

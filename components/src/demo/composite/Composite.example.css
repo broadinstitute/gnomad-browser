@@ -1,0 +1,22 @@
+.track {
+  display: flex;
+  align-items: center;
+  /*border: 1px solid blue;*/
+  margin-top: 5px;
+}
+
+.variantAxisName {
+  font-size: 11px;
+  /*border: 1px solid green;*/
+}
+
+.menus {
+  display: flex;
+  flex-direction: row;
+}
+
+.positionLabel {
+  height: 200px;
+  width: 200px;
+  border: 1px solid #000;
+}

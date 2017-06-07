@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>react-gnomad</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <link type="image/x-icon" rel="shortcut icon" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+    <script type="text/javascript" src="dist/umd/react-gnomad.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/javascript">
+      var root = document.getElementById('root')
+      ReactDOM.render(React.createElement(ReactGnomad.TestComponent, { name: 'Matt' }), root)
+    </script>
+  </body>
+</html>
