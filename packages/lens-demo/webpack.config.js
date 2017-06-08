@@ -3,11 +3,12 @@
 
 const webpack = require('webpack')
 const path = require('path')
-const config = require('config')
+// const config = require('config')
 
 const isDev = (process.env.NODE_ENV === 'development')
 
-const API_URL = config.get('API_URL')
+// const API_URL = config.get('API_URL')
+const API_URL = 'http://gnomad-api.broadinstitute.org'
 console.log('Webpack setting API: ', API_URL)
 
 const defineEnvPlugin = new webpack.DefinePlugin({
@@ -21,7 +22,7 @@ const webpackConfig = {
     demo: [
       'babel-polyfill',
       'react-hot-loader/patch',
-      './src/demo/index',
+      './src/index',
     ],
   },
   output: {
@@ -74,7 +75,7 @@ const webpackConfig = {
     port: 8010,
     historyApiFallback: true,
     quiet: true,
-    clientLogLevel: "none",
+    clientLogLevel: 'none',
   },
 }
 

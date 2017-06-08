@@ -1,0 +1,14 @@
+{
+  "name": "@lens/track-transcript",
+  "version": "1.0.0",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "react-motion": "^0.5.0"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4"
+  }
+}

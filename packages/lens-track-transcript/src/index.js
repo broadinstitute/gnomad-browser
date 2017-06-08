@@ -10,7 +10,7 @@ import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
 import {
   filterRegions,
-} from 'utilities/calculateOffsets'  // eslint-disable-line
+} from '@lens/utils-genomic-coordinates'  // eslint-disable-line
 
 import defaultStyles from './styles.css'
 

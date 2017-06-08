@@ -1,0 +1,12 @@
+{
+  "name": "@lens/utils-genomic-coordinates",
+  "version": "1.0.0",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "d3-scale": "^1.0.6",
+    "ramda": "^0.24.1"
+  }
+}

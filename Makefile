@@ -20,9 +20,19 @@ setup:
 		echo "" ;\
 	done < .scripts/RELEASABLE_PACKAGES
 
-something:
-	@echo "$(ARG)"
-	@ls $(ARG)
+clean:
+	@while read d ; do \
+		echo "$$d: Cleaning lib" ;\
+		rm -rf packages/$$d/lib/ ;\
+		mkdir -p packages/$$d/lib ;
+	done < .scripts/RELEASABLE_PACKAGES
+
+watch:
+	@if [ "$(ARG)" = "" ]; then \
+		echo "Please use 'make watch <package>"; \
+	else \
+		$(BINDIR)/watch "make lib $(ARG)" packages/$(ARG)/src ; \
+	fi
 
 lib:
 	@if [ "$(ARG)" = "all" ]; then \
@@ -33,12 +43,10 @@ lib:
 	elif [ "$(ARG)" = "" ]; then \
 		echo "Please call 'make lib' with all or name of package as argument"; \
 	else \
-		rm -rf $(ARG)/lib/ ;\
-		mkdir -p $(ARG)/lib ;\
 		NODE_ENV=production \
 		BABEL_ENV=es \
-		$(BINDIR)/babel $(ARG)/src \
-		--out-dir $(ARG)/lib \
+		$(BINDIR)/babel packages/$(ARG)/src \
+		--out-dir packages/$(ARG)/lib \
 		--copy-files ;\
 		echo "✓ Compiled Babel to lib" ;\
 	fi
