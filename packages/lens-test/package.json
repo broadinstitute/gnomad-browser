@@ -6,6 +6,8 @@
   "files": [
     "lib"
   ],
+  "dependencies": {},
+  "devDependencies": {},
   "peerDependencies": {
     "react": "^15.5.4"
   }

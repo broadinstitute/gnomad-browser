@@ -20,6 +20,9 @@ setup:
 		echo "" ;\
 	done < .scripts/RELEASABLE_PACKAGES
 
+link-all:
+	.scripts/yarn-link-packages.sh
+
 clean:
 	@while read d ; do \
 		echo "$$d: Cleaning lib" ;\

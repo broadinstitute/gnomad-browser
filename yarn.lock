@@ -1096,7 +1096,7 @@ core-js@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
 
-core-util-is@~1.0.0:
+core-util-is@^1.0.1, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
@@ -2524,6 +2524,13 @@ isobject@^2.0.0:
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
+
+jase@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/jase/-/jase-1.2.0.tgz#326db81705dc98bff7037cd0980fdbb93abec033"
+  dependencies:
+    core-util-is "^1.0.1"
+    minimist "^1.1.0"
 
 jodid25519@^1.0.0:
   version "1.0.2"
