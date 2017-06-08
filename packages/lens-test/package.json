@@ -1,7 +1,7 @@
 {
-  "name": "@lens/test",
+  "name": "@broad/lens-test",
   "main": "lib/index.js",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "license": "MIT",
   "files": [
     "lib"
