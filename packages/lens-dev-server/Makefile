@@ -5,7 +5,7 @@ SRC ?= index.js
 
 BUILD_FLAGS ?=
 SERVER_ENV ?= NODE_ENV=development
-SERVER_FLAGS ?= --hot --config $(SERVER_DIR)/webpack.config.js
+SERVER_FLAGS ?= --hot --config webpack.config.js
 WATCH_FLAGS ?= example/index.js -p browserify-hmr -o example/bundle.js -dv
 
 P="\\033[34m[+]\\033[0m"
@@ -30,7 +30,9 @@ watch:
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
+	cd $(SERVER_DIR) ; \
+	pwd; \
 	ls; \
-	$(BIN_DIR)/webpack-dev-server $(SERVER_FLAGS)
+	./node_modules/.bin/webpack-dev-server $(SERVER_FLAGS)
 
 .PHONY: build start watch serve help

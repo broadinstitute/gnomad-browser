@@ -77,7 +77,7 @@ const webpackConfig = {
   },
   plugins: [
     defineEnvPlugin,
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
   devServer: {
     contentBase: 'public',
