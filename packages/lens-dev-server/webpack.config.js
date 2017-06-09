@@ -3,7 +3,9 @@
 
 const webpack = require('webpack')
 const path = require('path')
-// const config = require('config')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+// const ENTRY_POINT = (process.env.ENTRY_OINT === 'development')
 
 const isDev = (process.env.NODE_ENV === 'development')
 
@@ -16,14 +18,21 @@ const defineEnvPlugin = new webpack.DefinePlugin({
   'process.env.API_URL': JSON.stringify(API_URL),
 })
 
+const entries = isDev ?
+[
+  // 'babel-polyfill',
+  'react-hot-loader/patch',
+  './src/index.js',
+] :
+[
+  // 'babel-polyfill',
+  './src/index.js',
+]
+
 const webpackConfig = {
   devtool: 'source-map',
   entry: {
-    demo: [
-      'babel-polyfill',
-      'react-hot-loader/patch',
-      './src/index',
-    ],
+    bundle: entries,
   },
   output: {
     path: path.resolve(__dirname, './public/static/js'),
@@ -68,19 +77,35 @@ const webpackConfig = {
   },
   plugins: [
     defineEnvPlugin,
+    new BundleAnalyzerPlugin(),
   ],
   devServer: {
     contentBase: 'public',
     publicPath: '/static/js',
     port: 8010,
     historyApiFallback: true,
-    quiet: true,
+    // quiet: true,
     clientLogLevel: 'none',
+    stats: 'verbose',
   },
 }
 
 if (!isDev) {
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin())
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    minimize: true,
+    debug: false,
+  }))
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    beautify: false,
+    mangle: {
+      screw_ie8: true,
+      keep_fnames: true,
+    },
+    compress: {
+      screw_ie8: true,
+    },
+    comments: false,
+  }))
 }
 
 module.exports = webpackConfig

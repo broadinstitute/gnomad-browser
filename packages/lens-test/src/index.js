@@ -4,7 +4,7 @@ import css from './styles.css'
 const LensTest = ({ message }) => {
   return (
     <div className={css.lensTest}>
-      {'Hey dude! Whas cooking '}{message}
+      {'Hey dude!! Whas cooking '}{message}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@lens/utils-genomic-coordinates",
+  "name": "lens-utils-coordinates",
   "version": "1.0.0",
   "license": "MIT",
   "files": [

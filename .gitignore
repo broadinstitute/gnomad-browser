@@ -9,6 +9,8 @@ build
 node_modules
 resources/*
 *lib
+bundle.js
+public/static/js/*
 components/test/data/*.json
 components/test/data/*.txt
 components/test/data/*.csv
