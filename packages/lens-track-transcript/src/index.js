@@ -1,16 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes, Component } from 'react'
 import { Motion, spring } from 'react-motion'
-// import FlatButton from 'material-ui/FlatButton'
-// import ContentAdd from 'material-ui/svg-icons/content/add'
-
 import R from 'ramda'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
 import {
   filterRegions,
-} from '@lens/utils-genomic-coordinates'  // eslint-disable-line
+} from 'utils-genomic-coordinates'  // eslint-disable-line
 
 import defaultStyles from './styles.css'
 

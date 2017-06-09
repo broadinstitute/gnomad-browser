@@ -1,39 +1,26 @@
 {
   "name": "lens",
   "version": "1.0.0",
-  "repository": "https://github.com/mattsolo1/gregor.git",
   "author": "msolomon@broadinstitute.org",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^7.1.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.0.1",
-    "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
-    "file-loader": "^0.11.2",
     "jase": "^1.2.0",
     "json-loader": "^0.5.4",
-    "postcss-cssnext": "^2.11.0",
-    "postcss-loader": "^2.0.5",
-    "react-hot-loader": "3.0.0-beta.6",
-    "style-loader": "^0.18.2",
     "stylelint": "^7.10.1",
     "stylelint-config-standard": "^16.0.0",
-    "watch": "^1.0.2",
-    "webpack": "^2.6.1",
-    "webpack-bundle-analyzer": "^2.8.2",
-    "webpack-dev-server": "^2.4.5"
-  },
-  "dependencies": {}
+    "watch": "^1.0.2"
+  }
 }

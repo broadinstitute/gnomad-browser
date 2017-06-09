@@ -47,6 +47,7 @@ lib:
 		echo "Please call 'make lib' with all or name of package as argument"; \
 	else \
 		NODE_ENV=production \
+		BABEL_ENV=es \
 		$(BINDIR)/babel packages/$(ARG)/src \
 		--out-dir packages/$(ARG)/lib \
 		--copy-files ;\

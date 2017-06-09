@@ -11,10 +11,10 @@ import {
 
 import {
   groupExonsByTranscript,
-} from 'utilities/transcriptTools'  // eslint-disable-line
+} from 'lens-utils-coordinates'  // eslint-disable-line
 
-import testData from 'data/transcript-tools-CD33.json'  // eslint-disable-line
-import RegionViewer from '../../../RegionViewer'
+// import testData from './transcript-tools-CD33.json'  // eslint-disable-line
+import RegionViewer from 'lens-region'
 import TranscriptTrack from '../index'
 
 import examplePageStyles from './TranscriptTrack.example.css'

@@ -1,6 +1,7 @@
 {
   "name": "lens-utils-coordinates",
-  "version": "1.0.0",
+  "main": "lib/index.js",
+  "version": "0.0.1",
   "license": "MIT",
   "files": [
     "lib"
