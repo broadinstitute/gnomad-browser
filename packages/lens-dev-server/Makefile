@@ -30,6 +30,8 @@ watch:
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
+	lsof -ti:8010 | xargs kill ; \
+	pwd; \
 	cd $(SERVER_DIR) ; \
 	pwd; \
 	ls; \
