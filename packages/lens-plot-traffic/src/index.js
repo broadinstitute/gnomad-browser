@@ -15,13 +15,12 @@ import {
 import css from './styles.css'
 
 import exacSessions from '/Users/msolomon/lens/resources/170610-exac-sessions.json'
-
-console.log(exacSessions)
+import combined from '/Users/msolomon/lens/resources/170611-combine-sessions.json'
 
 const Plot = ({
   title,
-  datax,
-  datay,
+  data,
+  datasets,
   ytitle,
   xtitle,
   width,
@@ -29,15 +28,19 @@ const Plot = ({
   xticks,
 }) => {
   const padding = 75
-
+  const cumulative = data.map(datum =>
+    datasets.reduce((total, dataset) => total + datum[dataset], 0))
+  const maxY = max(cumulative)
   const yscale = scaleLinear()
-    .domain([0, max(datay) + (max(datay) * 0.2)])
+    .domain([0, maxY + (maxY * 0.1)])
     .range([0, height - (padding * 2)])
+
   const xscale = scaleBand()
-    .domain(range(datax.length))
+    .domain(range(data.length))
     .rangeRound([0, width - (padding * 2)])
-    .paddingOuter(0.5)
-    .paddingInner(0.3)
+    // .paddingOuter(0.5)
+    // .align([0.5])
+
   const Background = () => (
     <rect
       x={0}
@@ -71,7 +74,7 @@ const Plot = ({
       className={css.ylabel}
       x={5}
       y={height / 2}
-      transform={`rotate(270 10 ${height / 2})`}
+      transform={`rotate(270 ${padding / 3} ${height / 2})`}
     >
       {ytitle}
     </text>
@@ -119,7 +122,7 @@ const Plot = ({
               <text
                 className={css.yTickText}
                 x={padding - 5}
-                y={height - padding - yscale(t)}
+                y={height - padding - yscale(t) + 3}
               >
                 {t}
               </text>
@@ -130,20 +133,16 @@ const Plot = ({
     )
   }
   const Xticks = () => {
-    // console.log(x)
-    const numberOfTicks = 20
-    const dataxobj = datax.map((d, i) => ({ ix: i, datum: Number(d) }))
-    const tickData = dataxobj.filter((x, i) => {
-      // console.log((i % (datax.length / numberOfTicks)))
-      return i % (Math.floor(datax.length / numberOfTicks)) === 0
+    const numberOfTicks = 18
+    const tickData = data.filter((x, i) => {
+      return i % (Math.floor(data.length / numberOfTicks)) === 0
     })
     const textRotationDegrees = 45
-    // console.log(tickData)
     return (
       <g>
-        {tickData.map((elem, i) => {
+        {R.init(tickData).map((elem, i) => {
           return (
-            <g key={`xtick-${elem.datum}-${i}`}>
+            <g key={`xtick-${elem.date}-${i}`}>
               <line
                 x1={padding + xscale(elem.ix)}
                 x2={padding + xscale(elem.ix)}
@@ -154,10 +153,10 @@ const Plot = ({
               <text
                 className={css.xTickText}
                 x={padding + xscale(elem.ix)}
-                y={height - padding}
-                transform={`rotate(${360 - textRotationDegrees} ${padding + xscale(elem.ix)} ${height})`}
+                y={height - padding + 30}
+                transform={`rotate(${360 - textRotationDegrees} ${padding + xscale(elem.ix)} ${height - padding + 30})`}
               >
-                {xticks && moment.unix(elem.datum / 1000).format('MMM YY')}
+                {xticks && moment(elem.date).format('MMM YYYY')}
               </text>
             </g>
           )
@@ -165,22 +164,67 @@ const Plot = ({
       </g>
     )
   }
-  const Bars = () => (
+  const exacBars = (
     <g>
-      {datay.map((value, i) => (
+      {data.map((value, i) => {
+        console.log(value.exac_sessions)
+        console.log(yscale(value.exac_sessions))
+        return (
+          <rect
+            className={css.bars}
+            x={padding + xscale(i)}
+            y={height - padding - yscale(value.exac_sessions)}
+            width={xscale.bandwidth()}
+            height={yscale(value.exac_sessions)}
+            fill={'#0D47A1'}
+            stroke={'#0D47A1'}
+            key={`bar-${value.exac_sessions}-${i}`}
+          />
+        )
+      })}
+    </g>
+  )
+  const gnomadBars = (
+    <g>
+      {data.map((value, i) => (
         <rect
           className={css.bars}
           x={padding + xscale(i)}
-          y={height - padding - yscale(value)}
+          y={height - padding - yscale(value.gnomad_sessions) - yscale(value.exac_sessions)}
           width={xscale.bandwidth()}
-          height={yscale(value)}
-          fill={'#0D47A1'}
-          stroke={'black'}
-          key={`bar-${value}-${i}`}
+          height={yscale(value.gnomad_sessions)}
+          fill={'green'}
+          stroke={'green'}
+          key={`bar-${value.gnomad_sessions}-${i}`}
         />
       ))}
     </g>
   )
+
+  // const barSeries = (ys) => (
+  //   <g>
+  //     {ys.map((value, i) => (
+  //       <rect
+  //         className={css.bars}
+  //         x={padding + xscale(i)}
+  //         y={height - padding - yscale(value)}
+  //         width={xscale.bandwidth()}
+  //         height={yscale(value)}
+  //         fill={'#0D47A1'}
+  //         stroke={'#0D47A1'}
+  //         key={`bar-${value}-${i}`}
+  //       />
+  //     ))}
+  //   </g>
+  // )
+    // const stackedData = datasets.map((dataset, datasetIndex) =>
+    //   data[dataset].map((datum, datumIndex) => {
+    //     const previousY = datasetIndex === 0 ? 0 : data[datasetIndex - 1][datumIndex]
+    //     return ({ y: previousY, yHeight: datum })
+    //   }))
+    // return stackedData.map(barSeries)
+  // }
+
   return (
     <div className={css.barGraph}>
       <svg width={width} height={height}>
@@ -193,24 +237,28 @@ const Plot = ({
         <Xaxis />
         <Yticks />
         <Xticks />
-        <Bars />
+        {exacBars}
+        {gnomadBars}
       </svg>
     </div>
   )
 }
 
 const Traffic = () => {
+  const data = combined.map((datum, i) => ({ ...datum, ix: i }))
+  console.log(data)
   return (
     <div className={css.component}>
       <Plot
-        title={'gnomAD browser sessions per day'}
-        datax={Object.keys(exacSessions.sessions)}
-        datay={Object.values(exacSessions.sessions)}
-        ytitle={'Sessions'}
-        xtitle={'Date'}
+        title={'ExAC/gnomAD browser sessions per day'}
+        data={R.drop(30, data)}
+        datasets={['exac_sessions', 'gnomad_sessions']}
+        ytitle={'Sessions per day'}
+        xtitle={'Month'}
         xticks
-        width={1300}
+        width={1200}
         height={500}
+
       />
     </div>
   )

@@ -22,10 +22,11 @@
 }
 
 .yTickText {
-  font-size: 8x;
+  font-size: 12px;
   text-anchor: end;
 }
 .xTickText {
   font-size: 12px;
+  font-weight: bold;
   text-anchor: middle;
 }
