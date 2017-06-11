@@ -34,7 +34,7 @@ watch:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
 	else \
-		$(BINDIR)/watch "make lib $(ARG); .scripts/link-dev-server.sh" packages/$(ARG)/src ; \
+		$(BINDIR)/watch --interval=1 "echo 'Recompiling';make lib $(ARG); .scripts/link-dev-server-faster.sh" packages/$(ARG)/src ; \
 	fi
 
 lib:

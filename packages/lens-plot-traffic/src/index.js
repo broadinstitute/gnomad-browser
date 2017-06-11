@@ -28,7 +28,7 @@ const Plot = ({
   height,
   xticks,
 }) => {
-  const padding = 50
+  const padding = 75
 
   const yscale = scaleLinear()
     .domain([0, max(datay) + (max(datay) * 0.2)])
@@ -121,7 +121,7 @@ const Plot = ({
                 x={padding - 5}
                 y={height - padding - yscale(t)}
               >
-               {t}
+                {t}
               </text>
             </g>
           )
@@ -134,7 +134,6 @@ const Plot = ({
     const numberOfTicks = 20
     const dataxobj = datax.map((d, i) => ({ ix: i, datum: Number(d) }))
     const tickData = dataxobj.filter((x, i) => {
-
       // console.log((i % (datax.length / numberOfTicks)))
       return i % (Math.floor(datax.length / numberOfTicks)) === 0
     })
@@ -211,7 +210,7 @@ const Traffic = () => {
         xtitle={'Date'}
         xticks
         width={1300}
-        height={700}
+        height={500}
       />
     </div>
   )

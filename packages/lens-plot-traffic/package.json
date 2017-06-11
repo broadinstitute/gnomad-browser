@@ -1,8 +1,11 @@
 {
   "name": "lens-plot-traffic",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "main": "lib/index.js",
   "license": "MIT",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "d3-array": "^1.2.0",
     "d3-scale": "^1.0.6",

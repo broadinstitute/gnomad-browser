@@ -4,6 +4,7 @@
   "license": "MIT",
   "localDependencies": {
     "lens-test": "0.0.1",
+    "lens-plot-traffic": "0.0.1",
     "lens-track-transcript": "0.0.1",
     "lens-utils-coordinates": "0.0.1",
     "lens-utils-fetch": "0.0.1"
