@@ -21,7 +21,7 @@ setup:
 	done < .scripts/RELEASABLE_PACKAGES
 
 link-all:
-	.scripts/yarn-link-packages.sh
+	.scripts/link-packages.sh
 
 clean:
 	@while read d ; do \
@@ -34,7 +34,7 @@ watch:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
 	else \
-		$(BINDIR)/watch "make lib $(ARG)" packages/$(ARG)/src ; \
+		$(BINDIR)/watch "make lib $(ARG); .scripts/link-dev-server.sh" packages/$(ARG)/src ; \
 	fi
 
 lib:

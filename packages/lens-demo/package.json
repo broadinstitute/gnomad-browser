@@ -14,8 +14,7 @@
     "dist"
   ],
   "localDependencies": {
-    "lens-test": "0.0.2",
-    "lens-dev-server": "0.0.1"
+    "lens-test": "0.0.2"
   },
   "dependencies": {
     "react": "^15.5.4",

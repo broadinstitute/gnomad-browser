@@ -6,9 +6,7 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {
-    "lens-dev-server": "0.0.1"
-  },
+  "localDependencies": {},
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
