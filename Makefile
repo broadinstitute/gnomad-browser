@@ -34,7 +34,17 @@ watch:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
 	else \
-		$(BINDIR)/watch --interval=1 "echo 'Recompiling';make lib $(ARG); .scripts/link-dev-server-faster.sh" packages/$(ARG)/src ; \
+		cd packages/lens-dev-server; \
+		echo "> Copying local dependency $(ARG) to node_modules"; \
+		rm -rf ./node_modules/$(ARG)/lib; \
+		cp -r ../lens-plot-traffic/lib ./node_modules/$(ARG); \
+		echo "Done copying, watching $(ARG) for changes"; \
+		cd ../../; \
+		echo ""; \
+		$(BINDIR)/watch --interval=1 \
+		"echo 'Recompiling';make lib $(ARG); \
+		 .scripts/link-dev-server-faster.sh $(ARG)" \
+		 packages/$(ARG)/src ; \
 	fi
 
 lib:

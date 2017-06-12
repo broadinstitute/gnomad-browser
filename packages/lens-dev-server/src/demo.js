@@ -1,14 +1,13 @@
 import React, { PropTypes } from 'react'
-import { TrafficBar, TrafficArea} from 'lens-plot-traffic'
-// import TranscriptDemo from 'lens-track-transcript/example/TranscriptTrack.example'
+import LensTestExample from 'lens-test/lib/example'
+
 import css from './styles.css'
 
 const Demo = () => {
   return (
     <div className={css.demo}>
-      {'hardcoded!!!'}
-      <TrafficBar />
-      {/*<TrafficArea />*/}
+      {'hardcoded!!!!!!'}
+      <LensTestExample />
     </div>
   )
 }
