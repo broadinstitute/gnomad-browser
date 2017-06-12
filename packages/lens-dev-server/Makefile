@@ -35,6 +35,6 @@ serve:
 	cd $(SERVER_DIR) ; \
 	pwd; \
 	ls; \
-	./node_modules/.bin/webpack-dev-server $(SERVER_FLAGS)
+	ENTRY_POINT=lens-test/lib/example ./node_modules/.bin/webpack-dev-server $(SERVER_FLAGS)
 
 .PHONY: build start watch serve help

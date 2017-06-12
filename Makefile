@@ -35,12 +35,14 @@ watch:
 		echo "Please use 'make watch <package>"; \
 	else \
 		cd packages/lens-dev-server; \
+		echo "> Cleaning development server";\
+		rm -rf ./node_modules/lens-test; \
+		mkdir ./node_modules/lens-test; \
 		echo "> Copying local dependency $(ARG) to node_modules"; \
-		rm -rf ./node_modules/$(ARG)/lib; \
-		cp -r ../lens-plot-traffic/lib ./node_modules/$(ARG); \
-		echo "Done copying, watching $(ARG) for changes"; \
+		cp -r ../$(ARG)/* ./node_modules/lens-test; \
 		cd ../../; \
 		echo ""; \
+		echo "Done copying, watching $(ARG) for changes"; \
 		$(BINDIR)/watch --interval=1 \
 		"echo 'Recompiling';make lib $(ARG); \
 		 .scripts/link-dev-server-faster.sh $(ARG)" \

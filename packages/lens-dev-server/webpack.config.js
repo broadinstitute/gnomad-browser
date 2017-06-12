@@ -15,6 +15,7 @@ console.log('Webpack setting API: ', API_URL)
 
 const defineEnvPlugin = new webpack.DefinePlugin({
   __DEV__: isDev,
+  __ENTRY__: JSON.stringify(process.env.ENTRY_POINT),
   'process.env.API_URL': JSON.stringify(API_URL),
 })
 
