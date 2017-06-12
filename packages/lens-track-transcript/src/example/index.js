@@ -7,7 +7,7 @@ import Slider from 'material-ui/Slider'
 
 import {
   fetchTranscriptsByGeneName,
-} from 'utilities'  // eslint-disable-line
+} from 'lens-utils-fetch'  // eslint-disable-line
 
 import {
   groupExonsByTranscript,
@@ -17,7 +17,7 @@ import {
 import RegionViewer from 'lens-region'
 import TranscriptTrack from '../index'
 
-import examplePageStyles from './TranscriptTrack.example.css'
+import examplePageStyles from './styles.css'
 
 class RegionTableExample extends Component {
   state = {

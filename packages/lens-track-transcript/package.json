@@ -2,20 +2,20 @@
   "name": "lens-track-transcript",
   "version": "0.0.1",
   "license": "MIT",
+  "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "localDependencies": {
     "lens-utils-coordinates": "0.0.1",
-    "lens-utils-fetch": "0.0.1"
+    "lens-utils-fetch": "0.0.1",
+    "lens-region": "0.0.1"
   },
   "dependencies": {
-    "material-ui": "^0.18.3",
     "ramda": "^0.24.1",
     "react-motion": "^0.5.0"
   },
   "peerDependencies": {
-    "material-ui": "^0.18.3",
     "react": "^15.5.4"
   }
 }

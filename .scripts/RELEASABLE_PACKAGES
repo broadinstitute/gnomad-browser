@@ -2,6 +2,7 @@ lens-test
 lens-demo
 lens-dev-server
 lens-track-transcript
+lens-region
 lens-utils-coordinates
 lens-utils-fetch
 lens-plot-traffic

@@ -6,7 +6,7 @@ import {
   calculatePositionOffset,
   invertPositionOffset,
   calculateXScale,
-} from '@lens/utils-genomic-coordinates'  // eslint-disable-line
+} from 'lens-utils-coordinates'  // eslint-disable-line
 
 import defaultStyles from './styles.css'
 

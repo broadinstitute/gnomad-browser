@@ -7,7 +7,7 @@ import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
 import {
   filterRegions,
-} from 'utils-genomic-coordinates'  // eslint-disable-line
+} from 'lens-utils-coordinates'  // eslint-disable-line
 
 import defaultStyles from './styles.css'
 

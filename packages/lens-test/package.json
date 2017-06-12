@@ -6,7 +6,10 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
+  "localDependencies": {
+    "lens-plot-traffic": "0.0.1",
+    "lens-utils-fetch": "0.0.1"
+  },
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
