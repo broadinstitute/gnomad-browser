@@ -6,8 +6,7 @@
     "lens-test": "0.0.1",
     "lens-plot-traffic": "0.0.1",
     "lens-track-transcript": "0.0.1",
-    "lens-utils-coordinates": "0.0.1",
-    "lens-utils-fetch": "0.0.1"
+    "lens-utilities": "0.0.1"
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",

@@ -7,23 +7,21 @@ import Slider from 'material-ui/Slider'
 
 import {
   fetchTranscriptsByGeneName,
-} from 'lens-utils-fetch'  // eslint-disable-line
+} from 'lens-utilities/lib/fetch'  // eslint-disable-line
 
 import {
   groupExonsByTranscript,
-} from 'lens-utils-coordinates'  // eslint-disable-line
+} from 'lens-utilities/lib/coordinates'  // eslint-disable-line
 
-// import testData from './transcript-tools-CD33.json'  // eslint-disable-line
 import RegionViewer from 'lens-region'
 import TranscriptTrack from '../index'
-
 import examplePageStyles from './styles.css'
 
 class RegionTableExample extends Component {
   state = {
     hasData: false,
-    currentGene: 'TP53',
-    padding: 150,
+    currentGene: 'DMD',
+    padding: 70,
     testGenes: [
       'PCSK9',
       'ZNF658',

@@ -6,6 +6,7 @@
   "files": [
     "lib"
   ],
+  "localDependencies": {},
   "dependencies": {
     "d3-array": "^1.2.0",
     "d3-path": "^1.0.5",

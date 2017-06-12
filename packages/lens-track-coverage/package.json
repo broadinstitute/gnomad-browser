@@ -1,5 +1,5 @@
 {
-  "name": "lens-track-transcript",
+  "name": "lens-track-coverage",
   "version": "0.0.1",
   "license": "MIT",
   "main": "lib/index.js",
@@ -7,7 +7,8 @@
     "lib"
   ],
   "localDependencies": {
-    "lens-utilities": "0.0.1",
+    "lens-utils-coordinates": "0.0.1",
+    "lens-utils-fetch": "0.0.1",
     "lens-region": "0.0.1"
   },
   "dependencies": {

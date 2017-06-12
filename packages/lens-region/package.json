@@ -7,7 +7,7 @@
     "lib"
   ],
   "localDependencies": {
-    "lens-utils-coordinates": "0.0.1"
+    "lens-utilities": "0.0.1"
   },
   "dependencies": {
     "react-tap-event-plugin": "^2.0.1"
