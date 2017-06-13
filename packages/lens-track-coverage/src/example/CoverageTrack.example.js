@@ -27,10 +27,10 @@ const testGenes = [
 ]
 
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-PCSK9-v1.json'
-// import testData from '/Users/msolomon/lens/resources/region-viewer-full-ZNF658-v1.json'
+import testData from '/Users/msolomon/lens/resources/region-viewer-full-ZNF658-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-MYH9-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-FMR1-v1.json'
-import testData from '/Users/msolomon/lens/resources/region-viewer-full-BRCA2-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-BRCA2-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-CFTR-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-FBN1-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-TP53-v1.json'

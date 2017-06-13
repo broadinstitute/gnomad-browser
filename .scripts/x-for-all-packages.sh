@@ -6,19 +6,22 @@
 # E.g.: calling this script will the command line args "run test"
 # will execute `yarn run test` for each package.
 
+IFS=$'\n' read -d '' -r -a packages <$(dirname $0)/RELEASABLE_PACKAGES
+
+cd packages
+
 exitstatus=0
 
-while read d; do
+for d in "${packages[@]}"; do
   echo "> ($d)";
-  echo "> $@";
-  echo "";
-  cd ../packages/$d;
+  cd $d;
   $@ || exitstatus=$?;
+  echo "";
   cd ..;
   if [ $exitstatus -ne 0 ]; then
     break;
     exit $exitstatus;
   fi
-done <$(dirname $0)/RELEASABLE_PACKAGES
+done
 
 exit $exitstatus

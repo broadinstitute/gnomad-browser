@@ -11,24 +11,21 @@ help:
 	@echo ""
 
 setup:
-	@echo "yarn install"
+	@echo "Cleaning..."
+	make clean
+	@echo "yarn install in the root folder"
 	@yarn install
+	@echo "yarn install all packages"
+	.scripts/x-for-all-packages.sh yarn
+	@echo "Compiling package libraries"
+	make lib all
+	@echo "Linking development server"
+	.scripts/link-dev-server.sh
 	@echo ""
-	@while read d ; do \
-		echo "$$d: yarn install" ;\
-		cd $$d ; yarn install ; cd .. ;\
-		echo "" ;\
-	done < .scripts/RELEASABLE_PACKAGES
-
-link-all:
-	.scripts/link-packages.sh
 
 clean:
-	@while read d ; do \
-		echo "$$d: Cleaning lib" ;\
-		rm -rf packages/$$d/lib/ ;\
-		mkdir -p packages/$$d/lib ;
-	done < .scripts/RELEASABLE_PACKAGES
+	rm -rf node_modules
+	.scripts/x-for-all-packages.sh rm -rf node_modules lib
 
 watch:
 	@if [ "$(ARG)" = "" ]; then \
@@ -51,6 +48,7 @@ watch:
 
 lib:
 	@if [ "$(ARG)" = "all" ]; then \
+		.scripts/x-for-all-packages.sh rm -rf lib; \
 		while read d ; do \
 			echo "Compiling $$d" ; \
 			make lib $$d ; \
