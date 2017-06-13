@@ -5,8 +5,8 @@
 # from pandas import DataFrame
 # from hail import HailContext
 # from hail.expr import TStruct
-# from portage.constants import TEST_VDS_PATH
-# from portage.hail.pandas import make_df
+# from portal_framework.constants import TEST_VDS_PATH
+# from portal_framework.hail.pandas import make_df
 #
 # def test_make_df():
 #     """docstring."""

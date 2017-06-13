@@ -4,10 +4,10 @@
 
 from hail import HailContext
 from hail.representation import Interval
-import portage
-from portage.hail.pandas import make_df
-from portage.graphql import get_gene_intervals
-from portage.constants import GNOMAD_VDS_PATH
+import portal_framework
+from portal_framework.hail.pandas import make_df
+from portal_framework.graphql import get_gene_intervals
+from portal_framework.constants import GNOMAD_VDS_PATH
 
 def main():
     """Filter vds for exon variants in a gene"""

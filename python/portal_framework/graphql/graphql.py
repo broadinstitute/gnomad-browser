@@ -4,7 +4,7 @@
 
 import requests
 import ast
-import portage
+import portal_framework
 
 def get_query(gene_name):
     query = '''{

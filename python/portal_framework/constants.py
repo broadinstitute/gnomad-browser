@@ -23,4 +23,4 @@ GENES = [
 
 GNOMAD_VDS_PATH = '/Users/msolomon/data/gnomad/170520_gnomad_data/exomes/gnomad.exomes.r2.0.1.sites.vds'
 
-TEST_VDS_PATH = '/Users/msolomon/portage/python/resources/sample.vds'
+TEST_VDS_PATH = '/Users/msolomon/portal_framework/python/resources/sample.vds'
