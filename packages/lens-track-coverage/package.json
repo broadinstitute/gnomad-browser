@@ -7,13 +7,16 @@
     "lib"
   ],
   "localDependencies": {
-    "lens-utils-coordinates": "0.0.1",
-    "lens-utils-fetch": "0.0.1",
+    "lens-utilities": "0.0.1",
+    "lens-track-transcript": "0.0.1",
     "lens-region": "0.0.1"
   },
   "dependencies": {
-    "ramda": "^0.24.1",
-    "react-motion": "^0.5.0"
+    "d3-array": "^1.2.0",
+    "d3-path": "^1.0.5",
+    "d3-scale": "^1.0.6",
+    "d3-shape": "^1.2.0",
+    "ramda": "^0.24.1"
   },
   "peerDependencies": {
     "react": "^15.5.4"

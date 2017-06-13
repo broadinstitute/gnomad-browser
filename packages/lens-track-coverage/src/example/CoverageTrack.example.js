@@ -2,20 +2,12 @@
 
 import React, { Component } from 'react'
 import Slider from 'material-ui/Slider'
-
-import {
-  fetchAllByGeneName,
-  groupExonsByTranscript,
-} from 'utilities'
-
- // eslint-disable-line
-// import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
-
-import RegionViewer from '../../../RegionViewer'
+import RegionViewer from 'lens-region'
+import TranscriptTrack from 'lens-track-transcript'
+import { fetchAllByGeneName } from 'lens-utilities/lib/fetch'
+import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 
 import CoverageTrack from '../index'
-import TranscriptTrack from '../../TranscriptTrack'
-
 import examplePageStyles from './CoverageTrack.example.css'
 
 const testGenes = [
@@ -34,19 +26,19 @@ const testGenes = [
   'CD33',
 ]
 
-import testData from 'data/region-viewer-full-PCSK9-v1.json'
-// import testData from 'data/region-viewer-full-ZNF658-v1.json'
-// import testData from 'data/region-viewer-full-MYH9-v1.json'
-// import testData from 'data/region-viewer-full-FMR1-v1.json'
-// import testData from 'data/region-viewer-full-BRCA2-v1.json'
-// import testData from 'data/region-viewer-full-CFTR-v1.json'
-// import testData from 'data/region-viewer-full-FBN1-v1.json'
-// import testData from 'data/region-viewer-full-TP53-v1.json'
-// import testData from 'data/region-viewer-full-SCN5A-v1.json'
-// import testData from 'data/region-viewer-full-MYH7-v1.json'
-// import testData from 'data/region-viewer-full-MYBPC3-v1.json'
-// import testData from 'data/region-viewer-full-ARSF-v1.json'
-// import testData from 'data/region-viewer-full-CD33-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-PCSK9-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-ZNF658-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-MYH9-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-FMR1-v1.json'
+import testData from '/Users/msolomon/lens/resources/region-viewer-full-BRCA2-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-CFTR-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-FBN1-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-TP53-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-SCN5A-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-MYH7-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-MYBPC3-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-ARSF-v1.json'
+// import testData from '/Users/msolomon/lens/resources/region-viewer-full-CD33-v1.json'
 
 class RegionViewerFullExample extends Component {
   state = {

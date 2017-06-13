@@ -1,6 +1,7 @@
 lens-test
 lens-dev-server
 lens-track-transcript
+lens-track-coverage
 lens-region
 lens-utilities
 lens-plot-traffic

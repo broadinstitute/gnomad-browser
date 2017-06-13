@@ -10,10 +10,10 @@ exitstatus=0
 
 while read d; do
   echo "> ($d)";
-  echo "> yarn $@";
+  echo "> $@";
   echo "";
-  cd packages/$d;
-  yarn $@ || exitstatus=$?;
+  cd ../packages/$d;
+  $@ || exitstatus=$?;
   cd ..;
   if [ $exitstatus -ne 0 ]; then
     break;

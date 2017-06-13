@@ -6,7 +6,7 @@ import { range } from 'd3-array'
 import { path } from 'd3-path'
 import { scaleLinear } from 'd3-scale'
 
-import { getMaxMeanFromCoverageDatasets } from 'utilities/plotting'
+import { getMaxMeanFromCoverageDatasets } from 'lens-utilities/lib/plotting'
 
 import defaultStyles from './styles.css'
 
