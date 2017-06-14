@@ -5,8 +5,8 @@
 # from pandas import DataFrame
 # from hail import HailContext
 # from hail.expr import TStruct
-# from portal_framework.constants import TEST_VDS_PATH
-# from portal_framework.hail.pandas import make_df
+# from lens.constants import TEST_VDS_PATH
+# from lens.hail.pandas import make_df
 #
 # def test_make_df():
 #     """docstring."""

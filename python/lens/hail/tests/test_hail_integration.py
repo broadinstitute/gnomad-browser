@@ -4,7 +4,7 @@
 #
 from hail import HailContext
 from hail.expr import TStruct
-from portal_framework.constants import TEST_VDS_PATH
+from lens.constants import TEST_VDS_PATH
 
 def test_variant_dataset():
     """docstring."""

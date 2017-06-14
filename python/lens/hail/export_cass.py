@@ -5,7 +5,7 @@
 from hail import HailContext
 from hail.utils import escape_identifier
 
-from portal_framework.constants import TEST_VDS_PATH
+from lens.constants import TEST_VDS_PATH
 
 def load_variants_cassandra():
     """docstring."""

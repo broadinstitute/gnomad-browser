@@ -8,7 +8,8 @@
     "lens-region": "0.0.1",
     "lens-track-transcript": "0.0.1",
     "lens-track-coverage": "0.0.1",
-    "lens-utilities": "0.0.1"
+    "lens-utilities": "0.0.1",
+    "lens-manhattan": "0.0.1"
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",

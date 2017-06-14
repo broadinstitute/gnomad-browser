@@ -5,9 +5,9 @@
 import pandas
 import pymongo
 
-from portal_framework.constants import TEST_GENES
-from portal_framework.graphql import get_gene_intervals
-from portal_framework.hail.pandas import make_df, format_df_for_loading
+from lens.constants import TEST_GENES
+from lens.graphql import get_gene_intervals
+from lens.hail.pandas import make_df, format_df_for_loading
 
 def load_variants(hc, vds, genes=TEST_GENES):
     db = pymongo.MongoClient('localhost', 27017)['exac']

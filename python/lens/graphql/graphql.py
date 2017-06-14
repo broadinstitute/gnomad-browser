@@ -4,7 +4,7 @@
 
 import requests
 import ast
-import portal_framework
+import lens
 
 def get_query(gene_name):
     query = '''{
