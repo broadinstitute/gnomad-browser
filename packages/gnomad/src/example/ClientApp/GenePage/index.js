@@ -17,11 +17,9 @@ const AppGenePage = ({
   exonPadding,
   setExonPadding,
 }) => {
-  console.log(isFetching, gene)
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
-  console.log(visibleVariants)
   return (
     <div className={css.genePage}>
       <GeneSettings

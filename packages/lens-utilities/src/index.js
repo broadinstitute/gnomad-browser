@@ -3,7 +3,7 @@ export {
   fetchTranscriptsByGeneName,
   fetchTestData,
   test,
-} from './fetch/fetchData'
+} from './fetch'
 
 export {
   groupExonsByTranscript,
@@ -25,4 +25,4 @@ export {
 
 export {
   processVariantsList
-} from './exalt/process'
+} from './exalt'

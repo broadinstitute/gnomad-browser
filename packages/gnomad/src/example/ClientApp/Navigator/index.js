@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { NavigatorTrack } from 'react-gnomad'
+import NavigatorTrack from 'lens-track-navigator'
 
 import {
   getVisibleVariants,

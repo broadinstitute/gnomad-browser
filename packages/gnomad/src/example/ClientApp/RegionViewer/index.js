@@ -1,13 +1,11 @@
 import React, { PropTypes } from 'react'
 import R from 'ramda'
 
-import {
-  groupExonsByTranscript,
-  RegionViewer,
-  TranscriptTrack,
-  CoverageTrack,
-  VariantTrack,
-} from 'react-gnomad'
+import RegionViewer from 'lens-region'
+import TranscriptTrack from 'lens-track-transcript'
+import CoverageTrack from 'lens-track-coverage'
+import VariantTrack from 'lens-track-variant'
+import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 
 import Navigator from '../Navigator'
 
@@ -72,7 +70,6 @@ const GeneRegion = ({
   const canonicalExons = gene.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
   const { exome_coverage, genome_coverage } = gene
-
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
@@ -164,6 +161,7 @@ const GeneRegion = ({
       },
     ],
   }
+  console.log('exon', canonicalExons)
   return (
     <div className={css.geneRegion}>
       <RegionViewer

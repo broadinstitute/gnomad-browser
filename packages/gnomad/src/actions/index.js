@@ -1,6 +1,5 @@
 import fetch from 'graphql-fetch'
 
-import * as utils from 'react-gnomad'
 import * as types from '../constants/actionTypes'
 
 const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'

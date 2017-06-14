@@ -2,7 +2,7 @@
 import React, { PropTypes } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
 import R from 'ramda'
-import { getTableIndexByPosition } from 'lens-utilities'
+import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 import { range } from 'd3-array'
 
 import defaultStyles from './styles.css'

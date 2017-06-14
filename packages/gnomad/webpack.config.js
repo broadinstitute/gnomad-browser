@@ -40,13 +40,6 @@ const config = {
       },
     ],
   },
-  resolve: {
-    extensions: ['.js', '.jsx', '.json'],
-    alias: {
-      utilities: path.resolve(__dirname, 'src/utilities'),
-      data: path.resolve(__dirname, 'test/data'),
-    },
-  },
   devServer: {
     contentBase: 'public',
     publicPath: '/static/js',

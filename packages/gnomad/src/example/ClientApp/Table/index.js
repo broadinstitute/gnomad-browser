@@ -1,11 +1,8 @@
 import React, { PropTypes } from 'react'
 import { throttle } from 'throttle-debounce'
 import { connect } from 'react-redux'
-// import R from 'ramda'
-import {
-  VariantTable,
-  getTableIndexByPosition,
-} from 'react-gnomad'
+import VariantTable from 'lens-variant-table'
+import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 
 import { getVisibleVariants } from '../../../selectors'
 import * as actions from '../../../actions'
