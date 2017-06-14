@@ -4,16 +4,16 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import Slider from 'material-ui/Slider'
 
-import { groupExonsByTranscript } from 'utilities'
+import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
+import RegionViewer from 'lens-region'
+import TranscriptTrack from 'lens-track-transcript'
+import PositionTableTrack from 'lens-track-position-table'
 
-import RegionViewer from '../../RegionViewer'
-import TranscriptTrack from '../TranscriptTrack'
-import SashimiTrack from './index'
-import PositionTableTrack from '../PositionTableTrack'
+import SashimiTrack from '../index'
 
-import testGene from 'data/region-viewer-full-CAPN3-v1.json'
-import testCoverage from 'data/sashimi-15-42681621-42685368.coverage.csv'
-import testJunctions from 'data/sashimi-15-42681621-42685368.junctions.csv'
+import testGene from '/Users/msolomon/lens/resources/region-viewer-full-CAPN3-v1.json'
+import testCoverage from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.coverage.csv'
+import testJunctions from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.junctions.csv'
 
 import css from './styles.css'
 

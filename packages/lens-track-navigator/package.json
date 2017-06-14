@@ -1,0 +1,20 @@
+{
+  "name": "lens-track-navigator",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {
+    "lens-utilities": "0.0.1"
+  },
+  "dependencies": {
+    "d3-array": "^1.2.0",
+    "ramda": "^0.24.1",
+    "react-cursor-position": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4"
+  }
+}

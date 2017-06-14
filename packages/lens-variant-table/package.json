@@ -1,0 +1,26 @@
+{
+  "name": "lens-variant-table",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {},
+  "exampleDependencies": {
+    "material-ui": "^0.18.3",
+    "graphql-fetch": "^1.0.1",
+    "lens-utilities": "0.0.1",
+    "lens-region": "0.0.1",
+    "lens-track-transcript": "0.0.1",
+    "lens-track-variant": "0.0.1",
+    "lens-plot": "0.0.1"
+  },
+  "dependencies": {
+    "ramda": "^0.24.1",
+    "react-virtualized": "^9.8.0"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4"
+  }
+}

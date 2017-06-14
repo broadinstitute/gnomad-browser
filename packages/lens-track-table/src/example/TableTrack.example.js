@@ -7,12 +7,11 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 
-import { groupExonsByTranscript } from 'utilities'
-
-import RegionViewer from '../../RegionViewer'
-import TranscriptTrack from '../TranscriptTrack'
-import VariantTrack from '../VariantTrack'
-import GenericTableTrack from './index'
+import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
+import RegionViewer from 'lens-region'
+import TranscriptTrack from 'lens-track-transcript'
+import VariantTrack from 'lens-track-variant'
+import GenericTableTrack from '../index'
 
 import css from './styles.css'
 

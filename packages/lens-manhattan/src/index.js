@@ -143,7 +143,6 @@ const ManhattanPlot = ({
       const pos = xScale(currentCount - (count / 2))
       return [...acc, { name: chr.name, pos, count: currentCount }]
     }, [])
-    console.log(chrWithPos)
     return (
       <g>
         {chrWithPos.map(chr => (
