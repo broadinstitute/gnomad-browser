@@ -3,21 +3,35 @@ import R from 'ramda'
 import { scaleLinear, scaleBand } from 'd3-scale'
 import { max, range } from 'd3-array'
 
+import {
+  HUMAN_CHROMOSOMES,
+  HUMAN_AUTOSOMES,
+} from 'lens-utilities/lib/constants'
+
 import css from './styles.css'
 
-const ManhattanPlot = ({ data }) => {
-  const width = 800
+const ManhattanPlot = ({
+  data,
+  sexChromosomes = false,
+  showAxisBounds = false,
+}) => {
+  const width = 1000
   const height = 500
-  const padding = 75
-
+  const padding = 60
   const yData = R.pluck('-log10p', data)
+
+  const plotChromosomes = sexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
+  const rgb = () => Math.floor(Math.random() * 256)
+  const colorCode = () => `rgb(${rgb()}, ${rgb()}, ${rgb()})`
+  const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
+    ({ ...acc, [chr]: colorCode()}), {})
 
   const xScale = scaleLinear()
     .domain([0, data.length])
     .range([0 + padding, width])
 
   const yScale = scaleLinear()
-    .domain([0, max(yData)])
+    .domain([0, max(yData) + (max(yData) * 0.1)])
     .range([height - padding, padding])
 
   const Background = () => (
@@ -66,7 +80,88 @@ const ManhattanPlot = ({ data }) => {
     </text>
   )
 
+  const Ylabel = () => (
+    <text
+      className={css.yLabel}
+      x={5}
+      y={height / 2}
+      transform={`rotate(270 ${padding / 3} ${height / 2})`}
+    >
+      {'-log10(P)'}
+    </text>
+  )
+
+  const Yticks = () => {
+    return (
+      <g>
+        {yScale.ticks().map(t => {
+          return (
+            <g key={t}>
+              <line
+                x1={padding}
+                x2={width}
+                y1={yScale(t)}
+                y2={yScale(t)}
+                stroke={'#BDBDBD'}
+              />
+              <text
+                className={css.yTickText}
+                x={padding - 15}
+                y={yScale(t) + 5}
+              >
+                {t}
+              </text>
+            </g>
+          )
+        })}
+      </g>
+    )
+  }
+
+  const Xlabel = () => (
+    <text
+      className={css.xLabel}
+      x={width / 2}
+      y={height - (padding / 4)}
+    >
+      Chromosome
+    </text>
+  )
+
+  const Xticks = () => {
+    const snpsSplitByChrom = plotChromosomes.map((chr, i) =>
+      ({
+        name: chr,
+        data: data.filter(snp => chr === `chr${snp.chromosome}`),
+      })
+    )
+    const chrWithPos = snpsSplitByChrom.reduce((acc, chr, i) => {
+      const count = chr.data.length
+      if (i === 0) return [ { name: chr.name, pos: xScale(count - (count / 2)), count } ]
+      const previousCount = acc[i - 1].count
+      const currentCount = previousCount + count
+      const pos = xScale(currentCount - (count / 2))
+      return [...acc, { name: chr.name, pos, count: currentCount }]
+    }, [])
+    console.log(chrWithPos)
+    return (
+      <g>
+        {chrWithPos.map(chr => (
+          <text
+            key={chr.name}
+            className={css.chromosomeLabel}
+            x={chr.pos}
+            y={height - padding + 20}
+          >
+            {chr.name.replace('chr', '')}
+          </text>
+        ))}
+      </g>
+    )
+  }
+
   const snps = data.map((snp, i) => {
+    const color = chromosomeColors[`chr${snp.chromosome}`]
     return (
       <circle
         key={`snp-${i}`}
@@ -74,21 +169,25 @@ const ManhattanPlot = ({ data }) => {
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
         r={2}
-        fill={'white'}
+        fill={color}
         stroke={'black'}
       />
     )
   })
 
-  console.log(snps)
-
   return (
     <div className={css.component}>
       <svg width={width} height={height}>
-        <Background />
-        <AxisBackgroundY />
-        <AxisBackgroundX />
+        {showAxisBounds &&
+          <Background /> &&
+          <AxisBackgroundY /> &&
+          <AxisBackgroundX />
+        }
         <Title />
+        <Ylabel />
+        <Yticks />
+        <Xlabel />
+        <Xticks />
         {snps}
       </svg>
     </div>

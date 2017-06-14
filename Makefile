@@ -27,6 +27,13 @@ clean:
 	rm -rf node_modules
 	.scripts/x-for-all-packages.sh rm -rf node_modules lib
 
+dev:
+	@echo "Compiling package libraries"
+	make lib all
+	@echo "Updating development server"
+	.scripts/link-dev-server.sh
+	@echo ""
+
 watch:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
@@ -45,6 +52,26 @@ watch:
 		 .scripts/link-dev-server-faster.sh $(ARG)" \
 		 packages/$(ARG)/src ; \
 	fi
+
+watch-dep:
+	@if [ "$(ARG)" = "" ]; then \
+		echo "Please use 'make watch <package>"; \
+	else \
+		cd packages/lens-dev-server; \
+		echo "> Cleaning development server";\
+		rm -rf ./node_modules/$(ARG)/; \
+		mkdir ./node_modules/$(ARG); \
+		echo "> Copying local dependency $(ARG) to node_modules"; \
+		cp -r ../$(ARG)/* ./node_modules/$(ARG); \
+		cd ../../; \
+		echo ""; \
+		echo "Done copying, watching $(ARG) for changes"; \
+		$(BINDIR)/watch --interval=1 \
+		"echo 'Recompiling';make lib $(ARG); \
+		 .scripts/copy-dep-dev-server.sh $(ARG)" \
+		 packages/$(ARG)/src ; \
+	fi
+
 
 lib:
 	@if [ "$(ARG)" = "all" ]; then \

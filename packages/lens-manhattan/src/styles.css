@@ -1,4 +1,23 @@
 
 .title {
+  font-size: 22px;
+  text-anchor: middle;
+}
+
+.yLabel {
+
+}
+
+.xLabel {
+  text-anchor: middle;
+}
+
+.yTickText {
+  font-size: 14px;
+  text-anchor: middle;
+}
+
+.chromosomeLabel {
+  font-size: 14px;
   text-anchor: middle;
 }

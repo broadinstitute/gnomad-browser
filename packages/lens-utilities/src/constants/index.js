@@ -9,3 +9,9 @@ export {
   VARIANT_PAGE_FIELDS,
   TEST_GENES,
 }
+
+export {
+  HUMAN_AUTOSOMES,
+  HUMAN_CHROMOSOMES,
+  HUMAN_CHROMOSOMES_WITH_MITO,
+} from './chromosomes'
