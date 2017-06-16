@@ -43,7 +43,7 @@ const config = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8030 }),
+    // new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8031 }),
   ],
   devServer: {
     contentBase: 'public',

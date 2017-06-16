@@ -14,7 +14,9 @@
     "expect": "^1.20.2",
     "graphql-fetch": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "mocha": "^3.4.2",
+    "mocha": "^3.4.2"
+  },
+  "peerDependencies": {
     "ramda": "^0.24.1"
   }
 }

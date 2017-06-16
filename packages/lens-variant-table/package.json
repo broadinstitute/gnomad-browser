@@ -17,10 +17,10 @@
     "lens-plot": "0.0.1"
   },
   "dependencies": {
-    "ramda": "^0.24.1",
     "react-virtualized": "^9.8.0"
   },
   "peerDependencies": {
+    "ramda": "^0.24.1",
     "react": "^15.5.4"
   }
 }

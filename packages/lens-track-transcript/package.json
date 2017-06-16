@@ -11,10 +11,10 @@
     "lens-region": "0.0.1"
   },
   "dependencies": {
-    "ramda": "^0.24.1",
     "react-motion": "^0.5.0"
   },
   "peerDependencies": {
-    "react": "^15.5.4"
+    "react": "^15.5.4",
+    "ramda": "^0.24.1"
   }
 }
