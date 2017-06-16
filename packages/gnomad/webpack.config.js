@@ -1,4 +1,6 @@
 const path = require('path')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 
 const config = {
   devtool: 'source-map',
@@ -40,6 +42,9 @@ const config = {
       },
     ],
   },
+  plugins: [
+    new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8030 }),
+  ],
   devServer: {
     contentBase: 'public',
     publicPath: '/static/js',

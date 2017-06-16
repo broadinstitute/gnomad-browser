@@ -15,8 +15,9 @@ setup:
 	make clean
 	@echo "yarn install in the root folder"
 	@yarn install
-	@echo "yarn install all packages"
+	@echo "yarn install all packages/projects"
 	.scripts/x-for-all-packages.sh yarn
+	.scripts/x-for-all-projects.sh yarn
 	@echo "Compiling package libraries"
 	make lib all
 	@echo "Linking development server"
@@ -26,6 +27,7 @@ setup:
 clean:
 	rm -rf node_modules
 	.scripts/x-for-all-packages.sh rm -rf node_modules lib
+	.scripts/x-for-all-projects.sh rm -rf node_modules lib
 
 dev:
 	@echo "Compiling package libraries"
