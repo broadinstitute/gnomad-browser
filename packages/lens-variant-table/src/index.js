@@ -348,6 +348,7 @@ VariantTable.propTypes = {
   width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
   tableData: PropTypes.array.isRequired,
+  remoteRowCount: ProperTypes.number.isRequired,
   loadMoreRows: PropTypes.func,
   overscan: PropTypes.number,
   showIndex: PropTypes.bool,
@@ -365,6 +366,7 @@ VariantTable.defaultProps = {
   scrollToRow: 10,
   setCurrentVariant: () => { },
   scrollCallback: () => {},
+  onRowClick: () => {},
 }
 
 export default VariantTable

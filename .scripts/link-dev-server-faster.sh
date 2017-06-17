@@ -14,6 +14,7 @@ for project in "${projects[@]}"; do
     cd $project;
     rm -rf ./node_modules/$PACKAGE/lib;
     cp -r ../$PACKAGE/lib ./node_modules/$PACKAGE/lib;
+    cd ..;
   fi
 done
 echo "Done copying";

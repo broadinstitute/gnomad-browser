@@ -12,6 +12,7 @@ import css from './styles.css'
 
 const ManhattanPlot = ({
   data,
+  title = '',
   sexChromosomes = false,
   showAxisBounds = false,
 }) => {
@@ -76,7 +77,7 @@ const ManhattanPlot = ({
       x={width / 2}
       y={padding / 2}
     >
-      Manhattan plot
+      
     </text>
   )
 
