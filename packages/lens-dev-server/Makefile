@@ -28,6 +28,10 @@ watch:
 	@echo "  $(P) watch $(WATCH_FLAGS)"
 	@$(BIN_DIR)/watch $(WATCH_FLAGS)
 
+pdf:
+	./node_modules/.bin/babel-node node_modules/lens-test/lib/example
+	open /Users/msolomon/lens/packages/lens-dev-server/node_modules/lens-test/lib/tmp/test.pdf
+
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
 	lsof -ti:8010 | xargs kill ; \

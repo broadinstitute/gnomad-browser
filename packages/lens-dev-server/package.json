@@ -5,6 +5,7 @@
   "localDependencies": {
     "lens-manhattan": "0.0.1",
     "lens-fetch-hoc": "0.0.1",
+    "lens-pdf-export": "0.0.1",
     "lens-plot": "0.0.1",
     "lens-plot-traffic": "0.0.1",
     "lens-region": "0.0.1",
@@ -28,6 +29,7 @@
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.0.1",
