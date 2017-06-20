@@ -1,5 +1,8 @@
 {
-  "presets": ["react", "babel-preset-es2015", "babel-preset-stage-2"],
+  "presets": [
+    "react",
+    "babel-preset-stage-2"
+  ],
   "plugins": [
     "transform-object-rest-spread"
   ]

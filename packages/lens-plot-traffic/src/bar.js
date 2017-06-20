@@ -14,8 +14,11 @@ import {
 
 import css from './styles.css'
 
-import exacSessions from '/Users/msolomon/lens/resources/170610-exac-sessions.json'
-import combined from '/Users/msolomon/lens/resources/170611-combine-sessions.json'
+import combined from '/Users/msolomon/lens/resources/170620-combine-pageviews.json'
+import combinedWeeks from '/Users/msolomon/lens/resources/170620-combine-pageviews-weeks.json'
+
+console.log(combined)
+console.log(combinedWeeks)
 
 const Plot = ({
   title,
@@ -133,14 +136,14 @@ const Plot = ({
     )
   }
   const Xticks = () => {
-    const numberOfTicks = 18
+    const numberOfTicks = 17
     const tickData = data.filter((x, i) => {
       return i % (Math.floor(data.length / numberOfTicks)) === 0
     })
     const textRotationDegrees = 45
     return (
       <g>
-        {R.init(tickData).map((elem, i) => {
+        {tickData.map((elem, i) => {
           return (
             <g key={`xtick-${elem.date}-${i}`}>
               <line
@@ -171,12 +174,12 @@ const Plot = ({
           <rect
             className={css.bars}
             x={padding + xscale(i)}
-            y={height - padding - yscale(value.exac_sessions)}
+            y={height - padding - yscale(value.exac_pageviews)}
             width={xscale.bandwidth()}
-            height={yscale(value.exac_sessions)}
+            height={yscale(value.exac_pageviews)}
             fill={'#0D47A1'}
             stroke={'#0D47A1'}
-            key={`bar-${value.exac_sessions}-${i}`}
+            key={`bar-${value.exac_pageviews}-${i}`}
           />
         )
       })}
@@ -184,18 +187,23 @@ const Plot = ({
   )
   const gnomadBars = (
     <g>
-      {data.map((value, i) => (
-        <rect
-          className={css.bars}
-          x={padding + xscale(i)}
-          y={height - padding - yscale(value.gnomad_sessions) - yscale(value.exac_sessions)}
-          width={xscale.bandwidth()}
-          height={yscale(value.gnomad_sessions)}
-          fill={'green'}
-          stroke={'green'}
-          key={`bar-${value.gnomad_sessions}-${i}`}
-        />
-      ))}
+      {data.map((value, i) => {
+        if (value.gnomad_pageviews === 0) {
+          return
+        }
+        return (
+          <rect
+            className={css.bars}
+            x={padding + xscale(i)}
+            y={height - padding - yscale(value.gnomad_pageviews) - yscale(value.exac_pageviews)}
+            width={xscale.bandwidth()}
+            height={yscale(value.gnomad_pageviews)}
+            fill={'green'}
+            stroke={'green'}
+            key={`bar-${value.gnomad_pageviews}-${i}`}
+          />
+        )
+      })}
     </g>
   )
 
@@ -244,13 +252,26 @@ const Plot = ({
 
 const Traffic = () => {
   const data = combined.map((datum, i) => ({ ...datum, ix: i }))
+  const dataWeeks = combinedWeeks.map((datum, i) => ({ ...datum, ix: i }))
+
   return (
     <div className={css.component}>
       <Plot
-        title={'ExAC/gnomAD browser sessions per day'}
-        data={R.drop(30, data)}
-        datasets={['exac_sessions', 'gnomad_sessions']}
-        ytitle={'Sessions per day'}
+        title={'ExAC/gnomAD browser pageviews per day'}
+        data={R.drop(0, data)}
+        datasets={['exac_pageviews', 'gnomad_pageviews']}
+        ytitle={'Pageviews per day'}
+        xtitle={'Month'}
+        xticks
+        width={1200}
+        height={500}
+
+      />
+      <Plot
+        title={'ExAC/gnomAD browser pageviews per week'}
+        data={R.drop(1, dataWeeks)}
+        datasets={['exac_pageviews', 'gnomad_pageviews']}
+        ytitle={'Pageviews per week'}
         xtitle={'Month'}
         xticks
         width={1200}
