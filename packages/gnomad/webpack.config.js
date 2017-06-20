@@ -8,7 +8,7 @@ const config = {
     app: [
       'babel-polyfill',
       'react-hot-loader/patch',
-      './src/example/index',
+      './src/index',
     ],
   },
   output: {

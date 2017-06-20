@@ -348,7 +348,7 @@ VariantTable.propTypes = {
   width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
   tableData: PropTypes.array.isRequired,
-  remoteRowCount: ProperTypes.number.isRequired,
+  remoteRowCount: PropTypes.number.isRequired,
   loadMoreRows: PropTypes.func,
   overscan: PropTypes.number,
   showIndex: PropTypes.bool,

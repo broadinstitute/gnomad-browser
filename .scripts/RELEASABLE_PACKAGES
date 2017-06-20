@@ -2,6 +2,7 @@ lens-fetch-hoc
 lens-manhattan
 lens-plot
 lens-plot-traffic
+lens-redux-gene-page
 lens-region
 lens-test
 lens-track-coverage

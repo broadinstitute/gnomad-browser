@@ -5,6 +5,7 @@
  * HOC for checking if data needs fetching using React lifecycle methods
  * Pass component to be wrapped, a data id to compare, function for checking
  * if the store already has data, and the function for fetching data if needed.
+ * Returns connected component.
  */
 
 import React, { PropTypes, Component } from 'react'
