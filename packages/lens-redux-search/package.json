@@ -1,0 +1,27 @@
+{
+  "name": "lens-redux-search",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "../../node_modules/.bin/babel-node node_modules/.bin/tape './src/tests/*.test.js' | ./node_modules/.bin/tspec",
+    "test:watch": "../../node_modules/.bin/watch 'npm run test' ."
+  },
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {},
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "redux": "^3.7.0",
+    "redux-logger": "^3.0.6",
+    "redux-search": "^2.3.3",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
+  }
+}

@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-"""docstring.
-
-python convert_csv_to_json /Users/msolomon/lens/resources/gwas-eg.csv
-
-Using example data from:
+"""Using example data from:
 https://github.com/stephenturner/qqman/blob/master/data/gwasResults.RData
 
 Open in R and export to csv:
