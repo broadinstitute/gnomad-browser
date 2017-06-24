@@ -5,10 +5,9 @@ import R from 'ramda'
 import { Provider, connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import Highlighter from 'react-highlight-words'
+import Mousetrap from 'mousetrap'
 
 import createStore from './store'
-
-import css from './styles.css'
 
 import {
   // State,
@@ -22,8 +21,18 @@ import {
   actions,
 } from './resources'
 
+import css from './styles.css'
+
+let findInput
+
+Mousetrap.bind(['command+f', 'meta+s'], function(e, combo) {
+    e.preventDefault()
+    findInput.focus()
+    console.log(combo); // logs 'ctrl+shift+up'
+})
 
 const store = createStore()
+
 
 let SearchExample = ({ variants, filteredIdList, dataSearchText, searchVariants }) => {
   const filteredVariants = filteredIdList.map(id => {
@@ -45,6 +54,7 @@ let SearchExample = ({ variants, filteredIdList, dataSearchText, searchVariants 
       <input
         type="text"
         placeholder={'Enter data'}
+        ref={input => findInput = input}
         onChange={(event) => {
           event.preventDefault()
           searchVariants(event.target.value)

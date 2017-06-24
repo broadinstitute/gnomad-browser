@@ -50,4 +50,3 @@ export const actions = {
 export function reducer(state = new State(), action) {
   return state
 }
-

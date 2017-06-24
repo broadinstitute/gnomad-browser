@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "immutable": "^3.8.1",
+    "mousetrap": "^1.6.1",
     "ramda": "^0.24.1",
     "react-highlight-words": "^0.8.0",
     "redux": "^3.7.0",
