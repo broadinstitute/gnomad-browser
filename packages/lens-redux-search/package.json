@@ -23,6 +23,7 @@
   "dependencies": {
     "immutable": "^3.8.1",
     "ramda": "^0.24.1",
+    "react-highlight-words": "^0.8.0",
     "redux": "^3.7.0",
     "redux-logger": "^3.0.6",
     "redux-search": "^2.3.3",

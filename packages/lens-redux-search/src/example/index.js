@@ -4,8 +4,11 @@ import React from 'react'
 import R from 'ramda'
 import { Provider, connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import Highlighter from 'react-highlight-words'
 
 import createStore from './store'
+
+import css from './styles.css'
 
 import {
   // State,
@@ -16,36 +19,46 @@ import {
   dataSearchText,
   filteredIdList,
   searchVariants,
-  unfilteredResult,
-  immutableData,
   actions,
 } from './resources'
 
 
 const store = createStore()
 
-let SearchExample = ({ variants, filteredIdList, searchVariants }) => {
+let SearchExample = ({ variants, filteredIdList, dataSearchText, searchVariants }) => {
+  const filteredVariants = filteredIdList.map(id => {
+    const variant = variants.get(id)
+    return (
+      <div className={css.row}>
+        <Highlighter
+          key={id}
+          highlightClassName={css.Highlight}
+          searchWords={dataSearchText.split(/\s+/)}
+          textToHighlight={`${variant.variant_id},      ${variant.hgvsp},      ${variant.hgvsc}`}
+        />
+    </div>
+    )
+  })
   return (
     <div>
-      <form
-        onSubmit={(event) => {
+
+      <input
+        type="text"
+        placeholder={'Enter data'}
+        onChange={(event) => {
           event.preventDefault()
-          searchVariants(event.target.elements[0].value)
+          searchVariants(event.target.value)
         }}
-      >
-        <input type="text" placeholder={'Enter data'} />
-        <button style={{ visibility: 'hidden' }} type="submit" />
-      </form>
-      {filteredIdList.map(id => {
-        return <p>{variants.get(id)}</p>
-      })}
-      {/*variants.map(v => <p>{v.variant_id}_____{v.hgvsp}</p>)*/}
+      />
+      <button style={{ visibility: 'hidden' }} type="submit" />
+      {filteredVariants}
     </div>
   )
 }
 
 const selectors = createSelector(
-  [variants, filteredIdList], (variants, filteredIdList) => ({ variants, filteredIdList })
+  [variants, filteredIdList, dataSearchText], (variants, filteredIdList, dataSearchText) =>
+    ({ variants, filteredIdList, dataSearchText })
 )
 
 SearchExample = connect(selectors, actions)(SearchExample)
