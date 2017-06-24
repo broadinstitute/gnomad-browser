@@ -1,8 +1,11 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { reducer as searchReducer, reduxSearch } from 'redux-search'
 import thunk from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
 import { reducer as resourceReducer } from './resources'
+
+const logger = createLogger()
 
 export default function createTestStore() {
   const finalCreateStore = compose(
@@ -12,6 +15,7 @@ export default function createTestStore() {
         variants: ['variant_id', 'hgvsp', 'hgvsc'],
       },
       resourceSelector: (resourceName, state) => {
+        // console.log('resource name', state.resources.get(resourceName))
         return state.resources.get(resourceName)
       },
     }),

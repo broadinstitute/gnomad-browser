@@ -4,6 +4,7 @@ lens-pdf-export
 lens-plot
 lens-plot-traffic
 lens-redux-gene-page
+lens-redux-search
 lens-region
 lens-test
 lens-track-coverage

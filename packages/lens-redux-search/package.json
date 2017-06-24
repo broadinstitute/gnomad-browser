@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "test": "../../node_modules/.bin/babel-node node_modules/.bin/tape './src/tests/resources.test.js' | ./node_modules/.bin/tspec",
+    "test": "../../node_modules/.bin/babel-node --inspect node_modules/.bin/tape './src/tests/resources.test.js' | ./node_modules/.bin/tspec",
     "test:data": "../../node_modules/.bin/babel-node src/tests/getTestData",
     "test:watch": "../../node_modules/.bin/watch 'npm run test' src -d"
   },
@@ -27,6 +27,7 @@
     "redux-logger": "^3.0.6",
     "redux-search": "^2.3.3",
     "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "uuid": "^3.1.0"
   }
 }
