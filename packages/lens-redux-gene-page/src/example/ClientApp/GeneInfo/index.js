@@ -9,7 +9,7 @@ const GeneInfo = ({ gene, variantCount }) => {
     gene_id,
     full_gene_name,
     omim_accession,
-  } = gene
+  } = gene.toJS()
   return (
     <div className={css.geneInfo}>
       <h1>{gene_name}</h1>

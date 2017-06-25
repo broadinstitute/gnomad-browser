@@ -6,18 +6,9 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import * as actions from '../../actions'
-
-import {
-  currentGene,
-  exonPadding,
-  actions as activeActions,
-} from '../../resources/active'
-
-import {
-  getGene,
-  getVisibleVariants,
-} from '../../selectors'
+import { currentGene, exonPadding, actions as activeActions } from '../../resources/active'
+import { geneData, isFetching, actions as geneActions } from '../../resources/genes'
+import { visibleVariants } from '../../resources/table'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -25,7 +16,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     setCurrentGene: PropTypes.func.isRequired,
-    fetchVariantsIfNeeded: PropTypes.func.isRequired,
+    fetchGeneIfNeeded: PropTypes.func.isRequired,
     visibleVariants: PropTypes.array.isRequired,
     setExonPadding: PropTypes.func.isRequired,
     exonPadding: PropTypes.number.isRequired,
@@ -36,14 +27,14 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 
   componentDidMount() {
-    const { currentGene, fetchVariantsIfNeeded } = this.props
-    fetchVariantsIfNeeded(currentGene)
+    const { currentGene, fetchGeneIfNeeded } = this.props
+    fetchGeneIfNeeded(currentGene)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchVariantsIfNeeded } = this.props
+    const { fetchGeneIfNeeded } = this.props
     if (this.props.currentGene !== nextProps.currentGene) {
-      fetchVariantsIfNeeded(nextProps.currentGene)
+      fetchGeneIfNeeded(nextProps.currentGene)
     }
   }
 
@@ -52,17 +43,18 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 }
 
+
 const mapStateToProps = state => ({
   currentGene: currentGene(state),
-  isFetching: state.genes.isFetching,
-  gene: getGene(state),
+  isFetching: isFetching(state),
+  gene: geneData(state),
   exonPadding: exonPadding(state),
-  visibleVariants: getVisibleVariants(state),
+  visibleVariants: visibleVariants(state),
 })
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchVariantsIfNeeded: currentGene => dispatch(actions.fetchVariantsIfNeeded(currentGene)),
+    fetchGeneIfNeeded: currentGene => dispatch(geneActions.fetchGeneIfNeeded(currentGene)),
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
   }

@@ -1,8 +1,14 @@
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import throttle from "redux-throttle"
-import rootReducer from '../reducers'
+import throttle from 'redux-throttle'
+import rootReducer from '../resources'
 
 const logger = createLogger()
 

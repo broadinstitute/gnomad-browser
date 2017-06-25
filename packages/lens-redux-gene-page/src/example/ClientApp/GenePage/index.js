@@ -20,6 +20,7 @@ const AppGenePage = ({
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
+  console.log(gene.toJS())
   return (
     <div className={css.genePage}>
       <GeneSettings

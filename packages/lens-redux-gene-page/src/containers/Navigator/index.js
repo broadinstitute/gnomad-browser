@@ -7,15 +7,13 @@ import { connect } from 'react-redux'
 import NavigatorTrack from 'lens-track-navigator'
 
 import {
-  getVisibleVariants,
-} from '../../selectors'
-
-import {
   currentVariant,
   currentTableIndex,
   currentNavigatorPosition,
   actions as activeActions,
 } from '../../resources/active'
+
+import { visibleVariants, variantSortKey } from '../../resources/table'
 
 import css from './styles.css'
 
@@ -25,7 +23,7 @@ const Navigator = ({
   onNavigatorClick,
   currentNavigatorPosition,
   variants,
-  variantSort,
+  variantSortKey,
   ownProps,
 }) => {
   return (
@@ -38,7 +36,7 @@ const Navigator = ({
       scrollSync={currentTableIndex}
       variants={variants}
       currentVariant={currentVariant}
-      variantSort={variantSort}
+      variantSortKey={variantSortKey}
       {...ownProps}
     />
   )
@@ -47,9 +45,9 @@ Navigator.propTypes = {
   currentTableIndex: PropTypes.number.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
   currentVariant: PropTypes.string.isRequired,
-  variantSort: PropTypes.object.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
   variants: PropTypes.array.isRequired,
+  variantSortKey: PropTypes.string.isRequired,
   ownProps: PropTypes.object.isRequired,
 }
 
@@ -57,8 +55,8 @@ const mapStateToProps = (state, ownProps) => ({
   currentTableIndex: currentTableIndex(state),
   currentNavigatorPosition: currentNavigatorPosition(state),
   currentVariant: currentVariant(state),
-  variantSort: state.table.variantSort,
-  variants: getVisibleVariants(state),
+  variantSortKey: variantSortKey(state),
+  variants: visibleVariants(state),
   ownProps,
 })
 

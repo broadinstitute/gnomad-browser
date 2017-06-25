@@ -1,3 +1,10 @@
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+/* eslint-disable no-case-declarations */
+
 import React, { PropTypes } from 'react'
 import R from 'ramda'
 
@@ -66,10 +73,11 @@ const GeneRegion = ({
   visibleVariants,
   exonPadding,
 }) => {
-  const geneExons = gene.exons
-  const canonicalExons = gene.transcript.exons
+  const geneJS = gene.toJS()
+  const geneExons = geneJS.exons
+  const canonicalExons = geneJS.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
-  const { exome_coverage, genome_coverage } = gene
+  const { exome_coverage, genome_coverage } = geneJS
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight

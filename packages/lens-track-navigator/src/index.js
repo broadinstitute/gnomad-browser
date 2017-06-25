@@ -1,3 +1,9 @@
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+/* eslint-disable no-case-declarations */
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
@@ -39,26 +45,20 @@ const ClickArea = ({
   position, // active mouse position from ReactCursorPosition
   isPositionOutside, // from ReactCursorPosition
   scrollSync, // position in from table
-  currentNavigatorPosition,
   onNavigatorClick,
   variants,
   currentVariant,
-  variantSort,
+  variantSortKey,
 }) => {
-  const sortVariants = (variants, { key, ascending }) => (
-    ascending ?
-    variants.sort((a, b) => a[key] - b[key]) :
-    variants.sort((a, b) => b[key] - a[key])
-  )
-  const sortedVariants = sortVariants(variants, variantSort)
-
-  const currentlyVisibleVariants = sortedVariants.slice(scrollSync, scrollSync + 15)
+  const currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + 15)
 
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 
   const tableRectPadding = 10
-  const tableRectStart = xScale(positionOffset(tablePositionStart).offsetPosition) - tableRectPadding
+  const tableRectStart = xScale(
+    positionOffset(tablePositionStart).offsetPosition
+  ) - tableRectPadding
   const tableRectStop = xScale(positionOffset(tablePositionStop).offsetPosition)
   const tableRectWidth = tableRectStop - tableRectStart + tableRectPadding
 
@@ -178,7 +178,7 @@ const ClickArea = ({
         height={height}
       />
 
-      {variantSort.key === 'pos' &&
+      {variantSortKey === 'pos' &&
       <rect
         className={css.tablePositionRect}
         x={tableRectStart}
