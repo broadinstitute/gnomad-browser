@@ -12,7 +12,7 @@ export default function createTestStore() {
     applyMiddleware(thunk),
     reduxSearch({
       resourceIndexes: {
-        variants: ['variant_id', 'hgvsp', 'hgvsc'],
+        variants: ['variant_id', 'hgvsp', 'hgvsc', 'consequence'],
       },
       resourceSelector: (resourceName, state) => {
         // console.log('resource name', state.resources.get(resourceName))

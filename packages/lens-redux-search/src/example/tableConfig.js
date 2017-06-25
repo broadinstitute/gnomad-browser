@@ -1,0 +1,80 @@
+const tableDataConfig = {
+  fields: [
+    {
+      dataKey: 'variant_id',
+      title: 'Variant ID',
+      dataType: 'variantId',
+      width: 125,
+      // searchable: true,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'filters',
+      title: 'Filters',
+      dataType: 'filter',
+      width: 70,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'rsid',
+      title: 'RSID',
+      dataType: 'string',
+      width: 70,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'hgvsp',
+      title: 'HGVSp',
+      dataType: 'string',
+      width: 100,
+      searchable: true,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'hgvsc',
+      title: 'HGVSc',
+      dataType: 'string',
+      width: 100,
+      searchable: true,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'consequence',
+      title: 'Consequence',
+      dataType: 'string',
+      width: 100,
+      searchable: true,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'allele_count',
+      title: 'AC',
+      dataType: 'integer',
+      width: 40,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'allele_num',
+      title: 'AN',
+      dataType: 'integer',
+      width: 40,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'allele_freq',
+      title: 'AF',
+      dataType: 'float',
+      width: 40,
+      // onHeaderClick: setVariantSort,
+    },
+    {
+      dataKey: 'hom_count',
+      title: 'Hom',
+      dataType: 'integer',
+      width: 20,
+      // onHeaderClick: setVariantSort,
+    },
+  ],
+}
+
+export default tableDataConfig

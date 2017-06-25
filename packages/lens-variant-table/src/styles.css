@@ -59,3 +59,8 @@
   border: 1px solid #000;
   border: 0;
 }
+
+.highlight {
+  /*background-color: #fffec0;*/
+  background-color: red;
+}

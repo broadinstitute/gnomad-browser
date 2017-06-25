@@ -12,7 +12,8 @@
     "lib"
   ],
   "localDependencies": {
-    "lens-utilities": "0.0.1"
+    "lens-utilities": "0.0.1",
+    "lens-variant-table": "0.0.1"
   },
   "devDependencies": {
     "faker": "^4.1.0",

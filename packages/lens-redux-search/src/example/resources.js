@@ -10,13 +10,19 @@ const VariantRecord = Immutable.Record({
   variant_id: null,
   hgvsp: null,
   hgvsc: null,
+  filters: null,
+  rsid: null,
+  consequence: null,
+  allele_count: null,
+  allele_num: null,
+  allele_freq: null,
+  hom_count: null,
 })
 
 const variantData = {}
 data.gene.variants.forEach(variant => {
   const id = v4()
-  const { variant_id, hgvsc, hgvsp } = variant
-  variantData[id] = new VariantRecord({ id, variant_id, hgvsp, hgvsc })
+  variantData[id] = new VariantRecord({ id, ...variant })
 })
 export const immutableData = Immutable.OrderedMap(variantData)
 

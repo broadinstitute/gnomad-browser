@@ -1,3 +1,3 @@
-import VariantTableExample from './VariantTable.example'
+import ScrollFetchExample from './ScrollFetch.example'
 
-export default VariantTableExample
+export default ScrollFetchExample

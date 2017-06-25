@@ -7,12 +7,12 @@ import { createSelector } from 'reselect'
 import Highlighter from 'react-highlight-words'
 import Mousetrap from 'mousetrap'
 
+import LensTable from 'lens-variant-table'
+
 import createStore from './store'
+import tableConfig from './tableConfig'
 
 import {
-  // State,
-  // resources,
-  // resourceSelector,
   variants,
   searchSelectors,
   dataSearchText,
@@ -28,29 +28,31 @@ let findInput
 Mousetrap.bind(['command+f', 'meta+s'], function(e, combo) {
     e.preventDefault()
     findInput.focus()
-    console.log(combo); // logs 'ctrl+shift+up'
 })
 
 const store = createStore()
 
-
-let SearchExample = ({ variants, filteredIdList, dataSearchText, searchVariants }) => {
-  const filteredVariants = filteredIdList.map(id => {
+let SearchExample = ({
+  variants,
+  filteredIdList,
+  dataSearchText,
+  searchVariants
+}) => {
+  const filteredVariantsRendered = filteredIdList.map(id => {
     const variant = variants.get(id)
     return (
-      <div className={css.row}>
+      <div key={id} className={css.row}>
         <Highlighter
-          key={id}
           highlightClassName={css.Highlight}
           searchWords={dataSearchText.split(/\s+/)}
           textToHighlight={`${variant.variant_id},      ${variant.hgvsp},      ${variant.hgvsc}`}
         />
     </div>
-    )
+  )
   })
+  const filteredVariants = filteredIdList.map(id => variants.get(id))
   return (
     <div>
-
       <input
         type="text"
         placeholder={'Enter data'}
@@ -61,7 +63,14 @@ let SearchExample = ({ variants, filteredIdList, dataSearchText, searchVariants 
         }}
       />
       <button style={{ visibility: 'hidden' }} type="submit" />
-      {filteredVariants}
+      <LensTable
+        title={''}
+        height={800}
+        tableConfig={tableConfig}
+        tableData={filteredVariants}
+        remoteRowCount={filteredVariants.size}
+        searchText={dataSearchText}
+      />
     </div>
   )
 }

@@ -17,6 +17,8 @@
     "lens-plot": "0.0.1"
   },
   "dependencies": {
+    "immutable": "^3.8.1",
+    "react-highlight-words": "^0.8.0",
     "react-virtualized": "^9.8.0"
   },
   "peerDependencies": {

@@ -2,6 +2,8 @@
 import React, { PropTypes } from 'react'
 import R from 'ramda'
 import { InfiniteLoader, List } from 'react-virtualized'
+import Highlighter from 'react-highlight-words'
+import Immutable from 'immutable'
 
 import defaultStyles from './styles.css'
 
@@ -20,6 +22,7 @@ const VariantTable = ({
   scrollToRow,
   onRowClick,
   scrollCallback,
+  searchText,
 }) => {
 
   const abstractCellStyle = {
@@ -152,6 +155,14 @@ const VariantTable = ({
       maxWidth: width,
       minWidth: width,
     }
+    const cellText = field.searchable ? (
+      <Highlighter
+        highlightClassName={css.highlight}
+        searchWords={searchText.split(/\s+/)}
+        textToHighlight={`${dataRow[dataKey]}`}
+      />
+  ) : dataRow[dataKey]
+
     switch (dataType) {
       case 'string':
         return (
@@ -159,7 +170,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {dataRow[dataKey]}
+            {cellText}
           </div>
         )
       case 'float':
@@ -168,7 +179,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {dataRow[dataKey].toPrecision(3)}
+            {cellText.toPrecision(3)}
           </div>
         )
       case 'integer':
@@ -177,7 +188,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {dataRow[dataKey]}
+            {cellText}
           </div>
         )
       case 'filter':
@@ -186,7 +197,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {formatFitler(dataRow[dataKey], i)}
+            {formatFitler(cellText, i)}
           </div>
         )
       case 'variantId':
@@ -195,7 +206,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {formatVariantId(dataRow[dataKey])}
+            {formatVariantId(cellText)}
           </div>
         )
       case 'datasets':
@@ -222,7 +233,7 @@ const VariantTable = ({
             style={cellStyle}
             key={`cell-${dataKey}-${i}`}
           >
-            {dataRow[dataKey]}
+            {cellText}
           </div>
         )
     }
@@ -288,12 +299,19 @@ const VariantTable = ({
 
   const rowRenderer = ({ key, index, style }) => {
     scrollCallback(index)
+    let row
+    if (Array.isArray(tableData)) {
+      row = getDataRow(tableConfig, tableData[index], index, showIndex)
+    }
+    if (Immutable.List.isList(tableData)) {
+      row = getDataRow(tableConfig, tableData.get(index), index, showIndex)
+    }
     return (
       <div
         key={key}
         style={style}
       >
-        {getDataRow(tableConfig, tableData[index], index, showIndex)}
+        {row}
       </div>
     )
   }
@@ -311,6 +329,16 @@ const VariantTable = ({
       ix
     </div>
   )
+
+  const getDefaultWidth = (tableConfig)  => {
+    const scrollBarWidth = 40
+    const paddingWidth = tableConfig.fields.length * 40
+    const cellContentWidth = tableConfig.fields.reduce((acc, field) =>
+      acc + field.width, 0)
+    const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+    return calculatedWidth
+  }
+
   return (
     <div className={css.variantTable}>
       <div style={{ width }}>
@@ -333,7 +361,7 @@ const VariantTable = ({
               rowHeight={30}
               rowRenderer={rowRenderer}
               overscanRowCount={overscan}
-              width={width}
+              width={width || getDefaultWidth(tableConfig) }
               scrollToIndex={scrollToRow}
             />
           )}
@@ -347,18 +375,20 @@ VariantTable.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
-  tableData: PropTypes.array.isRequired,
+  tableData: PropTypes.any.isRequired,
   remoteRowCount: PropTypes.number.isRequired,
   loadMoreRows: PropTypes.func,
   overscan: PropTypes.number,
   showIndex: PropTypes.bool,
   scrollToRow: PropTypes.number,
   onRowClick: PropTypes.func,
-  // onRowHover: PropTypes.func,
+  // onRowHover: PropTypin ines.func,
   scrollCallback: PropTypes.func,
+  searchText: PropTypes.string,
 }
 VariantTable.defaultProps = {
   css: defaultStyles,
+  width: null,
   loadMoreRows: () => { },
   overscan: 100,
   loadLookAhead: 0,
@@ -367,6 +397,7 @@ VariantTable.defaultProps = {
   setCurrentVariant: () => { },
   scrollCallback: () => {},
   onRowClick: () => {},
+  searchText: '',
 }
 
 export default VariantTable
