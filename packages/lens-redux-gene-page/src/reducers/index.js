@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import selections from './selections'
+import active from '../resources/active'
 import table from './table'
 import genes from './genes'
 // import variants from './variants'
@@ -8,7 +8,7 @@ import genes from './genes'
 // import coverage from './coverage'
 
 const app = combineReducers({
-  selections,
+  active,
   // regions,
   genes,
   // coverage,

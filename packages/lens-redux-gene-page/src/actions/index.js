@@ -95,51 +95,12 @@ const regionFetch = (xstart, xstop) => {
   })
 }
 
-export const setExonPadding = (padding) => {
-  return {
-    type: types.SET_EXON_PADDING,
-    padding,
-  }
-}
-
-export const setCurrentGene = (geneName) => {
-  return {
-    type: types.SET_CURRENT_GENE,
-    geneName,
-  }
-}
-
-export const setCurrentVariant = (variantId) => {
-  return {
-    type: types.SET_CURRENT_VARIANT,
-    variantId,
-  }
-}
-
-export const setNavigatorPosition = navigatorPosition => ({
-  type: types.SET_CURRENT_NAVIGATOR_POSITION,
-  navigatorPosition,
-  meta: {
-    throttle: true,
-  },
-})
-
-export const setCurrentTableIndex = tableIndex => ({
-  type: types.SET_CURRENT_TABLE_INDEX,
-  tableIndex,
-  meta: {
-    throttle: true,
-  },
-})
-
-
 export const requestGeneData = currentGene => ({
   type: types.REQUEST_GENE_DATA,
   currentGene,
 })
 
 export const receiveGeneData = (currentGene, geneData) => {
-  console.log('recieved data')
   return {
     type: types.RECEIVE_GENE_DATA,
     geneName: currentGene,
@@ -203,10 +164,4 @@ export const setVisibleInTable = (range) => {
   }
 }
 
-export const onNavigatorClick = (tableIndex, position) => {
-  return (dispatch) => {
-    dispatch({ type: types.ORDER_VARIANTS_BY_POSITION })
-    dispatch(setCurrentTableIndex(tableIndex))
-    dispatch(setNavigatorPosition(position))
-  }
-}
+

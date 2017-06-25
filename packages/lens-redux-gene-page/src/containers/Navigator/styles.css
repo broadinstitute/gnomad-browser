@@ -1,4 +1,4 @@
-@import "../config.css";
+@import "./config.css";
 
 .track {
   display: flex;

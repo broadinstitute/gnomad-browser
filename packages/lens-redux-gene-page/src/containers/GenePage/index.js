@@ -1,8 +1,18 @@
 /* eslint-disable react/no-unused-prop-types */
+/* eslint-disable no-shadow */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../../actions'
+
+import {
+  currentGene,
+  exonPadding,
+  actions as activeActions,
+} from '../../resources/active'
 
 import {
   getGene,
@@ -43,18 +53,18 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 }
 
 const mapStateToProps = state => ({
-  currentGene: state.selections.currentGene,
+  currentGene: currentGene(state),
   isFetching: state.genes.isFetching,
   gene: getGene(state),
-  exonPadding: state.selections.exonPadding,
+  exonPadding: exonPadding(state),
   visibleVariants: getVisibleVariants(state),
 })
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchVariantsIfNeeded: currentGene => dispatch(actions.fetchVariantsIfNeeded(currentGene)),
-    setCurrentGene: geneName => dispatch(actions.setCurrentGene(geneName)),
-    setExonPadding: padding => dispatch(actions.setExonPadding(padding)),
+    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
   }
 }
 

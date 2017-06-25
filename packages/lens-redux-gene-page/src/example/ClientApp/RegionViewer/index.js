@@ -7,7 +7,7 @@ import CoverageTrack from 'lens-track-coverage'
 import VariantTrack from 'lens-track-variant'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 
-import Navigator from '../Navigator'
+import Navigator from '../../../containers/Navigator'
 
 import css from './styles.css'
 
@@ -161,7 +161,6 @@ const GeneRegion = ({
       },
     ],
   }
-  console.log('exon', canonicalExons)
   return (
     <div className={css.geneRegion}>
       <RegionViewer

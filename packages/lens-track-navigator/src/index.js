@@ -54,8 +54,6 @@ const ClickArea = ({
 
   const currentlyVisibleVariants = sortedVariants.slice(scrollSync, scrollSync + 15)
 
-  console.log(currentlyVisibleVariants)
-
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 
@@ -71,9 +69,8 @@ const ClickArea = ({
   }))
 
   const variantMarks = variantPositions.map((v, i) => (
-    <g>
+    <g key={`variant-${v}-${i}`}>
       {v.variant_id === currentVariant && <circle
-        key={'variant-active-circle'}
         cx={v.x}
         cy={height / 3}
         r={10}
@@ -83,7 +80,6 @@ const ClickArea = ({
         strokeDasharray={'3, 3'}
       />}
       <circle
-        key={`variant-${v}-${i}`}
         cx={v.x}
         cy={height / 3}
         r={5}

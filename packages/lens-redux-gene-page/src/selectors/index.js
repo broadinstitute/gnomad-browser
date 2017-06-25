@@ -6,7 +6,7 @@ const sortVariants = (variants, { key, ascending }) => (
   variants.sort((a, b) => b[key] - a[key])
 )
 
-const getCurrentGene = state => state.selections.currentGene
+const getCurrentGene = state => state.active.currentGene
 
 const getGenes = state => state.genes.byGeneName
 

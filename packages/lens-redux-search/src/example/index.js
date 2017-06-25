@@ -89,4 +89,3 @@ const ExampleApp = () => (
 )
 
 export default ExampleApp
-

@@ -1,12 +1,21 @@
+/* eslint-disable no-shadow */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import NavigatorTrack from 'lens-track-navigator'
 
 import {
   getVisibleVariants,
-} from '../selectors'
+} from '../../selectors'
 
-import * as actions from '../actions'
+import {
+  currentVariant,
+  currentTableIndex,
+  currentNavigatorPosition,
+  actions as activeActions,
+} from '../../resources/active'
 
 import css from './styles.css'
 
@@ -45,17 +54,18 @@ Navigator.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  currentTableIndex: state.selections.currentTableIndex,
-  currentNavigatorPosition: state.selections.currentNavigatorPosition,
-  currentVariant: state.selections.currentVariant,
+  currentTableIndex: currentTableIndex(state),
+  currentNavigatorPosition: currentNavigatorPosition(state),
+  currentVariant: currentVariant(state),
   variantSort: state.table.variantSort,
   variants: getVisibleVariants(state),
   ownProps,
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+
+const mapDispatchToProps = dispatch => ({
   onNavigatorClick: (tableIndex, position) =>
-    dispatch(actions.onNavigatorClick(tableIndex, position)),
+    dispatch(activeActions.onNavigatorClick(tableIndex, position)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigator)

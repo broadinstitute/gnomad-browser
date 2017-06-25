@@ -7,6 +7,8 @@ import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 import { getVisibleVariants } from '../../../selectors'
 import * as actions from '../../../actions'
 
+import { actions as activeActions } from '../../../resources/active'
+
 import css from './styles.css'
 
 const sortVariants = (variants, { key, ascending }) => (
@@ -145,14 +147,14 @@ const mapStateToProps = (state) => {
   return {
     visibleVariants: getVisibleVariants(state),
     variantSort: state.table.variantSort,
-    currentNavigatorPosition: state.selections.currentNavigatorPosition,
+    currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
-    setCurrentVariant: variantId => dispatch(actions.setCurrentVariant(variantId)),
-    setCurrentTableIndex: index => dispatch(actions.setCurrentTableIndex(index)),
+    setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
+    setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
   }
 }
