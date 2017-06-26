@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import store from 'lens-redux-gene-page/lib/store/store'
+import createStore from 'lens-redux-gene-page/lib/store/store'
+
+const store = createStore()
 
 import App from './routes'
 

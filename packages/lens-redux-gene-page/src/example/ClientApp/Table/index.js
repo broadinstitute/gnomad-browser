@@ -43,14 +43,14 @@ const GnomadVariantTable = ({
       <VariantTable
         css={css}
         title={''}
-        height={400}
+        height={650}
         width={calculatedWidth}
         tableConfig={tConfig}
         tableData={visibleVariants}
         remoteRowCount={visibleVariants.size}
         loadMoreRows={() => {}}
-        overscan={10}
-        loadLookAhead={1000}
+        overscan={0}
+        loadLookAhead={0}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}

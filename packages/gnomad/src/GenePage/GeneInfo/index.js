@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable camelcase */
 
 import React, { PropTypes } from 'react'
@@ -9,7 +10,7 @@ const GeneInfo = ({ gene, variantCount }) => {
     gene_id,
     full_gene_name,
     omim_accession,
-  } = gene
+  } = gene.toJS()
   return (
     <div className={css.geneInfo}>
       <h1>{gene_name}</h1>

@@ -1,159 +1,89 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+
 import React, { PropTypes } from 'react'
-import { throttle } from 'throttle-debounce'
 import { connect } from 'react-redux'
 import VariantTable from 'lens-variant-table'
-import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 
-import { getVisibleVariants } from 'lens-redux-gene-page/lib/selectors'
-import * as actions from 'lens-redux-gene-page/lib/actions'
+import { actions as activeActions } from 'lens-redux-gene-page/lib/resources/active'
+
+import {
+  visibleVariants,
+  tablePosition,
+  searchText,
+  searchFilteredVariants,
+  actions as tableActions
+} from 'lens-redux-gene-page/lib/resources/table'
+
+import { tableConfig } from './tableConfig'
 
 import css from './styles.css'
 
-const sortVariants = (variants, { key, ascending }) => (
-  ascending ?
-  variants.sort((a, b) => a[key] - b[key]) :
-  variants.sort((a, b) => b[key] - a[key])
-)
-
 const GnomadVariantTable = ({
   visibleVariants,
-  variantSort,
   setVariantSort,
   setCurrentVariant,
-  currentNavigatorPosition,
   setCurrentTableIndex,
+  tablePosition,
+  searchText,
 }) => {
-  const sortedVariants = sortVariants(visibleVariants, variantSort)
-
-  const tableDataConfig = {
-    fields: [
-      {
-        dataKey: 'variant_id',
-        title: 'Variant ID',
-        dataType: 'variantId',
-        width: 125,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'filters',
-        title: 'Filters',
-        dataType: 'filter',
-        width: 70,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'rsid',
-        title: 'RSID',
-        dataType: 'string',
-        width: 70,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'hgvsp',
-        title: 'HGVSp',
-        dataType: 'string',
-        width: 100,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'hgvsc',
-        title: 'HGVSc',
-        dataType: 'string',
-        width: 100,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'consequence',
-        title: 'Consequence',
-        dataType: 'string',
-        width: 100,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'allele_count',
-        title: 'AC',
-        dataType: 'integer',
-        width: 40,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'allele_num',
-        title: 'AN',
-        dataType: 'integer',
-        width: 40,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'allele_freq',
-        title: 'AF',
-        dataType: 'float',
-        width: 40,
-        onHeaderClick: setVariantSort,
-      },
-      {
-        dataKey: 'hom_count',
-        title: 'Hom',
-        dataType: 'integer',
-        width: 20,
-        onHeaderClick: setVariantSort,
-      },
-    ],
-  }
+  const tConfig = tableConfig(setVariantSort)
 
   const scrollBarWidth = 40
-  const paddingWidth = tableDataConfig.fields.length * 40
-  const cellContentWidth = tableDataConfig.fields.reduce((acc, field) =>
+  const paddingWidth = tConfig.fields.length * 40
+  const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-
-  const tablePosition = getTableIndexByPosition(
-    currentNavigatorPosition,
-    sortedVariants,
-  )
-
+  console.log('from table', visibleVariants)
   return (
     <div className={css.component}>
       <VariantTable
         css={css}
         title={''}
-        height={400}
+        height={650}
         width={calculatedWidth}
-        tableConfig={tableDataConfig}
-        tableData={sortedVariants}
-        remoteRowCount={visibleVariants.length}
+        tableConfig={tConfig}
+        tableData={visibleVariants}
+        remoteRowCount={visibleVariants.size}
         loadMoreRows={() => {}}
-        overscan={10}
-        loadLookAhead={1000}
+        overscan={0}
+        loadLookAhead={0}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
+        searchText={searchText}
       />
     </div>
   )
 }
 GnomadVariantTable.propTypes = {
-  visibleVariants: PropTypes.array.isRequired,
-  variantSort: PropTypes.object.isRequired,
+  visibleVariants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
-  currentNavigatorPosition: PropTypes.number.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
+  tablePosition: PropTypes.number.isRequired,
+  searchText: PropTypes.string.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
-    visibleVariants: getVisibleVariants(state),
-    variantSort: state.table.variantSort,
-    currentNavigatorPosition: state.selections.currentNavigatorPosition,
+    // visibleVariants: visibleVariants(state),
+    visibleVariants: searchFilteredVariants(state),
+    tablePosition: tablePosition(state),
+    searchText: searchText(state),
+    currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVariantSort: sortKey => dispatch(actions.setVariantSort(sortKey)),
-    setCurrentVariant: variantId => dispatch(actions.setCurrentVariant(variantId)),
-    setCurrentTableIndex: index => dispatch(actions.setCurrentTableIndex(index)),
-    // setVisibleInTable: range => dispatch(actions.setVisibleInTable(range)),
+    setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
+    setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
+    setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
   }
 }
 

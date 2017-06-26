@@ -1,13 +1,24 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+/* eslint-disable no-case-declarations */
+
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import R from 'ramda'
 
 import RegionViewer from 'lens-region'
 import TranscriptTrack from 'lens-track-transcript'
 import CoverageTrack from 'lens-track-coverage'
 import VariantTrack from 'lens-track-variant'
+import Navigator from 'lens-redux-gene-page/lib/containers/Navigator'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
-// import Navigator from 'lens-redux-gene-page/lib/containers/Navigator'
-import Navigator from '../Navigator'
+import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
+import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
+import { visibleVariants } from 'lens-redux-gene-page/lib/resources/table'
 
 import css from './styles.css'
 
@@ -66,10 +77,11 @@ const GeneRegion = ({
   visibleVariants,
   exonPadding,
 }) => {
-  const geneExons = gene.exons
-  const canonicalExons = gene.transcript.exons
+  const geneJS = gene.toJS()
+  const geneExons = geneJS.exons
+  const canonicalExons = geneJS.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
-  const { exome_coverage, genome_coverage } = gene
+  const { exome_coverage, genome_coverage } = geneJS
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
@@ -161,7 +173,6 @@ const GeneRegion = ({
       },
     ],
   }
-  console.log('exon', canonicalExons)
   return (
     <div className={css.geneRegion}>
       <RegionViewer
@@ -195,4 +206,8 @@ GeneRegion.propTypes = {
   visibleVariants: PropTypes.array.isRequired,
   exonPadding: PropTypes.number.isRequired,
 }
-export default GeneRegion
+export default connect(state => ({
+  gene: geneData(state),
+  exonPadding: exonPadding(state),
+  visibleVariants: visibleVariants(state),
+}))(GeneRegion)

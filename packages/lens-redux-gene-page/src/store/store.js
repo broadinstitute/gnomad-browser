@@ -13,7 +13,7 @@ import rootReducer from '../resources'
 
 const logger = createLogger()
 
-const defaultWait = 400
+const defaultWait = 20
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
   leading: true,
   trailing: false,
@@ -24,6 +24,7 @@ export default function createTestStore() {
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
       thunk,
+      logger,
     ),
     reduxSearch({
       resourceIndexes: {
