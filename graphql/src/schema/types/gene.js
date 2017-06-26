@@ -18,6 +18,7 @@ import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 import metaVariantType from './metavariant'
+import schzVariantType, { lookupSchzVariantsByStartStop } from './schzvariant'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 
 const geneType = new GraphQLObjectType({
@@ -76,10 +77,21 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id, args.consequence),
     },
-    meta_schizophrenia_variants: {
-      type: new GraphQLList(metaVariantType),
+    // meta_schizophrenia_variants: {
+    //   type: new GraphQLList(metaVariantType),
+    //   resolve: (obj, args, ctx) =>
+    //     ctx.database.sczMockDb.getSczVariants(),
+    // },
+    schiz_variants: {
+      type: new GraphQLList(schzVariantType),
       resolve: (obj, args, ctx) =>
-        ctx.database.sczMockDb.getSczVariants(),
+        lookupSchzVariantsByStartStop(
+          ctx.database.gnomad,
+          'schizophrenia',
+          Number(obj.chrom),
+          obj.start,
+          Number(obj.stop),
+        ),
     },
     transcript: {
       type: transcriptType,

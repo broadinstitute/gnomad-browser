@@ -4,7 +4,6 @@
 
 import requests
 import ast
-import lens
 
 def get_query(gene_name):
     query = '''{
