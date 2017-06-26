@@ -17,7 +17,7 @@ import Navigator from 'lens-redux-gene-page/lib/containers/Navigator'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
 import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
-import { visibleVariants } from 'lens-redux-gene-page/lib/resources/table'
+import { searchFilteredVariants as visibleVariants } from 'lens-redux-gene-page/lib/resources/table'
 
 import css from './styles.css'
 
@@ -62,9 +62,9 @@ const GeneRegion = ({
   const geneExons = geneJS.exons
   const canonicalExons = geneJS.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
-
+  const variantsArray = visibleVariants.toArray()
   const markerConfigOther = {
-    markerType: 'af',
+    markerType: 'circle',
     circleRadius: 3,
     circleStroke: 'black',
     circleStrokeWidth: 1,
@@ -73,14 +73,34 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
+  // const markerConfigCircle = {
+  //   markerType: 'circle',
+  //   circleRadius: this.state.markerWidth,
+  //   circleStroke: 'black',
+  //   circleStrokeWidth: this.state.markerStrokeWidth,
+  //   yPositionSetting: this.state.variantYPosition,
+  //   fillColor: 'lof',
+  // }
+
+  const markerConfigTick = {
+    markerType: 'tick',
+    tickHeight: 3,
+    tickWidth: 1,
+    tickStroke: 'black',
+    tickStrokeWidth: 1,
+    yPositionSetting: 'center',
+    fillColor: 'lof',
+  }
+
+
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`All variants: (${visibleVariants.length})`}
-      height={30}
+      title={`All variants: (${visibleVariants.size})`}
+      height={200}
       color={'#75757'}
       markerConfig={markerConfigOther}
-      variants={visibleVariants}
+      variants={variantsArray}
     />
   )
 
@@ -89,7 +109,7 @@ const GeneRegion = ({
       <RegionViewer
         css={css}
         width={1150}
-        padding={exonPadding}
+        padding={10000}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
       >
@@ -106,7 +126,7 @@ const GeneRegion = ({
 }
 GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
-  visibleVariants: PropTypes.array.isRequired,
+  visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
 }
 export default connect(state => ({

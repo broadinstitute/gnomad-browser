@@ -179,6 +179,7 @@ const VariantTrack = ({
             } = markerConfig
             const yPosition = setYPosition(height, yPositionSetting)
             const regionViewerAttributes = positionOffset(variant.pos)
+            console.log(positionOffset(variant.pos))
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
             const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
             if (regionViewerAttributes === 0) return  // eslint-disable-line

@@ -4,12 +4,21 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 
-import { createStore, applyMiddleware, compose } from 'redux'
+import {
+  applyMiddleware,
+  compose,
+  combineReducers,
+  createStore,
+} from 'redux'
+
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import throttle from 'redux-throttle'
-import { reduxSearch } from 'redux-search'
-import rootReducer from '../resources'
+import { reduxSearch, reducer as searchReducer } from 'redux-search'
+
+import { makeGeneReducers } from '../resources/genes'
+import active from '../resources/active'
+import table from '../resources/table'
 
 const logger = createLogger()
 
@@ -19,7 +28,18 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
   trailing: false,
 }
 
-export default function createTestStore() {
+export default function createGenePageStore({
+  searchIndexes,
+  // fetchFunction,
+  variantSchema,
+}) {
+  const rootReducer = combineReducers({
+    active,
+    ...makeGeneReducers(variantSchema),
+    table,
+    search: searchReducer,
+  })
+
   const finalCreateStore = compose(
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
@@ -28,10 +48,9 @@ export default function createTestStore() {
     ),
     reduxSearch({
       resourceIndexes: {
-        variants: ['variant_id', 'hgvsp', 'hgvsc', 'consequence'],
+        variants: searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        // console.log('resource name', state.resources.get(resourceName))
         return state.resources.get(resourceName)
       },
     }),

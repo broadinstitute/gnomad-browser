@@ -7,47 +7,14 @@
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
+import { getXpos } from 'lens-utilities'
 
-import { fetchGenePage } from './fetch'
+import { fetchGenePage, fetchSchzGenePage } from './fetch'
 import {
   currentGene
 } from './active'
 
 const API_URL = 'http://localhost:8006'
-
-const State = Immutable.Record({
-  isFetching: false,
-  byGeneName: Immutable.OrderedMap(),
-  allGeneNames: Immutable.Set(),
-})
-
-const ResourcesState = Immutable.Record({
-  variants: Immutable.OrderedMap(),
-})
-
-function prepareVariantData(geneData) {
-  const VariantRecord = Immutable.Record({
-    id: null,
-    variant_id: null,
-    pos: null,
-    hgvsp: null,
-    hgvsc: null,
-    filters: null,
-    rsid: null,
-    consequence: null,
-    allele_count: null,
-    allele_num: null,
-    allele_freq: null,
-    hom_count: null,
-  })
-
-  const variantData = {}
-  geneData.variants.forEach((variant) => {
-    const id = variant.variant_id //v4()
-    variantData[id] = new VariantRecord({ id, ...variant })
-  })
-  return Immutable.OrderedMap(variantData)
-}
 
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
@@ -69,7 +36,7 @@ export const actions = {
   fetchPageDataByGeneName (geneName) {
     return (dispatch) => {
       dispatch(actions.requestGeneData(geneName))
-      fetchGenePage(geneName, API_URL)
+      fetchSchzGenePage(geneName, API_URL)
         .then((geneData) => {
           dispatch(actions.receiveGeneData(geneName, geneData))
         }
@@ -97,44 +64,74 @@ export const actions = {
   }
 }
 
-const actionHandlers = {
-  [types.REQUEST_GENE_DATA] (state) {
-    return state.set('isFetching', true)
-  },
-  [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+export function makeGeneReducers(variantSchema) {
+  const State = Immutable.Record({
+    isFetching: false,
+    byGeneName: Immutable.OrderedMap(),
+    allGeneNames: Immutable.Set(),
+  })
 
-    return (
-      state
-        .set('isFetching', false)
-        .set('byGeneName', state.byGeneName.set(geneName, Immutable.fromJS(geneData)))
-        .set('allGeneNames', state.allGeneNames.add(geneName))
-        // .set('variants', prepareVariantData(geneData))
-    )
-  },
-}
+  const ResourcesState = Immutable.Record({
+    variants: Immutable.OrderedMap(),
+  })
 
-const resourcesHandlers = {
-  [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
-    return (
-      state.set('variants', prepareVariantData(geneData))
-    )
-  },
-}
+  function prepareVariantData(geneData) {
+    const VariantRecord = Immutable.Record(variantSchema)
 
-export default function reducer (state = new State(), action: Object): State {
-  const { type } = action
-  if (type in actionHandlers) {
-    return actionHandlers[type](state, action)
+    const variantData = {}
+    geneData.variants.forEach((variant) => {
+      let id //v4()
+      if (variant.variant_id) {
+        id = variant.variant_id
+      } else {
+        id = `${variant.chr}-${variant.pos}-${variant.ref}-${variant.alt}`
+      }
+
+      const xpos = variant.xpos ? variant.xpos : getXpos(variant.chr, variant.pos)
+      variantData[id] = new VariantRecord({ id, ...variant, variant_id: id, xpos, })
+    })
+    return Immutable.OrderedMap(variantData)
   }
-  return state
-}
 
-export function resourcesReducer(state = new ResourcesState(), action) {
-  const { type } = action
-  if (type in resourcesHandlers) {
-    return resourcesHandlers[type](state, action)
+  const actionHandlers = {
+    [types.REQUEST_GENE_DATA] (state) {
+      return state.set('isFetching', true)
+    },
+    [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+      return (
+        state
+          .set('isFetching', false)
+          .set('byGeneName', state.byGeneName.set(geneName, Immutable.fromJS(geneData)))
+          .set('allGeneNames', state.allGeneNames.add(geneName))
+      )
+    },
   }
-  return state
+
+  const resourcesHandlers = {
+    [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+      return (
+        state.set('variants', prepareVariantData(geneData))
+      )
+    },
+  }
+
+  function genes (state = new State(), action: Object): State {
+    const { type } = action
+    if (type in actionHandlers) {
+      return actionHandlers[type](state, action)
+    }
+    return state
+  }
+
+  function resources(state = new ResourcesState(), action) {
+    const { type } = action
+    if (type in resourcesHandlers) {
+      return resourcesHandlers[type](state, action)
+    }
+    return state
+  }
+
+  return ({ genes, resources })
 }
 
 export const byGeneName = state => state.genes.byGeneName
