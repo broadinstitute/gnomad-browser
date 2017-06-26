@@ -6,6 +6,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataType: 'variantId',
       width: 125,
       onHeaderClick,
+      // searchable: true,
     },
     {
       dataKey: 'filters',
@@ -27,6 +28,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataType: 'string',
       width: 100,
       onHeaderClick,
+      searchable: true,
     },
     {
       dataKey: 'hgvsc',
@@ -34,6 +36,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataType: 'string',
       width: 100,
       onHeaderClick,
+      searchable: true,
     },
     {
       dataKey: 'consequence',
@@ -41,6 +44,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataType: 'string',
       width: 100,
       onHeaderClick,
+      searchable: true,
     },
     {
       dataKey: 'allele_count',

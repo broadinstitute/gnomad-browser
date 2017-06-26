@@ -7,12 +7,13 @@
 
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
+import { createSearchAction, getSearchSelectors } from 'redux-search'
 import Immutable from 'immutable'
 
 import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 
-import { currentGene, currentNavigatorPosition } from './active'
-import { geneData } from './genes'
+import { currentNavigatorPosition } from './active'
+import { geneData, variantsById } from './genes'
 
 const State = Immutable.Record({
   variantSortKey: 'pos',
@@ -48,7 +49,8 @@ export const actions = {
       type: types.SET_VISIBLE_IN_TABLE,
       filter,
     }
-  }
+  },
+  searchVariants: createSearchAction('variants')
 }
 
 const actionHandlers = {
@@ -94,7 +96,7 @@ export const variantSortAscending = state => state.table.variantSortAscending
 export const variantFilter = state => state.table.variantFilter
 
 export const visibleVariants = createSelector(
-  [geneData,variantSortKey, variantSortAscending, variantFilter],
+  [geneData, variantSortKey, variantSortAscending, variantFilter],
   (geneData, variantSortKey, variantSortAscending, variantFilter) => {
     console.log('visible variants', geneData)
     if (geneData) {
@@ -121,5 +123,30 @@ export const tablePosition = createSelector(
       currentNavigatorPosition,
       visibleVariants,
     )
+  }
+)
+
+export const resourceSelector = (resourceName, state) => state.resources.get(resourceName)
+
+export const searchSelectors = getSearchSelectors({
+  resourceName: 'variants',
+  resourceSelector,
+})
+
+export const searchText = searchSelectors.text
+
+export const filteredVariantIdList = createSelector(
+  [searchSelectors.result],
+  result => Immutable.List(result)
+)
+
+export const searchFilteredVariants = createSelector(
+  [variantsById, filteredVariantIdList],
+  (variantsById, filteredVariantIdList) => {
+    if (filteredVariantIdList.size === 0) {
+      console.log(variantsById)
+      return variantsById.toList()
+    }
+    return filteredVariantIdList.map(id => variantsById.get(id))
   }
 )

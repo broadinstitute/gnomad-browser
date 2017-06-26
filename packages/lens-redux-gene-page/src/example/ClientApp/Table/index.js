@@ -13,6 +13,8 @@ import { actions as activeActions } from '../../../resources/active'
 import {
   visibleVariants,
   tablePosition,
+  searchText,
+  searchFilteredVariants,
   actions as tableActions
 } from '../../../resources/table'
 
@@ -26,6 +28,7 @@ const GnomadVariantTable = ({
   setCurrentVariant,
   setCurrentTableIndex,
   tablePosition,
+  searchText,
 }) => {
   const tConfig = tableConfig(setVariantSort)
 
@@ -34,7 +37,7 @@ const GnomadVariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-
+  console.log('from table', visibleVariants)
   return (
     <div className={css.component}>
       <VariantTable
@@ -44,30 +47,34 @@ const GnomadVariantTable = ({
         width={calculatedWidth}
         tableConfig={tConfig}
         tableData={visibleVariants}
-        remoteRowCount={visibleVariants.length}
+        remoteRowCount={visibleVariants.size}
         loadMoreRows={() => {}}
         overscan={10}
         loadLookAhead={1000}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
+        searchText={searchText}
       />
     </div>
   )
 }
 GnomadVariantTable.propTypes = {
-  visibleVariants: PropTypes.array.isRequired,
+  visibleVariants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
+  searchText: PropTypes.string.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
-    visibleVariants: visibleVariants(state),
+    // visibleVariants: visibleVariants(state),
+    visibleVariants: searchFilteredVariants(state),
     tablePosition: tablePosition(state),
+    searchText: searchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }

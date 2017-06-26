@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-import store from '../store/store'
+import createStore from '../store/store'
 import App from './ClientApp'
 
 const muiTheme = getMuiTheme({
@@ -16,6 +16,8 @@ const muiTheme = getMuiTheme({
     height: 50,
   },
 })
+
+const store = createStore()
 
 const Main = () => (
   <Provider store={store}>

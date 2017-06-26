@@ -21,6 +21,34 @@ const State = Immutable.Record({
   allGeneNames: Immutable.Set(),
 })
 
+const ResourcesState = Immutable.Record({
+  variants: Immutable.OrderedMap(),
+})
+
+function prepareVariantData(geneData) {
+  const VariantRecord = Immutable.Record({
+    id: null,
+    variant_id: null,
+    pos: null,
+    hgvsp: null,
+    hgvsc: null,
+    filters: null,
+    rsid: null,
+    consequence: null,
+    allele_count: null,
+    allele_num: null,
+    allele_freq: null,
+    hom_count: null,
+  })
+
+  const variantData = {}
+  geneData.variants.forEach((variant) => {
+    const id = variant.variant_id //v4()
+    variantData[id] = new VariantRecord({ id, ...variant })
+  })
+  return Immutable.OrderedMap(variantData)
+}
+
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
   RECEIVE_GENE_DATA: null,
@@ -74,11 +102,21 @@ const actionHandlers = {
     return state.set('isFetching', true)
   },
   [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+
     return (
       state
         .set('isFetching', false)
         .set('byGeneName', state.byGeneName.set(geneName, Immutable.fromJS(geneData)))
         .set('allGeneNames', state.allGeneNames.add(geneName))
+        // .set('variants', prepareVariantData(geneData))
+    )
+  },
+}
+
+const resourcesHandlers = {
+  [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+    return (
+      state.set('variants', prepareVariantData(geneData))
     )
   },
 }
@@ -91,6 +129,14 @@ export default function reducer (state = new State(), action: Object): State {
   return state
 }
 
+export function resourcesReducer(state = new ResourcesState(), action) {
+  const { type } = action
+  if (type in resourcesHandlers) {
+    return resourcesHandlers[type](state, action)
+  }
+  return state
+}
+
 export const byGeneName = state => state.genes.byGeneName
 export const allGeneNames = state => state.genes.allGeneNames
 export const isFetching = state => state.genes.isFetching
@@ -99,6 +145,8 @@ export const geneData = createSelector(
   [byGeneName, currentGene],
   (byGeneName, currentGene) => byGeneName.get(currentGene),
 )
+
+export const variantsById = state => state.resources.get('variants')
 
 export const shouldFetchGene = createSelector(
   [allGeneNames, isFetching, currentGene],

@@ -4,10 +4,11 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import throttle from 'redux-throttle'
+import { reduxSearch } from 'redux-search'
 import rootReducer from '../resources'
 
 const logger = createLogger()
@@ -18,13 +19,22 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
   trailing: false,
 }
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(
-    throttle(defaultWait, defaultThrottleOption),
-    thunk,
-    logger,
-  ),
-)
+export default function createTestStore() {
+  const finalCreateStore = compose(
+    applyMiddleware(
+      throttle(defaultWait, defaultThrottleOption),
+      thunk,
+    ),
+    reduxSearch({
+      resourceIndexes: {
+        variants: ['variant_id', 'hgvsp', 'hgvsc', 'consequence'],
+      },
+      resourceSelector: (resourceName, state) => {
+        // console.log('resource name', state.resources.get(resourceName))
+        return state.resources.get(resourceName)
+      },
+    }),
+  )(createStore)
 
-export default store
+  return finalCreateStore(rootReducer)
+}

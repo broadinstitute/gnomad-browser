@@ -6,6 +6,7 @@
 /* eslint-disable no-case-declarations */
 
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import R from 'ramda'
 
 import RegionViewer from 'lens-region'
@@ -15,6 +16,10 @@ import VariantTrack from 'lens-track-variant'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 
 import Navigator from '../../../containers/Navigator'
+
+import { exonPadding } from '../../../resources/active'
+import { geneData } from '../../../resources/genes'
+import { visibleVariants } from '../../../resources/table'
 
 import css from './styles.css'
 
@@ -202,4 +207,8 @@ GeneRegion.propTypes = {
   visibleVariants: PropTypes.array.isRequired,
   exonPadding: PropTypes.number.isRequired,
 }
-export default GeneRegion
+export default connect(state => ({
+  gene: geneData(state),
+  exonPadding: exonPadding(state),
+  visibleVariants: visibleVariants(state),
+}))(GeneRegion)

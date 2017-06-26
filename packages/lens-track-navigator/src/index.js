@@ -50,8 +50,14 @@ const ClickArea = ({
   currentVariant,
   variantSortKey,
 }) => {
-  const currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + 15)
+  let currentlyVisibleVariants
+  if (variants.size < scrollSync + 15) {
+    currentlyVisibleVariants = variants.slice(0, 15).toJS()
+  } else {
+    currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + 15).toJS()
+  }
 
+  console.log('inside', currentlyVisibleVariants, scrollSync)
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 
@@ -166,7 +172,7 @@ const ClickArea = ({
       height={height}
       onClick={_ => {
         const genomePos = invertOffset(position.x)
-        const tableIndex = getTableIndexByPosition(genomePos, variants)
+        const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
     >

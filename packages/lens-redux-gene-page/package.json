@@ -6,7 +6,6 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
   "peerDependencies": {
     "react": "^15.5.4",
     "react-redux": "^0.24.1",
@@ -16,6 +15,8 @@
   },
   "dependencies": {
     "immutable": "^3.8.1",
-    "keymirror": "^0.1.1"
+    "keymirror": "^0.1.1",
+    "mousetrap": "^1.6.1",
+    "redux-search": "^2.3.3"
   }
 }

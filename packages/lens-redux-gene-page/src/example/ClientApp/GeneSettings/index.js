@@ -1,17 +1,37 @@
-import React, { PropTypes } from 'react'
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-shadow */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+/* eslint-disable no-case-declarations */
 
-import DropDownMenu from 'material-ui/DropDownMenu'
-import MenuItem from 'material-ui/MenuItem'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+
+// import DropDownMenu from 'material-ui/DropDownMenu'
+// import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
-import Checkbox from 'material-ui/Checkbox'
+// import Checkbox from 'material-ui/Checkbox'
+import Mousetrap from 'mousetrap'
+
+import { actions as tableActions } from '../../../resources/table'
+import { currentGene, exonPadding, actions as activeActions } from '../../../resources/active'
 
 import css from './styles.css'
+
+let findInput
+
+Mousetrap.bind(['command+f', 'meta+s'], function(e) {
+  e.preventDefault()
+  findInput.focus()
+})
 
 const GeneSettings = ({
   currentGene,
   exonPadding,
   setCurrentGene,
   setExonPadding,
+  searchVariants
 }) => {
   const testGenes = [
     'PCSK9',
@@ -40,45 +60,28 @@ const GeneSettings = ({
     const padding = Math.floor(1000 * newValue)
     setExonPadding(padding)
   }
-
+  const geneLinks = testGenes.map(gene =>
+    <a href="#" key={`${gene}-link`} onClick={() => handleDropdownChange(gene)}>{gene} </a>)
   return (
     <div className={css.geneSettings}>
-      {testGenes.map(gene =>
-        <a href="#" key={`${gene}-link`} onClick={() =>
-         handleDropdownChange(gene)}>{gene} </a>)
-       }
+      {geneLinks}
       <div className={css.menus}>
-      {/*
-        <p>markerType</p>
-        <DropDownMenu value={this.state.markerType} onChange={() => {}}>
-          {['circle', 'tick', 'af'].map(markerType =>
-            <MenuItem key={`${markerType}-menu`} value={markerType} primaryText={markerType} />,
-         )}
-        </DropDownMenu>
-        <Checkbox
-          label="Split consequences"
-          onCheck={() => {}}
-          style={{ display: 'flex', width: 200, height: 25 }}
-        />
-        <p>AF domain max</p>
-        <DropDownMenu value={0} onChange={() => {}}>
-          {[1, 0.1, 0.01, 0.001, 0.0001, 0.00005, 0.00001].map(afmax =>
-            <MenuItem key={`${afmax}-menu`} value={afmax} primaryText={afmax} />,
-         )}
-        </DropDownMenu>
-        <p>Track height</p>
-        <Slider
-          style={{
-            width: 100,
-          }}
-          onChange={() => {}}
-        />*/}
+        {currentGene}
         <p>Exon padding {exonPadding}</p>
         <Slider
           style={{
             width: 100,
           }}
           onChange={setPadding}
+        />
+        <input
+          type="text"
+          placeholder={'Enter data'}
+          ref={input => findInput = input}
+          onChange={(event) => {
+            event.preventDefault()
+            searchVariants(event.target.value)
+          }}
         />
       </div>
     </div>
@@ -87,7 +90,24 @@ const GeneSettings = ({
 
 GeneSettings.propTypes = {
   currentGene: PropTypes.string.isRequired,
+  exonPadding: PropTypes.number.isRequired,
   setCurrentGene: PropTypes.func.isRequired,
+  setExonPadding: PropTypes.func.isRequired,
+  searchVariants: PropTypes.func.isRequired,
 }
 
-export default GeneSettings
+const mapStateToProps = (state) => {
+  return {
+    currentGene: currentGene(state),
+    exonPadding: exonPadding(state),
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
+    searchVariants: searchText => dispatch(tableActions.searchVariants(searchText))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GeneSettings)
