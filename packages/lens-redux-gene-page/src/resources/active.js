@@ -6,11 +6,11 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 
 const State = Immutable.Record({
-  currentGene: 'CFTR',
+  currentGene: 'GRIN2A',
   currentVariant: '',
   currentNavigatorPosition: 0,
   currentTableIndex: 0,
-  exonPadding: 75,
+  exonPadding: 20000,
 })
 
 export const types = keymirror({

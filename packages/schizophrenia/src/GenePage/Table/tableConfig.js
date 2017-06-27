@@ -92,12 +92,12 @@ export const tableConfig = (onHeaderClick) => ({
       width: 60,
       onHeaderClick,
     },
-    {
-      dataKey: 'comment',
-      title: 'Comment',
-      dataType: 'string',
-      width: 40,
-      onHeaderClick,
-    },
+    // {
+    //   dataKey: 'comment',
+    //   title: 'Comment',
+    //   dataType: 'string',
+    //   width: 40,
+    //   onHeaderClick,
+    // },
   ],
 })

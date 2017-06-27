@@ -19,7 +19,6 @@ const GeneInfo = ({ gene, variantCount }) => {
           <div>Number of variants: {variantCount}</div>
           <div>Full name: {full_gene_name}</div>
           <div>Gene ID: {gene_id}</div>
-          <div>OMIM accession: {omim_accession}</div>
         </div>
         {/*<div className={css.constraint}>
           <div>Full name: {full_gene_name}</div>

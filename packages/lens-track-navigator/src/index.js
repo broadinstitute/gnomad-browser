@@ -57,7 +57,6 @@ const ClickArea = ({
     currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + 15).toJS()
   }
 
-  console.log('inside', currentlyVisibleVariants, scrollSync)
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 

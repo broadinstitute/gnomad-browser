@@ -26,7 +26,6 @@ const Navigator = ({
   variantSortKey,
   ownProps,
 }) => {
-  console.log('from navigator', variants)
   return (
     <NavigatorTrack
       css={css}

@@ -29,6 +29,7 @@ const genePageSettings = {
     i_squared: null,
     mhtp: null,
     comment: null,
+    '-log10p': null,
   }
 }
 

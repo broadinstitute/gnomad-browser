@@ -62,54 +62,35 @@ const GeneRegion = ({
   const geneExons = geneJS.exons
   const canonicalExons = geneJS.transcript.exons
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
-  const variantsArray = visibleVariants.toArray()
-  const markerConfigOther = {
+
+  // const variantsArray = visibleVariants.map(v => {
+  //   return v.set('-log10p', -Math.log10(v.get('p_value')))
+  // }).toArray()
+  const variantsArray = visibleVariants.map(v => {
+    return v.set('-log10p', -Math.log10(v.get('p_value')))
+  }).toJS()
+
+  const markerConfig = {
     markerType: 'circle',
     circleRadius: 3,
     circleStroke: 'black',
     circleStrokeWidth: 1,
-    yPositionSetting: 'random',
+    yPositionSetting: 'attribute',
+    yPositionAttribute: '-log10p',
     fillColor: '#757575',
-    afMax: 0.001,
   }
 
-  // const markerConfigCircle = {
-  //   markerType: 'circle',
-  //   circleRadius: this.state.markerWidth,
-  //   circleStroke: 'black',
-  //   circleStrokeWidth: this.state.markerStrokeWidth,
-  //   yPositionSetting: this.state.variantYPosition,
-  //   fillColor: 'lof',
-  // }
-
-  const markerConfigTick = {
-    markerType: 'tick',
-    tickHeight: 3,
-    tickWidth: 1,
-    tickStroke: 'black',
-    tickStrokeWidth: 1,
-    yPositionSetting: 'center',
-    fillColor: 'lof',
-  }
-
-
-  const allTrack = (
-    <VariantTrack
-      key={'All-variants'}
-      title={`All variants: (${visibleVariants.size})`}
-      height={200}
-      color={'#75757'}
-      markerConfig={markerConfigOther}
-      variants={variantsArray}
-    />
-  )
+  const markerConfigP = { ...markerConfig, yPositionAttribute: '-log10p' }
+  const markerConfigOdds = { ...markerConfig, yPositionAttribute: 'odds_ratio' }
+  const markerConfigSczAF = { ...markerConfig, yPositionAttribute: 'scz_af' }
+  const markerConfigHCAF = { ...markerConfig, yPositionAttribute: 'hc_af' }
 
   return (
     <div className={css.geneRegion}>
       <RegionViewer
         css={css}
         width={1150}
-        padding={10000}
+        padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
       >
@@ -118,7 +99,38 @@ const GeneRegion = ({
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />
-        {allTrack}
+        <VariantTrack
+          key={'-log10p'}
+          title={''}
+          height={200}
+          color={'#75757'}
+          markerConfig={markerConfigP}
+          variants={variantsArray}
+        />
+        {/*<VariantTrack
+          key={'odds_ratio'}
+          title={''}
+          height={100}
+          color={'#75757'}
+          markerConfig={markerConfigOdds}
+          variants={variantsArray}
+        />
+        <VariantTrack
+          key={'scz_af'}
+          title={''}
+          height={100}
+          color={'#75757'}
+          markerConfig={markerConfigSczAF}
+          variants={variantsArray}
+        />
+        <VariantTrack
+          key={'hc_af'}
+          title={''}
+          height={100}
+          color={'#75757'}
+          markerConfig={markerConfigHCAF}
+          variants={variantsArray}
+        />*/}
         <Navigator />
       </RegionViewer>
     </div>

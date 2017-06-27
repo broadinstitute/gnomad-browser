@@ -31,7 +31,6 @@ const GnomadVariantTable = ({
   tablePosition,
   searchText,
 }) => {
-  console.log(visibleVariants)
   const tConfig = tableConfig(setVariantSort)
 
   const scrollBarWidth = 40
@@ -39,7 +38,6 @@ const GnomadVariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  console.log('from table', visibleVariants)
   return (
     <div className={css.component}>
       <VariantTable

@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import Manhattan from 'lens-manhattan'
 
 import GenePage from './GenePage'
+import GeneSettings from './GenePage/GeneSettings'
 
 import css from './styles.css'
 
@@ -12,6 +13,8 @@ const App = () => (
   <div className={css.app}>
     <div>
       <div className={css.mainPanel}>
+        <GeneSettings />
+        <h1>Schizophrenia exome meta-analysis</h1>
         <Manhattan data={MANHATTAN_DATA} />
         <Route exact path="/" component={GenePage} />
         <Route path="/gene/:gene" component={GenePage} />

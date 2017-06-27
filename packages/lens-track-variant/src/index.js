@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
-import { scaleLog } from 'd3-scale'
+import R from 'ramda'
+import { scaleLinear, scaleLog } from 'd3-scale'
+import { max, min, range } from 'd3-array'
 
 import defaultStyles from './styles.css'
+
+const yPad = 10
 
 const Axis = ({ title, css }) => {
   return <div className={css.yLabel}>{title}</div>
@@ -11,15 +15,57 @@ Axis.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
-const VariantAxis = ({ title, leftPanelWidth, css }) => {
+const VariantAxis = ({ title, height, leftPanelWidth, trackYScale, css }) => {
+  const YTicks = trackYScale ? () => {
+    return (
+        <g>
+          {trackYScale.ticks().map(t => {
+            return (
+              <g key={t}>
+                <line
+                  x1={leftPanelWidth - 10}
+                  x2={leftPanelWidth - 5}
+                  y1={trackYScale(t)}
+                  y2={trackYScale(t)}
+                  stroke={'black'}
+                />
+                <text
+                  className={css.yTickText}
+                  x={leftPanelWidth - 30}
+                  y={trackYScale(t) + 5}
+                >
+                  {t}
+                </text>
+              </g>
+            )
+          })}
+        </g>
+      </svg>
+    )
+  } : null
+  const YAxis = () => {
+    return (
+      <svg width={leftPanelWidth} height={height}>
+        <text
+          className={css.yLabel}
+          x={5}
+          y={height / 2}
+
+        >
+          {title}
+        </text>
+        <YTicks />
+      </svg>
+    )
+  }
   return (
     <div
       style={{ width: leftPanelWidth }}
-      className={css.variantLeftAxis}
     >
-      <div className={css.variantAxisName} style={{ fontSize: 12 }}>
+      <YAxis/>
+      {/*<div className={css.variantAxisName} style={{ fontSize: 12 }}>
         {title}
-      </div>
+      </div>*/}
     </div>
   )
 }
@@ -127,23 +173,32 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
   }
 }
 
-const setYPosition = (height, ySetting) => {
-  const yPad = 10
-  const max = height - yPad
-  const min = yPad
+const setYPosition = (height, ySetting, markerConfig, variant, trackYScale) => {
+  const maxHeight = height - yPad
+  const minHeight = yPad
   switch (ySetting) {
     case 'random':
-      return Math.floor((Math.random() * (max - min)) + min)
+      return Math.floor((Math.random() * (maxHeight - minHeight)) + minHeight)
     case 'center':
-      return Math.floor((max + min) / 2)
+      return Math.floor((maxHeight + minHeight) / 2)
+    case 'attribute':
+      return trackYScale(variant[markerConfig.yPositionAttribute])
     default:
-      return Math.floor((Math.random() * (max - min)) + min)
+      return Math.floor((Math.random() * (maxHeight - minHeight)) + minHeight)
   }
 }
 
 const lofColors = {
   HC: '#FF583F',
   LC: '#F0C94D',
+}
+
+function getTrackYScale (markerConfig, variants, height) {
+  const yData = R.pluck(markerConfig.yPositionAttribute, variants)
+  const yScale = scaleLinear()
+    .domain([min(yData), max(yData) + (max(yData) * 0.1)])
+    .range([height - yPad, yPad])
+  return yScale
 }
 
 const VariantTrack = ({
@@ -158,13 +213,18 @@ const VariantTrack = ({
   color,
   ...rest
 }) => {
+  const trackYScale = markerConfig.yPositionSetting === 'attribute' ?
+    getTrackYScale(markerConfig, variants, height) : null
+  const localTitle = markerConfig.yPositionSetting === 'attribute' ?
+    markerConfig.yPositionAttribute : title
   return (
     <div className={css.track}>
       <VariantAxis
         css={css}
         height={height}
         leftPanelWidth={leftPanelWidth}
-        title={title}
+        title={localTitle}
+        trackYScale={trackYScale}
       />
       <div className={css.data}>
         <svg
@@ -172,14 +232,14 @@ const VariantTrack = ({
           height={height}
         >
           {variants.map((variant, index) => {
-            const { markerType,
+            const {
+              markerType,
               yPositionSetting,
               fillColor,
               afMax,
             } = markerConfig
-            const yPosition = setYPosition(height, yPositionSetting)
+            const yPosition = setYPosition(height, yPositionSetting, markerConfig, variant, trackYScale)
             const regionViewerAttributes = positionOffset(variant.pos)
-            console.log(positionOffset(variant.pos))
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
             const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
             if (regionViewerAttributes === 0) return  // eslint-disable-line
