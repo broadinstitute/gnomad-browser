@@ -10,6 +10,7 @@ import React, { PropTypes } from 'react'
 
 import GenePageHOC from 'lens-redux-gene-page/lib/containers/GenePage'
 import GeneInfo from './GeneInfo'
+import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
 
@@ -33,6 +34,7 @@ const AppGenePage = ({
       </div>
       <RegionViewer />
       <Table />
+      <GeneSettings />
     </div>
   )
 }

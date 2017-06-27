@@ -1,6 +1,6 @@
 :root {
   --backgroundColor: #FAFAFA;
-  --primaryColor: #375D81;
+  --primaryColor: 'black';
   --secondaryColor: #91AA9D;
   --exonColor: #475453;
   --paddingColor: #183152;

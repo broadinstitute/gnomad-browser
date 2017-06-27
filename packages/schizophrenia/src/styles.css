@@ -49,3 +49,10 @@ h1 {
   padding-left: 50px;
   padding-top: 10px;
 }
+
+.title {
+  font-size: 30px;
+  color: var(--primaryColor);
+  margin-left: 30px;
+  margin-top: 20px;
+}

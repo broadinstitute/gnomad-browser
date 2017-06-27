@@ -74,7 +74,7 @@ const GeneSettings = ({
     <div className={css.geneSettings}>
       {geneLinks}
       <div className={css.menus}>
-        <input
+        {/*<input
           type="text"
           placeholder={'Enter data'}
           ref={input => findInput = input}
@@ -82,7 +82,7 @@ const GeneSettings = ({
             event.preventDefault()
             searchVariants(event.target.value)
           }}
-        />
+        />*/}
       </div>
     </div>
   )
