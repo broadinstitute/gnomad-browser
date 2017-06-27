@@ -13,6 +13,7 @@
     "dist"
   ],
   "localDependencies": {
+    "lens-manhattan": "0.0.1",
     "lens-redux-gene-page": "0.0.1",
     "lens-region": "0.0.1",
     "lens-track-navigator": "0.0.1",

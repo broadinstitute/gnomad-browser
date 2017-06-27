@@ -51,6 +51,13 @@ const GeneSettings = ({
     'DMD',
     'TTN',
     'USH2A',
+    'DRD2',
+    'GRM3',
+    'GRIN2A',
+    'SRR',
+    'GRIA1',
+    'CACNA1C',
+    'CACNB2',
   ]
 
   const handleDropdownChange = (gene) => {

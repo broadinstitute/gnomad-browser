@@ -11,8 +11,8 @@ import React, { PropTypes } from 'react'
 import GenePageHOC from 'lens-redux-gene-page/lib/containers/GenePage'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
-import GeneRegion from './RegionViewer'
-import GnomadVariantTable from './Table'
+import RegionViewer from './RegionViewer'
+import Table from './Table'
 
 import css from './styles.css'
 
@@ -33,8 +33,8 @@ const AppGenePage = ({
           variantCount={visibleVariants.length}
         />
       </div>
-      <GeneRegion/>
-      <GnomadVariantTable />
+      <RegionViewer />
+      <Table />
     </div>
   )
 }

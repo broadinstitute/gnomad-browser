@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import R from 'ramda'
 import { scaleLinear, scaleBand } from 'd3-scale'
-import { max, range } from 'd3-array'
+import { max, min, range } from 'd3-array'
 
 import {
   HUMAN_CHROMOSOMES,
@@ -16,7 +16,7 @@ const ManhattanPlot = ({
   sexChromosomes = false,
   showAxisBounds = false,
 }) => {
-  const width = 1000
+  const width = 1300
   const height = 500
   const padding = 60
   const yData = R.pluck('-log10p', data)
@@ -32,7 +32,7 @@ const ManhattanPlot = ({
     .range([0 + padding, width])
 
   const yScale = scaleLinear()
-    .domain([0, max(yData) + (max(yData) * 0.1)])
+    .domain([min(yData), max(yData) + (max(yData) * 0.1)])
     .range([height - padding, padding])
 
   const Background = () => (
@@ -77,7 +77,7 @@ const ManhattanPlot = ({
       x={width / 2}
       y={padding / 2}
     >
-      
+
     </text>
   )
 
