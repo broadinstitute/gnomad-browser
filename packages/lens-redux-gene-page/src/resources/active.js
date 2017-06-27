@@ -5,12 +5,26 @@
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
 
+// HACK
+const getDefaultsForProject = (env) => {
+  switch (env) {
+    case 'gnomad':
+      return { startingGene: 'USH2A', padding: 75 }
+    case 'schizophrenia':
+      return { startingGene: 'GRIN2A', padding: 10000 }
+    case 'dblof':
+      return { startingGene: 'CFTR', padding: 75 }
+    default:
+      return { startingGene: 'CFTR', padding: 75 }
+  }
+}
+
 const State = Immutable.Record({
-  currentGene: 'GRIN2A',
+  currentGene: getDefaultsForProject(process.env.FETCH_FUNCTION).startingGene,
   currentVariant: '',
   currentNavigatorPosition: 0,
   currentTableIndex: 0,
-  exonPadding: 20000,
+  exonPadding: getDefaultsForProject(process.env.FETCH_FUNCTION).padding
 })
 
 export const types = keymirror({

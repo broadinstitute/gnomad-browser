@@ -34,7 +34,7 @@ const GeneSettings = ({
   setExonPadding,
   searchVariants
 }) => {
-  const testGenes = [
+  const testGenes = 
     'PCSK9',
     'ZNF658',
     'MYH9',

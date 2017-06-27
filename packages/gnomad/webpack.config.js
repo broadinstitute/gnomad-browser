@@ -1,6 +1,13 @@
+const webpack = require('webpack')
 const path = require('path')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
+const isDev = (process.env.NODE_ENV === 'development')
+
+const defineEnvPlugin = new webpack.DefinePlugin({
+  __DEV__: isDev,
+  'process.env.FETCH_FUNCTION': JSON.stringify(process.env.FETCH_FUNCTION),
+})
 
 const config = {
   devtool: 'source-map',
@@ -43,6 +50,7 @@ const config = {
     ],
   },
   plugins: [
+    defineEnvPlugin,
     // new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8031 }),
   ],
   devServer: {

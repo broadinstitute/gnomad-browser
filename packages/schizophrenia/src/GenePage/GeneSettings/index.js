@@ -65,7 +65,7 @@ const GeneSettings = ({
   }
 
   const setPadding = (event, newValue) => {
-    const padding = Math.floor(1000 * newValue)
+    const padding = Math.floor(30000 * newValue)
     setExonPadding(padding)
   }
   const geneLinks = testGenes.map(gene =>
@@ -73,6 +73,12 @@ const GeneSettings = ({
   return (
     <div className={css.geneSettings}>
       {geneLinks}
+      <Slider
+        style={{
+          width: 100,
+        }}
+        onChange={setPadding}
+      />
       <div className={css.menus}>
         {/*<input
           type="text"

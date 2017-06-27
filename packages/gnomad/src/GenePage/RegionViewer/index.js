@@ -185,7 +185,7 @@ const GeneRegion = ({
         <CoverageTrack
           title={'Coverage'}
           height={120}
-          dataConfig={coverageConfigClassic}
+          dataConfig={coverageConfig}
           yTickNumber={11}
           yMax={110}
         />

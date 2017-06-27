@@ -5,20 +5,20 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 
-import { fetchTranscriptsByGeneName, test } from 'utilities'  // eslint-disable-line
+import { fetchTranscriptsByGeneName, test } from 'lens-utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from '../RegionViewer'
+import RegionViewer from 'lens-region'
 
-import TranscriptTrack from '../../Tracks/TranscriptTrack'
-import PositionTableTrack from '../../Tracks/PositionTableTrack'
+import TranscriptTrack from 'lens-track-transcript'
+import PositionTableTrack from 'lens-track-position-table'
 
 import examplePageStyles from './RegionTable.example.css'
 
 class RegionTableExample extends Component {
   state = {
     hasData: false,
-    currentGene: 'TP53',
+    currentGene: 'NEB',
     padding: 150,
     testGenes: [
       'PCSK9',

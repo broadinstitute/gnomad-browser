@@ -9,10 +9,27 @@ import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 import { getXpos } from 'lens-utilities'
 
-import { fetchGenePage, fetchSchzGenePage } from './fetch'
 import {
   currentGene
 } from './active'
+
+import { fetchGenePage, fetchSchzGenePage } from './fetch'
+
+// HACK
+const getDefaultsForProject = (env) => {
+  switch (env) {
+    case 'gnomad':
+      return fetchGenePage
+    case 'schizophrenia':
+      return fetchSchzGenePage
+    case 'dblof':
+      return fetchGenePage
+    default:
+      return fetchGenePage
+  }
+}
+
+const fetchFunction = getDefaultsForProject(process.env.FETCH_FUNCTION)
 
 const API_URL = 'http://localhost:8006'
 
@@ -36,8 +53,9 @@ export const actions = {
   fetchPageDataByGeneName (geneName) {
     return (dispatch) => {
       dispatch(actions.requestGeneData(geneName))
-      fetchSchzGenePage(geneName, API_URL)
+      fetchFunction(geneName, API_URL)
         .then((geneData) => {
+          console.log(geneData)
           dispatch(actions.receiveGeneData(geneName, geneData))
         }
       )

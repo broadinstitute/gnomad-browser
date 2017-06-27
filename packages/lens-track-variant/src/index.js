@@ -40,7 +40,6 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale, css }) => {
             )
           })}
         </g>
-      </svg>
     )
   } : null
   const YAxis = () => {
@@ -54,7 +53,7 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale, css }) => {
         >
           {title}
         </text>
-        <YTicks />
+        {trackYScale && <YTicks />}
       </svg>
     )
   }
@@ -283,6 +282,7 @@ VariantTrack.propTypes = {
 }
 VariantTrack.defaultProps = {
   css: defaultStyles,
+  title: '',
   color: 'grey',
   markerConfig: {
     markerType: 'circle',

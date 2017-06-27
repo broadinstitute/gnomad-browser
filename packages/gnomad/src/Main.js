@@ -3,11 +3,31 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import createStore from 'lens-redux-gene-page/lib/store/store'
-
-const store = createStore()
+import createGenePageStore from 'lens-redux-gene-page/lib/store/store'
 
 import App from './routes'
+
+const genePageSettings = {
+  searchIndexes: ['variant_id', 'hgvsp', 'hgvsc', 'consequence'],
+  // fetchFunction,
+  variantSchema: {
+    id: null,
+    variant_id: null,
+    pos: null,
+    xpos: null,
+    hgvsp: null,
+    hgvsc: null,
+    filters: null,
+    rsid: null,
+    consequence: null,
+    allele_count: null,
+    allele_num: null,
+    allele_freq: null,
+    hom_count: null,
+  }
+}
+
+const store = createGenePageStore(genePageSettings)
 
 const muiTheme = getMuiTheme({
   palette: {

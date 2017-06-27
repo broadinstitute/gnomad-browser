@@ -165,6 +165,7 @@ const ManhattanPlot = ({
     return (
       <circle
         key={`snp-${i}`}
+        onClick={() => console.log(snp.chromosome, snp.pos)}
         className={css.snp}
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
