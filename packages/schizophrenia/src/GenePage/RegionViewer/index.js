@@ -89,10 +89,11 @@ const GeneRegion = ({
     <div className={css.geneRegion}>
       <RegionViewer
         css={css}
-        width={1150}
+        width={1000}
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
+        leftPanelWidth={90}
       >
         <TranscriptTrack
           css={css}

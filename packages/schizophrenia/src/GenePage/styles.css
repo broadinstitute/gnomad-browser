@@ -3,7 +3,7 @@
 .genePage {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   /*border: 1px solid var(--secondaryColor);*/
   background-color: var(--backgroundColor);
   color: var(--primaryColor);

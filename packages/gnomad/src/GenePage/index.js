@@ -26,7 +26,6 @@ const AppGenePage = ({
   }
   return (
     <div className={css.genePage}>
-      <GeneSettings />
       <div className={css.summary}>
         <GeneInfo
           gene={gene}
@@ -35,6 +34,7 @@ const AppGenePage = ({
       </div>
       <GeneRegion/>
       <GnomadVariantTable />
+      <GeneSettings />
     </div>
   )
 }

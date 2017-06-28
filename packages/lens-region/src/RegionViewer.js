@@ -33,6 +33,7 @@ class RegionViewer extends Component {
   static defaultProps = {
     css: defaultStyles,
     exonSubset: null,
+    leftPanelWidth: 100,
     onRegionClick: () => {},
     regionAttributes: {
       CDS: {
@@ -59,7 +60,6 @@ class RegionViewer extends Component {
   }
 
   state = {
-    leftPanelWidth: 100,
     rightPanelWidth: 50,
     featuresToDisplay: ['CDS'],
     ready: false,
@@ -84,14 +84,15 @@ class RegionViewer extends Component {
   }
 
   render() {
-    const { css } = this.props
-    const { featuresToDisplay, leftPanelWidth } = this.state
+    const { featuresToDisplay } = this.state
     const {
       regions,
       regionAttributes,
       width,
       exonSubset,
       padding,
+      css,
+      leftPanelWidth,
     } = this.props
 
     const offsetRegions = calculateOffsetRegions(

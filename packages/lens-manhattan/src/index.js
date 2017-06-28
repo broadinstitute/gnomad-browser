@@ -13,11 +13,11 @@ import css from './styles.css'
 const ManhattanPlot = ({
   data,
   title = '',
+  width = 1300,
+  height = 500,
   sexChromosomes = false,
   showAxisBounds = false,
 }) => {
-  const width = 1300
-  const height = 500
   const padding = 60
   const yData = R.pluck('-log10p', data)
 
