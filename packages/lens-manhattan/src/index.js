@@ -33,7 +33,7 @@ const ManhattanPlot = ({
 
   const yScale = scaleLinear()
     .domain([min(yData), max(yData) + (max(yData) * 0.1)])
-    .range([height - padding, padding])
+    .range([height - padding, 10])
 
   const Background = () => (
     <rect

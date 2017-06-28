@@ -13,6 +13,7 @@ const App = () => (
     <div>
       <div className={css.mainPanel}>
         <h1 className={css.title}>Schizophrenia exome meta-analysis</h1>
+        <h2 className={css.manhattan}>Top {MANHATTAN_DATA.length} hits in dataset</h2>
         <Manhattan data={MANHATTAN_DATA} width={1050} height={400}/>
         <Route exact path="/" component={GenePage} />
         <Route path="/gene/:gene" component={GenePage} />
