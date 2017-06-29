@@ -21,6 +21,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataType: 'string',
       width: 70,
       onHeaderClick,
+      searchable: true,
     },
     {
       dataKey: 'hgvsp',

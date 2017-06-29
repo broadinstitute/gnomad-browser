@@ -126,7 +126,7 @@ const GeneRegion = ({
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`Other (${otherVariants.length})`}
+      title={`other (${otherVariants.length})`}
       height={otherHeight}
       color={'#75757'}
       markerConfig={markerConfigOther}
@@ -194,8 +194,8 @@ const GeneRegion = ({
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />
-        {splitTracks}
-        {allTrack}
+      {/*splitTracks}
+        {allTrack*/}
         <Navigator />
       </RegionViewer>
     </div>

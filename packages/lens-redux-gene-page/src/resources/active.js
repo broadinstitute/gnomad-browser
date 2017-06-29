@@ -9,7 +9,7 @@ import keymirror from 'keymirror'
 const getDefaultsForProject = (env) => {
   switch (env) {
     case 'gnomad':
-      return { startingGene: 'USH2A', padding: 75 }
+      return { startingGene: 'CFTR', padding: 75 }
     case 'schizophrenia':
       return { startingGene: 'GRIN2A', padding: 10000 }
     case 'dblof':

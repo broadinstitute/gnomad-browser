@@ -93,7 +93,7 @@ const GeneRegion = ({
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
-        leftPanelWidth={90}
+        leftPanelWidth={100}
       >
         <TranscriptTrack
           css={css}

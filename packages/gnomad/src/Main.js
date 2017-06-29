@@ -8,7 +8,7 @@ import createGenePageStore from 'lens-redux-gene-page/lib/store/store'
 import App from './routes'
 
 const genePageSettings = {
-  searchIndexes: ['variant_id', 'hgvsp', 'hgvsc', 'consequence'],
+  searchIndexes: ['variant_id', 'rsid', 'hgvsp', 'hgvsc', 'consequence'],
   // fetchFunction,
   variantSchema: {
     id: null,

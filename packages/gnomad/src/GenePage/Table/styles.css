@@ -1,5 +1,9 @@
 @import "../config.css";
 
+.tableContainer {
+  margin-left: 110px;
+}
+
 .variantTable {
   display: flex;
   flex-direction: row;

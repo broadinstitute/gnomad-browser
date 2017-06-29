@@ -254,10 +254,12 @@ const VariantTable = ({
         {i}
       </div>
     )
-
+    const rowBackground = i % 2 === 0 ? 'white' : '#F5F5F5'
+    const style = {}
     return (
       <div
         className={css.row}
+        style={style}
         onClick={e => onRowClick(dataRow['variant_id'])}
         onMouseEnter={e => onRowClick(dataRow['variant_id'])}
         key={`row-${i}`}
@@ -306,10 +308,16 @@ const VariantTable = ({
     if (Immutable.List.isList(tableData)) {
       row = getDataRow(tableConfig, tableData.get(index), index, showIndex)
     }
+
+
+    const localStyle = {
+      ...style,
+      borderTop: '1px solid #E0E0E0',
+    }
     return (
       <div
         key={key}
-        style={style}
+        style={localStyle}
       >
         {row}
       </div>
@@ -358,7 +366,7 @@ const VariantTable = ({
               onRowsRendered={onRowsRendered}
               ref={registerChild}
               rowCount={remoteRowCount}
-              rowHeight={30}
+              rowHeight={25}
               rowRenderer={rowRenderer}
               overscanRowCount={overscan}
               width={width || getDefaultWidth(tableConfig) }

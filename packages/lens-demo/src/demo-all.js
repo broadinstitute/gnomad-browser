@@ -162,7 +162,7 @@ const Demo = () =>
     <div>
       <div className={css.menus}>
         <DrawerSimpleExample />
-        <h1 className={css.title}>lens</h1>
+        <h1 className={css.title}></h1>
         <DrawerOpenRightExample />
       </div>
       <div className={css.demoArea}>

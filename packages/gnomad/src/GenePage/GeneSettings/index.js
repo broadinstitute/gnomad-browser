@@ -13,6 +13,8 @@ import { connect } from 'react-redux'
 // import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 // import Checkbox from 'material-ui/Checkbox'
+import TextField from 'material-ui/TextField'
+import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
 import { actions as tableActions } from 'lens-redux-gene-page/lib/resources/table'
@@ -63,21 +65,67 @@ const GeneSettings = ({
   }
   const geneLinks = testGenes.map(gene =>
     <a href="#" key={`${gene}-link`} onClick={() => handleDropdownChange(gene)}>{gene} </a>)
+
+  const filterTextInputStyles = {
+    hintStyle: {
+      color: 'grey',
+      fontSize: 12,
+    },
+    floatingLabelStyle: {
+      color: 'black',
+      fontSize: 14,
+    },
+    floatingLabelFocusStyle: {
+      color: 'black',
+      fontSize: 14,
+    },
+  }
   return (
     <div className={css.geneSettings}>
-      {geneLinks}
+      {/*geneLinks*/}
       <div className={css.menus}>
-        {currentGene}
-        <p>Exon padding {exonPadding}</p>
-        <Slider
+        {/*<Slider
           style={{
             width: 100,
+            height: 20,
           }}
           onChange={setPadding}
-        />
-        <input
-          type="text"
-          placeholder={'Enter data'}
+        />*/}
+        <div className={css.variantSelectorCheckboxContainer}>
+          <div className={css.variantSelectorCheckboxTitle}>
+              Include:
+          </div>
+          <div className={css.variantSelectorCheckboxes}>
+              <label>
+                  <input checked type="checkbox" id="exome_checkbox" value="" />
+                  <div className={css.checkboxLabel}>Exomes</div>
+              </label>
+
+              <label>
+                  <input type="checkbox" id="genome_checkbox" value="" />
+                  <div className={css.checkboxLabel}>Genomes</div>
+              </label>
+              <label>
+                  <input checked type="checkbox" id="snp_checkbox" value="" />
+                  <div className={css.checkboxLabel}>SNPs</div>
+              </label>
+              <label>
+                  <input checked type="checkbox" id="indel_checkbox" value="" />
+                  <div className={css.checkboxLabel}>Indels</div>
+              </label>
+
+              <label>
+                  <input checked type="checkbox" id="filtered_checkbox" value="" />
+                  <div className={css.checkboxLabel}>Filtered (non-PASS) variants</div>
+              </label>
+          </div>
+        </div>
+        <TextField
+          hintText="Enter filter criteria"
+          hintStyle={filterTextInputStyles.inputStyle}
+          floatingLabelText="Find variants"
+          floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
+          floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
           ref={input => findInput = input}
           onChange={(event) => {
             event.preventDefault()

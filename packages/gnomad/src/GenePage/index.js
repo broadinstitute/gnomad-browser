@@ -12,7 +12,7 @@ import GenePageHOC from 'lens-redux-gene-page/lib/containers/GenePage'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import GeneRegion from './RegionViewer'
-import GnomadVariantTable from './Table'
+import Table from './Table'
 
 import css from './styles.css'
 
@@ -33,8 +33,8 @@ const AppGenePage = ({
         />
       </div>
       <GeneRegion/>
-      <GnomadVariantTable />
       <GeneSettings />
+      <Table />
     </div>
   )
 }

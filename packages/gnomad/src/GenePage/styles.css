@@ -3,15 +3,17 @@
 .genePage {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   /*border: 1px solid var(--secondaryColor);*/
   background-color: var(--backgroundColor);
   color: var(--primaryColor);
+  margin-left: 50px;
 }
 
 .summary {
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding-left: 150px;
+  padding-left: 75px;
+  margin-bottom: 10px;
 }

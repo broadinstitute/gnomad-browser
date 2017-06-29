@@ -30,12 +30,14 @@
 
 html {
   height: 100%;
+  width: 100%;
 }
 
 body {
   padding: 0 0 0 0;
   margin: 0 0 0 0;
   height: 100%;
+  width: 100%;
   min-height: 100%;
   background-color: var(--backgroundColor);
 }
@@ -46,6 +48,7 @@ h1 {
 }
 
 .mainPanel {
-  padding-left: 50px;
-  padding-top: 10px;
+  width: 100%;
+  /*padding-left: 50px;*/
+  /*padding-top: 10px;*/
 }
