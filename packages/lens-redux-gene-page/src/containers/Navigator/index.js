@@ -10,6 +10,7 @@ import {
   currentVariant,
   currentTableIndex,
   currentNavigatorPosition,
+  currentTableScrollData,
   actions as activeActions,
 } from '../../resources/active'
 
@@ -19,6 +20,7 @@ import css from './styles.css'
 
 const Navigator = ({
   currentTableIndex,
+  currentTableScrollData,
   currentVariant,
   onNavigatorClick,
   currentNavigatorPosition,
@@ -34,6 +36,7 @@ const Navigator = ({
       onNavigatorClick={onNavigatorClick}
       currentNavigatorPosition={currentNavigatorPosition}
       scrollSync={currentTableIndex}
+      currentTableScrollData={currentTableScrollData}
       variants={variants}
       currentVariant={currentVariant}
       variantSortKey={variantSortKey}
@@ -43,6 +46,7 @@ const Navigator = ({
 }
 Navigator.propTypes = {
   currentTableIndex: PropTypes.number.isRequired,
+  currentTableScrollData: PropTypes.object.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
   currentVariant: PropTypes.string.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
@@ -53,6 +57,7 @@ Navigator.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   currentTableIndex: currentTableIndex(state),
+  currentTableScrollData: currentTableScrollData(state),
   currentNavigatorPosition: currentNavigatorPosition(state),
   currentVariant: currentVariant(state),
   variantSortKey: variantSortKey(state),
@@ -64,7 +69,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   onNavigatorClick: (tableIndex, position) =>
-    dispatch(activeActions.onNavigatorClick(tableIndex, position)),
+    dispatch(activeActions.onNavigatorClick(tableIndex, position))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigator)

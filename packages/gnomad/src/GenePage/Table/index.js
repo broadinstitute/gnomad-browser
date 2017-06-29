@@ -22,12 +22,12 @@ import {
 import { tableConfig } from './tableConfig'
 
 import css from './styles.css'
-
 const GnomadVariantTable = ({
   visibleVariants,
   setVariantSort,
   setCurrentVariant,
   setCurrentTableIndex,
+  setCurrentTableScrollData,
   tablePosition,
   searchText,
 }) => {
@@ -54,6 +54,7 @@ const GnomadVariantTable = ({
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
+        onScroll={setCurrentTableScrollData}
         searchText={searchText}
       />
     </div>
@@ -64,6 +65,7 @@ GnomadVariantTable.propTypes = {
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
+  setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
@@ -83,6 +85,7 @@ const mapDispatchToProps = (dispatch) => {
     setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
     setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
+    setCurrentTableScrollData: scrollData => dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }
 }
 

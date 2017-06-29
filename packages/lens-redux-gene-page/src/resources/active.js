@@ -24,6 +24,7 @@ const State = Immutable.Record({
   currentVariant: '',
   currentNavigatorPosition: 0,
   currentTableIndex: 0,
+  currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
   exonPadding: getDefaultsForProject(process.env.FETCH_FUNCTION).padding
 })
 
@@ -32,6 +33,7 @@ export const types = keymirror({
   SET_CURRENT_VARIANT: null,
   SET_CURRENT_NAVIGATOR_POSITION: null,
   SET_CURRENT_TABLE_INDEX: null,
+  SET_CURRENT_TABLE_SCROLL_DATA: null,
   SET_EXON_PADDING: null,
   ORDER_VARIANTS_BY_POSITION: null,
 })
@@ -51,6 +53,14 @@ export const actions = {
   setCurrentTableIndex: tableIndex => ({
     type: types.SET_CURRENT_TABLE_INDEX,
     tableIndex,
+    meta: {
+      throttle: true,
+    },
+  }),
+
+  setCurrentTableScrollData: tableScrollData => ({
+    type: types.SET_CURRENT_TABLE_SCROLL_DATA,
+    tableScrollData,
     meta: {
       throttle: true,
     },
@@ -80,6 +90,9 @@ const actionHandlers = {
   [types.SET_CURRENT_TABLE_INDEX] (state, { tableIndex }) {
     return state.set('currentTableIndex', tableIndex)
   },
+  [types.SET_CURRENT_TABLE_SCROLL_DATA] (state, { tableScrollData }) {
+    return state.set('currentTableScrollData', tableScrollData)
+  },
   [types.SET_EXON_PADDING] (state, { padding }) {
     return state.set('exonPadding', padding)
   },
@@ -89,6 +102,7 @@ export const currentGene = state => state.active.currentGene
 export const currentVariant = state => state.active.currentVariant
 export const currentNavigatorPosition = state => state.active.currentNavigatorPosition
 export const currentTableIndex = state => state.active.currentTableIndex
+export const currentTableScrollData = state => state.active.currentTableScrollData
 export const exonPadding = state => state.active.exonPadding
 
 export default function reducer (state = new State(), action: Object): State {

@@ -44,17 +44,22 @@ const ClickArea = ({
   xScale,
   position, // active mouse position from ReactCursorPosition
   isPositionOutside, // from ReactCursorPosition
-  scrollSync, // position in from table
+  // scrollSync, // position in from table
+  currentTableScrollData,
   onNavigatorClick,
   variants,
   currentVariant,
   variantSortKey,
 }) => {
+  const numberOfVariantsVisibleInTable = 26
+  const { scrollHeight, scrollTop } = currentTableScrollData
+  const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
+  console.log(scrollSync)
   let currentlyVisibleVariants
-  if (variants.size < scrollSync + 15) {
-    currentlyVisibleVariants = variants.slice(0, 15).toJS()
+  if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
+    currentlyVisibleVariants = variants.slice(0, variants.size).toJS()
   } else {
-    currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + 15).toJS()
+    currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + numberOfVariantsVisibleInTable).toJS()
   }
 
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
@@ -94,6 +99,24 @@ const ClickArea = ({
       />
     </g>
   ))
+
+
+  const allVariantPositions = variants.map(v => ({
+    x: xScale(positionOffset(v.pos).offsetPosition),
+    variant_id: v.variant_id,
+  }))
+
+  const allVariantMarks = allVariantPositions.map((v, i) => (
+    <g key={`variant-${v}-${i}`}>
+      <circle
+        cx={v.x}
+        cy={height / 3}
+        r={5}
+        fill={'grey'}
+      />
+    </g>
+  ))
+
   const PositionMarks = () => {
     const tickHeight = 3
     const numberOfTicks = 10
@@ -202,6 +225,7 @@ const ClickArea = ({
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
       />}
+      {variants.size < 100 && allVariantMarks}
       {variantMarks}
       <PositionMarks />
     </svg>

@@ -22,9 +22,9 @@ const VariantTable = ({
   scrollToRow,
   onRowClick,
   scrollCallback,
+  onScroll,
   searchText,
 }) => {
-
   const abstractCellStyle = {
     paddingLeft: 20,
     paddingRight: 20,
@@ -300,7 +300,7 @@ const VariantTable = ({
   }
 
   const rowRenderer = ({ key, index, style }) => {
-    scrollCallback(index)
+    // scrollCallback(index)
     let row
     if (Array.isArray(tableData)) {
       row = getDataRow(tableConfig, tableData[index], index, showIndex)
@@ -371,6 +371,7 @@ const VariantTable = ({
               overscanRowCount={overscan}
               width={width || getDefaultWidth(tableConfig) }
               scrollToIndex={scrollToRow}
+              onScroll={onScroll}
             />
           )}
         </InfiniteLoader>
