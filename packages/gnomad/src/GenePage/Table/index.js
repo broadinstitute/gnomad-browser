@@ -49,7 +49,7 @@ const GnomadVariantTable = ({
         tableData={visibleVariants}
         remoteRowCount={visibleVariants.size}
         loadMoreRows={() => {}}
-        overscan={0}
+        overscan={20}
         loadLookAhead={0}
         onRowClick={setCurrentVariant}
         scrollToRow={tablePosition}

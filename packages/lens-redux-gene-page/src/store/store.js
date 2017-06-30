@@ -44,7 +44,7 @@ export default function createGenePageStore({
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
       thunk,
-      logger,
+      // logger,
     ),
     reduxSearch({
       resourceIndexes: {

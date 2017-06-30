@@ -30,6 +30,7 @@ const VariantTable = ({
     paddingRight: 20,
     paddingTop: 4,
     paddingBottom: 3,
+    overflow: 'hidden',
     // border: '1px solid blue',
   }
 

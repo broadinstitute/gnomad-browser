@@ -26,6 +26,7 @@ const NavigatorAxis = ({ css, title, height, leftPanelWidth }) => {
         style={{
           height,
           fontSize: 12,
+          marginLeft: 30,
         }}
       >
         {title}
@@ -49,6 +50,7 @@ const ClickArea = ({
   // scrollSync, // position in from table
   currentTableScrollData,
   onNavigatorClick,
+  variantPlotData,
   variants,
   currentVariant,
   variantSortKey,
@@ -56,7 +58,6 @@ const ClickArea = ({
   const numberOfVariantsVisibleInTable = 26
   const { scrollHeight, scrollTop } = currentTableScrollData
   const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
-  console.log(scrollSync)
   let currentlyVisibleVariants
   if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
     currentlyVisibleVariants = variants.slice(0, variants.size).toJS()
@@ -84,7 +85,7 @@ const ClickArea = ({
     <g key={`variant-${v}-${i}`}>
       {v.variant_id === currentVariant && <circle
         cx={v.x}
-        cy={height / 3}
+        cy={height / 2.5}
         r={10}
         fill={'rgba(0,0,0,0)'}
         strokeWidth={1}
@@ -93,7 +94,7 @@ const ClickArea = ({
       />}
       <circle
         cx={v.x}
-        cy={height / 3}
+        cy={height / 2.5}
         r={5}
         fill={v.color}
         strokeWidth={1}
@@ -114,7 +115,7 @@ const ClickArea = ({
       <g key={`variant-${v}-${i}`}>
         <circle
           cx={v.x}
-          cy={height / 3}
+          cy={height / 2.5}
           r={5}
           fill={'grey'}
         />
@@ -191,30 +192,39 @@ const ClickArea = ({
   }
 
   const navigatorBoxBottomPadding = 20
-  const navigatorBoxTopPadding = 2
+  const navigatorBoxTopPadding = 4
 
-  const slidingWindowBp = 500
+  const makeVariantPlotData = (variants) => {
+
+    const slidingWindowBp = 500
+
+    const variantDensity = range(30, width, 1).map(i => {
+      const pos = invertOffset(i)
+      const left = getTableIndexByPosition(pos - slidingWindowBp, variants)
+      const right = getTableIndexByPosition(pos + slidingWindowBp, variants)
+      return { pos, x: i, density: variants.slice(left, right).length / slidingWindowBp }
+    })
+
+    const yMax = max(R.pluck('density', variantDensity))
+    const densityYScale = scaleLinear()
+      .domain([0, yMax])
+      .range([height - 25, 10])
+    const variantDensityLine = line()
+      .defined((base) => {
+        return !isNaN(base.density)
+      })
+      .x(base => base.x)
+      .y(base => densityYScale(base.density))
+
+    return {
+      variantDensity,
+      variantDensityLine,
+      densityYScale,
+    }
+  }
 
   const jsVariants = variants.toJS()
-
-  const variantDensity = range(1, width).map(i => {
-    const pos = invertOffset(i)
-    const left = getTableIndexByPosition(pos - slidingWindowBp, jsVariants)
-    const right = getTableIndexByPosition(pos + slidingWindowBp, jsVariants)
-    return { pos, x: i, density: variants.slice(left, right).size / slidingWindowBp }
-  })
-
-  const yMax = max(R.pluck('density', variantDensity))
-  const densityYScale = scaleLinear()
-    .domain([0, yMax])
-    .range([height - 20, 0])
-  const variantDensityLine = line()
-    .defined((base) => {
-      return !isNaN(base.density)
-    })
-    .x(base => base.x)
-    .y(base => densityYScale(base.density))
-
+  const { variantDensityLine, densityYScale, variantDensity } = makeVariantPlotData(jsVariants)
 
   const renderLine = (data) => {
     return (
@@ -227,6 +237,20 @@ const ClickArea = ({
       />
     )
   }
+  const densityYScaleTicks = densityYScale.ticks(3).map((t) => {
+    return (
+      <g key={`${t}tick`}>
+        <text
+          className={css.yTickText}
+          x={3}
+          y={densityYScale(t) + 5}
+        >
+          {t}
+        </text>
+      </g>
+    )
+  })
+
   return (
     <svg
       className={css.areaClick}
@@ -256,7 +280,7 @@ const ClickArea = ({
         strokeDasharray={'5, 5'}
       />}
 
-      {/*!isPositionOutside &&
+      {!isPositionOutside &&
       <rect
         className={css.cursorPositionRect}
         x={position.x - 15}
@@ -264,10 +288,11 @@ const ClickArea = ({
         width={30}
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
-      />*/}
+      />}
       {variants.size < 300 && allVariantMarks}
       {variantMarks}
       {renderLine(variantDensity)}
+      {densityYScaleTicks}
       <PositionMarks />
     </svg>
   )

@@ -18,7 +18,10 @@ import Navigator from 'lens-redux-gene-page/lib/containers/Navigator'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
 import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
-import { visibleVariants } from 'lens-redux-gene-page/lib/resources/table'
+import {
+  visibleVariants,
+  regionViewerComponentState,
+} from 'lens-redux-gene-page/lib/resources/table'
 
 import css from './styles.css'
 
@@ -76,6 +79,7 @@ const GeneRegion = ({
   gene,
   visibleVariants,
   exonPadding,
+  setRegionViewerComponentState,
 }) => {
   const geneJS = gene.toJS()
   const geneExons = geneJS.exons

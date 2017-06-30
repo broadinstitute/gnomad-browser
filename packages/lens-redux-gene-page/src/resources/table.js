@@ -8,7 +8,11 @@
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 import { createSearchAction, getSearchSelectors } from 'redux-search'
+import R from 'ramda'
 import Immutable from 'immutable'
+import { range, max } from 'd3-array'
+import { line } from 'd3-shape'
+import { scaleLinear } from 'd3-scale'
 
 import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 
@@ -150,3 +154,41 @@ export const searchFilteredVariants = createSelector(
     return filteredVariantIdList.map(id => variantsById.get(id))
   }
 )
+
+
+export const variantPlotData = state => 'test'
+
+
+// export const variantPlotData = createSelector(
+//   [searchFilteredVariants,
+//   (variants) => {
+//     const slidingWindowBp = 500
+//     const width = 1150
+//     const height = 80
+//
+//     const variantDensity = range(30, width, 1).map(i => {
+//       const pos = invertFunction(i)
+//       const left = getTableIndexByPosition(pos - slidingWindowBp, variants)
+//       const right = getTableIndexByPosition(pos + slidingWindowBp, variants)
+//       return { pos, x: i, density: variants.slice(left, right).size / slidingWindowBp }
+//     })
+//
+//     const yMax = max(R.pluck('density', variantDensity))
+//     const densityYScale = scaleLinear()
+//       .domain([0, yMax])
+//       .range([height - 25, 10])
+//     const variantDensityLine = line()
+//       .defined((base) => {
+//         return !isNaN(base.density)
+//       })
+//       .x(base => base.x)
+//       .y(base => densityYScale(base.density))
+//     console.log('something')
+//     return {
+//       variantDensity,
+//       variantDensityLine,
+//       densityYScale,
+//     }
+//   }
+//
+// )

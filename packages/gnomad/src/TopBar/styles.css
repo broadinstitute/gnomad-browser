@@ -37,10 +37,6 @@
   transition: width 0.4s ease-in-out;
 }
 
-.searchInput:focus{
-  width: 400px;
-}
-
 .menu {
   display: flex;
   flex-direction: row;

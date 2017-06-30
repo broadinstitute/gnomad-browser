@@ -82,15 +82,8 @@ const GeneSettings = ({
   }
   return (
     <div className={css.geneSettings}>
-      {geneLinks}
+      {/*geneLinks*/}
       <div className={css.menus}>
-        <Slider
-          style={{
-            width: 100,
-            height: 20,
-          }}
-          onChange={setPadding}
-        />
         <div className={css.variantSelectorCheckboxContainer}>
           <div className={css.variantSelectorCheckboxTitle}>
               Include:
@@ -131,6 +124,13 @@ const GeneSettings = ({
             event.preventDefault()
             searchVariants(event.target.value)
           }}
+        />
+        <Slider
+          style={{
+            width: 100,
+            height: 20,
+          }}
+          onChange={setPadding}
         />
       </div>
     </div>

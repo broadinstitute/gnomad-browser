@@ -14,7 +14,12 @@ import {
   actions as activeActions,
 } from '../../resources/active'
 
-import { visibleVariants, variantSortKey, searchFilteredVariants } from '../../resources/table'
+import {
+  visibleVariants,
+  variantSortKey,
+  searchFilteredVariants,
+  variantPlotData,
+} from '../../resources/table'
 
 import css from './styles.css'
 
@@ -26,12 +31,13 @@ const Navigator = ({
   currentNavigatorPosition,
   variants,
   variantSortKey,
+  variantPlotData,
   ownProps,
 }) => {
   return (
     <NavigatorTrack
       css={css}
-      title={''}
+      title={'     Variants/bp'}
       height={80}
       onNavigatorClick={onNavigatorClick}
       currentNavigatorPosition={currentNavigatorPosition}
@@ -40,6 +46,7 @@ const Navigator = ({
       variants={variants}
       currentVariant={currentVariant}
       variantSortKey={variantSortKey}
+      variantPlotData={variantPlotData}
       {...ownProps}
     />
   )
@@ -61,6 +68,7 @@ const mapStateToProps = (state, ownProps) => ({
   currentNavigatorPosition: currentNavigatorPosition(state),
   currentVariant: currentVariant(state),
   variantSortKey: variantSortKey(state),
+  variantPlotData: variantPlotData(state),
   // variants: visibleVariants(state),
   variants: searchFilteredVariants(state),
   ownProps,

@@ -118,6 +118,9 @@ class RegionViewer extends Component {
       padding,
     }
 
+    // window.invertOffset = invertOffset
+    // console.log(window.invertOffset)
+
     return (
       <div className={css.regionViewer}>
         {/*<p>Exon padding {padding.toPrecision(3)} bp</p>*/}
