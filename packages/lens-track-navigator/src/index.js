@@ -191,65 +191,8 @@ const ClickArea = ({
     )
   }
 
-  const navigatorBoxBottomPadding = 20
-  const navigatorBoxTopPadding = 4
-
-  const makeVariantPlotData = (variants) => {
-
-    const slidingWindowBp = 500
-
-    const variantDensity = range(30, width, 1).map(i => {
-      const pos = invertOffset(i)
-      const left = getTableIndexByPosition(pos - slidingWindowBp, variants)
-      const right = getTableIndexByPosition(pos + slidingWindowBp, variants)
-      return { pos, x: i, density: variants.slice(left, right).length / slidingWindowBp }
-    })
-
-    const yMax = max(R.pluck('density', variantDensity))
-    const densityYScale = scaleLinear()
-      .domain([0, yMax])
-      .range([height - 25, 10])
-    const variantDensityLine = line()
-      .defined((base) => {
-        return !isNaN(base.density)
-      })
-      .x(base => base.x)
-      .y(base => densityYScale(base.density))
-
-    return {
-      variantDensity,
-      variantDensityLine,
-      densityYScale,
-    }
-  }
-
-  const jsVariants = variants.toJS()
-  const { variantDensityLine, densityYScale, variantDensity } = makeVariantPlotData(jsVariants)
-
-  const renderLine = (data) => {
-    return (
-      <path
-        d={variantDensityLine(data)}
-        fill={'none'}
-        stroke={'black'}
-        opacity={1}
-        strokeWidth={1}
-      />
-    )
-  }
-  const densityYScaleTicks = densityYScale.ticks(3).map((t) => {
-    return (
-      <g key={`${t}tick`}>
-        <text
-          className={css.yTickText}
-          x={3}
-          y={densityYScale(t) + 5}
-        >
-          {t}
-        </text>
-      </g>
-    )
-  })
+  const navigatorBoxBottomPadding = 5
+  const navigatorBoxTopPadding = 0
 
   return (
     <svg
@@ -291,8 +234,6 @@ const ClickArea = ({
       />}
       {variants.size < 300 && allVariantMarks}
       {variantMarks}
-      {renderLine(variantDensity)}
-      {densityYScaleTicks}
       <PositionMarks />
     </svg>
   )

@@ -18,10 +18,13 @@ import Navigator from 'lens-redux-gene-page/lib/containers/Navigator'
 import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
 import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
+
 import {
   visibleVariants,
   regionViewerComponentState,
 } from 'lens-redux-gene-page/lib/resources/table'
+
+import VariantDensityTrack from './VariantDensityTrack'
 
 import css from './styles.css'
 
@@ -117,6 +120,11 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
+  const markerConfigDensity = {
+    markerType: 'density',
+    stroke: 1,
+  }
+
   const otherVariants = visibleVariants.filter(v =>
     !R.contains(v.consequence, [...lof, ...missense]))
 
@@ -177,6 +185,9 @@ const GeneRegion = ({
       },
     ],
   }
+
+
+
   return (
     <div className={css.geneRegion}>
       <RegionViewer
@@ -200,6 +211,7 @@ const GeneRegion = ({
         />
       {/*splitTracks}
         {allTrack*/}
+        <VariantDensityTrack />
         <Navigator />
       </RegionViewer>
     </div>
