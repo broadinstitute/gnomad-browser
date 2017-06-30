@@ -9,7 +9,9 @@ import React, { PropTypes } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
 import R from 'ramda'
 import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
-import { range } from 'd3-array'
+import { range, max } from 'd3-array'
+import { line } from 'd3-shape'
+import { scaleLinear } from 'd3-scale'
 
 import defaultStyles from './styles.css'
 
@@ -101,21 +103,25 @@ const ClickArea = ({
   ))
 
 
-  const allVariantPositions = variants.map(v => ({
-    x: xScale(positionOffset(v.pos).offsetPosition),
-    variant_id: v.variant_id,
-  }))
+  let allVariantMarks
+  if (variants.size < 300) {
+    const allVariantPositions = variants.map(v => ({
+      x: xScale(positionOffset(v.pos).offsetPosition),
+      variant_id: v.variant_id,
+    }))
 
-  const allVariantMarks = allVariantPositions.map((v, i) => (
-    <g key={`variant-${v}-${i}`}>
-      <circle
-        cx={v.x}
-        cy={height / 3}
-        r={5}
-        fill={'grey'}
-      />
-    </g>
-  ))
+    allVariantMarks = allVariantPositions.map((v, i) => (
+      <g key={`variant-${v}-${i}`}>
+        <circle
+          cx={v.x}
+          cy={height / 3}
+          r={5}
+          fill={'grey'}
+        />
+      </g>
+    ))
+  }
+
 
   const PositionMarks = () => {
     const tickHeight = 3
@@ -187,6 +193,40 @@ const ClickArea = ({
   const navigatorBoxBottomPadding = 20
   const navigatorBoxTopPadding = 2
 
+  const slidingWindowBp = 500
+
+  const jsVariants = variants.toJS()
+
+  const variantDensity = range(1, width).map(i => {
+    const pos = invertOffset(i)
+    const left = getTableIndexByPosition(pos - slidingWindowBp, jsVariants)
+    const right = getTableIndexByPosition(pos + slidingWindowBp, jsVariants)
+    return { pos, x: i, density: variants.slice(left, right).size / slidingWindowBp }
+  })
+
+  const yMax = max(R.pluck('density', variantDensity))
+  const densityYScale = scaleLinear()
+    .domain([0, yMax])
+    .range([height - 20, 0])
+  const variantDensityLine = line()
+    .defined((base) => {
+      return !isNaN(base.density)
+    })
+    .x(base => base.x)
+    .y(base => densityYScale(base.density))
+
+
+  const renderLine = (data) => {
+    return (
+      <path
+        d={variantDensityLine(data)}
+        fill={'none'}
+        stroke={'black'}
+        opacity={1}
+        strokeWidth={1}
+      />
+    )
+  }
   return (
     <svg
       className={css.areaClick}
@@ -216,7 +256,7 @@ const ClickArea = ({
         strokeDasharray={'5, 5'}
       />}
 
-      {!isPositionOutside &&
+      {/*!isPositionOutside &&
       <rect
         className={css.cursorPositionRect}
         x={position.x - 15}
@@ -224,9 +264,10 @@ const ClickArea = ({
         width={30}
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
-      />}
-      {variants.size < 100 && allVariantMarks}
+      />*/}
+      {variants.size < 300 && allVariantMarks}
       {variantMarks}
+      {renderLine(variantDensity)}
       <PositionMarks />
     </svg>
   )

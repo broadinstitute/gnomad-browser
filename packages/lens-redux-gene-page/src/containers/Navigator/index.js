@@ -31,8 +31,8 @@ const Navigator = ({
   return (
     <NavigatorTrack
       css={css}
-      title={'Navigator'}
-      height={50}
+      title={''}
+      height={80}
       onNavigatorClick={onNavigatorClick}
       currentNavigatorPosition={currentNavigatorPosition}
       scrollSync={currentTableIndex}
