@@ -31,13 +31,13 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
           {trackYScale.ticks(3).map(t => {
             return (
               <g key={t}>
-                <line
+                {/*<line
                   x1={leftPanelWidth - 10}
                   x2={leftPanelWidth - 5}
                   y1={trackYScale(t)}
                   y2={trackYScale(t)}
                   stroke={'black'}
-                />
+                />*/}
                 <text
                   x={leftPanelWidth - 30}
                   y={trackYScale(t) + 5}
@@ -133,19 +133,21 @@ const VariantDensityTrack = ({
     )
   }
 
+  const renderedLine = renderLine(variantDensity)
+
   return (
     <div className={css.track}>
       <VariantAxis
         height={height}
         leftPanelWidth={leftPanelWidth}
-        title={''}
+        title={'Variants/bp'}
         trackYScale={densityYScale}
       />
       <svg
         width={width}
         height={height}
       >
-      {renderLine(variantDensity)}
+      {renderedLine}
     </svg>
   </div>
   )

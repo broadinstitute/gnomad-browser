@@ -7,7 +7,9 @@
 .menus {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  width: 60%;
 }
 
 .legend-square-exomes {

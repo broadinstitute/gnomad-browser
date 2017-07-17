@@ -11,7 +11,7 @@ import R from 'ramda'
 import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 import { range, max } from 'd3-array'
 import { line } from 'd3-shape'
-import { scaleLinear } from 'd3-scale'
+import { scaleLinear, scaleLog } from 'd3-scale'
 
 import defaultStyles from './styles.css'
 
@@ -79,7 +79,16 @@ const ClickArea = ({
     x: xScale(positionOffset(v.pos).offsetPosition),
     variant_id: v.variant_id,
     color: v.variant_id === currentVariant ? 'yellow' : 'red',
+    allele_freq: v.allele_freq,
   }))
+
+  const afScale =
+    scaleLog()
+      .domain([
+        0.00000660,
+        0.0001,
+      ])
+      .range([3, 6])
 
   const variantMarks = variantPositions.map((v, i) => (
     <g key={`variant-${v}-${i}`}>
@@ -95,7 +104,7 @@ const ClickArea = ({
       <circle
         cx={v.x}
         cy={height / 2.5}
-        r={5}
+        r={afScale(v.allele_freq)}
         fill={v.color}
         strokeWidth={1}
         stroke={'black'}
@@ -109,6 +118,7 @@ const ClickArea = ({
     const allVariantPositions = variants.map(v => ({
       x: xScale(positionOffset(v.pos).offsetPosition),
       variant_id: v.variant_id,
+      allele_freq: v.allele_freq,
     }))
 
     allVariantMarks = allVariantPositions.map((v, i) => (
@@ -116,7 +126,7 @@ const ClickArea = ({
         <circle
           cx={v.x}
           cy={height / 2.5}
-          r={5}
+          r={afScale(v.allele_freq)}
           fill={'grey'}
         />
       </g>
@@ -191,8 +201,8 @@ const ClickArea = ({
     )
   }
 
-  const navigatorBoxBottomPadding = 5
-  const navigatorBoxTopPadding = 0
+  const navigatorBoxBottomPadding = 18
+  const navigatorBoxTopPadding = 3
 
   return (
     <svg

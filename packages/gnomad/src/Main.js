@@ -9,7 +9,6 @@ import App from './routes'
 
 const genePageSettings = {
   searchIndexes: ['variant_id', 'rsid', 'hgvsp', 'hgvsc', 'consequence'],
-  // fetchFunction,
   variantSchema: {
     id: null,
     variant_id: null,
