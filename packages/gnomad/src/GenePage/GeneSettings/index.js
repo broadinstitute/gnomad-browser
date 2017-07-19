@@ -84,7 +84,7 @@ const GeneSettings = ({
     <div className={css.geneSettings}>
       {/*geneLinks*/}
       <div className={css.menus}>
-        <div className={css.variantSelectorCheckboxContainer}>
+        {/*<div className={css.variantSelectorCheckboxContainer}>
           <div className={css.variantSelectorCheckboxTitle}>
               Include:
           </div>
@@ -112,7 +112,7 @@ const GeneSettings = ({
                   <div className={css.checkboxLabel}>Filtered (non-PASS) variants</div>
               </label>
           </div>
-        </div>
+        </div>*/}
         <TextField
           hintText="Enter filter criteria"
           hintStyle={filterTextInputStyles.inputStyle}

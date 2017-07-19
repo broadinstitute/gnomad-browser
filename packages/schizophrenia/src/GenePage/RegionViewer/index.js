@@ -132,7 +132,7 @@ const GeneRegion = ({
           markerConfig={markerConfigHCAF}
           variants={variantsArray}
         />*/}
-        <Navigator />
+        <Navigator noVariants />
       </RegionViewer>
     </div>
   )

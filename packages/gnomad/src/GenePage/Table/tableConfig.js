@@ -65,7 +65,7 @@ export const tableConfig = (onHeaderClick) => ({
       dataKey: 'allele_freq',
       title: 'AF',
       dataType: 'float',
-      width: 40,
+      width: 50,
       onHeaderClick,
     },
     {

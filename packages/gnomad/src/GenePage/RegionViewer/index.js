@@ -209,9 +209,9 @@ const GeneRegion = ({
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />
-      {/*splitTracks}
-        {allTrack*/}
-        {/*<VariantDensityTrack />*/}
+        {splitTracks}
+        {allTrack}
+        <VariantDensityTrack />
         <Navigator />
       </RegionViewer>
     </div>

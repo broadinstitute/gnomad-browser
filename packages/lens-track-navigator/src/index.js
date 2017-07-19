@@ -54,6 +54,7 @@ const ClickArea = ({
   variants,
   currentVariant,
   variantSortKey,
+  noVariants,
 }) => {
   const numberOfVariantsVisibleInTable = 26
   const { scrollHeight, scrollTop } = currentTableScrollData
@@ -201,8 +202,8 @@ const ClickArea = ({
     )
   }
 
-  const navigatorBoxBottomPadding = 18
-  const navigatorBoxTopPadding = 3
+  const navigatorBoxBottomPadding = 20
+  const navigatorBoxTopPadding = 4
 
   return (
     <svg
@@ -223,7 +224,7 @@ const ClickArea = ({
         height={height}
       />
 
-      {variantSortKey === 'pos' &&
+      {!noVariants && variantSortKey === 'pos' &&
       <rect
         className={css.tablePositionRect}
         x={tableRectStart}
@@ -242,8 +243,8 @@ const ClickArea = ({
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
       />}
-      {variants.size < 300 && allVariantMarks}
-      {variantMarks}
+      {!noVariants && variants.size < 300 && allVariantMarks}
+      {!noVariants && variantMarks}
       <PositionMarks />
     </svg>
   )
