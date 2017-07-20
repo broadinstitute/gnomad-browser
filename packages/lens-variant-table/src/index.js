@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
 import R from 'ramda'
-import { InfiniteLoader, List } from 'react-virtualized'
+import { InfiniteLoader, List, WindowScroller, AutoSizer } from 'react-virtualized'
 import Highlighter from 'react-highlight-words'
 import Immutable from 'immutable'
 
@@ -349,34 +349,38 @@ const VariantTable = ({
   }
 
   return (
-    <div className={css.variantTable}>
-      <div style={{ width }}>
-        <h3>{title}</h3>
-        <div className={css.headers}>
-          {showIndex && indexHeader}
-          {headers}
-        </div>
-        <InfiniteLoader
-          isRowLoaded={isRowLoaded}
-          loadMoreRows={loadMoreRows}
-          rowCount={remoteRowCount}
-        >
-          {({ onRowsRendered, registerChild }) => (
-            <List
-              height={height}
-              onRowsRendered={onRowsRendered}
-              ref={registerChild}
-              rowCount={remoteRowCount}
-              rowHeight={25}
-              rowRenderer={rowRenderer}
-              overscanRowCount={overscan}
-              width={width || getDefaultWidth(tableConfig) }
-              scrollToIndex={scrollToRow}
-              onScroll={onScroll}
-            />
-          )}
-        </InfiniteLoader>
+    <div>
+      <h3>{title}</h3>
+      <div className={css.headers}>
+        {showIndex && indexHeader}
+        {headers}
       </div>
+      <InfiniteLoader
+        isRowLoaded={isRowLoaded}
+        loadMoreRows={loadMoreRows}
+        rowCount={remoteRowCount}
+      >
+        {({ onRowsRendered, registerChild }) => (
+            <AutoSizer disableHeight>
+              {({ width }) => {
+                return (
+                  <List
+                    height={height}
+                    onRowsRendered={onRowsRendered}
+                    ref={registerChild}
+                    rowCount={remoteRowCount}
+                    rowHeight={25}
+                    rowRenderer={rowRenderer}
+                    overscanRowCount={overscan}
+                    width={width || getDefaultWidth(tableConfig) }
+                    scrollToIndex={scrollToRow}
+                    onScroll={onScroll}
+                  />
+                )
+              }}
+          </AutoSizer>
+        )}
+      </InfiniteLoader>
     </div>
   )
 }
