@@ -26,7 +26,7 @@ test('Immutable data structure has no side effects', (assert) => {
     'new list is updated')
 
   assert.end()
-})
+})>
 
 test('Immutable map', (assert) => {
   const myMap = Map({ a: 1, b: 2, c: 3 })

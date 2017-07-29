@@ -2,7 +2,8 @@
   "presets": [
     "react",
     "babel-preset-stage-2",
-    "flow"
+    "flow",
+    "babel-preset-es2015"
   ],
   "plugins": [
     "transform-object-rest-spread",

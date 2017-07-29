@@ -1,0 +1,10 @@
+.pdb {
+  height: 360px;
+}
+.noPdb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 600px;
+}
