@@ -1,30 +1,21 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-shadow */
 import React, { PropTypes } from 'react'
-import Immutable from 'immutable'
-import { Provider, connect } from 'react-redux'
-
-import createTestStore from './store'
+import { connect } from 'react-redux'
 
 import {
   actions,
   structures,
   currentPdb,
   retrieving,
-} from '../redux'
+} from 'lens-structure-viewer/lib/redux'
 
-const store = createTestStore()
+import ProteinStructureViewer from 'lens-structure-viewer/lib/component'
 
-import ProteinStructureViewer from '../component'
-
-let StructureViewerExample = (props) => {
+let StructureViewerConnected = (props) => {
   return (
     <div>
-      <h1>Structure viewer example</h1>
       <ProteinStructureViewer
-        height={800}
-        width={800}
-        backgroundColor={'white'}
         variantsData={[123, 124, 125]}
         {...props}
       />
@@ -34,12 +25,10 @@ let StructureViewerExample = (props) => {
 
 const mapStateToProps = (state) => {
   const currentGene = 'HBB'
-  const structureData = structures(state, currentGene)
-  console.log(state.toJS())
-  console.log(structureData.toJS())
+  const structureData = structures(state.structureViewer, currentGene)
   return ({
-    retrieving: retrieving(state),
-    currentPdb: currentPdb(state),
+    retrieving: retrieving(state.structureViewer),
+    currentPdb: currentPdb(state.structureViewer),
     pdbSearchResultsList: structureData.get('pdbSearchResultsList').toJS(),
     receivedPdb: structureData.get('receivedPdb'),
     hasPdb: structureData.get('receivedPdb'),
@@ -54,12 +43,6 @@ const mapDispatchProps = (dispatch) => ({
   searchPdb: (gene) => dispatch(actions.searchPdb(gene)),
 })
 
-StructureViewerExample = connect(mapStateToProps, mapDispatchProps)(StructureViewerExample)
+StructureViewerConnected = connect(mapStateToProps, mapDispatchProps)(StructureViewerConnected)
 
-const ExampleApp = () => (
-  <Provider store={store}>
-    <StructureViewerExample />
-  </Provider>
-)
-
-export default ExampleApp
+export default StructureViewerConnected

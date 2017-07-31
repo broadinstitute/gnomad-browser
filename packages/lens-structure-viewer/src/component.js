@@ -39,11 +39,13 @@ class VariantsStructure extends Component {
   attachViewer = (node) => {
     // debugger
     const options = {
-      width: 600,
-      height: 300,
+      width: this.props.width,
+      height: this.props.height,
       antialias: true,
       quality: 'high',
+      background: this.props.backgroundColor
     }
+
 
     return pv.Viewer(node, options)
   }
@@ -64,10 +66,10 @@ class VariantsStructure extends Component {
       { color: color.uniform('white') },
     )
     // const ligands = structure.select({ rnames: ['SAH', 'RVP'] })
-    // const residues = structure.select({ rnums: res })
+    const residues = structure.select({ rnums: res })
     // viewer.ballsAndSticks('ligands', ligands)
     // viewer.ballsAndSticks('residues', residues, { color: color.byElement() })
-    // self.viewer.ballsAndSticks('residues', residues, { color: color.uniform('red') })
+    self.viewer.ballsAndSticks('residues', residues, { color: color.uniform('red') })
     // viewer.centerOn(residues)
     // viewer.setZoom(40)
     self.viewer.autoZoom()
@@ -101,7 +103,7 @@ class VariantsStructure extends Component {
                 console.log(this.viewer)
                 this.renderMolecule(
                   this,
-                  // this.getResidues(variantsData),
+                  this.getResidues(variantsData),
                 )
               }
             }}

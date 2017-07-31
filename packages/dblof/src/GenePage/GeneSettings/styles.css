@@ -1,0 +1,112 @@
+.geneSettings {
+  /*margin-bottom: 20px;*/
+  margin-left: 110px;
+  width: 100%;
+}
+
+.menus {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.legend-square-exomes {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  background-color: rgba(70, 130, 180, 1);
+  border: 1px solid #000;
+}
+.legend-square-genomes {
+  width: 15px;
+  height: 15px;
+  margin-left: 10px;
+  margin-right: 5px;
+  background-color: rgba(115, 171, 61, 1);
+  border: 1px solid #000;
+}
+
+.variantSelectorGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  /*border: 1px solid green;*/
+}
+
+@media (max-width: 600px) {
+  .variantSelectorGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: 1px solid green;
+    height: 160px;
+    margin-bottom: 20px;
+  }
+}
+
+.variantSelectorsContainer {
+  width: 30%;
+  border: 1px solid blue;
+}
+
+.variantSelectorCheckboxContainer {
+  padding-left: 10px;
+  margin-right: 50px;
+  height: 100%;
+  width: 20%;
+  /*border: 1px solid yellow;*/
+}
+
+.variantSelectorCheckboxTitle {
+  width: 100%;
+  height: 30%;
+  font-weight: bold;
+  padding-left: 3px;
+  /*border: 1px solid orange;*/
+}
+
+.variantSelectorCheckboxes {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex-shrink: 1;
+  align-items: flex-start;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
+  padding-left: 12px;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media (max-width: 1000px) {
+  .variantSelectorCheckboxes {
+    padding-left: 0;
+    padding-bottom: 3px;
+    border: 0;
+    height: 85%;
+    justify-content: flex-start;
+  }
+  .variantSelectorCheckboxTitle {
+    width: 100%;
+    height: 15%;
+    font-weight: bold;
+    padding-left: 3px;
+    /*border: 1px solid orange;*/
+  }
+}
+.variantSelectorCheckboxes label {
+  font-weight: normal !important;
+  display: flex;
+  margin-bottom: 0;
+}
+
+.checkboxLabel {
+  /*margin-left: 10px;*/
+  padding-left: 5px;
+}

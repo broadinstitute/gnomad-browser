@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import injectTapEventPlugin from 'react-tap-event-plugin'
+// import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {
   calculateOffsetRegions,
@@ -10,7 +10,8 @@ import {
 
 import defaultStyles from './styles.css'
 
-injectTapEventPlugin()
+// injectTapEventPlugin()
+
 
 const {
   exonColor,

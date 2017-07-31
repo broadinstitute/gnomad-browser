@@ -19,8 +19,11 @@ import { reduxSearch, reducer as searchReducer } from 'redux-search'
 import { makeGeneReducers } from '../resources/genes'
 import active from '../resources/active'
 import table from '../resources/table'
+import structureViewer from 'lens-structure-viewer/lib/redux'
 
 const logger = createLogger()
+
+// import  from ''
 
 const defaultWait = 20
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
@@ -38,13 +41,14 @@ export default function createGenePageStore({
     ...makeGeneReducers(variantSchema),
     table,
     search: searchReducer,
+    structureViewer,
   })
 
   const finalCreateStore = compose(
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
       thunk,
-      // logger,
+      logger,
     ),
     reduxSearch({
       resourceIndexes: {

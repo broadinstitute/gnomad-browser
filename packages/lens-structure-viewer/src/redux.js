@@ -140,7 +140,7 @@ export const actions = {
   },
 
   shouldFetchPdb (state, currentGene, currentPdb) {
-    console.log('fetch', state.get('structuresByGene'))
+    // console.log('fetch', state.structureViewer.get('structuresByGene'))
 
     // const pdbFiles = state.getIn(['structuresByGene', 'currentGene', 'pdbFiles'])
     // if (!pdbFiles.get(currentPdb)) {

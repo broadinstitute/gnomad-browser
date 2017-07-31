@@ -1,0 +1,117 @@
+@import "../config.css";
+
+:export {
+  exonColor: var(--exonColor);
+  paddingColor: var(--paddingColor);
+  masterExonThickness: 20px;
+  masterPaddingThickness: 3px;
+  flipOutExonThickness: 25px;
+  flipOutPaddingThickness: 5px;
+}
+
+.regionViewer {
+  display: flex;
+  flex-direction: column;
+  border: 0 solid #000;
+  align-items: center;
+  padding-left: 0;
+  padding-bottom: 10px;
+}
+
+.regionArea {
+  flex-direction: column;
+  /*border: 1px solid var(--secondaryColor);*/
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
+.transcriptContainer {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+.transcriptLeftAxis {
+  display: flex;
+  width: 100%;
+}
+
+.transcriptName {
+  display: flex;
+  width: 100%;
+}
+
+.transcriptTrackBackground {
+  fill: var(--backgroundColor);
+}
+
+.transcriptTrackLine {
+  stroke: var(--paddingColor);
+  /*stroke-width: var(--paddingThickness);*/
+}
+
+.transcriptData {
+  display: flex;
+  justify-content: center;
+}
+
+.transcriptsGrouped {
+  display: flex;
+  flex-direction: column;
+}
+
+.transcriptFlipOutButtonContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  /*border: 1px blue #000;*/
+}
+
+.transcriptFlipOutButton {
+  font-size: 22px;
+  color: var(--primaryColor);
+  background-color: var(--backgroundColor);
+  border-radius: 5%;
+  border: 0;
+}
+
+.transcriptFlipOutButton:hover {
+  font-size: 22px;
+  color: var(--backgroundColor);
+  background-color: var(--primaryColor);
+  border-radius: 5%;
+  border: 0;
+}
+
+.coverageTrack {
+  display: flex;
+}
+
+.coverageYAxis {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.coverageArea {
+
+}
+
+.ylabel {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: var(--primaryColor);
+}
+
+.yticktext {
+  font-size: 8px;
+  text-anchor: end;
+  fill: var(--primaryColor);
+}
+

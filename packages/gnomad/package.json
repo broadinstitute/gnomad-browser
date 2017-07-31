@@ -20,7 +20,8 @@
     "lens-track-transcript": "0.0.1",
     "lens-track-variant": "0.0.1",
     "lens-utilities": "0.0.1",
-    "lens-variant-table": "0.0.1"
+    "lens-variant-table": "0.0.1",
+    "lens-structure-viewer": "0.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",
@@ -33,7 +34,7 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "caniuse-db": "^1.0.30000684",
+    "caniuse-db": "^1.0.30000684",=
     "css-loader": "^0.28.4",
     "postcss-cssnext": "2.9.0",
     "postcss-import": "10.0.0",
@@ -52,6 +53,7 @@
     "graphql-fetch": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.18.3",
+    "mousetrap": "^1.6.1",
     "normalize.css": "^6.0.0",
     "ramda": "^0.24.1",
     "react": "^15.5.4",

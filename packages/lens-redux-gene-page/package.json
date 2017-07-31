@@ -7,7 +7,8 @@
     "lib"
   ],
   "localDependencies": {
-    "lens-utilities": "0.0.1"
+    "lens-utilities": "0.0.1",
+    "lens-structure-viewer": "0.0.1"
   },
   "peerDependencies": {
     "react": "^15.5.4",

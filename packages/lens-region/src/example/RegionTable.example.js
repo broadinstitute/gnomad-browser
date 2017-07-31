@@ -18,7 +18,7 @@ import examplePageStyles from './RegionTable.example.css'
 class RegionTableExample extends Component {
   state = {
     hasData: false,
-    currentGene: 'NEB',
+    currentGene: 'CFTR',
     padding: 150,
     testGenes: [
       'PCSK9',

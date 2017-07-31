@@ -6,16 +6,16 @@
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "FETCH_FUNCTION=schizophrenia ./node_modules/.bin/webpack-dev-server --hot --config webpack.config.js",
+    "start": "FETCH_FUNCTION=gnomad ./node_modules/.bin/webpack-dev-server --hot --config webpack.config.js",
     "build:es": "cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore example"
   },
   "files": [
     "dist"
   ],
   "localDependencies": {
-    "lens-manhattan": "0.0.1",
     "lens-redux-gene-page": "0.0.1",
     "lens-region": "0.0.1",
+    "lens-track-coverage": "0.0.1",
     "lens-track-navigator": "0.0.1",
     "lens-track-transcript": "0.0.1",
     "lens-track-variant": "0.0.1",
@@ -47,6 +47,9 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "d3-array": "^1.2.0",
+    "d3-scale": "^1.0.6",
+    "d3-shape": "^1.2.0",
     "graphql-fetch": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.18.3",

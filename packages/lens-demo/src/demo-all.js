@@ -8,6 +8,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 /**
  * Components
@@ -18,9 +19,11 @@ import TranscriptTrackDemo from 'lens-track-transcript/lib/example'
 import SashimiTrackDemo from 'lens-track-sashimi/lib/example'
 import TableTrackDemo from 'lens-track-table/lib/example'
 import ManhattanDemo from 'lens-manhattan/lib/example'
-
+import StructureViewer from 'lens-structure-viewer/lib/example'
 
 import css from './styles.css'
+
+injectTapEventPlugin()
 
 class DrawerOpenRightExample extends React.Component {
 
@@ -36,7 +39,7 @@ class DrawerOpenRightExample extends React.Component {
       <div>
         <RaisedButton
           label="Quick links"
-          onTouchTap={this.handleToggle}
+          onClick={this.handleToggle}
         />
         <Drawer width={ 200 } openSecondary={ true } open={ this.state.open } >
           <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
@@ -66,7 +69,7 @@ class DrawerSimpleExample extends React.Component {
       <div>
         <RaisedButton
           label="Open menu"
-          onTouchTap={this.handleToggle}
+          onClick={this.handleToggle}
         />
         <Drawer open={this.state.open}>
           <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
@@ -137,10 +140,28 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
+            to={'/structure'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>Structure viewer</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
             to={'/gnomad'}
             onClick={this.handleToggle}
           >
             <MenuItem>gnomAD</MenuItem>
+          </NavLink>
+          <NavLink
+            className={css.navlink}
+            activeClassName={css.active}
+            exact
+            to={'/dblof'}
+            onClick={this.handleToggle}
+          >
+            <MenuItem>dbLoF</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
@@ -187,6 +208,7 @@ const Demo = () =>
         <Route exact path={'/sashimi-track'} component={SashimiTrackDemo} />
         <Route exact path={'/table-track'} component={TableTrackDemo} />
         <Route exact path={'/manhattan'} component={ManhattanDemo} />
+        <Route exact path={'/structure'} component={StructureViewer} />
 
         <Route
           exact
@@ -196,6 +218,22 @@ const Demo = () =>
               React.createElement('iframe', {
                 frameBorder: 0,
                 src: 'http://localhost:8011',
+                style: {
+                  height: 1500,
+                  width: '100%',
+                },
+              })
+            )
+          }}
+        />
+        <Route
+          exact
+          path={'/dblof'}
+          render={() => {
+            return (
+              React.createElement('iframe', {
+                frameBorder: 0,
+                src: 'http://localhost:8013',
                 style: {
                   height: 1500,
                   width: '100%',
