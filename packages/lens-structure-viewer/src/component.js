@@ -33,8 +33,26 @@ class VariantsStructure extends Component {
       this.viewer.destroy()
     }
   }
+  // componentShouldUpdate () {
+  //   // debugger
+  //   if (this.props.currentPdb === nextProps.currentPdb) {
+  //     // debugger
+  //     return false
+  //   }
+  //   return true
+  // }
   getResidues = (variants) => {
-    return variants
+    console.log(variants.toJS())
+    const results = variants.toJS()
+      .filter(v => v.consequence === 'frameshift_variant')
+      .map(v => /\d+/.exec(v.hgvsp))
+    const numbers = results.map(n => {
+      if (n === null) {
+        return 0
+      }
+      return Number(n[0])
+    })
+    return numbers
   }
   attachViewer = (node) => {
     // debugger

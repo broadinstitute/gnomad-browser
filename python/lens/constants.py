@@ -2,7 +2,7 @@
 
 """Constants."""
 
-GENES = [
+TEST_GENES = [
     'BRCA2',
     'PCSK9',
     'ZNF658',

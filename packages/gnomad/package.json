@@ -34,7 +34,7 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "caniuse-db": "^1.0.30000684",=
+    "caniuse-db": "^1.0.30000684",
     "css-loader": "^0.28.4",
     "postcss-cssnext": "2.9.0",
     "postcss-import": "10.0.0",

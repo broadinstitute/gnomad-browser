@@ -17,6 +17,13 @@ import StructureViewer from './StructureViewer'
 
 import css from './styles.css'
 
+const MockImages = () => (
+  <div className={css.mockImagesContainer}>
+    <img src="https://storage.googleapis.com/gnomad-browser/jars/age_mock.png" width={300} alt=""/>
+    <img src="https://storage.googleapis.com/gnomad-browser/jars/population_mock.png" width={300} alt=""/>
+  </div>
+)
+
 const AppGenePage = ({
   gene,
   isFetching,
@@ -25,18 +32,19 @@ const AppGenePage = ({
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
+  const visibleVariantCount = visibleVariants.length
   return (
     <div className={css.genePage}>
       <div className={css.summary}>
         <GeneInfo
           gene={gene}
-          variantCount={visibleVariants.length}
+          variantCount={visibleVariantCount}
         />
       </div>
       <GeneRegion/>
+      <StructureViewer />
       <GeneSettings />
       <Table />
-      {/*<StructureViewer />*/}
     </div>
   )
 }

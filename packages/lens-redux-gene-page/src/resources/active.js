@@ -13,7 +13,7 @@ const getDefaultsForProject = (env) => {
     case 'schizophrenia':
       return { startingGene: 'GRIN2A', padding: 10000 }
     case 'dblof':
-      return { startingGene: 'CFTR', padding: 75 }
+      return { startingGene: 'CD33', padding: 75 }
     default:
       return { startingGene: 'CFTR', padding: 75 }
   }

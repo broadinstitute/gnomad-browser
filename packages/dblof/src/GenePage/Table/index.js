@@ -43,7 +43,7 @@ const GnomadVariantTable = ({
       <VariantTable
         css={css}
         title={''}
-        height={200}
+        height={600}
         width={calculatedWidth}
         tableConfig={tConfig}
         tableData={visibleVariants}

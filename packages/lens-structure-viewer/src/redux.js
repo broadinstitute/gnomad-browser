@@ -140,14 +140,15 @@ export const actions = {
   },
 
   shouldFetchPdb (state, currentGene, currentPdb) {
-    // console.log('fetch', state.structureViewer.get('structuresByGene'))
+    const structuresForGene = state.structureViewer.structuresByGene.get(currentGene)
+    const pdbFiles = structuresForGene.get('pdbFiles')
+    console.log('here are the files', pdbFiles)
+    if (!pdbFiles.get(currentPdb)) {
 
-    // const pdbFiles = state.getIn(['structuresByGene', 'currentGene', 'pdbFiles'])
-    // if (!pdbFiles.get(currentPdb)) {
-    //   return true
-    // }
-    // return false
-    return true
+      return true
+    }
+    console.log('Dont have to fetch')
+    return false
   },
 
   fetchPdbIfNeeded (currentGene, pdb) {
@@ -159,7 +160,6 @@ export const actions = {
     }
   }
 }
-
 const actionHandlers = {
   [types.TOGGLE_ROTATE] (state) {
     return state.set('rotate', !state.get('rotate'))
@@ -216,24 +216,27 @@ export default function reducer (state = new State(), action: Object): State {
 }
 
 // Selectors
-export const currentGene = state => state.get('currentGene')
-export const rotate = state => state.get('rotate')
-export const zoom = state => state.get('zoom')
-export const retrieving = state => state.get('retrieving')
-export const currentPdb = state => state.get('currentPdb')
-export const structuresByGene = state => state.get('structuresByGene')
+export const currentGene = state => state.structureViewer.get('currentGene')
+export const rotate = state => state.structureViewer.get('rotate')
+export const zoom = state => state.structureViewer.get('zoom')
+export const retrieving = state => state.structureViewer.get('retrieving')
+export const currentPdb = state => state.structureViewer.get('currentPdb')
+export const structuresByGene = state => state.structureViewer.get('structuresByGene')
 
-export const structures = (state, gene) => {
-  if (structuresByGene(state).get(gene)) {
-    return structuresByGene(state).get(gene)
+export const structures = createSelector(
+  [state => state.active.currentGene, structuresByGene],
+  (currentGene, structuresByGene) => {
+    if (structuresByGene.get(currentGene)) {
+      return structuresByGene.get(currentGene)
+    }
+    return Immutable.Map({
+      pdbSearchResultsList: Immutable.List(),
+      pdbFiles: Immutable.Map(),
+      hasPdb: false,
+      receivedPdb: false,
+    })
   }
-  return Immutable.Map({
-    pdbSearchResultsList: Immutable.List(),
-    pdbFiles: Immutable.Map(),
-    hasPdb: false,
-    receivedPdb: false,
-  })
-}
+)
 
 // export const pdbSearchResultsList = (state, currentGene) => {
 //   return structures(state, currentGene).get('pdbSearchResultsList')

@@ -5,6 +5,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import createGenePageStore from 'lens-redux-gene-page/lib/store/store'
 
+// import StructureViewer from './GenePage/StructureViewer'
+
 import App from './routes'
 
 const genePageSettings = {
@@ -40,9 +42,11 @@ const muiTheme = getMuiTheme({
 const Main = () => (
   <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
-      <Router>
-        <Route path="/" component={App} />
-      </Router>
+      <div>
+        <Router>
+          <Route path="/" component={App} />
+        </Router>
+      </div>
     </MuiThemeProvider>
   </Provider>
 )
