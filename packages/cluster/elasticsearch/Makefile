@@ -1,3 +1,6 @@
+#!make
+include ../config.sh
+export $(shell sed 's/=.*//' ../config.sh)
 
 ELASTICSEARCH_NODE_POOL_NAME=elasticsearch
 ELASTICSEARCH_NODE_MACHINE_TYPE=n1-standard-4
