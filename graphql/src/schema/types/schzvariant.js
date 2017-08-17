@@ -10,6 +10,8 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
+import fetch from 'isomorphic-fetch'
+
 const schzVariantType = new GraphQLObjectType({
   name: 'schzVariant',
   fields: () => ({
@@ -82,3 +84,47 @@ export const lookupSchzVariantsByStartStop = (db, collection, chr, xstart, xstop
   db.collection(collection).find(
     { chr, pos: { '$gte': Number(xstart), '$lte': Number(xstop) } }
   ).toArray()
+
+
+export const schzVariantTypeExome = new GraphQLObjectType({
+    name: 'schzVariantExome',
+    fields: () => ({
+      chrom: { type: GraphQLInt },
+      pos: { type: GraphQLInt },
+      ref: { type: GraphQLString },
+      alt: { type: GraphQLString }
+    }),
+  })
+
+export function lookupSchzVariantsByStartStopElastic (chr, xstart, xstop) {
+  return new Promise((resolve, reject) => {
+    const form = `{
+      "query": {
+        "range" : {
+            "xpos" : {
+              "gte" : ${xstart},
+              "lte" : ${xstop}
+            }
+        }
+      }
+    }`
+    // fetch('http://35.202.72.34:9200/schizophrenia/variant/_search?pretty', {
+    fetch('http://35.202.72.34:9200/schizophrenia/variant/_search?pretty', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: form
+    }).then(response => {
+      // console.log(response.status)
+      // if (response.status >= 400) {
+      //   throw new Error("Bad response from server");
+      // }
+      response.json().then(data => {
+        console.log(data)
+        resolve(data.hits.hits.map(h => h._source))
+      })
+    }).catch(error => console.log(error))
+  })
+}

@@ -17,8 +17,11 @@ import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
-import metaVariantType from './metavariant'
-import schzVariantType, { lookupSchzVariantsByStartStop } from './schzvariant'
+import schzVariantType, {
+  lookupSchzVariantsByStartStop,
+  schzVariantTypeExome,
+  lookupSchzVariantsByStartStopElastic,
+ } from './schzvariant'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 
 const geneType = new GraphQLObjectType({
@@ -91,6 +94,15 @@ const geneType = new GraphQLObjectType({
           Number(obj.chrom),
           obj.start,
           Number(obj.stop),
+        ),
+    },
+    schiz_exome_variants: {
+      type: new GraphQLList(schzVariantTypeExome),
+      resolve: (obj, args, ctx) =>
+        lookupSchzVariantsByStartStopElastic(
+          Number(obj.chrom),
+          obj.xstart,
+          Number(obj.xstop),
         ),
     },
     transcript: {
