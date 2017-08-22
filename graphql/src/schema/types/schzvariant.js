@@ -10,7 +10,7 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
-import fetch from 'isomorphic-fetch'
+import elasticsearch from 'elasticsearch'
 
 const schzVariantType = new GraphQLObjectType({
   name: 'schzVariant',
@@ -87,44 +87,87 @@ export const lookupSchzVariantsByStartStop = (db, collection, chr, xstart, xstop
 
 
 export const schzVariantTypeExome = new GraphQLObjectType({
-    name: 'schzVariantExome',
-    fields: () => ({
-      chrom: { type: GraphQLInt },
-      pos: { type: GraphQLInt },
-      ref: { type: GraphQLString },
-      alt: { type: GraphQLString }
-    }),
-  })
+  name: 'schzVariantExome',
+  fields: () => ({
+    chrom: { type: GraphQLString },
+    pos: { type: GraphQLInt },
+    xpos: { type: GraphQLFloat },
+    ref: { type: GraphQLString },
+    alt: { type: GraphQLString },
+    rsid: { type: GraphQLString },
+    qual: { type: GraphQLFloat },
+    filters: { type: new GraphQLList(GraphQLString) },
 
-export function lookupSchzVariantsByStartStopElastic (chr, xstart, xstop) {
+    variantId: { type: GraphQLString },
+    originalAltAlleles: { type: new GraphQLList(GraphQLString) },
+    geneIds: { type: new GraphQLList(GraphQLString) },
+    transcriptIds: { type: new GraphQLList(GraphQLString) },
+    transcriptConsequenceTerms: { type: new GraphQLList(GraphQLString) },
+    sortedTranscriptConsequences: { type: GraphQLString },
+
+    AC: {
+      type: GraphQLInt,
+      resolve: obj => obj.AC[0],
+    },
+    AF: {
+      type: GraphQLFloat,
+      resolve: obj => obj.AF[0],
+    },
+    AC_cases: { type: GraphQLInt },
+    AC_ctrls: { type: GraphQLInt },
+    AC_UK_cases: { type: GraphQLInt },
+    AC_UK_ctrls: { type: GraphQLInt },
+    AC_FIN_cases: { type: GraphQLInt },
+    AC_FIN_ctrls: { type: GraphQLInt },
+    AC_SWE_cases: { type: GraphQLInt },
+    AC_SWE_ctrls: { type: GraphQLInt },
+
+    mainTranscriptAminoAcids: { type: GraphQLString },
+    mainTranscriptBiotype: { type: GraphQLString },
+    mainTranscriptCanonical: { type: GraphQLInt },
+    mainTranscriptCdnaStart: { type: GraphQLInt },
+    mainTranscriptCdnaEnd: { type: GraphQLInt },
+    mainTranscriptCodons: { type: GraphQLString },
+    mainTranscriptDomains: { type: GraphQLString },
+    mainTranscriptExon: { type: GraphQLString },
+    mainTranscriptGeneId: { type: GraphQLString },
+    mainTranscriptGeneSymbol: { type: GraphQLString },
+    mainTranscriptGeneSymbolSource: { type: GraphQLString },
+    mainTranscriptHgncId: { type: GraphQLString },
+    mainTranscriptHgvsc: { type: GraphQLString },
+    mainTranscriptHgvsp: { type: GraphQLString },
+    mainTranscriptLof: { type: GraphQLString },
+    mainTranscriptLofFlags: { type: GraphQLString },
+    mainTranscriptLofFilter: { type: GraphQLString },
+    mainTranscriptLofInfo: { type: GraphQLString },
+    mainTranscriptProteinId: { type: GraphQLString },
+    mainTranscriptTranscriptId: { type: GraphQLString },
+    mainTranscriptHgvs: { type: GraphQLString },
+    mainTranscriptMajorConsequence: { type: GraphQLString },
+    mainTranscriptMajorConsequenceRank: { type: GraphQLInt },
+    mainTranscriptCategory: { type: GraphQLString },
+  })
+})
+
+export function lookupSchzVariantsByGeneId (geneId) {
+  const client = new elasticsearch.Client({
+    host: 'elastic:9200',
+    // log: 'trace',
+  })
   return new Promise((resolve, reject) => {
-    const form = `{
-      "query": {
-        "range" : {
-            "xpos" : {
-              "gte" : ${xstart},
-              "lte" : ${xstop}
-            }
-        }
-      }
-    }`
-    // fetch('http://35.202.72.34:9200/schizophrenia/variant/_search?pretty', {
-    fetch('http://35.202.72.34:9200/schizophrenia/variant/_search?pretty', {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+    client.search({
+      index: 'schizophrenia',
+      type: 'variant',
+      body: {
+        query: {
+          match: {
+            geneIds: geneId,
+          },
+        },
       },
-      body: form
-    }).then(response => {
-      // console.log(response.status)
-      // if (response.status >= 400) {
-      //   throw new Error("Bad response from server");
-      // }
-      response.json().then(data => {
-        console.log(data)
-        resolve(data.hits.hits.map(h => h._source))
-      })
-    }).catch(error => console.log(error))
+    }).then((response) => {
+      const variants = response.hits.hits.map(v => v._source)
+      resolve(variants)
+    })
   })
 }

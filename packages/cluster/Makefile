@@ -17,6 +17,13 @@ cluster:
 	--num-nodes $(NUMBER_OF_NODES) \
 	--project $(GCLOUD_PROJECT)
 
+default-node-pool:
+	gcloud beta container node-pools create default-pool \
+	--cluster $(CLUSTER_NAME) \
+	--zone $(GCLOUD_ZONE) \
+	--num-nodes $(NUMBER_OF_NODES) \
+	--machine-type $(MACHINE_TYPE)
+
 .PHONY: context
 context:
 	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE)

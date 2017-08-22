@@ -13,7 +13,7 @@ import {
   currentGene
 } from './active'
 
-import { fetchGenePage, fetchSchzGenePage } from './fetch'
+import { fetchGenePage, fetchSchzGenePage, fetchSchzGenePage2 } from './fetch'
 
 // HACK
 const getDefaultsForProject = (env) => {
@@ -22,6 +22,8 @@ const getDefaultsForProject = (env) => {
       return fetchGenePage
     case 'schizophrenia':
       return fetchSchzGenePage
+    case 'schizophreniaExome':
+      return fetchSchzGenePage2
     case 'dblof':
       return fetchGenePage
     default:

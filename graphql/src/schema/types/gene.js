@@ -20,7 +20,7 @@ import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 import schzVariantType, {
   lookupSchzVariantsByStartStop,
   schzVariantTypeExome,
-  lookupSchzVariantsByStartStopElastic,
+  lookupSchzVariantsByGeneId,
  } from './schzvariant'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 
@@ -99,11 +99,7 @@ const geneType = new GraphQLObjectType({
     schiz_exome_variants: {
       type: new GraphQLList(schzVariantTypeExome),
       resolve: (obj, args, ctx) =>
-        lookupSchzVariantsByStartStopElastic(
-          Number(obj.chrom),
-          obj.xstart,
-          Number(obj.xstop),
-        ),
+        lookupSchzVariantsByGeneId(obj.gene_id),
     },
     transcript: {
       type: transcriptType,
