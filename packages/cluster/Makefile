@@ -4,6 +4,8 @@ export $(shell sed 's/=.*//' config.sh)
 
 all: cluster context elasticsearch
 
+load-cluster: cluster context
+
 MACHINE_TYPE=n1-standard-4
 NUMBER_OF_NODES=1
 GKE_CLUSTER_NAME=gke_$(GCLOUD_PROJECT)_$(GCLOUD_ZONE)_$(CLUSTER_NAME)
@@ -33,17 +35,36 @@ context:
 	--namespace $(CLUSTER_NAMESPACE)
 	kubectl config use-context $(CLUSTER_NAME)
 
+dataproc-no-vep:
+	../hail-db-utils/create_cluster_without_VEP.py \
+	--project $(GCLOUD_PROJECT) \
+	--zone $(GCLOUD_ZONE) \
+	--machine-type $(DATAPROC_CLUSTER_MACHINE_TYPE) \
+	no-vep $(DATAPROC_CLUSTER_NUM_NODES)
+
 .PHONY: spark
 spark:
 	make -C spark
 
 .PHONY: elasticsearch
-elasticsearch:
-	make -C elasticsearch
+elasticsearch: context
+	make -C elasticsearch load
 
 .PHONY: delete-cluster
-delete-cluster:
-	gcloud container clusters delete $(CLUSTER_NAME) \
+delete-elasticsearch-cluster:
+	gcloud -q container clusters delete $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE) \
 	--project $(GCLOUD_PROJECT)
 	kubectl config delete-context $(CLUSTER_NAME)
+
+delete-dataproc-cluster:
+	gcloud -q dataproc clusters delete $(DATAPROC_CLUSTER_NAME)
+
+# load-gnomad:
+# 	echo $$PWD
+# 	# cd ..
+# 	# shell pwd
+# 	# make -C gnomad/data/make test
+#
+# load-schizophrenia:
+# 	make -C $(shell pwd)/../schizophrenia/data/make test

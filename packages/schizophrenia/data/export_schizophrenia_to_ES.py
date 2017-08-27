@@ -17,8 +17,9 @@ p.add_argument("-H", "--host", help="Elasticsearch node host or IP. To look this
 p.add_argument("-p", "--port", help="Elasticsearch port", default=30001, type=int)  # 9200
 p.add_argument("-i", "--index", help="Elasticsearch index name", default="schizophrenia")
 p.add_argument("-t", "--index-type", help="Elasticsearch index type", default="variant")
-p.add_argument("-t", "--schizophrenia-vds", help="Path to schizophrenia data" required=True)
-p.add_argument("-b", "--block-size", help="Elasticsearch block size", default=200)
+p.add_argument("-v", "--schizophrenia-vds", help="Path to schizophrenia data", required=True)
+p.add_argument("-b", "--block-size", help="Elasticsearch block size", default=200, type=int)
+p.add_argument("-s", "--num-shards", help="Number of shards", default=1, type=int)
 
 # parse args
 args = p.parse_args()
@@ -120,7 +121,7 @@ transcript_annotations_to_keep = [
 pprint(kt.schema)
 
 for field_name in transcript_annotations_to_keep:
-    new_field_name = "mainTranscript" + "".join(map(lambda word: word.capitalize(), field_name.split("_")))
+    new_field_name = field_name.split("_")[0] + "".join(map(lambda word: word.capitalize(), field_name.split("_")[1:]))
     kt = kt.annotate("%(new_field_name)s = mainTranscript.%(field_name)s" % locals())
 
 # pprint(kt.schema)
@@ -139,6 +140,7 @@ export_kt_to_elasticsearch(
     index_name=args.index,
     index_type_name=args.index_type,
     block_size=args.block_size,
+    num_shards=args.num_shards,
     delete_index_before_exporting=True,
     disable_doc_values_for_fields=DISABLE_INDEX_AND_DOC_VALUES_FOR_FIELDS,
     disable_index_for_fields=DISABLE_INDEX_AND_DOC_VALUES_FOR_FIELDS,

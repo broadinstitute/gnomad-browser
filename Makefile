@@ -97,3 +97,17 @@ lib:
 	@:
 .DEFAULT :
 	@:
+
+context:
+	make -C packages/cluster context
+
+bootstrap-data-test:
+	make -C packages/cluster cluster
+	make -C packages/cluster elasticsearch
+	make -C packages/cluster dataproc-no-vep
+	make -C packages/gnomad/data test
+	make -C packages/schizophrenia/data variants
+
+delete-data-cluster:
+	make -C packages/cluster delete-elasticsearch-cluster & \
+	make -C packages/cluster delete-dataproc-cluster

@@ -7,6 +7,8 @@ NUMBER=1
 MACHINE_TYPE=n1-highmem-8
 LOCAL_SSD_COUNT=1
 
+ES_SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=23.236.50.46)
+
 persistent: create-persistent-nodes deploy-persistent-data-pods
 
 load: create-loading-nodes deploy-loading-all
@@ -26,7 +28,10 @@ create-persistent-nodes:
 	--num-nodes 1 \
 	--machine-type n1-standard-4
 
-deploy-loading-all:
+delete-es-forwarding-rule:
+	gcloud -q compute forwarding-rules delete $(ES_SERVICE_FORWARDING_RULE_ID) --region us-central1
+
+deploy-loading-all: delete-es-forwarding-rule
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-master.yaml
@@ -37,7 +42,7 @@ deploy-loading-all:
 deploy-loading-data-pods:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-data.yaml
 
-deploy-persistent-all:
+deploy-persistent-all: delete-es-forwarding-rule
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-master.yaml

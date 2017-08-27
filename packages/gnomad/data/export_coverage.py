@@ -10,8 +10,7 @@ p = argparse.ArgumentParser()
 p.add_argument("-H", "--host", help="Elasticsearch node host or IP. To look this up, run: `kubectl describe nodes | grep Addresses`", required=True)
 p.add_argument("-p", "--port", help="Elasticsearch port", default=9200, type=int)
 p.add_argument("-i", "--index", help="Elasticsearch index name", default="coverage")
-p.add_argument("-c", "--coverage-type", help="exome or genome, default="exome")
-p.add_argument("-i", "--index", help="Elasticsearch index name", default="exome")
+p.add_argument("-c", "--coverage-type", help="exome/genome/test", default="test")
 p.add_argument("-t", "--index-type", help="Elasticsearch index type", default="position")
 p.add_argument("-b", "--block-size", help="Elasticsearch block size", default=100, type=int)
 p.add_argument("-s", "--num-shards", help="Number of shards", default=1, type=int)
@@ -44,8 +43,8 @@ EXOME_COVERAGE_CSV_PATHS = [
     "gs://gnomad-browser/exomes/coverage/exacv2.chr7.cov.txt.gz",
     "gs://gnomad-browser/exomes/coverage/exacv2.chr8.cov.txt.gz",
     "gs://gnomad-browser/exomes/coverage/exacv2.chr9.cov.txt.gz",
-    "gs://gnomad-browser/exomes/coverage/exacv2.chrX.cov.txt.gz",
     "gs://gnomad-browser/exomes/coverage/exacv2.chrY.cov.txt.gz",
+    "gs://gnomad-browser/exomes/coverage/exacv2.chrX.cov.txt.gz",
 ]
 
 GENOME_COVERAGE_CSV_PATHS = [
@@ -90,10 +89,15 @@ types = {
     '100': TDouble()
 }
 
-COVERAGE_PATHS = EXOME_COVERAGE_CSV_PATHS if args.coverage_type == 'exome' else GENOME_COVERAGE_CSV_PATHS
+if args.coverage_type == 'exome':
+    COVERAGE_PATHS = EXOME_COVERAGE_CSV_PATHS
+if args.coverage_type == 'genome':
+    COVERAGE_PATHS = GENOME_COVERAGE_CSV_PATHS
+if args.coverage_type == 'test':
+    COVERAGE_PATHS = EXOME_COVERAGE_CSV_PATHS[-1]
 
-kt_exome_coverage = hc.import_table(COVERAGE_PATHS, types=types)
-kt_exome_coverage = kt_exome_coverage.rename({
+kt_coverage = hc.import_table(COVERAGE_PATHS, types=types)
+kt_coverage = kt_coverage.rename({
     '#chrom': 'chrom',
     '1': 'over1',
     '5': 'over5',
@@ -105,40 +109,13 @@ kt_exome_coverage = kt_exome_coverage.rename({
     '50': 'over50',
     '100': 'over100',
 })
-print(kt_exome_coverage.schema)
+print(kt_coverage.schema)
 print("======== Export exome coverage to elasticsearch ======")
 export_kt_to_elasticsearch(
-    kt_exome_coverage,
+    kt_coverage,
     host=args.host,
     port=args.port,
-    index_name='exome_coverage',
-    index_type_name=args.index_type,
-    num_shards=args.num_shards,
-    block_size=args.block_size,
-    delete_index_before_exporting=True,
-    verbose=True
-)
-
-kt_genome_coverage = hc.import_table(GENOME_COVERAGE_CSV_PATHS, types=types)
-kt_genome_coverage = kt_genome_coverage.rename({
-    '#chrom': 'chrom',
-    '1': 'over1',
-    '5': 'over5',
-    '10': 'over10',
-    '15': 'over15',
-    '20': 'over20',
-    '25': 'over25',
-    '30': 'over30',
-    '50': 'over50',
-    '100': 'over100',
-})
-print(kt_genome_coverage.schema)
-print("======== Export genome coverage to elasticsearch ======")
-export_kt_to_elasticsearch(
-    kt_genome_coverage,
-    host=args.host,
-    port=args.port,
-    index_name='genome_coverage',
+    index_name=args.index,
     index_type_name=args.index_type,
     num_shards=args.num_shards,
     block_size=args.block_size,
