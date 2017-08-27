@@ -288,7 +288,6 @@ test('Look up variants by gene id', (assert) => {
     const variant = response.hits.hits[0]
     assert.equal(response.hits.hits.length, 295)
   })
-
   assert.end()
 })
 
@@ -311,4 +310,42 @@ test('Aggregate variants by gene.', (assert) => {
 
   assert.end()
 })
+
+test('Look up genome coverage and arrange query', (assert) => {
+  client.search({
+    index: 'genome_coverage',
+    type: 'position',
+    size: 500000,
+    body: {
+      query: {
+        bool: {
+          must: [
+            {
+              term: {
+                chrom: '1',
+              },
+            },
+            {
+              range: {
+                pos: {
+                  from: 55505221,
+                  to: 55530525,
+                }
+              },
+            }
+          ]
+        }
+      },
+    },
+  }).then(response => {
+    console.log(response)
+    //const variant = response.hits.hits[0]
+    //assert.equal(response.hits.hits.length, 295)
+  })
+  assert.end()
+})
+
+
+
+
 

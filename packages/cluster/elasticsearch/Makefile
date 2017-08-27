@@ -4,12 +4,14 @@ include ../config.sh
 
 POOL_NAME=elasticsearch
 NUMBER=1
-MACHINE_TYPE=n1-standard-4
+MACHINE_TYPE=n1-highmem-8
 LOCAL_SSD_COUNT=1
 
-all: create-nodes deploy
+persistent: create-persistent-nodes deploy-persistent-data-pods
 
-create-nodes:
+load: create-loading-nodes deploy-loading-all
+
+create-loading-nodes:
 	gcloud beta container node-pools create $(POOL_NAME) \
 	--cluster $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE) \
@@ -17,13 +19,40 @@ create-nodes:
 	--machine-type $(MACHINE_TYPE) \
 	--local-ssd-count $(LOCAL_SSD_COUNT)
 
-deploy: delete-deployments
+create-persistent-nodes:
+	gcloud beta container node-pools create elasticpersistent \
+	--cluster $(CLUSTER_NAME) \
+	--zone $(GCLOUD_ZONE) \
+	--num-nodes 1 \
+	--machine-type n1-standard-4
+
+deploy-loading-all:
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-master.yaml
+	sleep 30
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-client.yaml
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-data.yaml
+
+deploy-loading-data-pods:
+	@-kubectl create -f kubernetes-elasticsearch-cluster/es-data.yaml
+
+deploy-persistent-all:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-master.yaml
 	sleep 20
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-client.yaml
-	@-kubectl create -f kubernetes-elasticsearch-cluster/es-data.yaml
+	@-kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-persistent-volume.yaml
+	sleep 10
+	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-svc.yaml
+	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-stateful.yaml
+
+deploy-persistent-data-pods:
+	@-kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-persistent-volume.yaml
+	sleep 10
+	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-svc.yaml
+	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-stateful.yaml
 
 kibana:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/kibana-svc.yaml
@@ -45,6 +74,11 @@ delete-services:
 	@-kubectl delete -f kubernetes-elasticsearch-cluster/kibana.yaml 2>/dev/null
 	@-kubectl create -f kubernetes-elasticsearch-cluster/elasticsearch-head-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/elasticsearch-head.yaml
+
+delete-load-nodes:
+	gcloud beta container node-pools delete $(POOL_NAME) \
+	--cluster $(CLUSTER_NAME) \
+	--zone $(GCLOUD_ZONE)
 
 delete-all: delete-deployments delete-services kibana
 	gcloud beta container node-pools delete $(POOL_NAME) \
