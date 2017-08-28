@@ -42,6 +42,9 @@ deploy-loading-all: delete-es-forwarding-rule
 deploy-loading-data-pods:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-data.yaml
 
+delete-loading-data-pods:
+	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-data.yaml
+
 deploy-persistent-all: delete-es-forwarding-rule
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
@@ -58,6 +61,13 @@ deploy-persistent-data-pods:
 	sleep 10
 	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-svc.yaml
 	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-stateful.yaml
+	sleep 60
+
+reallocate-shards:
+	./reallocate.sh
+
+delete-all-indices:
+	curl -XDELETE $(ES_IP):9200/*
 
 kibana:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/kibana-svc.yaml
@@ -81,7 +91,7 @@ delete-services:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/elasticsearch-head.yaml
 
 delete-load-nodes:
-	gcloud beta container node-pools delete $(POOL_NAME) \
+	gcloud -q beta container node-pools delete $(POOL_NAME) \
 	--cluster $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE)
 
@@ -89,3 +99,5 @@ delete-all: delete-deployments delete-services kibana
 	gcloud beta container node-pools delete $(POOL_NAME) \
 	--cluster $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE)
+
+

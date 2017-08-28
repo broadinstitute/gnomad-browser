@@ -43,3 +43,9 @@ variants:
 	--index-type variant \
 	--num-shards 1 \
 	--schizophrenia-vds gs://gnomad-browser/datasets/sczmeta.counts.vep.vds
+
+persist:
+	curl -XPUT http://$(ES_IP)/schizophrenia/_settings -d '{ \
+		"index.routing.allocation.include.data_node_hostname": "es-data-loading*", \
+		"index.routing.allocation.exclude.data_node_hostname": "es-data-persistent*" \
+	}'

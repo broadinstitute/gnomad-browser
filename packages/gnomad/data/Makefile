@@ -72,4 +72,9 @@ coverage-test:
 	COVERAGE_TYPE=test \
 	coverage
 
+persist:
+	curl -XPUT http://$(ES_IP)/dmd,chrom_x_coverage/_settings -d '{ \
+		"index.routing.allocation.include.data_node_hostname": "es-data-persistent*", \
+		"index.routing.allocation.exclude.data_node_hostname": "es-data-loading*" \
+	}'
 

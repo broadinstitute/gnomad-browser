@@ -101,12 +101,25 @@ lib:
 context:
 	make -C packages/cluster context
 
-bootstrap-data-test:
+load-and-persist: load-data-test persist-data-test
+
+load-data-test:
 	make -C packages/cluster cluster
 	make -C packages/cluster elasticsearch
 	make -C packages/cluster dataproc-no-vep
 	make -C packages/gnomad/data test
 	make -C packages/schizophrenia/data variants
+
+persist-data-test:
+	make -C packages/cluster/elasticsearch create-persistent-nodes
+	make -C packages/cluster/elasticsearch deploy-persistent-data-pods
+	make -C packages/cluster/elasticsearch reallocate-shards
+	make takedown-loading-nodes
+
+takedown-loading-nodes:
+	make -C packages/cluster delete-dataproc-cluster
+	make -C packages/cluster/elasticsearch delete-loading-data-pods
+	make -C packages/cluster/elasticsearch delete-load-nodes
 
 delete-data-cluster:
 	make -C packages/cluster delete-elasticsearch-cluster & \
