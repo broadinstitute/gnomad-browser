@@ -19,7 +19,7 @@ variants:
 	--index-type variant \
 	--exomes-vds $(EXOMES_VDS_PATH) \
 	--genomes-vds $(GENOMES_VDS_PATH) \
-	--num-shards 1
+	--num-shards 6
 
 variants-gnomad:
 	@make \
@@ -50,7 +50,7 @@ coverage:
 	--host $(ES_HOST_IP) \
 	--port 9200 \
 	--block-size 20000 \
-	--num-shards 1 \
+	--num-shards 6 \
 	--index $(COVERAGE_INDEX_NAME) \
 	--coverage-type $(COVERAGE_TYPE)
 

@@ -101,16 +101,16 @@ lib:
 context:
 	make -C packages/cluster context
 
-load-and-persist: load-data-test persist-data-test
+load-and-persist: load-data persist-data
 
-load-data-test:
+load-data:
 	make -C packages/cluster cluster
 	make -C packages/cluster elasticsearch
 	make -C packages/cluster dataproc-no-vep
-	make -C packages/gnomad/data test
 	make -C packages/schizophrenia/data variants
+	make -C packages/gnomad/data all
 
-persist-data-test:
+persist-data:
 	make -C packages/cluster/elasticsearch create-persistent-nodes
 	make -C packages/cluster/elasticsearch deploy-persistent-data-pods
 	make -C packages/cluster/elasticsearch reallocate-shards
