@@ -94,6 +94,7 @@ if args.coverage_type == 'exome':
 if args.coverage_type == 'genome':
     COVERAGE_PATHS = GENOME_COVERAGE_CSV_PATHS
 if args.coverage_type == 'test':
+    # x chromosome only
     COVERAGE_PATHS = EXOME_COVERAGE_CSV_PATHS[-1]
 
 kt_coverage = hc.import_table(COVERAGE_PATHS, types=types)

@@ -121,6 +121,10 @@ takedown-loading-nodes:
 	make -C packages/cluster/elasticsearch delete-loading-data-pods
 	make -C packages/cluster/elasticsearch delete-load-nodes
 
+start-persistent-cluster:
+	make -C packages/cluster cluster
+	make -C packages/cluster/elasticsearch persistent
+
 delete-data-cluster:
 	make -C packages/cluster delete-elasticsearch-cluster & \
 	make -C packages/cluster delete-dataproc-cluster
