@@ -6,6 +6,7 @@ all: cluster context elasticsearch
 
 load-cluster: cluster context
 
+# MACHINE_TYPE=n1-standard-4
 MACHINE_TYPE=n1-standard-4
 NUMBER_OF_NODES=1
 GKE_CLUSTER_NAME=gke_$(GCLOUD_PROJECT)_$(GCLOUD_ZONE)_$(CLUSTER_NAME)

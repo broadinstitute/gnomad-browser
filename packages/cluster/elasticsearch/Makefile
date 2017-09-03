@@ -4,7 +4,8 @@ include ../config.sh
 
 POOL_NAME=elasticsearch
 NUMBER=6
-MACHINE_TYPE=n1-highmem-8
+LOADING_MACHINE_TYPE=n1-highmem-4
+PERSISTENT_MACHINE_TYPE=n1-standard-4
 LOCAL_SSD_COUNT=1
 
 ES_SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=23.236.50.46)
@@ -18,7 +19,7 @@ create-loading-nodes:
 	--cluster $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE) \
 	--num-nodes $(NUMBER) \
-	--machine-type $(MACHINE_TYPE) \
+	--machine-type $(LOADING_MACHINE_TYPE) \
 	--local-ssd-count $(LOCAL_SSD_COUNT)
 
 create-persistent-nodes:
@@ -26,7 +27,7 @@ create-persistent-nodes:
 	--cluster $(CLUSTER_NAME) \
 	--zone $(GCLOUD_ZONE) \
 	--num-nodes 1 \
-	--machine-type n1-standard-4
+	--machine-type $(PERSISTENT_MACHINE_TYPE)
 
 delete-es-forwarding-rule:
 	gcloud -q compute forwarding-rules delete $(ES_SERVICE_FORWARDING_RULE_ID) --region us-central1

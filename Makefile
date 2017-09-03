@@ -123,6 +123,7 @@ takedown-loading-nodes:
 
 start-persistent-cluster:
 	make -C packages/cluster cluster
+	make -C packages/cluster context
 	make -C packages/cluster/elasticsearch persistent
 
 delete-data-cluster:
