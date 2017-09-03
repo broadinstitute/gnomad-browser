@@ -47,13 +47,16 @@ const mapStateToProps = state => ({
   visibleVariants: visibleVariants(state),
 })
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = geneFetchFunction => dispatch => {
   return {
-    fetchGeneIfNeeded: currentGene => dispatch(geneActions.fetchGeneIfNeeded(currentGene)),
+    fetchGeneIfNeeded: currentGene => dispatch(geneActions.fetchGeneIfNeeded(currentGene, geneFetchFunction)),
   }
 }
 
-const GenePageHOC = ComposedComponent =>
-  connect(mapStateToProps, mapDispatchToProps)(GenePageContainer(ComposedComponent))
+const GenePageHOC = (ComposedComponent, geneFetchFunction) =>
+  connect(
+    mapStateToProps,
+    mapDispatchToProps(geneFetchFunction),
+  )(GenePageContainer(ComposedComponent))
 
 export default GenePageHOC

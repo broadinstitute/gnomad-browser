@@ -14,6 +14,7 @@ import GeneSettings from './GeneSettings'
 import GeneRegion from './RegionViewer'
 import Table from './Table'
 import StructureViewer from './StructureViewer'
+import { fetchGene } from './fetch'
 
 import css from './styles.css'
 
@@ -55,4 +56,4 @@ AppGenePage.propTypes = {
   visibleVariants: PropTypes.array.isRequired,
 }
 
-export default GenePageHOC(AppGenePage)
+export default GenePageHOC(AppGenePage, fetchGene)

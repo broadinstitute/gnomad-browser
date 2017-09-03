@@ -13,6 +13,7 @@ import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
+import { fetchSchzGenePage } from './fetch'
 
 import css from './styles.css'
 
@@ -45,4 +46,4 @@ AppGenePage.propTypes = {
   visibleVariants: PropTypes.array.isRequired,
 }
 
-export default GenePageHOC(AppGenePage)
+export default GenePageHOC(AppGenePage, fetchSchzGenePage)

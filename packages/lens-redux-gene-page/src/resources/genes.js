@@ -13,27 +13,27 @@ import {
   currentGene
 } from './active'
 
-import { fetchGenePage, fetchSchzGenePage, fetchSchzGenePage2 } from './fetch'
+// import { fetchGenePage, fetchSchzGenePage, fetchSchzGenePage2 } from './fetch'
 
 // HACK
-const getDefaultsForProject = (env) => {
-  switch (env) {
-    case 'gnomad':
-      return fetchGenePage
-    case 'schizophrenia':
-      return fetchSchzGenePage
-    case 'schizophreniaExome':
-      return fetchSchzGenePage2
-    case 'dblof':
-      return fetchGenePage
-    default:
-      return fetchGenePage
-  }
-}
+// const getDefaultsForProject = (env) => {
+//   switch (env) {
+//     case 'gnomad':
+//       return fetchGenePage
+//     case 'schizophrenia':
+//       return fetchSchzGenePage
+//     case 'schizophreniaExome':
+//       return fetchSchzGenePage2
+//     case 'dblof':
+//       return fetchGenePage
+//     default:
+//       return fetchGenePage
+//   }
+// }
 
-const fetchFunction = getDefaultsForProject(process.env.FETCH_FUNCTION)
+// const fetchFunction = getDefaultsForProject(process.env.FETCH_FUNCTION)
 
-const API_URL = 'http://localhost:8006'
+// const API_URL = 'http://localhost:8006'
 
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
@@ -52,10 +52,10 @@ export const actions = {
     geneData,
   }),
 
-  fetchPageDataByGeneName (geneName) {
+  fetchPageDataByGeneName (geneName, geneFetchFunction) {
     return (dispatch) => {
       dispatch(actions.requestGeneData(geneName))
-      fetchFunction(geneName, API_URL)
+      geneFetchFunction(geneName)
         .then((geneData) => {
           console.log(geneData)
           dispatch(actions.receiveGeneData(geneName, geneData))
@@ -75,10 +75,10 @@ export const actions = {
     return false
   },
 
-  fetchGeneIfNeeded (currentGene) {
+  fetchGeneIfNeeded (currentGene, geneFetchFunction) {
     return (dispatch, getState) => {  // eslint-disable-line
       if (actions.shouldFetchGene(getState(), currentGene)) {
-        return dispatch(actions.fetchPageDataByGeneName(currentGene))
+        return dispatch(actions.fetchPageDataByGeneName(currentGene, geneFetchFunction))
       }
     }
   }
