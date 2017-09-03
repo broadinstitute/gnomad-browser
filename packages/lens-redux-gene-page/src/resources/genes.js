@@ -13,28 +13,6 @@ import {
   currentGene
 } from './active'
 
-// import { fetchGenePage, fetchSchzGenePage, fetchSchzGenePage2 } from './fetch'
-
-// HACK
-// const getDefaultsForProject = (env) => {
-//   switch (env) {
-//     case 'gnomad':
-//       return fetchGenePage
-//     case 'schizophrenia':
-//       return fetchSchzGenePage
-//     case 'schizophreniaExome':
-//       return fetchSchzGenePage2
-//     case 'dblof':
-//       return fetchGenePage
-//     default:
-//       return fetchGenePage
-//   }
-// }
-
-// const fetchFunction = getDefaultsForProject(process.env.FETCH_FUNCTION)
-
-// const API_URL = 'http://localhost:8006'
-
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
   RECEIVE_GENE_DATA: null,
@@ -57,7 +35,6 @@ export const actions = {
       dispatch(actions.requestGeneData(geneName))
       geneFetchFunction(geneName)
         .then((geneData) => {
-          console.log(geneData)
           dispatch(actions.receiveGeneData(geneName, geneData))
         }
       )
