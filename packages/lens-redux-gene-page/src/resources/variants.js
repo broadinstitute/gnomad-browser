@@ -1,6 +1,8 @@
 import keymirror from 'keymirror'
 import { Record, Set, OrderedMap, Map, fromJS } from 'immutable'
 
+import { types as geneTypes } from './genes'
+
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
   RECEIVE_VARIANTS: null,
@@ -40,7 +42,7 @@ export const actions = {
 }
 
 const exampleVariantSchema = {
-  gnomadExomes: {
+  variants: {
     id: null,
     variant_id: null,
     pos: null,
@@ -55,21 +57,21 @@ const exampleVariantSchema = {
     allele_freq: null,
     hom_count: null,
   },
-  gnomadGenomes: {
-    id: null,
-    variant_id: null,
-    pos: null,
-    xpos: null,
-    hgvsp: null,
-    hgvsc: null,
-    filters: null,
-    rsid: null,
-    consequence: null,
-    allele_count: null,
-    allele_num: null,
-    allele_freq: null,
-    hom_count: null,
-  },
+  // gnomadGenomes: {
+  //   id: null,
+  //   variant_id: null,
+  //   pos: null,
+  //   xpos: null,
+  //   hgvsp: null,
+  //   hgvsc: null,
+  //   filters: null,
+  //   rsid: null,
+  //   consequence: null,
+  //   allele_count: null,
+  //   allele_num: null,
+  //   allele_freq: null,
+  //   hom_count: null,
+  // },
 }
 
 export function createVariantReducer(variantSchema = exampleVariantSchema) {
@@ -89,10 +91,20 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
       return datasets.reduce((nextState, dataset) => {
         return nextState.byVariantDataset.set(
           dataset,
-          nextState.byVariantDataset.merge(payload[dataset])
+          nextState.byVariantDataset
+            .get(dataset)
+            .merge(payload[dataset].map(v => ([v.variant_id, v])))
         )
       }, state).set('isFetching', false)
-    }
+    },
+
+    [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
+      return datasets.reduce((nextState, dataset) => {
+        return nextState.set('byVariantDataset', nextState.byVariantDataset
+          .set(dataset, Map(geneData[dataset].map(v => ([v.variant_id, v])))))
+          // .merge(geneData[dataset].map(v => ([v.variant_id, v])))
+      }, state)
+    },
   }
 
   return function variants (state = new State(), action: Object): State {

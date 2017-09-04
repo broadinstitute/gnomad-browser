@@ -13,15 +13,16 @@ import {
 
 import thunk from 'redux-thunk'
 import throttle from 'redux-throttle'
-// import { createLogger } from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
 import { makeGeneReducers } from '../resources/genes'
 import active from '../resources/active'
 import table from '../resources/table'
+import { createVariantReducer } from '../resources/variants'
 import structureViewer from 'lens-structure-viewer/lib/redux'
 
-// const logger = createLogger()
+const logger = createLogger()
 
 const defaultWait = 20
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
@@ -40,13 +41,14 @@ export default function createGenePageStore({
     table,
     search: searchReducer,
     structureViewer,
+    variants: createVariantReducer()
   })
 
   const finalCreateStore = compose(
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
       thunk,
-      // logger,
+      logger,
     ),
     reduxSearch({
       resourceIndexes: {
