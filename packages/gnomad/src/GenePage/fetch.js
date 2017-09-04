@@ -14,17 +14,17 @@ export const fetchGene = (geneName, url = API_URL) => {
       stop
       xstart
       xstop
-      variants: minimal_gnomad_variants {
+      variants: gnomadExomeVariants {
         variant_id
         rsid
         pos
+        xpos
         hgvsc
         hgvsp
         allele_count
         allele_freq
         allele_num
         filters
-        pass
         hom_count
         consequence
         lof
@@ -56,7 +56,8 @@ export const fetchGene = (geneName, url = API_URL) => {
         gene_id
       }
   }
-}`
+}
+`
   return new Promise((resolve, reject) => {
     fetch(url)(query)
       .then(data => resolve(data.data.gene))

@@ -2,6 +2,7 @@ import 'babel-core/register'
 import 'babel-polyfill'
 import express from 'express'
 import { MongoClient } from 'mongodb'
+import elasticsearch from 'elasticsearch'
 import GraphQLHTTP from 'express-graphql'
 import cors from 'cors'
 
@@ -16,6 +17,10 @@ app.use(cors());
   try {
     const gnomad = await MongoClient.connect(process.env.GNOMAD_MONGO_URL)
     const exacv1 = await MongoClient.connect(process.env.EXACV1_MONGO_URL)
+    const elastic = await new elasticsearch.Client({
+      host: 'elastic:9200',
+      // log: 'trace',
+    })
     app.use('/', GraphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
@@ -24,6 +29,7 @@ app.use(cors());
           gnomad,
           exacv1,
           sczMockDb,
+          elastic,
         },
       },
     }))

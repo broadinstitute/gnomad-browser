@@ -58,6 +58,7 @@ const exampleVariantSchema = {
     allele_num: null,
     allele_freq: null,
     hom_count: null,
+    lof: null, 
   },
   // gnomadGenomes: {
   //   id: null,

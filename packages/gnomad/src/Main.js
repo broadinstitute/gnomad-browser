@@ -18,6 +18,7 @@ const genePageSettings = {
     hgvsc: null,
     filters: null,
     rsid: null,
+    lof: null,
     consequence: null,
     allele_count: null,
     allele_num: null,
