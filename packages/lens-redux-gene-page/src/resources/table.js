@@ -155,7 +155,6 @@ export const searchFilteredVariants = createSelector(
   }
 )
 
-
 export const variantPlotData = state => 'test'
 
 

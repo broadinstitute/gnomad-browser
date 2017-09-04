@@ -12,7 +12,6 @@ import VariantTable from 'lens-variant-table'
 import { actions as activeActions } from 'lens-redux-gene-page/lib/resources/active'
 
 import {
-  visibleVariants,
   tablePosition,
   searchText,
   searchFilteredVariants,
@@ -22,8 +21,9 @@ import {
 import { tableConfig } from './tableConfig'
 
 import css from './styles.css'
+
 const GnomadVariantTable = ({
-  visibleVariants,
+  variants,
   setVariantSort,
   setCurrentVariant,
   setCurrentTableIndex,
@@ -32,12 +32,12 @@ const GnomadVariantTable = ({
   searchText,
 }) => {
   const tConfig = tableConfig(setVariantSort)
-
   const scrollBarWidth = 40
   const paddingWidth = tConfig.fields.length * 40
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+
   return (
     <div className={css.tableContainer}>
       <VariantTable
@@ -46,8 +46,8 @@ const GnomadVariantTable = ({
         height={600}
         width={calculatedWidth}
         tableConfig={tConfig}
-        tableData={visibleVariants}
-        remoteRowCount={visibleVariants.size}
+        tableData={variants}
+        remoteRowCount={variants.size}
         loadMoreRows={() => {}}
         overscan={20}
         loadLookAhead={0}
@@ -61,7 +61,7 @@ const GnomadVariantTable = ({
   )
 }
 GnomadVariantTable.propTypes = {
-  visibleVariants: PropTypes.any.isRequired,
+  variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
@@ -73,8 +73,7 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    // visibleVariants: visibleVariants(state),
-    visibleVariants: searchFilteredVariants(state),
+    variants: searchFilteredVariants(state),
     tablePosition: tablePosition(state),
     searchText: searchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,

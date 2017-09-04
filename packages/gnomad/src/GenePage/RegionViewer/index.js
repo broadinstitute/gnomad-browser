@@ -20,9 +20,10 @@ import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
 import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
 
 import {
-  visibleVariants,
   regionViewerComponentState,
 } from 'lens-redux-gene-page/lib/resources/table'
+
+import { allVariants } from 'lens-redux-gene-page/lib/resources/variants'
 
 import VariantDensityTrack from './VariantDensityTrack'
 
@@ -80,7 +81,7 @@ const factor = 50
 
 const GeneRegion = ({
   gene,
-  visibleVariants,
+  allVariants,
   exonPadding,
   setRegionViewerComponentState,
 }) => {
@@ -92,17 +93,17 @@ const GeneRegion = ({
 
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
-    const filteredVariants = visibleVariants.filter(variant =>
+    const filteredVariants = allVariants.filter(variant =>
       R.contains(variant.consequence, consequence.groups))
-    if (filteredVariants.length / factor < 20) {
+    if (filteredVariants.size / factor < 20) {
       rowHeight = 20
     } else {
-      rowHeight = filteredVariants.length / factor
+      rowHeight = filteredVariants.size / factor
     }
     return (
       <VariantTrack
         key={`${consequence.annotation}-${index}`}
-        title={`${consequence.annotation} (${filteredVariants.length})`}
+        title={`${consequence.annotation} (${filteredVariants.size})`}
         height={rowHeight}
         markerConfig={markerConfigLoF}
         variants={filteredVariants}
@@ -125,20 +126,20 @@ const GeneRegion = ({
     stroke: 1,
   }
 
-  const otherVariants = visibleVariants.filter(v =>
+  const otherVariants = allVariants.filter(v =>
     !R.contains(v.consequence, [...lof, ...missense]))
 
   let otherHeight
-  if (otherVariants.length / factor < 20) {
+  if (otherVariants.size / factor < 20) {
     otherHeight = 20
   } else {
-    otherHeight = otherVariants.length / factor
+    otherHeight = otherVariants.size / factor
   }
 
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`other (${otherVariants.length})`}
+      title={`other (${otherVariants.size})`}
       height={otherHeight}
       color={'#75757'}
       markerConfig={markerConfigOther}
@@ -219,11 +220,11 @@ const GeneRegion = ({
 }
 GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
-  visibleVariants: PropTypes.array.isRequired,
+  allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
 }
 export default connect(state => ({
   gene: geneData(state),
   exonPadding: exonPadding(state),
-  visibleVariants: visibleVariants(state),
+  allVariants: allVariants(state),
 }))(GeneRegion)

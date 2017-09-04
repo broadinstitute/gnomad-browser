@@ -1,7 +1,9 @@
 import keymirror from 'keymirror'
 import { Record, Set, OrderedMap, Map, fromJS } from 'immutable'
+import { createSelector } from 'reselect'
 
 import { types as geneTypes } from './genes'
+
 
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
@@ -115,3 +117,8 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
     return state
   }
 }
+
+export const allVariants = createSelector(
+  [state => state.variants.byVariantDataset.get('variants')],
+  variants => variants.toList()
+)

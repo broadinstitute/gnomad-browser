@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 
 import { currentGene } from '../../resources/active'
 import { geneData, isFetching, actions as geneActions } from '../../resources/genes'
-import { visibleVariants } from '../../resources/table'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -16,7 +15,6 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     fetchGeneIfNeeded: PropTypes.func.isRequired,
-    visibleVariants: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
@@ -44,7 +42,6 @@ const mapStateToProps = state => ({
   isFetching: isFetching(state),
   gene: geneData(state),
   currentGene: currentGene(state),
-  visibleVariants: visibleVariants(state),
 })
 
 const mapDispatchToProps = geneFetchFunction => dispatch => {

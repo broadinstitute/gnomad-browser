@@ -20,7 +20,6 @@ import css from './styles.css'
 const AppGenePage = ({
   gene,
   isFetching,
-  visibleVariants,
 }) => {
   if (isFetching || !gene) {
     return <div>Loading...!</div>
@@ -30,7 +29,6 @@ const AppGenePage = ({
       <div className={css.summary}>
         <GeneInfo
           gene={gene}
-          variantCount={visibleVariants.length}
         />
       </div>
       <GeneRegion/>
@@ -43,7 +41,6 @@ const AppGenePage = ({
 AppGenePage.propTypes = {
   gene: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
-  visibleVariants: PropTypes.array.isRequired,
 }
 
 export default GenePageHOC(AppGenePage, fetchGene)
