@@ -18,6 +18,7 @@ import { getTableIndexByPosition } from 'lens-utilities/lib/variant'
 
 import { currentNavigatorPosition } from './active'
 import { geneData, variantsById } from './genes'
+import { variantsFilteredByActiveInterval } from './variants'
 
 const State = Immutable.Record({
   variantSortKey: 'pos',

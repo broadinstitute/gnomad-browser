@@ -3,7 +3,7 @@ import { Record, Set, OrderedMap, Map, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { types as geneTypes } from './genes'
-
+import { regionViewerIntervals } from './active'
 
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
@@ -58,7 +58,7 @@ const exampleVariantSchema = {
     allele_num: null,
     allele_freq: null,
     hom_count: null,
-    lof: null, 
+    lof: null,
   },
   // gnomadGenomes: {
   //   id: null,
@@ -120,6 +120,22 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
 }
 
 export const allVariants = createSelector(
-  [state => state.variants.byVariantDataset.get('variants')],
-  variants => variants.toList()
+  [
+    state => state.variants.byVariantDataset.get('variants'),
+  ],
+  (variants) => variants.toList()
+)
+
+export const variantsFilteredByActiveInterval = createSelector(
+  [
+    state => state.variants.byVariantDataset.get('variants'),
+    regionViewerIntervals
+  ],
+  (variants, intervals) => variants.take(10).filter(({ pos }) => {
+    console.log(intervals)
+    const inIntervals = intervals.some(([start, stop]) => start < pos && pos < stop )).sort((a, b) => a.pos - b.pos)
+    console.log(inIntervals)
+    return inIntervals
+  }
+
 )

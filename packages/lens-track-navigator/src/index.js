@@ -60,12 +60,15 @@ const ClickArea = ({
   const { scrollHeight, scrollTop } = currentTableScrollData
   const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
   let currentlyVisibleVariants
+
   if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
-    currentlyVisibleVariants = variants.slice(0, variants.size).toJS()
+    currentlyVisibleVariants = variants.slice(0, numberOfVariantsVisibleInTable).toJS()
+      // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   } else {
     currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + numberOfVariantsVisibleInTable).toJS()
+      // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   }
-
+  // console.log(currentlyVisibleVariants)
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 
@@ -81,12 +84,12 @@ const ClickArea = ({
     variant_id: v.variant_id,
     color: v.variant_id === currentVariant ? 'yellow' : 'red',
     allele_freq: v.allele_freq,
-  }))
+  })).filter(v => v.allele_freq !== 0).filter(v => !isNaN(v.x))
 
   const afScale =
     scaleLog()
       .domain([
-        0.00000660,
+        0.000000660,
         0.0001,
       ])
       .range([3, 6])
@@ -116,12 +119,13 @@ const ClickArea = ({
 
   let allVariantMarks
   if (variants.size < 300) {
-    const allVariantPositions = variants.map(v => ({
-      x: xScale(positionOffset(v.pos).offsetPosition),
-      variant_id: v.variant_id,
-      allele_freq: v.allele_freq,
-    }))
-
+    const allVariantPositions = variants.map(v => {
+      return ({
+        x: xScale(positionOffset(v.pos).offsetPosition),
+        variant_id: v.variant_id,
+        allele_freq: v.allele_freq,
+      })
+    }).filter(v => !isNaN(v.x))
     allVariantMarks = allVariantPositions.map((v, i) => (
       <g key={`variant-${v}-${i}`}>
         <circle
@@ -133,7 +137,6 @@ const ClickArea = ({
       </g>
     ))
   }
-
 
   const PositionMarks = () => {
     const tickHeight = 3
@@ -224,7 +227,7 @@ const ClickArea = ({
         height={height}
       />
 
-      {!noVariants && variantSortKey === 'pos' &&
+    {/*!noVariants && variantSortKey === 'pos' &&
       <rect
         className={css.tablePositionRect}
         x={tableRectStart}
@@ -232,7 +235,7 @@ const ClickArea = ({
         width={tableRectWidth}
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
-      />}
+      />*/}
 
       {!isPositionOutside &&
       <rect

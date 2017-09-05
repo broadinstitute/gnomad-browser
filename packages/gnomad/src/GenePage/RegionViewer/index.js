@@ -19,9 +19,7 @@ import { groupExonsByTranscript } from 'lens-utilities/lib/transcriptTools'
 import { exonPadding } from 'lens-redux-gene-page/lib/resources/active'
 import { geneData } from 'lens-redux-gene-page/lib/resources/genes'
 
-import {
-  regionViewerComponentState,
-} from 'lens-redux-gene-page/lib/resources/table'
+import { actions } from 'lens-redux-gene-page/lib/resources/active'
 
 import { allVariants } from 'lens-redux-gene-page/lib/resources/variants'
 
@@ -83,7 +81,7 @@ const GeneRegion = ({
   gene,
   allVariants,
   exonPadding,
-  setRegionViewerComponentState,
+  setRegionViewerAttributes,
 }) => {
   const geneJS = gene.toJS()
   const geneExons = geneJS.exons
@@ -197,6 +195,7 @@ const GeneRegion = ({
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
+        broadcast={setRegionViewerAttributes}
       >
         <CoverageTrack
           title={'Coverage'}
@@ -222,9 +221,16 @@ GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
+  setRegionViewerAttributes: PropTypes.func.isRequired,
 }
-export default connect(state => ({
-  gene: geneData(state),
-  exonPadding: exonPadding(state),
-  allVariants: allVariants(state),
-}))(GeneRegion)
+export default connect(
+  state => ({
+    gene: geneData(state),
+    exonPadding: exonPadding(state),
+    allVariants: allVariants(state),
+  }),
+  dispatch => ({
+    setRegionViewerAttributes: regionViewerAttributes =>
+      dispatch(actions.setRegionViewerAttributes(regionViewerAttributes))
+  })
+)(GeneRegion)

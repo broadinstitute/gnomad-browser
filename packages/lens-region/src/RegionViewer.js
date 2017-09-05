@@ -12,7 +12,6 @@ import defaultStyles from './styles.css'
 
 // injectTapEventPlugin()
 
-
 const {
   exonColor,
   paddingColor,
@@ -29,6 +28,7 @@ class RegionViewer extends Component {
     padding: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
     onRegionClick: PropTypes.func,
+    broadcast: PropTypes.func,
   }
 
   static defaultProps = {
@@ -36,6 +36,7 @@ class RegionViewer extends Component {
     exonSubset: null,
     leftPanelWidth: 100,
     onRegionClick: () => {},
+    broadcast: () => {},
     regionAttributes: {
       CDS: {
         color: exonColor,
@@ -66,6 +67,27 @@ class RegionViewer extends Component {
     ready: false,
   }
 
+  componentWillMount () {
+    this.broadcastOffsetRegions()
+  }
+
+  componentDidUpdate () {
+    this.broadcastOffsetRegions()
+  }
+
+  broadcastOffsetRegions = () => {
+    if (this.props.regions) {
+      const offsetRegions = calculateOffsetRegions(
+        this.state.featuresToDisplay,
+        this.props.regionAttributes,
+        this.props.padding,
+        this.props.regions,
+        this.props.exonSubset,
+      )
+      this.props.broadcast({ offsetRegions })
+    }
+  }
+
   setWidth = (event, newValue) => {
     const newWidth = 800 * newValue
     this.setState({ width: newWidth })
@@ -84,6 +106,10 @@ class RegionViewer extends Component {
     })
   }
 
+  broadcast(offsetRegions) {
+    console.log()
+  }
+
   render() {
     const { featuresToDisplay } = this.state
     const {
@@ -94,6 +120,7 @@ class RegionViewer extends Component {
       padding,
       css,
       leftPanelWidth,
+      broadcast,
     } = this.props
 
     const offsetRegions = calculateOffsetRegions(
@@ -118,9 +145,6 @@ class RegionViewer extends Component {
       regionAttributes,
       padding,
     }
-
-    // window.invertOffset = invertOffset
-    // console.log(window.invertOffset)
 
     return (
       <div className={css.regionViewer}>

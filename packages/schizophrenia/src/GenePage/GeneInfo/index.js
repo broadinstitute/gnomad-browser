@@ -31,6 +31,5 @@ const GeneInfo = ({ gene, variantCount }) => {
 }
 GeneInfo.propTypes = {
   gene: PropTypes.object.isRequired,
-  variantCount: PropTypes.number.isRequired,
 }
 export default GeneInfo
