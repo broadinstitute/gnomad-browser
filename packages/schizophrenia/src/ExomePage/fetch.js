@@ -1,9 +1,9 @@
 import fetch from 'graphql-fetch'
 
 const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
-const API_URL = 'http://localhost:8007'
+const API_URL = 'http://localhost:8006'
 
-export const fetchGene = (geneName, url = API_URL) => {
+export const fetchSchzExomes = (geneName, url = API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -14,28 +14,29 @@ export const fetchGene = (geneName, url = API_URL) => {
       stop
       xstart
       xstop
-      variants: gnomadExomeVariants {
-        variant_id
-        rsid
+      variants: schiz_exome_variants {
+        chrom
         pos
         xpos
-        hgvsc
-        hgvsp
-        allele_count
-        allele_freq
-        allele_num
-        filters
-        hom_count
-        consequence
-        lof
-      }
-      exome_coverage {
-        pos
-        mean
-      }
-      genome_coverage {
-        pos
-        mean
+        ref
+        alt
+        rsid
+        qual
+        variantId
+        geneIds
+        transcriptIds
+        transcriptConsequenceTerms
+        sortedTranscriptConsequences
+        AC
+        AF
+        AC_cases
+        AC_ctrls
+        AC_UK_cases
+        AC_UK_ctrls
+        AC_FIN_cases
+        AC_FIN_ctrls
+        AC_SWE_cases
+        AC_SWE_ctrls
       }
       transcript {
         exons {
@@ -56,8 +57,8 @@ export const fetchGene = (geneName, url = API_URL) => {
         gene_id
       }
   }
-}
-`
+}`
+
   return new Promise((resolve, reject) => {
     fetch(url)(query)
       .then(data => resolve(data.data.gene))
@@ -66,5 +67,3 @@ export const fetchGene = (geneName, url = API_URL) => {
       })
   })
 }
-
-

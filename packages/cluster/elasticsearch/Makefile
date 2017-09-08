@@ -82,6 +82,7 @@ delete-deployments:
 	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-master.yaml 2>/dev/null
 	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-client.yaml 2>/dev/null
 	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-data.yaml 2>/dev/null
+	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-data.yaml 2>/dev/null
 
 delete-services:
 	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml 2>/dev/null

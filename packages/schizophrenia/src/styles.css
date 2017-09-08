@@ -13,7 +13,7 @@
 }
 
 .app {
-  display: flex;inspector
+  display: flex;
   flex-direction: column;
   font-family: Roboto, sans-serif;
   font-size: 12px;

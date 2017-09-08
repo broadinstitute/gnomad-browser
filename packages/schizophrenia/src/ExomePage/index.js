@@ -13,11 +13,11 @@ import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
-import { fetchSchzGenePage } from './fetch'
+import { fetchSchzExomes } from './fetch'
 
 import css from './styles.css'
 
-const AppGenePage = ({
+const GwasPage = ({
   gene,
   isFetching,
 }) => {
@@ -38,9 +38,9 @@ const AppGenePage = ({
   )
 }
 
-AppGenePage.propTypes = {
+GwasPage.propTypes = {
   gene: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default GenePageHOC(AppGenePage, fetchSchzGenePage)
+export default GenePageHOC(GwasPage, fetchSchzExomes)
