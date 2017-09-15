@@ -40,12 +40,12 @@ watch:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
 	else \
-		cd packages/lens-dev-server; \
+		cd packages/@broad/dev-server; \
 		echo "> Cleaning development server";\
-		rm -rf ./node_modules/lens-test; \
-		mkdir ./node_modules/lens-test; \
+		rm -rf ./node_modules/@broad/test; \
+		mkdir ./node_modules/@broad/test; \
 		echo "> Copying local dependency $(ARG) to node_modules"; \
-		cp -r ../$(ARG)/* ./node_modules/lens-test; \
+		cp -r ../$(ARG)/* ./node_modules/@broad/test; \
 		cd ../../; \
 		echo ""; \
 		echo "Done copying, watching $(ARG) for changes"; \
@@ -59,7 +59,7 @@ watch-dep:
 	@if [ "$(ARG)" = "" ]; then \
 		echo "Please use 'make watch <package>"; \
 	else \
-		cd packages/lens-dev-server; \
+		cd packages/@broad/dev-server; \
 		echo "> Cleaning development server";\
 		rm -rf ./node_modules/$(ARG)/; \
 		mkdir ./node_modules/$(ARG); \

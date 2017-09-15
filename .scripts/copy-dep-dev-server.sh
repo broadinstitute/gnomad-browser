@@ -2,7 +2,7 @@
 
 PACKAGE=$1
 
-cd packages/lens-dev-server;
+cd packages/@broad/dev-server;
 echo "> Copying local dependency $PACKAGE to node_modules";
 rm -rf ./node_modules/$PACKAGE/lib;
 cp -r ../$PACKAGE/lib ./node_modules/$PACKAGE/lib;

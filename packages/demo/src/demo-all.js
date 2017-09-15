@@ -8,32 +8,22 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 /**
  * Components
  */
-import RegionViewerDemo from '../RegionViewer/example/RegionTable.example'
-
-import CoverageTrackDemo from '../Tracks/CoverageTrack/example/CoverageTrack.example'
-import CoverageTrackMultiDemo from '../Tracks/CoverageTrack/example_multi/CoverageTrackMulti.example'
-import TranscriptTrackDemo from '../Tracks/TranscriptTrack/example/TranscriptTrack.example'
-import SashimiTrackDemo from '../Tracks/SashimiTrack/SashimiTrack.example'
-import TableTrackDemo from '../Tracks/TableTrack/TableTrack.example'
-
-import VariantTableDemo from '../VariantTable/VariantTable.example'
-
-/**
- * Composite demos
- */
-// import ClinvarVariantsDemo from './clinvar/ClinVar.example'
-// import VepTrackDemo from './vep/Vep.example'
-// import VDSPage from './vds/VdsPage.example'
-import DbLofGenePageDemo from './dblof/dbLofGenePageComponents.example'
-import CompositeDemo from './composite/Composite.example'
+import RegionViewerDemo from '@broad/region/lib/example'
+import CoverageTrackDemo from '@broad/track-coverage/lib/example'
+import TranscriptTrackDemo from '@broad/track-transcript/lib/example'
+import SashimiTrackDemo from '@broad/track-sashimi/lib/example'
+import TableTrackDemo from '@broad/track-table/lib/example'
+import ManhattanDemo from '@broad/manhattan/lib/example'
+import StructureViewer from '@broad/structure-viewer/lib/example'
 
 import css from './styles.css'
 
-const vdsGraphiqlURL = 'http://localhost:8004'
+injectTapEventPlugin()
 
 class DrawerOpenRightExample extends React.Component {
 
@@ -49,7 +39,7 @@ class DrawerOpenRightExample extends React.Component {
       <div>
         <RaisedButton
           label="Quick links"
-          onTouchTap={this.handleToggle}
+          onClick={this.handleToggle}
         />
         <Drawer width={ 200 } openSecondary={ true } open={ this.state.open } >
           <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
@@ -62,7 +52,6 @@ class DrawerOpenRightExample extends React.Component {
           <MenuItem><a target="_blank" href="http://localhost:8008">Spark UI</a></MenuItem>
           <MenuItem><a target="_blank" href="http://localhost:8012">Zeppelin notebook</a></MenuItem>
           <MenuItem><a target="_blank" href="http://gnomad-api.broadinstitute.org">gnomAD GraphiQL</a></MenuItem>
-          <MenuItem><a target="_blank" href={vdsGraphiqlURL}>VDS GraphiQL</a></MenuItem>
         </Drawer>
       </div>
     )
@@ -80,7 +69,7 @@ class DrawerSimpleExample extends React.Component {
       <div>
         <RaisedButton
           label="Open menu"
-          onTouchTap={this.handleToggle}
+          onClick={this.handleToggle}
         />
         <Drawer open={this.state.open}>
           <MenuItem onClick={this.handleToggle}>Close menu</MenuItem>
@@ -124,15 +113,6 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/multi-coverage-track'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>Multi-coverage</MenuItem>
-          </NavLink>
-          <NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
             to={'/sashimi-track'}
             onClick={this.handleToggle}
           >
@@ -151,56 +131,47 @@ class DrawerSimpleExample extends React.Component {
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/table'}
+            to={'/manhattan'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Variant table</MenuItem>
+            <MenuItem>Manhattan</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/composite'}
+            to={'/structure'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Composite</MenuItem>
+            <MenuItem>Structure viewer</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/db-lof-gene-page-components'}
+            to={'/gnomad'}
             onClick={this.handleToggle}
           >
-            <MenuItem>dbLoF gene page components</MenuItem>
-          </NavLink>
-          {/*<NavLink
-            className={css.navlink}
-            activeClassName={css.active}
-            exact
-            to={'/vds'}
-            onClick={this.handleToggle}
-          >
-            <MenuItem>VDS tracks</MenuItem>
+            <MenuItem>gnomAD</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/vep'}
+            to={'/dblof'}
             onClick={this.handleToggle}
           >
-            <MenuItem>VEP track</MenuItem>
+            <MenuItem>dbLoF</MenuItem>
           </NavLink>
           <NavLink
             className={css.navlink}
             activeClassName={css.active}
             exact
-            to={'/clinvar'}
+            to={'/schizophrenia'}
             onClick={this.handleToggle}
           >
-            <MenuItem>Clinvar VDS</MenuItem>
-          </NavLink>*/}
+            <MenuItem>Schizophrenia</MenuItem>
+          </NavLink>
         </Drawer>
       </div>
     )
@@ -212,18 +183,18 @@ const Demo = () =>
     <div>
       <div className={css.menus}>
         <DrawerSimpleExample />
-        <h1 className={css.title}>react gnomad</h1>
+        <h1 className={css.title}></h1>
         <DrawerOpenRightExample />
       </div>
       <div className={css.demoArea}>
         <Route exact path={'/'} render={() => {
             return (
               <div className={css.homePage}>
-                <p className={css.subtitle}>react-gnomad is JavaScript library for visualizing genomic data</p>
+                <p className={css.subtitle}>lens is JavaScript framework for visualizing genomic data</p>
                 <div className={css.features}>
-                  <p>Build web portals to share your results</p>
+                  <p>Build web portals to share results</p>
                   <p>Create ad hoc data interactive anlaysis tools</p>
-                  <p>High performance with very large datasets such as gnomAD</p>
+                  <p>Performant with very large datasets such as gnomAD</p>
                   <p>Plot data by genomic coordinate along gene models</p>
                   <p>Filter/split/view data by annotation</p>
                   <p>Combine multiple variant datasets on the fly</p>
@@ -233,16 +204,60 @@ const Demo = () =>
           }} />
         <Route exact path={'/region-viewer'} component={RegionViewerDemo} />
         <Route exact path={'/coverage-track'} component={CoverageTrackDemo} />
-        <Route exact path={'/multi-coverage-track'} component={CoverageTrackMultiDemo} />
         <Route exact path={'/transcript-track'} component={TranscriptTrackDemo} />
         <Route exact path={'/sashimi-track'} component={SashimiTrackDemo} />
         <Route exact path={'/table-track'} component={TableTrackDemo} />
-        <Route exact path={'/table'} component={VariantTableDemo} />
-        <Route exact path={'/db-lof-gene-page-components'} component={DbLofGenePageDemo} />
-        <Route exact path={'/composite'} component={CompositeDemo} />
-        {/*<Route exact path={'/vds'} component={VDSPage} />
-        <Route exact path={'/vep'} component={VepTrackDemo} />
-        <Route exact path={'/clinvar'} component={ClinvarVariantsDemo} />*/}
+        <Route exact path={'/manhattan'} component={ManhattanDemo} />
+        <Route exact path={'/structure'} component={StructureViewer} />
+
+        <Route
+          exact
+          path={'/gnomad'}
+          render={() => {
+            return (
+              React.createElement('iframe', {
+                frameBorder: 0,
+                src: 'http://localhost:8011',
+                style: {
+                  height: 1500,
+                  width: '100%',
+                },
+              })
+            )
+          }}
+        />
+        <Route
+          exact
+          path={'/dblof'}
+          render={() => {
+            return (
+              React.createElement('iframe', {
+                frameBorder: 0,
+                src: 'http://localhost:8013',
+                style: {
+                  height: 1500,
+                  width: '100%',
+                },
+              })
+            )
+          }}
+        />
+        <Route
+          exact
+          path={'/schizophrenia'}
+          render={() => {
+            return (
+              React.createElement('iframe', {
+                frameBorder: 0,
+                src: 'http://localhost:8012',
+                style: {
+                  height: 1500,
+                  width: '100%',
+                },
+              })
+            )
+          }}
+        />
         <Route
           exact
           path={'/graphiql'}

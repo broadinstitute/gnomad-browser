@@ -1,0 +1,24 @@
+{
+  "name": "@broad/track-table",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {},
+  "exampleDependencies": {
+    "ramda": "^0.24.1",
+    "material-ui": "^0.18.3",
+    "graphql-fetch": "^1.0.1",
+    "@broad/utilities": "0.0.1",
+    "@broad/region": "0.0.1",
+    "@broad/track-transcript": "0.0.1",
+    "@broad/track-variant": "0.0.1"
+
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^15.5.4"
+  }
+}
