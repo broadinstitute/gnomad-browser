@@ -8,7 +8,7 @@ const TestWrapper = styled.div`
 const TestComponent = ({ message }) => {
   return (
     <TestWrapper>
-      {'Hey dude!! Whas cooking?'}{message}
+      {'Hey dude!! Whas cooking!'}{message}
     </TestWrapper>
   )
 }
