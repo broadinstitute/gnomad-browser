@@ -102,10 +102,7 @@ export const schzVariantTypeExome = new GraphQLObjectType({
     originalAltAlleles: { type: new GraphQLList(GraphQLString) },
     geneIds: { type: new GraphQLList(GraphQLString) },
     transcriptIds: { type: new GraphQLList(GraphQLString) },
-    transcriptConsequenceTerms: { // HACK
-      type: GraphQLString,
-      resolve: obj => obj.transcriptConsequenceTerms[0] //.split('_').join(' ')
-    },
+    transcriptConsequenceTerms: { type: new GraphQLList(GraphQLString) },
     sortedTranscriptConsequences: { type: GraphQLString },
 
     AC: {
@@ -161,7 +158,6 @@ export function lookupSchzVariantsByGeneId (geneId) {
     client.search({
       index: 'schizophrenia',
       type: 'variant',
-      size: 5000,
       body: {
         query: {
           match: {

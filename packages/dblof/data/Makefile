@@ -71,3 +71,32 @@ export-east-london:
 	--exomes-vds $(EXOMES_VDS_PATH) \
 	--genomes-vds $(GENOMES_VDS_PATH) \
 	--num-shards 1
+
+convert-clinvar:
+	../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	../../hail-db-utils/convert_vcf_to_vds.py \
+	--output-path gs://dblof/data/clinvar_alleles.single.b37.vds  \
+	gs://dblof/data/clinvar_alleles.single.b37.vcf.bgz
+
+print-stats-clinvar:
+	../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	../../hail-db-utils/print_vds_stats.py \
+	gs://dblof/data/clinvar_alleles.single.b37.vds
+
+export-clinvar:
+	../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	export_clinvar_to_ES.py \
+	--host $(ES_HOST_IP) \
+	--port 9200 \
+	--block-size 200 \
+	--genome_version 37 \
+	--index clinvar \
+	--index-type variant \
+	--clinvar-vds gs://dblof/data/clinvar_alleles.single.b37.vds \
+	--num-shards 1

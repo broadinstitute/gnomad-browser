@@ -133,9 +133,8 @@ export const variantsFilteredByActiveInterval = createSelector(
   ],
   (variants, intervals) => variants.take(10).filter(({ pos }) => {
     console.log(intervals)
-    const inIntervals = intervals.some(([start, stop]) => start < pos && pos < stop )).sort((a, b) => a.pos - b.pos)
+    const inIntervals = intervals.some(([start, stop]) => start < pos && pos < stop ).sort((a, b) => a.pos - b.pos)
     console.log(inIntervals)
     return inIntervals
-  }
-
+  })
 )
