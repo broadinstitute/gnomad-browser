@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 
 import TestComponent from '@broad/test'
+import ManhattanExample from '@broad/manhattan/lib/example'
 
 const DemoRoot = styled.div`
   color: black;
@@ -14,6 +15,7 @@ const Demo = () => {
     <DemoRoot>
       <h1>test server</h1>
       <TestComponent />
+      <ManhattanExample />
     </DemoRoot>
   )
 }

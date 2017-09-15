@@ -10,7 +10,7 @@ render(
   <AppContainer>
     <Demo />
   </AppContainer>,
-  mount,
+  mount
 )
 
 if (module.hot) {
@@ -20,7 +20,7 @@ if (module.hot) {
       <AppContainer>
         <NextApp />
       </AppContainer>,
-      mount,
+      mount
     )
   })
 }

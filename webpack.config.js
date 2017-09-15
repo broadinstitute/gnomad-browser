@@ -59,6 +59,11 @@ const webpackConfig = {
         exclude: /node_modules/,
         use: 'dsv-loader',
       },
+      {
+        test: /\.json$/,
+        exclude: /node_modules/,
+        use: 'json-loader',
+      },
     ],
   },
   plugins: [

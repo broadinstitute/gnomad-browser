@@ -26,6 +26,13 @@
      "generator-star-spacing": [2, {"before": false, "after": true}],
      "no-confusing-arrow": 0,
      "space-before-function-paren": 0,
+     "comma-dangle": ["error", {
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "never"
+    }],
     },
   "parserOptions": {
         "ecmaFeatures": {

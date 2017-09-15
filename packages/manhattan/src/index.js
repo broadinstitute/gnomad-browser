@@ -1,14 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
 import R from 'ramda'
-import { scaleLinear, scaleBand } from 'd3-scale'
-import { max, min, range } from 'd3-array'
+import { scaleLinear } from 'd3-scale'
+import { max, min } from 'd3-array'
 
 import {
   HUMAN_CHROMOSOMES,
   HUMAN_AUTOSOMES,
-} from 'lens-utilities/lib/constants'
-
-import css from './styles.css'
+} from '@broad/utilities/lib/constants'
 
 const ManhattanPlot = ({
   data,
@@ -18,6 +17,7 @@ const ManhattanPlot = ({
   sexChromosomes = false,
   showAxisBounds = false,
 }) => {
+  console.log(data)
   const padding = 60
   const yData = R.pluck('-log10p', data)
 
@@ -25,7 +25,7 @@ const ManhattanPlot = ({
   const rgb = () => Math.floor(Math.random() * 256)
   const colorCode = () => `rgb(${rgb()}, ${rgb()}, ${rgb()})`
   const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
-    ({ ...acc, [chr]: colorCode()}), {})
+    ({ ...acc, [chr]: colorCode() }), {})
 
   const xScale = scaleLinear()
     .domain([0, data.length])
@@ -37,7 +37,6 @@ const ManhattanPlot = ({
 
   const Background = () => (
     <rect
-      className={css.background}
       x={0}
       y={0}
       width={width}
@@ -49,7 +48,6 @@ const ManhattanPlot = ({
 
   const AxisBackgroundY = () => (
     <rect
-      className={css.axisBackground}
       x={0}
       y={0}
       width={padding}
@@ -61,7 +59,6 @@ const ManhattanPlot = ({
 
   const AxisBackgroundX = () => (
     <rect
-      className={css.axisBackground}
       x={0}
       y={height - padding}
       width={width}
@@ -73,17 +70,18 @@ const ManhattanPlot = ({
 
   const Title = () => (
     <text
-      className={css.title}
+      className={'title'}
       x={width / 2}
       y={padding / 2}
     >
-
+      {title}
     </text>
   )
 
+
+
   const Ylabel = () => (
     <text
-      className={css.yLabel}
       x={5}
       y={height / 2}
       transform={`rotate(270 ${padding / 3} ${height / 2})`}
@@ -95,7 +93,7 @@ const ManhattanPlot = ({
   const Yticks = () => {
     return (
       <g>
-        {yScale.ticks().map(t => {
+        {yScale.ticks().map((t) => {
           return (
             <g key={t}>
               <line
@@ -106,7 +104,8 @@ const ManhattanPlot = ({
                 stroke={'#BDBDBD'}
               />
               <text
-                className={css.yTickText}
+                className={'yTickText'}
+                style={{ textAnchor: 'middle' }}
                 x={padding - 15}
                 y={yScale(t) + 5}
               >
@@ -121,7 +120,8 @@ const ManhattanPlot = ({
 
   const Xlabel = () => (
     <text
-      className={css.xLabel}
+      className={'xLabel'}
+      style={{ textAnchor: 'middle' }}
       x={width / 2}
       y={height - (padding / 4)}
     >
@@ -130,7 +130,7 @@ const ManhattanPlot = ({
   )
 
   const Xticks = () => {
-    const snpsSplitByChrom = plotChromosomes.map((chr, i) =>
+    const snpsSplitByChrom = plotChromosomes.map(chr =>
       ({
         name: chr,
         data: data.filter(snp => chr === `chr${snp.chromosome}`),
@@ -138,7 +138,7 @@ const ManhattanPlot = ({
     )
     const chrWithPos = snpsSplitByChrom.reduce((acc, chr, i) => {
       const count = chr.data.length
-      if (i === 0) return [ { name: chr.name, pos: xScale(count - (count / 2)), count } ]
+      if (i === 0) return [{ name: chr.name, pos: xScale(count - (count / 2)), count }]
       const previousCount = acc[i - 1].count
       const currentCount = previousCount + count
       const pos = xScale(currentCount - (count / 2))
@@ -149,9 +149,10 @@ const ManhattanPlot = ({
         {chrWithPos.map(chr => (
           <text
             key={chr.name}
-            className={css.chromosomeLabel}
+            className={'chromosomeLabel'}
+            style={{ textAnchor: 'middle' }}
             x={chr.pos}
-            y={height - padding + 20}
+            y={height - (padding + 20)}
           >
             {chr.name.replace('chr', '')}
           </text>
@@ -164,9 +165,8 @@ const ManhattanPlot = ({
     const color = chromosomeColors[`chr${snp.chromosome}`]
     return (
       <circle
-        key={`snp-${i}`}
+        key={`snp-${snp}-${i}`}
         onClick={() => console.log(snp.chromosome, snp.pos)}
-        className={css.snp}
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
         r={2}
@@ -177,7 +177,7 @@ const ManhattanPlot = ({
   })
 
   return (
-    <div className={css.component}>
+    <div>
       <svg width={width} height={height}>
         {showAxisBounds &&
           <Background /> &&
