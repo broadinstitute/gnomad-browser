@@ -20,8 +20,12 @@
     "no-class-assign": 0,
     "no-plusplus": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "jsx-a11y/href-no-hash": 0,
     "import/no-mutable-exports": 0,
-    "import/no-extraneous-dependencies": 0
+     "no-multiple-empty-lines": 0,
+     "generator-star-spacing": [2, {"before": false, "after": true}],
+     "no-confusing-arrow": 0,
+     "space-before-function-paren": 0,
     },
   "parserOptions": {
         "ecmaFeatures": {
