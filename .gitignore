@@ -7,7 +7,10 @@ __pycache__/
 .ipynb_checkpoints
 env
 build
-node_modules
+./node_modules
+./packages/node modules/*/node_modules
+./packages/**/node_modules
+./graphql/ node_modules
 resources/*
 *lib
 bundle.js
