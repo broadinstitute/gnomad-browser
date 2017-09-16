@@ -99,37 +99,37 @@ lib:
 	@:
 
 context:
-	make -C packages/cluster context
+	make -C cluster context
 
 load-and-persist: load-data persist-data
 
 load-data:
-	make -C packages/cluster cluster
-	make -C packages/cluster elasticsearch
-	make -C packages/cluster dataproc-no-vep
+	make -C cluster cluster
+	make -C cluster elasticsearch
+	make -C cluster dataproc-no-vep
 	make -C packages/schizophrenia/data variants
 	make -C packages/gnomad/data all
 
 persist-data:
-	make -C packages/cluster/elasticsearch create-persistent-nodes
-	make -C packages/cluster/elasticsearch deploy-persistent-data-pods
-	make -C packages/cluster/elasticsearch reallocate-shards
+	make -C cluster/elasticsearch create-persistent-nodes
+	make -C cluster/elasticsearch deploy-persistent-data-pods
+	make -C cluster/elasticsearch reallocate-shards
 	make takedown-loading-nodes
 
 takedown-loading-nodes:
-	make -C packages/cluster delete-dataproc-cluster
-	make -C packages/cluster/elasticsearch delete-loading-data-pods
-	make -C packages/cluster/elasticsearch delete-load-nodes
+	make -C cluster delete-dataproc-cluster
+	make -C cluster/elasticsearch delete-loading-data-pods
+	make -C cluster/elasticsearch delete-load-nodes
 
 start-persistent-cluster:
-	make -C packages/cluster cluster
-	make -C packages/cluster context
-	make -C packages/cluster/elasticsearch persistent
+	make -C cluster cluster
+	make -C cluster context
+	make -C cluster/elasticsearch persistent
 
 start-dev:
-	make -C packages/cluster cluster
-	make -C packages/cluster context
-	make -C packages/cluster/elasticsearch dev
+	make -C cluster cluster
+	make -C cluster context
+	make -C cluster/elasticsearch dev
 
 delete-data-cluster:
 	make -C cluster delete-elasticsearch-cluster & \

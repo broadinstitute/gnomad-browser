@@ -78,7 +78,6 @@ const TopBar = ({ setCurrentGene }) => {
         }}
         >
           <SearchInput
-            className={css.searchInput}
             type="text"
             name="search"
             placeholder="Search by gene, transcript, region, or variant"

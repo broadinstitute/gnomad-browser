@@ -23,6 +23,7 @@ import schzVariantType, {
   lookupSchzVariantsByGeneId,
  } from './schzvariant'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
+import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import clinvarType, { lookupClinvarVariantsByGeneName } from './clinvar'
 
 const geneType = new GraphQLObjectType({
@@ -101,6 +102,11 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(schzVariantTypeExome),
       resolve: (obj, args, ctx) =>
         lookupSchzVariantsByGeneId(obj.gene_id),
+    },
+    gnomadExomeVariants: {
+      type: new GraphQLList(elasticVariantType),
+      resolve: (obj, args, ctx) =>
+        lookupElasticVariantsByGeneId(ctx.database.elastic, 'exomes', obj.gene_id),
     },
     clinvar_variants: {
       type: new GraphQLList(clinvarType),

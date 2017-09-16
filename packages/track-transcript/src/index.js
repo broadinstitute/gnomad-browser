@@ -45,7 +45,6 @@ TranscriptAxis.defaultProps = {
 }
 
 const TranscriptDrawing = ({
-  css,
   width,
   height,
   regions,
@@ -86,7 +85,6 @@ const TranscriptDrawing = ({
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (
             <line
-              className={css.rectangle}
               x1={xScale(start.offsetPosition)}
               x2={xScale(stop.offsetPosition)}
               y1={height / 2}
@@ -103,7 +101,6 @@ const TranscriptDrawing = ({
 }
 
 const Transcript = ({
-  css,
   width,
   height,
   leftPanelWidth,
@@ -155,15 +152,13 @@ const Transcript = ({
       }}
     >
       <TranscriptAxis
-        css={css}
         leftPanelWidth={leftPanelWidth}
         title={title}
         fontSize={fontSize}
         expandTranscriptButton={expandTranscriptButton}
       />
-      <div styles={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <TranscriptDrawing
-          css={css}
           width={width}
           height={localHeight}
           regions={regions}
@@ -184,7 +179,6 @@ Transcript.propTypes = {
 }
 
 const TranscriptGroup = ({
-  css,
   transcriptsGrouped,
   fanOutButtonOpen,
   initialTranscriptStyles,
@@ -216,7 +210,6 @@ const TranscriptGroup = ({
             }) => {
               return (
                 <Transcript
-                  css={css}
                   title={transcript}
                   motionHeight={top}
                   paddingTop={paddingTop}
@@ -252,7 +245,6 @@ const TranscriptTrackContainer = styled.div`
 
 class TranscriptTrack extends Component {
   static PropTypes = {
-    css: PropTypes.object,
     height: PropTypes.number.isRequired,
     width: PropTypes.number, // eslint-disable-line
     leftPanelWidth: PropTypes.number, // eslint-disable-line
