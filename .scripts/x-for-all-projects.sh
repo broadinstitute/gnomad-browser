@@ -8,7 +8,7 @@
 
 IFS=$'\n' read -d '' -r -a packages <$(dirname $0)/PROJECTS
 
-cd packages
+cd projects
 
 exitstatus=0
 

@@ -14,15 +14,15 @@ import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
-import Navigator from '@broad/gene-page/lib/containers/Navigator'
-import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
-import { exonPadding } from '@broad/gene-page/lib/resources/active'
-import { geneData } from '@broad/gene-page/lib/resources/genes'
+import Navigator from '@broad/gene-page/src/containers/Navigator'
+import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
+import { exonPadding } from '@broad/gene-page/src/resources/active'
+import { geneData } from '@broad/gene-page/src/resources/genes'
 
 import {
   visibleVariants,
   regionViewerComponentState,
-} from '@broad/gene-page/lib/resources/table'
+} from '@broad/gene-page/src/resources/table'
 
 import VariantDensityTrack from './VariantDensityTrack'
 

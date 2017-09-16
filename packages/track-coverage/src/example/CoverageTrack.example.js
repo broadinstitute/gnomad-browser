@@ -6,8 +6,8 @@ import Slider from 'material-ui/Slider'
 
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
-import { fetchAllByGeneName } from '@broad/utilities/lib/fetch'
-import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
+import { fetchAllByGeneName } from '@broad/utilities/src/fetch'
+import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 
 import CoverageTrack from '../index'
 

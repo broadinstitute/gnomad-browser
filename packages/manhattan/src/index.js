@@ -7,7 +7,7 @@ import { max, min } from 'd3-array'
 import {
   HUMAN_CHROMOSOMES,
   HUMAN_AUTOSOMES,
-} from '@broad/utilities/lib/constants'
+} from '@broad/utilities/src/constants'
 
 const ManhattanPlot = ({
   data,

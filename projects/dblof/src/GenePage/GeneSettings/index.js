@@ -17,8 +17,8 @@ import TextField from 'material-ui/TextField'
 import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
-import { actions as tableActions } from '@broad/gene-page/lib/resources/table'
-import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/lib/resources/active'
+import { actions as tableActions } from '@broad/gene-page/src/resources/table'
+import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import css from './styles.css'
 

@@ -3,14 +3,14 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import * as reduxFunctions from '@broad/structure-viewer/lib/redux'
+import * as reduxFunctions from '@broad/structure-viewer/src/redux'
 
-import ProteinStructureViewer from '@broad/structure-viewer/lib/component'
+import ProteinStructureViewer from '@broad/structure-viewer/src/component'
 
 import {
   visibleVariants,
   searchFilteredVariants,
-} from '@broad/gene-page/lib/resources/table'
+} from '@broad/gene-page/src/resources/table'
 
 let StructureViewerConnected = (props) => {
   const {

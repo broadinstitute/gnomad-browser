@@ -29,8 +29,8 @@ watch:
 	@$(BIN_DIR)/watch $(WATCH_FLAGS)
 
 pdf:
-	./node_modules/.bin/babel-node node_modules/@broad/test/lib/example
-	open /Users/msolomon/lens/packages/@broad/dev-server/node_modules/@broad/test/lib/tmp/test.pdf
+	./node_modules/.bin/babel-node node_modules/@broad/test/src/example
+	open /Users/msolomon/lens/packages/@broad/dev-server/node_modules/@broad/test/src/tmp/test.pdf
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \

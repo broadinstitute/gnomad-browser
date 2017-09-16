@@ -13,7 +13,7 @@ import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
-import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
+import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 
 import Navigator from '../../../containers/Navigator'
 

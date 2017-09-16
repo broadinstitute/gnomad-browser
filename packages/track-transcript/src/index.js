@@ -9,7 +9,7 @@ import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
 import {
   filterRegions,
-} from '@broad/utilities/lib/coordinates'  // eslint-disable-line
+} from '@broad/utilities/src/coordinates'  // eslint-disable-line
 
 const flipOutExonThickness = '13px'
 

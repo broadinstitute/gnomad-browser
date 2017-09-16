@@ -7,7 +7,7 @@ import {
   calculatePositionOffset,
   invertPositionOffset,
   calculateXScale,
-} from '@broad/utilities/lib/coordinates'  // eslint-disable-line
+} from '@broad/utilities/src/coordinates'  // eslint-disable-line
 
 const RegionViewerWrapper = styled.div`
   display: flex;

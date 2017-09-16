@@ -7,11 +7,11 @@ import Slider from 'material-ui/Slider'
 
 import {
   fetchTranscriptsByGeneName,
-} from '@broad/utilities/lib/fetch'  // eslint-disable-line
+} from '@broad/utilities/src/fetch'  // eslint-disable-line
 
 import {
   groupExonsByTranscript,
-} from '@broad/utilities/lib/coordinates'  // eslint-disable-line
+} from '@broad/utilities/src/coordinates'  // eslint-disable-line
 
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '../index'

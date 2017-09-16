@@ -14,7 +14,7 @@ import { range, max } from 'd3-array'
 import { line } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
 
-import { getTableIndexByPosition } from '@broad/utilities/lib/variant'
+import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 import { currentNavigatorPosition } from './active'
 import { geneData, variantsById } from './genes'

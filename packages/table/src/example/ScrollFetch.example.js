@@ -9,8 +9,8 @@ import Slider from 'material-ui/Slider'
 import RefreshIndicator from 'material-ui/RefreshIndicator'
 import Checkbox from 'material-ui/Checkbox'
 
-import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
-import { TEST_GENES } from '@broad/utilities/lib/constants'
+import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
+import { TEST_GENES } from '@broad/utilities/src/constants'
 
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'

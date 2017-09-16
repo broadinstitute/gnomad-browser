@@ -20,7 +20,7 @@ import { makeGeneReducers } from '../resources/genes'
 import active from '../resources/active'
 import table from '../resources/table'
 import { createVariantReducer } from '../resources/variants'
-import structureViewer from '@broad/structure-viewer/lib/redux'
+import structureViewer from '@broad/structure-viewer/src/redux'
 
 const logger = createLogger()
 

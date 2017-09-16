@@ -9,14 +9,14 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import VariantTable from '@broad/table'
 
-import { actions as activeActions } from '@broad/gene-page/lib/resources/active'
+import { actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
   tablePosition,
   searchText,
   searchFilteredVariants,
   actions as tableActions
-} from '@broad/gene-page/lib/resources/table'
+} from '@broad/gene-page/src/resources/table'
 
 import { tableConfig } from './tableConfig'
 

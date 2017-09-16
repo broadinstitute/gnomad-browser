@@ -13,13 +13,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 /**
  * Components
  */
-import RegionViewerDemo from '@broad/region/lib/example'
-import CoverageTrackDemo from '@broad/track-coverage/lib/example'
-import TranscriptTrackDemo from '@broad/track-transcript/lib/example'
-import SashimiTrackDemo from '@broad/track-sashimi/lib/example'
-import TableTrackDemo from '@broad/track-table/lib/example'
-import ManhattanDemo from '@broad/manhattan/lib/example'
-import StructureViewer from '@broad/structure-viewer/lib/example'
+import RegionViewerDemo from '@broad/region/src/example'
+import CoverageTrackDemo from '@broad/track-coverage/src/example'
+import TranscriptTrackDemo from '@broad/track-transcript/src/example'
+import SashimiTrackDemo from '@broad/track-sashimi/src/example'
+import TableTrackDemo from '@broad/track-table/src/example'
+import ManhattanDemo from '@broad/manhattan/src/example'
+import StructureViewer from '@broad/structure-viewer/src/example'
 
 import css from './styles.css'
 

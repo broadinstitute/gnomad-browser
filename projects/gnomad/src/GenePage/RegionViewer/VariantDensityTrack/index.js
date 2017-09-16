@@ -8,7 +8,7 @@
 
 import React, { PropTypes } from 'react'
 import R from 'ramda'
-import { getTableIndexByPosition } from '@broad/utilities/lib/variant'
+import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 import { range, max } from 'd3-array'
 import { line } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
@@ -17,7 +17,7 @@ import { connect } from 'react-redux'
 
 import {
   searchFilteredVariants,
-} from '@broad/gene-page/lib/resources/table'
+} from '@broad/gene-page/src/resources/table'
 
 
 import css from './styles.css'

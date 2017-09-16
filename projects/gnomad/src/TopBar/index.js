@@ -5,9 +5,7 @@ import { connect } from 'react-redux'
 
 import SearchIcon from 'material-ui/svg-icons/action/search'
 
-import { currentGene, actions as activeActions } from '@broad/gene-page/lib/resources/active'
-
-import css from './styles.css'
+import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 const TopBarContainer = styled.div`
   display: flex;

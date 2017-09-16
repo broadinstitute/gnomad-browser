@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import createGenePageStore from '@broad/gene-page/lib/store/store'
+import createGenePageStore from '@broad/gene-page/src/store/store'
 
 import App from './routes'
 

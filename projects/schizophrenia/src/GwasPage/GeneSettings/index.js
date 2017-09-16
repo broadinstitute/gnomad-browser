@@ -15,8 +15,8 @@ import Slider from 'material-ui/Slider'
 // import Checkbox from 'material-ui/Checkbox'
 import Mousetrap from 'mousetrap'
 
-import { actions as tableActions } from '@broad/gene-page/lib/resources/table'
-import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/lib/resources/active'
+import { actions as tableActions } from '@broad/gene-page/src/resources/table'
+import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import css from './styles.css'
 

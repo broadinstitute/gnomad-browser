@@ -7,7 +7,7 @@
 /* eslint-disable no-case-declarations */
 
 import React, { PropTypes } from 'react'
-import styled from 'style-components'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 // import DropDownMenu from 'material-ui/DropDownMenu'
@@ -18,8 +18,8 @@ import TextField from 'material-ui/TextField'
 import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
-import { actions as tableActions } from '@broad/gene-page/lib/resources/table'
-import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/lib/resources/active'
+import { actions as tableActions } from '@broad/gene-page/src/resources/table'
+import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 let findInput
 

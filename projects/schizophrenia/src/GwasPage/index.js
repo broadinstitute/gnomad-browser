@@ -8,7 +8,7 @@
 
 import React, { PropTypes } from 'react'
 
-import GenePageHOC from '@broad/gene-page/lib/containers/GenePage'
+import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import Manhattan from '@broad/manhattan'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'

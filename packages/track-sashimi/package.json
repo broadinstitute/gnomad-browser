@@ -25,6 +25,6 @@
     "react": "^15.5.4",
     "ramda": "^0.24.1",
     "styled-components": "^2.1.2",
-    "material-ui": "^0.18.3",
+    "material-ui": "^0.18.3"
   }
 }

@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "author": "msolomon@broadinstitute.org",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+      "packages/*",
+      "projects/*"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -24,7 +29,7 @@
     "file-loader": "^0.11.2",
     "jase": "^1.2.0",
     "json-loader": "^0.5.7",
-    "react-hot-loader": "3.0.0-beta",
+    "react-hot-loader": "3.0.0-beta.7",
     "rimraf": "^2.6.2",
     "stylelint": "^8.1.1",
     "stylelint-config-standard": "^17.0.0",
