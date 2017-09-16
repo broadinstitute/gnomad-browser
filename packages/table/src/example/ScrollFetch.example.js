@@ -19,8 +19,6 @@ import { BarGraph, LineGraph } from '@broad/plot'
 
 import InfiniteTable from '../index'
 
-import css from './styles.css'
-
 const API_URL = process.env.API_URL
 
 export const geneFetch = (geneName) => {
@@ -445,9 +443,9 @@ class InfiniteTableExample extends Component {
     ]
 
     return (
-      <div className={css.page}>
+      <div>
         <h1>Infinite scrolling demo</h1>
-        <div className={css.menus}>
+        <div>
           <p>Gene</p>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
@@ -486,7 +484,7 @@ class InfiniteTableExample extends Component {
           />
         {/* this.state.isFetching && refreshIndicatorSmall */}
         </div>
-        <div className={css.menus}>
+        <div>
           <p>markerType</p>
           <DropDownMenu value={this.state.markerType} onChange={this.handleMarkerTypeChange}>
             {['circle', 'tick', 'af'].map(markerType =>
@@ -564,7 +562,6 @@ class InfiniteTableExample extends Component {
           onChange={this.setPadding}
         />
         <RegionViewer
-          css={css}
           width={1000}
           regions={canonicalExons}
           regionAttributes={regionAttributesConfig}

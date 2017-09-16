@@ -6,23 +6,26 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
-  "exampleDependencies": {
-    "material-ui": "^0.18.3",
-    "graphql-fetch": "^1.0.1",
-    "@broad/utilities": "0.0.1",
-    "@broad/region": "0.0.1",
-    "@broad/track-transcript": "0.0.1",
-    "@broad/track-variant": "0.0.1",
-    "@broad/plot": "0.0.1"
-  },
   "dependencies": {
     "immutable": "^3.8.1",
     "react-highlight-words": "^0.8.0",
     "react-virtualized": "^9.8.0"
   },
+  "devDependencies": {
+    "@broad/utilities": "*",
+    "@broad/region": "*",
+    "@broad/track-transcript": "*",
+    "@broad/track-variant": "*",
+    "@broad/plot": "*",
+    "@broad/track-transcript": "*",
+    "@broad/track-position-table": "*",
+    "material-ui": "*",
+    "graphql-fetch": "^1.0.1"
+  },
   "peerDependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
     "ramda": "^0.24.1",
-    "react": "^15.5.4"
+    "styled-components": "^2.1.2"
   }
 }

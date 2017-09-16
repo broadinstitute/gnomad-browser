@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes } from 'react'
-import R from 'ramda'
-import { InfiniteLoader, List, WindowScroller, AutoSizer } from 'react-virtualized'
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
+import { InfiniteLoader, List, AutoSizer } from 'react-virtualized'
 import Highlighter from 'react-highlight-words'
 import Immutable from 'immutable'
 
-import defaultStyles from './styles.css'
-
-const VariantTable = ({
-  css,
+const Table = ({
   title,
-  width,
   height,
   tableConfig,
   tableData,
@@ -21,7 +21,6 @@ const VariantTable = ({
   showIndex,
   scrollToRow,
   onRowClick,
-  scrollCallback,
   onScroll,
   searchText,
 }) => {
@@ -70,7 +69,8 @@ const VariantTable = ({
     genomeFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G', border: '1px dashed #000' },
   }
   const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
-    if (dataset === 'all') return
+    // eslint-disable-next-line
+    if (dataset === 'all') return // TODO return something proper
     const { filter } = dataRow[dataset]
     let border
     let backgroundColor
@@ -81,6 +81,7 @@ const VariantTable = ({
       border = datasetConfig[dataset].border
       backgroundColor = datasetConfig[dataset].color
     }
+    // eslint-disable-next-line
     return (
       <span
         key={`${dataset}${index}`}
@@ -134,7 +135,7 @@ const VariantTable = ({
   ))
 
   const formatVariantId = (variantId) => {
-    let [chrom, pos, ref, alt] = variantId.split('-')
+    let [chrom, pos, ref, alt] = variantId.split('-')  // eslint-disable-line
     if (alt.length > 6) {
       alt = `${alt.slice(0, 6)}...`
     }
@@ -158,11 +159,10 @@ const VariantTable = ({
     }
     const cellText = field.searchable ? (
       <Highlighter
-        highlightClassName={css.highlight}
         searchWords={searchText.split(/\s+/)}
         textToHighlight={`${dataRow[dataKey]}`}
       />
-  ) : dataRow[dataKey]
+    ) : dataRow[dataKey]
 
     switch (dataType) {
       case 'string':
@@ -240,8 +240,8 @@ const VariantTable = ({
     }
   }
 
-  const getDataRow = (tableConfig, dataRow, i, showIndex) => {
-    const cells = tableConfig.fields.map((field, i) =>
+  const getDataRow = (tableConfig, dataRow, i, showIndex) => {  // eslint-disable-line
+    const cells = tableConfig.fields.map((field, i) =>  // eslint-disable-line
       getDataCell(field, dataRow, i))
 
     const indexCell = (
@@ -255,14 +255,13 @@ const VariantTable = ({
         {i}
       </div>
     )
-    const rowBackground = i % 2 === 0 ? 'white' : '#F5F5F5'
-    const style = {}
+    // const rowBackground = i % 2 === 0 ? 'white' : '#F5F5F5'
     return (
+      // eslint-disable-next-line
       <div
-        className={css.row}
-        style={style}
-        onClick={e => onRowClick(dataRow['variant_id'])}
-        onMouseEnter={e => onRowClick(dataRow['variant_id'])}
+        style={{ display: 'flex', height: '100%' }}
+        onClick={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
+        onMouseEnter={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
         key={`row-${i}`}
       >
         {showIndex && indexCell}
@@ -271,26 +270,44 @@ const VariantTable = ({
     )
   }
 
+  const HeaderButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  `
+
+  const HeaderButton = styled.button`
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    border-radius: 3px;
+    border: 0;
+  `
+  const HeaderButtonHover = HeaderButton.extend`
+    color: white;
+    background-color: black;
+    border: 1px solid #000;
+  `
+
   const getHeaderCell = field => (
-    <div
+    <HeaderButtonContainer
       style={{
         width: field.width + 40,
         maxWidth: field.width + 40,
         minWidth: field.width + 40,
       }}
-      className={css.headerButtonContainer}
       key={`${field.title}-header-cell`}
     >
-      <button
-        className={css.headerButton}
+      <HeaderButton
         style={{
           ...abstractCellStyle
         }}
         onClick={e => field.onHeaderClick(field.dataKey)}
       >
         {field.title}
-      </button>
-    </div>
+      </HeaderButton>
+    </HeaderButtonContainer>
   )
 
 
@@ -301,7 +318,6 @@ const VariantTable = ({
   }
 
   const rowRenderer = ({ key, index, style }) => {
-    // scrollCallback(index)
     let row
     if (Array.isArray(tableData)) {
       row = getDataRow(tableConfig, tableData[index], index, showIndex)
@@ -339,7 +355,7 @@ const VariantTable = ({
     </div>
   )
 
-  const getDefaultWidth = (tableConfig)  => {
+  const getDefaultWidth = (tableConfig) => {
     const scrollBarWidth = 40
     const paddingWidth = tableConfig.fields.length * 40
     const cellContentWidth = tableConfig.fields.reduce((acc, field) =>
@@ -348,44 +364,49 @@ const VariantTable = ({
     return calculatedWidth
   }
 
+  const HeadersContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+  `
+
   return (
     <div>
       <h3>{title}</h3>
-      <div className={css.headers}>
+      <HeadersContainer>
         {showIndex && indexHeader}
         {headers}
-      </div>
+      </HeadersContainer>
       <InfiniteLoader
         isRowLoaded={isRowLoaded}
         loadMoreRows={loadMoreRows}
         rowCount={remoteRowCount}
       >
         {({ onRowsRendered, registerChild }) => (
-            <AutoSizer disableHeight>
-              {({ width }) => {
-                return (
-                  <List
-                    height={height}
-                    onRowsRendered={onRowsRendered}
-                    ref={registerChild}
-                    rowCount={remoteRowCount}
-                    rowHeight={25}
-                    rowRenderer={rowRenderer}
-                    overscanRowCount={overscan}
-                    width={width || getDefaultWidth(tableConfig) }
-                    scrollToIndex={scrollToRow}
-                    onScroll={onScroll}
-                  />
-                )
-              }}
+          <AutoSizer disableHeight>
+            {({ width }) => {
+              return (
+                <List
+                  height={height}
+                  onRowsRendered={onRowsRendered}
+                  ref={registerChild}
+                  rowCount={remoteRowCount}
+                  rowHeight={25}
+                  rowRenderer={rowRenderer}
+                  overscanRowCount={overscan}
+                  width={width || getDefaultWidth(tableConfig)}
+                  scrollToIndex={scrollToRow}
+                  onScroll={onScroll}
+                />
+              )
+            }}
           </AutoSizer>
         )}
       </InfiniteLoader>
     </div>
   )
 }
-VariantTable.propTypes = {
-  css: PropTypes.object,
+Table.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
@@ -397,11 +418,9 @@ VariantTable.propTypes = {
   scrollToRow: PropTypes.number,
   onRowClick: PropTypes.func,
   // onRowHover: PropTypin ines.func,
-  scrollCallback: PropTypes.func,
   searchText: PropTypes.string,
 }
-VariantTable.defaultProps = {
-  css: defaultStyles,
+Table.defaultProps = {
   width: null,
   loadMoreRows: () => { },
   overscan: 100,
@@ -409,9 +428,8 @@ VariantTable.defaultProps = {
   showIndex: false,
   scrollToRow: 10,
   setCurrentVariant: () => { },
-  scrollCallback: () => {},
   onRowClick: () => {},
   searchText: '',
 }
 
-export default VariantTable
+export default Table

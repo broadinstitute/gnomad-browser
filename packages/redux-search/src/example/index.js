@@ -21,13 +21,11 @@ import {
   actions,
 } from './resources'
 
-import css from './styles.css'
-
 let findInput
 
 Mousetrap.bind(['command+f', 'meta+s'], function(e, combo) {
-    e.preventDefault()
-    findInput.focus()
+  e.preventDefault()
+  findInput.focus()
 })
 
 const store = createStore()
@@ -41,9 +39,8 @@ let SearchExample = ({
   const filteredVariantsRendered = filteredIdList.map(id => {
     const variant = variants.get(id)
     return (
-      <div key={id} className={css.row}>
+      <div key={id} styles={{ display: 'block' }}>
         <Highlighter
-          highlightClassName={css.Highlight}
           searchWords={dataSearchText.split(/\s+/)}
           textToHighlight={`${variant.variant_id},      ${variant.hgvsp},      ${variant.hgvsc}`}
         />
