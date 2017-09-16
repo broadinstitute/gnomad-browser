@@ -2,19 +2,20 @@
   "name": "@broad/track-transcript",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "files": [
     "lib"
   ],
-  "localDependencies": {
-    "@broad/utilities": "0.0.1",
-    "@broad/region": "0.0.1"
-  },
   "dependencies": {
+    "@broad/utilities": "*",
     "react-motion": "^0.5.0"
   },
   "peerDependencies": {
+    "@broad/track-region": "*",
+    "material-ui": "*",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "ramda": "^0.24.1"
+    "ramda": "^0.24.1",
+    "styled-components": "^2.1.2"
   }
 }

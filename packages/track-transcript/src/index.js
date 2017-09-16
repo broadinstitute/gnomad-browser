@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { Motion, spring } from 'react-motion'
 import R from 'ramda'
 
@@ -9,26 +11,37 @@ import {
   filterRegions,
 } from '@broad/utilities/lib/coordinates'  // eslint-disable-line
 
-import defaultStyles from './styles.css'
+const flipOutExonThickness = '13px'
 
 const TranscriptAxis = ({
-  css,
   title,
   leftPanelWidth,
   fontSize,
   expandTranscriptButton,
 }) => {
+  const TranscriptLeftAxis = styled.div`
+    display: flex;
+    width: 100%; /* Set by Redux */
+  `
+  const TranscriptName = styled.div`
+  display: flex;
+  width: 100%; /* Set by Redux */
+  color: black;
+  `
   return (
-    <div style={{ width: leftPanelWidth }} className={css.transcriptLeftAxis}>
-      <div style={{ fontSize }} className={css.transcriptName}>
+    <TranscriptLeftAxis style={{ width: leftPanelWidth }}>
+      <TranscriptName style={{ fontSize }}>
         {expandTranscriptButton || title}
-      </div>
-    </div>
+      </TranscriptName>
+    </TranscriptLeftAxis>
   )
 }
 TranscriptAxis.propTypes = {
   title: PropTypes.string,
   leftPanelWidth: PropTypes.number.isRequired,
+}
+TranscriptAxis.defaultProps = {
+  title: '',
 }
 
 const TranscriptDrawing = ({
@@ -46,29 +59,29 @@ const TranscriptDrawing = ({
       height={height}
     >
       <rect
-        className={css.transcriptTrackBackground}
         x={0}
         y={0}
         width={width}
         height={height}
         stroke={'none'}
+        fill={'white'}
       />
       <line
-        className={css.transcriptTrackLine}
         x1={0}
         x2={width}
         y1={height / 2}
         y2={height / 2}
+        stroke={'#BDBDBD'}
         strokeWidth={2}
       />
-      {regions.map((region, i) => {
+      {regions.map((region, i) => {  // eslint-disable-line
         const start = positionOffset(region.start)
         const stop = positionOffset(region.stop)
         let localThickness
         if (isMaster) {
           localThickness = region.thickness
         } else {
-          localThickness = css.flipOutExonThickness
+          localThickness = flipOutExonThickness
         }
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (
@@ -80,7 +93,7 @@ const TranscriptDrawing = ({
               y2={height / 2}
               stroke={start.color}
               strokeWidth={localThickness}
-              key={`${i}-rectangle2`}
+              key={`${start.offsetPosition}-rectangle2`}
             />
           )
         }
@@ -106,6 +119,13 @@ const Transcript = ({
   fontSize,
   opacity,
 }) => {
+  const TranscriptContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 3px;
+    padding-top: 3px;
+  `
+
   let localHeight
   if (motionHeight !== undefined) {
     localHeight = motionHeight
@@ -115,11 +135,10 @@ const Transcript = ({
   let expandTranscriptButton
   if (isMaster) {
     localHeight = 40
-    paddingTop = 2
-    paddingBottom = 2
+    paddingTop = 2  // eslint-disable-line
+    paddingBottom = 2  // eslint-disable-line
     expandTranscriptButton = (
       <TranscriptFlipOutButton
-        css={css}
         localHeight={localHeight}
         leftPanelWidth={leftPanelWidth}
         onClick={fanOut}
@@ -127,15 +146,14 @@ const Transcript = ({
     )
   }
   return (
-    <div
+    <TranscriptContainer
       style={{
         height: localHeight,
         paddingTop,
         paddingBottom,
         opacity,
-       }}
-       className={css.transcriptContainer}
-      >
+      }}
+    >
       <TranscriptAxis
         css={css}
         leftPanelWidth={leftPanelWidth}
@@ -143,7 +161,7 @@ const Transcript = ({
         fontSize={fontSize}
         expandTranscriptButton={expandTranscriptButton}
       />
-      <div className={css.transcriptData}>
+      <div styles={{ display: 'flex', justifyContent: 'center' }}>
         <TranscriptDrawing
           css={css}
           width={width}
@@ -154,7 +172,7 @@ const Transcript = ({
           isMaster={isMaster}
         />
       </div>
-    </div>
+    </TranscriptContainer>
   )
 }
 Transcript.propTypes = {
@@ -173,18 +191,22 @@ const TranscriptGroup = ({
   finalTranscriptStyles,
   ...rest
 }) => {
+  const TranscriptGroupWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+  `
   const transcriptGroup = (
-    <div className={css.transcriptsGrouped}>
+    <TranscriptGroupWrapper>
       {Object.keys(transcriptsGrouped).map((transcript, index) => {
         const transcriptExonsFiltered =
           filterRegions(['CDS'], transcriptsGrouped[transcript])
         if (R.isEmpty(transcriptExonsFiltered)) {
-          return
+          return  // eslint-disable-line
         }
         const style = fanOutButtonOpen ?
           finalTranscriptStyles(index) : initialTranscriptStyles()
-        return (
-          <Motion style={style} key={index}>
+        return (  // eslint-disable-line
+          <Motion style={style} key={transcript}>
             {({
               top,
               paddingTop,
@@ -209,7 +231,7 @@ const TranscriptGroup = ({
           </Motion>
         )
       })}
-    </div>
+    </TranscriptGroupWrapper>
   )
   return <div>{transcriptGroup}</div>
 }
@@ -221,8 +243,14 @@ TranscriptGroup.propTypes = {
   positionOffset: PropTypes.func,  // eslint-disable-line
 }
 
-class TranscriptTrack extends Component {
+const TranscriptTrackContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*border: 1px solid orange;*/
+`
 
+class TranscriptTrack extends Component {
   static PropTypes = {
     css: PropTypes.object,
     height: PropTypes.number.isRequired,
@@ -258,7 +286,7 @@ class TranscriptTrack extends Component {
   })
 
   finalTranscriptStyles = (childIndex) => {
-    const deltaY = (childIndex + 1) * 2
+    const deltaY = (childIndex + 1) * 2  // eslint-disable-line
     return {
       top: spring(this.props.height, this.config),
       paddingTop: 2,
@@ -270,7 +298,6 @@ class TranscriptTrack extends Component {
 
   render() {
     let transcriptGroup
-    // console.log(this.props.position)
     if (this.props.transcriptsGrouped) {
       transcriptGroup = (
         <TranscriptGroup
@@ -283,22 +310,17 @@ class TranscriptTrack extends Component {
       )
     }
     return (
-      <div
-        className={this.props.css.track}
-      >
+      <TranscriptTrackContainer>
         <Transcript
-          isMaster fanOut={this.fanOut}
+          isMaster
+          fanOut={this.fanOut}
           regions={this.props.offsetRegions}
           {...this.props}
         />
         {transcriptGroup}
-      </div>
+      </TranscriptTrackContainer>
     )
   }
-}
-
-TranscriptTrack.defaultProps = {
-  css: defaultStyles,
 }
 
 export default TranscriptTrack

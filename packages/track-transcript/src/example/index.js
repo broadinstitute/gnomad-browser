@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react'
-import R from 'ramda'
+import styled from 'styled-components'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
@@ -16,6 +16,12 @@ import {
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '../index'
 import examplePageStyles from './styles.css'
+
+const ExamplePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 class RegionTableExample extends Component {
   state = {
@@ -98,11 +104,11 @@ class RegionTableExample extends Component {
     }
     const transcriptsGrouped = groupExonsByTranscript(geneExons)
     return (
-      <div className={examplePageStyles.page}>
+      <ExamplePage>
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
             )}
           </DropDownMenu>
         </div>
@@ -123,7 +129,7 @@ class RegionTableExample extends Component {
             height={15}
           />
         </RegionViewer>
-      </div>
+      </ExamplePage>
     )
   }
 }
