@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
+import styled from 'styled-components'
+
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
@@ -8,12 +10,16 @@ import Slider from 'material-ui/Slider'
 import { fetchTranscriptsByGeneName, test } from '@broad/utilities'  // eslint-disable-line
 // import data from 'data/PCSK9-transcript.json'  // eslint-disable-line
 
-import RegionViewer from '@broad/region'
-
 import TranscriptTrack from '@broad/track-transcript'
 import PositionTableTrack from '@broad/track-position-table'
 
-import examplePageStyles from './RegionTable.example.css'
+import RegionViewer from '../index'
+
+const ExamplePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 class RegionTableExample extends Component {
   state = {
@@ -97,7 +103,7 @@ class RegionTableExample extends Component {
     }
 
     return (
-      <div className={examplePageStyles.page}>
+      <ExamplePage>
         <h1>Region viewer demo</h1>
         <Slider
           style={{
@@ -108,7 +114,7 @@ class RegionTableExample extends Component {
         <div>
           <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
             {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />,
+              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
             )}
           </DropDownMenu>
         </div>
@@ -127,7 +133,7 @@ class RegionTableExample extends Component {
             height={50}
           />
         </RegionViewer>
-      </div>
+      </ExamplePage>
     )
   }
 }

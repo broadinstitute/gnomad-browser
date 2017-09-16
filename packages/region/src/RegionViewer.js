@@ -1,5 +1,6 @@
-import React, { PropTypes, Component } from 'react'
-// import injectTapEventPlugin from 'react-tap-event-plugin'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import {
   calculateOffsetRegions,
@@ -8,31 +9,35 @@ import {
   calculateXScale,
 } from '@broad/utilities/lib/coordinates'  // eslint-disable-line
 
-import defaultStyles from './styles.css'
+const RegionViewerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10px;
+  padding-bottom: 10px;
+`
 
-// injectTapEventPlugin()
+const RegionArea = styled.div`
+  flex-direction: column;
+`
 
-const {
-  exonColor,
-  paddingColor,
-  masterExonThickness,
-  masterPaddingThickness,
-} = defaultStyles
+const exonColor = '#212121'
+const paddingColor = '#BDBDBD'
+const masterExonThickness = '25px'
+const masterPaddingThickness = '5px'
 
 class RegionViewer extends Component {
-
   static propTypes = {
-    css: PropTypes.object,
     regions: PropTypes.array.isRequired,
     regionAttributes: PropTypes.object,
     padding: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    leftPanelWidth: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
-    onRegionClick: PropTypes.func,
     broadcast: PropTypes.func,
   }
 
   static defaultProps = {
-    css: defaultStyles,
     exonSubset: null,
     leftPanelWidth: 100,
     onRegionClick: () => {},
@@ -75,19 +80,6 @@ class RegionViewer extends Component {
     this.broadcastOffsetRegions()
   }
 
-  broadcastOffsetRegions = () => {
-    if (this.props.regions) {
-      const offsetRegions = calculateOffsetRegions(
-        this.state.featuresToDisplay,
-        this.props.regionAttributes,
-        this.props.padding,
-        this.props.regions,
-        this.props.exonSubset,
-      )
-      this.props.broadcast({ offsetRegions })
-    }
-  }
-
   setWidth = (event, newValue) => {
     const newWidth = 800 * newValue
     this.setState({ width: newWidth })
@@ -98,16 +90,26 @@ class RegionViewer extends Component {
     this.setState({ leftPanelWidth })
   }
 
+  broadcastOffsetRegions = () => {
+    if (this.props.regions) {
+      const offsetRegions = calculateOffsetRegions(
+        this.state.featuresToDisplay,
+        this.props.regionAttributes,
+        this.props.padding,
+        this.props.regions,
+        this.props.exonSubset
+      )
+      this.props.broadcast({ offsetRegions })
+    }
+  }
+
   renderChildren = (childProps) => {
+    // eslint-disable-next-line
     return React.Children.map(this.props.children, (child) => {
       if (child) {
         return React.cloneElement(child, childProps)
       }
     })
-  }
-
-  broadcast(offsetRegions) {
-    console.log()
   }
 
   render() {
@@ -118,9 +120,7 @@ class RegionViewer extends Component {
       width,
       exonSubset,
       padding,
-      css,
       leftPanelWidth,
-      broadcast,
     } = this.props
 
     const offsetRegions = calculateOffsetRegions(
@@ -128,7 +128,7 @@ class RegionViewer extends Component {
       regionAttributes,
       padding,
       regions,
-      exonSubset,
+      exonSubset
     )
 
     const positionOffset = calculatePositionOffset(offsetRegions)
@@ -147,12 +147,11 @@ class RegionViewer extends Component {
     }
 
     return (
-      <div className={css.regionViewer}>
-        {/*<p>Exon padding {padding.toPrecision(3)} bp</p>*/}
-        <div style={{ width: width + leftPanelWidth }} className={css.regionArea}>
+      <RegionViewerWrapper>
+        <RegionArea width={width + leftPanelWidth}>
           {this.renderChildren(childProps)}
-        </div>
-      </div>
+        </RegionArea>
+      </RegionViewerWrapper>
     )
   }
 }

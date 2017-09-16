@@ -2,17 +2,22 @@
   "name": "@broad/region",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "files": [
     "lib"
   ],
-  "localDependencies": {
-    "@broad/utilities": "0.0.1"
-  },
   "dependencies": {
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "@broad/utilities": "*"
+  },
+  "devDependencies": {
+    "@broad/track-transcript": "*",
+    "@broad/track-position-table": "*",
+    "material-ui": "*"
   },
   "peerDependencies": {
-    "react": "^15.5.4"
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "styled-components": "^2.1.2"
   }
 }
