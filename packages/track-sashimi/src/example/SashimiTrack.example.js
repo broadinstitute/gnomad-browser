@@ -15,8 +15,6 @@ import testGene from '/Users/msolomon/lens/resources/region-viewer-full-CAPN3-v1
 import testCoverage from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.coverage.csv'
 import testJunctions from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.junctions.csv'
 
-import css from './styles.css'
-
 class SashimiTrackExample extends Component {
   state = {
     hasData: false,
@@ -43,7 +41,7 @@ class SashimiTrackExample extends Component {
 
   render() {
     if (!this.state.hasData) {
-      return <p className={css.cool}>Loading!</p>
+      return <p>Loading!</p>
     }
 
     const {
@@ -108,7 +106,7 @@ class SashimiTrackExample extends Component {
       .map(base => ({ pos: Number(base.pos), reading: Number(base.series2) }))
 
     return (
-      <div className={css.page}>
+      <div>
         <Slider
           style={{
             width: 800,
@@ -116,7 +114,6 @@ class SashimiTrackExample extends Component {
           onChange={this.setPadding}
         />
         <RegionViewer
-          css={css}
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}

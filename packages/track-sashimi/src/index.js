@@ -147,16 +147,20 @@ const SashimiTrack = ({
     .map(junction => sashimiJunctionPath(junction))
 
   return (
-    <div className={css.coverageTrack}>
+    <div styles={{ display: 'flex' }}>
       <div
-        className={css.coverageYAxis}
         style={{
           width: leftPanelWidth,
+          display: 'flex',
+          justifyContent: 'flexEnd',
         }}
       >
         <svg width={50} height={height}>
           <text
-            className={css.ylabel}
+            styles={{
+              fontSize: '12px',
+              textAnchor: 'middle',
+            }}
             x={10}
             y={height / 2}
             transform={`rotate(270 10 ${height / 2})`}
@@ -167,7 +171,10 @@ const SashimiTrack = ({
             {range(0, 190, 10).map(tick =>
               <g key={`ytick-${tick}`}>
                 <text
-                  className={css.yticktext}
+                  styles={{
+                    fontSize: '8px',
+                    textAnchor: 'end',
+                  }}
                   x={40}
                   y={height - tick}
                 >

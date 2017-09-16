@@ -9,6 +9,10 @@
   "localDependencies": {},
   "dependencies": {},
   "peerDependencies": {
-    "react": "^15.5.4"
+    "@broad/track-region": "*",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "ramda": "^0.24.1",
+    "styled-components": "^2.1.2"
   }
 }

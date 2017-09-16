@@ -2,17 +2,14 @@
   "name": "@broad/track-sashimi",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "files": [
     "lib"
   ],
-  "localDependencies": {},
-  "exampleDependencies": {
+  "devDependencies": {
     "ramda": "^0.24.1",
-    "material-ui": "^0.18.3",
     "dsv-loader": "^2.0.0",
     "@broad/utilities": "0.0.1",
-    "@broad/region": "0.0.1",
     "@broad/track-transcript": "0.0.1",
     "@broad/track-position-table": "0.0.1"
   },
@@ -23,7 +20,11 @@
     "d3-shape": "^1.2.0"
   },
   "peerDependencies": {
+    "@broad/region": "*",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "ramda": "^0.24.1"
+    "ramda": "^0.24.1",
+    "styled-components": "^2.1.2",
+    "material-ui": "^0.18.3",
   }
 }

@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import css from './styles.css'
+const PositionTableTrackWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
 
-const Axis = ({ height, title, width }) => {
-  return <div className={css.yLabel}>{title}</div>
+const Axis = ({ title }) => {
+  return <div>{title}</div>
 }
 
 Axis.propTypes = {
-  height: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 const Positions = ({
@@ -25,15 +29,14 @@ const Positions = ({
   >
     {offsetRegions.map((region, i) => (
       <text
-        className={css.text}
+        style={{ fontSize: '8px' }}
         x={xScale(region.start - region.offset)}
         y={height / 2}
-        key={`${i}-text`}
+        key={`${region.start}-text`}
       >
         {i}
       </text>
-  ),
-    )}
+    ))}
   </svg>
 )
 
@@ -46,23 +49,23 @@ const PositionTableTrack = ({
   title,
 }) => {
   return (
-    <div className={css.track}>
-      <div className={css.yAxis}>
+    <PositionTableTrackWrapper>
+      <div>
         <Axis
           height={height}
           width={leftPanelWidth}
           title={title}
         />
       </div>
-      <div className={css.data}>
+      <div styles={{ display: 'flex', flexDirection: 'column' }}>
         <Positions
           width={width}
           height={height}
           offsetRegions={offsetRegions}
           xScale={xScale}
         />
-        <div className={css.positionValues}>
-          <table className={css.positionValuesTable} style={{width: "100%"}}>
+        <div>
+          <table style={{ width: '100%', paddingLeft: '40px' }}>
             <thead>
               <tr>
                 <th>index</th>
@@ -78,7 +81,7 @@ const PositionTableTrack = ({
             </thead>
             <tbody>
               {offsetRegions.map((region, i) =>
-                <tr style={{backgroundColor: region.color}} key={`${i}-row`}>
+                (<tr style={{ backgroundColor: region.color }} key={`${region.start}-row`}>
                   <td>{i}</td>
                   <td>{region.feature_type}</td>
                   <td>{region.start}</td>
@@ -88,13 +91,13 @@ const PositionTableTrack = ({
                   <td>{region.offset}</td>
                   <td>{xScale(region.start - region.offset).toPrecision(3)}</td>
                   <td>{xScale(region.stop - region.offset).toPrecision(3)}</td>
-                </tr>
+                </tr>)
               )}
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </PositionTableTrackWrapper>
   )
 }
 PositionTableTrack.propTypes = {
