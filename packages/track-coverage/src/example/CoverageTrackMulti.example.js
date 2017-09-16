@@ -45,6 +45,12 @@ import testData from 'data/region-viewer-full-BRCA2-v1.json'
 // import testData from 'data/region-viewer-full-ARSF.json'
 // import testData from 'data/region-viewer-full-CD33.json'
 
+const CoverageExamplePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
 class RegionViewerFullExample extends Component {
   state = {
     hasData: false,
@@ -113,7 +119,7 @@ class RegionViewerFullExample extends Component {
       },
     }
     return (
-      <div className={examplePageStyles.page}>
+      <CoverageExamplePage>
         <Slider
           style={{
             width: 800,
@@ -161,7 +167,7 @@ class RegionViewerFullExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
           />
         </RegionViewer>
-      </div>
+      </CoverageExamplePage>
     )
   }
 }

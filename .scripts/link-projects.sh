@@ -3,15 +3,25 @@
 IFS=$'\n' read -d '' -r -a packages <$(dirname $0)/RELEASABLE_PACKAGES
 IFS=$'\n' read -d '' -r -a projects <$(dirname $0)/PROJECTS
 
-cd packages
+cd packages;
+pwd
+for package in "${packages[@]}"; do
+  cd $package;
+  yarn link
+  cd ..;
+done
 
 for package1 in "${packages[@]}"; do
   cd $package1;
-  yarn link
   dependencies=$(cat ./package.json | echo $(../../node_modules/.bin/jase dependencies));
+  devDependencies=$(cat ./package.json | echo $(../../node_modules/.bin/jase devDependencies));
   for package2 in "${packages[@]}"; do
-    if `echo ${dependencies} | grep "${package}" 1>/dev/null 2>&1`; then
-      echo "> Linking local dependency $package1 to $project2";
+    if `echo ${dependencies} | grep "@broad/${package2}" 1>/dev/null 2>&1`; then
+      echo "> Linking dependency $package1 to $project2";
+      yarn link "@broad/${package2}";
+    fi
+    if `echo ${devDependencies} | grep "@broad/${package2}" 1>/dev/null 2>&1`; then
+      echo "> Linking development dependency $package1 to $project2";
       yarn link "@broad/${package2}";
     fi
   done

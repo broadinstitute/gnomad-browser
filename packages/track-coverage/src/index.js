@@ -8,10 +8,7 @@ import { scaleLinear } from 'd3-scale'
 
 import { getMaxMeanFromCoverageDatasets } from '@broad/utilities/lib/plotting'
 
-import defaultStyles from './styles.css'
-
 const CoverageTrack = ({
-  css,
   title,
   width,
   height,
@@ -22,9 +19,9 @@ const CoverageTrack = ({
   yTickNumber,
   yMax,
 }) => {
-  const scaleCoverage = (xScale, coverage) => {
+  const scaleCoverage = (xScaleCoverage, coverage) => {
     const coverageScaled = coverage.map((base) => {
-      const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
+      const newPosition = Math.floor(xScaleCoverage(positionOffset(base.pos).offsetPosition))
       if (newPosition !== undefined) {
         return ({
           mean: base.mean,
@@ -43,7 +40,7 @@ const CoverageTrack = ({
         [scaledPosition]: base.mean,
       }
     }, {})
-    const [min, max] = xScale.range()
+    const [min, max] = xScaleCoverage.range()
     const final = range(min, max).map((i) => {
       if (dict[i]) {
         return { scaledPosition: i, mean: dict[i] }
@@ -114,21 +111,25 @@ const CoverageTrack = ({
   })
 
   const [yScaleDomainMin, yScaleDomainMax] = yScale.domain()
-  const [yScaleRangeMax, yScaleRangeMin] = yScale.range()
+  const [yScaleRangeMax, yScaleRangeMin] = yScale.range()  // eslint-disable-line
 
   const incrementSize = Math.floor(yScaleDomainMax / yTickNumber)
 
   return (
-    <div className={css.coverageTrack}>
+    <div style={{ display: 'flex' }}>
       <div
-        className={css.coverageYAxis}
         style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
           width: leftPanelWidth,
         }}
       >
         <svg width={50} height={yScaleRangeMax}>
           <text
-            className={css.ylabel}
+            style={{
+              fontSize: '12px',
+              textAnchor: 'middle',
+            }}
             x={10}
             y={yScaleRangeMax / 2}
             transform={`rotate(270 10 ${yScaleRangeMax / 2})`}
@@ -137,23 +138,28 @@ const CoverageTrack = ({
           </text>
           <g>
             <text
-              className={css.yticktext}
+              style={{
+                fontSize: '8px',
+                textAnchor: 'end',
+              }}
               x={40}
               y={yScaleRangeMax}
             >
               0
             </text>
             {R.tail(range(yScaleDomainMin, yScaleDomainMax, incrementSize)).map(tick =>
-              <g key={`ytick-${tick}`}>
+              (<g key={`ytick-${tick}`}>
                 <text
-                  className={css.yticktext}
+                  style={{
+                    fontSize: '8px',
+                    textAnchor: 'end',
+                  }}
                   x={40}
-                  y={yScaleRangeMax - yScale(tick) + 2}
+                  y={yScaleRangeMax - (yScale(tick) + 2)}
                 >
                   {yScaleDomainMax - tick}
                 </text>
                 <line
-                  className={css.ytickline}
                   x1={42}
                   x2={48}
                   y1={yScaleRangeMax - yScale(tick)}
@@ -162,12 +168,12 @@ const CoverageTrack = ({
                   strokeWidth={1}
                   key={`coverage-y-axis-${tick}`}
                 />
-              </g>,
+              </g>)
             )}
           </g>
         </svg>
       </div>
-      <div className={css.coverageArea}>
+      <div>
         <svg
           width={width}
           height={height}
@@ -180,7 +186,7 @@ const CoverageTrack = ({
             stroke={'black'}
             strokeWidth={1}
           />
-          <g className={css.coverage}>
+          <g>
             {plots}
           </g>
         </svg>
@@ -189,7 +195,6 @@ const CoverageTrack = ({
   )
 }
 CoverageTrack.propTypes = {
-  css: PropTypes.object,
   title: PropTypes.string,
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
@@ -202,7 +207,6 @@ CoverageTrack.propTypes = {
 }
 CoverageTrack.defaultProps = {
   title: '',
-  css: defaultStyles,
   yTickNumber: 5,
   yMax: null,
 }

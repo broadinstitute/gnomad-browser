@@ -6,32 +6,61 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable react/prop-types */
 import React, { PropTypes } from 'react'
+import styled from 'styled-components'
 import ReactCursorPosition from 'react-cursor-position'
 import R from 'ramda'
 import { getTableIndexByPosition } from '@broad/utilities/lib/variant'
-import { range, max } from 'd3-array'
+import { range } from 'd3-array'
 import { line } from 'd3-shape'
-import { scaleLinear, scaleLog } from 'd3-scale'
+import { scaleLog } from 'd3-scale'
 
-import defaultStyles from './styles.css'
+const NavigatorAxisName = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 12px;
+  margin-left: 30;
+  border: 1px solid green;
+`
 
-const NavigatorAxis = ({ css, title, height, leftPanelWidth }) => {
+// const Track = styled.div`
+//   display: flex;
+//   align-items: center;
+//   border: 1px solid blue;
+// `
+//
+// const AreaClick = styled.div`
+//   border: 1px solid yellow;
+// `
+//
+// const NavigatorContainerRect = styled.div`
+//   fill: #DAEDE2;
+//   stroke: red;
+// `
+//
+// const CursorPositionRect = styled.div`
+//   fill: #EA2E49;
+//   stroke: black;
+//   stroke-width: 1px;
+//   cursor: pointer;
+// `
+//
+// const TablePositionRect = styled.div`
+//   fill: green;
+//   stroke: black;
+//   stroke-width: 1px;
+// `
+//
+// const XTickText = styled.div`
+//   text-anchor: center;
+//   font-size: 10px;
+// `
+
+const NavigatorAxis = ({ title, height, leftPanelWidth }) => {
   return (
-    <div
-      style={{ width: leftPanelWidth }}
-      className={css.loadingLeftAxis}
-    >
-      <div
-        className={css.loadingAxisName}
-        style={{
-          height,
-          fontSize: 12,
-          marginLeft: 30,
-        }}
-      >
-        {title}
-      </div>
-    </div>
+    <NavigatorAxisName width={leftPanelWidth} height={height}>
+      {title}
+    </NavigatorAxisName>
   )
 }
 NavigatorAxis.propTypes = {
@@ -39,7 +68,6 @@ NavigatorAxis.propTypes = {
 }
 
 const ClickArea = ({
-  css,
   height,
   width,
   positionOffset,
@@ -50,10 +78,10 @@ const ClickArea = ({
   // scrollSync, // position in from table
   currentTableScrollData,
   onNavigatorClick,
-  variantPlotData,
+  variantPlotData, // TODO
   variants,
   currentVariant,
-  variantSortKey,
+  variantSortKey, // TODO
   noVariants,
 }) => {
   const numberOfVariantsVisibleInTable = 26
@@ -63,10 +91,12 @@ const ClickArea = ({
 
   if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
     currentlyVisibleVariants = variants.slice(0, numberOfVariantsVisibleInTable).toJS()
-      // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
+    // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   } else {
-    currentlyVisibleVariants = variants.slice(scrollSync, scrollSync + numberOfVariantsVisibleInTable).toJS()
-      // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
+    currentlyVisibleVariants = variants.slice(
+      scrollSync, scrollSync + numberOfVariantsVisibleInTable
+    ).toJS()
+    // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   }
   // console.log(currentlyVisibleVariants)
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
@@ -77,7 +107,7 @@ const ClickArea = ({
     positionOffset(tablePositionStart).offsetPosition
   ) - tableRectPadding
   const tableRectStop = xScale(positionOffset(tablePositionStop).offsetPosition)
-  const tableRectWidth = tableRectStop - tableRectStart + tableRectPadding
+  const tableRectWidth = tableRectStop - (tableRectStart + tableRectPadding) // TODO
 
   const variantPositions = currentlyVisibleVariants.map(v => ({
     x: xScale(positionOffset(v.pos).offsetPosition),
@@ -119,7 +149,7 @@ const ClickArea = ({
 
   let allVariantMarks
   if (variants.size < 300) {
-    const allVariantPositions = variants.map(v => {
+    const allVariantPositions = variants.map((v) => {
       return ({
         x: xScale(positionOffset(v.pos).offsetPosition),
         variant_id: v.variant_id,
@@ -150,7 +180,7 @@ const ClickArea = ({
     const tickDrawing = (x, genomePositionLabel) => (
       <g key={`tick-${x}-axis`}>
         <line
-          className={css.xTickLine}
+          className={'xTickLine'}
           x1={x}
           x2={x}
           y1={height - 2}
@@ -159,7 +189,7 @@ const ClickArea = ({
           strokeWidth={1}
         />
         <text
-          className={css.xTickText}
+          className={'xTickText'}
           x={x + textXOffsetFromTick}
           y={height - textYOffsetFromTick}
           transform={`rotate(${360 - textRotationDegrees} ${x} ${height})`}
@@ -169,12 +199,14 @@ const ClickArea = ({
       </g>
     )
 
-    const axisTicksDrawing = R.tail(tickGenomePositions.map(({ x, label }) => tickDrawing(x, label)))
+    const axisTicksDrawing = R.tail(tickGenomePositions.map(
+      ({ x, label }) => tickDrawing(x, label))
+    )
 
     return (
       <g>
         <line
-          className={css.xAxisLine}
+          className={'xAxisLine'}
           x1={0 + 2}
           x2={width - 2}
           y1={height - 1}
@@ -183,7 +215,7 @@ const ClickArea = ({
           strokeWidth={1}
         />
         <line
-          className={css.yAxisLine}
+          className={'yAxisLine'}
           x1={1}
           x2={1}
           y1={height - 7}
@@ -192,7 +224,7 @@ const ClickArea = ({
           strokeWidth={1}
         />
         <line
-          className={css.yAxisLine}
+          className={'yAxisLine'}
           x1={width - 1}
           x2={width - 1}
           y1={height - 7}
@@ -210,7 +242,7 @@ const ClickArea = ({
 
   return (
     <svg
-      className={css.areaClick}
+      className={'areaClick'}
       width={width}
       height={height}
       onClick={_ => {
@@ -220,16 +252,15 @@ const ClickArea = ({
       }}
     >
       <rect
-        className={css.navigatorContainerRect}
+        className={'navigatorContainerRect'}
         x={0}
         y={0}
         width={width}
         height={height}
       />
-
     {/*!noVariants && variantSortKey === 'pos' &&
       <rect
-        className={css.tablePositionRect}
+        className={'tablePositionRect'}
         x={tableRectStart}
         y={0 + navigatorBoxTopPadding}
         width={tableRectWidth}
@@ -239,7 +270,7 @@ const ClickArea = ({
 
       {!isPositionOutside &&
       <rect
-        className={css.cursorPositionRect}
+        className={'cursorPositionRect'}
         x={position.x - 15}
         y={0 + navigatorBoxTopPadding}
         width={30}
@@ -256,14 +287,14 @@ const ClickArea = ({
 const NavigatorTrack = (props) => {
   const { css } = props
   return (
-    <div className={css.track}>
+    <div className={'track'}>
       <NavigatorAxis
         css={css}
         title={props.title}
         height={props.height}
         leftPanelWidth={props.leftPanelWidth}
       />
-      <ReactCursorPosition className={css.cursorPosition}>
+      <ReactCursorPosition className={'cursorPosition'}>
         <ClickArea {...props} />
       </ReactCursorPosition>
     </div>
@@ -273,8 +304,6 @@ NavigatorTrack.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number,  // eslint-disable-line
 }
-NavigatorTrack.defaultProps = {
-  css: defaultStyles,
-}
+NavigatorTrack.defaultProps = {}
 
 export default NavigatorTrack

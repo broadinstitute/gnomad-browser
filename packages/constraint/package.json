@@ -1,5 +1,5 @@
 {
-  "name": "@broad/manhattan",
+  "name": "@broad/constraint",
   "version": "0.0.1",
   "license": "MIT",
   "main": "lib/index.js",

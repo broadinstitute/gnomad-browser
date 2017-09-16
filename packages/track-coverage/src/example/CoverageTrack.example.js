@@ -1,14 +1,15 @@
 /* eslint-disable camelcase */
 
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import Slider from 'material-ui/Slider'
+
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import { fetchAllByGeneName } from '@broad/utilities/lib/fetch'
 import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
 
 import CoverageTrack from '../index'
-import examplePageStyles from './CoverageTrack.example.css'
 
 const testGenes = [
   'PCSK9',
@@ -39,6 +40,12 @@ import testData from '/Users/msolomon/lens/resources/region-viewer-full-ZNF658-v
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-MYBPC3-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-ARSF-v1.json'
 // import testData from '/Users/msolomon/lens/resources/region-viewer-full-CD33-v1.json'
+
+const CoverageExamplePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 class RegionViewerFullExample extends Component {
   state = {
@@ -133,7 +140,7 @@ class RegionViewerFullExample extends Component {
       ],
     }
     return (
-      <div className={examplePageStyles.page}>
+      <CoverageExamplePage>
         <Slider
           style={{
             width: 800,
@@ -158,7 +165,7 @@ class RegionViewerFullExample extends Component {
             transcriptsGrouped={transcriptsGrouped}
           />
         </RegionViewer>
-      </div>
+      </CoverageExamplePage>
     )
   }
 }
