@@ -1,11 +1,11 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import reducer from '../redux'
+import structureViewer from '../redux'
 
 const logger = createLogger()
 
 export default function createTestStore () {
-  return createStore(reducer, applyMiddleware(thunk, logger))
+  return createStore(combineReducers({ structureViewer }), applyMiddleware(thunk, logger))
 }

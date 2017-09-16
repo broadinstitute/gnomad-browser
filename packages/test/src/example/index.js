@@ -10,8 +10,7 @@ const ExampleWrapper = styled.div`
 const TestExample = () => {
   return (
     <ExampleWrapper>
-      {'June 12, 2017 10:39 AM!!!'}
-      <TestComponent message={'Hello there'} />
+      <TestComponent message={'yes'} />
     </ExampleWrapper>
   )
 }

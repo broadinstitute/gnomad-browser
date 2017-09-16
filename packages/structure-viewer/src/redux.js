@@ -23,6 +23,7 @@ const State = Immutable.Record({
   currentPdb: null,
   structuresByGene: Immutable.Map(),
   retrieving: false,
+  currentGene: 'HBB',
 })
 
 export const types = keymirror({
@@ -63,7 +64,6 @@ export const actions = {
   },
 
   receivePdbSearchResults (currentGene, pdbSearchResultsList) {
-    console.log('yooo!', pdbSearchResultsList)
     return {
       type: types.RECEIVE_PDB_SEARCH_RESULTS,
       currentGene,
@@ -128,7 +128,6 @@ export const actions = {
             R.isEmpty,
             response.text.split('\n')
           )
-          console.log('received search results:', results)
           dispatch(actions.receivePdbSearchResults(currentGene, results))
           if (results.length > 0) {
             dispatch(actions.ioFetchPdb(currentGene, results[0]))
@@ -144,7 +143,6 @@ export const actions = {
     const pdbFiles = structuresForGene.get('pdbFiles')
     console.log('here are the files', pdbFiles)
     if (!pdbFiles.get(currentPdb)) {
-
       return true
     }
     console.log('Dont have to fetch')
@@ -180,7 +178,6 @@ const actionHandlers = {
       pdbSearchResultsList: Immutable.List(pdbSearchResultsList),
       pdbFiles: Immutable.Map()
     })
-    console.log(pdbSearchResultsList)
     return state
       .set('structuresByGene', state.structuresByGene.set(currentGene, searchResults))
       .set('currentPdb', pdbSearchResultsList[0])
@@ -224,7 +221,7 @@ export const currentPdb = state => state.structureViewer.get('currentPdb')
 export const structuresByGene = state => state.structureViewer.get('structuresByGene')
 
 export const structures = createSelector(
-  [state => state.active.currentGene, structuresByGene],
+  [currentGene, structuresByGene],
   (currentGene, structuresByGene) => {
     if (structuresByGene.get(currentGene)) {
       return structuresByGene.get(currentGene)

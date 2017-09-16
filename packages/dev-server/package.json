@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@broad/manhattan": "*",
-    "@broad/test": "*"
+    "@broad/test": "*",
+    "@broad/structure-viewer": "*"
   }
 }

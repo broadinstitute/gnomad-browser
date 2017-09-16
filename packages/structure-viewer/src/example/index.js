@@ -13,9 +13,9 @@ import {
   retrieving,
 } from '../redux'
 
-const store = createTestStore()
-
 import ProteinStructureViewer from '../component'
+
+const store = createTestStore()
 
 let StructureViewerExample = (props) => {
   return (
@@ -34,9 +34,7 @@ let StructureViewerExample = (props) => {
 
 const mapStateToProps = (state) => {
   const currentGene = 'HBB'
-  const structureData = structures(state, currentGene)
-  console.log(state.toJS())
-  console.log(structureData.toJS())
+  const structureData = structures(state)
   return ({
     retrieving: retrieving(state),
     currentPdb: currentPdb(state),
