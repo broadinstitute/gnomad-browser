@@ -1,52 +1,50 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes } from 'react'
+import React from 'react'
+import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import R from 'ramda'
 import { scaleLinear, scaleLog } from 'd3-scale'
-import { max, min, range } from 'd3-array'
-
-import defaultStyles from './styles.css'
+import { max, min } from 'd3-array'
 
 const yPad = 10
 
-const Axis = ({ title, css }) => {
-  return <div className={css.yLabel}>{title}</div>
+const Axis = ({ title }) => {
+  return <div>{title}</div>
 }
 Axis.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
-const VariantAxis = ({ title, height, leftPanelWidth, trackYScale, css }) => {
+const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
   const YTicks = trackYScale ? () => {
     return (
-        <g>
-          {trackYScale.ticks().map(t => {
-            return (
-              <g key={t}>
-                <line
-                  x1={leftPanelWidth - 10}
-                  x2={leftPanelWidth - 5}
-                  y1={trackYScale(t)}
-                  y2={trackYScale(t)}
-                  stroke={'black'}
-                />
-                <text
-                  className={css.yTickText}
-                  x={leftPanelWidth - 30}
-                  y={trackYScale(t) + 5}
-                >
-                  {t}
-                </text>
-              </g>
-            )
-          })}
-        </g>
+      <g>
+        {trackYScale.ticks().map((t) => {
+          return (
+            <g key={t}>
+              <line
+                x1={leftPanelWidth - 10}
+                x2={leftPanelWidth - 5}
+                y1={trackYScale(t)}
+                y2={trackYScale(t)}
+                stroke={'black'}
+              />
+              <text
+                x={leftPanelWidth - 30}
+                y={trackYScale(t) + 5}
+              >
+                {t}
+              </text>
+            </g>
+          )
+        })}
+      </g>
     )
   } : null
   const YAxis = () => {
     return (
       <svg width={leftPanelWidth} height={height}>
         <text
-          className={css.yLabel}
           x={5}
           y={height / 2}
 
@@ -61,8 +59,8 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale, css }) => {
     <div
       style={{ width: leftPanelWidth }}
     >
-      <YAxis/>
-      {/*<div className={css.variantAxisName} style={{ fontSize: 12 }}>
+      <YAxis />
+      {/*<div style={{ fontSize: 12 }}>
         {title}
       </div>*/}
     </div>
@@ -74,7 +72,6 @@ VariantAxis.propTypes = {
 }
 
 const VariantAlleleFrequency = ({
-  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -86,9 +83,9 @@ const VariantAlleleFrequency = ({
   afScale,
 }) => {
   if (variant.allele_freq === 0) {
+    // TODO add back hover effect
     return (
       <circle
-        className={css.point}
         cx={xScale(offsetPosition)}
         cy={yPosition}
         r={1}
@@ -100,7 +97,6 @@ const VariantAlleleFrequency = ({
   }
   return (
     <circle
-      className={css.point}
       cx={xScale(offsetPosition)}
       cy={yPosition}
       r={afScale(variant.allele_freq)}
@@ -112,7 +108,6 @@ const VariantAlleleFrequency = ({
 }
 
 const VariantCircle = ({
-  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -123,7 +118,6 @@ const VariantCircle = ({
 }) => {
   return (
     <circle
-      className={css.point}
       cx={xScale(offsetPosition)}
       cy={yPosition}
       r={circleRadius || 2}
@@ -135,7 +129,6 @@ const VariantCircle = ({
 }
 
 const VariantTick = ({
-  css,
   xScale,
   offsetPosition,
   yPosition,
@@ -147,7 +140,6 @@ const VariantTick = ({
 }) => {
   return (
     <rect
-      className={css.rect}
       x={xScale(offsetPosition)}
       y={yPosition}
       width={tickWidth}
@@ -201,7 +193,6 @@ function getTrackYScale (markerConfig, variants, height) {
 }
 
 const VariantTrack = ({
-  css,
   title,
   width,
   height,
@@ -216,16 +207,24 @@ const VariantTrack = ({
     getTrackYScale(markerConfig, variants, height) : null
   const localTitle = markerConfig.yPositionSetting === 'attribute' ?
     markerConfig.yPositionAttribute : title
+
+  const VariantTrackContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  `
+
+
+
   return (
-    <div className={css.track}>
+    <VariantTrackContainer>
       <VariantAxis
-        css={css}
         height={height}
         leftPanelWidth={leftPanelWidth}
         title={localTitle}
         trackYScale={trackYScale}
       />
-      <div className={css.data}>
+      <div>
         <svg
           width={width}
           height={height}
@@ -237,11 +236,20 @@ const VariantTrack = ({
               fillColor,
               afMax,
             } = markerConfig
-            const yPosition = setYPosition(height, yPositionSetting, markerConfig, variant, trackYScale)
+
+            const yPosition = setYPosition(
+              height,
+              yPositionSetting,
+              markerConfig,
+              variant,
+              trackYScale
+            )
+
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
             const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
-            if (regionViewerAttributes === 0) return  // eslint-disable-line
+
+            // if (regionViewerAttributes === 0) return  // TODO: what is this for
             const afScale =
               scaleLog()
                 .domain([
@@ -249,8 +257,8 @@ const VariantTrack = ({
                   afMax,
                 ])
                 .range([3, 6])
+
             const childProps = {
-              css,
               index,
               ...regionViewerAttributes,
               ...rest,
@@ -261,15 +269,15 @@ const VariantTrack = ({
               variant,
               afScale,
             }
+
             return getVariantMarker(childProps)
           })}
         </svg>
       </div>
-    </div>
+    </VariantTrackContainer>
   )
 }
 VariantTrack.propTypes = {
-  css: PropTypes.object,
   title: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
   variants: PropTypes.array.isRequired,
@@ -278,10 +286,8 @@ VariantTrack.propTypes = {
   xScale: PropTypes.func,  // eslint-disable-line
   color: PropTypes.string,
   markerConfig: PropTypes.object,
-  activeVariant: PropTypes.string,
 }
 VariantTrack.defaultProps = {
-  css: defaultStyles,
   title: '',
   color: 'grey',
   markerConfig: {
