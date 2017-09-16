@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable object-shorthand */
 
 const webpack = require('webpack')
 const path = require('path')
@@ -25,7 +24,6 @@ const entries = isDev ?
     // 'babel-polyfill',
     'react-hot-loader/patch',
     './src/index.js',
-    // './src/index.js',
   ] :
   [
     // 'babel-polyfill',

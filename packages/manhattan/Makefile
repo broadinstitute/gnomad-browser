@@ -1,1 +1,2 @@
-include ../template/Makefile
+include ../dev-server/Makefile
+

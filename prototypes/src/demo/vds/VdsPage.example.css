@@ -1,0 +1,25 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.regionViewer {
+  display: flex;
+  flex-direction: column;
+  border: 0 solid #000;
+  align-items: center;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.regionArea {
+  flex-direction: column;
+  /*border: 1px solid green;*/
+}
+
+.button {
+  width: 100px;
+  margin-top: 10px;
+  background-color: none;
+}

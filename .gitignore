@@ -25,3 +25,4 @@ framework/build
 framework/dist
 framework/public/static/js/*
 python/resources/*
+packages/dev-server/src/current.js

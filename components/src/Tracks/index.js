@@ -1,3 +1,0 @@
-export {
-  TranscriptTrack,
-} from './TranscriptTrack'

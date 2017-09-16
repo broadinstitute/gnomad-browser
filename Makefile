@@ -132,5 +132,5 @@ start-dev:
 	make -C packages/cluster/elasticsearch dev
 
 delete-data-cluster:
-	make -C packages/cluster delete-elasticsearch-cluster & \
-	make -C packages/cluster delete-dataproc-cluster
+	make -C cluster delete-elasticsearch-cluster & \
+	make -C cluster delete-dataproc-cluster
