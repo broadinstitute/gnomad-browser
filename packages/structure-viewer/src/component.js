@@ -23,25 +23,21 @@ class VariantsStructure extends Component {
     this.props.searchPdb(this.props.currentGene)
   }
   componentWillReceiveProps(nextProps) {
-    // debugger
     if (this.props.currentPdb !== nextProps.currentPdb) {
-      // debugger
       const { currentGene } = this.props
       this.props.fetchPdbIfNeeded(currentGene, nextProps.currentPdb)
     }
   }
   componentWillUpdate () {
-    // debugger
     if (!this.destroyed) {
-      // debugger
       this.destroyed = true
-      this.viewer.destroy()
+      if (this.viewer) {
+        this.viewer.destroy()
+      }
     }
   }
   // componentShouldUpdate () {
-  //   // debugger
   //   if (this.props.currentPdb === nextProps.currentPdb) {
-  //     // debugger
   //     return false
   //   }
   //   return true
@@ -60,7 +56,6 @@ class VariantsStructure extends Component {
     return numbers
   }
   attachViewer = (node) => {
-    // debugger
     const options = {
       width: this.props.width,
       height: this.props.height,
@@ -73,7 +68,6 @@ class VariantsStructure extends Component {
     return pv.Viewer(node, options)
   }
   renderMolecule = (self, res) => {
-    // debugger
     const {
       pdbFiles,
       currentPdb,
@@ -106,14 +100,11 @@ class VariantsStructure extends Component {
       currentPdb,
       setCurrentPdbOnClick,
     } = this.props
-    console.log(this.props)
     let view
     if (retrieving) {
-      // debugger
       view = <NoPdpWrapper><h1>Searching for pdb...</h1></NoPdpWrapper>
     }
     if (!retrieving && receivedPdb) {
-      // debugger
       view = (
         <div>
           <div
@@ -133,7 +124,6 @@ class VariantsStructure extends Component {
       )
     }
     if (!retrieving && !receivedPdb) {
-      // debugger
       view = <NoPdpWrapper><h1>No PDB found</h1></NoPdpWrapper>
     }
     return (
@@ -148,7 +138,7 @@ class VariantsStructure extends Component {
             (<option
               value={option}
               key={option}
-              selected={currentPdb === option}
+              defaultValue={currentPdb === option}
             >
               {option}
             </option>)
@@ -162,9 +152,9 @@ VariantsStructure.propTypes = {
   variantsData: PropTypes.array.isRequired,
   pdbFiles: PropTypes.object.isRequired,  // eslint-disable-line
   pdbSearchResultsList: PropTypes.array.isRequired,
-  receivedPdb: PropTypes.bool.isRequired,
+  receivedPdb: PropTypes.bool,
   retrieving: PropTypes.bool.isRequired,
-  currentPdb: PropTypes.string.isRequired,
+  currentPdb: PropTypes.string,
   currentGene: PropTypes.string.isRequired,
   setCurrentPdbOnClick: PropTypes.func.isRequired,
   fetchPdbIfNeeded: PropTypes.func.isRequired,

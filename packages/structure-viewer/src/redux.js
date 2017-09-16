@@ -23,7 +23,7 @@ const State = Immutable.Record({
   currentPdb: null,
   structuresByGene: Immutable.Map(),
   retrieving: false,
-  currentGene: 'HBB',
+  currentGene: 'HBB', // HACK for example
 })
 
 export const types = keymirror({
@@ -213,7 +213,13 @@ export default function reducer (state = new State(), action: Object): State {
 }
 
 // Selectors
-export const currentGene = state => state.structureViewer.get('currentGene')
+export const currentGene = (state) => {
+  if (state.active) {
+    return state.active.get('currentGene')
+  }
+  return state.structureViewer.get('currentGene')
+}
+
 export const rotate = state => state.structureViewer.get('rotate')
 export const zoom = state => state.structureViewer.get('zoom')
 export const retrieving = state => state.structureViewer.get('retrieving')
