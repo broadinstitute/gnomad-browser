@@ -21,8 +21,6 @@ import {
   variantPlotData,
 } from '../../resources/table'
 
-import css from './styles.css'
-
 const Navigator = ({
   currentTableIndex,
   currentTableScrollData,
@@ -36,7 +34,6 @@ const Navigator = ({
 }) => {
   return (
     <NavigatorTrack
-      css={css}
       title={''}
       height={55}
       onNavigatorClick={onNavigatorClick}
@@ -81,3 +78,71 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigator)
+
+// old styles
+// @import "./config.css";
+//
+// :root {
+//   --backgroundColor: #FAFAFA;
+//   --primaryColor: #375D81;
+//   --secondaryColor: #91AA9D;
+//   --exonColor: #375D81;
+//   --paddingColor: #183152;
+//   --rowHoverColor: #E8EAF6;
+//   --rowBackGroundColor: #FAFAFA;
+// }
+// /*
+// :root {
+//   --backgroundColor: #1E1E20;
+//   --primaryColor: #D9CB9E;
+//   --secondaryColor: #DC3522;
+//   --exonColor: #475453;
+//   --paddingColor: #5A5E5C;
+//   --rowHoverColor: #183152;
+//   --rowBackGroundColor: #1E1E20;
+// }*/
+//
+//
+// .track {
+//   display: flex;
+//   align-items: center;
+//   /*border: 1px solid blue;*/
+// }
+//
+// .loadingAxisName {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   font-size: 11px;
+//   /*border: 1px solid green;*/
+// }
+//
+// .cursorPosition { }
+//
+// .areaClick {
+//   /*border: 1px solid yellow;*/
+// }
+//
+// .navigatorContainerRect {
+//   fill: var(--backgroundColor);
+//   /*stroke: red;*/
+// }
+//
+// .cursorPositionRect {
+//   fill: #FAFAFA;
+//   stroke: black;
+//   stroke-width: 1px;
+//   cursor: pointer;
+// }
+//
+// .tablePositionRect {
+//   fill: var(--rowHoverColor);
+//   stroke: black;
+//   stroke-width: 1px;
+//
+// }
+//
+// .xTickText {
+//   text-anchor: middle;
+//   font-size: 10px;
+// }

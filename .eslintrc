@@ -34,7 +34,7 @@
       "exports": "only-multiline",
       "functions": "never"
     }],
-    },
+  },
   "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,

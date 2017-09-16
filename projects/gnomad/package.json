@@ -12,41 +12,16 @@
   "files": [
     "dist"
   ],
-  "localDependencies": {
-    "@broad/gene-page": "0.0.1",
-    "@broad/region": "0.0.1",
-    "@broad/track-coverage": "0.0.1",
-    "@broad/track-navigator": "0.0.1",
-    "@broad/track-transcript": "0.0.1",
-    "@broad/track-variant": "0.0.1",
-    "@broad/utilities": "0.0.1",
-    "@broad/table": "0.0.1",
-    "@broad/structure-viewer": "0.0.1"
-  },
-  "devDependencies": {
-    "autoprefixer": "^7.1.1",
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.5.2",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "caniuse-db": "^1.0.30000684",
-    "css-loader": "^0.28.4",
-    "postcss-cssnext": "2.9.0",
-    "postcss-import": "10.0.0",
-    "postcss-loader": "^2.0.5",
-    "style-loader": "^0.18.2",
-    "stylelint": "^7.10.1",
-    "stylelint-config-standard": "16.0.0",
-    "webpack": "^2.6.1",
-    "webpack-bundle-analyzer": "^2.8.2",
-    "webpack-dev-server": "^2.4.5"
-  },
   "dependencies": {
+    "@broad/gene-page": "*",
+    "@broad/region": "*",
+    "@broad/track-coverage": "*",
+    "@broad/track-navigator": "*",
+    "@broad/track-transcript": "*",
+    "@broad/track-variant": "*",
+    "@broad/utilities": "*",
+    "@broad/table": "*",
+    "@broad/structure-viewer": "*",
     "d3-array": "^1.2.0",
     "d3-scale": "^1.0.6",
     "d3-shape": "^1.2.0",
@@ -54,11 +29,9 @@
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.18.3",
     "mousetrap": "^1.6.1",
-    "normalize.css": "^6.0.0",
     "ramda": "^0.24.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
@@ -67,5 +40,8 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "throttle-debounce": "^1.0.1"
+  },
+  "devDependencies": {
+    "react-hot-loader": "^3.0.0-beta.6"
   }
 }

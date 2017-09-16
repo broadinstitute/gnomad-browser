@@ -20,8 +20,6 @@ import {
 
 import { tableConfig } from './tableConfig'
 
-import css from './styles.css'
-
 const GnomadVariantTable = ({
   variants,
   setVariantSort,
@@ -39,9 +37,8 @@ const GnomadVariantTable = ({
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
 
   return (
-    <div className={css.tableContainer}>
+    <div style={{ marginLeft: '110px' }}>
       <VariantTable
-        css={css}
         title={''}
         height={600}
         width={calculatedWidth}
@@ -84,7 +81,8 @@ const mapDispatchToProps = (dispatch) => {
     setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
     setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
-    setCurrentTableScrollData: scrollData => dispatch(activeActions.setCurrentTableScrollData(scrollData)),
+    setCurrentTableScrollData: scrollData =>
+      dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }
 }
 

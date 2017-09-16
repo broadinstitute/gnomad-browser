@@ -24,6 +24,8 @@
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
     "mousetrap": "^1.6.1",
-    "redux-search": "^2.3.3"
+    "redux-search": "^2.3.3",
+    "@broad/utilities": "0.0.1",
+    "@broad/structure-viewer": "0.0.1"
   }
 }

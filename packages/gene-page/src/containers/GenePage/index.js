@@ -44,16 +44,18 @@ const mapStateToProps = state => ({
   currentGene: currentGene(state),
 })
 
-const mapDispatchToProps = geneFetchFunction => dispatch => {
+const mapDispatchToProps = geneFetchFunction => (dispatch) => {
   return {
-    fetchGeneIfNeeded: currentGene => dispatch(geneActions.fetchGeneIfNeeded(currentGene, geneFetchFunction)),
+    fetchGeneIfNeeded: currentGene => dispatch(
+      geneActions.fetchGeneIfNeeded(currentGene, geneFetchFunction)
+    ),
   }
 }
 
 const GenePageHOC = (ComposedComponent, geneFetchFunction) =>
   connect(
     mapStateToProps,
-    mapDispatchToProps(geneFetchFunction),
+    mapDispatchToProps(geneFetchFunction)
   )(GenePageContainer(ComposedComponent))
 
 export default GenePageHOC

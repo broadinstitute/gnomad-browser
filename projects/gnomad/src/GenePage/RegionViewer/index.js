@@ -16,23 +16,16 @@ import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import Navigator from '@broad/gene-page/lib/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/lib/transcriptTools'
-import { exonPadding } from '@broad/gene-page/lib/resources/active'
+import { exonPadding, actions } from '@broad/gene-page/lib/resources/active'
 import { geneData } from '@broad/gene-page/lib/resources/genes'
-
-import { actions } from '@broad/gene-page/lib/resources/active'
-
 import { allVariants } from '@broad/gene-page/lib/resources/variants'
 
-import VariantDensityTrack from './VariantDensityTrack'
+// import VariantDensityTrack from './VariantDensityTrack'
 
-import css from './styles.css'
-
-const {
-  exonColor,
-  paddingColor,
-  masterExonThickness,
-  masterPaddingThickness,
-} = css
+// const exonColor = '#475453'
+const paddingColor = '#5A5E5C'
+const masterExonThickness = '20px'
+const masterPaddingThickness = '3px'
 
 const attributeConfig = {
   CDS: {
@@ -89,7 +82,7 @@ const GeneRegion = ({
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
   const { exome_coverage, genome_coverage } = geneJS
 
-  const splitTracks = consequenceCategories.map((consequence, index) => {
+  const splitTracks = consequenceCategories.map((consequence) => {
     let rowHeight
     const filteredVariants = allVariants.filter(variant =>
       R.contains(variant.consequence, consequence.groups))
@@ -100,7 +93,7 @@ const GeneRegion = ({
     }
     return (
       <VariantTrack
-        key={`${consequence.annotation}-${index}`}
+        key={`${consequence.annotation}`}
         title={`${consequence.annotation} (${filteredVariants.size})`}
         height={rowHeight}
         markerConfig={markerConfigLoF}
@@ -119,10 +112,10 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
-  const markerConfigDensity = {
-    markerType: 'density',
-    stroke: 1,
-  }
+  // const markerConfigDensity = {
+  //   markerType: 'density',
+  //   stroke: 1,
+  // }
 
   const otherVariants = allVariants.filter(v =>
     !R.contains(v.consequence, [...lof, ...missense]))
@@ -145,25 +138,25 @@ const GeneRegion = ({
     />
   )
 
-  const coverageConfigClassic = {
-    datasets: [
-      {
-        name: 'exome',
-        data: exome_coverage,
-        type: 'area',
-        color: 'rgba(70, 130, 180, 1)',
-        opacity: 1,
-      },
-      {
-        name: 'genome',
-        data: genome_coverage,
-        type: 'line',
-        color: 'rgba(115, 171, 61,  1)',
-        strokeWidth: 4,
-        opacity: 1,
-      },
-    ],
-  }
+  // const coverageConfigClassic = {
+  //   datasets: [
+  //     {
+  //       name: 'exome',
+  //       data: exome_coverage,
+  //       type: 'area',
+  //       color: 'rgba(70, 130, 180, 1)',
+  //       opacity: 1,
+  //     },
+  //     {
+  //       name: 'genome',
+  //       data: genome_coverage,
+  //       type: 'line',
+  //       color: 'rgba(115, 171, 61,  1)',
+  //       strokeWidth: 4,
+  //       opacity: 1,
+  //     },
+  //   ],
+  // }
 
   const coverageConfig = {
     datasets: [
@@ -188,9 +181,8 @@ const GeneRegion = ({
 
 
   return (
-    <div className={css.geneRegion}>
+    <div>
       <RegionViewer
-        css={css}
         width={1150}
         padding={exonPadding}
         regions={canonicalExons}
@@ -205,7 +197,6 @@ const GeneRegion = ({
           yMax={110}
         />
         <TranscriptTrack
-          css={css}
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />

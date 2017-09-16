@@ -7,6 +7,7 @@
 /* eslint-disable no-case-declarations */
 
 import React, { PropTypes } from 'react'
+import styled from 'style-components'
 import { connect } from 'react-redux'
 
 // import DropDownMenu from 'material-ui/DropDownMenu'
@@ -19,8 +20,6 @@ import Mousetrap from 'mousetrap'
 
 import { actions as tableActions } from '@broad/gene-page/lib/resources/table'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/lib/resources/active'
-
-import css from './styles.css'
 
 let findInput
 
@@ -80,10 +79,25 @@ const GeneSettings = ({
       fontSize: 14,
     },
   }
+  const GeneSettingsContainer = styled.div`
+    margin-left: 110px;
+    width: 100%;
+  `
+
+
+  const MenusContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+  `
+
+
   return (
-    <div className={css.geneSettings}>
+    <GeneSettingsContainer>
       {/*geneLinks*/}
-      <div className={css.menus}>
+      <MenusContainer>
         {/*<div className={css.variantSelectorCheckboxContainer}>
           <div className={css.variantSelectorCheckboxTitle}>
               Include:
@@ -132,8 +146,8 @@ const GeneSettings = ({
           }}
           onChange={setPadding}
         />
-      </div>
-    </div>
+      </MenusContainer>
+    </GeneSettingsContainer>
   )
 }
 

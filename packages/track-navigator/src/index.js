@@ -5,6 +5,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
 /* eslint-disable react/prop-types */
+
 import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import ReactCursorPosition from 'react-cursor-position'
@@ -285,11 +286,9 @@ const ClickArea = ({
 }
 
 const NavigatorTrack = (props) => {
-  const { css } = props
   return (
     <div className={'track'}>
       <NavigatorAxis
-        css={css}
         title={props.title}
         height={props.height}
         leftPanelWidth={props.leftPanelWidth}
