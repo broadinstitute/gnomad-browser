@@ -424,7 +424,7 @@ const Table = ({
       </InfiniteLoader>
     </div>
   )
-}
+}dhow
 Table.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
