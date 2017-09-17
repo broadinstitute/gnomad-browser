@@ -244,6 +244,10 @@ const ClickArea = ({
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
+      style={{
+        cursor: 'pointer',
+      }}
+
     >
       <rect
         className={'navigatorContainerRect'}

@@ -9,15 +9,6 @@ import { InfiniteLoader, List, AutoSizer } from 'react-virtualized'
 import Highlighter from 'react-highlight-words'
 import Immutable from 'immutable'
 
-const TableRow = styled.div`
-  display: flex;
-  height: 100%;
-  &:hover {
-    background-color: palevioletred;
-    cursor: pointer;
-  }
-`
-
 const abstractCellStyle = {
   paddingLeft: 20,
   paddingRight: 20,
@@ -234,7 +225,18 @@ const getDataCell = (field, dataRow, searchText, i) => {
   }
 }
 
-const getDataRow = (tableConfig, dataRow, searchText, i, showIndex) => {  // eslint-disable-line
+const TableRow = styled.div`
+  display: flex;
+  height: 100%;
+  background-color: ${({ rowIndex, alternatingColors: [c1, c2] }) =>
+    (rowIndex % 2 === 0 ? c1 : c2)};
+  &:hover {
+    background-color: rgba(115, 171, 61,  0.1);
+    cursor: pointer;
+  }
+`
+
+const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick) => {  // eslint-disable-line
   const cells = tableConfig.fields.map((field, i) =>  // eslint-disable-line
     getDataCell(field, dataRow, searchText, i))
 
@@ -249,13 +251,15 @@ const getDataRow = (tableConfig, dataRow, searchText, i, showIndex) => {  // esl
       {i}
     </div>
   )
-  // const rowBackground = i % 2 === 0 ? 'white' : '#F5F5F5'
+  const rowBackground = i % 2 === 0 ? 'white' : '#F5F5F5'
   return (
     // eslint-disable-next-line
     <TableRow
       onClick={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
       onMouseEnter={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
       key={`row-${i}`}
+      alternatingColors={['white', '#F5F5F5']}
+      rowIndex={i}
     >
       {showIndex && indexCell}
       {cells}
@@ -275,13 +279,13 @@ const HeaderButtonContainer = styled.div`
 const HeaderButton = styled.button`
   border-radius: 3px;
   font-weight: bold;
-  color: black;
-  background-color: white;
-  border: 1px solid white;
+  color: rgb(66, 66, 66);
+  background-color: #FAFAFA;
+  border: 1px solid #FAFAFA;
   &:hover {
-    color: white;
-    background-color: black;
-    border: 1px solid #000;
+    color: #FAFAFA;
+    background-color: rgb(66, 66, 66);
+    border: 1px solid rgb(66, 66, 66);
   }
 `
 
@@ -312,16 +316,14 @@ const isRowLoaded = (tableData, loadLookAhead) => ({ index }) => {
   return !!tableData[index + loadLookAhead]
 }
 
-const tableRowRenderer = (tableConfig, tableData, searchText, showIndex) =>
+const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowClick) =>
   ({ key, index, style }) => {
-    let row
-    if (Array.isArray(tableData)) {
-      row = getDataRow(tableConfig, tableData[index], searchText, index, showIndex)
+    let tData
+    if (Array.isArray(tableData)) tData = tableData[index]
+    else if (Immutable.List.isList(tableData)) {
+      tData = tableData.get(index)
     }
-    if (Immutable.List.isList(tableData)) {
-      row = getDataRow(tableConfig, tableData.get(index), searchText, index, showIndex)
-    }
-
+    const row = getDataRow(tableConfig, tData, searchText, index, showIndex, onRowClick)
     const localStyle = {
       ...style,
       borderTop: '1px solid #E0E0E0',
@@ -391,7 +393,7 @@ const Table = ({
   searchText,
 }) => {
   const isRowTableLoaded = isRowLoaded(tableData, loadLookAhead)
-  const rowRenderer = tableRowRenderer(tableConfig, tableData, searchText, showIndex)
+  const rowRenderer = tableRowRenderer(tableConfig, tableData, searchText, showIndex, onRowClick)
   const defaultWidth = getDefaultWidth(tableConfig)
   return (
     <div>
@@ -424,7 +426,7 @@ const Table = ({
       </InfiniteLoader>
     </div>
   )
-}dhow
+}
 Table.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.number, // eslint-disable-line
@@ -436,7 +438,7 @@ Table.propTypes = {
   showIndex: PropTypes.bool,
   scrollToRow: PropTypes.number,
   onRowClick: PropTypes.func,
-  // onRowHover: PropTypin ines.func,
+  // onRowHover: PropTypes.func,
   searchText: PropTypes.string,
 }
 Table.defaultProps = {

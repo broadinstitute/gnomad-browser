@@ -12,8 +12,13 @@ const TranscriptFlipOutButtonContainer = styled.div`
 
 const TranscriptFlipOutButton = styled.button`
   font-size: 22px;
-  background-color: ${props => props.onMouseOver ? '#E0E0E0' : '#ffffff'}; // NOTE check this
+  background-color: #FAFAFA;
+  border-radius: 3px;
   border: 0;
+  &:hover {
+    background-color: rgb(66, 66, 66);
+    color: #FAFAFA;
+  }
 `
 const TranscriptFlipOut = ({ localHeight, leftPanelWidth, onClick }) => {
   return (
