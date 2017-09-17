@@ -21,14 +21,9 @@ const NavigatorAxisName = styled.div`
   justify-content: center;
   font-size: 12px;
   margin-left: 30;
-  border: 1px solid green;
+  width: ${props => props.leftPanelWidth}px;
 `
 
-// const Track = styled.div`
-//   display: flex;
-//   align-items: center;
-//   border: 1px solid blue;
-// `
 //
 // const AreaClick = styled.div`
 //   border: 1px solid yellow;
@@ -52,14 +47,12 @@ const NavigatorAxisName = styled.div`
 //   stroke-width: 1px;
 // `
 //
-// const XTickText = styled.div`
-//   text-anchor: center;
-//   font-size: 10px;
-// `
+
 
 const NavigatorAxis = ({ title, height, leftPanelWidth }) => {
+  console.log(leftPanelWidth)
   return (
-    <NavigatorAxisName width={leftPanelWidth} height={height}>
+    <NavigatorAxisName leftPanelWidth={leftPanelWidth} height={height}>
       {title}
     </NavigatorAxisName>
   )
@@ -190,7 +183,7 @@ const ClickArea = ({
           strokeWidth={1}
         />
         <text
-          className={'xTickText'}
+          style={{ textAnchor: 'center', fontSize: '10px' }}
           x={x + textXOffsetFromTick}
           y={height - textYOffsetFromTick}
           transform={`rotate(${360 - textRotationDegrees} ${x} ${height})`}
@@ -258,6 +251,7 @@ const ClickArea = ({
         y={0}
         width={width}
         height={height}
+        fill={'none'}
       />
     {/*!noVariants && variantSortKey === 'pos' &&
       <rect
@@ -277,6 +271,12 @@ const ClickArea = ({
         width={30}
         height={height - navigatorBoxBottomPadding}
         strokeDasharray={'5, 5'}
+        fill={'none'}
+        stroke={'black'}
+        strokeWidth={'1px'}
+        style={{
+          cursor: 'pointer',
+        }}
       />}
       {!noVariants && variants.size < 300 && allVariantMarks}
       {!noVariants && variantMarks}
@@ -285,9 +285,15 @@ const ClickArea = ({
   )
 }
 
+const NavigatorTrackContainer = styled.div`
+  display: flex;
+  align-items: center;
+  ${'' /* border: 1px solid blue; */}
+`
+
 const NavigatorTrack = (props) => {
   return (
-    <div className={'track'}>
+    <NavigatorTrackContainer>
       <NavigatorAxis
         title={props.title}
         height={props.height}
@@ -296,7 +302,7 @@ const NavigatorTrack = (props) => {
       <ReactCursorPosition className={'cursorPosition'}>
         <ClickArea {...props} />
       </ReactCursorPosition>
-    </div>
+    </NavigatorTrackContainer>
   )
 }
 NavigatorTrack.propTypes = {

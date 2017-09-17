@@ -28,7 +28,7 @@ const Logo = styled.div`
 `
 
 const Search = styled.div`
-  position: absolute;
+  position: relative;
   left: 7px;
   font-size: 15px;
 `
