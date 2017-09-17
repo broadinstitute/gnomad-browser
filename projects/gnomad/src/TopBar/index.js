@@ -66,7 +66,7 @@ const TopBar = ({ setCurrentGene }) => {
   return (
     <TopBarContainer>
       <Logo>
-        gnomAD browser
+        gnomAD browser 2
       </Logo>
       <Search>
         <SearchIconContainer>

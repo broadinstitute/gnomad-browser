@@ -18,8 +18,6 @@ import Mousetrap from 'mousetrap'
 import { actions as tableActions } from '@broad/gene-page/src/resources/table'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
-import css from './styles.css'
-
 let findInput
 
 Mousetrap.bind(['command+f', 'meta+s'], function(e) {
@@ -71,7 +69,7 @@ const GeneSettings = ({
   const geneLinks = testGenes.map(gene =>
     <a href="#" key={`${gene}-link`} onClick={() => handleDropdownChange(gene)}>{gene} </a>)
   return (
-    <div className={css.geneSettings}>
+    <div>
       {geneLinks}
       <Slider
         style={{
@@ -79,7 +77,7 @@ const GeneSettings = ({
         }}
         onChange={setPadding}
       />
-      <div className={css.menus}>
+      <div>
         {/*<input
           type="text"
           placeholder={'Enter data'}

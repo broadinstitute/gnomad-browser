@@ -22,7 +22,7 @@ const GenePage = styled.div`
   align-items: flex-start;
   background-color: #FAFAFA;
   color: black;
-  margin-left: 50px;
+  margin-left: 10px;
 `
 
 const Summary = styled.div`

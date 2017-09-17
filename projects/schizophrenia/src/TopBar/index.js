@@ -1,30 +1,83 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import SearchIcon from 'material-ui/svg-icons/action/search'
 
 import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
-import css from './styles.css'
+const TopBarContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #000;
+  background-color: #006064;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+`
 
-// let TopBarSearchInput
+const Logo = styled.div`
+  color: white;
+  font-size: 23px;
+  margin-left: 40px;
+  font-weight: bold;
+`
+
+const Search = styled.div`
+  position: relative;
+  left: 7px;
+  font-size: 15px;
+`
+
+const SearchIconContainer = styled.span`
+  position: absolute;
+  left: 7px;
+  font-size: 15px;
+`
+
+const SearchInput = styled.input`
+  height: 20px;
+  width: 275px;
+  /*margin-top: 2px;*/
+  /*margin-right: 100px;*/
+  text-indent: 30px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+`
+
+const Menu = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-top: 3px;
+`
+
+const MenuItem = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 20px;
+  color: white;
+`
 
 const TopBar = ({ setCurrentGene }) => {
   return (
-    <div className={css.topBar}>
-      <div className={css.logo}>
+    <TopBarContainer>
+      <Logo>
         Schizophrenia exome meta-analysis
-      </div>
-      <div className={css.search}>
-        <span className={css.searchIcon}>
+      </Logo>
+      <Search>
+        <SearchIconContainer>
           <SearchIcon />
-        </span>
+        </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()
           setCurrentGene(event.target.elements[0].value)
-        }}>
-          <input
-            className={css.searchInput}
+        }}
+        >
+          <SearchInput
             type="text"
             name="search"
             placeholder="Search by gene, transcript, region, or variant"
@@ -49,22 +102,16 @@ const TopBar = ({ setCurrentGene }) => {
             <option value="USH2A" />
           </datalist>
         </form>
-      </div>
-      <div className={css.menu}>
-        <div className={css.menuItem}>
-          About
-        </div>
-        <div className={css.menuItem}>
-          Downloads
-        </div>
-        <div className={css.menuItem}>
-          Terms
-        </div>
-        <div className={css.menuItem}>
-          Contact
-        </div>
-      </div>
-    </div>
+      </Search>
+      <Menu>
+        <MenuItem>About</MenuItem>
+        <MenuItem>Downloads</MenuItem>
+        <MenuItem>Terms</MenuItem>
+        <MenuItem>Contact</MenuItem>
+        <MenuItem>Jobs</MenuItem>
+        <MenuItem>FAQ</MenuItem>
+      </Menu>
+    </TopBarContainer>
   )
 }
 
@@ -77,6 +124,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
   }
+}
+
+TopBar.propTypes = {
+  setCurrentGene: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar)

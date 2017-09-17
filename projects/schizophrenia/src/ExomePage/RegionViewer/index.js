@@ -6,7 +6,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import { scaleLinear } from 'd3-scale'
@@ -21,14 +22,9 @@ import { exonPadding } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
 import { searchFilteredVariants as visibleVariants } from '@broad/gene-page/src/resources/table'
 
-import css from './styles.css'
-
-const {
-  exonColor,
-  paddingColor,
-  masterExonThickness,
-  masterPaddingThickness,
-} = css
+const paddingColor = '#5A5E5C'
+const masterExonThickness = '20px'
+const masterPaddingThickness = '3px'
 
 const attributeConfig = {
   CDS: {
@@ -134,9 +130,8 @@ const GeneRegion = ({
   )
 
   return (
-    <div className={css.geneRegion}>
+    <div>
       <RegionViewer
-        css={css}
         width={1000}
         padding={exonPadding}
         regions={canonicalExons}
@@ -144,7 +139,6 @@ const GeneRegion = ({
         leftPanelWidth={100}
       >
         <TranscriptTrack
-          css={css}
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />

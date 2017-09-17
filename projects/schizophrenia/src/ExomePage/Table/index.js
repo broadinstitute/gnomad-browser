@@ -21,8 +21,6 @@ import {
 
 import { tableConfig } from './tableConfig'
 
-import css from './styles.css'
-
 const GnomadVariantTable = ({
   visibleVariants,
   setVariantSort,
@@ -39,9 +37,8 @@ const GnomadVariantTable = ({
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
   return (
-    <div className={css.tableContainer}>
+    <div style={{ marginLeft: '110px' }}>
       <VariantTable
-        css={css}
         title={''}
         height={400}
         width={calculatedWidth}

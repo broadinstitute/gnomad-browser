@@ -1,21 +1,32 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Route } from 'react-router-dom'
-import GwasPage from './GwasPage'
+// import GwasPage from './GwasPage'
 import ExomePage from './ExomePage'
 import TopBar from './TopBar'
 
-import css from './styles.css'
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  height: 100%;
+  width: 100%;
+  background-color: #FAFAFA;;
+`
+
+const MainPanel = styled.div`
+  width: 100%;
+`
 
 const App = () => (
-  <div className={css.app}>
-    <div>
+  <Root>
+    <MainPanel>
       <TopBar />
-      <div className={css.mainPanel}>
-        <Route path="/gwas" component={GwasPage} />
-        <Route path="/exomes" component={ExomePage} />
-      </div>
-    </div>
-  </div>
+      {/* <Route path="/gwas" component={GwasPage} /> */}
+      <Route path="/exomes" component={ExomePage} />
+    </MainPanel>
+  </Root>
 )
 
 export default App

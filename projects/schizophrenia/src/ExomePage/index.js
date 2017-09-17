@@ -6,16 +6,32 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
 
-import React, { PropTypes } from 'react'
-
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import GeneInfo from './GeneInfo'
-import GeneSettings from './GeneSettings'
+// import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
 import { fetchSchzExomes } from './fetch'
 
-import css from './styles.css'
+const GenePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #FAFAFA;
+  color: black;
+  margin-left: 10px;
+`
+
+const Summary = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-left: 60px;
+  margin-bottom: 10px;
+`
 
 const GwasPage = ({
   gene,
@@ -25,16 +41,16 @@ const GwasPage = ({
     return <div>Loading...!</div>
   }
   return (
-    <div className={css.genePage}>
-      <div className={css.summary}>
+    <GenePage>
+      <Summary>
         <GeneInfo
           gene={gene}
         />
-      </div>
+      </Summary>
       <RegionViewer />
       <Table />
-      <GeneSettings />
-    </div>
+      {/* <GeneSettings /> */}
+    </GenePage>
   )
 }
 
