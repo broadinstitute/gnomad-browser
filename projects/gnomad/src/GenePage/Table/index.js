@@ -18,7 +18,7 @@ import {
   actions as tableActions
 } from '@broad/gene-page/src/resources/table'
 
-import { tableConfig } from './tableConfig'
+import tableConfig from './tableConfig'
 
 const GnomadVariantTable = ({
   variants,

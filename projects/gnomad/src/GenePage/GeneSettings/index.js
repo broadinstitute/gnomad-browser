@@ -10,22 +10,18 @@ import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-// import DropDownMenu from 'material-ui/DropDownMenu'
-// import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
-// import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
 import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
 import { actions as tableActions } from '@broad/gene-page/src/resources/table'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
-
 import { MaterialButtonRaised } from '@broad/ui'
 
 let findInput
 
-Mousetrap.bind(['command+f', 'meta+s'], function(e) {
+Mousetrap.bind(['command+f', 'meta+s'], (e) => {
   e.preventDefault()
   findInput.focus()
 })
@@ -91,8 +87,7 @@ const GeneSettings = ({
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 1100px;
-    ${'' /* border: 1px solid #000; */}
+    width: 950px;
   `
 
   const SearchContainer = styled.div`

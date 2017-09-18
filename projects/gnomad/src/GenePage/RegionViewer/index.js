@@ -184,7 +184,7 @@ const GeneRegion = ({
   return (
     <div>
       <RegionViewer
-        width={1150}
+        width={1000}
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}

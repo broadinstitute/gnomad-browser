@@ -1,4 +1,3 @@
-// import React from 'react'
 import styled from 'styled-components'
 
 export const MaterialButton = styled.button`
@@ -30,7 +29,6 @@ export const MaterialButton = styled.button`
   &:active {
     background-color: #9E9E9E;
   }
-
 `
 
 export const MaterialButtonRaised = MaterialButton.extend`

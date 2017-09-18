@@ -1,11 +1,15 @@
 export {
   MaterialButton,
   MaterialButtonRaised,
-} from './button/material'
+} from './material/button'
+
+export {
+  default as MaterialCheckbox,
+} from './material/checkbox'
 
 export {
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
   ClassicVariantCategoryButtonGroup,
-} from './button/classicExac'
+} from './classicExac/button'
