@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import GeneInfo from './GeneInfo'
-// import GeneSettings from './GeneSettings'
+import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
 import { fetchSchzExomes } from './fetch'
@@ -48,8 +48,8 @@ const GwasPage = ({
         />
       </Summary>
       <RegionViewer />
+      <GeneSettings />
       <Table />
-      {/* <GeneSettings /> */}
     </GenePage>
   )
 }

@@ -7,16 +7,21 @@
 /* eslint-disable no-case-declarations */
 
 import React, { PropTypes } from 'react'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 // import DropDownMenu from 'material-ui/DropDownMenu'
 // import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 // import Checkbox from 'material-ui/Checkbox'
+import TextField from 'material-ui/TextField'
+import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
 import { actions as tableActions } from '@broad/gene-page/src/resources/table'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+
+import { MaterialButtonRaised } from '@broad/ui'
 
 let findInput
 
@@ -30,13 +35,13 @@ const GeneSettings = ({
   exonPadding,
   setCurrentGene,
   setExonPadding,
-  searchVariants
+  // searchVariants
 }) => {
   const testGenes = [
     'PCSK9',
     'ZNF658',
     'MYH9',
-    // 'FMR1',
+    'FMR1',
     'BRCA2',
     'CFTR',
     'FBN1',
@@ -44,18 +49,11 @@ const GeneSettings = ({
     'SCN5A',
     'MYH7',
     'MYBPC3',
-    // 'ARSF',
+    'ARSF',
     'CD33',
-    // 'DMD',
+    'DMD',
     'TTN',
     'USH2A',
-    'DRD2',
-    // 'GRM3',
-    'GRIN2A',
-    // 'SRR',
-    'GRIA1',
-    // 'CACNA1C',
-    // 'CACNB2',
   ]
 
   const handleDropdownChange = (gene) => {
@@ -68,27 +66,91 @@ const GeneSettings = ({
   }
   const geneLinks = testGenes.map(gene =>
     <a href="#" key={`${gene}-link`} onClick={() => handleDropdownChange(gene)}>{gene} </a>)
+
+  const filterTextInputStyles = {
+    hintStyle: {
+      color: 'grey',
+      fontSize: 12,
+    },
+    floatingLabelStyle: {
+      color: 'black',
+      fontSize: 14,
+    },
+    floatingLabelFocusStyle: {
+      color: 'black',
+      fontSize: 14,
+    },
+  }
+  const GeneSettingsContainer = styled.div`
+    margin-left: 110px;
+    width: 100%;
+  `
+
+  const MenusContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 900px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  `
+
+  const SearchContainer = styled.div`
+    margin-bottom: 5px;
+  `
+
+  const VariantCategoryButtonGroup = styled.div`
+    display: flex;
+    flex-direction: row;
+  `
+
+  const VariantCatagoryButton = MaterialButtonRaised.extend`
+    background-color: #E0F2F1;
+    margin-right: 10px;
+    &:hover {
+      background-color: #B2DFDB;
+    &:active {
+      background-color: #80CBC4;
+    }
+  `
+
+  const MaterialVariantCategoryButtonGroup = () => (
+    <VariantCategoryButtonGroup>
+      <VariantCatagoryButton>All</VariantCatagoryButton>
+      <VariantCatagoryButton>Missense + LoF</VariantCatagoryButton>
+      <VariantCatagoryButton>LoF</VariantCatagoryButton>
+    </VariantCategoryButtonGroup>
+  )
+
   return (
-    <div>
-      {geneLinks}
-      <Slider
-        style={{
-          width: 100,
-        }}
-        onChange={setPadding}
-      />
-      <div>
-        {/*<input
-          type="text"
-          placeholder={'Enter data'}
-          ref={input => findInput = input}
-          onChange={(event) => {
-            event.preventDefault()
-            searchVariants(event.target.value)
+    <GeneSettingsContainer>
+      {/*geneLinks*/}
+      <MenusContainer>
+        <MaterialVariantCategoryButtonGroup />
+        {/* <SearchContainer>
+          <TextField
+            hintText="Enter search terms"
+            hintStyle={filterTextInputStyles.inputStyle}
+            floatingLabelText="Find variants"
+            floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
+            floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
+            ref={input => findInput = input}
+            onChange={(event) => {
+              event.preventDefault()
+              searchVariants(event.target.value)
+            }}
+          />
+        </SearchContainer> */}
+        <Slider
+          style={{
+            width: 100,
+            height: 20,
           }}
-        />*/}
-      </div>
-    </div>
+          onChange={setPadding}
+        />
+      </MenusContainer>
+    </GeneSettingsContainer>
   )
 }
 
