@@ -8,12 +8,15 @@
   ],
   "localDependencies": {},
   "dependencies": {
+    "@broad/utilities": "*",
     "d3-array": "^1.2.0",
-    "d3-scale": "^1.0.6",
-    "@broad/utilities": "*"
+    "d3-scale": "^1.0.6"
   },
   "peerDependencies": {
     "ramda": "^0.24.1",
     "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "eslint-import-resolver-webpack": "^0.8.3"
   }
 }

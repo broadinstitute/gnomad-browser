@@ -17,6 +17,7 @@ const defineEnvPlugin = new webpack.DefinePlugin({
   __ENTRY__: JSON.stringify(process.env.ENTRY_POINT),
   'process.env.FETCH_FUNCTION': JSON.stringify(process.env.FETCH_FUNCTION),
   'process.env.API_URL': JSON.stringify(API_URL),
+
 })
 
 const entries = isDev ?
@@ -68,6 +69,11 @@ const webpackConfig = {
     defineEnvPlugin,
     // new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8030 }),
   ],
+  resolve: {
+    alias: {
+      '@resources': path.resolve(__dirname, 'resources')
+    }
+  },
   devServer: {
     contentBase: 'public',
     publicPath: '/static/js',

@@ -14,8 +14,8 @@ import {
 
 import css from './styles.css'
 
-import combined from '/Users/msolomon/gnomadjs/resources/170620-combine-pageviews.json'
-import combinedWeeks from '/Users/msolomon/gnomadjs/resources/170620-combine-pageviews-weeks.json'
+import combined from '@resources/gwas-eg.json'  // eslint-disable-line
+import combinedWeeks from '@resources/gwas-eg.json'  // eslint-disable-line
 
 console.log(combined)
 console.log(combinedWeeks)

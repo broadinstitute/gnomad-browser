@@ -4,7 +4,7 @@ import VariantTable from '@broad/table'
 
 import css from './styles.css'
 
-import data from '/Users/msolomon/gnomadjs/resources/gwas-eg.json'
+import data from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const tableConfig = {
   fields: [

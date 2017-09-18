@@ -18,8 +18,8 @@ import {
 
 import css from './styles.css'
 
-import exacSessions from '/Users/msolomon/gnomadjs/resources/170610-exac-sessions.json'
-import combined from '/Users/msolomon/gnomadjs/resources/170611-combine-sessions.json'
+import exacSessions from '@resources/gwas-eg.json'  // eslint-disable-line
+import combined from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const Plot = ({
   title,

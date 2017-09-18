@@ -27,19 +27,19 @@ const testGenes = [
   'CD33',
 ]
 
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-PCSK9-v1.json'
-import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-ZNF658-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-MYH9-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-FMR1-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-BRCA2-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-CFTR-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-FBN1-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-TP53-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-SCN5A-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-MYH7-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-MYBPC3-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-ARSF-v1.json'
-// import testData from '/Users/msolomon/gnomadjs/resources/region-viewer-full-CD33-v1.json'
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
+// import testData from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const CoverageExamplePage = styled.div`
   display: flex;

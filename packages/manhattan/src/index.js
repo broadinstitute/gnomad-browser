@@ -12,7 +12,7 @@ import {
 const ManhattanPlot = ({
   data,
   title = '',
-  width = 1300,
+  width = 900,
   height = 500,
   sexChromosomes = false,
   showAxisBounds = false,

@@ -7,6 +7,10 @@
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
-    "styled-components"
+    "styled-components",
+    [ "babel-plugin-webpack-alias", {
+      "findConfig": "true",
+      "config": "webpack.config.js"
+      }]
   ]
 }

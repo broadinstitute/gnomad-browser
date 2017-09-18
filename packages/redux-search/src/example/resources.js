@@ -3,7 +3,7 @@ import v4 from 'uuid/v4'
 import { createSelector } from 'reselect'
 import { createSearchAction, getSearchSelectors } from 'redux-search'
 
-import data from '/Users/msolomon/gnomadjs/resources/search-test-PCSK9.json'
+import data from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const VariantRecord = Immutable.Record({
   id: null,

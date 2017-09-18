@@ -1,3 +1,3 @@
-import data from '/Users/msolomon/gnomadjs/resources/region-viewer-full-TP53.json'
+import data from '@resources/gwas-eg.json'  // eslint-disable-line
 
 console.log(data)

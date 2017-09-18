@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import VariantTable from '@broad/table'
 
-import data from '/Users/msolomon/gnomadjs/resources/constraint_full_gene_multiple_regions_only.json'
+import data from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const tableConfig = {
   fields: [

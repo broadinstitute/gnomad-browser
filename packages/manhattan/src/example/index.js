@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import ManhattanPlot from '../index'
 
-import data from '/Users/msolomon/gnomadjs/resources/gwas-eg.json'
+import data from '@resources/gwas-eg.json'  // eslint-disable-line
 
 const ManhattanPlotExample = () => {
   return (
@@ -12,3 +12,4 @@ const ManhattanPlotExample = () => {
 }
 
 export default ManhattanPlotExample
+
