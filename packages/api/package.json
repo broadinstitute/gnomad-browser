@@ -45,6 +45,7 @@
     "eslint-plugin-react": "^6.4.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0",
-    "tape-promise": "^2.0.1"
+    "tape-promise": "^2.0.1",
+    "csvtojson": "^1.1.7"
   }
 }

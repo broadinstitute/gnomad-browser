@@ -27,6 +27,7 @@
     "no-confusing-arrow": 0,
     "space-before-function-paren": 0,
     "no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
+    "import/prefer-default-export": 0,
     "comma-dangle": ["error", {
       "arrays": "only-multiline",
       "objects": "only-multiline",
