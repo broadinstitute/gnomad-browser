@@ -11,6 +11,7 @@ node_modules
 resources/*
 *lib
 bundle.js
+untracked
 *public/static/js/*
 prototypes/test/data/*.json
 prototypes/test/data/*.txt
