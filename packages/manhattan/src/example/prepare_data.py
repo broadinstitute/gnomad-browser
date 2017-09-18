@@ -5,7 +5,7 @@ https://github.com/stephenturner/qqman/blob/master/data/gwasResults.RData
 
 Open in R and export to csv:
 
-/Users/msolomon/lens/resources/gwas-eg.csv
+/Users/msolomon/gnomadjs/resources/gwas-eg.csv
 
 "","SNP","CHR","BP","P"
 "1","rs1",1,1,0.914806043496355
@@ -14,7 +14,7 @@ Open in R and export to csv:
 
 This function writes a json array of records:
 
-/Users/msolomon/lens/resources/gwas-eg.json
+/Users/msolomon/gnomadjs/resources/gwas-eg.json
 
 [
     {
@@ -48,11 +48,11 @@ def convert_csv_to_json(file):
     df['-log10p'] = df['pvalue'].apply(lambda x: -math.log10(x))
 
     print 'writing to json'
-    df.to_json('/Users/msolomon/lens/resources/gwas-eg.json', orient='records')
+    df.to_json('/Users/msolomon/gnomadjs/resources/gwas-eg.json', orient='records')
     return df
 
 if __name__ == '__main__':
     if not len(sys.argv) > 1:
-        convert_csv_to_json('/Users/msolomon/lens/resources/gwas-eg.csv')
+        convert_csv_to_json('/Users/msolomon/gnomadjs/resources/gwas-eg.csv')
     else:
         convert_csv_to_json(sys.argv[1])

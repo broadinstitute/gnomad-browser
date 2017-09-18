@@ -11,9 +11,9 @@ import PositionTableTrack from '@broad/track-position-table'
 
 import SashimiTrack from '../index'
 
-import testGene from '/Users/msolomon/lens/resources/region-viewer-full-CAPN3-v1.json'
-import testCoverage from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.coverage.csv'
-import testJunctions from '/Users/msolomon/lens/resources/sashimi-15-42681621-42685368.junctions.csv'
+import testGene from '/Users/msolomon/gnomadjs/resources/region-viewer-full-CAPN3-v1.json'
+import testCoverage from '/Users/msolomon/gnomadjs/resources/sashimi-15-42681621-42685368.coverage.csv'
+import testJunctions from '/Users/msolomon/gnomadjs/resources/sashimi-15-42681621-42685368.junctions.csv'
 
 class SashimiTrackExample extends Component {
   state = {

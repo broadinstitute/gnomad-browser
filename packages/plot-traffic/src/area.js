@@ -18,8 +18,8 @@ import {
 
 import css from './styles.css'
 
-import exacSessions from '/Users/msolomon/lens/resources/170610-exac-sessions.json'
-import combined from '/Users/msolomon/lens/resources/170611-combine-sessions.json'
+import exacSessions from '/Users/msolomon/gnomadjs/resources/170610-exac-sessions.json'
+import combined from '/Users/msolomon/gnomadjs/resources/170611-combine-sessions.json'
 
 const Plot = ({
   title,

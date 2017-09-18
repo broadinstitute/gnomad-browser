@@ -14,8 +14,8 @@ import {
 
 import css from './styles.css'
 
-import combined from '/Users/msolomon/lens/resources/170620-combine-pageviews.json'
-import combinedWeeks from '/Users/msolomon/lens/resources/170620-combine-pageviews-weeks.json'
+import combined from '/Users/msolomon/gnomadjs/resources/170620-combine-pageviews.json'
+import combinedWeeks from '/Users/msolomon/gnomadjs/resources/170620-combine-pageviews-weeks.json'
 
 console.log(combined)
 console.log(combinedWeeks)

@@ -30,7 +30,7 @@ watch:
 
 pdf:
 	./node_modules/.bin/babel-node node_modules/@broad/test/src/example
-	open /Users/msolomon/lens/packages/@broad/dev-server/node_modules/@broad/test/src/tmp/test.pdf
+	open /Users/msolomon/gnomadjs/packages/@broad/dev-server/node_modules/@broad/test/src/tmp/test.pdf
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \

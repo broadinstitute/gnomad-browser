@@ -18,7 +18,7 @@ import { fetchSchzGenePage } from './fetch'
 
 import css from './styles.css'
 
-import MANHATTAN_DATA from '/Users/msolomon/lens/resources/schizophrenia-manhattan.json'
+import MANHATTAN_DATA from '/Users/msolomon/gnomadjs/resources/schizophrenia-manhattan.json'
 
 const GwasPage = ({
   gene,

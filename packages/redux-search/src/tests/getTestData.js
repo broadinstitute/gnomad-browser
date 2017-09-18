@@ -3,7 +3,7 @@ import fs from 'fs'
 import R from 'ramda'
 import fetch from 'graphql-fetch'
 
-const TEST_DATA_DIRECTORY = '/Users/msolomon/lens/resources'
+const TEST_DATA_DIRECTORY = '/Users/msolomon/gnomadjs/resources'
 const API_URL = 'http://localhost:8006'
 
 const makeVariantQuery = geneName => (`{
