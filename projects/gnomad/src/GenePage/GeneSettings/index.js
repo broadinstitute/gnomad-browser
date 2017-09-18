@@ -21,6 +21,8 @@ import Mousetrap from 'mousetrap'
 import { actions as tableActions } from '@broad/gene-page/src/resources/table'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
+import { MaterialButtonRaised } from '@broad/ui'
+
 let findInput
 
 Mousetrap.bind(['command+f', 'meta+s'], function(e) {
@@ -84,61 +86,62 @@ const GeneSettings = ({
     width: 100%;
   `
 
-
   const MenusContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 60%;
+    width: 1100px;
+    ${'' /* border: 1px solid #000; */}
   `
 
+  const SearchContainer = styled.div`
+    margin-bottom: 5px;
+  `
+
+  const VariantCategoryButtonGroup = styled.div`
+    display: flex;
+    flex-direction: row;
+  `
+
+  const VariantCatagoryButton = MaterialButtonRaised.extend`
+    background-color: rgba(70, 130, 180, 0.07);
+    margin-right: 10px;
+    &:hover {
+      background-color: rgba(70, 130, 180, 0.3)
+    }
+    &:active {
+      background-color: rgba(70, 130, 180, 0.4)
+    }
+  `
+
+  const MaterialVariantCategoryButtonGroup = () => (
+    <VariantCategoryButtonGroup>
+      <VariantCatagoryButton>All</VariantCatagoryButton>
+      <VariantCatagoryButton>Missense + LoF</VariantCatagoryButton>
+      <VariantCatagoryButton>LoF</VariantCatagoryButton>
+    </VariantCategoryButtonGroup>
+  )
 
   return (
     <GeneSettingsContainer>
       {/*geneLinks*/}
       <MenusContainer>
-        {/*<div className={css.variantSelectorCheckboxContainer}>
-          <div className={css.variantSelectorCheckboxTitle}>
-              Include:
-          </div>
-          <div className={css.variantSelectorCheckboxes}>
-              <label>
-                  <input checked type="checkbox" id="exome_checkbox" value="" />
-                  <div className={css.checkboxLabel}>Exomes</div>
-              </label>
-
-              <label>
-                  <input type="checkbox" id="genome_checkbox" value="" />
-                  <div className={css.checkboxLabel}>Genomes</div>
-              </label>
-              <label>
-                  <input checked type="checkbox" id="snp_checkbox" value="" />
-                  <div className={css.checkboxLabel}>SNPs</div>
-              </label>
-              <label>
-                  <input checked type="checkbox" id="indel_checkbox" value="" />
-                  <div className={css.checkboxLabel}>Indels</div>
-              </label>
-
-              <label>
-                  <input checked type="checkbox" id="filtered_checkbox" value="" />
-                  <div className={css.checkboxLabel}>Filtered (non-PASS) variants</div>
-              </label>
-          </div>
-        </div>*/}
-        <TextField
-          hintText="Enter filter criteria"
-          hintStyle={filterTextInputStyles.inputStyle}
-          floatingLabelText="Find variants"
-          floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
-          floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
-          ref={input => findInput = input}
-          onChange={(event) => {
-            event.preventDefault()
-            searchVariants(event.target.value)
-          }}
-        />
+        <MaterialVariantCategoryButtonGroup />
+        <SearchContainer>
+          <TextField
+            hintText="Enter search terms"
+            hintStyle={filterTextInputStyles.inputStyle}
+            floatingLabelText="Find variants"
+            floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
+            floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
+            ref={input => findInput = input}
+            onChange={(event) => {
+              event.preventDefault()
+              searchVariants(event.target.value)
+            }}
+          />
+        </SearchContainer>
         <Slider
           style={{
             width: 100,
