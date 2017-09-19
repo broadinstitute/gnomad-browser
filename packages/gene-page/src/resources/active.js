@@ -15,7 +15,7 @@ const getDefaultsForProject = (env) => {
     case 'dblof':
       return { startingGene: 'CD33', padding: 75 }
     default:
-      return { startingGene: 'CFTR', padding: 75 }
+      return { startingGene: 'TRIO', padding: 75 }
   }
 }
 

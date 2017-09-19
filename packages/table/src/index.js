@@ -231,7 +231,8 @@ const TableRow = styled.div`
   background-color: ${({ rowIndex, alternatingColors: [c1, c2] }) =>
     (rowIndex % 2 === 0 ? c1 : c2)};
   &:hover {
-    background-color: rgba(115, 171, 61,  0.1);
+    ${'' /* background-color: rgba(115, 171, 61,  0.1); */}
+    background-color: rgba(10, 121, 191, 0.1);
     cursor: pointer;
   }
 `

@@ -43,6 +43,7 @@ const SearchIconContainer = styled.span`
 const SearchInput = styled.input`
   height: 20px;
   width: 275px;
+  background-color: white;
   /*margin-top: 2px;*/
   /*margin-right: 100px;*/
   text-indent: 30px;

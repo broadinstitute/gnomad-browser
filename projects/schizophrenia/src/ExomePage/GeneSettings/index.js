@@ -106,12 +106,12 @@ const GeneSettings = ({
   `
 
   const VariantCatagoryButton = MaterialButtonRaised.extend`
-    background-color: #E0F2F1;
+    background-color: rgba(10, 121, 191, 0.1);
     margin-right: 10px;
     &:hover {
-      background-color: #B2DFDB;
+      background-color: rgba(10, 121, 191, 0.3);
     &:active {
-      background-color: #80CBC4;
+      background-color: rgba(10, 121, 191, 0.5);
     }
   `
 
