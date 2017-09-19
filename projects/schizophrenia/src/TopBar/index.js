@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import SearchIcon from 'material-ui/svg-icons/action/search'
 
@@ -16,8 +17,8 @@ const TopBarContainer = styled.div`
   padding-top: 20px;
   margin-bottom: 20px;
   border-bottom: 1px solid #000;
-  background-color: #006064;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background-color: #0a79bf;
+  ${'' /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */}
 `
 
 const Logo = styled.div`
@@ -62,12 +63,18 @@ const MenuItem = styled.div`
   color: white;
 `
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`
+
 const TopBar = ({ setCurrentGene }) => {
   return (
     <TopBarContainer>
-      <Logo>
-        Schizophrenia exome meta-analysis
-      </Logo>
+      <StyledLink to={'/'}>
+        <Logo>
+          Schizophrenia exome meta-analysis
+        </Logo>
+      </StyledLink>
       <Search>
         <SearchIconContainer>
           <SearchIcon />
@@ -104,6 +111,7 @@ const TopBar = ({ setCurrentGene }) => {
         </form>
       </Search>
       <Menu>
+        <StyledLink to={'/exomes'}><MenuItem>Exomes</MenuItem></StyledLink>
         <MenuItem>About</MenuItem>
         <MenuItem>Downloads</MenuItem>
         <MenuItem>Terms</MenuItem>

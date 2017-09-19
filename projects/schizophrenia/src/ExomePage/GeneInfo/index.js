@@ -17,7 +17,7 @@ const GeneDetails = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-right: 400px;
-  width: 70%;
+  width: 900px;
 `
 
 const GeneAttributes = styled.div`
