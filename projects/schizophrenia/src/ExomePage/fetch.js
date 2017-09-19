@@ -14,6 +14,16 @@ export const fetchSchzExomes = (geneName, url = API_URL) => {
       stop
       xstart
       xstop
+      schzGeneResults {
+        geneName
+        dnmLof
+        caseLof
+        ctrlLof
+        caseMis
+        ctrlMis
+        pCaco
+        pMeta
+      }
       variants: schiz_exome_variants {
         chrom
         pos

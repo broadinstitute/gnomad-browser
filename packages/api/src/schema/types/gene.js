@@ -22,6 +22,7 @@ import schzVariantType, {
   schzVariantTypeExome,
   lookupSchzVariantsByGeneId,
  } from './schzvariant'
+import schzGeneResultsType, { lookUpSchzGeneResultsByGeneName } from './schzGeneResults'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import clinvarType, { lookupClinvarVariantsByGeneName } from './clinvar'
@@ -95,13 +96,17 @@ const geneType = new GraphQLObjectType({
           'schizophrenia',
           Number(obj.chrom),
           obj.start,
-          Number(obj.stop),
+          Number(obj.stop)
         ),
     },
     schiz_exome_variants: {
       type: new GraphQLList(schzVariantTypeExome),
+      resolve: obj => lookupSchzVariantsByGeneId(obj.gene_id),
+    },
+    schzGeneResults: {
+      type: schzGeneResultsType,
       resolve: (obj, args, ctx) =>
-        lookupSchzVariantsByGeneId(obj.gene_id),
+        lookUpSchzGeneResultsByGeneName(ctx.database.elastic, obj.gene_name)
     },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),

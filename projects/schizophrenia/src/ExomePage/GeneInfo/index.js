@@ -17,11 +17,13 @@ const GeneDetails = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-right: 400px;
+  width: 70%;
 `
 
 const GeneAttributes = styled.div`
   display: flex;
   flex-direction: column;
+  ${'' /* margin-right: 30px; */}
 `
 //
 // const Constraint = styled.div`
@@ -35,7 +37,10 @@ const GeneInfo = ({ gene, variantCount }) => {
     gene_id,
     full_gene_name,
     omim_accession,
+    schzGeneResults,
   } = gene.toJS()
+
+
   return (
     <GeneInfoContainer>
       <h1>{gene_name}</h1>
@@ -44,13 +49,16 @@ const GeneInfo = ({ gene, variantCount }) => {
           <div>Number of variants: {variantCount}</div>
           <div>Full name: {full_gene_name}</div>
           <div>Gene ID: {gene_id}</div>
-          <div>OMIM accession: {omim_accession}</div>
         </GeneAttributes>
-        {/*<div className={css.constraint}>
-          <div>Full name: {full_gene_name}</div>
-          <div>Gene ID: {gene_id}</div>
-          <div>OMIM accession: {omim_accession}</div>
-        </div>*/}
+        <GeneAttributes>
+          <div>Cases LoF: {schzGeneResults.caseLof} </div>
+          <div>Controls LoF: {schzGeneResults.ctrlLof} </div>
+          <div>Cases missense: {schzGeneResults.caseMis} </div>
+          <div>Controls missense: {schzGeneResults.ctrlMis} </div>
+          <div>pCaco: {schzGeneResults.pCaco} </div>
+          <div>pMeta: {schzGeneResults.pMeta} </div>
+        </GeneAttributes>
+
       </GeneDetails>
     </GeneInfoContainer>
   )

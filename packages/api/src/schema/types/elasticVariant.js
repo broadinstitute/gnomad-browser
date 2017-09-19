@@ -97,7 +97,6 @@ export const lookupElasticVariantsByGeneId = (client, dataset, gene_id) => {
         sort: [ { xpos: { order: "asc" }}],
       },
     }).then(response => {
-      console.log(response)
       resolve(response.hits.hits.map(v => {
         const elastic_variant = v._source
         return ({
