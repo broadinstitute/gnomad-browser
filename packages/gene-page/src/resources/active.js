@@ -15,7 +15,7 @@ const getDefaultsForProject = (env) => {
     case 'dblof':
       return { startingGene: 'CD33', padding: 75 }
     case 'variantfx':
-      return { startingGene: 'MYH7', padding: 75 }
+      return { startingGene: 'MYH7', padding: 75, startingVariant: '14-23902974-C-A' }
     default:
       return { startingGene: 'PCSK9', padding: 75 }
   }
@@ -23,7 +23,7 @@ const getDefaultsForProject = (env) => {
 
 const State = Immutable.Record({
   currentGene: getDefaultsForProject(process.env.PROJECT_DEFAULTS).startingGene,
-  currentVariant: '',
+  currentVariant: getDefaultsForProject(process.env.PROJECT_DEFAULTS).startingVariant,
   currentNavigatorPosition: 0,
   currentTableIndex: 0,
   currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },

@@ -6,7 +6,7 @@ export const POPULATIONS = {
   ASJ: 'Ashkenazy Jewish',
   EAS: 'East Asian',
   FIN: 'European (Finnish)',
-  NFE: 'European (Non-Finnish)',
+  NFE: 'European',
   LAT: 'Latvian',
   SAS: 'South asian',
   OTH: 'Other',
@@ -14,11 +14,11 @@ export const POPULATIONS = {
 }
 
 export const COHORTS = {
-  RBH: 'Royal Brompton Hospital',
+  RBH: 'Royal Brompton ',
   EGY: 'Egypt',
   SGP: 'Singapore',
-  LMM: 'Laboratory for Molecular Medicine',
-  OMG: 'Oxford Medical Genetics',
+  LMM: 'LMM',
+  OMG: 'Oxford',
 }
 
 export const STATS = {
