@@ -48,7 +48,7 @@ export function groupFieldsByDisease (variant) {
     acc_disease[disease] = Object.keys(variant).reduce((acc_disease_field, vfield) => {
       if (vfield.includes(disease)) {
         // acc_disease_field[vfield] = variant[vfield]
-        acc_disease_field.ages = AGE_BINS.map((bin) => {
+        const ages = AGE_BINS.map((bin) => {
           return variant[`RBH_${disease}_${bin}_AC`]
         })
 
@@ -88,16 +88,18 @@ export function groupFieldsByDisease (variant) {
             ...acc_cohorts,
           }
         }, {})
+        const disease_totals = Object.keys(COHORTS).reduce((disease_counts, cohort) => {
+          return {
+            allele_count: (
+              disease_counts.allele_count +
+              cohorts[cohort].cohort_totals.allele_count
+            ),
+            allele_num: disease_counts.allele_num + cohorts[cohort].cohort_totals.allele_num,
+          }
+        }, { allele_count: 0, allele_num: 0 })
         return {
-          disease_totals: Object.keys(COHORTS).reduce((disease_counts, cohort) => {
-            return {
-              allele_count: (
-                disease_counts.allele_count +
-                cohorts[cohort].cohort_totals.allele_count
-              ),
-              allele_num: disease_counts.allele_num + cohorts[cohort].cohort_totals.allele_num,
-            }
-          }, { allele_count: 0, allele_num: 0 }),
+          disease_totals,
+          ages,
           cohorts,
         }
       }
