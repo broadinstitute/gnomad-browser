@@ -33,44 +33,44 @@ test('Get for a given disease', (assert) => {
   const grouped = processCardioVariants(data.variants.filter(v => v.variant_id === '14-23902865-G-A'))
   // const grouped = processCardioVariants(data.variants)
   const expected = {
-    "variant_id": "14-23902865-G-A",
-    "chrom": "chr14",
-    "ref": "G",
-    "alt": "A",
-    "rsid": "rs186964570",
-    "filter": "PASS",
-    "pos": 23902865,
-    "xpos": null,
-    "ENST": "ENST00000355349",
-    "Consequence": "missense_variant",
-    "SYMBOL": "MYH7",
-    "SYMBOL_SOURCE": "HGNC",
-    "ENSG": "ENSG00000092054",
-    "Feature": null,
-    "BIOTYPE": "protein_coding",
-    "HGVSc": "ENST00000355349.3:c.77C>T",
-    "HGVSp": null,
-    "cDNA_position": "240",
-    "CDS_position": null,
-    "Protein_position": null,
-    "Amino_acids": null,
-    "Codons": null,
-    "Existing_variation": null,
-    "STRAND": "-1",
-    "CANONICAL": "YES",
-    "CCDS": "CCDS9601.1",
-    "ENSP": "ENSP00000347507",
-    "SIFT": null,
-    "PolyPhen": null,
-    "ExAC_MAF": null,
-    "PUBMED": null,
-    "diseases": {
-      "DCM": {
-        "disease_totals": {
-          "allele_count": 2,
-          "allele_num": 1726
+    'variant_id': '14-23902865-G-A',
+    'chrom': 'chr14',
+    'ref': 'G',
+    'alt': 'A',
+    'rsid': 'rs186964570',
+    'filter': 'PASS',
+    'pos': 23902865,
+    'xpos': null,
+    'ENST': 'ENST00000355349',
+    'Consequence': 'missense_variant',
+    'SYMBOL': 'MYH7',
+    'SYMBOL_SOURCE': 'HGNC',
+    'ENSG': 'ENSG00000092054',
+    'Feature': null,
+    'BIOTYPE': 'protein_coding',
+    'HGVSc': 'ENST00000355349.3:c.77C>T',
+    'HGVSp': null,
+    'cDNA_position': '240',
+    'CDS_position': null,
+    'Protein_position': null,
+    'Amino_acids': null,
+    'Codons': null,
+    'Existing_variation': null,
+    'STRAND': '-1',
+    'CANONICAL': 'YES',
+    'CCDS': 'CCDS9601.1',
+    'ENSP': 'ENSP00000347507',
+    'SIFT': null,
+    'PolyPhen': null,
+    'ExAC_MAF': null,
+    'PUBMED': null,
+    'diseases': {
+      'DCM': {
+        'disease_totals': {
+          'allele_count': 2,
+          'allele_num': 1726
         },
-        "ages": [
+        'ages': [
           null,
           null,
           null,
@@ -81,111 +81,111 @@ test('Get for a given disease', (assert) => {
           null,
           null
         ],
-        "cohorts": {
-          "OMG": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+        'cohorts': {
+          'OMG': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "LMM": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {
-                "pop_ac": 1,
-                "pop_an": 1512,
-                "pop_freq": 0.0006613756613756613
+          'LMM': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {
+                'pop_ac': 1,
+                'pop_an': 1512,
+                'pop_freq': 0.0006613756613756613
               }
             },
-            "cohort_totals": {
-              "allele_count": 1,
-              "allele_num": 1512
+            'cohort_totals': {
+              'allele_count': 1,
+              'allele_num': 1512
             }
           },
-          "SGP": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {
-                "pop_ac": 1,
-                "pop_an": 214,
-                "pop_freq": 0.004672897196261682
+          'SGP': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {
+                'pop_ac': 1,
+                'pop_an': 214,
+                'pop_freq': 0.004672897196261682
               },
-              "OTH": {},
-              "UNK": {}
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": 0,
-            "cohort_totals": {
-              "allele_count": 1,
-              "allele_num": 214
+            'zygosity': 0,
+            'cohort_totals': {
+              'allele_count': 1,
+              'allele_num': 214
             }
           },
-          "EGY": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'EGY': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "RBH": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'RBH': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           }
         }
       },
-      "HCM": {
-        "disease_totals": {
-          "allele_count": 0,
-          "allele_num": 312
+      'HCM': {
+        'disease_totals': {
+          'allele_count': 0,
+          'allele_num': 312
         },
-        "ages": [
+        'ages': [
           null,
           null,
           null,
@@ -196,107 +196,107 @@ test('Get for a given disease', (assert) => {
           null,
           null
         ],
-        "cohorts": {
-          "OMG": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+        'cohorts': {
+          'OMG': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "LMM": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'LMM': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "SGP": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {
-                "pop_ac": 0,
-                "pop_an": 312,
-                "pop_freq": 0
+          'SGP': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {
+                'pop_ac': 0,
+                'pop_an': 312,
+                'pop_freq': 0
               },
-              "OTH": {},
-              "UNK": {}
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": 0,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 312
+            'zygosity': 0,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 312
             }
           },
-          "EGY": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'EGY': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "RBH": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'RBH': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           }
         }
       },
-      "HVO": {
-        "disease_totals": {
-          "allele_count": 3,
-          "allele_num": 1492
+      'HVO': {
+        'disease_totals': {
+          'allele_count': 3,
+          'allele_num': 1492
         },
-        "ages": [
+        'ages': [
           null,
           null,
           null,
@@ -307,97 +307,97 @@ test('Get for a given disease', (assert) => {
           null,
           null
         ],
-        "cohorts": {
-          "OMG": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+        'cohorts': {
+          'OMG': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "LMM": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'LMM': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "SGP": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {
-                "pop_ac": 3,
-                "pop_an": 1492,
-                "pop_freq": 0.0020107238605898124
+          'SGP': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {
+                'pop_ac': 3,
+                'pop_an': 1492,
+                'pop_freq': 0.0020107238605898124
               },
-              "OTH": {},
-              "UNK": {}
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": 0,
-            "cohort_totals": {
-              "allele_count": 3,
-              "allele_num": 1492
+            'zygosity': 0,
+            'cohort_totals': {
+              'allele_count': 3,
+              'allele_num': 1492
             }
           },
-          "EGY": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'EGY': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           },
-          "RBH": {
-            "populations": {
-              "AFR": {},
-              "ASJ": {},
-              "EAS": {},
-              "FIN": {},
-              "NFE": {},
-              "LAT": {},
-              "SAS": {},
-              "OTH": {},
-              "UNK": {}
+          'RBH': {
+            'populations': {
+              'AFR': {},
+              'ASJ': {},
+              'EAS': {},
+              'FIN': {},
+              'NFE': {},
+              'LAT': {},
+              'SAS': {},
+              'OTH': {},
+              'UNK': {}
             },
-            "zygosity": null,
-            "cohort_totals": {
-              "allele_count": 0,
-              "allele_num": 0
+            'zygosity': null,
+            'cohort_totals': {
+              'allele_count': 0,
+              'allele_num': 0
             }
           }
         }
