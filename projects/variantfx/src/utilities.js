@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
+/* eslint-disable quote-props */
 
 export const POPULATIONS = {
   AFR: 'African',
@@ -179,3 +180,62 @@ export function processCardioVariant(rawVariant) {
     diseases: groupFieldsByDisease(rest),
   }
 }
+
+export const GENE_DISEASE_INFO = [
+  {
+    'Disease': 'HCM',
+    'Gene': 'MYH7',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Gain of function',
+    'VariantClasses': 'missense*'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'TNNT2',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Gain of function',
+    'VariantClasses': 'missense*'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'MYL3',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Gain of function',
+    'VariantClasses': 'missense'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'ACTC1',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Gain of function',
+    'VariantClasses': 'missense'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'FHL1',
+    'InheritanceMode': 'XL',
+    'DiseaseMechanism': 'Gain of function',
+    'VariantClasses': 'non-truncating'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'MYBPC3',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Loss of function',
+    'VariantClasses': '\'frameshift, splicing site, exonic deletion and nonsense*\''
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'MYL2',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Loss of function',
+    'VariantClasses': 'missense'
+  },
+  {
+    'Disease': 'HCM',
+    'Gene': 'CSRP3',
+    'InheritanceMode': 'AD',
+    'DiseaseMechanism': 'Loss of function',
+    'VariantClasses': 'missense'
+  }
+]

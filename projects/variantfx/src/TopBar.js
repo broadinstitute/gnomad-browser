@@ -90,22 +90,14 @@ const TopBar = ({ setCurrentGene }) => {
             list="genes"
           />
           <datalist id="genes">
-            <option value="PCSK9" />
-            <option value="ZNF658" />
-            <option value="MYH9" />
-            <option value="FMR1" />
-            <option value="BRCA2" />
-            <option value="CFTR" />
-            <option value="FBN1" />
-            <option value="TP53" />
-            <option value="SCN5A" />
             <option value="MYH7" />
+            <option value="TNNT2" />
+            <option value="MYL3" />
+            <option value="ACTC1" />
+            <option value="FHL1" />
             <option value="MYBPC3" />
-            <option value="ARSF" />
-            <option value="CD33" />
-            <option value="DMD" />
-            <option value="TTN" />
-            <option value="USH2A" />
+            <option value="MYL2" />
+            <option value="CSRP3" />
           </datalist>
         </form>
       </Search>

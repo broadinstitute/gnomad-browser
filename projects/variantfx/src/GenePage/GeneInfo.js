@@ -1,9 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable camelcase */
+/* eslint-disable quote-props */
 
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
+import {
+  DISEASES,
+  GENE_DISEASE_INFO
+} from '../utilities'
 
 const GeneInfoContainer = styled.div`
   display: flex;
@@ -31,7 +37,6 @@ const GeneDetails = styled.div`
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  ${'' /* padding-right: 400px; */}
   width: 1050px;
 `
 
@@ -40,8 +45,6 @@ const GeneAttributes = styled.div`
   font-size: 14px;
   flex-direction: column;
   align-items: space-between;
-  ${'' /* margin-right: 40px; */}
-  ${'' /* width: 40%; */}
 `
 
 const GeneAttribute = styled.div`
@@ -52,8 +55,6 @@ const GeneStats = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  ${'' /* width: 60%; */}
 `
 
 const GeneStatsRow = styled.div`
@@ -84,8 +85,12 @@ const GeneInfo = ({ gene, variantCount }) => {
     gene_id,
     full_gene_name,
     omim_accession,
-    schzGeneResults,
   } = gene.toJS()
+
+  const currentDisease = 'HCM'
+  const geneDiseaseInfo = GENE_DISEASE_INFO.find(geneDisease =>
+    geneDisease.Gene === gene_name && geneDisease.Disease === currentDisease
+  )
   return (
     <GeneInfoContainer>
       <GeneName>
@@ -94,35 +99,22 @@ const GeneInfo = ({ gene, variantCount }) => {
       </GeneName>
       <GeneDetails>
         <GeneAttributes>
-          {/* <div><strong>Number of variants:</strong> {variantCount}</div> */}
           <GeneAttribute>
             <strong>Ensembl ID:</strong> {gene_id}
           </GeneAttribute>
           <GeneAttribute>
-            {/* <strong>pCaco:</strong> {schzGeneResults.pCaco.toPrecision(3)} */}
+            <strong>Disease: </strong>{DISEASES[geneDiseaseInfo.Disease]}
           </GeneAttribute>
           <GeneAttribute>
-            {/* <strong>pMeta:</strong> {schzGeneResults.pMeta.toPrecision(3)} */}
+            <strong>Inheritance mode: </strong>{geneDiseaseInfo.InheritanceMode}
+          </GeneAttribute>
+          <GeneAttribute>
+            <strong>Disease mechanism: </strong>{geneDiseaseInfo.DiseaseMechanism}
+          </GeneAttribute>
+          <GeneAttribute>
+            <strong>Variant classes: </strong>{geneDiseaseInfo.VariantClasses}
           </GeneAttribute>
         </GeneAttributes>
-        {/* <GeneStats>
-          <GeneStatsHeader>
-            <GeneStatsTitleColumn />
-            <GeneStatsCell>LoF count</GeneStatsCell>
-            <GeneStatsCell>Missense count</GeneStatsCell>
-          </GeneStatsHeader>
-          <GeneStatsRow>
-            <GeneStatsTitleColumn><strong>Cases</strong></GeneStatsTitleColumn>
-            <GeneStatsCell>{schzGeneResults.caseLof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResults.caseMis}</GeneStatsCell>
-          </GeneStatsRow>
-          <GeneStatsRow>
-            <GeneStatsTitleColumn><strong>Controls</strong></GeneStatsTitleColumn>
-            <GeneStatsCell>{schzGeneResults.ctrlLof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResults.ctrlMis}</GeneStatsCell>
-          </GeneStatsRow>
-        </GeneStats> */}
-
       </GeneDetails>
     </GeneInfoContainer>
   )

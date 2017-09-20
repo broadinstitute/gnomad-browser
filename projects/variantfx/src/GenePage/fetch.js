@@ -1,8 +1,8 @@
 import fetch from 'graphql-fetch'
 import { getXpos } from '@broad/utilities/src/variant'
 
-import TestData from '@resources/1505910855-variantfx-myh7.json'
-export default () => new Promise(resolve => resolve(TestData))
+// import TestData from '@resources/1505910855-variantfx-myh7.json'
+// export default () => new Promise(resolve => resolve(TestData))
 
 const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
 const API_URL = 'http://localhost:8007'
@@ -187,7 +187,7 @@ const fetchGeneData = (geneName, url = API_URL) => {
   })
 }
 
-function fetchData(geneName) {
+export default function fetchData(geneName) {
   return Promise.all([
     fetchVariantData(geneName),
     fetchGeneData(geneName),

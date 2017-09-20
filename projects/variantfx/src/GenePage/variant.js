@@ -9,7 +9,6 @@ import {
   POPULATIONS,
   COHORTS,
   DISEASES,
-
 } from '../utilities'
 
 const VariantContainer = styled.div`

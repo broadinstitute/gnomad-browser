@@ -13,7 +13,7 @@ import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
-import VariantPage from './variant'
+import VariantPage from './Variant'
 import Table from './Table'
 import fetchFunction from './fetch'
 
