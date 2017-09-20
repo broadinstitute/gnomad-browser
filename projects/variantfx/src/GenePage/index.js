@@ -13,6 +13,7 @@ import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
+import VariantPage from './variant'
 import Table from './Table'
 import fetchFunction from './fetch'
 
@@ -50,6 +51,7 @@ const GenePage = ({
       <RegionViewer />
       <GeneSettings />
       <Table />
+      <VariantPage />
     </GenePageContainer>
   )
 }

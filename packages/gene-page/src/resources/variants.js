@@ -3,7 +3,7 @@ import { Record, Set, OrderedMap, Map, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { types as geneTypes } from './genes'
-import { regionViewerIntervals } from './active'
+import { regionViewerIntervals, currentVariant } from './active'
 
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
@@ -124,6 +124,11 @@ export const allVariants = createSelector(
     state => state.variants.byVariantDataset.get('variants'),
   ],
   (variants) => variants.toList()
+)
+
+export const currentVariantData = createSelector(
+  [currentVariant, state => state.variants.byVariantDataset.get('variants')],
+  (currentVariant, variants) => variants.get(currentVariant)
 )
 
 export const variantsFilteredByActiveInterval = createSelector(

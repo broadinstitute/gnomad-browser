@@ -36,6 +36,7 @@ const GnomadVariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+
   return (
     <div style={{ marginLeft: '110px' }}>
       <VariantTable
