@@ -91,7 +91,7 @@ const GeneRegion = ({
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
     const filteredVariants = modifiedVariants.filter(variant =>
-      R.contains(variant.transcriptConsequenceTerms, consequence.groups))
+      R.contains(variant.Consequence, consequence.groups))
     if (filteredVariants.size / factor < 20) {
       rowHeight = 30
     } else {

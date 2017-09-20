@@ -6,7 +6,7 @@
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "lsof -ti:8012| xargs kill && ../../node_modules/.bin/webpack-dev-server --port 8013 --hot --config ../../webpack.config.js"
+    "start": "lsof -ti:8012| xargs kill && PROJECT_DEFAULTS=variantfx ../../node_modules/.bin/webpack-dev-server --port 8013 --hot --config ../../webpack.config.js"
 
   },
   "files": [

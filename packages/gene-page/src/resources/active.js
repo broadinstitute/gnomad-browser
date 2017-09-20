@@ -14,18 +14,20 @@ const getDefaultsForProject = (env) => {
       return { startingGene: 'GRIN2A', padding: 75 }
     case 'dblof':
       return { startingGene: 'CD33', padding: 75 }
+    case 'variantfx':
+      return { startingGene: 'MYH7', padding: 75 }
     default:
-      return { startingGene: 'TRIO', padding: 75 }
+      return { startingGene: 'PCSK9', padding: 75 }
   }
 }
 
 const State = Immutable.Record({
-  currentGene: getDefaultsForProject(process.env.FETCH_FUNCTION).startingGene,
+  currentGene: getDefaultsForProject(process.env.PROJECT_DEFAULTS).startingGene,
   currentVariant: '',
   currentNavigatorPosition: 0,
   currentTableIndex: 0,
   currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
-  exonPadding: getDefaultsForProject(process.env.FETCH_FUNCTION).padding,
+  exonPadding: getDefaultsForProject(process.env.PROJECT_DEFAULTS).padding,
   regionViewerAttributes: {
     offsetRegions: [{ start: 0, stop: 0 }],
     // positionOffset: null,

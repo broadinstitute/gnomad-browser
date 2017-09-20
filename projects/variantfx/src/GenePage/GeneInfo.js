@@ -99,13 +99,13 @@ const GeneInfo = ({ gene, variantCount }) => {
             <strong>Ensembl ID:</strong> {gene_id}
           </GeneAttribute>
           <GeneAttribute>
-            <strong>pCaco:</strong> {schzGeneResults.pCaco.toPrecision(3)}
+            {/* <strong>pCaco:</strong> {schzGeneResults.pCaco.toPrecision(3)} */}
           </GeneAttribute>
           <GeneAttribute>
-            <strong>pMeta:</strong> {schzGeneResults.pMeta.toPrecision(3)}
+            {/* <strong>pMeta:</strong> {schzGeneResults.pMeta.toPrecision(3)} */}
           </GeneAttribute>
         </GeneAttributes>
-        <GeneStats>
+        {/* <GeneStats>
           <GeneStatsHeader>
             <GeneStatsTitleColumn />
             <GeneStatsCell>LoF count</GeneStatsCell>
@@ -121,7 +121,7 @@ const GeneInfo = ({ gene, variantCount }) => {
             <GeneStatsCell>{schzGeneResults.ctrlLof}</GeneStatsCell>
             <GeneStatsCell>{schzGeneResults.ctrlMis}</GeneStatsCell>
           </GeneStatsRow>
-        </GeneStats>
+        </GeneStats> */}
 
       </GeneDetails>
     </GeneInfoContainer>

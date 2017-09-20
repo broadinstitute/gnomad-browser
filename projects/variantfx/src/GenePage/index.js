@@ -14,7 +14,7 @@ import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import Table from './Table'
-import { fetchSchzExomes } from './fetch'
+import fetchFunction from './fetch'
 
 const GenePageContainer = styled.div`
   display: flex;
@@ -59,4 +59,4 @@ GenePage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default GenePageHOC(GenePage, fetchSchzExomes)
+export default GenePageHOC(GenePage, fetchFunction)
