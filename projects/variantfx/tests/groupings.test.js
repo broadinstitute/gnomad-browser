@@ -5,7 +5,12 @@
 import test from 'tape'  // eslint-disable-line
 import data from '@resources/1505910855-variantfx-myh7.json'  // eslint-disable-line
 
-import { processCardioVariant, getConsequenceBreakdown } from '../src/utilities'
+import {
+  processCardioVariant,
+  getConsequenceBreakdown,
+  sumCohorts,
+  burdenCalculations,
+} from '../src/utilities'
 
 test('Expected keys', (assert) => {
   const geneKeys = Object.keys(data)
@@ -410,8 +415,103 @@ test('Get for a given disease', (assert) => {
 })
 
 test('getConsequenceBreakdown', (assert) => {
-  const breakdown = getConsequenceBreakdown(data.variants)
-  console.log(JSON.stringify(breakdown, null, '\t'))
+  const expected = {
+    all: {
+      OMG: [
+        454,
+        1363200
+      ],
+      LMM: [
+        466,
+        1217216
+      ],
+      SGP: [
+        379,
+        36500
+      ],
+      EGY: [
+        0,
+        0
+      ],
+      RBH: [
+        2682,
+        202430
+      ]
+    },
+    lof: {
+      OMG: [
+        2,
+        12800
+      ],
+      LMM: [
+        1,
+        5824
+      ],
+      SGP: [
+        0,
+        624
+      ],
+      EGY: [
+        0,
+        0
+      ],
+      RBH: [
+        4,
+        5362
+      ]
+    },
+    missense: {
+      OMG: [
+        420,
+        1235200
+      ],
+      LMM: [
+        432,
+        1089088
+      ],
+      SGP: [
+        18,
+        9360
+      ],
+      EGY: [
+        0,
+        0
+      ],
+      RBH: [
+        66,
+        68940
+      ]
+    }
+  }
+  const breakdown = getConsequenceBreakdown(data.variants, 'HCM')
+  assert.deepEqual(expected, breakdown)
+  assert.end()
+})
+
+test('sum cohorts.', (assert) => {
+  const cohortBreakdowns = getConsequenceBreakdown(data.variants, 'HCM')
+  const numeratorsByCategory = sumCohorts(cohortBreakdowns)
+  const expected = {
+    all: 0.0014120295983536606,
+    lof: 0.0002844372206420154,
+    missense: 0.0003895799030045934,
+  }
+  assert.deepEqual(expected, numeratorsByCategory)
+  assert.end()
+})
+
+
+test('odds ratio', (assert) => {
+  const cohortBreakdowns = getConsequenceBreakdown(data.variants, 'HCM')
+  const healthyBreakdowns = getConsequenceBreakdown(data.variants, 'HVO')
+  const or_calculations = burdenCalculations(cohortBreakdowns, healthyBreakdowns)
+  const expected = {
+    "missense": 1.35530952456268,
+    "lof": 0.8952945956928077,
+    "all": 0.12503734865004978
+  }
+  assert.deepEqual(expected, or_calculations)
+  // console.log(JSON.stringify(calculations, null, '\t'))
   assert.end()
 })
 

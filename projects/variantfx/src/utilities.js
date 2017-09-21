@@ -178,43 +178,65 @@ const missense = ['missense_variant']
 
 const categories = { lof, missense }
 
-function getCohortCountsByCategory(category, breakdown, variant) {
+function getCohortCountsByCategory(category, breakdown, variant, disease) {
   const cohortBreakdown = Object.keys(COHORTS).reduce((cohort_acc, cohort) => {
-    let previousAn = 0
-    let previousAc = 0
+    let previousCount = [0, 0]
     if (breakdown[category]) {
-      previousAn = breakdown[category][cohort].an
-      previousAc = breakdown[category][cohort].ac
+      previousCount = breakdown[category][cohort]
     }
-    const { allele_count, allele_num } = variant.diseases.HCM.cohorts[cohort].cohort_totals
+    const { allele_count, allele_num } = variant.diseases[disease].cohorts[cohort].cohort_totals
     if (category === 'all') {
       return {
         ...cohort_acc,
-        [cohort]: {
-          an: previousAn + allele_num,
-          ac: previousAc + allele_count,
-        }
+        [cohort]: [previousCount[0] + allele_count, previousCount[1] + allele_num]
       }
     }
     return {
       ...cohort_acc,
       [cohort]: categories[category].indexOf(variant.Consequence) > -1
-        ? {
-          an: previousAn + allele_num,
-          ac: previousAc + allele_count,
-        } : { previousAn, previousAc },
+        ? [previousCount[0] + allele_count, previousCount[1] + allele_num] : previousCount,
     }
-  }, Object.keys(COHORTS).reduce((acc, cohort) => ({ [cohort]: { an: 0, ac: 0 }, ...acc }), {}))
+  }, Object.keys(COHORTS).reduce((acc, cohort) => ({ [cohort]: [0, 0], ...acc }), {}))
   return cohortBreakdown
 }
 
-export function getConsequenceBreakdown (rawVariants) {
+export function getConsequenceBreakdown (rawVariants, disease) {
   return rawVariants.reduce((breakdown, rawVariant) => {
     const variant = processCardioVariant(rawVariant)
     return {
-      all: getCohortCountsByCategory('all', breakdown, variant),
-      lof: getCohortCountsByCategory('lof', breakdown, variant),
-      missense: getCohortCountsByCategory('missense', breakdown, variant),
+      all: getCohortCountsByCategory('all', breakdown, variant, disease),
+      lof: getCohortCountsByCategory('lof', breakdown, variant, disease),
+      missense: getCohortCountsByCategory('missense', breakdown, variant, disease),
+    }
+  }, {})
+}
+
+export function sumCohorts (consequencesByCohort) {
+  const cohortSums = Object.keys(consequencesByCohort).reduce((acc, consequence) => {
+    return {
+      [consequence]: Object.keys(COHORTS).reduce((total, cohort) => {
+        const [ac, an] = consequencesByCohort[consequence][cohort]
+        return [(total[0] + ac), (total[1] + an)]
+      }, [0, 0]),
+      ...acc,
+    }
+  }, {})
+
+  return Object.keys(cohortSums).reduce((acc, category) => {
+    return {
+      [category]: cohortSums[category][0] / cohortSums[category][1],
+      ...acc
+    }
+  }, {})
+}
+
+export function burdenCalculations (cohortBreakdowns, healthyBreakdowns) {
+  const numeratorsByCategory = sumCohorts(cohortBreakdowns)
+  const denominatorsByCategory = sumCohorts(healthyBreakdowns)
+  return Object.keys(numeratorsByCategory).reduce((acc, category) => {
+    return {
+      [category]: numeratorsByCategory[category] / denominatorsByCategory[category],
+      ...acc,
     }
   }, {})
 }
