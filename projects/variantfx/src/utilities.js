@@ -180,23 +180,31 @@ const categories = { lof, missense }
 
 function getCohortCountsByCategory(category, breakdown, variant) {
   const cohortBreakdown = Object.keys(COHORTS).reduce((cohort_acc, cohort) => {
-    let previousCount = 0
+    let previousAn = 0
+    let previousAc = 0
     if (breakdown[category]) {
-      previousCount = breakdown[category][cohort]
+      previousAn = breakdown[category][cohort].an
+      previousAc = breakdown[category][cohort].ac
     }
     const { allele_count, allele_num } = variant.diseases.HCM.cohorts[cohort].cohort_totals
     if (category === 'all') {
       return {
         ...cohort_acc,
-        [cohort]: previousCount + allele_count
+        [cohort]: {
+          an: previousAn + allele_num,
+          ac: previousAc + allele_count,
+        }
       }
     }
     return {
       ...cohort_acc,
       [cohort]: categories[category].indexOf(variant.Consequence) > -1
-        ? previousCount + allele_count : previousCount,
+        ? {
+          an: previousAn + allele_num,
+          ac: previousAc + allele_count,
+        } : { previousAn, previousAc },
     }
-  }, Object.keys(COHORTS).reduce((acc, cohort) => ({ [cohort]: 0, ...acc }), {}))
+  }, Object.keys(COHORTS).reduce((acc, cohort) => ({ [cohort]: { an: 0, ac: 0 }, ...acc }), {}))
   return cohortBreakdown
 }
 
