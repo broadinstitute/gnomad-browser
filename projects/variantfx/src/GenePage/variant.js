@@ -97,7 +97,7 @@ const Variant = ({ variant }) => {
               HCM cases
             </VerticalLabelText>
           </TableVerticalLabel>
-          <TableVerticalLabel height={70}>
+          <TableVerticalLabel height={35}>
             <VerticalLabelText>
               Controls
             </VerticalLabelText>
@@ -158,7 +158,7 @@ const Variant = ({ variant }) => {
               )
             })}
           </TableRow>
-          <TableRow>
+          {/* <TableRow>
             <TableTitleColumn><strong>Gnomad</strong></TableTitleColumn>
             {Object.keys(POPULATIONS).map((pop) => {
               const popCounts = processedVariant
@@ -180,7 +180,7 @@ const Variant = ({ variant }) => {
                 </TableCell>
               )
             })}
-          </TableRow>
+          </TableRow> */}
         </TableRows>
       </Table>
     </VariantContainer>
