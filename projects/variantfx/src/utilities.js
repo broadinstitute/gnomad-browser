@@ -36,14 +36,6 @@ export const DISEASES = {
 
 export const AGE_BINS = ['0_10', '11_20', '21_30', '31_40', '41_50', '51_60', '61_70', '71_80', '81_90']
 
-const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
-const missense = ['missense_variant']
-
-const consequenceCategories = [
-  { annotation: 'LoF', groups: lof },
-  { annotation: 'Missense', groups: missense },
-]
-
 export function groupFieldsByDisease (variant) {
   return Object.keys(DISEASES).reduce((acc_disease, disease) => {
     acc_disease[disease] = Object.keys(variant).reduce((acc_disease_field, vfield) => {
@@ -179,6 +171,44 @@ export function processCardioVariant(rawVariant) {
     PUBMED,
     diseases: groupFieldsByDisease(rest),
   }
+}
+
+const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
+const missense = ['missense_variant']
+
+const categories = { lof, missense }
+
+function getCohortCountsByCategory(category, breakdown, variant) {
+  const cohortBreakdown = Object.keys(COHORTS).reduce((cohort_acc, cohort) => {
+    let previousCount = 0
+    if (breakdown[category]) {
+      previousCount = breakdown[category][cohort]
+    }
+    const { allele_count, allele_num } = variant.diseases.HCM.cohorts[cohort].cohort_totals
+    if (category === 'all') {
+      return {
+        ...cohort_acc,
+        [cohort]: previousCount + allele_count
+      }
+    }
+    return {
+      ...cohort_acc,
+      [cohort]: categories[category].indexOf(variant.Consequence) > -1
+        ? previousCount + allele_count : previousCount,
+    }
+  }, Object.keys(COHORTS).reduce((acc, cohort) => ({ [cohort]: 0, ...acc }), {}))
+  return cohortBreakdown
+}
+
+export function getConsequenceBreakdown (rawVariants) {
+  return rawVariants.reduce((breakdown, rawVariant) => {
+    const variant = processCardioVariant(rawVariant)
+    return {
+      all: getCohortCountsByCategory('all', breakdown, variant),
+      lof: getCohortCountsByCategory('lof', breakdown, variant),
+      missense: getCohortCountsByCategory('missense', breakdown, variant),
+    }
+  }, {})
 }
 
 export const GENE_DISEASE_INFO = [

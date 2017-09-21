@@ -3,12 +3,17 @@
 /* eslint-disable quote-props */
 
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { geneData } from '@broad/gene-page/src/resources/genes'
+import { allVariants } from '@broad/gene-page/src/resources/variants'
+
 import {
   DISEASES,
-  GENE_DISEASE_INFO
+  GENE_DISEASE_INFO,
+
 } from '../utilities'
 
 const GeneInfoContainer = styled.div`
@@ -51,41 +56,15 @@ const GeneAttribute = styled.div`
   margin-bottom: 2px;
 `
 
-const GeneStats = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`
-
-const GeneStatsRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 20px;
-  font-size: 14px;
-  border-bottom: 1px solid lightgrey;
-`
-
-const GeneStatsHeader = GeneStatsRow.extend`
-  font-weight: bold;
-  border-bottom: 1px solid black;
-`
-
-const GeneStatsCell = styled.div`
-  width: 100px;
-`
-
-const GeneStatsTitleColumn = GeneStatsCell.extend`
-  width: 100px;
-`
-
-const GeneInfo = ({ gene, variantCount }) => {
+const GeneInfo = ({ gene, variants }) => {
   const {
     gene_name,
     gene_id,
     full_gene_name,
     omim_accession,
   } = gene.toJS()
+
+  // const processedVariants = variants.toJS().map(v => {})
 
   const currentDisease = 'HCM'
   const geneDiseaseInfo = GENE_DISEASE_INFO.find(geneDisease =>
@@ -101,6 +80,9 @@ const GeneInfo = ({ gene, variantCount }) => {
         <GeneAttributes>
           <GeneAttribute>
             <strong>Ensembl ID:</strong> {gene_id}
+          </GeneAttribute>
+          <GeneAttribute>
+            <strong>Total variants</strong> {variants.size}
           </GeneAttribute>
           <GeneAttribute>
             <strong>Disease: </strong>{DISEASES[geneDiseaseInfo.Disease]}
@@ -121,6 +103,11 @@ const GeneInfo = ({ gene, variantCount }) => {
 }
 GeneInfo.propTypes = {
   gene: PropTypes.object.isRequired,
-  variantCount: PropTypes.number.isRequired,
+  variants: PropTypes.any.isRequired,
 }
-export default GeneInfo
+export default connect(
+  state => ({
+    gene: geneData(state),
+    variants: allVariants(state)
+  })
+)(GeneInfo)

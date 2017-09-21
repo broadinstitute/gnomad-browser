@@ -44,9 +44,7 @@ const GenePage = ({
   return (
     <GenePageContainer>
       <Summary>
-        <GeneInfo
-          gene={gene}
-        />
+        <GeneInfo />
       </Summary>
       <RegionViewer />
       <GeneSettings />
