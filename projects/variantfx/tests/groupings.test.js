@@ -501,17 +501,26 @@ test('sum cohorts.', (assert) => {
 })
 
 
-test('odds ratio', (assert) => {
+test('odds ratio, ef', (assert) => {
   const cohortBreakdowns = getConsequenceBreakdown(data.variants, 'HCM')
   const healthyBreakdowns = getConsequenceBreakdown(data.variants, 'HVO')
-  const or_calculations = burdenCalculations(cohortBreakdowns, healthyBreakdowns)
+  const calculations = burdenCalculations(cohortBreakdowns, healthyBreakdowns)
   const expected = {
-    "missense": 1.35530952456268,
-    "lof": 0.8952945956928077,
-    "all": 0.12503734865004978
+    missense: {
+      odds_ratio: 1.35530952456268,
+      ef: 0.2621611654926784
+    },
+    lof: {
+      odds_ratio: 0.8952945956928077,
+      ef: -0.11695078336328829
+    },
+    all: {
+      odds_ratio: 0.12503734865004978,
+      ef: -6.997610400383373
+    }
   }
-  assert.deepEqual(expected, or_calculations)
+
+  assert.deepEqual(expected, calculations)
   // console.log(JSON.stringify(calculations, null, '\t'))
   assert.end()
 })
-

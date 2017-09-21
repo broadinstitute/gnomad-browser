@@ -234,11 +234,25 @@ export function burdenCalculations (cohortBreakdowns, healthyBreakdowns) {
   const numeratorsByCategory = sumCohorts(cohortBreakdowns)
   const denominatorsByCategory = sumCohorts(healthyBreakdowns)
   return Object.keys(numeratorsByCategory).reduce((acc, category) => {
+    const odds_ratio = numeratorsByCategory[category] / denominatorsByCategory[category]
     return {
-      [category]: numeratorsByCategory[category] / denominatorsByCategory[category],
+      [category]: {
+        odds_ratio,
+        ef: ((odds_ratio - 1) / odds_ratio),
+      },
       ...acc,
     }
   }, {})
+}
+
+export function getGenePageCalculations(rawVariants, disease) {
+  const diseaseCohortBreakdown = getConsequenceBreakdown(rawVariants, disease)
+  const healthyBreakdown = getConsequenceBreakdown(rawVariants, 'HVO')
+  const calculations = burdenCalculations(diseaseCohortBreakdown, healthyBreakdown)
+  return {
+    diseaseCohortBreakdown,
+    calculations,
+  }
 }
 
 export const GENE_DISEASE_INFO = [

@@ -11,9 +11,19 @@ import { geneData } from '@broad/gene-page/src/resources/genes'
 import { allVariants } from '@broad/gene-page/src/resources/variants'
 
 import {
+  Table,
+  TableRows,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableTitleColumn,
+} from '@broad/ui/src/tables/SimpleTable'
+
+import {
   DISEASES,
   GENE_DISEASE_INFO,
-
+  COHORTS,
+  getGenePageCalculations,
 } from '../utilities'
 
 const GeneInfoContainer = styled.div`
@@ -33,7 +43,7 @@ const Symbol = styled.h1`
   margin-right: 10px;
 `
 
-const FullName = styled.h2`
+const SubHeader = styled.h2`
   font-size: 18px;
 `
 
@@ -56,6 +66,23 @@ const GeneAttribute = styled.div`
   margin-bottom: 2px;
 `
 
+const DiseaseBurdenTable = Table.extend`
+  margin-bottom: 20px;
+  margin-top: 20px;
+`
+
+const DiseaseBurdenHeader = SubHeader.extend`
+  margin-top: 20px;
+`
+
+const translations = {
+  odds_ratio: 'Odds ratio',
+  ef: 'Etiological fraction',
+  all: 'All',
+  lof: 'LoF',
+  missense: 'Missense',
+}
+
 const GeneInfo = ({ gene, variants }) => {
   const {
     gene_name,
@@ -70,11 +97,17 @@ const GeneInfo = ({ gene, variants }) => {
   const geneDiseaseInfo = GENE_DISEASE_INFO.find(geneDisease =>
     geneDisease.Gene === gene_name && geneDisease.Disease === currentDisease
   )
+
+  const {
+    diseaseCohortBreakdown,
+    calculations
+  } = getGenePageCalculations(variants.toJS(), currentDisease)
+
   return (
     <GeneInfoContainer>
       <GeneName>
         <Symbol>{gene_name}</Symbol>
-        <FullName>{full_gene_name}</FullName>
+        <SubHeader>{full_gene_name}</SubHeader>
       </GeneName>
       <GeneDetails>
         <GeneAttributes>
@@ -96,7 +129,53 @@ const GeneInfo = ({ gene, variants }) => {
           <GeneAttribute>
             <strong>Variant classes: </strong>{geneDiseaseInfo.VariantClasses}
           </GeneAttribute>
+          <DiseaseBurdenHeader>Disease burden analysis (case v. control)</DiseaseBurdenHeader>
+          <DiseaseBurdenTable>
+            <TableRows>
+              <TableHeader>
+                <TableTitleColumn />
+                {Object.keys(calculations.all).map(calculation =>
+                  (<TableCell>{translations[calculation]}</TableCell>))}
+              </TableHeader>
+              {Object.keys(calculations).map(category => (
+                <TableRow>
+                  <TableTitleColumn>{translations[category]}</TableTitleColumn>
+                  {Object.keys(calculations.all).map((calculation) => {
+                    return (
+                      <TableCell>
+                        {calculations[category][calculation].toPrecision(3)}
+                      </TableCell>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableRows>
+          </DiseaseBurdenTable>
         </GeneAttributes>
+        <Table>
+
+          <TableRows>
+            <SubHeader>Cohort summary</SubHeader>
+            <TableHeader>
+              <TableTitleColumn />
+              {Object.keys(diseaseCohortBreakdown).map(category =>
+                (<TableCell>{translations[category]}</TableCell>))}
+            </TableHeader>
+            {Object.keys(COHORTS).map(cohort => (
+              <TableRow>
+                <TableTitleColumn>{COHORTS[cohort]}</TableTitleColumn>
+                {Object.keys(diseaseCohortBreakdown).map((category) => {
+                  const [ac, an] = diseaseCohortBreakdown[category][cohort]
+                  const allele_frequency = (ac / an)
+                  if (!isNaN(allele_frequency)) {
+                    return <TableCell>{`${ac} (${allele_frequency.toPrecision(3)})`}</TableCell>
+                  }
+                  return <TableCell>{`${ac} (0)`}</TableCell>
+                })}
+              </TableRow>
+            ))}
+          </TableRows>
+        </Table>
       </GeneDetails>
     </GeneInfoContainer>
   )
