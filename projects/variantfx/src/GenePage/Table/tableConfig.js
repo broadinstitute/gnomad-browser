@@ -9,20 +9,20 @@ export const tableConfig = onHeaderClick => ({
       width: 150,
       onHeaderClick,
     },
-    {
-      dataKey: 'filter',
-      title: 'Filter',
-      dataType: 'string',
-      onHeaderClick,
-      width: 60
-    },
-    {
-      dataKey: 'rsid',
-      title: 'RSID',
-      dataType: 'string',
-      onHeaderClick,
-      width: 60
-    },
+    // {
+    //   dataKey: 'filter',
+    //   title: 'Filter',
+    //   dataType: 'string',
+    //   onHeaderClick,
+    //   width: 60
+    // },
+    // {
+    //   dataKey: 'rsid',
+    //   title: 'RSID',
+    //   dataType: 'string',
+    //   onHeaderClick,
+    //   width: 60
+    // },
     // {
     //   dataKey: 'AC',
     //   title: 'AC total',
@@ -30,18 +30,20 @@ export const tableConfig = onHeaderClick => ({
     //   width: 60,
     //   onHeaderClick,
     // },
-    // {
-    //   dataKey: 'HGVSc',
-    //   title: 'HGVSc',
-    //   dataType: 'string',
-    //   onHeaderClick,
-    //   width: 130
-    // },
+    {
+      dataKey: 'HGVSc',
+      title: 'HGVSc',
+      dataType: 'string',
+      onHeaderClick,
+      searchable: true,
+      width: 200
+    },
 
     {
       dataKey: 'Consequence',
       title: 'Consequence',
       dataType: 'string',
+      searchable: true,
       onHeaderClick,
       width: 250
     },

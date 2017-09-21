@@ -35,7 +35,7 @@ const GeneSettings = ({
   exonPadding,
   setCurrentGene,
   setExonPadding,
-  // searchVariants
+  searchVariants
 }) => {
   const testGenes = [
     'PCSK9',
@@ -82,7 +82,7 @@ const GeneSettings = ({
     },
   }
   const GeneSettingsContainer = styled.div`
-    margin-left: 110px;
+    margin-left: 50px;
     width: 100%;
   `
 
@@ -91,7 +91,7 @@ const GeneSettings = ({
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 900px;
+    width: 600px;
     margin-top: 20px;
     margin-bottom: 20px;
   `
@@ -128,7 +128,7 @@ const GeneSettings = ({
       {/*geneLinks*/}
       <MenusContainer>
         <MaterialVariantCategoryButtonGroup />
-        {/* <SearchContainer>
+        <SearchContainer>
           <TextField
             hintText="Enter search terms"
             hintStyle={filterTextInputStyles.inputStyle}
@@ -141,14 +141,14 @@ const GeneSettings = ({
               searchVariants(event.target.value)
             }}
           />
-        </SearchContainer> */}
-        <Slider
+        </SearchContainer>
+        {'' /* <Slider
           style={{
             width: 100,
             height: 20,
           }}
           onChange={setPadding}
-        />
+        /> */}
       </MenusContainer>
     </GeneSettingsContainer>
   )

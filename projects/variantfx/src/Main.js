@@ -8,9 +8,9 @@ import createGenePageStore from '@broad/gene-page/src/store/store'
 import App from './routes'
 
 const genePageSettings = {
-  searchIndexes: [],
-  // fetchFunction,
+  searchIndexes: ['variant_id', 'HGVSc', 'Consequence'],
   variantSchema: {
+    id: null,
     ENST: null,
     Consequence: null,
     SYMBOL: null,

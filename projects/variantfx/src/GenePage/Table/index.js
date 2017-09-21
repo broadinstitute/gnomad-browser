@@ -12,7 +12,6 @@ import VariantTable from '@broad/table'
 import { actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
-  visibleVariants,
   tablePosition,
   searchText,
   searchFilteredVariants,
@@ -22,7 +21,7 @@ import {
 import { tableConfig } from './tableConfig'
 
 const GnomadVariantTable = ({
-  visibleVariants,
+  variants,
   setVariantSort,
   setCurrentVariant,
   setCurrentTableIndex,
@@ -44,8 +43,8 @@ const GnomadVariantTable = ({
         height={200}
         width={calculatedWidth}
         tableConfig={tConfig}
-        tableData={visibleVariants}
-        remoteRowCount={visibleVariants.size}
+        tableData={variants}
+        remoteRowCount={variants.size}
         loadMoreRows={() => {}}
         overscan={0}
         loadLookAhead={0}
@@ -58,7 +57,7 @@ const GnomadVariantTable = ({
   )
 }
 GnomadVariantTable.propTypes = {
-  visibleVariants: PropTypes.any.isRequired,
+  variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setCurrentVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
@@ -69,8 +68,7 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    // visibleVariants: visibleVariants(state),
-    visibleVariants: searchFilteredVariants(state),
+    variants: searchFilteredVariants(state),
     tablePosition: tablePosition(state),
     searchText: searchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,

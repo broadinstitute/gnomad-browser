@@ -20,7 +20,8 @@ import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { exonPadding } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { searchFilteredVariants as visibleVariants } from '@broad/gene-page/src/resources/table'
+// import { searchFilteredVariants as visibleVariants } from '@broad/gene-page/src/resources/table'
+import { allVariants } from '@broad/gene-page/src/resources/variants'
 
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
@@ -181,5 +182,5 @@ GeneRegion.propTypes = {
 export default connect(state => ({
   gene: geneData(state),
   exonPadding: exonPadding(state),
-  visibleVariants: visibleVariants(state),
+  visibleVariants: allVariants(state),
 }))(GeneRegion)
