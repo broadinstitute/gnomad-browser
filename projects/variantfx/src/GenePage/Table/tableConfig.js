@@ -12,7 +12,7 @@ export const tableConfig = onHeaderClick => ({
     {
       dataKey: 'filter',
       title: 'Filter',
-      dataType: 'filter',
+      dataType: 'string',
       onHeaderClick,
       width: 60
     },
