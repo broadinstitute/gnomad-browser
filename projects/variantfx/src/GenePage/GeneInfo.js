@@ -83,7 +83,7 @@ const translations = {
   missense: 'Missense',
 }
 
-const GeneInfo = ({ gene, variants }) => {
+const GeneInfo = ({ gene, variants, currentDisease }) => {
   const {
     gene_name,
     gene_id,
@@ -91,11 +91,8 @@ const GeneInfo = ({ gene, variants }) => {
     omim_accession,
   } = gene.toJS()
 
-  // const processedVariants = variants.toJS().map(v => {})
-
-  const currentDisease = 'HCM'
   const geneDiseaseInfo = GENE_DISEASE_INFO.find(geneDisease =>
-    geneDisease.Gene === gene_name && geneDisease.Disease === currentDisease
+    geneDisease.Gene === gene_name && geneDisease.Disease === 'HCM' // hack, only 1 disease available
   )
 
   const {

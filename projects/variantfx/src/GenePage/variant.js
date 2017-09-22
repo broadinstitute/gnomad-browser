@@ -59,9 +59,7 @@ const VariantAttribute = styled.div`
   margin-bottom: 2px;
 `
 
-const currentDisease = 'DCM'
-
-const Variant = ({ variant }) => {
+const Variant = ({ variant, currentDisease }) => {
   if (!variant) {
     return <div />
   }

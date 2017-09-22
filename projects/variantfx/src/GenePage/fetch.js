@@ -4,8 +4,8 @@ import { getXpos } from '@broad/utilities/src/variant'
 // import TestData from '@resources/1505910855-variantfx-myh7.json'
 // export default () => new Promise(resolve => resolve(TestData))
 
-const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
-const API_URL = 'http://localhost:8007'
+const PUBLIC_API_URL = 'http://gnomad-api.broadinstitute.org/'
+const LOCAL_API_URL = 'http://localhost:8007'
 const VARIANT_FX_API_URL = 'http://variantfx.org:4000/graphql'
 
 const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
@@ -146,7 +146,7 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
   })
 }
 
-const fetchGeneData = (geneName, url = API_URL) => {
+const fetchGeneData = (geneName, url = PUBLIC_API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id

@@ -63,7 +63,7 @@ const TranscriptDrawing = ({
         width={width}
         height={height}
         stroke={'none'}
-        fill={'white'}
+        fill={'none'}
       />
       <line
         x1={0}

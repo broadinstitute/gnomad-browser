@@ -41,15 +41,19 @@ const GenePage = ({
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
+
+  // const currentDisease = 'HCM'
+  const currentDisease = 'DCM'
+
   return (
     <GenePageContainer>
       <Summary>
-        <GeneInfo />
+        <GeneInfo currentDisease={currentDisease} />
       </Summary>
       <RegionViewer />
       <GeneSettings />
       <Table />
-      <VariantPage />
+      <VariantPage currentDisease={currentDisease} />
     </GenePageContainer>
   )
 }
