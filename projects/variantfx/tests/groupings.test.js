@@ -418,8 +418,8 @@ test('getConsequenceBreakdown', (assert) => {
   const expected = {
     all: {
       OMG: [
-        454,
-        1363200
+        454, // ac
+        1363200 // an
       ],
       LMM: [
         466,
@@ -479,7 +479,6 @@ test('getConsequenceBreakdown', (assert) => {
       ],
       RBH: [
         66,
-        68940
       ]
     }
   }
