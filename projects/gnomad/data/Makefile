@@ -1,6 +1,6 @@
 #!make
 
-include ../../cluster/config.sh
+include ../../../cluster/config.sh
 
 all: variants-gnomad coverage-exome coverage-genome
 
@@ -78,3 +78,8 @@ persist:
 		"index.routing.allocation.exclude.data_node_hostname": "es-data-loading*" \
 	}'
 
+genome-parts:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	export_genomes_as_parts.py

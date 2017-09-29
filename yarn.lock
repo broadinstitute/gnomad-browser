@@ -177,7 +177,7 @@
   dependencies:
     d3-scale "^1.0.5"
 
-"@vx/shape@0.0.140", "@vx/shape@^0.0.140":
+"@vx/shape@0.0.140":
   version "0.0.140"
   resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.140.tgz#6a282d5fdf3a5752b6e938bb3debe983e89ff6d3"
   dependencies:

@@ -8,7 +8,6 @@ import { LinearGradient } from '@vx/gradient'
 import { extent, max } from 'd3-array'
 
 const data = appleStock
-
 const width = 750
 const height = 400
 
@@ -60,8 +59,9 @@ export default () => (
           top={0}
           left={0}
           label={'Close Price ($)'}
-          stroke={'#1b1a1e'}
+          stroke={'#1b1a1'}
           tickTextFill={'#1b1a1e'}
+          hideTicks
         />
 
         <AxisBottom

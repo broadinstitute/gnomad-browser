@@ -7,7 +7,7 @@ MAINTAINER MacArthur Lab
 COPY . /var/www
 WORKDIR /var/www
 
-RUN npm run build
+# RUN npm run build
 
 ENTRYPOINT ["npm"]
 CMD ["run", "docker"]
