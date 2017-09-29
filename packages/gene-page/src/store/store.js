@@ -20,7 +20,7 @@ import { makeGeneReducers } from '../resources/genes'
 import active from '../resources/active'
 import table from '../resources/table'
 import { createVariantReducer } from '../resources/variants'
-import structureViewer from '@broad/structure-viewer/src/redux'
+// import structureViewer from '@broad/structure-viewer/src/redux'
 
 const logger = createLogger()
 
@@ -40,7 +40,7 @@ export default function createGenePageStore({
     ...makeGeneReducers(variantSchema),
     table,
     search: searchReducer,
-    structureViewer,
+    // structureViewer,
     variants: createVariantReducer()
   })
 
@@ -48,7 +48,7 @@ export default function createGenePageStore({
     applyMiddleware(
       throttle(defaultWait, defaultThrottleOption),
       thunk,
-      logger,
+      // logger,
     ),
     reduxSearch({
       resourceIndexes: {

@@ -6,6 +6,11 @@
   "files": [
     "lib"
   ],
+  "scripts": {
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/tests/test.js' | ../../node_modules/.bin/tspec",
+    "test:data": "../../node_modules/.bin/babel-node ./src/tests/getTestData.js",
+    "test:watch": "../../node_modules/.bin/watch 'npm run test' src -d"
+  },
   "peerDependencies": {
     "react": "^15.5.4",
     "react-redux": "^0.24.1",
