@@ -16,11 +16,12 @@ import throttle from 'redux-throttle'
 import { createLogger } from 'redux-logger'
 import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
-import { makeGeneReducers } from '../resources/genes'
-import active from '../resources/active'
+import createGeneReducer from '../resources/genes'
+import createVariantReducer, {
+  allVariantsInCurrentDatasetAsList
+} from '../resources/variants'
+import createActiveReducer from '../resources/active'
 import table from '../resources/table'
-import { createVariantReducer } from '../resources/variants'
-// import structureViewer from '@broad/structure-viewer/src/redux'
 
 const logger = createLogger()
 
@@ -30,36 +31,30 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
   trailing: false,
 }
 
-export default function createGenePageStore({
-  searchIndexes,
-  // fetchFunction,
-  variantDatasets,
-  combinedDatasets,
-}) {
-  const variantDatasetKeys = Object.keys(variantDatasets)
+const middlewares = [throttle(defaultWait, defaultThrottleOption), thunk]
+
+export default function createGenePageStore(appSettings) {
+  if (appSettings.logger) {
+    middlewares.push(logger)
+  }
   const rootReducer = combineReducers({
-    active,
-    genes: makeGeneReducers(variantDatasetKeys),
+    active: createActiveReducer(appSettings),
+    genes: createGeneReducer(appSettings),
     table,
     search: searchReducer,
-    // structureViewer,
-    variants: createVariantReducer({ variantDatasets, combinedDatasets })
+    variants: createVariantReducer(appSettings),
   })
 
   const finalCreateStore = compose(
-    applyMiddleware(
-      throttle(defaultWait, defaultThrottleOption),
-      thunk,
-      // logger,
-    ),
-    // reduxSearch({
-    //   resourceIndexes: {
-    //     variants: searchIndexes,
-    //   },
-    //   resourceSelector: (resourceName, state) => {
-    //     return state.resources.get(resourceName)
-    //   },
-    // }),
+    applyMiddleware(...middlewares),
+    reduxSearch({
+      resourceIndexes: {
+        variants: appSettings.searchIndexes,
+      },
+      resourceSelector: (resourceName, state) => {
+        return allVariantsInCurrentDatasetAsList(state)
+      },
+    }),
   )(createStore)
 
   return finalCreateStore(rootReducer)

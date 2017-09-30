@@ -61,7 +61,8 @@ export const actions = {
   }
 }
 
-export function makeGeneReducers(variantDatasetKeys) {
+export default function createGeneReducer({ variantDatasets }) {
+  const variantDatasetKeys = Object.keys(variantDatasets)
   const State = Immutable.Record({
     isFetching: false,
     byGeneName: Immutable.OrderedMap(),

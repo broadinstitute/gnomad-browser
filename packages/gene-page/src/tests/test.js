@@ -3,7 +3,9 @@ import { Record, OrderedMap, Set, Map, Seq, List } from 'immutable'  // eslint-d
 import createGenePageStore from '../store/store'
 import data from '@resources/1506782078-gene-page-test-data.json'  // eslint-disable-line
 
-import { actions } from '../resources/genes'
+import * as fromGenes from '../resources/genes'
+import * as fromVariants from '../resources/variants'
+import * as fromActive from '../resources/active'
 
 function log (json) {
   console.log(JSON.stringify(json, null, '  '))
@@ -14,6 +16,13 @@ const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
   searchIndexes: ['variant_id'],
+  logger: false,
+  projectDefaults: {
+    startingGene: 'ARSF',
+    startingVariant: '',
+    startingPadding: 75,
+    startingVariantDataset: 'gnomadCombinedVariants',
+  },
   variantDatasets: {
     gnomadExomeVariants: {
       variant_id: null,
@@ -66,7 +75,7 @@ test('Initial state.', (assert) => {
 
 test('Receive initial gene data/variants.', (assert) => {
   const store = createGenePageStore(appSettings)
-  store.dispatch(actions.receiveGeneData('ARSF', data.data.gene))
+  store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
   const state = store.getState()
   assert.deepEqual(
     state.genes.byGeneName.get('ARSF').keySeq().toJS(),
@@ -87,11 +96,9 @@ test('Receive initial gene data/variants.', (assert) => {
 
 test('Combine variant datasets.', (assert) => {
   const store = createGenePageStore(appSettings)
-  store.dispatch(actions.receiveGeneData('ARSF', data.data.gene))
+  store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
   const state = store.getState()
 
-  const exomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadExomeVariants'])
-  const genomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadGenomeVariants'])
   const combinedVariants = state.variants.getIn(['byVariantDataset', 'gnomadCombinedVariants'])
 
   assert.equal(combinedVariants.size, 720, 'combined data set is expected size')
@@ -101,6 +108,20 @@ test('Combine variant datasets.', (assert) => {
     'entry has appropriate source keys'
   )
 
-  
+  assert.end()
+})
+
+test('Variant dataset switch + variant selectors', (assert) => {
+  const store = createGenePageStore(appSettings)
+  store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
+  const state = store.getState()
+
+  const combinedVariants = fromVariants.allVariantsInCurrentDatasetAsList(state)
+  assert.equal(combinedVariants.size, 720, 'selector gets data given state, using default variant dataset')
+
+  store.dispatch(fromActive.actions.setCurrentVariantDataset('gnomadGenomeVariants'))
+  const state2 = store.getState()
+  const genomeVariants = fromVariants.allVariantsInCurrentDatasetAsList(state2)
+  assert.equal(genomeVariants.size, 193, 'action correctly changes active variant dataset')
   assert.end()
 })

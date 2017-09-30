@@ -3,7 +3,11 @@ import { Record, Set, OrderedMap, Map, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { types as geneTypes } from './genes'
-import { regionViewerIntervals, currentVariant } from './active'
+import {
+  regionViewerIntervals,
+  currentVariant,
+  currentVariantDataset,
+} from './active'
 
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
@@ -43,7 +47,7 @@ export const actions = {
   }
 }
 
-export function createVariantReducer({ variantDatasets, combinedDatasets }) {
+export default function createVariantReducer({ variantDatasets, combinedDatasets }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
 
   const State = Record({
@@ -107,17 +111,23 @@ export function createVariantReducer({ variantDatasets, combinedDatasets }) {
   }
 }
 
-export const allVariants = createSelector(
-  [
-    state => state.variants.byVariantDataset.get('variants'),
-  ],
-  variants => variants.toList()
+const byVariantDataset = state => state.variants.byVariantDataset
+
+export const allVariantsInCurrentDatasetAsList = createSelector(
+  [currentVariantDataset, byVariantDataset],
+  (currentVariantDataset, byVariantDataset) =>
+    byVariantDataset.get(currentVariantDataset).toList()
 )
 
-export const currentVariantData = createSelector(
-  [currentVariant, state => state.variants.byVariantDataset.get('variants')],
-  (currentVariant, variants) => variants.get(currentVariant)
-)
+// export const allVariants = createSelector(
+//   [state => state.variants.byVariantDataset.get('gnomadGenomeVariants')],
+//   variants => variants.toList()
+// )
+
+// export const currentVariantData = createSelector(
+//   [currentVariant, state => state.variants.byVariantDataset.get('variants')],
+//   (currentVariant, variants) => variants.get(currentVariant)
+// )
 
 export const variantsFilteredByActiveInterval = createSelector(
   [

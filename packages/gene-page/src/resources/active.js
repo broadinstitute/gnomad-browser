@@ -6,39 +6,25 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 
 // HACK
-const getDefaultsForProject = (env) => {
-  switch (env) {
-    case 'gnomad':
-      return { startingGene: 'CFTR', padding: 75 }
-    case 'schizophrenia':
-      return { startingGene: 'GRIN2A', padding: 75 }
-    case 'dblof':
-      return { startingGene: 'CD33', padding: 75 }
-    case 'variantfx':
-      return { startingGene: 'MYH7', padding: 75, startingVariant: '14-23902974-C-A' }
-    default:
-      return { startingGene: 'PCSK9', padding: 75 }
-  }
-}
-
-const State = Immutable.Record({
-  currentGene: getDefaultsForProject(process.env.PROJECT_DEFAULTS).startingGene,
-  currentVariant: getDefaultsForProject(process.env.PROJECT_DEFAULTS).startingVariant,
-  currentNavigatorPosition: 0,
-  currentTableIndex: 0,
-  currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
-  exonPadding: getDefaultsForProject(process.env.PROJECT_DEFAULTS).padding,
-  regionViewerAttributes: {
-    offsetRegions: [{ start: 0, stop: 0 }],
-    // positionOffset: null,
-    // xScale: null,
-    // invertOffset: null,
-  },
-})
+// const getDefaultsForProject = (env) => {
+//   switch (env) {
+//     case 'gnomad':
+//       return { startingGene: 'CFTR', padding: 75 }
+//     case 'schizophrenia':
+//       return { startingGene: 'GRIN2A', padding: 75 }
+//     case 'dblof':
+//       return { startingGene: 'CD33', padding: 75 }
+//     case 'variantfx':
+//       return { startingGene: 'MYH7', padding: 75, startingVariant: '14-23902974-C-A' }
+//     default:
+//       return { startingGene: 'PCSK9', padding: 75 }
+//   }
+// }
 
 export const types = keymirror({
   SET_CURRENT_GENE: null,
   SET_CURRENT_VARIANT: null,
+  SET_CURRENT_VARIANT_DATASET: null,
   SET_CURRENT_NAVIGATOR_POSITION: null,
   SET_CURRENT_TABLE_INDEX: null,
   SET_CURRENT_TABLE_SCROLL_DATA: null,
@@ -50,6 +36,8 @@ export const types = keymirror({
 export const actions = {
   setCurrentGene: geneName => ({ type: types.SET_CURRENT_GENE, geneName }),
   setCurrentVariant: variantId => ({ type: types.SET_CURRENT_VARIANT, variantId }),
+  setCurrentVariantDataset: variantDataset =>
+    ({ type: types.SET_CURRENT_VARIANT_DATASET, variantDataset }),
 
   setNavigatorPosition: navigatorPosition => ({
     type: types.SET_CURRENT_NAVIGATOR_POSITION,
@@ -67,15 +55,7 @@ export const actions = {
     },
   }),
 
-  setCurrentTableScrollData: tableScrollData => ({
-    type: types.SET_CURRENT_TABLE_SCROLL_DATA,
-    tableScrollData,
-    meta: {
-      throttle: true,
-    }
-  }),
-
-  setRegionViewerAttributes: ({ offsetRegions}) => ({
+  setRegionViewerAttributes: ({ offsetRegions }) => ({
     type: types.SET_REGION_VIEWER_ATTRIBUTES,
     offsetRegions,
     // positionOffset,
@@ -101,6 +81,9 @@ const actionHandlers = {
   [types.SET_CURRENT_VARIANT] (state, { variantId }) {
     return state.set('currentVariant', variantId)
   },
+  [types.SET_CURRENT_VARIANT_DATASET] (state, { variantDataset }) {
+    return state.set('currentVariantDataset', variantDataset)
+  },
   [types.SET_CURRENT_NAVIGATOR_POSITION] (state, { navigatorPosition }) {
     return state.set('currentNavigatorPosition', navigatorPosition)
   },
@@ -118,20 +101,46 @@ const actionHandlers = {
   },
 }
 
+export default function ({
+  projectDefaults: {
+    startingGene,
+    startingVariant,
+    startingPadding,
+    startingVariantDataset,
+  }
+}) {
+  const State = Immutable.Record({
+    currentGene: startingGene,
+    currentVariant: startingVariant,
+    currentVariantDataset: startingVariantDataset,
+    currentNavigatorPosition: 0,
+    currentTableIndex: 0,
+    currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
+    exonPadding: startingPadding,
+    regionViewerAttributes: {
+      offsetRegions: [{ start: 0, stop: 0 }],
+      // positionOffset: null,
+      // xScale: null,
+      // invertOffset: null,
+    },
+  })
+  function reducer (state = new State(), action: Object): State {
+    const { type } = action
+    if (type in actionHandlers) {
+      return actionHandlers[type](state, action)
+    }
+    return state
+  }
+
+  return reducer
+}
+
 export const currentGene = state => state.active.currentGene
 export const currentVariant = state => state.active.currentVariant
+export const currentVariantDataset = state => state.active.currentVariantDataset
 export const currentNavigatorPosition = state => state.active.currentNavigatorPosition
 export const currentTableIndex = state => state.active.currentTableIndex
 export const currentTableScrollData = state => state.active.currentTableScrollData
 export const exonPadding = state => state.active.exonPadding
-
 export const regionViewerIntervals = state =>
   state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
-
-export default function reducer (state = new State(), action: Object): State {
-  const { type } = action
-  if (type in actionHandlers) {
-    return actionHandlers[type](state, action)
-  }
-  return state
-}

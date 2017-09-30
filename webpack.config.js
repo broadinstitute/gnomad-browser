@@ -10,7 +10,6 @@ const isDev = (process.env.NODE_ENV === 'development')
 
 // const API_URL = config.get('API_URL')
 const API_URL = 'http://gnomad-api.broadinstitute.org'
-console.log('Webpack setting API: ', API_URL)
 
 const defineEnvPlugin = new webpack.DefinePlugin({
   __DEV__: isDev,
