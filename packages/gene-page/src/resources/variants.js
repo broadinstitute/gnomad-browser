@@ -43,31 +43,13 @@ export const actions = {
   }
 }
 
-const exampleVariantSchema = {
-  variants: {
-    id: null,
-    variant_id: null,
-    pos: null,
-    xpos: null,
-    hgvsp: null,
-    hgvsc: null,
-    filters: null,
-    rsid: null,
-    consequence: null,
-    allele_count: null,
-    allele_num: null,
-    allele_freq: null,
-    hom_count: null,
-    lof: null,
-  },
-}
-
-export function createVariantReducer(variantSchema = exampleVariantSchema) {
-  const datasetKeys = Object.keys(variantSchema)
+export function createVariantReducer({ variantDatasets, combinedDatasets }) {
+  const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
 
   const State = Record({
     isFetching: false,
-    byVariantDataset: datasetKeys.reduce((acc, dataset) => (acc.set(dataset, Map())), OrderedMap()),
+    byVariantDataset: datasetKeys.reduce((acc, dataset) =>
+      (acc.set(dataset, Map())), OrderedMap()),
   })
 
   const actionHandlers = {
@@ -88,10 +70,30 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
+        let variantMap
+        if (variantDatasets[datasetKey]) {
+          variantMap = Map(geneData.get(datasetKey).map(v =>
+            ([
+              v.get('variant_id'),
+              v.set('id', v.get('variant_id'))
+                .set('datasets', Set([datasetKey]))
+            ])
+          ))
+        } else if (combinedDatasets[datasetKey]) {
+          const sources = combinedDatasets[datasetKey].sources
+          const combineKeys = combinedDatasets[datasetKey].combineKeys
+          variantMap = sources.reduce((acc, dataset) => {
+            return acc.mergeDeepWith((oldValue, newValue, key) => {
+              if (combineKeys[key]) {
+                return combineKeys[key](oldValue, newValue)
+              }
+              return oldValue
+            }, nextState.byVariantDataset.get(dataset))
+          }, OrderedMap())
+        }
         return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(datasetKey, Map(geneData.get(datasetKey).map(v =>
-            ([v.get('variant_id'), v.set('id', v.get('variant_id'))])))))
-            // .merge(geneData[dataset].map(v => ([v.variant_id, v])))
+          .set(datasetKey, variantMap)
+        )
       }, state)
     },
   }
@@ -109,7 +111,7 @@ export const allVariants = createSelector(
   [
     state => state.variants.byVariantDataset.get('variants'),
   ],
-  (variants) => variants.toList()
+  variants => variants.toList()
 )
 
 export const currentVariantData = createSelector(
@@ -124,7 +126,8 @@ export const variantsFilteredByActiveInterval = createSelector(
   ],
   (variants, intervals) => variants.take(10).filter(({ pos }) => {
     console.log(intervals)
-    const inIntervals = intervals.some(([start, stop]) => start < pos && pos < stop ).sort((a, b) => a.pos - b.pos)
+    const inIntervals = intervals.some(([start, stop]) =>
+      start < pos && pos < stop).sort((a, b) => a.pos - b.pos)
     console.log(inIntervals)
     return inIntervals
   })

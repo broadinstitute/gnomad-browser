@@ -68,35 +68,13 @@ export function makeGeneReducers(variantDatasetKeys) {
     allGeneNames: Immutable.Set(),
   })
 
-  // const ResourcesState = Immutable.Record({
-  //   variants: Immutable.OrderedMap(),
-  // })
-  //
-  // function prepareVariantData(geneData) {
-  //   const VariantRecord = Immutable.Record(variantSchema)
-  //
-  //   const variantData = {}
-  //   geneData.variants.forEach((variant) => {
-  //     let id //v4()
-  //     if (variant.variant_id) {
-  //       id = variant.variant_id
-  //     } else {
-  //       id = `${variant.chr}-${variant.pos}-${variant.ref}-${variant.alt}`
-  //     }
-  //
-  //     const xpos = variant.xpos ? variant.xpos : getXpos(variant.chr, variant.pos)
-  //     variantData[id] = new VariantRecord({ id, ...variant, variant_id: id, xpos, })
-  //   })
-  //   return Immutable.OrderedMap(variantData)
-  // }
-
   const actionHandlers = {
     [types.REQUEST_GENE_DATA] (state) {
       return state.set('isFetching', true)
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
       const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
-        return geneData.delete(variantDataKey)
+        return acc.delete(variantDataKey)
       }, geneData)
 
       return (

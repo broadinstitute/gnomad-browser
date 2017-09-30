@@ -34,6 +34,7 @@ export default function createGenePageStore({
   searchIndexes,
   // fetchFunction,
   variantDatasets,
+  combinedDatasets,
 }) {
   const variantDatasetKeys = Object.keys(variantDatasets)
   const rootReducer = combineReducers({
@@ -42,7 +43,7 @@ export default function createGenePageStore({
     table,
     search: searchReducer,
     // structureViewer,
-    variants: createVariantReducer(variantDatasets)
+    variants: createVariantReducer({ variantDatasets, combinedDatasets })
   })
 
   const finalCreateStore = compose(

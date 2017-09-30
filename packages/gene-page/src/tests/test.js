@@ -1,5 +1,5 @@
-import test from 'tape'
-import { Record, OrderedMap, Set, Map, Seq } from 'immutable'
+import test from 'tape'  // eslint-disable-line
+import { Record, OrderedMap, Set, Map, Seq, List } from 'immutable'  // eslint-disable-line
 import createGenePageStore from '../store/store'
 import data from '@resources/1506782078-gene-page-test-data.json'  // eslint-disable-line
 
@@ -8,6 +8,9 @@ import { actions } from '../resources/genes'
 function log (json) {
   console.log(JSON.stringify(json, null, '  '))
 }
+
+const sum = (oldValue, newValue) => oldValue + newValue
+const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
   searchIndexes: ['variant_id'],
@@ -28,30 +31,76 @@ const appSettings = {
       allele_freq: null,
       filter: null,
     },
+  },
+  combinedDatasets: {
+    gnomadCombinedVariants: {
+      sources: ['gnomadExomeVariants', 'gnomadGenomeVariants'],
+      combineKeys: {
+        variant_id: sum,
+        xpos: sum,
+        allele_count: sum,
+        filter: concat,
+        allele_freq: () => null,
+        datasets: [],
+      }
+    }
   }
 }
 
 test('Initial state.', (assert) => {
   const store = createGenePageStore(appSettings)
-  assert.true(OrderedMap.isOrderedMap(store.getState().genes.byGeneName), 'Gene data by name is ordered map')
-  assert.false(store.getState().genes.isFetching, 'Initial gene data fetching state set to false')
-  assert.true(Set.isSet(store.getState().genes.allGeneNames), 'Set of all gene names fetched')
+  const initialState = store.getState()
+  assert.true(OrderedMap.isOrderedMap(initialState.genes.byGeneName), 'Gene data by name is ordered map')
+  assert.false(initialState.genes.isFetching, 'Initial gene data fetching state set to false')
+  assert.true(Set.isSet(initialState.genes.allGeneNames), 'Set of all gene names fetched')
 
-  assert.true(OrderedMap.isOrderedMap(store.getState().variants.byVariantDataset), 'Variant datasets ordered map')
-  assert.false(store.getState().variants.isFetching, 'Variants fetching state initializes false')
+  assert.true(OrderedMap.isOrderedMap(initialState.variants.byVariantDataset), 'Variant datasets ordered map')
+  assert.false(initialState.variants.isFetching, 'Variants fetching state initializes false')
   assert.deepEqual(
-    store.getState().variants.byVariantDataset.keySeq().toJS(),
-    ['gnomadExomeVariants', 'gnomadGenomeVariants'],
-    'Variant dataset keys said according to app settings'
+    initialState.variants.byVariantDataset.keySeq().toJS(),
+    ['gnomadExomeVariants', 'gnomadGenomeVariants', 'gnomadCombinedVariants'],
+    'Variant dataset keys set according to app settings'
   )
   assert.end()
 })
 
-test('Assertions with tape.', (assert) => {
-  // log(Object.keys(data.data.gene))
+test('Receive initial gene data/variants.', (assert) => {
   const store = createGenePageStore(appSettings)
-  // log(store.getState().variants.byVariantDataset)
   store.dispatch(actions.receiveGeneData('ARSF', data.data.gene))
-  // log(store.getState().variants.get('byVariantDataset'))
+  const state = store.getState()
+  assert.deepEqual(
+    state.genes.byGeneName.get('ARSF').keySeq().toJS(),
+    ['gene_name', 'xstart', 'xstop'],
+    'Expected gene fields set'
+  )
+  const exomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadExomeVariants'])
+  const genomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadGenomeVariants'])
+  assert.equal(exomeVariants.size, 691, 'data set 1 is expected size')
+  assert.equal(genomeVariants.size, 193, 'data set 2 is expected size')
+  assert.deepEqual(
+    exomeVariants.first().keySeq().toJS(),
+    [...Object.keys(appSettings.variantDatasets.gnomadExomeVariants), 'id', 'datasets'],
+    'A variant has expected keys and id added'
+  )
+  assert.end()
+})
+
+test('Combine variant datasets.', (assert) => {
+  const store = createGenePageStore(appSettings)
+  store.dispatch(actions.receiveGeneData('ARSF', data.data.gene))
+  const state = store.getState()
+
+  const exomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadExomeVariants'])
+  const genomeVariants = state.variants.getIn(['byVariantDataset', 'gnomadGenomeVariants'])
+  const combinedVariants = state.variants.getIn(['byVariantDataset', 'gnomadCombinedVariants'])
+
+  assert.equal(combinedVariants.size, 720, 'combined data set is expected size')
+  assert.deepEqual(
+    combinedVariants.first().get('datasets').toJS(),
+    ['gnomadExomeVariants', 'gnomadGenomeVariants'],
+    'entry has appropriate source keys'
+  )
+
+  
   assert.end()
 })
