@@ -27,7 +27,7 @@ export const actions = {
   receiveGeneData: (geneName, geneData) => ({
     type: types.RECEIVE_GENE_DATA,
     geneName,
-    geneData,
+    geneData: Immutable.fromJS(geneData),
   }),
 
   fetchPageDataByGeneName (geneName, geneFetchFunction) {
@@ -61,53 +61,49 @@ export const actions = {
   }
 }
 
-export function makeGeneReducers(variantSchema) {
+export function makeGeneReducers(variantDatasetKeys) {
   const State = Immutable.Record({
     isFetching: false,
     byGeneName: Immutable.OrderedMap(),
     allGeneNames: Immutable.Set(),
   })
 
-  const ResourcesState = Immutable.Record({
-    variants: Immutable.OrderedMap(),
-  })
-
-  function prepareVariantData(geneData) {
-    const VariantRecord = Immutable.Record(variantSchema)
-
-    const variantData = {}
-    geneData.variants.forEach((variant) => {
-      let id //v4()
-      if (variant.variant_id) {
-        id = variant.variant_id
-      } else {
-        id = `${variant.chr}-${variant.pos}-${variant.ref}-${variant.alt}`
-      }
-
-      const xpos = variant.xpos ? variant.xpos : getXpos(variant.chr, variant.pos)
-      variantData[id] = new VariantRecord({ id, ...variant, variant_id: id, xpos, })
-    })
-    return Immutable.OrderedMap(variantData)
-  }
+  // const ResourcesState = Immutable.Record({
+  //   variants: Immutable.OrderedMap(),
+  // })
+  //
+  // function prepareVariantData(geneData) {
+  //   const VariantRecord = Immutable.Record(variantSchema)
+  //
+  //   const variantData = {}
+  //   geneData.variants.forEach((variant) => {
+  //     let id //v4()
+  //     if (variant.variant_id) {
+  //       id = variant.variant_id
+  //     } else {
+  //       id = `${variant.chr}-${variant.pos}-${variant.ref}-${variant.alt}`
+  //     }
+  //
+  //     const xpos = variant.xpos ? variant.xpos : getXpos(variant.chr, variant.pos)
+  //     variantData[id] = new VariantRecord({ id, ...variant, variant_id: id, xpos, })
+  //   })
+  //   return Immutable.OrderedMap(variantData)
+  // }
 
   const actionHandlers = {
     [types.REQUEST_GENE_DATA] (state) {
       return state.set('isFetching', true)
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+      const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
+        return geneData.delete(variantDataKey)
+      }, geneData)
+
       return (
         state
           .set('isFetching', false)
-          .set('byGeneName', state.byGeneName.set(geneName, Immutable.fromJS(geneData)))
+          .set('byGeneName', state.byGeneName.set(geneName, geneDataOnly))
           .set('allGeneNames', state.allGeneNames.add(geneName))
-      )
-    },
-  }
-
-  const resourcesHandlers = {
-    [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
-      return (
-        state.set('variants', prepareVariantData(geneData))
       )
     },
   }
@@ -119,16 +115,7 @@ export function makeGeneReducers(variantSchema) {
     }
     return state
   }
-
-  function resources(state = new ResourcesState(), action) {
-    const { type } = action
-    if (type in resourcesHandlers) {
-      return resourcesHandlers[type](state, action)
-    }
-    return state
-  }
-
-  return ({ genes, resources })
+  return genes
 }
 
 export const byGeneName = state => state.genes.byGeneName

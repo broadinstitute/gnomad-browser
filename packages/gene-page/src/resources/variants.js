@@ -37,7 +37,7 @@ export const actions = {
   fetchVariantsIfNeeded(xstart, xstop, variantFetchFunction) {
     return (dispatch, getState) => {
       if (actions.shouldFetchVariants(getState(), xstart, xstop)) {
-        return dispatch(actions.fetchVariantsByStartStop(variantFetchFunction, xstart, xstop))
+        return dispatch(actions.fetchVareiantsByStartStop(variantFetchFunction, xstart, xstop))
       }
     }
   }
@@ -60,29 +60,14 @@ const exampleVariantSchema = {
     hom_count: null,
     lof: null,
   },
-  // gnomadGenomes: {
-  //   id: null,
-  //   variant_id: null,
-  //   pos: null,
-  //   xpos: null,
-  //   hgvsp: null,
-  //   hgvsc: null,
-  //   filters: null,
-  //   rsid: null,
-  //   consequence: null,
-  //   allele_count: null,
-  //   allele_num: null,
-  //   allele_freq: null,
-  //   hom_count: null,
-  // },
 }
 
 export function createVariantReducer(variantSchema = exampleVariantSchema) {
-  const datasets = Object.keys(variantSchema)
+  const datasetKeys = Object.keys(variantSchema)
 
   const State = Record({
     isFetching: false,
-    byVariantDataset: datasets.reduce((acc, dataset) => (acc.set(dataset, Map())), OrderedMap()),
+    byVariantDataset: datasetKeys.reduce((acc, dataset) => (acc.set(dataset, Map())), OrderedMap()),
   })
 
   const actionHandlers = {
@@ -91,7 +76,7 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
     },
 
     [types.RECEIVE_VARIANTS] (state, payload) {
-      return datasets.reduce((nextState, dataset) => {
+      return datasetKeys.reduce((nextState, dataset) => {
         return nextState.byVariantDataset.set(
           dataset,
           nextState.byVariantDataset
@@ -102,10 +87,11 @@ export function createVariantReducer(variantSchema = exampleVariantSchema) {
     },
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
-      return datasets.reduce((nextState, dataset) => {
+      return datasetKeys.reduce((nextState, datasetKey) => {
         return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(dataset, Map(geneData[dataset].map(v => ([v.variant_id, v])))))
-          // .merge(geneData[dataset].map(v => ([v.variant_id, v])))
+          .set(datasetKey, Map(geneData.get(datasetKey).map(v =>
+            ([v.get('variant_id'), v.set('id', v.get('variant_id'))])))))
+            // .merge(geneData[dataset].map(v => ([v.variant_id, v])))
       }, state)
     },
   }

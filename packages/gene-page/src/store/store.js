@@ -33,15 +33,16 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
 export default function createGenePageStore({
   searchIndexes,
   // fetchFunction,
-  variantSchema,
+  variantDatasets,
 }) {
+  const variantDatasetKeys = Object.keys(variantDatasets)
   const rootReducer = combineReducers({
     active,
-    ...makeGeneReducers(variantSchema),
+    genes: makeGeneReducers(variantDatasetKeys),
     table,
     search: searchReducer,
     // structureViewer,
-    variants: createVariantReducer()
+    variants: createVariantReducer(variantDatasets)
   })
 
   const finalCreateStore = compose(
@@ -50,14 +51,14 @@ export default function createGenePageStore({
       thunk,
       // logger,
     ),
-    reduxSearch({
-      resourceIndexes: {
-        variants: searchIndexes,
-      },
-      resourceSelector: (resourceName, state) => {
-        return state.resources.get(resourceName)
-      },
-    }),
+    // reduxSearch({
+    //   resourceIndexes: {
+    //     variants: searchIndexes,
+    //   },
+    //   resourceSelector: (resourceName, state) => {
+    //     return state.resources.get(resourceName)
+    //   },
+    // }),
   )(createStore)
 
   return finalCreateStore(rootReducer)
