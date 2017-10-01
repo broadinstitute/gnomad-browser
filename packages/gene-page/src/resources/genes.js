@@ -36,8 +36,7 @@ export const actions = {
       geneFetchFunction(geneName)
         .then((geneData) => {
           dispatch(actions.receiveGeneData(geneName, geneData))
-        }
-      )
+        })
     }
   },
 

@@ -1,25 +1,12 @@
 // @flow
 /* eslint-disable space-before-function-paren */
 /* eslint-disable comma-dangle */
+/* eslint-disable no-shadow */
 
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
-
-// HACK
-// const getDefaultsForProject = (env) => {
-//   switch (env) {
-//     case 'gnomad':
-//       return { startingGene: 'CFTR', padding: 75 }
-//     case 'schizophrenia':
-//       return { startingGene: 'GRIN2A', padding: 75 }
-//     case 'dblof':
-//       return { startingGene: 'CD33', padding: 75 }
-//     case 'variantfx':
-//       return { startingGene: 'MYH7', padding: 75, startingVariant: '14-23902974-C-A' }
-//     default:
-//       return { startingGene: 'PCSK9', padding: 75 }
-//   }
-// }
+import { createSelector } from 'reselect'
+import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 export const types = keymirror({
   SET_CURRENT_GENE: null,
@@ -65,13 +52,21 @@ export const actions = {
 
   setExonPadding: padding => ({ type: types.SET_EXON_PADDING, padding }),
 
+  setVisibleInTable: (range) => {
+    return {
+      type: types.SET_VISIBLE_IN_TABLE,
+      range,
+    }
+  },
+
   onNavigatorClick (tableIndex, position) {
     return (dispatch) => {
       dispatch({ type: types.ORDER_VARIANTS_BY_POSITION })
       dispatch(actions.setCurrentTableIndex(tableIndex))
       dispatch(actions.setNavigatorPosition(position))
     }
-  }
+  },
+
 }
 
 const actionHandlers = {
@@ -93,15 +88,28 @@ const actionHandlers = {
   [types.SET_CURRENT_TABLE_SCROLL_DATA] (state, { tableScrollData }) {
     return state.set('currentTableScrollData', tableScrollData)
   },
-  [types.SET_REGION_VIEWER_ATTRIBUTES] (state, { offsetRegions, positionOffset, xScale, invertOffset }) {
+  [types.SET_REGION_VIEWER_ATTRIBUTES] (state, {
+    offsetRegions,
+    positionOffset,
+    xScale,
+    invertOffset
+  }) {
     return state.set('regionViewerAttributes', { offsetRegions, positionOffset, xScale, invertOffset })
   },
   [types.SET_EXON_PADDING] (state, { padding }) {
     return state.set('exonPadding', padding)
   },
+
+  [types.SET_VISIBLE_IN_TABLE] (state, { range }) {
+    const [min, max] = state.get('visibleInTable')
+    if (min < 0 || max < 0) {
+      return state.set('visibleInTable', [0, 15])
+    }
+    return state.set('visibleInTable', range)
+  },
 }
 
-export default function ({
+export default function createActiveReducer ({
   projectDefaults: {
     startingGene,
     startingVariant,
@@ -123,6 +131,7 @@ export default function ({
       // xScale: null,
       // invertOffset: null,
     },
+    visibleInTable: [0, 15],
   })
   function reducer (state = new State(), action: Object): State {
     const { type } = action
@@ -131,7 +140,6 @@ export default function ({
     }
     return state
   }
-
   return reducer
 }
 
@@ -143,4 +151,14 @@ export const currentTableIndex = state => state.active.currentTableIndex
 export const currentTableScrollData = state => state.active.currentTableScrollData
 export const exonPadding = state => state.active.exonPadding
 export const regionViewerIntervals = state =>
-  state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
+state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
+//
+// export const tablePosition = createSelector(
+//   [currentNavigatorPosition, fromVariant.finalFilteredVariants],
+//   (currentNavigatorPosition, variants) => {
+//     return getTableIndexByPosition(
+//       currentNavigatorPosition,
+//       variants,
+//     )
+//   }
+// )

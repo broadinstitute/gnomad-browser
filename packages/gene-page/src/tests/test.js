@@ -10,7 +10,6 @@ import * as fromActive from '../resources/active'
 function log (json) {
   console.log(JSON.stringify(json, null, '  '))
 }
-
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
@@ -125,3 +124,40 @@ test('Variant dataset switch + variant selectors', (assert) => {
   assert.equal(genomeVariants.size, 193, 'action correctly changes active variant dataset')
   assert.end()
 })
+
+test.only('Variant search', (assert) => {
+  const store = createGenePageStore(appSettings)
+  store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
+  const state = store.getState()
+
+  const variants = fromVariants.visibleVariantsById(state)
+  assert.equal(variants.size, 720, 'all variants by default')
+  store.dispatch(fromVariants.actions.setVariantFilter('rare'))
+  const state2 = store.getState()
+  const variants2 = fromVariants.visibleVariantsById(state2)
+  assert.equal(variants2.size, 402, 'filter variants by something')
+
+  assert.equal(fromVariants.variantSortKey(state2), 'pos')
+  assert.true(fromVariants.variantSortAscending(state2))
+  assert.equal(variants2.first().get('pos'), 2976602, 'initial sort (position)')
+
+  store.dispatch(fromVariants.actions.setVariantSort('pos'))
+  const state3 = store.getState()
+  assert.equal(fromVariants.variantSortKey(state3), 'pos')
+  assert.false(fromVariants.variantSortAscending(state3))
+  const variants3 = fromVariants.visibleVariantsById(state3)
+  assert.equal(variants3.first().get('pos'), 3030635, 'toggle sort (position)')
+
+  assert.end()
+})
+
+// test('Variant search', (assert) => {
+//   const store = createGenePageStore(appSettings)
+//   store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
+//   const state = store.getState()
+//
+//   const searchResults = fromVariants.variantSearchResults(state)
+//   // log(searchResults(state))
+//
+//   assert.end()
+// })

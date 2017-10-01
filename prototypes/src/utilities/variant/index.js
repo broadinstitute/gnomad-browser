@@ -24,10 +24,19 @@ export const getPositionsToFetch = (
   return fetchThese
 }
 
-export const getTableIndexByPosition = (position, variants) =>
-  variants.findIndex((variant, i) => {
+export const getTableIndexByPosition = (position, variants) => {
+  if (variants.size) {
+    return variants.findIndex((variant, i) => {
+      if (variants.get(i + 1)) {
+        return position >= variant.get('pos') && position <= variants.get(i + 1).get('pos')
+      }
+      return variants.length - 1
+    })
+  }
+  return variants.findIndex((variant, i) => {
     if (variants[i + 1]) {
       return position >= variant.pos && position <= variants[i + 1].pos
     }
     return variants.length - 1
   })
+}

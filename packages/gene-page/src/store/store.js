@@ -21,7 +21,6 @@ import createVariantReducer, {
   allVariantsInCurrentDatasetAsList
 } from '../resources/variants'
 import createActiveReducer from '../resources/active'
-import table from '../resources/table'
 
 const logger = createLogger()
 
@@ -40,7 +39,6 @@ export default function createGenePageStore(appSettings) {
   const rootReducer = combineReducers({
     active: createActiveReducer(appSettings),
     genes: createGeneReducer(appSettings),
-    table,
     search: searchReducer,
     variants: createVariantReducer(appSettings),
   })
