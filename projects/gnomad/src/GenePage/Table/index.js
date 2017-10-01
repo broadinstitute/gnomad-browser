@@ -15,6 +15,7 @@ import {
   variantSearchText,
   searchFilteredVariants,
   allVariantsInCurrentDatasetAsList,
+  finalFilteredVariants,
   visibleVariantsList,
   actions as variantActions,
 } from '@broad/gene-page/src/resources/variants'
@@ -71,7 +72,7 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    variants: visibleVariantsList(state),
+    variants: finalFilteredVariants(state),
     tablePosition: tablePosition(state),
     searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,

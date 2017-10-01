@@ -14,7 +14,7 @@ const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
-  searchIndexes: ['variant_id', 'consequence', 'hgvsp', 'hgvsc'],
+  searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
   logger: true,
   projectDefaults: {
     startingGene: 'ARSF',

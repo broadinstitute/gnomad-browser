@@ -49,10 +49,11 @@ export default function createGenePageStore(appSettings) {
     reduxSearch({
       resourceIndexes: {
         gnomadExomeVariants: appSettings.searchIndexes,
+        gnomadGenomeVariants: appSettings.searchIndexes,
+        gnomadCombinedVariants: appSettings.searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        console.log('from resource selector', resourceName, state.variants.byVariantDataset.get('gnomadCombinedVariants').first())
-        return state.variants.byVariantDataset.get('gnomadExomeVariants')
+        return state.variants.byVariantDataset.get(resourceName)
       },
     }),
   )(createStore)

@@ -6,9 +6,8 @@ import { createSearchAction, getSearchSelectors } from 'redux-search'
 
 import {
   isCategoryLoF,
-  isCategoryMissense,
   isCategoryMissenseOrLoF,
- } from '@broad/utilities/src/constants/categoryDefinitions'
+} from '@broad/utilities/src/constants/categoryDefinitions'
 
 import { types as geneTypes } from './genes'
 import * as fromActive from './active'
@@ -55,7 +54,7 @@ export const actions = {
   fetchVariantsIfNeeded(xstart, xstop, variantFetchFunction) {
     return (dispatch, getState) => {  // eslint-disable-line
       if (actions.shouldFetchVariants(getState(), xstart, xstop)) {
-        return dispatch(actions.fetchVareiantsByStartStop(variantFetchFunction, xstart, xstop))
+        return dispatch(actions.fetchVariantsByStartStop(variantFetchFunction, xstart, xstop))
       }
     }
   },
@@ -74,7 +73,8 @@ export const actions = {
     }
   },
 
-  searchVariants: createSearchAction('gnomadExomeVariants')
+  searchVariants: text => (dispatch, getState) =>
+    dispatch(createSearchAction(getState().variants.currentVariantDataset)(text))
 }
 
 export default function createVariantReducer({
@@ -135,10 +135,6 @@ export default function createVariantReducer({
       return datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
         if (variantDatasets[datasetKey]) {
-          // variantMap = Map(geneData.get(datasetKey).map(v => ([
-          //   v.get('variant_id'),
-          //   v.set('id', v.get('variant_id')).set('datasets', Set([datasetKey]))
-          // ])))
           geneData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant
@@ -198,7 +194,7 @@ export default function createVariantReducer({
 const byVariantDataset = state => state.variants.byVariantDataset
 export const currentVariant = state => state.variants.currentVariant
 export const currentVariantDataset = state => state.variants.currentVariantDataset
-
+export const variantDatasetKeys = state => state.variants.byVariantDataset.seqKey()
 
 export const allVariantsInCurrentDataset = createSelector(
   [currentVariantDataset, byVariantDataset],
@@ -225,8 +221,6 @@ export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 
-
-
 const sortVariants = (variants, key, ascending) => {
   if (key === 'variant_id') {
     return (
@@ -246,7 +240,8 @@ export const visibleVariantsById = createSelector([
   allVariantsInCurrentDataset,
   variantSortKey,
   variantSortAscending,
-  variantFilter
+  variantFilter,
+  currentVariantDataset,
 ], (variants, variantSortKey, variantSortAscending, variantFilter) => {
   let filteredVariants
   if (variantFilter === 'all') {
@@ -287,17 +282,26 @@ export const visibleVariantsList = createSelector(
  * Redux search selectors
  */
 
-const variantSelectors = getSearchSelectors({
-  resourceName: 'gnomadExomeVariants',
-  resourceSelector: (resourceName, state) => state.variants.byVariantDataset.get(resourceName)
-})
+const searchSelectors = (state) => {
+  const dataset = state.variants.currentVariantDataset
+  return getSearchSelectors({
+    resourceName: dataset,
+    resourceSelector: (resourceName, state) =>
+      state.variants.byVariantDataset.get(dataset)
+  })
+}
 
-export const variantSearchText = variantSelectors.text
-export const filteredIdList = createSelector([variantSelectors.result], result => List(result))
-export const unfilteredResult = createSelector([variantSelectors.unfilteredResult], result => List(result))
+export const variantSearchText = state => searchSelectors(state).text(state)
+export const variantSearchResult = state => searchSelectors(state).result(state)
+
+
+export const filteredIdList = createSelector(
+  [variantSearchResult, currentVariantDataset],
+  result => List(result)
+)
 
 export const finalFilteredVariants = createSelector(
-  [visibleVariantsById, filteredIdList],
+  [visibleVariantsById, filteredIdList, currentVariantDataset],
   (visibleVariantsById, filteredIdList) => {
     if (filteredIdList.size === 0) {
       return visibleVariantsById.toList()

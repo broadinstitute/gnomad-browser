@@ -145,9 +145,9 @@ const getDataCell = (field, dataRow, searchText, i) => {
   const cellText = field.searchable ? (
     <Highlighter
       searchWords={searchText.split(/\s+/)}
-      textToHighlight={`${dataRow.get(dataKey)}`}
+      textToHighlight={`${dataRow[dataKey]}`}
     />
-  ) : dataRow.get(dataKey)
+  ) : dataRow[dataKey]
 
   switch (dataType) {
     case 'string':
