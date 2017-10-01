@@ -73,8 +73,7 @@ export const actions = {
     }
   },
 
-  searchVariants: text => (dispatch, getState) =>
-    dispatch(createSearchAction(getState().variants.currentVariantDataset)(text))
+  searchVariants: createSearchAction('variants')
 }
 
 export default function createVariantReducer({
@@ -241,7 +240,6 @@ export const visibleVariantsById = createSelector([
   variantSortKey,
   variantSortAscending,
   variantFilter,
-  currentVariantDataset,
 ], (variants, variantSortKey, variantSortAscending, variantFilter) => {
   let filteredVariants
   if (variantFilter === 'all') {
@@ -264,6 +262,33 @@ export const visibleVariantsList = createSelector(
   [visibleVariantsById], visibleVariantsById => visibleVariantsById.toList()
 )
 
+/**
+ * Redux search selectors
+ */
+
+const searchSelectors = getSearchSelectors({
+  resourceName: 'variants',
+  resourceSelector: (resourceName, state) => visibleVariantsById(state),
+})
+export const variantSearchText = searchSelectors.text
+export const variantSearchResult = searchSelectors.result
+
+export const filteredIdList = createSelector(
+  [variantSearchResult],
+  result => List(result)
+)
+
+export const finalFilteredVariants = createSelector(
+  [visibleVariantsById, filteredIdList],
+  (visibleVariantsById, filteredIdList) => {
+    if (filteredIdList.size === 0) {
+      return visibleVariantsById.toList()
+    }
+    return filteredIdList.map(id => visibleVariantsById.get(id))
+  }
+)
+
+
 // export const variantsFilteredByActiveInterval = createSelector(
 //   [
 //     state => state.variants.byVariantDataset.get('variants'),
@@ -277,35 +302,3 @@ export const visibleVariantsList = createSelector(
 //     return inIntervals
 //   })
 // )
-
-/**
- * Redux search selectors
- */
-
-const searchSelectors = (state) => {
-  const dataset = state.variants.currentVariantDataset
-  return getSearchSelectors({
-    resourceName: dataset,
-    resourceSelector: (resourceName, state) =>
-      state.variants.byVariantDataset.get(dataset)
-  })
-}
-
-export const variantSearchText = state => searchSelectors(state).text(state)
-export const variantSearchResult = state => searchSelectors(state).result(state)
-
-
-export const filteredIdList = createSelector(
-  [variantSearchResult, currentVariantDataset],
-  result => List(result)
-)
-
-export const finalFilteredVariants = createSelector(
-  [visibleVariantsById, filteredIdList, currentVariantDataset],
-  (visibleVariantsById, filteredIdList) => {
-    if (filteredIdList.size === 0) {
-      return visibleVariantsById.toList()
-    }
-    return filteredIdList.map(id => visibleVariantsById.get(id))
-  }
-)
