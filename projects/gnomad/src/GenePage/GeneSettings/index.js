@@ -15,7 +15,7 @@ import TextField from 'material-ui/TextField'
 import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
-import { actions as tableActions } from '@broad/gene-page/src/resources/table'
+import { actions as variantActions } from '@broad/gene-page/src/resources/variants'
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { MaterialButtonRaised } from '@broad/ui'
 
@@ -167,7 +167,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
-    searchVariants: searchText => dispatch(tableActions.searchVariants(searchText))
+    searchVariants: searchText => dispatch(variantActions.searchVariants(searchText))
   }
 }
 

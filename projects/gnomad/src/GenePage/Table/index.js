@@ -9,14 +9,15 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import VariantTable from '@broad/table'
 
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { tablePosition, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
-  tablePosition,
-  searchText,
+  variantSearchText,
   searchFilteredVariants,
-  actions as tableActions
-} from '@broad/gene-page/src/resources/table'
+  allVariantsInCurrentDatasetAsList,
+  visibleVariantsList,
+  actions as variantActions,
+} from '@broad/gene-page/src/resources/variants'
 
 import tableConfig from './tableConfig'
 
@@ -29,6 +30,7 @@ const GnomadVariantTable = ({
   tablePosition,
   searchText,
 }) => {
+  console.log(variants)
   const tConfig = tableConfig(setVariantSort)
   const scrollBarWidth = 40
   const paddingWidth = tConfig.fields.length * 40
@@ -70,16 +72,16 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    variants: searchFilteredVariants(state),
+    variants: visibleVariantsList(state),
     tablePosition: tablePosition(state),
-    searchText: searchText(state),
+    searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
-    setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
+    setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setCurrentVariant: variantId => dispatch(variantActions.setCurrentVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>
       dispatch(activeActions.setCurrentTableScrollData(scrollData)),

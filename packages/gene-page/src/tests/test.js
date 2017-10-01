@@ -5,7 +5,6 @@ import data from '@resources/1506782078-gene-page-test-data.json'  // eslint-dis
 
 import * as fromGenes from '../resources/genes'
 import * as fromVariants from '../resources/variants'
-import * as fromActive from '../resources/active'
 
 function log (json) {
   console.log(JSON.stringify(json, null, '  '))
@@ -118,14 +117,14 @@ test('Variant dataset switch + variant selectors', (assert) => {
   const combinedVariants = fromVariants.allVariantsInCurrentDatasetAsList(state)
   assert.equal(combinedVariants.size, 720, 'selector gets data given state, using default variant dataset')
 
-  store.dispatch(fromActive.actions.setCurrentVariantDataset('gnomadGenomeVariants'))
+  store.dispatch(fromVariants.actions.setCurrentVariantDataset('gnomadGenomeVariants'))
   const state2 = store.getState()
   const genomeVariants = fromVariants.allVariantsInCurrentDatasetAsList(state2)
   assert.equal(genomeVariants.size, 193, 'action correctly changes active variant dataset')
   assert.end()
 })
 
-test.only('Variant search', (assert) => {
+test('Variant search', (assert) => {
   const store = createGenePageStore(appSettings)
   store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
   const state = store.getState()
@@ -135,7 +134,7 @@ test.only('Variant search', (assert) => {
   store.dispatch(fromVariants.actions.setVariantFilter('rare'))
   const state2 = store.getState()
   const variants2 = fromVariants.visibleVariantsById(state2)
-  assert.equal(variants2.size, 402, 'filter variants by something')
+  assert.equal(variants2.size, 557, 'filter variants by something')
 
   assert.equal(fromVariants.variantSortKey(state2), 'pos')
   assert.true(fromVariants.variantSortAscending(state2))
@@ -148,16 +147,31 @@ test.only('Variant search', (assert) => {
   const variants3 = fromVariants.visibleVariantsById(state3)
   assert.equal(variants3.first().get('pos'), 3030635, 'toggle sort (position)')
 
+  store.dispatch(fromVariants.actions.setVariantSort('allele_count'))
+  const state4 = store.getState()
+  assert.equal(fromVariants.variantSortKey(state4), 'allele_count')
+  const variants4 = fromVariants.visibleVariantsById(state4)
+  assert.equal(variants4.first().get('allele_count'), 4, 'change key (ac)')
+  assert.equal(variants4.last().get('allele_count'), 0, 'change key (ac)')
+
+  store.dispatch(fromVariants.actions.setVariantSort('allele_count'))
+  const state5 = store.getState()
+  assert.equal(fromVariants.variantSortKey(state5), 'allele_count')
+  const variants5 = fromVariants.visibleVariantsById(state5)
+  assert.equal(variants5.first().get('allele_count'), 0, 'toggle sort (ac)')
+  assert.equal(variants5.last().get('allele_count'), 4, 'toggle sort (ac)')
+
   assert.end()
 })
 
-// test('Variant search', (assert) => {
-//   const store = createGenePageStore(appSettings)
-//   store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
-//   const state = store.getState()
-//
-//   const searchResults = fromVariants.variantSearchResults(state)
-//   // log(searchResults(state))
-//
-//   assert.end()
-// })
+test.only('Variant search', (assert) => {
+  const store = createGenePageStore(appSettings)
+  store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
+  store.dispatch(fromVariants.actions.searchVariants('3030635'))
+  // console.log(state2.search)
+  // const searchResults = fromVariants.searchSelectors.result(state)
+  // const searchText = fromVariants.text(state)
+  // log(searchResults)
+  // console.log(fromVariants)
+  assert.end()
+})

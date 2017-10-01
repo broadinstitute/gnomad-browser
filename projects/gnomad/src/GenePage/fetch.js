@@ -14,7 +14,22 @@ export const fetchGene = (geneName, url = API_URL) => {
       stop
       xstart
       xstop
-      variants: gnomadExomeVariants {
+      gnomadExomeVariants {
+        variant_id
+        rsid
+        pos
+        xpos
+        hgvsc
+        hgvsp
+        allele_count
+        allele_freq
+        allele_num
+        filters
+        hom_count
+        consequence
+        lof
+      }
+      gnomadGenomeVariants {
         variant_id
         rsid
         pos

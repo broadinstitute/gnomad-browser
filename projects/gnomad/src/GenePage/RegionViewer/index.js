@@ -19,7 +19,7 @@ import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { exonPadding, actions } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { allVariants } from '@broad/gene-page/src/resources/variants'
+import { allVariantsInCurrentDatasetAsList } from '@broad/gene-page/src/resources/variants'
 
 // import VariantDensityTrack from './VariantDensityTrack'
 
@@ -219,7 +219,7 @@ export default connect(
   state => ({
     gene: geneData(state),
     exonPadding: exonPadding(state),
-    allVariants: allVariants(state),
+    allVariants: allVariantsInCurrentDatasetAsList(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>

@@ -10,6 +10,8 @@ import * as fromActive from './active'
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
   RECEIVE_VARIANTS: null,
+  SET_CURRENT_VARIANT: null,
+  SET_CURRENT_VARIANT_DATASET: null,
   SET_VARIANT_FILTER: null,
   SET_VARIANT_SORT: null,
   ORDER_VARIANTS_BY_POSITION: null,
@@ -20,6 +22,11 @@ export const actions = {
     type: types.REQUEST_VARIANTS_BY_POSITION,
     payload: { xstart, xstop },
   }),
+
+  setCurrentVariant: variantId => ({ type: types.SET_CURRENT_VARIANT, variantId }),
+
+  setCurrentVariantDataset: variantDataset =>
+    ({ type: types.SET_CURRENT_VARIANT_DATASET, variantDataset }),
 
   receiveVariants: variantData => ({
     type: types.REQUEST_VARIANTS_BY_POSITION,
@@ -61,10 +68,17 @@ export const actions = {
     }
   },
 
-  searchVariants: createSearchAction('variants')
+  searchVariants: createSearchAction('gnomadCombinedVariants')
 }
 
-export default function createVariantReducer({ variantDatasets, combinedDatasets }) {
+export default function createVariantReducer({
+  variantDatasets,
+  combinedDatasets,
+  projectDefaults: {
+    startingVariant,
+    startingVariantDataset,
+  }
+}) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
 
   const State = Record({
@@ -74,9 +88,19 @@ export default function createVariantReducer({ variantDatasets, combinedDatasets
     variantSortKey: 'pos',
     variantSortAscending: true,
     variantFilter: 'all',
+    currentVariant: startingVariant,
+    currentVariantDataset: startingVariantDataset,
   })
 
   const actionHandlers = {
+    [types.SET_CURRENT_VARIANT] (state, { variantId }) {
+      return state.set('currentVariant', variantId)
+    },
+
+    [types.SET_CURRENT_VARIANT_DATASET] (state, { variantDataset }) {
+      return state.set('currentVariantDataset', variantDataset)
+    },
+
     [types.REQUEST_VARIANTS_BY_POSITION] (state) {
       return state.set('isFetching', true)
     },
@@ -96,13 +120,10 @@ export default function createVariantReducer({ variantDatasets, combinedDatasets
       return datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap
         if (variantDatasets[datasetKey]) {
-          variantMap = Map(geneData.get(datasetKey).map(v =>
-            ([
-              v.get('variant_id'),
-              v.set('id', v.get('variant_id'))
-                .set('datasets', Set([datasetKey]))
-            ])
-          ))
+          variantMap = Map(geneData.get(datasetKey).map(v => ([
+            v.get('variant_id'),
+            v.set('id', v.get('variant_id')).set('datasets', Set([datasetKey]))
+          ])))
         } else if (combinedDatasets[datasetKey]) {
           const sources = combinedDatasets[datasetKey].sources
           const combineKeys = combinedDatasets[datasetKey].combineKeys
@@ -153,21 +174,24 @@ export default function createVariantReducer({ variantDatasets, combinedDatasets
  */
 
 const byVariantDataset = state => state.variants.byVariantDataset
+export const currentVariant = state => state.variants.currentVariant
+export const currentVariantDataset = state => state.variants.currentVariantDataset
+
 
 export const allVariantsInCurrentDataset = createSelector(
-  [fromActive.currentVariantDataset, byVariantDataset],
+  [currentVariantDataset, byVariantDataset],
   (currentVariantDataset, byVariantDataset) =>
     byVariantDataset.get(currentVariantDataset)
 )
 
 export const allVariantsInCurrentDatasetAsList = createSelector(
-  [fromActive.currentVariantDataset, byVariantDataset],
+  [currentVariantDataset, byVariantDataset],
   (currentVariantDataset, byVariantDataset) =>
     byVariantDataset.get(currentVariantDataset).toList()
 )
 
 export const currentVariantData = createSelector(
-  [fromActive.currentVariant, allVariantsInCurrentDataset],
+  [currentVariant, allVariantsInCurrentDataset],
   (currentVariant, variants) => variants.get(currentVariant)
 )
 
@@ -196,7 +220,7 @@ export const visibleVariantsById = createSelector([
     filteredVariants = variants
   }
   if (variantFilter === 'rare') {
-    filteredVariants = variants.filter(v => v.get('allele_count') < 2)
+    filteredVariants = variants.filter(v => v.get('allele_count') < 5)
   }
   return sortVariants(
     filteredVariants,
@@ -204,6 +228,10 @@ export const visibleVariantsById = createSelector([
     variantSortAscending
   )
 })
+
+export const visibleVariantsList = createSelector(
+  [visibleVariantsById], visibleVariantsById => visibleVariantsById.toList()
+)
 
 // export const variantsFilteredByActiveInterval = createSelector(
 //   [
@@ -223,26 +251,20 @@ export const visibleVariantsById = createSelector([
  * Redux search selectors
  */
 
-export const resourceSelector = (resourceName, state) => state.resources.get(resourceName)
+export const resources = state => state.variants.byVariantDataset
+export const resourceSelector = (resourceName, state) => state.variants.byVariantDataset.get(resourceName)
 
-export const variantSearchResults = getSearchSelectors({
-  resourceName: 'variants',
-  resourceSelector: allVariantsInCurrentDatasetAsList,
-})
-
-export const searchText = variantSearchResults.text
-
-export const searchFilteredVariantIdList = createSelector(
-  [variantSearchResults.result],
-  result => List(result)
-)
+const variantSelectors = getSearchSelectors({ resourceName: 'gnomadCombinedVariants', resourceSelector })
+export const variantSearchText = variantSelectors.text
+export const filteredIdList = createSelector([variantSelectors.result], result => List(result))
+export const unfilteredResult = createSelector([variantSelectors.unfilteredResult], result => List(result))
 
 export const finalFilteredVariants = createSelector(
-  [visibleVariantsById, searchFilteredVariantIdList],
-  (visibleVariantsById, searchFilteredVariantIdList) => {
-    if (searchFilteredVariantIdList.size === 0) {
+  [visibleVariantsById, filteredIdList],
+  (visibleVariantsById, filteredIdList) => {
+    if (filteredIdList.size === 0) {
       return visibleVariantsById.toList()
     }
-    return searchFilteredVariantIdList.map(id => visibleVariantsById.get(id))
+    return filteredIdList.map(id => visibleVariantsById.get(id))
   }
 )

@@ -7,24 +7,19 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
+import { allVariantsInCurrentDatasetAsList } from './variants'
 
 export const types = keymirror({
   SET_CURRENT_GENE: null,
-  SET_CURRENT_VARIANT: null,
-  SET_CURRENT_VARIANT_DATASET: null,
   SET_CURRENT_NAVIGATOR_POSITION: null,
   SET_CURRENT_TABLE_INDEX: null,
   SET_CURRENT_TABLE_SCROLL_DATA: null,
   SET_EXON_PADDING: null,
   SET_REGION_VIEWER_ATTRIBUTES: null,
-  ORDER_VARIANTS_BY_POSITION: null,
 })
 
 export const actions = {
   setCurrentGene: geneName => ({ type: types.SET_CURRENT_GENE, geneName }),
-  setCurrentVariant: variantId => ({ type: types.SET_CURRENT_VARIANT, variantId }),
-  setCurrentVariantDataset: variantDataset =>
-    ({ type: types.SET_CURRENT_VARIANT_DATASET, variantDataset }),
 
   setNavigatorPosition: navigatorPosition => ({
     type: types.SET_CURRENT_NAVIGATOR_POSITION,
@@ -40,6 +35,14 @@ export const actions = {
     meta: {
       throttle: true,
     },
+  }),
+
+  setCurrentTableScrollData: tableScrollData => ({
+    type: types.SET_CURRENT_TABLE_SCROLL_DATA,
+    tableScrollData,
+    meta: {
+      throttle: true,
+    }
   }),
 
   setRegionViewerAttributes: ({ offsetRegions }) => ({
@@ -72,12 +75,6 @@ export const actions = {
 const actionHandlers = {
   [types.SET_CURRENT_GENE] (state, { geneName }) {
     return state.set('currentGene', geneName)
-  },
-  [types.SET_CURRENT_VARIANT] (state, { variantId }) {
-    return state.set('currentVariant', variantId)
-  },
-  [types.SET_CURRENT_VARIANT_DATASET] (state, { variantDataset }) {
-    return state.set('currentVariantDataset', variantDataset)
   },
   [types.SET_CURRENT_NAVIGATOR_POSITION] (state, { navigatorPosition }) {
     return state.set('currentNavigatorPosition', navigatorPosition)
@@ -112,15 +109,11 @@ const actionHandlers = {
 export default function createActiveReducer ({
   projectDefaults: {
     startingGene,
-    startingVariant,
     startingPadding,
-    startingVariantDataset,
   }
 }) {
   const State = Immutable.Record({
     currentGene: startingGene,
-    currentVariant: startingVariant,
-    currentVariantDataset: startingVariantDataset,
     currentNavigatorPosition: 0,
     currentTableIndex: 0,
     currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
@@ -144,21 +137,19 @@ export default function createActiveReducer ({
 }
 
 export const currentGene = state => state.active.currentGene
-export const currentVariant = state => state.active.currentVariant
-export const currentVariantDataset = state => state.active.currentVariantDataset
 export const currentNavigatorPosition = state => state.active.currentNavigatorPosition
 export const currentTableIndex = state => state.active.currentTableIndex
 export const currentTableScrollData = state => state.active.currentTableScrollData
 export const exonPadding = state => state.active.exonPadding
 export const regionViewerIntervals = state =>
-state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
-//
-// export const tablePosition = createSelector(
-//   [currentNavigatorPosition, fromVariant.finalFilteredVariants],
-//   (currentNavigatorPosition, variants) => {
-//     return getTableIndexByPosition(
-//       currentNavigatorPosition,
-//       variants,
-//     )
-//   }
-// )
+  state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
+
+export const tablePosition = createSelector(
+  [currentNavigatorPosition, allVariantsInCurrentDatasetAsList],
+  (currentNavigatorPosition, variants) => {
+    return getTableIndexByPosition(
+      currentNavigatorPosition,
+      variants,
+    )
+  }
+)

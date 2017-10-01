@@ -145,9 +145,9 @@ const getDataCell = (field, dataRow, searchText, i) => {
   const cellText = field.searchable ? (
     <Highlighter
       searchWords={searchText.split(/\s+/)}
-      textToHighlight={`${dataRow[dataKey]}`}
+      textToHighlight={`${dataRow.get(dataKey)}`}
     />
-  ) : dataRow[dataKey]
+  ) : dataRow.get(dataKey)
 
   switch (dataType) {
     case 'string':
@@ -256,8 +256,8 @@ const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick) 
   return (
     // eslint-disable-next-line
     <TableRow
-      onClick={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
-      onMouseEnter={_ => onRowClick(dataRow['variant_id'])}  // eslint-disable-line
+      onClick={_ => onRowClick(dataRow.get('variant_id'))}  // eslint-disable-line
+      onMouseEnter={_ => onRowClick(dataRow.get('variant_id'))}  // eslint-disable-line
       key={`row-${i}`}
       alternatingColors={['white', '#F5F5F5']}
       rowIndex={i}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export GCLOUD_PROJECT=exac-gnomad
-export GCLOUD_ZONE=us-east1-b
+export GCLOUD_ZONE=us-central1-b
 export CLUSTER_NAME=elastic
 export CLUSTER_NAMESPACE=default
 

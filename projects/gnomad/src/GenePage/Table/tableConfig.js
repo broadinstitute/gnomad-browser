@@ -22,7 +22,7 @@ export default function (onHeaderClick) {
         dataType: 'string',
         width: 70,
         onHeaderClick,
-        searchable: true,
+        // searchable: true,
       },
       {
         dataKey: 'hgvsp',
@@ -30,7 +30,7 @@ export default function (onHeaderClick) {
         dataType: 'string',
         width: 100,
         onHeaderClick,
-        searchable: true,
+        // searchable: true,
       },
       // {
       //   dataKey: 'hgvsc',
@@ -46,7 +46,7 @@ export default function (onHeaderClick) {
         dataType: 'string',
         width: 100,
         onHeaderClick,
-        searchable: true,
+        // searchable: true,
       },
       {
         dataKey: 'allele_count',
@@ -62,13 +62,13 @@ export default function (onHeaderClick) {
         width: 40,
         onHeaderClick,
       },
-      {
-        dataKey: 'allele_freq',
-        title: 'AF',
-        dataType: 'float',
-        width: 50,
-        onHeaderClick,
-      },
+      // {
+      //   dataKey: 'allele_freq',
+      //   title: 'AF',
+      //   dataType: 'float',
+      //   width: 50,
+      //   onHeaderClick,
+      // },
       {
         dataKey: 'hom_count',
         title: 'Hom',

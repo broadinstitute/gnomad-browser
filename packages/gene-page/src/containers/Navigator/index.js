@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import NavigatorTrack from '@broad/track-navigator'
 
 import {
-  currentVariant,
   currentTableIndex,
   currentNavigatorPosition,
   currentTableScrollData,
@@ -15,11 +14,10 @@ import {
 } from '../../resources/active'
 
 import {
-  visibleVariants,
+  currentVariant,
   variantSortKey,
-  searchFilteredVariants,
-  variantPlotData,
-} from '../../resources/table'
+  allVariantsInCurrentDatasetAsList,
+} from '../../resources/variants'
 
 const Navigator = ({
   currentTableIndex,
@@ -29,7 +27,6 @@ const Navigator = ({
   currentNavigatorPosition,
   variants,
   variantSortKey,
-  variantPlotData,
   ownProps,
 }) => {
   return (
@@ -43,7 +40,6 @@ const Navigator = ({
       variants={variants}
       currentVariant={currentVariant}
       variantSortKey={variantSortKey}
-      variantPlotData={variantPlotData}
       {...ownProps}
     />
   )
@@ -65,9 +61,8 @@ const mapStateToProps = (state, ownProps) => ({
   currentNavigatorPosition: currentNavigatorPosition(state),
   currentVariant: currentVariant(state),
   variantSortKey: variantSortKey(state),
-  variantPlotData: variantPlotData(state),
   // variants: visibleVariants(state),
-  variants: searchFilteredVariants(state),
+  variants: allVariantsInCurrentDatasetAsList(state),
   ownProps,
 })
 

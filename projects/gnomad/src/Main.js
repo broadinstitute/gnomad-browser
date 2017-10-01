@@ -7,27 +7,68 @@ import createGenePageStore from '@broad/gene-page/src/store/store'
 
 import App from './routes'
 
-const genePageSettings = {
-  searchIndexes: ['variant_id', 'rsid', 'hgvsp', 'hgvsc', 'consequence'],
-  variantSchema: {
-    id: null,
-    variant_id: null,
-    pos: null,
-    xpos: null,
-    hgvsp: null,
-    hgvsc: null,
-    filters: null,
-    rsid: null,
-    lof: null,
-    consequence: null,
-    allele_count: null,
-    allele_num: null,
-    allele_freq: null,
-    hom_count: null,
+const sum = (oldValue, newValue) => oldValue + newValue
+const concat = (oldValue, newValue) => oldValue.concat(newValue)
+
+const appSettings = {
+  searchIndexes: ['variant_id'],
+  logger: true,
+  projectDefaults: {
+    startingGene: 'ARSF',
+    startingVariant: '',
+    startingPadding: 75,
+    startingVariantDataset: 'gnomadCombinedVariants',
+  },
+  variantDatasets: {
+    gnomadExomeVariants: {
+      id: null,
+      variant_id: null,
+      rsid: null,
+      pos: null,
+      xpos: null,
+      hgvsc: null,
+      hgvsp: null,
+      allele_count: null,
+      allele_freq: null,
+      allele_num: null,
+      filters: null,
+      hom_count: null,
+      consequence: null,
+      lof: null,
+    },
+    gnomadGenomeVariants: {
+      id: null,
+      variant_id: null,
+      rsid: null,
+      pos: null,
+      xpos: null,
+      hgvsc: null,
+      hgvsp: null,
+      allele_count: null,
+      allele_freq: null,
+      allele_num: null,
+      filters: null,
+      hom_count: null,
+      consequence: null,
+      lof: null,
+    },
+  },
+  combinedDatasets: {
+    gnomadCombinedVariants: {
+      sources: ['gnomadExomeVariants', 'gnomadGenomeVariants'],
+      combineKeys: {
+        allele_count: sum,
+        allele_num: sum,
+        hom_count: sum,
+        filter: concat,
+        allele_freq: () => null,
+        datasets: [],
+      }
+    }
   }
 }
 
-const store = createGenePageStore(genePageSettings)
+const store = createGenePageStore(appSettings)
 
 const muiTheme = getMuiTheme({
   palette: {

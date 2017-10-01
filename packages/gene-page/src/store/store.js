@@ -18,7 +18,7 @@ import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
 import createGeneReducer from '../resources/genes'
 import createVariantReducer, {
-  allVariantsInCurrentDatasetAsList
+  allVariantsInCurrentDataset
 } from '../resources/variants'
 import createActiveReducer from '../resources/active'
 
@@ -47,10 +47,10 @@ export default function createGenePageStore(appSettings) {
     applyMiddleware(...middlewares),
     reduxSearch({
       resourceIndexes: {
-        variants: appSettings.searchIndexes,
+        gnomadCombinedVariants: appSettings.searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        return allVariantsInCurrentDatasetAsList(state)
+        return state.variants.byVariantDataset.get(resourceName)
       },
     }),
   )(createStore)
