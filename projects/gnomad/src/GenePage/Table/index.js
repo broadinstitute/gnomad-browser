@@ -30,7 +30,6 @@ const GnomadVariantTable = ({
   tablePosition,
   searchText,
 }) => {
-  console.log(variants)
   const tConfig = tableConfig(setVariantSort)
   const scrollBarWidth = 40
   const paddingWidth = tConfig.fields.length * 40

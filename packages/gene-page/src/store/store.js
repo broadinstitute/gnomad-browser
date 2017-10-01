@@ -33,6 +33,7 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
 const middlewares = [throttle(defaultWait, defaultThrottleOption), thunk]
 
 export default function createGenePageStore(appSettings) {
+  console.log(appSettings.searchIndexes)
   if (appSettings.logger) {
     middlewares.push(logger)
   }
@@ -47,10 +48,11 @@ export default function createGenePageStore(appSettings) {
     applyMiddleware(...middlewares),
     reduxSearch({
       resourceIndexes: {
-        gnomadCombinedVariants: appSettings.searchIndexes,
+        gnomadExomeVariants: appSettings.searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        return state.variants.byVariantDataset.get(resourceName)
+        console.log('from resource selector', resourceName, state.variants.byVariantDataset.get('gnomadCombinedVariants').first())
+        return state.variants.byVariantDataset.get('gnomadExomeVariants')
       },
     }),
   )(createStore)

@@ -14,7 +14,7 @@ const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
-  searchIndexes: ['variant_id'],
+  searchIndexes: ['variant_id', 'consequence', 'hgvsp', 'hgvsc'],
   logger: true,
   projectDefaults: {
     startingGene: 'ARSF',
@@ -38,6 +38,7 @@ const appSettings = {
       hom_count: null,
       consequence: null,
       lof: null,
+      datasets: [],
     },
     gnomadGenomeVariants: {
       id: null,
@@ -54,6 +55,7 @@ const appSettings = {
       hom_count: null,
       consequence: null,
       lof: null,
+      datasets: [],
     },
   },
   combinedDatasets: {

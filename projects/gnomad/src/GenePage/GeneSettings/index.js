@@ -85,6 +85,9 @@ const GeneSettings = ({
       color: 'black',
       fontSize: 14,
     },
+    menuItemStyle: {
+      fontSize: 14
+    },
   }
   const GeneSettingsContainer = styled.div`
     margin-left: 110px;
@@ -132,7 +135,7 @@ const GeneSettings = ({
       {/*geneLinks*/}
       <MenusContainer>
         <MaterialVariantCategoryButtonGroup />
-        {/* <SearchContainer>
+        <SearchContainer>
           <TextField
             hintText="Enter search terms"
             hintStyle={filterTextInputStyles.inputStyle}
@@ -145,11 +148,13 @@ const GeneSettings = ({
               searchVariants(event.target.value)
             }}
           />
-        </SearchContainer> */}
+        </SearchContainer>
         <SelectField
           floatingLabelText="Select dataset"
           value={currentVariantDataset}
           onChange={(event, index, value) => setCurrentVariantDataset(value)}
+          floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
+          floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
         >
           <MenuItem value={'gnomadExomeVariants'} primaryText="gnomAD exomes" />
           <MenuItem value={'gnomadGenomeVariants'} primaryText="gnomAD genomes" />

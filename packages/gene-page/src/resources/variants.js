@@ -74,7 +74,7 @@ export const actions = {
     }
   },
 
-  searchVariants: createSearchAction('gnomadCombinedVariants')
+  searchVariants: createSearchAction('gnomadExomeVariants')
 }
 
 export default function createVariantReducer({
@@ -87,6 +87,15 @@ export default function createVariantReducer({
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
 
+  const variantRecords = datasetKeys.reduce((acc, dataset) => {
+    if (dataset in variantDatasets) {
+      acc[dataset] = Record(variantDatasets[dataset])
+    } else if (dataset in combinedDatasets) {
+      acc[dataset] = Record(combinedDatasets[dataset].schema)
+    }
+    return acc
+  }, {})
+  console.log(variantRecords)
   const State = Record({
     isFetching: false,
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>
@@ -124,15 +133,22 @@ export default function createVariantReducer({
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
-        let variantMap
+        let variantMap = {}
         if (variantDatasets[datasetKey]) {
-          variantMap = Map(geneData.get(datasetKey).map(v => ([
-            v.get('variant_id'),
-            v.set('id', v.get('variant_id')).set('datasets', Set([datasetKey]))
-          ])))
+          // variantMap = Map(geneData.get(datasetKey).map(v => ([
+          //   v.get('variant_id'),
+          //   v.set('id', v.get('variant_id')).set('datasets', Set([datasetKey]))
+          // ])))
+          geneData.get(datasetKey).forEach((variant) => {
+            variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
+              variant
+                .set('id', variant.get('variant_id'))
+                .set('datasets', Set([datasetKey])))
+          })
         } else if (combinedDatasets[datasetKey]) {
           const sources = combinedDatasets[datasetKey].sources
           const combineKeys = combinedDatasets[datasetKey].combineKeys
+
           variantMap = sources.reduce((acc, dataset) => {
             return acc.mergeDeepWith((oldValue, newValue, key) => {
               if (combineKeys[key]) {
@@ -143,7 +159,7 @@ export default function createVariantReducer({
           }, OrderedMap())
         }
         return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(datasetKey, variantMap)
+          .set(datasetKey, Map(variantMap))
         )
       }, state)
     },
@@ -271,10 +287,11 @@ export const visibleVariantsList = createSelector(
  * Redux search selectors
  */
 
-export const resources = state => state.variants.byVariantDataset
-export const resourceSelector = (resourceName, state) => state.variants.byVariantDataset.get(resourceName)
+const variantSelectors = getSearchSelectors({
+  resourceName: 'gnomadExomeVariants',
+  resourceSelector: (resourceName, state) => state.variants.byVariantDataset.get(resourceName)
+})
 
-const variantSelectors = getSearchSelectors({ resourceName: 'gnomadCombinedVariants', resourceSelector })
 export const variantSearchText = variantSelectors.text
 export const filteredIdList = createSelector([variantSelectors.result], result => List(result))
 export const unfilteredResult = createSelector([variantSelectors.unfilteredResult], result => List(result))
