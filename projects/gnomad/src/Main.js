@@ -4,8 +4,11 @@ import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import createGenePageStore from '@broad/gene-page/src/store/store'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import App from './routes'
+
+injectTapEventPlugin()
 
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)

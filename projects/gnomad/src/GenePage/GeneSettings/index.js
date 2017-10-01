@@ -12,10 +12,16 @@ import { connect } from 'react-redux'
 
 import Slider from 'material-ui/Slider'
 import TextField from 'material-ui/TextField'
-import { orange500, blue500 } from 'material-ui/styles/colors'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+
 import Mousetrap from 'mousetrap'
 
-import { actions as variantActions } from '@broad/gene-page/src/resources/variants'
+import {
+  actions as variantActions,
+  currentVariantDataset,
+} from '@broad/gene-page/src/resources/variants'
+
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { MaterialButtonRaised } from '@broad/ui'
 
@@ -29,10 +35,12 @@ Mousetrap.bind(['command+f', 'meta+s'], (e) => {
 const GeneSettings = ({
   currentGene,
   exonPadding,
+  currentVariantDataset,
   setCurrentGene,
   setExonPadding,
   searchVariants,
   setVariantFilter,
+  setCurrentVariantDataset,
 }) => {
   const testGenes = [
     'PCSK9',
@@ -124,7 +132,7 @@ const GeneSettings = ({
       {/*geneLinks*/}
       <MenusContainer>
         <MaterialVariantCategoryButtonGroup />
-        <SearchContainer>
+        {/* <SearchContainer>
           <TextField
             hintText="Enter search terms"
             hintStyle={filterTextInputStyles.inputStyle}
@@ -137,7 +145,17 @@ const GeneSettings = ({
               searchVariants(event.target.value)
             }}
           />
-        </SearchContainer>
+        </SearchContainer> */}
+        <SelectField
+          floatingLabelText="Select dataset"
+          value={currentVariantDataset}
+          onChange={(event, index, value) => setCurrentVariantDataset(value)}
+        >
+          <MenuItem value={'gnomadExomeVariants'} primaryText="gnomAD exomes" />
+          <MenuItem value={'gnomadGenomeVariants'} primaryText="gnomAD genomes" />
+          <MenuItem value={'gnomadCombinedVariants'} primaryText="gnomAD combined" />
+          <MenuItem value={'exACv1'} primaryText="ExACv1" />
+        </SelectField>
         <Slider
           style={{
             width: 100,
@@ -152,17 +170,20 @@ const GeneSettings = ({
 
 GeneSettings.propTypes = {
   currentGene: PropTypes.string.isRequired,
+  currentVariantDataset: PropTypes.string.isRequired,
   exonPadding: PropTypes.number.isRequired,
   setCurrentGene: PropTypes.func.isRequired,
   setExonPadding: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
+  setCurrentVariantDataset: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
     currentGene: currentGene(state),
     exonPadding: exonPadding(state),
+    currentVariantDataset: currentVariantDataset(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -170,7 +191,8 @@ const mapDispatchToProps = (dispatch) => {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
     setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
-    searchVariants: searchText => dispatch(variantActions.searchVariants(searchText))
+    searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
+    setCurrentVariantDataset: dataset => dispatch(variantActions.setCurrentVariantDataset(dataset)),
   }
 }
 
