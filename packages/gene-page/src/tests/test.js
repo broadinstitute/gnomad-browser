@@ -1,6 +1,7 @@
 import test from 'tape'  // eslint-disable-line
 import { Record, OrderedMap, Set, Map, Seq, List } from 'immutable'  // eslint-disable-line
 import createGenePageStore from '../store/store'
+
 import data from '@resources/1506782078-gene-page-test-data.json'  // eslint-disable-line
 
 import * as fromGenes from '../resources/genes'
@@ -167,7 +168,12 @@ test('Variant search', (assert) => {
 test.only('Variant search', (assert) => {
   const store = createGenePageStore(appSettings)
   store.dispatch(fromGenes.actions.receiveGeneData('ARSF', data.data.gene))
-  store.dispatch(fromVariants.actions.searchVariants('3030635'))
+
+  console.log(isCategoryLoF('missense_variant'))
+  console.log(isCategoryMissense('missense_variant'))
+  console.log(isCategoryMissenseOrLoF('missense_variant'))
+
+  // store.dispatch(fromVariants.actions.searchVariants('3030635'))
   // console.log(state2.search)
   // const searchResults = fromVariants.searchSelectors.result(state)
   // const searchText = fromVariants.text(state)

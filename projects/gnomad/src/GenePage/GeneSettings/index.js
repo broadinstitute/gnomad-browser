@@ -31,7 +31,8 @@ const GeneSettings = ({
   exonPadding,
   setCurrentGene,
   setExonPadding,
-  searchVariants
+  searchVariants,
+  setVariantFilter,
 }) => {
   const testGenes = [
     'PCSK9',
@@ -112,9 +113,9 @@ const GeneSettings = ({
 
   const MaterialVariantCategoryButtonGroup = () => (
     <VariantCategoryButtonGroup>
-      <VariantCatagoryButton>All</VariantCatagoryButton>
-      <VariantCatagoryButton>Missense + LoF</VariantCatagoryButton>
-      <VariantCatagoryButton>LoF</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
     </VariantCategoryButtonGroup>
   )
 
@@ -155,6 +156,7 @@ GeneSettings.propTypes = {
   setCurrentGene: PropTypes.func.isRequired,
   setExonPadding: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
+  setVariantFilter: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -167,6 +169,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
+    setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
     searchVariants: searchText => dispatch(variantActions.searchVariants(searchText))
   }
 }

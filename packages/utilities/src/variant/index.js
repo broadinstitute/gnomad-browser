@@ -40,3 +40,5 @@ export const getTableIndexByPosition = (position, variants) => {
     return variants.length - 1
   })
 }
+
+// export const getCategory

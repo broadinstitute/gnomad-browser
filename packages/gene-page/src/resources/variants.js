@@ -4,6 +4,12 @@ import { Record, Set, OrderedMap, Map, List } from 'immutable'
 import { createSelector } from 'reselect'
 import { createSearchAction, getSearchSelectors } from 'redux-search'
 
+import {
+  isCategoryLoF,
+  isCategoryMissense,
+  isCategoryMissenseOrLoF,
+ } from '@broad/utilities/src/constants/categoryDefinitions'
+
 import { types as geneTypes } from './genes'
 import * as fromActive from './active'
 
@@ -203,11 +209,22 @@ export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 
-const sortVariants = (variants, key, ascending) => (
-  ascending ?
-    variants.sort((a, b) => a.get(key) - b.get(key)) :
-    variants.sort((a, b) => b.get(key) - a.get(key))
-)
+
+
+const sortVariants = (variants, key, ascending) => {
+  if (key === 'variant_id') {
+    return (
+      ascending ?
+        variants.sort((a, b) => a.get('pos') - b.get('pos')) :
+        variants.sort((a, b) => b.get('pos') - a.get('pos'))
+    )
+  }
+  return (
+    ascending ?
+      variants.sort((a, b) => a.get(key) - b.get(key)) :
+      variants.sort((a, b) => b.get(key) - a.get(key))
+  )
+}
 
 export const visibleVariantsById = createSelector([
   allVariantsInCurrentDataset,
@@ -219,8 +236,11 @@ export const visibleVariantsById = createSelector([
   if (variantFilter === 'all') {
     filteredVariants = variants
   }
-  if (variantFilter === 'rare') {
-    filteredVariants = variants.filter(v => v.get('allele_count') < 5)
+  if (variantFilter === 'lof') {
+    filteredVariants = variants.filter(v => isCategoryLoF(v.get('consequence')))
+  }
+  if (variantFilter === 'missenseOrLoF') {
+    filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
   }
   return sortVariants(
     filteredVariants,

@@ -1,4 +1,6 @@
-var csq_order = [
+import { fromJS } from 'immutable'
+
+export const csq_order = [
   'transcript_ablation',
   'splice_acceptor_variant',
   'splice_donor_variant',
@@ -37,15 +39,34 @@ var csq_order = [
   'upstream_gene_variant',
 ]
 
-const CATEGORY_DEFINITIONS = {
+export const CATEGORY_DEFINITIONS = {
   all: csq_order,
   lof: csq_order.slice(0, csq_order.indexOf('stop_lost')),
   missense: csq_order.slice(
-      csq_order.indexOf('stop_lost'),
-      csq_order.indexOf('protein_altering_variant')
+    csq_order.indexOf('stop_lost'),
+    csq_order.indexOf('protein_altering_variant')
   ),
 }
-CATEGORY_DEFINITIONS.missenseAndLof =
-    CATEGORY_DEFINITIONS.lof.concat(CATEGORY_DEFINITIONS.missense)
+CATEGORY_DEFINITIONS.missenseAndLof = CATEGORY_DEFINITIONS.lof.concat(CATEGORY_DEFINITIONS.missense)
 
 export default CATEGORY_DEFINITIONS
+
+export const CATEGORY_DEFINITIONS_MAP = fromJS(CATEGORY_DEFINITIONS)
+
+export function getCategoryFromConsequence(consequence) {
+  return CATEGORY_DEFINITIONS_MAP.findKey((value) => {
+    return value.includes(consequence)
+  })
+}
+
+export function isCategoryLoF(consequence) {
+  return CATEGORY_DEFINITIONS_MAP.get('lof').contains(consequence)
+}
+export function isCategoryMissense(consequence) {
+  return CATEGORY_DEFINITIONS_MAP.get('missense').contains(consequence)
+}
+export function isCategoryMissenseOrLoF(consequence) {
+  return CATEGORY_DEFINITIONS_MAP.get('missenseAndLof').contains(consequence)
+}
+
+
