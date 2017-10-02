@@ -103,7 +103,7 @@ export const calculateOffset = R.curry((regions) =>
     ]
   }, []))
 
-const defaultAttributeConfig = {
+export const defaultAttributeConfig = {
   CDS: {
     color: '#FFB33D',
     thickness: '30px',
@@ -142,7 +142,7 @@ export const calculateOffsetRegions = (
   attributeConfig = defaultAttributeConfig,
   padding = 50,
   regions,
-  exonSubset,
+  exonSubset
 ) => R.pipe(
   filterRegions(featuresToDisplay),
   applyExonSubset(exonSubset),

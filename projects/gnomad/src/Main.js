@@ -17,7 +17,7 @@ const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
   logger: true,
   projectDefaults: {
-    startingGene: 'ARSF',
+    startingGene: 'BRCA2',
     startingVariant: '',
     startingPadding: 75,
     startingVariantDataset: 'gnomadCombinedVariants',
@@ -66,7 +66,7 @@ const appSettings = {
         allele_num: sum,
         hom_count: sum,
         filter: concat,
-        allele_freq: () => null,
+        // allele_freq: () => null,
         datasets: [],
       }
     }

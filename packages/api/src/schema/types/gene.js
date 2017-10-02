@@ -111,12 +111,12 @@ const geneType = new GraphQLObjectType({
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId(ctx.database.elastic, 'exomes', obj.gene_id),
+        lookupElasticVariantsByGeneId(ctx.database.elastic, 'exomes', obj, ctx),
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj.gene_id),
+        lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj, ctx),
     },
     clinvar_variants: {
       type: new GraphQLList(clinvarType),

@@ -143,25 +143,25 @@ const GeneRegion = ({
     />
   )
 
-  // const coverageConfigClassic = {
-  //   datasets: [
-  //     {
-  //       name: 'exome',
-  //       data: exome_coverage,
-  //       type: 'area',
-  //       color: 'rgba(70, 130, 180, 1)',
-  //       opacity: 1,
-  //     },
-  //     {
-  //       name: 'genome',
-  //       data: genome_coverage,
-  //       type: 'line',
-  //       color: 'rgba(115, 171, 61,  1)',
-  //       strokeWidth: 4,
-  //       opacity: 1,
-  //     },
-  //   ],
-  // }
+  const coverageConfigClassic = {
+    datasets: [
+      {
+        name: 'exome',
+        data: exome_coverage,
+        type: 'area',
+        color: 'rgba(70, 130, 180, 1)',
+        opacity: 1,
+      },
+      {
+        name: 'genome',
+        data: genome_coverage,
+        type: 'line',
+        color: 'rgba(115, 171, 61,  1)',
+        strokeWidth: 4,
+        opacity: 1,
+      },
+    ],
+  }
 
   const coverageConfig = {
     datasets: [
@@ -183,8 +183,6 @@ const GeneRegion = ({
     ],
   }
 
-
-
   return (
     <div>
       <RegionViewer
@@ -196,7 +194,7 @@ const GeneRegion = ({
       >
         <CoverageTrack
           title={'Coverage'}
-          height={90}
+          height={150}
           dataConfig={coverageConfig}
           yTickNumber={11}
           yMax={110}

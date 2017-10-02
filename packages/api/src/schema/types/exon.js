@@ -5,8 +5,8 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
+  GraphQLList,
 } from 'graphql'
-
 
 const exonType = new GraphQLObjectType({
   name: 'Exon',
@@ -23,6 +23,7 @@ const exonType = new GraphQLObjectType({
 })
 
 export default exonType
+
 
 export const lookupExonsByTranscriptId = (db, transcript_id) =>
   db.collection('exons').find({ transcript_id }).toArray()
