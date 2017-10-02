@@ -47,7 +47,7 @@ const AppGenePage = ({
           gene={gene}
         />
       </Summary>
-      {/* <GeneRegion /> */}
+      <GeneRegion />
       <GeneSettings />
       <Table />
     </GenePage>

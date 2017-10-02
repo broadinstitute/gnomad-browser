@@ -186,6 +186,21 @@ export default function createVariantReducer({
   }
 }
 
+const sortVariants = (variants, key, ascending) => {
+  if (key === 'variant_id') {
+    return (
+      ascending ?
+        variants.sort((a, b) => a.get('pos') - b.get('pos')) :
+        variants.sort((a, b) => b.get('pos') - a.get('pos'))
+    )
+  }
+  return (
+    ascending ?
+      variants.sort((a, b) => a.get(key) - b.get(key)) :
+      variants.sort((a, b) => b.get(key) - a.get(key))
+  )
+}
+
 /**
  * Variant selectors
  */
@@ -204,7 +219,7 @@ export const allVariantsInCurrentDataset = createSelector(
 export const allVariantsInCurrentDatasetAsList = createSelector(
   [currentVariantDataset, byVariantDataset],
   (currentVariantDataset, byVariantDataset) =>
-    byVariantDataset.get(currentVariantDataset).toList()
+    sortVariants(byVariantDataset.get(currentVariantDataset).toList(), 'pos', true)
 )
 
 export const currentVariantData = createSelector(
@@ -219,21 +234,6 @@ export const currentVariantData = createSelector(
 export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
-
-const sortVariants = (variants, key, ascending) => {
-  if (key === 'variant_id') {
-    return (
-      ascending ?
-        variants.sort((a, b) => a.get('pos') - b.get('pos')) :
-        variants.sort((a, b) => b.get('pos') - a.get('pos'))
-    )
-  }
-  return (
-    ascending ?
-      variants.sort((a, b) => a.get(key) - b.get(key)) :
-      variants.sort((a, b) => b.get(key) - a.get(key))
-  )
-}
 
 export const visibleVariantsById = createSelector([
   allVariantsInCurrentDataset,

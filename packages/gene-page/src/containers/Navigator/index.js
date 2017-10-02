@@ -16,7 +16,7 @@ import {
 import {
   currentVariant,
   variantSortKey,
-  allVariantsInCurrentDatasetAsList,
+  finalFilteredVariants,
 } from '../../resources/variants'
 
 const Navigator = ({
@@ -62,7 +62,7 @@ const mapStateToProps = (state, ownProps) => ({
   currentVariant: currentVariant(state),
   variantSortKey: variantSortKey(state),
   // variants: visibleVariants(state),
-  variants: allVariantsInCurrentDatasetAsList(state),
+  variants: finalFilteredVariants(state),
   ownProps,
 })
 

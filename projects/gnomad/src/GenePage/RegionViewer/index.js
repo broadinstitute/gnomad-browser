@@ -19,7 +19,11 @@ import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { exonPadding, actions } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { allVariantsInCurrentDatasetAsList } from '@broad/gene-page/src/resources/variants'
+import {
+  finalFilteredVariants,
+  visibleVariantsList,
+  allVariantsInCurrentDatasetAsList,
+} from '@broad/gene-page/src/resources/variants'
 
 // import VariantDensityTrack from './VariantDensityTrack'
 
@@ -83,25 +87,25 @@ const GeneRegion = ({
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
   const { exome_coverage, genome_coverage } = geneJS
 
-  const splitTracks = consequenceCategories.map((consequence) => {
-    let rowHeight
-    const filteredVariants = allVariants.filter(variant =>
-      R.contains(variant.consequence, consequence.groups))
-    if (filteredVariants.size / factor < 20) {
-      rowHeight = 20
-    } else {
-      rowHeight = filteredVariants.size / factor
-    }
-    return (
-      <VariantTrack
-        key={`${consequence.annotation}`}
-        title={`${consequence.annotation} (${filteredVariants.size})`}
-        height={rowHeight}
-        markerConfig={markerConfigLoF}
-        variants={filteredVariants}
-      />
-    )
-  })
+  // const splitTracks = consequenceCategories.map((consequence) => {
+  //   let rowHeight
+  //   const filteredVariants = allVariants.filter(variant =>
+  //     R.contains(variant.consequence, consequence.groups))
+  //   if (filteredVariants.size / factor < 20) {
+  //     rowHeight = 20
+  //   } else {
+  //     rowHeight = filteredVariants.size / factor
+  //   }
+  //   return (
+  //     <VariantTrack
+  //       key={`${consequence.annotation}`}
+  //       title={`${consequence.annotation} (${filteredVariants.size})`}
+  //       height={rowHeight}
+  //       markerConfig={markerConfigLoF}
+  //       variants={filteredVariants}
+  //     />
+  //   )
+  // })
 
   const markerConfigOther = {
     markerType: 'af',
@@ -118,24 +122,24 @@ const GeneRegion = ({
   //   stroke: 1,
   // }
 
-  const otherVariants = allVariants.filter(v =>
-    !R.contains(v.consequence, [...lof, ...missense]))
+  // const otherVariants = allVariants.filter(v =>
+  //   !R.contains(v.consequence, [...lof, ...missense]))
 
   let otherHeight
-  if (otherVariants.size / factor < 20) {
+  if (allVariants.size / factor < 20) {
     otherHeight = 20
   } else {
-    otherHeight = otherVariants.size / factor
+    otherHeight = allVariants.size / factor
   }
 
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`other (${otherVariants.size})`}
+      title={`variants (${allVariants.size})`}
       height={otherHeight}
       color={'#75757'}
       markerConfig={markerConfigOther}
-      variants={otherVariants}
+      variants={allVariants}
     />
   )
 
@@ -201,7 +205,7 @@ const GeneRegion = ({
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />
-        {splitTracks}
+        {/* {splitTracks} */}
         {allTrack}
         {/*<VariantDensityTrack />*/}
         <Navigator />
