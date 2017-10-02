@@ -3,7 +3,7 @@ import fetch from 'graphql-fetch'
 const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
 const API_URL = 'http://localhost:8007'
 
-export const fetchSchzExomes = (geneName, url = API_URL) => {
+export const fetchSchz = (geneName, url = API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -24,7 +24,8 @@ export const fetchSchzExomes = (geneName, url = API_URL) => {
         pCaco
         pMeta
       }
-      variants: schiz_exome_variants {
+      schizophreniaExomeVariants {
+        variant_id
         chrom
         pos
         xpos
@@ -32,10 +33,9 @@ export const fetchSchzExomes = (geneName, url = API_URL) => {
         alt
         rsid
         qual
-        variantId
         geneIds
         transcriptIds
-        transcriptConsequenceTerms
+        consequence
         sortedTranscriptConsequences
         AC
         AF
@@ -47,6 +47,24 @@ export const fetchSchzExomes = (geneName, url = API_URL) => {
         AC_FIN_ctrls
         AC_SWE_cases
         AC_SWE_ctrls
+      }
+      schizophreniaGwas {
+        variant_id
+        chr
+        pos
+        ref
+        alt
+        n_study
+        study
+        p_value
+        scz_af
+        hc_af
+        odds_ratio
+        se
+        qp
+        i_squared
+        mhtp
+        comment
       }
       transcript {
         exons {

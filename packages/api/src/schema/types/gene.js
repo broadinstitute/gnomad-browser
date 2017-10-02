@@ -88,7 +88,7 @@ const geneType = new GraphQLObjectType({
     //   resolve: (obj, args, ctx) =>
     //     ctx.database.sczMockDb.getSczVariants(),
     // },
-    schiz_variants: {
+    schizophreniaGwas: {
       type: new GraphQLList(schzVariantType),
       resolve: (obj, args, ctx) =>
         lookupSchzVariantsByStartStop(
@@ -99,7 +99,7 @@ const geneType = new GraphQLObjectType({
           Number(obj.stop)
         ),
     },
-    schiz_exome_variants: {
+    schizophreniaExomeVariants: {
       type: new GraphQLList(schzVariantTypeExome),
       resolve: obj => lookupSchzVariantsByGeneId(obj.gene_id),
     },

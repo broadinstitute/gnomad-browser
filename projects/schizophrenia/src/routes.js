@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Route } from 'react-router-dom'
 // import GwasPage from './GwasPage'
 import HomePage from './HomePage'
-import ExomePage from './ExomePage'
+import MainPage from './MainPage'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -27,7 +27,7 @@ const App = () => (
       <TopBar />
       <Route path="/" exact component={HomePage} />
       {/* <Route path="/gwas" component={GwasPage} /> */}
-      <Route path="/exomes" component={ExomePage} />
+      <Route path="/exomes" component={MainPage} />
     </MainPanel>
   </Root>
 )

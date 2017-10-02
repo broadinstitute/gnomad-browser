@@ -5,60 +5,74 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import createGenePageStore from '@broad/gene-page/src/store/store'
 
-import App from './routes'
-//
-// const genePageSettings = {
-//   searchIndexes: [],
-//   // fetchFunction,
-//   variantSchema: {
-//     id: null,
-//     variant_id: null,
-//     chr: null,
-//     pos: null,
-//     xpos: null,
-//     ref: null,
-//     alt: null,
-//     n_study: null,
-//     study: null,
-//     p_value: null,
-//     scz_af: null,
-//     hc_af: null,
-//     odds_ratio: null,
-//     se: null,
-//     qp: null,
-//     i_squared: null,
-//     mhtp: null,
-//     comment: null,
-//     '-log10p': null,
-//   }
-// }
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
-const genePageSettings = {
-  searchIndexes: [],
-  // fetchFunction,
-  variantSchema: {
-    chrom: null,
-    pos: null,
-    xpos: null,
-    ref: null,
-    alt: null,
-    rsid: null,
-    variantId: null,
-    transcriptConsequenceTerms: null,
-    AC: null,
-    AF: null,
-    AC_cases: null,
-    AC_ctrls: null,
-    AC_UK_cases: null,
-    AC_UK_ctrls: null,
-    AC_FIN_cases: null,
-    AC_FIN_ctrls: null,
-    AC_SWE_cases: null,
-    AC_SWE_ctrls: null,
+import App from './routes'
+
+injectTapEventPlugin()
+
+const appSettings = {
+  searchIndexes: ['variant_id', 'rsid', 'consequence'],
+  logger: true,
+  projectDefaults: {
+    startingGene: 'TRIO',
+    startingVariant: '',
+    startingPadding: 75,
+    startingVariantDataset: 'schizophreniaExomeVariants',
+  },
+  variantDatasets: {
+    schizophreniaExomeVariants: {
+      id: null,
+      chrom: null,
+      pos: null,
+      xpos: null,
+      ref: null,
+      alt: null,
+      rsid: null,
+      variant_id: null,
+      consequence: null,
+      AC: null,
+      AF: null,
+      AC_cases: null,
+      AC_ctrls: null,
+      AC_UK_cases: null,
+      AC_UK_ctrls: null,
+      AC_FIN_cases: null,
+      AC_FIN_ctrls: null,
+      AC_SWE_cases: null,
+      AC_SWE_ctrls: null,
+    },
+    schizophreniaGwas: {
+      id: null,
+      variant_id: null,
+      chr: null,
+      pos: null,
+      xpos: null,
+      ref: null,
+      alt: null,
+      n_study: null,
+      study: null,
+      p_value: null,
+      scz_af: null,
+      hc_af: null,
+      odds_ratio: null,
+      se: null,
+      qp: null,
+      i_squared: null,
+      mhtp: null,
+      comment: null,
+      '-log10p': null,
+    },
+  },
+  combinedDatasets: {
+    schizophreniaCombinedVariants: {
+      sources: ['schizophreniaExomeVariants', 'schizophreniaGwas'],
+      combineKeys: {}
+    }
   }
 }
 
-const store = createGenePageStore(genePageSettings)
+const store = createGenePageStore(appSettings)
 
 const muiTheme = getMuiTheme({
   palette: {

@@ -15,6 +15,11 @@ import elasticsearch from 'elasticsearch'
 const schzVariantType = new GraphQLObjectType({
   name: 'schzVariant',
   fields: () => ({
+    variant_id: {
+      type: GraphQLString,
+      resolve: (({ chrom, pos, ref, alt }) =>
+      (`${chrom}-${pos}-${ref}-${alt}`))
+    },
     chr: { type: GraphQLInt },
     pos: { type: GraphQLInt },
     ref: { type: GraphQLString },
@@ -98,11 +103,14 @@ export const schzVariantTypeExome = new GraphQLObjectType({
     qual: { type: GraphQLFloat },
     filters: { type: new GraphQLList(GraphQLString) },
 
-    variantId: { type: GraphQLString },
+    variant_id: {
+      type: GraphQLString,
+      resolve: obj => obj.variantId,
+    },
     originalAltAlleles: { type: new GraphQLList(GraphQLString) },
     geneIds: { type: new GraphQLList(GraphQLString) },
     transcriptIds: { type: new GraphQLList(GraphQLString) },
-    transcriptConsequenceTerms: {
+    consequence: {
       type: GraphQLString,
       resolve: obj => obj.transcriptConsequenceTerms[0]
     },

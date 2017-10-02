@@ -115,10 +115,10 @@ const GeneSettings = ({
     background-color: rgba(70, 130, 180, 0.07);
     margin-right: 10px;
     &:hover {
-      background-color: rgba(70, 130, 180, 0.3)
+      background-color: rgba(70, 130, 180, 0.3);
     }
     &:active {
-      background-color: rgba(70, 130, 180, 0.4)
+      background-color: rgba(70, 130, 180, 0.4);
     }
   `
 

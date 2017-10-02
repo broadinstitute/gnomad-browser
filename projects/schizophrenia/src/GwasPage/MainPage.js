@@ -10,13 +10,11 @@ import React, { PropTypes } from 'react'
 
 import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import Manhattan from '@broad/manhattan'
-import GeneInfo from './GeneInfo'
-import GeneSettings from './GeneSettings'
-import RegionViewer from './RegionViewer'
-import Table from './Table'
-import { fetchSchzGenePage } from './fetch'
-
-import css from './styles.css'
+import GeneInfo from './GwasPage/GeneInfo'
+import GeneSettings from './GwasPage/GeneSettings'
+import RegionViewer from './GwasPage/RegionViewer'
+import Table from './GwasPage/Table'
+import { fetchSchz } from './fetch'
 
 import MANHATTAN_DATA from '@resources/gwas-eg.json'  // eslint-disable-line
 
@@ -28,11 +26,11 @@ const GwasPage = ({
     return <div>Loading...!</div>
   }
   return (
-    <div className={css.genePage}>
-      <h1 className={css.title}>Schizophrenia genome-wide</h1>
-      <h2 className={css.manhattan}>Top {MANHATTAN_DATA.length} hits</h2>
+    <div>
+      <h1>Schizophrenia genome-wide</h1>
+      <h2>Top {MANHATTAN_DATA.length} hits</h2>
       <Manhattan data={MANHATTAN_DATA} width={1050} height={300}/>
-      <div className={css.summary}>
+      <div>
         <GeneInfo
           gene={gene}
         />
@@ -49,4 +47,4 @@ GwasPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default GenePageHOC(GwasPage, fetchSchzGenePage)
+export default GenePageHOC(GwasPage, fetchSchz)

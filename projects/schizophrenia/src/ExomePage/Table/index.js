@@ -9,15 +9,15 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import VariantTable from '@broad/table'
 
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { tablePosition, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
-  visibleVariants,
-  tablePosition,
-  searchText,
-  searchFilteredVariants,
-  actions as tableActions
-} from '@broad/gene-page/src/resources/table'
+  variantSearchText,
+  // allVariantsInCurrentDatasetAsList,
+  finalFilteredVariants,
+  // visibleVariantsList,
+  actions as variantActions,
+} from '@broad/gene-page/src/resources/variants'
 
 import { tableConfig } from './tableConfig'
 
@@ -69,17 +69,19 @@ GnomadVariantTable.propTypes = {
 const mapStateToProps = (state) => {
   return {
     // visibleVariants: visibleVariants(state),
-    visibleVariants: searchFilteredVariants(state),
+    visibleVariants: finalFilteredVariants(state),
     tablePosition: tablePosition(state),
-    searchText: searchText(state),
+    searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
-    setCurrentVariant: variantId => dispatch(activeActions.setCurrentVariant(variantId)),
+    setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setCurrentVariant: variantId => dispatch(variantActions.setCurrentVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
+    setCurrentTableScrollData: scrollData =>
+      dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }
 }
 

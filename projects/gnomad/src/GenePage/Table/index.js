@@ -13,7 +13,6 @@ import { tablePosition, actions as activeActions } from '@broad/gene-page/src/re
 
 import {
   variantSearchText,
-  searchFilteredVariants,
   allVariantsInCurrentDatasetAsList,
   finalFilteredVariants,
   visibleVariantsList,

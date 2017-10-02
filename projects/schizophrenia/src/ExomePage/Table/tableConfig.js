@@ -1,36 +1,9 @@
-export const tableConfig = (onHeaderClick) => ({
-  fields: [
+/* eslint-disable max-len */
 
-    // {
-    //   dataKey: 'chr',
-    //   title: 'Chrom',
-    //   dataType: 'integer',
-    //   width: 20,
-    //   onHeaderClick,
-    // },
-    // {
-    //   dataKey: 'pos',
-    //   title: 'Position',
-    //   dataType: 'integer',
-    //   width: 80,
-    //   onHeaderClick,
-    // },
-    // {
-    //   dataKey: 'ref',
-    //   title: 'Ref',
-    //   dataType: 'string',
-    //   width: 20,
-    //   onHeaderClick,
-    // },
-    // {
-    //   dataKey: 'alt',
-    //   title: 'Alt',
-    //   dataType: 'string',
-    //   width: 20,
-    //   onHeaderClick,
-    // },
+export const tableConfig = onHeaderClick => ({
+  fields: [
     {
-      dataKey: 'variantId',
+      dataKey: 'variant_id',
       title: 'Variant Id ',
       dataType: 'variantId',
       width: 150,
@@ -52,6 +25,6 @@ export const tableConfig = (onHeaderClick) => ({
     // { dataKey: 'AC_FIN_ctrls', title: 'FIN ctrls', dataType: 'integer', onHeaderClick, width: 13 },
     // { dataKey: 'AC_SWE_cases', title: 'SWE cases', dataType: 'integer', onHeaderClick, width: 13 },
     // { dataKey: 'AC_SWE_ctrls', title: 'SWE ctrls', dataType: 'integer', onHeaderClick, width: 13 },
-    { dataKey: 'transcriptConsequenceTerms', title: 'major transcript consequence', dataType: 'string', onHeaderClick, width: 250 },
+    { dataKey: 'consequence', title: 'major transcript consequence', dataType: 'string', onHeaderClick, width: 250, searchable: true },
   ],
 })

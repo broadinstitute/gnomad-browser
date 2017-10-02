@@ -10,8 +10,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
-import { scaleLinear } from 'd3-scale'
-import { max } from 'd3-array'
 
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
@@ -20,7 +18,12 @@ import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { exonPadding } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { searchFilteredVariants as visibleVariants } from '@broad/gene-page/src/resources/table'
+
+import {
+  // finalFilteredVariants,
+  // visibleVariantsList,
+  allVariantsInCurrentDatasetAsList,
+} from '@broad/gene-page/src/resources/variants'
 
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
@@ -91,7 +94,7 @@ const GeneRegion = ({
   const splitTracks = consequenceCategories.map((consequence, index) => {
     let rowHeight
     const filteredVariants = modifiedVariants.filter(variant =>
-      R.contains(variant.transcriptConsequenceTerms, consequence.groups))
+      R.contains(variant.consequence, consequence.groups))
     if (filteredVariants.size / factor < 20) {
       rowHeight = 30
     } else {
@@ -181,5 +184,5 @@ GeneRegion.propTypes = {
 export default connect(state => ({
   gene: geneData(state),
   exonPadding: exonPadding(state),
-  visibleVariants: visibleVariants(state),
+  visibleVariants: allVariantsInCurrentDatasetAsList(state),
 }))(GeneRegion)
