@@ -10,8 +10,9 @@ import { createSelector } from 'reselect'
 import { getXpos } from '@broad/utilities'
 
 import {
-  currentGene
-} from './active'
+  currentGene,
+  actions as activeActions,
+  } from './active'
 
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
@@ -51,7 +52,12 @@ export const actions = {
     return false
   },
 
-  fetchGeneIfNeeded (currentGene, geneFetchFunction) {
+  fetchGeneIfNeeded (currentGene, match, geneFetchFunction) {
+    if (match) {
+      return (dispatch) => {
+        dispatch(activeActions.setCurrentGene(match.params.gene))
+      }
+    }
     return (dispatch, getState) => {  // eslint-disable-line
       if (actions.shouldFetchGene(getState(), currentGene)) {
         return dispatch(actions.fetchPageDataByGeneName(currentGene, geneFetchFunction))

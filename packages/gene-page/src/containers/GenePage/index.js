@@ -22,13 +22,14 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 
   componentDidMount() {
-    const { currentGene, fetchGeneIfNeeded } = this.props
-    fetchGeneIfNeeded(currentGene)
+    const { currentGene, match, fetchGeneIfNeeded } = this.props
+    fetchGeneIfNeeded(currentGene, match, history)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchGeneIfNeeded } = this.props
-    if (this.props.currentGene !== nextProps.currentGene) {
+    const { fetchGeneIfNeeded, currentGene, history } = this.props
+    if (currentGene !== nextProps.currentGene) {
+      history.push(nextProps.currentGene)
       fetchGeneIfNeeded(nextProps.currentGene)
     }
   }
@@ -46,8 +47,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = geneFetchFunction => (dispatch) => {
   return {
-    fetchGeneIfNeeded: currentGene => dispatch(
-      geneActions.fetchGeneIfNeeded(currentGene, geneFetchFunction)
+    fetchGeneIfNeeded: (currentGene, match) => dispatch(
+      geneActions.fetchGeneIfNeeded(currentGene, match, geneFetchFunction)
     ),
   }
 }

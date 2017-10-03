@@ -17,7 +17,7 @@ const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
   logger: true,
   projectDefaults: {
-    startingGene: 'BRCA2',
+    startingGene: 'TP53',
     startingVariant: '',
     startingPadding: 75,
     startingVariantDataset: 'gnomadCombinedVariants',
@@ -88,7 +88,7 @@ const Main = () => (
   <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
       <Router>
-        <Route path="/" component={App} />
+        <App />
       </Router>
     </MuiThemeProvider>
   </Provider>

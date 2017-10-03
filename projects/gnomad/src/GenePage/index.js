@@ -9,6 +9,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { withRouter } from 'react-router-dom'
 import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
@@ -36,7 +37,13 @@ const Summary = styled.div`
 const AppGenePage = ({
   gene,
   isFetching,
+  // match,
+  // location,
+  // history,
 }) => {
+  // console.log('match', match)
+  // console.log('location', location)
+  // console.log('history', history)
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
@@ -62,4 +69,4 @@ AppGenePage.defaultProps = {
   gene: null,
 }
 
-export default GenePageHOC(AppGenePage, fetchGene)
+export default withRouter(GenePageHOC(AppGenePage, fetchGene))

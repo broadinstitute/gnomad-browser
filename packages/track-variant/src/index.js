@@ -280,7 +280,7 @@ const VariantTrack = ({
 VariantTrack.propTypes = {
   title: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
-  variants: PropTypes.array.isRequired,
+  variants: PropTypes.any.isRequired,
   width: PropTypes.number,  // eslint-disable-line
   positionOffset: PropTypes.func,  // eslint-disable-line
   xScale: PropTypes.func,  // eslint-disable-line

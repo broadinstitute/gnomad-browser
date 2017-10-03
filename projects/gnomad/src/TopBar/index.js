@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import SearchIcon from 'material-ui/svg-icons/action/search'
@@ -104,6 +105,9 @@ const TopBar = ({ setCurrentGene }) => {
         </form>
       </Search>
       <Menu>
+        <MenuItem>
+          <Link to={'/gene'}>Gene</Link>
+        </MenuItem>
         <MenuItem>About</MenuItem>
         <MenuItem>Downloads</MenuItem>
         <MenuItem>Terms</MenuItem>
