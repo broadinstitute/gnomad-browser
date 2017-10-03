@@ -23,7 +23,7 @@ const App = () => (
     <MainPanel>
       <TopBar />
       <Route exact path="/" component={GenePage} />
-      <Route path="/gene/:gene" component={GenePage} />
+      <Route path="/gene/:gene/:variantId" component={GenePage} />
       <Route path="/variant/:variant" component={GenePage} />
       <Route path="/rsid/:rsid" component={GenePage} />
       <Route path="/gene-name/:geneName" component={GenePage} />

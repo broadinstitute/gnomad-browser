@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 
 import { currentGene } from '../../resources/active'
 import { geneData, isFetching, actions as geneActions } from '../../resources/genes'
+import { currentVariantData } from '../../resources/variants'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -29,7 +30,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   componentWillReceiveProps(nextProps) {
     const { fetchGeneIfNeeded, currentGene, history } = this.props
     if (currentGene !== nextProps.currentGene) {
-      history.push(nextProps.currentGene)
+      // history.push(nextProps.currentGene)
       fetchGeneIfNeeded(nextProps.currentGene)
     }
   }
@@ -43,6 +44,7 @@ const mapStateToProps = state => ({
   isFetching: isFetching(state),
   gene: geneData(state),
   currentGene: currentGene(state),
+  currentVariantData: currentVariantData(state)
 })
 
 const mapDispatchToProps = geneFetchFunction => (dispatch) => {

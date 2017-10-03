@@ -12,7 +12,11 @@ import { getXpos } from '@broad/utilities'
 import {
   currentGene,
   actions as activeActions,
-  } from './active'
+} from './active'
+
+import {
+  actions as variantActions
+} from './variants'
 
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
@@ -56,6 +60,10 @@ export const actions = {
     if (match) {
       return (dispatch) => {
         dispatch(activeActions.setCurrentGene(match.params.gene))
+        console.log('this is match', match)
+        if (match.params.variantId) {
+          dispatch(variantActions.setCurrentVariant(match.params.variantId))
+        }
       }
     }
     return (dispatch, getState) => {  // eslint-disable-line
