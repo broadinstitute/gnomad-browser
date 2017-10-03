@@ -64,12 +64,12 @@ const appSettings = {
       '-log10p': null,
     },
   },
-  combinedDatasets: {
-    schizophreniaCombinedVariants: {
-      sources: ['schizophreniaExomeVariants', 'schizophreniaGwas'],
-      combineKeys: {}
-    }
-  }
+  // combinedDatasets: {
+  //   schizophreniaCombinedVariants: {
+  //     sources: ['schizophreniaExomeVariants', 'schizophreniaGwas'],
+  //     combineKeys: {}
+  //   }
+  // }
 }
 
 const store = createGenePageStore(appSettings)

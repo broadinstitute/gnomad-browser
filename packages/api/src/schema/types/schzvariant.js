@@ -17,8 +17,8 @@ const schzVariantType = new GraphQLObjectType({
   fields: () => ({
     variant_id: {
       type: GraphQLString,
-      resolve: (({ chrom, pos, ref, alt }) =>
-      (`${chrom}-${pos}-${ref}-${alt}`))
+      resolve: (({ chr, pos, ref, alt }) =>
+      (`${chr}-${pos}-${ref}-${alt}`))
     },
     chr: { type: GraphQLInt },
     pos: { type: GraphQLInt },
