@@ -237,7 +237,7 @@ const TableRow = styled.div`
   }
 `
 
-const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick) => {  // eslint-disable-line
+const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick, onRowHover) => {  // eslint-disable-line
   const cells = tableConfig.fields.map((field, i) =>  // eslint-disable-line
     getDataCell(field, dataRow, searchText, i))
 
@@ -257,7 +257,7 @@ const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick) 
     // eslint-disable-next-line
     <TableRow
       onClick={_ => onRowClick(dataRow.get('variant_id'))}  // eslint-disable-line
-      onMouseEnter={_ => onRowClick(dataRow.get('variant_id'))}  // eslint-disable-line
+      onMouseEnter={_ => onRowHover(dataRow.get('variant_id'))}  // eslint-disable-line
       key={`row-${i}`}
       alternatingColors={['white', '#F5F5F5']}
       rowIndex={i}
@@ -317,14 +317,14 @@ const isRowLoaded = (tableData, loadLookAhead) => ({ index }) => {
   return !!tableData[index + loadLookAhead]
 }
 
-const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowClick) =>
+const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowClick, onRowHover) =>
   ({ key, index, style }) => {
     let tData
     if (Array.isArray(tableData)) tData = tableData[index]
     else if (Immutable.List.isList(tableData)) {
       tData = tableData.get(index)
     }
-    const row = getDataRow(tableConfig, tData, searchText, index, showIndex, onRowClick)
+    const row = getDataRow(tableConfig, tData, searchText, index, showIndex, onRowClick, onRowHover)
     const localStyle = {
       ...style,
       borderTop: '1px solid #E0E0E0',
@@ -390,11 +390,21 @@ const Table = ({
   showIndex,
   scrollToRow,
   onRowClick,
+  onRowHover,
   onScroll,
   searchText,
 }) => {
   const isRowTableLoaded = isRowLoaded(tableData, loadLookAhead)
-  const rowRenderer = tableRowRenderer(tableConfig, tableData, searchText, showIndex, onRowClick)
+
+  const rowRenderer = tableRowRenderer(
+    tableConfig,
+    tableData,
+    searchText,
+    showIndex,
+    onRowClick,
+    onRowHover
+  )
+
   const defaultWidth = getDefaultWidth(tableConfig)
   return (
     <div>

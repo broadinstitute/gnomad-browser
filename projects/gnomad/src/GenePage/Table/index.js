@@ -13,9 +13,7 @@ import { tablePosition, actions as activeActions } from '@broad/gene-page/src/re
 
 import {
   variantSearchText,
-  allVariantsInCurrentDatasetAsList,
   finalFilteredVariants,
-  visibleVariantsList,
   actions as variantActions,
 } from '@broad/gene-page/src/resources/variants'
 
@@ -24,6 +22,7 @@ import tableConfig from './tableConfig'
 const GnomadVariantTable = ({
   variants,
   setVariantSort,
+  setFocusedVariant,
   setHoveredVariant,
   setCurrentTableIndex,
   setCurrentTableScrollData,
@@ -49,7 +48,8 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={20}
         loadLookAhead={0}
-        onRowClick={setHoveredVariant}
+        onRowClick={setFocusedVariant}
+        onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
         onScroll={setCurrentTableScrollData}
@@ -62,6 +62,7 @@ GnomadVariantTable.propTypes = {
   variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
+  setFocusedVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
   setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
@@ -80,6 +81,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>

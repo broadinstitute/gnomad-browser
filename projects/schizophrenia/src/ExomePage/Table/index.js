@@ -21,9 +21,10 @@ import {
 
 import { tableConfig } from './tableConfig'
 
-const GnomadVariantTable = ({
+const SchizophreniaVariantTable = ({
   visibleVariants,
   setVariantSort,
+  setFocusedVariant,
   setHoveredVariant,
   setCurrentTableIndex,
   tablePosition,
@@ -48,7 +49,8 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={0}
         loadLookAhead={0}
-        onRowClick={setHoveredVariant}
+        onRowClick={setFocusedVariant}
+        onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
         searchText={searchText}
@@ -56,10 +58,11 @@ const GnomadVariantTable = ({
     </div>
   )
 }
-GnomadVariantTable.propTypes = {
+SchizophreniaVariantTable.propTypes = {
   visibleVariants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
+  setFocusedVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
@@ -78,6 +81,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>
@@ -85,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable)
+export default connect(mapStateToProps, mapDispatchToProps)(SchizophreniaVariantTable)

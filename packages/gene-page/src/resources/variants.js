@@ -16,6 +16,7 @@ export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
   RECEIVE_VARIANTS: null,
   SET_HOVERED_VARIANT: null,
+  SET_FOCUSED_VARIANT: null,
   SET_SELECTED_VARIANT_DATASET: null,
   SET_VARIANT_FILTER: null,
   SET_VARIANT_SORT: null,
@@ -29,6 +30,8 @@ export const actions = {
   }),
 
   setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
+
+  setFocusedVariant: variantId => ({ type: types.SET_FOCUSED_VARIANT, variantId }),
 
   setSelectedVariantDataset: variantDataset =>
     ({ type: types.SET_SELECTED_VARIANT_DATASET, variantDataset }),
@@ -102,12 +105,17 @@ export default function createVariantReducer({
     variantSortAscending: true,
     variantFilter: 'all',
     hoveredVariant: startingVariant,
+    focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
   })
 
   const actionHandlers = {
     [types.SET_HOVERED_VARIANT] (state, { variantId }) {
       return state.set('hoveredVariant', variantId)
+    },
+
+    [types.SET_FOCUSED_VARIANT] (state, { variantId }) {
+      return state.set('focusedVariant', variantId)
     },
 
     [types.SET_SELECTED_VARIANT_DATASET] (state, { variantDataset }) {

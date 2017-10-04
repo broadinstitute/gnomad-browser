@@ -9,22 +9,23 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import VariantTable from '@broad/table'
 
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { tablePosition, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
-  tablePosition,
-  searchText,
-  searchFilteredVariants,
-  actions as tableActions
-} from '@broad/gene-page/src/resources/table'
+  variantSearchText,
+  finalFilteredVariants,
+  actions as variantActions,
+} from '@broad/gene-page/src/resources/variants'
 
 import { tableConfig } from './tableConfig'
 
-const GnomadVariantTable = ({
+const VariantFxVariantTable = ({
   variants,
   setVariantSort,
+  setFocusedVariant,
   setHoveredVariant,
   setCurrentTableIndex,
+  setCurrentTableScrollData,
   tablePosition,
   searchText,
 }) => {
@@ -48,19 +49,23 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={0}
         loadLookAhead={0}
-        onRowClick={setHoveredVariant}
+        onRowClick={setFocusedVariant}
+        onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
+        onScroll={setCurrentTableScrollData}
         searchText={searchText}
       />
     </div>
   )
 }
-GnomadVariantTable.propTypes = {
+VariantFxVariantTable.propTypes = {
   variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
+  setFocusedVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
+  setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
@@ -68,18 +73,21 @@ GnomadVariantTable.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    variants: searchFilteredVariants(state),
+    variants: finalFilteredVariants(state),
     tablePosition: tablePosition(state),
-    searchText: searchText(state),
+    searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
-    setHoveredVariant: variantId => dispatch(activeActions.setHoveredVariant(variantId)),
+    setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
+    setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
+    setCurrentTableScrollData: scrollData =>
+      dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable)
+export default connect(mapStateToProps, mapDispatchToProps)(VariantFxVariantTable)

@@ -26,6 +26,7 @@ import css from './styles.css'
 const GnomadVariantTable = ({
   visibleVariants,
   setVariantSort,
+  setFocusedVariant,
   setHoveredVariant,
   setCurrentTableIndex,
   tablePosition,
@@ -51,7 +52,8 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={0}
         loadLookAhead={0}
-        onRowClick={setHoveredVariant}
+        onRowClick={setFocusedVariant}
+        onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
         searchText={searchText}
@@ -81,7 +83,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
-    setHoveredVariant: variantId => dispatch(activeActions.setHoveredVariant(variantId)),
+    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
+    setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
   }
 }
