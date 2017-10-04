@@ -10,18 +10,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
-import { scaleLinear } from 'd3-scale'
-import { max } from 'd3-array'
 
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import VariantTrack from '@broad/track-variant'
 import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
-import { exonPadding } from '@broad/gene-page/src/resources/active'
+import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
-// import { searchFilteredVariants as visibleVariants } from '@broad/gene-page/src/resources/table'
-import { allVariants } from '@broad/gene-page/src/resources/variants'
+
+import {
+  allVariantsInCurrentDatasetAsList,
+} from '@broad/gene-page/src/resources/variants'
 
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
@@ -54,7 +54,7 @@ const factor = 50
 
 const GeneRegion = ({
   gene,
-  visibleVariants,
+  allVariants,
   exonPadding,
 }) => {
   const geneJS = gene.toJS()
@@ -69,7 +69,7 @@ const GeneRegion = ({
   // }
 
   // const modifiedVariants = visibleVariants.map(v => v.set('color', getColor(v)))
-  const modifiedVariants = visibleVariants
+  const modifiedVariants = allVariants
   const markerConfigOther = {
     circleRadius: 3,
     circleStroke: 'black',
@@ -174,13 +174,15 @@ const GeneRegion = ({
     </div>
   )
 }
-GeneRegion.propTypes = {
-  gene: PropTypes.object.isRequired,
-  visibleVariants: PropTypes.any.isRequired,
-  exonPadding: PropTypes.number.isRequired,
-}
-export default connect(state => ({
-  gene: geneData(state),
-  exonPadding: exonPadding(state),
-  visibleVariants: allVariants(state),
-}))(GeneRegion)
+
+export default connect(
+  state => ({
+    gene: geneData(state),
+    exonPadding: exonPadding(state),
+    allVariants: allVariantsInCurrentDatasetAsList(state),
+  }),
+  dispatch => ({
+    setRegionViewerAttributes: regionViewerAttributes =>
+      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes))
+  })
+)(GeneRegion)

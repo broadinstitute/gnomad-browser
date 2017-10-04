@@ -18,8 +18,16 @@ import TextField from 'material-ui/TextField'
 import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
-import { actions as tableActions } from '@broad/gene-page/src/resources/table'
-import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import {
+  actions as variantActions,
+  selectedVariantDataset,
+} from '@broad/gene-page/src/resources/variants'
+
+import {
+  currentGene,
+  exonPadding,
+  actions as activeActions
+} from '@broad/gene-page/src/resources/active'
 
 import { MaterialButtonRaised } from '@broad/ui'
 
@@ -35,7 +43,8 @@ const GeneSettings = ({
   exonPadding,
   setCurrentGene,
   setExonPadding,
-  searchVariants
+  searchVariants,
+  setVariantFilter,
 }) => {
   const testGenes = [
     'PCSK9',
@@ -117,9 +126,9 @@ const GeneSettings = ({
 
   const MaterialVariantCategoryButtonGroup = () => (
     <VariantCategoryButtonGroup>
-      <VariantCatagoryButton>All</VariantCatagoryButton>
-      <VariantCatagoryButton>Missense + LoF</VariantCatagoryButton>
-      <VariantCatagoryButton>LoF</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
     </VariantCategoryButtonGroup>
   )
 
@@ -156,23 +165,29 @@ const GeneSettings = ({
 
 GeneSettings.propTypes = {
   currentGene: PropTypes.string.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
   exonPadding: PropTypes.number.isRequired,
   setCurrentGene: PropTypes.func.isRequired,
   setExonPadding: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
+  setVariantFilter: PropTypes.func.isRequired,
+  setSelectedVariantDataset: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
     currentGene: currentGene(state),
     exonPadding: exonPadding(state),
+    selectedVariantDataset: selectedVariantDataset(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
-    searchVariants: searchText => dispatch(tableActions.searchVariants(searchText))
+    setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
+    searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
+    setSelectedVariantDataset: dataset => dispatch(variantActions.setSelectedVariantDataset(dataset)),
   }
 }
 

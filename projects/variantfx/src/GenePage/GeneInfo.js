@@ -8,7 +8,9 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { allVariants } from '@broad/gene-page/src/resources/variants'
+import {
+  allVariantsInCurrentDatasetAsList,
+} from '@broad/gene-page/src/resources/variants'
 
 import {
   Table,
@@ -184,6 +186,6 @@ GeneInfo.propTypes = {
 export default connect(
   state => ({
     gene: geneData(state),
-    variants: allVariants(state)
+    variants: allVariantsInCurrentDatasetAsList(state)
   })
 )(GeneInfo)

@@ -50,12 +50,6 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
     MQ
     MQ0
     QD
-    EGY_DCM_EGY_AC
-    EGY_DCM_EGY_AN
-    EGY_HCM_EGY_AC
-    EGY_HCM_EGY_AN
-    EGY_HVO_EGY_AC
-    EGY_HVO_EGY_AN
     EGY_DCM_HH
     EGY_HCM_HH
     EGY_HVO_HH
@@ -146,7 +140,7 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
   })
 }
 
-const fetchGeneData = (geneName, url = PUBLIC_API_URL) => {
+const fetchGeneData = (geneName, url = LOCAL_API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id

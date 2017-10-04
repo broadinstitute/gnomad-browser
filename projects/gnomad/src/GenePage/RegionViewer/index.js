@@ -17,7 +17,7 @@ import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import Navigator from '@broad/gene-page/src/containers/Navigator'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
-import { exonPadding, actions } from '@broad/gene-page/src/resources/active'
+import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
 import {
   finalFilteredVariants,
@@ -206,7 +206,7 @@ const GeneRegion = ({
         {/* {splitTracks} */}
         {allTrack}
         {/*<VariantDensityTrack />*/}
-        <Navigator />
+        <Navigator noVariants />
       </RegionViewer>
     </div>
   )
@@ -225,6 +225,6 @@ export default connect(
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>
-      dispatch(actions.setRegionViewerAttributes(regionViewerAttributes))
+      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes))
   })
 )(GeneRegion)

@@ -57,7 +57,8 @@ export const actions = {
   },
 
   fetchGeneIfNeeded (currentGene, match, geneFetchFunction) {
-    if (match) {
+    if (match.params.gene) {
+      console.log('match', match)
       return (dispatch) => {
         dispatch(activeActions.setCurrentGene(match.params.gene))
         console.log('this is match', match)
