@@ -7,6 +7,8 @@
 
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+
 import VariantTable from '@broad/table'
 
 import { tablePosition, actions as activeActions } from '@broad/gene-page/src/resources/active'
@@ -28,6 +30,7 @@ const GnomadVariantTable = ({
   setCurrentTableScrollData,
   tablePosition,
   searchText,
+  history,
 }) => {
   const tConfig = tableConfig(setVariantSort)
   const scrollBarWidth = 40
@@ -48,7 +51,7 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={20}
         loadLookAhead={0}
-        onRowClick={setFocusedVariant}
+        onRowClick={setFocusedVariant(history)}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
@@ -67,6 +70,7 @@ GnomadVariantTable.propTypes = {
   setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -81,7 +85,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
+    setFocusedVariant: history => variantId =>
+      dispatch(variantActions.setFocusedVariant(variantId, history)),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>
@@ -89,4 +94,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable))

@@ -57,13 +57,15 @@ export const actions = {
   },
 
   fetchGeneIfNeeded (currentGene, match, geneFetchFunction) {
-    if (match.params.gene) {
-      console.log('match', match)
-      return (dispatch) => {
-        dispatch(activeActions.setCurrentGene(match.params.gene))
-        console.log('this is match', match)
-        if (match.params.variantId) {
-          dispatch(variantActions.setHoveredVariant(match.params.variantId))
+    console.log('match', match)
+    if (match) {
+      if (match.params.gene) {
+        return (dispatch) => {
+          dispatch(activeActions.setCurrentGene(match.params.gene))
+          console.log('this is match', match)
+          if (match.params.variantId) {
+            dispatch(variantActions.setHoveredVariant(match.params.variantId))
+          }
         }
       }
     }

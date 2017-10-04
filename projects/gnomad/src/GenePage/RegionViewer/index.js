@@ -206,7 +206,7 @@ const GeneRegion = ({
         {/* {splitTracks} */}
         {allTrack}
         {/*<VariantDensityTrack />*/}
-        <Navigator noVariants />
+        <Navigator />
       </RegionViewer>
     </div>
   )
