@@ -38,7 +38,7 @@ const GnomadVariantTable = ({
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
 
   return (
-    <div style={{ marginLeft: '110px' }}>
+    <div>
       <VariantTable
         title={''}
         height={600}

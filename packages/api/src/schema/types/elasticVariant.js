@@ -90,7 +90,7 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
       client.search({
         index: 'gnomad',
         type: 'variant',
-        size: 5000,
+        size: 100,
         _source: fields,
         body: {
           query: {

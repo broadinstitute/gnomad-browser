@@ -94,7 +94,6 @@ export default function createVariantReducer({
     }
     return acc
   }, {})
-  console.log(variantRecords)
   const State = Record({
     isFetching: false,
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import GenePage from './GenePage'
 import TopBar from './TopBar'
@@ -22,11 +22,13 @@ const App = () => (
   <Root>
     <MainPanel>
       <TopBar />
-      <Route exact path="/" component={GenePage} />
-      <Route path="/gene/:gene/:variantId" component={GenePage} />
+      {/* <Route exact path="/" component={GenePage} /> */}
+      <Switch>
+        <Route path="/gene/:gene/:variantId" component={GenePage} />
+        <Route exact path="/gene/:gene" component={GenePage} />
+      </Switch>
       <Route path="/variant/:variant" component={GenePage} />
       <Route path="/rsid/:rsid" component={GenePage} />
-      <Route path="/gene-name/:geneName" component={GenePage} />
     </MainPanel>
   </Root>
 )

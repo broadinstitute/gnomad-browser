@@ -106,7 +106,10 @@ const TopBar = ({ setCurrentGene }) => {
       </Search>
       <Menu>
         <MenuItem>
-          <Link to={'/gene'}>Gene</Link>
+          <Link to={'/gene/BRCA2'}>Gene</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link to={'/gene/BRCA2/13-32900634-AG-A'}>Variant</Link>
         </MenuItem>
         <MenuItem>About</MenuItem>
         <MenuItem>Downloads</MenuItem>

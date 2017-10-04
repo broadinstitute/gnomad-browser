@@ -18,7 +18,7 @@ const appSettings = {
   logger: true,
   projectDefaults: {
     startingGene: 'TP53',
-    startingVariant: '',
+    startingVariant: '13-32900634-AG-A',
     startingPadding: 75,
     startingVariantDataset: 'gnomadCombinedVariants',
   },

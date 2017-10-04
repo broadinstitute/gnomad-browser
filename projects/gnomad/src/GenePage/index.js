@@ -16,6 +16,8 @@ import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import GeneRegion from './RegionViewer'
 import Table from './Table'
+import VariantPage from './VariantPage'
+
 import { fetchGene } from './fetch'
 
 const GenePage = styled.div`
@@ -35,21 +37,15 @@ const Summary = styled.div`
   margin-bottom: 10px;
 `
 
-const Variant = ({ match, variantData }) => {
-  console.log(variantData)
-  return (
-    <div style={{ marginLeft: '110px' }}>
-      <h1>{variantData.variant_id}</h1>
-      {JSON.stringify(variantData)}
-    </div>
-  )
-}
+const MainSection = styled.div`
+  margin-left: 110px;
+`
+
 
 const AppGenePage = ({
   gene,
-  currentVariantData,
   isFetching,
-  match,
+  // match,
   // location,
   // history,
 }) => {
@@ -69,16 +65,13 @@ const AppGenePage = ({
       </Summary>
       <GeneRegion />
       <GeneSettings />
-      <Switch>
+      <MainSection>
+        {/* <Switch> */}
         {/* http://localhost:8010/gene/SCN5A/3-38591847-G-C */}
-        <Route
-          path={'/gene/:gene/:variantId'}
-          render={() => (
-            <Variant variantData={currentVariantData} />
-          )}
-        />
-        <Route path="/gene/:gene" component={Table} />
-      </Switch>
+        <Route path={'/gene/:gene/:variantId'} component={VariantPage} />
+        <Route exact path="/gene/:gene" component={Table} />
+        {/* </Switch> */}
+      </MainSection>
     </GenePage>
   )
 }
