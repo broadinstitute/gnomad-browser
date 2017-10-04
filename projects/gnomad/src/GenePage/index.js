@@ -42,7 +42,6 @@ const Summary = styled.div`
 const MainSection = styled.div`
   margin-left: 110px;
 `
-
 const VariantTable = withRouter(VariantTableConnected)
 
 const AppGenePage = ({

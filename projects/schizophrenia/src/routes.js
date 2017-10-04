@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 // import GwasPage from './GwasPage'
 import HomePage from './HomePage'
 import MainPage from './MainPage'
@@ -26,8 +26,10 @@ const App = () => (
     <MainPanel>
       <TopBar />
       <Route path="/" exact component={HomePage} />
-      {/* <Route path="/gwas" component={GwasPage} /> */}
-      <Route path="/exomes" component={MainPage} />
+      <Switch>
+        <Route path="/gene/:gene/:variantId" component={MainPage} />
+        <Route exact path="/gene/:gene" component={MainPage} />
+      </Switch>
     </MainPanel>
   </Root>
 )

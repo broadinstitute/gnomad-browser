@@ -87,7 +87,7 @@ const Main = () => (
   <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
       <Router>
-        <Route path="/" component={App} />
+        <App />
       </Router>
     </MuiThemeProvider>
   </Provider>

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-export const tableConfig = onHeaderClick => ({
+export default onHeaderClick => ({
   fields: [
     {
       dataKey: 'variant_id',

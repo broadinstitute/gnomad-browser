@@ -9,12 +9,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { FetchHoc } from '@broad/gene-page'
+import { withRouter, Route } from 'react-router-dom'
+import { FetchHoc, VariantTableConnected } from '@broad/gene-page'
 
 import GeneInfo from './ExomePage/GeneInfo'
 import GeneSettings from './ExomePage/GeneSettings'
 import RegionViewer from './ExomePage/RegionViewer'
-import Table from './ExomePage/Table'
+// import Table from './ExomePage/Table'
+import tableConfig from './ExomePage/tableConfig'
 import { fetchSchz } from './fetch'
 
 const GenePage = styled.div`
@@ -34,6 +36,12 @@ const Summary = styled.div`
   margin-bottom: 10px;
 `
 
+const MainSection = styled.div`
+  margin-left: 110px;
+`
+
+const VariantTable = withRouter(VariantTableConnected)
+
 const MainPage = ({
   gene,
   isFetching,
@@ -50,7 +58,20 @@ const MainPage = ({
       </Summary>
       <RegionViewer />
       <GeneSettings />
-      <Table />
+      <MainSection>
+        <Route
+          exact
+          path="/gene/:gene"
+          render={() => {
+            return (
+              <VariantTable
+                tableConfig={tableConfig}
+                height={600}
+              />
+            )
+          }}
+        />
+      </MainSection>
     </GenePage>
   )
 }
@@ -59,4 +80,4 @@ MainPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default FetchHoc(MainPage, fetchSchz)
+export default withRouter(FetchHoc(MainPage, fetchSchz))
