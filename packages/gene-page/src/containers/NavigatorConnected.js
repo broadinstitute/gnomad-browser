@@ -11,13 +11,14 @@ import {
   currentNavigatorPosition,
   currentTableScrollData,
   actions as activeActions,
-} from '../../resources/active'
+} from '../resources/active'
 
 import {
   hoveredVariant,
   variantSortKey,
   finalFilteredVariants,
-} from '../../resources/variants'
+  // actions as variantActions,
+} from '../resources/variants'
 
 const Navigator = ({
   currentTableIndex,

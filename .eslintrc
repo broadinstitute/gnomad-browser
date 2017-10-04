@@ -10,7 +10,7 @@
   "parser": "babel-eslint",
   "rules": {
     "semi": [2, "never"],
-    "no-shadow": ["error", { "allow": ["error"] }],
+    "no-shadow": 0,
     "arrow-body-style": 0,
     "no-console": 0,
     "func-names": 0,

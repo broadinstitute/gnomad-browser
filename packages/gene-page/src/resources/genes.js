@@ -7,7 +7,6 @@
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
-import { getXpos } from '@broad/utilities'
 
 import {
   currentGene,
@@ -120,19 +119,4 @@ export const isFetching = state => state.genes.isFetching
 export const geneData = createSelector(
   [byGeneName, currentGene],
   (byGeneName, currentGene) => byGeneName.get(currentGene),
-)
-
-export const variantsById = state => state.resources.get('variants')
-
-export const shouldFetchGene = createSelector(
-  [allGeneNames, isFetching, currentGene],
-  (allGeneNames, isFetching, currentGene) => {
-    if (!allGeneNames[currentGene]) {
-      return true
-    }
-    if (isFetching) {
-      return false
-    }
-    return false
-  }
 )

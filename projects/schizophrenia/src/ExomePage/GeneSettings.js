@@ -10,24 +10,17 @@ import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-// import DropDownMenu from 'material-ui/DropDownMenu'
-// import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
-// import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
-import { orange500, blue500 } from 'material-ui/styles/colors'
 import Mousetrap from 'mousetrap'
 
 import {
-  actions as variantActions,
+  variantActions,
   selectedVariantDataset,
-} from '@broad/gene-page/src/resources/variants'
-
-import {
   currentGene,
   exonPadding,
-  actions as activeActions
-} from '@broad/gene-page/src/resources/active'
+  activeActions
+} from '@broad/gene-page'
 
 import { MaterialButtonRaised } from '@broad/ui'
 

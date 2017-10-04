@@ -14,7 +14,7 @@ import R from 'ramda'
 import RegionViewer from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import VariantTrack from '@broad/track-variant'
-import Navigator from '@broad/gene-page/src/containers/Navigator'
+import { NavigatorConnected } from '@broad/gene-page'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { exonPadding } from '@broad/gene-page/src/resources/active'
 import { geneData } from '@broad/gene-page/src/resources/genes'
@@ -171,7 +171,7 @@ const GeneRegion = ({
           markerConfig={markerConfigHCAF}
           variants={variantsArray}
         />*/}
-        <Navigator noVariants />
+        <NavigatorConnected noVariants />
       </RegionViewer>
     </div>
   )

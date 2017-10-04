@@ -9,7 +9,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
+import { FetchHoc } from '@broad/gene-page'
+
 import GeneInfo from './ExomePage/GeneInfo'
 import GeneSettings from './ExomePage/GeneSettings'
 import RegionViewer from './ExomePage/RegionViewer'
@@ -58,4 +59,4 @@ MainPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default GenePageHOC(MainPage, fetchSchz)
+export default FetchHoc(MainPage, fetchSchz)

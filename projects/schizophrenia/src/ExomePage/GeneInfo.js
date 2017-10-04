@@ -3,9 +3,15 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-const GeneInfoContainer = styled.div`
+import {
+  geneData,
+  variantCount,
+} from '@broad/gene-page'
+
+const GeneInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 1000px;
@@ -78,23 +84,23 @@ const GeneStatsTitleColumn = GeneStatsCell.extend`
   width: 100px;
 `
 
-const GeneInfo = ({ gene, variantCount }) => {
+const GeneInfo = ({ geneData, variantCount }) => {
   const {
     gene_name,
     gene_id,
     full_gene_name,
     omim_accession,
     schzGeneResults,
-  } = gene.toJS()
+  } = geneData.toJS()
   return (
-    <GeneInfoContainer>
+    <GeneInfoWrapper>
       <GeneName>
         <Symbol>{gene_name}</Symbol>
         <FullName>{full_gene_name}</FullName>
       </GeneName>
       <GeneDetails>
         <GeneAttributes>
-          {/* <div><strong>Number of variants:</strong> {variantCount}</div> */}
+          <div><strong>Number of variants:</strong> {variantCount}</div>
           <GeneAttribute>
             <strong>Ensembl ID:</strong> {gene_id}
           </GeneAttribute>
@@ -124,11 +130,18 @@ const GeneInfo = ({ gene, variantCount }) => {
         </GeneStats>
 
       </GeneDetails>
-    </GeneInfoContainer>
+    </GeneInfoWrapper>
   )
 }
+
 GeneInfo.propTypes = {
-  gene: PropTypes.object.isRequired,
+  geneData: PropTypes.object.isRequired,
   variantCount: PropTypes.number.isRequired,
 }
-export default GeneInfo
+
+export default connect(
+  state => ({
+    geneData: geneData(state),
+    variantCount: variantCount(state)
+  })
+)(GeneInfo)

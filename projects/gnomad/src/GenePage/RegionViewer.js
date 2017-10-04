@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable no-shadow */
 /* eslint-disable comma-dangle */
@@ -5,7 +6,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
@@ -15,24 +17,23 @@ import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 
-import Navigator from '../../../containers/Navigator'
+import {
+  exonPadding,
+  geneData,
+  allVariantsInCurrentDatasetAsList,
+  setRegionViewerAttributes,
+  NavigatorConnected,
+} from '@broad/gene-page'
 
-import { exonPadding } from '../../../resources/active'
-import { geneData } from '../../../resources/genes'
-import { visibleVariants } from '../../../resources/table'
-
-import css from './styles.css'
-
-const {
-  exonColor,
-  paddingColor,
-  masterExonThickness,
-  masterPaddingThickness,
-} = css
+// import VariantDensityTrack from './VariantDensityTrack'
+// const exonColor = '#475453'
+const paddingColor = '#5A5E5C'
+const masterExonThickness = '20px'
+const masterPaddingThickness = '3px'
 
 const attributeConfig = {
   CDS: {
-    color: exonColor,
+    color: '#424242',
     thickness: masterExonThickness,
   },
   start_pad: {
@@ -75,8 +76,9 @@ const factor = 50
 
 const GeneRegion = ({
   gene,
-  visibleVariants,
+  allVariants,
   exonPadding,
+  setRegionViewerAttributes,
 }) => {
   const geneJS = gene.toJS()
   const geneExons = geneJS.exons
@@ -84,25 +86,25 @@ const GeneRegion = ({
   const transcriptsGrouped = groupExonsByTranscript(geneExons)
   const { exome_coverage, genome_coverage } = geneJS
 
-  const splitTracks = consequenceCategories.map((consequence, index) => {
-    let rowHeight
-    const filteredVariants = visibleVariants.filter(variant =>
-      R.contains(variant.consequence, consequence.groups))
-    if (filteredVariants.length / factor < 20) {
-      rowHeight = 20
-    } else {
-      rowHeight = filteredVariants.length / factor
-    }
-    return (
-      <VariantTrack
-        key={`${consequence.annotation}-${index}`}
-        title={`${consequence.annotation} (${filteredVariants.length})`}
-        height={rowHeight}
-        markerConfig={markerConfigLoF}
-        variants={filteredVariants}
-      />
-    )
-  })
+  // const splitTracks = consequenceCategories.map((consequence) => {
+  //   let rowHeight
+  //   const filteredVariants = allVariants.filter(variant =>
+  //     R.contains(variant.consequence, consequence.groups))
+  //   if (filteredVariants.size / factor < 20) {
+  //     rowHeight = 20
+  //   } else {
+  //     rowHeight = filteredVariants.size / factor
+  //   }
+  //   return (
+  //     <VariantTrack
+  //       key={`${consequence.annotation}`}
+  //       title={`${consequence.annotation} (${filteredVariants.size})`}
+  //       height={rowHeight}
+  //       markerConfig={markerConfigLoF}
+  //       variants={filteredVariants}
+  //     />
+  //   )
+  // })
 
   const markerConfigOther = {
     markerType: 'af',
@@ -114,24 +116,29 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
-  const otherVariants = visibleVariants.filter(v =>
-    !R.contains(v.consequence, [...lof, ...missense]))
+  // const markerConfigDensity = {
+  //   markerType: 'density',
+  //   stroke: 1,
+  // }
+
+  // const otherVariants = allVariants.filter(v =>
+  //   !R.contains(v.consequence, [...lof, ...missense]))
 
   let otherHeight
-  if (otherVariants.length / factor < 20) {
+  if (allVariants.size / factor < 20) {
     otherHeight = 20
   } else {
-    otherHeight = otherVariants.length / factor
+    otherHeight = allVariants.size / factor
   }
 
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`Other (${otherVariants.length})`}
+      title={`variants (${allVariants.size})`}
       height={otherHeight}
       color={'#75757'}
       markerConfig={markerConfigOther}
-      variants={otherVariants}
+      variants={allVariants}
     />
   )
 
@@ -174,41 +181,49 @@ const GeneRegion = ({
       },
     ],
   }
+
   return (
-    <div className={css.geneRegion}>
+    <div>
       <RegionViewer
-        css={css}
-        width={1150}
+        width={1000}
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
+        broadcast={setRegionViewerAttributes}
       >
         <CoverageTrack
           title={'Coverage'}
-          height={120}
+          height={150}
           dataConfig={coverageConfig}
           yTickNumber={11}
           yMax={110}
         />
         <TranscriptTrack
-          css={css}
           transcriptsGrouped={transcriptsGrouped}
           height={10}
         />
-        {splitTracks}
+        {/* {splitTracks} */}
         {allTrack}
-        <Navigator />
+        {/*<VariantDensityTrack />*/}
+        <NavigatorConnected />
       </RegionViewer>
     </div>
   )
 }
 GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
-  visibleVariants: PropTypes.array.isRequired,
+  allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
+  setRegionViewerAttributes: PropTypes.func.isRequired,
 }
-export default connect(state => ({
-  gene: geneData(state),
-  exonPadding: exonPadding(state),
-  visibleVariants: visibleVariants(state),
-}))(GeneRegion)
+export default connect(
+  state => ({
+    gene: geneData(state),
+    exonPadding: exonPadding(state),
+    allVariants: allVariantsInCurrentDatasetAsList(state),
+  }),
+  dispatch => ({
+    setRegionViewerAttributes: regionViewerAttributes =>
+      dispatch(setRegionViewerAttributes(regionViewerAttributes))
+  })
+)(GeneRegion)

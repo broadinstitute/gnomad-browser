@@ -7,86 +7,101 @@
 
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import VariantTable from '@broad/table'
-
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import Table from '@broad/table'
 
 import {
-  visibleVariants,
+  activeActions,
+  variantActions,
   tablePosition,
-  searchText,
-  searchFilteredVariants,
-  actions as tableActions
-} from '@broad/gene-page/src/resources/table'
+  variantSearchText,
+  finalFilteredVariants,
+  finalFilteredVariantsCount,
+} from '../index'
 
-import { tableConfig } from './tableConfig'
+console.log(activeActions)
 
-import css from './styles.css'
-
-const GnomadVariantTable = ({
-  visibleVariants,
+const VariantTable = ({
+  variants,
   setVariantSort,
   setFocusedVariant,
   setHoveredVariant,
   setCurrentTableIndex,
+  setCurrentTableScrollData,
   tablePosition,
   searchText,
+  title,
+  height,
+  tableConfig,
+  history,
+  variantCount,
 }) => {
   const tConfig = tableConfig(setVariantSort)
-
   const scrollBarWidth = 40
   const paddingWidth = tConfig.fields.length * 40
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
   return (
-    <div className={css.tableContainer}>
-      <VariantTable
-        css={css}
-        title={''}
-        height={400}
+    <div>
+      <Table
+        title={title}
+        height={height}
         width={calculatedWidth}
         tableConfig={tConfig}
-        tableData={visibleVariants}
-        remoteRowCount={visibleVariants.size}
+        tableData={variants}
+        remoteRowCount={variants.size}
         loadMoreRows={() => {}}
-        overscan={0}
+        overscan={5}
         loadLookAhead={0}
-        onRowClick={setFocusedVariant}
+        onRowClick={setFocusedVariant(history)}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
+        onScroll={setCurrentTableScrollData}
         searchText={searchText}
       />
     </div>
   )
 }
-GnomadVariantTable.propTypes = {
-  visibleVariants: PropTypes.any.isRequired,
+VariantTable.propTypes = {
+  variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
+  setFocusedVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
+  setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  height: PropTypes.number,
+  tableConfig: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
+VariantTable.defaultProps = {
+  title: '',
+  height: 400,
+}
 const mapStateToProps = (state) => {
   return {
-    // visibleVariants: visibleVariants(state),
-    visibleVariants: searchFilteredVariants(state),
+    variants: finalFilteredVariants(state),
+    variantCount: finalFilteredVariantsCount(state),
     tablePosition: tablePosition(state),
-    searchText: searchText(state),
+    searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVariantSort: sortKey => dispatch(tableActions.setVariantSort(sortKey)),
-    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
+    setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
+    setFocusedVariant: history => variantId =>
+      dispatch(variantActions.setFocusedVariant(variantId, history)),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
+    setCurrentTableScrollData: scrollData =>
+      dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GnomadVariantTable)
+export default connect(mapStateToProps, mapDispatchToProps)(VariantTable)

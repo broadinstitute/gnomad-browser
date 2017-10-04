@@ -232,6 +232,11 @@ export const allVariantsInCurrentDatasetAsList = createSelector(
     sortVariants(byVariantDataset.get(selectedVariantDataset).toList(), 'pos', true)
 )
 
+export const variantCount = createSelector(
+  [allVariantsInCurrentDatasetAsList],
+  variants => variants.size
+)
+
 export const singleVariantData = createSelector(
   [hoveredVariant, allVariantsInCurrentDataset],
   (hoveredVariant, variants) => variants.get(hoveredVariant)
@@ -296,6 +301,11 @@ export const finalFilteredVariants = createSelector(
     }
     return filteredIdList.map(id => visibleVariantsById.get(id))
   }
+)
+
+export const finalFilteredVariantsCount = createSelector(
+  [finalFilteredVariants],
+  finalFilteredVariants => finalFilteredVariants.size
 )
 
 

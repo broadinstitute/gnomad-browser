@@ -6,8 +6,8 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import { currentGene } from '../../resources/active'
-import { geneData, isFetching, actions as geneActions } from '../../resources/genes'
+import { currentGene } from '../resources/active'
+import { geneData, isFetching, actions as geneActions } from '../resources/genes'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -54,10 +54,12 @@ const mapDispatchToProps = geneFetchFunction => (dispatch) => {
   }
 }
 
-const GenePageHOC = (ComposedComponent, geneFetchFunction) =>
-  connect(
-    mapStateToProps,
-    mapDispatchToProps(geneFetchFunction)
-  )(GenePageContainer(ComposedComponent))
+const GenePageHOC = (
+  ComposedComponent,
+  geneFetchFunction,
+) => connect(
+  mapStateToProps,
+  mapDispatchToProps(geneFetchFunction)
+)(GenePageContainer(ComposedComponent))
 
 export default GenePageHOC

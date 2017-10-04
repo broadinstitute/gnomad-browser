@@ -29,8 +29,9 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
   leading: true,
   trailing: false,
 }
+const reduxThrottle = throttle(defaultWait, defaultThrottleOption)  // eslint-disable-line
 
-const middlewares = [throttle(defaultWait, defaultThrottleOption), thunk]
+const middlewares = [thunk]
 
 export default function createGenePageStore(appSettings) {
   console.log(appSettings.searchIndexes)
