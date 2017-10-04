@@ -24,7 +24,7 @@ import tableConfig from './tableConfig'
 const GnomadVariantTable = ({
   variants,
   setVariantSort,
-  setCurrentVariant,
+  setHoveredVariant,
   setCurrentTableIndex,
   setCurrentTableScrollData,
   tablePosition,
@@ -49,7 +49,7 @@ const GnomadVariantTable = ({
         loadMoreRows={() => {}}
         overscan={20}
         loadLookAhead={0}
-        onRowClick={setCurrentVariant}
+        onRowClick={setHoveredVariant}
         scrollToRow={tablePosition}
         scrollCallback={setCurrentTableIndex}
         onScroll={setCurrentTableScrollData}
@@ -61,7 +61,7 @@ const GnomadVariantTable = ({
 GnomadVariantTable.propTypes = {
   variants: PropTypes.any.isRequired,
   setVariantSort: PropTypes.func.isRequired,
-  setCurrentVariant: PropTypes.func.isRequired,
+  setHoveredVariant: PropTypes.func.isRequired,
   setCurrentTableIndex: PropTypes.func.isRequired,
   setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
@@ -80,7 +80,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-    setCurrentVariant: variantId => dispatch(variantActions.setCurrentVariant(variantId)),
+    setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>
       dispatch(activeActions.setCurrentTableScrollData(scrollData)),

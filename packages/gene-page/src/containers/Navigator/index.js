@@ -14,7 +14,7 @@ import {
 } from '../../resources/active'
 
 import {
-  currentVariant,
+  hoveredVariant,
   variantSortKey,
   finalFilteredVariants,
 } from '../../resources/variants'
@@ -22,7 +22,7 @@ import {
 const Navigator = ({
   currentTableIndex,
   currentTableScrollData,
-  currentVariant,
+  hoveredVariant,
   onNavigatorClick,
   currentNavigatorPosition,
   variants,
@@ -38,7 +38,7 @@ const Navigator = ({
       scrollSync={currentTableIndex}
       currentTableScrollData={currentTableScrollData}
       variants={variants}
-      currentVariant={currentVariant}
+      hoveredVariant={hoveredVariant}
       variantSortKey={variantSortKey}
       {...ownProps}
     />
@@ -48,7 +48,7 @@ Navigator.propTypes = {
   currentTableIndex: PropTypes.number.isRequired,
   currentTableScrollData: PropTypes.object.isRequired,
   currentNavigatorPosition: PropTypes.number.isRequired,
-  currentVariant: PropTypes.string.isRequired,
+  hoveredVariant: PropTypes.string.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
   variants: PropTypes.any.isRequired,
   variantSortKey: PropTypes.string.isRequired,
@@ -59,7 +59,7 @@ const mapStateToProps = (state, ownProps) => ({
   currentTableIndex: currentTableIndex(state),
   currentTableScrollData: currentTableScrollData(state),
   currentNavigatorPosition: currentNavigatorPosition(state),
-  currentVariant: currentVariant(state),
+  hoveredVariant: hoveredVariant(state),
   variantSortKey: variantSortKey(state),
   // variants: visibleVariants(state),
   variants: finalFilteredVariants(state),

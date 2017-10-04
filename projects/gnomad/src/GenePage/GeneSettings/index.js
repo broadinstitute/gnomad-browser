@@ -19,7 +19,7 @@ import Mousetrap from 'mousetrap'
 
 import {
   actions as variantActions,
-  currentVariantDataset,
+  selectedVariantDataset,
 } from '@broad/gene-page/src/resources/variants'
 
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
@@ -35,12 +35,12 @@ Mousetrap.bind(['command+f', 'meta+s'], (e) => {
 const GeneSettings = ({
   currentGene,
   exonPadding,
-  currentVariantDataset,
+  selectedVariantDataset,
   setCurrentGene,
   setExonPadding,
   searchVariants,
   setVariantFilter,
-  setCurrentVariantDataset,
+  setSelectedVariantDataset,
 }) => {
   const testGenes = [
     'PCSK9',
@@ -151,8 +151,8 @@ const GeneSettings = ({
         </SearchContainer>
         <SelectField
           floatingLabelText="Select dataset"
-          value={currentVariantDataset}
-          onChange={(event, index, value) => setCurrentVariantDataset(value)}
+          value={selectedVariantDataset}
+          onChange={(event, index, value) => setSelectedVariantDataset(value)}
           floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
           floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
         >
@@ -175,20 +175,20 @@ const GeneSettings = ({
 
 GeneSettings.propTypes = {
   currentGene: PropTypes.string.isRequired,
-  currentVariantDataset: PropTypes.string.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
   exonPadding: PropTypes.number.isRequired,
   setCurrentGene: PropTypes.func.isRequired,
   setExonPadding: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
-  setCurrentVariantDataset: PropTypes.func.isRequired,
+  setSelectedVariantDataset: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
     currentGene: currentGene(state),
     exonPadding: exonPadding(state),
-    currentVariantDataset: currentVariantDataset(state),
+    selectedVariantDataset: selectedVariantDataset(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -197,7 +197,7 @@ const mapDispatchToProps = (dispatch) => {
     setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
     setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
     searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
-    setCurrentVariantDataset: dataset => dispatch(variantActions.setCurrentVariantDataset(dataset)),
+    setSelectedVariantDataset: dataset => dispatch(variantActions.setSelectedVariantDataset(dataset)),
   }
 }
 

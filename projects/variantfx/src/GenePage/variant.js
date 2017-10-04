@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { currentVariantData } from '@broad/gene-page/src/resources/variants'
+import { singleVariantData } from '@broad/gene-page/src/resources/variants'
 
 import {
   Table,
@@ -190,6 +190,6 @@ Variant.propTypes = {
 
 export default connect(
   state => ({
-    variant: currentVariantData(state),
+    variant: singleVariantData(state),
   })
 )(Variant)

@@ -118,7 +118,7 @@ test('Variant dataset switch + variant selectors', (assert) => {
   const combinedVariants = fromVariants.allVariantsInCurrentDatasetAsList(state)
   assert.equal(combinedVariants.size, 720, 'selector gets data given state, using default variant dataset')
 
-  store.dispatch(fromVariants.actions.setCurrentVariantDataset('gnomadGenomeVariants'))
+  store.dispatch(fromVariants.actions.setSelectedVariantDataset('gnomadGenomeVariants'))
   const state2 = store.getState()
   const genomeVariants = fromVariants.allVariantsInCurrentDatasetAsList(state2)
   assert.equal(genomeVariants.size, 193, 'action correctly changes active variant dataset')

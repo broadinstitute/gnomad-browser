@@ -15,8 +15,8 @@ import * as fromActive from './active'
 export const types = keymirror({
   REQUEST_VARIANTS_BY_POSITION: null,
   RECEIVE_VARIANTS: null,
-  SET_CURRENT_VARIANT: null,
-  SET_CURRENT_VARIANT_DATASET: null,
+  SET_HOVERED_VARIANT: null,
+  SET_SELECTED_VARIANT_DATASET: null,
   SET_VARIANT_FILTER: null,
   SET_VARIANT_SORT: null,
   ORDER_VARIANTS_BY_POSITION: null,
@@ -28,10 +28,10 @@ export const actions = {
     payload: { xstart, xstop },
   }),
 
-  setCurrentVariant: variantId => ({ type: types.SET_CURRENT_VARIANT, variantId }),
+  setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
 
-  setCurrentVariantDataset: variantDataset =>
-    ({ type: types.SET_CURRENT_VARIANT_DATASET, variantDataset }),
+  setSelectedVariantDataset: variantDataset =>
+    ({ type: types.SET_SELECTED_VARIANT_DATASET, variantDataset }),
 
   receiveVariants: variantData => ({
     type: types.REQUEST_VARIANTS_BY_POSITION,
@@ -101,17 +101,17 @@ export default function createVariantReducer({
     variantSortKey: 'pos',
     variantSortAscending: true,
     variantFilter: 'all',
-    currentVariant: startingVariant,
-    currentVariantDataset: startingVariantDataset,
+    hoveredVariant: startingVariant,
+    selectedVariantDataset: startingVariantDataset,
   })
 
   const actionHandlers = {
-    [types.SET_CURRENT_VARIANT] (state, { variantId }) {
-      return state.set('currentVariant', variantId)
+    [types.SET_HOVERED_VARIANT] (state, { variantId }) {
+      return state.set('hoveredVariant', variantId)
     },
 
-    [types.SET_CURRENT_VARIANT_DATASET] (state, { variantDataset }) {
-      return state.set('currentVariantDataset', variantDataset)
+    [types.SET_SELECTED_VARIANT_DATASET] (state, { variantDataset }) {
+      return state.set('selectedVariantDataset', variantDataset)
     },
 
     [types.REQUEST_VARIANTS_BY_POSITION] (state) {
@@ -205,25 +205,25 @@ const sortVariants = (variants, key, ascending) => {
  */
 
 const byVariantDataset = state => state.variants.byVariantDataset
-export const currentVariant = state => state.variants.currentVariant
-export const currentVariantDataset = state => state.variants.currentVariantDataset
+export const hoveredVariant = state => state.variants.hoveredVariant
+export const selectedVariantDataset = state => state.variants.selectedVariantDataset
 export const variantDatasetKeys = state => state.variants.byVariantDataset.seqKey()
 
 export const allVariantsInCurrentDataset = createSelector(
-  [currentVariantDataset, byVariantDataset],
-  (currentVariantDataset, byVariantDataset) =>
-    byVariantDataset.get(currentVariantDataset)
+  [selectedVariantDataset, byVariantDataset],
+  (selectedVariantDataset, byVariantDataset) =>
+    byVariantDataset.get(selectedVariantDataset)
 )
 
 export const allVariantsInCurrentDatasetAsList = createSelector(
-  [currentVariantDataset, byVariantDataset],
-  (currentVariantDataset, byVariantDataset) =>
-    sortVariants(byVariantDataset.get(currentVariantDataset).toList(), 'pos', true)
+  [selectedVariantDataset, byVariantDataset],
+  (selectedVariantDataset, byVariantDataset) =>
+    sortVariants(byVariantDataset.get(selectedVariantDataset).toList(), 'pos', true)
 )
 
-export const currentVariantData = createSelector(
-  [currentVariant, allVariantsInCurrentDataset],
-  (currentVariant, variants) => variants.get(currentVariant)
+export const singleVariantData = createSelector(
+  [hoveredVariant, allVariantsInCurrentDataset],
+  (hoveredVariant, variants) => variants.get(hoveredVariant)
 )
 
 /**

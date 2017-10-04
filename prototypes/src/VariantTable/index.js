@@ -363,7 +363,7 @@ VariantTable.defaultProps = {
   loadLookAhead: 0,
   showIndex: false,
   scrollToRow: 10,
-  setCurrentVariant: () => { },
+  setHoveredVariant: () => { },
   scrollCallback: () => {},
 }
 

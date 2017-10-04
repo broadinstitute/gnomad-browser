@@ -73,7 +73,7 @@ const ClickArea = ({
   onNavigatorClick,
   variantPlotData, // TODO
   variants,
-  currentVariant,
+  hoveredVariant,
   variantSortKey, // TODO
   noVariants,
 }) => {
@@ -105,7 +105,7 @@ const ClickArea = ({
   const variantPositions = currentlyVisibleVariants.map(v => ({
     x: xScale(positionOffset(v.pos).offsetPosition),
     variant_id: v.variant_id,
-    color: v.variant_id === currentVariant ? 'yellow' : 'red',
+    color: v.variant_id === hoveredVariant ? 'yellow' : 'red',
     allele_freq: v.allele_freq,
   })).filter(v => v.allele_freq !== 0).filter(v => !isNaN(v.x))
 
@@ -119,7 +119,7 @@ const ClickArea = ({
 
   const variantMarks = variantPositions.map((v, i) => (
     <g key={`variant-${v}-${i}`}>
-      {v.variant_id === currentVariant && <circle
+      {v.variant_id === hoveredVariant && <circle
         cx={v.x}
         cy={height / 2.5}
         r={10}

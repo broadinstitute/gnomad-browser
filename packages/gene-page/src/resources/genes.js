@@ -62,7 +62,7 @@ export const actions = {
         dispatch(activeActions.setCurrentGene(match.params.gene))
         console.log('this is match', match)
         if (match.params.variantId) {
-          dispatch(variantActions.setCurrentVariant(match.params.variantId))
+          dispatch(variantActions.setHoveredVariant(match.params.variantId))
         }
       }
     }

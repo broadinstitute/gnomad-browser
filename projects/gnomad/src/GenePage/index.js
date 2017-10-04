@@ -49,7 +49,7 @@ const AppGenePage = ({
   // location,
   // history,
 }) => {
-  // console.log('current variant data', currentVariantData)
+  // console.log('current variant data', singleVariantData)
   // console.log('match', match)
   // console.log('location', location)
   // console.log('history', history)
