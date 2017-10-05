@@ -56,5 +56,47 @@ export const TableCell = styled.div`
 `
 
 export const TableTitleColumn = TableCell.extend`
-  width: 150px;
+  width: 10px;
 `
+
+export const ExampleTable = () => (
+  <Table>
+    <TableRows>
+      <TableHeader>
+        <TableTitleColumn />
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+      </TableHeader>
+      <TableRow>
+        <TableTitleColumn />
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableTitleColumn />
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableTitleColumn />
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableTitleColumn />
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+    </TableRows>
+  </Table>
+)

@@ -72,7 +72,7 @@ const AppGenePage = ({
             return (
               <VariantTable
                 tableConfig={tableConfig}
-                height={600}
+                height={400}
               />
             )
           }}

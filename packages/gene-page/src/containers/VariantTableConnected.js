@@ -13,6 +13,7 @@ import {
   activeActions,
   variantActions,
   tablePosition,
+  currentTableIndex,
   variantSearchText,
   finalFilteredVariants,
   finalFilteredVariantsCount,
@@ -25,7 +26,6 @@ const VariantTable = ({
   setVariantSort,
   setFocusedVariant,
   setHoveredVariant,
-  setCurrentTableIndex,
   setCurrentTableScrollData,
   tablePosition,
   searchText,
@@ -33,7 +33,6 @@ const VariantTable = ({
   height,
   tableConfig,
   history,
-  variantCount,
 }) => {
   const tConfig = tableConfig(setVariantSort)
   const scrollBarWidth = 40
@@ -41,6 +40,7 @@ const VariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+  console.log(tablePosition)
   return (
     <div>
       <Table
@@ -56,7 +56,6 @@ const VariantTable = ({
         onRowClick={setFocusedVariant(history)}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
-        scrollCallback={setCurrentTableIndex}
         onScroll={setCurrentTableScrollData}
         searchText={searchText}
       />
@@ -68,7 +67,6 @@ VariantTable.propTypes = {
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
   setFocusedVariant: PropTypes.func.isRequired,
-  setCurrentTableIndex: PropTypes.func.isRequired,
   setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchText: PropTypes.string.isRequired,
@@ -87,7 +85,7 @@ const mapStateToProps = (state) => {
   return {
     variants: finalFilteredVariants(state),
     variantCount: finalFilteredVariantsCount(state),
-    tablePosition: tablePosition(state),
+    tablePosition: currentTableIndex(state),
     searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
   }
@@ -98,7 +96,6 @@ const mapDispatchToProps = (dispatch) => {
     setFocusedVariant: history => variantId =>
       dispatch(variantActions.setFocusedVariant(variantId, history)),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
-    setCurrentTableIndex: index => dispatch(activeActions.setCurrentTableIndex(index)),
     setCurrentTableScrollData: scrollData =>
       dispatch(activeActions.setCurrentTableScrollData(scrollData)),
   }

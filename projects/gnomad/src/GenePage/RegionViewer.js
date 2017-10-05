@@ -21,6 +21,7 @@ import {
   exonPadding,
   geneData,
   allVariantsInCurrentDatasetAsList,
+  finalFilteredVariants,
   setRegionViewerAttributes,
   NavigatorConnected,
 } from '@broad/gene-page'
@@ -221,6 +222,7 @@ export default connect(
     gene: geneData(state),
     exonPadding: exonPadding(state),
     allVariants: allVariantsInCurrentDatasetAsList(state),
+    // allVariants: finalFilteredVariants(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>

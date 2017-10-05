@@ -7,7 +7,10 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
-import { allVariantsInCurrentDatasetAsList } from './variants'
+import {
+  allVariantsInCurrentDatasetAsList,
+  types as variantTypes,
+} from './variants'
 
 export const types = keymirror({
   SET_CURRENT_GENE: null,
@@ -24,26 +27,30 @@ export const actions = {
   setNavigatorPosition: navigatorPosition => ({
     type: types.SET_CURRENT_NAVIGATOR_POSITION,
     navigatorPosition,
-    meta: {
-      throttle: true,
-    },
   }),
 
   setCurrentTableIndex: tableIndex => ({
     type: types.SET_CURRENT_TABLE_INDEX,
     tableIndex,
-    meta: {
-      throttle: true,
-    },
+    // meta: {
+    //   throttle: true,
+    // }
   }),
 
-  setCurrentTableScrollData: tableScrollData => ({
-    type: types.SET_CURRENT_TABLE_SCROLL_DATA,
-    tableScrollData,
-    meta: {
-      throttle: true,
-    }
-  }),
+  // setTableIsScrolling: () => ({
+  //   type: types.SET_TABLE_IS_SCROLLING,
+  //   meta: {
+  //     throttle: true,
+  //   }
+  // }),
+
+  setCurrentTableScrollData: tableScrollData => (dispatch) => {
+    // dispatch(actions.setTableIsScrolling())
+    return dispatch(({
+      type: types.SET_CURRENT_TABLE_SCROLL_DATA,
+      tableScrollData,
+    }))
+  },
 
   setRegionViewerAttributes: ({ offsetRegions }) => ({
     type: types.SET_REGION_VIEWER_ATTRIBUTES,
@@ -64,12 +71,11 @@ export const actions = {
 
   onNavigatorClick (tableIndex, position) {
     return (dispatch) => {
-      dispatch({ type: types.ORDER_VARIANTS_BY_POSITION })
+      dispatch({ type: variantTypes.ORDER_VARIANTS_BY_POSITION })
       dispatch(actions.setCurrentTableIndex(tableIndex))
       dispatch(actions.setNavigatorPosition(position))
     }
   },
-
 }
 
 const actionHandlers = {
@@ -139,6 +145,7 @@ export default function createActiveReducer ({
 export const currentGene = state => state.active.currentGene
 export const currentNavigatorPosition = state => state.active.currentNavigatorPosition
 export const currentTableIndex = state => state.active.currentTableIndex
+
 export const currentTableScrollData = state => state.active.currentTableScrollData
 export const exonPadding = state => state.active.exonPadding
 export const regionViewerIntervals = state =>

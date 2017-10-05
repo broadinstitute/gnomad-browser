@@ -8,24 +8,24 @@ import styled from 'styled-components'
 
 import { geneData, variantCount } from '@broad/gene-page'
 
-const GeneInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
+import {
+  GeneInfoWrapper,
+  GeneNameWrapper,
+  GeneSymbol,
+  GeneLongName,
+  GeneDetails,
+  GeneAttributes,
+  GeneAttribute,
+} from '@broad/gene-page/src/presentation/GeneInfoStyles'
 
-const GeneDetails = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 400px;
-`
-
-const GeneAttributes = styled.div`
-  display: flex;
-  flex-direction: column;
-`
+import {
+  Table,
+  TableRows,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableTitleColumn,
+} from '@broad/ui/src/tables/SimpleTable'
 
 const GeneInfo = ({ geneData, variantCount }) => {
   const {
@@ -35,17 +35,66 @@ const GeneInfo = ({ geneData, variantCount }) => {
     omim_accession,
   } = geneData.toJS()
   return (
-    <GeneInfoContainer>
-      <h1>{gene_name}</h1>
+    <GeneInfoWrapper>
+      <GeneNameWrapper>
+        <GeneSymbol>{gene_name}</GeneSymbol>
+        <GeneLongName>{full_gene_name}</GeneLongName>
+      </GeneNameWrapper>
       <GeneDetails>
         <GeneAttributes>
-          <div>Number of variants: {variantCount}</div>
-          <div>Full name: {full_gene_name}</div>
-          <div>Gene ID: {gene_id}</div>
-          <div>OMIM accession: {omim_accession}</div>
+          <GeneAttribute>
+            <strong>Ensembl ID:</strong> {gene_id}
+          </GeneAttribute>
+          <GeneAttribute>
+            <strong>Total variants</strong> {variantCount}
+          </GeneAttribute>
+          <GeneAttribute>
+            <strong>OMIM: </strong>omim_accession
+          </GeneAttribute>
         </GeneAttributes>
+        {/* <GeneLongName>Disease burden analysis (case v. control)</GeneLongName> */}
+        <Table>
+          <TableRows>
+            <TableHeader>
+              <TableTitleColumn />
+              <TableCell>Category</TableCell>
+              <TableCell>Expected no. variants</TableCell>
+              <TableCell>Observed no. variants</TableCell>
+              <TableCell>Constraint metric</TableCell>
+            </TableHeader>
+            <TableRow>
+              <TableTitleColumn />
+              <TableCell>Synonymous</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableTitleColumn />
+              <TableCell>Missense</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableTitleColumn />
+              <TableCell>LoF</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableTitleColumn />
+              <TableCell>CNV</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableRows>
+        </Table>
+
       </GeneDetails>
-    </GeneInfoContainer>
+    </GeneInfoWrapper>
   )
 }
 

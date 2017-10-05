@@ -455,10 +455,10 @@ Table.propTypes = {
 Table.defaultProps = {
   width: null,
   loadMoreRows: () => { },
-  overscan: 100,
+  overscan: 10,
   loadLookAhead: 0,
   showIndex: false,
-  scrollToRow: 10,
+  scrollToRow: 200,
   setHoveredVariant: () => { },
   onRowClick: () => {},
   searchText: '',

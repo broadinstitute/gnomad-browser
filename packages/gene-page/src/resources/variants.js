@@ -9,6 +9,8 @@ import {
   isCategoryMissenseOrLoF,
 } from '@broad/utilities/src/constants/categoryDefinitions'
 
+import { getTableIndexByPosition } from '@broad/utilities/src/variant'
+
 import { types as geneTypes } from './genes'
 import * as fromActive from './active'
 
@@ -31,8 +33,15 @@ export const actions = {
 
   setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
 
-  setFocusedVariant: (variantId, history) => (dispatch) => {
+  setFocusedVariant: (variantId, history) => (dispatch, getState) => {
     history.push(`/gene/BRCA2/${variantId}`)
+    // HACK way to preserve table state when switching to variant table
+    dispatch(fromActive.actions.setCurrentTableIndex(
+      getTableIndexByPosition(
+        variantId.split('-')[1],
+        finalFilteredVariants(getState())
+      ) + 7
+    ))
     dispatch(({ type: types.SET_FOCUSED_VARIANT, variantId }))
   },
 
@@ -103,7 +112,7 @@ export default function createVariantReducer({
   const State = Record({
     isFetching: false,
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>
-      (acc.set(dataset, Map())), OrderedMap()),
+      (acc.set(dataset, OrderedMap())), OrderedMap()),
     variantSortKey: 'pos',
     variantSortAscending: true,
     variantFilter: 'all',
@@ -164,7 +173,7 @@ export default function createVariantReducer({
           }, OrderedMap())
         }
         return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(datasetKey, Map(variantMap))
+          .set(datasetKey, OrderedMap(variantMap))
         )
       }, state)
     },
@@ -250,12 +259,10 @@ export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 
-export const visibleVariantsById = createSelector([
+export const filteredVariantsById = createSelector([
   allVariantsInCurrentDataset,
-  variantSortKey,
-  variantSortAscending,
   variantFilter,
-], (variants, variantSortKey, variantSortAscending, variantFilter) => {
+], (variants, variantFilter) => {
   let filteredVariants
   if (variantFilter === 'all') {
     filteredVariants = variants
@@ -266,15 +273,12 @@ export const visibleVariantsById = createSelector([
   if (variantFilter === 'missenseOrLoF') {
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
   }
-  return sortVariants(
-    filteredVariants,
-    variantSortKey,
-    variantSortAscending
-  )
+  console.log('filteredVariants')
+  return filteredVariants
 })
 
 export const visibleVariantsList = createSelector(
-  [visibleVariantsById], visibleVariantsById => visibleVariantsById.toList()
+  [filteredVariantsById], filteredVariantsById => filteredVariantsById.toList()
 )
 
 /**
@@ -283,24 +287,41 @@ export const visibleVariantsList = createSelector(
 
 const searchSelectors = getSearchSelectors({
   resourceName: 'variants',
-  resourceSelector: (resourceName, state) => visibleVariantsById(state),
+  resourceSelector: (resourceName, state) => filteredVariantsById,
 })
 export const variantSearchText = searchSelectors.text
 export const variantSearchResult = searchSelectors.result
 
 export const filteredIdList = createSelector(
-  [variantSearchResult],
+  [searchSelectors.result],
   result => List(result)
 )
 
-export const finalFilteredVariants = createSelector(
-  [visibleVariantsById, filteredIdList],
-  (visibleVariantsById, filteredIdList) => {
-    if (filteredIdList.size === 0) {
-      return visibleVariantsById.toList()
-    }
-    return filteredIdList.map(id => visibleVariantsById.get(id))
+
+
+export const sortedVariants = createSelector(
+  [
+    filteredVariantsById,
+    variantSortKey,
+    variantSortAscending
+  ],
+  (
+    variants,
+    variantSortKey,
+    variantSortAscending
+  ) => {
+    const sortedVariants = sortVariants(
+      variants,
+      variantSortKey,
+      variantSortAscending
+    )
+    return sortedVariants
   }
+)
+
+export const finalFilteredVariants = createSelector(
+  [sortedVariants],
+  variants => variants.toList()
 )
 
 export const finalFilteredVariantsCount = createSelector(

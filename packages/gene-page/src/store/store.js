@@ -19,19 +19,20 @@ import { reduxSearch, reducer as searchReducer } from 'redux-search'
 import createGeneReducer from '../resources/genes'
 import createVariantReducer, {
   visibleVariantsById,
+  filteredVariantsById,
 } from '../resources/variants'
 import createActiveReducer from '../resources/active'
 
 const logger = createLogger()
 
-const defaultWait = 20
+const defaultWait = 500
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
   leading: true,
   trailing: false,
 }
 const reduxThrottle = throttle(defaultWait, defaultThrottleOption)  // eslint-disable-line
 
-const middlewares = [thunk]
+const middlewares = [reduxThrottle, thunk]
 
 export default function createGenePageStore(appSettings) {
   console.log(appSettings.searchIndexes)
@@ -52,7 +53,7 @@ export default function createGenePageStore(appSettings) {
         variants: appSettings.searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        return visibleVariantsById(state)
+        return filteredVariantsById(state)
       },
     }),
   )(createStore)
