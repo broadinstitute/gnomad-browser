@@ -6,10 +6,11 @@ const config = require('../../webpack.config')
 const umdConfig = {
   devtool: 'source-map',
   entry: {
-    'react-gnomad': './src/index.umd.js',
+    'genepage': './src/index.umd.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist/umd'),
+    path: '/Users/msolomon/Projects/exacg/exac_gnomad_private/static',
+    // path: path.resolve(__dirname, 'dist/umd'),
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'ReactGnomad',

@@ -1,12 +1,16 @@
 import React from 'react'
-// import styled from ''
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+const TestWrapper = styled.div`
+  border: 1px solid #000;
+`
+
 const TestComponent = ({ name, geneId }) => (
-  <div>
+  <TestWrapper>
     <h3>Hello {name}!!</h3>
     <p>The gene is {geneId}</p>
-  </div>
+  </TestWrapper>
 )
 
 TestComponent.propTypes = {

@@ -21,14 +21,14 @@ const MainPanel = styled.div`
 const App = () => (
   <Root>
     <MainPanel>
-      <TopBar />
+      {/* <TopBar /> */}
       {/* <Route exact path="/" component={GenePage} /> */}
       <Switch>
-        <Route path="/gene/:gene/:variantId" component={GenePage} />
+        {/* <Route path="/gene/:gene/:variantId" component={GenePage} /> */}
         <Route exact path="/gene/:gene" component={GenePage} />
       </Switch>
-      <Route path="/variant/:variant" component={GenePage} />
-      <Route path="/rsid/:rsid" component={GenePage} />
+      {/* <Route path="/variant/:variant" component={GenePage} /> */}
+      {/* <Route path="/rsid/:rsid" component={GenePage} /> */}
     </MainPanel>
   </Root>
 )

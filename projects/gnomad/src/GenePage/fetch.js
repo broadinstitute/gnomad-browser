@@ -1,7 +1,8 @@
 import fetch from 'graphql-fetch'
 
-const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
-const API_URL = 'http://localhost:8007'
+// const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
+// const API_URL = 'http://localhost:8007'
+const API_URL = 'http://35.185.9.245'
 
 export const fetchGene = (geneName, url = API_URL) => {
   const query = `{

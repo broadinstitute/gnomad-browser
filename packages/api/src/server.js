@@ -16,9 +16,9 @@ app.use(cors());
 (async () => {
   try {
     const gnomad = await MongoClient.connect(process.env.GNOMAD_MONGO_URL)
-    const exacv1 = await MongoClient.connect(process.env.EXACV1_MONGO_URL)
+    // const exacv1 = await MongoClient.connect(process.env.EXACV1_MONGO_URL)
     const elastic = await new elasticsearch.Client({
-      host: 'elastic:9200',
+      host: process.env.ELASTICSEARCH_URL,
       // log: 'trace',
     })
     app.use('/', GraphQLHTTP({
@@ -27,7 +27,7 @@ app.use(cors());
       context: {
         database: {
           gnomad,
-          exacv1,
+          // exacv1,
           sczMockDb,
           elastic,
         },

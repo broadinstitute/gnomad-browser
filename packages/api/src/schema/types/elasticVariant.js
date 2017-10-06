@@ -11,12 +11,12 @@ import {
   // GraphQLBoolean,
 } from 'graphql'
 
-import { getXpos } from '@broad/utilities/src/variant'
+import { getXpos } from '@broad/utilities/lib/variant'
 
 import {
   calculateOffsetRegions,
   defaultAttributeConfig
-} from '@broad/utilities/src/coordinates'
+} from '@broad/utilities/lib/coordinates'
 
 import { lookupExonsByTranscriptId } from './exon'
 

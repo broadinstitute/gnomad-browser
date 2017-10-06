@@ -48,7 +48,7 @@ delete-loading-data-pods:
 
 deploy-persistent-all:
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
-	@-kubectl create -f kubernetes-elasticsearch-cluster/es-svc.yaml
+	@-kubectl delete -f kubernetes-elasticsearch-cluster/es-svc.yaml
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-master.yaml
 	sleep 20
 	@-kubectl create -f kubernetes-elasticsearch-cluster/es-client.yaml
