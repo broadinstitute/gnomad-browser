@@ -7,6 +7,7 @@ __pycache__/
 .ipynb_checkpoints
 env
 build
+dist
 node_modules
 resources/*
 *lib

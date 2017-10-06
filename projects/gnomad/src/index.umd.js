@@ -1,0 +1,4 @@
+export {
+  TestComponent,
+} from './TestComponent'
+

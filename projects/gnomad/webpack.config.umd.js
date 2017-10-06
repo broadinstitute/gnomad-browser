@@ -1,13 +1,15 @@
+const path = require('path')
+
 const webpack = require('webpack')
-const config = require('./webpack.config')
+const config = require('../../webpack.config')
 
 const umdConfig = {
   devtool: 'source-map',
   entry: {
-    'react-gnomad': './src/index.js',
+    'react-gnomad': './src/index.umd.js',
   },
   output: {
-    path: 'dist/umd',
+    path: path.resolve(__dirname, 'dist/umd'),
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'ReactGnomad',
