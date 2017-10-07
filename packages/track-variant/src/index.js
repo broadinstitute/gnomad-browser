@@ -6,6 +6,8 @@ import R from 'ramda'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { max, min } from 'd3-array'
 
+import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
+
 const yPad = 10
 
 const Axis = ({ title }) => {
@@ -107,6 +109,50 @@ const VariantAlleleFrequency = ({
   )
 }
 
+const VariantExacClassic = ({
+  xScale,
+  offsetPosition,
+  yPosition,
+  // circleRadius,
+  circleStroke,
+  circleStrokeWidth,
+  variant,
+  afScale,
+}) => {
+  const exacClassicColors = {
+    all: '#757575',
+    missense: '#F0C94D',
+    lof: '#FF583F',
+    synonymous: 'green',
+  }
+  const localColor = exacClassicColors[getCategoryFromConsequence(variant.get('consequence'))]
+  if (variant.allele_freq === 0) {
+    // TODO add back hover effect
+    return (
+      <circle
+        cx={xScale(offsetPosition)}
+        cy={yPosition}
+        r={1}
+        fill={'white'}
+        strokeWidth={circleStrokeWidth || 0}
+        stroke={circleStroke || 0}
+      />
+    )
+  }
+  return (
+    <ellipse
+      cx={xScale(offsetPosition)}
+      cy={yPosition}
+      ry={afScale(variant.allele_freq)}
+      rx={3}
+      opacity={0.7}
+      fill={localColor}
+      strokeWidth={circleStrokeWidth || 0}
+      stroke={circleStroke || 0}
+    />
+  )
+}
+
 const VariantCircle = ({
   xScale,
   offsetPosition,
@@ -159,6 +205,8 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
       return <VariantCircle key={markerKey} {...rest} />
     case 'tick':
       return <VariantTick key={markerKey} {...rest} />
+    case 'exacClassic':
+      return <VariantExacClassic key={markerKey} {...rest} />
     default:
       return <VariantCircle key={markerKey} {...rest} />
   }
@@ -253,10 +301,10 @@ const VariantTrack = ({
             const afScale =
               scaleLog()
                 .domain([
-                  0.00000660,
+                  0.000010,
                   afMax,
                 ])
-                .range([3, 6])
+                .range([5, 15])
 
             const childProps = {
               index,

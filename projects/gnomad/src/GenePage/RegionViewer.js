@@ -118,6 +118,16 @@ const GeneRegion = ({
     afMax: 0.001,
   }
 
+  const markerExacClassic = {
+    markerType: 'exacClassic',
+    circleRadius: 3,
+    circleStroke: 'black',
+    circleStrokeWidth: 0.5,
+    yPositionSetting: 'center',
+    fillColor: '#757575',
+    afMax: 0.001,
+  }
+
   // const markerConfigDensity = {
   //   markerType: 'density',
   //   stroke: 1,
@@ -137,9 +147,9 @@ const GeneRegion = ({
     <VariantTrack
       key={'All-variants'}
       title={`variants (${allVariants.size})`}
-      height={20}
+      height={50}
       color={'#75757'}
-      markerConfig={markerConfigOther}
+      markerConfig={markerExacClassic}
       variants={variantsReversed}
     />
   )
