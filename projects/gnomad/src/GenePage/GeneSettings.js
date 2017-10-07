@@ -9,10 +9,6 @@
 import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-
-// import Slider from 'material-ui/Slider'
-// import TextField from 'material-ui/TextField'
-// import SelectField from 'material-ui/SelectField'
 import Mousetrap from 'mousetrap'
 
 import {
@@ -23,15 +19,13 @@ import {
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import {
-  MaterialButtonRaised,
   ClassicExacButton,
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
 } from '@broad/ui/src/classicExac/button'
-import {
-  Search
-} from '@broad/ui/src/search/simpleSearch'
+
+import { Search } from '@broad/ui/src/search/simpleSearch'
 
 let findInput
 
@@ -114,22 +108,6 @@ const GeneSettings = ({
     margin-bottom: 5px;
   `
 
-  // const VariantCategoryButtonGroup = styled.div`
-  //   display: flex;
-  //   flex-direction: row;
-  // `
-  //
-  // const VariantCatagoryButton = MaterialButtonRaised.extend`
-  //   background-color: rgba(70, 130, 180, 0.07);
-  //   margin-right: 10px;
-  //   &:hover {
-  //     background-color: rgba(70, 130, 180, 0.3);
-  //   }
-  //   &:active {
-  //     background-color: rgba(70, 130, 180, 0.4);
-  //   }
-  // `
-
   const ClassicVariantCategoryButtonGroup = () => (
     <ClassicExacButtonGroup>
       <ClassicExacButtonFirst onClick={() => setVariantFilter('all')}>All</ClassicExacButtonFirst>
@@ -137,32 +115,12 @@ const GeneSettings = ({
       <ClassicExacButtonLast onClick={() => setVariantFilter('lof')}>LoF</ClassicExacButtonLast>
     </ClassicExacButtonGroup>
   )
-  // const MaterialVariantCategoryButtonGroup = () => (
-  //   <VariantCategoryButtonGroup>
-  //     <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
-  //     <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
-  //     <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
-  //   </VariantCategoryButtonGroup>
-  // )
-console.log(ClassicVariantCategoryButtonGroup)
+
   return (
     <GeneSettingsContainer>
-      {/*geneLinks*/}
       <MenusContainer>
         <ClassicVariantCategoryButtonGroup />
         <SearchContainer>
-          {/* <TextField
-            hintText="Enter search terms"
-            hintStyle={filterTextInputStyles.inputStyle}
-            floatingLabelText="Find variants"
-            floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
-            floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
-            ref={input => findInput = input}
-            onChange={(event) => {
-              event.preventDefault()
-              searchVariants(event.target.value)
-            }}
-          /> */}
           <Search
             listName={'search table'}
             options={['Variant ID', 'RSID', 'HGVSp']}
@@ -179,25 +137,6 @@ console.log(ClassicVariantCategoryButtonGroup)
           <option value="gnomadGenomeVariants">gnomAD genomes</option>
           <option value="gnomadCombinedVariants">gnomAD combined</option>
         </select>
-        {/* <Menu
-          floatingLabelText="Select dataset"
-          value={selectedVariantDataset}
-          onChange={(event, index, value) => setSelectedVariantDataset(value)}
-          floatingLabelStyle={filterTextInputStyles.floatingLabelStyle}
-          floatingLabelFocusStyle={filterTextInputStyles.floatingLabelFocusStyle}
-        >
-          <MenuItem value={'gnomadExomeVariants'} primaryText="gnomAD exomes" />
-          <MenuItem value={'gnomadGenomeVariants'} primaryText="gnomAD genomes" />
-          <MenuItem value={'gnomadCombinedVariants'} primaryText="gnomAD combined" />
-          <MenuItem value={'exACv1'} primaryText="ExACv1" />
-        </Menu> */}
-        {/* <Slider
-          style={{
-            width: 100,
-            height: 20,
-          }}
-          onChange={setPadding}
-        /> */}
       </MenusContainer>
     </GeneSettingsContainer>
   )

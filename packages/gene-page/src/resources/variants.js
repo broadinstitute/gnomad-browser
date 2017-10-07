@@ -96,7 +96,7 @@ export const actions = {
     }
     thunk.meta = {
       debounce: {
-        time: 100,
+        time: 500,
         key: 'SEARCH_VARIANT_TABLE',
       }
     }
