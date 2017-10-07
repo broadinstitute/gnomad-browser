@@ -19,7 +19,6 @@
     "@broad/plot": "*",
     "@broad/track-transcript": "*",
     "@broad/track-position-table": "*",
-    "material-ui": "*",
     "graphql-fetch": "^1.0.1"
   },
   "peerDependencies": {

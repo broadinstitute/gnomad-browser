@@ -53,7 +53,7 @@ export default function createGenePageStore(appSettings) {
         variants: appSettings.searchIndexes,
       },
       resourceSelector: (resourceName, state) => {
-        return filteredVariantsById(state)
+        // return filteredVariantsById(state)
       },
     }),
   )(createStore)

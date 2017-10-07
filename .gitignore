@@ -13,6 +13,7 @@ resources/*
 *lib
 bundle.js
 untracked
+stats.txt
 *public/static/js/*
 prototypes/test/data/*.json
 prototypes/test/data/*.txt

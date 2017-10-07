@@ -6,7 +6,7 @@ const config = require('../../webpack.config')
 const umdConfig = {
   devtool: 'source-map',
   entry: {
-    'genepage': './src/index.umd.js',
+    genepage: './src/index.umd.js',
   },
   output: {
     path: '/Users/msolomon/Projects/exacg/exac_gnomad_private/static',

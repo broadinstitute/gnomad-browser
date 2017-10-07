@@ -67,7 +67,6 @@
     "googleapis": "^18.0.0",
     "immutable": "3.8.1",
     "isomorphic-fetch": "2.2.1",
-    "material-ui": "0.17.1",
     "ramda": "0.23.0",
     "react": "15.4.2",
     "react-cursor-position": "2.0.2",

@@ -30,15 +30,12 @@
     "d3-shape": "^1.2.0",
     "graphql-fetch": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "material-ui": "^0.18.3",
     "mousetrap": "^1.6.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
-    "react-tap-event-plugin": "2.0.1",
+    "react-select": "^1.0.0-rc.10",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-throttle": "^0.1.1",
@@ -49,5 +46,9 @@
   },
   "devDependencies": {
     "react-hot-loader": "^3.0.0-beta.6"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   }
 }

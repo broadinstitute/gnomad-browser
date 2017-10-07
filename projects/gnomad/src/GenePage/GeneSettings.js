@@ -10,11 +10,9 @@ import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import Slider from 'material-ui/Slider'
-import TextField from 'material-ui/TextField'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
-
+// import Slider from 'material-ui/Slider'
+// import TextField from 'material-ui/TextField'
+// import SelectField from 'material-ui/SelectField'
 import Mousetrap from 'mousetrap'
 
 import {
@@ -121,6 +119,13 @@ const GeneSettings = ({
       background-color: rgba(70, 130, 180, 0.4);
     }
   `
+  const friendOptions = [
+    {
+      text: 'Jenny Hess',
+      value: 'Jenny Hess',
+    },
+
+  ]
 
   const MaterialVariantCategoryButtonGroup = () => (
     <VariantCategoryButtonGroup>
@@ -136,7 +141,7 @@ const GeneSettings = ({
       <MenusContainer>
         <MaterialVariantCategoryButtonGroup />
         <SearchContainer>
-          <TextField
+          {/* <TextField
             hintText="Enter search terms"
             hintStyle={filterTextInputStyles.inputStyle}
             floatingLabelText="Find variants"
@@ -147,9 +152,17 @@ const GeneSettings = ({
               event.preventDefault()
               searchVariants(event.target.value)
             }}
-          />
+          /> */}
         </SearchContainer>
-        <SelectField
+        <select
+          onChange={event => setSelectedVariantDataset(event.target.value)}
+          value={selectedVariantDataset}
+        >
+          <option value="gnomadExomeVariants">gnomAD exomes</option>
+          <option value="gnomadGenomeVariants">gnomAD genomes</option>
+          <option value="gnomadCombinedVariants">gnomAD combined</option>
+        </select>
+        {/* <Menu
           floatingLabelText="Select dataset"
           value={selectedVariantDataset}
           onChange={(event, index, value) => setSelectedVariantDataset(value)}
@@ -160,14 +173,14 @@ const GeneSettings = ({
           <MenuItem value={'gnomadGenomeVariants'} primaryText="gnomAD genomes" />
           <MenuItem value={'gnomadCombinedVariants'} primaryText="gnomAD combined" />
           <MenuItem value={'exACv1'} primaryText="ExACv1" />
-        </SelectField>
-        <Slider
+        </Menu> */}
+        {/* <Slider
           style={{
             width: 100,
             height: 20,
           }}
           onChange={setPadding}
-        />
+        /> */}
       </MenusContainer>
     </GeneSettingsContainer>
   )

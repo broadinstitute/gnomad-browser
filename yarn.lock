@@ -1316,7 +1316,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
+babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -1510,10 +1510,6 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
-
-bowser@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.7.3.tgz#504bdb43118ca8db9cbbadf28fd60f265af96e4f"
 
 boxen@^1.0.0:
   version "1.2.1"
@@ -1812,10 +1808,6 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chain-function@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.0.tgz#0d4ab37e7e18ead0bdc47b920764118ce58733dc"
-
 chalk@^1.0.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -1870,7 +1862,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@^2.2.3, classnames@^2.2.5:
+classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -2224,6 +2216,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+create-react-class@^15.5.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 create-react-class@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
@@ -2298,12 +2298,6 @@ css-color-names@0.0.3:
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
-
-css-in-js-utils@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.0.tgz#5af1dd70f4b06b331f48d22a3d86e0786c0b9435"
-  dependencies:
-    hyphenate-style-name "^1.0.2"
 
 css-loader@^0.28.4:
   version "0.28.7"
@@ -2760,7 +2754,7 @@ doiuse@^2.4.1:
     through2 "^0.6.3"
     yargs "^3.5.4"
 
-"dom-helpers@^2.4.0 || ^3.0.0", dom-helpers@^3.2.0:
+"dom-helpers@^2.4.0 || ^3.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
 
@@ -3492,7 +3486,7 @@ faye-websocket@~0.11.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
-fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.16:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -4176,10 +4170,6 @@ https-browserify@0.0.1, https-browserify@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
 
-hyphenate-style-name@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
-
 iconv-lite@0.4, iconv-lite@0.4.19, iconv-lite@^0.4.17, iconv-lite@~0.4.13:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
@@ -4262,13 +4252,6 @@ inline-source-map@~0.5.0:
   resolved "https://registry.yarnpkg.com/inline-source-map/-/inline-source-map-0.5.0.tgz#4a4c5dd8e4fb5e9b3cda60c822dfadcaee66e0af"
   dependencies:
     source-map "~0.4.0"
-
-inline-style-prefixer@^3.0.2:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-3.0.8.tgz#8551b8e5b4d573244e66a34b04f7d32076a2b534"
-  dependencies:
-    bowser "^1.7.3"
-    css-in-js-utils "^2.0.0"
 
 inquirer@^0.12.0:
   version "0.12.0"
@@ -4838,10 +4821,6 @@ kew@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/kew/-/kew-0.7.0.tgz#79d93d2d33363d6fdd2970b335d9141ad591d79b"
 
-keycode@^2.1.8:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.9.tgz#964a23c54e4889405b4861a5c9f0480d45141dfa"
-
 keymirror@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
@@ -5096,10 +5075,6 @@ lodash.memoize@~3.0.3:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-3.0.4.tgz#2dcbd2c287cbc0a55cc42328bd0c736150d53e3f"
 
-lodash.merge@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
-
 lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
@@ -5126,10 +5101,6 @@ lodash.throttle@4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.0.1.tgz#b3211662ee9d82f56903d0731262aaaa873a6330"
   dependencies:
     lodash.debounce "^4.0.0"
-
-lodash.throttle@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
 
 lodash.trimend@^4.5.1:
   version "4.5.1"
@@ -5216,38 +5187,6 @@ map-obj@^1.0.0, map-obj@^1.0.1:
 map-stream@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
-
-material-ui@*:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.19.2.tgz#98c8898c933279b12df879d7184306aceb364cb5"
-  dependencies:
-    babel-runtime "^6.23.0"
-    inline-style-prefixer "^3.0.2"
-    keycode "^2.1.8"
-    lodash.merge "^4.6.0"
-    lodash.throttle "^4.1.1"
-    prop-types "^15.5.7"
-    react-event-listener "^0.4.5"
-    react-transition-group "^1.1.2"
-    recompose "0.24.0"
-    simple-assign "^0.1.0"
-    warning "^3.0.0"
-
-material-ui@^0.18.3:
-  version "0.18.7"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.18.7.tgz#b87af16357e6966b36c23d489eb2ed70746d25f8"
-  dependencies:
-    babel-runtime "^6.23.0"
-    inline-style-prefixer "^3.0.2"
-    keycode "^2.1.8"
-    lodash.merge "^4.6.0"
-    lodash.throttle "^4.1.1"
-    prop-types "^15.5.7"
-    react-event-listener "^0.4.5"
-    react-transition-group "^1.1.2"
-    recompose "0.24.0"
-    simple-assign "^0.1.0"
-    warning "^3.0.0"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -6779,7 +6718,7 @@ prop-types@15.5.10, prop-types@^15.5.10, prop-types@^15.5.4:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
-prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8:
+prop-types@^15.5.7, prop-types@^15.5.8:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -6963,15 +6902,6 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-event-listener@^0.4.5:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.4.5.tgz#e3e895a0970cf14ee8f890113af68197abf3d0b1"
-  dependencies:
-    babel-runtime "^6.20.0"
-    fbjs "^0.8.4"
-    prop-types "^15.5.4"
-    warning "^3.0.0"
-
 react-highlight-words@^0.8.0:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.8.1.tgz#072fa0a5e52810aae8428686d50ba05f94b1d6dc"
@@ -7001,6 +6931,13 @@ react-hot-loader@3.0.0-beta.7, react-hot-loader@^3.0.0-beta.6:
     redbox-react "^1.3.6"
     source-map "^0.4.4"
 
+react-input-autosize@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.0.1.tgz#e92190497b4026c2780ad0f2fd703c835ba03e33"
+  dependencies:
+    create-react-class "^15.5.2"
+    prop-types "^15.5.8"
+
 react-motion@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/react-motion/-/react-motion-0.5.1.tgz#b90631408175ab1668e173caccd66d41a44f4592"
@@ -7026,7 +6963,7 @@ react-redux@^5.0.4, react-redux@^5.0.5:
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
 
-react-router-dom@^4.1.1, react-router-dom@^4.2.2:
+react-router-dom@^4.1.1:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.2.2.tgz#c8a81df3adc58bba8a76782e946cbd4eae649b8d"
   dependencies:
@@ -7049,21 +6986,19 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-tap-event-plugin@2.0.1, react-tap-event-plugin@^2.0.1:
+react-select@^1.0.0-rc.10:
+  version "1.0.0-rc.10"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.0.0-rc.10.tgz#f137346250f9255c979fbfa21860899928772350"
+  dependencies:
+    classnames "^2.2.4"
+    prop-types "^15.5.8"
+    react-input-autosize "^2.0.1"
+
+react-tap-event-plugin@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-tap-event-plugin/-/react-tap-event-plugin-2.0.1.tgz#316beb3bc6556e29ec869a7293e89c826a9074d2"
   dependencies:
     fbjs "^0.8.6"
-
-react-transition-group@^1.1.2:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.1.tgz#e11f72b257f921b213229a774df46612346c7ca6"
-  dependencies:
-    chain-function "^1.0.0"
-    dom-helpers "^3.2.0"
-    loose-envify "^1.3.1"
-    prop-types "^15.5.6"
-    warning "^3.0.0"
 
 react-virtualized@^9.8.0:
   version "9.10.1"
@@ -7214,15 +7149,6 @@ rechoir@^0.6.2:
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
   dependencies:
     resolve "^1.1.6"
-
-recompose@0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.24.0.tgz#262e93f974439eb17e7779824d88cce90492a5dd"
-  dependencies:
-    change-emitter "^0.1.2"
-    fbjs "^0.8.1"
-    hoist-non-react-statics "^1.0.0"
-    symbol-observable "^1.0.4"
 
 recompose@^0.23.1:
   version "0.23.5"
@@ -7763,10 +7689,6 @@ shelljs@^0.7.5:
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
-
-simple-assign@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/simple-assign/-/simple-assign-0.1.0.tgz#17fd3066a5f3d7738f50321bb0f14ca281cc4baa"
 
 slash@^1.0.0:
   version "1.0.0"

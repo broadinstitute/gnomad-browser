@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import SearchIcon from 'material-ui/svg-icons/action/search'
+// import SearchIcon from 'material-ui/svg-icons/action/search'
 
 import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
@@ -71,7 +71,7 @@ const TopBar = ({ setCurrentGene }) => {
       </Logo>
       <Search>
         <SearchIconContainer>
-          <SearchIcon />
+          {/* <SearchIcon /> */}
         </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()

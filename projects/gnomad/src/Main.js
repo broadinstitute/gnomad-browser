@@ -1,14 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
+// import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+
 import createGenePageStore from '@broad/gene-page/src/store/store'
-import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import App from './routes'
 
-injectTapEventPlugin()
+// injectTapEventPlugin()
 
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
@@ -75,22 +74,15 @@ const appSettings = {
 
 const store = createGenePageStore(appSettings)
 
-const muiTheme = getMuiTheme({
-  palette: {
-    primary1Color: '#4682b4',
-  },
-  appBar: {
-    height: 50,
-  },
-})
+// const theme = createMuiTheme()
 
 const Main = () => (
   <Provider store={store}>
-    <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
+    {/* <MuiThemeProvider theme={theme}> */}
       <Router>
         <App />
       </Router>
-    </MuiThemeProvider>
+    {/* </MuiThemeProvider> */}
   </Provider>
 )
 

@@ -15,8 +15,7 @@
   },
   "devDependencies": {
     "@broad/region": "*",
-    "@broad/track-transcript": "*",
-    "material-ui": "*"
+    "@broad/track-transcript": "*"
   },
   "peerDependencies": {
     "@broad/track-region": "*",
