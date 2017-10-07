@@ -77,7 +77,7 @@ const ClickArea = ({
   variantSortKey, // TODO
   noVariants,
 }) => {
-  const numberOfVariantsVisibleInTable = 26
+  const numberOfVariantsVisibleInTable = 18
   const { scrollHeight, scrollTop } = currentTableScrollData
   const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
   let currentlyVisibleVariants

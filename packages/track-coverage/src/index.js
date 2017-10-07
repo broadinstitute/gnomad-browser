@@ -127,7 +127,8 @@ const CoverageTrack = ({
         <svg width={50} height={yScaleRangeMax}>
           <text
             style={{
-              fontSize: '12px',
+              fontSize: '14px',
+              fontWeight: 'bold',
               textAnchor: 'middle',
             }}
             x={10}
@@ -137,25 +138,25 @@ const CoverageTrack = ({
             {title}
           </text>
           <g>
-            <text
+            {/* <text
               style={{
-                fontSize: '8px',
+                fontSize: '12px',
                 textAnchor: 'end',
               }}
               x={40}
-              y={yScaleRangeMax}
+              y={yScaleRangeMax + 1}
             >
               0
-            </text>
+            </text> */}
             {R.tail(range(yScaleDomainMin, yScaleDomainMax, incrementSize)).map(tick =>
               (<g key={`ytick-${tick}`}>
                 <text
                   style={{
-                    fontSize: '8px',
+                    fontSize: '12px',
                     textAnchor: 'end',
                   }}
                   x={40}
-                  y={yScaleRangeMax - (yScale(tick) + 2)}
+                  y={yScaleRangeMax - (yScale(tick) - 4)}
                 >
                   {yScaleDomainMax - tick}
                 </text>

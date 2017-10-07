@@ -147,7 +147,7 @@ const GeneRegion = ({
     <VariantTrack
       key={'All-variants'}
       title={`variants (${allVariants.size})`}
-      height={50}
+      height={60}
       color={'#75757'}
       markerConfig={markerExacClassic}
       variants={variantsReversed}
@@ -168,7 +168,7 @@ const GeneRegion = ({
         data: genome_coverage,
         type: 'line',
         color: 'rgba(115, 171, 61,  1)',
-        strokeWidth: 4,
+        strokeWidth: 5,
         opacity: 1,
       },
     ],
@@ -205,7 +205,7 @@ const GeneRegion = ({
       >
         <CoverageTrack
           title={'Coverage'}
-          height={150}
+          height={200}
           dataConfig={coverageConfigClassic}
           yTickNumber={11}
           yMax={110}
