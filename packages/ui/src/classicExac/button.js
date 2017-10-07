@@ -25,7 +25,7 @@ export const ClassicExacButtonFirst = ClassicExacButton.extend`
   border-right-style: solid;
 `
 
-export const ClassicExacButtonLast= ClassicExacButton.extend`
+export const ClassicExacButtonLast = ClassicExacButton.extend`
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   border-left-width: 1.5px;

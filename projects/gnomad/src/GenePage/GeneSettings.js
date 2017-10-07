@@ -21,7 +21,17 @@ import {
 } from '@broad/gene-page/src/resources/variants'
 
 import { currentGene, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
-import { MaterialButtonRaised } from '@broad/ui'
+
+import {
+  MaterialButtonRaised,
+  ClassicExacButton,
+  ClassicExacButtonFirst,
+  ClassicExacButtonLast,
+  ClassicExacButtonGroup,
+} from '@broad/ui/src/classicExac/button'
+import {
+  Search
+} from '@broad/ui/src/search/simpleSearch'
 
 let findInput
 
@@ -104,42 +114,42 @@ const GeneSettings = ({
     margin-bottom: 5px;
   `
 
-  const VariantCategoryButtonGroup = styled.div`
-    display: flex;
-    flex-direction: row;
-  `
+  // const VariantCategoryButtonGroup = styled.div`
+  //   display: flex;
+  //   flex-direction: row;
+  // `
+  //
+  // const VariantCatagoryButton = MaterialButtonRaised.extend`
+  //   background-color: rgba(70, 130, 180, 0.07);
+  //   margin-right: 10px;
+  //   &:hover {
+  //     background-color: rgba(70, 130, 180, 0.3);
+  //   }
+  //   &:active {
+  //     background-color: rgba(70, 130, 180, 0.4);
+  //   }
+  // `
 
-  const VariantCatagoryButton = MaterialButtonRaised.extend`
-    background-color: rgba(70, 130, 180, 0.07);
-    margin-right: 10px;
-    &:hover {
-      background-color: rgba(70, 130, 180, 0.3);
-    }
-    &:active {
-      background-color: rgba(70, 130, 180, 0.4);
-    }
-  `
-  const friendOptions = [
-    {
-      text: 'Jenny Hess',
-      value: 'Jenny Hess',
-    },
-
-  ]
-
-  const MaterialVariantCategoryButtonGroup = () => (
-    <VariantCategoryButtonGroup>
-      <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
-    </VariantCategoryButtonGroup>
+  const ClassicVariantCategoryButtonGroup = () => (
+    <ClassicExacButtonGroup>
+      <ClassicExacButtonFirst onClick={() => setVariantFilter('all')}>All</ClassicExacButtonFirst>
+      <ClassicExacButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</ClassicExacButton>
+      <ClassicExacButtonLast onClick={() => setVariantFilter('lof')}>LoF</ClassicExacButtonLast>
+    </ClassicExacButtonGroup>
   )
-
+  // const MaterialVariantCategoryButtonGroup = () => (
+  //   <VariantCategoryButtonGroup>
+  //     <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
+  //     <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
+  //     <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
+  //   </VariantCategoryButtonGroup>
+  // )
+console.log(ClassicVariantCategoryButtonGroup)
   return (
     <GeneSettingsContainer>
       {/*geneLinks*/}
       <MenusContainer>
-        <MaterialVariantCategoryButtonGroup />
+        <ClassicVariantCategoryButtonGroup />
         <SearchContainer>
           {/* <TextField
             hintText="Enter search terms"
@@ -153,6 +163,13 @@ const GeneSettings = ({
               searchVariants(event.target.value)
             }}
           /> */}
+          <Search
+            listName={'search table'}
+            options={['Variant ID', 'RSID', 'HGVSp']}
+            placeholder={'Search variant table'}
+            reference={findInput}
+            onChange={searchVariants}
+          />
         </SearchContainer>
         <select
           onChange={event => setSelectedVariantDataset(event.target.value)}

@@ -140,26 +140,26 @@ const ClickArea = ({
   ))
 
 
-  let allVariantMarks
-  if (variants.size < 300) {
-    const allVariantPositions = variants.map((v) => {
-      return ({
-        x: xScale(positionOffset(v.pos).offsetPosition),
-        variant_id: v.variant_id,
-        allele_freq: v.allele_freq,
-      })
-    }).filter(v => !isNaN(v.x))
-    allVariantMarks = allVariantPositions.map((v, i) => (
-      <g key={`variant-${v}-${i}`}>
-        <circle
-          cx={v.x}
-          cy={height / 2.5}
-          r={afScale(v.allele_freq)}
-          fill={'grey'}
-        />
-      </g>
-    ))
-  }
+  // let allVariantMarks
+  // if (variants.size < 300) {
+  //   const allVariantPositions = variants.map((v) => {
+  //     return ({
+  //       x: xScale(positionOffset(v.pos).offsetPosition),
+  //       variant_id: v.variant_id,
+  //       allele_freq: v.allele_freq,
+  //     })
+  //   }).filter(v => !isNaN(v.x))
+  //   allVariantMarks = allVariantPositions.map((v, i) => (
+  //     <g key={`variant-${v}-${i}`}>
+  //       <circle
+  //         cx={v.x}
+  //         cy={height / 2.5}
+  //         r={afScale(v.allele_freq)}
+  //         fill={'grey'}
+  //       />
+  //     </g>
+  //   ))
+  // }
 
   const PositionMarks = () => {
     const tickHeight = 3
@@ -281,7 +281,7 @@ const ClickArea = ({
           cursor: 'pointer',
         }}
       />}
-      {!noVariants && variants.size < 300 && allVariantMarks}
+      {/* {!noVariants && variants.size < 300 && allVariantMarks} */}
       {!noVariants && variantMarks}
       <PositionMarks />
     </svg>

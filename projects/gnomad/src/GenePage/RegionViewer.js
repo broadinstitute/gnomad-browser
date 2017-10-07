@@ -107,6 +107,8 @@ const GeneRegion = ({
   //   )
   // })
 
+  const variantsReversed = allVariants.reverse()
+
   const markerConfigOther = {
     markerType: 'af',
     circleRadius: 3,
@@ -136,10 +138,10 @@ const GeneRegion = ({
     <VariantTrack
       key={'All-variants'}
       title={`variants (${allVariants.size})`}
-      height={otherHeight}
+      height={20}
       color={'#75757'}
       markerConfig={markerConfigOther}
-      variants={allVariants}
+      variants={variantsReversed}
     />
   )
 
@@ -195,7 +197,7 @@ const GeneRegion = ({
         <CoverageTrack
           title={'Coverage'}
           height={150}
-          dataConfig={coverageConfig}
+          dataConfig={coverageConfigClassic}
           yTickNumber={11}
           yMax={110}
         />
@@ -221,8 +223,8 @@ export default connect(
   state => ({
     gene: geneData(state),
     exonPadding: exonPadding(state),
-    allVariants: allVariantsInCurrentDatasetAsList(state),
-    // allVariants: finalFilteredVariants(state),
+    // allVariants: allVariantsInCurrentDatasetAsList(state),
+    allVariants: finalFilteredVariants(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>
