@@ -17,14 +17,13 @@ import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 
+import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { geneData } from '@broad/gene-page/src/resources/genes'
+import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
 import {
-  exonPadding,
-  geneData,
   allVariantsInCurrentDatasetAsList,
   finalFilteredVariants,
-  setRegionViewerAttributes,
-  NavigatorConnected,
-} from '@broad/gene-page'
+} from '@broad/gene-page/src/resources/variants'
 
 // import VariantDensityTrack from './VariantDensityTrack'
 // const exonColor = '#475453'
@@ -192,7 +191,7 @@ const GeneRegion = ({
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
-        broadcast={setRegionViewerAttributes}
+        // broadcast={setRegionViewerAttributes}
       >
         <CoverageTrack
           title={'Coverage'}
@@ -228,6 +227,6 @@ export default connect(
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>
-      dispatch(setRegionViewerAttributes(regionViewerAttributes))
+      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes))
   })
 )(GeneRegion)

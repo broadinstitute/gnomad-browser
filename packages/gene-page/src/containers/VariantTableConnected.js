@@ -10,16 +10,16 @@ import { connect } from 'react-redux'
 import Table from '@broad/table'
 
 import {
-  activeActions,
-  variantActions,
-  tablePosition,
+  actions as activeActions,
   currentTableIndex,
+} from '../resources/active'
+
+import {
+  actions as variantActions,
   variantSearchText,
   finalFilteredVariants,
   finalFilteredVariantsCount,
-} from '../index'
-
-console.log(activeActions)
+} from '../resources/variants'
 
 const VariantTable = ({
   variants,
@@ -40,7 +40,6 @@ const VariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  console.log(tablePosition)
   return (
     <div>
       <Table

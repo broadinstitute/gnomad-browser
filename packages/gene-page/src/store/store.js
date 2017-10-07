@@ -13,6 +13,7 @@ import {
 
 import thunk from 'redux-thunk'
 import throttle from 'redux-throttle'
+import createDebounce from 'redux-debounced'
 import { createLogger } from 'redux-logger'
 import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
@@ -20,7 +21,9 @@ import createGeneReducer from '../resources/genes'
 import createVariantReducer, {
   visibleVariantsById,
   filteredVariantsById,
+  allVariantsInCurrentDataset,
 } from '../resources/variants'
+
 import createActiveReducer from '../resources/active'
 
 const logger = createLogger()
@@ -32,7 +35,7 @@ const defaultThrottleOption = { // https://lodash.com/docs#throttle
 }
 const reduxThrottle = throttle(defaultWait, defaultThrottleOption)  // eslint-disable-line
 
-const middlewares = [reduxThrottle, thunk]
+const middlewares = [createDebounce(), thunk]
 
 export default function createGenePageStore(appSettings) {
   console.log(appSettings.searchIndexes)
@@ -52,9 +55,7 @@ export default function createGenePageStore(appSettings) {
       resourceIndexes: {
         variants: appSettings.searchIndexes,
       },
-      resourceSelector: (resourceName, state) => {
-        // return filteredVariantsById(state)
-      },
+      resourceSelector: appSettings.searchResourceSelector,
     }),
   )(createStore)
 

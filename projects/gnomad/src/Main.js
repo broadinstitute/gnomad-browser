@@ -1,19 +1,19 @@
 import React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
-// import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 import createGenePageStore from '@broad/gene-page/src/store/store'
 
 import App from './routes'
-
-// injectTapEventPlugin()
 
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
+  searchResourceSelector: (resourceName, state) => {
+    return state.variants.byVariantDataset.get('gnomadCombinedVariants')
+  },
   logger: true,
   projectDefaults: {
     startingGene: 'TP53',
@@ -74,15 +74,12 @@ const appSettings = {
 
 const store = createGenePageStore(appSettings)
 
-// const theme = createMuiTheme()
 
 const Main = () => (
   <Provider store={store}>
-    {/* <MuiThemeProvider theme={theme}> */}
-      <Router>
-        <App />
-      </Router>
-    {/* </MuiThemeProvider> */}
+    <Router>
+      <App />
+    </Router>
   </Provider>
 )
 

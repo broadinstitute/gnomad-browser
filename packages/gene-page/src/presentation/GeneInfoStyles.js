@@ -7,6 +7,8 @@ export const GeneInfoWrapper = styled.div`
 `
 
 export const GeneNameWrapper = styled.div`
+  font-family: Roboto;
+  font-weight: bold;
   display: flex;
   flex-direction: row;
   align-items: center;

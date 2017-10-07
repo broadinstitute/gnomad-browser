@@ -88,7 +88,20 @@ export const actions = {
     }
   },
 
-  searchVariants: createSearchAction('variants')
+  searchVariantsRaw: createSearchAction('variants'),
+
+  searchVariants(text) {
+    const thunk = (dispatch) => {
+      return dispatch(actions.searchVariantsRaw(text))
+    }
+    thunk.meta = {
+      debounce: {
+        time: 100,
+        key: 'SEARCH_VARIANT_TABLE',
+      }
+    }
+    return thunk
+  }
 }
 
 export default function createVariantReducer({
@@ -285,19 +298,22 @@ export const visibleVariantsList = createSelector(
  * Redux search selectors
  */
 
+const resourceSelector = (resourceName, state) => state.variants.byVariantDataset.get('gnomadCombinedVariants')
+
 const searchSelectors = getSearchSelectors({
   resourceName: 'variants',
-  resourceSelector: (resourceName, state) => filteredVariantsById,
+  resourceSelector,
 })
 export const variantSearchText = searchSelectors.text
 export const variantSearchResult = searchSelectors.result
 
 export const filteredIdList = createSelector(
-  [searchSelectors.result],
-  result => List(result)
+  [state => state.search.variants.result],
+  (result) => {
+    // console.log('filtered id list selector', result)
+    return List(result)
+  }
 )
-
-
 
 export const sortedVariants = createSelector(
   [
@@ -315,13 +331,21 @@ export const sortedVariants = createSelector(
       variantSortKey,
       variantSortAscending
     )
+    console.log('sordid variants selector')
     return sortedVariants
   }
 )
 
 export const finalFilteredVariants = createSelector(
-  [sortedVariants],
-  variants => variants.toList()
+  [sortedVariants, filteredIdList],
+  (variants, filteredIdList) => {
+    if (filteredIdList.size !== 0 || variants.size === 0) {
+      return variants.filter((v) => {
+        return filteredIdList.includes(v.get('id'))
+      }).toList()
+    }
+    return variants.toList()
+  }
 )
 
 export const finalFilteredVariantsCount = createSelector(

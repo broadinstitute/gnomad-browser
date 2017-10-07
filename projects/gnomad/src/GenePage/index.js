@@ -11,7 +11,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import { FetchHoc, VariantTableConnected } from '@broad/gene-page'
+import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
 import Table from './Table'
 
 import GeneInfo from './GeneInfo'

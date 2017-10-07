@@ -15,11 +15,14 @@ const SearchIconContainer = styled.span`
 `
 
 const SearchInput = styled.input`
-  height: 20px;
-  width: 275px;
+  height: 25px;
+  width: 210px;
+  border: 0;
+  border-bottom: 1px solid #000;
+  background-color: transparent;
   /*margin-top: 2px;*/
   /*margin-right: 100px;*/
-  text-indent: 30px;
+  text-indent: 5px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
 `
@@ -44,7 +47,7 @@ export const Search = ({
       <SearchInput
         type="text"
         name="search"
-        autocomplete="off"
+        autoComplete="off"
         placeholder={placeholder}
         ref={input => reference = input}
         list={listName}
