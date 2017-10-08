@@ -11,6 +11,8 @@ import {
 
 import coverageType, { lookupCoverageByStartStop, lookupCoverageByIntervals } from './coverage'
 import variantType, { lookupVariantsByStartStop } from './variant'
+import elasticVariantType, { lookupElasticVariantsByInterval } from './elasticVariant'
+import geneType, { lookupGenesByInterval } from './gene'
 
 const regionType = new GraphQLObjectType({
   name: 'Region',
@@ -20,6 +22,14 @@ const regionType = new GraphQLObjectType({
     xstart: { type: GraphQLFloat },
     xstop: { type: GraphQLFloat },
     chrom: { type: GraphQLInt },
+    genes: {
+      type: new GraphQLList(geneType),
+      resolve: (obj, args, ctx) => lookupGenesByInterval({
+        mongoDatabase: ctx.database.gnomad,
+        xstart: obj.xstart,
+        xstop: obj.xstop,
+      })
+    },
     exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) =>
@@ -35,17 +45,25 @@ const regionType = new GraphQLObjectType({
         chrom: obj.chrom,
       }),
     },
-    exome_variants: {
-      type: new GraphQLList(variantType),
-      resolve: (obj, args, ctx) => {
-        console.log(lookupVariantsByStartStop(ctx.database.gnomad, 'exome_variants', obj.xstart, obj.xstop))
-        return lookupVariantsByStartStop(ctx.database.gnomad, 'exome_variants', obj.xstart, obj.xstop)
-      },
-    },
-    genome_variants: {
-      type: new GraphQLList(variantType),
+    gnomadExomeVariants: {
+      type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) =>
-        lookupVariantsByStartStop(ctx.database.gnomad, 'genome_variants', obj.xstart, obj.xstop),
+        lookupElasticVariantsByInterval({
+          elasticClient: ctx.database.elastic,
+          index: 'gnomad',
+          dataset: 'exomes',
+          intervals: [{ xstart: obj.xstart, xstop: obj.xstop }],
+        }),
+    },
+    gnomadGenomeVariants: {
+      type: new GraphQLList(elasticVariantType),
+      resolve: (obj, args, ctx) =>
+        lookupElasticVariantsByInterval({
+          elasticClient: ctx.database.elastic,
+          index: 'gnomad',
+          dataset: 'genomes',
+          intervals: [{ xstart: obj.xstart, xstop: obj.xstop }],
+        }),
     },
     exacv1_variants: {
       type: new GraphQLList(variantType),

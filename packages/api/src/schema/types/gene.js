@@ -157,3 +157,11 @@ export const lookupGeneByGeneId = (db, gene_id) =>
 
 export const lookupGeneByName = (db, gene_name) =>
   db.collection('genes').findOne({ gene_name })
+
+export const lookupGenesByInterval = ({ mongoDatabase, xstart, xstop }) =>
+  mongoDatabase.collection('genes').find({
+    '$or': [
+      { 'xstart': { '$gte': xstart, '$lte': xstop } },
+      { 'xstop': { '$gte': xstart, '$lte': xstop } },
+    ]
+}).toArray()

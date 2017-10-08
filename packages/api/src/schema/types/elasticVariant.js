@@ -11,13 +11,6 @@ import {
   // GraphQLBoolean,
 } from 'graphql'
 
-import { getXpos } from '@broad/utilities/lib/variant'
-
-import {
-  calculateOffsetRegions,
-  defaultAttributeConfig
-} from '@broad/utilities/lib/coordinates'
-
 import { lookupExonsByTranscriptId } from './exon'
 
 // import vepType from './vep'
@@ -79,7 +72,7 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
     const filteredRegions = regions.filter(region => region.feature_type === 'CDS')
 
     const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
-      { range: { pos: { gte: start, lte: stop } } }))
+      { range: { pos: { gte: start - padding, lte: stop + padding } } }))
 
     return new Promise((resolve, _) => {
       client.search({
@@ -127,6 +120,72 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
           })
         }))
       })
+    })
+  })
+}
+
+export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset, intervals }) => {
+  const regionRangeQueries = intervals.map(({ xstart, xstop }) => (
+    { range: { xpos: { gte: xstart, lte: xstop } } }
+  ))
+
+  const fields = [
+    'hgvsp',
+    'hgvsc',
+    'majorConsequence',
+    'pos',
+    'xpos',
+    'rsid',
+    'variantId',
+    'variantId',
+    'lof',
+    `${dataset}_AC`,
+    `${dataset}_AF`,
+    `${dataset}_AN`,
+    `${dataset}_Hom`,
+  ]
+
+  return new Promise((resolve, _) => {
+    elasticClient.search({
+      index,
+      type: 'variant',
+      size: 5000,
+      _source: fields,
+      body: {
+        query: {
+          bool: {
+            filter: {
+              bool: {
+                should: regionRangeQueries
+              },
+            },
+          },
+        },
+        sort: [{ xpos: { order: 'asc' } }],
+      },
+    }).then((response) => {
+      resolve(response.hits.hits.map((v) => {
+        const elastic_variant = v._source
+        return ({
+          hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
+          hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
+          // chrom: elastic_variant.contig,
+          // ref: elastic_variant.ref,
+          // alt: elastic_variant.alt,
+          consequence: elastic_variant.majorConsequence,
+          pos: elastic_variant.pos,
+          xpos: elastic_variant.xpos,
+          rsid: elastic_variant.rsid,
+          variant_id: elastic_variant.variantId,
+          id: elastic_variant.variantId,
+          lof: elastic_variant.lof,
+          filters: 'PASS',
+          allele_count: elastic_variant[`${dataset}_AC`],
+          allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
+          allele_num: elastic_variant[`${dataset}_AN`],
+          hom_count: elastic_variant[`${dataset}_Hom`],
+        })
+      }))
     })
   })
 }
