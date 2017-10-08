@@ -11,18 +11,17 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import RegionHoc from '@broad/gene-page/src/containers/RegionHoc'
 import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
 
-import GeneInfo from './GeneInfo'
+import RegionInfo from './RegionInfo'
 import Settings from '../Settings'
-import GeneRegion from './RegionViewer'
-import VariantPage from '../VariantPage'
+import RegionViewer from './RegionViewer'
 
 import tableConfig from '../tableConfig'
-import { fetchGene } from './fetch'
+import { fetchRegion } from './fetch'
 
-const GenePage = styled.div`
+const RegionPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -44,30 +43,24 @@ const MainSection = styled.div`
 `
 const VariantTable = withRouter(VariantTableConnected)
 
-const AppGenePage = ({
-  gene,
+const RegionPage = ({
+  regionData,
   isFetching,
 }) => {
-  if (isFetching || !gene) {
+  if (isFetching || !regionData) {
     return <div>Loading...!</div>
   }
   return (
-    <GenePage>
+    <RegionPageWrapper>
       <Summary>
-        <GeneInfo />
+        <RegionInfo />
       </Summary>
-      <GeneRegion />
+      <RegionViewer coverageStyle={'classic'} />
       <Settings />
       <MainSection>
-        <Route path={'/gene/:gene/:variantId'} component={VariantPage} />
-        {/* <Route
-          exact
-          path="/gene/:gene"
-          component={Table}
-        /> */}
         <Route
           exact
-          path="/gene/:gene"
+          path="/region/:regionId"
           render={() => {
             return (
               <VariantTable
@@ -78,16 +71,16 @@ const AppGenePage = ({
           }}
         />
       </MainSection>
-    </GenePage>
+    </RegionPageWrapper>
   )
 }
 
-AppGenePage.propTypes = {
-  gene: PropTypes.object,
+RegionPage.propTypes = {
+  regionData: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
 }
-AppGenePage.defaultProps = {
-  gene: null,
+RegionPage.defaultProps = {
+  regionData: null,
 }
 
-export default withRouter(FetchHoc(AppGenePage, fetchGene))
+export default withRouter(RegionHoc(RegionPage, fetchRegion))

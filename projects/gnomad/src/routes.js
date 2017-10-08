@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
 
 import GenePage from './GenePage'
+import RegionPage from './RegionPage'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -26,6 +27,7 @@ const App = () => (
       <Switch>
         {/* <Route path="/gene/:gene/:variantId" component={GenePage} /> */}
         <Route exact path="/gene/:gene" component={GenePage} />
+        <Route exact path="/region/:regionId" component={RegionPage} />
       </Switch>
       {/* <Route path="/variant/:variant" component={GenePage} /> */}
       {/* <Route path="/rsid/:rsid" component={GenePage} /> */}

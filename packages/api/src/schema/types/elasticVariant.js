@@ -154,6 +154,9 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
       body: {
         query: {
           bool: {
+            must: [
+              { exists: { field: `${dataset}_AC` } },
+            ],
             filter: {
               bool: {
                 should: regionRangeQueries

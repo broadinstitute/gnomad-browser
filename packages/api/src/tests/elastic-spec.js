@@ -345,6 +345,29 @@ test('Look up genome coverage and arrange query', (assert) => {
   assert.end()
 })
 
+test('Look up genome coverage and arrange query', (assert) => {
+  const regionRangeQueries = { range: { pos: { gte: 55510000, lte: 55540000 } } }
+  client.search({
+    index: 'genome_coverage',
+    type: 'position',
+    body: {
+      query: {
+        bool: {
+          filter: {
+            bool: {
+              should: regionRangeQueries,
+            },
+          },
+        },
+      },
+      sort: [{ pos: { order: 'asc' } }],
+    },
+  }).then((response) => {
+    console.log(response)
+  })
+  assert.end()
+})
+
 
 
 

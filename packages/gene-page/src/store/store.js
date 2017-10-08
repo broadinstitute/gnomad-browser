@@ -18,6 +18,8 @@ import { createLogger } from 'redux-logger'
 import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
 import createGeneReducer from '../resources/genes'
+import createRegionReducer from '../resources/regions'
+
 import createVariantReducer, {
   visibleVariantsById,
   filteredVariantsById,
@@ -47,6 +49,7 @@ export default function createGenePageStore(appSettings) {
     genes: createGeneReducer(appSettings),
     search: searchReducer,
     variants: createVariantReducer(appSettings),
+    regions: createRegionReducer(appSettings),
   })
 
   const finalCreateStore = compose(

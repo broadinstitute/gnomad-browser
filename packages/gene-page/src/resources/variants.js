@@ -12,6 +12,8 @@ import {
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 import { types as geneTypes } from './genes'
+import { types as regionTypes } from './regions'
+
 import * as fromActive from './active'
 
 export const types = keymirror({
@@ -167,6 +169,35 @@ export default function createVariantReducer({
         let variantMap = {}
         if (variantDatasets[datasetKey]) {
           geneData.get(datasetKey).forEach((variant) => {
+            variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
+              variant
+                .set('id', variant.get('variant_id'))
+                .set('datasets', Set([datasetKey])))
+          })
+        } else if (combinedDatasets[datasetKey]) {
+          const sources = combinedDatasets[datasetKey].sources
+          const combineKeys = combinedDatasets[datasetKey].combineKeys
+
+          variantMap = sources.reduce((acc, dataset) => {
+            return acc.mergeDeepWith((oldValue, newValue, key) => {
+              if (combineKeys[key]) {
+                return combineKeys[key](oldValue, newValue)
+              }
+              return oldValue
+            }, nextState.byVariantDataset.get(dataset))
+          }, OrderedMap())
+        }
+        return nextState.set('byVariantDataset', nextState.byVariantDataset
+          .set(datasetKey, OrderedMap(variantMap))
+        )
+      }, state)
+    },
+
+    [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
+      return datasetKeys.reduce((nextState, datasetKey) => {
+        let variantMap = {}
+        if (variantDatasets[datasetKey]) {
+          regionData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant
                 .set('id', variant.get('variant_id'))

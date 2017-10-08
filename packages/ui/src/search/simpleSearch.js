@@ -60,9 +60,9 @@ export const Search = ({
 )
 Search.propTypes = {
   listName: PropTypes.string,
-  options: PropTypes.string,
+  // options: PropTypes.string,
   placeholder: PropTypes.string,
-  onSubmit: PropTypes.string,
+  // onSubmit: PropTypes.string,
 }
 Search.defaultProps = {
   listName: 'myList',

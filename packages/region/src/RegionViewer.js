@@ -35,6 +35,7 @@ class RegionViewer extends Component {
     leftPanelWidth: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
     broadcast: PropTypes.func,
+    featuresToDisplay: PropTypes.array,
   }
 
   static defaultProps = {
@@ -42,6 +43,7 @@ class RegionViewer extends Component {
     leftPanelWidth: 100,
     onRegionClick: () => {},
     broadcast: () => {},
+    featuresToDisplay: ['CDS'],
     regionAttributes: {
       CDS: {
         color: exonColor,
@@ -68,7 +70,6 @@ class RegionViewer extends Component {
 
   state = {
     rightPanelWidth: 50,
-    featuresToDisplay: ['CDS'],
     ready: false,
   }
 
@@ -93,7 +94,7 @@ class RegionViewer extends Component {
   broadcastOffsetRegions = () => {
     if (this.props.regions) {
       const offsetRegions = calculateOffsetRegions(
-        this.state.featuresToDisplay,
+        this.props.featuresToDisplay,
         this.props.regionAttributes,
         this.props.padding,
         this.props.regions,
@@ -113,7 +114,7 @@ class RegionViewer extends Component {
   }
 
   render() {
-    const { featuresToDisplay } = this.state
+    const { featuresToDisplay } = this.props
     const {
       regions,
       regionAttributes,
