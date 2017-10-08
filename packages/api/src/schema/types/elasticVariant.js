@@ -76,14 +76,9 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
     const padding = 75
     const regions = exons
 
-    const offsetRegions = calculateOffsetRegions(
-      ['CDS'],
-      defaultAttributeConfig,
-      padding,
-      regions
-    )
+    const filteredRegions = regions.filter(region => region.feature_type === 'CDS')
 
-    const regionRangeQueries = offsetRegions.map(({ start, stop }) => (
+    const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
       { range: { pos: { gte: start, lte: stop } } }))
 
     return new Promise((resolve, _) => {

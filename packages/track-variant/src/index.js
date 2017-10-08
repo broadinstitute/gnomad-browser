@@ -207,7 +207,7 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
       return <VariantTick key={markerKey} {...rest} />
     case 'exacClassic':
       return <VariantExacClassic key={markerKey} {...rest} />
-    // case 
+    // case
     default:
       return <VariantCircle key={markerKey} {...rest} />
   }
@@ -305,7 +305,7 @@ const VariantTrack = ({
                   0.000010,
                   afMax,
                 ])
-                .range([5, 15])
+                .range([4, 12])
 
             const childProps = {
               index,

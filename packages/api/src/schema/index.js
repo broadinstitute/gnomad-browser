@@ -3,8 +3,11 @@ import {
   GraphQLObjectType,
   GraphQLFloat,
   GraphQLString,
+  GraphQLInt,
   GraphQLNonNull,
 } from 'graphql'
+
+import { getXpos } from '@broad/utilities/lib/variant'
 
 import geneType, {
   lookupGeneByGeneId,
@@ -59,13 +62,20 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
     },
     region: {
-      description: 'Look up variant data by start/stop. Example: (xstart: 1055530526, xstop: 1055505222).',
+      description: 'Look up data by start/stop. Example: (start: 55505222, stop: 55505300, chrom: 1).',
       type: regionType,
       args: {
-        xstart: { type: new GraphQLNonNull(GraphQLFloat) },
-        xstop: { type: new GraphQLNonNull(GraphQLFloat) },
+        start: { type: new GraphQLNonNull(GraphQLFloat) },
+        stop: { type: new GraphQLNonNull(GraphQLFloat) },
+        chrom: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (obj, args) => ({ xstart: args.xstart, xstop: args.xstop }),
+      resolve: (obj, args) => ({
+        start: args.start,
+        stop: args.stop,
+        chrom: args.chrom,
+        xstart: getXpos(args.chrom, args.start),
+        xstop: getXpos(args.chrom, args.stop),
+      }),
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',

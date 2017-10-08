@@ -5,9 +5,10 @@ import {
   GraphQLInt,
   GraphQLString,
   GraphQLList,
+  GraphQLFloat,
 } from 'graphql'
 
-// import coverageType, { lookupCoverageByStartStop } from './coverage'
+import coverageType, { lookUpCoverageByExons } from './coverage'
 import variantType, { lookupVariantsByTranscriptId } from './variant'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 
@@ -20,10 +21,10 @@ const transcriptType = new GraphQLObjectType({
     transcript_id: { type: GraphQLString },
     strand: { type: GraphQLString },
     stop: { type: GraphQLInt },
-    xstart: { type: GraphQLInt },
+    xstart: { type: GraphQLFloat },
     chrom: { type: GraphQLInt },
     gene_id: { type: GraphQLString },
-    xstop: { type: GraphQLInt },
+    xstop: { type: GraphQLFloat },
     exome_variants: {
       type: new GraphQLList(variantType),
       resolve: (obj, args, ctx) =>
@@ -38,6 +39,32 @@ const transcriptType = new GraphQLObjectType({
       type: new GraphQLList(exonType),
       resolve: (obj, args, ctx) =>
        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
+    },
+    genome_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) => {
+        return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+          return lookUpCoverageByExons({
+            elasticClient: ctx.database.elastic,
+            index: 'genome_coverage',
+            exons,
+            chrom: obj.chrom
+          })
+        })
+      }
+    },
+    exome_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) => {
+        return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+          return lookUpCoverageByExons({
+            elasticClient: ctx.database.elastic,
+            index: 'exome_coverage',
+            exons,
+            chrom: obj.chrom
+          })
+        })
+      }
     },
   }),
 })
