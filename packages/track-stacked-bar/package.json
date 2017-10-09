@@ -1,0 +1,24 @@
+{
+  "name": "@broad/track-stacked-bar",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "test:data": "../../node_modules/.bin/babel-node src/example/getTestData"
+  },
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {},
+  "dependencies": {
+    "d3-array": "^1.2.0",
+    "d3-scale": "^1.0.6"
+  },
+  "peerDependencies": {
+    "@broad/region": "*",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "ramda": "^0.24.1",
+    "styled-components": "^2.1.2"
+  }
+}

@@ -20,7 +20,7 @@ const x = d => d.letter
 const y = d => d.frequency * 100
 
 const xScale = scaleBand({
-  rangeRound: [0, xMax],
+
   domain: data.map(x),
   padding: 0.4,
 })

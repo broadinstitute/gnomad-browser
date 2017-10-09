@@ -365,15 +365,16 @@ test('aggregate consequence types for a gene', (assert) => {
       sort: [{ xpos: { order: 'asc' } }],
     },
   }).then((response) => {
-    console.log(response)
+    // console.log(response)
     const buckets = response.aggregations.consequence_counts.buckets
+    // console.log(buckets)
     assert.equal(19543, buckets.find(bucket =>
       bucket.key === 'missense_variant').doc_count)
   })
   assert.end()
 })
 
-test.only('aggregate by interval', (assert) => {
+test('aggregate by interval', (assert) => {
   const regionRangeQueries = { range: { pos: { gte: 179390717, lte: 179695530 } } }
   client.search({
     index: 'genome_coverage',
@@ -410,5 +411,54 @@ test.only('aggregate by interval', (assert) => {
   assert.end()
 })
 
+test.only('aggregate consequences by interval', (assert) => {
+  const regionRangeQueries = { range: { pos: { gte: 179390717, lte: 179695530 } } }
+  client.search({
+    index: 'gnomad',
+    type: 'variant',
+    body: {
+      query: {
+        bool: {
+          filter: {
+            bool: {
+              should: regionRangeQueries,
+            },
+          },
+        },
+      },
+      aggregations: {
+        total_consequence_counts: {
+          terms: {
+            field: 'majorConsequence',
+          },
+        },
+        position_buckets: {
+          histogram: {
+            field: 'pos',
+            interval: 10000,
+          },
+          aggregations: {
+            consequence_counts: {
+              terms: {
+                field: 'majorConsequence',
+              },
+            },
+          },
+        },
+      },
+      sort: [{ pos: { order: 'asc' } }],
+    },
+  }).then((response) => {
+    // console.log(response)
+    // const { buckets } = response.aggregations.position_buckets
+    const { total_consequence_counts } = response.aggregations
+    console.log(total_consequence_counts)
+    // console.log(buckets.length)
+    // console.log(buckets.slice(1, 5).map(bucket => {
+    //   console.log('position', bucket.key, 'consequence_counts', bucket.consequence_counts.buckets)
+    // }))
+  })
+  assert.end()
+})
 
 

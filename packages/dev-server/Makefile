@@ -18,7 +18,6 @@ build: clean install lib
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
-	lsof -ti:8008| xargs kill ; \
 	cd ../dev-server ; \
 	$(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
 
