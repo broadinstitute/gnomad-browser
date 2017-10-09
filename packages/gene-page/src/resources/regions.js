@@ -55,15 +55,14 @@ export const actions = {
   },
 
   fetchRegionIfNeeded (currentRegion, match, regionFetchFunction) {
-    // if (match) {
-    //   if (match.params.regionId) {
-    //     return (dispatch) => {
-    //       dispatch(actions.setCurrentRegion(match.params.regionId))
-    //     }
-    //   }
-    // }
+    if (match) {
+      if (match.params.regionId) {
+        return (dispatch) => {
+          dispatch(actions.setCurrentRegion(match.params.regionId))
+        }
+      }
+    }
     return (dispatch, getState) => {  // eslint-disable-line
-        return dispatch(actions.fetchPageDataByRegionName(currentRegion, regionFetchFunction))
       if (actions.shouldFetchRegion(getState(), currentRegion)) {
         return dispatch(actions.fetchPageDataByRegionName(currentRegion, regionFetchFunction))
       }

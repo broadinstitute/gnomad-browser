@@ -395,7 +395,7 @@ test.only('aggregate by interval', (assert) => {
             interval: 500,
           },
           aggregations: {
-            window_mean: { stats: { field: 'mean' } },
+            bucket_mean: { stats: { field: 'mean' } },
           },
         },
       },
@@ -405,7 +405,7 @@ test.only('aggregate by interval', (assert) => {
     console.log(response)
     const { buckets } = response.aggregations.genome_coverage_downsampled
     console.log(buckets.length)
-    // console.log(buckets.map(bucket => bucket.window_mean.avg))
+    console.log(buckets.slice(1, 5).map(bucket => bucket))
   })
   assert.end()
 })

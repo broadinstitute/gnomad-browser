@@ -6,8 +6,6 @@ const API_URL = 'http://localhost:8007'
 
 export const fetchRegion = (regionId, url = API_URL) => {
   const [chrom, start, stop] = regionId.split('-')
-  console.log([chrom, start, stop])
-
   const query = `{
   region(start: ${Number(start)}, stop: ${Number(stop)}, chrom: ${Number(chrom)}) {
     start
@@ -86,7 +84,6 @@ export const fetchRegion = (regionId, url = API_URL) => {
   return new Promise((resolve, reject) => {
     fetch(url)(query)
       .then(data => {
-        console.log(data)
         resolve(data.data.region)
       })
       .catch((error) => {

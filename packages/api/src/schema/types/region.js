@@ -9,9 +9,16 @@ import {
   // GraphQLString,
 } from 'graphql'
 
-import coverageType, { lookupCoverageByStartStop, lookupCoverageByIntervals } from './coverage'
+import coverageType, {
+  lookupCoverageByStartStop,
+  lookupCoverageByIntervals,
+  lookupCoverageBuckets,
+} from './coverage'
+
 import variantType, { lookupVariantsByStartStop } from './variant'
+
 import elasticVariantType, { lookupElasticVariantsByInterval } from './elasticVariant'
+
 import geneType, { lookupGenesByInterval } from './gene'
 
 const regionType = new GraphQLObjectType({
@@ -37,13 +44,22 @@ const regionType = new GraphQLObjectType({
     },
     genome_coverage: {
       type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) =>
-      lookupCoverageByIntervals({
-        elasticClient: ctx.database.elastic,
-        index: 'genome_coverage',
-        intervals: [{ start: obj.start, stop: obj.stop }],
-        chrom: obj.chrom,
-      }),
+      resolve: (obj, args, ctx) => {
+        if ((obj.stop - obj.start) > 1600) {
+          return lookupCoverageBuckets({
+            elasticClient: ctx.database.elastic,
+            index: 'genome_coverage',
+            intervals: [{ start: obj.start, stop: obj.stop }],
+            chrom: obj.chrom,
+          })
+        }
+        return lookupCoverageByIntervals({
+          elasticClient: ctx.database.elastic,
+          index: 'genome_coverage',
+          intervals: [{ start: obj.start, stop: obj.stop }],
+          chrom: obj.chrom,
+        })
+      }
     },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),

@@ -40,7 +40,6 @@ const reduxThrottle = throttle(defaultWait, defaultThrottleOption)  // eslint-di
 const middlewares = [createDebounce(), thunk]
 
 export default function createGenePageStore(appSettings) {
-  console.log(appSettings.searchIndexes)
   if (appSettings.logger) {
     middlewares.push(logger)
   }

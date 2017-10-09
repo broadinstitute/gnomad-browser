@@ -317,7 +317,6 @@ export const filteredVariantsById = createSelector([
   if (variantFilter === 'missenseOrLoF') {
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
   }
-  console.log('filteredVariants')
   return filteredVariants
 })
 
@@ -341,7 +340,6 @@ export const variantSearchResult = searchSelectors.result
 export const filteredIdList = createSelector(
   [state => state.search.variants.result],
   (result) => {
-    // console.log('filtered id list selector', result)
     return List(result)
   }
 )
@@ -362,7 +360,6 @@ export const sortedVariants = createSelector(
       variantSortKey,
       variantSortAscending
     )
-    console.log('sordid variants selector')
     return sortedVariants
   }
 )

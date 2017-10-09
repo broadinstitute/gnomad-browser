@@ -94,3 +94,49 @@ export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom }) =>
   const codingRegions = exons.filter(region => region.feature_type === 'CDS')
   return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
 }
+
+export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }) => {
+  const regionRangeQueries = intervals.map(({ start, stop }) => (
+    { range: { pos: { gte: start, lte: stop } } }
+  ))
+  return new Promise((resolve, _) => {
+    elasticClient.search({
+      index,
+      type: 'position',
+      body: {
+        query: {
+          bool: {
+            filter: {
+              bool: {
+                should: regionRangeQueries,
+              },
+            },
+          },
+        },
+        aggregations: {
+          genome_coverage_downsampled: {
+            histogram: {
+              field: 'pos',
+              interval: 500,
+            },
+            aggregations: {
+              bucket_stats: { stats: { field: 'mean' } },
+            },
+          },
+        },
+        sort: [{ pos: { order: 'asc' } }],
+      },
+    }).then((response) => {
+      const { buckets } = response.aggregations.genome_coverage_downsampled
+      console.log(buckets)
+      const positions = buckets.map((bucket) => {
+        return {
+          xpos: getXpos(chrom, bucket.key),
+          pos: bucket.key,
+          mean: bucket.bucket_stats.avg,
+        }
+      })
+      resolve(positions)
+    }).catch(error => console.log(error))
+  })
+}

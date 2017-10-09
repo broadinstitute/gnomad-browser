@@ -55,7 +55,7 @@ const RegionPage = ({
       <Summary>
         <RegionInfo />
       </Summary>
-      <RegionViewer coverageStyle={'classic'} />
+      <RegionViewer coverageStyle={'new'} />
       <Settings />
       <MainSection>
         <Route
