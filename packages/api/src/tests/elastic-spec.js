@@ -305,48 +305,76 @@ test('Aggregate variants by gene.', (assert) => {
     // },
     _source: ['mainTranscriptCategory']
   }).then(response => {
-    console.log(response)
+    // console.log(response)
   })
 
   assert.end()
 })
 
-test('Look up genome coverage and arrange query', (assert) => {
+test('aggregate consequence types for a gene', (assert) => {
   client.search({
-    index: 'genome_coverage',
-    type: 'position',
-    size: 500000,
+    index: 'gnomad',
+    type: 'variant',
     body: {
       query: {
         bool: {
           must: [
-            {
-              term: {
-                chrom: '1',
-              },
-            },
-            {
-              range: {
-                pos: {
-                  from: 55505221,
-                  to: 55530525,
-                }
-              },
-            }
-          ]
-        }
+            { term: { geneId: 'ENSG00000155657' } },
+            { exists: { field: 'exomes_AC' } },
+          ],
+        },
       },
+      aggregations: {
+        consequence_counts: {
+          terms: {
+            field: 'majorConsequence',
+          },
+        },
+      },
+      sort: [{ xpos: { order: 'asc' } }],
     },
-  }).then(response => {
+  }).then((response) => {
     console.log(response)
-    //const variant = response.hits.hits[0]
-    //assert.equal(response.hits.hits.length, 295)
+    const buckets = response.aggregations.consequence_counts.buckets
+    assert.equal(19543, buckets.find(bucket =>
+      bucket.key === 'missense_variant').doc_count)
   })
   assert.end()
 })
 
-test('Look up genome coverage and arrange query', (assert) => {
-  const regionRangeQueries = { range: { pos: { gte: 55510000, lte: 55540000 } } }
+test('aggregate consequence types for a gene', (assert) => {
+  client.search({
+    index: 'gnomad',
+    type: 'variant',
+    body: {
+      query: {
+        bool: {
+          must: [
+            { term: { geneId: 'ENSG00000155657' } },
+            { exists: { field: 'exomes_AC' } },
+          ],
+        },
+      },
+      aggregations: {
+        consequence_counts: {
+          terms: {
+            field: 'majorConsequence',
+          },
+        },
+      },
+      sort: [{ xpos: { order: 'asc' } }],
+    },
+  }).then((response) => {
+    console.log(response)
+    const buckets = response.aggregations.consequence_counts.buckets
+    assert.equal(19543, buckets.find(bucket =>
+      bucket.key === 'missense_variant').doc_count)
+  })
+  assert.end()
+})
+
+test.only('aggregate by interval', (assert) => {
+  const regionRangeQueries = { range: { pos: { gte: 179390717, lte: 179695530 } } }
   client.search({
     index: 'genome_coverage',
     type: 'position',
@@ -360,15 +388,27 @@ test('Look up genome coverage and arrange query', (assert) => {
           },
         },
       },
+      aggregations: {
+        genome_coverage_downsampled: {
+          histogram: {
+            field: 'pos',
+            interval: 500,
+          },
+          aggregations: {
+            window_mean: { stats: { field: 'mean' } },
+          },
+        },
+      },
       sort: [{ pos: { order: 'asc' } }],
     },
   }).then((response) => {
     console.log(response)
+    const { buckets } = response.aggregations.genome_coverage_downsampled
+    console.log(buckets.length)
+    // console.log(buckets.map(bucket => bucket.window_mean.avg))
   })
   assert.end()
 })
-
-
 
 
 

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/babel-node --inspect node_modules/.bin/tape './src/tests/elastic-spec.js' | ./node_modules/.bin/tspec",
-    "test:watch": "./node_modules/.bin/watch 'npm test' src -d",
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/tests/elastic-spec.js' | ../../node_modules/.bin/tspec",
+    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d",
     "clean": "rm -rf build && mkdir build",
     "build-server": "../../node_modules/.bin/babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
