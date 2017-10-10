@@ -69,13 +69,13 @@ export default function (onHeaderClick) {
         width: 40,
         onHeaderClick,
       },
-      // {
-      //   dataKey: 'allele_freq',
-      //   title: 'AF',
-      //   dataType: 'float',
-      //   width: 50,
-      //   onHeaderClick,
-      // },
+      {
+        dataKey: 'allele_freq',
+        title: 'AF',
+        dataType: 'alleleFrequency',
+        width: 50,
+        onHeaderClick,
+      },
       {
         dataKey: 'hom_count',
         title: 'Hom',

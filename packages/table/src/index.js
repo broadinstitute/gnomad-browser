@@ -43,6 +43,9 @@ const specialCellStyles = {
   consequence: {
     ...normalCellStyles.string,
   },
+  alleleFrequency: {
+    ...normalCellStyles.float,
+  },
 }
 
 const tableCellStyles = {
@@ -174,7 +177,6 @@ const getConsequenceName = (consequence) => {
 }
 
 const formatConsequence = (consequence, index, searchText) => {
-  console.log(consequence)
   return (
     <span
       style={{
@@ -189,6 +191,13 @@ const formatConsequence = (consequence, index, searchText) => {
       />
     </span>
   )
+}
+
+const formatAlleleFrequency = (dataRow, dataKey) => {
+  if (dataRow['allele_count'] === 0) {
+    return 0
+  }
+  return Number((dataRow['allele_count'] / dataRow['allele_num']).toPrecision(4)).toExponential()  // eslint-disable-line
 }
 
 
@@ -278,6 +287,15 @@ const getDataCell = (field, dataRow, searchText, i) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatLoF(dataRow)}
+        </div>
+      )
+    case 'alleleFrequency':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatAlleleFrequency(dataRow)}
         </div>
       )
     default:
