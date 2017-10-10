@@ -365,8 +365,11 @@ export const sortedVariants = createSelector(
 )
 
 export const finalFilteredVariants = createSelector(
-  [sortedVariants, filteredIdList],
-  (variants, filteredIdList) => {
+  [sortedVariants, filteredIdList, selectedVariantDataset],
+  (variants, filteredIdList, selectedVariantDataset) => {
+    if (selectedVariantDataset === 'exacVariants') { // HACK: messes up search
+      return variants.toList()
+    }
     if (filteredIdList.size !== 0 || variants.size === 0) {
       return variants.filter((v) => {
         return filteredIdList.includes(v.get('id'))

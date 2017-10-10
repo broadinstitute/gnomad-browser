@@ -52,6 +52,8 @@ const datasetConfig = {
   gnomadExomeVariantsFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E', border: '1px dashed #000' },
   gnomadGenomeVariants: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G', border: '1px solid #000' },
   gnomadGenomeVariantsFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G', border: '1px dashed #000' },
+  exacVariants: { color: 'rgba(50, 90, 61, 1)', abbreviation: 'V1', border: '1px solid #000' },
+  exacVariantsFiltered: { color: 'rgba(50, 90, 61, 0.4)', abbreviation: 'V1', border: '1px dashed #000' },
 }
 const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
   // eslint-disable-next-line

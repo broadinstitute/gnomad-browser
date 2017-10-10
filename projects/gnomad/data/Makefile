@@ -83,3 +83,17 @@ genome-parts:
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	export_genomes_as_parts.py
+
+variants-exac:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	export_exacv1_to_ES.py \
+	--host $(ES_HOST_IP) \
+	--port 9200 \
+	--block-size 200 \
+	--genome_version 37 \
+	--index exacv1 \
+	--index-type variant \
+	--exacv1-vds gs://gnomad-browser/datasets/ExAC.r1.sites.vds \
+	--num-shards 1

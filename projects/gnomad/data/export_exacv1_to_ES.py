@@ -15,29 +15,31 @@ p = argparse.ArgumentParser()
 p.add_argument("-g", "--genome_version", help="Genome build: 37 or 38", choices=["37", "38"], required=True)
 p.add_argument("-H", "--host", help="Elasticsearch node host or IP. To look this up, run: `kubectl describe nodes | grep Addresses`", required=True)
 p.add_argument("-p", "--port", help="Elasticsearch port", default=30001, type=int)  # 9200
-p.add_argument("-i", "--index", help="Elasticsearch index name", default="schizophrenia")
+p.add_argument("-i", "--index", help="Elasticsearch index name", default="exacv1")
 p.add_argument("-t", "--index-type", help="Elasticsearch index type", default="variant")
-p.add_argument("-v", "--schizophrenia-vds", help="Path to schizophrenia data", required=True)
+p.add_argument("-v", "--exacv1-vds", help="Path to exacv1 data", required=True)
 p.add_argument("-b", "--block-size", help="Elasticsearch block size", default=200, type=int)
 p.add_argument("-s", "--num-shards", help="Number of shards", default=1, type=int)
 
 # parse args
 args = p.parse_args()
 hc = hail.HailContext(log="/hail.log") #, branching_factor=1)
-vds = hc.read(args.schizophrenia_vds)
+vds = hc.read(args.exacv1_vds)
 
 # based on output of pprint(vds.variant_schema)
-SCHIZOPHRENIA_SCHEMA = {
+EXACV1_SCHEMA = {
     "top_level_fields": """
-        chrom: String,
-        pos: Int,
-        xpos: Int,
+        contig: String,
+        start: Int,
         ref: String,
         alt: String,
+
         rsid: String,
         qual: Double,
         filters: Set[String],
+        wasSplit: Boolean,
 
+        joinKey: String,
         variantId: String,
         originalAltAlleles: Set[String],
         geneIds: Set[String],
@@ -48,26 +50,81 @@ SCHIZOPHRENIA_SCHEMA = {
     """,
 
     "info_fields": """
-         AC: Array[Int],
-         AF: Array[Double],
-         AC_cases: Int,
-         AC_ctrls: Int,
-         AC_UK_cases: Int,
-         AC_UK_ctrls: Int,
-         AC_FIN_cases: Int,
-         AC_FIN_ctrls: Int,
-         AC_SWE_cases: Int,
-         AC_SWE_ctrls: Int
+        AC: Array[Int],
+        AF: Array[Double],
+        AN: Int,
+        BaseQRankSum: Double,
+        ClippingRankSum: Double,
+        DP: Int,
+        FS: Double,
+        InbreedingCoeff: Double,
+        MQ: Double,
+        MQRankSum: Double,
+        QD: Double,
+        ReadPosRankSum: Double,
+        VQSLOD: Double,
+        VQSR_culprit: String,
+        GQ_HIST_ALT: Array[String],
+        DP_HIST_ALT: Array[String],
+        AB_HIST_ALT: Array[String],
+        AC_AFR: Array[Int],
+        AC_AMR: Array[Int],
+        AC_ASJ: Array[Int],
+        AC_EAS: Array[Int],
+        AC_FIN: Array[Int],
+        AC_NFE: Array[Int],
+        AC_OTH: Array[Int],
+        AC_Male: Array[Int],
+        AC_Female: Array[Int],
+        AN_AFR: Int,
+        AN_AMR: Int,
+        AN_ASJ: Int,
+        AN_EAS: Int,
+        AN_FIN: Int,
+        AN_NFE: Int,
+        AN_OTH: Int,
+        AN_Male: Int,
+        AN_Female: Int,
+        AF_AFR: Array[Double],
+        AF_AMR: Array[Double],
+        AF_ASJ: Array[Double],
+        AF_EAS: Array[Double],
+        AF_FIN: Array[Double],
+        AF_NFE: Array[Double],
+        AF_OTH: Array[Double],
+        AF_Male: Array[Double],
+        AF_Female: Array[Double],
+        Hom_AFR: Array[Int],
+        Hom_AMR: Array[Int],
+        Hom_ASJ: Array[Int],
+        Hom_EAS: Array[Int],
+        Hom_FIN: Array[Int],
+        Hom_NFE: Array[Int],
+        Hom_OTH: Array[Int],
+        Hom_Male: Array[Int],
+        Hom_Female: Array[Int],
+        Hom: Array[Int],
+        POPMAX: Array[String],
+        AC_POPMAX: Array[Int],
+        AN_POPMAX: Array[Int],
+        AF_POPMAX: Array[Double],
+        Hemi_NFE: Array[Int],
+        Hemi_AFR: Array[Int],
+        Hemi_AMR: Array[Int],
+        Hemi: Array[Int],
+        Hemi_ASJ: Array[Int],
+        Hemi_OTH: Array[Int],
+        Hemi_FIN: Array[Int],
+        Hemi_EAS: Array[Int],
     """
 }
 
 vds_computed_annotations_exprs = [
-    "va.chrom = %s" % get_expr_for_contig(),
-    "va.pos = %s" % get_expr_for_start_pos(),
+    "va.contig = %s" % get_expr_for_contig(),
+    "va.start = %s" % get_expr_for_start_pos(),
     "va.ref = %s" % get_expr_for_ref_allele(),
     "va.alt = %s" % get_expr_for_alt_allele(),
-    "va.xpos = %s" % get_expr_for_xpos(),
-
+    "va.joinKey = %s" % get_expr_for_variant_id(),
     "va.variantId = %s" % get_expr_for_variant_id(),
     "va.originalAltAlleles = %s" % get_expr_for_orig_alt_alleles_set(),
     "va.geneIds = %s" % get_expr_for_vep_gene_ids_set(),
@@ -75,13 +132,13 @@ vds_computed_annotations_exprs = [
     "va.transcriptConsequenceTerms = %s" % get_expr_for_vep_consequence_terms_set(),
     "va.sortedTranscriptConsequences = %s" % get_expr_for_vep_sorted_transcript_consequences_array(),
     "va.mainTranscript = %s" % get_expr_for_worst_transcript_consequence_annotations_struct("va.sortedTranscriptConsequences"),
-    "va.sortedTranscriptConsequences = json(va.sortedTranscriptConsequences)"
+    "va.sortedTranscriptConsequences = json(va.sortedTranscriptConsequences)",
 ]
 
 print("======== Exomes: KT Schema ========")
 for expr in vds_computed_annotations_exprs:
     vds = vds.annotate_variants_expr(expr)
-kt_variant_expr = convert_vds_schema_string_to_vds_make_table_arg(split_multi=False, **SCHIZOPHRENIA_SCHEMA)
+kt_variant_expr = convert_vds_schema_string_to_vds_make_table_arg(split_multi=False, **EXACV1_SCHEMA)
 kt = vds.make_table(kt_variant_expr, [])
 
 pprint(kt.schema)

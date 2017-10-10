@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { variantCount } from '@broad/gene-page/src/resources/variants'
+import { variantCount, selectedVariantDataset } from '@broad/gene-page/src/resources/variants'
 
 import {
   GeneInfoWrapper,
@@ -28,12 +28,13 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
-const GeneInfo = ({ geneData, variantCount }) => {
+const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
   const {
     gene_name,
     gene_id,
     full_gene_name,
     omim_accession,
+    exacv1_constraint,
   } = geneData.toJS()
   return (
     <GeneInfoWrapper>
@@ -54,7 +55,7 @@ const GeneInfo = ({ geneData, variantCount }) => {
           </GeneAttribute>
         </GeneAttributes>
         {/* <GeneLongName>Disease burden analysis (case v. control)</GeneLongName> */}
-        <Table>
+        {selectedVariantDataset === 'exacVariants' && <Table>
           <TableRows>
             <TableHeader>
               <TableTitleColumn />
@@ -66,34 +67,33 @@ const GeneInfo = ({ geneData, variantCount }) => {
             <TableRow>
               <TableTitleColumn />
               <TableCell>Synonymous</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
+              <TableCell>{exacv1_constraint.exp_syn.toFixed(1)}</TableCell>
+              <TableCell>{exacv1_constraint.n_syn}</TableCell>
+              <TableCell>Z = {exacv1_constraint.syn_z.toFixed(1)}</TableCell>
             </TableRow>
             <TableRow>
               <TableTitleColumn />
               <TableCell>Missense</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
+              <TableCell>{exacv1_constraint.exp_mis.toFixed(1)}</TableCell>
+              <TableCell>{exacv1_constraint.n_mis}</TableCell>
+              <TableCell>Z = {exacv1_constraint.mis_z.toFixed(1)}</TableCell>
             </TableRow>
             <TableRow>
               <TableTitleColumn />
               <TableCell>LoF</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
+              <TableCell>{exacv1_constraint.exp_lof.toFixed(1)}</TableCell>
+              <TableCell>{exacv1_constraint.n_lof}</TableCell>
+              <TableCell>pLI = {exacv1_constraint.lof_z.toFixed(1)}</TableCell>
             </TableRow>
             <TableRow>
               <TableTitleColumn />
               <TableCell>CNV</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
+              <TableCell>{exacv1_constraint.exp_cnv.toFixed(1)}</TableCell>
+              <TableCell>{exacv1_constraint.n_cnv}</TableCell>
+              <TableCell>Z = {exacv1_constraint.cnv_z.toFixed(1)}</TableCell>
             </TableRow>
           </TableRows>
-        </Table>
-
+        </Table>}
       </GeneDetails>
     </GeneInfoWrapper>
   )
@@ -102,11 +102,13 @@ const GeneInfo = ({ geneData, variantCount }) => {
 GeneInfo.propTypes = {
   geneData: PropTypes.object.isRequired,
   variantCount: PropTypes.number.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
 }
 
 export default connect(
   state => ({
     geneData: geneData(state),
-    variantCount: variantCount(state)
+    variantCount: variantCount(state),
+    selectedVariantDataset: selectedVariantDataset(state),
   })
 )(GeneInfo)

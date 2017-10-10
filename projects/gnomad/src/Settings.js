@@ -84,6 +84,7 @@ const GeneSettings = ({
           <option value="gnomadExomeVariants">gnomAD exomes</option>
           <option value="gnomadGenomeVariants">gnomAD genomes</option>
           <option value="gnomadCombinedVariants">gnomAD combined</option>
+          <option value="exacVariants">ExAC</option>
         </select>
       </MenusContainer>
     </SettingsContainer>
