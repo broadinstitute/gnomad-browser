@@ -40,6 +40,9 @@ const specialCellStyles = {
   datasets: {
     ...normalCellStyles.string,
   },
+  consequence: {
+    ...normalCellStyles.string,
+  },
 }
 
 const tableCellStyles = {
@@ -137,6 +140,58 @@ const formatVariantId = (variantId) => {
   )
 }
 
+const lof = '#DD2C00'
+const missense = 'orange'
+const synonymous = '#2E7D32'
+const other = '#424242'
+const consequencePresentation = {
+  missense_variant: { name: 'missense', color: missense },
+  synonymous_variant: { name: 'synonymous', color: lof },
+  upstream_gene_variant: { name: 'upstream gene', color: other },
+  downstream_gene_variant: { name: 'downstream gene', color: other },
+  intron_variant: { name: 'intron', color: other },
+  '3_prime_UTR_variant': { name: "3' UTR", color: other },
+  '5_prime_UTR_variant': { name: "5' UTR", color: other },
+  splice_region_variant: { name: 'splice region', color: lof },
+  splice_donor_variant: { name: 'splice donor', color: lof },
+  splice_acceptor_variant: { name: 'splice acceptor', color: lof },
+  frameshift_variant: { name: 'frameshift', color: lof },
+  stop_gained: { name: 'stop gained', color: lof },
+  inframe_deletion: { name: 'inframe deletion', color: lof },
+}
+
+const getConsequenceColor = (consequence) => {
+  if (consequence in consequencePresentation) {
+    return consequencePresentation[consequence].color
+  }
+  return other
+}
+const getConsequenceName = (consequence) => {
+  if (consequence in consequencePresentation) {
+    return consequencePresentation[consequence].name
+  }
+  return consequence
+}
+
+const formatConsequence = (consequence, index, searchText) => {
+  console.log(consequence)
+  return (
+    <span
+      style={{
+        color: getConsequenceColor(consequence),
+        fontWeight: 'bold',
+      }}
+      key={`${consequence}-${index}`}
+    >
+      <Highlighter
+        searchWords={searchText.split(/\s+/)}
+        textToHighlight={getConsequenceName(consequence)}
+      />
+    </span>
+  )
+}
+
+
 const getDataCell = (field, dataRow, searchText, i) => {
   const { dataKey, dataType, width } = field
   const cellStyle = {
@@ -196,6 +251,15 @@ const getDataCell = (field, dataRow, searchText, i) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatVariantId(cellText)}
+        </div>
+      )
+    case 'consequence':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatConsequence(dataRow[dataKey], i, searchText)}
         </div>
       )
     case 'datasets':

@@ -134,13 +134,12 @@ const regionType = new GraphQLObjectType({
                 bucket_positions: {
                   histogram: {
                     field: 'pos',
-                    interval: 2000,
+                    interval: 3000,
                   },
                   aggregations: {
                     bucket_consequence_counts: {
                       terms: {
                         field: 'majorConsequence',
-                        missing: 0,
                       },
                     },
                   },

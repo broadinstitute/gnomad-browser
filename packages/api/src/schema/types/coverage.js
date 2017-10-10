@@ -63,7 +63,7 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
     elasticClient.search({
       index,
       type: 'position',
-      size: 5000,
+      size: 1000,
       _source: fields,
       body: {
         query: {
@@ -117,7 +117,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
           genome_coverage_downsampled: {
             histogram: {
               field: 'pos',
-              interval: 500,
+              interval: 300,
             },
             aggregations: {
               bucket_stats: { stats: { field: 'mean' } },
@@ -128,7 +128,6 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
       },
     }).then((response) => {
       const { buckets } = response.aggregations.genome_coverage_downsampled
-      console.log(buckets)
       const positions = buckets.map((bucket) => {
         return {
           xpos: getXpos(chrom, bucket.key),

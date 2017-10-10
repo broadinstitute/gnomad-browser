@@ -54,7 +54,7 @@ const TrackStackedBar = ({
         if (key !== 'pos') {
           return acc + bucket[key]
         }
-        return 0
+        return acc
       }, 0)
     })
   }
@@ -65,6 +65,7 @@ const TrackStackedBar = ({
   const y = (d, key) => {
     return d[key]
   }
+  console.log(Math.max(...bucketTotals(data2)))
   const yScale = scaleLinear()
     .domain([0, Math.max(...bucketTotals(data2))])
     .range([yMax, 0])
@@ -76,14 +77,14 @@ const TrackStackedBar = ({
 
   const colors = {
     intron_variant: 'gray',
-    missense_variant: 'red',
+    missense_variant: 'orange',
     synonymous_variant: 'green',
-    splice_region_variant: 'orange',
-    stop_gained: 'yellow',
-    frameshift_variant: 'purple',
-    inframe_deletion: 'pink',
-    splice_donor_variant: 'cyan',
-    splice_acceptor_variant: 'gray',
+    splice_region_variant: 'red',
+    stop_gained: 'red',
+    frameshift_variant: 'red',
+    inframe_deletion: 'red',
+    splice_donor_variant: 'red',
+    splice_acceptor_variant: 'red',
     '3_prime_UTR_variant': 'gray'
   }
 
@@ -107,19 +108,18 @@ const TrackStackedBar = ({
           let lastHeight = 0
           return Object.keys(d).map((key, i2) => {
             if (key !== 'pos') {
-              // console.log(`bar-${i1}-${i2}`, yPoint(d, key))
-              // console.log(`bar-${i1}-${i2}`, lastHeight)
+              const h = lastHeight
               const barHeight = yMax - yPoint(d, key)
-              // console.log(`bar-${i1}-${i2}`, barHeight)
-              // console.log(`bar-${i1}-${i2}`, barHeight)
+              const color = key in colors ? colors[key] : 'gray'
               const bar = (
-                <g key={`bar-${i1}-${i2}`}>
+                <g key={`bar-${key}-${i1}-${i2}`}>
                   <rect
+                    className={`bar-${key}-${i1}-${i2}`}
                     x={xPoint(d)}
                     y={yMax - barHeight}
                     width={barWidth}
                     height={barHeight}
-                    fill={colors[key]}
+                    fill={color}
                     stroke={'black'}
                   />
                 </g>

@@ -50,10 +50,10 @@ export default function (onHeaderClick) {
       {
         dataKey: 'consequence',
         title: 'Consequence',
-        dataType: 'string',
+        dataType: 'consequence',
         width: 100,
         onHeaderClick,
-        searchable: true,
+        // searchable: true,
       },
       {
         dataKey: 'allele_count',
