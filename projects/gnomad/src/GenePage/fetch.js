@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8007'
 // const API_URL = 'http://35.185.9.245'
 
 
-export const fetchLocal = (geneName, url = API_URL) => {
+export const fetchGnomadOnly = (geneName, url = API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -144,9 +144,9 @@ export const fetchExac = (geneName, url = PUBLIC_API) => {
   })
 }
 
-export function fetchGene(geneName) {
+export function fetchWithExac(geneName) {
   return Promise.all([
-    fetchLocal(geneName),
+    fetchGnomadOnly(geneName),
     fetchExac(geneName),
   ]).then(([localData, publicData]) => {
     // console.log(publicData)

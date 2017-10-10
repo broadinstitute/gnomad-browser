@@ -17,7 +17,10 @@ import coverageType, {
 
 import variantType, { lookupVariantsByStartStop } from './variant'
 
-import elasticVariantType, { lookupElasticVariantsByInterval } from './elasticVariant'
+import elasticVariantType, {
+  lookupElasticVariantsByInterval,
+  lookupElasticVariantsInRegion,
+} from './elasticVariant'
 
 import geneType, { lookupGenesByInterval } from './gene'
 
@@ -29,6 +32,7 @@ const regionType = new GraphQLObjectType({
     xstart: { type: GraphQLFloat },
     xstop: { type: GraphQLFloat },
     chrom: { type: GraphQLInt },
+    regionSize: { type: GraphQLInt },
     genes: {
       type: new GraphQLList(geneType),
       resolve: (obj, args, ctx) => lookupGenesByInterval({
@@ -112,6 +116,8 @@ const regionType = new GraphQLObjectType({
       resolve: (obj, args, ctx) => {
         return new Promise((resolve, reject) => {
           const regionRangeQueries = { range: { pos: { gte: obj.start, lte: obj.stop } } }
+          // NOTE: divide region size by the number of buckets you want
+          const intervalSize = Math.floor((obj.stop - obj.start) / 100)
           ctx.database.elastic.search({
             index: 'gnomad',
             type: 'variant',
@@ -134,7 +140,7 @@ const regionType = new GraphQLObjectType({
                 bucket_positions: {
                   histogram: {
                     field: 'pos',
-                    interval: 3000,
+                    interval: intervalSize,
                   },
                   aggregations: {
                     bucket_consequence_counts: {
@@ -172,23 +178,51 @@ const regionType = new GraphQLObjectType({
     },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
-      resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByInterval({
+      resolve: (obj, args, ctx) => {
+        console.log(obj.regionSize)
+        if (obj.regionSize < 10000) {
+          return lookupElasticVariantsInRegion({
+            elasticClient: ctx.database.elastic,
+            index: 'gnomad',
+            dataset: 'exomes',
+            xstart: obj.xstart,
+            xstop: obj.xstop,
+            numberOfVariants: 5000,
+          })
+        }
+        return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
           index: 'gnomad',
           dataset: 'exomes',
-          intervals: [{ xstart: obj.xstart, xstop: obj.xstop }],
-        }),
+          xstart: obj.xstart,
+          xstop: obj.xstop,
+          numberOfVariants: 5000,
+        })
+      }
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
-      resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByInterval({
+      resolve: (obj, args, ctx) => {
+        console.log(obj.regionSize)
+        if (obj.regionSize < 10000) {
+          return lookupElasticVariantsInRegion({
+            elasticClient: ctx.database.elastic,
+            index: 'gnomad',
+            dataset: 'genomes',
+            xstart: obj.xstart,
+            xstop: obj.xstop,
+            numberOfVariants: 5000,
+          })
+        }
+        return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
           index: 'gnomad',
           dataset: 'genomes',
-          intervals: [{ xstart: obj.xstart, xstop: obj.xstop }],
-        }),
+          xstart: obj.xstart,
+          xstop: obj.xstop,
+          numberOfVariants: 5000,
+        })
+      }
     },
     exacv1_variants: {
       type: new GraphQLList(variantType),

@@ -20,7 +20,7 @@ import GeneRegion from './RegionViewer'
 import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
-import { fetchGene } from './fetch'
+import { fetchWithExac, fetchGnomadOnly } from './fetch'
 
 const GenePage = styled.div`
   display: flex;
@@ -90,4 +90,5 @@ AppGenePage.defaultProps = {
   gene: null,
 }
 
-export default withRouter(FetchHoc(AppGenePage, fetchGene))
+export default withRouter(FetchHoc(AppGenePage, fetchWithExac))
+// export default withRouter(FetchHoc(AppGenePage, fetchGnomadOnly))

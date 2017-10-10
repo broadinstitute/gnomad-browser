@@ -170,6 +170,9 @@ const getConsequenceColor = (consequence) => {
   return other
 }
 const getConsequenceName = (consequence) => {
+  if (!consequence) {
+    return 'No annotation'
+  }
   if (consequence in consequencePresentation) {
     return consequencePresentation[consequence].name
   }
@@ -269,6 +272,7 @@ const getDataCell = (field, dataRow, searchText, i) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatConsequence(dataRow[dataKey], i, searchText)}
+          {/* {dataRow[dataKey]} */}
         </div>
       )
     case 'datasets':
@@ -304,7 +308,7 @@ const getDataCell = (field, dataRow, searchText, i) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {cellText}
+          {dataRow[dataKey]}
         </div>
       )
   }

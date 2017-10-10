@@ -96,6 +96,8 @@ export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom }) =>
 }
 
 export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }) => {
+  const { start, stop } = intervals[0] // HACK
+  const intervalSize = Math.floor((stop - start) / 1000)
   const regionRangeQueries = intervals.map(({ start, stop }) => (
     { range: { pos: { gte: start, lte: stop } } }
   ))
@@ -117,7 +119,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
           genome_coverage_downsampled: {
             histogram: {
               field: 'pos',
-              interval: 300,
+              interval: intervalSize,
             },
             aggregations: {
               bucket_stats: { stats: { field: 'mean' } },
