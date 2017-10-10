@@ -134,6 +134,7 @@ class RegionViewer extends Component {
 
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)
+    const xScaleBand = calculateXScale(width, offsetRegions, 0.2)
     const invertOffset = invertPositionOffset(offsetRegions, xScale)
 
     const childProps = {
@@ -145,6 +146,7 @@ class RegionViewer extends Component {
       offsetRegions,
       regionAttributes,
       padding,
+      xScaleBand,
     }
 
     return (

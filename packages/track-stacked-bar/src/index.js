@@ -1,22 +1,29 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable camelcase */
 
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { scaleLinear } from 'd3-scale'
+import { AxisLeft, AxisBottom } from '@vx/axis'
+import { scaleOrdinal } from '@vx/scale'
+import { BarStack } from '@vx/shape'
 
 const TrackWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  border: 1px solid #000;
+  ${'' /* border: 1px solid #000; */}
 `
 
 const TrackStackedBar = ({
   data,
   height,
-  // leftPanelWidth,
+  leftPanelWidth,
   positionOffset,
   // invertOffset,
+  // xScaleBand,
   xScale,
   width,
   // offsetRegions,
@@ -25,46 +32,102 @@ const TrackStackedBar = ({
 }) => {
   const margin = {
     top: 20,
-    bottom: 20,
+    bottom: 0,
     right: 20,
     left: 20,
   }
-  // console.log(data)
   const yMax = height - margin.top - margin.bottom
+
+  const data2 = data.map((interval) => {
+    return {
+      pos: interval.pos,
+      ...interval.bucket_consequence_counts.reduce((acc, csq_count) => ({
+        ...acc,
+        [csq_count.consequence]: csq_count.count,
+      }), {})
+    }
+  })
+
+  const bucketTotals = (buckets) => {
+    return buckets.map((bucket) => {
+      return Object.keys(bucket).reduce((acc, key) => {
+        if (key !== 'pos') {
+          return acc + bucket[key]
+        }
+        return 0
+      }, 0)
+    })
+  }
 
   const x = (d) => {
     return positionOffset(d.pos).offsetPosition
   }
-  const y = (d) => {
-    // console.log(d.bucket_consequence_counts.find(csq => csq.consequence === 'intron_variant').count)
-    return d.bucket_consequence_counts.find(csq => csq.consequence === 'intron_variant').count
+  const y = (d, key) => {
+    return d[key]
   }
-
   const yScale = scaleLinear()
-    .domain([0, Math.max(...data.map(y))])
+    .domain([0, Math.max(...bucketTotals(data2))])
     .range([yMax, 0])
 
-  const compose = (scale, accessor) => data => scale(accessor(data))
+  const compose = (scale, accessor) => (data, key) => scale(accessor(data, key))
   const xPoint = compose(xScale, x)
   const yPoint = compose(yScale, y)
   const barWidth = (width / data.length) - 3
+
+  const colors = {
+    intron_variant: 'gray',
+    missense_variant: 'red',
+    synonymous_variant: 'green',
+    splice_region_variant: 'orange',
+    stop_gained: 'yellow',
+    frameshift_variant: 'purple',
+    inframe_deletion: 'pink',
+    splice_donor_variant: 'cyan',
+    splice_acceptor_variant: 'gray',
+    '3_prime_UTR_variant': 'gray'
+  }
+
+  console.log(data2)
   return (
     <TrackWrapper>
+      <svg width={leftPanelWidth} height={height}>
+        <AxisLeft
+          scale={yScale}
+          top={0}
+          left={leftPanelWidth - 5}
+          label={'Variants count'}
+          stroke={'#1b1a1e'}
+          tickTextFill={'#1b1a1e'}
+          numTicks={10}
+          // hideTicks
+        />
+      </svg>
       <svg width={width} height={height}>
-        {data.map((d, i) => {
-          const barHeight = yMax - yPoint(d)
-          return (
-            <g key={`bar-${i}`}>
-              <rect
-                x={xPoint(d)}
-                y={yMax - barHeight}
-                width={barWidth}
-                height={barHeight}
-                fill={'#fc2e1c'}
-                stroke={'black'}
-              />
-            </g>
-          )
+        {data2.map((d, i1) => {
+          let lastHeight = 0
+          return Object.keys(d).map((key, i2) => {
+            if (key !== 'pos') {
+              // console.log(`bar-${i1}-${i2}`, yPoint(d, key))
+              // console.log(`bar-${i1}-${i2}`, lastHeight)
+              const barHeight = yMax - yPoint(d, key)
+              // console.log(`bar-${i1}-${i2}`, barHeight)
+              // console.log(`bar-${i1}-${i2}`, barHeight)
+              const bar = (
+                <g key={`bar-${i1}-${i2}`}>
+                  <rect
+                    x={xPoint(d)}
+                    y={yMax - barHeight}
+                    width={barWidth}
+                    height={barHeight}
+                    fill={colors[key]}
+                    stroke={'black'}
+                  />
+                </g>
+              )
+              lastHeight += yPoint(d, key)
+              return bar
+            }
+          })
         })}
       </svg>
     </TrackWrapper>
@@ -72,7 +135,7 @@ const TrackStackedBar = ({
 }
 
 TrackStackedBar.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
 }
 
 export default TrackStackedBar

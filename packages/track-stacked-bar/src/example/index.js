@@ -31,7 +31,7 @@ const regions = [{
 const featuresToDisplay = ['default']
 
 const TrackStackedBarExample = () => {
-  const { gnomad_consequence_buckets: { buckets } } = regionData
+  const { total_consequence_counts, gnomad_consequence_buckets: { buckets } } = regionData
   return (
     <Wrapper>
       <RegionViewer

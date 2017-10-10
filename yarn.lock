@@ -30,6 +30,16 @@
     classnames "^2.2.5"
     prop-types "15.5.10"
 
+"@vx/axis@^0.0.142":
+  version "0.0.142"
+  resolved "https://registry.yarnpkg.com/@vx/axis/-/axis-0.0.142.tgz#99353d4430aa1d1136c7a5a8c7287550f21c1d12"
+  dependencies:
+    "@vx/group" "0.0.140"
+    "@vx/point" "0.0.136"
+    "@vx/shape" "0.0.142"
+    classnames "^2.2.5"
+    prop-types "15.5.10"
+
 "@vx/bounds@0.0.140":
   version "0.0.140"
   resolved "https://registry.yarnpkg.com/@vx/bounds/-/bounds-0.0.140.tgz#4ede9766aabb41b791a4fbf4c27fcc19ed83f910"
@@ -171,7 +181,7 @@
   dependencies:
     lodash "^4.0.8"
 
-"@vx/scale@0.0.140":
+"@vx/scale@0.0.140", "@vx/scale@^0.0.140":
   version "0.0.140"
   resolved "https://registry.yarnpkg.com/@vx/scale/-/scale-0.0.140.tgz#1eb087d11d0000b250c2cdc4061b9e2212edb10d"
   dependencies:
@@ -180,6 +190,17 @@
 "@vx/shape@0.0.140":
   version "0.0.140"
   resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.140.tgz#6a282d5fdf3a5752b6e938bb3debe983e89ff6d3"
+  dependencies:
+    "@vx/curve" "0.0.140"
+    "@vx/group" "0.0.140"
+    "@vx/point" "0.0.136"
+    classnames "^2.2.5"
+    d3-shape "^1.2.0"
+    prop-types "^15.5.10"
+
+"@vx/shape@0.0.142", "@vx/shape@^0.0.142":
+  version "0.0.142"
+  resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.142.tgz#3728eda292c004e61d9f88ae119b6154ccbf79e5"
   dependencies:
     "@vx/curve" "0.0.140"
     "@vx/group" "0.0.140"

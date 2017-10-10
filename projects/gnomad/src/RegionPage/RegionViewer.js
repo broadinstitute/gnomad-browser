@@ -14,6 +14,7 @@ import RegionViewerComponent from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
+import StackedBarTrack from '@broad/track-stacked-bar'
 import { exonPadding } from '@broad/gene-page/src/resources/active'
 import { regionData } from '@broad/gene-page/src/resources/regions'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
@@ -41,6 +42,7 @@ const RegionViewer = ({
     stop,
     exome_coverage,
     genome_coverage,
+    gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
   const variantsReversed = allVariants.reverse()
@@ -86,7 +88,8 @@ const RegionViewer = ({
           yTickNumber={11}
           yMax={110}
         />
-        {allTrack}
+        {/* {allTrack} */}
+        <StackedBarTrack height={150} data={buckets} />
         <NavigatorConnected />
       </RegionViewerComponent>
     </div>

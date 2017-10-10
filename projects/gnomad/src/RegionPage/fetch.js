@@ -38,6 +38,19 @@ export const fetchRegion = (regionId, url = API_URL) => {
         }
       }
     }
+    gnomad_consequence_buckets {
+      total_consequence_counts {
+        consequence
+        count
+      }
+      buckets {
+        pos
+        bucket_consequence_counts {
+          consequence
+          count
+        }
+      }
+    }
     gnomadExomeVariants {
       variant_id
       rsid

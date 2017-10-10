@@ -149,7 +149,7 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
     elasticClient.search({
       index,
       type: 'variant',
-      size: 5000,
+      size: 100,
       _source: fields,
       body: {
         query: {

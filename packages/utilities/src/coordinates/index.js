@@ -2,7 +2,7 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-shadow */
 import R from 'ramda'
-import { scaleLinear } from 'd3-scale'
+import { scaleLinear, scaleBand } from 'd3-scale'
 
 // const EXON_PADDING = 50
 const FEATURES_TO_DISPLAY = [
@@ -178,7 +178,17 @@ export const invertPositionOffset = R.curry((regions, xScale, scaledPosition) =>
   return result
 })
 
-export const calculateXScale = (width, offsetRegions) => {
+export const calculateXScale = (width, offsetRegions, band = null) => {
+  if (band) {
+    return scaleBand()
+      .domain([
+        offsetRegions[0].start,
+        offsetRegions[offsetRegions.length - 1].stop -
+        offsetRegions[offsetRegions.length - 1].offset,
+      ])
+      .rangeRound([0, width])
+      .padding(band)
+  }
   return scaleLinear()
     .domain([
       offsetRegions[0].start,
