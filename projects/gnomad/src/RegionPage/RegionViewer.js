@@ -9,6 +9,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import RegionViewerComponent from '@broad/region'
 import TranscriptTrack from '@broad/track-transcript'
@@ -42,7 +43,9 @@ const RegionViewer = ({
     stop,
     exome_coverage,
     genome_coverage,
+    genes,
     gnomad_consequence_buckets: { buckets },
+
   } = regionData.toJS()
 
   const variantsReversed = allVariants.reverse()
@@ -72,6 +75,87 @@ const RegionViewer = ({
     strand: '+',
   }]
 
+  const genesToMap = genes.map(gene => ({
+    name: gene.gene_name,
+    start: gene.start,
+    stop: gene.stop,
+    exonIntervals: gene.transcript.exons.filter(exon => exon.feature_type === 'CDS').map(exon => ({ start: exon.start, stop: exon.stop })),
+  }))
+
+  const GenesTrack = ({ genesToMap, positionOffset, xScale, leftPanelWidth, width }) => {
+    const GENE_TRACK_HEIGHT = 10
+    const GENE_TRACK_PADDING = 3
+    // const height = genesToMap.length * GENE_TRACK_HEIGHT
+
+    const GeneTrackWrapper = styled.div`
+      display: flex;
+      flex-direction: row;
+      ${'' /* height: ${height}px; */}
+      width: 100%;
+    `
+
+    const GeneTrackLeft = styled.div`
+      height: 100%;
+      width: ${leftPanelWidth}px;
+    `
+
+    const GeneTrackData = styled.div`
+      height: 100%;
+    `
+
+    const GeneTrackTitle = styled.div`
+      height: ${GENE_TRACK_HEIGHT + 3}px;
+    `
+    const GeneTrackTitleText = styled.div`
+      margin: 0 0 0 0;
+      padding: 0 0 0 0;
+    `
+
+    const GeneTrackPlot = styled.div`
+
+    `
+
+    return (
+      <GeneTrackWrapper>
+        <GeneTrackLeft>
+          {genesToMap.map(gene => (
+            <GeneTrackTitle key={`${gene.name}-title`}>
+              <GeneTrackTitleText>{gene.name}</GeneTrackTitleText>
+            </GeneTrackTitle>
+          ))}
+        </GeneTrackLeft>
+        <GeneTrackData>
+          {genesToMap.map(gene => (
+            <GeneTrackPlot key={`${gene.name}-data`}>
+              <svg height={GENE_TRACK_HEIGHT} width={width}>
+                <line
+                  x1={xScale(gene.start)}
+                  x2={xScale(gene.stop)}
+                  y1={GENE_TRACK_HEIGHT / 2}
+                  y2={GENE_TRACK_HEIGHT / 2}
+                  stroke={'black'}
+                  strokeWidth={1}
+                />
+                {gene.exonIntervals.map(exon => (
+                  <rect
+                    x={xScale(exon.start)}
+                    y={0}
+                    width={xScale(exon.stop) - xScale(exon.start)}
+                    height={GENE_TRACK_HEIGHT}
+                    fill={'black'}
+                    stroke={'black'}
+                    key={`${exon.start}-${gene.name}`}
+                  />
+                ))}
+              </svg>
+            </GeneTrackPlot>
+          ))}
+        </GeneTrackData>
+
+      </GeneTrackWrapper>
+    )
+  }
+
   return (
     <div>
       <RegionViewerComponent
@@ -88,6 +172,7 @@ const RegionViewer = ({
           yTickNumber={11}
           yMax={110}
         />
+        <GenesTrack genesToMap={genesToMap} />
         {/* {allTrack} */}
         <StackedBarTrack height={150} data={buckets} />
         <NavigatorConnected />

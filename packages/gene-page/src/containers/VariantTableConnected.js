@@ -92,8 +92,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-    setFocusedVariant: history => variantId =>
-      dispatch(variantActions.setFocusedVariant(variantId, history)),
+    // setFocusedVariant: history => variantId =>
+    //   dispatch(variantActions.setFocusedVariant(variantId, history)),
+    setFocusedVariant: history => variantId => window.open(`http://gnomad.broadinstitute.org/variant/${variantId}`),
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableScrollData: scrollData =>
       dispatch(activeActions.setCurrentTableScrollData(scrollData)),

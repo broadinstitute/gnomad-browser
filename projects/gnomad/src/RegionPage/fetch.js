@@ -16,6 +16,8 @@ export const fetchRegion = (regionId, url = API_URL) => {
     genes {
       gene_id
       gene_name
+      start
+      stop
       transcript {
         _id
         start

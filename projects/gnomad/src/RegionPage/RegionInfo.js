@@ -40,7 +40,7 @@ const synonymous = '#2E7D32'
 const other = '#424242'
 const consequencePresentation = {
   missense_variant: { name: 'missense', color: missense },
-  synonymous_variant: { name: 'synonymous', color: lof },
+  synonymous_variant: { name: 'synonymous', color: synonymous },
   upstream_gene_variant: { name: 'upstream gene', color: other },
   downstream_gene_variant: { name: 'downstream gene', color: other },
   intron_variant: { name: 'intron', color: other },
