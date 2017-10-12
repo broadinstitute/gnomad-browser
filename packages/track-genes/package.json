@@ -1,0 +1,22 @@
+{
+  "name": "@broad/track-genes",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/GenesTrackStacked.test.js' | ../../node_modules/.bin/tspec",
+    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d",
+    "test:data": "../../node_modules/.bin/babel-node src/example/getTestData"
+  },
+  "files": [
+    "lib"
+  ],
+  "localDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {
+    "@broad/region": "*",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "styled-components": "^2.1.2"
+  }
+}
