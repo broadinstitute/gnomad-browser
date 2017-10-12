@@ -1,25 +1,16 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-case-declarations */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 
 import RegionViewerComponent from '@broad/region'
-import TranscriptTrack from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import StackedBarTrack from '@broad/track-stacked-bar'
 
 import { GenesTrack } from '@broad/track-genes'
 
-import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { regionData } from '@broad/gene-page/src/resources/regions'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
 
@@ -32,13 +23,13 @@ import {
 
 import {
   finalFilteredVariants,
+  selectedVariantDataset,
 } from '@broad/gene-page/src/resources/variants'
 
 const RegionViewer = ({
   regionData,
   allVariants,
-  exonPadding,
-  coverageStyle,
+  selectedVariantDataset,
   onGeneClick,
 }) => {
   const {
@@ -49,23 +40,13 @@ const RegionViewer = ({
     genome_coverage,
     genes,
     gnomad_consequence_buckets: { buckets },
-
   } = regionData.toJS()
+
+  const showVariants = false
 
   const variantsReversed = allVariants.reverse()
 
-  const allTrack = (
-    <VariantTrack
-      key={'All-variants'}
-      title={`variants (${allVariants.size})`}
-      height={60}
-      color={'#75757'}
-      markerConfig={markerExacClassic}
-      variants={variantsReversed}
-    />
-  )
-
-  const coverageConfig = coverageStyle === 'classic' ?
+  const coverageConfig = selectedVariantDataset === 'exacVariants' ?
     coverageConfigClassic(exome_coverage, genome_coverage) :
     coverageConfigNew(exome_coverage, genome_coverage)
 
@@ -96,7 +77,15 @@ const RegionViewer = ({
           yMax={110}
         />
         <GenesTrack onGeneClick={onGeneClick} genes={genes} />
-        {/* {allTrack} */}
+        {showVariants &&
+          <VariantTrack
+            key={'All-variants'}
+            title={`variants (${allVariants.size})`}
+            height={60}
+            color={'#75757'}
+            markerConfig={markerExacClassic}
+            variants={variantsReversed}
+          />}
         <StackedBarTrack height={150} data={buckets} />
         <NavigatorConnected />
       </RegionViewerComponent>
@@ -106,19 +95,19 @@ const RegionViewer = ({
 RegionViewer.propTypes = {
   regionData: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
-  exonPadding: PropTypes.number.isRequired,
-  coverageStyle: PropTypes.string,
   onGeneClick: PropTypes.func,
+  selectedVariantDataset: PropTypes.string.isRequired,
 }
 RegionViewer.defaultProps = {
   coverageStyle: null,
+  onGeneClick: () => {},
 }
 
 export default connect(
   state => ({
     regionData: regionData(state),
-    exonPadding: exonPadding(state),
     allVariants: finalFilteredVariants(state),
+    selectedVariantDataset: selectedVariantDataset(state),
   }),
   dispatch => ({
     onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),

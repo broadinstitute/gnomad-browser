@@ -20,6 +20,8 @@
     "@broad/track-coverage": "*",
     "@broad/track-navigator": "*",
     "@broad/track-transcript": "*",
+    "@broad/track-stacked-bar": "*",
+    "@broad/track-genes": "*",
     "@broad/track-variant": "*",
     "@broad/utilities": "*",
     "@broad/table": "*",
