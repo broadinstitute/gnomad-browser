@@ -27,6 +27,8 @@ import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import clinvarType, { lookupClinvarVariantsByGeneName } from './clinvar'
 
+import * as fromRegionalConstraint from './regionalConstraint'
+
 const geneType = new GraphQLObjectType({
   name: 'Gene',
   fields: () => ({
@@ -137,10 +139,21 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookUpConstraintByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
-    exacv1_cnvs_gene: {
-      type: new GraphQLList(cnvsGene),
+    exacv1_regional_constraint_regions: {
+      type: new GraphQLList(fromRegionalConstraint.regionalConstraintRegion),
       resolve: (obj, args, ctx) =>
-        lookUpCnvsGeneByGeneName(ctx.database.exacv1, obj.gene_id),
+        fromRegionalConstraint.lookUpRegionalConstraintRegions({
+          elasticClient: ctx.database.elastic,
+          geneName: obj.gene_name,
+        }),
+    },
+    exacv1_regional_gene_stats: {
+      type: fromRegionalConstraint.regionalConstraintGeneStatsType,
+      resolve: (obj, args, ctx) =>
+      fromRegionalConstraint.lookUpRegionalConstraintGeneStats({
+        elasticClient: ctx.database.elastic,
+        geneName: obj.gene_name,
+      }),
     },
     exacv1_cnvs_exons: {
       type: new GraphQLList(cnvsExons),

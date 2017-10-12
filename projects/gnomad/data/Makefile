@@ -84,6 +84,27 @@ genome-parts:
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	export_genomes_as_parts.py
 
+regional-constraint-gene-stats:
+	../../../node_modules/.bin/babel-node export_regional_constraint_gene_stats.js
+
+regional-constraint-regional-missense:
+	../../../node_modules/.bin/babel-node export_regional_constraint_regional_missense.js
+
+dataproc-exacv1:
+	../../../hail-db-utils/create_cluster.GRCh37.py \
+	--project $(GCLOUD_PROJECT) \
+	--zone $(GCLOUD_ZONE) \
+	--machine-type n1-standard-4 \
+	--num-workers 10
+
+vep-annotate-exacv1:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster vep-grch37 \
+	../../../hail-db-utils/run_vep.py \
+	gs://gnomad-browser/datasets/ExAC.r1.sites.vds \
+	gs://gnomad-browser/datasets/ExAC.r1.sites.vep.vds
+
 variants-exac:
 	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
