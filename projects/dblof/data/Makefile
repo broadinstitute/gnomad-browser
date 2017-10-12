@@ -1,6 +1,6 @@
 #!make
 
-include ../../cluster/config.sh
+include ../../../cluster/config.sh
 
 # assumes dataproc/es running already
 all: export-east-london
@@ -100,3 +100,15 @@ export-clinvar:
 	--index-type variant \
 	--clinvar-vds gs://dblof/data/clinvar_alleles.single.b37.vds \
 	--num-shards 1
+
+export-gtex-tissues-by-transcript:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	export_gtex_tissue_tpms_by_transcript.py \
+	--host $(ES_HOST_IP) \
+	--port 9200 \
+	--block-size 1000 \
+	--num-shards 4 \
+	--index gtex_tissue_tpms_by_transcript \
+	--type tissue_tpms

@@ -11,7 +11,7 @@ import {
 import coverageType, { lookUpCoverageByExons } from './coverage'
 import variantType, { lookupVariantsByTranscriptId } from './variant'
 import exonType, { lookupExonsByTranscriptId } from './exon'
-
+import * as fromGtex from './gtex'
 
 const transcriptType = new GraphQLObjectType({
   name: 'Transcript',
@@ -66,6 +66,14 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
+    tissues_by_transcript: {
+      type: new GraphQLList(fromGtex.tissuesByTranscript),
+      resolve: (obj, args, ctx) =>
+      fromGtex.lookUpTranscriptTissueExpression({
+        elasticClient: ctx.database.elastic,
+        transcriptId: obj.transcript_id,
+      }),
+    },
   }),
 })
 
@@ -73,3 +81,6 @@ export default transcriptType
 
 export const lookupTranscriptsByTranscriptId = (db, transcript_id) =>
   db.collection('transcripts').findOne({ transcript_id })
+
+export const lookupAllTranscriptsByGeneId = (db, gene_id) =>
+  db.collection('transcripts').find({ gene_id }).toArray()

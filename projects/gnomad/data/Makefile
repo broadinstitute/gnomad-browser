@@ -116,5 +116,5 @@ variants-exac:
 	--genome_version 37 \
 	--index exacv1 \
 	--index-type variant \
-	--exacv1-vds gs://gnomad-browser/datasets/ExAC.r1.sites.vds \
-	--num-shards 1
+	--exacv1-vds gs://gnomad-browser/datasets/ExAC.r1.sites.vep.vds \
+	--num-shards 5

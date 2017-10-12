@@ -12,7 +12,7 @@ import coverageType, { lookupCoverageByStartStop } from './coverage'
 import variantType, {
   lookupVariantsByGeneId,
 } from './variant'
-import transcriptType, { lookupTranscriptsByTranscriptId } from './transcript'
+import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsByGeneId } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
@@ -129,6 +129,11 @@ const geneType = new GraphQLObjectType({
       type: transcriptType,
       resolve: (obj, args, ctx) =>
         lookupTranscriptsByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
+    },
+    transcripts: {
+      type: new GraphQLList(transcriptType),
+      resolve: (obj, args, ctx) =>
+        lookupAllTranscriptsByGeneId(ctx.database.gnomad, obj.gene_id),
     },
     exons: {
       type: new GraphQLList(exonType),
