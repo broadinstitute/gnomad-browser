@@ -13,9 +13,18 @@ import {
   actions as regionActions
 } from '../resources/regions'
 
+import {
+  currentGene
+} from '../resources/active'
+
+import {
+  actions as geneActions,
+} from '../resources/genes'
+
 const RegionPageContainer = ComposedComponent => class RegionPage extends Component {
   static propTypes = {
     currentRegion: PropTypes.string.isRequired,
+    currentGene: PropTypes.string.isRequired,
     regionData: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     fetchRegionIfNeeded: PropTypes.func.isRequired,
@@ -31,10 +40,14 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchRegionIfNeeded, currentRegion, history } = this.props
+    const { fetchRegionIfNeeded, currentRegion, currentGene, history } = this.props
     if (currentRegion !== nextProps.currentRegion) {
       history.push(`/region/${nextProps.currentRegion}`)
       fetchRegionIfNeeded(nextProps.currentRegion)
+    }
+    if (currentGene !== nextProps.currentGene) {
+      history.push(`/gene/${nextProps.currentGene}`)
+      location.reload()
     }
   }
 
@@ -47,6 +60,7 @@ const mapStateToProps = state => ({
   isFetching: isFetching(state),
   regionData: regionData(state),
   currentRegion: currentRegion(state),
+  currentGene: currentGene(state),
 })
 
 const mapDispatchToProps = regionFetchFunction => (dispatch) => {

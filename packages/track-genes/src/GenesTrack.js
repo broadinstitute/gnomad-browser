@@ -9,6 +9,7 @@ const GenesTrack = ({
   xScale,
   leftPanelWidth,
   width,
+  onGeneClick,
 }) => {
   console.log(genes)
   const GENE_TRACK_HEIGHT = 50
@@ -38,6 +39,13 @@ const GenesTrack = ({
     padding: 0 0 0 0;
   `
 
+  const GeneGroup = styled.g`
+    &:hover {
+      fill: red;
+      cursor: pointer;
+    }
+  `
+
   const tracksToMap = createTracks(formatGenes(genes), xScale).toJS()
 
   return (
@@ -49,15 +57,6 @@ const GenesTrack = ({
       </GeneTrackLeft>
       <GeneTrackData>
         <svg height={GENE_TRACK_HEIGHT * tracksToMap.length} width={width}>
-          {/* <rect
-            x={0}
-            y={0}
-            width={width}
-            height={GENE_TRACK_HEIGHT * tracksToMap.length}
-            fill={'yellow'}
-            stroke={'black'}
-            strokeWidth={1}
-          /> */}
           {tracksToMap.map((track, trackNumber) => {
             return track.map((gene) => {
               const textYPosition = (GENE_TRACK_HEIGHT * 0.66) + (GENE_TRACK_HEIGHT * trackNumber)
@@ -65,10 +64,11 @@ const GenesTrack = ({
               const geneStart = xScale(gene.start)
               const geneStop = xScale(gene.stop)
               return (
-                <g>
+                <GeneGroup>
                   <text
                     x={(geneStop + geneStart) / 2}
                     y={textYPosition}
+                    onClick={() => onGeneClick(gene.name)}
                   >
                     {gene.name}
                   </text>
@@ -79,6 +79,14 @@ const GenesTrack = ({
                     y2={exonsYPosition}
                     stroke={'black'}
                     strokeWidth={1}
+                  />
+                  <rect
+                    x={geneStart}
+                    y={exonsYPosition - (GENE_TRACK_HEIGHT * 0.16)}
+                    width={geneStop - geneStart}
+                    height={GENE_TRACK_HEIGHT * 0.33}
+                    fill={'transparent'}
+                    // stroke={'black'}
                   />
                   {gene.exonIntervals.map((exon) => {
                     const exonStart = xScale(exon.start)
@@ -95,7 +103,7 @@ const GenesTrack = ({
                       />
                     )
                   })}
-                </g>
+                </GeneGroup>
               )
             })
           })}

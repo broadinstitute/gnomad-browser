@@ -19,7 +19,7 @@ import StackedBarTrack from '@broad/track-stacked-bar'
 
 import { GenesTrack } from '@broad/track-genes'
 
-import { exonPadding } from '@broad/gene-page/src/resources/active'
+import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { regionData } from '@broad/gene-page/src/resources/regions'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
 
@@ -39,6 +39,7 @@ const RegionViewer = ({
   allVariants,
   exonPadding,
   coverageStyle,
+  onGeneClick,
 }) => {
   const {
     chrom,
@@ -94,7 +95,7 @@ const RegionViewer = ({
           yTickNumber={11}
           yMax={110}
         />
-        <GenesTrack genes={genes} />
+        <GenesTrack onGeneClick={onGeneClick} genes={genes} />
         {/* {allTrack} */}
         <StackedBarTrack height={150} data={buckets} />
         <NavigatorConnected />
@@ -107,6 +108,7 @@ RegionViewer.propTypes = {
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
   coverageStyle: PropTypes.string,
+  onGeneClick: PropTypes.func,
 }
 RegionViewer.defaultProps = {
   coverageStyle: null,
@@ -118,4 +120,7 @@ export default connect(
     exonPadding: exonPadding(state),
     allVariants: finalFilteredVariants(state),
   }),
+  dispatch => ({
+    onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+  })
 )(RegionViewer)

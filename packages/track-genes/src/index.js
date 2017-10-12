@@ -14,10 +14,6 @@ export const formatGenes = genes => genes.map(gene => ({
 export const createTracks = (genesToMap, xScale) => {
   const previousGeneIsNotTooClose = (gene, previousGene) => {
     const previousGeneWidth = xScale(gene.get('start')) - xScale(previousGene.get('stop'))
-    // const previousGeneWidth = xScale(gene.get('start')) - xScale(previousGene.get('stop'))
-    const previousGeneNameLength = previousGene.get('name').length
-    console.log(previousGeneWidth)
-    // return (previousGeneWidth > 10 || previousGeneNameLength > 5)
     return (previousGeneWidth > 60)
   }
   const genes = fromJS(genesToMap)
