@@ -46,6 +46,21 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         consequence
         lof
       }
+      exacVariants {
+        variant_id
+        rsid
+        pos
+        xpos
+        hgvsc
+        hgvsp
+        allele_count
+        allele_freq
+        allele_num
+        filters
+        hom_count
+        consequence
+        lof
+      }
       exome_coverage {
         pos
         mean
@@ -154,24 +169,6 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
 export const fetchExac = (geneName, url = PUBLIC_API) => {
   const query = `{
     gene(gene_name: "${geneName}") {
-      exacVariants: exacv1_variants {
-        allele_count
-        allele_freq
-        allele_num
-        chrom
-        filters: filter
-        hom_count
-        pos
-        ref
-        rsid
-        variant_id
-        xpos
-        xstart
-        xstop
-        vep_annotations {
-          Consequence
-        }
-      }
       exacv1_constraint {
         mu_syn
         exp_syn
@@ -195,11 +192,6 @@ export const fetchExac = (geneName, url = PUBLIC_API) => {
         bp
         exp_mis
       }
-      exacv1_coverage {
-        xpos
-        pos
-        mean
-      }
     }
   }
 `
@@ -217,19 +209,9 @@ export function fetchWithExac(geneName) {
     fetchGnomadOnly(geneName),
     fetchExac(geneName),
   ]).then(([localData, publicData]) => {
-    // console.log(publicData)
-    const { exacVariants, ...rest } = publicData
-    const modifiedExacVariants = exacVariants.map((v) => {
-      return {
-        consequence: v.vep_annotations[0].Consequence,
-        ...v,
-      }
-    })
-    console.log(modifiedExacVariants)
     return ({
-      ...rest,
-      exacVariants: modifiedExacVariants,
-      ...localData
+      ...localData,
+      ...publicData,
     })
   }).catch(error => console.log(error))
 }

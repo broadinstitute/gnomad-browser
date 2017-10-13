@@ -25,6 +25,7 @@ import schzVariantType, {
 import schzGeneResultsType, { lookUpSchzGeneResultsByGeneName } from './schzGeneResults'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
+import * as fromExacVariant from './exacElasticVariant'
 import clinvarType, { lookupClinvarVariantsByGeneName } from './clinvar'
 
 import * as fromRegionalConstraint from './regionalConstraint'
@@ -119,6 +120,11 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) =>
         lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj, ctx),
+    },
+    exacVariants: {
+      type: new GraphQLList(elasticVariantType),
+      resolve: (obj, args, ctx) =>
+        fromExacVariant.lookupElasticVariantsByGeneId(ctx.database.elastic, obj, ctx),
     },
     clinvar_variants: {
       type: new GraphQLList(clinvarType),

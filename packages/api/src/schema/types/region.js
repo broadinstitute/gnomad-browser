@@ -22,6 +22,8 @@ import elasticVariantType, {
   lookupElasticVariantsInRegion,
 } from './elasticVariant'
 
+import * as fromExacVariant from './exacElasticVariant'
+
 import geneType, { lookupGenesByInterval } from './gene'
 
 const regionType = new GraphQLObjectType({
@@ -220,6 +222,26 @@ const regionType = new GraphQLObjectType({
           dataset: 'genomes',
           xstart: obj.xstart,
           xstop: obj.xstop,
+          numberOfVariants: 5000,
+        })
+      }
+    },
+    exacVariants: {
+      type: new GraphQLList(elasticVariantType),
+      resolve: (obj, args, ctx) => {
+        console.log(obj.regionSize)
+        if (obj.regionSize < 10000) {
+          return fromExacVariant.lookupElasticVariantsInRegion({
+            elasticClient: ctx.database.elastic,
+            xstart: obj.start,
+            xstop: obj.stop,
+            numberOfVariants: 5000,
+          })
+        }
+        return fromExacVariant.lookupElasticVariantsInRegion({
+          elasticClient: ctx.database.elastic,
+          start: obj.xstart,
+          stop: obj.xstop,
           numberOfVariants: 5000,
         })
       }
