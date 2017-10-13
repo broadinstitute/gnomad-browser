@@ -3,17 +3,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Motion, spring } from 'react-motion'
+import { scaleLinear } from 'd3-scale'
 import R from 'ramda'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
-import {
-  filterRegions,
-} from '@broad/utilities/src/coordinates'  // eslint-disable-line
-
 const flipOutExonThickness = '13px'
 
-const TranscriptAxis = ({
+const TranscriptLeftPanel = ({
   title,
   leftPanelWidth,
   fontSize,
@@ -36,12 +33,74 @@ const TranscriptAxis = ({
     </TranscriptLeftAxis>
   )
 }
-TranscriptAxis.propTypes = {
+TranscriptLeftPanel.propTypes = {
   title: PropTypes.string,
   leftPanelWidth: PropTypes.number.isRequired,
 }
-TranscriptAxis.defaultProps = {
+TranscriptLeftPanel.defaultProps = {
   title: '',
+}
+
+const TranscriptRightPanelWrapper = styled.div`
+  display: flex;
+  width: 100%; /* Set by Redux */
+  height: 100%;
+  ${'' /* border: 1px solid blue; */}
+
+`
+const TranscriptName = styled.div`
+  display: flex;
+  width: 100%; /* Set by Redux */
+  color: black;
+`
+
+const TranscriptRightPanel = ({
+  rightPanelWidth,
+  transcript,
+  fanOutButtonOpen,
+  // selectedTissue,
+}) => {
+  const selectedTissue = 'muscleSkeletal'
+  const padding = 20
+
+  const gtexScale = scaleLinear()
+    .domain([0, 30])
+    .range([0, rightPanelWidth])
+
+  const GtexPlot = () => {
+    const { gtex_tissue_tpms_by_transcript } = transcript
+    const tpm = gtex_tissue_tpms_by_transcript[selectedTissue]
+    return (
+      <svg height={flipOutExonThickness} width={rightPanelWidth}>
+        <line
+          x1={padding}
+          x2={rightPanelWidth}
+          y1={13 / 2}
+          y2={13 / 2}
+          stroke={'black'}
+        />
+        <circle
+          cx={padding + gtexScale(tpm)}
+          cy={13 / 2}
+          r={5}
+          fill={'black'}
+        />
+      </svg>
+    )
+  }
+
+  return (
+    <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
+      <TranscriptName>
+        {fanOutButtonOpen && <GtexPlot />}
+      </TranscriptName>
+    </TranscriptRightPanelWrapper>
+  )
+}
+TranscriptLeftPanel.propTypes = {
+  leftPanelWidth: PropTypes.number.isRequired,
+}
+TranscriptLeftPanel.defaultProps = {
 }
 
 const TranscriptDrawing = ({
@@ -91,7 +150,7 @@ const TranscriptDrawing = ({
               y2={height / 2}
               stroke={start.color}
               strokeWidth={localThickness}
-              key={`${start.offsetPosition}-rectangle2`}
+              key={`${i}-rectangle2`}
             />
           )
         }
@@ -115,7 +174,11 @@ const Transcript = ({
   paddingBottom,
   fontSize,
   opacity,
+  rightPanelWidth,
+  fanOutButtonOpen,
+  transcript,
 }) => {
+  console.log(transcript)
   const TranscriptContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -151,7 +214,7 @@ const Transcript = ({
         opacity,
       }}
     >
-      <TranscriptAxis
+      <TranscriptLeftPanel
         leftPanelWidth={leftPanelWidth}
         title={title}
         fontSize={fontSize}
@@ -167,6 +230,13 @@ const Transcript = ({
           isMaster={isMaster}
         />
       </div>
+      <TranscriptRightPanel
+        rightPanelWidth={rightPanelWidth}
+        title={title}
+        fontSize={fontSize}
+        transcript={transcript}
+        fanOutButtonOpen={fanOutButtonOpen}
+      />
     </TranscriptContainer>
   )
 }
@@ -185,6 +255,7 @@ const TranscriptGroup = ({
   finalTranscriptStyles,
   ...rest
 }) => {
+  console.log('testing', transcriptsGrouped)
   const TranscriptGroupWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -192,8 +263,8 @@ const TranscriptGroup = ({
   const transcriptGroup = (
     <TranscriptGroupWrapper>
       {Object.keys(transcriptsGrouped).map((transcript, index) => {
-        const transcriptExonsFiltered =
-          filterRegions(['CDS'], transcriptsGrouped[transcript])
+        const transcriptExonsFiltered = transcriptsGrouped[transcript].exons
+          .filter(exon => exon.feature_type === 'CDS')
         if (R.isEmpty(transcriptExonsFiltered)) {
           return  // eslint-disable-line
         }
@@ -217,6 +288,8 @@ const TranscriptGroup = ({
                   fontSize={fontSize}
                   opacity={opacity}
                   regions={transcriptExonsFiltered}
+                  fanOutButtonOpen={fanOutButtonOpen}
+                  transcript={transcriptsGrouped[transcript]}
                   {...rest}
                 />
               )
@@ -248,6 +321,7 @@ class TranscriptTrack extends Component {
     height: PropTypes.number.isRequired,
     width: PropTypes.number, // eslint-disable-line
     leftPanelWidth: PropTypes.number, // eslint-disable-line
+    rightPanelWidth: PropTypes.number, // eslint-disable-line
     xScale: PropTypes.func, // eslint-disable-line
     positionOffset: PropTypes.func,  // eslint-disable-line
   }
@@ -289,6 +363,7 @@ class TranscriptTrack extends Component {
   }
 
   render() {
+    console.log(this.props)
     let transcriptGroup
     if (this.props.transcriptsGrouped) {
       transcriptGroup = (

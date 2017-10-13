@@ -67,7 +67,6 @@ export const tissuesByTranscript = new GraphQLObjectType({
     wholeBlood: { type: GraphQLFloat },
     transcriptId: { type: GraphQLString },
     geneId: { type: GraphQLString },
-
   }),
 })
 
@@ -86,10 +85,7 @@ export const lookUpTranscriptTissueExpression = ({ elasticClient, transcriptId }
       }
     }).then((response) => {
       console.log(response)
-      resolve(response.hits.hits.map((v) => {
-        const ConstraintRegions = v._source
-        return ConstraintRegions
-      }))
+      resolve(response.hits.hits[0]._source)
     })
   })
 }

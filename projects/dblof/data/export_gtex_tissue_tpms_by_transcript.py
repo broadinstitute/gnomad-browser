@@ -79,8 +79,11 @@ types = {
     'geneId': TString(),
 }
 
+kt = hc.import_table(FILE_PATH, types=types, delimiter=',')
 
-kt = hc.import_table(FILE_PATH, types=types)
+kt = kt.rename({
+    '': 'index',
+})
 
 print(kt.schema)
 print("======== Export CSV to elasticsearch ======")

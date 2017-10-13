@@ -1,137 +1,46 @@
-/* eslint-disable camelcase */
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import DropDownMenu from 'material-ui/DropDownMenu'
-import MenuItem from 'material-ui/MenuItem'
-import Slider from 'material-ui/Slider'
-
-import {
-  fetchTranscriptsByGeneName,
-} from '@broad/utilities/src/fetch'  // eslint-disable-line
-
-import {
-  groupExonsByTranscript,
-} from '@broad/utilities/src/coordinates'  // eslint-disable-line
-
 import RegionViewer from '@broad/region'
+import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import TranscriptTrack from '../index'
-import examplePageStyles from './styles.css'
 
-const ExamplePage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+import geneData from '@resources/dmd-gtex-1507854422.json'  // eslint-disable-line
+
+const Wrapper = styled.div`
+  padding-left: 50px;
+  padding-top: 50px;
+  border: 1px solid #000;
 `
 
-class RegionTableExample extends Component {
-  state = {
-    hasData: false,
-    currentGene: 'DMD',
-    padding: 70,
-    testGenes: [
-      'PCSK9',
-      'ZNF658',
-      'MYH9',
-      'FMR1',
-      'BRCA2',
-      'CFTR',
-      'FBN1',
-      'TP53',
-      'SCN5A',
-      'MYH7',
-      'MYBPC3',
-      'ARSF',
-      'CD33',
-      'DMD',
-      'TTN',
-    ],
-  }
+const {
+  transcript,
+  transcripts,
+} = geneData
 
-  componentDidMount() {
-    this.fetchData()
+const canonicalExons = transcript.exons
+const transcriptsGrouped = transcripts.reduce((acc, transcript) => {
+  return {
+    ...acc,
+    [transcript.transcript_id]: transcript,
   }
+}, {})
+console.log(transcriptsGrouped)
 
-  componentDidUpdate(_, previousState) {
-    if (previousState.currentGene !== this.state.currentGene) {
-      this.fetchData()
-    }
-  }
-
-  setPadding = (event, newValue) => {
-    const padding = Math.floor(2000 * newValue)
-    this.setState({ padding })
-  }
-
-  fetchData = () => {
-    fetchTranscriptsByGeneName(this.state.currentGene).then((data) => {
-      this.setState({ data })
-      this.setState({ hasData: true })
-    })
-  }
-
-  handleChange = (event, index, value) => {
-    console.log(value)
-    this.setState({ currentGene: value })
-  }
-
-  render() {
-    if (!this.state.hasData) {
-      return <p>Loading!</p>
-    }
-    const geneExons = this.state.data.exons
-    const canonicalExons = this.state.data.transcript.exons
-    const attributeConfig = {
-      CDS: {
-        color: '#424242',
-        thickness: '30px',
-      },
-      start_pad: {
-        color: '#e0e0e0',
-        thickness: '5px',
-      },
-      end_pad: {
-        color: '#e0e0e0',
-        thickness: '5px',
-      },
-      intron: {
-        color: '#e0e0e0',
-        thickness: '5px',
-      },
-      default: {
-        color: '#grey',
-        thickness: '5px',
-      },
-    }
-    const transcriptsGrouped = groupExonsByTranscript(geneExons)
-    return (
-      <ExamplePage>
-        <div>
-          <DropDownMenu value={this.state.currentGene} onChange={this.handleChange}>
-            {this.state.testGenes.map(gene =>
-              <MenuItem key={`${gene}-menu`} value={gene} primaryText={gene} />
-            )}
-          </DropDownMenu>
-        </div>
-        <Slider
-          style={{
-            width: 800,
-          }}
-          onChange={this.setPadding}
+export default () => {
+  return (
+    <Wrapper>
+      <RegionViewer
+        width={1000}
+        padding={75}
+        regions={canonicalExons}
+        rightPanelWidth={100}
+      >
+        <TranscriptTrack
+          transcriptsGrouped={transcriptsGrouped}
+          height={10}
         />
-        <RegionViewer
-          width={1100}
-          regions={canonicalExons}
-          regionAttributes={attributeConfig}
-          padding={this.state.padding}
-        >
-          <TranscriptTrack
-            transcriptsGrouped={transcriptsGrouped}
-            height={15}
-          />
-        </RegionViewer>
-      </ExamplePage>
-    )
-  }
+      </RegionViewer>
+    </Wrapper>
+  )
 }
 
-export default RegionTableExample

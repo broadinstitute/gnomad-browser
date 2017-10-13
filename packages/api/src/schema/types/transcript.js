@@ -22,7 +22,7 @@ const transcriptType = new GraphQLObjectType({
     strand: { type: GraphQLString },
     stop: { type: GraphQLInt },
     xstart: { type: GraphQLFloat },
-    chrom: { type: GraphQLInt },
+    chrom: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     xstop: { type: GraphQLFloat },
     exome_variants: {
@@ -66,8 +66,8 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
-    tissues_by_transcript: {
-      type: new GraphQLList(fromGtex.tissuesByTranscript),
+    gtex_tissue_tpms_by_transcript: {
+      type: fromGtex.tissuesByTranscript,
       resolve: (obj, args, ctx) =>
       fromGtex.lookUpTranscriptTissueExpression({
         elasticClient: ctx.database.elastic,
