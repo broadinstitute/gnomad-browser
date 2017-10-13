@@ -151,8 +151,6 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
           uterus
           vagina
           wholeBlood
-          transcriptId
-          geneId
         }
       }
   }

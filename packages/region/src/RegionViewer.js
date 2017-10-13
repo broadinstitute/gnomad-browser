@@ -42,7 +42,7 @@ class RegionViewer extends Component {
   static defaultProps = {
     exonSubset: null,
     leftPanelWidth: 100,
-    rightPanelWidth: 100,
+    rightPanelWidth: 150,
     onRegionClick: () => {},
     broadcast: () => {},
     featuresToDisplay: ['CDS'],
@@ -71,7 +71,7 @@ class RegionViewer extends Component {
   }
 
   state = {
-    rightPanelWidth: 50,
+    rightPanelWidth: 150,
     ready: false,
   }
 
