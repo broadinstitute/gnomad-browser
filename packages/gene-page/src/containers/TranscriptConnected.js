@@ -41,15 +41,21 @@ const TranscriptConnected = ({
 }
 TranscriptConnected.propTypes = {
   ownProps: PropTypes.object.isRequired,
-  currentTissue: PropTypes.string.isRequired,
-  currentTranscript: PropTypes.string.isRequired,
-  currentExon: PropTypes.string.isRequired,
-  transcripts: PropTypes.string.isRequired,
-  transcriptsGrouped: PropTypes.string.isRequired,
+  currentTissue: PropTypes.string,
+  currentTranscript: PropTypes.string,
+  currentExon: PropTypes.string,
+  transcripts: PropTypes.array.isRequired,
+  transcriptsGrouped: PropTypes.object.isRequired,
   tissueStats: PropTypes.any.isRequired,
   setCurrentTissue: PropTypes.func.isRequired,
-  // setCurrentTranscript: PropTypes.func.isRequired,
-  // setCurrentExon: PropTypes.func.isRequired,
+  setCurrentTranscript: PropTypes.func.isRequired,
+  setCurrentExon: PropTypes.func.isRequired,
+}
+
+TranscriptConnected.defaultProps = {
+  currentTissue: null,
+  currentTranscript: null,
+  currentExon: null,
 }
 
 const mapStateToProps = (state, ownProps) => ({

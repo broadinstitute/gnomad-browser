@@ -12,7 +12,7 @@ import { tissueMappings } from '@broad/utilities/src/constants/gtex'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
-const flipOutExonThickness = '13px'
+const flipOutExonThickness = 10
 
 const TranscriptLeftPanel = ({
   title,
@@ -117,14 +117,14 @@ const TranscriptRightPanel = ({
         <line
           x1={padding}
           x2={rightPanelWidth - padding}
-          y1={13 / 2}
-          y2={13 / 2}
+          y1={flipOutExonThickness / 2}
+          y2={flipOutExonThickness / 2}
           stroke={'black'}
           strokeDasharray="1.5"
         />
         <circle
           cx={padding + gtexScale(tpm)}
-          cy={13 / 2}
+          cy={flipOutExonThickness / 2}
           r={5}
           fill={'black'}
           onClick={() => onTissueChange('hello')}
@@ -188,7 +188,7 @@ const TranscriptRightPanel = ({
             <GtexTitleText>GTEx (mTPM)</GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}
-              value={currentTissue}
+              value={selectedTissue}
             >
               {tissueStats.map((tpm, tissue) => (
                 <option key={`${tissue}-option`} value={tissue}>

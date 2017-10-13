@@ -88,9 +88,9 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
             <TableRow>
               <TableTitleColumn />
               <TableCell>CNV</TableCell>
-              <TableCell>{exacv1_constraint.exp_cnv.toFixed(1)}</TableCell>
-              <TableCell>{exacv1_constraint.n_cnv}</TableCell>
-              <TableCell>Z = {exacv1_constraint.cnv_z.toFixed(1)}</TableCell>
+              <TableCell>{exacv1_constraint.exp_cnv ? exacv1_constraint.exp_cnv.toFixed(1) : 'N/A'}</TableCell>
+              <TableCell>{exacv1_constraint.n_cnv || 'N/A'}</TableCell>
+              <TableCell>Z = {exacv1_constraint.cnv_z ? exacv1_constraint.cnv_z.toFixed(1) : 'N/A'}</TableCell>
             </TableRow>
           </TableRows>
         </Table>}

@@ -79,7 +79,8 @@ export const actions = {
   setCurrentTissue: tissueName => ({ type: types.SET_CURRENT_TISSUE, tissueName }),
   setCurrentTranscript: transcriptId => ({ type: types.SET_CURRENT_TRANSCRIPT, transcriptId }),
   setCurrentExon: exonId => ({ type: types.SET_CURRENT_EXON, exonId }),
-  setCurrentConstrainedRegion: constrainedRegionName => ({ type: types.SET_CURRENT_CONSTRAINED_REGION, constrainedRegionName }),
+  setCurrentConstrainedRegion: constrainedRegionName =>
+    ({ type: types.SET_CURRENT_CONSTRAINED_REGION, constrainedRegionName }),
 }
 
 export default function createGeneReducer({ variantDatasets }) {
@@ -180,3 +181,9 @@ export const tissueStats = createSelector(
     return Immutable.Map(maxValuesForTissue).sort().reverse()
   }
 )
+
+export const regionalConstraint = createSelector(
+  [geneData],
+  geneData => geneData.get('exacv1_regional_constraint_regions').toJS()
+)
+

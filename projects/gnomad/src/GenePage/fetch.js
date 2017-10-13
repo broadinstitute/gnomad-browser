@@ -61,6 +61,19 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         consequence
         lof
       }
+      exacv1_regional_constraint_regions {
+        transcript
+        gene
+        chr
+        amino_acids
+        genomic_start
+        genomic_end
+        obs_mis
+        exp_mis
+        obs_exp
+        chisq_diff_null
+        region_name
+      }
       exome_coverage {
         pos
         mean
