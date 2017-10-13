@@ -58,9 +58,10 @@ const TranscriptRightPanel = ({
   rightPanelWidth,
   transcript,
   fanOutButtonOpen,
-  // selectedTissue,
+  selectedTissue,
+  onTissueChange,
+  isMaster,
 }) => {
-  const selectedTissue = 'muscleSkeletal'
   const padding = 20
 
   const gtexScale = scaleLinear()
@@ -84,8 +85,18 @@ const TranscriptRightPanel = ({
           cy={13 / 2}
           r={5}
           fill={'black'}
+          onClick={() => onTissueChange('hello')}
         />
       </svg>
+    )
+  }
+  if (isMaster) {
+    return (
+      <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
+        <TranscriptName>
+          {selectedTissue}
+        </TranscriptName>
+      </TranscriptRightPanelWrapper>
     )
   }
 
@@ -96,11 +107,6 @@ const TranscriptRightPanel = ({
       </TranscriptName>
     </TranscriptRightPanelWrapper>
   )
-}
-TranscriptLeftPanel.propTypes = {
-  leftPanelWidth: PropTypes.number.isRequired,
-}
-TranscriptLeftPanel.defaultProps = {
 }
 
 const TranscriptDrawing = ({
@@ -177,8 +183,9 @@ const Transcript = ({
   rightPanelWidth,
   fanOutButtonOpen,
   transcript,
+  selectedTissue,
+  onTissueChange,
 }) => {
-  console.log(transcript)
   const TranscriptContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -236,6 +243,9 @@ const Transcript = ({
         fontSize={fontSize}
         transcript={transcript}
         fanOutButtonOpen={fanOutButtonOpen}
+        isMaster={isMaster}
+        selectedTissue={selectedTissue}
+        onTissueChange={onTissueChange}
       />
     </TranscriptContainer>
   )
@@ -255,7 +265,6 @@ const TranscriptGroup = ({
   finalTranscriptStyles,
   ...rest
 }) => {
-  console.log('testing', transcriptsGrouped)
   const TranscriptGroupWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -363,7 +372,6 @@ class TranscriptTrack extends Component {
   }
 
   render() {
-    console.log(this.props)
     let transcriptGroup
     if (this.props.transcriptsGrouped) {
       transcriptGroup = (

@@ -31,9 +31,14 @@ const GeneRegion = ({
   exonPadding,
 }) => {
   const geneJS = gene.toJS()
-  const geneExons = geneJS.exons
   const canonicalExons = geneJS.transcript.exons
-  const transcriptsGrouped = groupExonsByTranscript(geneExons)
+  const { transcripts } = geneJS
+  const transcriptsGrouped = transcripts.reduce((acc, transcript) => {
+    return {
+      ...acc,
+      [transcript.transcript_id]: transcript,
+    }
+  }, {})
   const { exome_coverage, genome_coverage } = geneJS
 
   const variantsReversed = allVariants.reverse()
@@ -43,6 +48,19 @@ const GeneRegion = ({
   const coverageConfig = selectedVariantDataset === 'exacVariants' ?
     coverageConfigClassic(exome_coverage, genome_coverage) :
     coverageConfigNew(exome_coverage, genome_coverage)
+
+  const maxTissue = transcripts.reduce((acc, transcript) => {
+    let maxTissueForTranscript = [null, 0]
+    Object.keys(transcript.gtex_tissue_tpms_by_transcript).forEach((tissue) => {
+      if (transcript.gtex_tissue_tpms_by_transcript[tissue] > maxTissueForTranscript[1]) {
+        maxTissueForTranscript = [tissue, transcript.gtex_tissue_tpms_by_transcript[tissue]]
+      }
+    })
+    if (maxTissueForTranscript[1] > acc[1]) {
+      return maxTissueForTranscript
+    }
+    return acc
+  }, [null, 0])
 
   return (
     <div>
@@ -63,6 +81,7 @@ const GeneRegion = ({
         <TranscriptTrack
           transcriptsGrouped={transcriptsGrouped}
           height={10}
+          selectedTissue={maxTissue[0]}
         />
         {showVariants &&
           <VariantTrack

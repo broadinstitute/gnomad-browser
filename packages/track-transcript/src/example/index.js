@@ -38,6 +38,8 @@ export default () => {
         <TranscriptTrack
           transcriptsGrouped={transcriptsGrouped}
           height={10}
+          selectedTissue={'muscleSkeletal'}
+          onTissueChange={console.log}
         />
       </RegionViewer>
     </Wrapper>
