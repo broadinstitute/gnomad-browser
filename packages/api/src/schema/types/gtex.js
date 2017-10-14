@@ -84,7 +84,6 @@ export const lookUpTranscriptTissueExpression = ({ elasticClient, transcriptId }
         },
       }
     }).then((response) => {
-      console.log(response)
       resolve(response.hits.hits[0]._source)
     })
   })

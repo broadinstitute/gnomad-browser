@@ -50,9 +50,14 @@ export const lookupCoverageByStartStop = (db, collection, xstart, xstop) =>
   db.collection(collection).find({ xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }).toArray()
 
 export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom }) => {
+  const padding = 50
   const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
+    { range: { pos: { gte: start - padding, lte: stop + padding } } }
   ))
+  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
+    (acc + (stop - start + (padding * 2))), 0)
+  console.log('Total base pairs in query', totalBasePairs)
+
   const fields = [
     'pos',
     'mean',
@@ -61,7 +66,7 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
     elasticClient.search({
       index,
       type: 'position',
-      size: 5000,
+      size: totalBasePairs,
       _source: fields,
       body: {
         query: {
@@ -81,11 +86,11 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
     }).then((response) => {
       resolve(response.hits.hits.map((position) => {
         const coverage_position = position._source
-        // return coverage_position
-        return {
-          xpos: getXpos(chrom, coverage_position.pos),
-          ...coverage_position,
-        }
+        return coverage_position
+        // return {
+          // xpos: getXpos(chrom, coverage_position.pos),
+          // ...coverage_position,
+        // }
       }))
     })
   })
@@ -94,6 +99,7 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
 export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom }) => {
   const codingRegions = exons
     .filter(region => region.feature_type === 'CDS')
+    console.log(codingRegions.length)
   return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
 }
 
@@ -155,7 +161,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
 }) => {
   const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
     (acc + (stop - start)), 0)
-  console.log(totalBasePairs)
+  console.log('Total base pairs in query', totalBasePairs)
   const regionRangeQueries = intervals.map(({ start, stop }) => (
     { range: { pos: { gte: start - 100, lte: stop + 100} } }
   ))
@@ -164,7 +170,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
 
   const intervalAggregationSize = Math.floor((totalBasePairs) / EXPECTED_SCREEN_WIDTH)
 
-  console.log(intervalAggregationSize)
+  console.log('interval aggregation size', intervalAggregationSize)
   const fields = [
     'pos',
     'mean',

@@ -39,7 +39,6 @@ export const lookUpRegionalConstraintRegions = ({ elasticClient, geneName }) => 
         },
       }
     }).then((response) => {
-      console.log(response)
       resolve(response.hits.hits.map((v) => {
         const ConstraintRegions = v._source
         return ConstraintRegions
@@ -77,7 +76,6 @@ export const regionalConstraintGeneStatsType = new GraphQLObjectType({
 })
 
 export const lookUpRegionalConstraintGeneStats = ({ elasticClient, geneName }) => {
-  console.log(geneName)
   return new Promise((resolve, reject) => {
     elasticClient.search({
       index: 'regional_constraint_full_gene',
@@ -91,7 +89,6 @@ export const lookUpRegionalConstraintGeneStats = ({ elasticClient, geneName }) =
         },
       },
     }).then((response) => {
-      console.log(response)
       if (response.hits.hits.length === 0) {
         reject('Could not find gene')
       } else {

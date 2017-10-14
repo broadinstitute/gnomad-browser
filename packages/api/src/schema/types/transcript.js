@@ -40,37 +40,11 @@ const transcriptType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
-    // genome_coverage_buckets: {
-    //   type: new GraphQLList(coverageType),
-    //   resolve: (obj, args, ctx) => {
-    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-    //       return lookUpCoverageByExons({
-    //         elasticClient: ctx.database.elastic,
-    //         index: 'genome_coverage',
-    //         exons,
-    //         chrom: obj.chrom
-    //       })
-    //     })
-    //   }
-    // },
-    // exome_coverage_buckets: {
-    //   type: new GraphQLList(coverageType),
-    //   resolve: (obj, args, ctx) => {
-    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-    //       return lookUpCoverageByExons({
-    //         elasticClient: ctx.database.elastic,
-    //         index: 'exome_coverage',
-    //         exons,
-    //         chrom: obj.chrom
-    //       })
-    //     })
-    //   }
-    // },
-    genome_coverage_buckets: {
+    genome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
         return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-          return lookUpCoverageByExonsWithBuckets({
+          return lookUpCoverageByExons({
             elasticClient: ctx.database.elastic,
             index: 'genome_coverage',
             exons,
@@ -79,11 +53,11 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
-    exome_coverage_buckets: {
+    exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
         return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-          return lookUpCoverageByExonsWithBuckets({
+          return lookUpCoverageByExons({
             elasticClient: ctx.database.elastic,
             index: 'exome_coverage',
             exons,
@@ -92,6 +66,32 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
+    // genome_coverage: {
+    //   type: new GraphQLList(coverageType),
+    //   resolve: (obj, args, ctx) => {
+    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+    //       return lookUpCoverageByExonsWithBuckets({
+    //         elasticClient: ctx.database.elastic,
+    //         index: 'genome_coverage',
+    //         exons,
+    //         chrom: obj.chrom
+    //       })
+    //     })
+    //   }
+    // },
+    // exome_coverage: {
+    //   type: new GraphQLList(coverageType),
+    //   resolve: (obj, args, ctx) => {
+    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+    //       return lookUpCoverageByExonsWithBuckets({
+    //         elasticClient: ctx.database.elastic,
+    //         index: 'exome_coverage',
+    //         exons,
+    //         chrom: obj.chrom
+    //       })
+    //     })
+    //   }
+    // },
     gtex_tissue_tpms_by_transcript: {
       type: fromGtex.tissuesByTranscript,
       resolve: (obj, args, ctx) =>

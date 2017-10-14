@@ -19,7 +19,7 @@ const appSettings = {
     startingGene: 'TP53',
     startingVariant: '13-32900634-AG-A',
     startingRegion: '1-55530000-55540000',
-    startingPadding: 75,
+    startingPadding: 200,
     startingVariantDataset: 'gnomadCombinedVariants',
   },
   variantDatasets: {

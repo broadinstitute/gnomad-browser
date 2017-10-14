@@ -81,13 +81,11 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
           stop
           strand
         }
-        genome_coverage_buckets {
-          xpos
+        genome_coverage {
           pos
           mean
         }
-        exome_coverage_buckets {
-          xpos
+        exome_coverage {
           pos
           mean
         }

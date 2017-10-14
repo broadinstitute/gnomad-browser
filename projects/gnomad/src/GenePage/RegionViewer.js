@@ -34,16 +34,16 @@ const GeneRegion = ({
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
-  const { exome_coverage_buckets, genome_coverage_buckets } = transcript
-  console.log('exome coverage length', exome_coverage_buckets.length, exome_coverage_buckets)
-  console.log('genome coverage length', genome_coverage_buckets.length, genome_coverage_buckets)
+  const { exome_coverage, genome_coverage } = transcript
+  console.log('exome coverage length', exome_coverage.length, exome_coverage)
+  console.log('genome coverage length', genome_coverage.length, genome_coverage)
   const variantsReversed = allVariants.reverse()
 
   const showVariants = true
 
   const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-    coverageConfigClassic(exome_coverage_buckets, genome_coverage_buckets) :
-    coverageConfigNew(exome_coverage_buckets, genome_coverage_buckets)
+    coverageConfigClassic(exome_coverage, genome_coverage) :
+    coverageConfigNew(exome_coverage, genome_coverage)
 
 
   const RegionalConstraintTrackWrapper = styled.div`
