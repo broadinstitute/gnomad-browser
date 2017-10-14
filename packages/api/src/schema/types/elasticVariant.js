@@ -30,7 +30,7 @@ const lofs = [
   'start_lost',
   'inframe_insertion',
   'inframe_deletion',
-  'missense_variant',
+  // 'missense_variant',
 ]
 const lofQuery = lofs.map(consequence => (
   { term: { majorConsequence: consequence } }
@@ -131,11 +131,11 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
                         should: regionRangeQueries,
                       }
                     },
-                    {
-                      bool: {
-                        should: lofQuery,
-                      }
-                    },
+                    // {
+                    //   bool: {
+                    //     should: lofQuery,
+                    //   }
+                    // },
                   ]
                 },
               },

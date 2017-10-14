@@ -6,6 +6,8 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
+import { List, fromJS } from 'immutable'
+
 import { getXpos } from '@broad/utilities/lib/variant'
 
 const coverageType = new GraphQLObjectType({
@@ -96,33 +98,34 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
   })
 }
 
-export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj, ctx }) => {
-  const codingRegions = exons
-    .filter(region => region.feature_type === 'CDS')
-    console.log(codingRegions.length)
-    console.log(obj.transcript_id)
-  const gene_name = 'TTN'
-  if (gene_name === 'TTN') {
-    console.log('its titan')
-    return lookupCoverageBuckets({
-      elasticClient: ctx.database.elastic,
-      index: 'exome_coverage',
-      intervals: [{ start: obj.start, stop: obj.stop }],
-      chrom: obj.chrom,
-    })
-  }
-  return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
+export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj }) => {
+  const codingRegions = exons.filter(region => region.feature_type === 'CDS')
+  // return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
+  // return lookupCoverageByIntervalsWithBuckets({ elasticClient, index, intervals: codingRegions, chrom })
+  return lookupCoverageByIntervalsWithBuckets({
+    elasticClient,
+    index,
+    intervals: codingRegions,
+    start: obj.start,
+    stop: obj.stop,
+    chrom,
+  })
 }
 
 export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }) => {
   const { start, stop } = intervals[0] // HACK
-  const intervalSize = Math.floor((stop - start) / 1000)
+  const intervalSize = Math.floor((stop - start) / 2000)
   const regionRangeQueries = intervals.map(({ start, stop }) => (
     { range: { pos: { gte: start - 100, lte: stop + 100 } } }
   ))
+  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
+    (acc + (stop - start)), 0)
+
+  console.log('Total base pairs in query', totalBasePairs)
   return new Promise((resolve, _) => {
     elasticClient.search({
       index,
+      // size: totalBasePairs,
       type: 'position',
       body: {
         query: {
@@ -164,29 +167,79 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
   })
 }
 
+function getCoverageIntervals(buckets, intervals) {
+  const allPositions = fromJS(buckets)
+
+  const [_, filteredCoverage] = intervals.reduce((acc, interval) => {
+    const [positionsAcc, coverageAcc] = acc
+    const intervalCoverage = positionsAcc
+      .skipWhile(position => position.get('key') < interval.start)
+      .takeWhile(position => position.get('key') < interval.stop)
+    return [
+      positionsAcc.skipWhile(position => position.get('key') < interval.stop),
+      coverageAcc.push(intervalCoverage)
+    ]
+  }, [allPositions, new List()])
+
+  const intervalsOnly = filteredCoverage
+    .flatten(true)
+    .toJS()
+    .map((bucket) => {
+      return {
+        // xpos: getXpos(chrom, bucket.key),
+        pos: bucket.key,
+        mean: bucket.bucket_stats.avg
+      }
+    })
+    return intervalsOnly
+}
+
 export const lookupCoverageByIntervalsWithBuckets = ({
   elasticClient,
   index,
   intervals,
   chrom,
+  start,
+  stop,
 }) => {
-  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
+  const exonsOnly = true
+
+  const transcriptBasePairsSize = stop - start
+  const wholeTranscriptQuery = [{ range: { pos: { gte: start - 100, lte: stop + 100 } } }]
+
+  const exonsBasePairsSize = intervals.reduce((acc, { start, stop }) =>
     (acc + (stop - start)), 0)
-  console.log('Total base pairs in query', totalBasePairs)
-  const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start - 100, lte: stop + 100} } }
+  const exonQueries = intervals.map(({ start, stop }) => (
+    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
   ))
 
-  const EXPECTED_SCREEN_WIDTH = 1000
+  // const totalBasePairs = exonsBasePairsSize
+  const totalBasePairs = exonsOnly ? exonsBasePairsSize : transcriptBasePairsSize
+  const intervalQuery = exonsOnly ? exonQueries : wholeTranscriptQuery
 
+  const EXPECTED_SCREEN_WIDTH = 1000
   const intervalAggregationSize = Math.floor((totalBasePairs) / EXPECTED_SCREEN_WIDTH)
 
-  console.log('interval aggregation size', intervalAggregationSize)
+  console.log('Total transcript base pairs: ', transcriptBasePairsSize)
+  console.log('Total exon base pairs: ', exonsBasePairsSize)
+  console.log('Querying exons only: ', exonsOnly)
+  console.log('Expected screen width: ', EXPECTED_SCREEN_WIDTH)
+  console.log('Interval aggregation size', intervalAggregationSize)
+
+  if (totalBasePairs < 5000) {
+    console.log('doing exactl look up')
+    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom })
+  }
+
+  console.log('looking up with buckets')
+
   const fields = [
     'pos',
     'mean',
   ]
+
   return new Promise((resolve, _) => {
+    console.log('searching')
     elasticClient.search({
       index,
       type: 'position',
@@ -200,7 +253,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
             ],
             filter: {
               bool: {
-                should: regionRangeQueries,
+                should: intervalQuery,
               },
             },
           },
@@ -219,15 +272,21 @@ export const lookupCoverageByIntervalsWithBuckets = ({
         sort: [{ pos: { order: 'asc' } }],
       },
     }).then((response) => {
+      console.log('got server data', index)
       const { buckets } = response.aggregations.genome_coverage_downsampled
-      const positions = buckets.filter(b => b.bucket_stats.avg !== null).map((bucket) => {
+      console.log('removing empty values', index)
+      // const intervalsOnly = getCoverageIntervals(buckets, intervals)
+      const intervalsOnly = buckets.filter(bucket => bucket.bucket_stats.avg !== null).map((bucket) => {
         return {
           xpos: getXpos(chrom, bucket.key),
           pos: bucket.key,
           mean: bucket.bucket_stats.avg,
         }
       })
-      resolve(positions)
+
+      console.log('done', index)
+
+      resolve(intervalsOnly)
     }).catch(error => console.log(error))
   })
 }

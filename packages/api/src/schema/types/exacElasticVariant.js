@@ -17,7 +17,7 @@ const lofs = [
   'start_lost',
   'inframe_insertion',
   'inframe_deletion',
-  'missense_variant',
+  // 'missense_variant',
 ]
 const lofQuery = lofs.map(consequence => (
   { term: { majorConsequence: consequence } }
