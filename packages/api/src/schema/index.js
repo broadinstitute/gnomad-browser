@@ -41,6 +41,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         filter: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
+        
         if (args.gene_name) {
           return lookupGeneByName(ctx.database.gnomad, args.gene_name)
         }

@@ -5,6 +5,7 @@ import { MongoClient } from 'mongodb'
 import elasticsearch from 'elasticsearch'
 import GraphQLHTTP from 'express-graphql'
 import cors from 'cors'
+import Redis from 'ioredis'
 
 import gnomadSchema from './schema'
 
@@ -30,6 +31,7 @@ app.use(cors());
           // exacv1,
           sczMockDb,
           elastic,
+          redis: await new Redis({ host: process.env.REDIS_HOST }),
         },
       },
     }))

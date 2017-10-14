@@ -7,16 +7,5 @@ MAINTAINER MacArthur Lab
 COPY . /var/www
 WORKDIR /var/www
 
-# RUN npm run build
-
-COPY lib/utilities/ /var/www/node_modules/@broad/utilities
-COPY lib/utilities/ /var/www/node_modules/@broad/utilities
-WORKDIR /var/www/node_modules/@broad/utilities
-RUN npm install
-WORKDIR /var/www
-
-# RUN ls /var/www/node_modules
-RUN ls /var/www/node_modules/@broad
-
 ENTRYPOINT ["npm"]
 CMD ["run", "docker"]

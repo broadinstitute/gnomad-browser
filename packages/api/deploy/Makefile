@@ -15,6 +15,9 @@ API_EXTERNAL_IP=35.192.159.174
 BASE_IMAGE_NAME="$(BASE_IMAGE_PREFIX):$(IMAGE_TAG)"
 MAIN_IMAGE_NAME="$(IMAGE_PREFIX):$(IMAGE_TAG)"
 
+local-redis:
+	redis-server /usr/local/etc/redis.conf
+
 mongo-legacy:
 	kubectl create -f gnomad-mongo-controller.yaml
 	kubectl create -f gnomad-mongo-service.yaml
