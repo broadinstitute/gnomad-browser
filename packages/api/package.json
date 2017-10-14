@@ -26,6 +26,7 @@
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
     "graphql-tester": "0.0.5",
+    "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.2.11",
     "nodemon": "^1.11.0",
@@ -38,6 +39,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
+    "csvtojson": "^1.1.7",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^2.2.0",
@@ -45,7 +47,6 @@
     "eslint-plugin-react": "^6.4.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0",
-    "tape-promise": "^2.0.1",
-    "csvtojson": "^1.1.7"
+    "tape-promise": "^2.0.1"
   }
 }

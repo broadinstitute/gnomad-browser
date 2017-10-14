@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: gnomad-mongo
+  name: gnomad-mongo-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gnomad-mongo
+  template:
+    metadata:
+      labels:
+        name: gnomad-mongo
+    spec:
+      containers:
+      - image: mongo
+        name: gnomad-mongo
+        env:
+          - name: DATA_VERSION
+            value: 2.0.1
+        ports:
+        - name: gnomad-mongo
+          containerPort: 27017
+          # hostPort: 27017
+        volumeMounts:
+            - name: gnomad-mongo-persistent-storage-3
+              mountPath: /data/db
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "redis"
+      volumes:
+        - name: gnomad-mongo-persistent-storage-3
+          gcePersistentDisk:
+            pdName: gnomad-mongo-disk-3
+            fsType: ext4

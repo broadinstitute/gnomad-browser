@@ -28,6 +28,8 @@ spec:
           value: "true"
       ports:
         - containerPort: 26379
+  nodeSelector:
+    cloud.google.com/gke-nodepool: "redis"
   volumes:
     - name: data
       emptyDir: {}

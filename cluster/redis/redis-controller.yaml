@@ -22,6 +22,8 @@ spec:
         volumeMounts:
         - mountPath: /redis-master-data
           name: data
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "redis"
       volumes:
         - name: data
           emptyDir: {}

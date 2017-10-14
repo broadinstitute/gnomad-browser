@@ -6,7 +6,7 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import { List, fromJS } from 'immutable'
+// import { List, fromJS } from 'immutable'
 
 import { getXpos } from '@broad/utilities/lib/variant'
 
@@ -167,32 +167,32 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
   })
 }
 
-function getCoverageIntervals(buckets, intervals) {
-  const allPositions = fromJS(buckets)
-
-  const [_, filteredCoverage] = intervals.reduce((acc, interval) => {
-    const [positionsAcc, coverageAcc] = acc
-    const intervalCoverage = positionsAcc
-      .skipWhile(position => position.get('key') < interval.start)
-      .takeWhile(position => position.get('key') < interval.stop)
-    return [
-      positionsAcc.skipWhile(position => position.get('key') < interval.stop),
-      coverageAcc.push(intervalCoverage)
-    ]
-  }, [allPositions, new List()])
-
-  const intervalsOnly = filteredCoverage
-    .flatten(true)
-    .toJS()
-    .map((bucket) => {
-      return {
-        // xpos: getXpos(chrom, bucket.key),
-        pos: bucket.key,
-        mean: bucket.bucket_stats.avg
-      }
-    })
-    return intervalsOnly
-}
+// function getCoverageIntervals(buckets, intervals) {
+//   const allPositions = fromJS(buckets)
+//
+//   const [_, filteredCoverage] = intervals.reduce((acc, interval) => {
+//     const [positionsAcc, coverageAcc] = acc
+//     const intervalCoverage = positionsAcc
+//       .skipWhile(position => position.get('key') < interval.start)
+//       .takeWhile(position => position.get('key') < interval.stop)
+//     return [
+//       positionsAcc.skipWhile(position => position.get('key') < interval.stop),
+//       coverageAcc.push(intervalCoverage)
+//     ]
+//   }, [allPositions, new List()])
+//
+//   const intervalsOnly = filteredCoverage
+//     .flatten(true)
+//     .toJS()
+//     .map((bucket) => {
+//       return {
+//         // xpos: getXpos(chrom, bucket.key),
+//         pos: bucket.key,
+//         mean: bucket.bucket_stats.avg
+//       }
+//     })
+//     return intervalsOnly
+// }
 
 export const lookupCoverageByIntervalsWithBuckets = ({
   elasticClient,
