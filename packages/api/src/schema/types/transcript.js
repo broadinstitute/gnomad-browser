@@ -8,7 +8,7 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import coverageType, { lookUpCoverageByExons } from './coverage'
+import coverageType, { lookUpCoverageByExons, lookUpCoverageByExonsWithBuckets } from './coverage'
 import variantType, { lookupVariantsByTranscriptId } from './variant'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
@@ -40,11 +40,37 @@ const transcriptType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
-    genome_coverage: {
+    // genome_coverage_buckets: {
+    //   type: new GraphQLList(coverageType),
+    //   resolve: (obj, args, ctx) => {
+    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+    //       return lookUpCoverageByExons({
+    //         elasticClient: ctx.database.elastic,
+    //         index: 'genome_coverage',
+    //         exons,
+    //         chrom: obj.chrom
+    //       })
+    //     })
+    //   }
+    // },
+    // exome_coverage_buckets: {
+    //   type: new GraphQLList(coverageType),
+    //   resolve: (obj, args, ctx) => {
+    //     return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+    //       return lookUpCoverageByExons({
+    //         elasticClient: ctx.database.elastic,
+    //         index: 'exome_coverage',
+    //         exons,
+    //         chrom: obj.chrom
+    //       })
+    //     })
+    //   }
+    // },
+    genome_coverage_buckets: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
         return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-          return lookUpCoverageByExons({
+          return lookUpCoverageByExonsWithBuckets({
             elasticClient: ctx.database.elastic,
             index: 'genome_coverage',
             exons,
@@ -53,11 +79,11 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
-    exome_coverage: {
+    exome_coverage_buckets: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
         return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-          return lookUpCoverageByExons({
+          return lookUpCoverageByExonsWithBuckets({
             elasticClient: ctx.database.elastic,
             index: 'exome_coverage',
             exons,

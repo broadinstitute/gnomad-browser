@@ -206,7 +206,7 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
     case 'tick':
       return <VariantTick key={markerKey} {...rest} />
     case 'exacClassic':
-      return <VariantEohxacClassic key={markerKey} {...rest} />
+      return <VariantExacClassic key={markerKey} {...rest} />
     // case
     default:
       return <VariantCircle key={markerKey} {...rest} />

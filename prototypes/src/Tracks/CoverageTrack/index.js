@@ -22,36 +22,36 @@ const CoverageTrack = ({
   yTickNumber,
   yMax,
 }) => {
-  const scaleCoverage = (xScale, coverage) => {
-    const coverageScaled = coverage.map((base) => {
-      const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
-      if (newPosition !== undefined) {
-        return ({
-          mean: base.mean,
-          scaledPosition: newPosition,
-        })
-      }
-      return null
-    })
-
-    const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
-
-    const dict = downSampled.reduce((acc, base) => {
-      const { scaledPosition } = base
-      return {
-        ...acc,
-        [scaledPosition]: base.mean,
-      }
-    }, {})
-    const [min, max] = xScale.range()
-    const final = range(min, max).map((i) => {
-      if (dict[i]) {
-        return { scaledPosition: i, mean: dict[i] }
-      }
-      return { scaledPosition: i, mean: 0 }
-    })
-    return final
-  }
+  // const scaleCoverage = (xScale, coverage) => {
+  //   const coverageScaled = coverage.map((base) => {
+  //     const newPosition = Math.floor(xScale(positionOffset(base.pos).offsetPosition))
+  //     if (newPosition !== undefined) {
+  //       return ({
+  //         mean: base.mean,
+  //         scaledPosition: newPosition,
+  //       })
+  //     }
+  //     return null
+  //   })
+  //
+  //   const downSampled = R.uniqBy(b => b.scaledPosition, coverageScaled)
+  //
+  //   const dict = downSampled.reduce((acc, base) => {
+  //     const { scaledPosition } = base
+  //     return {
+  //       ...acc,
+  //       [scaledPosition]: base.mean,
+  //     }
+  //   }, {})
+  //   const [min, max] = xScale.range()
+  //   const final = range(min, max).map((i) => {
+  //     if (dict[i]) {
+  //       return { scaledPosition: i, mean: dict[i] }
+  //     }
+  //     return { scaledPosition: i, mean: 0 }
+  //   })
+  //   return final
+  // }
 
   const dataYDomainMax = yMax || getMaxMeanFromCoverageDatasets(dataConfig)
 
@@ -60,28 +60,43 @@ const CoverageTrack = ({
     .range([height, 0])
 
   const dataArea = area()
-    .x(base => base.scaledPosition)
+    .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y0(_ => height)  // eslint-disable-line
     .y1(base => yScale(base.mean))
 
-  const dataLine = line()
-    .defined((base) => {
-      return !isNaN(base.mean)
-        && positionOffset(base.pos).offsetPosition !== undefined
-    })
-    .x(base => xScale(positionOffset(base.pos).offsetPosition))
-    .y(base => yScale(base.mean))
+  // const dataArea = area()
+  //   .x(base => base.scaledPosition)
+  //   .y0(_ => height)  // eslint-disable-line
+  //   .y1(base => yScale(base.mean))
+
+  // const dataLine = line()
+  //   .defined((base) => {
+  //     return !isNaN(base.mean)
+  //       && positionOffset(base.pos).offsetPosition !== undefined
+  //   })
+  //   .x(base => xScale(positionOffset(base.pos).offsetPosition))
+  //   .y(base => yScale(base.mean))
 
   const renderArea = (dataset) => {
     return (
       <path
         key={`cov-series-${dataset.name}-area`}
-        d={dataArea(scaleCoverage(xScale, dataset.data))}
+        d={dataArea(dataset.data)}
         fill={dataset.color}
         opacity={dataset.opacity}
       />
     )
   }
+  // const renderArea = (dataset) => {
+  //   return (
+  //     <path
+  //       key={`cov-series-${dataset.name}-area`}
+  //       d={dataArea(scaleCoverage(xScale, dataset.data))}
+  //       fill={dataset.color}
+  //       opacity={dataset.opacity}
+  //     />
+  //   )
+  // }
   const renderLine = (dataset) => {
     return (
       <path

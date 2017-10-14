@@ -1,11 +1,9 @@
 /* eslint-disable camelcase */
+/* eslint-disable quote-props */
 
-import R from 'ramda'
 import {
   GraphQLObjectType,
   GraphQLFloat,
-  GraphQLInt,
-  GraphQLString,
 } from 'graphql'
 
 import { getXpos } from '@broad/utilities/lib/variant'
@@ -53,7 +51,7 @@ export const lookupCoverageByStartStop = (db, collection, xstart, xstop) =>
 
 export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom }) => {
   const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start, lte: stop } } }
+    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
   ))
   const fields = [
     'pos',
@@ -63,11 +61,14 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
     elasticClient.search({
       index,
       type: 'position',
-      size: 1000,
+      size: 5000,
       _source: fields,
       body: {
         query: {
           bool: {
+            must: [
+              { term: { chrom } },
+            ],
             filter: {
               bool: {
                 should: regionRangeQueries,
@@ -91,7 +92,8 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
 }
 
 export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom }) => {
-  const codingRegions = exons.filter(region => region.feature_type === 'CDS')
+  const codingRegions = exons
+    .filter(region => region.feature_type === 'CDS')
   return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
 }
 
@@ -99,7 +101,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
   const { start, stop } = intervals[0] // HACK
   const intervalSize = Math.floor((stop - start) / 1000)
   const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start, lte: stop } } }
+    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
   ))
   return new Promise((resolve, _) => {
     elasticClient.search({
@@ -108,6 +110,9 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
       body: {
         query: {
           bool: {
+            must: [
+              { term: { chrom } },
+            ],
             filter: {
               bool: {
                 should: regionRangeQueries,
@@ -140,4 +145,77 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
       resolve(positions)
     }).catch(error => console.log(error))
   })
+}
+
+export const lookupCoverageByIntervalsWithBuckets = ({
+  elasticClient,
+  index,
+  intervals,
+  chrom,
+}) => {
+  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
+    (acc + (stop - start)), 0)
+  console.log(totalBasePairs)
+  const regionRangeQueries = intervals.map(({ start, stop }) => (
+    { range: { pos: { gte: start - 100, lte: stop + 100} } }
+  ))
+
+  const EXPECTED_SCREEN_WIDTH = 1000
+
+  const intervalAggregationSize = Math.floor((totalBasePairs) / EXPECTED_SCREEN_WIDTH)
+
+  console.log(intervalAggregationSize)
+  const fields = [
+    'pos',
+    'mean',
+  ]
+  return new Promise((resolve, _) => {
+    elasticClient.search({
+      index,
+      type: 'position',
+      size: EXPECTED_SCREEN_WIDTH,
+      _source: fields,
+      body: {
+        query: {
+          bool: {
+            must: [
+              { term: { chrom } },
+            ],
+            filter: {
+              bool: {
+                should: regionRangeQueries,
+              },
+            },
+          },
+        },
+        aggregations: {
+          genome_coverage_downsampled: {
+            histogram: {
+              field: 'pos',
+              interval: intervalAggregationSize,
+            },
+            aggregations: {
+              bucket_stats: { stats: { field: 'mean' } },
+            },
+          },
+        },
+        sort: [{ pos: { order: 'asc' } }],
+      },
+    }).then((response) => {
+      const { buckets } = response.aggregations.genome_coverage_downsampled
+      const positions = buckets.filter(b => b.bucket_stats.avg !== null).map((bucket) => {
+        return {
+          xpos: getXpos(chrom, bucket.key),
+          pos: bucket.key,
+          mean: bucket.bucket_stats.avg,
+        }
+      })
+      resolve(positions)
+    }).catch(error => console.log(error))
+  })
+}
+
+export const lookUpCoverageByExonsWithBuckets = ({ elasticClient, index, exons, chrom }) => {
+  const codingRegions = exons.filter(region => region.feature_type === 'CDS')
+  return lookupCoverageByIntervalsWithBuckets({ elasticClient, index, intervals: codingRegions, chrom })
 }

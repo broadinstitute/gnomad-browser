@@ -74,20 +74,22 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         chisq_diff_null
         region_name
       }
-      exome_coverage {
-        pos
-        mean
-      }
-      genome_coverage {
-        pos
-        mean
-      }
       transcript {
         exons {
           feature_type
           start
           stop
           strand
+        }
+        genome_coverage_buckets {
+          xpos
+          pos
+          mean
+        }
+        exome_coverage_buckets {
+          xpos
+          pos
+          mean
         }
       }
       transcripts {
