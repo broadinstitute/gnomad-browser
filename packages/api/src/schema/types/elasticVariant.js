@@ -20,6 +20,22 @@ import { lookupExonsByTranscriptId } from './exon'
 
 import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
 
+const lofs = [
+  'transcript_ablation',
+  'splice_acceptor_variant',
+  'splice_donor_variant',
+  'stop_gained',
+  'frameshift_variant',
+  'stop_lost',
+  'start_lost',
+  'inframe_insertion',
+  'inframe_deletion',
+  'missense_variant',
+]
+const lofQuery = lofs.map(consequence => (
+  { term: { majorConsequence: consequence } }
+))
+
 const elasticVariantType = new GraphQLObjectType({
   name: 'ElasticVariant',
   fields: () => ({
@@ -62,6 +78,18 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
     `${dataset}_Hom`,
   ]
 
+  if (obj.gene_name === 'TTN') {
+    console.log('special case')
+    return lookupElasticVariantsInRegion({
+      elasticClient: ctx.database.elastic,
+      index: 'gnomad',
+      dataset: dataset,
+      xstart: obj.xstart,
+      xstop: obj.xstop,
+      numberOfVariants: 20000,
+    })
+  }
+
   return lookupExonsByTranscriptId(
     ctx.database.gnomad,
     obj.canonical_transcript
@@ -71,14 +99,22 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
 
     const filteredRegions = regions.filter(region => region.feature_type === 'CDS')
 
+    const totalBasePairs = filteredRegions.reduce((acc, { start, stop }) =>
+      (acc + (stop - start + (padding * 2))), 0)
+    console.log('Total base pairs in variant query', totalBasePairs)
+
     const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
       { range: { pos: { gte: start - padding, lte: stop + padding } } }))
+
+      if (totalBasePairs > 20000) {
+
+      }
 
     return new Promise((resolve, _) => {
       client.search({
         index: 'gnomad',
         type: 'variant',
-        size: 5000,
+        size: 20000,
         _source: fields,
         body: {
           query: {
@@ -89,7 +125,18 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
               ],
               filter: {
                 bool: {
-                  should: regionRangeQueries
+                  must: [
+                    {
+                      bool: {
+                        should: regionRangeQueries,
+                      }
+                    },
+                    {
+                      bool: {
+                        should: lofQuery,
+                      }
+                    },
+                  ]
                 },
               },
             },
@@ -218,20 +265,7 @@ export const lookupElasticVariantsInRegion = ({
     `${dataset}_AN`,
     `${dataset}_Hom`,
   ]
-  const lofs = [
-    'transcript_ablation',
-    'splice_acceptor_variant',
-    'splice_donor_variant',
-    'stop_gained',
-    'frameshift_variant',
-    'stop_lost',
-    'start_lost',
-    'inframe_insertion',
-    'inframe_deletion',
-  ]
-  const lofQuery = lofs.map(consequence => (
-    { term: { majorConsequence: consequence } }
-  ))
+
   return new Promise((resolve, _) => {
     elasticClient.search({
       index,

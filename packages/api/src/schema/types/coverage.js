@@ -50,13 +50,13 @@ export const lookupCoverageByStartStop = (db, collection, xstart, xstop) =>
   db.collection(collection).find({ xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }).toArray()
 
 export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom }) => {
-  const padding = 50
+  const padding = 75
   const regionRangeQueries = intervals.map(({ start, stop }) => (
     { range: { pos: { gte: start - padding, lte: stop + padding } } }
   ))
   const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
     (acc + (stop - start + (padding * 2))), 0)
-  console.log('Total base pairs in query', totalBasePairs)
+  // console.log('Total base pairs in query', totalBasePairs)
 
   const fields = [
     'pos',
@@ -96,10 +96,21 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
   })
 }
 
-export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom }) => {
+export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj, ctx }) => {
   const codingRegions = exons
     .filter(region => region.feature_type === 'CDS')
     console.log(codingRegions.length)
+    console.log(obj.transcript_id)
+  const gene_name = 'TTN'
+  if (gene_name === 'TTN') {
+    console.log('its titan')
+    return lookupCoverageBuckets({
+      elasticClient: ctx.database.elastic,
+      index: 'exome_coverage',
+      intervals: [{ start: obj.start, stop: obj.stop }],
+      chrom: obj.chrom,
+    })
+  }
   return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
 }
 

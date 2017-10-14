@@ -24,6 +24,7 @@ const transcriptType = new GraphQLObjectType({
     xstart: { type: GraphQLFloat },
     chrom: { type: GraphQLString },
     gene_id: { type: GraphQLString },
+    gene_name: { type: GraphQLString },
     xstop: { type: GraphQLFloat },
     exome_variants: {
       type: new GraphQLList(variantType),
@@ -48,7 +49,9 @@ const transcriptType = new GraphQLObjectType({
             elasticClient: ctx.database.elastic,
             index: 'genome_coverage',
             exons,
-            chrom: obj.chrom
+            chrom: obj.chrom,
+            obj,
+            ctx,
           })
         })
       }
@@ -61,7 +64,9 @@ const transcriptType = new GraphQLObjectType({
             elasticClient: ctx.database.elastic,
             index: 'exome_coverage',
             exons,
-            chrom: obj.chrom
+            chrom: obj.chrom,
+            obj,
+            ctx,
           })
         })
       }

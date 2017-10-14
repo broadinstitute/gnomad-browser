@@ -7,6 +7,22 @@ import { getXpos } from '@broad/utilities/lib/variant'
 import { lookupExonsByTranscriptId } from './exon'
 import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
 
+const lofs = [
+  'transcript_ablation',
+  'splice_acceptor_variant',
+  'splice_donor_variant',
+  'stop_gained',
+  'frameshift_variant',
+  'stop_lost',
+  'start_lost',
+  'inframe_insertion',
+  'inframe_deletion',
+  'missense_variant',
+]
+const lofQuery = lofs.map(consequence => (
+  { term: { majorConsequence: consequence } }
+))
+
 export const lookupElasticVariantsByGeneId = (client, obj, ctx) => {
   const fields = [
     'hgvsp',
@@ -38,7 +54,7 @@ export const lookupElasticVariantsByGeneId = (client, obj, ctx) => {
       client.search({
         index: 'exacv1',
         type: 'variant',
-        size: 5000,
+        size: 20000,
         _source: fields,
         body: {
           query: {
@@ -48,7 +64,18 @@ export const lookupElasticVariantsByGeneId = (client, obj, ctx) => {
               ],
               filter: {
                 bool: {
-                  should: regionRangeQueries
+                  must: [
+                    {
+                      bool: {
+                        should: regionRangeQueries,
+                      }
+                    },
+                    {
+                      bool: {
+                        should: lofQuery,
+                      }
+                    },
+                  ]
                 },
               },
             },
@@ -103,21 +130,7 @@ export const lookupElasticVariantsInRegion = ({
     'AF',
     'AC_Hom',
   ]
-  const lofs = [
-    'transcript_ablation',
-    'splice_acceptor_variant',
-    'splice_donor_variant',
-    'stop_gained',
-    'frameshift_variant',
-    'stop_lost',
-    'start_lost',
-    'inframe_insertion',
-    'inframe_deletion',
-  ]
-  const lofQuery = lofs.map(consequence => (
-    { term: { majorConsequence: consequence } }
-  ))
-  return new Promise((resolve, _) => {
+    return new Promise((resolve, _) => {
     elasticClient.search({
       index: 'exacv1',
       type: 'variant',
