@@ -254,10 +254,10 @@ export const lookupCoverageByIntervalsWithBuckets = ({
   // console.log('Expected screen width: ', EXPECTED_SCREEN_WIDTH)
   // console.log('Interval aggregation size', intervalAggregationSize)
 
-  // if (totalBasePairs < 5000) {
-  //   console.log('doing exactl look up')
-  //   return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom })
-  // }
+  if (totalBasePairs < 5000) {
+    console.log('doing exactl look up')
+    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom })
+  }
 
   console.log('looking up with buckets')
 

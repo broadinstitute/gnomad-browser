@@ -30,7 +30,6 @@ const lofs = [
   'start_lost',
   'inframe_insertion',
   'inframe_deletion',
-  // 'missense_variant',
 ]
 const lofQuery = lofs.map(consequence => (
   { term: { majorConsequence: consequence } }
@@ -78,95 +77,97 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
     `${dataset}_Hom`,
   ]
 
-  if (obj.gene_name === 'TTN') {
-    console.log('special case')
-    return lookupElasticVariantsInRegion({
-      elasticClient: ctx.database.elastic,
-      index: 'gnomad',
-      dataset: dataset,
-      xstart: obj.xstart,
-      xstop: obj.xstop,
-      numberOfVariants: 20000,
-    })
-  }
+  return new Promise((resolve, _) => {
+    const variantSubset = 'all'
 
-  return lookupExonsByTranscriptId(
-    ctx.database.gnomad,
-    obj.canonical_transcript
-  ).then((exons) => {
-    const padding = 75
-    const regions = exons
+    const cacheKey = `${dataset}-variants-${obj.gene_id}-${variantSubset}`
 
-    const filteredRegions = regions.filter(region => region.feature_type === 'CDS')
+    const subsetLookup = variantSubset === 'lof' ? lofQuery : []
 
-    const totalBasePairs = filteredRegions.reduce((acc, { start, stop }) =>
-      (acc + (stop - start + (padding * 2))), 0)
-    console.log('Total base pairs in variant query', totalBasePairs)
+    return ctx.database.redis.get(cacheKey).then((reply) => {
+      if (reply) {
+        console.log('gotVariantsFromCash')
+        resolve(JSON.parse(reply))
+      } else {
+        return lookupExonsByTranscriptId(
+          ctx.database.gnomad,
+          obj.canonical_transcript
+        ).then((exons) => {
+          const padding = 75
+          const regions = exons
 
-    const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
-      { range: { pos: { gte: start - padding, lte: stop + padding } } }))
+          const filteredRegions = regions.filter(region => region.feature_type === 'CDS')
 
-      if (totalBasePairs > 20000) {
+          const totalBasePairs = filteredRegions.reduce((acc, { start, stop }) =>
+            (acc + (stop - start + (padding * 2))), 0)
+          console.log('Total base pairs in variant query', totalBasePairs)
 
-      }
-
-    return new Promise((resolve, _) => {
-      client.search({
-        index: 'gnomad',
-        type: 'variant',
-        size: 20000,
-        _source: fields,
-        body: {
-          query: {
-            bool: {
-              must: [
-                { term: { geneId: obj.gene_id } },
-                { exists: { field: `${dataset}_AC` } },
-              ],
-              filter: {
+          const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
+            { range: { pos: { gte: start - padding, lte: stop + padding } } }))
+          return client.search({
+            index: 'gnomad',
+            type: 'variant',
+            size: 20000,
+            _source: fields,
+            body: {
+              query: {
                 bool: {
                   must: [
-                    {
-                      bool: {
-                        should: regionRangeQueries,
-                      }
+                    { term: { geneId: obj.gene_id } },
+                    { exists: { field: `${dataset}_AC` } },
+                  ],
+                  filter: {
+                    bool: {
+                      must: [
+                        {
+                          bool: {
+                            should: regionRangeQueries,
+                          }
+                        },
+                        {
+                          bool: {
+                            should: subsetLookup,
+                          }
+                        },
+                      ]
                     },
-                    // {
-                    //   bool: {
-                    //     should: lofQuery,
-                    //   }
-                    // },
-                  ]
+                  },
                 },
               },
+              sort: [{ xpos: { order: 'asc' } }],
             },
-          },
-          sort: [{ xpos: { order: 'asc' } }],
-        },
-      }).then((response) => {
-        resolve(response.hits.hits.map((v) => {
-          const elastic_variant = v._source
-          return ({
-            hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
-            hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-            // chrom: elastic_variant.contig,
-            // ref: elastic_variant.ref,
-            // alt: elastic_variant.alt,
-            consequence: elastic_variant.majorConsequence,
-            pos: elastic_variant.pos,
-            xpos: elastic_variant.xpos,
-            rsid: elastic_variant.rsid,
-            variant_id: elastic_variant.variantId,
-            id: elastic_variant.variantId,
-            lof: elastic_variant.lof,
-            filters: 'PASS',
-            allele_count: elastic_variant[`${dataset}_AC`],
-            allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
-            allele_num: elastic_variant[`${dataset}_AN`],
-            hom_count: elastic_variant[`${dataset}_Hom`],
-          })
-        }))
-      })
+          }).then((response) => {
+            const variants = response.hits.hits.map((v) => {
+              const elastic_variant = v._source
+              return ({
+                hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
+                hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
+                // chrom: elastic_variant.contig,
+                // ref: elastic_variant.ref,
+                // alt: elastic_variant.alt,
+                consequence: elastic_variant.majorConsequence,
+                pos: elastic_variant.pos,
+                xpos: elastic_variant.xpos,
+                rsid: elastic_variant.rsid,
+                variant_id: elastic_variant.variantId,
+                id: elastic_variant.variantId,
+                lof: elastic_variant.lof,
+                filters: 'PASS',
+                allele_count: elastic_variant[`${dataset}_AC`],
+                allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
+                allele_num: elastic_variant[`${dataset}_AN`],
+                hom_count: elastic_variant[`${dataset}_Hom`],
+              })
+            })
+            return ctx.database.redis.set(
+              cacheKey, JSON.stringify(variants)
+            ).then((response) => {
+              console.log(response),
+              resolve(variants)
+            })
+          }).catch(error => console.log(error))
+        })
+      }
     })
   })
 }
