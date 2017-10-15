@@ -14,6 +14,7 @@ import {
 } from './active'
 
 import {
+  variantFilter,
   actions as variantActions
 } from './variants'
 
@@ -39,9 +40,13 @@ export const actions = {
   }),
 
   fetchPageDataByGeneName (geneName, geneFetchFunction) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+      const state = getState()
+      const options = {
+        variantFilter: variantFilter(state),
+      }
       dispatch(actions.requestGeneData(geneName))
-      geneFetchFunction(geneName)
+      geneFetchFunction(geneName, options)
         .then((geneData) => {
           dispatch(actions.receiveGeneData(geneName, geneData))
         })

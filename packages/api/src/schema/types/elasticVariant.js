@@ -60,7 +60,14 @@ const elasticVariantType = new GraphQLObjectType({
 
 export default elasticVariantType
 
-export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
+export const lookupElasticVariantsByGeneId = ({
+  elasticClient,
+  dataset,
+  obj,
+  ctx,
+  category,
+}) => {
+  console.log(category)
   const fields = [
     'hgvsp',
     'hgvsc',
@@ -82,6 +89,7 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
       ctx.database.gnomad,
       obj.canonical_transcript
     ).then((exons) => {
+      const overrideCategory = true
       const padding = 75
       const regions = exons
 
@@ -91,8 +99,11 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
         (acc + ((stop - start) + (padding * 2))), 0)
 
       console.log('Total base pairs in variant query', totalBasePairs)
+
       let variantSubset
-      if (totalBasePairs > 40000) {
+      if (category && !overrideCategory) {
+        variantSubset = category
+      } else if (totalBasePairs > 40000) {
         variantSubset = 'lof'
       } else if (totalBasePairs > 15000) {
         variantSubset = 'lofAndMissense'
@@ -124,7 +135,7 @@ export const lookupElasticVariantsByGeneId = (client, dataset, obj, ctx) => {
         }
         const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
           { range: { pos: { gte: start - padding, lte: stop + padding } } }))
-        return client.search({
+        return elasticClient.search({
           index: 'gnomad',
           type: 'variant',
           size: 20000,

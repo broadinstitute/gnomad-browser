@@ -129,20 +129,46 @@ const geneType = new GraphQLObjectType({
     },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
+      args: {
+        category: {
+          type: GraphQLString,
+          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
+        },
+      },
       resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId(ctx.database.elastic, 'exomes', obj, ctx),
+        lookupElasticVariantsByGeneId({
+          elasticClient: ctx.database.elastic,
+          dataset: 'exomes',
+          obj,
+          ctx,
+          category: args.category,
+        }),
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
-      resolve: (obj, args, ctx) => {
-        const data = lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj, ctx)
-        console.log(data)
-        return data
-      }
-
+      args: {
+        category: {
+          type: GraphQLString,
+          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
+        },
+      },
+      resolve: (obj, args, ctx) =>
+        lookupElasticVariantsByGeneId({
+          elasticClient: ctx.database.elastic,
+          dataset: 'exomes',
+          obj,
+          ctx,
+          category: args.category,
+        }),
     },
     exacVariants: {
       type: new GraphQLList(elasticVariantType),
+      args: {
+        category: {
+          type: GraphQLString,
+          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
+        },
+      },
       resolve: (obj, args, ctx) =>
         fromExacVariant.lookupElasticVariantsByGeneId(ctx.database.elastic, obj, ctx),
     },

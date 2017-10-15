@@ -5,7 +5,10 @@ const API_URL = 'http://localhost:8007'
 // const API_URL = 'http://35.185.9.245'
 
 
-export const fetchGnomadOnly = (geneName, url = API_URL) => {
+export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
+  const { variantFilter } = options
+  console.log(geneName)
+  console.log(variantFilter)
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -16,7 +19,7 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
       stop
       xstart
       xstop
-      gnomadExomeVariants {
+      gnomadExomeVariants(category: "${variantFilter}") {
         variant_id
         rsid
         pos
@@ -31,7 +34,22 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         consequence
         lof
       }
-      gnomadGenomeVariants {
+      gnomadGenomeVariants(category: "${variantFilter}") {
+        variant_id
+        rsid
+        pos
+        xpos
+        hgvsc
+        hgvsp
+        allele_count
+        allele_freq
+        allele_num
+        filters
+        hom_count
+        consequence
+        lof
+      }
+      exacVariants {
         variant_id
         rsid
         pos
@@ -200,9 +218,9 @@ export const fetchExac = (geneName, url = PUBLIC_API) => {
   })
 }
 
-export function fetchWithExac(geneName) {
+export function fetchWithExac(geneName, options) {
   return Promise.all([
-    fetchGnomadOnly(geneName),
+    fetchGnomadOnly(geneName, options),
     fetchExac(geneName),
   ]).then(([localData, publicData]) => {
     return ({

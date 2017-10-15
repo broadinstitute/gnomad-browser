@@ -90,4 +90,4 @@ AppGenePage.defaultProps = {
   gene: null,
 }
 
-export default withRouter(FetchHoc(AppGenePage, fetchGnomadOnly))
+export default withRouter(FetchHoc(AppGenePage, fetchWithExac))

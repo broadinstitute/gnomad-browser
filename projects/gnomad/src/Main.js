@@ -57,6 +57,23 @@ const appSettings = {
       lof: null,
       datasets: [],
     },
+    exacVariants: {
+      id: null,
+      variant_id: null,
+      rsid: null,
+      pos: null,
+      xpos: null,
+      hgvsc: null,
+      hgvsp: null,
+      allele_count: null,
+      allele_freq: null,
+      allele_num: null,
+      filters: null,
+      hom_count: null,
+      consequence: null,
+      lof: null,
+      datasets: [],
+    },
   },
   combinedDatasets: {
     gnomadCombinedVariants: {
