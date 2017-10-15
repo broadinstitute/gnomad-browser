@@ -24,7 +24,7 @@ export const types = keymirror({
   SET_CURRENT_TISSUE: null,
   SET_CURRENT_TRANSCRIPT: null,
   SET_CURRENT_EXON: null,
-  SET_CURRENT_CONSTRAINED_REGION: null,
+  SET_CURRENT_CONSTRAINED_REGION: null
 })
 
 export const actions = {
@@ -128,7 +128,6 @@ export default function createGeneReducer({ variantDatasets }) {
     [types.SET_CURRENT_CONSTRAINED_REGION] (state, { constrainedRegionName }) {
       return state.set('currentConstrainedRegion', constrainedRegionName)
     },
-
   }
 
   function genes (state = new State(), action: Object): State {

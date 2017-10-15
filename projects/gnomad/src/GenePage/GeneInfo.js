@@ -28,6 +28,10 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
+const GeneInfoWrapperFixedHeight = GeneInfoWrapper.extend`
+  height: 110px;
+`
+
 const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
   const {
     gene_name,
@@ -37,7 +41,7 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
     exacv1_constraint,
   } = geneData.toJS()
   return (
-    <GeneInfoWrapper>
+    <GeneInfoWrapperFixedHeight>
       <GeneNameWrapper>
         <GeneSymbol>{gene_name}</GeneSymbol>
         <GeneLongName>{full_gene_name}</GeneLongName>
@@ -95,7 +99,7 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
           </TableRows>
         </Table>}
       </GeneDetails>
-    </GeneInfoWrapper>
+    </GeneInfoWrapperFixedHeight>
   )
 }
 

@@ -40,7 +40,7 @@ const Summary = styled.div`
 `
 
 const MainSection = styled.div`
-  margin-left: 110px;
+  margin-left: 70px;
 `
 const VariantTable = withRouter(VariantTableConnected)
 

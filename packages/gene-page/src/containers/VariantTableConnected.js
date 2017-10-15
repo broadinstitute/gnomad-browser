@@ -12,6 +12,7 @@ import Table from '@broad/table'
 import {
   actions as activeActions,
   currentTableIndex,
+  screenSize,
 } from '../resources/active'
 
 import {
@@ -33,6 +34,7 @@ const VariantTable = ({
   height,
   tableConfig,
   history,
+  screenSize,
 }) => {
   const tConfig = tableConfig(setVariantSort)
   const scrollBarWidth = 40
@@ -40,12 +42,12 @@ const VariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+  const tableHeight = screenSize.height - 700
   return (
     <div>
       <Table
         title={title}
-        height={height}
-        width={calculatedWidth}
+        height={tableHeight}
         tableConfig={tConfig}
         tableData={variants}
         remoteRowCount={variants.size}
@@ -73,6 +75,7 @@ VariantTable.propTypes = {
   height: PropTypes.number,
   tableConfig: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  screenSize: PropTypes.object.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -87,6 +90,7 @@ const mapStateToProps = (state) => {
     tablePosition: currentTableIndex(state),
     searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
+    screenSize: screenSize(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

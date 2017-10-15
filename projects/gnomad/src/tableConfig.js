@@ -5,7 +5,7 @@ export default function (onHeaderClick) {
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
-        width: 125,
+        width: window.innerWidth - 70 - 70 - 100 - 100 - 40 - 40 - 40 - 50 - 20 - 550,
         onHeaderClick,
         // searchable: true,
       },

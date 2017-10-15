@@ -9,7 +9,7 @@ import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConne
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
-import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { screenSize, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { geneData, regionalConstraint } from '@broad/gene-page/src/resources/genes'
 
 import {
@@ -24,19 +24,29 @@ import {
   attributeConfig,
 } from '@broad/gene-page/src/presentation/RegionViewerStyles'
 
+const COVERAGE_TRACK_HEIGHT = 200
+const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
+const VARIANT_TRACK_HEIGHT = 60
+
+export const TOTAL_REGION_VIEWER_HEIGHT =
+  COVERAGE_TRACK_HEIGHT +
+  REGIONAL_CONSTRAINED_TRACK_HEIGHT +
+  VARIANT_TRACK_HEIGHT
+
 const GeneRegion = ({
   gene,
   allVariants,
   selectedVariantDataset,
   exonPadding,
   regionalConstraint,
+  screenSize,
 }) => {
+  const regionViewerWidth = screenSize.width - 330
+
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
   const { exome_coverage, genome_coverage } = transcript
-  console.log('exome coverage length', exome_coverage.length, exome_coverage)
-  console.log('genome coverage length', genome_coverage.length, genome_coverage)
   const variantsReversed = allVariants.reverse()
 
   const showVariants = true
@@ -131,13 +141,13 @@ const GeneRegion = ({
           </svg>
         </RegionalConstraintData>
       </RegionalConstraintTrackWrapper>
-
     )
   }
+
   return (
     <div>
       <RegionViewer
-        width={1000}
+        width={regionViewerWidth}
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
@@ -151,7 +161,13 @@ const GeneRegion = ({
           yMax={110}
         />
         <TranscriptConnected height={12} />
-        <RegionalConstraintTrack height={17} regionalConstraintData={regionalConstraint} strand={strand} />
+        {regionalConstraint.length > 0 &&
+          <RegionalConstraintTrack
+            height={17}
+            regionalConstraintData={regionalConstraint}
+            strand={strand}
+          />}
+
         {showVariants &&
           <VariantTrack
             key={'All-variants'}
@@ -173,15 +189,16 @@ GeneRegion.propTypes = {
   setRegionViewerAttributes: PropTypes.func.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
+  screenSize: PropTypes.object.isRequired,
 }
 export default connect(
   state => ({
     gene: geneData(state),
     exonPadding: exonPadding(state),
-    // allVariants: allVariantsInCurrentDatasetAsList(state),
     allVariants: finalFilteredVariants(state),
     selectedVariantDataset: selectedVariantDataset(state),
     regionalConstraint: regionalConstraint(state),
+    screenSize: screenSize(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>

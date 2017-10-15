@@ -19,6 +19,7 @@ export const types = keymirror({
   SET_CURRENT_TABLE_SCROLL_DATA: null,
   SET_EXON_PADDING: null,
   SET_REGION_VIEWER_ATTRIBUTES: null,
+  SET_SCREEN_SIZE: null,
 })
 
 export const actions = {
@@ -76,6 +77,7 @@ export const actions = {
       dispatch(actions.setNavigatorPosition(position))
     }
   },
+  setScreenSize: (height, width) => ({ type: types.SET_SCREEN_SIZE, height, width }),
 }
 
 const actionHandlers = {
@@ -110,6 +112,9 @@ const actionHandlers = {
     }
     return state.set('visibleInTable', range)
   },
+  [types.SET_SCREEN_SIZE] (state, { height, width }) {
+    return state.set('screenSize', { height, width })
+  },
 }
 
 export default function createActiveReducer ({
@@ -131,6 +136,10 @@ export default function createActiveReducer ({
       // invertOffset: null,
     },
     visibleInTable: [0, 15],
+    screenSize: {
+      width: typeof window === 'object' ? window.innerWidth: null,
+      height: typeof window === 'object' ? window.innerHeight: null ,
+    },
   })
   function reducer (state = new State(), action: Object): State {
     const { type } = action
@@ -160,3 +169,5 @@ export const tablePosition = createSelector(
     )
   }
 )
+
+export const screenSize = state => state.active.screenSize
