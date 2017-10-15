@@ -46,21 +46,6 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         consequence
         lof
       }
-      exacVariants {
-        variant_id
-        rsid
-        pos
-        xpos
-        hgvsc
-        hgvsp
-        allele_count
-        allele_freq
-        allele_num
-        filters
-        hom_count
-        consequence
-        lof
-      }
       exacv1_regional_constraint_regions {
         transcript
         gene

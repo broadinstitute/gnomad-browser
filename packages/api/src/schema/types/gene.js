@@ -107,28 +107,6 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
           lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id, args.consequence),
     },
-    minimal_gnomad_variants: {
-      type: new GraphQLList(minimalVariantType),
-      resolve: (obj, args, ctx) =>
-          lookupMinimalVariants(ctx.database.gnomad, 'hailtest', obj.gene_name),
-    },
-    genome_variants: {
-      type: new GraphQLList(variantType),
-      args: { consequence: { type: GraphQLString } },
-      resolve: (obj, args, ctx) =>
-        lookupVariantsByGeneId(ctx.database.gnomad, 'genome_variants', obj.gene_id, args.consequence),
-    },
-    exacv1_variants: {
-      type: new GraphQLList(variantType),
-      args: { consequence: { type: GraphQLString } },
-      resolve: (obj, args, ctx) =>
-        lookupVariantsByGeneId(ctx.database.exacv1, 'variants', obj.gene_id, args.consequence),
-    },
-    // meta_schizophrenia_variants: {
-    //   type: new GraphQLList(metaVariantType),
-    //   resolve: (obj, args, ctx) =>
-    //     ctx.database.sczMockDb.getSczVariants(),
-    // },
     schizophreniaGwas: {
       type: new GraphQLList(schzVariantType),
       resolve: (obj, args, ctx) =>
@@ -156,8 +134,12 @@ const geneType = new GraphQLObjectType({
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
-      resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj, ctx),
+      resolve: (obj, args, ctx) => {
+        const data = lookupElasticVariantsByGeneId(ctx.database.elastic, 'genomes', obj, ctx)
+        console.log(data)
+        return data
+      }
+
     },
     exacVariants: {
       type: new GraphQLList(elasticVariantType),

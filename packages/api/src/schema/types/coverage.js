@@ -123,7 +123,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
   const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
     (acc + (stop - start)), 0)
 
-  console.log('Total base pairs in query', totalBasePairs)
+  // console.log('Total base pairs in query', totalBasePairs)
   return new Promise((resolve, _) => {
     elasticClient.search({
       index,
@@ -259,7 +259,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
     return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom })
   }
 
-  console.log('looking up with buckets')
+  // console.log('looking up with buckets')
 
   const fields = [
     'pos',
@@ -269,7 +269,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
   const cacheKey = `${index}-coverage-${obj.transcript_id}`
 
   return new Promise((resolve, _) => {
-    console.log('searching')
+    // console.log('searching')
     return ctx.database.redis.get(cacheKey).then((reply) => {
       if (reply) {
         // console.log(reply)
