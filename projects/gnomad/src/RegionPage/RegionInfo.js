@@ -17,22 +17,22 @@ import {
   GeneAttribute,
 } from '@broad/gene-page/src/presentation/GeneInfoStyles'
 
-const GeneDetailsModified = GeneDetails.extend`
-  width: 100%;
-  ${'' /* border: 1px solid red; */}
-
-`
-const GeneAttributesModified = GeneAttributes.extend`
-  flex-direction: row;
-  flex-wrap: wrap ;
-  width: 100%;
-  ${'' /* border: 1px solid blue; */}
-`
-const GeneAttributeModified = GeneAttribute.extend`
-  width: 25%;
-  margin-right: 50px;
-  ${'' /* border: 1px solid yellow; */}
-`
+// const GeneDetailsModified = GeneDetails.extend`
+//   width: 100%;
+//   ${'' /* border: 1px solid red; */}
+//
+// `
+// const GeneAttributesModified = GeneAttributes.extend`
+//   flex-direction: row;
+//   flex-wrap: wrap ;
+//   width: 100%;
+//   ${'' /* border: 1px solid blue; */}
+// `
+// const GeneAttributeModified = GeneAttribute.extend`
+//   width: 25%;
+//   margin-right: 50px;
+//   ${'' /* border: 1px solid yellow; */}
+// `
 
 const lof = '#DD2C00'
 const missense = 'orange'
@@ -81,7 +81,7 @@ const RegionInfo = ({ regionData, variantCount }) => {
   console.log(total)
   return (
     <GeneInfoWrapper>
-      <GeneNameWrapper>
+      {/* <GeneNameWrapper>
         <GeneSymbol>{`${chrom}-${start}-${stop}`}</GeneSymbol>
       </GeneNameWrapper>
       <GeneDetailsModified>
@@ -98,7 +98,7 @@ const RegionInfo = ({ regionData, variantCount }) => {
             </GeneAttributeModified>
           ))}
         </GeneAttributesModified>
-      </GeneDetailsModified>
+      </GeneDetailsModified> */}
     </GeneInfoWrapper>
   )
 }

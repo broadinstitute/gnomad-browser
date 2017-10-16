@@ -42,12 +42,12 @@ const VariantTable = ({
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     acc + field.width, 0)
   const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  const tableHeight = screenSize.height - 700
+  // const tableHeight = screenSize.height - 700
   return (
     <div>
       <Table
         title={title}
-        height={tableHeight}
+        height={800}
         tableConfig={tConfig}
         tableData={variants}
         remoteRowCount={variants.size}

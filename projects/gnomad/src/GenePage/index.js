@@ -34,6 +34,7 @@ const GenePage = styled.div`
 const Summary = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   padding-left: 60px;
   margin-bottom: 10px;
