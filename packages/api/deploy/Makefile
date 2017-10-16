@@ -10,10 +10,12 @@ VERSION=0
 BUILD_TIME=$(shell date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s")
 IMAGE_TAG=$(BUILD_TIME)
 SOURCE_DIRECTORY=..
-API_EXTERNAL_IP=35.192.159.174
+API_EXTERNAL_IP=35.184.79.173
 
 BASE_IMAGE_NAME="$(BASE_IMAGE_PREFIX):$(IMAGE_TAG)"
 MAIN_IMAGE_NAME="$(IMAGE_PREFIX):$(IMAGE_TAG)"
+
+SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=23.236.50.46)
 
 local-redis:
 	redis-server /usr/local/etc/redis.conf
@@ -39,6 +41,7 @@ gnomad-api:
 	kubectl create -f gnomad-api-controller.yaml
 
 gnomad-api-service:
+	gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment $(PROJECT_NAME) \
 	--type="LoadBalancer" \
 	--load-balancer-ip="(API_EXTERNAL_IP)"
