@@ -23,7 +23,7 @@ spec:
       #     readOnly: true
       containers:
       - name: gnomad-p-serve
-        image: gcr.io/exac-gnomad/gnomad-legacy:1508121710
+        image: gcr.io/exac-gnomad/gnomad-legacy:1508166941
         env:
         - name: DEPLOYMENT_ENV
           value: development

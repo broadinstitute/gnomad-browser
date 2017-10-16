@@ -93,20 +93,22 @@ const CoverageTrack = ({
   }
 
   const plots = dataConfig.datasets.map((dataset) => {
-    switch (dataset.type) {
-      case 'area':
-        return renderArea(dataset)
-      case 'line':
-        return renderLine(dataset)
-      case 'line-area':
-        return (
-          <g>
-            {renderArea(dataset)}
-            {renderLine(dataset)}
-          </g>
-        )
-      default:
-        return renderArea(dataset)
+    if (dataset.data) {
+      switch (dataset.type) {
+        case 'area':
+          return renderArea(dataset)
+        case 'line':
+          return renderLine(dataset)
+        case 'line-area':
+          return (
+            <g>
+              {renderArea(dataset)}
+              {renderLine(dataset)}
+            </g>
+          )
+        default:
+          return renderArea(dataset)
+      }
     }
   })
 

@@ -36,7 +36,8 @@ const VariantTable = ({
   history,
   screenSize,
 }) => {
-  const tConfig = tableConfig(setVariantSort)
+  const tableWidth = screenSize.width * 0.9
+  const tConfig = tableConfig(setVariantSort, tableWidth)
   const scrollBarWidth = 40
   const paddingWidth = tConfig.fields.length * 40
   const cellContentWidth = tConfig.fields.reduce((acc, field) =>
@@ -48,6 +49,7 @@ const VariantTable = ({
       <Table
         title={title}
         height={800}
+        width={tableWidth}
         tableConfig={tConfig}
         tableData={variants}
         remoteRowCount={variants.size}

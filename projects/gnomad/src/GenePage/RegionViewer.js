@@ -52,7 +52,7 @@ const GeneRegion = ({
   const showVariants = true
 
   const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-    coverageConfigClassic(exome_coverage, genome_coverage) :
+    coverageConfigClassic(exome_coverage) :
     coverageConfigNew(exome_coverage, genome_coverage)
 
 

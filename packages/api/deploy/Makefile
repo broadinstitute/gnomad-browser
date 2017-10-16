@@ -50,3 +50,7 @@ update-gnomad-api:
 	# $(sed -ie "s/THIS_STRING_IS_REPLACED_DURING_BUILD/$(BUILD_TIME)/g" gnomad-api-controller.yml)
 	kubectl delete -f gnomad-api-controller.yaml
 	kubectl create -f gnomad-api-controller.yaml
+
+dev:
+	redis-cli flushall
+	npm run dev

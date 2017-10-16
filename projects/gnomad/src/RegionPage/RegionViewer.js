@@ -47,7 +47,7 @@ const RegionViewer = ({
   const variantsReversed = allVariants.reverse()
 
   const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-    coverageConfigClassic(exome_coverage, genome_coverage) :
+    coverageConfigClassic(exome_coverage) :
     coverageConfigNew(exome_coverage, genome_coverage)
 
   const featuresToDisplay = ['default']

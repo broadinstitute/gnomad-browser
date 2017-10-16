@@ -7,7 +7,7 @@ import {
   GraphQLInt,
   GraphQLFloat,
   GraphQLString,
-  // GraphQLList,
+  GraphQLList,
   // GraphQLBoolean,
 } from 'graphql'
 
@@ -34,7 +34,7 @@ const lofs = [
 const createConsequenceQuery = consequences => consequences.map(consequence => (
   { term: { majorConsequence: consequence } }
 ))
-
+//
 const elasticVariantType = new GraphQLObjectType({
   name: 'ElasticVariant',
   fields: () => ({
@@ -50,8 +50,8 @@ const elasticVariantType = new GraphQLObjectType({
     allele_count: { type: GraphQLInt },
     allele_freq: { type: GraphQLFloat },
     allele_num: { type: GraphQLInt },
-    // filters: { type: new GraphQLList(GraphQLString) },
-    filters: { type: GraphQLString },
+    filters: { type: new GraphQLList(GraphQLString) },
+    // filters: { type: GraphQLString },
     hom_count: { type: GraphQLInt },
     consequence: { type: GraphQLString },
     lof: { type: GraphQLString },
@@ -67,7 +67,6 @@ export const lookupElasticVariantsByGeneId = ({
   ctx,
   category,
 }) => {
-  console.log(category)
   const fields = [
     'hgvsp',
     'hgvsc',
@@ -78,6 +77,7 @@ export const lookupElasticVariantsByGeneId = ({
     'variantId',
     'variantId',
     'lof',
+    `${dataset}_filters`,
     `${dataset}_AC`,
     `${dataset}_AF`,
     `${dataset}_AN`,
@@ -126,7 +126,6 @@ export const lookupElasticVariantsByGeneId = ({
       const cacheKey = `${dataset}-variants-${obj.gene_id}-${variantSubset}`
 
       return ctx.database.redis.get(cacheKey).then((reply, error) => {
-        console.log()
         if (error) {
           reject(error)
         }
@@ -180,7 +179,7 @@ export const lookupElasticVariantsByGeneId = ({
               variant_id: elastic_variant.variantId,
               id: elastic_variant.variantId,
               lof: elastic_variant.lof,
-              filters: 'PASS',
+              filters: elastic_variant[`${dataset}_filters`],
               allele_count: elastic_variant[`${dataset}_AC`],
               allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
               allele_num: elastic_variant[`${dataset}_AN`],
@@ -323,6 +322,7 @@ export const lookupElasticVariantsInRegion = ({
     }).then((response) => {
       resolve(response.hits.hits.map((v) => {
         const elastic_variant = v._source
+        console.log(elastic_variant[`${dataset}_filters`])
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
@@ -336,7 +336,8 @@ export const lookupElasticVariantsInRegion = ({
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: 'PASS',
+          filters: elastic_variant[`${dataset}_filters`] !== null ?
+            elastic_variant[`${dataset}_filters`].join('|') : '',
           allele_count: elastic_variant[`${dataset}_AC`],
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],

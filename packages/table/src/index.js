@@ -66,7 +66,8 @@ const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
   const { filters } = dataRow
   let border
   let backgroundColor
-  if (filters !== 'PASS') {
+
+  if (filters.size !== 0) {
     border = datasetConfig[`${dataset}Filtered`].border
     backgroundColor = datasetConfig[`${dataset}Filtered`].color
   } else {
@@ -90,16 +91,7 @@ const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
     </span>
   )
 })
-
-const getFilterBackgroundColor = (filter) => {
-  switch (filter) {
-    case 'PASS':
-      return '#85C77D'
-    default:
-      return '#F1FF87'
-  }
-}
-const formatFitler = (filters, index) => filters.split('|').map(filter => (
+const formatFitler = (filters, index) => filters.map(filter => (
   <span
     key={`${filter}${index}`}
     style={{
@@ -107,7 +99,6 @@ const formatFitler = (filters, index) => filters.split('|').map(filter => (
       border: '1px solid #000',
       marginLeft: 10,
       padding: '1px 2px 1px 2px',
-      backgroundColor: getFilterBackgroundColor(filter),
     }}
   >
     {filter}
@@ -205,6 +196,9 @@ const formatAlleleFrequency = (dataRow, dataKey) => {
 
 
 const getDataCell = (field, dataRow, searchText, i) => {
+  // if (condition) {
+  //
+  // }
   const { dataKey, dataType, width } = field
   const cellStyle = {
     ...tableCellStyles[dataType],
@@ -320,15 +314,19 @@ const TableRow = styled.div`
   background-color: ${({ rowIndex, alternatingColors: [c1, c2] }) =>
     (rowIndex % 2 === 0 ? c1 : c2)};
   &:hover {
-    ${'' /* background-color: rgba(115, 171, 61,  0.1); */}
     background-color: rgba(10, 121, 191, 0.1);
     cursor: pointer;
   }
 `
 
 const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick, onRowHover) => {  // eslint-disable-line
-  const cells = tableConfig.fields.map((field, i) =>  // eslint-disable-line
-    getDataCell(field, dataRow, searchText, i))
+
+  const cells = tableConfig.fields
+    .filter(field => {
+      return !field.disappear
+    })
+    .map((field, i) =>  // eslint-disable-line
+      getDataCell(field, dataRow, searchText, i))
 
   const indexCell = (
     <div
@@ -400,7 +398,9 @@ const getHeaderCell = field => (
 )
 
 
-const headers = tableConfig => tableConfig.fields.map(field => getHeaderCell(field))
+const headers = tableConfig => tableConfig.fields
+  .filter(field => !field.disappear)
+  .map(field => getHeaderCell(field))
 
 const isRowLoaded = (tableData, loadLookAhead) => ({ index }) => {
   return !!tableData[index + loadLookAhead]
@@ -482,6 +482,7 @@ const Table = ({
   onRowHover,
   onScroll,
   searchText,
+  width,
 }) => {
   const isRowTableLoaded = isRowLoaded(tableData, loadLookAhead)
 
@@ -504,24 +505,18 @@ const Table = ({
         rowCount={remoteRowCount}
       >
         {({ onRowsRendered, registerChild }) => (
-          <AutoSizer disableHeight>
-            {({ width }) => {
-              return (
-                <List
-                  height={height}
-                  onRowsRendered={onRowsRendered}
-                  ref={registerChild}
-                  rowCount={remoteRowCount}
-                  rowHeight={25}
-                  rowRenderer={rowRenderer}
-                  overscanRowCount={overscan}
-                  width={defaultWidth}
-                  scrollToIndex={scrollToRow}
-                  onScroll={onScroll}
-                />
-              )
-            }}
-          </AutoSizer>
+          <List
+            height={height}
+            onRowsRendered={onRowsRendered}
+            ref={registerChild}
+            rowCount={remoteRowCount}
+            rowHeight={25}
+            rowRenderer={rowRenderer}
+            overscanRowCount={overscan}
+            width={width}
+            scrollToIndex={scrollToRow}
+            onScroll={onScroll}
+          />
         )}
       </InfiniteLoader>
     </div>
