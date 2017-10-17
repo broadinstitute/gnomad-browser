@@ -170,7 +170,12 @@ const geneType = new GraphQLObjectType({
         },
       },
       resolve: (obj, args, ctx) =>
-        fromExacVariant.lookupElasticVariantsByGeneId(ctx.database.elastic, obj, ctx),
+        fromExacVariant.lookupElasticVariantsByGeneId({
+          elasticClient: ctx.database.elastic,
+          obj,
+          ctx,
+          category: args.category,
+        }),
     },
     clinvar_variants: {
       type: new GraphQLList(clinvarType),

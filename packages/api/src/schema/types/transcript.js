@@ -71,6 +71,21 @@ const transcriptType = new GraphQLObjectType({
         })
       }
     },
+    exacv1_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) => {
+        return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
+          return lookUpCoverageByExons({
+            elasticClient: ctx.database.elastic,
+            index: 'exacv1_coverage',
+            exons,
+            chrom: obj.chrom,
+            obj,
+            ctx,
+          })
+        })
+      }
+    },
     // genome_coverage: {
     //   type: new GraphQLList(coverageType),
     //   resolve: (obj, args, ctx) => {

@@ -49,15 +49,31 @@ const GeneRegion = ({
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
-  const { exome_coverage, genome_coverage } = transcript
+  const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
   const variantsReversed = allVariants.reverse()
 
   const showVariants = true
 
-  const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-    coverageConfigClassic(exome_coverage) :
-    coverageConfigNew(exome_coverage, genome_coverage)
+  // const coverageConfig = selectedVariantDataset === 'exacVariants' ?
+  //   coverageConfigClassic(exome_coverage) :
+  //   coverageConfigNew(exome_coverage, genome_coverage)
 
+  const getCoverageConfig = (selectedVariantDataset) => {
+    switch (selectedVariantDataset) {
+      case 'exacVariants':
+        return coverageConfigClassic(exacv1_coverage)
+      case 'gnomadExomeVariants':
+        return coverageConfigNew(exome_coverage)
+      case 'gnomadGenomeVariants':
+        return coverageConfigNew(null, genome_coverage)
+      case 'gnomadCombinedVariants':
+        return coverageConfigNew(exome_coverage, genome_coverage)
+      default:
+        return coverageConfigNew(exome_coverage, genome_coverage)
+    }
+  }
+
+  const coverageConfig = getCoverageConfig(selectedVariantDataset)
 
   const RegionalConstraintTrackWrapper = styled.div`
     display: flex;

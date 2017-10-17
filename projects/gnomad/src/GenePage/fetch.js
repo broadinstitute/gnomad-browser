@@ -91,6 +91,10 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
           pos
           mean
         }
+        exacv1_coverage {
+          pos
+          mean
+        }
       }
       transcripts {
         _id

@@ -75,7 +75,6 @@ export const lookupElasticVariantsByGeneId = ({
     'xpos',
     'rsid',
     'variantId',
-    'variantId',
     'lof',
     `${dataset}_filters`,
     `${dataset}_AC`,

@@ -7,7 +7,11 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { geneData } from '@broad/gene-page/src/resources/genes'
-import { variantCount, selectedVariantDataset } from '@broad/gene-page/src/resources/variants'
+import {
+  variantCount,
+  selectedVariantDataset,
+  actions as variantActions,
+} from '@broad/gene-page/src/resources/variants'
 
 import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
@@ -41,7 +45,7 @@ const GeneDetailsResponsive = GeneDetails.extend`
 `
 
 const TableWrapper = styled.div`
-  width: 100%;
+
 `
 
 const ConstraintTable = ({ constraintData }) => (
@@ -97,11 +101,12 @@ const PlaceholderTable = Table.extend`
 const ComingSoon = TableCell.extend`
   width: 100%;
   text-align: center;
+  cursor: pointer;
 `
 
-const ConstraintTablePlaceholder = () => (
+const ConstraintTablePlaceholder = ({ setSelectedVariantDataset }) => (
   <PlaceholderTable>
-    <div>
+    <TableWrapper>
       <SectionTitle>Gene constraint</SectionTitle>
       <TableRows>
         <TableHeader>
@@ -119,7 +124,11 @@ const ConstraintTablePlaceholder = () => (
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Missense</TableCell>
-          <ComingSoon>Click here to see ExAC values</ComingSoon>
+          <ComingSoon
+            onClick={() => setSelectedVariantDataset('exacVariants')}
+          >
+            Click here to see ExAC values
+          </ComingSoon>
 
         </TableRow>
         <TableRow>
@@ -135,11 +144,11 @@ const ConstraintTablePlaceholder = () => (
           <TableCell />
         </TableRow> */}
       </TableRows>
-    </div>
+    </TableWrapper>
   </PlaceholderTable>
 )
 
-const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
+const GeneInfo = ({ geneData, variantCount, selectedVariantDataset, setSelectedVariantDataset }) => {
   const {
     gene_name,
     gene_id,
@@ -230,7 +239,7 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
         {selectedVariantDataset === 'exacVariants' &&
           <ConstraintTable constraintData={exacv1_constraint} />}
         {selectedVariantDataset === 'gnomadCombinedVariants' &&
-          <ConstraintTablePlaceholder />}
+          <ConstraintTablePlaceholder setSelectedVariantDataset={setSelectedVariantDataset} />}
       </GeneDetailsResponsive>
     </GeneInfoWrapper>
   )
@@ -247,5 +256,9 @@ export default connect(
     geneData: geneData(state),
     variantCount: variantCount(state),
     selectedVariantDataset: selectedVariantDataset(state),
+  }),
+  dispatch => ({
+    setSelectedVariantDataset: dataset =>
+      dispatch(variantActions.setSelectedVariantDataset(dataset)),
   })
 )(GeneInfo)

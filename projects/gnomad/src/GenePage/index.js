@@ -29,7 +29,7 @@ const GenePage = styled.div`
   align-items: flex-start;
   background-color: #FAFAFA;
   color: black;
-  ${'' /* border: 5px solid orange; */}
+  border: 5px solid orange;
   width: 95%;
   @media (max-width: 900px) {
     padding-left: 0;
@@ -44,7 +44,9 @@ const Summary = styled.div`
   width: 95%;
   padding-left: 60px;
   margin-bottom: 10px;
-  ${'' /* border: 5px solid blue; */}
+  border: 5px solid blue;
+  flex-shrink: 0;
+  height: 100%;
   @media (max-width: 900px) {
     padding-left: 0;
     align-items: center;
@@ -54,7 +56,7 @@ const Summary = styled.div`
 
 const TableSection = styled.div`
   margin-left: 70px;
-  ${'' /* border: 1px solid green; */}
+  border: 1px solid green;
   @media (max-width: 900px) {
     margin-left: 5px;
     align-items: center;

@@ -6,6 +6,8 @@ export const GeneInfoWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 97%;
+  flex-shrink: 0;
+  height: 100%;
   @media (max-width: 900px) {
     flex-direction: column;
     justify-content: center;
@@ -19,6 +21,7 @@ export const GeneNameWrapper = styled.div`
   margin-bottom: 10px;
   justify-content: flex-start;
   width: 100%;
+  flex-shrink: 0;
   @media (max-width: 900px) {
     align-items: center;
     flex-direction: column;
@@ -49,7 +52,8 @@ export const GeneDetails = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  ${'' /* border: 1px solid red; */}
+  flex-shrink: 0;
+  border: 1px solid red;
 `
 
 export const GeneAttributes = styled.div`
@@ -62,13 +66,13 @@ export const GeneAttributes = styled.div`
   width: 300px;
   margin-bottom: 30px;
   margin-top: 35px;
-  ${'' /* border: 1px solid purple; */}
+  border: 1px solid purple;
 `
 
 export const GeneAttributeKeys = styled.strong`
   display: flex;
   flex-direction: column;
-  ${'' /* border: 2px solid red; */}
+  border: 2px solid red;
   width: 50%;
   ${'' /* width: 50%; */}
   ${'' /* justify-content: flex-end; */}
@@ -79,13 +83,13 @@ export const GeneAttributeKeys = styled.strong`
 export const GeneAttributeValues = styled.div`
   display: flex;
   flex-direction: column;
-  ${'' /* border: 2px solid orange; */}
+  border: 2px solid orange;
   width: 50%;
   ${'' /* justify-content: flex-end; */}
 `
 
 export const GeneAttributeKey = styled.strong`
-  ${'' /* border: 2px solid green; */}
+  border: 2px solid green;
   ${'' /* width: 50%; */}
   ${'' /* justify-content: flex-end; */}
   ${'' /* align-items: flex-end; */}
@@ -95,7 +99,7 @@ export const GeneAttributeKey = styled.strong`
 `
 
 export const GeneAttributeValue = styled.div`
-  ${'' /* border: 2px solid blue; */}
+  border: 2px solid blue;
   ${'' /* width: 50%; */}
   ${'' /* justify-content: flex-start; */}
   margin-bottom: 3px;

@@ -72,6 +72,18 @@ coverage-test:
 	COVERAGE_TYPE=test \
 	coverage
 
+coverage-exacv1:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	export_exacv1_coverage.py \
+	--host $(ES_HOST_IP) \
+	--port 9200 \
+	--block-size 20000 \
+	--num-shards 6 \
+	--index exacv1_coverage
+
+
 persist:
 	curl -XPUT http://$(ES_IP)/dmd,chrom_x_coverage/_settings -d '{ \
 		"index.routing.allocation.include.data_node_hostname": "es-data-persistent*", \
