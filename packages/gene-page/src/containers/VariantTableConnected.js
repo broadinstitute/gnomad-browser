@@ -36,14 +36,14 @@ const VariantTable = ({
   history,
   screenSize,
 }) => {
-  const tableWidth = screenSize.width * 0.9
-  const tConfig = tableConfig(setVariantSort, tableWidth)
   const scrollBarWidth = 40
-  const paddingWidth = tConfig.fields.length * 40
-  const cellContentWidth = tConfig.fields.reduce((acc, field) =>
-    acc + field.width, 0)
-  const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  // const tableHeight = screenSize.height - 700
+  // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+  const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
+  const tConfig = tableConfig(setVariantSort, tableWidth)
+  // const paddingWidth = tConfig.fields.length * 40
+  // const cellContentWidth = tConfig.fields.reduce((acc, field) =>
+    // acc + field.width, 0)
+  // const tableHeight = screenSize.width - 700
   return (
     <div>
       <Table

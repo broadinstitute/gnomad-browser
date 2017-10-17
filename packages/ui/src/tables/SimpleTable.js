@@ -4,7 +4,6 @@ import styled from 'styled-components'
 export const Table = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100%;
 `
 
 export const VerticalTextLabels = styled.div`
@@ -33,15 +32,14 @@ export const VerticalLabelText = styled.span`
 export const TableRows = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
 `
 
 export const TableRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 30px;
-  font-size: 14px;
+  height: 25px;
+  font-size: 13px;
   border-bottom: 1px solid lightgrey;
 `
 
@@ -52,7 +50,9 @@ export const TableHeader = TableRow.extend`
 `
 
 export const TableCell = styled.div`
-  width: 100px;
+  width: ${props => props.width};
+  margin-left: 5px;
+  ${'' /* width: 100px; */}
 `
 
 export const TableTitleColumn = TableCell.extend`

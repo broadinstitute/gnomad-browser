@@ -13,6 +13,7 @@ import { withRouter, Route } from 'react-router-dom'
 
 import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
 import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
 import GeneInfo from './GeneInfo'
 import Settings from '../Settings'
@@ -28,20 +29,37 @@ const GenePage = styled.div`
   align-items: flex-start;
   background-color: #FAFAFA;
   color: black;
-  margin-left: 10px;
+  ${'' /* border: 5px solid orange; */}
+  width: 95%;
+  @media (max-width: 900px) {
+    padding-left: 0;
+    align-items: center;
+  }
 `
 
 const Summary = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 95%;
   padding-left: 60px;
   margin-bottom: 10px;
+  ${'' /* border: 5px solid blue; */}
+  @media (max-width: 900px) {
+    padding-left: 0;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
-const MainSection = styled.div`
+const TableSection = styled.div`
   margin-left: 70px;
+  ${'' /* border: 1px solid green; */}
+  @media (max-width: 900px) {
+    margin-left: 5px;
+    align-items: center;
+    margin-top: 10px;
+  }
 `
 const VariantTable = withRouter(VariantTableConnected)
 
@@ -58,8 +76,9 @@ const AppGenePage = ({
         <GeneInfo />
       </Summary>
       <GeneRegion />
-      <Settings />
-      <MainSection>
+      <TableSection>
+        {/* <SectionTitle>Variant table</SectionTitle> */}
+        <Settings />
         <Route path={'/gene/:gene/:variantId'} component={VariantPage} />
         {/* <Route
           exact
@@ -71,14 +90,17 @@ const AppGenePage = ({
           path="/gene/:gene"
           render={() => {
             return (
-              <VariantTable
-                tableConfig={tableConfig}
-                height={400}
-              />
+              <div>
+                <VariantTable
+                  tableConfig={tableConfig}
+                  height={400}
+                />
+              </div>
+
             )
           }}
         />
-      </MainSection>
+      </TableSection>
     </GenePage>
   )
 }

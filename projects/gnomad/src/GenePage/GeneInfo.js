@@ -9,6 +9,8 @@ import styled from 'styled-components'
 import { geneData } from '@broad/gene-page/src/resources/genes'
 import { variantCount, selectedVariantDataset } from '@broad/gene-page/src/resources/variants'
 
+import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
+
 import {
   GeneInfoWrapper,
   GeneNameWrapper,
@@ -31,51 +33,60 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
-const GeneInfoWrapperFixedHeight = GeneInfoWrapper.extend`
-  height: 200px;
+const GeneDetailsResponsive = GeneDetails.extend`
+  align-items: center;
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+`
+
+const TableWrapper = styled.div`
   width: 100%;
 `
 
 const ConstraintTable = ({ constraintData }) => (
-  <Table>
-    <TableRows>
-      <TableHeader>
-        <TableTitleColumn />
-        <TableCell>Category</TableCell>
-        <TableCell>Expected no. variants</TableCell>
-        <TableCell>Observed no. variants</TableCell>
-        <TableCell>Constraint metric</TableCell>
-      </TableHeader>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>Synonymous</TableCell>
-        <TableCell>{constraintData.exp_syn.toFixed(1)}</TableCell>
-        <TableCell>{constraintData.n_syn}</TableCell>
-        <TableCell>Z = {constraintData.syn_z.toFixed(1)}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>Missense</TableCell>
-        <TableCell>{constraintData.exp_mis.toFixed(1)}</TableCell>
-        <TableCell>{constraintData.n_mis}</TableCell>
-        <TableCell>Z = {constraintData.mis_z.toFixed(1)}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>LoF</TableCell>
-        <TableCell>{constraintData.exp_lof.toFixed(1)}</TableCell>
-        <TableCell>{constraintData.n_lof}</TableCell>
-        <TableCell>pLI = {constraintData.lof_z.toFixed(1)}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>CNV</TableCell>
-        <TableCell>{constraintData.exp_cnv ? constraintData.exp_cnv.toFixed(1) : 'N/A'}</TableCell>
-        <TableCell>{constraintData.n_cnv || 'N/A'}</TableCell>
-        <TableCell>Z = {constraintData.cnv_z ? constraintData.cnv_z.toFixed(1) : 'N/A'}</TableCell>
-      </TableRow>
-    </TableRows>
-  </Table>
+  <TableWrapper>
+    <SectionTitle>Gene constraint</SectionTitle>
+    <Table>
+      <TableRows>
+        <TableHeader>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Category</TableCell>
+          <TableCell width={'20%'}>Exp. no. variants</TableCell>
+          <TableCell width={'20%'}>Obs. no. variants</TableCell>
+          <TableCell width={'20%'}>Constraint metric</TableCell>
+        </TableHeader>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Synonymous</TableCell>
+          <TableCell width={'20%'}>{constraintData.exp_syn.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>{constraintData.n_syn}</TableCell>
+          <TableCell width={'20%'}>Z = {constraintData.syn_z.toFixed(1)}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Missense</TableCell>
+          <TableCell width={'20%'}>{constraintData.exp_mis.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>{constraintData.n_mis}</TableCell>
+          <TableCell width={'20%'}>Z = {constraintData.mis_z.toFixed(1)}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>LoF</TableCell>
+          <TableCell width={'20%'}>{constraintData.exp_lof.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>{constraintData.n_lof}</TableCell>
+          <TableCell width={'20%'}>pLI = {constraintData.lof_z.toFixed(1)}</TableCell>
+        </TableRow>
+        {/* <TableRow>
+          <TableTitleColumn />
+          <TableCell>CNV</TableCell>
+          <TableCell>{constraintData.exp_cnv ? constraintData.exp_cnv.toFixed(1) : 'N/A'}</TableCell>
+          <TableCell>{constraintData.n_cnv || 'N/A'}</TableCell>
+          <TableCell>Z = {constraintData.cnv_z ? constraintData.cnv_z.toFixed(1) : 'N/A'}</TableCell>
+        </TableRow> */}
+      </TableRows>
+    </Table>
+  </TableWrapper>
 )
 ConstraintTable.propTypes = { constraintData: PropTypes.object.isRequired }
 
@@ -90,39 +101,41 @@ const ComingSoon = TableCell.extend`
 
 const ConstraintTablePlaceholder = () => (
   <PlaceholderTable>
-    <TableRows>
-      <TableHeader>
-        <TableTitleColumn />
-        <TableCell>Category</TableCell>
-        <TableCell>Expected no. variants</TableCell>
-        <TableCell>Observed no. variants</TableCell>
-        <TableCell>Constraint metric</TableCell>
-      </TableHeader>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>Synonymous</TableCell>
-        <TableCell />
-        <TableCell />
-        <TableCell />
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>Missense</TableCell>
-        <ComingSoon>gnomAD constraint coming soon!</ComingSoon>
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>LoF</TableCell>
-        <ComingSoon>Click here to see ExAC values</ComingSoon>
-      </TableRow>
-      <TableRow>
-        <TableTitleColumn />
-        <TableCell>CNV</TableCell>
-        <TableCell />
-        <TableCell />
-        <TableCell />
-      </TableRow>
-    </TableRows>
+    <div>
+      <SectionTitle>Gene constraint</SectionTitle>
+      <TableRows>
+        <TableHeader>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Category</TableCell>
+          <TableCell>Exp. no. variants</TableCell>
+          <TableCell>Obs. no. variants</TableCell>
+          <TableCell>Constraint metric</TableCell>
+        </TableHeader>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Synonymous</TableCell>
+          <ComingSoon>gnomAD constraint coming soon!</ComingSoon>
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Missense</TableCell>
+          <ComingSoon>Click here to see ExAC values</ComingSoon>
+
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>LoF</TableCell>
+          <TableCell />
+        </TableRow>
+        {/* <TableRow>
+          <TableTitleColumn />
+          <TableCell>CNV</TableCell>
+          <TableCell />
+          <TableCell />
+          <TableCell />
+        </TableRow> */}
+      </TableRows>
+    </div>
   </PlaceholderTable>
 )
 
@@ -138,12 +151,12 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
     exacv1_constraint,
   } = geneData.toJS()
   return (
-    <GeneInfoWrapperFixedHeight>
+    <GeneInfoWrapper>
       <GeneNameWrapper>
         <GeneSymbol>{gene_name}</GeneSymbol>
         <GeneLongName>{full_gene_name}</GeneLongName>
       </GeneNameWrapper>
-      <GeneDetails>
+      <GeneDetailsResponsive>
         <GeneAttributes>
           <GeneAttributeKeys>
             <GeneAttributeKey>
@@ -218,8 +231,8 @@ const GeneInfo = ({ geneData, variantCount, selectedVariantDataset }) => {
           <ConstraintTable constraintData={exacv1_constraint} />}
         {selectedVariantDataset === 'gnomadCombinedVariants' &&
           <ConstraintTablePlaceholder />}
-      </GeneDetails>
-    </GeneInfoWrapperFixedHeight>
+      </GeneDetailsResponsive>
+    </GeneInfoWrapper>
   )
 }
 

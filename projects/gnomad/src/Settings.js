@@ -40,7 +40,6 @@ const GeneSettings = ({
   }
 
   const SettingsContainer = styled.div`
-    margin-left: 110px;
     width: 100%;
   `
 
@@ -49,11 +48,29 @@ const GeneSettings = ({
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 950px;
+    width: 100%;
+    padding-right: 0;
+    @media (max-width: 900px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
   `
 
   const SearchContainer = styled.div`
+    margin-left: 10px;
     margin-bottom: 5px;
+    @media (max-width: 900px) {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  `
+
+  const DataSelectionContainer = styled.div`
+    margin-right: 20px;
+    @media (max-width: 900px) {
+    }
   `
 
   const ClassicVariantCategoryButtonGroup = () => (
@@ -64,10 +81,35 @@ const GeneSettings = ({
     </ClassicExacButtonGroup>
   )
 
+  const DataSelectionGroup = styled.div`
+    display: flex;
+    width: 57%;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 900px) {
+      flex-direction: row;
+      justify-content: space-around;
+      width: 80%;
+    }
+  `
+
   return (
     <SettingsContainer>
       <MenusContainer>
-        <ClassicVariantCategoryButtonGroup />
+        <DataSelectionGroup>
+          <DataSelectionContainer>
+            <select
+              onChange={event => setSelectedVariantDataset(event.target.value)}
+              value={selectedVariantDataset}
+            >
+              <option value="gnomadExomeVariants">gnomAD exomes</option>
+              <option value="gnomadGenomeVariants">gnomAD genomes</option>
+              <option value="gnomadCombinedVariants">gnomAD combined</option>
+              <option value="exacVariants">ExAC</option>
+            </select>
+          </DataSelectionContainer>
+          <ClassicVariantCategoryButtonGroup />
+        </DataSelectionGroup>
         <SearchContainer>
           <Search
             listName={'search table'}
@@ -77,15 +119,6 @@ const GeneSettings = ({
             onChange={searchVariants}
           />
         </SearchContainer>
-        <select
-          onChange={event => setSelectedVariantDataset(event.target.value)}
-          value={selectedVariantDataset}
-        >
-          <option value="gnomadExomeVariants">gnomAD exomes</option>
-          <option value="gnomadGenomeVariants">gnomAD genomes</option>
-          <option value="gnomadCombinedVariants">gnomAD combined</option>
-          <option value="exacVariants">ExAC</option>
-        </select>
       </MenusContainer>
     </SettingsContainer>
   )

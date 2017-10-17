@@ -30,7 +30,7 @@ export const coverageConfigNew = (exome_coverage, genome_coverage) => {
       data: exome_coverage,
       type: 'area',
       color: 'rgba(70, 130, 180, 1)',
-      opacity: 0.5,
+      opacity: 0.7,
     },
     {
       name: 'genome',

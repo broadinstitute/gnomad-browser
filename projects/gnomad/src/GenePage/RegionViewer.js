@@ -12,6 +12,8 @@ import VariantTrack from '@broad/track-variant'
 import { screenSize, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { geneData, regionalConstraint } from '@broad/gene-page/src/resources/genes'
 
+import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
+
 import {
   finalFilteredVariants,
   selectedVariantDataset,
@@ -41,7 +43,8 @@ const GeneRegion = ({
   regionalConstraint,
   screenSize,
 }) => {
-  const regionViewerWidth = screenSize.width - 330
+  const smallScreen = screenSize.width < 900
+  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
 
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
@@ -74,7 +77,7 @@ const GeneRegion = ({
   `
 
   const RegionalConstraintText = styled.p`
-  height: 100%;
+    height: 100%;
   `
 
   const RegionalConstraintData = styled.div`
@@ -144,8 +147,21 @@ const GeneRegion = ({
     )
   }
 
+  const RegionViewerWrapper = styled.div`
+    width: 100%;
+    padding-left: 0;
+  `
+
+  const RegionViewerSectionTitle = SectionTitle.extend`
+    margin-left: 80px;
+    @media (max-width: 900px) {
+      margin-left: 0;
+    }
+  `
+
   return (
-    <div>
+    <RegionViewerWrapper>
+      <RegionViewerSectionTitle>Positional data</RegionViewerSectionTitle>
       <RegionViewer
         width={regionViewerWidth}
         padding={exonPadding}
@@ -160,7 +176,7 @@ const GeneRegion = ({
           yTickNumber={11}
           yMax={110}
         />
-        <TranscriptConnected height={12} />
+        <TranscriptConnected height={12} showRightPanel={!smallScreen} />
         {regionalConstraint.length > 0 &&
           <RegionalConstraintTrack
             height={17}
@@ -179,7 +195,7 @@ const GeneRegion = ({
           />}
         <NavigatorConnected />
       </RegionViewer>
-    </div>
+    </RegionViewerWrapper>
   )
 }
 GeneRegion.propTypes = {

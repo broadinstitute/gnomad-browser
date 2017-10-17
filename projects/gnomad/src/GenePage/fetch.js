@@ -1,14 +1,12 @@
 import fetch from 'graphql-fetch'
 
 const PUBLIC_API = 'http://gnomad-api.broadinstitute.org'
-const API_URL = 'http://localhost:8007'
+// const API_URL = 'http://localhost:8007'
 // const API_URL = 'http://35.184.79.173'
-
+const API_URL = process.env.GNOMAD_API_URL
 
 export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
   const { variantFilter } = options
-  console.log(geneName)
-  console.log(variantFilter)
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id

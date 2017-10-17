@@ -243,6 +243,11 @@ const ClickArea = ({
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
+      onTouchStart={_ => {
+        const genomePos = invertOffset(position.x)
+        const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
+        onNavigatorClick(tableIndex, genomePos)
+      }}
       style={{
         cursor: 'pointer',
       }}

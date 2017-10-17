@@ -293,6 +293,7 @@ const Transcript = ({
   maxTissue,
   tissueStats,
   onTissueChange,
+  showRightPanel,
 }) => {
   const TranscriptContainer = styled.div`
     display: flex;
@@ -345,19 +346,20 @@ const Transcript = ({
           isMaster={isMaster}
         />
       </div>
-      <TranscriptRightPanel
-        rightPanelWidth={rightPanelWidth}
-        title={title}
-        fontSize={fontSize}
-        transcript={transcript}
-        currentTissue={currentTissue}
-        maxTissue={maxTissue}
-        tissueStats={tissueStats}
-        onTissueChange={onTissueChange}
-        fanOutButtonOpen={fanOutButtonOpen}
-        isMaster={isMaster}
-        masterHeight={localHeight}
-      />
+      {showRightPanel &&
+        <TranscriptRightPanel
+          rightPanelWidth={rightPanelWidth}
+          title={title}
+          fontSize={fontSize}
+          transcript={transcript}
+          currentTissue={currentTissue}
+          maxTissue={maxTissue}
+          tissueStats={tissueStats}
+          onTissueChange={onTissueChange}
+          fanOutButtonOpen={fanOutButtonOpen}
+          isMaster={isMaster}
+          masterHeight={localHeight}
+        />}
     </TranscriptContainer>
   )
 }

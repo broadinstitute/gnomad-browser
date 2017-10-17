@@ -10,11 +10,12 @@ import Highlighter from 'react-highlight-words'
 import Immutable from 'immutable'
 
 const abstractCellStyle = {
-  paddingLeft: 20,
-  paddingRight: 20,
+  paddingLeft: 10,
+  paddingRight: 10,
   paddingTop: 4,
   paddingBottom: 3,
   overflow: 'hidden',
+  whiteSpace: 'nowrap',
   // border: '1px solid blue',
 }
 
@@ -146,7 +147,7 @@ const consequencePresentation = {
   intron_variant: { name: 'intron', color: other },
   '3_prime_UTR_variant': { name: "3' UTR", color: other },
   '5_prime_UTR_variant': { name: "5' UTR", color: other },
-  splice_region_variant: { name: 'splice region', color: lof },
+  splice_region_variant: { name: 'splice region', color: other },
   splice_donor_variant: { name: 'splice donor', color: lof },
   splice_acceptor_variant: { name: 'splice acceptor', color: lof },
   frameshift_variant: { name: 'frameshift', color: lof },
@@ -380,9 +381,9 @@ const HeaderButton = styled.button`
 const getHeaderCell = field => (
   <HeaderButtonContainer
     style={{
-      width: field.width + 40,
-      maxWidth: field.width + 40,
-      minWidth: field.width + 40,
+      width: field.width + 20,
+      maxWidth: field.width + 20,
+      minWidth: field.width + 20,
     }}
     key={`${field.title}-header-cell`}
   >

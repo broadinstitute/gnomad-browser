@@ -19,14 +19,16 @@ const umdConfig = {
     react: 'React',
     'react-dom': 'ReactDOM',
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      mangle: false,
-    }),
-  ],
+  plugins: config.plugins,
 }
+
+umdConfig.plugins.concat([
+  new webpack.optimize.UglifyJsPlugin({
+    beautify: false,
+    comments: false,
+    mangle: false,
+  }),
+])
 
 umdConfig.module = config.module
 
