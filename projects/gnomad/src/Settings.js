@@ -6,6 +6,7 @@ import Mousetrap from 'mousetrap'
 import {
   actions as variantActions,
   selectedVariantDataset,
+  variantQcFilter,
 } from '@broad/gene-page/src/resources/variants'
 
 import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
@@ -33,6 +34,8 @@ const GeneSettings = ({
   searchVariants,
   setVariantFilter,
   setSelectedVariantDataset,
+  toggleVariantQcFilter,
+  variantQcFilter,
 }) => {
   const setPadding = (event, newValue) => {
     const padding = Math.floor(1000 * newValue)
@@ -83,7 +86,7 @@ const GeneSettings = ({
 
   const DataSelectionGroup = styled.div`
     display: flex;
-    width: 57%;
+    width: 45%;
     justify-content: space-between;
     align-items: center;
     @media (max-width: 900px) {
@@ -97,6 +100,7 @@ const GeneSettings = ({
     <SettingsContainer>
       <MenusContainer>
         <DataSelectionGroup>
+          <ClassicVariantCategoryButtonGroup />
           <DataSelectionContainer>
             <select
               onChange={event => setSelectedVariantDataset(event.target.value)}
@@ -108,17 +112,29 @@ const GeneSettings = ({
               <option value="exacVariants">ExAC</option>
             </select>
           </DataSelectionContainer>
-          <ClassicVariantCategoryButtonGroup />
         </DataSelectionGroup>
-        <SearchContainer>
-          <Search
-            listName={'search table'}
-            options={['Variant ID', 'RSID', 'HGVSp']}
-            placeholder={'Search variant table'}
-            reference={findInput}
-            onChange={searchVariants}
-          />
-        </SearchContainer>
+        <DataSelectionGroup>
+          <form>
+            <div>
+              <input
+                id="qcFilter"
+                type="checkbox"
+                checked={!variantQcFilter}
+                onChange={event => toggleVariantQcFilter()}
+              />
+              <label style={{ marginLeft: '5px' }} for="qcFilter">Include filtered variants</label>
+            </div>
+          </form>
+          <SearchContainer>
+            <Search
+              listName={'search table'}
+              options={['Variant ID', 'RSID', 'HGVSp']}
+              placeholder={'Search variant table'}
+              reference={findInput}
+              onChange={searchVariants}
+            />
+          </SearchContainer>
+        </DataSelectionGroup>
       </MenusContainer>
     </SettingsContainer>
   )
@@ -137,6 +153,7 @@ const mapStateToProps = (state) => {
   return {
     exonPadding: exonPadding(state),
     selectedVariantDataset: selectedVariantDataset(state),
+    variantQcFilter: variantQcFilter(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -147,6 +164,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(variantActions.searchVariants(searchText)),
     setSelectedVariantDataset: dataset =>
       dispatch(variantActions.setSelectedVariantDataset(dataset)),
+    toggleVariantQcFilter: () =>
+      dispatch(variantActions.toggleVariantQcFilter()),
   }
 }
 

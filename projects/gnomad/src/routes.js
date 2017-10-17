@@ -22,7 +22,7 @@ const MainPanel = styled.div`
 const App = () => (
   <Root>
     <MainPanel>
-      {/* <TopBar /> */}
+      <TopBar />
       {/* <Route exact path="/" component={GenePage} /> */}
       <Switch>
         {/* <Route path="/gene/:gene/:variantId" component={GenePage} /> */}

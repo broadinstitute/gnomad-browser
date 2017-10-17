@@ -24,6 +24,7 @@ export const types = keymirror({
   SET_SELECTED_VARIANT_DATASET: null,
   SET_VARIANT_FILTER: null,
   SET_VARIANT_SORT: null,
+  TOGGLE_VARIANT_QC_FILTER: null,
   ORDER_VARIANTS_BY_POSITION: null,
 })
 
@@ -89,6 +90,11 @@ export const actions = {
       key,
     }
   },
+  toggleVariantQcFilter: () => {
+    return {
+      type: types.TOGGLE_VARIANT_QC_FILTER,
+    }
+  },
 
   searchVariantsRaw: createSearchAction('variants'),
 
@@ -134,6 +140,7 @@ export default function createVariantReducer({
     hoveredVariant: startingVariant,
     focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
+    variantQcFilter: true,
   })
 
   const actionHandlers = {
@@ -241,6 +248,9 @@ export default function createVariantReducer({
       }
       return state.set('variantSortKey', key)
     },
+    [types.TOGGLE_VARIANT_QC_FILTER] (state) {
+      return state.set('variantQcFilter', !state.get('variantQcFilter'))
+    },
   }
 
   return function variants (state = new State(), action: Object): State {
@@ -305,11 +315,13 @@ export const singleVariantData = createSelector(
 export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
+export const variantQcFilter = state => state.variants.variantQcFilter
 
 export const filteredVariantsById = createSelector([
   allVariantsInCurrentDataset,
   variantFilter,
-], (variants, variantFilter) => {
+  variantQcFilter,
+], (variants, variantFilter, variantQcFilter) => {
   let filteredVariants
   if (variantFilter === 'all') {
     filteredVariants = variants
@@ -319,6 +331,9 @@ export const filteredVariantsById = createSelector([
   }
   if (variantFilter === 'missenseOrLoF') {
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
+  }
+  if (variantQcFilter) {
+    filteredVariants = variants.filter(v => v.get('filters').size === 0)
   }
   return filteredVariants
 })

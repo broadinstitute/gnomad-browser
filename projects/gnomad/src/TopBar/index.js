@@ -23,7 +23,7 @@ const TopBarContainer = styled.div`
 
 const Logo = styled.div`
   color: white;
-  font-size: 23px;
+  font-size: 20px;
   margin-left: 40px;
   font-weight: bold;
 `
@@ -56,18 +56,19 @@ const Menu = styled.div`
   padding-top: 3px;
 `
 
-const MenuItem = styled.div`
-  font-size: 18px;
+const MenuItem = styled.a`
+  font-size: 16px;
   font-weight: bold;
   margin-right: 20px;
   color: white;
+  text-decoration: none;
 `
 
 const TopBar = ({ setCurrentGene }) => {
   return (
     <TopBarContainer>
       <Logo>
-        gnomAD browser 2
+        gnomAD browser
       </Logo>
       <Search>
         <SearchIconContainer>
@@ -105,18 +106,12 @@ const TopBar = ({ setCurrentGene }) => {
         </form>
       </Search>
       <Menu>
-        <MenuItem>
-          <Link to={'/gene/BRCA2'}>Gene</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to={'/gene/BRCA2/13-32900634-AG-A'}>Variant</Link>
-        </MenuItem>
-        <MenuItem>About</MenuItem>
-        <MenuItem>Downloads</MenuItem>
-        <MenuItem>Terms</MenuItem>
-        <MenuItem>Contact</MenuItem>
-        <MenuItem>Jobs</MenuItem>
-        <MenuItem>FAQ</MenuItem>
+        <MenuItem href="/about" >About</MenuItem>
+        <MenuItem href="/downloads" >Downloads</MenuItem>
+        <MenuItem href="/terms" >Terms</MenuItem>
+        <MenuItem href="/contact" >Contact</MenuItem>
+        <MenuItem href="https://macarthurlab.org/jobs/" >Jobs</MenuItem>
+        <MenuItem href="/faq" >FAQ</MenuItem>
       </Menu>
     </TopBarContainer>
   )
