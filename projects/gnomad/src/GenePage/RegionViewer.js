@@ -10,7 +10,7 @@ import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
 import { screenSize, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
-import { geneData, regionalConstraint } from '@broad/gene-page/src/resources/genes'
+import { geneData, regionalConstraint, transcriptFanOut, actions as geneActions } from '@broad/gene-page/src/resources/genes'
 
 import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
@@ -42,6 +42,8 @@ const GeneRegion = ({
   exonPadding,
   regionalConstraint,
   screenSize,
+  transcriptFanOut,
+  toggleTranscriptFanOut,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -193,7 +195,12 @@ const GeneRegion = ({
           yTickNumber={11}
           yMax={110}
         />
-        <TranscriptConnected height={12} showRightPanel={!smallScreen} />
+        <TranscriptConnected
+          height={12}
+          showRightPanel={!smallScreen}
+          transcriptFanOut={transcriptFanOut}
+          transcriptButtonOnClick={toggleTranscriptFanOut}
+        />
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack
             height={17}
@@ -223,6 +230,8 @@ GeneRegion.propTypes = {
   selectedVariantDataset: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
   screenSize: PropTypes.object.isRequired,
+  transcriptFanOut: PropTypes.bool.isRequired,
+  toggleTranscriptFanOut: PropTypes.func.isRequired,
 }
 export default connect(
   state => ({
@@ -232,9 +241,11 @@ export default connect(
     selectedVariantDataset: selectedVariantDataset(state),
     regionalConstraint: regionalConstraint(state),
     screenSize: screenSize(state),
+    transcriptFanOut: transcriptFanOut(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>
-      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes))
+      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes)),
+    toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
   })
 )(GeneRegion)

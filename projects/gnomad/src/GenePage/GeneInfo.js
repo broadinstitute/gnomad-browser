@@ -65,21 +65,21 @@ const ConstraintTable = ({ constraintData }) => (
           <TableCell width={'40%'}>Synonymous</TableCell>
           <TableCell width={'20%'}>{constraintData.exp_syn.toFixed(1)}</TableCell>
           <TableCell width={'20%'}>{constraintData.n_syn}</TableCell>
-          <TableCell width={'20%'}>Z = {constraintData.syn_z.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>Z = {constraintData.syn_z.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Missense</TableCell>
           <TableCell width={'20%'}>{constraintData.exp_mis.toFixed(1)}</TableCell>
           <TableCell width={'20%'}>{constraintData.n_mis}</TableCell>
-          <TableCell width={'20%'}>Z = {constraintData.mis_z.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>Z = {constraintData.mis_z.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>LoF</TableCell>
           <TableCell width={'20%'}>{constraintData.exp_lof.toFixed(1)}</TableCell>
           <TableCell width={'20%'}>{constraintData.n_lof}</TableCell>
-          <TableCell width={'20%'}>pLI = {constraintData.lof_z.toFixed(1)}</TableCell>
+          <TableCell width={'20%'}>pLI = {constraintData.pLI.toFixed(2)}</TableCell>
         </TableRow>
         {/* <TableRow>
           <TableTitleColumn />
@@ -198,6 +198,7 @@ const GeneInfo = ({
     omim_accession,
     exacv1_constraint,
   } = geneData.toJS()
+  console.log(exacv1_constraint)
   return (
     <GeneInfoWrapper>
       <GeneNameWrapper>

@@ -23,6 +23,7 @@ export const types = keymirror({
   RECEIVE_GENE_DATA: null,
   SET_CURRENT_TISSUE: null,
   SET_CURRENT_TRANSCRIPT: null,
+  TOGGLE_TRANSCRIPT_FAN_OUT: null,
   SET_CURRENT_EXON: null,
   SET_CURRENT_CONSTRAINED_REGION: null
 })
@@ -82,6 +83,7 @@ export const actions = {
     }
   },
   setCurrentTissue: tissueName => ({ type: types.SET_CURRENT_TISSUE, tissueName }),
+  toggleTranscriptFanOut: () => ({ type: types.TOGGLE_TRANSCRIPT_FAN_OUT }),
   setCurrentTranscript: transcriptId => ({ type: types.SET_CURRENT_TRANSCRIPT, transcriptId }),
   setCurrentExon: exonId => ({ type: types.SET_CURRENT_EXON, exonId }),
   setCurrentConstrainedRegion: constrainedRegionName =>
@@ -96,6 +98,7 @@ export default function createGeneReducer({ variantDatasets }) {
     allGeneNames: Immutable.Set(),
     currentTissue: null,
     currentTranscript: null,
+    transcriptFanOut: true,
     currentExon: null,
     currentConstrainedRegion: null,
   })
@@ -121,6 +124,9 @@ export default function createGeneReducer({ variantDatasets }) {
     },
     [types.SET_CURRENT_TRANSCRIPT] (state, { transcriptId }) {
       return state.set('currentTranscript', transcriptId)
+    },
+    [types.TOGGLE_TRANSCRIPT_FAN_OUT] (state) {
+      return state.set('transcriptFanOut', !state.get('transcriptFanOut'))
     },
     [types.SET_CURRENT_EXON] (state, { exonId }) {
       return state.set('currentExon', exonId)
@@ -151,6 +157,7 @@ export const geneData = createSelector(
 
 export const currentTissue = state => state.genes.currentTissue
 export const currentTranscript = state => state.genes.currentTranscript
+export const transcriptFanOut = state => state.genes.transcriptFanOut
 export const currentExon = state => state.genes.currentcurrentExon
 
 export const transcripts = createSelector(

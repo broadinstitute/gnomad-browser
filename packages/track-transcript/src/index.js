@@ -493,7 +493,7 @@ class TranscriptTrack extends Component {
       transcriptGroup = (
         <TranscriptGroup
           transcriptsGrouped={this.props.geneExons}
-          fanOutButtonOpen={this.state.fanOutButtonOpen}
+          fanOutButtonOpen={this.props.transcriptFanOut}
           initialTranscriptStyles={this.initialTranscriptStyles}
           finalTranscriptStyles={this.finalTranscriptStyles}
           {...this.props}
@@ -504,7 +504,7 @@ class TranscriptTrack extends Component {
       <TranscriptTrackContainer>
         <Transcript
           isMaster
-          fanOut={this.fanOut}
+          fanOut={this.props.transcriptButtonOnClick}
           regions={this.props.offsetRegions}
           {...this.props}
         />
