@@ -19,7 +19,7 @@ export const GeneNameWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   flex-shrink: 0;
@@ -37,7 +37,7 @@ export const GeneSymbol = styled.h1`
 
 export const GeneLongName = styled.h2`
   font-size: 22px;
-  margin-left: 7px;
+  margin-left: 20px;
   margin-bottom: 0;
   margin-top: 0;
   @media (max-width: 900px) {

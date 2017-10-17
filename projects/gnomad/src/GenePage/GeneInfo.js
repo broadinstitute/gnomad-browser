@@ -98,7 +98,7 @@ const PlaceholderTable = Table.extend`
   opacity: 0.4;
 `
 
-const ComingSoon = TableCell.extend`
+const ConstraintMessage = TableCell.extend`
   width: 100%;
   text-align: center;
   cursor: pointer;
@@ -119,22 +119,22 @@ const ConstraintTablePlaceholder = ({ setSelectedVariantDataset, regionalConstra
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Synonymous</TableCell>
-          <ComingSoon>gnomAD constraint coming soon!</ComingSoon>
+          <ConstraintMessage>gnomAD constraint coming soon!</ConstraintMessage>
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Missense</TableCell>
-          <ComingSoon
+          <ConstraintMessage
             onClick={() => setSelectedVariantDataset('exacVariants')}
           >
             Click here to see ExAC values.
-          </ComingSoon>
+          </ConstraintMessage>
 
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>LoF</TableCell>
-          {regionalConstraint.length > 0 ? <ComingSoon onClick={() => setSelectedVariantDataset('exacVariants')}>Also, this gene exhibits regional constraint.</ComingSoon> : <TableCell />}
+          {regionalConstraint.length > 0 ? <ConstraintMessage onClick={() => setSelectedVariantDataset('exacVariants')}>Also, this gene exhibits regional constraint.</ConstraintMessage> : <TableCell />}
         </TableRow>
         {/* <TableRow>
           <TableTitleColumn />
@@ -143,6 +143,39 @@ const ConstraintTablePlaceholder = ({ setSelectedVariantDataset, regionalConstra
           <TableCell />
           <TableCell />
         </TableRow> */}
+      </TableRows>
+    </TableWrapper>
+  </PlaceholderTable>
+)
+const ConstraintTableNone = () => (
+  <PlaceholderTable>
+    <TableWrapper>
+      <SectionTitle>Gene constraint</SectionTitle>
+      <TableRows>
+        <TableHeader>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Category</TableCell>
+          <TableCell>Exp. no. variants</TableCell>
+          <TableCell>Obs. no. variants</TableCell>
+          <TableCell>Constraint metric</TableCell>
+        </TableHeader>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell />
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>Missense</TableCell>
+          <ConstraintMessage>
+            No constraint available
+          </ConstraintMessage>
+
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
+          <TableCell width={'40%'}>LoF</TableCell>
+          <TableCell />
+        </TableRow>
       </TableRows>
     </TableWrapper>
   </PlaceholderTable>
@@ -226,7 +259,7 @@ const GeneInfo = ({
                 target="_blank"
                 href={`http://omim.org/entry/${omim_accession}`}
               >
-                {omim_accession}
+                {omim_accession || 'N/A'}
               </a>
             </GeneAttributeValue>
             <GeneAttributeValue>
@@ -242,8 +275,10 @@ const GeneInfo = ({
             </GeneAttributeValue>
           </GeneAttributeValues>
         </GeneAttributes>
-        {selectedVariantDataset === 'exacVariants' &&
+        {selectedVariantDataset === 'exacVariants' && exacv1_constraint &&
           <ConstraintTable constraintData={exacv1_constraint} />}
+        {selectedVariantDataset === 'exacVariants' && !exacv1_constraint &&
+          <ConstraintTableNone />}
         {selectedVariantDataset === 'gnomadCombinedVariants' &&
           <ConstraintTablePlaceholder
             regionalConstraint={regionalConstraint}
@@ -258,7 +293,7 @@ GeneInfo.propTypes = {
   geneData: PropTypes.object.isRequired,
   variantCount: PropTypes.number.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
-  regionalConstraint: PropTypes.array.isRequired,
+  regionalConstraint: PropTypes.array,
 }
 
 export default connect(

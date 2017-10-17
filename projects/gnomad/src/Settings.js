@@ -122,7 +122,7 @@ const GeneSettings = ({
                 checked={!variantQcFilter}
                 onChange={event => toggleVariantQcFilter()}
               />
-              <label style={{ marginLeft: '5px' }} for="qcFilter">Include filtered variants</label>
+              <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">Include filtered variants</label>
             </div>
           </form>
           <SearchContainer>

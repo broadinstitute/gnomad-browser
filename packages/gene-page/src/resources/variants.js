@@ -333,7 +333,7 @@ export const filteredVariantsById = createSelector([
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
   }
   if (variantQcFilter) {
-    filteredVariants = variants.filter(v => v.get('filters').size === 0)
+    filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
   }
   return filteredVariants
 })

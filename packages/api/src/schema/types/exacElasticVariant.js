@@ -15,9 +15,6 @@ const lofs = [
   'frameshift_variant',
   'stop_lost',
   'start_lost',
-  'inframe_insertion',
-  'inframe_deletion',
-  // 'missense_variant',
 ]
 const lofQuery = lofs.map(consequence => (
   { term: { majorConsequence: consequence } }
