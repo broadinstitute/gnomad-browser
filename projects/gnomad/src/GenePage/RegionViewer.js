@@ -193,7 +193,7 @@ const GeneRegion = ({
           yMax={110}
         />
         <TranscriptConnected height={12} showRightPanel={!smallScreen} />
-        {regionalConstraint.length > 0 &&
+        {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack
             height={17}
             regionalConstraintData={regionalConstraint}

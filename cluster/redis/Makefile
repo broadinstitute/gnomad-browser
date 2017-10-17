@@ -27,3 +27,5 @@ create-redis-containers:
 
 	# Create a replication controller for redis sentinels
 	kubectl create -f redis-sentinel-controller.yaml
+
+

@@ -222,6 +222,7 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookUpCnvsExonsByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
+    test: { type: GraphQLString, resolve: () => 'hello' },
   }),
 })
 

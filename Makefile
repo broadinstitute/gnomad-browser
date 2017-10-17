@@ -134,3 +134,7 @@ start-dev:
 delete-data-cluster:
 	make -C cluster delete-elasticsearch-cluster & \
 	make -C cluster delete-dataproc-cluster
+
+legacy:
+	make -C projects/gnomad/deploy update & \
+	make -C packages/api/deploy update

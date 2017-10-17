@@ -9,11 +9,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: gnomad-p-app
+      name: gnomad-p-serve
   template:
     metadata:
       labels:
-        name: gnomad-p-app
+        name: gnomad-p-serve
     spec:
       # volumes:
       # - name: gnomad-d-readviz-exons-vol-1
@@ -23,7 +23,7 @@ spec:
       #     readOnly: true
       containers:
       - name: gnomad-p-serve
-        image: gcr.io/exac-gnomad/gnomad-legacy:1508202221  
+        image: gcr.io/exac-gnomad/gnomad-legacy
         env:
         - name: DEPLOYMENT_ENV
           value: development

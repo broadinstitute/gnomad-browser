@@ -29,7 +29,7 @@ const GenePage = styled.div`
   align-items: flex-start;
   background-color: #FAFAFA;
   color: black;
-  border: 5px solid orange;
+  border: 5px solid purple;
   width: 95%;
   @media (max-width: 900px) {
     padding-left: 0;
@@ -57,6 +57,7 @@ const Summary = styled.div`
 const TableSection = styled.div`
   margin-left: 70px;
   border: 1px solid green;
+  margin-bottom: 100px;
   @media (max-width: 900px) {
     margin-left: 5px;
     align-items: center;
@@ -95,7 +96,7 @@ const AppGenePage = ({
               <div>
                 <VariantTable
                   tableConfig={tableConfig}
-                  height={400}
+                  height={300}
                 />
               </div>
 

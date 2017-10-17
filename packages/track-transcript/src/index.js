@@ -75,18 +75,20 @@ const GtexPlotWrapper = styled.div`
 `
 
 const GtexTitleText = styled.h3`
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   margin-bottom: 0;
   margin-top: 0;
   margin-left: 6px;
+  flex-shrink: 0;
 `
 const GtexTissueSelect = styled.select`
   max-width: 100%;
-  height: 100%;
-  font-size: 14px;
+  ${'' /* height: 100%; */}
+  font-size: 12px;
   margin-bottom: 0;
   margin-top: 5px;
+  flex-shrink: 0;
 `
 
 const TranscriptRightPanel = ({
@@ -185,7 +187,8 @@ const TranscriptRightPanel = ({
       <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
         <TranscriptName>
           <GtexTitleWrapper>
-            <GtexTitleText>GTEx (mTPM)</GtexTitleText>
+            {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
+            <GtexTitleText>Tissue-specific gene expression (GTEx)</GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}
