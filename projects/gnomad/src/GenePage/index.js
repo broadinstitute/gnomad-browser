@@ -96,7 +96,6 @@ const AppGenePage = ({
               <div>
                 <VariantTable
                   tableConfig={tableConfig}
-                  height={300}
                 />
               </div>
 

@@ -26,6 +26,10 @@ const Logo = styled.div`
   font-size: 20px;
   margin-left: 40px;
   font-weight: bold;
+  @media (max-width: 900px) {
+    font-size: 15px;
+    margin-left: 30px;
+  }
 `
 
 const Search = styled.div`
@@ -62,6 +66,10 @@ const MenuItem = styled.a`
   margin-right: 20px;
   color: white;
   text-decoration: none;
+  @media (max-width: 900px) {
+    font-size: 12px;
+    margin-right: 4px;
+  }
 `
 
 const TopBar = ({ setCurrentGene }) => {

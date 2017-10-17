@@ -18,6 +18,7 @@ import {
 import {
   actions as variantActions,
   variantSearchText,
+  filteredIdList,
   finalFilteredVariants,
   finalFilteredVariantsCount,
 } from '../resources/variants'
@@ -35,6 +36,7 @@ const VariantTable = ({
   tableConfig,
   history,
   screenSize,
+  filteredIdList,
 }) => {
   const scrollBarWidth = 40
   // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
@@ -48,7 +50,7 @@ const VariantTable = ({
     <div>
       <Table
         title={title}
-        height={800}
+        height={500}
         width={tableWidth}
         tableConfig={tConfig}
         tableData={variants}
@@ -61,6 +63,7 @@ const VariantTable = ({
         scrollToRow={tablePosition}
         onScroll={setCurrentTableScrollData}
         searchText={searchText}
+        filteredIdList={filteredIdList}
       />
     </div>
   )
@@ -78,6 +81,7 @@ VariantTable.propTypes = {
   tableConfig: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   screenSize: PropTypes.object.isRequired,
+  filteredIdList: PropTypes.any.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -93,6 +97,7 @@ const mapStateToProps = (state) => {
     searchText: variantSearchText(state),
     currentNavigatorPosition: state.active.currentNavigatorPosition,
     screenSize: screenSize(state),
+    filteredIdList: filteredIdList(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

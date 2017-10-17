@@ -3,16 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const SearchWrapper = styled.div`
-  position: relative;
-  left: 7px;
-  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  align-items: center;
 `
 
-const SearchIconContainer = styled.span`
-  position: absolute;
-  left: 7px;
-  font-size: 15px;
-`
 
 const SearchInput = styled.input`
   height: 25px;
@@ -27,17 +23,21 @@ const SearchInput = styled.input`
   transition: width 0.4s ease-in-out;
 `
 
+const ClearSearch = styled.button`
+  margin-left: 5px;
+  height: 20px;
+
+`
+
 export const Search = ({
   listName,
   options,
   placeholder,
   onChange,
   reference,
+  searchText,
 }) => (
   <SearchWrapper>
-    <SearchIconContainer>
-      {/* <SearchIcon /> */}
-    </SearchIconContainer>
     <form
       onChange={(event) => {
         event.preventDefault()
@@ -48,14 +48,21 @@ export const Search = ({
         type="text"
         name="search"
         autoComplete="off"
-        placeholder={placeholder}
-        ref={input => reference = input}
+        placeholder={searchText === '' ? 'Search variant table' : searchText}
+        ref={e1 => {
+          reference = e1
+
+        }}
         list={listName}
       />
       {/* <datalist id={listName}>
         {options.map(item => <option value={item} />)}
       </datalist> */}
     </form>
+    <ClearSearch onClick={() => {
+      onChange('')
+      // reference = ''
+    }}>Clear</ClearSearch>
   </SearchWrapper>
 )
 Search.propTypes = {

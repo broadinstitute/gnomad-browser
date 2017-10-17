@@ -19,7 +19,8 @@ import {
   selectedVariantDataset,
   currentGene,
   exonPadding,
-  activeActions
+  activeActions,
+  geneData,
 } from '@broad/gene-page'
 
 import { MaterialButtonRaised } from '@broad/ui'
@@ -38,8 +39,10 @@ const GeneSettings = ({
   setExonPadding,
   searchVariants,
   setVariantFilter,
+  geneData,
   // searchVariants
 }) => {
+  
   const testGenes = [
     'PCSK9',
     'ZNF658',
@@ -185,6 +188,7 @@ const mapStateToProps = (state) => {
     currentGene: currentGene(state),
     exonPadding: exonPadding(state),
     selectedVariantDataset: selectedVariantDataset(state),
+    geneData: geneData(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

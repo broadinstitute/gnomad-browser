@@ -15,7 +15,7 @@ const appSettings = {
   searchResourceSelector: (resourceName, state) => {
     return state.variants.byVariantDataset.get('gnomadCombinedVariants')
   },
-  logger: true,
+  // logger: true,
   projectDefaults: {
     startingGene: 'TP53',
     startingVariant: '13-32900634-AG-A',

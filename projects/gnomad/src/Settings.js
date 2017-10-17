@@ -6,10 +6,14 @@ import Mousetrap from 'mousetrap'
 import {
   actions as variantActions,
   selectedVariantDataset,
+  variantFilter,
   variantQcFilter,
+  variantSearchText,
 } from '@broad/gene-page/src/resources/variants'
 
 import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
+
+import { geneData } from '@broad/gene-page/src/resources/genes'
 
 import {
   ClassicExacButton,
@@ -33,9 +37,12 @@ const GeneSettings = ({
   setExonPadding,
   searchVariants,
   setVariantFilter,
+  variantFilter,
   setSelectedVariantDataset,
   toggleVariantQcFilter,
   variantQcFilter,
+  variantSearchText,
+  geneData,
 }) => {
   const setPadding = (event, newValue) => {
     const padding = Math.floor(1000 * newValue)
@@ -53,6 +60,7 @@ const GeneSettings = ({
     justify-content: space-between;
     width: 100%;
     padding-right: 0;
+    ${'' /* border: 1px solid green; */}
     @media (max-width: 900px) {
       display: flex;
       flex-direction: column;
@@ -69,30 +77,64 @@ const GeneSettings = ({
       margin-bottom: 5px;
     }
   `
+  const exons = geneData.getIn(['transcript', 'exons']).toJS()
 
-  const DataSelectionContainer = styled.div`
-    margin-right: 20px;
-    @media (max-width: 900px) {
-    }
-  `
+  const padding = 75
+  const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
+    .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+
+  let partialFetch
+  if (totalBasePairs > 40000) {
+    partialFetch = 'lof'
+    variantFilter = partialFetch  // eslint-disable-line
+  } else if (totalBasePairs > 15000) {
+    partialFetch = 'missenseOrLoF'
+    variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
+  }
 
   const ClassicVariantCategoryButtonGroup = () => (
     <ClassicExacButtonGroup>
-      <ClassicExacButtonFirst onClick={() => setVariantFilter('all')}>All</ClassicExacButtonFirst>
-      <ClassicExacButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</ClassicExacButton>
-      <ClassicExacButtonLast onClick={() => setVariantFilter('lof')}>LoF</ClassicExacButtonLast>
+      <ClassicExacButtonFirst
+        isActive={variantFilter === 'all'}
+        onClick={() => setVariantFilter('all')}
+        disabled={(partialFetch === 'lof' || partialFetch === 'missenseOrLoF')}
+      >
+        All
+      </ClassicExacButtonFirst>
+      <ClassicExacButton
+        isActive={variantFilter === 'missenseOrLoF'}
+        onClick={() => setVariantFilter('missenseOrLoF')}
+        disabled={(partialFetch === 'lof')}
+      >
+        Missense + LoF
+      </ClassicExacButton>
+      <ClassicExacButtonLast
+        isActive={variantFilter === 'lof'}
+        onClick={() => setVariantFilter('lof')}
+      >
+        LoF
+      </ClassicExacButtonLast>
     </ClassicExacButtonGroup>
   )
 
   const DataSelectionGroup = styled.div`
+    margin: 0;
     display: flex;
-    width: 45%;
-    justify-content: space-between;
+    width: 50%;
+    justify-content: space-around;
     align-items: center;
+    ${'' /* border: 1px solid orange; */}
     @media (max-width: 900px) {
       flex-direction: row;
       justify-content: space-around;
-      width: 80%;
+      width: 90%;
+    }
+  `
+
+  const DataSelectionContainer = styled.div`
+    ${'' /* margin-right: 20px; */}
+    ${'' /* border: 1px solid blue; */}
+    @media (max-width: 900px) {
     }
   `
 
@@ -122,7 +164,9 @@ const GeneSettings = ({
                 checked={!variantQcFilter}
                 onChange={event => toggleVariantQcFilter()}
               />
-              <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">Include filtered variants</label>
+              <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">
+                Include filtered variants
+              </label>
             </div>
           </form>
           <SearchContainer>
@@ -132,6 +176,7 @@ const GeneSettings = ({
               placeholder={'Search variant table'}
               reference={findInput}
               onChange={searchVariants}
+              searchText={variantSearchText}
             />
           </SearchContainer>
         </DataSelectionGroup>
@@ -147,6 +192,7 @@ GeneSettings.propTypes = {
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
   setSelectedVariantDataset: PropTypes.func.isRequired,
+  variantSearchText: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -154,6 +200,9 @@ const mapStateToProps = (state) => {
     exonPadding: exonPadding(state),
     selectedVariantDataset: selectedVariantDataset(state),
     variantQcFilter: variantQcFilter(state),
+    variantFilter: variantFilter(state),
+    variantSearchText: variantSearchText(state),
+    geneData: geneData(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

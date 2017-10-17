@@ -164,6 +164,7 @@ const GeneRegion = ({
   }
 
   const RegionViewerWrapper = styled.div`
+    margin-left: 3px;
     width: 100%;
     padding-left: 0;
   `
@@ -177,7 +178,7 @@ const GeneRegion = ({
 
   return (
     <RegionViewerWrapper>
-      <RegionViewerSectionTitle>Positional data</RegionViewerSectionTitle>
+      {/* <RegionViewerSectionTitle>Positional data</RegionViewerSectionTitle> */}
       <RegionViewer
         width={regionViewerWidth}
         padding={exonPadding}

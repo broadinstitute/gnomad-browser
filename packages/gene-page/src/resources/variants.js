@@ -354,6 +354,7 @@ const searchSelectors = getSearchSelectors({
 })
 export const variantSearchText = searchSelectors.text
 export const variantSearchResult = searchSelectors.result
+export const isSearching = state => state.search.variants.isSearching
 
 export const filteredIdList = createSelector(
   [state => state.search.variants.result],
