@@ -35,7 +35,6 @@ export const TOTAL_REGION_VIEWER_HEIGHT =
   REGIONAL_CONSTRAINED_TRACK_HEIGHT +
   VARIANT_TRACK_HEIGHT
 
-
 export const getCoverageConfig = (
   selectedVariantDataset,
   exacv1_coverage,
@@ -75,11 +74,13 @@ const GeneRegion = ({
   const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
   const variantsReversed = allVariants.reverse()
 
-  const showVariants = true
 
-  // const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-  //   coverageConfigClassic(exome_coverage) :
-  //   coverageConfigNew(exome_coverage, genome_coverage)
+  const { exons } = transcript
+  const padding = 75
+  const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
+    .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+
+  const showVariants = true
 
   const coverageConfig = getCoverageConfig(
     selectedVariantDataset,
@@ -206,6 +207,7 @@ const GeneRegion = ({
           dataConfig={coverageConfig}
           yTickNumber={11}
           yMax={110}
+          totalBp={totalBasePairs}
         />
         <TranscriptConnected
           height={12}

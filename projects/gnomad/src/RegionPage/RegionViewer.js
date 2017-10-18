@@ -69,6 +69,8 @@ const RegionViewer = ({
     strand: '+',
   }]
 
+  const totalBp = stop - start
+
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
 
@@ -87,6 +89,7 @@ const RegionViewer = ({
           dataConfig={coverageConfig}
           yTickNumber={11}
           yMax={110}
+          totalBp={totalBp}
         />
         <GenesTrack onGeneClick={onGeneClick} genes={genes} />
         {showVariants &&

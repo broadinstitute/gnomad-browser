@@ -138,7 +138,13 @@ const regionType = new GraphQLObjectType({
         return new Promise((resolve, reject) => {
           const regionRangeQueries = { range: { pos: { gte: obj.start, lte: obj.stop } } }
           // NOTE: divide region size by the number of buckets you want
-          const intervalSize = Math.floor((obj.stop - obj.start) / 100)
+          const numberOfBuckets = 100
+          let intervalSize
+          if (obj.stop - obj.start < 100) {
+            intervalSize = 1
+          } else {
+            intervalSize = Math.floor((obj.stop - obj.start) / numberOfBuckets)
+          }
           ctx.database.elastic.search({
             index: 'gnomad',
             type: 'variant',

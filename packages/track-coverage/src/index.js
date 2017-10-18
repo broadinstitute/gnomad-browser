@@ -18,7 +18,9 @@ const CoverageTrack = ({
   dataConfig,
   yTickNumber,
   yMax,
+  totalBp,
 }) => {
+  console.log(dataConfig)
   const scaleCoverage = (xScaleCoverage, coverage) => {
     const coverageScaled = coverage.map((base) => {
       const newPosition = Math.floor(xScaleCoverage(positionOffset(base.pos).offsetPosition))
@@ -56,8 +58,17 @@ const CoverageTrack = ({
     .domain([0, dataYDomainMax])
     .range([height, 0])
 
+  // const dataArea = area()
+  //   .x(base => base.scaledPosition)
+  //   .y0(_ => height)  // eslint-disable-line
+  //   .y1(base => yScale(base.mean))
+
   const dataArea = area()
-    .x(base => base.scaledPosition)
+    .defined((base) => {
+      return !isNaN(base.mean)
+        && positionOffset(base.pos).offsetPosition !== undefined
+    })
+    .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y0(_ => height)  // eslint-disable-line
     .y1(base => yScale(base.mean))
 
@@ -73,7 +84,7 @@ const CoverageTrack = ({
     return (
       <path
         key={`cov-series-${dataset.name}-area`}
-        d={dataArea(scaleCoverage(xScale, dataset.data))}
+        d={dataArea(dataset.data)}
         fill={dataset.color}
         opacity={dataset.opacity}
       />
@@ -92,7 +103,33 @@ const CoverageTrack = ({
     )
   }
 
+  const getX = base => xScale(positionOffset(base.pos).offsetPosition)
+  const getY = base => yScale(base.mean)
+  const renderBars = (dataset) => {
+    const barWidth = (width / totalBp) - 1
+    return dataset.data.map((base) => {
+      const barHeight = height - getY(base)
+      const xValue = getX(base)
+      if (!isNaN(xValue) && xValue !== undefined ) {
+        return (
+          <rect
+            x={xValue}
+            y={height - barHeight}
+            width={barWidth}
+            height={barHeight}
+            fill={dataset.color}
+            stroke={'none'}
+            opacity={dataset.opacity}
+          />
+        )
+      }
+    })
+  }
+
   const plots = dataConfig.datasets.map((dataset) => {
+    if (totalBp < 100) {
+      return renderBars(dataset)
+    }
     if (dataset.data) {
       switch (dataset.type) {
         case 'area':
