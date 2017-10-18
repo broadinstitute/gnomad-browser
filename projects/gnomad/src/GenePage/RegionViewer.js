@@ -35,6 +35,27 @@ export const TOTAL_REGION_VIEWER_HEIGHT =
   REGIONAL_CONSTRAINED_TRACK_HEIGHT +
   VARIANT_TRACK_HEIGHT
 
+
+export const getCoverageConfig = (
+  selectedVariantDataset,
+  exacv1_coverage,
+  exome_coverage,
+  genome_coverage
+) => {
+  switch (selectedVariantDataset) {
+    case 'exacVariants':
+      return coverageConfigClassic(exacv1_coverage)
+    case 'gnomadExomeVariants':
+      return coverageConfigNew(exome_coverage)
+    case 'gnomadGenomeVariants':
+      return coverageConfigNew(null, genome_coverage)
+    case 'gnomadCombinedVariants':
+      return coverageConfigNew(exome_coverage, genome_coverage)
+    default:
+      return coverageConfigNew(exome_coverage, genome_coverage)
+  }
+}
+
 const GeneRegion = ({
   gene,
   allVariants,
@@ -60,22 +81,12 @@ const GeneRegion = ({
   //   coverageConfigClassic(exome_coverage) :
   //   coverageConfigNew(exome_coverage, genome_coverage)
 
-  const getCoverageConfig = (selectedVariantDataset) => {
-    switch (selectedVariantDataset) {
-      case 'exacVariants':
-        return coverageConfigClassic(exacv1_coverage)
-      case 'gnomadExomeVariants':
-        return coverageConfigNew(exome_coverage)
-      case 'gnomadGenomeVariants':
-        return coverageConfigNew(null, genome_coverage)
-      case 'gnomadCombinedVariants':
-        return coverageConfigNew(exome_coverage, genome_coverage)
-      default:
-        return coverageConfigNew(exome_coverage, genome_coverage)
-    }
-  }
-
-  const coverageConfig = getCoverageConfig(selectedVariantDataset)
+  const coverageConfig = getCoverageConfig(
+    selectedVariantDataset,
+    exacv1_coverage,
+    exome_coverage,
+    genome_coverage
+  )
 
   const RegionalConstraintTrackWrapper = styled.div`
     display: flex;

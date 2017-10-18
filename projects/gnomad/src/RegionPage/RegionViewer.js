@@ -10,13 +10,11 @@ import StackedBarTrack from '@broad/track-stacked-bar'
 
 import { GenesTrack } from '@broad/track-genes'
 
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { screenSize, actions as activeActions } from '@broad/gene-page/src/resources/active'
 import { regionData } from '@broad/gene-page/src/resources/regions'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
 
 import {
-  coverageConfigClassic,
-  coverageConfigNew,
   markerExacClassic,
   attributeConfig,
 } from '@broad/gene-page/src/presentation/RegionViewerStyles'
@@ -26,11 +24,14 @@ import {
   selectedVariantDataset,
 } from '@broad/gene-page/src/resources/variants'
 
+import { getCoverageConfig } from '../GenePage/RegionViewer'
+
 const RegionViewer = ({
   regionData,
   allVariants,
   selectedVariantDataset,
   onGeneClick,
+  screenSize,
 }) => {
   const {
     chrom,
@@ -38,6 +39,7 @@ const RegionViewer = ({
     stop,
     exome_coverage,
     genome_coverage,
+    exacv1_coverage,
     genes,
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
@@ -46,9 +48,16 @@ const RegionViewer = ({
 
   const variantsReversed = allVariants.reverse()
 
-  const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-    coverageConfigClassic(exome_coverage) :
-    coverageConfigNew(exome_coverage, genome_coverage)
+  const coverageConfig = getCoverageConfig(
+    selectedVariantDataset,
+    exacv1_coverage,
+    exome_coverage,
+    genome_coverage
+  )
+
+  // const coverageConfig = selectedVariantDataset === 'exacVariants' ?
+  //   coverageConfigClassic(exome_coverage) :
+  //   coverageConfigNew(exome_coverage, genome_coverage)
 
   const featuresToDisplay = ['default']
 
@@ -60,10 +69,13 @@ const RegionViewer = ({
     strand: '+',
   }]
 
+  const smallScreen = screenSize.width < 900
+  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+
   return (
     <div>
       <RegionViewerComponent
-        width={1000}
+        width={regionViewerWidth}
         padding={0}
         regions={regions}
         regionAttributes={attributeConfig}
@@ -97,6 +109,7 @@ RegionViewer.propTypes = {
   allVariants: PropTypes.any.isRequired,
   onGeneClick: PropTypes.func,
   selectedVariantDataset: PropTypes.string.isRequired,
+  screenSize: PropTypes.object.isRequired,
 }
 RegionViewer.defaultProps = {
   coverageStyle: null,
@@ -108,6 +121,7 @@ export default connect(
     regionData: regionData(state),
     allVariants: finalFilteredVariants(state),
     selectedVariantDataset: selectedVariantDataset(state),
+    screenSize: screenSize(state),
   }),
   dispatch => ({
     onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),

@@ -280,13 +280,16 @@ export const lookupElasticVariantsInRegion = ({
     'xpos',
     'rsid',
     'variantId',
-    'variantId',
     'lof',
+    `${dataset}_filters`,
     `${dataset}_AC`,
     `${dataset}_AF`,
     `${dataset}_AN`,
     `${dataset}_Hom`,
   ]
+
+
+  const lofQuery = createConsequenceQuery(lofs)
 
   return new Promise((resolve, _) => {
     elasticClient.search({
@@ -319,7 +322,7 @@ export const lookupElasticVariantsInRegion = ({
     }).then((response) => {
       resolve(response.hits.hits.map((v) => {
         const elastic_variant = v._source
-        console.log(elastic_variant[`${dataset}_filters`])
+        // console.log(elastic_variant[`${dataset}_filters`])
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
@@ -333,8 +336,7 @@ export const lookupElasticVariantsInRegion = ({
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: elastic_variant[`${dataset}_filters`] !== null ?
-            elastic_variant[`${dataset}_filters`].join('|') : '',
+          filters: elastic_variant[`${dataset}_filters`],
           allele_count: elastic_variant[`${dataset}_AC`],
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],

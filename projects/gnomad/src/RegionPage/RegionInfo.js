@@ -14,25 +14,11 @@ import {
   GeneSymbol,
   GeneDetails,
   GeneAttributes,
-  GeneAttribute,
+  GeneAttributeKeys,
+  GeneAttributeKey,
+  GeneAttributeValues,
+  GeneAttributeValue,
 } from '@broad/gene-page/src/presentation/GeneInfoStyles'
-
-// const GeneDetailsModified = GeneDetails.extend`
-//   width: 100%;
-//   ${'' /* border: 1px solid red; */}
-//
-// `
-// const GeneAttributesModified = GeneAttributes.extend`
-//   flex-direction: row;
-//   flex-wrap: wrap ;
-//   width: 100%;
-//   ${'' /* border: 1px solid blue; */}
-// `
-// const GeneAttributeModified = GeneAttribute.extend`
-//   width: 25%;
-//   margin-right: 50px;
-//   ${'' /* border: 1px solid yellow; */}
-// `
 
 const lof = '#DD2C00'
 const missense = 'orange'
@@ -50,6 +36,12 @@ const consequencePresentation = {
   stop_gained: { name: 'stop gained', color: lof },
   inframe_deletion: { name: 'inframe deletion', color: lof },
 }
+
+const GeneAttributesConsequenceCounts = GeneAttributes.extend`
+  max-height: 100px;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+`
 
 const getConsequenceColor = (consequence) => {
   if (consequence in consequencePresentation) {
@@ -81,24 +73,46 @@ const RegionInfo = ({ regionData, variantCount }) => {
   console.log(total)
   return (
     <GeneInfoWrapper>
-      {/* <GeneNameWrapper>
+      <GeneNameWrapper>
         <GeneSymbol>{`${chrom}-${start}-${stop}`}</GeneSymbol>
       </GeneNameWrapper>
-      <GeneDetailsModified>
-        <GeneAttributesModified>
-          <GeneAttributeModified>
-            <strong>Region size:</strong> {(stop - start).toLocaleString()} BP
-          </GeneAttributeModified>
-          <GeneAttributeModified>
-            <strong>Total variants:</strong> {total.toLocaleString()}
-          </GeneAttributeModified>
-          {total_consequence_counts.map(({ consequence, count }) => (
-            <GeneAttributeModified key={consequence}>
-              <strong style={{ color: getConsequenceColor(consequence) }}>{getConsequenceName(consequence)}:</strong> {count.toLocaleString()}
-            </GeneAttributeModified>
-          ))}
-        </GeneAttributesModified>
-      </GeneDetailsModified> */}
+      <GeneDetails>
+        <GeneAttributes>
+          <GeneAttributeKeys>
+            <GeneAttributeKey>
+              Region size:
+            </GeneAttributeKey>
+            <GeneAttributeKey>
+              Total variants:
+            </GeneAttributeKey>
+
+          </GeneAttributeKeys>
+          <GeneAttributeValues>
+            <GeneAttributeValue>
+              {(stop - start).toLocaleString()} BP
+            </GeneAttributeValue>
+            <GeneAttributeValue>
+              {total.toLocaleString()}
+            </GeneAttributeValue>
+          </GeneAttributeValues>
+        </GeneAttributes>
+        {/* <GeneAttributesConsequenceCounts>
+          <GeneAttributeKeys>
+            {total_consequence_counts.map(({ consequence, count }) => (
+              <GeneAttributeKey key={`${consequence}-key`}>
+                <strong style={{ color: getConsequenceColor(consequence) }}>{getConsequenceName(consequence)}</strong>
+              </GeneAttributeKey>
+            ))}
+          </GeneAttributeKeys>
+          <GeneAttributeValues>
+            {total_consequence_counts.map(({ consequence, count }) => (
+              <GeneAttributeValue key={`${consequence}-value`}>
+                {count.toLocaleString()}
+              </GeneAttributeValue>
+            ))}
+          </GeneAttributeValues>
+        </GeneAttributesConsequenceCounts> */}
+      </GeneDetails>
     </GeneInfoWrapper>
   )
 }

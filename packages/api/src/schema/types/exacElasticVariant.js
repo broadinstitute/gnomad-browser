@@ -203,6 +203,7 @@ export const lookupElasticVariantsInRegion = ({
     }).then((response) => {
       resolve(response.hits.hits.map((v) => {
         const elastic_variant = v._source
+        console.log(elastic_variant)
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
@@ -216,7 +217,7 @@ export const lookupElasticVariantsInRegion = ({
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: 'PASS',
+          filters: elastic_variant.filters,
           allele_count: elastic_variant['AC'],
           allele_freq: elastic_variant['AF'],
           allele_num: elastic_variant['AN'],

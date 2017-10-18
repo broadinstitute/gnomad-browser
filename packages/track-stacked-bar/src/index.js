@@ -38,7 +38,25 @@ const TrackStackedBar = ({
   }
   const yMax = height - margin.top - margin.bottom
 
-  const data2 = data.map((interval) => {
+  const consequencesToDisplay = [
+    'stop_gained',
+    'missense_variant',
+    'synonymous_variant',
+    // 'intron_variant',
+  ]
+
+  const filterConsequenceCounts = (data) => {
+    return data.map((interval) => {
+      return {
+        ...interval,
+        bucket_consequence_counts: interval.bucket_consequence_counts
+          .filter(csq_count => (
+            consequencesToDisplay.includes(csq_count.consequence)))
+      }
+    })
+  }
+
+  const data2 = filterConsequenceCounts(data).map((interval) => {
     return {
       pos: interval.pos,
       ...interval.bucket_consequence_counts.reduce((acc, csq_count) => ({
@@ -88,7 +106,6 @@ const TrackStackedBar = ({
     '3_prime_UTR_variant': 'gray'
   }
 
-  console.log(data2)
   return (
     <TrackWrapper>
       <svg width={leftPanelWidth} height={height}>

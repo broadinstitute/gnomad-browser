@@ -1,8 +1,9 @@
 import fetch from 'graphql-fetch'
 
 // const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
-const API_URL = 'http://localhost:8007'
+// const API_URL = 'http://localhost:8007'
 // const API_URL = 'http://35.185.9.245'
+const API_URL = process.env.GNOMAD_API_URL
 
 export const fetchRegion = (regionId, url = API_URL) => {
   const [chrom, start, stop] = regionId.split('-')
@@ -53,27 +54,17 @@ export const fetchRegion = (regionId, url = API_URL) => {
         }
       }
     }
-    gnomadExomeVariants {
-      variant_id
-      rsid
-      pos
-      xpos
-      hgvsc
-      hgvsp
-      allele_count
-      allele_freq
-      allele_num
-      filters
-      hom_count
-      consequence
-      lof
-    }
     exome_coverage {
       xpos
       pos
       mean
     }
     genome_coverage {
+      xpos
+      pos
+      mean
+    }
+    exacv1_coverage {
       xpos
       pos
       mean
@@ -93,7 +84,23 @@ export const fetchRegion = (regionId, url = API_URL) => {
       consequence
       lof
     }
+    gnomadExomeVariants {
+      variant_id
+      rsid
+      pos
+      xpos
+      hgvsc
+      hgvsp
+      allele_count
+      allele_freq
+      allele_num
+      filters
+      hom_count
+      consequence
+      lof
+    }
   }
+
 }
 `
   return new Promise((resolve, reject) => {

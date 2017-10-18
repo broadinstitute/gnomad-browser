@@ -81,6 +81,25 @@ const regionType = new GraphQLObjectType({
         })
       }
     },
+    exacv1_coverage: {
+      type: new GraphQLList(coverageType),
+      resolve: (obj, args, ctx) => {
+        if ((obj.stop - obj.start) > 1600) {
+          return lookupCoverageBuckets({
+            elasticClient: ctx.database.elastic,
+            index: 'exacv1_coverage',
+            intervals: [{ start: obj.start, stop: obj.stop }],
+            chrom: obj.chrom,
+          })
+        }
+        return lookupCoverageByIntervals({
+          elasticClient: ctx.database.elastic,
+          index: 'exacv1_coverage',
+          intervals: [{ start: obj.start, stop: obj.stop }],
+          chrom: obj.chrom,
+        })
+      }
+    },
     gnomad_consequence_buckets: {
       type: new GraphQLObjectType({
         name: 'buckets',
@@ -245,11 +264,6 @@ const regionType = new GraphQLObjectType({
           numberOfVariants: 5000,
         })
       }
-    },
-    exacv1_variants: {
-      type: new GraphQLList(variantType),
-      resolve: (obj, args, ctx) =>
-        lookupVariantsByStartStop(ctx.database.exacv1, 'variants', obj.xstart, obj.xstop),
     },
   }),
 })

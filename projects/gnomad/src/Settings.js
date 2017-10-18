@@ -14,6 +14,7 @@ import {
 import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import { geneData } from '@broad/gene-page/src/resources/genes'
+import { regionData } from '@broad/gene-page/src/resources/regions'
 
 import {
   ClassicExacButton,
@@ -43,6 +44,7 @@ const GeneSettings = ({
   variantQcFilter,
   variantSearchText,
   geneData,
+  regionData,
 }) => {
   const setPadding = (event, newValue) => {
     const padding = Math.floor(1000 * newValue)
@@ -77,11 +79,15 @@ const GeneSettings = ({
       margin-bottom: 5px;
     }
   `
-  const exons = geneData.getIn(['transcript', 'exons']).toJS()
 
-  const padding = 75
-  const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-    .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+  let totalBasePairs
+  if (geneData) {
+    const exons = geneData.getIn(['transcript', 'exons']).toJS()
+
+    const padding = 75
+    totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
+      .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+  }
 
   let partialFetch
   if (totalBasePairs > 40000) {
@@ -90,7 +96,11 @@ const GeneSettings = ({
   } else if (totalBasePairs > 15000) {
     partialFetch = 'missenseOrLoF'
     variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
+  } else if (regionData) {
+    partialFetch = 'lof'
   }
+
+
 
   const ClassicVariantCategoryButtonGroup = () => (
     <ClassicExacButtonGroup>
@@ -201,6 +211,7 @@ const mapStateToProps = (state) => {
     variantFilter: variantFilter(state),
     // variantSearchText: variantSearchText(state),
     geneData: geneData(state),
+    regionData: regionData(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
