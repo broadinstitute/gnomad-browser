@@ -39,18 +39,74 @@ import {
 
 const GeneDetailsResponsive = GeneDetails.extend`
   align-items: center;
+  ${'' /* min-height: 70%; */}
   @media (max-width: 900px) {
     flex-direction: column;
   }
 `
 
 const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+`
+
+const ConstraintTabletop = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  align-items: center;
+  ${'' /* border: 1px solid orange; */}
+`
+
+const ConstraintSectionTitle = SectionTitle.extend`
+  width: 60%;
+  ${'' /* border: 1px solid blue; */}
+  margin: 0;
+`
+
+const DatasetSelectionWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: flex-end;
+  ${'' /* border: 5px solid pink; */}
 
 `
 
-const ConstraintTable = ({ constraintData }) => (
+const DatasetSelection = styled.div`
+  margin-right: 5px;
+  font-weight: ${({ isActive }) => isActive ? 'bold': 'normal'};
+  cursor: pointer;
+  ${'' /* border: 1px solid purple; */}
+`
+
+const ConstraintTable = ({
+  constraintData,
+  setSelectedVariantDataset,
+  selectedVariantDataset,
+}) => (
   <TableWrapper>
-    <SectionTitle>Gene constraint</SectionTitle>
+    <ConstraintTabletop>
+      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <DatasetSelectionWrapper>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'exacVariants'}
+          onClick={() => setSelectedVariantDataset('exacVariants')}
+        >
+          ExAC
+        </DatasetSelection>
+        <DatasetSelection>
+          {'|'}
+        </DatasetSelection>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'gnomadCombinedVariants'}
+          onClick={() => setSelectedVariantDataset('gnomadCombinedVariants')}
+        >
+          gnomAD
+        </DatasetSelection>
+      </DatasetSelectionWrapper>
+    </ConstraintTabletop>
     <Table>
       <TableRows>
         <TableHeader>
@@ -104,10 +160,33 @@ const ConstraintMessage = TableCell.extend`
   cursor: pointer;
 `
 
-const ConstraintTablePlaceholder = ({ setSelectedVariantDataset, regionalConstraint }) => (
-  <PlaceholderTable>
-    <TableWrapper>
-      <SectionTitle>Gene constraint</SectionTitle>
+const ConstraintTablePlaceholder = ({
+  setSelectedVariantDataset,
+  selectedVariantDataset,
+  regionalConstraint,
+}) => (
+  <TableWrapper>
+    <ConstraintTabletop>
+      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <DatasetSelectionWrapper>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'exacVariants'}
+          onClick={() => setSelectedVariantDataset('exacVariants')}
+        >
+          ExAC
+        </DatasetSelection>
+        <DatasetSelection>
+          {'|'}
+        </DatasetSelection>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'gnomadCombinedVariants'}
+          onClick={() => setSelectedVariantDataset('gnomadCombinedVariants')}
+        >
+          gnomAD
+        </DatasetSelection>
+      </DatasetSelectionWrapper>
+    </ConstraintTabletop>
+    <PlaceholderTable>
       <TableRows>
         <TableHeader>
           <TableTitleColumn />
@@ -119,22 +198,24 @@ const ConstraintTablePlaceholder = ({ setSelectedVariantDataset, regionalConstra
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Synonymous</TableCell>
-          <ConstraintMessage>gnomAD constraint coming soon!</ConstraintMessage>
-        </TableRow>
-        <TableRow>
-          <TableTitleColumn />
-          <TableCell width={'40%'}>Missense</TableCell>
-          <ConstraintMessage
-            onClick={() => setSelectedVariantDataset('exacVariants')}
-          >
-            Click here to see ExAC values.
-          </ConstraintMessage>
 
         </TableRow>
         <TableRow>
           <TableTitleColumn />
+          <TableCell width={'40%'}>Missense</TableCell>
+          {/* <ConstraintMessage
+            onClick={() => setSelectedVariantDataset('exacVariants')}
+          >
+            Click here to see ExAC values.
+          </ConstraintMessage> */}
+          <ConstraintMessage>gnomAD constraint coming soon!</ConstraintMessage>
+          <TableCell />
+        </TableRow>
+        <TableRow>
+          <TableTitleColumn />
           <TableCell width={'40%'}>LoF</TableCell>
-          {regionalConstraint.length > 0 ? <ConstraintMessage onClick={() => setSelectedVariantDataset('exacVariants')}>Also, this gene exhibits regional constraint.</ConstraintMessage> : <TableCell />}
+          <TableCell />
+          {/* {regionalConstraint.length > 0 ? <ConstraintMessage onClick={() => setSelectedVariantDataset('exacVariants')}>Also, this gene exhibits regional constraint.</ConstraintMessage> : <TableCell />} */}
         </TableRow>
         {/* <TableRow>
           <TableTitleColumn />
@@ -144,13 +225,35 @@ const ConstraintTablePlaceholder = ({ setSelectedVariantDataset, regionalConstra
           <TableCell />
         </TableRow> */}
       </TableRows>
-    </TableWrapper>
-  </PlaceholderTable>
+    </PlaceholderTable>
+</TableWrapper>
 )
-const ConstraintTableNone = () => (
-  <PlaceholderTable>
-    <TableWrapper>
-      <SectionTitle>Gene constraint</SectionTitle>
+const ConstraintTableNone = ({
+  setSelectedVariantDataset,
+  selectedVariantDataset,
+}) => (
+  <TableWrapper>
+    <ConstraintTabletop>
+      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <DatasetSelectionWrapper>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'exacVariants'}
+          onClick={() => setSelectedVariantDataset('exacVariants')}
+        >
+          ExAC
+        </DatasetSelection>
+        <DatasetSelection>
+          {'|'}
+        </DatasetSelection>
+        <DatasetSelection
+          isActive={selectedVariantDataset === 'gnomadCombinedVariants'}
+          onClick={() => setSelectedVariantDataset('gnomadCombinedVariants')}
+        >
+          gnomAD
+        </DatasetSelection>
+      </DatasetSelectionWrapper>
+    </ConstraintTabletop>
+    <PlaceholderTable>
       <TableRows>
         <TableHeader>
           <TableTitleColumn />
@@ -177,8 +280,8 @@ const ConstraintTableNone = () => (
           <TableCell />
         </TableRow>
       </TableRows>
-    </TableWrapper>
-  </PlaceholderTable>
+    </PlaceholderTable>
+  </TableWrapper>
 )
 
 const GeneInfo = ({
@@ -198,7 +301,6 @@ const GeneInfo = ({
     omim_accession,
     exacv1_constraint,
   } = geneData.toJS()
-  console.log(exacv1_constraint)
   return (
     <GeneInfoWrapper>
       <GeneNameWrapper>
@@ -223,9 +325,9 @@ const GeneInfo = ({
             <GeneAttributeKey>
               OMIM
             </GeneAttributeKey>
-            <GeneAttributeKey>
+            {/* <GeneAttributeKey>
               External references
-            </GeneAttributeKey>
+            </GeneAttributeKey> */}
           </GeneAttributeKeys>
           <GeneAttributeValues>
             <GeneAttributeValue>
@@ -263,27 +365,56 @@ const GeneInfo = ({
                 {omim_accession || 'N/A'}
               </a>
             </GeneAttributeValue>
-            <GeneAttributeValue>
-              <select
-                onChange={event => window.open(event.target.value)}
-                value={selectedVariantDataset}
+            {/* <GeneAttributeValue>
+              <a
+                target="_blank"
+                href={`http://en.wikipedia.org/wiki/${gene_name}`}
               >
-                <option value={`http://en.wikipedia.org/wiki/${gene_name}`}>Wikipedia</option>
-                <option value={`http://www.ncbi.nlm.nih.gov/pubmed?term=${gene_name}`}>PubMed Search</option>
-                <option value={`http://www.wikigenes.org/?search=${gene_name}`}>Wikigenes</option>
-                <option value={`http://www.gtexportal.org/home/gene/${gene_name}`}>GTEx (Expression)</option>
-              </select>
+                PubMed
+              </a>
             </GeneAttributeValue>
+            <GeneAttributeValue>
+              <a
+                target="_blank"
+                href={`http://en.wikipedia.org/wiki/${gene_name}`}
+              >
+                Wikipedia
+              </a>
+            </GeneAttributeValue>
+            <GeneAttributeValue>
+              <a
+                target="_blank"
+                href={`http://www.wikigenes.org/?search=${gene_name}`}
+              >
+                Wikigenes
+              </a>
+            </GeneAttributeValue>
+            <GeneAttributeValue>
+              <a
+                target="_blank"
+                href={`http://www.gtexportal.org/home/gene/${gene_name}`}
+              >
+                GTEx (Expression)
+              </a>
+            </GeneAttributeValue> */}
           </GeneAttributeValues>
         </GeneAttributes>
         {selectedVariantDataset === 'exacVariants' && exacv1_constraint &&
-          <ConstraintTable constraintData={exacv1_constraint} />}
+          <ConstraintTable
+            constraintData={exacv1_constraint}
+            setSelectedVariantDataset={setSelectedVariantDataset}
+            selectedVariantDataset={selectedVariantDataset}
+          />}
         {selectedVariantDataset === 'exacVariants' && !exacv1_constraint &&
-          <ConstraintTableNone />}
+          <ConstraintTableNone
+            setSelectedVariantDataset={setSelectedVariantDataset}
+            selectedVariantDataset={selectedVariantDataset}
+          />}
         {selectedVariantDataset === 'gnomadCombinedVariants' &&
           <ConstraintTablePlaceholder
             regionalConstraint={regionalConstraint}
             setSelectedVariantDataset={setSelectedVariantDataset}
+            selectedVariantDataset={selectedVariantDataset}
           />}
       </GeneDetailsResponsive>
     </GeneInfoWrapper>

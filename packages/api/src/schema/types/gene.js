@@ -96,11 +96,11 @@ const geneType = new GraphQLObjectType({
         })
       }
     },
-    exacv1_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) =>
-        lookupCoverageByStartStop(ctx.database.exacv1, 'base_coverage', obj.xstart, obj.xstop),
-    },
+    // exacv1_coverage: {
+    //   type: new GraphQLList(coverageType),
+    //   resolve: (obj, args, ctx) =>
+    //     lookupCoverageByStartStop(ctx.database.exacv1, 'base_coverage', obj.xstart, obj.xstop),
+    // },
     exome_variants: {
       type: new GraphQLList(variantType),
       args: { consequence: { type: GraphQLString } },

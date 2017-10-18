@@ -188,7 +188,7 @@ const TranscriptRightPanel = ({
         <TranscriptName>
           <GtexTitleWrapper>
             {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
-            <GtexTitleText>Tissue-specific gene expression (GTEx)</GtexTitleText>
+            <GtexTitleText>GTEx tissue-specific gene expression (median TPM)</GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}

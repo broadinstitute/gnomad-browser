@@ -120,7 +120,13 @@ const formatLoF = (lofs, index) => lofs.map(lof => (
   </span>
 ))
 
-const formatVariantId = (variantId) => {
+const VariantId = styled.span`
+  font-weight: bold;
+  color: rgba(70, 130, 180, 1);
+  cursor: pointer;
+`
+
+const formatVariantId = (variantId, onRowClick) => {
   let [chrom, pos, ref, alt] = variantId.split('-')  // eslint-disable-line
   if (alt.length > 6) {
     alt = `${alt.slice(0, 6)}...`
@@ -129,9 +135,12 @@ const formatVariantId = (variantId) => {
     ref = `${ref.slice(0, 6)}...`
   }
   return (
-    <span key={`variant-id-${variantId}`}>
+    <VariantId
+      key={`variant-id-${variantId}`}
+      onClick={_ => onRowClick(variantId)}  // eslint-disable-line
+    >
       {chrom}:{pos} {ref} / {alt}
-    </span>
+    </VariantId>
   )
 }
 
@@ -196,7 +205,7 @@ const formatAlleleFrequency = (dataRow, dataKey) => {
 }
 
 
-const getDataCell = (field, dataRow, searchText, i) => {
+const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
   // if (condition) {
   //
   // }
@@ -221,7 +230,7 @@ const getDataCell = (field, dataRow, searchText, i) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {cellText}
+          {dataRow[dataKey] === null ? '' : dataRow[dataKey]}
         </div>
       )
     case 'float':
@@ -257,7 +266,7 @@ const getDataCell = (field, dataRow, searchText, i) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatVariantId(cellText)}
+          {formatVariantId(cellText, onRowClick)}
         </div>
       )
     case 'consequence':
@@ -303,7 +312,7 @@ const getDataCell = (field, dataRow, searchText, i) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {dataRow[dataKey]}
+          {dataRow[dataKey] === null ? '' : dataRow[dataKey]}
         </div>
       )
   }
@@ -316,7 +325,6 @@ const TableRow = styled.div`
     (rowIndex % 2 === 0 ? c1 : c2)};
   &:hover {
     background-color: rgba(10, 121, 191, 0.1);
-    cursor: pointer;
   }
 `
 
@@ -327,7 +335,7 @@ const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick, 
       return !field.disappear
     })
     .map((field, i) =>  // eslint-disable-line
-      getDataCell(field, dataRow, searchText, i))
+      getDataCell(field, dataRow, searchText, i, onRowClick))
 
   const indexCell = (
     <div
@@ -344,7 +352,6 @@ const getDataRow = (tableConfig, dataRow, searchText, i, showIndex, onRowClick, 
   return (
     // eslint-disable-next-line
     <TableRow
-      onClick={_ => onRowClick(dataRow.get('variant_id'))}  // eslint-disable-line
       onMouseEnter={_ => onRowHover(dataRow.get('variant_id'))}  // eslint-disable-line
       key={`row-${i}`}
       alternatingColors={['white', '#F5F5F5']}

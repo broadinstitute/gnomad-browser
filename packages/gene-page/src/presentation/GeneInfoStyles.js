@@ -7,7 +7,7 @@ export const GeneInfoWrapper = styled.div`
   align-items: center;
   width: 97%;
   flex-shrink: 0;
-  height: 100%;
+  min-height: 100%;
   @media (max-width: 900px) {
     flex-direction: column;
     justify-content: center;
@@ -53,9 +53,7 @@ export const GeneDetails = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 100%;
-  flex-shrink: 0;
-  ${'' /* border: 1px solid red; */}
+  ${'' /* border: 3px solid red; */}
 `
 
 export const GeneAttributes = styled.div`
@@ -66,6 +64,7 @@ export const GeneAttributes = styled.div`
   ${'' /* justify-content: center; */}
   min-width: 300px;
   width: 300px;
+  min-height: 100%;
   margin-bottom: 30px;
   margin-top: 35px;
   ${'' /* border: 1px solid purple; */}

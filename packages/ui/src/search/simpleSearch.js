@@ -35,36 +35,34 @@ export const Search = ({
   placeholder,
   onChange,
   reference,
-  searchText,
-}) => (
-  <SearchWrapper>
-    <form
-      onChange={(event) => {
-        event.preventDefault()
-        onChange(event.target.value)
-      }}
-    >
-      <SearchInput
-        type="text"
-        name="search"
-        autoComplete="off"
-        placeholder={searchText === '' ? 'Search variant table' : searchText}
-        ref={e1 => {
-          reference = e1
-
-        }}
-        list={listName}
-      />
-      {/* <datalist id={listName}>
-        {options.map(item => <option value={item} />)}
-      </datalist> */}
-    </form>
-    <ClearSearch onClick={() => {
-      onChange('')
-      // reference = ''
-    }}>Clear</ClearSearch>
-  </SearchWrapper>
-)
+}) => {
+  let elem
+  return (
+    <SearchWrapper>
+        <SearchInput
+          type="text"
+          name="search"
+          autoComplete="off"
+          placeholder='Search variant table'
+          ref={e1 => {
+            elem = e1
+          }}
+          list={listName}
+          onChange={(event) => {
+            event.preventDefault()
+            onChange(event.target.value)
+          }}
+        />
+        {/* <datalist id={listName}>
+          {options.map(item => <option value={item} />)}
+        </datalist> */}
+      {/* <ClearSearch onClick={() => {
+        onChange('')
+        elem.inputText = ''
+      }}>Clear</ClearSearch> */}
+    </SearchWrapper>
+  )
+}
 Search.propTypes = {
   listName: PropTypes.string,
   // options: PropTypes.string,

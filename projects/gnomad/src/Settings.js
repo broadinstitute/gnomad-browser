@@ -150,7 +150,7 @@ const GeneSettings = ({
             >
               <option value="gnomadExomeVariants">gnomAD exomes</option>
               <option value="gnomadGenomeVariants">gnomAD genomes</option>
-              <option value="gnomadCombinedVariants">gnomAD combined</option>
+              <option value="gnomadCombinedVariants">gnomAD</option>
               <option value="exacVariants">ExAC</option>
             </select>
           </DataSelectionContainer>
@@ -176,7 +176,6 @@ const GeneSettings = ({
               placeholder={'Search variant table'}
               reference={findInput}
               onChange={searchVariants}
-              searchText={variantSearchText}
             />
           </SearchContainer>
         </DataSelectionGroup>
@@ -192,7 +191,6 @@ GeneSettings.propTypes = {
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
   setSelectedVariantDataset: PropTypes.func.isRequired,
-  variantSearchText: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -201,7 +199,7 @@ const mapStateToProps = (state) => {
     selectedVariantDataset: selectedVariantDataset(state),
     variantQcFilter: variantQcFilter(state),
     variantFilter: variantFilter(state),
-    variantSearchText: variantSearchText(state),
+    // variantSearchText: variantSearchText(state),
     geneData: geneData(state),
   }
 }

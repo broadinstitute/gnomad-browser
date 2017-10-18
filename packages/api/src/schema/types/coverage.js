@@ -270,9 +270,13 @@ export const lookupCoverageByIntervalsWithBuckets = ({
 
   return new Promise((resolve, _) => {
     // console.log('searching')
+    if (totalBasePairs > 150000 && index === 'exacv1_coverage') {
+      resolve([])
+    }
     return ctx.database.redis.get(cacheKey).then((reply) => {
       if (reply) {
         // console.log(reply)
+        console.log('resolving from cash')
         resolve(JSON.parse(reply))
       } else {
         elasticClient.search({
@@ -307,7 +311,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
             sort: [{ pos: { order: 'asc' } }],
           },
         }).then((response) => {
-          // console.log('got server data', index)
+          console.log('got server data', index)
           const { buckets } = response.aggregations.genome_coverage_downsampled
           console.log('removing empty values', index)
           // const intervalsOnly = getCoverageIntervals(buckets, intervals)

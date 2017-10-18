@@ -166,9 +166,10 @@ const GeneRegion = ({
   }
 
   const RegionViewerWrapper = styled.div`
-    margin-left: 3px;
+    margin-left: 10px;
     width: 100%;
     padding-left: 0;
+    ${'' /* border: 5px solid orange; */}
   `
 
   const RegionViewerSectionTitle = SectionTitle.extend`
