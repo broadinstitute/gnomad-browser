@@ -89,6 +89,7 @@ const GeneSettings = ({
       .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
   }
 
+  console.log(regionData)
   let partialFetch
   if (totalBasePairs > 40000) {
     partialFetch = 'lof'
@@ -97,10 +98,11 @@ const GeneSettings = ({
     partialFetch = 'missenseOrLoF'
     variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
   } else if (regionData) {
-    partialFetch = 'lof'
+    if ((regionData.get('stop') - regionData.get('start')) > 50000) {
+      partialFetch = 'lof'
+      variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
+    }
   }
-
-
 
   const ClassicVariantCategoryButtonGroup = () => (
     <ClassicExacButtonGroup>

@@ -58,12 +58,12 @@ const CoverageTrack = ({
     .domain([0, dataYDomainMax])
     .range([height, 0])
 
-  // const dataArea = area()
-  //   .x(base => base.scaledPosition)
-  //   .y0(_ => height)  // eslint-disable-line
-  //   .y1(base => yScale(base.mean))
+  const dataAreaLarge = area()
+    .x(base => base.scaledPosition)
+    .y0(_ => height)  // eslint-disable-line
+    .y1(base => yScale(base.mean))
 
-  const dataArea = area()
+  const dataAreaSmall = area()
     .defined((base) => {
       return !isNaN(base.mean)
         && positionOffset(base.pos).offsetPosition !== undefined
@@ -80,11 +80,21 @@ const CoverageTrack = ({
     .x(base => xScale(positionOffset(base.pos).offsetPosition))
     .y(base => yScale(base.mean))
 
-  const renderArea = (dataset) => {
+  const renderAreaLarge = (dataset) => {
     return (
       <path
         key={`cov-series-${dataset.name}-area`}
-        d={dataArea(dataset.data)}
+        d={dataAreaLarge(scaleCoverage(xScale, dataset.data))}
+        fill={dataset.color}
+        opacity={dataset.opacity}
+      />
+    )
+  }
+  const renderAreaSmall= (dataset) => {
+    return (
+      <path
+        key={`cov-series-${dataset.name}-area`}
+        d={dataAreaSmall(dataset.data)}
         fill={dataset.color}
         opacity={dataset.opacity}
       />
@@ -130,16 +140,19 @@ const CoverageTrack = ({
     if (totalBp < 100) {
       return renderBars(dataset)
     }
+    if (totalBp < 2000) {
+      return renderAreaSmall(dataset)
+    }
     if (dataset.data) {
       switch (dataset.type) {
         case 'area':
-          return renderArea(dataset)
+          return renderAreaLarge(dataset)
         case 'line':
           return renderLine(dataset)
         case 'line-area':
           return (
             <g>
-              {renderArea(dataset)}
+              {renderAreaLarge(dataset)}
               {renderLine(dataset)}
             </g>
           )

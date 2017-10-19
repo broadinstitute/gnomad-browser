@@ -29,6 +29,7 @@ const TrackStackedBar = ({
   // offsetRegions,
   // regionAttributes,
   // padding,
+  hideIntrons,
 }) => {
   const margin = {
     top: 20,
@@ -39,10 +40,14 @@ const TrackStackedBar = ({
   const yMax = height - margin.top - margin.bottom
 
   const consequencesToDisplay = [
-    'stop_gained',
     'missense_variant',
     'synonymous_variant',
-    // 'intron_variant',
+    'splice_region_variant',
+    'stop_gained',
+    'frameshift_variant',
+    'inframe_deletion',
+    'splice_donor_variant',
+    'splice_acceptor_variant',
   ]
 
   const filterConsequenceCounts = (data) => {
@@ -56,7 +61,8 @@ const TrackStackedBar = ({
     })
   }
 
-  const data2 = filterConsequenceCounts(data).map((interval) => {
+  // const data2 = filterConsequenceCounts(data).map((interval) => {
+  const data2 = data.map((interval) => {
     return {
       pos: interval.pos,
       ...interval.bucket_consequence_counts.reduce((acc, csq_count) => ({
@@ -97,7 +103,7 @@ const TrackStackedBar = ({
     intron_variant: 'gray',
     missense_variant: 'orange',
     synonymous_variant: 'green',
-    splice_region_variant: 'red',
+    splice_region_variant: 'gray',
     stop_gained: 'red',
     frameshift_variant: 'red',
     inframe_deletion: 'red',
@@ -106,6 +112,8 @@ const TrackStackedBar = ({
     '3_prime_UTR_variant': 'gray'
   }
 
+  const colorKeys = Object.keys(colors)
+
   return (
     <TrackWrapper>
       <svg width={leftPanelWidth} height={height}>
@@ -113,10 +121,12 @@ const TrackStackedBar = ({
           scale={yScale}
           top={0}
           left={leftPanelWidth - 5}
-          label={'Variants count'}
+          label={'Variants binned'}
+          fontSize={'14px'}
           stroke={'#1b1a1e'}
           tickTextFill={'#1b1a1e'}
-          numTicks={10}
+          numTicks={5}
+          labelProps={{textAnchor: 'middle', fontSize: 12}}
           // hideTicks
         />
       </svg>
@@ -127,7 +137,7 @@ const TrackStackedBar = ({
             if (key !== 'pos') {
               const h = lastHeight
               const barHeight = yMax - yPoint(d, key)
-              const color = key in colors ? colors[key] : 'gray'
+              const color = colorKeys.includes(key) ? colors[key] : 'gray'
               const bar = (
                 <g key={`bar-${key}-${i1}-${i2}`}>
                   <rect

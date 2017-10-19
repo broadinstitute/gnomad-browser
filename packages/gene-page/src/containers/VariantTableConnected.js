@@ -105,7 +105,14 @@ const mapDispatchToProps = (dispatch) => {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
     // setFocusedVariant: history => variantId =>
     //   dispatch(variantActions.setFocusedVariant(variantId, history)),
-    setFocusedVariant: history => variantId => window.open(`http://gnomad.broadinstitute.org/variant/${variantId}`),
+    setFocusedVariant: history => (variantId, dataset) => {
+      console.log(dataset)
+      if (dataset === 'exacVariants') {
+        window.open(`http://exac.broadinstitute.org/variant/${variantId}`)
+      } else {
+        window.open(`http://gnomad.broadinstitute.org/variant/${variantId}`)
+      }
+    },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableScrollData: scrollData =>
       dispatch(activeActions.setCurrentTableScrollData(scrollData)),

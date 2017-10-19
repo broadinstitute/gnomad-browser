@@ -160,9 +160,9 @@ export const lookupElasticVariantsByGeneId = ({
 export const lookupElasticVariantsInRegion = ({
   elasticClient,
   numberOfVariants,
-  filter,
   start,
   stop,
+  chrom,
 }) => {
   const fields = [
     'hgvsp',
@@ -172,11 +172,25 @@ export const lookupElasticVariantsInRegion = ({
     'rsid',
     'variantId',
     'lof',
+    'filters',
     'AC',
     'AN',
     'AF',
     'AC_Hom',
   ]
+
+  const lofQuery = createConsequenceQuery(lofs)
+  const missenseQuery = createConsequenceQuery([...lofs, 'missense_variant'])
+
+  let consequenceQuery = createConsequenceQuery([])
+
+  if ((stop - start) > 50000) {
+    consequenceQuery = missenseQuery
+  }
+  if ((stop - start) > 200000) {
+    consequenceQuery = lofQuery
+  }
+  console.log(chrom)
     return new Promise((resolve, _) => {
     elasticClient.search({
       index: 'exacv1',
@@ -189,21 +203,27 @@ export const lookupElasticVariantsInRegion = ({
             filter: {
               bool: {
                 must: [
-                  { range: { start: { gte: start, lte: stop } } },
-                  // { term: { majorConsequence: 'stop_gained' } },
-                  // { term: { majorConsequence: 'frameshift_variant' } },
+                  {
+                    bool: {
+                      must: { range: { start: { gte: start, lte: stop } } },
+                    }
+                  },
+                  {
+                    bool: {
+                      must: { term: { contig: chrom } },
+                    }
+                  }
                 ],
-                should: lofQuery,
+                should: consequenceQuery,
               },
             },
           },
         },
-        sort: [{ xpos: { order: 'asc' } }],
+        sort: [{ start: { order: 'asc' } }],
       },
     }).then((response) => {
       resolve(response.hits.hits.map((v) => {
         const elastic_variant = v._source
-        console.log(elastic_variant)
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',

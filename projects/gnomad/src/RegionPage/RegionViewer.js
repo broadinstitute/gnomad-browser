@@ -44,8 +44,6 @@ const RegionViewer = ({
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
-  const showVariants = false
-
   const variantsReversed = allVariants.reverse()
 
   const coverageConfig = getCoverageConfig(
@@ -54,10 +52,6 @@ const RegionViewer = ({
     exome_coverage,
     genome_coverage
   )
-
-  // const coverageConfig = selectedVariantDataset === 'exacVariants' ?
-  //   coverageConfigClassic(exome_coverage) :
-  //   coverageConfigNew(exome_coverage, genome_coverage)
 
   const featuresToDisplay = ['default']
 
@@ -73,6 +67,11 @@ const RegionViewer = ({
 
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+
+  const largeRegion = totalBp > 50000
+  // const showVariants = !largeRegion
+  const showVariants = true
+  const showStacked = true
 
   return (
     <div>
@@ -101,7 +100,9 @@ const RegionViewer = ({
             markerConfig={markerExacClassic}
             variants={variantsReversed}
           />}
-        <StackedBarTrack height={150} data={buckets} />
+        {showStacked &&
+          <StackedBarTrack height={150} data={buckets} />
+        }
         <NavigatorConnected />
       </RegionViewerComponent>
     </div>

@@ -126,7 +126,7 @@ const VariantId = styled.span`
   cursor: pointer;
 `
 
-const formatVariantId = (variantId, onRowClick) => {
+const formatVariantId = (variantId, onRowClick, dataRow) => {
   let [chrom, pos, ref, alt] = variantId.split('-')  // eslint-disable-line
   if (alt.length > 6) {
     alt = `${alt.slice(0, 6)}...`
@@ -137,7 +137,8 @@ const formatVariantId = (variantId, onRowClick) => {
   return (
     <VariantId
       key={`variant-id-${variantId}`}
-      onClick={_ => onRowClick(variantId)}  // eslint-disable-line
+      // HACK
+      onClick={_ => onRowClick(variantId, dataRow.get('datasets').first())}  // eslint-disable-line
     >
       {chrom}:{pos} {ref} / {alt}
     </VariantId>
@@ -150,6 +151,8 @@ const synonymous = '#2E7D32'
 const other = '#424242'
 const consequencePresentation = {
   missense_variant: { name: 'missense', color: missense },
+  inframe_insertion: { name: 'inframe insertion', color: missense },
+  inframe_deletion: { name: 'inframe deletion', color: missense },
   synonymous_variant: { name: 'synonymous', color: synonymous },
   upstream_gene_variant: { name: 'upstream gene', color: other },
   downstream_gene_variant: { name: 'downstream gene', color: other },
@@ -161,6 +164,8 @@ const consequencePresentation = {
   splice_acceptor_variant: { name: 'splice acceptor', color: lof },
   frameshift_variant: { name: 'frameshift', color: lof },
   stop_gained: { name: 'stop gained', color: lof },
+  stop_lost: { name: 'stop lost', color: lof },
+  start_lost: { name: 'stop lost', color: lof },
   inframe_deletion: { name: 'inframe deletion', color: lof },
 }
 
@@ -266,7 +271,7 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatVariantId(cellText, onRowClick)}
+          {formatVariantId(cellText, onRowClick, dataRow)}
         </div>
       )
     case 'consequence':

@@ -136,15 +136,16 @@ const regionType = new GraphQLObjectType({
       }),
       resolve: (obj, args, ctx) => {
         return new Promise((resolve, reject) => {
-          const regionRangeQueries = { range: { pos: { gte: obj.start, lte: obj.stop } } }
+          const regionRangeQueries = { range: { xpos: { gte: obj.xstart, lte: obj.xstop } } }
           // NOTE: divide region size by the number of buckets you want
           const numberOfBuckets = 100
           let intervalSize
-          if (obj.stop - obj.start < 100) {
+          if (obj.xstop - obj.xstart < 100) {
             intervalSize = 1
           } else {
-            intervalSize = Math.floor((obj.stop - obj.start) / numberOfBuckets)
+            intervalSize = Math.floor((obj.xstop - obj.xstart) / numberOfBuckets)
           }
+
           ctx.database.elastic.search({
             index: 'gnomad',
             type: 'variant',
@@ -178,7 +179,7 @@ const regionType = new GraphQLObjectType({
                   },
                 },
               },
-              sort: [{ pos: { order: 'asc' } }],
+              sort: [{ xpos: { order: 'asc' } }],
             },
           }).then((response) => {
             const { buckets } = response.aggregations.bucket_positions
@@ -258,15 +259,17 @@ const regionType = new GraphQLObjectType({
         if (obj.regionSize < 10000) {
           return fromExacVariant.lookupElasticVariantsInRegion({
             elasticClient: ctx.database.elastic,
-            xstart: obj.start,
-            xstop: obj.stop,
+            start: obj.start,
+            stop: obj.stop,
+            chrom: obj.chrom,
             numberOfVariants: 5000,
           })
         }
         return fromExacVariant.lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
-          start: obj.xstart,
-          stop: obj.xstop,
+          start: obj.start,
+          stop: obj.stop,
+          chrom: obj.chrom,
           numberOfVariants: 5000,
         })
       }

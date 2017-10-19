@@ -75,7 +75,7 @@ const GtexPlotWrapper = styled.div`
 `
 
 const GtexTitleText = styled.h3`
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   margin-bottom: 0;
   margin-top: 0;
@@ -125,7 +125,7 @@ const TranscriptRightPanel = ({
           strokeDasharray="1.5"
         />
         <circle
-          cx={padding + gtexScale(tpm)}
+          cx={gtexScale(tpm)}
           cy={flipOutExonThickness / 2}
           r={5}
           fill={'black'}
@@ -188,7 +188,7 @@ const TranscriptRightPanel = ({
         <TranscriptName>
           <GtexTitleWrapper>
             {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
-            <GtexTitleText>GTEx tissue-specific gene expression (median TPM)</GtexTitleText>
+            <GtexTitleText>GTEx tissue-specific isoform expression (median TPM)</GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}

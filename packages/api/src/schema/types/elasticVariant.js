@@ -269,6 +269,7 @@ export const lookupElasticVariantsInRegion = ({
   dataset,
   xstart,
   xstop,
+  chrom,
   numberOfVariants,
   filter,
 }) => {
@@ -290,6 +291,16 @@ export const lookupElasticVariantsInRegion = ({
 
 
   const lofQuery = createConsequenceQuery(lofs)
+  const missenseQuery = createConsequenceQuery([...lofs, 'missense_variant'])
+
+  let consequenceQuery = createConsequenceQuery([])
+
+  if ((xstop - xstart) > 50000) {
+    consequenceQuery = missenseQuery
+  }
+  if ((xstop - xstart) > 200000) {
+    consequenceQuery = lofQuery
+  }
 
   return new Promise((resolve, _) => {
     elasticClient.search({
@@ -302,17 +313,13 @@ export const lookupElasticVariantsInRegion = ({
           bool: {
             must: [
               { exists: { field: `${dataset}_AC` } },
-              // { term: { majorConsequence: 'stop_gained' } },
-              // ...lofQuery
             ],
             filter: {
               bool: {
                 must: [
                   { range: { xpos: { gte: xstart, lte: xstop } } },
-                  // { term: { majorConsequence: 'stop_gained' } },
-                  // { term: { majorConsequence: 'frameshift_variant' } },
                 ],
-                should: lofQuery,
+                should: consequenceQuery,
               },
             },
           },

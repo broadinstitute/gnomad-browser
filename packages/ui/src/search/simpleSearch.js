@@ -56,10 +56,10 @@ export const Search = ({
         {/* <datalist id={listName}>
           {options.map(item => <option value={item} />)}
         </datalist> */}
-      {/* <ClearSearch onClick={() => {
+      <ClearSearch onClick={() => {
         onChange('')
         elem.inputText = ''
-      }}>Clear</ClearSearch> */}
+      }}>Clear</ClearSearch>
     </SearchWrapper>
   )
 }

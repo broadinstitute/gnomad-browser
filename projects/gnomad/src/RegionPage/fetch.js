@@ -55,17 +55,14 @@ export const fetchRegion = (regionId, url = API_URL) => {
       }
     }
     exome_coverage {
-      xpos
       pos
       mean
     }
     genome_coverage {
-      xpos
       pos
       mean
     }
     exacv1_coverage {
-      xpos
       pos
       mean
     }
@@ -85,6 +82,21 @@ export const fetchRegion = (regionId, url = API_URL) => {
       lof
     }
     gnomadExomeVariants {
+      variant_id
+      rsid
+      pos
+      xpos
+      hgvsc
+      hgvsp
+      allele_count
+      allele_freq
+      allele_num
+      filters
+      hom_count
+      consequence
+      lof
+    }
+    exacVariants {
       variant_id
       rsid
       pos
