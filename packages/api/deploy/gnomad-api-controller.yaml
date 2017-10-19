@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: gnomad-api-pod
-        image: gcr.io/exac-gnomad/gnomad-api:1508243191
+        image: gcr.io/exac-gnomad/gnomad-api
         env:
         - name: DEPLOYMENT_ENV
           value: production

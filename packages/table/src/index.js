@@ -121,7 +121,7 @@ const formatLoF = (lofs, index) => lofs.map(lof => (
 ))
 
 const VariantId = styled.span`
-  font-weight: bold;
+  ${'' /* font-weight: bold; */}
   color: rgba(70, 130, 180, 1);
   cursor: pointer;
 `
@@ -190,7 +190,7 @@ const formatConsequence = (consequence, index, searchText) => {
     <span
       style={{
         color: getConsequenceColor(consequence),
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
       }}
       key={`${consequence}-${index}`}
     >

@@ -71,7 +71,7 @@ const RegionViewer = ({
   const largeRegion = totalBp > 50000
   // const showVariants = !largeRegion
   const showVariants = true
-  const showStacked = true
+  const showStacked = largeRegion
 
   return (
     <div>

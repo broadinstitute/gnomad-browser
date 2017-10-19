@@ -12,6 +12,8 @@ import {
   actions as geneActions,
 } from '../resources/genes'
 
+import { currentGene } from '../resources/active'
+
 const TranscriptConnected = ({
   ownProps,
   transcripts,
@@ -23,6 +25,7 @@ const TranscriptConnected = ({
   currentTissue,
   setCurrentTissue,
   tissueStats,
+  currentGene,
 }) => {
   return (
     <TranscriptTrack
@@ -35,12 +38,14 @@ const TranscriptConnected = ({
       currentTissue={currentTissue}
       tissueStats={tissueStats}
       onTissueChange={setCurrentTissue}
+      currentGene={currentGene}
       {...ownProps}
     />
   )
 }
 TranscriptConnected.propTypes = {
   ownProps: PropTypes.object.isRequired,
+  currentGene: PropTypes.string,
   currentTissue: PropTypes.string,
   currentTranscript: PropTypes.string,
   currentExon: PropTypes.string,
@@ -60,6 +65,7 @@ TranscriptConnected.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   ownProps,
+  currentGene: currentGene(state),
   currentTissue: currentTissue(state),
   currentTranscript: currentTranscript(state),
   currentExon: currentExon(state),

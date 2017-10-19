@@ -71,23 +71,24 @@ const GtexTitleWrapper = styled.div`
 `
 
 const GtexPlotWrapper = styled.div`
-  margin-bottom: 5px;
+  ${'' /* margin-bottom: 5px; */}
 `
 
-const GtexTitleText = styled.h3`
-  font-size: 10px;
-  font-weight: bold;
+const GtexTitleText = styled.a`
+  font-size: 13px;
+  font-weight: normal;
   margin-bottom: 0;
   margin-top: 0;
   margin-left: 6px;
   flex-shrink: 0;
+  text-decoration: none;
 `
 const GtexTissueSelect = styled.select`
   max-width: 100%;
   ${'' /* height: 100%; */}
   font-size: 12px;
   margin-bottom: 0;
-  margin-top: 5px;
+  margin-top: 0;
   flex-shrink: 0;
 `
 
@@ -100,6 +101,7 @@ const TranscriptRightPanel = ({
   onTissueChange,
   isMaster,
   masterHeight,
+  currentGene,
 }) => {
   const maxTissue = tissueStats.keySeq().first()
   const maxTissueValue = tissueStats.first()
@@ -139,14 +141,6 @@ const TranscriptRightPanel = ({
     const axisHeight = masterHeight / 2.5
     return (
       <svg height={axisHeight} width={rightPanelWidth}>
-        <rect
-          x={0}
-          y={0}
-          width={rightPanelWidth}
-          height={masterHeight}
-          fill={'transparent'}
-          stroke={'none'}
-        />
         <line
           x1={padding}
           x2={rightPanelWidth - padding}
@@ -181,14 +175,20 @@ const TranscriptRightPanel = ({
       </svg>
     )
   }
-
   if (isMaster) {
+    console.log(transcript)
     return (
       <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
         <TranscriptName>
           <GtexTitleWrapper>
             {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
-            <GtexTitleText>GTEx tissue-specific isoform expression (median TPM)</GtexTitleText>
+            {/* <GtexTitleText>GTEx tissue-specific isoform expression (median TPM)</GtexTitleText> */}
+            <GtexTitleText
+              href={`https://www.gtexportal.org/home/gene/${currentGene}`}
+              target="_blank"
+              >
+              Tissue-specific isoform expression (TPM)
+            </GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}
@@ -231,14 +231,6 @@ const TranscriptDrawing = ({
       width={width}
       height={height}
     >
-      <rect
-        x={0}
-        y={0}
-        width={width}
-        height={height}
-        stroke={'none'}
-        fill={'none'}
-      />
       <line
         x1={0}
         x2={width}
@@ -297,6 +289,7 @@ const Transcript = ({
   tissueStats,
   onTissueChange,
   showRightPanel,
+  currentGene,
 }) => {
   const TranscriptContainer = styled.div`
     display: flex;
@@ -313,9 +306,9 @@ const Transcript = ({
   }
   let expandTranscriptButton
   if (isMaster) {
-    localHeight = 70
-    paddingTop = 2  // eslint-disable-line
-    paddingBottom = 2  // eslint-disable-line
+    localHeight = 80
+    paddingTop = 0  // eslint-disable-line
+    paddingBottom = 0  // eslint-disable-line
     expandTranscriptButton = (
       <TranscriptFlipOutButton
         localHeight={localHeight}
@@ -362,6 +355,7 @@ const Transcript = ({
           fanOutButtonOpen={fanOutButtonOpen}
           isMaster={isMaster}
           masterHeight={localHeight}
+          currentGene={currentGene}
         />}
     </TranscriptContainer>
   )

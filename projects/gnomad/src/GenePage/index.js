@@ -36,7 +36,7 @@ const GenePage = styled.div`
   @media (max-width: 900px) {
     padding-left: 0;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 80px;
   }
 `
 
