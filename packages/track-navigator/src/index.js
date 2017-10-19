@@ -15,6 +15,8 @@ import { range } from 'd3-array'
 import { line } from 'd3-shape'
 import { scaleLog } from 'd3-scale'
 
+import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
+
 const NavigatorAxisName = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,37 +113,53 @@ const ClickArea = ({
     variant_id: v.variant_id,
     color: v.variant_id === hoveredVariant ? 'yellow' : 'red',
     allele_freq: v.allele_freq,
+    consequence: v.consequence,
   })).filter(v => v.allele_freq !== 0).filter(v => !isNaN(v.x))
 
   const afScale =
     scaleLog()
       .domain([
-        0.000000660,
-        0.0001,
+        0.000010,
+        0.001,
       ])
-      .range([3, 6])
+      .range([4, 12])
 
-  const variantMarks = variantPositions.map((v, i) => (
-    <g key={`variant-${v}-${i}`}>
-      {v.variant_id === hoveredVariant && <circle
-        cx={v.x}
-        cy={height / 2.5}
-        r={10}
-        fill={'rgba(0,0,0,0)'}
-        strokeWidth={1}
-        stroke={'black'}
-        strokeDasharray={'3, 3'}
-      />}
-      <circle
-        cx={v.x}
-        cy={height / 2.5}
-        r={afScale(v.allele_freq)}
-        fill={v.color}
-        strokeWidth={1}
-        stroke={'black'}
-      />
-    </g>
-  ))
+  const exacClassicColors = {
+    all: '#757575',
+    missense: '#F0C94D',
+    lof: '#FF583F',
+    synonymous: 'green',
+  }
+
+  const variantMarks = variantPositions.map((v, i) => {
+    const localColor = exacClassicColors[getCategoryFromConsequence(
+      v.consequence
+    )]
+    return (
+      <g key={`variant-${v}-${i}`}>
+        {v.variant_id === hoveredVariant && <ellipse
+          cx={v.x}
+          cy={height / 2.5}
+          ry={afScale(v.allele_freq) + 4}
+          rx={5}
+          fill={'rgba(0,0,0,0)'}
+          strokeWidth={1}
+          stroke={'black'}
+          strokeDasharray={'3, 3'}
+        />}
+        <ellipse
+          cx={v.x}
+          cy={height / 2.5}
+          ry={afScale(v.allele_freq)}
+          rx={3}
+          fill={localColor}
+          strokeWidth={0.5}
+          stroke={'black'}
+          opacity={0.7}
+        />
+      </g>
+    )
+  })
 
 
   // let allVariantMarks
@@ -242,12 +260,12 @@ const ClickArea = ({
       className={'areaClick'}
       width={width}
       height={height}
-      onClick={_ => {
+      onClick={(_) => {
         const genomePos = invertOffset(position.x)
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
-      onTouchStart={_ => {
+      onTouchStart={(_) => {
         const genomePos = invertOffset(position.x)
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
