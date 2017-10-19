@@ -22,6 +22,7 @@ import {
 import {
   finalFilteredVariants,
   selectedVariantDataset,
+  variantFilter,
 } from '@broad/gene-page/src/resources/variants'
 
 import { getCoverageConfig } from '../GenePage/RegionViewer'
@@ -32,6 +33,7 @@ const RegionViewer = ({
   selectedVariantDataset,
   onGeneClick,
   screenSize,
+  variantFilter,
 }) => {
   const {
     chrom,
@@ -43,6 +45,12 @@ const RegionViewer = ({
     genes,
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
+
+  let partialFetch
+  if ((regionData.get('stop') - regionData.get('start')) > 50000) {
+    partialFetch = 'lof'
+    variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
+  }
 
   const variantsReversed = allVariants.reverse()
 
@@ -73,6 +81,19 @@ const RegionViewer = ({
   const showVariants = true
   const showStacked = largeRegion
 
+  const datasetTranslations = {
+    gnomadExomeVariants: 'gnomAD exomes',
+    gnomadGenomeVariants: 'gnomAD genomes',
+    gnomadCombinedVariants: 'gnomAD',
+    exacVariants: 'ExAC',
+  }
+  const consequenceTranslations = {
+    all: 'All variants',
+    gnomadGenomeVariants: 'gnomAD genomes',
+    missenseOrLoF: 'Missense/LoF',
+    lof: 'LoF',
+  }
+
   return (
     <div>
       <RegionViewerComponent
@@ -94,7 +115,7 @@ const RegionViewer = ({
         {showVariants &&
           <VariantTrack
             key={'All-variants'}
-            title={`Variants (${allVariants.size})`}
+            title={`${datasetTranslations[selectedVariantDataset]}|${consequenceTranslations[variantFilter]}|variants|(${allVariants.size})`}
             height={60}
             color={'#75757'}
             markerConfig={markerExacClassic}
@@ -126,6 +147,7 @@ export default connect(
     allVariants: finalFilteredVariants(state),
     selectedVariantDataset: selectedVariantDataset(state),
     screenSize: screenSize(state),
+    variantFilter: variantFilter(state),
   }),
   dispatch => ({
     onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),

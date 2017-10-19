@@ -89,7 +89,6 @@ const GeneSettings = ({
       .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
   }
 
-  console.log(regionData)
   let partialFetch
   if (totalBasePairs > 40000) {
     partialFetch = 'lof'

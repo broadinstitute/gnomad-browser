@@ -177,7 +177,6 @@ const TranscriptRightPanel = ({
     )
   }
   if (isMaster) {
-    console.log(transcript)
     return (
       <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
         <TranscriptName>

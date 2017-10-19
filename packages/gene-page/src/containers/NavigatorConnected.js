@@ -33,7 +33,7 @@ const Navigator = ({
   return (
     <NavigatorTrack
       title={''}
-      height={55}
+      height={60}
       onNavigatorClick={onNavigatorClick}
       currentNavigatorPosition={currentNavigatorPosition}
       scrollSync={currentTableIndex}

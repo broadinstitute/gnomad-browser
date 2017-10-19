@@ -89,7 +89,6 @@ const TrackStackedBar = ({
   const y = (d, key) => {
     return d[key]
   }
-  console.log(Math.max(...bucketTotals(data2)))
   const yScale = scaleLinear()
     .domain([0, Math.max(...bucketTotals(data2))])
     .range([yMax, 0])

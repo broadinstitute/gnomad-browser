@@ -11,7 +11,6 @@ const GenesTrack = ({
   width,
   onGeneClick,
 }) => {
-  console.log(genes)
   const GENE_TRACK_HEIGHT = 50
   const GENE_TRACK_PADDING = 3
 

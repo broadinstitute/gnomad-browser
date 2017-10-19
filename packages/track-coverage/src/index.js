@@ -20,7 +20,7 @@ const CoverageTrack = ({
   yMax,
   totalBp,
 }) => {
-  console.log(dataConfig)
+
   const scaleCoverage = (xScaleCoverage, coverage) => {
     const coverageScaled = coverage.map((base) => {
       const newPosition = Math.floor(xScaleCoverage(positionOffset(base.pos).offsetPosition))

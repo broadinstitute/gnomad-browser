@@ -29,7 +29,6 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   componentWillReceiveProps(nextProps) {
     const { fetchGeneIfNeeded, currentGene, history } = this.props
     if (currentGene !== nextProps.currentGene) {
-      console.log(history)
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)
     }

@@ -51,7 +51,6 @@ const getConsequenceColor = (consequence) => {
 }
 const getConsequenceName = (consequence) => {
   if (consequence in consequencePresentation) {
-    console.log(consequence)
     return consequencePresentation[consequence].name
   }
   return consequence
@@ -70,7 +69,6 @@ const RegionInfo = ({ regionData, variantCount }) => {
     }, 0)
   }
   const total = getTotalVariants(total_consequence_counts)
-  console.log(total)
   return (
     <GeneInfoWrapper>
       <GeneNameWrapper>
