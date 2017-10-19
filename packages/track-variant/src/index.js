@@ -18,6 +18,7 @@ Axis.propTypes = {
 }
 
 const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
+  const [dataset, subset, variant, count] = title.split('|')
   const YTicks = trackYScale ? () => {
     return (
       <g>
@@ -47,11 +48,25 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
     return (
       <svg width={leftPanelWidth} height={height}>
         <text
-          x={5}
+          x={0}
+          y={(height * 0.20)}
+
+        >
+          {dataset}
+        </text>
+        <text
+          x={0}
           y={height / 2}
 
         >
-          {title}
+          {`${subset}`}
+        </text>
+        <text
+          x={0}
+          y={height * 0.80}
+
+        >
+          {count}
         </text>
         {trackYScale && <YTicks />}
       </svg>

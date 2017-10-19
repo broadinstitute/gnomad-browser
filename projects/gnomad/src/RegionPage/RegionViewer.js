@@ -94,7 +94,7 @@ const RegionViewer = ({
         {showVariants &&
           <VariantTrack
             key={'All-variants'}
-            title={`variants (${allVariants.size})`}
+            title={`Variants (${allVariants.size})`}
             height={60}
             color={'#75757'}
             markerConfig={markerExacClassic}
@@ -103,7 +103,7 @@ const RegionViewer = ({
         {showStacked &&
           <StackedBarTrack height={150} data={buckets} />
         }
-        <NavigatorConnected />
+        <NavigatorConnected title={'Viewing in table'} />
       </RegionViewerComponent>
     </div>
   )

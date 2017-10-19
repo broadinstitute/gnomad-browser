@@ -17,6 +17,7 @@ import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 import {
   finalFilteredVariants,
   selectedVariantDataset,
+  variantFilter,
 } from '@broad/gene-page/src/resources/variants'
 
 import {
@@ -64,6 +65,7 @@ const GeneRegion = ({
   screenSize,
   transcriptFanOut,
   toggleTranscriptFanOut,
+  variantFilter,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -191,6 +193,19 @@ const GeneRegion = ({
     }
   `
 
+  const datasetTranslations = {
+    gnomadExomeVariants: 'gnomAD exomes',
+    gnomadGenomeVariants: 'gnomAD genomes',
+    gnomadCombinedVariants: 'gnomAD',
+    exacVariants: 'ExAC',
+  }
+  const consequenceTranslations = {
+    all: 'All variants',
+    gnomadGenomeVariants: 'gnomAD genomes',
+    missenseOrLoF: 'Missense/LoF',
+    lof: 'LoF',
+  }
+
   return (
     <RegionViewerWrapper>
       {/* <RegionViewerSectionTitle>Positional data</RegionViewerSectionTitle> */}
@@ -225,13 +240,13 @@ const GeneRegion = ({
         {showVariants &&
           <VariantTrack
             key={'All-variants'}
-            title={`variants (${allVariants.size})`}
+            title={`${datasetTranslations[selectedVariantDataset]}|${consequenceTranslations[variantFilter]}|variants|(${allVariants.size})`}
             height={60}
             color={'#75757'}
             markerConfig={markerExacClassic}
             variants={variantsReversed}
           />}
-        <NavigatorConnected />
+        <NavigatorConnected title={'Viewing in table'} />
       </RegionViewer>
     </RegionViewerWrapper>
   )
@@ -242,6 +257,7 @@ GeneRegion.propTypes = {
   exonPadding: PropTypes.number.isRequired,
   setRegionViewerAttributes: PropTypes.func.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
+  variantFilter: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
   screenSize: PropTypes.object.isRequired,
   transcriptFanOut: PropTypes.bool.isRequired,
@@ -256,6 +272,7 @@ export default connect(
     regionalConstraint: regionalConstraint(state),
     screenSize: screenSize(state),
     transcriptFanOut: transcriptFanOut(state),
+    variantFilter: variantFilter(state),
   }),
   dispatch => ({
     setRegionViewerAttributes: regionViewerAttributes =>

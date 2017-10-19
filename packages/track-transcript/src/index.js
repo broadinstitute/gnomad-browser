@@ -82,6 +82,7 @@ const GtexTitleText = styled.a`
   margin-left: 6px;
   flex-shrink: 0;
   text-decoration: none;
+  color: #428bca;
 `
 const GtexTissueSelect = styled.select`
   max-width: 100%;
