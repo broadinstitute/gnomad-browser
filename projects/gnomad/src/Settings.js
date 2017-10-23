@@ -23,6 +23,14 @@ import {
   ClassicExacButtonGroup,
 } from '@broad/ui/src/classicExac/button'
 
+import {
+  SettingsContainer,
+  MenusContainer,
+  SearchContainer,
+  DataSelectionGroup,
+  DataSelectionContainer,
+} from '@broad/gene-page/src/presentation/UserInterface'
+
 import { Search } from '@broad/ui/src/search/simpleSearch'
 
 let findInput
@@ -50,35 +58,6 @@ const GeneSettings = ({
     const padding = Math.floor(1000 * newValue)
     setExonPadding(padding)
   }
-
-  const SettingsContainer = styled.div`
-    width: 100%;
-  `
-
-  const MenusContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding-right: 0;
-    ${'' /* border: 1px solid green; */}
-    @media (max-width: 900px) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  `
-
-  const SearchContainer = styled.div`
-    margin-left: 10px;
-    margin-bottom: 5px;
-    @media (max-width: 900px) {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-  `
 
   let totalBasePairs
   if (geneData) {
@@ -127,27 +106,6 @@ const GeneSettings = ({
       </ClassicExacButtonLast>
     </ClassicExacButtonGroup>
   )
-
-  const DataSelectionGroup = styled.div`
-    margin: 0;
-    display: flex;
-    width: 50%;
-    justify-content: space-around;
-    align-items: center;
-    ${'' /* border: 1px solid orange; */}
-    @media (max-width: 900px) {
-      flex-direction: row;
-      justify-content: space-around;
-      width: 90%;
-    }
-  `
-
-  const DataSelectionContainer = styled.div`
-    ${'' /* margin-right: 20px; */}
-    ${'' /* border: 1px solid blue; */}
-    @media (max-width: 900px) {
-    }
-  `
 
   return (
     <SettingsContainer>

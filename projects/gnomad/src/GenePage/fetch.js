@@ -172,7 +172,7 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
           wholeBlood
         }
       }
-  }
+    }
 }
 `
   return new Promise((resolve, reject) => {

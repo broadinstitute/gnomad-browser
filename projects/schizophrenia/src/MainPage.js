@@ -8,9 +8,16 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
-import { FetchHoc, VariantTableConnected } from '@broad/gene-page'
+
+import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+
+import {
+  GenePage,
+  Summary,
+  TableSection,
+} from '@broad/gene-page/src/presentation/UserInterface'
 
 import GeneInfo from './ExomePage/GeneInfo'
 import GeneSettings from './ExomePage/GeneSettings'
@@ -18,27 +25,6 @@ import RegionViewer from './ExomePage/RegionViewer'
 // import Table from './ExomePage/Table'
 import tableConfig from './ExomePage/tableConfig'
 import { fetchSchz } from './fetch'
-
-const GenePage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background-color: #FAFAFA;
-  color: black;
-  margin-left: 10px;
-`
-
-const Summary = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  padding-left: 60px;
-  margin-bottom: 10px;
-`
-
-const MainSection = styled.div`
-  margin-left: 110px;
-`
 
 const VariantTable = withRouter(VariantTableConnected)
 
@@ -58,7 +44,7 @@ const MainPage = ({
       </Summary>
       <RegionViewer />
       <GeneSettings />
-      <MainSection>
+      <TableSection>
         <Route
           exact
           path="/gene/:gene"
@@ -71,7 +57,7 @@ const MainPage = ({
             )
           }}
         />
-      </MainSection>
+      </TableSection>
     </GenePage>
   )
 }

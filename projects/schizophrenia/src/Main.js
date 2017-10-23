@@ -1,24 +1,19 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import createGenePageStore from '@broad/gene-page/src/store/store'
 
-import injectTapEventPlugin from 'react-tap-event-plugin'
-
 import App from './routes'
-
-injectTapEventPlugin()
 
 const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence'],
   logger: true,
   projectDefaults: {
-    startingGene: 'TRIO',
+    startingGene: '',
     startingVariant: '',
     startingPadding: 75,
     startingVariantDataset: 'schizophreniaExomeVariants',
+    startingQcFilter: false,
   },
   variantDatasets: {
     schizophreniaExomeVariants: {
@@ -74,22 +69,11 @@ const appSettings = {
 
 const store = createGenePageStore(appSettings)
 
-const muiTheme = getMuiTheme({
-  palette: {
-    primary1Color: '#4682b4',
-  },
-  appBar: {
-    height: 50,
-  },
-})
-
 const Main = () => (
   <Provider store={store}>
-    <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
-      <Router>
-        <App />
-      </Router>
-    </MuiThemeProvider>
+    <Router>
+      <App />
+    </Router>
   </Provider>
 )
 

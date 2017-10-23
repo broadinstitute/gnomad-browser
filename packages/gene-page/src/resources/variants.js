@@ -118,6 +118,7 @@ export default function createVariantReducer({
   projectDefaults: {
     startingVariant,
     startingVariantDataset,
+    startingQcFilter,
   }
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
@@ -140,7 +141,7 @@ export default function createVariantReducer({
     hoveredVariant: startingVariant,
     focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
-    variantQcFilter: true,
+    variantQcFilter: startingQcFilter,
   })
 
   const actionHandlers = {

@@ -12,17 +12,16 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 
 import RegionViewer from '@broad/region'
-import TranscriptTrack from '@broad/track-transcript'
 import VariantTrack from '@broad/track-variant'
-import { NavigatorConnected } from '@broad/gene-page'
-import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
-import { exonPadding } from '@broad/gene-page/src/resources/active'
-import { geneData } from '@broad/gene-page/src/resources/genes'
+
+import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
+import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConnected'
+
+import { screenSize, exonPadding } from '@broad/gene-page/src/resources/active'
+import { geneData, transcriptFanOut, actions as geneActions } from '@broad/gene-page/src/resources/genes'
 
 import {
-  // finalFilteredVariants,
-  // visibleVariantsList,
-  allVariantsInCurrentDatasetAsList,
+  finalFilteredVariants,
 } from '@broad/gene-page/src/resources/variants'
 
 const paddingColor = '#5A5E5C'
@@ -52,33 +51,32 @@ const attributeConfig = {
   },
 }
 
-const factor = 50
-
 const GeneRegion = ({
   gene,
   visibleVariants,
   exonPadding,
+  screenSize,
+  transcriptFanOut,
+  toggleTranscriptFanOut,
 }) => {
+  const smallScreen = screenSize.width < 900
+  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+
   const geneJS = gene.toJS()
-  const geneExons = geneJS.exons
   const canonicalExons = geneJS.transcript.exons
-  const transcriptsGrouped = groupExonsByTranscript(geneExons)
+  const { transcript } = geneJS
+  const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
+  const variantsReversed = visibleVariants.reverse()
 
-  // function getColor (variant) {
-  //
-  //   const color = scaleLinear()
-  //     .domain([])
-  // }
 
-  // const modifiedVariants = visibleVariants.map(v => v.set('color', getColor(v)))
-  const modifiedVariants = visibleVariants
+  const modifiedVariants = variantsReversed
+
   const markerConfigOther = {
     circleRadius: 3,
     circleStroke: 'black',
     circleStrokeWidth: 1,
     yPositionSetting: 'random',
     fillColor: '#757575',
-
   }
 
   const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
@@ -103,7 +101,7 @@ const GeneRegion = ({
     return (
       <VariantTrack
         key={`${consequence.annotation}-${index}`}
-        title={`${consequence.annotation} (${filteredVariants.size})`}
+        // title={`${consequence.annotation} (${filteredVariants.size})`}
         height={rowHeight}
         markerConfig={markerConfigOther}
         variants={filteredVariants}
@@ -124,7 +122,7 @@ const GeneRegion = ({
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
-      title={`other (${otherVariants.size})`}
+      // title={`other (${otherVariants.size})`
       height={otherHeight}
       color={'#75757'}
       markerConfig={markerConfigOther}
@@ -135,15 +133,17 @@ const GeneRegion = ({
   return (
     <div>
       <RegionViewer
-        width={1000}
+        width={regionViewerWidth}
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
         leftPanelWidth={100}
       >
-        <TranscriptTrack
-          transcriptsGrouped={transcriptsGrouped}
-          height={10}
+        <TranscriptConnected
+          height={12}
+          showRightPanel={!smallScreen}
+          transcriptFanOut={transcriptFanOut}
+          transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {splitTracks}
         {allTrack}
@@ -180,9 +180,19 @@ GeneRegion.propTypes = {
   gene: PropTypes.object.isRequired,
   visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
+  screenSize: PropTypes.object.isRequired,
+  transcriptFanOut: PropTypes.bool.isRequired,
+  toggleTranscriptFanOut: PropTypes.func.isRequired,
 }
-export default connect(state => ({
-  gene: geneData(state),
-  exonPadding: exonPadding(state),
-  visibleVariants: allVariantsInCurrentDatasetAsList(state),
-}))(GeneRegion)
+export default connect(
+  state => ({
+    gene: geneData(state),
+    exonPadding: exonPadding(state),
+    visibleVariants: finalFilteredVariants(state),
+    screenSize: screenSize(state),
+    transcriptFanOut: transcriptFanOut(state),
+  }),
+  dispatch => ({
+    toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
+  })
+)(GeneRegion)

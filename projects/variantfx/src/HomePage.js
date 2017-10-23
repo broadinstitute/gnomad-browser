@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { actions as activeActions } from '@broad/gene-page/src/resources/active'
-import TextField from 'material-ui/TextField'
 
 const HomePageWrapper = styled.section`
   display: flex;
@@ -100,16 +99,6 @@ const HomePage = ({ setCurrentGene }) => {
           soluta atque consequuntur molestias dolor porro, rem, pariatur minus
           eligendi vero dolorum recusandae incidunt sint laborum. Delectus ipsa
           amet, nobis.</ParagraphText>
-        <SearchContainer>
-          <TextField
-            hintText="Enter gene symbol"
-            floatingLabelText="Enter gene symbol"
-            onChange={(event) => {
-              event.preventDefault()
-              setCurrentGene(event.target.value)
-            }}
-          />
-        </SearchContainer>
         <Announcements>
           <AnnouncementsTitle>Announcements</AnnouncementsTitle>
           <Announcement>
