@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-api
+  labels:
+    name: gnomad-api
+    state: serving
+spec:
+  type: LoadBalancer
+  # loadBalancerIP: 35.184.79.173
+  # loadBalancerSourceRanges:
+  # - 207.228.78.190/32
+  # - 73.142.4.70/32
+  # - 69.173.127.25/32
+  # - 69.173.127.109/32
+  # - 35.185.9.245/32
+  selector:
+    name: gnomad-api
+    state: serving
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP

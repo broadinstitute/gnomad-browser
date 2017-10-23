@@ -18,6 +18,9 @@ IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
 SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.202.229.180)
 
+start-gnomad: create-gnomad-legacy gnomad-legacy-service
+
+
 context:
 	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE)
 	kubectl config set-context $(CLUSTER_NAME) \

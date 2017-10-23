@@ -121,10 +121,13 @@ takedown-loading-nodes:
 	make -C cluster/elasticsearch delete-loading-data-pods
 	make -C cluster/elasticsearch delete-load-nodes
 
-start-persistent-cluster:
+gnomad:
 	make -C cluster cluster
 	make -C cluster context
 	make -C cluster/elasticsearch persistent
+	make -C cluster/redis start-redis
+	make -C packages/api/deploy start-api
+	make -C projects/gnomad/deploy start-gnomad
 
 start-dev:
 	make -C cluster cluster

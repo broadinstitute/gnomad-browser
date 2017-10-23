@@ -7,6 +7,8 @@ NUMBER=1
 MACHINE_TYPE=n1-standard-4
 LOCAL_SSD_COUNT=1
 
+start-redis: create-redis-nodes create-redis-containers
+
 create-redis-nodes:
 	gcloud beta container node-pools create $(POOL_NAME) \
 	--cluster $(CLUSTER_NAME) \
@@ -17,15 +19,15 @@ create-redis-nodes:
 
 create-redis-containers:
 		# Create a bootstrap master
-	kubectl create -f redis-master.yaml
+	@-kubectl create -f redis-master.yaml
 
 	# Create a service to track the sentinels
-	kubectl create -f redis-sentinel-service.yaml
+	@-kubectl create -f redis-sentinel-service.yaml
 
 	# Create a replication controller for redis servers
-	kubectl create -f redis-controller.yaml
+	@-kubectl create -f redis-controller.yaml
 
 	# Create a replication controller for redis sentinels
-	kubectl create -f redis-sentinel-controller.yaml
+	@-kubectl create -f redis-sentinel-controller.yaml
 
 

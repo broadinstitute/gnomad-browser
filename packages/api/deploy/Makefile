@@ -16,7 +16,9 @@ API_EXTERNAL_IP=35.184.79.173
 BASE_IMAGE_NAME="$(BASE_IMAGE_PREFIX)$(IMAGE_TAG)"
 MAIN_IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
-SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=23.236.50.46)
+SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.184.79.173)
+
+start-api: mongo-legacy gnomad-api gnomad-api-service-delete-previous
 
 local-redis:
 	redis-server /usr/local/etc/redis.conf
@@ -41,11 +43,13 @@ build-all: build-base build-main
 gnomad-api:
 	kubectl create -f gnomad-api-controller.yaml
 
+# gnomad-api-service-delete-previous:
+# 	@-gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
+# 	kubectl create -f gnomad-api-svc.yaml
+
 gnomad-api-service:
-	gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment $(PROJECT_NAME) \
-	--type="LoadBalancer" \
-	--load-balancer-ip="(API_EXTERNAL_IP)"
+	--type="LoadBalancer"
 
 update-gnomad-api:
 	# $(sed -ie "s/THIS_STRING_IS_REPLACED_DURING_BUILD/$(BUILD_TIME)/g" gnomad-api-controller.yml)
