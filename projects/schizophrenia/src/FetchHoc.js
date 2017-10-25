@@ -6,17 +6,15 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import { currentGene } from '../resources/active'
-import { actions as variantActions } from '../resources/variants'
-import { geneData, isFetching, actions as geneActions } from '../resources/genes'
+import { currentGene } from '@broad/gene-page/src/resources/active'
+import { geneData, isFetching, actions as geneActions } from '@broad/gene-page/src/resources/genes'
 
-const GenePageContainer = ComposedComponent => class GenePage extends Component {
+const PageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
     currentGene: PropTypes.string.isRequired,
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     fetchGeneIfNeeded: PropTypes.func.isRequired,
-    resetSearchVariants: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -31,10 +29,8 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   componentWillReceiveProps(nextProps) {
     const { fetchGeneIfNeeded, currentGene, history } = this.props
     if (currentGene !== nextProps.currentGene) {
-      // if(this.props.route.path == nextProps.route.path) return false
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)
-      this.props.resetSearchVariants()
     }
   }
 
@@ -54,9 +50,6 @@ const mapDispatchToProps = geneFetchFunction => (dispatch) => {
     fetchGeneIfNeeded: (currentGene, match) => dispatch(
       geneActions.fetchGeneIfNeeded(currentGene, match, geneFetchFunction)
     ),
-    resetSearchVariants: () => dispatch(
-      variantActions.searchVariantsRaw('')
-    ),
   }
 }
 
@@ -66,6 +59,6 @@ const GenePageHOC = (
 ) => connect(
   mapStateToProps,
   mapDispatchToProps(geneFetchFunction)
-)(GenePageContainer(ComposedComponent))
+)(PageContainer(ComposedComponent))
 
 export default GenePageHOC

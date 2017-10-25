@@ -18,7 +18,7 @@ MAIN_IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
 SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.184.79.173)
 
-start-api: mongo-legacy gnomad-api gnomad-api-service-delete-previous
+start-api: mongo-legacy gnomad-api gnomad-api-service
 
 local-redis:
 	redis-server /usr/local/etc/redis.conf

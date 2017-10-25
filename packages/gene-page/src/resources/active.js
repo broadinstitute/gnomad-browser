@@ -124,7 +124,7 @@ export default function createActiveReducer ({
   }
 }) {
   const State = Immutable.Record({
-    currentGene: startingGene,
+    currentGene: '',
     currentNavigatorPosition: 0,
     currentTableIndex: 0,
     currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },

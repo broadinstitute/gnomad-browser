@@ -97,7 +97,9 @@ const ClickArea = ({
     ).toJS()
     // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   }
-  // console.log(currentlyVisibleVariants)
+  if (currentlyVisibleVariants.length === 0) {
+    return <p></p>
+  }
   const tablePositionStart = R.head(currentlyVisibleVariants).pos
   const tablePositionStop = R.last(currentlyVisibleVariants).pos
 

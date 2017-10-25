@@ -83,8 +83,6 @@ const schzVariantType = new GraphQLObjectType({
   }),
 })
 
-export default schzVariantType
-
 export const lookupSchzVariantsByStartStop = (db, collection, chr, xstart, xstop) =>
   db.collection(collection).find(
     { chr, pos: { '$gte': Number(xstart), '$lte': Number(xstop) } }
@@ -160,16 +158,15 @@ export const schzVariantTypeExome = new GraphQLObjectType({
   })
 })
 
-export function lookupSchzVariantsByGeneId (geneId) {
-  const client = new elasticsearch.Client({
-    host: 'elastic:9200',
-    // log: 'trace',
-  })
+export function lookupSchzVariantsByGeneId ({
+  elasticClient,
+  geneId,
+}) {
   return new Promise((resolve, reject) => {
-    client.search({
+    elasticClient.search({
       index: 'schizophrenia',
       type: 'variant',
-      size: 1000,
+      size: 10000,
       body: {
         query: {
           match: {
@@ -178,8 +175,69 @@ export function lookupSchzVariantsByGeneId (geneId) {
         },
       },
     }).then((response) => {
+      console.log()
       const variants = response.hits.hits.map(v => v._source)
       resolve(variants)
     })
   })
+}
+
+export function lookupSchzExomeVariantsByStartStop ({
+  elasticClient,
+  xstart,
+  xstop,
+}) {
+  return new Promise((resolve, reject) => {
+    elasticClient.search({
+      index: 'schizophrenia',
+      type: 'variant',
+      size: 10000,
+      body: {
+        query: {
+          bool: {
+            filter: {
+              bool: {
+                must: [
+                  { range: { xpos: { gte: xstart, lte: xstop } } },
+                ]
+              }
+            }
+          }
+        },
+        sort: [{ xpos: { order: 'asc' } }],
+      },
+    }).then((response) => {
+      const variants = response.hits.hits.map(v => v._source)
+      resolve(variants)
+    })
+  })
+}
+
+export const schizophreniaGwasVariants = {
+  type: new GraphQLList(schzVariantType),
+  resolve: (obj, args, ctx) =>
+    lookupSchzVariantsByStartStop(
+      ctx.database.gnomad,
+      'schizophrenia',
+      Number(obj.chrom),
+      obj.start,
+      Number(obj.stop)
+    ),
+}
+
+export const schizophreniaExomeVariantsByGeneId = {
+  type: new GraphQLList(schzVariantTypeExome),
+  resolve: (obj, args, ctx) => lookupSchzVariantsByGeneId({
+    elasticClient: ctx.database.elastic,
+    geneId: obj.gene_id,
+  }),
+}
+
+export const schizophreniaExomeVariantsInRegion = {
+  type: new GraphQLList(schzVariantTypeExome),
+  resolve: (obj, args, ctx) => lookupSchzExomeVariantsByStartStop({
+    elasticClient: ctx.database.elastic,
+    xstart: obj.xstart,
+    xstop: obj.xstop,
+  }),
 }

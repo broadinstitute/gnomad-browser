@@ -1,4 +1,4 @@
-export const tableConfig = (onHeaderClick) => ({
+export default (onHeaderClick) => ({
   fields: [
 
     // {

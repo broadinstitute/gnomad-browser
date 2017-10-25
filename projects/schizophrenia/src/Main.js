@@ -37,7 +37,7 @@ const appSettings = {
       AC_SWE_cases: null,
       AC_SWE_ctrls: null,
     },
-    schizophreniaGwas: {
+    schizophreniaGwasVariants: {
       id: null,
       variant_id: null,
       chr: null,

@@ -21,6 +21,10 @@ import {
   actions as geneActions,
 } from '../resources/genes'
 
+import {
+  actions as variantActions,
+} from '../resources/variants'
+
 const RegionPageContainer = ComposedComponent => class RegionPage extends Component {
   static propTypes = {
     currentRegion: PropTypes.string.isRequired,
@@ -28,15 +32,17 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
     regionData: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     fetchRegionIfNeeded: PropTypes.func.isRequired,
+    setVariantDataset: PropTypes.func,
   }
-
   static defaultProps = {
     regionData: null,
+    setVariantDataset: () => {},
   }
 
   componentDidMount() {
     const { currentRegion, match, fetchRegionIfNeeded } = this.props
     fetchRegionIfNeeded(currentRegion, match, history)
+    this.props.setVariantDataset()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,20 +69,24 @@ const mapStateToProps = state => ({
   currentGene: currentGene(state),
 })
 
-const mapDispatchToProps = regionFetchFunction => (dispatch) => {
+const mapDispatchToProps = (regionFetchFunction, variantDataset) => (dispatch) => {
   return {
     fetchRegionIfNeeded: (currentRegion, match) => dispatch(
       regionActions.fetchRegionIfNeeded(currentRegion, match, regionFetchFunction)
     ),
+    setVariantDataset: () => dispatch(
+      variantActions.setSelectedVariantDataset(variantDataset)
+    )
   }
 }
 
 const RegionHOC = (
   ComposedComponent,
-  regionFetchFunction
+  regionFetchFunction,
+  variantDataset,
 ) => connect(
   mapStateToProps,
-  mapDispatchToProps(regionFetchFunction)
+  mapDispatchToProps(regionFetchFunction, variantDataset)
 )(RegionPageContainer(ComposedComponent))
 
 export default RegionHOC

@@ -67,6 +67,7 @@ const GeneRegion = ({
   toggleTranscriptFanOut,
   variantFilter,
 }) => {
+  console.log(allVariants)
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
 

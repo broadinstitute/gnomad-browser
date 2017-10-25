@@ -13,9 +13,9 @@ const concat = (oldValue, newValue) => oldValue.concat(newValue)
 const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
   searchResourceSelector: (resourceName, state) => {
-    return state.variants.byVariantDataset.get('gnomadCombinedVariants')
+    return state.variants.searchIndexed
   },
-  // logger: true,
+  logger: true,
   projectDefaults: {
     startingGene: '',
     startingVariant: '13-32900634-AG-A',

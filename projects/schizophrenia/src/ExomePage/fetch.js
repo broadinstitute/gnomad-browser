@@ -48,7 +48,7 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         AC_SWE_cases
         AC_SWE_ctrls
       }
-      schizophreniaGwas {
+      schizophreniaGwasVariants {
         variant_id
         chr
         pos

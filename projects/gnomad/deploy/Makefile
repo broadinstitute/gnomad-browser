@@ -12,7 +12,8 @@ IMAGE_TAG=
 # IMAGE_TAG=:$(BUILD_TIME)
 SOURCE_DIRECTORY=.
 LEGACY_DIRECTORY=/Users/msolomon/Projects/exacg/exac_gnomad_private
-GNOMAD_EXTERNAL_IP=104.196.46.19
+# GNOMAD_EXTERNAL_IP=104.196.46.19
+# GNOMAD_EXTERNAL_IP=35.202.229.180
 
 IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
@@ -59,4 +60,5 @@ gnomad-legacy-service:
 	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment gnomad-p-serve \
 	--type="LoadBalancer"
+	# \
 	# --load-balancer-ip="(API_EXTERNAL_IP)"

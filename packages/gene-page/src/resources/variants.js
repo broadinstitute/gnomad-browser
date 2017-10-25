@@ -13,7 +13,6 @@ import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 import { types as geneTypes } from './genes'
 import { types as regionTypes } from './regions'
-
 import * as fromActive from './active'
 
 export const types = keymirror({
@@ -142,6 +141,7 @@ export default function createVariantReducer({
     focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
+    searchIndexed: OrderedMap(),
   })
 
   const actionHandlers = {
@@ -154,7 +154,12 @@ export default function createVariantReducer({
     },
 
     [types.SET_SELECTED_VARIANT_DATASET] (state, { variantDataset }) {
-      return state.set('selectedVariantDataset', variantDataset)
+      const variants = state
+        .getIn(['byVariantDataset', variantDataset])
+
+      return state
+        .set('selectedVariantDataset', variantDataset)
+        .set('searchIndexed', variants)
     },
 
     [types.REQUEST_VARIANTS_BY_POSITION] (state) {
@@ -173,7 +178,7 @@ export default function createVariantReducer({
     },
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
-      return datasetKeys.reduce((nextState, datasetKey) => {
+      const withVariants = datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
         if (variantDatasets[datasetKey]) {
           geneData.get(datasetKey).forEach((variant) => {
@@ -195,10 +200,19 @@ export default function createVariantReducer({
             }, nextState.byVariantDataset.get(dataset))
           }, OrderedMap())
         }
-        return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(datasetKey, OrderedMap(variantMap))
-        )
+        return nextState
+          .set('byVariantDataset', nextState.byVariantDataset
+            .set(datasetKey, OrderedMap(variantMap))
+          )
       }, state)
+
+      const currentVariantDataset = withVariants
+        .get('byVariantDataset')
+        .get(withVariants.selectedVariantDataset)
+
+      return withVariants
+        .set('searchIndexed', currentVariantDataset)
+
     },
 
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
@@ -276,6 +290,8 @@ const sortVariants = (variants, key, ascending) => {
   )
 }
 
+const currentGene = fromActive.currentGene ? fromActive.currentGene : () => {}
+
 /**
  * Variant selectors
  */
@@ -289,6 +305,11 @@ export const allVariantsInCurrentDataset = createSelector(
   [selectedVariantDataset, byVariantDataset],
   (selectedVariantDataset, byVariantDataset) =>
     byVariantDataset.get(selectedVariantDataset)
+)
+
+export const createVariantDatasetSelector = variantDataset => createSelector(
+  [byVariantDataset],
+  byVariantDataset => sortVariants(byVariantDataset.get(variantDataset).toList(), 'pos', true)
 )
 
 export const allVariantsInCurrentDatasetAsList = createSelector(
@@ -345,14 +366,22 @@ export const visibleVariantsList = createSelector(
  * Redux search selectors
  */
 
-const resourceSelector = (resourceName, state) => state.variants.byVariantDataset.get('gnomadCombinedVariants')
+const resourceSelector = (resourceName, state) => state.variants.searchIndexed
 
 const searchSelectors = getSearchSelectors({
   resourceName: 'variants',
   resourceSelector,
 })
 export const variantSearchText = searchSelectors.text
-export const variantSearchResult = searchSelectors.result
+export const variantSearchResult = createSelector(
+  [searchSelectors.result, variantSearchText, variantCount],
+  (result, variantSearchText, variantCount) => {
+    if (result.length !== variantCount && variantSearchText === '') {
+      return []
+    }
+    return result
+  }
+)
 export const isSearching = state => state.search.variants.isSearching
 
 export const filteredIdList = createSelector(
@@ -384,10 +413,7 @@ export const sortedVariants = createSelector(
 
 export const finalFilteredVariants = createSelector(
   [sortedVariants, filteredIdList, selectedVariantDataset],
-  (variants, filteredIdList, selectedVariantDataset) => {
-    if (selectedVariantDataset === 'exacVariants') { // HACK: messes up search
-      return variants.toList()
-    }
+  (variants, filteredIdList) => {
     if (filteredIdList.size !== 0 || variants.size === 0) {
       return variants.filter((v) => {
         return filteredIdList.includes(v.get('id'))

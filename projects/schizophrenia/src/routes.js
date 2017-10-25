@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
-// import GwasPage from './GwasPage'
+import GwasPage from './GwasPage'
 import HomePage from './HomePage'
-import MainPage from './MainPage'
+import ExomePage from './ExomePage'
+import ManhattanPage from './Manhattan'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -27,8 +28,10 @@ const App = () => (
       <TopBar />
       <Route path="/" exact component={HomePage} />
       <Switch>
-        <Route path="/gene/:gene/:variantId" component={MainPage} />
-        <Route exact path="/gene/:gene" component={MainPage} />
+        <Route path="/gene/:gene/:variantId" component={ExomePage} />
+        <Route exact path="/gene/:gene" component={ExomePage} />
+        <Route exact path="/region/:regionId" component={GwasPage} />
+        <Route exact path="/manhattan" component={ManhattanPage} />
       </Switch>
     </MainPanel>
   </Root>

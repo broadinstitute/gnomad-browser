@@ -10,7 +10,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import RegionHoc from '@broad/gene-page/src/containers/RegionHoc'
 import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
 
 import {
@@ -19,40 +19,37 @@ import {
   TableSection,
 } from '@broad/gene-page/src/presentation/UserInterface'
 
-import GeneInfo from './ExomePage/GeneInfo'
-import GeneSettings from './ExomePage/GeneSettings'
-import RegionViewer from './ExomePage/RegionViewer'
-// import Table from './ExomePage/Table'
-import tableConfig from './ExomePage/tableConfig'
-import { fetchSchz } from './fetch'
+import RegionInfo from './RegionInfo'
+import RegionSettings from './RegionSettings'
+import RegionViewer from './RegionViewer'
+import tableConfig from './tableConfig'
+import { fetchRegion } from './fetch'
 
 const VariantTable = withRouter(VariantTableConnected)
 
-const MainPage = ({
-  gene,
+const RegionPage = ({
+  regionData,
   isFetching,
 }) => {
-  if (isFetching || !gene) {
+  if (isFetching || !regionData) {
     return <div>Loading...!</div>
   }
   return (
     <GenePage>
       <Summary>
-        <GeneInfo
-          gene={gene}
-        />
+        <RegionInfo />
       </Summary>
       <RegionViewer />
-      <GeneSettings />
+      <RegionSettings />
       <TableSection>
         <Route
           exact
-          path="/gene/:gene"
+          path="/region/:regionId"
           render={() => {
             return (
               <VariantTable
                 tableConfig={tableConfig}
-                height={600}
+                height={400}
               />
             )
           }}
@@ -61,9 +58,12 @@ const MainPage = ({
     </GenePage>
   )
 }
-MainPage.propTypes = {
-  gene: PropTypes.object,
+RegionPage.propTypes = {
+  regionData: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
 }
+RegionPage.defaultProps = {
+  regionData: null,
+}
 
-export default withRouter(FetchHoc(MainPage, fetchSchz))
+export default withRouter(RegionHoc(RegionPage, fetchRegion, 'schizophreniaGwasVariants'))
