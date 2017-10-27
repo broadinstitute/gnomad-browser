@@ -110,6 +110,12 @@ load-data:
 	make -C packages/schizophrenia/data variants
 	make -C packages/gnomad/data all
 
+load-gnomad-variants-test:
+	make -C cluster cluster
+	make -C cluster elasticsearch
+	make -C cluster dataproc-no-vep
+	# make -C projects/gnomad/data variants-22
+
 persist-data:
 	make -C cluster/elasticsearch create-persistent-nodes
 	make -C cluster/elasticsearch deploy-persistent-data-pods

@@ -7,10 +7,10 @@ all: variants-gnomad coverage-exome coverage-genome
 test: variants-dmd coverage-test
 
 variants:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit_hail_v0.1.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
-	export_gnomad_to_ES.py \
+	../../../hail-db-utils/export_gnomad_to_ES.py \
 	--host $(ES_HOST_IP) \
 	--port 9200 \
 	--block-size 200 \
@@ -37,13 +37,27 @@ variants-22:
 
 variants-dmd:
 	@make \
+	EXOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
+	GENOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
+	VARIANTS_INDEX_NAME=dmd \
+	variants
+
+variants-dmd:
+	@make \
+	EXOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
+	GENOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
+	VARIANTS_INDEX_NAME=dmd \
+	variants
+
+variants-dmd-old:
+	@make \
 	EXOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.1.vep.sites_37_DMD_subset.vds \
 	GENOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.1.vep.sites_37_DMD_subset.vds \
 	VARIANTS_INDEX_NAME=dmd \
 	variants
 
 coverage:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	export_coverage.py \
@@ -130,3 +144,23 @@ variants-exac:
 	--index-type variant \
 	--exacv1-vds gs://gnomad-browser/datasets/ExAC.r1.sites.vep.vds \
 	--num-shards 5
+
+create-subset-vds:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	create_gnomad_subsets_by_interval.py \
+	--exomes-vds $(EXOMES_VDS_PATH) \
+	--genomes-vds $(GENOMES_VDS_PATH) \
+	--exomes-vds-out $(EXOMES_VDS_PATH_OUT) \
+	--genomes-vds-out $(GENOMES_VDS_PATH_OUT) \
+	--interval $(INTERVAL)
+
+create-subset-dmd:
+	@make \
+	EXOMES_VDS_PATH=gs://gnomad-public/release/2.0.2/vds/exomes/gnomad.exomes.r2.0.2.sites.split.vds \
+	GENOMES_VDS_PATH=gs://gnomad-public/release/2.0.2/vds/genomes/gnomad.genomes.r2.0.2.sites.split.vds \
+	EXOMES_VDS_PATH_OUT=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
+	GENOMES_VDS_PATH_OUT=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
+	INTERVAL="X:31224000-31228000" \
+	create-subset-vds
