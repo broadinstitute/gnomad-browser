@@ -75,7 +75,7 @@ const GeneRegion = ({
     circleRadius: 3,
     circleStroke: 'black',
     circleStrokeWidth: 1,
-    yPositionSetting: 'random',
+    yPositionSetting: 'center',
     fillColor: '#757575',
   }
 
@@ -87,46 +87,46 @@ const GeneRegion = ({
     { annotation: 'missense', groups: missense, colour: '#757575' },
   ]
 
-  const factor = 50
+  // const factor = 50
 
-  const splitTracks = consequenceCategories.map((consequence, index) => {
-    let rowHeight
-    const filteredVariants = modifiedVariants.filter(variant =>
-      R.contains(variant.consequence, consequence.groups))
-    if (filteredVariants.size / factor < 20) {
-      rowHeight = 30
-    } else {
-      rowHeight = filteredVariants.size / factor
-    }
-    return (
-      <VariantTrack
-        key={`${consequence.annotation}-${index}`}
-        // title={`${consequence.annotation} (${filteredVariants.size})`}
-        height={rowHeight}
-        markerConfig={markerConfigOther}
-        variants={filteredVariants}
-      />
-    )
-  })
-
-  const otherVariants = modifiedVariants.filter(v =>
-    !R.contains(v.consequence, [...lof, ...missense]))
-
-  let otherHeight
-  if (otherVariants.size / factor < 20) {
-    otherHeight = 30
-  } else {
-    otherHeight = otherVariants.size / factor
-  }
+  // const splitTracks = consequenceCategories.map((consequence, index) => {
+  //   let rowHeight
+  //   const filteredVariants = modifiedVariants.filter(variant =>
+  //     R.contains(variant.consequence, consequence.groups))
+  //   if (filteredVariants.size / factor < 20) {
+  //     rowHeight = 30
+  //   } else {
+  //     rowHeight = filteredVariants.size / factor
+  //   }
+  //   return (
+  //     <VariantTrack
+  //       key={`${consequence.annotation}-${index}`}
+  //       // title={`${consequence.annotation} (${filteredVariants.size})`}
+  //       height={rowHeight}
+  //       markerConfig={markerConfigOther}
+  //       variants={filteredVariants}
+  //     />
+  //   )
+  // })
+  //
+  // const otherVariants = modifiedVariants.filter(v =>
+  //   !R.contains(v.consequence, [...lof, ...missense]))
+  //
+  // let otherHeight
+  // if (otherVariants.size / factor < 20) {
+  //   otherHeight = 30
+  // } else {
+  //   otherHeight = otherVariants.size / factor
+  // }
 
   const allTrack = (
     <VariantTrack
       key={'All-variants'}
       // title={`other (${otherVariants.size})`
-      height={otherHeight}
+      height={10}
       color={'#75757'}
       markerConfig={markerConfigOther}
-      variants={otherVariants}
+      variants={modifiedVariants}
     />
   )
 
@@ -145,7 +145,6 @@ const GeneRegion = ({
           transcriptFanOut={transcriptFanOut}
           transcriptButtonOnClick={toggleTranscriptFanOut}
         />
-        {splitTracks}
         {allTrack}
         <NavigatorConnected noVariants />
       </RegionViewer>

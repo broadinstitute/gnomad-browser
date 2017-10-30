@@ -45,7 +45,7 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
     )
   } : null
   const YAxis = () => {
-    return (
+    return dataset ? (
       <svg width={leftPanelWidth} height={height}>
         <text
           x={0}
@@ -69,6 +69,9 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
           {count}
         </text>
         {trackYScale && <YTicks />}
+      </svg>
+    ) : (
+      <svg width={leftPanelWidth} height={height}>
       </svg>
     )
   }
