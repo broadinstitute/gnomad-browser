@@ -62,9 +62,11 @@ const Viewer = ({
     strand: '+',
   }]
 
-  const variantsArray = gwasVariants.map((v) => {
-    return v.set('-log10p', -Math.log10(v.get('p_value')))
-  }).toJS()
+  const variantsArray = gwasVariants
+    .filter(v => v.get('p_value') !== 0)
+    .map((v) => {
+      return v.set('-log10p', -Math.log10(v.get('p_value')))
+    }).toJS()
 
   const markerConfig = {
     markerType: 'circle',

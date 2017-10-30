@@ -134,7 +134,7 @@ export const lookupElasticVariantsByGeneId = ({
         return elasticClient.search({
           index: 'gnomad',
           type: 'variant',
-          size: 20000,
+          size: 10000,
           _source: fields,
           body: {
             query: {

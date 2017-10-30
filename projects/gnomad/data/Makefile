@@ -162,5 +162,18 @@ create-subset-dmd:
 	GENOMES_VDS_PATH=gs://gnomad-public/release/2.0.2/vds/genomes/gnomad.genomes.r2.0.2.sites.split.vds \
 	EXOMES_VDS_PATH_OUT=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
 	GENOMES_VDS_PATH_OUT=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
-	INTERVAL="X:31224000-31228000" \
+	INTERVAL="X:31115795-33357559" \
 	create-subset-vds
+
+annotate-gnomad:
+	../../../hail-db-utils/submit.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	../../../hail-db-utils/add_annotations.py \
+	--genome-version 37 \
+	--exclude-dbnsfp \
+	--exclude-1kg \
+	--exclude-gnomad \
+	--exclude-exac \
+	gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
+	gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.annotated.vds

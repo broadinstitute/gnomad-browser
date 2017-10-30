@@ -16,8 +16,8 @@ hc = hail.HailContext(log="/hail.log")
 
 (hc.read(args.exomes_vds)
     .filter_intervals(Interval.parse(args.interval))
-    .write(args.exomes_vds_out))
+    .write(args.exomes_vds_out, overwrite=True))
 
 (hc.read(args.genomes_vds)
     .filter_intervals(Interval.parse(args.interval))
-    .write(args.genomes_vds_out))
+    .write(args.genomes_vds_out, overwrite=True))
