@@ -9,32 +9,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import GenePageHOC from '@broad/gene-page/src/containers/GenePage'
+import { withRouter, Route } from 'react-router-dom'
+
+import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+
+import {
+  GenePage,
+  Summary,
+  TableSection,
+} from '@broad/gene-page/src/presentation/UserInterface'
+
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import VariantPage from './Variant'
-import Table from './Table'
+import tableConfig from './tableConfig'
 import fetchFunction from './fetch'
 
-const GenePageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background-color: #FAFAFA;
-  color: black;
-  margin-left: 10px;
-`
+const VariantTable = withRouter(VariantTableConnected)
 
-const Summary = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  padding-left: 60px;
-  margin-bottom: 10px;
-`
-
-const GenePage = ({
+const Page = ({
   gene,
   isFetching,
 }) => {
@@ -42,25 +37,43 @@ const GenePage = ({
     return <div>Loading...!</div>
   }
 
-  // const currentDisease = 'HCM'
-  const currentDisease = 'DCM'
+  const currentDisease = 'HCM'
+  // const currentDisease = 'DCM'
 
   return (
-    <GenePageContainer>
+    <GenePage>
       <Summary>
-        <GeneInfo currentDisease={currentDisease} />
+        <GeneInfo
+          currentDisease={currentDisease}
+          gene={gene}
+        />
       </Summary>
       <RegionViewer />
       <GeneSettings />
-      <Table />
-      <VariantPage currentDisease={currentDisease} />
-    </GenePageContainer>
+      <TableSection>
+        <Route
+          exact
+          path="/gene/:gene"
+          render={() => {
+            return (
+              <div>
+                <VariantTable
+                  tableConfig={tableConfig}
+                  height={600}
+                />
+                <VariantPage currentDisease={currentDisease} />
+              </div>
+            )
+          }}
+        />
+      </TableSection>
+    </GenePage>
   )
 }
 
-GenePage.propTypes = {
+Page.propTypes = {
   gene: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default GenePageHOC(GenePage, fetchFunction)
+export default withRouter(FetchHoc(Page, fetchFunction))

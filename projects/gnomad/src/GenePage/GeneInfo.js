@@ -26,6 +26,7 @@ import {
   GeneAttributeKey,
   GeneAttributeValues,
   GeneAttributeValue,
+  ItemWrapper,
 } from '@broad/gene-page/src/presentation/GeneInfoStyles'
 
 import {
@@ -37,25 +38,12 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
-const GeneDetailsResponsive = GeneDetails.extend`
-  align-items: center;
-  ${'' /* min-height: 70%; */}
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
-`
-
-const TableWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-`
-
 const ConstraintTabletop = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 20px;
   align-items: center;
+  width: 100%;
   ${'' /* border: 1px solid orange; */}
 `
 
@@ -86,7 +74,7 @@ const ConstraintTable = ({
   setSelectedVariantDataset,
   selectedVariantDataset,
 }) => (
-  <TableWrapper>
+  <ItemWrapper>
     <ConstraintTabletop>
       <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
       <DatasetSelectionWrapper>
@@ -146,7 +134,7 @@ const ConstraintTable = ({
         </TableRow> */}
       </TableRows>
     </Table>
-  </TableWrapper>
+  </ItemWrapper>
 )
 ConstraintTable.propTypes = { constraintData: PropTypes.object.isRequired }
 
@@ -165,7 +153,7 @@ const ConstraintTablePlaceholder = ({
   selectedVariantDataset,
   regionalConstraint,
 }) => (
-  <TableWrapper>
+  <ItemWrapper>
     <ConstraintTabletop>
       <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
       <DatasetSelectionWrapper>
@@ -226,13 +214,13 @@ const ConstraintTablePlaceholder = ({
         </TableRow> */}
       </TableRows>
     </PlaceholderTable>
-</TableWrapper>
+</ItemWrapper>
 )
 const ConstraintTableNone = ({
   setSelectedVariantDataset,
   selectedVariantDataset,
 }) => (
-  <TableWrapper>
+  <ItemWrapper>
     <ConstraintTabletop>
       <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
       <DatasetSelectionWrapper>
@@ -281,7 +269,7 @@ const ConstraintTableNone = ({
         </TableRow>
       </TableRows>
     </PlaceholderTable>
-  </TableWrapper>
+  </ItemWrapper>
 )
 
 const GeneInfo = ({
@@ -307,7 +295,7 @@ const GeneInfo = ({
         <GeneSymbol>{gene_name}</GeneSymbol>
         <GeneLongName>{full_gene_name}</GeneLongName>
       </GeneNameWrapper>
-      <GeneDetailsResponsive>
+      <GeneDetails>
         <GeneAttributes>
           <GeneAttributeKeys>
             <GeneAttributeKey>
@@ -416,7 +404,7 @@ const GeneInfo = ({
             setSelectedVariantDataset={setSelectedVariantDataset}
             selectedVariantDataset={selectedVariantDataset}
           />}
-      </GeneDetailsResponsive>
+      </GeneDetails>
     </GeneInfoWrapper>
   )
 }

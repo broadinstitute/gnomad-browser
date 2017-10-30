@@ -1,11 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-case-declarations */
-
 import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'

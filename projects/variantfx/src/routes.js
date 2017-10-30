@@ -25,7 +25,7 @@ const App = () => (
     <MainPanel>
       <TopBar />
       <Route path="/" exact component={HomePage} />
-      <Route path="/genes" component={GenePage} />
+      <Route exact path="/gene/:gene" component={GenePage} />
     </MainPanel>
   </Root>
 )

@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-
-import SearchIcon from 'material-ui/svg-icons/action/search'
-
 import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 const TopBarContainer = styled.div`
@@ -76,7 +73,6 @@ const TopBar = ({ setCurrentGene }) => {
       </StyledLink>
       <Search>
         <SearchIconContainer>
-          <SearchIcon />
         </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()

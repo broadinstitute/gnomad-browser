@@ -4,6 +4,7 @@ export const SectionTitle = styled.h1`
   margin-bottom: 10px;
   margin-top: 15px;
   font-size: 18px;
+  width: 100%;
   @media (max-width: 900px) {
     padding-left: 0;
     text-align: center;

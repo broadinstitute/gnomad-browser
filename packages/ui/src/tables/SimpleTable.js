@@ -51,7 +51,8 @@ export const TableHeader = TableRow.extend`
 
 export const TableCell = styled.div`
   width: ${props => props.width};
-  margin-left: 5px;
+  margin-left: 20px;
+  ${'' /* white-space: nowrap; */}
   ${'' /* width: 100px; */}
 `
 

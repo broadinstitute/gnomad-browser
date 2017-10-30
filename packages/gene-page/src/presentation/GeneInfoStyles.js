@@ -53,7 +53,10 @@ export const GeneDetails = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  ${'' /* border: 3px solid red; */}
+  @media (max-width: 900px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 export const GeneAttributes = styled.div`
@@ -63,10 +66,8 @@ export const GeneAttributes = styled.div`
   ${'' /* align-items: space-between; */}
   ${'' /* justify-content: center; */}
   min-width: 300px;
-  width: 300px;
+  width: 400px;
   min-height: 100%;
-  margin-bottom: 30px;
-  margin-top: 35px;
   ${'' /* border: 1px solid purple; */}
 `
 
@@ -114,3 +115,11 @@ export const GeneAttributeValue = styled.div`
   }
 `
 
+export const ItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  @media (max-width: 900px) {
+    align-items: center;
+  }
+`

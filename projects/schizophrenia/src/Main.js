@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import createGenePageStore from '@broad/gene-page/src/store/store'
+import { actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import App from './routes'
 
@@ -68,6 +69,11 @@ const appSettings = {
 }
 
 const store = createGenePageStore(appSettings)
+
+window.addEventListener('resize', () => store.dispatch(activeActions.setScreenSize(
+  window.innerHeight,
+  window.innerWidth
+)))
 
 const Main = () => (
   <Provider store={store}>

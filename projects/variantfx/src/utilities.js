@@ -15,7 +15,7 @@ export const POPULATIONS = {
 }
 
 export const COHORTS = {
-  RBH: 'Royal Brompton something',
+  RBH: 'Royal Brompton',
   EGY: 'Egypt',
   SGP: 'Singapore',
   LMM: 'LMM',
