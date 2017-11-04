@@ -31,6 +31,12 @@ import VariantPage from './Variant'
 import tableConfig from './tableConfig'
 import fetchFunction from './fetch'
 
+import {
+  GeneInfoWrapper,
+  GeneNameWrapper,
+  GeneSymbol,
+} from '@broad/gene-page/src/presentation/GeneInfoStyles'
+
 const VariantTable = withRouter(VariantTableConnected)
 
 const Page = ({
@@ -44,7 +50,19 @@ const Page = ({
   }
 
   if (currentGeneDiseaseData.has('error')) {
-    return <div>Gene/disease data not found.</div>
+    return (
+      <GenePage>
+        <Summary>
+          <GeneInfoWrapper>
+            <GeneNameWrapper>
+              <GeneSymbol>
+                Disease data not found for {gene.get('gene_name')}
+              </GeneSymbol>
+            </GeneNameWrapper>
+          </GeneInfoWrapper>
+        </Summary>
+      </GenePage>
+    )
   }
 
   return (

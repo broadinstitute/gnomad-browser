@@ -36,6 +36,9 @@ import {
 } from '@broad/gene-page/src/presentation/GeneInfoStyles'
 
 import {
+  VerticalTextLabels,
+  TableVerticalLabel,
+  VerticalLabelText,
   Table,
   TableRows,
   TableRow,
@@ -67,6 +70,12 @@ const GeneAttributeKeysCustom = GeneAttributeKeys.extend`
   width: 40%;
 `
 
+const TableRowTotal = TableRow.extend`
+  font-weight: bold;
+  border-bottom: 1px solid #000;
+  ${'' /* border-bottom: 2px solid #000; */}
+`
+
 const translations = {
   odds_ratio: 'Odds ratio',
   ef: 'Etiological fraction',
@@ -90,10 +99,15 @@ const GeneInfo = ({
 
   console.log(currentGeneDiseaseData)
 
+  const currentDisease = currentGeneDiseaseData.get('Disease')
+
   const {
     diseaseCohortBreakdown,
     calculations
-  } = getGenePageCalculations(variants.toJS(), currentGeneDiseaseData.get('Disease'))
+  } = getGenePageCalculations(variants.toJS(), currentDisease)
+
+  const COHORT_TABLE_COHORT_WIDTH = '130px'
+  const COHORT_TABLE_COLUMN_WIDTH = '60px'
 
   return (
     <GeneInfoWrapper>
@@ -177,25 +191,82 @@ const GeneInfo = ({
         <ItemWrapper>
           <SubHeader>Cohort summary</SubHeader>
           <Table>
+            <VerticalTextLabels>
+              <TableVerticalLabel height={10}>
+                <VerticalLabelText>
+                  {' '}
+                </VerticalLabelText>
+              </TableVerticalLabel>
+              <TableVerticalLabel height={170}>
+                <VerticalLabelText>
+                  Cases
+                </VerticalLabelText>
+              </TableVerticalLabel>
+              <TableVerticalLabel height={35}>
+                <VerticalLabelText>
+                  Controls
+                </VerticalLabelText>
+              </TableVerticalLabel>
+            </VerticalTextLabels>
             <TableRows>
               <TableHeader>
-                <TableCell width={'100px'} />
-                {Object.keys(diseaseCohortBreakdown).map(category =>
-                  (<TableCell width={'100px'}>{translations[category]}</TableCell>))}
+                <TableCell width={COHORT_TABLE_COHORT_WIDTH}>Cohort</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>n</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>Protein-truncating</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>Missense</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>Other</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>Protein-altering</TableCell>
+
               </TableHeader>
               {Object.keys(COHORTS).map(cohort => (
                 <TableRow>
-                  <TableCell width={'100px'}>{COHORTS[cohort]}</TableCell>
-                  {Object.keys(diseaseCohortBreakdown).map((category) => {
-                    const [ac, an] = diseaseCohortBreakdown[category][cohort]
-                    const allele_frequency = (ac / an)
-                    if (!isNaN(allele_frequency)) {
-                      return <TableCell width={'100px'}>{`${ac} (${allele_frequency.toPrecision(3)})`}</TableCell>
-                    }
-                    return <TableCell width={'100px'}>{`${ac} (0)`}</TableCell>
-                  })}
+                  <TableCell width={COHORT_TABLE_COHORT_WIDTH}>{COHORTS[cohort]}</TableCell>
+                  <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get(`${cohort}_DIS_Ind`)}</TableCell>
+                  {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
+                    <TableCell key={`${csq}-${cohort}`} width={COHORT_TABLE_COLUMN_WIDTH}>
+                      {currentGeneDiseaseData.get(`${cohort}_${csq}_FF_AC`)}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
+              <TableRowTotal>
+                <TableCell width={COHORT_TABLE_COHORT_WIDTH}>Total cases</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get('Case_Ind')}</TableCell>
+                {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
+                  <TableCell key={`${csq}-case`} width={COHORT_TABLE_COLUMN_WIDTH}>
+                    {currentGeneDiseaseData.get(`${csq}_a`)}
+                  </TableCell>
+                ))}
+              </TableRowTotal>
+              {Object.keys(COHORTS).slice(0, 3).map(cohort => (
+                <TableRow>
+                  <TableCell width={COHORT_TABLE_COHORT_WIDTH}>{COHORTS[cohort]}</TableCell>
+                  <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get(`${cohort}_HVO_Ind`)}</TableCell>
+                  {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
+                    <TableCell key={`${csq}-${cohort}`} width={COHORT_TABLE_COLUMN_WIDTH}>
+                      {currentGeneDiseaseData.get(`${cohort}_HVO_${csq}_FF_AC`)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell width={COHORT_TABLE_COHORT_WIDTH}>gnomAD</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get('GNO_Ind')}</TableCell>
+                {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
+                  <TableCell key={`${csq}-gnomad`} width={COHORT_TABLE_COLUMN_WIDTH}>
+                    {currentGeneDiseaseData.get(`GNO_${csq}_FF_AC`)}
+                  </TableCell>
+                ))}
+              </TableRow>
+              <TableRowTotal>
+                <TableCell width={COHORT_TABLE_COHORT_WIDTH}>Total controls</TableCell>
+                <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get('Control_Ind')}</TableCell>
+                {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
+                  <TableCell key={`${csq}-control`} width={COHORT_TABLE_COLUMN_WIDTH}>
+                    {currentGeneDiseaseData.get(`${csq}_c`)}
+                  </TableCell>
+                ))}
+              </TableRowTotal>
             </TableRows>
           </Table>
         </ItemWrapper>

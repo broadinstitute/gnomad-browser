@@ -15,11 +15,11 @@ export const POPULATIONS = {
 }
 
 export const COHORTS = {
-  RBH: 'Royal Brompton',
-  EGY: 'Egypt',
-  SGP: 'Singapore',
-  LMM: 'LMM',
-  OMG: 'Oxford',
+  RBH: 'Royal Brompton, UK',
+  EGY: 'AHC, Egypt',
+  SGP: 'NHCS, Singapore',
+  LMM: 'LMM, USA',
+  OMG: 'Oxford, UK',
 }
 
 export const STATS = {
@@ -33,6 +33,10 @@ export const DISEASES = {
   HCM: 'Hypertrophic cardiomyopathy',
   HVO: 'Healthy',
 }
+
+export const VARIANT_TABLE_BREAKDOWN = [
+  ''
+]
 
 export const AGE_BINS = ['0_10', '11_20', '21_30', '31_40', '41_50', '51_60', '61_70', '71_80', '81_90']
 
