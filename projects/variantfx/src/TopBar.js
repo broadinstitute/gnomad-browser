@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import GENE_DISEASES from '@resources/171030-gene-disease-data.json'
 
 const TopBarContainer = styled.div`
   display: flex;
@@ -86,14 +87,9 @@ const TopBar = ({ setCurrentGene }) => {
             list="genes"
           />
           <datalist id="genes">
-            <option value="MYH7" />
-            <option value="TNNT2" />
-            <option value="MYL3" />
-            <option value="ACTC1" />
-            <option value="FHL1" />
-            <option value="MYBPC3" />
-            <option value="MYL2" />
-            <option value="CSRP3" />
+            GENE_DISEASES.data.genediseases.map(gd => (
+              <option value="CSRP3" />
+            ))
           </datalist>
         </form>
       </Search>

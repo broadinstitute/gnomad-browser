@@ -15,6 +15,10 @@ import {
   actions as variantActions,
 } from '@broad/gene-page/src/resources/variants'
 
+import {
+  currentGeneDiseaseData,
+} from '../redux'
+
 import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
 import {
@@ -42,7 +46,6 @@ import {
 
 import {
   DISEASES,
-  GENE_DISEASE_INFO,
   COHORTS,
   getGenePageCalculations,
 } from '../utilities'
@@ -72,7 +75,13 @@ const translations = {
   missense: 'Missense',
 }
 
-const GeneInfo = ({ gene, variants, currentDisease, variantCount }) => {
+const GeneInfo = ({
+  gene,
+  variants,
+  currentGeneDiseaseData,
+  variantCount,
+  currentDisease,
+}) => {
   const {
     gene_name,
     gene_id,
@@ -80,9 +89,7 @@ const GeneInfo = ({ gene, variants, currentDisease, variantCount }) => {
     omim_accession,
   } = gene.toJS()
 
-  const geneDiseaseInfo = GENE_DISEASE_INFO.find(geneDisease =>
-    geneDisease.Gene === gene_name && geneDisease.Disease === 'HCM' // hack, only 1 disease available
-  )
+  console.log(currentGeneDiseaseData)
 
   const {
     diseaseCohortBreakdown,
@@ -132,16 +139,16 @@ const GeneInfo = ({ gene, variants, currentDisease, variantCount }) => {
                 {variantCount}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {DISEASES[geneDiseaseInfo.Disease]}
+                {DISEASES[currentGeneDiseaseData.Disease]}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {geneDiseaseInfo.InheritanceMode}
+                {currentGeneDiseaseData.InheritanceMode}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {geneDiseaseInfo.DiseaseMechanism}
+                {currentGeneDiseaseData.DiseaseMechanism}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {geneDiseaseInfo.VariantClasses}
+                {currentGeneDiseaseData.VariantClasses}
               </GeneAttributeValue>
             </GeneAttributeValues>
           </GeneAttributes>
@@ -169,7 +176,7 @@ const GeneInfo = ({ gene, variants, currentDisease, variantCount }) => {
           </DiseaseBurdenTable>
         </ItemWrapper>
         <ItemWrapper>
-        <SubHeader>Cohort summary</SubHeader>
+          <SubHeader>Cohort summary</SubHeader>
           <Table>
             <TableRows>
               <TableHeader>
@@ -200,12 +207,14 @@ const GeneInfo = ({ gene, variants, currentDisease, variantCount }) => {
 GeneInfo.propTypes = {
   gene: PropTypes.object.isRequired,
   variants: PropTypes.any.isRequired,
+  currentGeneDiseaseData: PropTypes.any.isRequired,
 }
 export default connect(
   state => ({
     gene: geneData(state),
     variantCount: variantCount(state),
-    variants: allVariantsInCurrentDatasetAsList(state)
+    variants: allVariantsInCurrentDatasetAsList(state),
+    currentGeneDiseaseData: currentGeneDiseaseData(state),
 
   })
 )(GeneInfo)

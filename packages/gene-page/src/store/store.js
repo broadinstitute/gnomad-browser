@@ -39,7 +39,7 @@ const reduxThrottle = throttle(defaultWait, defaultThrottleOption)  // eslint-di
 
 const middlewares = [createDebounce(), thunk]
 
-export default function createGenePageStore(appSettings) {
+export default function createGenePageStore(appSettings, appReducers) {
   if (appSettings.logger) {
     middlewares.push(logger)
   }
@@ -49,6 +49,7 @@ export default function createGenePageStore(appSettings) {
     search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
+    ...appReducers,
   })
 
   const finalCreateStore = compose(

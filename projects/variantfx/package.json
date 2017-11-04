@@ -29,7 +29,9 @@
     "d3-scale": "^1.0.6",
     "d3-shape": "^1.2.0",
     "graphql-fetch": "^1.0.1",
+    "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
+    "keymirror": "^0.1.1",
     "mousetrap": "^1.6.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
@@ -46,6 +48,7 @@
     "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
-    "react-hot-loader": "^3.0.0-beta.6",
-    "@broad/api": "*"
-  }}
+    "@broad/api": "*",
+    "react-hot-loader": "^3.0.0-beta.6"
+  }
+}
