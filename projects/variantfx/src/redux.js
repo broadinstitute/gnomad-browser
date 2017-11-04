@@ -11,7 +11,7 @@ export const types = keymirror({
 })
 
 export const actions = {
-  setCurrentGene: disease => ({ type: types.SET_CURRENT_DISEASE, disease })
+  setCurrentDisease: disease => ({ type: types.SET_CURRENT_DISEASE, disease })
 }
 
 const actionHandlers = {
@@ -22,8 +22,10 @@ const actionHandlers = {
 
 const State = Immutable.Record({
   geneDiseases: Immutable.Map(GENE_DISEASES.data.genediseases.map(gd =>
-    [`${gd.Gene}-${gd.Disease}`, gd])),
+    [`${gd.Gene}-${gd.Disease}`, Immutable.Map(gd)])),
   currentDisease: 'HCM',
+  uniqueGeneDiseaseNames: Immutable.Set(GENE_DISEASES.data.genediseases.map(gd => gd.Gene)),
+  uniqueGeneDiseaseDiseases: Immutable.Set(GENE_DISEASES.data.genediseases.map(gd => gd.Disease)),
 })
 
 export function variantfx (state = new State(), action: Object): State {
@@ -36,11 +38,8 @@ export function variantfx (state = new State(), action: Object): State {
 
 export const currentDisease = state => state.variantfx.currentDisease
 export const geneDiseases = state => state.variantfx.geneDiseases
-
-export const allGeneNames = createSelector(
-  geneDiseases,
-  geneDiseases => Immutable.Set(geneDiseases.map(gd => gd.Name))
-)
+export const uniqueGeneDiseaseNames = state => state.variantfx.uniqueGeneDiseaseNames
+export const uniqueGeneDiseaseDiseases = state => state.variantfx.uniqueGeneDiseaseDiseases
 
 export const currentGeneDiseaseData = createSelector(
   [currentGene, currentDisease, geneDiseases],
@@ -49,6 +48,6 @@ export const currentGeneDiseaseData = createSelector(
     if (geneDiseases.has(geneDiseaseKey)) {
       return geneDiseases.get(geneDiseaseKey)
     }
-    return 'Gene/disease combo not found'
+    return Immutable.Map({ error: 'Gene/disease combo not found' })
   }
 )

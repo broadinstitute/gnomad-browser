@@ -16,6 +16,8 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
+import { currentDisease } from '../redux'
+
 import {
   processCardioVariant,
   POPULATIONS,
@@ -60,6 +62,7 @@ const VariantAttribute = styled.div`
 `
 
 const Variant = ({ variant, currentDisease }) => {
+  console.log(currentDisease)
   if (!variant) {
     return <div />
   }
@@ -186,10 +189,12 @@ const Variant = ({ variant, currentDisease }) => {
 }
 Variant.propTypes = {
   variant: PropTypes.object,
+  currentDisease: PropTypes.string.isRequired,
 }
 
 export default connect(
   state => ({
     variant: singleVariantData(state),
+    currentDisease: currentDisease(state),
   })
 )(Variant)

@@ -4,15 +4,27 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
-import GENE_DISEASES from '@resources/171030-gene-disease-data.json'
+import {
+  uniqueGeneDiseaseNames,
+  uniqueGeneDiseaseDiseases,
+  currentDisease,
+  actions as variantFxActions,
+} from './redux'
+
+import {
+  DataSelectionGroup,
+  DataSelectionContainer,
+} from '@broad/gene-page/src/presentation/UserInterface'
+
 
 const TopBarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 40px;
-  padding-top: 20px;
+  padding-top: 10px;
   margin-bottom: 20px;
   border-bottom: 1px solid #000;
   background-color: #B71C1C;
@@ -64,7 +76,13 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const TopBar = ({ setCurrentGene }) => {
+const TopBar = ({
+  setCurrentGene,
+  uniqueGeneDiseaseNames,
+  uniqueGeneDiseaseDiseases,
+  currentDisease,
+  setCurrentDisease,
+}) => {
   return (
     <TopBarContainer>
       <StyledLink to={'/'}>
@@ -72,6 +90,15 @@ const TopBar = ({ setCurrentGene }) => {
           VariantFX
         </Logo>
       </StyledLink>
+      <DataSelectionContainer>
+        <select
+          onChange={event => setCurrentDisease(event.target.value)}
+          value={currentDisease}
+        >
+          <option value="DMC">Dilated cardiomyopathy</option>
+          <option value="HCM">Hypertrophic cardiomyopathy</option>
+        </select>
+      </DataSelectionContainer>
       <Search>
         <SearchIconContainer>
         </SearchIconContainer>
@@ -87,9 +114,9 @@ const TopBar = ({ setCurrentGene }) => {
             list="genes"
           />
           <datalist id="genes">
-            GENE_DISEASES.data.genediseases.map(gd => (
-              <option value="CSRP3" />
-            ))
+            {uniqueGeneDiseaseNames.map(gene => (
+              <option key={`${gene}`} value={gene} />
+            ))}
           </datalist>
         </form>
       </Search>
@@ -107,16 +134,25 @@ const TopBar = ({ setCurrentGene }) => {
 const mapStateToProps = (state) => {
   return {
     currentGene: currentGene(state),
+    uniqueGeneDiseaseNames: uniqueGeneDiseaseNames(state),
+    uniqueGeneDiseaseDiseases: uniqueGeneDiseaseDiseases(state),
+    uniqueGeneDiseaseDiseases: uniqueGeneDiseaseDiseases(state),
+    currentDisease: currentDisease(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setCurrentDisease: disease => dispatch(variantFxActions.setCurrentDisease(disease)),
   }
 }
 
 TopBar.propTypes = {
   setCurrentGene: PropTypes.func.isRequired,
+  setCurrentDisease: PropTypes.func.isRequired,
+  uniqueGeneDiseaseNames: PropTypes.any.isRequired,
+  uniqueGeneDiseaseDiseases: PropTypes.any.isRequired,
+  currentDisease: PropTypes.string.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar)

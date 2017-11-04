@@ -80,7 +80,6 @@ const GeneInfo = ({
   variants,
   currentGeneDiseaseData,
   variantCount,
-  currentDisease,
 }) => {
   const {
     gene_name,
@@ -94,7 +93,7 @@ const GeneInfo = ({
   const {
     diseaseCohortBreakdown,
     calculations
-  } = getGenePageCalculations(variants.toJS(), currentDisease)
+  } = getGenePageCalculations(variants.toJS(), currentGeneDiseaseData.get('Disease'))
 
   return (
     <GeneInfoWrapper>
@@ -139,16 +138,16 @@ const GeneInfo = ({
                 {variantCount}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {DISEASES[currentGeneDiseaseData.Disease]}
+                {DISEASES[currentGeneDiseaseData.get('Disease')]}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {currentGeneDiseaseData.InheritanceMode}
+                {currentGeneDiseaseData.get('InheritanceMode')}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {currentGeneDiseaseData.DiseaseMechanism}
+                {currentGeneDiseaseData.get('DiseaseMechanism')}
               </GeneAttributeValue>
               <GeneAttributeValue>
-                {currentGeneDiseaseData.VariantClasses}
+                {currentGeneDiseaseData.get('VariantClasses')}
               </GeneAttributeValue>
             </GeneAttributeValues>
           </GeneAttributes>

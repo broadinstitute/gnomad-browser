@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import FetchHoc from './FetchHoc'
 import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
 
 import {
@@ -19,6 +19,10 @@ import {
   Summary,
   TableSection,
 } from '@broad/gene-page/src/presentation/UserInterface'
+
+import {
+  currentGeneDiseaseData,
+} from '../redux'
 
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
@@ -32,21 +36,21 @@ const VariantTable = withRouter(VariantTableConnected)
 const Page = ({
   gene,
   isFetching,
+  currentGeneDiseaseData,
 }) => {
+  console.log(currentGeneDiseaseData)
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
 
-  const currentDisease = 'HCM'
-  // const currentDisease = 'DCM'
+  if (currentGeneDiseaseData.has('error')) {
+    return <div>Gene/disease data not found.</div>
+  }
 
   return (
     <GenePage>
       <Summary>
-        <GeneInfo
-          currentDisease={currentDisease}
-          gene={gene}
-        />
+        <GeneInfo />
       </Summary>
       <RegionViewer />
       <GeneSettings />
@@ -61,7 +65,7 @@ const Page = ({
                   tableConfig={tableConfig}
                   height={600}
                 />
-                <VariantPage currentDisease={currentDisease} />
+                <VariantPage />
               </div>
             )
           }}
@@ -74,6 +78,7 @@ const Page = ({
 Page.propTypes = {
   gene: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
+  currentGeneDiseaseData: PropTypes.any.isRequired,
 }
 
 export default withRouter(FetchHoc(Page, fetchFunction))
