@@ -106,4 +106,4 @@ RegionPage.defaultProps = {
   regionData: null,
 }
 
-export default withRouter(RegionHoc(RegionPage, fetchRegion))
+export default withRouter(RegionHoc(RegionPage, fetchRegion, 'gnomadCombinedVariants'))

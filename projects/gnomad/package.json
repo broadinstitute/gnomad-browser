@@ -8,7 +8,7 @@
   "scripts": {
     "start": "FETCH_FUNCTION=gnomad ./node_modules/.bin/webpack-dev-server --hot --config webpack.config.js",
     "build:es": "../../node_modules/.bin/cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore example",
-    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://146.148.35.46' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
+    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://104.155.165.85' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
     "prebuild": "../../node_modules/.bin/rimraf dist"
   },
   "files": [
