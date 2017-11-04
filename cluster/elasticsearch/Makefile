@@ -3,7 +3,7 @@ include ../config.sh
 # export $(shell sed 's/=.*//' ../config.sh)
 
 POOL_NAME=elasticsearch
-NUMBER=1
+NUMBER=12
 LOADING_MACHINE_TYPE=n1-highmem-4
 PERSISTENT_MACHINE_TYPE=n1-standard-4
 LOCAL_SSD_COUNT=1

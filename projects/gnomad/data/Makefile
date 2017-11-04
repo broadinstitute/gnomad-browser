@@ -19,12 +19,12 @@ variants:
 	--index-type variant \
 	--exomes-vds $(EXOMES_VDS_PATH) \
 	--genomes-vds $(GENOMES_VDS_PATH) \
-	--num-shards 6
+	--num-shards 12
 
 variants-gnomad:
 	@make \
-	EXOMES_VDS_PATH=gs://gnomad-public/release-170228/gnomad.exomes.r2.0.1.sites.vds \
-	GENOMES_VDS_PATH=gs://gnomad-public/release-170228/gnomad.genomes.r2.0.1.sites.vds \
+	EXOMES_VDS_PATH=gs://gnomad-public/release/2.0.2/vds/exomes/gnomad.exomes.r2.0.2.sites.split.vds \
+	GENOMES_VDS_PATH=gs://gnomad-public/release/2.0.2/vds/genomes/gnomad.genomes.r2.0.2.sites.split.vds \
 	VARIANTS_INDEX_NAME=gnomad \
 	variants
 

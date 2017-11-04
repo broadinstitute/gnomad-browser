@@ -127,6 +127,14 @@ takedown-loading-nodes:
 	make -C cluster/elasticsearch delete-loading-data-pods
 	make -C cluster/elasticsearch delete-load-nodes
 
+load-gnomad-variants:
+	make -C cluster dataproc-no-vep
+	make -C cluster/elasticsearch create-loading-nodes
+	make -C cluster/elasticsearch deploy-loading-data-pods
+	make -C projects/gnomad/data variants-gnomad
+	make -C cluster/elasticsearch reallocate-shards
+	make takedown-loading-nodes
+
 gnomad:
 	make -C cluster cluster
 	make -C cluster context
