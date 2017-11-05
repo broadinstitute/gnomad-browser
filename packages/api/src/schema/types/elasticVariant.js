@@ -11,6 +11,7 @@ import {
   // GraphQLBoolean,
 } from 'graphql'
 
+import populationType from './populations'
 import { lookupExonsByTranscriptId } from './exon'
 
 // import vepType from './vep'
@@ -53,6 +54,9 @@ const elasticVariantType = new GraphQLObjectType({
     hom_count: { type: GraphQLInt },
     consequence: { type: GraphQLString },
     lof: { type: GraphQLString },
+    pop_acs: { type: populationType },
+    pop_ans: { type: populationType },
+    pop_homs: { type: populationType },
   }),
 })
 
@@ -79,6 +83,31 @@ export const lookupElasticVariantsByGeneId = ({
     `${dataset}_AF`,
     `${dataset}_AN`,
     `${dataset}_Hom`,
+    `${dataset}_Hom`,
+    `${dataset}_AC_NFE`,
+    `${dataset}_AC_EAS`,
+    `${dataset}_AC_OTH`,
+    `${dataset}_AC_AFR`,
+    `${dataset}_AC_AMR`,
+    `${dataset}_AC_SAS`,
+    `${dataset}_AC_FIN`,
+    `${dataset}_AC_ASJ`,
+    `${dataset}_AN_NFE`,
+    `${dataset}_AN_EAS`,
+    `${dataset}_AN_OTH`,
+    `${dataset}_AN_AFR`,
+    `${dataset}_AN_AMR`,
+    `${dataset}_AN_SAS`,
+    `${dataset}_AN_FIN`,
+    `${dataset}_AN_ASJ`,
+    `${dataset}_Hom_NFE`,
+    `${dataset}_Hom_EAS`,
+    `${dataset}_Hom_OTH`,
+    `${dataset}_Hom_AFR`,
+    `${dataset}_Hom_AMR`,
+    `${dataset}_Hom_SAS`,
+    `${dataset}_Hom_FIN`,
+    `${dataset}_Hom_ASJ`,
   ]
 
   return new Promise((resolve, reject) => {
@@ -181,6 +210,36 @@ export const lookupElasticVariantsByGeneId = ({
               allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
               allele_num: elastic_variant[`${dataset}_AN`],
               hom_count: elastic_variant[`${dataset}_Hom`],
+              pop_acs: {
+                european_non_finnish: elastic_variant[`${dataset}_AC_NFE`],
+                east_asian: elastic_variant[`${dataset}_AC_EAS`],
+                other: elastic_variant[`${dataset}_AC_OTH`],
+                african: elastic_variant[`${dataset}_AC_AFR`],
+                latino: elastic_variant[`${dataset}_AC_AMR`],
+                south_asian: elastic_variant[`${dataset}_AC_SAS`],
+                european_finnish: elastic_variant[`${dataset}_AC_FIN`],
+                ashkenazi_jewish: elastic_variant[`${dataset}_AC_ASJ`],
+              },
+              pop_ans: {
+                european_non_finnish: elastic_variant[`${dataset}_AN_NFE`],
+                east_asian: elastic_variant[`${dataset}_AN_EAS`],
+                other: elastic_variant[`${dataset}_AN_OTH`],
+                african: elastic_variant[`${dataset}_AN_AFR`],
+                latino: elastic_variant[`${dataset}_AN_AMR`],
+                south_asian: elastic_variant[`${dataset}_AN_SAS`],
+                european_finnish: elastic_variant[`${dataset}_AN_FIN`],
+                ashkenazi_jewish: elastic_variant[`${dataset}_AN_ASJ`],
+              },
+              pop_homs: {
+                european_non_finnish: elastic_variant[`${dataset}_Hom_NFE`],
+                east_asian: elastic_variant[`${dataset}_Hom_EAS`],
+                other: elastic_variant[`${dataset}_Hom_OTH`],
+                african: elastic_variant[`${dataset}_Hom_AFR`],
+                latino: elastic_variant[`${dataset}_Hom_AMR`],
+                south_asian: elastic_variant[`${dataset}_Hom_SAS`],
+                european_finnish: elastic_variant[`${dataset}_Hom_FIN`],
+                ashkenazi_jewish: elastic_variant[`${dataset}_Hom_ASJ`],
+              }
             })
           })
           return ctx.database.redis.set(

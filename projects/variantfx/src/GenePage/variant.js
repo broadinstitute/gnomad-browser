@@ -66,6 +66,7 @@ const Variant = ({ variant, currentDisease }) => {
     return <div />
   }
   const processedVariant = processCardioVariant(variant)
+  console.log(processedVariant.diseases[currentDisease])
   return (
     <VariantContainer>
       <VariantTitle>{processedVariant.variant_id}</VariantTitle>

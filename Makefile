@@ -123,7 +123,7 @@ persist-data:
 	make takedown-loading-nodes
 
 takedown-loading-nodes:
-	make -C cluster delete-dataproc-cluster
+	# make -C cluster delete-dataproc-cluster
 	make -C cluster/elasticsearch delete-loading-data-pods
 	make -C cluster/elasticsearch delete-load-nodes
 

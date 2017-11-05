@@ -34,10 +34,6 @@ export const DISEASES = {
   HVO: 'Healthy',
 }
 
-export const VARIANT_TABLE_BREAKDOWN = [
-  ''
-]
-
 export const AGE_BINS = ['0_10', '11_20', '21_30', '31_40', '41_50', '51_60', '61_70', '71_80', '81_90']
 
 export function groupFieldsByDisease (variant) {
@@ -94,6 +90,7 @@ export function groupFieldsByDisease (variant) {
             allele_num: disease_counts.allele_num + cohorts[cohort].cohort_totals.allele_num,
           }
         }, { allele_count: 0, allele_num: 0 })
+        console.log(cohorts)
         return {
           disease_totals,
           ages,

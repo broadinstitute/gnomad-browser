@@ -98,14 +98,7 @@ const GeneInfo = ({
     omim_accession,
   } = gene.toJS()
 
-  console.log(currentGeneDiseaseData)
-
   const currentDisease = currentGeneDiseaseData.get('Disease')
-
-  const {
-    diseaseCohortBreakdown,
-    calculations
-  } = getGenePageCalculations(variants.toJS(), currentDisease)
 
   const COHORT_TABLE_COHORT_WIDTH = '130px'
   const COHORT_TABLE_COLUMN_WIDTH = '60px'
