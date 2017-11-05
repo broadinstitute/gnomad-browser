@@ -118,7 +118,8 @@ export default function createVariantReducer({
     startingVariant,
     startingVariantDataset,
     startingQcFilter,
-  }
+  },
+  definitions
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
 
@@ -142,6 +143,7 @@ export default function createVariantReducer({
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
     searchIndexed: OrderedMap(),
+    definitions: Map(definitions),
   })
 
   const actionHandlers = {
@@ -212,7 +214,6 @@ export default function createVariantReducer({
 
       return withVariants
         .set('searchIndexed', currentVariantDataset)
-
     },
 
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
@@ -336,21 +337,24 @@ export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
+export const definitions = state => state.variants.definitions
 
 export const filteredVariantsById = createSelector([
   allVariantsInCurrentDataset,
   variantFilter,
   variantQcFilter,
-], (variants, variantFilter, variantQcFilter) => {
+  definitions,
+], (variants, variantFilter, variantQcFilter, definitions) => {
   let filteredVariants
+  const consequenceKey = definitions.get('consequence') || 'consequence'
   if (variantFilter === 'all') {
     filteredVariants = variants
   }
   if (variantFilter === 'lof') {
-    filteredVariants = variants.filter(v => isCategoryLoF(v.get('consequence')))
+    filteredVariants = variants.filter(v => isCategoryLoF(v.get(consequenceKey)))
   }
   if (variantFilter === 'missenseOrLoF') {
-    filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get('consequence')))
+    filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get(consequenceKey)))
   }
   if (variantQcFilter) {
     filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)

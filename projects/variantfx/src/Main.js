@@ -8,12 +8,18 @@ import App from './routes'
 
 const appSettings = {
   searchIndexes: ['variant_id', 'HGVSc', 'Consequence'],
+  searchResourceSelector: (resourceName, state) => {
+    return state.variants.searchIndexed
+  },
   logger: true,
   projectDefaults: {
     startingGene: 'MYH7',
     startingVariant: '14-23902914-C-G',
     startingPadding: 75,
     startingVariantDataset: 'variants',
+  },
+  definitions: {
+    consequence: 'Consequence',
   },
   variantDatasets: {
     variants: {

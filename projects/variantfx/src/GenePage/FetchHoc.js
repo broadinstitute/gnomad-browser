@@ -33,7 +33,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
   componentWillReceiveProps(nextProps) {
     const { fetchGeneIfNeeded, currentDisease, currentGene, history } = this.props
-    if (currentGene !== nextProps.currentGene || currentDisease !== nextProps.currentDisease) {
+    if (currentGene !== nextProps.currentGene) {
       // if(this.props.route.path == nextProps.route.path) return false
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)

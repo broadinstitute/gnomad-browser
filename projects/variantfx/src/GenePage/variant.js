@@ -62,7 +62,6 @@ const VariantAttribute = styled.div`
 `
 
 const Variant = ({ variant, currentDisease }) => {
-  console.log(currentDisease)
   if (!variant) {
     return <div />
   }

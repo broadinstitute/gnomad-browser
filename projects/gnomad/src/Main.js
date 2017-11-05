@@ -23,7 +23,6 @@ const appSettings = {
     startingPadding: 75,
     startingVariantDataset: 'gnomadCombinedVariants',
     startingQcFilter: true,
-    // startingVariantDataset: 'exacVariants',
   },
   variantDatasets: {
     gnomadExomeVariants: {

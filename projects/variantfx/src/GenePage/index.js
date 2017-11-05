@@ -18,6 +18,7 @@ import {
   GenePage,
   Summary,
   TableSection,
+  SectionTitle,
 } from '@broad/gene-page/src/presentation/UserInterface'
 
 import {
@@ -39,12 +40,16 @@ import {
 
 const VariantTable = withRouter(VariantTableConnected)
 
+const SectionTitleIndent = SectionTitle.extend`
+  margin-left: 70px;
+  margin-right: 70px;
+`
+
 const Page = ({
   gene,
   isFetching,
   currentGeneDiseaseData,
 }) => {
-  console.log(currentGeneDiseaseData)
   if (isFetching || !gene) {
     return <div>Loading...!</div>
   }
@@ -70,8 +75,10 @@ const Page = ({
       <Summary>
         <GeneInfo />
       </Summary>
+      <SectionTitleIndent>Positional distribution</SectionTitleIndent>
       <RegionViewer />
       <GeneSettings />
+      <SectionTitleIndent>Variant table</SectionTitleIndent>
       <TableSection>
         <Route
           exact

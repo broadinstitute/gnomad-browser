@@ -95,7 +95,7 @@ const TopBar = ({
           onChange={event => setCurrentDisease(event.target.value)}
           value={currentDisease}
         >
-          <option value="DMC">Dilated cardiomyopathy</option>
+          <option value="DCM">Dilated cardiomyopathy</option>
           <option value="HCM">Hypertrophic cardiomyopathy</option>
         </select>
       </DataSelectionContainer>

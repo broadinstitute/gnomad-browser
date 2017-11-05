@@ -77,11 +77,12 @@ const TableRowTotal = TableRow.extend`
 `
 
 const translations = {
-  odds_ratio: 'Odds ratio',
-  ef: 'Etiological fraction',
-  all: 'All',
-  lof: 'LoF',
-  missense: 'Missense',
+  OR: 'Odds ratio',
+  EF: 'Etiological fraction',
+  CE: 'Case excess',
+  PTV: 'Truncating',
+  MIS: 'Missense',
+  PAL: 'Protein-altering',
 }
 
 const GeneInfo = ({
@@ -169,20 +170,17 @@ const GeneInfo = ({
           <DiseaseBurdenTable>
             <TableRows>
               <TableHeader>
-                <TableCell width={'70px'} />
-                {Object.keys(calculations.all).map(calculation =>
-                  (<TableCell width={'70px'}>{translations[calculation]}</TableCell>))}
+                <TableCell width={'100px'} />
+                {['OR', 'EF', 'CE'].map(calculation =>
+                  (<TableCell key={`header-${calculation}`} width={'70px'}>{translations[calculation]}</TableCell>))}
               </TableHeader>
-              {Object.keys(calculations).map(category => (
-                <TableRow>
-                  <TableCell width={'70px'}>{translations[category]}</TableCell>
-                  {Object.keys(calculations.all).map((calculation) => {
-                    return (
-                      <TableCell width={'70px'}>
-                        {calculations[category][calculation].toPrecision(3)}
-                      </TableCell>
-                    )
-                  })}
+              {['PTV', 'MIS', 'PAL'].map(category => (
+                <TableRow key={`burden-${category}`}>
+                  <TableCell width={'100px'}>{translations[category]}</TableCell>
+                  {['OR', 'EF', 'CE'].map(calculation =>
+                    (<TableCell key={`burden-${category}-${calculation}`} width={'70px'}>
+                      {currentGeneDiseaseData.get(`${category}_${calculation}`).toPrecision(3)}
+                    </TableCell>))}
                 </TableRow>
               ))}
             </TableRows>
@@ -202,7 +200,7 @@ const GeneInfo = ({
                   Cases
                 </VerticalLabelText>
               </TableVerticalLabel>
-              <TableVerticalLabel height={35}>
+              <TableVerticalLabel height={130}>
                 <VerticalLabelText>
                   Controls
                 </VerticalLabelText>

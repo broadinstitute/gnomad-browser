@@ -8,6 +8,9 @@ import App from './routes'
 
 const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence'],
+  searchResourceSelector: (resourceName, state) => {
+    return state.variants.searchIndexed
+  },
   logger: true,
   projectDefaults: {
     startingGene: '',
