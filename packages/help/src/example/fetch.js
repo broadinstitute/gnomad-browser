@@ -5,10 +5,10 @@ export const client = new elasticsearch.Client({
   host: 'elastic:9200',
 })
 
-export function searchHelpTopics (query) {
+export function searchHelpTopics (query, index) {
   return new Promise((resolve, reject) => {
     client.search({
-      index: 'help_example',
+      index,
       type: 'entry',
       body: {
         query: {

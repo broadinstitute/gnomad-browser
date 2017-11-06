@@ -7,7 +7,7 @@ import { actions as helpActions, helpQuery, topResultsList } from './redux'
 class Help extends Component {
   static propTypes = {}
   componentDidMount () {
-    this.props.fetchHelpTopicsIfNeeded('life')
+    this.props.fetchHelpTopicsIfNeeded('allele', 'gnomad_help')
   }
   render() {
     return (

@@ -27,7 +27,7 @@ test('Query can be set with an action.', (assert) => {
 })
 
 test('Fetch stuff from database.', (assert) => {
-  searchHelpTopics('foo').then((response) => {
+  searchHelpTopics('foo', 'help_example').then((response) => {
     assert.true(response.has('max_score'))
     assert.equal(response.get('hits').size, 1)
     assert.equal(response.get('hits').first().getIn(['_source', 'topic']), 'Foo')

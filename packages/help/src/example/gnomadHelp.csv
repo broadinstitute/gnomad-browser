@@ -1,0 +1,11 @@
+vcfkey,topic,description
+AC,"Allele count","Allele count in genotypes, for each ALT allele, in the same order as listed"
+AF,"Allele frequency","Allele Frequency among genotypes, for each ALT allele, in the same order as listed"
+AN,"Allele number","Total number of alleles in called genotypes"
+POPMAX,"Popmax","Population with max AF"
+AC_POPMAX,"Popmax allele count","AC in the population with the max AF"
+AN_POPMAX,"Popmax allele number","AN in the population with the max AF"
+AF_POPMAX,"Popmax allele frequency","Maximum Allele Frequency across populations (excluding OTH)"
+AS_FilterStatus,"Random forest filter status","Random Forests filter status for each allele"
+segdup,"Segmental duplication","In a segmental duplication region"
+lcr,"Low complexity region","In a low complexity region"
