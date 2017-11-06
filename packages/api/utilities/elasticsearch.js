@@ -16,12 +16,13 @@ export function loadCsvToElastic({
       index: indexName,
     })
   }
-
+  console.log(filePath)
   csv({
     delimiter,
     checkType: true,
     headers,
   }).fromFile(filePath).on('end_parsed', (json) => {
+    console.log(json)
     const data = json.reduce((acc, doc) => {
       return [
         ...acc,
@@ -37,5 +38,5 @@ export function loadCsvToElastic({
     client.bulk({ body: data })
       .then(response => console.log(response))
       .catch(error => console.log(error))
-  })
+  }).on('error', error => console.log(error))
 }
