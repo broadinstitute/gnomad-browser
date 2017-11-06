@@ -12,6 +12,8 @@ import glob from 'glob'
 import { v4 } from 'node-uuid'
 import moment from 'moment'
 
+import { loadJsonArrayToElastic } from '@broad/api/utilities/elasticsearch'
+
 // Max number of files open at once
 const fq = new FileQueue(100)
 
@@ -86,7 +88,7 @@ export const md2html = R.curry((
         html,
         hljs,
       ]).process(data).toString()
-      resolve({
+      const final = {
         frontmatter,
         mdReadDirectory,
         mdWriteDirectory,
@@ -97,12 +99,16 @@ export const md2html = R.curry((
         filename: path.basename(file, '.md'),
         metadata: fileStats(file),
         id: v4(),
-      })
+      }
+      resolve(final)
     })
   })
 })
 
 export const filterDocuments = (doc, filterSettings) => {
+  if (!doc.frontmatter.meta) {
+    return false
+  }
   if (filterSettings.onlyPublic && doc.frontmatter.public) {
     return true
   }
@@ -158,14 +164,76 @@ export const compile = (config: {
     filePaths(mdReadDirectory, '.md')
       .then(pathList => pathList.map(md2html(config)))
       .then(promiseArray => Promise.all(promiseArray))
-      .then(resolvedArray => {
+      .then((resolvedArray) => {
         return resolvedArray
           .filter(doc => filterDocuments(doc, filterSettings))
           .map(writeHtml)
       })
-      .then(promiseArray => Promise.all(promiseArray))
+      .then((promiseArray) => Promise.all(promiseArray))
       .then(resolve)
-      .catch(error => {
+      .catch((error) => {
+        console.log(error)
+        return reject(error)
+      })
+  })
+}
+
+export const prepareDocumentForElastic = (document) => {
+  const {
+    metadata: {
+      created,
+      modified,
+    },
+    frontmatter: {
+      meta: {
+        vcfkey,
+        topic,
+        index,
+      }
+    },
+    htmlString,
+  } = document
+  const elasticDocument = {
+    vcfkey,
+    topic,
+    index,
+    created,
+    modified,
+    htmlString,
+  }
+  return elasticDocument
+}
+
+export const batchLoadDocumentsToElastic = (config: {
+  mdReadDirectory: string,
+  htmlWriteDirectory: string,
+  filterSettings: {
+    type: string,
+    onlyPublic: boolean,
+  },
+  elasticSettings: {
+    address: string,
+    dropPreviousIndex: boolean,
+    indexName: string,
+    typeName: string,
+  }
+}) => {
+  return new Promise((resolve, reject) => {
+    const { mdReadDirectory, filterSettings } = config
+    filePaths(mdReadDirectory, '.md')
+      .then(pathList => pathList.map(md2html(config)))
+      .then(promiseArray => Promise.all(promiseArray))
+      .then((resolvedArray) => {
+        return resolvedArray
+          .filter(doc => filterDocuments(doc, filterSettings))
+          .map(prepareDocumentForElastic)
+      })
+      .then((promiseArray) => Promise.all(promiseArray))
+      .then((jsonArray) => {
+        loadJsonArrayToElastic({ ...config.elasticSettings, jsonArray })
+        resolve(jsonArray)
+      })
+      .catch((error) => {
         console.log(error)
         return reject(error)
       })

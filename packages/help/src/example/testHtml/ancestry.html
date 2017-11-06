@@ -1,0 +1,69 @@
+<h1 id="ancestry-in-gnomad">Ancestry in gnomAD</h1>
+<p>We computed principal components (PCs) on the same well-behaved bi-allelic autosomal SNVs as described above on all unrelated samples (both exomes and genomes). We then leveraged a set of 53,044 samples for which we knew the ancestry to train a random forests classifier using the PCs as features. We then assigned ancestry to all samples for which the probability of that ancestry was > 90% according to the random forest model.  All other samples, were assigned the other ancestry (OTH). In addition, the 34 south asian (SAS) samples among the genomes were assigned to other as well due to their low number.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_uRuFZv4JaU" frameborder="0" allowfullscreen></iframe>
+<table>
+<thead>
+<tr>
+<th>Population</th>
+<th>Exomes</th>
+<th>Genomes</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>African/African American (AFR)</td>
+<td>7,652</td>
+<td>4,368</td>
+<td>12,020</td>
+</tr>
+<tr>
+<td>Latino (AMR)</td>
+<td>16,791</td>
+<td>419</td>
+<td>17,210</td>
+</tr>
+<tr>
+<td>Ashkenazi Jewish (ASJ)</td>
+<td>4,925</td>
+<td>151</td>
+<td>5,076</td>
+</tr>
+<tr>
+<td>East Asian (EAS)</td>
+<td>8,624</td>
+<td>811</td>
+<td>9,435</td>
+</tr>
+<tr>
+<td>Finnish (FIN)</td>
+<td>11,150</td>
+<td>1,747</td>
+<td>12,897</td>
+</tr>
+<tr>
+<td>Non-Finnish European (NFE)</td>
+<td>55,860</td>
+<td>7,509</td>
+<td>63,369</td>
+</tr>
+<tr>
+<td>South Asian (SAS)</td>
+<td>15,391</td>
+<td>0</td>
+<td>15,391</td>
+</tr>
+<tr>
+<td>Other (OTH)</td>
+<td>2,743</td>
+<td>491</td>
+<td>3,234</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>123,136</td>
+<td>15,496</td>
+<td>138,632</td>
+</tr>
+</tbody>
+</table>

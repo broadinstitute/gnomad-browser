@@ -7,15 +7,19 @@ import { actions as helpActions, helpQuery, topResultsList } from './redux'
 class Help extends Component {
   static propTypes = {}
   componentDidMount () {
-    this.props.fetchHelpTopicsIfNeeded('allele', 'gnomad_help')
+    this.props.fetchHelpTopicsIfNeeded('population', 'gnomad_help')
   }
   render() {
+      console.log(this.props)
     return (
       <div>
         <div>query: {this.props.helpQuery}</div>
         <ul>
           {this.props.topResultsList.map(result => (
-            <li key={result.topic}>{result.topic}: {result.description}: {result.score}</li>
+            <li key={result.topic}>
+              {result.topic}: {result.description}: {result.score}
+              <div dangerouslySetInnerHTML={{ __html: result.htmlString }} />
+            </li>
           ))}
         </ul>
       </div>

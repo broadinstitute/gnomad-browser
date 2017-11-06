@@ -28,7 +28,7 @@ export const actions = {
 const HelpEntry = Record({
   score: null,
   topic: null,
-  description: null,
+  htmlString: null,
 })
 
 const actionHandlers = {
@@ -44,7 +44,8 @@ const actionHandlers = {
         hit.getIn(['_source', 'topic']),
         new HelpEntry({
           topic: hit.getIn(['_source', 'topic']),
-          description: hit.getIn(['_source', 'description']),
+          htmlString: hit.getIn(['_source', 'htmlString']),
+          vcfkey: hit.getIn(['_source', 'vcfkey']),
           score: hit.get('_score'),
         })
       ]
