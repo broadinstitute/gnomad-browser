@@ -12,11 +12,19 @@ export function searchHelpTopics (query, index) {
       type: 'entry',
       body: {
         query: {
-          match: {
-            _all: query
+          match_phrase_prefix: {
+            htmlString: query
+          }
+        },
+        highlight: {
+          fields: {
+            htmlString: { }
           }
         }
       }
-    }).then(response => resolve(fromJS(response.hits)))
+    }).then(response => {
+      console.log(response)
+      resolve(fromJS(response.hits))
+    })
   })
 }

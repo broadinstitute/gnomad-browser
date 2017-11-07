@@ -1,24 +1,44 @@
 import React, { PropTypes, Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-
-import { actions as helpActions, helpQuery, topResultsList } from './redux'
+import debounce from 'lodash.debounce'
+import Highlighter from 'react-highlight-words'
+import { actions as helpActions, topResultsList } from './redux'
 
 class Help extends Component {
   static propTypes = {}
+
+  state = { searchTerm: '' }
+
   componentDidMount () {
-    this.props.fetchHelpTopicsIfNeeded('population', 'gnomad_help')
+    this.props.fetchHelpTopicsIfNeeded('filter', 'gnomad_help')
   }
+
+  doSearch = debounce(() => {
+    console.log(this.state.searchTerm)
+    this.props.fetchHelpTopicsIfNeeded(this.state.searchTerm, 'gnomad_help')
+  }, 300)
+
+  handleSearch = (event) => { this.setState({ searchTerm: event.target.value }, () => {
+    this.doSearch()
+  })}
+
   render() {
-      console.log(this.props)
+    console.log(this.props)
     return (
       <div>
-        <div>query: {this.props.helpQuery}</div>
+        <input
+          type="search"
+          placeholder="Search help topics"
+          value={this.state.searchTerm}
+          onChange={this.handleSearch}
+        />
         <ul>
           {this.props.topResultsList.map(result => (
             <li key={result.topic}>
-              {result.topic}: {result.description}: {result.score}
+              Relevance score: {Math.floor((result.score * 100))}
               <div dangerouslySetInnerHTML={{ __html: result.htmlString }} />
+              <hr/>
             </li>
           ))}
         </ul>
@@ -29,7 +49,6 @@ class Help extends Component {
 
 export default connect(
   state => ({
-    helpQuery: helpQuery(state),
     topResultsList: topResultsList(state),
   }),
   dispatch => ({

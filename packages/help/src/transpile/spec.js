@@ -125,7 +125,7 @@ describe('batchLoadDocumentsToElastic.', () => {
       filterSettings: { onlyPublic: false },
       elasticSettings: {
         address: '23.236.50.46:9200',
-        dropPreviousIndex: false,
+        dropPreviousIndex: true,
         indexName: 'gnomad_help',
         typeName: 'entry',
       }

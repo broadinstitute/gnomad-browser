@@ -4182,6 +4182,12 @@ highlight-words-core@^1.0.2:
   dependencies:
     babel-runtime "^6.11.6"
 
+highlight-words-core@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/highlight-words-core/-/highlight-words-core-1.1.0.tgz#6ca35f256b1be72857963eafe97c255a2168c7ff"
+  dependencies:
+    babel-runtime "^6.11.6"
+
 highlight.js@^9.5.0, highlight.js@~9.12.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
@@ -5281,7 +5287,7 @@ lodash.create@3.1.1:
     lodash._basecreate "^3.0.0"
     lodash._isiterateecall "^3.0.0"
 
-lodash.debounce@^4.0.0:
+lodash.debounce@^4.0.0, lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
@@ -7302,6 +7308,13 @@ react-dom@^15.6.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
+
+react-highlight-words@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.10.0.tgz#2e905c76c11635237f848ecad00600f1b6f6f4a8"
+  dependencies:
+    highlight-words-core "^1.1.0"
+    prop-types "^15.5.8"
 
 react-highlight-words@^0.8.0:
   version "0.8.1"

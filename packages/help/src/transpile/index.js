@@ -169,7 +169,7 @@ export const compile = (config: {
           .filter(doc => filterDocuments(doc, filterSettings))
           .map(writeHtml)
       })
-      .then((promiseArray) => Promise.all(promiseArray))
+      .then(promiseArray => Promise.all(promiseArray))
       .then(resolve)
       .catch((error) => {
         console.log(error)

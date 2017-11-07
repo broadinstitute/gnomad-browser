@@ -1,7 +1,7 @@
 ---
 index: gnomad_help
 vcfkey: null
-topic: 'Random forest classifier'
+topic: 'Relatedness filtering'
 ---
 
 # Relatedness filtering

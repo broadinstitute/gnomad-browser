@@ -39,5 +39,9 @@
     "remark-toc": "^3.1.0",
     "remark-yaml-meta": "^0.1.0",
     "tape-promise": "^2.0.1"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "react-highlight-words": "^0.10.0"
   }
 }
