@@ -10,3 +10,7 @@ export {
 export {
   default as Help,
 } from './Help'
+
+export {
+  default as HelpButton
+} from './HelpButton'

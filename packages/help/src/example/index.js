@@ -3,12 +3,16 @@ import { Provider } from 'react-redux'
 
 import { createHelpStore } from './store'
 import Help from '../Help'
+import HelpButton from '../HelpButton'
 
 const store = createHelpStore()
 
 const ExampleApp = () => (
   <Provider store={store}>
-    <Help />
+    <div>
+      <Help />
+      <HelpButton />
+    </div>
   </Provider>
 )
 
