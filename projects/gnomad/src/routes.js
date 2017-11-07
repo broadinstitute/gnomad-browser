@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
+import { Help } from '@broad/help'
 
 import GenePage from './GenePage'
 import RegionPage from './RegionPage'
@@ -8,12 +9,27 @@ import TopBar from './TopBar'
 
 const Root = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-family: Roboto, sans-serif;
   font-size: 12px;
   height: 100%;
   width: 100%;
   background-color: #FAFAFA;;
+`
+
+const HelpSection = styled.div`
+  position: absolute;
+  width: 30%;
+  height: 80%;
+  top: 80px;
+  right: 100px;
+  z-index: 10;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #000;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 `
 
 const MainPanel = styled.div`
@@ -22,7 +38,7 @@ const MainPanel = styled.div`
 const App = () => (
   <Root>
     <MainPanel>
-      {/* <TopBar /> */}
+      <TopBar />
       {/* <Route exact path="/" component={GenePage} /> */}
       <Switch>
         {/* <Route path="/gene/:gene/:variantId" component={GenePage} /> */}
@@ -32,6 +48,9 @@ const App = () => (
       {/* <Route path="/variant/:variant" component={GenePage} /> */}
       {/* <Route path="/rsid/:rsid" component={GenePage} /> */}
     </MainPanel>
+    <HelpSection>
+      <Help />
+    </HelpSection>
   </Root>
 )
 

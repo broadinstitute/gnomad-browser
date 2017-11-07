@@ -26,6 +26,8 @@ import createVariantReducer, {
   allVariantsInCurrentDataset,
 } from '../resources/variants'
 
+import { help } from '@broad/help'
+
 import createActiveReducer from '../resources/active'
 
 const logger = createLogger()
@@ -49,6 +51,7 @@ export default function createGenePageStore(appSettings, appReducers) {
     search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
+    help,
     ...appReducers,
   })
 

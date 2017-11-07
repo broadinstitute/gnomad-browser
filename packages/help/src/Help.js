@@ -5,6 +5,31 @@ import debounce from 'lodash.debounce'
 import Highlighter from 'react-highlight-words'
 import { actions as helpActions, topResultsList } from './redux'
 
+const HelpContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  ${'' /* height: 100px; */}
+  align-items: center;
+`
+
+const Input = styled.input`
+  width: 50%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+`
+
+const Content = styled.div`
+  font-size: 14px;
+  >p {
+    margin-bottom: 15px;
+  }
+  >iframe {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+`
+
 class Help extends Component {
   static propTypes = {}
 
@@ -15,7 +40,6 @@ class Help extends Component {
   }
 
   doSearch = debounce(() => {
-    console.log(this.state.searchTerm)
     this.props.fetchHelpTopicsIfNeeded(this.state.searchTerm, 'gnomad_help')
   }, 300)
 
@@ -25,24 +49,26 @@ class Help extends Component {
 
   render() {
     console.log(this.props)
+    const doc = this.props.topResultsList.first() || { htmlString: '' }
     return (
-      <div>
-        <input
+      <HelpContainer>
+        <Input
           type="search"
           placeholder="Search help topics"
           value={this.state.searchTerm}
           onChange={this.handleSearch}
         />
-        <ul>
+        {/* <ul>
           {this.props.topResultsList.map(result => (
             <li key={result.topic}>
-              Relevance score: {Math.floor((result.score * 100))}
-              <div dangerouslySetInnerHTML={{ __html: result.htmlString }} />
-              <hr/>
+              {`${result.topic} ${Math.floor((result.score * 100))}`}
             </li>
           ))}
-        </ul>
-      </div>
+        </ul> */}
+        <Content
+          dangerouslySetInnerHTML={{ __html: doc.htmlString }}
+        />
+      </HelpContainer>
     )
   }
 }
