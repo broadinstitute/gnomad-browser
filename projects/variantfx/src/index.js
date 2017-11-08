@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
+import { AppContainer } from 'react-hot-loader'  // eslint-disable-line
 
 import Main from './Main'
 
@@ -10,7 +10,7 @@ render(
   <AppContainer>
     <Main />
   </AppContainer>,
-  mount,
+  mount
 )
 
 if (module.hot) {
@@ -20,7 +20,7 @@ if (module.hot) {
       <AppContainer>
         <NextApp />
       </AppContainer>,
-      mount,
+      mount
     )
   })
 }

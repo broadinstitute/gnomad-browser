@@ -1,9 +1,6 @@
+/* eslint-disable max-len */
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
-
 
 const HomePageWrapper = styled.section`
 display: flex;
@@ -41,66 +38,20 @@ font-size: 20px;
 font-family: Helvetica Neue;
 `
 
-const SearchContainer = styled.div`
-align-self: center;
-margin-bottom: 30px;
-`
-
-const Announcements = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-self: center;
-margin-top: 10px;
-width: 100%;
-`
-
-const AnnouncementsTitle = styled.h2`
-padding: 0;
-margin: 0;
-font-size: 20px;
-`
-
-const Announcement = styled.div`
-width: 100%;
-`
-
-const AnnouncementHeader = styled.h3`
-font-size: 16px;
-font-weight: bold;
-font-family: Helvetica Neue;
-align-self: center;
-`
-
-const AnnouncementParagraphText = ParagraphText.extend`
-font-size: 16px;
-`
-
 const JustifyParagraphText = ParagraphText.extend`
 line-height: 125%;
 `
 
-const Logos = styled.div`
-display: flex;
-margin-top: 20px;
-
-`
 const olStyle = {
-    fontSize: '18px',
+  fontSize: '18px',
 }
 
-const imageSettings = {
-  alignSelf: 'center',
-  width: '300px',
-  height: 'auto',
 
-}
-
-const HomePage = ({ setCurrentGene }) => {
+export default () => {
   return (
     <HomePageWrapper>
-    <TitleGroup>
-    <Title>Frequently Asked Questions</Title>
+      <TitleGroup>
+        <Title>Frequently Asked Questions</Title>
         <br />
         <br />
 
@@ -151,26 +102,17 @@ const HomePage = ({ setCurrentGene }) => {
         <JustifyParagraphText>To deploy VariantFX as is:</JustifyParagraphText>
 
         <ol style={olStyle}>
-        <li>Install and start <a href="https://docs.docker.com/engine/installation/" title="Docker">Docker</a></li>
-        <li>Clone the VariantFX repository from Github <code>git clone git@github.com:ImperialCardioGenetics/vfx.git</code></li>
-        <li>Change directory to VariantFX <code>cd vfx</code></li>
-        <li>Run command <code>docker-compose up</code></li>
-        <li>The API will be accessible at <a href="">http://localhost:4000/graphql</a></li>
-        <li>The front-end will be hosted at <a href="">http://localhost</a></li>
+          <li>Install and start <a href="https://docs.docker.com/engine/installation/" title="Docker">Docker</a></li>
+          <li>Clone the VariantFX repository from Github <code>git clone git@github.com:ImperialCardioGenetics/vfx.git</code></li>
+          <li>Change directory to VariantFX <code>cd vfx</code></li>
+          <li>Run command <code>docker-compose up</code></li>
+          <li>The API will be accessible at <a href="">http://localhost:4000/graphql</a></li>
+          <li>The front-end will be hosted at <a href="">http://localhost</a></li>
         </ol>
 
         <JustifyParagraphText>To host your own data, you will need to replace the seeded data, and modify the API &amp; front end to represent your own cohorts. </JustifyParagraphText>
 
-    </TitleGroup>
+      </TitleGroup>
     </HomePageWrapper>
   )
 }
-HomePage.propTypes = {
-  setCurrentGene: PropTypes.func.isRequired,
-}
-
-export default connect(null, (dispatch) => {
-  return {
-    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
-  }
-})(HomePage)

@@ -11,15 +11,7 @@ import { geneData } from '@broad/gene-page/src/resources/genes'
 
 import {
   variantCount,
-  allVariantsInCurrentDatasetAsList,
-  actions as variantActions,
 } from '@broad/gene-page/src/resources/variants'
-
-import {
-  currentGeneDiseaseData,
-} from '../redux'
-
-import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
 import {
   GeneInfoWrapper,
@@ -44,13 +36,15 @@ import {
   TableRow,
   TableHeader,
   TableCell,
-  TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
+
+import {
+  currentGeneDiseaseData,
+} from '../redux'
 
 import {
   DISEASES,
   COHORTS,
-  getGenePageCalculations,
 } from '../utilities'
 
 
@@ -73,7 +67,7 @@ const GeneAttributeKeysCustom = GeneAttributeKeys.extend`
 const TableRowTotal = TableRow.extend`
   font-weight: bold;
   border-bottom: 1px solid #000;
-  ${'' /* border-bottom: 2px solid #000; */}
+  ${''}
 `
 
 const translations = {
@@ -87,7 +81,6 @@ const translations = {
 
 const GeneInfo = ({
   gene,
-  variants,
   currentGeneDiseaseData,
   variantCount,
 }) => {
@@ -97,8 +90,6 @@ const GeneInfo = ({
     full_gene_name,
     omim_accession,
   } = gene.toJS()
-
-  const currentDisease = currentGeneDiseaseData.get('Disease')
 
   const COHORT_TABLE_COHORT_WIDTH = '130px'
   const COHORT_TABLE_COLUMN_WIDTH = '60px'
@@ -170,10 +161,14 @@ const GeneInfo = ({
               {['PTV', 'MIS', 'PAL'].map(category => (
                 <TableRow key={`burden-${category}`}>
                   <TableCell width={'100px'}>{translations[category]}</TableCell>
-                  {['OR', 'EF', 'CE'].map(calculation =>
-                    (<TableCell key={`burden-${category}-${calculation}`} width={'70px'}>
-                      {currentGeneDiseaseData.get(`${category}_${calculation}`).toPrecision(3)}
-                    </TableCell>))}
+                  {['OR', 'EF', 'CE'].map((calculation) => {
+                    const calculationValue = currentGeneDiseaseData.get(`${category}_${calculation}`)
+                    return calculationValue ?
+                      <TableCell key={`burden-${category}-${calculation}`} width={'70px'}>
+                        {calculationValue.toPrecision(3)}
+                      </TableCell>
+                      : <TableCell width={'70px'}>{'N/A'}</TableCell>
+                  })}
                 </TableRow>
               ))}
             </TableRows>
@@ -267,14 +262,13 @@ const GeneInfo = ({
 }
 GeneInfo.propTypes = {
   gene: PropTypes.object.isRequired,
-  variants: PropTypes.any.isRequired,
   currentGeneDiseaseData: PropTypes.any.isRequired,
+  variantCount: PropTypes.number.isRequired,
 }
 export default connect(
   state => ({
     gene: geneData(state),
     variantCount: variantCount(state),
-    variants: allVariantsInCurrentDatasetAsList(state),
     currentGeneDiseaseData: currentGeneDiseaseData(state),
 
   })

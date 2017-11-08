@@ -6,7 +6,6 @@ import test from 'tape'  // eslint-disable-line
 import data from '@resources/1505910855-variantfx-myh7.json'  // eslint-disable-line
 
 import {
-  processCardioVariant,
   getConsequenceBreakdown,
   sumCohorts,
   burdenCalculations,
@@ -35,10 +34,12 @@ test('Expected keys', (assert) => {
 })
 
 test('Get for a given disease', (assert) => {
-  const grouped = processCardioVariant(data.variants.filter(v => v.variant_id === '14-23902865-G-A')[0])
+  // const grouped = processCardioVariant(data.variants.filter(
+  //   v => v.variant_id === '14-23902865-G-A')[0]
+  // )
   // const grouped = processCardioVariants(data.variants)
   // console.log(JSON.stringify(grouped, null, '\t'))
-  const expected = {
+  const expected = {  // eslint-disable-line
     'variant_id': '14-23902865-G-A',
     'chrom': 'chr14',
     'ref': 'G',

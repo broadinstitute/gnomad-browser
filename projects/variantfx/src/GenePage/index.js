@@ -8,10 +8,8 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from './FetchHoc'
 import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
 
 import {
@@ -22,21 +20,18 @@ import {
 } from '@broad/gene-page/src/presentation/UserInterface'
 
 import {
-  currentGeneDiseaseData,
-} from '../redux'
-
-import GeneInfo from './GeneInfo'
-import GeneSettings from './GeneSettings'
-import RegionViewer from './RegionViewer'
-import VariantPage from './Variant'
-import tableConfig from './tableConfig'
-import fetchFunction from './fetch'
-
-import {
   GeneInfoWrapper,
   GeneNameWrapper,
   GeneSymbol,
 } from '@broad/gene-page/src/presentation/GeneInfoStyles'
+
+import FetchHoc from './FetchHoc'
+import GeneInfo from './GeneInfo'
+import GeneSettings from './GeneSettings'
+import RegionViewer from './RegionViewer'
+// import VariantPage from './Variant'
+import tableConfig from './tableConfig'
+import fetchFunction from './fetch'
 
 const VariantTable = withRouter(VariantTableConnected)
 
@@ -90,7 +85,7 @@ const Page = ({
                   tableConfig={tableConfig}
                   height={600}
                 />
-                <VariantPage />
+                {/* <VariantPage /> */}
               </div>
             )
           }}
@@ -101,7 +96,7 @@ const Page = ({
 }
 
 Page.propTypes = {
-  gene: PropTypes.object,
+  gene: PropTypes.object,  // eslint-disable-line
   isFetching: PropTypes.bool.isRequired,
   currentGeneDiseaseData: PropTypes.any.isRequired,
 }

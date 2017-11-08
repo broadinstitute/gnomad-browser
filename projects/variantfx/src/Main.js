@@ -13,7 +13,7 @@ const appSettings = {
   },
   logger: true,
   projectDefaults: {
-    startingGene: 'MYH7',
+    startingGene: '',
     startingVariant: '14-23902914-C-G',
     startingPadding: 75,
     startingVariantDataset: 'variants',

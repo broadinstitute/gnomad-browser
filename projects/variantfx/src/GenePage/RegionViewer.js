@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable no-shadow */
@@ -9,7 +10,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import R from 'ramda'
 
 import RegionViewer from '@broad/region'
 import VariantTrack from '@broad/track-variant'
@@ -79,13 +79,13 @@ const GeneRegion = ({
     fillColor: '#757575',
   }
 
-  const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
-  const missense = ['missense_variant']
+  // const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
+  // const missense = ['missense_variant']
 
-  const consequenceCategories = [
-    { annotation: 'lof', groups: lof, colour: '#757575' },
-    { annotation: 'missense', groups: missense, colour: '#757575' },
-  ]
+  // const consequenceCategories = [
+  //   { annotation: 'lof', groups: lof, colour: '#757575' },
+  //   { annotation: 'missense', groups: missense, colour: '#757575' },
+  // ]
 
   // const factor = 50
 

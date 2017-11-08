@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import GENE_DISEASES from '@resources/171030-gene-disease-data.json'
+import GENE_DISEASES from '@resources/171030-gene-disease-data.json'  // eslint-disable-line
 
 import { currentGene } from '@broad/gene-page/src/resources/active'
 

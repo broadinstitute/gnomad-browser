@@ -22,7 +22,6 @@ import {
   processCardioVariant,
   POPULATIONS,
   COHORTS,
-  DISEASES,
 } from '../utilities'
 
 const VariantContainer = styled.div`
@@ -33,10 +32,6 @@ const VariantContainer = styled.div`
 `
 
 const VariantTitle = styled.h1`
-
-`
-
-const AnnotationsWrapper = styled.div`
 
 `
 
@@ -140,8 +135,8 @@ const Variant = ({ variant, currentDisease }) => {
             <TableTitleColumn><strong>HVO (Healthy)</strong></TableTitleColumn>
             {Object.keys(POPULATIONS).map((pop) => {
               const popCounts = processedVariant
-                .diseases['HVO']
-                .cohorts['RBH']
+                .diseases.HVO
+                .cohorts.RBH
                 .populations[pop]
               if (Object.keys(popCounts).length !== 0) {
                 if (popCounts.pop_freq !== undefined) {
@@ -188,7 +183,7 @@ const Variant = ({ variant, currentDisease }) => {
   )
 }
 Variant.propTypes = {
-  variant: PropTypes.object,
+  variant: PropTypes.object.isRequired,
   currentDisease: PropTypes.string.isRequired,
 }
 

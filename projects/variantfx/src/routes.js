@@ -26,15 +26,15 @@ height: 100%;
 
 const App = () => (
   <Root>
-  <MainPanel>
-  <TopBar />
-  <Route path="/" exact component={HomePage} />
-  <Route exact path="/gene/:gene" component={GenePage} />
-  <Route path="/about" component={AboutPage} />
-  <Route path="/terms" component={TermPage} />
-  <Route path="/contact" component={ContactPage} />
-  <Route path="/faq" component={FaqPage} />
-  </MainPanel>
+    <MainPanel>
+      <TopBar />
+      <Route path="/" exact component={HomePage} />
+      <Route exact path="/gene/:gene" component={GenePage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/terms" component={TermPage} />
+      <Route path="/contact" component={ContactPage} />
+      <Route path="/faq" component={FaqPage} />
+    </MainPanel>
   </Root>
 )
 

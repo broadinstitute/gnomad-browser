@@ -20,6 +20,8 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     resetSearchVariants: PropTypes.func.isRequired,
     currentDisease: PropTypes.string.isRequired,
     currentGeneDiseaseData: PropTypes.any.isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -32,7 +34,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchGeneIfNeeded, currentDisease, currentGene, history } = this.props
+    const { fetchGeneIfNeeded, currentDisease, currentGene, history } = this.props  // eslint-disable-line
     if (currentGene !== nextProps.currentGene) {
       // if(this.props.route.path == nextProps.route.path) return false
       history.push(`/gene/${nextProps.currentGene}`)
