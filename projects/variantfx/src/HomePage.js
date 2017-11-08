@@ -23,7 +23,7 @@ const TitleGroup = styled.div`
 
 const Title = styled.h1`
   font-family: "HelveticaNeue-CondensedBold";
-  font-size: 60px;
+  font-size: 50px;
   font-weight: bold;
   margin-bottom: 5px;
   padding-bottom: 0;
@@ -75,6 +75,10 @@ const AnnouncementParagraphText = ParagraphText.extend`
   font-size: 16px;
 `
 
+const JustifyParagraphText = ParagraphText.extend`
+line-height: 125%;
+`
+
 const Logos = styled.div`
   display: flex;
   margin-top: 20px;
@@ -91,42 +95,24 @@ const imageSettings = {
 const HomePage = ({ setCurrentGene }) => {
   return (
     <HomePageWrapper>
-      <TitleGroup>
-        <Title>VariantFX</Title>
-        <Subtitle>Cardiovascular disease genetics</Subtitle>
-        <ParagraphText>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Et corrupti dolore qui debitis voluptatem consectetur doloribus repellendus
-          soluta atque consequuntur molestias dolor porro, rem, pariatur minus
-          eligendi vero dolorum recusandae incidunt sint laborum. Delectus ipsa
-          amet, nobis.</ParagraphText>
-        <Announcements>
-          <AnnouncementsTitle>Announcements</AnnouncementsTitle>
-          <Announcement>
-            <AnnouncementHeader>
-              <em>October 17, 2017</em>. Tempora,
-              possimus, iusto. Rem explicabo, consequuntur cumque id itaque deserunt,
-               harum provident?
-            </AnnouncementHeader>
-            <AnnouncementParagraphText>
-              Et corrupti dolore qui debitis voluptatem consectetur doloribus repellendus
-              soluta atque consequuntur molestias dolor porro, rem, pariatur minus
-              eligendi vero dolorum recusandae incidunt sint laborum. Delectus ipsa
-              amet, nobis.
-            </AnnouncementParagraphText>
-          </Announcement>
-          <Announcement>
-            <AnnouncementHeader>
-              <em>September 19, 2017</em>: Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Nihil, similique.
-            </AnnouncementHeader>
-            <AnnouncementParagraphText>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora,
-              possimus, iusto. Rem explicabo, consequuntur cumque id itaque deserunt,
-               harum provident?
-            </AnnouncementParagraphText>
-          </Announcement>
-        </Announcements>
-      </TitleGroup>
+    <TitleGroup>
+    <Title>VariantFX</Title>
+    <JustifyParagraphText>
+
+    The Cardiac VariantFX browser offers access to aggregated and harmonized genetic data from large series of individuals with inherited cardiovascular conditions together with population controls to improve our interpretation of individual rare variants.
+
+    </JustifyParagraphText>
+
+
+    <JustifyParagraphText>
+    The first release data provided on this website represents N subjects with inherited cardiomyopathies and N reference samples from targeted sequencing and the genome aggregation database (<a href="http://gnomad.broadinstitute.org">gnomAD</a>).
+    </JustifyParagraphText>
+
+    <JustifyParagraphText>
+    Further information about the data, the web site, and those who have contributed is available <a href="http://variantfx.org:81/about">here</a>.
+    Aggregated data are released ahead of publication under a Fort Lauderdale Agreement <a href="http://www.sanger.ac.uk/legal/assets/fortlauderdalereport.pdf">http://www.sanger.ac.uk/legal/assets/fortlauderdalereport.pdf</a> for the benefit of the wider biomedical community - see the terms of use <a href="http://variantfx.org:81/terms">here</a>.
+    </JustifyParagraphText>
+    </TitleGroup>
     </HomePageWrapper>
   )
 }
