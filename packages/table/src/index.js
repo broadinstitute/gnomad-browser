@@ -16,6 +16,7 @@ const abstractCellStyle = {
   paddingBottom: 3,
   overflow: 'hidden',
   whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
   // border: '1px solid blue',
 }
 
@@ -45,6 +46,9 @@ const specialCellStyles = {
     ...normalCellStyles.string,
   },
   alleleFrequency: {
+    ...normalCellStyles.float,
+  },
+  flags: {
     ...normalCellStyles.float,
   },
 }
@@ -92,6 +96,38 @@ const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
     </span>
   )
 })
+
+const flagConfig = {
+  lcr: { color: 'gray', abbreviation: 'LCR', border: '1px solid #000' },
+  segdup: { color: 'gray', abbreviation: 'SEGDUP', border: '1px solid #000' },
+  lof: { color: '#d9534f', abbreviation: 'LC LoF', border: '1px solid #000' },
+
+}
+
+const formatFlags = (dataRow, index) => {
+  return ['lcr', 'segdup', 'lof']
+    .filter((flag) => {
+      return dataRow.get(flag) === true || dataRow.get(flag) === 'LC'
+    })
+    .map((flag) => {
+      return (
+        <span
+          key={`${flag}${index}`}
+          style={{
+            border: flagConfig[flag].border,
+            borderRadius: 3,
+            color: 'white',
+            marginLeft: 10,
+            padding: '1px 4px 1px 4px',
+            backgroundColor: flagConfig[flag].color,
+          }}
+        >
+          {flagConfig[flag].abbreviation}
+        </span>
+      )
+    })
+}
+
 const formatFitler = (filters, index) => filters.map(filter => (
   <span
     key={`${filter}${index}`}
@@ -290,7 +326,7 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatDatasets(dataRow)}
+          {formatDatasets(dataRow, i)}
         </div>
       )
     case 'lof':
@@ -300,6 +336,15 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatLoF(dataRow)}
+        </div>
+      )
+    case 'flags':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatFlags(dataRow, i)}
         </div>
       )
     case 'alleleFrequency':

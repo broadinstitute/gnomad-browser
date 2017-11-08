@@ -32,6 +32,8 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
         hom_count
         consequence
         lof
+        lcr
+        segdup
       }
       gnomadGenomeVariants(category: "${variantFilter}") {
         variant_id
@@ -47,6 +49,8 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
         hom_count
         consequence
         lof
+        lcr
+        segdup
       }
       exacVariants {
         variant_id

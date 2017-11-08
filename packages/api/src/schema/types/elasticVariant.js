@@ -8,7 +8,7 @@ import {
   GraphQLFloat,
   GraphQLString,
   GraphQLList,
-  // GraphQLBoolean,
+  GraphQLBoolean,
 } from 'graphql'
 
 import populationType from './populations'
@@ -49,6 +49,8 @@ const elasticVariantType = new GraphQLObjectType({
     allele_count: { type: GraphQLInt },
     allele_freq: { type: GraphQLFloat },
     allele_num: { type: GraphQLInt },
+    lcr: { type: GraphQLBoolean },
+    segdup: { type: GraphQLBoolean },
     filters: { type: new GraphQLList(GraphQLString) },
     // filters: { type: GraphQLString },
     hom_count: { type: GraphQLInt },
@@ -78,6 +80,8 @@ export const lookupElasticVariantsByGeneId = ({
     'rsid',
     'variantId',
     'lof',
+    `${dataset}_lcr`,
+    `${dataset}_segdup`,
     `${dataset}_filters`,
     `${dataset}_AC`,
     `${dataset}_AF`,
@@ -156,6 +160,7 @@ export const lookupElasticVariantsByGeneId = ({
           reject(error)
         }
         if (reply) {
+          console.log('retrieving from cache')
           return resolve(JSON.parse(reply))
         }
         const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
@@ -195,6 +200,7 @@ export const lookupElasticVariantsByGeneId = ({
         }).then((response) => {
           const variants = response.hits.hits.map((v) => {
             const elastic_variant = v._source
+            console.log(elastic_variant[`${dataset}_lcr`])
             return ({
               hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
               hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
@@ -210,6 +216,8 @@ export const lookupElasticVariantsByGeneId = ({
               allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
               allele_num: elastic_variant[`${dataset}_AN`],
               hom_count: elastic_variant[`${dataset}_Hom`],
+              lcr: elastic_variant[`${dataset}_lcr`],
+              segdup: elastic_variant[`${dataset}_segdup`],
               pop_acs: {
                 european_non_finnish: elastic_variant[`${dataset}_AC_NFE`],
                 east_asian: elastic_variant[`${dataset}_AC_EAS`],
@@ -268,6 +276,8 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
     'variantId',
     'variantId',
     'lof',
+    `${dataset}_lcr`,
+    `${dataset}_segdup`,
     `${dataset}_AC`,
     `${dataset}_AF`,
     `${dataset}_AN`,
@@ -316,6 +326,8 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],
           hom_count: elastic_variant[`${dataset}_Hom`],
+          lcr: elastic_variant[`${dataset}_lcr`],
+          segdup: elastic_variant[`${dataset}_segdup`],
         })
       }))
     })
@@ -341,6 +353,8 @@ export const lookupElasticVariantsInRegion = ({
     'rsid',
     'variantId',
     'lof',
+    `${dataset}_lcr`,
+    `${dataset}_segdup`,
     `${dataset}_filters`,
     `${dataset}_AC`,
     `${dataset}_AF`,
@@ -407,6 +421,8 @@ export const lookupElasticVariantsInRegion = ({
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],
           hom_count: elastic_variant[`${dataset}_Hom`],
+          lcr: elastic_variant[`${dataset}_lcr`],
+          segdup: elastic_variant[`${dataset}_segdup`],
         })
       }))
     })

@@ -40,6 +40,8 @@ const appSettings = {
       hom_count: null,
       consequence: null,
       lof: null,
+      lcr: null,
+      segdup: null,
       datasets: [],
     },
     gnomadGenomeVariants: {
@@ -57,6 +59,8 @@ const appSettings = {
       hom_count: null,
       consequence: null,
       lof: null,
+      lcr: null,
+      segdup: null,
       datasets: [],
     },
     exacVariants: {
@@ -74,6 +78,8 @@ const appSettings = {
       hom_count: null,
       consequence: null,
       lof: null,
+      lcr: null,
+      segdup: null,
       datasets: [],
     },
   },
