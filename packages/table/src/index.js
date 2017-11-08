@@ -63,23 +63,30 @@ const datasetConfig = {
   gnomadExomeVariantsFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E', border: '1px dashed #000' },
   gnomadGenomeVariants: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G', border: '1px solid #000' },
   gnomadGenomeVariantsFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G', border: '1px dashed #000' },
-  exacVariants: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'V1', border: '1px solid #000' },
-  exacVariantsFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'V1', border: '1px dashed #000' },
+  exacVariants: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'ExAC', border: '1px solid #000' },
+  exacVariantsFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'ExAC', border: '1px dashed #000' },
 }
+
+const datasetTranslation = {
+  gnomadExomeVariants: 'exomes_',
+  gnomadGenomeVariants: 'genomes_',
+}
+
 const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
-  // eslint-disable-next-line
   const { filters } = dataRow
   let border
   let backgroundColor
-
-  if (filters.size !== 0) {
+  if (
+    filters.includes(`${datasetTranslation[dataset]}RF`) ||
+    filters.includes(`${datasetTranslation[dataset]}AC0`) ||
+    (dataset === 'exacVariants' && filters.size > 0)
+  ) {
     border = datasetConfig[`${dataset}Filtered`].border
     backgroundColor = datasetConfig[`${dataset}Filtered`].color
   } else {
     border = datasetConfig[dataset].border
     backgroundColor = datasetConfig[dataset].color
   }
-  // eslint-disable-next-line
   return (
     <span
       key={`${dataset}${index}`}
@@ -202,7 +209,6 @@ const consequencePresentation = {
   stop_gained: { name: 'stop gained', color: lof },
   stop_lost: { name: 'stop lost', color: lof },
   start_lost: { name: 'stop lost', color: lof },
-  inframe_deletion: { name: 'inframe deletion', color: lof },
 }
 
 const getConsequenceColor = (consequence) => {

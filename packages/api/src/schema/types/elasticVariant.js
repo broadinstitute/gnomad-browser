@@ -200,7 +200,6 @@ export const lookupElasticVariantsByGeneId = ({
         }).then((response) => {
           const variants = response.hits.hits.map((v) => {
             const elastic_variant = v._source
-            console.log(elastic_variant[`${dataset}_lcr`])
             return ({
               hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
               hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
@@ -211,7 +210,7 @@ export const lookupElasticVariantsByGeneId = ({
               variant_id: elastic_variant.variantId,
               id: elastic_variant.variantId,
               lof: elastic_variant.lof,
-              filters: elastic_variant[`${dataset}_filters`],
+              filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
               allele_count: elastic_variant[`${dataset}_AC`],
               allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
               allele_num: elastic_variant[`${dataset}_AN`],
@@ -321,7 +320,7 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: 'PASS',
+          filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
           allele_count: elastic_variant[`${dataset}_AC`],
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],
@@ -416,7 +415,7 @@ export const lookupElasticVariantsInRegion = ({
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: elastic_variant[`${dataset}_filters`],
+          filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
           allele_count: elastic_variant[`${dataset}_AC`],
           allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
           allele_num: elastic_variant[`${dataset}_AN`],
