@@ -19,6 +19,7 @@ const HelpFloatingSection = styled.div`
   width: 30%;
   ${'' /* height: 80%; */}
   min-height: 30%;
+  max-height: 80%;
   bottom: 80px;
   right: 80px;
   z-index: 10;
@@ -63,8 +64,14 @@ const Input = styled.input`
 
 const Content = styled.div`
   font-size: 14px;
+  overflow-y: scroll;
   >p {
+    line-height: 150%;
     margin-bottom: 15px;
+    >a {
+      text-decoration: none;
+      color: #428bca;
+    }
   }
   >iframe {
     margin-top: 15px;
@@ -161,7 +168,6 @@ class Help extends Component {
                     >
                       {`${i + 1}. ${result.topic}`}
                     </a>
-                    {/* {`${result.topic} ${Math.floor((result.score * 100))}`} */}
                   </SearchResult>
                 ))}
               </SearchResultsWrapper>}

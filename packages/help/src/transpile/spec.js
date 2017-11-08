@@ -142,3 +142,29 @@ describe('batchLoadDocumentsToElastic.', () => {
       })
   })
 })
+
+describe.only('load gnomad.', () => {
+  it('given a configuration file, compiles md to html and load elasticsearch', (done) => {
+    const config = {
+      mdReadDirectory: '/Users/msolomon/gnomadjs/projects/gnomad/gnomad-docs/docs',
+      htmlWriteDirectory: '/tmp',
+      filterSettings: { onlyPublic: false },
+      elasticSettings: {
+        address: '23.236.50.46:9200',
+        dropPreviousIndex: true,
+        indexName: 'gnomad_help',
+        typeName: 'entry',
+      }
+    }
+    batchLoadDocumentsToElastic(config)
+      .then((results) => {
+        expect(
+          Object.keys(results[0])
+        ).toEqual(['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString'])
+        done()
+      }).catch((error) => {
+        console.log(error)
+        done()
+      })
+  })
+})

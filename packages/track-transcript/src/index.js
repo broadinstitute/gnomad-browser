@@ -201,9 +201,8 @@ const TranscriptRightPanel = ({
             </GtexTissueSelect>
           </GtexTitleWrapper>
           <GtexPlotWrapper>
-            {fanOutButtonOpen && <GtexPlotAxis />}
+            <GtexPlotAxis />
           </GtexPlotWrapper>
-          <GtexPlotAxis />
         </TranscriptName>
       </TranscriptRightPanelWrapper>
     )
@@ -212,7 +211,7 @@ const TranscriptRightPanel = ({
   return (
     <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
       <TranscriptName>
-        {fanOutButtonOpen && <GtexPlot />}
+        <GtexPlot />
       </TranscriptName>
     </TranscriptRightPanelWrapper>
   )
@@ -342,7 +341,7 @@ const Transcript = ({
           isMaster={isMaster}
         />
       </div>
-      {showRightPanel &&
+      {showRightPanel && fanOutButtonOpen &&
         <TranscriptRightPanel
           rightPanelWidth={rightPanelWidth}
           title={title}
@@ -499,6 +498,7 @@ class TranscriptTrack extends Component {
         <Transcript
           isMaster
           fanOut={this.props.transcriptButtonOnClick}
+          fanOutButtonOpen={this.props.transcriptFanOut}
           regions={this.props.offsetRegions}
           {...this.props}
         />

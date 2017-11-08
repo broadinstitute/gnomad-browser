@@ -98,7 +98,7 @@ export default function createGeneReducer({ variantDatasets }) {
     allGeneNames: Immutable.Set(),
     currentTissue: null,
     currentTranscript: null,
-    transcriptFanOut: true,
+    transcriptFanOut: false,
     currentExon: null,
     currentConstrainedRegion: null,
   })

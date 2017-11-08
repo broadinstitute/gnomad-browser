@@ -29,10 +29,15 @@ const HelpButtonIcon = styled.span`
   font-size: 30px;
 `
 
+const HelpImage = styled.img`
+  max-width: 20px;
+`
+
 const HelpButton = ({ toggleHelpWindow }) => {
   return (
     <HelpButtonFloatingContainer onClick={toggleHelpWindow}>
       <HelpButtonIcon>
+        {/* <HelpImage  src="https://storage.googleapis.com/gnomad-browser/assets/gnome-helper.png" /> */}
         ?
       </HelpButtonIcon>
     </HelpButtonFloatingContainer>

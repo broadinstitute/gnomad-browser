@@ -35,24 +35,22 @@ export function fetchDefaultTopics (topics, index) {
     client.search({
       index,
       type: 'entry',
-      // body: {
-      //   query: {
-      //     match: {
-      //       topic: 'Ancestry'
-      //     }
-      //   },
-      // }
       body: {
         query: {
-          bool: {
-            must: {
-              bool: {
-                should: topics.map(topic => ({ match: { topic } })),
-              }
-            }
-          },
+          match_all: {}
         },
       }
+      // body: {
+      //   query: {
+      //     bool: {
+      //       must: {
+      //         bool: {
+      //           should: topics.map(topic => ({ match: { topic } })),
+      //         }
+      //       }
+      //     },
+      //   },
+      // }
     }).then((response) => {
       console.log(response)
       resolve(fromJS(response.hits))

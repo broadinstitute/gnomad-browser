@@ -77,13 +77,13 @@ const actionHandlers = {
 const State = Record({
   helpQuery: '',
   activeTopic: null,
-  helpWindowOpen: true,
+  helpWindowOpen: false,
   results: OrderedMap(),
   isFetching: false,
   defaultTopics: [
-    'Ancestry',
-    'Random forest classifier',
-    'Relatedness filtering',
+    'About gnomAD',
+    'What are the restrictions on data usage?',
+    'How should I cite discoveries made using gnomAD data?',
   ]
 })
 
