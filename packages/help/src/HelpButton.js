@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { actions as helpActions } from './redux'
+import { actions as helpActions, helpWindowOpen } from './redux'
 
 export const HelpButtonFloatingContainer = styled.div`
   display: flex;
@@ -14,11 +14,12 @@ export const HelpButtonFloatingContainer = styled.div`
   bottom: 20px;
   right: 20px;
   z-index: 10;
-  background-color: #F5F5F5;
+  background-color: ${({ isActive }) => isActive ? 'rgba(10, 121, 191, 0.1)' : '#F5F5F5'};
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
   cursor: pointer;
-  color: lightgrey;
+  color: ${({ isActive }) => isActive ? 'rgb(40, 94, 142)' : 'lightgrey'};
+  user-select: none;
   &:hover {
     background-color: rgba(10, 121, 191, 0.1);
     color: rgb(40, 94, 142);
@@ -33,15 +34,22 @@ const HelpImage = styled.img`
   max-width: 20px;
 `
 
-const HelpButton = ({ toggleHelpWindow }) => {
+const HelpButton = ({ toggleHelpWindow, helpWindowOpen }) => {
   return (
-    <HelpButtonFloatingContainer onClick={toggleHelpWindow}>
+    <HelpButtonFloatingContainer isActive={helpWindowOpen} onClick={toggleHelpWindow}>
       <HelpButtonIcon>
         {/* <HelpImage  src="https://storage.googleapis.com/gnomad-browser/assets/gnome-helper.png" /> */}
-        ?
+        {helpWindowOpen ?
+          <i className="fa fa-times" aria-hidden="true" /> :
+          <i className="fa fa-question" aria-hidden="true" /> }
       </HelpButtonIcon>
     </HelpButtonFloatingContainer>
   )
 }
 
-export default connect(null, helpActions)(HelpButton)
+export default connect(
+  state => ({
+    helpWindowOpen: helpWindowOpen(state),
+  }),
+  helpActions
+)(HelpButton)

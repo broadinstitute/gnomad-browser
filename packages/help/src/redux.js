@@ -6,7 +6,8 @@ import { searchHelpTopics, fetchDefaultTopics } from './example/fetch'
 
 const HelpEntry = Record({
   score: null,
-  topic: null,
+  title: null,
+  id: null,
   htmlString: null,
 })
 
@@ -19,7 +20,7 @@ export const types = keymirror({
 })
 
 export const actions = {
-  setActiveTopic: topic => ({ type: types.SET_ACTIVE_TOPIC, topic }),
+  setActiveTopic: topicId => ({ type: types.SET_ACTIVE_TOPIC, topicId }),
   toggleHelpWindow: () => ({ type: types.TOGGLE_HELP_WINDOW }),
   setHelpQuery: helpQuery => ({ type: types.SET_HELP_QUERY, helpQuery }),
   receiveHelpData: payload => ({ type: types.RECEIVE_HELP_DATA, payload }),
@@ -48,8 +49,8 @@ const actionHandlers = {
   [types.TOGGLE_HELP_WINDOW] (state) {
     return state.set('helpWindowOpen', !state.get('helpWindowOpen'))
   },
-  [types.SET_ACTIVE_TOPIC] (state, { topic }) {
-    return state.set('activeTopic', topic)
+  [types.SET_ACTIVE_TOPIC] (state, { topicId }) {
+    return state.set('activeTopic', topicId)
   },
   [types.SET_HELP_QUERY] (state, { helpQuery }) {
     return state.set('helpQuery', helpQuery)
@@ -61,9 +62,10 @@ const actionHandlers = {
     const hits = payload.get('hits')
     const results = OrderedMap(hits.map(hit =>
       [
-        hit.getIn(['_source', 'topic']),
+        hit.getIn(['_source', 'id']),
         new HelpEntry({
-          topic: hit.getIn(['_source', 'topic']),
+          id: hit.getIn(['_source', 'id']),
+          title: hit.getIn(['_source', 'title']),
           htmlString: hit.getIn(['_source', 'htmlString']),
           vcfkey: hit.getIn(['_source', 'vcfkey']),
           score: hit.get('_score'),
@@ -81,9 +83,9 @@ const State = Record({
   results: OrderedMap(),
   isFetching: false,
   defaultTopics: [
-    'About gnomAD',
-    'What are the restrictions on data usage?',
-    'How should I cite discoveries made using gnomAD data?',
+    'about-gnomad',
+    'data-usage',
+    'citing-gnomad',
   ]
 })
 

@@ -20,17 +20,19 @@
     "react": "^15.5.4",
     "styled-components": "^2.1.2"
   },
-  "devDependencies": {
+  "dependencies": {
     "elasticsearch": "^13.3.1",
     "expect": "^21.2.1",
     "filequeue": "^0.5.0",
     "glob": "^7.1.2",
     "immutable": "^3.8.2",
+    "lodash.debounce": "^4.0.8",
     "mocha": "^4.0.1",
     "moment": "^2.19.1",
     "node-uuid": "^1.4.8",
     "ramda": "^0.25.0",
-    "react-redux": "5.0.4",
+    "react-highlight-words": "^0.10.0",
+    "react-redux": "^5.0.6",
     "redux": "3.6.0",
     "redux-thunk": "^2.2.0",
     "remark": "^5.1.0",
@@ -39,9 +41,5 @@
     "remark-toc": "^3.1.0",
     "remark-yaml-meta": "^0.1.0",
     "tape-promise": "^2.0.1"
-  },
-  "dependencies": {
-    "lodash.debounce": "^4.0.8",
-    "react-highlight-words": "^0.10.0"
   }
 }

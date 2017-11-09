@@ -106,7 +106,7 @@ describe('prepareDocumentForElastic.', () => {
     md2html(config, filePath).then((result) => {
       const elasticDocument = prepareDocumentForElastic(result)
       expect(Object.keys(elasticDocument)).toEqual(
-        ['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString']
+        ['vcfkey', 'title', 'index', 'created', 'modified', 'htmlString']
       )
 
       done()
@@ -134,7 +134,7 @@ describe('batchLoadDocumentsToElastic.', () => {
       .then((results) => {
         expect(
           Object.keys(results[0])
-        ).toEqual(['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString'])
+        ).toEqual(['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString', 'id'])
         done()
       }).catch((error) => {
         console.log(error)
@@ -160,7 +160,7 @@ describe.only('load gnomad.', () => {
       .then((results) => {
         expect(
           Object.keys(results[0])
-        ).toEqual(['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString'])
+        ).toEqual(['vcfkey', 'title', 'index', 'created', 'modified', 'htmlString', 'id'])
         done()
       }).catch((error) => {
         console.log(error)

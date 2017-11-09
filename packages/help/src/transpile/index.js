@@ -180,6 +180,7 @@ export const compile = (config: {
 
 export const prepareDocumentForElastic = (document) => {
   const {
+    filename,
     metadata: {
       created,
       modified,
@@ -187,7 +188,7 @@ export const prepareDocumentForElastic = (document) => {
     frontmatter: {
       meta: {
         vcfkey,
-        topic,
+        title,
         index,
       }
     },
@@ -195,11 +196,12 @@ export const prepareDocumentForElastic = (document) => {
   } = document
   const elasticDocument = {
     vcfkey,
-    topic,
+    title,
     index,
     created,
     modified,
     htmlString,
+    id: filename,
   }
   return elasticDocument
 }

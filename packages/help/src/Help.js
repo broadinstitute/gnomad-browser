@@ -16,7 +16,7 @@ import {
 const HelpFloatingSection = styled.div`
   display: flex;
   position: fixed;
-  width: 30%;
+  width: 40%;
   ${'' /* height: 80%; */}
   min-height: 30%;
   max-height: 80%;
@@ -24,7 +24,7 @@ const HelpFloatingSection = styled.div`
   right: 80px;
   z-index: 10;
   padding-left: 30px;
-  padding-right: 30px;
+  padding-right: 5px;
   background-color: #FAFAFA;
   border-radius: 8px;
   border: 1px solid lightgray;
@@ -64,7 +64,9 @@ const Input = styled.input`
 
 const Content = styled.div`
   font-size: 14px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-right: 25px;
+
   >p {
     line-height: 150%;
     margin-bottom: 15px;
@@ -101,6 +103,7 @@ const FooterContainer = styled.div`all
   flex-direction: row;
   height: 50px;
   width: 100%;
+  margin-top: 10px;
   ${'' /* border: 1px solid #000; */}
 `
 
@@ -157,16 +160,16 @@ class Help extends Component {
                 dangerouslySetInnerHTML={{ __html: this.props.activeTopicData.htmlString }}
               /> :
               <SearchResultsWrapper>
-                {this.props.topResultsList.map((result, i) => (
-                  <SearchResult key={result.topic}>
+                {this.props.topResultsList.map((topic, i) => (
+                  <SearchResult key={topic.id}>
                     <a
                       href=""
                       onClick={(event) => {
                         event.preventDefault()
-                        this.props.setActiveTopic(result.topic)
+                        this.props.setActiveTopic(topic.id)
                       }}
                     >
-                      {`${i + 1}. ${result.topic}`}
+                      {`${i + 1}. ${topic.title}`}
                     </a>
                   </SearchResult>
                 ))}

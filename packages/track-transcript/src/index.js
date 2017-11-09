@@ -9,6 +9,7 @@ import { scaleLinear } from 'd3-scale'
 import R from 'ramda'
 
 import { tissueMappings } from '@broad/utilities/src/constants/gtex'
+import { QuestionMark } from '@broad/help'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
@@ -184,10 +185,11 @@ const TranscriptRightPanel = ({
             {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
             {/* <GtexTitleText>GTEx tissue-specific isoform expression (median TPM)</GtexTitleText> */}
             <GtexTitleText
-              href={`https://www.gtexportal.org/home/gene/${currentGene}`}
+              href={`http://www.gtexportal.org/home/gene/${currentGene}`}
               target="_blank"
               >
-              Tissue-specific isoform expression (TPM)
+              Tissue-specific isoform expression
+              <QuestionMark topic={'gtex'} display={'inline'} />
             </GtexTitleText>
             <GtexTissueSelect
               onChange={event => onTissueChange(event.target.value)}

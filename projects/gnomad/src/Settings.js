@@ -33,6 +33,8 @@ import {
 
 import { Search } from '@broad/ui/src/search/simpleSearch'
 
+import { QuestionMark } from '@broad/help'
+
 let findInput
 
 Mousetrap.bind(['command+f', 'meta+s'], (e) => {
@@ -122,6 +124,7 @@ const GeneSettings = ({
               <option value="gnomadCombinedVariants">gnomAD</option>
               <option value="exacVariants">ExAC</option>
             </select>
+            <QuestionMark topic={'dataset-selection'} display={'inline'} />
           </DataSelectionContainer>
         </DataSelectionGroup>
         <DataSelectionGroup>
@@ -136,6 +139,7 @@ const GeneSettings = ({
               <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">
                 Include filtered variants
               </label>
+              <QuestionMark topic={'variant-qc'} display={'inline'} />
             </div>
           </form>
           <SearchContainer>

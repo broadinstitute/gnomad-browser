@@ -7,13 +7,12 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { geneData, regionalConstraint} from '@broad/gene-page/src/resources/genes'
+
 import {
   variantCount,
   selectedVariantDataset,
   actions as variantActions,
 } from '@broad/gene-page/src/resources/variants'
-
-import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
 import {
   GeneInfoWrapper,
@@ -38,6 +37,9 @@ import {
   TableTitleColumn,
 } from '@broad/ui/src/tables/SimpleTable'
 
+import { QuestionMark } from '@broad/help'
+import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
+
 const ConstraintTabletop = styled.div`
   display: flex;
   flex-direction: row;
@@ -48,6 +50,8 @@ const ConstraintTabletop = styled.div`
 `
 
 const ConstraintSectionTitle = SectionTitle.extend`
+  display: flex;
+  flex-direction: row;
   width: 60%;
   ${'' /* border: 1px solid blue; */}
   margin: 0;
@@ -76,7 +80,10 @@ const ConstraintTable = ({
 }) => (
   <ItemWrapper>
     <ConstraintTabletop>
-      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <ConstraintSectionTitle>
+        Gene constraint
+        <QuestionMark topic={'gene-constraint'} />
+      </ConstraintSectionTitle>
       <DatasetSelectionWrapper>
         <DatasetSelection
           isActive={selectedVariantDataset === 'exacVariants'}
@@ -155,7 +162,10 @@ const ConstraintTablePlaceholder = ({
 }) => (
   <ItemWrapper>
     <ConstraintTabletop>
-      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <ConstraintSectionTitle>
+        Gene constraint
+        <QuestionMark topic={'gene-constraint'} />
+      </ConstraintSectionTitle>
       <DatasetSelectionWrapper>
         <DatasetSelection
           isActive={selectedVariantDataset === 'exacVariants'}
@@ -222,7 +232,10 @@ const ConstraintTableNone = ({
 }) => (
   <ItemWrapper>
     <ConstraintTabletop>
-      <ConstraintSectionTitle>Gene constraint</ConstraintSectionTitle>
+      <ConstraintSectionTitle>
+        Gene constraint
+        <QuestionMark topic={'gene-constraint'} />
+      </ConstraintSectionTitle>
       <DatasetSelectionWrapper>
         <DatasetSelection
           isActive={selectedVariantDataset === 'exacVariants'}
