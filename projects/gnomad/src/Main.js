@@ -7,6 +7,8 @@ import { actions as activeActions } from '@broad/gene-page/src/resources/active'
 
 import App from './routes'
 
+import toc from '../gnomad-docs/toc.json'
+
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
@@ -16,6 +18,10 @@ const appSettings = {
     return state.variants.searchIndexed
   },
   logger: true,
+  docs: {
+    toc: toc.toc,
+    index: 'gnomad_help',
+  },
   projectDefaults: {
     startingGene: '',
     startingVariant: '13-32900634-AG-A',

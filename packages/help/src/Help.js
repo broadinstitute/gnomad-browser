@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable template-curly-spacing */
 import React, { PropTypes, Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
-import Highlighter from 'react-highlight-words'
 
 import {
   actions as helpActions,
@@ -11,6 +12,8 @@ import {
   activeTopic,
   activeTopicData,
   helpQuery,
+  toc,
+  results,
 } from './redux'
 
 const HelpFloatingSection = styled.div`
@@ -46,20 +49,20 @@ const HelpContainer = styled.div`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: flex-start|flex-end|center|baseline|stretch;
-  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
   height: 50px;
-  margin-bottom: 20px;
 `
 
 const Input = styled.input`
-  width: 100%;
+  width: 90%;
   line-height: 50%;
-  height: 100%;
+  height: 40px;
   margin: 0;
   font-size: 14px;
   padding-left: 10px;
+  border: 1px solid lightgrey;
 `
 
 const Content = styled.div`
@@ -81,7 +84,7 @@ const Content = styled.div`
   }
 `
 
-const SearchResultsWrapper = styled.div`
+const TopicsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   ${'' /* border: 1px solid #000; */}
@@ -89,7 +92,7 @@ const SearchResultsWrapper = styled.div`
   height: 100%;
 `
 
-const SearchResult = styled.div`
+const HelpTopic = styled.div`
   margin-top: 10px;
   font-size: 16px;
   >a {
@@ -98,7 +101,7 @@ const SearchResult = styled.div`
   }
 `
 
-const FooterContainer = styled.div`all
+const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 50px;
@@ -107,16 +110,25 @@ const FooterContainer = styled.div`all
   ${'' /* border: 1px solid #000; */}
 `
 
-const BackButton = styled.button`
+const BottomButton = styled.button`
   border: 0;
   background-color: #F0F0F0 ;
   border-radius: 5px;
   width: 20%;
   height: 100%;
+  border: 1px solid lightgrey;
+  margin-right: 10px;
   &:hover {
     background-color: lightgrey;
     cursor: pointer;
   }
+`
+
+const Section = styled.div`
+  margin-bottom: 20px;
+`
+const SectionTitle = styled.h1`
+  font-size: 18px;
 `
 
 class Help extends Component {
@@ -131,8 +143,10 @@ class Help extends Component {
   doSearch = debounce(() => {
     if (this.state.searchTerm === '') {
       this.props.fetchDefaultHelpTopics(this.props.index)
+      this.props.setHelpQuery(this.state.searchTerm)
     } else {
       this.props.setActiveTopic(null)
+      this.props.setHelpQuery(this.state.searchTerm)
       this.props.fetchHelpTopicsIfNeeded(this.state.searchTerm, 'gnomad_help')
     }
   }, 300)
@@ -147,43 +161,83 @@ class Help extends Component {
       this.props.helpWindowOpen ?
         <HelpFloatingSection>
           <HelpContainer>
-            <InputContainer>
-              <Input
-                type="search"
-                placeholder="Search help topics"
-                value={this.state.searchTerm}
-                onChange={this.handleSearch}
-              />
-            </InputContainer>
-            {this.props.activeTopic ?
-              <Content
+            {this.props.activeTopic ?  // eslint-disable-line
+              (<Content
                 dangerouslySetInnerHTML={{ __html: this.props.activeTopicData.htmlString }}
-              /> :
-              <SearchResultsWrapper>
-                {this.props.topResultsList.map((topic, i) => (
-                  <SearchResult key={topic.id}>
-                    <a
-                      href=""
-                      onClick={(event) => {
-                        event.preventDefault()
-                        this.props.setActiveTopic(topic.id)
-                      }}
-                    >
-                      {`${i + 1}. ${topic.title}`}
-                    </a>
-                  </SearchResult>
-                ))}
-              </SearchResultsWrapper>}
+              />) :
+              this.props.helpQuery === '' ?
+                (
+                  <TopicsWrapper>
+                    {this.props.toc.sections.map((section) => {
+                      return (
+                        <Section key={`${section.id}`}>
+                          <SectionTitle>{section.title}</SectionTitle>
+                          {section.children.map((id) => {  // eslint-disable-line
+                            const topic = this.props.results.get(id)
+                            if (!topic) return  // eslint-disable-line
+                            return (  // eslint-disable-line
+                              <HelpTopic key={topic.id}>
+                                <a
+                                  href=""
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    this.props.setActiveTopic(topic.id)
+                                  }}
+                                >
+                                  {topic.title}
+                                </a>
+                              </HelpTopic>
+                            )
+                          })}
+                        </Section>
+                      )
+                    })}
+                  </TopicsWrapper>
+                ) :
+                (
+                  <TopicsWrapper>
+                    {this.props.topResultsList.map((topic, i) => (
+                      <HelpTopic key={topic.id}>
+                        <a
+                          href=""
+                          onClick={(event) => {
+                            event.preventDefault()
+                            this.props.setActiveTopic(topic.id)
+                          }}
+                        >
+                          {`${i + 1}. ${topic.title}`}
+                        </a>
+                      </HelpTopic>
+                    ))}
+                  </TopicsWrapper>
+                )}
             <FooterContainer>
+              <InputContainer>
+                <Input
+                  type="search"
+                  placeholder="Search help topics"
+                  value={this.state.searchTerm}
+                  onChange={this.handleSearch}
+                />
+              </InputContainer>
               {this.props.activeTopic &&
-                <BackButton
+                <BottomButton
                   onClick={(event) => {
                     event.preventDefault()
                     this.props.setActiveTopic(null)
                   }}
                 >
                   Back
-                </BackButton>}
+                </BottomButton>}
+
+              <BottomButton
+                onClick={(event) => {
+                  event.preventDefault()
+                  this.props.toggleHelpWindow()
+                }}
+              >
+                Close
+              </BottomButton>
             </FooterContainer>
           </HelpContainer>
         </HelpFloatingSection> : <div />
@@ -194,10 +248,12 @@ class Help extends Component {
 export default connect(
   state => ({
     topResultsList: topResultsList(state),
+    results: results(state),
     helpWindowOpen: helpWindowOpen(state),
     activeTopic: activeTopic(state),
     activeTopicData: activeTopicData(state),
     helpQuery: helpQuery(state),
+    toc: toc(state),
   }),
   helpActions
 )(Help)

@@ -19,6 +19,7 @@ import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
 import createGeneReducer from '../resources/genes'
 import createRegionReducer from '../resources/regions'
+import { createHelpReducer } from '@broad/help'
 
 import createVariantReducer, {
   visibleVariantsById,
@@ -26,7 +27,6 @@ import createVariantReducer, {
   allVariantsInCurrentDataset,
 } from '../resources/variants'
 
-import { help } from '@broad/help'
 
 import createActiveReducer from '../resources/active'
 
@@ -51,7 +51,7 @@ export default function createGenePageStore(appSettings, appReducers) {
     search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
-    help,
+    help: createHelpReducer(appSettings.docs),
     ...appReducers,
   })
 

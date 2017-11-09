@@ -14,6 +14,7 @@
   "peerDependencies": {
     "@broad/structure-viewer": "*",
     "@broad/utilities": "*",
+    "@broad/help": "*",
     "react": "^15.5.4",
     "react-redux": "^0.24.1",
     "redux": "^3.7.2",

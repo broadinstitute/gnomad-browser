@@ -76,31 +76,31 @@ const actionHandlers = {
   }
 }
 
-const State = Record({
-  helpQuery: '',
-  activeTopic: null,
-  helpWindowOpen: false,
-  results: OrderedMap(),
-  isFetching: false,
-  defaultTopics: [
-    'about-gnomad',
-    'data-usage',
-    'citing-gnomad',
-  ]
-})
+export function createHelpReducer({ toc, index }) {
+  const State = Record({
+    helpQuery: '',
+    activeTopic: null,
+    helpWindowOpen: false,
+    results: OrderedMap(),
+    isFetching: false,
+    toc,
+    index,
+  })
 
-export function help (state = new State(), action: Object): State {
-  const { type } = action
-  if (type in actionHandlers) {
-    return actionHandlers[type](state, action)
+  return function help (state = new State(), action: Object): State {
+    const { type } = action
+    if (type in actionHandlers) {
+      return actionHandlers[type](state, action)
+    }
+    return state
   }
-  return state
-}
 
+}
 export const helpWindowOpen = state => state.help.helpWindowOpen
 export const helpQuery = state => state.help.helpQuery
 export const results = state => state.help.results
 export const activeTopic = state => state.help.activeTopic
+export const toc = state => state.help.toc
 
 export const topResultsList = createSelector(
   [results], results => results.toList()

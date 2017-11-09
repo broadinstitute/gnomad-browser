@@ -1,5 +1,5 @@
 export {
-  help,
+  createHelpReducer,
   actions,
   types,
   helpQuery,
