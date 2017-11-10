@@ -87,7 +87,7 @@ const Content = styled.div`
 const TopicsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  ${'' /* border: 1px solid #000; */}
+  overflow-y: auto;
   width: 100%;
   height: 100%;
 `

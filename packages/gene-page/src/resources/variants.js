@@ -357,7 +357,12 @@ export const filteredVariantsById = createSelector([
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get(consequenceKey)))
   }
   if (variantQcFilter) {
-    filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
+    filteredVariants = filteredVariants.filter((v) => {
+      // if (v.filters.size > 0 && v.datasets.size > 0) {
+      //   
+      // }
+      return v.get('filters').size === 0
+    })
   }
   return filteredVariants
 })

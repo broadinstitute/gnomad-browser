@@ -34,6 +34,7 @@ export function fetchDefaultTopics (topics, index) {
   return new Promise((resolve, reject) => {
     client.search({
       index,
+      size: 1000,
       type: 'entry',
       body: {
         query: {
