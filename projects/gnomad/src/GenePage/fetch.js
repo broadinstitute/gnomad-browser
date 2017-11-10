@@ -7,8 +7,10 @@ const API_URL = process.env.GNOMAD_API_URL
 
 export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
   const { variantFilter } = options
+  const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
+    `gene_name: "${geneName}"`
   const query = `{
-    gene(gene_name: "${geneName}") {
+    gene(${argument}) {
       gene_id
       gene_name
       omim_accession
@@ -188,8 +190,10 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
   })
 }
 export const fetchExac = (geneName, url = PUBLIC_API) => {
+  const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
+    `gene_name: "${geneName}"`
   const query = `{
-    gene(gene_name: "${geneName}") {
+    gene(${argument}) {
       exacv1_constraint {
         mu_syn
         exp_syn

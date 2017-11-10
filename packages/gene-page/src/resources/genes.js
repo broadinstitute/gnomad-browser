@@ -40,7 +40,7 @@ export const actions = {
     geneData: Immutable.fromJS(geneData),
   }),
 
-  fetchPageDataByGeneName (geneName, geneFetchFunction) {
+  fetchPageDataByGene (geneName, geneFetchFunction) {
     return (dispatch, getState) => {
       const state = getState()
       const options = {
@@ -78,7 +78,7 @@ export const actions = {
     }
     return (dispatch, getState) => {  // eslint-disable-line
       if (actions.shouldFetchGene(getState(), currentGene)) {
-        return dispatch(actions.fetchPageDataByGeneName(currentGene, geneFetchFunction))
+        return dispatch(actions.fetchPageDataByGene(currentGene, geneFetchFunction))
       }
     }
   },
