@@ -98,6 +98,7 @@ const HelpTopic = styled.div`
   >a {
     text-decoration: none;
     color: #428bca;
+    font-weight: light;
   }
 `
 

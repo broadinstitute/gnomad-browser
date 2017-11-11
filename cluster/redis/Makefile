@@ -31,3 +31,17 @@ create-redis-containers:
 	@-kubectl create -f redis-sentinel-controller.yaml
 
 
+delete-redis-containers:
+		# Create a bootstrap master
+	@-kubectl delete -f redis-master.yaml
+
+	# Create a service to track the sentinels
+	@-kubectl delete -f redis-sentinel-service.yaml
+
+	# Create a replication controller for redis servers
+	@-kubectl delete -f redis-controller.yaml
+
+	# Create a replication controller for redis sentinels
+	@-kubectl delete -f redis-sentinel-controller.yaml
+
+

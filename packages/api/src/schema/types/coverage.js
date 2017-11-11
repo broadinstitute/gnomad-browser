@@ -51,7 +51,8 @@ export default coverageType
 export const lookupCoverageByStartStop = (db, collection, xstart, xstop) =>
   db.collection(collection).find({ xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }).toArray()
 
-export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom }) => {
+export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom, obj }) => {
+  const timeStart = new Date().getTime() // NOTE: timer
   const padding = 75
   const regionRangeQueries = intervals.map(({ start, stop }) => (
     { range: { pos: { gte: start - padding, lte: stop + padding } } }
@@ -86,14 +87,18 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
         sort: [{ pos: { order: 'asc' } }],
       },
     }).then((response) => {
-      resolve(response.hits.hits.map((position) => {
+      const coverage = response.hits.hits.map((position) => {
         const coverage_position = position._source
         return coverage_position
-        // return {
-          // xpos: getXpos(chrom, coverage_position.pos),
-          // ...coverage_position,
-        // }
-      }))
+      })
+      const end = new Date().getTime()
+      const time = end - timeStart
+      console.log(['coverage', index, obj.gene_name, 'exact', 'lookup', totalBasePairs, coverage.length, time].join(','))
+      resolve(coverage)
+      // return {
+        // xpos: getXpos(chrom, coverage_position.pos),
+        // ...coverage_position,
+      // }
     })
   })
 }
@@ -169,33 +174,6 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
   })
 }
 
-// function getCoverageIntervals(buckets, intervals) {
-//   const allPositions = fromJS(buckets)
-//
-//   const [_, filteredCoverage] = intervals.reduce((acc, interval) => {
-//     const [positionsAcc, coverageAcc] = acc
-//     const intervalCoverage = positionsAcc
-//       .skipWhile(position => position.get('key') < interval.start)
-//       .takeWhile(position => position.get('key') < interval.stop)
-//     return [
-//       positionsAcc.skipWhile(position => position.get('key') < interval.stop),
-//       coverageAcc.push(intervalCoverage)
-//     ]
-//   }, [allPositions, new List()])
-//
-//   const intervalsOnly = filteredCoverage
-//     .flatten(true)
-//     .toJS()
-//     .map((bucket) => {
-//       return {
-//         // xpos: getXpos(chrom, bucket.key),
-//         pos: bucket.key,
-//         mean: bucket.bucket_stats.avg
-//       }
-//     })
-//     return intervalsOnly
-// }
-
 export const lookupCoverageByIntervalsWithBuckets = ({
   elasticClient,
   index,
@@ -206,31 +184,6 @@ export const lookupCoverageByIntervalsWithBuckets = ({
   ctx,
   obj,
 }) => {
-
-  // (async () => {
-  //   try {
-  //     const cachedData = await ctx.database.redis.get(obj.gene_id)
-  //     if (cachedData) {
-  //       return new Promise((resolve, reject) => {
-  //         cachedData.then(data => {
-  //           console.log(resolve(data))
-  //         }).catch(error => console.log(error))
-  //       })
-  //     } else {
-  //       ctx.database.redis.set(obj.gene_id, `${obj.gene_name}`)
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // })()
-  // console.log('hello')
-  // return new Promise((resolve, reject) => {
-  //   return ctx.database.redis.getAsync('foo').then((response) => {
-  //     console.log(response)
-  //     resolve(response)
-  //   }).catch(error => console.log(error))
-  // })
-
   const exonsOnly = true
   const transcriptBasePairsSize = stop - start
   const wholeTranscriptQuery = [{ range: { pos: { gte: start - 100, lte: stop + 100 } } }]
@@ -254,30 +207,31 @@ export const lookupCoverageByIntervalsWithBuckets = ({
   // console.log('Expected screen width: ', EXPECTED_SCREEN_WIDTH)
   // console.log('Interval aggregation size', intervalAggregationSize)
 
+  const cacheKey = `${index}-coverage-${obj.gene_name}`
+
   if (totalBasePairs < 5000) {
-    console.log('doing exactl look up')
-    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom })
+    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom, obj })
   }
 
-  // console.log('looking up with buckets')
+  const timeStart = new Date().getTime() // NOTE: timer
 
   const fields = [
     'pos',
     'mean',
   ]
 
-  const cacheKey = `${index}-coverage-${obj.transcript_id}`
-
   return new Promise((resolve, _) => {
     // console.log('searching')
-    if (totalBasePairs > 150000 && index === 'exacv1_coverage') {
-      resolve([])
-    }
+    // if (totalBasePairs > 150000 && index === 'exacv1_coverage') {
+    //   resolve([])
+    // }
     return ctx.database.redis.get(cacheKey).then((reply) => {
       if (reply) {
-        // console.log(reply)
-        console.log('resolving from cash')
-        resolve(JSON.parse(reply))
+        const end = new Date().getTime()
+        const time = end - timeStart
+        const coverage = JSON.parse(reply)
+        console.log(['coverage', index, obj.gene_name, 'bucket', 'cache', totalBasePairs, coverage.length, timeStart].join(','))
+        return resolve(coverage)
       } else {
         elasticClient.search({
           index,
@@ -311,10 +265,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
             sort: [{ pos: { order: 'asc' } }],
           },
         }).then((response) => {
-          console.log('got server data', index)
           const { buckets } = response.aggregations.genome_coverage_downsampled
-          console.log('removing empty values', index)
-          // const intervalsOnly = getCoverageIntervals(buckets, intervals)
           const intervalsOnly = buckets.filter(bucket => bucket.bucket_stats.avg !== null).map((bucket) => {
             return {
               xpos: getXpos(chrom, bucket.key),
@@ -323,10 +274,11 @@ export const lookupCoverageByIntervalsWithBuckets = ({
             }
           })
 
-          console.log('done', index)
-          return ctx.database.redis.set(cacheKey, JSON.stringify(intervalsOnly)).then((response) => {
-            console.log(response)
-            resolve(intervalsOnly)
+          return ctx.database.redis.set(cacheKey, JSON.stringify(intervalsOnly)).then(() => {
+            const end = new Date().getTime()
+            const time = end - timeStart
+            console.log(['coverage', index, obj.gene_name, 'bucket', 'lookup', totalBasePairs, intervalsOnly.length, time].join(','))
+            return resolve(intervalsOnly)
           })
         }).catch(error => console.log(error))
       }

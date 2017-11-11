@@ -14,6 +14,7 @@ resources/*
 bundle.js
 untracked
 stats.txt
+logs
 *public/static/js/*
 prototypes/test/data/*.json
 prototypes/test/data/*.txt

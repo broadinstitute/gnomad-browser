@@ -125,8 +125,11 @@ const transcriptType = new GraphQLObjectType({
 
 export default transcriptType
 
-export const lookupTranscriptsByTranscriptId = (db, transcript_id) =>
-  db.collection('transcripts').findOne({ transcript_id })
+export const lookupTranscriptsByTranscriptId = (db, transcript_id, gene_name) =>
+  new Promise((resolve) => {
+    db.collection('transcripts').findOne({ transcript_id })
+      .then(data => resolve({ ...data, gene_name }))
+  })
 
 export const lookupAllTranscriptsByGeneId = (db, gene_id) =>
   db.collection('transcripts').find({ gene_id }).toArray()

@@ -42,13 +42,6 @@ variants-dmd:
 	VARIANTS_INDEX_NAME=dmd \
 	variants
 
-variants-dmd:
-	@make \
-	EXOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
-	GENOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
-	VARIANTS_INDEX_NAME=dmd \
-	variants
-
 variants-dmd-old:
 	@make \
 	EXOMES_VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.1.vep.sites_37_DMD_subset.vds \

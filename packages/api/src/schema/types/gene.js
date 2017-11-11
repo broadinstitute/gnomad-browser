@@ -171,7 +171,7 @@ const geneType = new GraphQLObjectType({
     transcript: {
       type: transcriptType,
       resolve: (obj, args, ctx) =>
-        lookupTranscriptsByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
+        lookupTranscriptsByTranscriptId(ctx.database.gnomad, obj.canonical_transcript, obj.gene_name),
     },
     transcripts: {
       type: new GraphQLList(transcriptType),

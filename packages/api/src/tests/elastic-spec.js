@@ -411,7 +411,7 @@ test('aggregate by interval', (assert) => {
   assert.end()
 })
 
-test.only('aggregate consequences by interval', (assert) => {
+test('aggregate consequences by interval', (assert) => {
   const regionRangeQueries = { range: { pos: { gte: 179390717, lte: 179695530 } } }
   client.search({
     index: 'gnomad',
@@ -460,5 +460,4 @@ test.only('aggregate consequences by interval', (assert) => {
   })
   assert.end()
 })
-
 

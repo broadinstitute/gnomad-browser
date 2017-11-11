@@ -128,7 +128,7 @@ export const lookupElasticVariantsByGeneId = ({
       const totalBasePairs = filteredRegions.reduce((acc, { start, stop }) =>
         (acc + ((stop - start) + (padding * 2))), 0)
 
-      console.log('Total base pairs in variant query', totalBasePairs)
+      // console.log('Total base pairs in variant query', totalBasePairs)
 
       let variantSubset
       if (category && !overrideCategory) {
@@ -154,21 +154,24 @@ export const lookupElasticVariantsByGeneId = ({
       const variantQuery = createVariantSubsetQuery(variantSubset)
 
       const cacheKey = `${dataset}-variants-${obj.gene_id}-${variantSubset}`
-
+      const start = new Date().getTime() // NOTE: timer
       return ctx.database.redis.get(cacheKey).then((reply, error) => {
         if (error) {
           reject(error)
         }
         if (reply) {
-          console.log('retrieving from cache')
-          return resolve(JSON.parse(reply))
+          const end = new Date().getTime()
+          const time = end - start
+          const variants = JSON.parse(reply)
+          console.log(['variants', dataset, obj.gene_name, variantSubset, 'cache', totalBasePairs, variants.length, time].join(','))
+          return resolve(variants)
         }
         const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
           { range: { pos: { gte: start - padding, lte: stop + padding } } }))
         return elasticClient.search({
           index: 'gnomad',
           type: 'variant',
-          size: 10000,
+          size: 30000,
           _source: fields,
           body: {
             query: {
@@ -251,7 +254,10 @@ export const lookupElasticVariantsByGeneId = ({
           })
           return ctx.database.redis.set(
             cacheKey, JSON.stringify(variants)
-          ).then((response) => {
+          ).then(() => {
+            const end = new Date().getTime()
+            const time = end - start
+            console.log(['variants', dataset, obj.gene_name, variantSubset, 'lookup', totalBasePairs, variants.length, time].join(','))
             resolve(variants)
           })
         }).catch(error => console.log(error))
