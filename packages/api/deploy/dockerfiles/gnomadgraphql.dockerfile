@@ -1,4 +1,4 @@
-FROM gcr.io/exac-gnomad/gnomad-api-base:1508115117
+FROM gcr.io/exac-gnomad/gnomad-api-base
 
 MAINTAINER MacArthur Lab
 

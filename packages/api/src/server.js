@@ -1,6 +1,7 @@
 import 'babel-core/register'
 import 'babel-polyfill'
 import express from 'express'
+import compression from 'compression'
 import { MongoClient } from 'mongodb'
 import elasticsearch from 'elasticsearch'
 import GraphQLHTTP from 'express-graphql'
@@ -12,6 +13,7 @@ import gnomadSchema from './schema'
 import sczMockDb from './mockdata/meta'
 
 const app = express()
+app.use(compression())
 app.use(cors());
 
 (async () => {
