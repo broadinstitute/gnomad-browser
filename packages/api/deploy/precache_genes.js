@@ -4,13 +4,33 @@ import { List } from 'immutable'
 
 const API_URL = process.env.GNOMAD_API_URL
 const GENE_FILE_PATH = process.argv[2]
+const FETCH_TITAN = false
+
 const genes = List(JSON.parse(fs.readFileSync(GENE_FILE_PATH, 'utf8')))
 
 console.log(`Loading ${genes.size} genes`)
 
 const variantFilter = 'all'
 
-const variantQuery = `
+const exacVariant = `
+  exacVariants {
+    variant_id
+    rsid
+    pos
+    xpos
+    hgvsc
+    hgvsp
+    allele_count
+    allele_freq
+    allele_num
+    filters
+    hom_count
+    consequence
+    lof
+  }
+`
+
+const variantQuery = (includeExac = true) => `
   gnomadExomeVariants(category: "${variantFilter}") {
     variant_id
     rsid
@@ -45,29 +65,21 @@ const variantQuery = `
     lcr
     segdup
   }
-  exacVariants {
-    variant_id
-    rsid
-    pos
-    xpos
-    hgvsc
-    hgvsp
-    allele_count
-    allele_freq
-    allele_num
-    filters
-    hom_count
-    consequence
-    lof
-  }
+  ${includeExac ? exacVariant : ''}
 `
 
-export const fetchCoverage = (geneName, url = API_URL) => {
+export const fetchData = (geneName, includeExac = true, url = API_URL) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
+
+  const exacCoverageQuery = `exacv1_coverage {
+    pos
+    mean
+  }`
+
   const query = `{
     gene(${argument}) {
-      ${variantQuery}
+      ${variantQuery(includeExac)}
       transcript {
         genome_coverage {
           pos
@@ -77,14 +89,12 @@ export const fetchCoverage = (geneName, url = API_URL) => {
           pos
           mean
         }
-        exacv1_coverage {
-          pos
-          mean
-        }
+        ${includeExac ? exacCoverageQuery : ''}
       }
     }
   }
   `
+
   return new Promise((resolve, reject) => {
     fetch(url)(query)
       .then(data => resolve(data.data.gene))
@@ -107,14 +117,15 @@ const variantDataSets = [
   'exacVariants',
 ]
 
-function fetchGeneList(genes = testGenes) {
+function fetchGeneList(genes = testGenes, includeExac = true) {
   if (genes.size === 0) {
     console.log('done')
     return
   }
   const gene = genes.first()
   const start = new Date().getTime()
-  fetchCoverage(gene)
+
+  fetchData(gene, includeExac)
     .then((response) => {
       const variantCounts = variantDataSets.map((dataset) => {
         return response[dataset].length
@@ -131,6 +142,20 @@ function fetchGeneList(genes = testGenes) {
       console.log([gene, error].join(','))
       fetchGeneList(genes.rest())
     })
+}
+
+export function fetchTitan () {
+  fetchData('TTN', false)
+    .then(() => fetchData('TTN')
+      .then(() => {
+        fetchData('TTN')
+        console.log('done fetching titan')
+      })
+  )
+}
+
+if (FETCH_TITAN) {
+  fetchTitan()
 }
 
 fetchGeneList(genes)

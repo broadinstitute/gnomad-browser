@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
@@ -61,23 +61,8 @@ const GeneSettings = ({
     setExonPadding(padding)
   }
 
-  let totalBasePairs
-  if (geneData) {
-    const exons = geneData.getIn(['transcript', 'exons']).toJS()
-
-    const padding = 75
-    totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-      .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-  }
-
   let partialFetch
-  if (totalBasePairs > 40000) {
-    partialFetch = 'lof'
-    variantFilter = partialFetch  // eslint-disable-line
-  } else if (totalBasePairs > 15000) {
-    partialFetch = 'missenseOrLoF'
-    variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
-  } else if (regionData) {
+  if (regionData) {
     if ((regionData.get('stop') - regionData.get('start')) > 50000) {
       partialFetch = 'lof'
       variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
@@ -89,14 +74,14 @@ const GeneSettings = ({
       <ClassicExacButtonFirst
         isActive={variantFilter === 'all'}
         onClick={() => setVariantFilter('all')}
-        disabled={(partialFetch === 'lof' || partialFetch === 'missenseOrLoF')}
+        disabled={(partialFetch === 'lofz' || partialFetch === 'missenseOrLoFz')}
       >
         All
       </ClassicExacButtonFirst>
       <ClassicExacButton
         isActive={variantFilter === 'missenseOrLoF'}
         onClick={() => setVariantFilter('missenseOrLoF')}
-        disabled={(partialFetch === 'lof')}
+        disabled={(partialFetch === 'lofz')}
       >
         Missense + LoF
       </ClassicExacButton>

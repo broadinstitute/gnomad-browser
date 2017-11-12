@@ -230,7 +230,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
         const end = new Date().getTime()
         const time = end - timeStart
         const coverage = JSON.parse(reply)
-        console.log(['coverage', index, obj.gene_name, 'bucket', 'cache', totalBasePairs, coverage.length, timeStart].join(','))
+        console.log(['coverage', index, obj.gene_name, 'bucket', 'cache', totalBasePairs, coverage.length, time].join(','))
         return resolve(coverage)
       } else {
         elasticClient.search({

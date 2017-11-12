@@ -59,6 +59,10 @@ update-gnomad-api:
 set-max-result:
 	curl -XPUT "http://elastic:9200/*/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
 
+set-elastic-connect-timeout:
+	#  this doesn't work, must be set in elasticsearch.yaml
+	curl -XPUT "http://elastic:9200/_cluster/settings" -d '{ "transient" : { "transport.tcp.connect_timeout" : "60s" } }'
+
 redis-interactive:
 	kubectl exec -it redis-master -- redis-cli
 
@@ -95,6 +99,7 @@ redis-dump-size:
 	kubectl exec -it redis-master -- ls -al --block-size=M /redis-master-data
 
 update: build-main redis-flush update-gnomad-api
+	kubectl get pods
 
 dev:
 	redis-cli flushall
@@ -109,6 +114,9 @@ REMOTE_API=http://35.184.112.239
 CLIENT_LOG_FILE_PATH=$(LOGS_PATH)/client_log_$(TIME).csv
 DATABASE_LOG_FILE_PATH=$(LOGS_PATH)/database_log_$(TIME).csv
 
+get-database-logs:
+	kubectl logs -f $(API_POD) 2>&1 | tee $(DATABASE_LOG_FILE_PATH)
+
 list-gene-files:
 	ls $(RESOURCES_PATH) | grep -i genes
 	# cat $(RESOURCES_PATH)/genes.json
@@ -117,6 +125,7 @@ list-log-files:
 	ls $(LOGS_PATH)
 
 precache-genes:
+	# sleep 10
 	GNOMAD_API_URL=$(API_URL) $(BIN_DIR)/babel-node precache_genes.js $(PRECACHE_GENES_ARGUMENTS) 2>&1 | tee $(CLIENT_LOG_FILE_PATH)
 
 precache-genes-local: redis-flush-local
@@ -125,15 +134,29 @@ precache-genes-local: redis-flush-local
 	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes_subset.json \
 	precache-genes
 
-precache-genes-subset: redis-flush
+precache-genes-subset: update
+	sleep 10
 	@make \
 	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes_subset.json \
+	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
 	precache-genes
 
-precache-genes-all: redis-flush
+precache-genes-subset-no-flush: update-gnomad-api
+	sleep 10
+	kubectl get pods
+	@make \
+	API_URL=$(REMOTE_API) \
+	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
+	precache-genes
+
+precache-genes-subset-no-update:
+	@make \
+	API_URL=$(REMOTE_API) \
+	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
+	precache-genes
+
+precache-genes-all:
 	@make \
 	API_URL=$(REMOTE_API) \
 	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes.json \
 	precache-genes
-

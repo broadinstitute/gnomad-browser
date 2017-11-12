@@ -119,7 +119,7 @@ export const lookupElasticVariantsByGeneId = ({
       ctx.database.gnomad,
       obj.canonical_transcript
     ).then((exons) => {
-      const overrideCategory = true
+      const overrideCategory = false
       const padding = 75
       const regions = exons
 
@@ -130,16 +130,16 @@ export const lookupElasticVariantsByGeneId = ({
 
       // console.log('Total base pairs in variant query', totalBasePairs)
 
-      let variantSubset
-      if (category && !overrideCategory) {
-        variantSubset = category
-      } else if (totalBasePairs > 40000) {
-        variantSubset = 'lof'
-      } else if (totalBasePairs > 15000) {
-        variantSubset = 'lofAndMissense'
-      } else {
-        variantSubset = 'all'
-      }
+      let variantSubset = 'all'
+      // if (category && !overrideCategory) {
+      //   variantSubset = category
+      // } else if (totalBasePairs > 40000) {
+      //   variantSubset = 'lof'
+      // } else if (totalBasePairs > 15000) {
+      //   variantSubset = 'lofAndMissense'
+      // } else {
+      //   variantSubset = 'all'
+      // }
 
       const createVariantSubsetQuery = (variantSubset) => {
         switch (variantSubset) {
