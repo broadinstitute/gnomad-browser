@@ -59,6 +59,8 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
   ))
   const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
     (acc + (stop - start + (padding * 2))), 0)
+  const exonsBasePairsSize = intervals.reduce((acc, { start, stop }) =>
+    (acc + (stop - start)), 0)
   // console.log('Total base pairs in query', totalBasePairs)
 
   const fields = [
@@ -93,7 +95,7 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
       })
       const end = new Date().getTime()
       const time = end - timeStart
-      console.log(['coverage', index, obj.gene_name, 'exact', 'lookup', totalBasePairs, coverage.length, time].join(','))
+      console.log(['coverage', index, obj.gene_name, 'exact', 'lookup', exonsBasePairsSize, coverage.length, time].join(','))
       resolve(coverage)
       // return {
         // xpos: getXpos(chrom, coverage_position.pos),

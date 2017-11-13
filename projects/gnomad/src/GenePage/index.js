@@ -29,14 +29,35 @@ import VariantPage from '../VariantPage'
 import tableConfig from '../tableConfig'
 import { fetchWithExac, fetchGnomadOnly } from './fetch'
 
+const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+  height: 100%;
+`
+
 const VariantTable = withRouter(VariantTableConnected)
+
+// const loading_gifs = [
+//   'http://www.skirlrecords.com/sites/all/themes/valx/imgs/loading.gif',
+//   'https://thumbs.gfycat.com/ClearcutGoldenKittiwake-size_restricted.gif',
+//   'https://i2.wp.com/media.boingboing.net/wp-content/uploads/2015/10/tumblr_nlohpxGdBi1tlivlxo1_12801.gif?w=970',
+// ]
 
 const AppGenePage = ({
   gene,
   isFetching,
 }) => {
   if (isFetching || !gene) {
-    return <div>Loading...!</div>
+    return (
+      <Loading>
+        {/* <img src={loading_gifs[Math.floor(Math.random() * loading_gifs.length)]} alt=""/> */}
+        <h1>Loading...</h1>
+      </Loading>
+    )
   }
   return (
     <GenePage>

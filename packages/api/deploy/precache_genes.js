@@ -1,12 +1,15 @@
 import fetch from 'graphql-fetch'
 import fs from 'fs'
-import { List } from 'immutable'
+import { List, Range } from 'immutable'
 
 const API_URL = process.env.GNOMAD_API_URL
 const GENE_FILE_PATH = process.argv[2]
-const FETCH_TITAN = false
+const NUMBER_OF_CLIENTS = process.argv[3]
+const FETCH_TITAN = true
 
 const genes = List(JSON.parse(fs.readFileSync(GENE_FILE_PATH, 'utf8')))
+
+// const genes = allGenes.slice(allGenes.indexOf('ZNF528') - 100)
 
 console.log(`Loading ${genes.size} genes`)
 
@@ -135,7 +138,7 @@ function fetchGeneList(genes = testGenes, includeExac = true) {
       })
       const end = new Date().getTime()
       const time = end - start
-      console.log([gene, ...variantCounts, ...coverageCounts, time].join(','))
+      console.log([end, genes.size, gene, ...variantCounts, ...coverageCounts, time].join(','))
       fetchGeneList(genes.rest())
     })
     .catch((error) => {
@@ -154,8 +157,24 @@ export function fetchTitan () {
   )
 }
 
+function fetchConcurrent(genes, numberOfClients = 1) {
+  function splitIntoGroups(list, chunkSize) {
+    return Range(0, list.count(), chunkSize)
+      .map(chunkStart => list.slice(chunkStart, chunkStart + chunkSize))
+  }
+
+  const chunkSize = genes.size / numberOfClients
+
+  splitIntoGroups(genes, chunkSize)
+    .forEach((group) => {
+      return new Promise(() => {
+        fetchGeneList(group)
+      })
+    })
+}
+
 if (FETCH_TITAN) {
   fetchTitan()
 }
 
-fetchGeneList(genes)
+// fetchConcurrent(genes, NUMBER_OF_CLIENTS)

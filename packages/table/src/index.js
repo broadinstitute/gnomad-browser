@@ -169,21 +169,17 @@ const VariantId = styled.span`
   cursor: pointer;
 `
 
-const formatVariantId = (variantId, onRowClick, dataRow) => {
-  let [chrom, pos, ref, alt] = variantId.split('-')  // eslint-disable-line
-  if (alt.length > 6) {
-    alt = `${alt.slice(0, 6)}...`
-  }
-  if (ref.length > 6) {
-    ref = `${ref.slice(0, 6)}...`
-  }
+const formatVariantId = (variantId, onRowClick, dataRow, searchText) => {
   return (
     <VariantId
       key={`variant-id-${variantId}`}
       // HACK
       onClick={_ => onRowClick(variantId, dataRow.get('datasets').first())}  // eslint-disable-line
     >
-      {chrom}:{pos} {ref} / {alt}
+      <Highlighter
+        searchWords={searchText.split(/\s+/)}
+        textToHighlight={variantId}
+      />
     </VariantId>
   )
 }
@@ -313,7 +309,7 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {formatVariantId(cellText, onRowClick, dataRow)}
+          {formatVariantId(cellText, onRowClick, dataRow, searchText)}
         </div>
       )
     case 'consequence':

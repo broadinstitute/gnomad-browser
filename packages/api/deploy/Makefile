@@ -24,8 +24,8 @@ local-redis:
 	redis-server /usr/local/etc/redis.conf
 
 mongo-legacy:
-	kubectl create -f gnomad-mongo-controller.yaml
-	kubectl create -f gnomad-mongo-service.yaml
+	@-kubectl create -f gnomad-mongo-controller.yaml
+	@-kubectl create -f gnomad-mongo-service.yaml
 
 build-base:
 	docker build -f dockerfiles/gnomadgraphqlbase.dockerfile \
@@ -41,14 +41,14 @@ build-main:
 build-all: build-base build-main
 
 gnomad-api:
-	kubectl create -f gnomad-api-controller.yaml
+	@-kubectl create -f gnomad-api-controller.yaml
 
 # gnomad-api-service-delete-previous:
 # 	@-gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 # 	kubectl create -f gnomad-api-svc.yaml
 
 gnomad-api-service:
-	kubectl expose deployment $(PROJECT_NAME) \
+	@-kubectl expose deployment $(PROJECT_NAME) \
 	--type="LoadBalancer"
 
 update-gnomad-api:
@@ -67,7 +67,7 @@ redis-interactive:
 	kubectl exec -it redis-master -- redis-cli
 
 redis-cat-config:
-	kubectl exec -it redis-master -- cat redis-master/redis.conf
+	kubectl exec -it redis-master -- cat ../redis-master/redis.conf
 
 redis-get-config:
 	kubectl exec -it redis-master -- redis-cli config get appendonly
@@ -124,6 +124,9 @@ list-gene-files:
 list-log-files:
 	ls $(LOGS_PATH)
 
+genes-fetched:
+	cat $(LOGS_PATH)/client_log_20171112-092303.csv | wc -l
+
 precache-genes:
 	# sleep 10
 	GNOMAD_API_URL=$(API_URL) $(BIN_DIR)/babel-node precache_genes.js $(PRECACHE_GENES_ARGUMENTS) 2>&1 | tee $(CLIENT_LOG_FILE_PATH)
@@ -138,7 +141,7 @@ precache-genes-subset: update
 	sleep 10
 	@make \
 	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
+	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-163002.json \
 	precache-genes
 
 precache-genes-subset-no-flush: update-gnomad-api
@@ -159,4 +162,10 @@ precache-genes-all:
 	@make \
 	API_URL=$(REMOTE_API) \
 	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes.json \
+	precache-genes
+
+chunks: update-gnomad-api
+	@make \
+	API_URL=$(REMOTE_API) \
+	PRECACHE_GENES_ARGUMENTS="$(RESOURCES_PATH)/clean_genes_list_171112.json 5" \
 	precache-genes

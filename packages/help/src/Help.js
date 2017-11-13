@@ -70,17 +70,42 @@ const Content = styled.div`
   overflow-y: auto;
   padding-right: 25px;
 
-  >p {
+  p {
     line-height: 150%;
     margin-bottom: 15px;
-    >a {
+    a {
       text-decoration: none;
       color: #428bca;
     }
   }
-  >iframe {
+
+  iframe {
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+
+  blockquote {
+    margin: 0 0 0 0;
+    line-height: 150%;
+    font-style: italic;
+    margin-left: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    padding-left: 1.3em;
+    padding-bottom: 3px;
+    padding-top: 3px;
+  }
+  li:before {
+    content: "\f192"; /* FontAwesome Unicode */
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-left: -1.3em; /* same as padding-left set on li */
+    width: 1.3em; /* same as padding-left set on li */
   }
 `
 

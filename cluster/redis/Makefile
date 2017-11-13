@@ -4,8 +4,8 @@ include ../config.sh
 
 POOL_NAME=redis
 NUMBER=1
-MACHINE_TYPE=n1-standard-4
-LOCAL_SSD_COUNT=1
+MACHINE_TYPE=n1-highmem-8
+LOCAL_SSD_COUNT=0
 
 start-redis: create-redis-nodes create-redis-containers
 
@@ -31,17 +31,22 @@ create-redis-containers:
 	@-kubectl create -f redis-sentinel-controller.yaml
 
 
+scale-redis-containers:
+	kubectl scale rc redis --replicas=3
+	kubectl scale rc redis-sentinel --replicas=3
+
 delete-redis-containers:
-		# Create a bootstrap master
 	@-kubectl delete -f redis-master.yaml
-
-	# Create a service to track the sentinels
 	@-kubectl delete -f redis-sentinel-service.yaml
-
-	# Create a replication controller for redis servers
 	@-kubectl delete -f redis-controller.yaml
-
-	# Create a replication controller for redis sentinels
 	@-kubectl delete -f redis-sentinel-controller.yaml
 
+delete-original-master:
+	# Delete the original master pod
+	# Note: If you are running all the above commands consecutively including this one in a shell script, it may NOT work out. When you run the above commands, let the pods first come up, especially the redis-master pod. Else, the sentinel pods would never be able to know the master redis server and establish a connection with it.
+	kubectl delete pods redis-master
 
+delete-redis-nodes: delete-redis-containers
+	gcloud -q beta container node-pools delete $(POOL_NAME) \
+	--cluster $(CLUSTER_NAME) \
+	--zone $(GCLOUD_ZONE)

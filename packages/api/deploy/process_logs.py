@@ -8,6 +8,8 @@ def process_client_log(file_name, sort=False):
     log_file_path = os.path.join(LOG_PATH, file_name)
 
     headers = [
+        'timestamp',
+        'order',
         'gene_name',
         'exome_variants',
         'genome_variants',
