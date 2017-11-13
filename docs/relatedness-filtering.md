@@ -1,14 +1,11 @@
 ---
 index: gnomad_help
-vcfkey: null
-topic: 'Relatedness filtering'
+title: 'Relatedness filtering'
 ---
 
 # Relatedness filtering
 
-We used KING to infer relatedness amongst individuals that passed the hard filters thresholds.
-
-[KING](http://people.virginia.edu/~wc9c/KING/)
+We used [KING](http://people.virginia.edu/~wc9c/KING/) to infer relatedness amongst individuals that passed the hard filters thresholds.
 
 KING was run on all samples (exomes and genomes) together on a set of well behaved sites selected as follows:
 

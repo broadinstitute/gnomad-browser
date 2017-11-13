@@ -1,14 +1,13 @@
 ---
 index: gnomad_help
-vcfkey: null
-topic: 'Ancestry'
+title: 'Ancestry'
 ---
 
 # Ancestry in gnomAD
 
 We computed principal components (PCs) on the same well-behaved bi-allelic autosomal SNVs as described above on all unrelated samples (both exomes and genomes). We then leveraged a set of 53,044 samples for which we knew the ancestry to train a random forests classifier using the PCs as features. We then assigned ancestry to all samples for which the probability of that ancestry was > 90% according to the random forest model.  All other samples, were assigned the other ancestry (OTH). In addition, the 34 south asian (SAS) samples among the genomes were assigned to other as well due to their low number.
 
-<iframe max-width="100%%" src="https://www.youtube.com/embed/_uRuFZv4JaU" frameborder="0" allowfullscreen></iframe>
+<iframe max-width="100%" src="https://www.youtube.com/embed/_uRuFZv4JaU" frameborder="0" allowfullscreen></iframe>
 
 ## gnomAD population breakdown
 
@@ -23,3 +22,7 @@ We computed principal components (PCs) on the same well-behaved bi-allelic autos
 | South Asian (SAS)              	| 15,391  	| 0       	| 15,391  	|
 | Other (OTH)                    	| 2,743   	| 491     	| 3,234   	|
 | Total                          	| 123,136 	| 15,496  	| 138,632 	|
+
+What ethnicities are represented in the "other" population?
+
+Individuals were classified as "other" if they did not unambiguously cluster with the major populations (i.e. NFE, FIN, AFR, SAS, EAS, ASJ or AMR) in a principal component analysis (PCA).

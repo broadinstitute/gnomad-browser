@@ -1,7 +1,6 @@
 ---
 index: gnomad_help
-vcfkey: null
-topic: 'Getting phenotypes for individuals'
+title: 'What phenotype data are available for individuals?'
 ---
 
 ## I have identified a rare variant in gnomAD that I believe is associated with a specific clinical phenotype. What phenotype data are available for these individuals?

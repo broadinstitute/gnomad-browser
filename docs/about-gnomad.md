@@ -1,7 +1,6 @@
 ---
 index: gnomad_help
-vcfkey: null
-topic: 'About gnomAD'
+title: 'About gnomAD'
 ---
 
 # About gnomAD

@@ -1,7 +1,6 @@
 ---
 index: gnomad_help
-vcfkey: filters
-topic: 'Variant QC'
+title: 'Variant QC'
 ---
 
 # Variant QC
@@ -11,10 +10,6 @@ For the variant QC process, we used the final set of high quality release sample
 The variant QC process departed significantly from the ExAC pipeline, since this time round we decided (after several weeks of assessment) not to use the standard GATK Variant Quality Score Recalibration (VQSR) approach for filtering variants, which turns out not to perform especially well once sample sizes exceed 100,000. Instead, we developed a combination of a random forest classifier and hard filters, described below, which performs much better for the very rare variants uncovered by gnomAD.
 
 ## Random forests classifier
-
-### How to interpret the RF flag
-
-The variant may not be real!
 
 ### Background
 
