@@ -70,9 +70,22 @@ const Content = styled.div`
   overflow-y: auto;
   padding-right: 25px;
 
+  h1, h2, h3 {
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
   p {
     line-height: 150%;
     margin-bottom: 15px;
+    margin-top: 15px;
     a {
       text-decoration: none;
       color: #428bca;
@@ -89,6 +102,7 @@ const Content = styled.div`
     line-height: 150%;
     font-style: italic;
     margin-left: 10px;
+    font-size: 14px;
   }
 
   ul {
@@ -154,6 +168,7 @@ const Section = styled.div`
   margin-bottom: 20px;
 `
 const SectionTitle = styled.h1`
+  font-weight: bold;
   font-size: 18px;
 `
 

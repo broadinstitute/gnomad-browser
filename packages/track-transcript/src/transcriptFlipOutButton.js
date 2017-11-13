@@ -4,40 +4,54 @@ import styled from 'styled-components'
 
 const TranscriptFlipOutButtonContainer = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: 100%;
   width: 100%;
   border: 1px blue #000;
+
+  i {
+    margin-right: 10px;
+    color: rgb(66, 66, 66);
+  }
 `
 
 const TranscriptFlipOutButton = styled.button`
-  font-size: 22px;
+  font-size: 26px;
   background-color: #FAFAFA;
   border-radius: 3px;
   border: 0;
+  width: 60%;
+  height: 60%;
+  cursor: pointer;
+  user-select: none;
+  margin: 5px 5px 5px 5px;
+
   &:hover {
-    background-color: rgb(66, 66, 66);
-    color: #FAFAFA;
+    background-color: lightgrey;
+    color: rgb(66, 66, 66);
   }
 `
-const TranscriptFlipOut = ({ localHeight, leftPanelWidth, onClick }) => {
+
+const TranscriptFlipOut = ({ onClick, strand }) => {
+  const direction = strand === '+' ? 'right' : 'left'
   return (
     <TranscriptFlipOutButtonContainer>
       <TranscriptFlipOutButton
-        style={{
-          height: localHeight - 10,
-          width: leftPanelWidth - 10,
-        }}
         onClick={onClick}
       >
         +
       </TranscriptFlipOutButton>
+      <i
+        className={`fa fa-arrow-circle-${direction} fa-2x`}
+        aria-hidden="true"
+      />
     </TranscriptFlipOutButtonContainer>
   )
 }
 TranscriptFlipOut.propTypes = {
-  localHeight: PropTypes.number.isRequired,
-  leftPanelWidth: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
+  strand: PropTypes.func.isRequired,
 }
 export default TranscriptFlipOut

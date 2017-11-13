@@ -17,12 +17,12 @@ export const SectionTitle = styled.h1`
 export const GenePage = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   background-color: #FAFAFA;
   color: black;
   margin-top: 40px;
   ${'' /* border: 5px solid yellow; */}
-  width: 95%;
+  width: 100%;
   flex-shrink: 0;
   @media (max-width: 900px) {
     padding-left: 0;
@@ -35,8 +35,7 @@ export const Summary = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 95%;
-  padding-left: 60px;
+  width: 90%;
   margin-bottom: 10px;
   ${'' /* border: 5px solid blue; */}
 
@@ -48,9 +47,8 @@ export const Summary = styled.div`
 `
 
 export const TableSection = styled.div`
-  margin-left: 70px;
   ${'' /* border: 1px solid green; */}
-  margin-bottom: 100px;
+  margin-bottom: 25px;
   @media (max-width: 900px) {
     margin-left: 5px;
     align-items: center;

@@ -124,7 +124,7 @@ const GeneSettings = ({
               <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">
                 Include filtered variants
               </label>
-              <QuestionMark topic={'variant-qc'} display={'inline'} />
+              <QuestionMark topic={'include-filtered-variants'} display={'inline'} />
             </div>
           </form>
           <SearchContainer>

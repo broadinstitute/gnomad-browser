@@ -40,7 +40,7 @@ const VariantTable = ({
 }) => {
   const scrollBarWidth = 40
   // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
+  const tableWidth = (screenSize.width * 0.85) + scrollBarWidth
   const tConfig = tableConfig(setVariantSort, tableWidth)
   // const paddingWidth = tConfig.fields.length * 40
   // const cellContentWidth = tConfig.fields.reduce((acc, field) =>

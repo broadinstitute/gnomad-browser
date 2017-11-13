@@ -11,7 +11,7 @@ const QuestionMarkContainer = styled.span`
   padding-left: ${props => props.padding};
   padding-right: ${props => props.padding};
   cursor: pointer;
-  color: black;
+  color: rgb(66, 66, 66);
 `
 
 const QuestionMark = ({
@@ -54,3 +54,23 @@ QuestionMark.defaultProps = {
   padding: '10px',
 }
 export default connect(null, helpActions)(QuestionMark)
+
+export const HelpLink = connect(null, helpActions)(({
+  topic,
+  children,
+  setActiveTopic,
+  toggleHelpWindow,
+}) => {
+  return (
+    <a
+      href="#"
+      onClick={(event) => {
+        event.preventDefault()
+        setActiveTopic(topic)
+        toggleHelpWindow()
+      }}
+    >
+      {children}
+    </a>
+  )
+})

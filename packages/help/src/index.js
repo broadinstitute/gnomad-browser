@@ -16,5 +16,6 @@ export {
 } from './HelpButton'
 
 export {
-  default as QuestionMark
+  default as QuestionMark,
+  HelpLink,
 } from './QuestionMark'

@@ -9,6 +9,7 @@ import {
   transcripts,
   transcriptsGrouped,
   tissueStats,
+  geneData,
   actions as geneActions,
 } from '../resources/genes'
 
@@ -26,7 +27,9 @@ const TranscriptConnected = ({
   setCurrentTissue,
   tissueStats,
   currentGene,
+  geneData,
 }) => {
+  console.log(geneData)
   return (
     <TranscriptTrack
       transcripts={transcripts}
@@ -39,6 +42,7 @@ const TranscriptConnected = ({
       tissueStats={tissueStats}
       onTissueChange={setCurrentTissue}
       currentGene={currentGene}
+      strand={geneData.get('strand')}
       {...ownProps}
     />
   )
@@ -72,6 +76,7 @@ const mapStateToProps = (state, ownProps) => ({
   transcripts: transcripts(state),
   transcriptsGrouped: transcriptsGrouped(state),
   tissueStats: tissueStats(state),
+  geneData: geneData(state),
 })
 
 export default connect(mapStateToProps, geneActions)(TranscriptConnected)

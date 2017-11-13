@@ -21,6 +21,8 @@ import {
   TableSection,
 } from '@broad/gene-page/src/presentation/UserInterface'
 
+import { HelpLink } from '@broad/help'
+
 import GeneInfo from './GeneInfo'
 import Settings from '../Settings'
 import GeneRegion from './RegionViewer'
@@ -37,6 +39,32 @@ const Loading = styled.div`
   margin-top: 20px;
   width: 100%;
   height: 100%;
+
+  h1 {
+    font-weight: bold;
+  }
+`
+
+const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+`
+
+const FooterItem = styled.div`
+  & > a {
+    text-decoration: none;
+    color: #428bca;
+    ${'' /* font-weight: bold; */}
+    &:hover  {
+      color: #BE4248;
+    }
+  }
+  font-size: 16px;
+  margin-right: 10px;
 `
 
 const VariantTable = withRouter(VariantTableConnected)
@@ -89,6 +117,14 @@ const AppGenePage = ({
           }}
         />
       </TableSection>
+      <Footer>
+        <FooterItem>
+          <HelpLink topic={'about-gnomad'}>About</HelpLink>
+        </FooterItem>
+        <FooterItem>
+          <HelpLink topic={'terms'}>Terms</HelpLink>
+        </FooterItem>
+      </Footer>
     </GenePage>
   )
 }

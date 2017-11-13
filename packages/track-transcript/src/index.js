@@ -78,6 +78,7 @@ const GtexPlotWrapper = styled.div`
 const GtexTitleText = styled.a`
   font-size: 13px;
   font-weight: normal;
+  line-height: 8px;
   margin-bottom: 0;
   margin-top: 0;
   margin-left: 6px;
@@ -140,7 +141,7 @@ const TranscriptRightPanel = ({
   }
 
   const GtexPlotAxis = () => {
-    const axisHeight = masterHeight / 2.5
+    const axisHeight = masterHeight / 3
     return (
       <svg height={axisHeight} width={rightPanelWidth}>
         <line
@@ -291,6 +292,7 @@ const Transcript = ({
   onTissueChange,
   showRightPanel,
   currentGene,
+  strand,
 }) => {
   const TranscriptContainer = styled.div`
     display: flex;
@@ -298,7 +300,6 @@ const Transcript = ({
     padding-bottom: 3px;
     padding-top: 3px;
   `
-
   let localHeight
   if (motionHeight !== undefined) {
     localHeight = motionHeight
@@ -312,8 +313,7 @@ const Transcript = ({
     paddingBottom = 0  // eslint-disable-line
     expandTranscriptButton = (
       <TranscriptFlipOutButton
-        localHeight={localHeight}
-        leftPanelWidth={leftPanelWidth}
+        strand={strand}
         onClick={fanOut}
       />
     )

@@ -20,6 +20,7 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
       xstart
       xstop
       chrom
+      strand
       gnomadExomeVariants(category: "${variantFilter}") {
         variant_id
         rsid

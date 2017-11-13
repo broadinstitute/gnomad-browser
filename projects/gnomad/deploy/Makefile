@@ -19,7 +19,7 @@ IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
 SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.202.229.180)
 
-start-gnomad: create-gnomad-legacy gnomad-legacy-service
+start-gnomad: build-javascript build-legacy 	create-gnomad-legacy gnomad-legacy-service
 
 
 context:
@@ -56,7 +56,7 @@ update: build-javascript build-legacy update-gnomad-legacy
 
 copy: build-javascript copy-javascript
 
-gnomad-legacy-service:
+gnomad-legacy-service: update
 	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment gnomad-p-serve \
 	--type="LoadBalancer"
