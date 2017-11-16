@@ -20,6 +20,8 @@ title: 'How do you pronounce gnomAD?'
 
 `gonad`
 
+`gon-mad`
+
 ## How do you pronounce ExAC?
 
 todo
