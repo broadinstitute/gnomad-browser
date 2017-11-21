@@ -2,7 +2,7 @@ import elasticsearch from 'elasticsearch'
 import { fromJS } from 'immutable'
 
 export const client = new elasticsearch.Client({
-  host: 'elastic:9200',
+  host: '23.236.50.46:9200',
 })
 
 export function searchHelpTopics (query, index) {
