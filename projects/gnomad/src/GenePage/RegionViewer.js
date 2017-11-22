@@ -68,11 +68,11 @@ const GeneRegion = ({
   variantFilter,
 }) => {
 
-  const reachingViewerDesktopPadding = transcriptFanOut ? 450 : 300
-  const reachingViewerMobilePadding = transcriptFanOut ? 200 : 150
+  const regionViewerDesktopPadding = transcriptFanOut ? 450 : 300
+  const regionViewerMobilePadding = transcriptFanOut ? 200 : 150
 
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - reachingViewerMobilePadding : screenSize.width - reachingViewerDesktopPadding
+  const regionViewerWidth = smallScreen ? screenSize.width - regionViewerMobilePadding : screenSize.width - regionViewerDesktopPadding
 
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons

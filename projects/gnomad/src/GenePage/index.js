@@ -29,7 +29,8 @@ import GeneRegion from './RegionViewer'
 import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
-import { fetchWithExac, fetchGnomadOnly } from './fetch'
+// import { fetchWithExac, fetchGnomadOnly } from './fetch'
+import { fetchWithExac } from './fetchInitial'
 
 const Loading = styled.div`
   display: flex;

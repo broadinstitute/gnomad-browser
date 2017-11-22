@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import RegionViewer from '@broad/region'
-import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
-import TranscriptTrack from '../index'
+import { Provider } from 'react-redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
-import geneData from '@resources/dmd-gtex-1507854422.json'  // eslint-disable-line
+import createGeneReducer from '@broad/gene-page/src/resources/genes'
+import createActiveReducer from '@broad/gene-page/src/resources/active'
+
+import GeneViewer from '@broad/region/src/GeneViewerConnected'
+
+import TranscriptConnected from '../TranscriptConnected'
 
 const Wrapper = styled.div`
   padding-left: 50px;
@@ -12,37 +18,26 @@ const Wrapper = styled.div`
   border: 1px solid #000;
 `
 
-const {
-  transcript,
-  transcripts,
-} = geneData
+const logger = createLogger()
 
-const canonicalExons = transcript.exons
-const transcriptsGrouped = transcripts.reduce((acc, transcript) => {
-  return {
-    ...acc,
-    [transcript.transcript_id]: transcript,
-  }
-}, {})
-console.log(transcriptsGrouped)
+const store = createStore(
+  combineReducers({
+    genes: createGeneReducer({ variantDatasets: {} }),
+    active: createActiveReducer({ projectDefaults: { startingGene: 'DMD' } }),
+  }),
+  applyMiddleware(thunk, logger)
+)
 
-export default () => {
-  return (
+const ExampleApp = () => (
+  <Provider store={store}>
     <Wrapper>
-      <RegionViewer
-        width={1000}
-        padding={75}
-        regions={canonicalExons}
-        rightPanelWidth={100}
-      >
-        <TranscriptTrack
-          transcriptsGrouped={transcriptsGrouped}
+      <GeneViewer width={800}>
+        <TranscriptConnected
           height={10}
-          selectedTissue={'muscleSkeletal'}
-          onTissueChange={console.log}
         />
-      </RegionViewer>
+      </GeneViewer>
     </Wrapper>
-  )
-}
+  </Provider>
+)
 
+export default ExampleApp

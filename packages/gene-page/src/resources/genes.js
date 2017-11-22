@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable comma-dangle */
 /* eslint-disable import/no-unresolved */
+
 /* eslint-disable import/extensions */
 
 import Immutable from 'immutable'
@@ -43,11 +44,11 @@ export const actions = {
   fetchPageDataByGene (geneName, geneFetchFunction) {
     return (dispatch, getState) => {
       const state = getState()
-      const options = {
-        variantFilter: variantFilter(state),
-      }
+      // const options = {
+      //   variantFilter: variantFilter(state),
+      // }
       dispatch(actions.requestGeneData(geneName))
-      geneFetchFunction(geneName, options)
+      geneFetchFunction(geneName)
         .then((geneData) => {
           dispatch(actions.receiveGeneData(geneName, geneData))
         })
@@ -70,9 +71,9 @@ export const actions = {
       if (match.params.gene) {
         return (dispatch) => {
           dispatch(activeActions.setCurrentGene(match.params.gene))
-          if (match.params.variantId) {
-            dispatch(variantActions.setHoveredVariant(match.params.variantId))
-          }
+          // if (match.params.variantId) {
+          //   dispatch(variantActions.setHoveredVariant(match.params.variantId))
+          // }
         }
       }
     }
@@ -111,7 +112,16 @@ export default function createGeneReducer({ variantDatasets }) {
       const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
         return acc.delete(variantDataKey)
       }, geneData)
-
+      if (state.byGeneName.get(geneName)) {
+        return (
+          state
+            .set('isFetching', false)
+            .set('byGeneName', state.byGeneName.set(
+              geneName,
+              state.byGeneName.get(geneName).mergeDeep(geneDataOnly)
+            ))
+        )
+      }
       return (
         state
           .set('isFetching', false)
@@ -160,36 +170,56 @@ export const currentTranscript = state => state.genes.currentTranscript
 export const transcriptFanOut = state => state.genes.transcriptFanOut
 export const currentExon = state => state.genes.currentcurrentExon
 
+
 export const transcripts = createSelector(
   [geneData],
-  geneData => geneData.get('transcripts').toJS()
+  (geneData) => {
+    if (geneData.get('transcripts')) {
+      return geneData.get('transcripts').toJS()
+    }
+    return null
+  }
+)
+
+export const canonicalExons = createSelector(
+  [geneData],
+  (geneData) => {
+    if (geneData) {
+      return geneData.getIn(['transcript', 'exons'])
+    }
+    return null
+  }
 )
 export const transcriptsGrouped = createSelector(
   [transcripts],
   (transcripts) => {
-    return transcripts.reduce((acc, transcript) => {
-      return {
-        ...acc,
-        [transcript.transcript_id]: transcript,
-      }
-    }, {})
+    if (transcripts) {
+      return transcripts.reduce((acc, transcript) => {
+        return {
+          ...acc,
+          [transcript.transcript_id]: transcript,
+        }
+      }, {})
+    }
   }
 )
 
 export const tissueStats = createSelector(
   [transcripts],
   (transcripts) => {
-    const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
-    const tissues = Object.keys(maxValuesForTissue)
-    transcripts.forEach((transcript) => {
-      tissues.forEach((tissue) => {
-        const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
-        if (nextValue > maxValuesForTissue[tissue]) {
-          maxValuesForTissue[tissue] = nextValue
-        }
+    if (transcripts) {
+      const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
+      const tissues = Object.keys(maxValuesForTissue)
+      transcripts.forEach((transcript) => {
+        tissues.forEach((tissue) => {
+          const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
+          if (nextValue > maxValuesForTissue[tissue]) {
+            maxValuesForTissue[tissue] = nextValue
+          }
+        })
       })
-    })
-    return Immutable.Map(maxValuesForTissue).sort().reverse()
+      return Immutable.Map(maxValuesForTissue).sort().reverse()
+    }
   }
 )
 
@@ -197,4 +227,3 @@ export const regionalConstraint = createSelector(
   [geneData],
   geneData => geneData.get('exacv1_regional_constraint_regions').toJS()
 )
-

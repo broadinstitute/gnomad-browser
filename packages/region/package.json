@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "react-tap-event-plugin": "^2.0.1",
+    "@broad/gene-page": "*",
     "@broad/utilities": "*"
   },
   "devDependencies": {

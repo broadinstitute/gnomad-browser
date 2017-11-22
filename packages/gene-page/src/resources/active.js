@@ -124,11 +124,11 @@ export default function createActiveReducer ({
   }
 }) {
   const State = Immutable.Record({
-    currentGene: '',
+    currentGene: startingGene,
     currentNavigatorPosition: 0,
     currentTableIndex: 0,
     currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
-    exonPadding: startingPadding,
+    exonPadding: startingPadding || 75,
     regionViewerAttributes: {
       offsetRegions: [{ start: 0, stop: 0 }],
       // positionOffset: null,

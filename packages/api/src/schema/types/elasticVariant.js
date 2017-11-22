@@ -236,7 +236,7 @@ export const lookupElasticVariantsByGeneId = ({
         return elasticClient.search({
           index,
           type: 'variant',
-          size: 10000,
+          size: 100,
           _source: fields,
           body: {
             query: {

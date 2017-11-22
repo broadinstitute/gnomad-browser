@@ -58,14 +58,14 @@ const PositionTableTrack = ({
         />
       </div>
       <div styles={{ display: 'flex', flexDirection: 'column' }}>
-        <Positions
+        {/* <Positions
           width={width}
           height={height}
           offsetRegions={offsetRegions}
           xScale={xScale}
-        />
+        /> */}
         <div>
-          <table style={{ width: '100%', paddingLeft: '40px' }}>
+          <table style={{ width }}>
             <thead>
               <tr>
                 <th>index</th>

@@ -291,6 +291,7 @@ const Transcript = ({
   tissueStats,
   onTissueChange,
   showRightPanel,
+  showLeftPanel,
   currentGene,
   strand,
 }) => {
@@ -318,6 +319,7 @@ const Transcript = ({
       />
     )
   }
+  showLeftPanel = true
   return (
     <TranscriptContainer
       style={{
@@ -327,12 +329,13 @@ const Transcript = ({
         opacity,
       }}
     >
-      <TranscriptLeftPanel
-        leftPanelWidth={leftPanelWidth}
-        title={title}
-        fontSize={fontSize}
-        expandTranscriptButton={expandTranscriptButton}
-      />
+      {showLeftPanel &&
+        <TranscriptLeftPanel
+          leftPanelWidth={leftPanelWidth}
+          title={title}
+          fontSize={fontSize}
+          expandTranscriptButton={expandTranscriptButton}
+        />}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <TranscriptDrawing
           width={width}
