@@ -12,6 +12,7 @@ import {
 } from 'graphql'
 
 import populationType from './populations'
+import qualityMetricsType from './qualityMetrics'
 import { lookupExonsByTranscriptId } from './exon'
 
 // import vepType from './vep'
@@ -30,6 +31,18 @@ const lofs = [
   'stop_lost',
   'start_lost',
 ]
+
+const populations = {
+  NFE: 'european_non_finnish',
+  EAS: 'east_asian',
+  OTH: 'other',
+  AFR: 'african',
+  AMR: 'latino',
+  SAS: 'south_asian',
+  FIN: 'european_finnish',
+  ASJ: 'ashkenazi_jewish',
+}
+
 const createConsequenceQuery = consequences => consequences.map(consequence => (
   { term: { majorConsequence: consequence } }
 ))
@@ -49,16 +62,57 @@ const elasticVariantType = new GraphQLObjectType({
     allele_count: { type: GraphQLInt },
     allele_freq: { type: GraphQLFloat },
     allele_num: { type: GraphQLInt },
+    hom_count: { type: GraphQLInt },
+    hemi_count: { type: GraphQLInt },
+    popmax: { type: GraphQLString },
+    popmax_ac: { type: GraphQLInt },
+    popmax_an: { type: GraphQLInt },
+    popmax_af: { type: GraphQLFloat },
     lcr: { type: GraphQLBoolean },
     segdup: { type: GraphQLBoolean },
     filters: { type: new GraphQLList(GraphQLString) },
-    // filters: { type: GraphQLString },
-    hom_count: { type: GraphQLInt },
     consequence: { type: GraphQLString },
     lof: { type: GraphQLString },
     pop_acs: { type: populationType },
     pop_ans: { type: populationType },
     pop_homs: { type: populationType },
+    pop_hemi: { type: populationType },
+    quality_metrics: { type: qualityMetricsType },
+    originalAltAlleles: { type: new GraphQLList(GraphQLString) },
+    transcriptIds: { type: new GraphQLList(GraphQLString) },
+    exon: { type: GraphQLString },
+    fitted_score: { type: GraphQLFloat },
+    sorted_transcript_consequences: { type: new GraphQLList(new GraphQLObjectType({
+      name: 'SortedTranscriptConsequences',
+      fields: () => ({
+        amino_acids: { type: GraphQLString },
+        biotype: { type: GraphQLString },
+        canonical: { type: GraphQLInt },
+        cdna_start: { type: GraphQLInt },
+        cdna_end: { type: GraphQLInt },
+        codons: { type: GraphQLString },
+        consequence_terms: { type: new GraphQLList(GraphQLString) },
+        distance: { type: GraphQLInt },
+        exon: { type: GraphQLString },
+        gene_id: { type: GraphQLString },
+        gene_symbol: { type: GraphQLString },
+        gene_symbol_source: { type: GraphQLString },
+        hgvsc: { type: GraphQLString },
+        hgvsp: { type: GraphQLString },
+        lof: { type: GraphQLString },
+        lof_flags: { type: GraphQLString },
+        lof_filter: { type: GraphQLString },
+        lof_info: { type: GraphQLString },
+        protein_id: { type: GraphQLString },
+        transcript_id: { type: GraphQLString },
+        hgnc_id: { type: GraphQLInt },
+        domains: { type: GraphQLString },
+        hgvs: { type: GraphQLString },
+        major_consequence: { type: GraphQLString },
+        major_consequence_rank: { type: GraphQLInt },
+        category: { type: GraphQLString },
+      })
+    })) }
   }),
 })
 
@@ -66,7 +120,7 @@ export default elasticVariantType
 
 export const lookupElasticVariantsByGeneId = ({
   elasticClient,
-  dataset,
+  index,
   obj,
   ctx,
   category,
@@ -80,39 +134,50 @@ export const lookupElasticVariantsByGeneId = ({
     'rsid',
     'variantId',
     'lof',
-    `${dataset}_lcr`,
-    `${dataset}_segdup`,
-    `${dataset}_filters`,
-    `${dataset}_AC`,
-    `${dataset}_AF`,
-    `${dataset}_AN`,
-    `${dataset}_Hom`,
-    `${dataset}_Hom`,
-    `${dataset}_AC_NFE`,
-    `${dataset}_AC_EAS`,
-    `${dataset}_AC_OTH`,
-    `${dataset}_AC_AFR`,
-    `${dataset}_AC_AMR`,
-    `${dataset}_AC_SAS`,
-    `${dataset}_AC_FIN`,
-    `${dataset}_AC_ASJ`,
-    `${dataset}_AN_NFE`,
-    `${dataset}_AN_EAS`,
-    `${dataset}_AN_OTH`,
-    `${dataset}_AN_AFR`,
-    `${dataset}_AN_AMR`,
-    `${dataset}_AN_SAS`,
-    `${dataset}_AN_FIN`,
-    `${dataset}_AN_ASJ`,
-    `${dataset}_Hom_NFE`,
-    `${dataset}_Hom_EAS`,
-    `${dataset}_Hom_OTH`,
-    `${dataset}_Hom_AFR`,
-    `${dataset}_Hom_AMR`,
-    `${dataset}_Hom_SAS`,
-    `${dataset}_Hom_FIN`,
-    `${dataset}_Hom_ASJ`,
+    'lcr',
+    'segdup',
+    'filters',
+    'AC',
+    'AF',
+    'AN',
+    'Hom',
+    'Hemi',
+    'POPMAX',
+    'AC_POPMAX',
+    'AN_POPMAX',
+    'AF_POPMAX',
+    'fitted_score',
+    'exon',
+    'originalAltAlleles',
+    'transcriptIds',
+    'FS',
+    'InbreedingCoeff',
+    'VQSLOD',
+    'BaseQRankSum',
+    'MQ',
+    'MQRankSum',
+    'ClippingRankSum',
+    'ReadPosRankSum',
+    'DP',
+    'QD',
+    'AS_RF',
+    'DREF_MEDIAN',
+    'DP_MEDIAN',
+    'GQ_MEDIAN',
+    'AB_MEDIAN',
+    'GQ_HIST_ALT',
+    'DP_HIST_ALT',
+    'AB_HIST_ALT',
+    'GQ_HIST_ALL',
+    'DP_HIST_ALL',
+    'AB_HIST_ALL',
+    'sortedTranscriptConsequences',
   ]
+
+  fields.push(Object.keys(populations).map(population => `AC_${population}`))
+  fields.push(Object.keys(populations).map(population => `AN_${population}`))
+  fields.push(Object.keys(populations).map(population => `Hom_${population}`))
+  fields.push(Object.keys(populations).map(population => `Hemi_${population}`))
 
   return new Promise((resolve, reject) => {
     return lookupExonsByTranscriptId(
@@ -153,7 +218,7 @@ export const lookupElasticVariantsByGeneId = ({
       }
       const variantQuery = createVariantSubsetQuery(variantSubset)
 
-      const cacheKey = `${dataset}-variants-${obj.gene_id}-${variantSubset}`
+      const cacheKey = `${index}-variants-${obj.gene_id}-${variantSubset}`
       const start = new Date().getTime() // NOTE: timer
       return ctx.database.redis.get(cacheKey).then((reply, error) => {
         if (error) {
@@ -163,22 +228,21 @@ export const lookupElasticVariantsByGeneId = ({
           const end = new Date().getTime()
           const time = end - start
           const variants = JSON.parse(reply)
-          console.log(['variants', dataset, obj.gene_name, variantSubset, 'cache', totalBasePairs, variants.length, time].join(','))
+          console.log(['variants', index, obj.gene_name, variantSubset, 'cache', totalBasePairs, variants.length, time].join(','))
           return resolve(variants)
         }
         const regionRangeQueries = filteredRegions.map(({ start, stop }) => (
           { range: { pos: { gte: start - padding, lte: stop + padding } } }))
         return elasticClient.search({
-          index: 'gnomad',
+          index,
           type: 'variant',
-          size: 30000,
+          size: 10000,
           _source: fields,
           body: {
             query: {
               bool: {
                 must: [
                   { term: { geneId: obj.gene_id } },
-                  { exists: { field: `${dataset}_AC` } },
                 ],
                 filter: {
                   bool: {
@@ -213,43 +277,54 @@ export const lookupElasticVariantsByGeneId = ({
               variant_id: elastic_variant.variantId,
               id: elastic_variant.variantId,
               lof: elastic_variant.lof,
-              filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
-              allele_count: elastic_variant[`${dataset}_AC`],
-              allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
-              allele_num: elastic_variant[`${dataset}_AN`],
-              hom_count: elastic_variant[`${dataset}_Hom`],
-              lcr: elastic_variant[`${dataset}_lcr`],
-              segdup: elastic_variant[`${dataset}_segdup`],
-              pop_acs: {
-                european_non_finnish: elastic_variant[`${dataset}_AC_NFE`],
-                east_asian: elastic_variant[`${dataset}_AC_EAS`],
-                other: elastic_variant[`${dataset}_AC_OTH`],
-                african: elastic_variant[`${dataset}_AC_AFR`],
-                latino: elastic_variant[`${dataset}_AC_AMR`],
-                south_asian: elastic_variant[`${dataset}_AC_SAS`],
-                european_finnish: elastic_variant[`${dataset}_AC_FIN`],
-                ashkenazi_jewish: elastic_variant[`${dataset}_AC_ASJ`],
+              filters: elastic_variant.filters,
+              allele_count: elastic_variant.AC,
+              allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
+              allele_num: elastic_variant.AN,
+              popmax: elastic_variant.POPMAX,
+              popmax_ac: elastic_variant.AC_POPMAX,
+              popmax_an: elastic_variant.AN_POPMAX,
+              popmax_af: elastic_variant.AF_POPMAX,
+              hom_count: elastic_variant.Hom,
+              hemi_count: elastic_variant.Hemi,
+              lcr: elastic_variant.lcr,
+              segdup: elastic_variant.segdup,
+              sorted_transcript_consequences: JSON.parse(elastic_variant.sortedTranscriptConsequences),
+              quality_metrics: {
+                FS: elastic_variant.FS,
+                MQRankSum: elastic_variant.MQRankSum,
+                InbreedingCoeff: elastic_variant.InbreedingCoeff,
+                VQSLOD: elastic_variant.VQSLOD,
+                BaseQRankSum: elastic_variant.BaseQRankSum,
+                MQ: elastic_variant.MQ,
+                ClippingRankSum: elastic_variant.ClippingRankSum,
+                ReadPosRankSum: elastic_variant.ReadPosRankSum,
+                DP: elastic_variant.DP,
+                QD: elastic_variant.QD,
+                AS_RF: elastic_variant.AS_RF,
+                DREF_MEDIAN: elastic_variant.DREF_MEDIAN,
+                DP_MEDIAN: elastic_variant.DP_MEDIAN,
+                GQ_MEDIAN: elastic_variant.GQ_MEDIAN,
+                AB_MEDIAN: elastic_variant.AB_MEDIAN,
+                GQ_HIST_ALT: elastic_variant.GQ_HIST_ALT,
+                DP_HIST_ALT: elastic_variant.DP_HIST_ALT,
+                AB_HIST_ALT: elastic_variant.AB_HIST_ALT,
+                GQ_HIST_ALL: elastic_variant.GQ_HIST_ALL,
+                DP_HIST_ALL: elastic_variant.DP_HIST_ALL,
+                AB_HIST_ALL: elastic_variant.AB_HIST_ALL,
               },
-              pop_ans: {
-                european_non_finnish: elastic_variant[`${dataset}_AN_NFE`],
-                east_asian: elastic_variant[`${dataset}_AN_EAS`],
-                other: elastic_variant[`${dataset}_AN_OTH`],
-                african: elastic_variant[`${dataset}_AN_AFR`],
-                latino: elastic_variant[`${dataset}_AN_AMR`],
-                south_asian: elastic_variant[`${dataset}_AN_SAS`],
-                european_finnish: elastic_variant[`${dataset}_AN_FIN`],
-                ashkenazi_jewish: elastic_variant[`${dataset}_AN_ASJ`],
-              },
-              pop_homs: {
-                european_non_finnish: elastic_variant[`${dataset}_Hom_NFE`],
-                east_asian: elastic_variant[`${dataset}_Hom_EAS`],
-                other: elastic_variant[`${dataset}_Hom_OTH`],
-                african: elastic_variant[`${dataset}_Hom_AFR`],
-                latino: elastic_variant[`${dataset}_Hom_AMR`],
-                south_asian: elastic_variant[`${dataset}_Hom_SAS`],
-                european_finnish: elastic_variant[`${dataset}_Hom_FIN`],
-                ashkenazi_jewish: elastic_variant[`${dataset}_Hom_ASJ`],
-              }
+              pop_acs: Object.keys(populations).reduce((acc, key) => (
+                { ...acc, [populations[key]]: elastic_variant[`AC_${key}`] }
+              ), {}),
+              pop_ans: Object.keys(populations).reduce((acc, key) => (
+                { ...acc, [populations[key]]: elastic_variant[`AN_${key}`] }
+              ), {}),
+              pop_homs: Object.keys(populations).reduce((acc, key) => (
+                { ...acc, [populations[key]]: elastic_variant[`Hom_${key}`] }
+              ), {}),
+              pop_hemi: Object.keys(populations).reduce((acc, key) => (
+                { ...acc, [populations[key]]: elastic_variant[`Hemi_${key}`] }
+              ), {}),
             })
           })
           return ctx.database.redis.set(
@@ -257,7 +332,7 @@ export const lookupElasticVariantsByGeneId = ({
           ).then(() => {
             const end = new Date().getTime()
             const time = end - start
-            console.log(['variants', dataset, obj.gene_name, variantSubset, 'lookup', totalBasePairs, variants.length, time].join(','))
+            console.log(['variants', index, obj.gene_name, variantSubset, 'lookup', totalBasePairs, variants.length, time].join(','))
             resolve(variants)
           })
         }).catch(error => console.log(error))
@@ -281,12 +356,12 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
     'variantId',
     'variantId',
     'lof',
-    `${dataset}_lcr`,
-    `${dataset}_segdup`,
-    `${dataset}_AC`,
-    `${dataset}_AF`,
-    `${dataset}_AN`,
-    `${dataset}_Hom`,
+    'lcr',
+    'segdup',
+    'AC',
+    'AF',
+    'AN',
+    'Hom',
   ]
 
   return new Promise((resolve, _) => {
@@ -298,9 +373,6 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
       body: {
         query: {
           bool: {
-            must: [
-              { exists: { field: `${dataset}_AC` } },
-            ],
             filter: {
               bool: {
                 should: regionRangeQueries
@@ -316,9 +388,6 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-          // chrom: elastic_variant.contig,
-          // ref: elastic_variant.ref,
-          // alt: elastic_variant.alt,
           consequence: elastic_variant.majorConsequence,
           pos: elastic_variant.pos,
           xpos: elastic_variant.xpos,
@@ -326,13 +395,13 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
-          allele_count: elastic_variant[`${dataset}_AC`],
-          allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
-          allele_num: elastic_variant[`${dataset}_AN`],
-          hom_count: elastic_variant[`${dataset}_Hom`],
-          lcr: elastic_variant[`${dataset}_lcr`],
-          segdup: elastic_variant[`${dataset}_segdup`],
+          filters: elastic_variant.filters,
+          allele_count: elastic_variant.AC,
+          allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
+          allele_num: elastic_variant.AN,
+          hom_count: elastic_variant.Hom,
+          lcr: elastic_variant.lcr,
+          segdup: elastic_variant.segdup,
         })
       }))
     })
@@ -358,15 +427,14 @@ export const lookupElasticVariantsInRegion = ({
     'rsid',
     'variantId',
     'lof',
-    `${dataset}_lcr`,
-    `${dataset}_segdup`,
-    `${dataset}_filters`,
-    `${dataset}_AC`,
-    `${dataset}_AF`,
-    `${dataset}_AN`,
-    `${dataset}_Hom`,
+    'lcr',
+    'segdup',
+    'filters',
+    'AC',
+    'AF',
+    'AN',
+    'Hom',
   ]
-
 
   const lofQuery = createConsequenceQuery(lofs)
   const missenseQuery = createConsequenceQuery([...lofs, 'missense_variant'])
@@ -389,9 +457,6 @@ export const lookupElasticVariantsInRegion = ({
       body: {
         query: {
           bool: {
-            must: [
-              { exists: { field: `${dataset}_AC` } },
-            ],
             filter: {
               bool: {
                 must: [
@@ -407,13 +472,9 @@ export const lookupElasticVariantsInRegion = ({
     }).then((response) => {
       resolve(response.hits.hits.map((v) => {
         const elastic_variant = v._source
-        // console.log(elastic_variant[`${dataset}_filters`])
         return ({
           hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
           hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-          // chrom: elastic_variant.contig,
-          // ref: elastic_variant.ref,
-          // alt: elastic_variant.alt,
           consequence: elastic_variant.majorConsequence,
           pos: elastic_variant.pos,
           xpos: elastic_variant.xpos,
@@ -421,13 +482,13 @@ export const lookupElasticVariantsInRegion = ({
           variant_id: elastic_variant.variantId,
           id: elastic_variant.variantId,
           lof: elastic_variant.lof,
-          filters: elastic_variant[`${dataset}_filters`].map(filter => `${dataset}_${filter}`),
-          allele_count: elastic_variant[`${dataset}_AC`],
-          allele_freq: elastic_variant[`${dataset}_AF`] ? elastic_variant[`${dataset}_AF`] : 0,
-          allele_num: elastic_variant[`${dataset}_AN`],
-          hom_count: elastic_variant[`${dataset}_Hom`],
-          lcr: elastic_variant[`${dataset}_lcr`],
-          segdup: elastic_variant[`${dataset}_segdup`],
+          filters: elastic_variant.filters,
+          allele_count: elastic_variant.AC,
+          allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
+          allele_num: elastic_variant.AN,
+          hom_count: elastic_variant.Hom,
+          lcr: elastic_variant.lcr,
+          segdup: elastic_variant.segdup,
         })
       }))
     })

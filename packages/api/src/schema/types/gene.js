@@ -124,7 +124,7 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookupElasticVariantsByGeneId({
           elasticClient: ctx.database.elastic,
-          dataset: 'exomes',
+          index: 'gnomad_exomes',
           obj,
           ctx,
           category: args.category,
@@ -141,7 +141,7 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookupElasticVariantsByGeneId({
           elasticClient: ctx.database.elastic,
-          dataset: 'genomes',
+          index: 'gnomad_genomes',
           obj,
           ctx,
           category: args.category,

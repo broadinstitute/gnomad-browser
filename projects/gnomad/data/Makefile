@@ -170,3 +170,29 @@ annotate-gnomad:
 	--exclude-exac \
 	gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
 	gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.annotated.vds
+
+variants-new:
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster $(DATAPROC_CLUSTER_NAME) \
+	./export_gnomad_to_ES.py \
+	--host $(ES_HOST_IP) \
+	--port 9200 \
+	--block-size 200 \
+	--genome_version 37 \
+	--index $(VARIANTS_INDEX_NAME) \
+	--index-type variant \
+	--vds $(VDS_PATH) \
+	--num-shards 12
+
+variants-dmd-exomes:
+	@make \
+	VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
+	VARIANTS_INDEX_NAME=gnomad_exomes \
+	variants-new
+
+variants-dmd-genomes:
+	@make \
+	VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
+	VARIANTS_INDEX_NAME=gnomad_genomes \
+	variants-new
