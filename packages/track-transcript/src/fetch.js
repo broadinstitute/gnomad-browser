@@ -7,6 +7,14 @@ export const fetchData = (geneName, options, url = API_URL) => {
     gene(gene_name: "${geneName}") {
       gene_name
       strand
+      transcript {
+        exons {
+          feature_type
+          start
+          stop
+          strand
+        }
+      }
       exons {
         _id
         start

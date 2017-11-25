@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
 import RegionHoc from '@broad/gene-page/src/containers/RegionHoc'
-import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import { VariantTable } from '@broad/table'
 
 import RegionInfo from './RegionInfo'
 import Settings from '../Settings'
@@ -64,7 +64,7 @@ const TableSection = styled.div`
     margin-top: 10px;
   }
 `
-const VariantTable = withRouter(VariantTableConnected)
+const VariantTableWithRouter = withRouter(VariantTable)
 
 const RegionPage = ({
   regionData,
@@ -86,7 +86,7 @@ const RegionPage = ({
           path="/region/:regionId"
           render={() => {
             return (
-              <VariantTable
+              <VariantTableWithRouter
                 tableConfig={tableConfig}
                 height={400}
               />

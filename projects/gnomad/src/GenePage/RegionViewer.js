@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import RegionViewer from '@broad/region'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
-import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConnected'
+import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
@@ -228,11 +228,9 @@ const GeneRegion = ({
           yMax={110}
           totalBp={totalBasePairs}
         />
-        <TranscriptConnected
+        <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
-          transcriptFanOut={transcriptFanOut}
-          transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack

@@ -10,7 +10,7 @@ import createActiveReducer from '@broad/gene-page/src/resources/active'
 
 import GeneViewer from '@broad/region/src/GeneViewerConnected'
 
-import TranscriptConnected from '../TranscriptConnected'
+import { TranscriptTrackConnected } from '../index'
 
 const Wrapper = styled.div`
   padding-left: 50px;
@@ -32,7 +32,7 @@ const ExampleApp = () => (
   <Provider store={store}>
     <Wrapper>
       <GeneViewer width={800}>
-        <TranscriptConnected
+        <TranscriptTrackConnected
           height={10}
         />
       </GeneViewer>

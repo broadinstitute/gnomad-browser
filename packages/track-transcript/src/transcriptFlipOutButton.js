@@ -51,7 +51,10 @@ const TranscriptFlipOut = ({ onClick, strand }) => {
   )
 }
 TranscriptFlipOut.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  strand: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  strand: PropTypes.string.isRequired,
+}
+TranscriptFlipOut.defaultProps = {
+  onClick: () => {},
 }
 export default TranscriptFlipOut

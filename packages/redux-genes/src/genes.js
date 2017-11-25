@@ -9,15 +9,7 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import {
-  currentGene,
-  actions as activeActions,
-} from './active'
-
-import {
-  variantFilter,
-  actions as variantActions
-} from './variants'
+import { createRecords } from './records'
 
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
@@ -38,15 +30,12 @@ export const actions = {
   receiveGeneData: (geneName, geneData) => ({
     type: types.RECEIVE_GENE_DATA,
     geneName,
-    geneData: Immutable.fromJS(geneData),
+    geneData,
   }),
 
   fetchPageDataByGene (geneName, geneFetchFunction) {
     return (dispatch, getState) => {
       const state = getState()
-      // const options = {
-      //   variantFilter: variantFilter(state),
-      // }
       dispatch(actions.requestGeneData(geneName))
       geneFetchFunction(geneName)
         .then((geneData) => {
@@ -70,10 +59,7 @@ export const actions = {
     if (match) {
       if (match.params.gene) {
         return (dispatch) => {
-          dispatch(activeActions.setCurrentGene(match.params.gene))
-          // if (match.params.variantId) {
-          //   dispatch(variantActions.setHoveredVariant(match.params.variantId))
-          // }
+          dispatch(actions.setCurrentGene(match.params.gene))
         }
       }
     }
@@ -83,49 +69,37 @@ export const actions = {
       }
     }
   },
-  setCurrentTissue: tissueName => ({ type: types.SET_CURRENT_TISSUE, tissueName }),
   toggleTranscriptFanOut: () => ({ type: types.TOGGLE_TRANSCRIPT_FAN_OUT }),
+  setCurrentGene: geneName => ({ type: types.SET_CURRENT_GENE, geneName }),
   setCurrentTranscript: transcriptId => ({ type: types.SET_CURRENT_TRANSCRIPT, transcriptId }),
   setCurrentExon: exonId => ({ type: types.SET_CURRENT_EXON, exonId }),
+  setCurrentTissue: tissueName => ({ type: types.SET_CURRENT_TISSUE, tissueName }),
   setCurrentConstrainedRegion: constrainedRegionName =>
     ({ type: types.SET_CURRENT_CONSTRAINED_REGION, constrainedRegionName }),
 }
 
-export default function createGeneReducer({ variantDatasets }) {
-  const variantDatasetKeys = Object.keys(variantDatasets)
-  const State = Immutable.Record({
-    isFetching: false,
-    byGeneName: Immutable.OrderedMap(),
-    allGeneNames: Immutable.Set(),
-    currentTissue: null,
-    currentTranscript: null,
-    transcriptFanOut: false,
-    currentExon: null,
-    currentConstrainedRegion: null,
-  })
-
+export default function createGeneReducer(config) {
+  const { State, fromJS } = createRecords(config)
   const actionHandlers = {
     [types.REQUEST_GENE_DATA] (state) {
       return state.set('isFetching', true)
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
-      const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
-        return acc.delete(variantDataKey)
-      }, geneData)
+      const newData = fromJS.Gene(geneData)
       if (state.byGeneName.get(geneName)) {
         return (
           state
             .set('isFetching', false)
             .set('byGeneName', state.byGeneName.set(
               geneName,
-              state.byGeneName.get(geneName).mergeDeep(geneDataOnly)
+              state.byGeneName.get(geneName).mergeDeep(newData)
             ))
         )
       }
       return (
         state
           .set('isFetching', false)
-          .set('byGeneName', state.byGeneName.set(geneName, geneDataOnly))
+          .set('byGeneName', state.byGeneName.set(geneName, newData))
           .set('allGeneNames', state.allGeneNames.add(geneName))
       )
     },
@@ -134,6 +108,9 @@ export default function createGeneReducer({ variantDatasets }) {
     },
     [types.SET_CURRENT_TRANSCRIPT] (state, { transcriptId }) {
       return state.set('currentTranscript', transcriptId)
+    },
+    [types.SET_CURRENT_GENE] (state, { geneName }) {
+      return state.set('currentGene', geneName)
     },
     [types.TOGGLE_TRANSCRIPT_FAN_OUT] (state) {
       return state.set('transcriptFanOut', !state.get('transcriptFanOut'))
@@ -146,7 +123,7 @@ export default function createGeneReducer({ variantDatasets }) {
     },
   }
 
-  function genes (state = new State(), action: Object): State {
+  function genes (state = fromJS.State({}), action: Object): State {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
@@ -159,6 +136,12 @@ export default function createGeneReducer({ variantDatasets }) {
 export const byGeneName = state => state.genes.byGeneName
 export const allGeneNames = state => state.genes.allGeneNames
 export const isFetching = state => state.genes.isFetching
+export const currentGene = state => state.genes.currentGene
+
+export const hasGeneData = createSelector(
+  [currentGene, allGeneNames],
+  (currentGene, allGeneNames) => allGeneNames.includes(currentGene)
+)
 
 export const geneData = createSelector(
   [byGeneName, currentGene],

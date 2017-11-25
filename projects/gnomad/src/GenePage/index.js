@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
 import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
-import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import { VariantTable } from '@broad/table'
 
 import {
   SectionTitle,
@@ -30,7 +30,7 @@ import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
 // import { fetchWithExac, fetchGnomadOnly } from './fetch'
-import { fetchWithExac } from './fetchInitial'
+import { fetchWithExac } from './fetch'
 
 const Loading = styled.div`
   display: flex;
@@ -59,7 +59,6 @@ const FooterItem = styled.div`
   & > a {
     text-decoration: none;
     color: #428bca;
-    ${'' /* font-weight: bold; */}
     &:hover  {
       color: #BE4248;
     }
@@ -68,7 +67,7 @@ const FooterItem = styled.div`
   margin-right: 10px;
 `
 
-const VariantTable = withRouter(VariantTableConnected)
+const VariantTableWithRouter = withRouter(VariantTable)
 
 // const loading_gifs = [
 //   'http://www.skirlrecords.com/sites/all/themes/valx/imgs/loading.gif',
@@ -109,7 +108,7 @@ const AppGenePage = ({
           render={() => {
             return (
               <div>
-                <VariantTable
+                <VariantTableWithRouter
                   tableConfig={tableConfig}
                 />
               </div>

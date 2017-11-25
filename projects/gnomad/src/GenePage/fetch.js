@@ -5,8 +5,7 @@ const PUBLIC_API = 'http://gnomad-api.broadinstitute.org'
 // const API_URL = 'http://35.184.79.173'
 const API_URL = process.env.GNOMAD_API_URL
 
-export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
-  const { variantFilter } = options
+export const fetchGnomadOnly = (geneName, url = API_URL) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
   const query = `{
@@ -21,7 +20,15 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
       xstop
       chrom
       strand
-      gnomadExomeVariants(category: "${variantFilter}") {
+      transcript {
+        exons {
+          feature_type
+          start
+          stop
+          strand
+        }
+      }
+      gnomadExomeVariants {
         variant_id
         rsid
         pos
@@ -38,7 +45,7 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
         lcr
         segdup
       }
-      gnomadGenomeVariants(category: "${variantFilter}") {
+      gnomadGenomeVariants {
         variant_id
         rsid
         pos
@@ -101,82 +108,6 @@ export const fetchGnomadOnly = (geneName, options, url = API_URL) => {
         exacv1_coverage {
           pos
           mean
-        }
-      }
-      transcripts {
-        _id
-        start
-        transcript_id
-        strand
-        stop
-        xstart
-        chrom
-        gene_id
-        xstop
-        exons {
-          _id
-          start
-          transcript_id
-          feature_type
-          strand
-          stop
-          chrom
-          gene_id
-        }
-        gtex_tissue_tpms_by_transcript {
-          adiposeSubcutaneous
-          adiposeVisceralOmentum
-          adrenalGland
-          arteryAorta
-          arteryCoronary
-          arteryTibial
-          bladder
-          brainAmygdala
-          brainAnteriorcingulatecortexBa24
-          brainCaudateBasalganglia
-          brainCerebellarhemisphere
-          brainCerebellum
-          brainCortex
-          brainFrontalcortexBa9
-          brainHippocampus
-          brainHypothalamus
-          brainNucleusaccumbensBasalganglia
-          brainPutamenBasalganglia
-          brainSpinalcordCervicalc1
-          brainSubstantianigra
-          breastMammarytissue
-          cellsEbvTransformedlymphocytes
-          cellsTransformedfibroblasts
-          cervixEctocervix
-          cervixEndocervix
-          colonSigmoid
-          colonTransverse
-          esophagusGastroesophagealjunction
-          esophagusMucosa
-          esophagusMuscularis
-          fallopianTube
-          heartAtrialappendage
-          heartLeftventricle
-          kidneyCortex
-          liver
-          lung
-          minorSalivaryGland
-          muscleSkeletal
-          nerveTibial
-          ovary
-          pancreas
-          pituitary
-          prostate
-          skinNotsunexposedSuprapubic
-          skinSunexposedLowerleg
-          smallIntestineTerminalileum
-          spleen
-          stomach
-          testis
-          thyroid
-          uterus
-          vagina
-          wholeBlood
         }
       }
     }

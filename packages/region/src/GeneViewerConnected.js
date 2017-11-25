@@ -4,15 +4,16 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import fetch from 'graphql-fetch'
 
-import {
-  exonPadding,
-  currentGene,
-} from '@broad/gene-page/src/resources/active'
+// import {
+//   exonPadding,
+// } from '@broad/gene-page/src/resources/active'
 
 import {
+  currentGene,
   canonicalExons,
+  hasGeneData,
   actions as geneActions,
-} from '@broad/gene-page/src/resources/genes'
+} from '@broad/redux-genes'
 
 import RegionViewer from './RegionViewer'
 
@@ -29,6 +30,7 @@ class GeneViewer extends PureComponent {
     const query = `{
       gene(gene_name: "${geneName}") {
         gene_name
+        strand
         transcript {
           exons {
             feature_type
@@ -52,9 +54,9 @@ class GeneViewer extends PureComponent {
   }
 
   render() {
-    const { exonPadding, canonicalExons, children, ...rest } = this.props
-    
-    if (!canonicalExons) {
+    const { exonPadding, hasGeneData, canonicalExons, children, ...rest } = this.props
+    console.log(canonicalExons, hasGeneData)
+    if (!hasGeneData) {
       return <div>Loading</div>
     }
 
@@ -73,7 +75,8 @@ class GeneViewer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  exonPadding: exonPadding(state),
+  // exonPadding: exonPadding(state),
+  hasGeneData: hasGeneData(state),
   canonicalExons: canonicalExons(state),
   currentGene: currentGene(state),
 })

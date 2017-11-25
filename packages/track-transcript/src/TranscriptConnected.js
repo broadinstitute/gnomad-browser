@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
@@ -16,36 +16,11 @@ import {
 
 import { currentGene } from '@broad/gene-page/src/resources/active'
 
-import TranscriptTrack from './index'
+import { TranscriptTrack } from './index'
 import { fetchData } from './fetch'
 
 
 class TranscriptConnected extends PureComponent {
-  static propTypes = {
-    ownProps: PropTypes.object.isRequired,
-    currentGene: PropTypes.string,
-    currentTissue: PropTypes.string,
-    currentTranscript: PropTypes.string,
-    currentExon: PropTypes.string,
-    transcripts: PropTypes.array.isRequired,
-    transcriptsGrouped: PropTypes.object.isRequired,
-    tissueStats: PropTypes.any.isRequired,
-    setCurrentTissue: PropTypes.func.isRequired,
-    setCurrentTranscript: PropTypes.func.isRequired,
-    setCurrentExon: PropTypes.func.isRequired,
-    geneData: PropTypes.object.isRequired,
-    fetchPageDataByGene: PropTypes.func.isRequired,
-    transcriptFanOut: PropTypes.bool.isRequired,
-    toggleTranscriptFanOut: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    currentTissue: null,
-    currentTranscript: null,
-    currentExon: null,
-    currentGene: null,
-  }
-
   componentDidMount() {
     const { currentGene, fetchPageDataByGene } = this.props
     console.log('fetching transcript data')
@@ -69,15 +44,20 @@ class TranscriptConnected extends PureComponent {
       transcriptFanOut,
       toggleTranscriptFanOut,
     } = this.props
-    console.log(geneData)
     if (!transcripts) {
-      <TranscriptTrack showLeftPanel {...ownProps} />
+      return (
+        <TranscriptTrack
+          strand={geneData.get('strand')}
+          showLeftPanel
+          {...ownProps}
+        />
+      )
     }
     return (
       <TranscriptTrack
         transcripts={transcripts}
         currentTranscript={currentTranscript}
-        transcriptFanOut={transcriptFanOut}
+        transcriptFanOut={transcriptFanOut || false}
         transcriptButtonOnClick={toggleTranscriptFanOut}
         transcriptsGrouped={transcriptsGrouped}
         onTranscriptNameClick={setCurrentTranscript}
