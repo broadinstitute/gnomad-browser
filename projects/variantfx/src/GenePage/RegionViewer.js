@@ -17,12 +17,18 @@ import VariantTrack from '@broad/track-variant'
 import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
 import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConnected'
 
-import { screenSize, exonPadding } from '@broad/gene-page/src/resources/active'
-import { geneData, transcriptFanOut, actions as geneActions } from '@broad/gene-page/src/resources/genes'
+import { screenSize } from '@broad/gene-page/src/resources/active'
+
+import {
+  geneData,
+  exonPadding,
+  transcriptFanOut,
+  actions as geneActions
+} from '@broad/redux-genes'
 
 import {
   finalFilteredVariants,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'

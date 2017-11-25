@@ -5,7 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import createVariantReducer from '@broad/gene-page/src/resources/variants'
+import createVariantReducer from '@broad/redux-variants'
 import createActiveReducer from '@broad/gene-page/src/resources/active'
 
 import { VariantTable } from '../index'

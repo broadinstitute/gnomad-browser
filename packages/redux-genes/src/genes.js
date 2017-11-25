@@ -18,6 +18,7 @@ export const types = keymirror({
   SET_CURRENT_TRANSCRIPT: null,
   TOGGLE_TRANSCRIPT_FAN_OUT: null,
   SET_CURRENT_EXON: null,
+  SET_EXON_PADDING: null,
   SET_CURRENT_CONSTRAINED_REGION: null
 })
 
@@ -73,6 +74,7 @@ export const actions = {
   setCurrentGene: geneName => ({ type: types.SET_CURRENT_GENE, geneName }),
   setCurrentTranscript: transcriptId => ({ type: types.SET_CURRENT_TRANSCRIPT, transcriptId }),
   setCurrentExon: exonId => ({ type: types.SET_CURRENT_EXON, exonId }),
+  setExonPadding: padding => ({ type: types.SET_EXON_PADDING, padding }),
   setCurrentTissue: tissueName => ({ type: types.SET_CURRENT_TISSUE, tissueName }),
   setCurrentConstrainedRegion: constrainedRegionName =>
     ({ type: types.SET_CURRENT_CONSTRAINED_REGION, constrainedRegionName }),
@@ -118,6 +120,9 @@ export default function createGeneReducer(config) {
     [types.SET_CURRENT_EXON] (state, { exonId }) {
       return state.set('currentExon', exonId)
     },
+    [types.SET_EXON_PADDING] (state, { padding }) {
+      return state.set('exonPadding', padding)
+    },
     [types.SET_CURRENT_CONSTRAINED_REGION] (state, { constrainedRegionName }) {
       return state.set('currentConstrainedRegion', constrainedRegionName)
     },
@@ -137,6 +142,11 @@ export const byGeneName = state => state.genes.byGeneName
 export const allGeneNames = state => state.genes.allGeneNames
 export const isFetching = state => state.genes.isFetching
 export const currentGene = state => state.genes.currentGene
+export const currentTissue = state => state.genes.currentTissue
+export const currentTranscript = state => state.genes.currentTranscript
+export const transcriptFanOut = state => state.genes.transcriptFanOut
+export const currentExon = state => state.genes.currentcurrentExon
+export const exonPadding = state => state.genes.exonPadding
 
 export const hasGeneData = createSelector(
   [currentGene, allGeneNames],
@@ -147,12 +157,6 @@ export const geneData = createSelector(
   [byGeneName, currentGene],
   (byGeneName, currentGene) => byGeneName.get(currentGene),
 )
-
-export const currentTissue = state => state.genes.currentTissue
-export const currentTranscript = state => state.genes.currentTranscript
-export const transcriptFanOut = state => state.genes.transcriptFanOut
-export const currentExon = state => state.genes.currentcurrentExon
-
 
 export const transcripts = createSelector(
   [geneData],

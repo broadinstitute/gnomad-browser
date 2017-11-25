@@ -6,9 +6,8 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import { currentGene } from '@broad/gene-page/src/resources/active'
-import { actions as variantActions } from '@broad/gene-page/src/resources/variants'
-import { geneData, isFetching, actions as geneActions } from '@broad/gene-page/src/resources/genes'
+import { actions as variantActions } from '@broad/redux-variants'
+import { currentGene, geneData, isFetching, actions as geneActions } from '@broad/redux-genes'
 import { currentDisease, currentGeneDiseaseData } from '../redux'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {

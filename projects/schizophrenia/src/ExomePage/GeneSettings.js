@@ -7,10 +7,9 @@ import Mousetrap from 'mousetrap'
 import {
   actions as variantActions,
   selectedVariantDataset,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
-import { currentGene, exonPadding } from '@broad/gene-page/src/resources/active'
-import { geneData } from '@broad/gene-page/src/resources/genes'
+import { currentGene, geneData, exonPadding } from '@broad/redux-genes'
 import { MaterialButtonRaised } from '@broad/ui'
 import { Search } from '@broad/ui/src/search/simpleSearch'
 

@@ -12,6 +12,7 @@ import {
   currentGene,
   canonicalExons,
   hasGeneData,
+  exonPadding,
   actions as geneActions,
 } from '@broad/redux-genes'
 
@@ -55,7 +56,7 @@ class GeneViewer extends PureComponent {
 
   render() {
     const { exonPadding, hasGeneData, canonicalExons, children, ...rest } = this.props
-    console.log(canonicalExons, hasGeneData)
+
     if (!hasGeneData) {
       return <div>Loading</div>
     }
@@ -75,7 +76,7 @@ class GeneViewer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  // exonPadding: exonPadding(state),
+  exonPadding: exonPadding(state),
   hasGeneData: hasGeneData(state),
   canonicalExons: canonicalExons(state),
   currentGene: currentGene(state),

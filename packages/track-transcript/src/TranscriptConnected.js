@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import {
+  currentGene,
   currentTissue,
   currentTranscript,
   currentExon,
@@ -12,9 +13,7 @@ import {
   geneData,
   transcriptFanOut,
   actions as geneActions,
-} from '@broad/gene-page/src/resources/genes'
-
-import { currentGene } from '@broad/gene-page/src/resources/active'
+} from '@broad/redux-genes'
 
 import { TranscriptTrack } from './index'
 import { fetchData } from './fetch'
@@ -23,7 +22,6 @@ import { fetchData } from './fetch'
 class TranscriptConnected extends PureComponent {
   componentDidMount() {
     const { currentGene, fetchPageDataByGene } = this.props
-    console.log('fetching transcript data')
     fetchPageDataByGene(currentGene, fetchData)
   }
 

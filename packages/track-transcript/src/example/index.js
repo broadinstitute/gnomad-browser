@@ -5,7 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import createGeneReducer from '@broad/gene-page/src/resources/genes'
+import createGeneReducer from '@broad/redux-genes'
 import createActiveReducer from '@broad/gene-page/src/resources/active'
 
 import GeneViewer from '@broad/region/src/GeneViewerConnected'

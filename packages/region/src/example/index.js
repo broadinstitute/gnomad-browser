@@ -53,7 +53,7 @@ const store = createStore(
 const ExampleApp = () => (
   <Provider store={store}>
     <Wrapper>
-      <GeneViewer exonPadding={75} width={1000} regionAttributes={attributeConfig}>
+      <GeneViewer width={1000} regionAttributes={attributeConfig}>
         <TranscriptTrack
           title={''}
           height={50}

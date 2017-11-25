@@ -4,7 +4,7 @@ import { createSelector } from 'reselect'
 
 import GENE_DISEASES from '@resources/171030-gene-disease-data.json'  // eslint-disable-line
 
-import { currentGene } from '@broad/gene-page/src/resources/active'
+import { currentGene } from '@broad/redux-genes'
 
 export const types = keymirror({
   SET_CURRENT_DISEASE: null,

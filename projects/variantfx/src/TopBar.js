@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { currentGene, actions as activeActions } from '@broad/redux-genes'
 
 import {
   DataSelectionContainer,

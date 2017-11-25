@@ -26,7 +26,7 @@ import createVariantReducer, {
 
 const logger = createLogger()
 
-const defaultWait = 500
+const defaultWait = 50
 const defaultThrottleOption = { // https://lodash.com/docs#throttle
   leading: true,
   trailing: false,

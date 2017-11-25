@@ -9,8 +9,15 @@ import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
-import { screenSize, exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
-import { geneData, regionalConstraint, transcriptFanOut, actions as geneActions } from '@broad/gene-page/src/resources/genes'
+import { screenSize, actions as activeActions } from '@broad/gene-page/src/resources/active'
+
+import {
+  geneData,
+  regionalConstraint,
+  transcriptFanOut,
+  exonPadding,
+  actions as geneActions,
+} from '@broad/redux-genes'
 
 import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
 
@@ -18,7 +25,7 @@ import {
   finalFilteredVariants,
   selectedVariantDataset,
   variantFilter,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import {
   coverageConfigClassic,

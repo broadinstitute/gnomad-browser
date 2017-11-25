@@ -17,7 +17,7 @@ import {
   variantSearchText,
   finalFilteredVariants,
   actions as variantActions,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import tableConfig from '../tableConfig'
 

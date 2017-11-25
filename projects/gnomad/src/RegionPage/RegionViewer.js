@@ -23,7 +23,7 @@ import {
   finalFilteredVariants,
   selectedVariantDataset,
   variantFilter,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import { getCoverageConfig } from '../GenePage/RegionViewer'
 

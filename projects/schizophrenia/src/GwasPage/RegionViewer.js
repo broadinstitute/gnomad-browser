@@ -31,7 +31,7 @@ import { regionData } from '@broad/gene-page/src/resources/regions'
 import {
   finalFilteredVariants,
   createVariantDatasetSelector,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 const exomeVariantsSelector = createVariantDatasetSelector('schizophreniaExomeVariants')
 

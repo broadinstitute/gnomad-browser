@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { singleVariantData } from '@broad/gene-page/src/resources/variants'
+import { singleVariantData } from '@broad/redux-variants'
 
 const VariantPageWrapper = styled.div`
   display: flex;

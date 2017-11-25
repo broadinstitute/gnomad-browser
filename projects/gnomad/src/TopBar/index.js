@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-// import SearchIcon from 'material-ui/svg-icons/action/search'
-
-import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { currentGene, actions as geneActions } from '@broad/redux-genes'
 
 const TopBarContainer = styled.div`
   display: flex;
@@ -132,7 +130,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setCurrentGene: geneName => dispatch(geneActions.setCurrentGene(geneName)),
   }
 }
 

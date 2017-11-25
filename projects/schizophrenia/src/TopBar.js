@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { currentGene, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { currentGene, actions as geneActions } from '@broad/redux-genes'
 
 const TopBarContainer = styled.div`
   display: flex;

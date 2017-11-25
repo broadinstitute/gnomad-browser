@@ -21,7 +21,7 @@ import {
   filteredIdList,
   finalFilteredVariants,
   finalFilteredVariantsCount,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import Table from './index'
 

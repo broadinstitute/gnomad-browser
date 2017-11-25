@@ -6,13 +6,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { geneData, regionalConstraint} from '@broad/gene-page/src/resources/genes'
+import { geneData, regionalConstraint} from '@broad/redux-genes'
 
 import {
   variantCount,
   selectedVariantDataset,
   actions as variantActions,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import {
   GeneInfoWrapper,

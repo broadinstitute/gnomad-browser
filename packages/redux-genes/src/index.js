@@ -12,6 +12,7 @@ export {
   currentTranscript,
   transcriptFanOut,
   currentExon,
+  exonPadding,
   transcripts,
   canonicalExons,
   transcriptsGrouped,

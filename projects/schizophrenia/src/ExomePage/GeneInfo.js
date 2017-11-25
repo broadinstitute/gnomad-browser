@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { geneData } from '@broad/gene-page/src/resources/genes'
-import { variantCount } from '@broad/gene-page/src/resources/variants'
+import { geneData } from '@broad/redux-genes'
+import { variantCount } from '@broad/redux-variants'
 
 const GeneInfoWrapper = styled.div`
   display: flex;

@@ -17,7 +17,6 @@ export const types = keymirror({
   SET_CURRENT_NAVIGATOR_POSITION: null,
   SET_CURRENT_TABLE_INDEX: null,
   SET_CURRENT_TABLE_SCROLL_DATA: null,
-  SET_EXON_PADDING: null,
   SET_REGION_VIEWER_ATTRIBUTES: null,
   SET_SCREEN_SIZE: null,
 })
@@ -61,8 +60,6 @@ export const actions = {
     // invertOffset,
   }),
 
-  setExonPadding: padding => ({ type: types.SET_EXON_PADDING, padding }),
-
   setVisibleInTable: (range) => {
     return {
       type: types.SET_VISIBLE_IN_TABLE,
@@ -101,10 +98,6 @@ const actionHandlers = {
   }) {
     return state.set('regionViewerAttributes', { offsetRegions, positionOffset, xScale, invertOffset })
   },
-  [types.SET_EXON_PADDING] (state, { padding }) {
-    return state.set('exonPadding', padding)
-  },
-
   [types.SET_VISIBLE_IN_TABLE] (state, { range }) {
     const [min, max] = state.get('visibleInTable')
     if (min < 0 || max < 0) {
@@ -156,7 +149,6 @@ export const currentNavigatorPosition = state => state.active.currentNavigatorPo
 export const currentTableIndex = state => state.active.currentTableIndex
 
 export const currentTableScrollData = state => state.active.currentTableScrollData
-export const exonPadding = state => state.active.exonPadding
 export const regionViewerIntervals = state =>
   state.active.regionViewerAttributes.offsetRegions.map(region => [region.start, region.stop])
 

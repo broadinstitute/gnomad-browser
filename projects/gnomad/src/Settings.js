@@ -9,11 +9,10 @@ import {
   variantFilter,
   variantQcFilter,
   variantSearchText,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
-import { exonPadding, actions as activeActions } from '@broad/gene-page/src/resources/active'
-
-import { geneData } from '@broad/gene-page/src/resources/genes'
+import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { geneData, exonPadding } from '@broad/redux-genes'
 import { regionData } from '@broad/gene-page/src/resources/regions'
 
 import {

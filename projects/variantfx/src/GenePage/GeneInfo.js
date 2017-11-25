@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { geneData } from '@broad/gene-page/src/resources/genes'
+import { geneData } from '@broad/redux-genes'
 
 import {
   variantCount,
-} from '@broad/gene-page/src/resources/variants'
+} from '@broad/redux-variants'
 
 import {
   GeneInfoWrapper,
