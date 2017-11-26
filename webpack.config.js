@@ -63,6 +63,11 @@ const webpackConfig = {
         exclude: /node_modules/,
         use: 'json-loader',
       },
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
+      }
     ],
   },
   plugins: [

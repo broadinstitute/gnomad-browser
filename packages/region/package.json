@@ -7,14 +7,19 @@
     "lib"
   ],
   "dependencies": {
-    "react-tap-event-plugin": "^2.0.1",
     "@broad/gene-page": "*",
     "@broad/redux-genes": "*",
-    "@broad/utilities": "*"
+    "@broad/utilities": "*",
+    "apollo-cache-inmemory": "^1.1.1",
+    "apollo-client": "^2.0.3",
+    "apollo-link-http": "^1.2.0",
+    "react-apollo": "^2.0.1",
+    "react-redux": "^5.0.6",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
-    "@broad/track-transcript": "*",
-    "@broad/track-position-table": "*"
+    "@broad/track-position-table": "*",
+    "@broad/track-transcript": "*"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

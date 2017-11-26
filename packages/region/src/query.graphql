@@ -1,0 +1,13 @@
+query GeneViewer($geneName: String!) {
+  gene(gene_name: $geneName) {
+    gene_name
+    transcript {
+      exons {
+        feature_type
+        start
+        stop
+        strand
+      }
+    }
+  }
+}
