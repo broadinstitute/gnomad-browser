@@ -10,6 +10,7 @@ import {
   transcripts,
   transcriptsGrouped,
   tissueStats,
+  hasGeneData,
   geneData,
   transcriptFanOut,
   actions as geneActions,
@@ -17,7 +18,6 @@ import {
 
 import { TranscriptTrack } from './index'
 import { fetchData } from './fetch'
-
 
 class TranscriptConnected extends PureComponent {
   componentDidMount() {
@@ -41,8 +41,9 @@ class TranscriptConnected extends PureComponent {
       geneData,
       transcriptFanOut,
       toggleTranscriptFanOut,
+      hasGeneData,
     } = this.props
-    if (!transcripts) {
+    if (!hasGeneData) {
       return (
         <TranscriptTrack
           strand={geneData.get('strand')}
@@ -85,6 +86,7 @@ const mapStateToProps = (state, ownProps) => ({
   transcriptsGrouped: transcriptsGrouped(state),
   tissueStats: tissueStats(state),
   geneData: geneData(state),
+  hasGeneData: hasGeneData(state),
 })
 
 export default connect(mapStateToProps, geneActions)(TranscriptConnected)

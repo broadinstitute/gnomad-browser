@@ -5,8 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import createGeneReducer from '@broad/redux-genes'
-import createActiveReducer from '@broad/gene-page/src/resources/active'
+import { createGeneReducer } from '@broad/redux-genes'
 
 import GeneViewer from '@broad/region/src/GeneViewerConnected'
 
@@ -22,8 +21,7 @@ const logger = createLogger()
 
 const store = createStore(
   combineReducers({
-    genes: createGeneReducer({ variantDatasets: {} }),
-    active: createActiveReducer({ projectDefaults: { startingGene: 'DMD' } }),
+    genes: createGeneReducer({ startingGene: 'DMD' }),
   }),
   applyMiddleware(thunk, logger)
 )

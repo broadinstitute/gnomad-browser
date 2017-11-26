@@ -50,7 +50,7 @@ test.only('Receive gene data.', (assert) => {
       }
     }
   }
-  console.log(store.getState())
+  // console.log(store.getState())
   store.dispatch(geneActions.receiveGeneData('PCSK9', geneData.data.gene))
   const state = store.getState()
   // assert.deepEqual(
@@ -58,7 +58,7 @@ test.only('Receive gene data.', (assert) => {
   //   ['xstop', 'xstart', 'gene_name'],
   //   'Expected gene fields set'
   // )
-  console.log(state.genes.byGeneName.get('PCSK9'))
+  // console.log(state.genes.byGeneName.get('PCSK9'))
   assert.end()
 })
 

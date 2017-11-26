@@ -53,7 +53,6 @@ export const createRecords = (config) => {
     transcripts: new List(),
   })
 
-
   const Exon = Record({
     chrom: null,
     start: null,

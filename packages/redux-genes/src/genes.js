@@ -88,6 +88,7 @@ export default function createGeneReducer(config) {
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
       const newData = fromJS.Gene(geneData)
+      console.log(newData)
       if (state.byGeneName.get(geneName)) {
         return (
           state
@@ -161,10 +162,10 @@ export const geneData = createSelector(
 export const transcripts = createSelector(
   [geneData],
   (geneData) => {
-    if (geneData.get('transcripts')) {
-      return geneData.get('transcripts').toJS()
+    if (!geneData.transcripts.isEmpty()) {
+      return geneData.transcripts.toJS()
     }
-    return null
+    return Immutable.List().toJS()
   }
 )
 
@@ -180,35 +181,35 @@ export const canonicalExons = createSelector(
 export const transcriptsGrouped = createSelector(
   [transcripts],
   (transcripts) => {
-    if (transcripts) {
+    // if (!transcripts.isEmpty()) {
       return transcripts.reduce((acc, transcript) => {
         return {
           ...acc,
           [transcript.transcript_id]: transcript,
         }
       }, {})
-    }
+    // }
+    return Immutable.List()
   }
 )
 
 export const tissueStats = createSelector(
   [transcripts],
   (transcripts) => {
-    if (transcripts) {
-      if (transcripts[0].gtex_tissue_tpms_by_transcript) {
-        const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
-        const tissues = Object.keys(maxValuesForTissue)
-        transcripts.forEach((transcript) => {
-          tissues.forEach((tissue) => {
-            const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
-            if (nextValue > maxValuesForTissue[tissue]) {
-              maxValuesForTissue[tissue] = nextValue
-            }
-          })
+    if (transcripts.length > 0) {
+      const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
+      const tissues = Object.keys(maxValuesForTissue)
+      transcripts.forEach((transcript) => {
+        tissues.forEach((tissue) => {
+          const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
+          if (nextValue > maxValuesForTissue[tissue]) {
+            maxValuesForTissue[tissue] = nextValue
+          }
         })
-        return Immutable.Map(maxValuesForTissue).sort().reverse()
-      }
+      })
+      return Immutable.Map(maxValuesForTissue).sort().reverse()
     }
+    return null
   }
 )
 
