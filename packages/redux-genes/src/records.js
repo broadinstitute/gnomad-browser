@@ -19,6 +19,7 @@ export const createRecords = (config) => {
     currentTranscript: null,
     transcriptFanOut: false,
     currentExon: null,
+    exonPadding: config.exonPadding || 75,
     currentConstrainedRegion: null,
   })
 

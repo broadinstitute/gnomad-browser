@@ -35,7 +35,14 @@ const TranscriptFlipOutButton = styled.button`
 `
 
 const TranscriptFlipOut = ({ onClick, strand }) => {
-  const direction = strand === '+' ? 'right' : 'left'
+  let direction
+  if (strand === '+') {
+    direction = 'right'
+  } else if (strand === '-') {
+    direction = 'left'
+  } else {
+    direction = null
+  }
   return (
     <TranscriptFlipOutButtonContainer>
       <TranscriptFlipOutButton
@@ -43,18 +50,19 @@ const TranscriptFlipOut = ({ onClick, strand }) => {
       >
         +
       </TranscriptFlipOutButton>
-      <i
+      {direction && <i
         className={`fa fa-arrow-circle-${direction} fa-2x`}
         aria-hidden="true"
-      />
+      />}
     </TranscriptFlipOutButtonContainer>
   )
 }
 TranscriptFlipOut.propTypes = {
   onClick: PropTypes.func,
-  strand: PropTypes.string.isRequired,
+  strand: PropTypes.string,
 }
 TranscriptFlipOut.defaultProps = {
   onClick: () => {},
+  strand: null,
 }
 export default TranscriptFlipOut

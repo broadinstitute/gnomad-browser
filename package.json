@@ -9,6 +9,9 @@
     "projects/*"
   ],
   "devDependencies": {
+    "apollo-cache-inmemory": "^1.1.1",
+    "apollo-client": "^2.0.3",
+    "apollo-link-http": "^1.2.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
@@ -40,6 +43,9 @@
     "jase": "^1.2.0",
     "json-loader": "^0.5.7",
     "react-hot-loader": "3.0.0-beta.7",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "rimraf": "^2.6.2",
     "stylelint": "^8.1.1",
     "stylelint-config-standard": "^17.0.0",

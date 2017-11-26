@@ -57,7 +57,7 @@ const PositionTableTrack = ({
           title={title}
         />
       </div>
-      <div styles={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         {/* <Positions
           width={width}
           height={height}

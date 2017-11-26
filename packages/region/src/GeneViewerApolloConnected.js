@@ -3,7 +3,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo'
-
 import {
   currentGene,
   exonPadding,
