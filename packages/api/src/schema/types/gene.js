@@ -216,8 +216,19 @@ export default geneType
 export const lookupGeneByGeneId = (db, gene_id) =>
   db.collection('genes').findOne({ gene_id })
 
-export const lookupGeneByName = (db, gene_name) =>
-  db.collection('genes').findOne({ gene_name })
+export const lookupGeneByName = (db, gene_name) => {
+  return new Promise((resolve, reject) => {
+    db.collection('genes').findOne({ gene_name })
+      .then((data) => {
+        console.log(data, gene_name)
+        if (!data) {
+          reject('Gene not found.')
+        }
+        resolve(data)
+      })
+      .catch(error => reject(error))
+  })
+}
 
 export const lookupGenesByInterval = ({ mongoDatabase, xstart, xstop }) =>
   mongoDatabase.collection('genes').find({

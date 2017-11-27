@@ -11,6 +11,8 @@
   "devDependencies": {
     "apollo-cache-inmemory": "^1.1.1",
     "apollo-client": "^2.0.3",
+    "apollo-link": "^1.0.3",
+    "apollo-link-error": "^1.0.1",
     "apollo-link-http": "^1.2.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

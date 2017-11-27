@@ -14,3 +14,8 @@ export {
   ClassicVariantCategoryButtonGroup,
 } from './classicExac/button'
 
+export {
+  Search,
+} from './search/simpleSearch'
+
+

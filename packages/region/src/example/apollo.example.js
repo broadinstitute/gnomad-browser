@@ -11,10 +11,11 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider, } from 'react-apollo'
 
 import { createLogger } from 'redux-logger'
-import { createGeneReducer } from '@broad/redux-genes'
+import { createGeneReducer, actions as geneActions } from '@broad/redux-genes'
 // import createActiveReducer from '@broad/gene-page/src/resources/active'
 import { TranscriptTrack } from '@broad/track-transcript'
 import PositionTableTrack from '@broad/track-position-table'
+import { Search } from '@broad/ui'
 
 import GeneViewer from '../GeneViewerApolloConnected'
 
@@ -57,8 +58,8 @@ const store = createStore(
 )
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:8007' }),
-  // link: new HttpLink({ uri: 'http://35.184.112.239/' }),
+  // link: new HttpLink({ uri: 'http://localhost:8007' }),
+  link: new HttpLink({ uri: 'http://35.184.112.239' }),
   cache: new InMemoryCache()
 })
 
@@ -66,6 +67,7 @@ const ExampleApp = () => (
   <ReduxStoreProvider store={store}>
     <ApolloProvider client={client}>
       <Wrapper>
+        <Search onChange={gene => store.dispatch(geneActions.setCurrentGene(gene))} />
         <GeneViewer width={1000} regionAttributes={attributeConfig}>
           <TranscriptTrack
             title={''}

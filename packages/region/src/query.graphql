@@ -1,5 +1,6 @@
 query GeneViewer($geneName: String!) {
   gene(gene_name: $geneName) {
+    id: gene_name
     gene_name
     transcript {
       exons {

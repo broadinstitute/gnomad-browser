@@ -14,6 +14,7 @@ import { createRecords } from './records'
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
   RECEIVE_GENE_DATA: null,
+  SET_CURRENT_GENE: null,
   SET_CURRENT_TISSUE: null,
   SET_CURRENT_TRANSCRIPT: null,
   TOGGLE_TRANSCRIPT_FAN_OUT: null,

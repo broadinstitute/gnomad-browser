@@ -16,19 +16,30 @@ const withGeneViewerQuery = graphql(GeneViewerQuery, {
     return {
       variables: {
         geneName: currentGene
-      }
+      },
+      errorPolicy: 'ignore',
+      // errorPolicy: 'none',
+      // errorPolicy: 'all',
+      // fetchPolicy: 'network-only'
     }
   }
 })
 
 class GeneViewer extends PureComponent {
   render() {
+    // console.log('data', this.props.data)
+    console.log(this.props)
+    console.log('gene', this.props.currentGene)
+    console.log('loading', this.props.data.loading)
+    console.log('network status', this.props.data.networkStatus)
+    console.log('gene data', this.props.data.gene)
+    console.log('error', this.props.data.error)
     const { data: { gene, loading, error }, exonPadding, children, ...rest } = this.props
-    if (error) {
-      return <div>{error.message}</div>
+    if (this.props.data.networkStatus === 1) {
+      return <div>Loading {this.props.currentGene} {this.props.data.variables.geneName}</div>
     }
-    if (loading) {
-      return <div>Loading</div>
+    if (!gene) {
+      return <div>{'Gene not found'}</div>
     }
     return (
       <div>
@@ -54,5 +65,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   connect(mapStateToProps),
-  withGeneViewerQuery
+  withGeneViewerQuery,
 )(GeneViewer)
