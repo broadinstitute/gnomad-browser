@@ -6,42 +6,105 @@ import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 
 const Wrapper = styled.div`
-
+  display: flex;
+  flex-direction: column;
+`
+const Cursor = styled.p`
+  max-width: 500px;
+  border: 1px solid #000;
+  word-wrap: break-word;
 `
 
 const variantTableQuery = gql`
-  query VariantTable($geneName: String!) {
-    geneData: gene(gene_name: $geneName) {
-      gene_name
-      gnomadExomeVariants {
-        id: variant_id
-        alleleFreq: allele_freq
+  query VariantTable(
+    $geneName: String,
+    $index: String,
+    $cursor: String,
+  ) {
+    variantResult: pageVariants(geneId: $geneName, index: $index, cursor: $cursor) {
+      variantCount
+      cursor
+      variants {
+        id
+        alleleCount
       }
     }
   }
 `
 
 const withQuery = graphql(variantTableQuery, {
-  options: ({ currentGene }) => ({
+  options: ({ currentGene, variantDataset }) => ({
     variables: {
-      geneName: currentGene
+      geneName: currentGene,
+      index: variantDataset,
     },
     errorPolicy: 'ignore',
-  })
+  }),
+  props: ({
+    data,
+    data: {
+      variantResult,
+      loading,
+      fetchMore,
+    }
+  }) => {
+    console.log(data)
+    return ({
+      loading,
+      variantResult,
+      loadMoreVariants () {
+        const cursor = variantResult ? variantResult.cursor : null
+        return fetchMore({
+          variables: {
+            cursor,
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            if (!fetchMoreResult) { return previousResult }
+            return {
+              ...previousResult,
+              variantResult: {
+                ...variantResult,
+                cursor: fetchMoreResult.variantResult.cursor,
+                variants: [
+                  ...previousResult.variantResult.variants,
+                  ...fetchMoreResult.variantResult.variants,
+                ]
+              }
+            }
+          }
+        })
+      }
+    })
+  },
 })
 
 const VariantTable = ({
-  data: { loading, geneData },
+  loading,
+  variantResult,
+  loadMoreVariants,
 }) => {
   if (loading) {
     return <div>Loading</div>
   }
-  if (!geneData) {
-    return <div>Gene not found.</div>
+  if (!variantResult) {
+    return <div>Variants not found.</div>
   }
   return (
     <Wrapper>
-      {geneData.gnomadExomeVariants.map(({ id, alleleFreq }) => <p key={`${id}`}>{id} {alleleFreq}</p>)}
+      <button
+        onClick={(event) => {
+          event.preventDefault()
+          loadMoreVariants()
+        }}
+      >
+        Fetch more
+      </button>
+      {`Total: ${variantResult.variantCount}`}
+      {`Fetched: ${variantResult.variants.length}`}
+      <Cursor>
+        {`Cursor: ${variantResult.cursor}`}
+      </Cursor>
+      {variantResult.variants.map(({ id, alleleCount }) => <p key={`${id}`}>{id} {alleleCount}</p>)}
     </Wrapper>
   )
 }

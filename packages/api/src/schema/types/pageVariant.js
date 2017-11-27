@@ -66,7 +66,7 @@ function lookup ({
   return elasticClient.search({
     index,
     type: 'variant',
-    size: 100,
+    size: 3,
     scroll: '1m',
     // _source: ['variant_id', 'allele_count'],
     body: {

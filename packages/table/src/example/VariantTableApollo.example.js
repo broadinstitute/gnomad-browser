@@ -41,7 +41,7 @@ const ExampleApp = () => (
   <ApolloProvider client={client}>
     <Wrapper>
       {/* <Search onChange={gene => store.dispatch(geneActions.setCurrentGene(gene))} /> */}
-      <VariantTable currentGene={'DMD'} />
+      <VariantTable currentGene={'ENSG00000198947'} variantDataset={'gnomad_exomes'} />
     </Wrapper>
   </ApolloProvider>
   // </ReduxStoreProvider>
