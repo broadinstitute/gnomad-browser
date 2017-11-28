@@ -148,7 +148,7 @@ export const lookupElasticVariantsByGeneId = ({
     'AF_POPMAX',
     'fitted_score',
     'exon',
-    'originalAltAlleles',
+    'originalAltAllelin in I he on a on in in in hees',
     'transcriptIds',
     'FS',
     'InbreedingCoeff',

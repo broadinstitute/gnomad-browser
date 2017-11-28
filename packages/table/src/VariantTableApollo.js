@@ -41,14 +41,12 @@ const withQuery = graphql(variantTableQuery, {
     errorPolicy: 'ignore',
   }),
   props: ({
-    data,
     data: {
       variantResult,
       loading,
       fetchMore,
     }
   }) => {
-    console.log(data)
     return ({
       loading,
       variantResult,
