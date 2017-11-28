@@ -12,7 +12,7 @@ import { fromJS, List, Map } from 'immutable'
 import camelCase from 'lodash.camelcase'
 import snakeCase from 'lodash.snakecase'
 
-import mappingsJson from '../../elastic-mappings/mappings.json'
+import elasticMappings from '../../elastic-mappings/mappings.json'
 
 const graphqlToElastic = {
   keyword: GraphQLString,
@@ -22,58 +22,52 @@ const graphqlToElastic = {
   long: GraphQLFloat,
 }
 
-const populationsDictionary = fromJS({
-  NFE: 'europeanNonFinnish',
-  EAS: 'eastAsian',
-  OTH: 'other',
-  AFR: 'african',
-  AMR: 'latino',
-  SAS: 'southAsian',
-  FIN: 'europeanFinnish',
-  ASJ: 'ashkenaziJewish',
-})
+export const getPopulationPath = (
+  populationDictionary,
+  populationDataFields
+) => (key, path) => {
+  const populationMap = fromJS(populationDictionary)
+  const populationKeys = populationMap.keySeq()
+  // const populationNames = populationMap.valueSeq()
 
-// const populationType = new GraphQLObjectType({
-//   name: 'Population',
-//   fields: () => ({
-//
-//   }),
-// })
-//
-// const populationsType = new GraphQLObjectType({
-//   name: 'Populations',
-//   fields: () => ({
-//
-//   })
-// })
+  const populationFields = fromJS(populationDataFields)
+    .reduce((acc, value) => acc.concat(populationKeys.map(pop => `${value}_${pop}`)), new List())
 
-const populationKeys = populationsDictionary.keySeq()
-const populationNames = populationsDictionary.valueSeq()
-
-const populationFields = new List(['AC', 'AN', 'Hom', 'Hemi'])
-  .reduce((acc, value) => acc.concat(populationKeys.map(pop => `${value}_${pop}`)), new List())
-
-function getPath (key) {
-  const path = new List([])
   if (populationFields.contains(key)) {
-    const [populationDataType, pop] = key.split('_')
+    const [populationDataField, pop] = key.split('_')
     return path
       .push('populations')
-      .push(populationsDictionary.get(pop))
+      .push(populationMap.get(pop))
       .push(key)
   }
   return path
 }
 
-const mappings = fromJS(mappingsJson)
+const getPathByGroup = (groupName, fields) => (key, path) => {
+  if (fromJS(fields).contains(key)) {
+    return path
+      .push(groupName)
+      .push(key)
+  }
+  return path
+}
 
-const gnomadVariantTypes = mappings
-  .getIn(['gnomad_exomes', 'mappings', 'variant', 'properties'])
-  .map((value, key) => {
-    return value.set('path', getPath(key))
-  })
-function convertToObject (gnomadVariantTypes) {
-  const object = gnomadVariantTypes
+function getPath(key, revivers) {
+  return revivers.reduce((acc, fn) => {
+    return fn(key, acc)
+  }, new List())
+}
+
+function getPaths(elasticMappings, revivers, index, type) {
+  return fromJS(elasticMappings)
+    .getIn([index, 'mappings', type, 'properties'])
+    .map((value, key) => {
+      return value.set('path', getPath(key, fromJS(revivers)))
+    })
+}
+
+function convertToNested (elasticTypesWithPaths) {
+  return elasticTypesWithPaths
     .reduce((acc, value, key) => {
       const path = value.get('path')
       if (!path.isEmpty()) {
@@ -81,10 +75,7 @@ function convertToObject (gnomadVariantTypes) {
       }
       return acc.set(key, value.delete('path'))
     }, new Map())
-  return object
 }
-
-const reshaped = convertToObject(gnomadVariantTypes)
 
 function convertToGraphQLSchema (object) {
   return object.reduce((acc, value, key) => {
@@ -109,9 +100,87 @@ function convertToGraphQLSchema (object) {
   }, {})
 }
 
-const variantGraphQLFields = convertToGraphQLSchema(reshaped)
+export function elasticToGraphQLObject (
+  elasticMappings: Object,
+  revivers: Array,
+  index: String,
+  type: String,
+) {
+  const elasticMappingsWithPaths = getPaths(elasticMappings, revivers, index, type)
+  const nested = convertToNested(elasticMappingsWithPaths)
+  return convertToGraphQLSchema(nested)
+}
 
-console.log(variantGraphQLFields)
+const gnomadPopDict = {
+  NFE: 'europeanNonFinnish',
+  EAS: 'eastAsian',
+  OTH: 'other',
+  AFR: 'african',
+  AMR: 'latino',
+  SAS: 'southAsian',
+  FIN: 'europeanFinnish',
+  ASJ: 'ashkenaziJewish',
+}
+
+const gnomadPopDataFields = ['AC', 'AN', 'Hom', 'Hemi']
+
+const qualityMetricFields = [
+  'FS',
+  'MQRankSum',
+  'InbreedingCoeff',
+  'VQSLOD',
+  'BaseQRankSum',
+  'MQ',
+  'ClippingRankSum',
+  'ReadPosRankSum',
+  'DP',
+  'QD',
+  'AS_RF',
+  'DREF_MEDIAN',
+  'DP_MEDIAN',
+  'GQ_MEDIAN',
+  'AB_MEDIAN',
+  'GQ_HIST_ALT',
+  'DP_HIST_ALT',
+  'AB_HIST_ALT',
+  'GQ_HIST_ALL',
+  'DP_HIST_ALL',
+  'AB_HIST_ALL',
+]
+
+const popmax = [
+  'POPMAX',
+  'AC_POPMAX',
+  'AN_POPMAX',
+  'AF_POPMAX',
+]
+
+const totals = [
+  'AC',
+  'AN',
+  'AF',
+  'Hemi',
+]
+
+const flags = [
+  'lcr',
+  'segdup',
+]
+
+const gnomadRevivers = [
+  getPopulationPath(gnomadPopDict, gnomadPopDataFields),
+  getPathByGroup('qualityMetrics', qualityMetricFields),
+  getPathByGroup('popmax', popmax),
+  getPathByGroup('totals', totals),
+  getPathByGroup('flags', flags),
+]
+
+const variantGraphQLFields = elasticToGraphQLObject(
+  elasticMappings,
+  gnomadRevivers,
+  'gnomad_exomes',
+  'variant'
+)
 
 const pageVariantType = new GraphQLObjectType({
   name: 'PageVariant',
