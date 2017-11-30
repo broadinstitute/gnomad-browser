@@ -1,0 +1,21 @@
+query VariantTable(
+    $index: String,
+    $cursor: String,
+  	$numberOfVariants: Int
+  ) {
+    variantResult: pageVariants(
+      index: $index,
+      cursor: $cursor,
+      size: $numberOfVariants,
+    ) {
+      variantCount
+      cursor
+      variants {
+        variantId
+   			exomes_AF(lte: 0.01, gte: 0.00001)
+        exomes_Hom(gte: 1)
+        majorConsequence(string: "frameshift_variant")
+        geneId
+      }
+    }
+  }
