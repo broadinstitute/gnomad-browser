@@ -25,8 +25,8 @@ const variantTableQuery = gql`
       variantCount
       cursor
       variants {
-        id
-        alleleCount
+        id: variantId
+        alleleCount: ac
       }
     }
   }
