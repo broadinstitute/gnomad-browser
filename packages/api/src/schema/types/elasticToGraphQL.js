@@ -12,8 +12,6 @@ import { fromJS, List, Map } from 'immutable'
 import camelCase from 'lodash.camelcase'
 import snakeCase from 'lodash.snakecase'
 
-import elasticMappings from '../../elastic-mappings/mappings.json'
-
 export const getPopulationPath = (
   populationDictionary,
   populationDataFields
@@ -80,18 +78,24 @@ function getPaths(elasticMappings, revivers, index, type) {
   return fromJS(elasticMappings)
     .getIn([index, 'mappings', type, 'properties'])
     .map((value, key) => {
-      return value.set('path', getPath(key, fromJS(revivers)))
+      return value
+        .set('path', getPath(key, fromJS(revivers)))
     })
 }
 
-function convertToNested (elasticTypesWithPaths) {
+function convertToNested (elasticTypesWithPaths, index, type) {
   return elasticTypesWithPaths
     .reduce((acc, value, key) => {
       const path = value.get('path')
       if (!path.isEmpty()) {
-        return acc.setIn(path, value.delete('path'))
+        return acc.setIn(path, value
+          .delete('path')
+        )
+
       }
-      return acc.set(key, value.delete('path'))
+      return acc.set(key, value
+        .delete('path')
+      )
     }, new Map())
 }
 
@@ -176,161 +180,41 @@ const elasticToGraphQL = {
   },
 }
 
-function convertToGraphQLSchema (object) {
+function convertToGraphQLSchema (object, elasticIndex, elasticType) {
   return object.reduce((acc, value, key) => {
-    const elasticType = value.get('type')
+    const type = value.get('type')
+    // const id = `${elasticIndex}_${elasticType}_${key}`
     if (!value.get('type')) {
       return {
         ...acc,
         [key]: {
           type: new GraphQLObjectType({
+            // name: camelCase(id),
             name: key,
-            fields: () => convertToGraphQLSchema(value)
+            fields: () => convertToGraphQLSchema(value, elasticIndex, elasticType)
           })
         }
       }
     }
     return {
       ...acc,
-      [key]: elasticToGraphQL[elasticType]
+      [key]: elasticToGraphQL[type]
     }
   }, {})
 }
 
-export function elasticToGraphQLObject (
-  elasticMappings: Object,
-  revivers: Array,
-  index: String,
-  type: String
-) {
-  const elasticMappingsWithPaths = getPaths(elasticMappings, revivers, index, type)
-  const nested = convertToNested(elasticMappingsWithPaths)
-  return convertToGraphQLSchema(nested)
-}
-
-const gnomadPopDict = {
-  NFE: 'europeanNonFinnish',
-  EAS: 'eastAsian',
-  OTH: 'other',
-  AFR: 'african',
-  AMR: 'latino',
-  SAS: 'southAsian',
-  FIN: 'europeanFinnish',
-  ASJ: 'ashkenaziJewish',
-}
-
-const gnomadPopDataFields = ['AC', 'AN', 'Hom', 'Hemi']
-
-const gnomadSchemaConfig = {
-  variantId: 'variantId',
-  // MQRankSum: 'qualityMetrics.MQRankSum',
-  AC: 'totals.AC',
-  AN: 'totals.AN',
-  AF: 'totals.AF',
-  Hom: 'totals.Hom',
-  Hemi: 'totals.Hemi',
-
-  POPMAX: 'popmax.POPMAX',
-  AC_POPMAX: 'popmax.AC_POPMAX',
-  AN_POPMAX: 'popmax.AN_POPMAX',
-  AF_POPMAX: 'popmax.AF_POPMAX',
-
-  MPC: 'mpc.MPC',
-  fitted_score: 'mpc.fitted_score',
-  mis_badness: 'mpc.mis_badness',
-  obs_exp: 'mpc.obs_exp',
-
-  lcr: 'flags.lcr',
-  consequence: 'consequence',
-
-  FS: 'qualityMetrics.FS',
-  MQRankSum: 'qualityMetrics.MQRankSum',
-  InbreedingCoeff: 'qualityMetrics.InbreedingCoeff',
-  VQSLOD: 'qualityMetrics.VQSLOD',
-  BaseQRankSum: 'qualityMetrics.BaseQRankSum',
-  MQ: 'qualityMetrics.MQ',
-  ClippingRankSum: 'qualityMetrics.ClippingRankSum',
-  ReadPosRankSum: 'qualityMetrics.ReadPosRankSum',
-  DP: 'qualityMetrics.DP',
-  QD: 'qualityMetrics.QD',
-  AS_RF: 'qualityMetrics.AS_RF',
-  DREF_MEDIAN: 'qualityMetrics.DREF_MEDIAN',
-  DP_MEDIAN: 'qualityMetrics.DP_MEDIAN',
-  GQ_MEDIAN: 'qualityMetrics.GQ_MEDIAN',
-  AB_MEDIAN: 'qualityMetrics.AB_MEDIAN',
-  GQ_HIST_ALT: 'qualityMetrics.GQ_HIST_ALT',
-  DP_HIST_ALT: 'qualityMetrics.DP_HIST_ALT',
-  AB_HIST_ALT: 'qualityMetrics.AB_HIST_ALT',
-  GQ_HIST_ALL: 'qualityMetrics.GQ_HIST_ALL',
-  DP_HIST_ALL: 'qualityMetrics.DP_HIST_ALL',
-  AB_HIST_ALL: 'qualityMetrics.AB_HIST_ALL',
-}
-
-const gnomadRevivers = [
-  getPathFromSchemaConfig(gnomadSchemaConfig, camelCase),
-  getPopulationPath(gnomadPopDict, gnomadPopDataFields),
-  // getPathByGroup('qualityMetrics', qualityMetricFields),
-  // transformCamelCase,
-]
-
-const variantGraphQLFields = elasticToGraphQLObject(
-  elasticMappings,
-  gnomadRevivers,
-  'gnomad',
-  'variant'
-)
-
-const pageVariantType = new GraphQLObjectType({
-  name: 'PageVariant',
-  fields: () => variantGraphQLFields
-})
-
-export const pageVariants = {
-  description: 'Variants!',
-  args: {
-    index: { type: GraphQLString },
-    // geneId: { type: GraphQLString },
-    cursor: { type: GraphQLString },
-    size: { type: GraphQLInt },
-  },
-  type: new GraphQLObjectType({
-    name: 'PageVariants',
-    fields: () => ({
-      variantCount: { type: GraphQLInt },
-      cursor: { type: GraphQLString },
-      variants: { type: new GraphQLList(pageVariantType) },
-    })
-  }),
-  resolve: (obj, args, ctx, info) => {
-    return lookup({
-      elasticClient: ctx.database.elastic,
-      index: args.index,
-      cursor: args.cursor,
-      geneId: args.geneId,
-      info,
-      size: args.size,
-    })
-  }
-}
-
-function formatVariants (response) {
-  const elasticMappingsWithPaths = getPaths(
-    elasticMappings,
-    gnomadRevivers,
-    'gnomad',
-    'variant'
-  )
-  const variants = response.hits.hits
+const createElasticFormatter = ({ fieldName, elasticMappingsWithPaths }) => (response) => {
+  const hits = response.hits.hits
     .map(hit => new Map(hit._source).map(v => new Map({ value: v })))
     .map(hit => hit.mergeDeep(elasticMappingsWithPaths))
     .map(hit => convertToNestedValues(hit).toJS())
   return {
-    variants,
-    variantCount: response.hits.total,
+    [fieldName]: hits,
+    count: response.hits.total,
     cursor: response._scroll_id,
   }
 }
-function report(argument) {
+export function report(argument) {
   console.log(JSON.stringify(argument, null, 2))
 }
 
@@ -364,7 +248,6 @@ function getSelectionNames(fields, variableValues) {
           fieldArgs.forEach((arg) => {
             const argKey = arg.getIn(['name', 'value'])
             const kind = arg.getIn(['value', 'kind'])
-            console.log(kind)
             argsFormatted.type = kind
             argsFormatted[argKey] = getVariableValue(arg, kind, variableValues)
           })
@@ -394,36 +277,43 @@ function getElasticsearchConditions (arg) {
   }
 }
 
-function lookup ({
+const createResolver = ({
+  fieldName,
+  elasticIndex,
+  elasticType,
+  elasticMappingsWithPaths,
+}) => ({
   elasticClient,
-  index,
   geneId,
   cursor,
   size,
   info,
-}) {
-  // if (cursor) {
-  //   return elasticClient.scroll({
-  //     scrollId: cursor,
-  //     scroll: '30m',
-  //   }).then(formatVariants)
-  // }
+}) => {
+  const formatter = createElasticFormatter({
+    fieldName,
+    elasticMappingsWithPaths,
+  })
+  if (cursor) {
+    return elasticClient.scroll({
+      scrollId: cursor,
+      scroll: '30m',
+    }).then(formatter)
+  }
   const fields = fromJS(info.fieldASTs)
   const astValues = getSelectionNames(fields, info.variableValues)
-  console.log(astValues)
   const elasticConditions = astValues.args.map(getElasticsearchConditions)
   return elasticClient.search({
-    index,
-    type: 'variant',
+    index: elasticIndex,
+    type: elasticType,
     size: size || 1000,
     scroll: '30m',
     _source: astValues.names,
     body: {
       query: {
         bool: {
-          // must: [
-          //   { term: { geneId } }
-          // ],
+          must: [
+            { term: { geneId } }
+          ],
           filter: {
             bool: {
               must: elasticConditions
@@ -433,5 +323,50 @@ function lookup ({
       },
       sort: [{ xpos: { order: 'asc' } }],
     },
-  }).then(formatVariants)
+  }).then(formatter)
+}
+
+
+export const createGraphQLObjectWithElasticCursor = ({
+  name,
+  description,
+  fieldName,
+  listItemObjectName,
+  elasticMappings,
+  mappers,
+  elasticIndex,
+  elasticType,
+}) => {
+  const elasticMappingsWithPaths = getPaths(elasticMappings, mappers, elasticIndex, elasticType)
+  const nested = convertToNested(elasticMappingsWithPaths)
+  const listItemObjectType = convertToGraphQLSchema(nested, elasticIndex, elasticType)
+  const resolver = createResolver({ fieldName, elasticIndex, elasticMappingsWithPaths })
+  return {
+    description,
+    args: {
+      geneId: { type: GraphQLString },
+      cursor: { type: GraphQLString },
+      size: { type: GraphQLInt },
+    },
+    type: new GraphQLObjectType({
+      name,
+      fields: () => ({
+        count: { type: GraphQLInt },
+        cursor: { type: GraphQLString },
+        [fieldName]: { type: new GraphQLList(new GraphQLObjectType({
+          name: listItemObjectName,
+          fields: () => listItemObjectType
+        })) },
+      })
+    }),
+    resolve: (obj, args, ctx, info) => {
+      return resolver({
+        elasticClient: ctx.database.elastic,
+        cursor: args.cursor,
+        geneId: args.geneId,
+        info,
+        size: args.size,
+      })
+    }
+  }
 }

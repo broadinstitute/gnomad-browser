@@ -26,7 +26,9 @@ import regionType from './types/region'
 
 import metaMetaDataType from './types/metametadata'
 
-import { pageVariants } from './types/pageVariant'
+import {
+  variants,
+ } from './types/gnomadVariants'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -98,11 +100,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       type: metaMetaDataType,
       resolve: (obj, args, ctx) => ctx.database.sczMockDb.getSczMetaData(),
     },
-    variants: {
-      type: metaMetaDataType,
-      resolve: (obj, args, ctx) => ctx.database.sczMockDb.getSczMetaData(),
-    },
-    pageVariants,
+    // variants: {
+    //   type: metaMetaDataType,
+    //   resolve: (obj, args, ctx) => ctx.database.sczMockDb.getSczMetaData(),
+    // },
+    variants,
+    // gnomadGenomeVariants,
+    // gnomadCombinedVariants,
   }),
 })
 

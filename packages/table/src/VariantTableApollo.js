@@ -16,27 +16,40 @@ const Cursor = styled.p`
 `
 
 const variantTableQuery = gql`
-  query VariantTable(
+  query VariantTable (
     $geneName: String,
-    $index: String,
     $cursor: String,
+    $numberOfVariants: Int,
   ) {
-    variantResult: pageVariants(geneId: $geneName, index: $index, cursor: $cursor) {
-      variantCount
+    variantResult: variants (
+      geneId: $geneName,
+      cursor: $cursor,
+      size: $numberOfVariants
+    ) {
+      count
       cursor
       variants {
         id: variantId
-        alleleCount: ac
+        totalCounts {
+          alleleCount: AC (lte: 2, gte: 1)
+          alleleFrequency: AF
+          alleleNumber: AN
+          homozygotes: Hom
+        }
+        mainTranscript {
+          lof 
+          majorConsequenceRank (lte: 10)
+        }
       }
     }
   }
 `
 
 const withQuery = graphql(variantTableQuery, {
-  options: ({ currentGene, variantDataset }) => ({
+  options: ({ currentGene, numberOfVariants }) => ({
     variables: {
       geneName: currentGene,
-      index: variantDataset,
+      numberOfVariants,
     },
     errorPolicy: 'ignore',
   }),
@@ -97,12 +110,20 @@ const VariantTable = ({
       >
         Fetch more
       </button>
-      {`Total: ${variantResult.variantCount}`}
+      {`Total: ${variantResult.count}`}
       {`Fetched: ${variantResult.variants.length}`}
       <Cursor>
         {`Cursor: ${variantResult.cursor}`}
       </Cursor>
-      {variantResult.variants.map(({ id, alleleCount }) => <p key={`${id}`}>{id} {alleleCount}</p>)}
+      {variantResult.variants.map(({
+        id,
+        totalCounts: { alleleCount },
+        mainTranscript: { lof }
+      }) => (
+        <p key={`${id}`}>
+          {id} {alleleCount} {lof}
+        </p>
+      ))}
     </Wrapper>
   )
 }
