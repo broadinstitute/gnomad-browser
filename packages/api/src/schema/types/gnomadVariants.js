@@ -1,8 +1,16 @@
 import {
+  GraphQLObjectType,
+  GraphQLInt,
+  GraphQLString,
+  GraphQLList,
+} from 'graphql'
+
+import {
   createGraphQLObjectWithElasticCursor,
   elasticToGraphQLObject,
   getPathFromSchemaConfig,
   getPopulationPath,
+  applyCustomTypes,
   transformCamelCase,
   transformSnakeCase,
 } from './elasticToGraphQL'
@@ -24,6 +32,7 @@ const gnomadPopDataFields = ['AC', 'AN', 'Hom', 'Hemi', 'AF']
 
 const gnomadSchemaConfig = {
   variantId: 'variantId',
+  // filters: 'filters',
   // MQRankSum: 'quality_metrics.MQRankSum',
   AC: 'totalCounts.AC',
   AN: 'totalCounts.AN',
@@ -103,9 +112,58 @@ const gnomadSchemaConfig = {
   majorConsequence: 'mainTranscript.majorConsequence',
   majorConsequenceRank: 'mainTranscript.majorConsequenceRank',
   category: 'mainTranscript.category',
+  sortedTranscriptConsequences: 'sortedTranscriptConsequences',
 }
 
-const gnomadMappers = [
+const TranscriptConsequences = new GraphQLObjectType({
+  name: 'TranscriptConsequences',
+  fields: () => ({
+    amino_acids: { type: GraphQLString },
+    biotype: { type: GraphQLString },
+    canonical: { type: GraphQLInt },
+    cdna_start: { type: GraphQLInt },
+    cdna_end: { type: GraphQLInt },
+    codons: { type: GraphQLString },
+    consequence_terms: { type: new GraphQLList(GraphQLString) },
+    distance: { type: GraphQLInt },
+    exon: { type: GraphQLString },
+    gene_id: { type: GraphQLString },
+    gene_symbol: { type: GraphQLString },
+    gene_symbol_source: { type: GraphQLString },
+    hgvsc: { type: GraphQLString },
+    hgvsp: { type: GraphQLString },
+    lof: { type: GraphQLString },
+    lof_flags: { type: GraphQLString },
+    lof_filter: { type: GraphQLString },
+    lof_info: { type: GraphQLString },
+    protein_id: { type: GraphQLString },
+    transcript_id: { type: GraphQLString },
+    hgnc_id: { type: GraphQLInt },
+    domains: { type: GraphQLString },
+    hgvs: { type: GraphQLString },
+    major_consequence: { type: GraphQLString },
+    major_consequence_rank: { type: GraphQLInt },
+    category: { type: GraphQLString },
+  })
+})
+
+const sortedTranscriptConsequences = {
+  name: 'sortedTranscriptConsequences',
+  args: {
+    transcriptId: { type: GraphQLString },
+  },
+  resolve: (obj, args) => {
+    const transcriptConsequences = JSON.parse(obj.sortedTranscriptConsequences)
+    if (args.transcriptId) {
+      return transcriptConsequences.filter(transcript =>
+        transcript.transcript_id === args.transcriptId)
+    }
+    return transcriptConsequences
+  },
+  type: new GraphQLList(TranscriptConsequences),
+}
+
+const gnomadPathMappers = [
   getPathFromSchemaConfig(gnomadSchemaConfig),
   getPopulationPath(gnomadPopDict, gnomadPopDataFields),
   // getPathByGroup('quality_metrics', qualityMetricFields),
@@ -118,7 +176,10 @@ export const variants = createGraphQLObjectWithElasticCursor({
   fieldName: 'variants',
   listItemObjectName: 'GnomadVariant',
   elasticMappings,
-  mappers: gnomadMappers,
+  customTypes: {
+    sortedTranscriptConsequences,
+  },
+  pathMappers: gnomadPathMappers,
   elasticIndex: 'gnomad_exomes',
   elasticType: 'variant',
 })

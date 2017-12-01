@@ -1,21 +1,35 @@
-query VariantTable(
-    $index: String,
+
+  query VariantTable(
+    $geneName: String,
+    $transcriptId: String,
     $cursor: String,
-  	$numberOfVariants: Int
+  	$numberOfVariants: Int,
   ) {
-    variantResult: pageVariants(
-      index: $index,
+		variants(
+      geneId: $geneName,
       cursor: $cursor,
       size: $numberOfVariants,
     ) {
-      variantCount
+      count
       cursor
       variants {
         variantId
-   			exomes_AF(lte: 0.01, gte: 0.00001)
-        exomes_Hom(gte: 1)
-        majorConsequence(string: "frameshift_variant")
-        geneId
+        mainTranscript {
+          majorConsequence(string: "missense_variant")
+          hgvsc
+          hgvsp
+          lof
+          transcriptId
+        }
+        sortedTranscriptConsequences(
+          transcriptId: $transcriptId
+        ) {
+          majorConsequence: major_consequence
+          hgvsc
+          hgvsp
+          lof
+          transcriptId: transcript_id
+        }
       }
     }
   }

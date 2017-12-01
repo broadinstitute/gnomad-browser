@@ -6,6 +6,11 @@ import {
   GraphQLBoolean,
   GraphQLString,
   GraphQLList,
+  isAbstractType,
+  isInputType,
+  isOutputType,
+  isLeafType,
+  isCompositeType,
 } from 'graphql'
 
 import { fromJS, List, Map } from 'immutable'
@@ -74,13 +79,13 @@ function getPath(key, revivers) {
   }, new List())
 }
 
-function getPaths(elasticMappings, revivers, index, type) {
+function getPaths({ elasticMappings, pathMappers, elasticIndex, elasticType }) {
   return fromJS(elasticMappings)
-    .getIn([index, 'mappings', type, 'properties'])
+    .getIn([elasticIndex, 'mappings', elasticType, 'properties'])
     .map((value, key) => {
       return value
-        .set('path', getPath(key, fromJS(revivers)))
-    })
+        .set('path', getPath(key, fromJS(pathMappers)))
+    }).filter(mapping => !mapping.get('path').isEmpty())
 }
 
 function convertToNested (elasticTypesWithPaths, index, type) {
@@ -180,18 +185,26 @@ const elasticToGraphQL = {
   },
 }
 
-function convertToGraphQLSchema (object, elasticIndex, elasticType) {
+function convertToGraphQLSchema ({ object, elasticIndex, elasticType, customTypes }) {
+  const customTypesMap = fromJS(customTypes)
   return object.reduce((acc, value, key) => {
+    if (customTypesMap.has(key)) {
+      const type = customTypesMap.get(key).get('type')
+      if (isOutputType(type)) {
+        return {
+          ...acc,
+          [key]: customTypesMap.get(key).toJS()
+        }
+      }
+    }
     const type = value.get('type')
-    // const id = `${elasticIndex}_${elasticType}_${key}`
     if (!value.get('type')) {
       return {
         ...acc,
         [key]: {
           type: new GraphQLObjectType({
-            // name: camelCase(id),
             name: key,
-            fields: () => convertToGraphQLSchema(value, elasticIndex, elasticType)
+            fields: () => convertToGraphQLSchema({ object: value, elasticIndex, elasticType, customTypes })
           })
         }
       }
@@ -333,13 +346,14 @@ export const createGraphQLObjectWithElasticCursor = ({
   fieldName,
   listItemObjectName,
   elasticMappings,
-  mappers,
+  pathMappers,
+  customTypes,
   elasticIndex,
   elasticType,
 }) => {
-  const elasticMappingsWithPaths = getPaths(elasticMappings, mappers, elasticIndex, elasticType)
+  const elasticMappingsWithPaths = getPaths({ elasticMappings, pathMappers, elasticIndex, elasticType })
   const nested = convertToNested(elasticMappingsWithPaths)
-  const listItemObjectType = convertToGraphQLSchema(nested, elasticIndex, elasticType)
+  const listItemObjectType = convertToGraphQLSchema({ object: nested, elasticIndex, elasticType, customTypes })
   const resolver = createResolver({ fieldName, elasticIndex, elasticMappingsWithPaths })
   return {
     description,
