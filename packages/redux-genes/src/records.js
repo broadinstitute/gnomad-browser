@@ -16,7 +16,7 @@ export const createRecords = (config) => {
     allGeneNames: Set(),
     currentGene: config.startingGene,
     currentTissue: null,
-    currentTranscript: null,
+    currentTranscript: config.startingTranscript,
     transcriptFanOut: false,
     currentExon: null,
     exonPadding: config.exonPadding || 75,

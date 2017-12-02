@@ -41,7 +41,7 @@ export default (onHeaderClick, width) =>  {
         dataType: 'string',
         width: width * 0.08,
         onHeaderClick,
-        searchable: true,
+        // searchable: true,
         disappear: mediumSize,
       },
       {
@@ -51,7 +51,7 @@ export default (onHeaderClick, width) =>  {
         width: mediumSize ? width * 0.1 : width * 0.10,
         onHeaderClick,
         disappear: mediumSize,
-        searchable: true,
+        // searchable: true,
       },
       {
         dataKey: 'consequence',

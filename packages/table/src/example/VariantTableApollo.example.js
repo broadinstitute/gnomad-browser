@@ -14,6 +14,7 @@ import { createGeneReducer, actions as geneActions } from '@broad/redux-genes'
 import { Search } from '@broad/ui'
 
 import VariantTable from '../VariantTableApollo'
+import tableConfig from './tableConfig'
 
 const logger = createLogger()
 
@@ -23,12 +24,15 @@ const Wrapper = styled.div`
   border: 1px solid #000;
 `
 
-// const store = createStore(
-//   combineReducers({
-//     genes: createGeneReducer({ startingGene: 'DMD' }),
-//   }),
-//   applyMiddleware(thunk, logger)
-// )
+const store = createStore(
+  combineReducers({
+    genes: createGeneReducer({
+      startingGene: 'ENSG00000198947',
+      startingTranscript: 'testing',
+    }),
+  }),
+  applyMiddleware(thunk, logger)
+)
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: 'http://localhost:8007' }),
@@ -37,14 +41,19 @@ const client = new ApolloClient({
 })
 
 const ExampleApp = () => (
-  // <ReduxStoreProvider store={store}>
-  <ApolloProvider client={client}>
-    <Wrapper>
-      {/* <Search onChange={gene => store.dispatch(geneActions.setCurrentGene(gene))} /> */}
-      <VariantTable currentGene={'ENSG00000198947'} numberOfVariants={3} />
-    </Wrapper>
-  </ApolloProvider>
-  // </ReduxStoreProvider>
+  <ReduxStoreProvider store={store}>
+    <ApolloProvider client={client}>
+      <Wrapper>
+        <Search onChange={gene => store.dispatch(geneActions.setCurrentTranscript(gene))} />
+        <VariantTable
+          store={store}
+          numberOfVariants={500}
+          tableConfig={tableConfig}
+          consequence={'missense_variant'}
+        />
+      </Wrapper>
+    </ApolloProvider>
+  </ReduxStoreProvider>
 )
 
 export default ExampleApp

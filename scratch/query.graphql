@@ -1,21 +1,34 @@
 
   query VariantTable(
-    $geneName: String,
-    $transcriptId: String,
+    $currentGene: String,
+    $currentTranscript: String,
     $cursor: String,
   	$numberOfVariants: Int,
+    $consequence: String,
   ) {
 		variants(
       geneId: $geneName,
-      cursor: $cursor,
+      transcriptId: $currentTranscript,
       size: $numberOfVariants,
+      cursor: $cursor,
     ) {
       count
       cursor
       variants {
         variantId
+        totalCounts {
+          alleleCount: AC
+          alleleFrequency: AF
+          homozygotes: Hom
+          alleleNumber: AN
+          hemizygotes: Hemi
+        }
+        flags {
+          segdup
+          lcr
+        }
         mainTranscript {
-          majorConsequence(string: "missense_variant")
+          majorConsequence(string: $consequence)
           hgvsc
           hgvsp
           lof
