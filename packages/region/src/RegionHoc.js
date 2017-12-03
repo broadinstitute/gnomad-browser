@@ -6,24 +6,18 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
+import { currentGene } from '@broad/redux-genes'
+
+import {
+  actions as variantActions,
+} from '@broad/redux-variants'
+
 import {
   currentRegion,
   regionData,
   isFetching,
   actions as regionActions
-} from '../resources/regions'
-
-import {
-  currentGene
-} from '../resources/active'
-
-import {
-  actions as geneActions,
-} from '../resources/genes'
-
-import {
-  actions as variantActions,
-} from '../resources/variants'
+} from './index'
 
 const RegionPageContainer = ComposedComponent => class RegionPage extends Component {
   static propTypes = {
@@ -83,7 +77,7 @@ const mapDispatchToProps = (regionFetchFunction, variantDataset) => (dispatch) =
 const RegionHOC = (
   ComposedComponent,
   regionFetchFunction,
-  variantDataset,
+  variantDataset
 ) => connect(
   mapStateToProps,
   mapDispatchToProps(regionFetchFunction, variantDataset)

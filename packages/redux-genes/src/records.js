@@ -52,6 +52,7 @@ export const createRecords = (config) => {
     gene_name: null,
     transcript: new Transcript(),
     transcripts: new List(),
+    exacv1_regional_constraint_regions: new Map(),
   })
 
   const Exon = Record({

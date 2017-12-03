@@ -1,19 +1,18 @@
 /* eslint-disable no-shadow */
 import keymirror from 'keymirror'
-import Immutable from 'immutable'
-import { Record, Set, OrderedMap, Map, List } from 'immutable'
+import { Record, Set, OrderedMap, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 import { createSearchAction, getSearchSelectors } from 'redux-search'
 
 import {
   isCategoryLoF,
   isCategoryMissenseOrLoF,
-} from '@broad/utilities/src/constants/categoryDefinitions'
+  getTableIndexByPosition
+} from '@broad/utilities'
 
-import { getTableIndexByPosition } from '@broad/utilities/src/variant'
-
-import { types as regionTypes } from './regions'
-import * as fromActive from './active'
+import { types as regionTypes } from '@broad/region'
+import { actions as tableActions } from '@broad/table'
+import { types as geneTypes,  } from '@broad/redux-genes'
 
 export const types = keymirror({
   REQUEST_VARIANTS: null,
@@ -33,7 +32,7 @@ export const actions = {
   setFocusedVariant: (variantId, history) => (dispatch, getState) => {
     history.push(`/gene/BRCA2/${variantId}`)
     // HACK way to preserve table state when switching to variant table
-    dispatch(fromActive.actions.setCurrentTableIndex(
+    dispatch(tableActions.setCurrentTableIndex(
       getTableIndexByPosition(
         variantId.split('-')[1],
         finalFilteredVariants(getState())
@@ -52,7 +51,7 @@ export const actions = {
 
   receiveVariants: variantData => ({
     type: types.REQUEST_VARIANTS,
-    payload: Immutable.fromJS(variantData),
+    payload: fromJS(variantData),
   }),
 
   fetchVariantsByGene (geneName, fetchFunction) {
@@ -136,7 +135,7 @@ export default function createVariantReducer({
   definitions
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
-
+  console.log(datasetKeys)
   const variantRecords = datasetKeys.reduce((acc, dataset) => {
     if (dataset in variantDatasets) {
       acc[dataset] = Record(variantDatasets[dataset])
@@ -178,40 +177,22 @@ export default function createVariantReducer({
         .set('searchIndexed', variants)
     },
 
-    [types.REQUEST_VARIANTS] (state) {
-      return state.set('isFetching', true)
+    [types.RECEIVE_VARIANTS] (state, payload) {
+      return datasetKeys.reduce((nextState, dataset) => {
+        return nextState.byVariantDataset.set(
+          dataset,
+          nextState.byVariantDataset
+            .get(dataset)
+            .merge(payload[dataset].map(v => ([v.variant_id, v])))
+        )
+      }, state).set('isFetching', false)
     },
 
-    // [types.RECEIVE_VARIANTS] (state, payload) {
-    //   return datasetKeys.reduce((nextState, dataset) => {
-    //     return nextState.byVariantDataset.set(
-    //       dataset,
-    //       nextState.byVariantDataset
-    //         .get(dataset)
-    //         .merge(payload[dataset].map(v => ([v.variant_id, v])))
-    //     )
-    //   }, state).set('isFetching', false)
-    // },
-
-    [types.RECEIVE_VARIANTS] (state, { payload }) {
-      // const exons = geneData.getIn(['transcript', 'exons']).toJS()
-      //
-      // const padding = 75
-      // const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-      //   .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-
-      //
-      // let defaultFilter = 'all'
-      //  if (totalBasePairs > 40000) {
-      //   defaultFilter = 'lof'
-      // } else if (totalBasePairs > 15000) {
-      //   defaultFilter = 'missenseOrLoF'
-      // }
-
+    [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
       const withVariants = datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
-        if (variantDatasets[datasetKey]) {
-          payload.get(datasetKey).forEach((variant) => {
+        if (geneData.get(datasetKey) && variantDatasets[datasetKey]) {
+          geneData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant
                 .set('id', variant.get('variant_id'))
@@ -242,7 +223,6 @@ export default function createVariantReducer({
 
       return withVariants
         .set('searchIndexed', currentVariantDataset)
-        // .set('variantFilter', defaultFilter)
     },
 
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
@@ -320,8 +300,6 @@ const sortVariants = (variants, key, ascending) => {
   )
 }
 
-const currentGene = fromActive.currentGene ? fromActive.currentGene : () => {}
-
 /**
  * Variant selectors
  */
@@ -386,12 +364,7 @@ export const filteredVariantsById = createSelector([
     filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get(consequenceKey)))
   }
   if (variantQcFilter) {
-    filteredVariants = filteredVariants.filter((v) => {
-      // if (v.filters.size > 0 && v.datasets.size > 0) {
-      //
-      // }
-      return v.get('filters').size === 0
-    })
+    filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
   }
   return filteredVariants
 })
@@ -465,7 +438,6 @@ export const finalFilteredVariantsCount = createSelector(
   [finalFilteredVariants],
   finalFilteredVariants => finalFilteredVariants.size
 )
-
 
 // export const variantsFilteredByActiveInterval = createSelector(
 //   [

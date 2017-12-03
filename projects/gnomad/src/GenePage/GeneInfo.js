@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { geneData, regionalConstraint} from '@broad/redux-genes'
+import { geneData, regionalConstraint } from '@broad/redux-genes'
 
 import {
   variantCount,
@@ -14,7 +14,11 @@ import {
   actions as variantActions,
 } from '@broad/redux-variants'
 
+import { QuestionMark } from '@broad/help'
+
 import {
+  SectionTitle,
+
   GeneInfoWrapper,
   GeneNameWrapper,
   GeneSymbol,
@@ -26,19 +30,14 @@ import {
   GeneAttributeValues,
   GeneAttributeValue,
   ItemWrapper,
-} from '@broad/gene-page/src/presentation/GeneInfoStyles'
 
-import {
   Table,
   TableRows,
   TableRow,
   TableHeader,
   TableCell,
   TableTitleColumn,
-} from '@broad/ui/src/tables/SimpleTable'
-
-import { QuestionMark } from '@broad/help'
-import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 const ConstraintTabletop = styled.div`
   display: flex;
@@ -46,14 +45,12 @@ const ConstraintTabletop = styled.div`
   margin-bottom: 20px;
   align-items: center;
   width: 100%;
-  ${'' /* border: 1px solid orange; */}
 `
 
 const ConstraintSectionTitle = SectionTitle.extend`
   display: flex;
   flex-direction: row;
   width: 60%;
-  ${'' /* border: 1px solid blue; */}
   margin: 0;
 `
 
@@ -62,15 +59,12 @@ const DatasetSelectionWrapper = styled.div`
   flex-direction: row;
   flex-grow: 1;
   justify-content: flex-end;
-  ${'' /* border: 5px solid pink; */}
-
 `
 
 const DatasetSelection = styled.div`
   margin-right: 5px;
-  font-weight: ${({ isActive }) => isActive ? 'bold': 'normal'};
+  font-weight: ${({ isActive }) => isActive ? 'bold' : 'normal'};
   cursor: pointer;
-  ${'' /* border: 1px solid purple; */}
 `
 
 const ConstraintTable = ({

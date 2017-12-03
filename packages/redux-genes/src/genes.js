@@ -32,7 +32,7 @@ export const actions = {
   receiveGeneData: (geneName, geneData) => ({
     type: types.RECEIVE_GENE_DATA,
     geneName,
-    geneData,
+    geneData: Immutable.fromJS(geneData),
   }),
 
   fetchPageDataByGene (geneName, geneFetchFunction) {
@@ -82,39 +82,44 @@ export const actions = {
 }
 
 export default function createGeneReducer(config) {
-  const { State, fromJS } = createRecords(config)
+  const variantDatasetKeys = Object.keys(config.variantDatasets)
+  const State = Immutable.Record({
+    isFetching: false,
+    byGeneName: Immutable.OrderedMap(),
+    allGeneNames: Immutable.Set(),
+    currentGene: config.startingGene,
+    currentTissue: null,
+    currentTranscript: null,
+    transcriptFanOut: false,
+    currentExon: null,
+    currentConstrainedRegion: null,
+    exonPadding: config.exonPadding || 75,
+  })
+
   const actionHandlers = {
     [types.REQUEST_GENE_DATA] (state) {
       return state.set('isFetching', true)
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
-      const newData = fromJS.Gene(geneData)
-      console.log(newData)
-      if (state.byGeneName.get(geneName)) {
-        return (
-          state
-            .set('isFetching', false)
-            .set('byGeneName', state.byGeneName.set(
-              geneName,
-              state.byGeneName.get(geneName).mergeDeep(newData)
-            ))
-        )
-      }
+      const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
+        return acc.delete(variantDataKey)
+      }, geneData)
+
       return (
         state
           .set('isFetching', false)
-          .set('byGeneName', state.byGeneName.set(geneName, newData))
+          .set('byGeneName', state.byGeneName.set(geneName, geneDataOnly))
           .set('allGeneNames', state.allGeneNames.add(geneName))
       )
     },
     [types.SET_CURRENT_TISSUE] (state, { tissueName }) {
       return state.set('currentTissue', tissueName)
     },
-    [types.SET_CURRENT_TRANSCRIPT] (state, { transcriptId }) {
-      return state.set('currentTranscript', transcriptId)
-    },
     [types.SET_CURRENT_GENE] (state, { geneName }) {
       return state.set('currentGene', geneName)
+    },
+    [types.SET_CURRENT_TRANSCRIPT] (state, { transcriptId }) {
+      return state.set('currentTranscript', transcriptId)
     },
     [types.TOGGLE_TRANSCRIPT_FAN_OUT] (state) {
       return state.set('transcriptFanOut', !state.get('transcriptFanOut'))
@@ -122,15 +127,12 @@ export default function createGeneReducer(config) {
     [types.SET_CURRENT_EXON] (state, { exonId }) {
       return state.set('currentExon', exonId)
     },
-    [types.SET_EXON_PADDING] (state, { padding }) {
-      return state.set('exonPadding', padding)
-    },
     [types.SET_CURRENT_CONSTRAINED_REGION] (state, { constrainedRegionName }) {
       return state.set('currentConstrainedRegion', constrainedRegionName)
     },
   }
 
-  function genes (state = fromJS.State({}), action: Object): State {
+  function genes (state = new State(), action: Object): State {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
@@ -140,20 +142,15 @@ export default function createGeneReducer(config) {
   return genes
 }
 
+export const currentGene = state => state.genes.currentGene
 export const byGeneName = state => state.genes.byGeneName
 export const allGeneNames = state => state.genes.allGeneNames
 export const isFetching = state => state.genes.isFetching
-export const currentGene = state => state.genes.currentGene
 export const currentTissue = state => state.genes.currentTissue
 export const currentTranscript = state => state.genes.currentTranscript
 export const transcriptFanOut = state => state.genes.transcriptFanOut
-export const currentExon = state => state.genes.currentcurrentExon
+export const currentExon = state => state.genes.currentExon
 export const exonPadding = state => state.genes.exonPadding
-
-export const hasGeneData = createSelector(
-  [currentGene, allGeneNames],
-  (currentGene, allGeneNames) => allGeneNames.includes(currentGene)
-)
 
 export const geneData = createSelector(
   [byGeneName, currentGene],
@@ -162,55 +159,34 @@ export const geneData = createSelector(
 
 export const transcripts = createSelector(
   [geneData],
-  (geneData) => {
-    if (!geneData.transcripts.isEmpty()) {
-      return geneData.transcripts.toJS()
-    }
-    return Immutable.List().toJS()
-  }
-)
-
-export const canonicalExons = createSelector(
-  [geneData],
-  (geneData) => {
-    if (geneData) {
-      return geneData.getIn(['transcript', 'exons'])
-    }
-    return null
-  }
+  geneData => geneData.get('transcripts').toJS()
 )
 export const transcriptsGrouped = createSelector(
   [transcripts],
   (transcripts) => {
-    // if (!transcripts.isEmpty()) {
-      return transcripts.reduce((acc, transcript) => {
-        return {
-          ...acc,
-          [transcript.transcript_id]: transcript,
-        }
-      }, {})
-    // }
-    return Immutable.List()
+    return transcripts.reduce((acc, transcript) => {
+      return {
+        ...acc,
+        [transcript.transcript_id]: transcript,
+      }
+    }, {})
   }
 )
 
 export const tissueStats = createSelector(
   [transcripts],
   (transcripts) => {
-    if (transcripts.length > 0) {
-      const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
-      const tissues = Object.keys(maxValuesForTissue)
-      transcripts.forEach((transcript) => {
-        tissues.forEach((tissue) => {
-          const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
-          if (nextValue > maxValuesForTissue[tissue]) {
-            maxValuesForTissue[tissue] = nextValue
-          }
-        })
+    const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
+    const tissues = Object.keys(maxValuesForTissue)
+    transcripts.forEach((transcript) => {
+      tissues.forEach((tissue) => {
+        const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
+        if (nextValue > maxValuesForTissue[tissue]) {
+          maxValuesForTissue[tissue] = nextValue
+        }
       })
-      return Immutable.Map(maxValuesForTissue).sort().reverse()
-    }
-    return null
+    })
+    return Immutable.Map(maxValuesForTissue).sort().reverse()
   }
 )
 

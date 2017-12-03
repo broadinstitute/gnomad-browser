@@ -22,7 +22,7 @@ import createVariantReducer, {
   visibleVariantsById,
   filteredVariantsById,
   allVariantsInCurrentDataset,
-} from '../resources/variants'
+} from '@broad/redux-variants'
 
 const logger = createLogger()
 

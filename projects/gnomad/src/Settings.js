@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
@@ -11,26 +11,23 @@ import {
   variantSearchText,
 } from '@broad/redux-variants'
 
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
-import { geneData, exonPadding } from '@broad/redux-genes'
-import { regionData } from '@broad/gene-page/src/resources/regions'
+import { actions as geneActions, geneData, exonPadding } from '@broad/redux-genes'
+import { regionData } from '@broad/region'
 
 import {
   ClassicExacButton,
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
-} from '@broad/ui/src/classicExac/button'
 
-import {
   SettingsContainer,
   MenusContainer,
   SearchContainer,
   DataSelectionGroup,
   DataSelectionContainer,
-} from '@broad/gene-page/src/presentation/UserInterface'
 
-import { Search } from '@broad/ui/src/search/simpleSearch'
+  Search,
+} from '@broad/ui'
 
 import { QuestionMark } from '@broad/help'
 
@@ -59,7 +56,6 @@ const GeneSettings = ({
     const padding = Math.floor(1000 * newValue)
     setExonPadding(padding)
   }
-
   let partialFetch
   if (regionData) {
     if ((regionData.get('stop') - regionData.get('start')) > 50000) {
@@ -163,7 +159,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setExonPadding: padding => dispatch(activeActions.setExonPadding(padding)),
+    setExonPadding: padding => dispatch(geneActions.setExonPadding(padding)),
     setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
     searchVariants: searchText =>
       dispatch(variantActions.searchVariants(searchText)),

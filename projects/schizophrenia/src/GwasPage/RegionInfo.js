@@ -18,7 +18,7 @@ import {
   GeneAttributeKey,
   GeneAttributeValues,
   GeneAttributeValue,
-} from '@broad/gene-page/src/presentation/GeneInfoStyles'
+} from '@broad/ui'
 
 const lof = '#DD2C00'
 const missense = 'orange'

@@ -8,6 +8,7 @@ export {
 } from './material/checkbox'
 
 export {
+  ClassicExacButton,
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
@@ -18,4 +19,48 @@ export {
   Search,
 } from './search/simpleSearch'
 
+export {
+  Table,
+  VerticalTextLabels,
+  TableVerticalLabel,
+  VerticalLabelText,
+  TableRows,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableTitleColumn,
+  ExampleTable,
+} from './tables/simpleTable'
 
+export {
+  types,
+  actions,
+  default as createUserInterfaceReducer,
+  screenSize,
+} from './userInterfaceRedux'
+
+export {
+  SectionTitle,
+  GenePage,
+  Summary,
+  TableSection,
+  SettingsContainer,
+  MenusContainer,
+  SearchContainer,
+  DataSelectionGroup,
+  DataSelectionContainer,
+} from './genePage/userInterface'
+
+export {
+  GeneInfoWrapper,
+  GeneNameWrapper,
+  GeneSymbol,
+  GeneLongName,
+  GeneDetails,
+  GeneAttributes,
+  GeneAttributeKeys,
+  GeneAttributeValues,
+  GeneAttributeKey,
+  GeneAttributeValue,
+  ItemWrapper,
+} from './genePage/geneInfoStyles'

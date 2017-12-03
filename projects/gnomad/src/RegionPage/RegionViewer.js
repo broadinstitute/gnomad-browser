@@ -1,23 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-// import styled from 'styled-components'
 
-import RegionViewerComponent from '@broad/region'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 import StackedBarTrack from '@broad/track-stacked-bar'
-
 import { GenesTrack } from '@broad/track-genes'
 
-import { screenSize, actions as activeActions } from '@broad/gene-page/src/resources/active'
-import { regionData } from '@broad/gene-page/src/resources/regions'
-import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
-
-import {
-  markerExacClassic,
-  attributeConfig,
-} from '@broad/gene-page/src/presentation/RegionViewerStyles'
+import { actions as geneActions } from '@broad/redux-genes'
+import { screenSize } from '@broad/ui'
+import { RegionViewer, regionData, markerExacClassic, attributeConfig } from '@broad/region'
+import { NavigatorConnected } from '@broad/track-navigator'
 
 import {
   finalFilteredVariants,
@@ -27,7 +20,7 @@ import {
 
 import { getCoverageConfig } from '../GenePage/RegionViewer'
 
-const RegionViewer = ({
+const RegionViewerConnected = ({
   regionData,
   allVariants,
   selectedVariantDataset,
@@ -46,7 +39,7 @@ const RegionViewer = ({
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
-  let partialFetch
+  let partialFetcho
   if ((regionData.get('stop') - regionData.get('start')) > 50000) {
     partialFetch = 'lof'
     variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
@@ -96,7 +89,7 @@ const RegionViewer = ({
 
   return (
     <div>
-      <RegionViewerComponent
+      <RegionViewer
         width={regionViewerWidth}
         padding={0}
         regions={regions}
@@ -125,7 +118,7 @@ const RegionViewer = ({
           <StackedBarTrack height={150} data={buckets} />
         }
         <NavigatorConnected title={'Viewing in table'} />
-      </RegionViewerComponent>
+      </RegionViewer>
     </div>
   )
 }
@@ -150,6 +143,6 @@ export default connect(
     variantFilter: variantFilter(state),
   }),
   dispatch => ({
-    onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    onGeneClick: geneName => dispatch(geneActions.setCurrentGene(geneName)),
   })
-)(RegionViewer)
+)(RegionViewerConnected)

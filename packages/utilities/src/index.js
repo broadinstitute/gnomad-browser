@@ -26,3 +26,9 @@ export {
 export {
   processVariantsList
 } from './exalt'
+
+export {
+  isCategoryLoF,
+  isCategoryMissenseOrLoF,
+} from './constants/categoryDefinitions'
+

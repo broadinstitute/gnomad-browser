@@ -8,10 +8,6 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import {
-  actions as variantActions
-} from './variants'
-
 export const types = keymirror({
   SET_CURRENT_REGION: null,
   REQUEST_REGION_DATA: null,

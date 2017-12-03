@@ -1,37 +1,28 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-case-declarations */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
+import { GenePageHoc } from '@broad/redux-genes'
 import { VariantTable } from '@broad/table'
 
 import {
-  SectionTitle,
   GenePage,
   Summary,
   TableSection,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 import { HelpLink } from '@broad/help'
 
 import GeneInfo from './GeneInfo'
 import Settings from '../Settings'
-import GeneRegion from './RegionViewer'
+import GeneViewer from './RegionViewer'
 import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
-// import { fetchWithExac, fetchGnomadOnly } from './fetch'
 import { fetchWithExac } from './fetch'
 
+console.log(GeneViewer)
 const Loading = styled.div`
   display: flex;
   align-items: center;
@@ -75,7 +66,7 @@ const VariantTableWithRouter = withRouter(VariantTable)
 //   'https://i2.wp.com/media.boingboing.net/wp-content/uploads/2015/10/tumblr_nlohpxGdBi1tlivlxo1_12801.gif?w=970',
 // ]
 
-const AppGenePage = ({
+const GenePageConnected = ({
   gene,
   isFetching,
 }) => {
@@ -92,7 +83,7 @@ const AppGenePage = ({
       <Summary>
         <GeneInfo />
       </Summary>
-      <GeneRegion />
+      <GeneViewer />
       <TableSection>
         {/* <SectionTitle>Variant table</SectionTitle> */}
         <Settings />
@@ -129,12 +120,12 @@ const AppGenePage = ({
   )
 }
 
-AppGenePage.propTypes = {
+GenePageConnected.propTypes = {
   gene: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
 }
-AppGenePage.defaultProps = {
+GenePageConnected.defaultProps = {
   gene: null,
 }
 
-export default withRouter(FetchHoc(AppGenePage, fetchWithExac))
+export default withRouter(GenePageHoc(GenePageConnected, fetchWithExac))

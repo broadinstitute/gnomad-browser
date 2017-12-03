@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Help, HelpButton } from '@broad/help'
 
 import GenePage from './GenePage'
-import RegionPage from './RegionPage'
+// import RegionPage from './RegionPage'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -28,7 +28,7 @@ const App = () => (
       <Switch>
         {/* <Route path="/gene/:gene/:variantId" component={GenePage} /> */}
         <Route exact path="/gene/:gene" component={GenePage} />
-        <Route exact path="/region/:regionId" component={RegionPage} />
+        {/* <Route exact path="/region/:regionId" component={RegionPage} /> */}
       </Switch>
       {/* <Route path="/variant/:variant" component={GenePage} /> */}
       {/* <Route path="/rsid/:rsid" component={GenePage} /> */}
@@ -39,24 +39,3 @@ const App = () => (
 )
 
 export default App
-
-// :root {
-//   --backgroundColor: #FAFAFA;
-//   /*--primaryColor: #375D81;*/
-//   --primaryColor: black;
-//   --secondaryColor: #91AA9D;
-//   --exonColor: #475453;
-//   --paddingColor: #183152;
-//   --rowHoverColor: #E8EAF6;
-//   --rowBackGroundColor: #FAFAFA;
-// }
-//
-// /*:root {
-//   --backgroundColor: #1E1E20;
-//   --primaryColor: #D9CB9E;
-//   --secondaryColor: #DC3522;
-//   --exonColor: #475453;
-//   --paddingColor: #5A5E5C;
-//   --rowHoverColor: #183152;
-//   --rowBackGroundColor: #1E1E20;
-// }*/

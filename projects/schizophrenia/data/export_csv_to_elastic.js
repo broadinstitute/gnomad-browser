@@ -1,6 +1,6 @@
 import { loadCsvToElastic } from '@broad/api/utilities/elasticsearch'
 
-const geneCountsFilePath = '../../../resources/gene_counts_results.txt'
+const geneCountsFilePath = '../../@broad/redux-gene_counts_results.txt'
 
 const geneCountsHeaders = [
   'geneName',

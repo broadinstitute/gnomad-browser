@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
-import RegionHoc from '@broad/gene-page/src/containers/RegionHoc'
+import { RegionHoc } from '@broad/region'
 import { VariantTable } from '@broad/table'
 
 import RegionInfo from './RegionInfo'
@@ -28,7 +28,6 @@ const RegionPageWrapper = styled.div`
   background-color: #FAFAFA;
   color: black;
   margin-top: 40px;
-  ${'' /* border: 5px solid yellow; */}
   width: 95%;
   flex-shrink: 0;
   @media (max-width: 900px) {
@@ -45,7 +44,6 @@ const Summary = styled.div`
   width: 95%;
   padding-left: 60px;
   margin-bottom: 10px;
-  ${'' /* border: 5px solid blue; */}
 
   @media (max-width: 900px) {
     padding-left: 0;
@@ -56,7 +54,6 @@ const Summary = styled.div`
 
 const TableSection = styled.div`
   margin-left: 70px;
-  ${'' /* border: 1px solid green; */}
   margin-bottom: 100px;
   @media (max-width: 900px) {
     margin-left: 5px;

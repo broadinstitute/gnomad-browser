@@ -20,6 +20,7 @@ export {
   variantSearchText,
   variantSearchResult,
   isSearching,
+  filteredIdList,
   sortedVariants,
   finalFilteredVariants,
   finalFilteredVariantsCount,

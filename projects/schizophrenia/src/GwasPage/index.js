@@ -17,7 +17,7 @@ import {
   GenePage,
   Summary,
   TableSection,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 import RegionInfo from './RegionInfo'
 import RegionSettings from './RegionSettings'

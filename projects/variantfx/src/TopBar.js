@@ -7,7 +7,7 @@ import { currentGene, actions as activeActions } from '@broad/redux-genes'
 
 import {
   DataSelectionContainer,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 import {
   uniqueGeneDiseaseNames,

@@ -18,7 +18,7 @@ import {
   MenusContainer,
   SearchContainer,
   DataSelectionGroup,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 let findInput
 

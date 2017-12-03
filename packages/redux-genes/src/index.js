@@ -19,3 +19,7 @@ export {
   tissueStats,
   regionalConstraint,
 } from './genes'
+
+export {
+  default as GenePageHoc
+} from './GenePageHoc'

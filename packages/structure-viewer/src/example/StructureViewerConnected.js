@@ -48,7 +48,7 @@ let StructureViewerConnected = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const currentGene = state.active.currentGene
+  const currentGene = state.genes.currentGene
   const structureData = reduxFunctions.structures(state)
   const retrieving = reduxFunctions.retrieving(state)
   const currentPdb = reduxFunctions.currentPdb(state)

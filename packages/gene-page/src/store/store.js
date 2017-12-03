@@ -1,9 +1,3 @@
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-
 import {
   applyMiddleware,
   compose,
@@ -16,19 +10,13 @@ import throttle from 'redux-throttle'
 import createDebounce from 'redux-debounced'
 import { createLogger } from 'redux-logger'
 import { reduxSearch, reducer as searchReducer } from 'redux-search'
-
-import createGeneReducer from '../resources/genes'
-import createRegionReducer from '../resources/regions'
+import { createVariantReducer } from '@broad/redux-variants'
+import { createGeneReducer } from '@broad/redux-genes'
+import { createRegionReducer } from '@broad/region'
 import { createHelpReducer } from '@broad/help'
-
-import createVariantReducer, {
-  visibleVariantsById,
-  filteredVariantsById,
-  allVariantsInCurrentDataset,
-} from '../resources/variants'
-
-
-import createActiveReducer from '../resources/active'
+import { createUserInterfaceReducer } from '@broad/ui'
+import { createTableReducer } from '@broad/table'
+import { createNavigatorReducer } from '@broad/track-navigator'
 
 const logger = createLogger()
 
@@ -46,12 +34,14 @@ export default function createGenePageStore(appSettings, appReducers) {
     middlewares.push(logger)
   }
   const rootReducer = combineReducers({
-    active: createActiveReducer(appSettings),
     genes: createGeneReducer(appSettings),
     search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
     help: createHelpReducer(appSettings.docs),
+    ui: createUserInterfaceReducer(),
+    navigator: createNavigatorReducer(),
+    table: createTableReducer(),
     ...appReducers,
   })
 
@@ -62,7 +52,7 @@ export default function createGenePageStore(appSettings, appReducers) {
         variants: appSettings.searchIndexes,
       },
       resourceSelector: appSettings.searchResourceSelector,
-    }),
+    })
   )(createStore)
 
   return finalCreateStore(rootReducer)

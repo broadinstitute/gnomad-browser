@@ -75,13 +75,13 @@ class RegionViewer extends Component {
     ready: false,
   }
 
-  componentWillMount () {
-    this.broadcastOffsetRegions()
-  }
-
-  componentDidUpdate () {
-    this.broadcastOffsetRegions()
-  }
+  // componentWillMount () {
+  //   this.broadcastOffsetRegions()
+  // }
+  //
+  // componentDidUpdate () {
+  //   this.broadcastOffsetRegions()
+  // }
 
   setWidth = (event, newValue) => {
     const newWidth = 800 * newValue

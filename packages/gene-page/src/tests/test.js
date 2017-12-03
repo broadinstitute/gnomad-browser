@@ -4,8 +4,8 @@ import createGenePageStore from '../store/store'
 
 import data from '@resources/1506782078-gene-page-test-data.json'  // eslint-disable-line
 
-import * as fromGenes from '../resources/genes'
-import * as fromVariants from '../resources/variants'
+import * as fromGenes from '@broad/redux-genes'
+import * as fromVariants from '@broad/redux-variants'
 
 function log (json) {
   console.log(JSON.stringify(json, null, '  '))

@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import RegionViewer from '@broad/region'
-import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
+import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import VariantTrack from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
-import { screenSize, actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { screenSize, SectionTitle } from '@broad/ui'
 
 import {
   geneData,
@@ -19,8 +18,6 @@ import {
   actions as geneActions,
 } from '@broad/redux-genes'
 
-import { SectionTitle } from '@broad/gene-page/src/presentation/UserInterface'
-
 import {
   finalFilteredVariants,
   selectedVariantDataset,
@@ -28,11 +25,12 @@ import {
 } from '@broad/redux-variants'
 
 import {
+  RegionViewer,
   coverageConfigClassic,
   coverageConfigNew,
   markerExacClassic,
   attributeConfig,
-} from '@broad/gene-page/src/presentation/RegionViewerStyles'
+} from '@broad/region'
 
 const COVERAGE_TRACK_HEIGHT = 200
 const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
@@ -63,7 +61,7 @@ export const getCoverageConfig = (
   }
 }
 
-const GeneRegion = ({
+const GeneViewer = ({
   gene,
   allVariants,
   selectedVariantDataset,
@@ -74,12 +72,8 @@ const GeneRegion = ({
   toggleTranscriptFanOut,
   variantFilter,
 }) => {
-
-  const regionViewerDesktopPadding = transcriptFanOut ? 450 : 300
-  const regionViewerMobilePadding = transcriptFanOut ? 200 : 150
-
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - regionViewerMobilePadding : screenSize.width - regionViewerDesktopPadding
+  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
 
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
@@ -128,7 +122,6 @@ const GeneRegion = ({
   `
 
   const RegionalConstraintRegion = styled.rect`
-
   `
 
   const RegionalConstraintTrack = ({
@@ -238,6 +231,8 @@ const GeneRegion = ({
         <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
+          transcriptFanOut={transcriptFanOut}
+          transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack
@@ -255,16 +250,16 @@ const GeneRegion = ({
             markerConfig={markerExacClassic}
             variants={variantsReversed}
           />}
-        <NavigatorConnected title={'Viewing in table'} />
+        <NavigatorTrackConnected title={'Viewing in table'} />
       </RegionViewer>
     </RegionViewerWrapper>
   )
 }
-GeneRegion.propTypes = {
+GeneViewer.propTypes = {
   gene: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
-  setRegionViewerAttributes: PropTypes.func.isRequired,
+  // setRegionViewerAttributes: PropTypes.func.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
   variantFilter: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
@@ -284,8 +279,8 @@ export default connect(
     variantFilter: variantFilter(state),
   }),
   dispatch => ({
-    setRegionViewerAttributes: regionViewerAttributes =>
-      dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes)),
+    // setRegionViewerAttributes: regionViewerAttributes =>
+    //   dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes)),
     toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
   })
-)(GeneRegion)
+)(GeneViewer)

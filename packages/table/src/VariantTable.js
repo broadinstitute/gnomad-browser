@@ -5,15 +5,12 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import {
-  actions as activeActions,
-  // currentTableIndex,
-  screenSize,
-} from '@broad/gene-page/src/resources/active'
+import { actions as tableActions, currentTableIndex } from '@broad/table'
+import { screenSize } from '@broad/ui'
 
 import {
   actions as variantActions,
@@ -23,62 +20,52 @@ import {
   finalFilteredVariantsCount,
 } from '@broad/redux-variants'
 
-import Table from './index'
+import { Table } from './index'
 
-class VariantTable extends PureComponent {
-  componentDidMount() {
-    this.props.fetchVariantsByGene(
-      this.props.currentGene,
-      this.props.fetchFunction,
-    )
-  }
-
-  render() {
-    const {
-      variants,
-      setVariantSort,
-      setFocusedVariant,
-      setHoveredVariant,
-      setCurrentTableScrollData,
-      tablePosition,
-      searchText,
-      title,
-      height,
-      tableConfig,
-      history,
-      screenSize,
-      filteredIdList,
-    } = this.props
-
-    const scrollBarWidth = 40
-    const tableWidth = (screenSize.width * 0.85) + scrollBarWidth
-    const tConfig = tableConfig(setVariantSort, tableWidth)
-    console.log(this.props)
-    if (!variants) {
-      return <div className=""></div>
-    }
-    return (
-      <div>
-        <Table
-          title={title}
-          height={500}
-          width={tableWidth}
-          tableConfig={tConfig}
-          tableData={variants}
-          remoteRowCount={variants.size}
-          loadMoreRows={() => {}}
-          overscan={5}
-          loadLookAhead={0}
-          onRowClick={setFocusedVariant(history)}
-          onRowHover={setHoveredVariant}
-          scrollToRow={tablePosition}
-          onScroll={setCurrentTableScrollData}
-          searchText={searchText}
-          filteredIdList={filteredIdList}
-        />
-      </div>
-    )
-  }
+const VariantTable = ({
+  variants,
+  setVariantSort,
+  setFocusedVariant,
+  setHoveredVariant,
+  setCurrentTableScrollData,
+  tablePosition,
+  searchText,
+  title,
+  height,
+  tableConfig,
+  history,
+  screenSize,
+  filteredIdList,
+}) => {
+  const scrollBarWidth = 40
+  // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
+  const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
+  const tConfig = tableConfig(setVariantSort, tableWidth)
+  // const paddingWidth = tConfig.fields.length * 40
+  // const cellContentWidth = tConfig.fields.reduce((acc, field) =>
+    // acc + field.width, 0)
+  // const tableHeight = screenSize.width - 700
+  return (
+    <div>
+      <Table
+        title={title}
+        height={500}
+        width={tableWidth}
+        tableConfig={tConfig}
+        tableData={variants}
+        remoteRowCount={variants.size}
+        loadMoreRows={() => {}}
+        overscan={5}
+        loadLookAhead={0}
+        onRowClick={setFocusedVariant(history)}
+        onRowHover={setHoveredVariant}
+        scrollToRow={tablePosition}
+        onScroll={setCurrentTableScrollData}
+        searchText={searchText}
+        filteredIdList={filteredIdList}
+      />
+    </div>
+  )
 }
 VariantTable.propTypes = {
   variants: PropTypes.any.isRequired,
@@ -101,22 +88,19 @@ VariantTable.defaultProps = {
   title: '',
   height: 400,
 }
-
 const mapStateToProps = (state) => {
   return {
     variants: finalFilteredVariants(state),
     variantCount: finalFilteredVariantsCount(state),
-    // tablePosition: currentTableIndex(state),
+    tablePosition: currentTableIndex(state),
     searchText: variantSearchText(state),
-    currentNavigatorPosition: state.active.currentNavigatorPosition,
+    currentNavigatorPosition: state.navigator.currentNavigatorPosition,
     screenSize: screenSize(state),
     filteredIdList: filteredIdList(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchVariantsByGene: (geneName, fetchFunction) =>
-      dispatch(variantActions.fetchVariantsByGene(geneName, fetchFunction)),
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
     // setFocusedVariant: history => variantId =>
     //   dispatch(variantActions.setFocusedVariant(variantId, history)),
@@ -130,7 +114,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
     setCurrentTableScrollData: scrollData =>
-      dispatch(activeActions.setCurrentTableScrollData(scrollData)),
+      dispatch(tableActions.setCurrentTableScrollData(scrollData)),
   }
 }
 

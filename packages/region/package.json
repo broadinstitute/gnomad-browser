@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "src/index.js",
+  "scripts": {
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/genes.spec.js' | ../../node_modules/.bin/tspec",
+    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d"
+  },
   "files": [
     "lib"
   ],
@@ -18,7 +22,15 @@
     "apollo-cache-inmemory": "^1.1.1",
     "apollo-client": "^2.0.3",
     "apollo-link-http": "^1.2.0",
-    "graphql-tag": "^2.5.0"
+    "graphql-tag": "^2.5.0",
+    "expect": "^21.2.1",
+    "immutable": "^4.0.0-rc.9",
+    "keymirror": "^0.1.1",
+    "react-redux": "^5.0.6",
+    "redux": "3.6.0",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
+    "tape-promise": "^2.0.1"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

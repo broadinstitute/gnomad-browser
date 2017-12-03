@@ -17,13 +17,13 @@ import {
   Summary,
   TableSection,
   SectionTitle,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 import {
   GeneInfoWrapper,
   GeneNameWrapper,
   GeneSymbol,
-} from '@broad/gene-page/src/presentation/GeneInfoStyles'
+} from '@broad/ui'
 
 import FetchHoc from './FetchHoc'
 import GeneInfo from './GeneInfo'

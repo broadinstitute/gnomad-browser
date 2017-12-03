@@ -17,7 +17,7 @@ import {
   GenePage,
   Summary,
   TableSection,
-} from '@broad/gene-page/src/presentation/UserInterface'
+} from '@broad/ui'
 
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'

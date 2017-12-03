@@ -25,7 +25,7 @@ import {
   GeneAttributeValues,
   GeneAttributeValue,
   ItemWrapper,
-} from '@broad/gene-page/src/presentation/GeneInfoStyles'
+} from '@broad/ui'
 
 import {
   VerticalTextLabels,

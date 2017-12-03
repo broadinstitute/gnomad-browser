@@ -2,8 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-import createGenePageStore from '@broad/gene-page/src/store/store'
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
+import { createGenePageStore } from '@broad/gene-page'
+import { actions as userInterfaceActions } from '@broad/ui'
 
 import App from './routes'
 
@@ -69,25 +69,25 @@ const appSettings = {
       segdup: null,
       datasets: [],
     },
-    // exacVariants: {
-    //   id: null,
-    //   variant_id: null,
-    //   rsid: null,
-    //   pos: null,
-    //   xpos: null,
-    //   hgvsc: null,
-    //   hgvsp: null,
-    //   allele_count: null,
-    //   allele_freq: null,
-    //   allele_num: null,
-    //   filters: null,
-    //   hom_count: null,
-    //   consequence: null,
-    //   lof: null,
-    //   lcr: null,
-    //   segdup: null,
-    //   datasets: [],
-    // },
+    exacVariants: {
+      id: null,
+      variant_id: null,
+      rsid: null,
+      pos: null,
+      xpos: null,
+      hgvsc: null,
+      hgvsp: null,
+      allele_count: null,
+      allele_freq: null,
+      allele_num: null,
+      filters: null,
+      hom_count: null,
+      consequence: null,
+      lof: null,
+      lcr: null,
+      segdup: null,
+      datasets: [],
+    },
   },
   combinedDatasets: {
     gnomadCombinedVariants: {
@@ -106,10 +106,11 @@ const appSettings = {
 
 const store = createGenePageStore(appSettings)
 
-window.addEventListener('resize', () => store.dispatch(activeActions.setScreenSize(
-  window.innerHeight,
-  window.innerWidth
-)))
+window.addEventListener('resize', () => store.dispatch(
+  userInterfaceActions.setScreenSize(
+    window.innerHeight,
+    window.innerWidth)
+))
 
 
 const Main = () => (
