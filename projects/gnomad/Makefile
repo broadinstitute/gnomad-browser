@@ -18,8 +18,8 @@ build: clean install lib
 
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
-	GNOMAD_API_URL='http://35.184.112.239' $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
-	# GNOMAD_API_URL=http://localhost:8007 $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
+	# GNOMAD_API_URL='http://35.184.112.239' $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
+	GNOMAD_API_URL=http://localhost:8007 $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
 
 COMPONENT_NAME=$(shell basename `pwd`)
 

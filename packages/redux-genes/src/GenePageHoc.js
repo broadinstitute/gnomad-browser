@@ -48,7 +48,7 @@ const mapStateToProps = state => ({
   currentGene: currentGene(state),
 })
 
-const mapDispatchToProps = geneFetchFunction => (dispatch) => {
+const mapDispatchToProps = (geneFetchFunction, exportFetch) => (dispatch) => {
   return {
     fetchGeneIfNeeded: (currentGene, match) => dispatch(
       geneActions.fetchGeneIfNeeded(currentGene, match, geneFetchFunction)
@@ -56,15 +56,19 @@ const mapDispatchToProps = geneFetchFunction => (dispatch) => {
     resetSearchVariants: () => dispatch(
       variantActions.searchVariantsRaw('')
     ),
+    exportVariantsToCsv: () => dispatch(
+      variantActions.exportVariantsToCsv(exportFetch)
+    ),
   }
 }
 
 const GenePageHOC = (
   ComposedComponent,
   geneFetchFunction,
+  exportFetch,
 ) => connect(
   mapStateToProps,
-  mapDispatchToProps(geneFetchFunction)
+  mapDispatchToProps(geneFetchFunction, exportFetch)
 )(GenePageContainer(ComposedComponent))
 
 export default GenePageHOC

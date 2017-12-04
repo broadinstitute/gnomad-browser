@@ -4,7 +4,7 @@ import express from 'express'
 import compression from 'compression'
 import { MongoClient } from 'mongodb'
 import elasticsearch from 'elasticsearch'
-import GraphQLHTTP from 'express-graphql'
+import graphQLHTTP from 'express-graphql'
 import cors from 'cors'
 import Redis from 'ioredis'
 
@@ -33,7 +33,7 @@ app.use(cors());
         ],
         name: 'mymaster',
       })
-    app.use('/', GraphQLHTTP({
+    app.use(/\/$/, graphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
       context: {
@@ -45,6 +45,10 @@ app.use(cors());
         },
       },
     }))
+    app.use('/export', (request, response) => {
+      console.log(request)
+      response.send('hello!')
+    })
     app.listen(process.env.GRAPHQL_PORT, () =>
       console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
   } catch (error) {

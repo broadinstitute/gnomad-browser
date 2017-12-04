@@ -12,7 +12,7 @@ import {
 
 import { types as regionTypes } from '@broad/region'
 import { actions as tableActions } from '@broad/table'
-import { types as geneTypes,  } from '@broad/redux-genes'
+import { types as geneTypes } from '@broad/redux-genes'
 
 export const types = keymirror({
   REQUEST_VARIANTS: null,
@@ -121,6 +121,100 @@ export const actions = {
       }
     }
     return thunk
+  },
+
+  exportVariantsToCsv: (fetchFunction) => {
+    const sum = (oldValue, newValue) => oldValue + newValue
+    const concat = (oldValue, newValue) => oldValue.concat(newValue)
+    const combineKeys = {
+      allele_count: sum,
+      allele_num: sum,
+      hom_count: sum,
+      filter: concat,
+      // allele_freq: () => null,
+      datasets: [],
+    }
+    return (dispatch, getState) => {
+      // function flatten (map) {
+      //
+      // }
+      const populations = new Map({
+        NFE: 'european_non_finnish',
+        EAS: 'east_asian',
+        OTH: 'other',
+        AFR: 'african',
+        AMR: 'latino',
+        SAS: 'south_asian',
+        FIN: 'european_finnish',
+        ASJ: 'ashkenazi_jewish',
+      })
+
+      const popDatatypes = ['pop_acs', 'pop_ans', 'pop_homs', 'pop_hemi']
+
+      function flattenForCsv (data) {
+        const dataMap = new Map(fromJS(data).map(v => List([v.get('variant_id'), v])))
+
+        const qualityMetricKeys = dataMap.first().get('quality_metrics').keySeq()
+        return dataMap.map((value) => {
+          const flattened = popDatatypes.reduce((acc, popDatatype) => {
+            return populations.valueSeq().reduce((acc, popKey) => {
+              return acc.set(`${popDatatype}_${popKey}`, acc.getIn([popDatatype, popKey]))
+            }, acc)
+          }, value)
+          const deletePopMap = popDatatypes.reduce((acc, popDatatype) =>
+            acc.delete(popDatatype), flattened)
+          const flattenedQualityMetrics = qualityMetricKeys.reduce((acc, key) => {
+            return acc.set(`quality_metrics_${key}`, acc.getIn(['quality_metrics', key]))
+          }, deletePopMap)
+          return flattenedQualityMetrics.delete('quality_metrics')
+        })
+      }
+
+      function exportToCsv (flattenedData, dataset) {
+        const data = flattenedData.toIndexedSeq().map((variant) => {
+          return variant.valueSeq().join(',')
+        }).join('\r\n')
+        const headers = flattenedData.first().keySeq().join(',')
+        const csv = `data:text/csv;charset=utf-8,${headers}\n${data}\r\n`
+        const encodedUri = encodeURI(csv)
+        // window.open(encodedUri)
+        const link = document.createElement('a')
+        link.setAttribute('href', encodedUri)
+        link.setAttribute('download', `${dataset}_${new Date().getTime()}`)
+        document.body.appendChild(link)
+        link.click()
+      }
+
+      const state = getState()
+      const currentDataset = selectedVariantDataset(state)
+      const filteredVariants = finalFilteredVariants(state)
+      const variantIds = filteredVariants.map(v => v.variant_id)
+
+      if (currentDataset === 'gnomadCombinedVariants') {
+        return Promise.all([
+          fetchFunction(variantIds, 'gnomadExomeVariants'),
+          fetchFunction(variantIds, 'gnomadGenomeVariants'),
+        ]).then((promiseArray) => {
+          const [exomeData, genomeData] = promiseArray
+          console.log(exomeData)
+          const exomeDataMapFlattened = flattenForCsv(exomeData)
+          const genomeDataMapFlattened = flattenForCsv(genomeData)
+          const combined = exomeDataMapFlattened.mergeDeepWith((oldValue, newValue, key) => {
+            if (combineKeys[key]) {
+              return combineKeys[key](oldValue, newValue)
+            }
+            return oldValue
+          }, genomeDataMapFlattened)
+          exportToCsv(combined, currentDataset)
+        })
+      }
+
+      fetchFunction(variantIds, currentDataset)
+        .then((data) => {
+          const variantDataMap = flattenForCsv(data)
+          exportToCsv(variantDataMap, currentDataset)
+        })
+    }
   }
 }
 

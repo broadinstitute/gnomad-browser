@@ -30,6 +30,8 @@ import {
   variants,
  } from './types/gnomadVariants'
 
+ import { gnomadVariants } from './types/elasticVariant'
+
 const rootType = new GraphQLObjectType({
   name: 'Root',
   description: `
@@ -96,6 +98,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: variantResolver,
     },
+
     schz_metadata: {
       type: metaMetaDataType,
       resolve: (obj, args, ctx) => ctx.database.sczMockDb.getSczMetaData(),
@@ -107,6 +110,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     variants,
     // gnomadGenomeVariants,
     // gnomadCombinedVariants,
+    gnomadVariants,
   }),
 })
 

@@ -116,6 +116,10 @@ const geneType = new GraphQLObjectType({
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
       args: {
+        variantIdListQuery: {
+          type: new GraphQLList(GraphQLString),
+          description: 'Give a list of variant ids.'
+        },
         category: {
           type: GraphQLString,
           description: 'Return variants by consequence category: all, lof, or lofAndMissense',
@@ -128,6 +132,7 @@ const geneType = new GraphQLObjectType({
           obj,
           ctx,
           category: args.category,
+          variantIdListQuery: args.variantIdListQuery,
         }),
     },
     gnomadGenomeVariants: {

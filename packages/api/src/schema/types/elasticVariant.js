@@ -124,6 +124,7 @@ export const lookupElasticVariantsByGeneId = ({
   obj,
   ctx,
   category,
+  variantIdListQuery,
 }) => {
   const fields = [
     'hgvsp',
@@ -236,7 +237,7 @@ export const lookupElasticVariantsByGeneId = ({
         return elasticClient.search({
           index,
           type: 'variant',
-          size: 100,
+          size: 10000,
           _source: fields,
           body: {
             query: {
@@ -368,7 +369,7 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
     elasticClient.search({
       index,
       type: 'variant',
-      size: 100,
+      size: 5000,
       _source: fields,
       body: {
         query: {
@@ -493,4 +494,177 @@ export const lookupElasticVariantsInRegion = ({
       }))
     })
   })
+}
+
+export const lookupElasticVariantByList = ({
+  elasticClient,
+  index,
+  variantIdListQuery,
+}) => {
+  const fields = [
+    'hgvsp',
+    'hgvsc',
+    'majorConsequence',
+    'pos',
+    'xpos',
+    'rsid',
+    'variantId',
+    'lof',
+    'lcr',
+    'segdup',
+    'filters',
+    'AC',
+    'AF',
+    'AN',
+    'Hom',
+    'Hemi',
+    'POPMAX',
+    'AC_POPMAX',
+    'AN_POPMAX',
+    'AF_POPMAX',
+    'fitted_score',
+    'exon',
+    'originalAltAllele',
+    'transcriptIds',
+    'FS',
+    'InbreedingCoeff',
+    'VQSLOD',
+    'BaseQRankSum',
+    'MQ',
+    'MQRankSum',
+    'ClippingRankSum',
+    'ReadPosRankSum',
+    'DP',
+    'QD',
+    'AS_RF',
+    'DREF_MEDIAN',
+    'DP_MEDIAN',
+    'GQ_MEDIAN',
+    'AB_MEDIAN',
+    'GQ_HIST_ALT',
+    'DP_HIST_ALT',
+    'AB_HIST_ALT',
+    'GQ_HIST_ALL',
+    'DP_HIST_ALL',
+    'AB_HIST_ALL',
+    'sortedTranscriptConsequences',
+  ]
+
+  fields.push(Object.keys(populations).map(population => `AC_${population}`))
+  fields.push(Object.keys(populations).map(population => `AN_${population}`))
+  fields.push(Object.keys(populations).map(population => `Hom_${population}`))
+  fields.push(Object.keys(populations).map(population => `Hemi_${population}`))
+  console.log(variantIdListQuery)
+  return elasticClient.search({
+    index: index,
+    type: 'variant',
+    size: 10000,
+    _source: fields,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            bool: {
+              must: [
+                {
+                  terms: { variantId: variantIdListQuery },
+                },
+
+              ]
+            },
+          },
+        },
+      },
+      sort: [{ xpos: { order: 'asc' } }],
+    },
+  }).then((response) => {
+    const variants = response.hits.hits.map((v) => {
+      const elastic_variant = v._source
+      return ({
+        hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
+        hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
+        consequence: elastic_variant.majorConsequence,
+        pos: elastic_variant.pos,
+        xpos: elastic_variant.xpos,
+        rsid: elastic_variant.rsid,
+        variant_id: elastic_variant.variantId,
+        id: elastic_variant.variantId,
+        lof: elastic_variant.lof,
+        filters: elastic_variant.filters,
+        allele_count: elastic_variant.AC,
+        allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
+        allele_num: elastic_variant.AN,
+        popmax: elastic_variant.POPMAX,
+        popmax_ac: elastic_variant.AC_POPMAX,
+        popmax_an: elastic_variant.AN_POPMAX,
+        popmax_af: elastic_variant.AF_POPMAX,
+        hom_count: elastic_variant.Hom,
+        hemi_count: elastic_variant.Hemi,
+        lcr: elastic_variant.lcr,
+        segdup: elastic_variant.segdup,
+        sorted_transcript_consequences: JSON.parse(elastic_variant.sortedTranscriptConsequences),
+        quality_metrics: {
+          FS: elastic_variant.FS,
+          MQRankSum: elastic_variant.MQRankSum,
+          InbreedingCoeff: elastic_variant.InbreedingCoeff,
+          VQSLOD: elastic_variant.VQSLOD,
+          BaseQRankSum: elastic_variant.BaseQRankSum,
+          MQ: elastic_variant.MQ,
+          ClippingRankSum: elastic_variant.ClippingRankSum,
+          ReadPosRankSum: elastic_variant.ReadPosRankSum,
+          DP: elastic_variant.DP,
+          QD: elastic_variant.QD,
+          AS_RF: elastic_variant.AS_RF,
+          DREF_MEDIAN: elastic_variant.DREF_MEDIAN,
+          DP_MEDIAN: elastic_variant.DP_MEDIAN,
+          GQ_MEDIAN: elastic_variant.GQ_MEDIAN,
+          AB_MEDIAN: elastic_variant.AB_MEDIAN,
+          GQ_HIST_ALT: elastic_variant.GQ_HIST_ALT,
+          DP_HIST_ALT: elastic_variant.DP_HIST_ALT,
+          AB_HIST_ALT: elastic_variant.AB_HIST_ALT,
+          GQ_HIST_ALL: elastic_variant.GQ_HIST_ALL,
+          DP_HIST_ALL: elastic_variant.DP_HIST_ALL,
+          AB_HIST_ALL: elastic_variant.AB_HIST_ALL,
+        },
+        pop_acs: Object.keys(populations).reduce((acc, key) => (
+          { ...acc, [populations[key]]: elastic_variant[`AC_${key}`] }
+        ), {}),
+        pop_ans: Object.keys(populations).reduce((acc, key) => (
+          { ...acc, [populations[key]]: elastic_variant[`AN_${key}`] }
+        ), {}),
+        pop_homs: Object.keys(populations).reduce((acc, key) => (
+          { ...acc, [populations[key]]: elastic_variant[`Hom_${key}`] }
+        ), {}),
+        pop_hemi: Object.keys(populations).reduce((acc, key) => (
+          { ...acc, [populations[key]]: elastic_variant[`Hemi_${key}`] }
+        ), {}),
+      })
+    })
+    return variants
+    }).catch(error => console.log(error))
+}
+
+export const gnomadVariants = {
+  type: new GraphQLList(elasticVariantType),
+  args: {
+    dataset: {
+      type: GraphQLString,
+      description: 'gnomad_exomes, gnomad_genomes'
+    },
+    variantIdList: {
+      type: new GraphQLList(GraphQLString),
+      description: 'Give a list of variant ids.'
+    },
+    category: {
+      type: GraphQLString,
+      description: 'Return variants by consequence category: all, lof, or lofAndMissense',
+    },
+  },
+  resolve: (obj, args, ctx) => {
+    return lookupElasticVariantByList({
+      elasticClient: ctx.database.elastic,
+      index: args.dataset,
+      variantIdListQuery: args.variantIdList,
+    })
+  }
 }

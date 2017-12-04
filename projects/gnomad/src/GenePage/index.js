@@ -10,6 +10,7 @@ import {
   GenePage,
   Summary,
   TableSection,
+  ClassicExacButton,
 } from '@broad/ui'
 
 import { HelpLink } from '@broad/help'
@@ -21,8 +22,8 @@ import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
 import { fetchWithExac } from './fetch'
+import { exportFetch } from './exportFetch'
 
-console.log(GeneViewer)
 const Loading = styled.div`
   display: flex;
   align-items: center;
@@ -58,6 +59,13 @@ const FooterItem = styled.div`
   margin-right: 10px;
 `
 
+const BottomButtonSection = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`
+
 const VariantTableWithRouter = withRouter(VariantTable)
 
 // const loading_gifs = [
@@ -69,6 +77,7 @@ const VariantTableWithRouter = withRouter(VariantTable)
 const GenePageConnected = ({
   gene,
   isFetching,
+  exportVariantsToCsv,
 }) => {
   if (isFetching || !gene) {
     return (
@@ -107,6 +116,11 @@ const GenePageConnected = ({
             )
           }}
         />
+        <BottomButtonSection>
+          <ClassicExacButton onClick={exportVariantsToCsv}>
+            Export variants
+          </ClassicExacButton>
+        </BottomButtonSection>
       </TableSection>
       <Footer>
         <FooterItem>
@@ -128,4 +142,4 @@ GenePageConnected.defaultProps = {
   gene: null,
 }
 
-export default withRouter(GenePageHoc(GenePageConnected, fetchWithExac))
+export default withRouter(GenePageHoc(GenePageConnected, fetchWithExac, exportFetch))
