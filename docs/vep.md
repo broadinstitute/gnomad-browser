@@ -15,7 +15,12 @@ LOFTEE considers all stop-gained, splice-disrupting, and frameshift variants, an
 
 ## MNVs
 
-Multi-nucleotide variants (MNVs) were identified using a custom script (written by Andrew Hill and Emma Pierce-Hoffman).
+Multi-nucleotide variants (MNVs) were identified using a custom script (written by Emma Pierce-Hoffman and Andrew Hill).
 
 ## LCR and SEGDUP
 
+Variants have been flagged according to whether they fall into low-complexity regions (LCRs) or segmental duplication (SEGDUP) regions.
+
+For LCRs, these regions were identified with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) at a score threshold of 30. The regions are available for download [here](https://console.cloud.google.com/storage/browser/gnomad-public/intervals/LCR.interval_list) and on Google Cloud Storage at: `gs://gnomad-public/intervals/LCR.interval_list`
+
+Information on the source of the segmental duplication file can be found [here](https://github.com/ga4gh/benchmarking-tools/tree/master/resources/stratification-bed-files/SegmentalDuplications). The regions are available for download [here](https://console.cloud.google.com/storage/browser/gnomad-public/intervals/mm-2-merged.bed.gz) and on on Google Cloud Storage at: `gs://gnomad-public/intervals/mm-2-merged.bed.gz`
