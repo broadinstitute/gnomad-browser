@@ -15,9 +15,9 @@ LOFTEE considers all stop-gained, splice-disrupting, and frameshift variants, an
 
 ## MNVs
 
-Multi-nucleotide variants (MNVs) were identified using a custom script (written by Emma Pierce-Hoffman and Andrew Hill).
+Multi-nucleotide variants (MNVs) were identified using a custom script (written by Emma Pierce-Hoffman and Andrew Hill). Briefly, this script took variant and phase information from the VCF to discover sites where two or three variants occur on the same haplotype within a single codon.
 
-## LCR and SEGDUP
+## LCR and SEGDUP flags
 
 Variants have been flagged according to whether they fall into low-complexity regions (LCRs) or segmental duplication (SEGDUP) regions.
 
