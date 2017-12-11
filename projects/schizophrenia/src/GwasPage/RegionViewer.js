@@ -1,32 +1,23 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-case-declarations */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import R from 'ramda'
 
-import RegionViewer from '@broad/region'
 import VariantTrack from '@broad/track-variant'
 import { GenesTrack } from '@broad/track-genes'
-import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
+import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
+  regionData,
+  RegionViewer,
   attributeConfig,
-} from '@broad/gene-page/src/presentation/RegionViewerStyles'
-
+} from '@broad/region'
 
 import {
-  screenSize,
-  actions as activeActions,
-} from '@broad/gene-page/src/resources/active'
+  actions as geneActions,
+} from '@broad/redux-genes'
 
-import { regionData } from '@broad/gene-page/src/resources/regions'
+
+import { screenSize } from '@broad/ui'
 
 import {
   finalFilteredVariants,
@@ -116,7 +107,7 @@ const Viewer = ({
           markerConfig={markerConfigP}
           variants={variantsArray}
         />
-        <NavigatorConnected noVariants />
+        <NavigatorTrackConnected noVariants />
       </RegionViewer>
     </div>
   )
@@ -140,6 +131,6 @@ const mapsStateToProps = (state) => {
 export default connect(
   mapsStateToProps,
   dispatch => ({
-    onGeneClick: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    onGeneClick: geneName => dispatch(geneActions.setCurrentGene(geneName)),
   })
 )(Viewer)

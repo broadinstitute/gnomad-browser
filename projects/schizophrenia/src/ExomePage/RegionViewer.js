@@ -11,13 +11,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
-import RegionViewer from '@broad/region'
+import { RegionViewer } from '@broad/region'
+
 import VariantTrack from '@broad/track-variant'
+import { NavigatorTrackConnected } from '@broad/track-navigator'
+import { TranscriptTrackConnected } from '@broad/track-transcript'
 
-import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
-import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConnected'
-
-import { screenSize } from '@broad/gene-page/src/resources/active'
+import { screenSize } from '@broad/ui'
 
 import {
   geneData,
@@ -71,9 +71,7 @@ const GeneRegion = ({
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const { transcript } = geneJS
-  const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
   const variantsReversed = visibleVariants.reverse()
-
 
   const modifiedVariants = variantsReversed
 
@@ -145,7 +143,7 @@ const GeneRegion = ({
         regionAttributes={attributeConfig}
         leftPanelWidth={100}
       >
-        <TranscriptConnected
+        <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
           transcriptFanOut={transcriptFanOut}
@@ -177,7 +175,7 @@ const GeneRegion = ({
           markerConfig={markerConfigHCAF}
           variants={variantsArray}
         />*/}
-        <NavigatorConnected noVariants />
+        <NavigatorTrackConnected noVariants />
       </RegionViewer>
     </div>
   )

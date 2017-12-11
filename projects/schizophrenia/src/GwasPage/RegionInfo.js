@@ -5,7 +5,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { regionData } from '@broad/gene-page/src/resources/regions'
+import { regionData } from '@broad/region'
 import { variantCount } from '@broad/redux-variants'
 
 import {

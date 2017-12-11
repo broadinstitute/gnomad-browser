@@ -10,8 +10,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route } from 'react-router-dom'
 
-import RegionHoc from '@broad/gene-page/src/containers/RegionHoc'
-import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import { RegionHoc } from '@broad/region'
+import { VariantTable } from '@broad/table'
 
 import {
   GenePage,
@@ -25,7 +25,7 @@ import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
 import { fetchRegion } from './fetch'
 
-const VariantTable = withRouter(VariantTableConnected)
+const VariantTableWithRouter = withRouter(VariantTable)
 
 const RegionPage = ({
   regionData,
@@ -47,7 +47,7 @@ const RegionPage = ({
           path="/region/:regionId"
           render={() => {
             return (
-              <VariantTable
+              <VariantTableWithRouter
                 tableConfig={tableConfig}
                 height={400}
               />

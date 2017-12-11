@@ -2,8 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import createGenePageStore from '@broad/gene-page/src/store/store'
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
-
+import { actions as userInterfaceActions } from '@broad/ui'
 import App from './routes'
 
 const appSettings = {
@@ -12,6 +11,10 @@ const appSettings = {
     return state.variants.searchIndexed
   },
   logger: true,
+  docs: {
+    toc: null,
+    index: null,
+  },
   projectDefaults: {
     startingGene: '',
     startingVariant: '',
@@ -73,7 +76,7 @@ const appSettings = {
 
 const store = createGenePageStore(appSettings)
 
-window.addEventListener('resize', () => store.dispatch(activeActions.setScreenSize(
+window.addEventListener('resize', () => store.dispatch(userInterfaceActions.setScreenSize(
   window.innerHeight,
   window.innerWidth
 )))

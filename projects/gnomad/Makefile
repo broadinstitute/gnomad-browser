@@ -24,3 +24,4 @@ serve:
 COMPONENT_NAME=$(shell basename `pwd`)
 
 .PHONY: install lib clean build serve prototype
+	

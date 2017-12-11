@@ -205,6 +205,7 @@ export const actions = {
             }
             return oldValue
           }, genomeDataMapFlattened)
+          console.log(combined)
           exportToCsv(combined, currentDataset)
         })
       }

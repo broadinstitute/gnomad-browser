@@ -10,8 +10,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route } from 'react-router-dom'
 
-import FetchHoc from '@broad/gene-page/src/containers/FetchHoc'
-import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import { GenePageHoc } from '@broad/redux-genes'
+import { VariantTable } from '@broad/table'
 
 import {
   GenePage,
@@ -25,7 +25,7 @@ import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
 import { fetchSchz } from './fetch'
 
-const VariantTable = withRouter(VariantTableConnected)
+const VariantTableWithRouter = withRouter(VariantTable)
 
 const MainPage = ({
   gene,
@@ -49,7 +49,7 @@ const MainPage = ({
           path="/gene/:gene"
           render={() => {
             return (
-              <VariantTable
+              <VariantTableWithRouter
                 tableConfig={tableConfig}
                 height={600}
               />
@@ -65,4 +65,4 @@ MainPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default withRouter(FetchHoc(MainPage, fetchSchz))
+export default withRouter(GenePageHoc(MainPage, fetchSchz))

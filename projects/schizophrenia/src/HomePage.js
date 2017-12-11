@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { actions as activeActions } from '@broad/gene-page/src/resources/active'
-
+import { actions as geneActions } from '@broad/redux-genes'
 
 const HomePageWrapper = styled.section`
   display: flex;
@@ -150,6 +149,6 @@ HomePage.propTypes = {
 
 export default connect(null, (dispatch) => {
   return {
-    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setCurrentGene: geneName => dispatch(geneActions.setCurrentGene(geneName)),
   }
 })(HomePage)
