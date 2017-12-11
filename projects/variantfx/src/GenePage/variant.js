@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableCell,
   TableTitleColumn,
-} from '@broad/ui/src/tables/SimpleTable'
+} from '@broad/ui'
 
 import { currentDisease } from '../redux'
 

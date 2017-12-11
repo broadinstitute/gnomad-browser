@@ -141,7 +141,7 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
   })
 }
 
-const fetchGeneData = (geneName, url = PUBLIC_API_URL) => {
+const fetchGeneData = (geneName, url = LOCAL_API_URL) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id

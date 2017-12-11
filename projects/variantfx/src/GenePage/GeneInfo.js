@@ -25,9 +25,6 @@ import {
   GeneAttributeValues,
   GeneAttributeValue,
   ItemWrapper,
-} from '@broad/ui'
-
-import {
   VerticalTextLabels,
   TableVerticalLabel,
   VerticalLabelText,
@@ -36,7 +33,7 @@ import {
   TableRow,
   TableHeader,
   TableCell,
-} from '@broad/ui/src/tables/SimpleTable'
+} from '@broad/ui'
 
 import {
   currentGeneDiseaseData,
@@ -270,6 +267,5 @@ export default connect(
     gene: geneData(state),
     variantCount: variantCount(state),
     currentGeneDiseaseData: currentGeneDiseaseData(state),
-
   })
 )(GeneInfo)

@@ -10,10 +10,10 @@ import {
 } from '@broad/redux-variants'
 
 import { geneData, currentGene, exonPadding } from '@broad/redux-genes'
-import { MaterialButtonRaised } from '@broad/ui'
 import { Search } from '@broad/ui/src/search/simpleSearch'
 
 import {
+  MaterialButtonRaised,
   SettingsContainer,
   MenusContainer,
   SearchContainer,

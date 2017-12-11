@@ -10,30 +10,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route } from 'react-router-dom'
 
-import VariantTableConnected from '@broad/gene-page/src/containers/VariantTableConnected'
+import FetchHoc from './FetchHoc'
+import { VariantTable } from '@broad/table'
 
 import {
   GenePage,
   Summary,
   TableSection,
   SectionTitle,
-} from '@broad/ui'
-
-import {
   GeneInfoWrapper,
   GeneNameWrapper,
   GeneSymbol,
 } from '@broad/ui'
 
-import FetchHoc from './FetchHoc'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
-// import VariantPage from './Variant'
 import tableConfig from './tableConfig'
 import fetchFunction from './fetch'
 
-const VariantTable = withRouter(VariantTableConnected)
+const VariantTableWithRouter = withRouter(VariantTable)
 
 const SectionTitleIndent = SectionTitle.extend`
   margin-left: 70px;
@@ -81,7 +77,7 @@ const Page = ({
           render={() => {
             return (
               <div>
-                <VariantTable
+                <VariantTableWithRouter
                   tableConfig={tableConfig}
                   height={600}
                 />

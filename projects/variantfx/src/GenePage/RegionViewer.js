@@ -11,13 +11,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import RegionViewer from '@broad/region'
+import { RegionViewer } from '@broad/region'
+
 import VariantTrack from '@broad/track-variant'
+import { NavigatorTrackConnected } from '@broad/track-navigator'
+import { TranscriptTrackConnected } from '@broad/track-transcript'
 
-import NavigatorConnected from '@broad/gene-page/src/containers/NavigatorConnected'
-import TranscriptConnected from '@broad/gene-page/src/containers/TranscriptConnected'
-
-import { screenSize } from '@broad/gene-page/src/resources/active'
+import { screenSize } from '@broad/ui'
 
 import {
   geneData,
@@ -70,8 +70,6 @@ const GeneRegion = ({
 
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
-  const { transcript } = geneJS
-  const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
   const variantsReversed = visibleVariants.reverse()
 
 
@@ -84,46 +82,6 @@ const GeneRegion = ({
     yPositionSetting: 'center',
     fillColor: '#757575',
   }
-
-  // const lof = ['splice_acceptor_variant', 'splice_donor_variant', 'stop_gained', 'frameshift_variant']
-  // const missense = ['missense_variant']
-
-  // const consequenceCategories = [
-  //   { annotation: 'lof', groups: lof, colour: '#757575' },
-  //   { annotation: 'missense', groups: missense, colour: '#757575' },
-  // ]
-
-  // const factor = 50
-
-  // const splitTracks = consequenceCategories.map((consequence, index) => {
-  //   let rowHeight
-  //   const filteredVariants = modifiedVariants.filter(variant =>
-  //     R.contains(variant.consequence, consequence.groups))
-  //   if (filteredVariants.size / factor < 20) {
-  //     rowHeight = 30
-  //   } else {
-  //     rowHeight = filteredVariants.size / factor
-  //   }
-  //   return (
-  //     <VariantTrack
-  //       key={`${consequence.annotation}-${index}`}
-  //       // title={`${consequence.annotation} (${filteredVariants.size})`}
-  //       height={rowHeight}
-  //       markerConfig={markerConfigOther}
-  //       variants={filteredVariants}
-  //     />
-  //   )
-  // })
-  //
-  // const otherVariants = modifiedVariants.filter(v =>
-  //   !R.contains(v.consequence, [...lof, ...missense]))
-  //
-  // let otherHeight
-  // if (otherVariants.size / factor < 20) {
-  //   otherHeight = 30
-  // } else {
-  //   otherHeight = otherVariants.size / factor
-  // }
 
   const allTrack = (
     <VariantTrack
@@ -145,14 +103,14 @@ const GeneRegion = ({
         regionAttributes={attributeConfig}
         leftPanelWidth={100}
       >
-        <TranscriptConnected
+        <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
           transcriptFanOut={transcriptFanOut}
           transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {allTrack}
-        <NavigatorConnected noVariants />
+        <NavigatorTrackConnected noVariants />
       </RegionViewer>
     </div>
   )
