@@ -1,9 +1,9 @@
 #!make
 
-include ../../cluster/config.sh
+include ../../../cluster/config.sh
 
 vds:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit.py \
 	./convert_vcf_to_vds.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
@@ -12,10 +12,10 @@ vds:
 
 # requires vep-grch37 dataproc cluster run on broad-mpg-gnomad
 vep:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
-	../../hail-db-utils/run_vep.py \
+	../../../hail-db-utils/run_vep.py \
 	--genome-version 37 \
 	gs://gnomad-browser/datasets/sczmeta.counts.vds \
 	gs://gnomad-browser/datasets/sczmeta.counts.vep.vds
@@ -23,7 +23,7 @@ vep:
 # requires vep-grch37 dataproc cluster run on broad-mpg-gnomad
 # don't think it's working
 all-annotations:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	./add_annotations_schizophrenia.py \
@@ -31,7 +31,7 @@ all-annotations:
 	gs://gnomad-matts/sczmeta.counts.vep.vds
 
 variants:
-	../../hail-db-utils/submit.py \
+	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	export_schizophrenia_to_ES.py \
@@ -49,3 +49,49 @@ persist:
 		"index.routing.allocation.include.data_node_hostname": "es-data-loading*", \
 		"index.routing.allocation.exclude.data_node_hostname": "es-data-persistent*" \
 	}'
+
+# --- December 11, 2017 8:24 PM ---
+
+dataproc-no-vep:
+	../../../hail-db-utils/create_cluster_without_VEP.py \
+	--project $(GCLOUD_PROJECT) \
+	--zone $(GCLOUD_ZONE) \
+	--machine-type $(DATAPROC_CLUSTER_MACHINE_TYPE) \
+	no-vep 2
+
+dataproc-vep-grch37:
+	../../../hail-db-utils/create_cluster.GRCh37.py \
+	--project $(GCLOUD_PROJECT) \
+	--zone $(GCLOUD_ZONE) \
+	--machine-type $(DATAPROC_CLUSTER_MACHINE_TYPE)
+	--num-workers 10
+	vep-grch37
+
+get-files:
+	gsutil -m cp -r gs://schizophrenia/browser/* gs://schizophrenia-browser/171211/
+
+list-files:
+	gsutil ls gs://schizophrenia-browser/171211
+
+print-keytable-schema:
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	print_keytable.py \
+	gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-count-by-population.kt && \
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	print_keytable.py \
+	gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-annotation.kt && \
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	print_keytable.py \
+	gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-in-schema.kt
+
+171212-load-data:
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	load_schizophrenia_data_171212.py
