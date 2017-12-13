@@ -241,3 +241,54 @@ export const schizophreniaExomeVariantsInRegion = {
     xstop: obj.xstop,
   }),
 }
+
+const schzRareVariantType = new GraphQLObjectType({
+  name: 'schzRareVariantType',
+  fields: () => ({
+    chrom: { type: GraphQLString },
+    variant_id: { type: GraphQLString },
+    X:  { type: GraphQLString },
+    basic_gene_id: { type: GraphQLString },
+    pos: { type: GraphQLInt },
+    MPC: { type: GraphQLFloat },
+    xpos: { type: GraphQLFloat },
+    basic_polyphen: { type: GraphQLString },
+    affected: { type: GraphQLInt },
+    basic_csq: { type: GraphQLString },
+    nonpsych_gnomad_AC: { type: GraphQLInt },
+    canonical_polyphen: { type: GraphQLString },
+    canonical_csq: { type: GraphQLString },
+    canonical_gene_id: { type: GraphQLString },
+  })
+})
+
+export const schizophreniaRareVariants = {
+  type: new GraphQLList(schzRareVariantType),
+  resolve: ({ gene_id }, args, { database: { elastic } }) => {
+    return new Promise((resolve, reject) => {
+      elastic.search({
+        index: 'schizophrenia_variants',
+        type: 'schizophrenia_variant',
+        size: 10000,
+        body: {
+          query: {
+            match: {
+              basic_gene_id: gene_id,
+            },
+          },
+        },
+      }).then((response) => {
+        const variants = response.hits.hits
+          .map(v => v._source)
+          .map(v => ({
+            ...v,
+            basic_gene_id: v.basic_gene_id[0],
+            canonical_gene_id: v.canonical_gene_id[0],
+            variant_id: v.variantId,
+            chrom: v.contig,
+          }))
+        resolve(variants)
+      })
+    })
+  }
+}

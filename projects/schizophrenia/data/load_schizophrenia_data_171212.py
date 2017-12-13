@@ -12,15 +12,15 @@ hc = hail.HailContext(log="/hail.log") #, branching_factor=1)
 
 path_pop = 'gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-count-by-population.kt'
 path_annotations = 'gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-annotation.kt'
-path_variants = 'gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-in-schema.kt'
+path_rare_variants = 'gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-in-schema.kt'
 
 kt_pop = hc.read_table(path_pop)
 kt_annotations = hc.read_table(path_annotations)
-kt_variants = hc.read_table(path_variants)
+kt_rare_variants = hc.read_table(path_rare_variants)
 
 pprint(kt_pop.schema)
 pprint(kt_annotations.schema)
-pprint(kt_variants.schema)
+pprint(kt_rare_variants.schema)
 
 ES_HOST_IP = '10.4.0.13'
 ES_HOST_PORT = 9200
@@ -32,21 +32,25 @@ es = ElasticsearchClient(
 )
 
 annotation_expressions = [
-    'variantId = %s' % get_expr_for_variant_id(),
-    'contig = %s' % get_expr_for_contig(),
+    'variant_id = %s' % get_expr_for_variant_id(),
+    'chrom = %s' % get_expr_for_contig(),
     'pos = %s' % get_expr_for_start_pos(),
     "xpos = %s" % get_expr_for_xpos(field_prefix="", pos_field="pos"),
 ]
 
-for expr in annotation_expressions:
-    kt_variants = kt_variants.annotate(expr)
+for expression in annotation_expressions:
+    kt_rare_variants = kt_rare_variants.annotate(expression)
 
-kt_variants = kt_variants.drop(['v'])
+kt_rare_variants = kt_rare_variants.drop(['v'])
 
-pprint(kt_variants.schema)
+kt_annotations = kt_annotations.annotate('variantId = %s' % get_expr_for_variant_id()).drop(['v'])
+
+kt_rare_variants = kt_rare_variants.key_by('variantId').join(kt_annotations.key_by('variantId'))
+
+pprint(kt_rare_variants.schema)
 
 es.export_kt_to_elasticsearch(
-    kt_variants,
+    kt_rare_variants,
     index_name='schizophrenia_variants',
     index_type_name='schizophrenia_variant',
     block_size=1000,

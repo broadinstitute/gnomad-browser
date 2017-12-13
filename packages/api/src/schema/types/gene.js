@@ -25,6 +25,7 @@ import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 import {
   schizophreniaGwasVariants,
   schizophreniaExomeVariantsByGeneId,
+  schizophreniaRareVariants,
 } from './schzvariant'
 import schzGeneResultsType, { lookUpSchzGeneResultsByGeneName } from './schzGeneResults'
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
@@ -213,6 +214,7 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookUpCnvsExonsByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
+    schizophreniaRareVariants,
   }),
 })
 

@@ -24,29 +24,21 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         pCaco
         pMeta
       }
-      schizophreniaExomeVariants {
-        variant_id
+      schizophreniaRareVariants {
         chrom
+        variant_id
+        X
+        basic_gene_id
         pos
+        MPC
         xpos
-        ref
-        alt
-        rsid
-        qual
-        geneIds
-        transcriptIds
-        consequence
-        sortedTranscriptConsequences
-        AC
-        AF
-        AC_cases
-        AC_ctrls
-        AC_UK_cases
-        AC_UK_ctrls
-        AC_FIN_cases
-        AC_FIN_ctrls
-        AC_SWE_cases
-        AC_SWE_ctrls
+        basic_polyphen
+        affected
+        basic_csq
+        nonpsych_gnomad_AC
+        canonical_polyphen
+        canonical_csq
+        canonical_gene_id
       }
       schizophreniaGwasVariants {
         variant_id
