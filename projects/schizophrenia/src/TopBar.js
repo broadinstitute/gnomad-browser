@@ -109,13 +109,14 @@ const TopBar = ({ setCurrentGene }) => {
         </form>
       </Search>
       <Menu>
+        <StyledLink to={'/genes'}><MenuItem>Gene results</MenuItem></StyledLink>
         <StyledLink to={'/exomes'}><MenuItem>Exomes</MenuItem></StyledLink>
         <MenuItem>About</MenuItem>
-        <MenuItem>Downloads</MenuItem>
-        <MenuItem>Terms</MenuItem>
-        <MenuItem>Contact</MenuItem>
-        <MenuItem>Jobs</MenuItem>
-        <MenuItem>FAQ</MenuItem>
+        {/* <MenuItem>Downloads</MenuItem> */}
+        {/* <MenuItem>Terms</MenuItem> */}
+        {/* <MenuItem>Contact</MenuItem> */}
+        {/* <MenuItem>Jobs</MenuItem> */}
+        {/* <MenuItem>FAQ</MenuItem> */}
       </Menu>
     </TopBarContainer>
   )

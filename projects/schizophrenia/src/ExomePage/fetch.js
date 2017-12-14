@@ -34,7 +34,7 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         xpos
         basic_polyphen
         affected
-        basic_csq
+        consequence
         nonpsych_gnomad_AC
         canonical_polyphen
         canonical_csq

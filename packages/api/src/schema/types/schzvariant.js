@@ -254,7 +254,7 @@ const schzRareVariantType = new GraphQLObjectType({
     xpos: { type: GraphQLFloat },
     basic_polyphen: { type: GraphQLString },
     affected: { type: GraphQLInt },
-    basic_csq: { type: GraphQLString },
+    consequence: { type: GraphQLString },
     nonpsych_gnomad_AC: { type: GraphQLInt },
     canonical_polyphen: { type: GraphQLString },
     canonical_csq: { type: GraphQLString },
@@ -286,6 +286,7 @@ export const schizophreniaRareVariants = {
             canonical_gene_id: v.canonical_gene_id[0],
             variant_id: v.variantId,
             chrom: v.contig,
+            consequence: v.basic_csq,
           }))
         resolve(variants)
       })

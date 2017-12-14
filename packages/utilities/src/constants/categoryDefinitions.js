@@ -1,7 +1,9 @@
 import { OrderedMap, fromJS } from 'immutable'
 
 export const csq_order = [
+  'lof', // category
   'transcript_ablation',
+  'splice', // category
   'splice_acceptor_variant',
   'splice_donor_variant',
   'stop_gained',
@@ -10,11 +12,13 @@ export const csq_order = [
   'start_lost',
   'inframe_insertion',
   'inframe_deletion',
+  'mis', // category
   'missense_variant',
   'protein_altering_variant',
   'incomplete_terminal_codon_variant',
   'stop_retained_variant',
   'synonymous_variant',
+  'syn', // category
   'coding_sequence_variant',
   'mature_miRNA_variant',
   '5_prime_UTR_variant',
@@ -54,7 +58,7 @@ export const CATEGORY_DEFINITIONS_ORDERED_MAP = OrderedMap({
     csq_order.indexOf('stop_lost'),
     csq_order.indexOf('protein_altering_variant')
   ),
-  synonymous: ['synonymous_variant'],
+  synonymous: ['synonymous_variant', 'syn'],
   all: csq_order,
 })
 
@@ -66,6 +70,7 @@ export default CATEGORY_DEFINITIONS
 
 
 export function getCategoryFromConsequence(consequence) {
+
   return CATEGORY_DEFINITIONS_ORDERED_MAP.findKey((value) => {
     return value.includes(consequence)
   })
