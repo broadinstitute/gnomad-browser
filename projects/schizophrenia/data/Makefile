@@ -95,3 +95,6 @@ print-keytable-schema:
 	--project $(GCLOUD_PROJECT) \
 	--cluster no-vep \
 	load_schizophrenia_data_171212.py
+
+171214-export-gene-results:
+	../../../node_modules/.bin/babel-node export_gene_results_to_elastic.js

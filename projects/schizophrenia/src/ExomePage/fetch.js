@@ -14,15 +14,17 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
       stop
       xstart
       xstop
-      schzGeneResults {
-        geneName
-        dnmLof
-        caseLof
-        ctrlLof
-        caseMis
-        ctrlMis
-        pCaco
-        pMeta
+      schzGeneResult {
+        gene_name
+        description
+        gene_id
+        case_lof
+        ctrl_lof
+        pval_lof
+        case_mpc
+        ctrl_mpc
+        pval_mpc
+        pval_meta
       }
       schizophreniaRareVariants {
         chrom

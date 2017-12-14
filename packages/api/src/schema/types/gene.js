@@ -22,12 +22,13 @@ import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
 import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
+
 import {
-  schizophreniaGwasVariants,
-  schizophreniaExomeVariantsByGeneId,
+  schzGeneResult,
   schizophreniaRareVariants,
+  schizophreniaGwasVariants,
 } from './schzvariant'
-import schzGeneResultsType, { lookUpSchzGeneResultsByGeneName } from './schzGeneResults'
+
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import * as fromExacVariant from './exacElasticVariant'
@@ -106,13 +107,6 @@ const geneType = new GraphQLObjectType({
       args: { consequence: { type: GraphQLString } },
       resolve: (obj, args, ctx) =>
           lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id, args.consequence),
-    },
-    schizophreniaGwasVariants,
-    schizophreniaExomeVariants: schizophreniaExomeVariantsByGeneId,
-    schzGeneResults: {
-      type: schzGeneResultsType,
-      resolve: (obj, args, ctx) =>
-        lookUpSchzGeneResultsByGeneName(ctx.database.elastic, obj.gene_name)
     },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
@@ -214,7 +208,9 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookUpCnvsExonsByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
+    schzGeneResult,
     schizophreniaRareVariants,
+    schizophreniaGwasVariants,
   }),
 })
 

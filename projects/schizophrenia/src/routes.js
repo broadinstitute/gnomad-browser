@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
+import GeneResults from './GeneResults'
 import GwasPage from './GwasPage'
 import HomePage from './HomePage'
 import ExomePage from './ExomePage'
@@ -28,8 +29,8 @@ const App = () => (
       <TopBar />
       <Route path="/" exact component={HomePage} />
       <Switch>
+        <Route exact path="/gene-results" component={GeneResults} />
         <Route path="/gene/:gene/:variantId" component={ExomePage} />
-        <Route exact path="/gene/:gene" component={ExomePage} />
         <Route exact path="/region/:regionId" component={GwasPage} />
         <Route exact path="/manhattan" component={ManhattanPage} />
       </Switch>

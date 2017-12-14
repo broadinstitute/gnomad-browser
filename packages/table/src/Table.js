@@ -621,7 +621,7 @@ Table.defaultProps = {
   overscan: 10,
   loadLookAhead: 0,
   showIndex: false,
-  scrollToRow: 200,
+  scrollToRow: 0,
   setHoveredVariant: () => { },
   onRowClick: () => {},
   searchText: '',

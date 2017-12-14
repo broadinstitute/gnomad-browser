@@ -1,9 +1,17 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 import { Provider } from 'react-redux'
+import { ApolloClient } from 'apollo-client'
+import { ApolloProvider } from 'react-apollo'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+
 import createGenePageStore from '@broad/gene-page/src/store/store'
 import { actions as userInterfaceActions } from '@broad/ui'
 import App from './routes'
+
+const API_URL = process.env.GNOMAD_API_URL
 
 const appSettings = {
   searchIndexes: ['variant_id', 'rsid', 'consequence'],
@@ -78,11 +86,19 @@ window.addEventListener('resize', () => store.dispatch(userInterfaceActions.setS
   window.innerWidth
 )))
 
+const client = new ApolloClient({
+  link: new HttpLink({ uri: 'http://localhost:8007' }),
+  // link: new HttpLink({ uri: API_URL }),
+  cache: new InMemoryCache()
+})
+
 const Main = () => (
   <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>
   </Provider>
 )
 

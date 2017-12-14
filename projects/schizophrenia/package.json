@@ -6,7 +6,7 @@
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "lsof -ti:8012| xargs kill && ../../node_modules/.bin/webpack-dev-server --port 8012 --hot --config ../../webpack.config.js"
+    "start": "lsof -ti:8012| xargs kill && GNOMAD_API_URL='http://localhost:8007' ../../node_modules/.bin/webpack-dev-server --port 8012 --hot --config ../../webpack.config.js"
 
   },
   "files": [

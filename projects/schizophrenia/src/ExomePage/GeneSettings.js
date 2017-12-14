@@ -53,6 +53,7 @@ const GeneSettings = ({
       <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
       <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
       <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={() => {}}>De novo</VariantCatagoryButton>
     </VariantCategoryButtonGroup>
   )
 

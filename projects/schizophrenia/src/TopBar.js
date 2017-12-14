@@ -109,7 +109,7 @@ const TopBar = ({ setCurrentGene }) => {
         </form>
       </Search>
       <Menu>
-        <StyledLink to={'/genes'}><MenuItem>Gene results</MenuItem></StyledLink>
+        <StyledLink to={'/gene-results'}><MenuItem>Gene results</MenuItem></StyledLink>
         <StyledLink to={'/exomes'}><MenuItem>Exomes</MenuItem></StyledLink>
         <MenuItem>About</MenuItem>
         {/* <MenuItem>Downloads</MenuItem> */}

@@ -28,6 +28,7 @@ import {
 
 import {
   finalFilteredVariants,
+  variantFilter,
 } from '@broad/redux-variants'
 
 const paddingColor = '#5A5E5C'
@@ -57,13 +58,14 @@ const attributeConfig = {
   },
 }
 
-const GeneRegion = ({
+const SchizophreniaGeneViewer = ({
   gene,
   visibleVariants,
   exonPadding,
   screenSize,
   transcriptFanOut,
   toggleTranscriptFanOut,
+  variantFilter,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -72,6 +74,15 @@ const GeneRegion = ({
   const canonicalExons = geneJS.transcript.exons
   const { transcript } = geneJS
   const variantsReversed = visibleVariants.reverse().map(variant => variant.set('allele_freq', 0.01)) // HACK
+
+  const cases = variantsReversed.filter(v => v.affected === 1)
+  const controls = variantsReversed.filter(v => v.affected === 0)
+
+  const consequenceTranslations = {
+    all: 'All variants',
+    missenseOrLoF: 'Missense/LoF',
+    lof: 'LoF',
+  }
 
   return (
     <div>
@@ -89,21 +100,29 @@ const GeneRegion = ({
           transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         <VariantTrack
-          key={'All-variants'}
+          key={'cases'}
           height={60}
-          color={'#75757'}
           markerConfig={{ disableScale: true, ...markerExacClassic }}
-          variants={variantsReversed}
+          variants={cases}
+          title={`Cases|${consequenceTranslations[variantFilter]}|variants|(${cases.size})`}
+        />
+        <VariantTrack
+          key={'controls'}
+          height={60}
+          markerConfig={{ disableScale: true, ...markerExacClassic }}
+          variants={controls}
+          title={`Controls|${consequenceTranslations[variantFilter]}|variants|(${controls.size})`}
         />
         <NavigatorTrackConnected title={'Viewing in table'} disableScale />
       </RegionViewer>
     </div>
   )
 }
-GeneRegion.propTypes = {
+SchizophreniaGeneViewer.propTypes = {
   gene: PropTypes.object.isRequired,
   visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
+  variantFilter: PropTypes.string.isRequired,
   screenSize: PropTypes.object.isRequired,
   transcriptFanOut: PropTypes.bool.isRequired,
   toggleTranscriptFanOut: PropTypes.func.isRequired,
@@ -115,8 +134,9 @@ export default connect(
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
     transcriptFanOut: transcriptFanOut(state),
+    variantFilter: variantFilter(state),
   }),
   dispatch => ({
     toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
   })
-)(GeneRegion)
+)(SchizophreniaGeneViewer)

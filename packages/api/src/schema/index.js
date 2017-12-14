@@ -30,7 +30,11 @@ import {
   variants,
  } from './types/gnomadVariants'
 
- import { gnomadVariants } from './types/elasticVariant'
+import { gnomadVariants } from './types/elasticVariant'
+
+import {
+ schzGeneResults,
+} from './types/schzvariant'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -111,6 +115,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     // gnomadGenomeVariants,
     // gnomadCombinedVariants,
     gnomadVariants,
+    schzGeneResults,
   }),
 })
 

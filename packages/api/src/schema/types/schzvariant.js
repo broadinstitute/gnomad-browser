@@ -293,3 +293,66 @@ export const schizophreniaRareVariants = {
     })
   }
 }
+
+export function lookUpSchzGeneResultsByGeneName (client, gene_id) {
+  return new Promise((resolve, reject) => {
+    client.search({
+      index: 'schizophrenia_gene_results_171214',
+      type: 'result',
+      size: 1,
+      // filter_path: 'filter_path‌​=hits.hits._source',
+      body: {
+        query: {
+          match: {
+            gene_id,
+          },
+        },
+      },
+    }).then(response => {
+      resolve(response.hits.hits[0]._source)
+    })
+  })
+}
+
+ const schzGeneResultType = new GraphQLObjectType({
+  name: 'SchizophreniaGeneResult',
+  fields: () => ({
+    gene_name: { type: GraphQLString },
+    description: { type: GraphQLString },
+    gene_id: { type: GraphQLString },
+    case_lof: { type: GraphQLInt },
+    ctrl_lof: { type: GraphQLInt },
+    pval_lof: { type: GraphQLFloat },
+    case_mpc: { type: GraphQLInt },
+    ctrl_mpc: { type: GraphQLInt },
+    pval_mpc: { type: GraphQLFloat },
+    pval_meta: { type: GraphQLFloat },
+  })
+})
+
+export const schzGeneResult = {
+  type: schzGeneResultType,
+  resolve: (obj, args, ctx) =>
+    lookUpSchzGeneResultsByGeneName(ctx.database.elastic, obj.gene_id)
+}
+
+export const schzGeneResults = {
+  type: new GraphQLList(schzGeneResultType),
+  resolve: (obj, args, { database: { elastic } }) => {
+    return new Promise((resolve, reject) => {
+      elastic.search({
+        index: 'schizophrenia_gene_results_171214',
+        type: 'result',
+        size: 4000,
+        body: {
+          query: {
+            match_all: {}
+          },
+          sort: [{ pval_meta: { order: 'asc' } }],
+        },
+      }).then((response) => {
+        resolve(response.hits.hits.map(h => h._source))
+      })
+    })
+  }
+}

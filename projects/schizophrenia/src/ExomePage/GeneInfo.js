@@ -88,7 +88,7 @@ const GeneInfo = ({ geneData, variantCount }) => {
     gene_id,
     full_gene_name,
     omim_accession,
-    schzGeneResults,
+    schzGeneResult,
   } = geneData.toJS()
   return (
     <GeneInfoWrapper>
@@ -103,27 +103,29 @@ const GeneInfo = ({ geneData, variantCount }) => {
             <strong>Ensembl ID:</strong> {gene_id}
           </GeneAttribute>
           <GeneAttribute>
-            <strong>pCaco:</strong> {schzGeneResults.pCaco.toPrecision(3)}
-          </GeneAttribute>
-          <GeneAttribute>
-            <strong>pMeta:</strong> {schzGeneResults.pMeta.toPrecision(3)}
+            <strong>p-meta:</strong> {schzGeneResult.pval_meta.toPrecision(3)}
           </GeneAttribute>
         </GeneAttributes>
         <GeneStats>
           <GeneStatsHeader>
             <GeneStatsTitleColumn />
-            <GeneStatsCell>LoF count</GeneStatsCell>
-            <GeneStatsCell>Missense count</GeneStatsCell>
+            <GeneStatsCell>LoF</GeneStatsCell>
+            <GeneStatsCell>MPC</GeneStatsCell>
           </GeneStatsHeader>
           <GeneStatsRow>
             <GeneStatsTitleColumn><strong>Cases</strong></GeneStatsTitleColumn>
-            <GeneStatsCell>{schzGeneResults.caseLof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResults.caseMis}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.case_lof}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.case_mpc}</GeneStatsCell>
           </GeneStatsRow>
           <GeneStatsRow>
             <GeneStatsTitleColumn><strong>Controls</strong></GeneStatsTitleColumn>
-            <GeneStatsCell>{schzGeneResults.ctrlLof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResults.ctrlMis}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.ctrl_lof}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.ctrl_mpc}</GeneStatsCell>
+          </GeneStatsRow>
+          <GeneStatsRow>
+            <GeneStatsTitleColumn><strong>p-value</strong></GeneStatsTitleColumn>
+            <GeneStatsCell>{schzGeneResult.pval_lof.toPrecision(3)}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.pval_mpc.toPrecision(3)}</GeneStatsCell>
           </GeneStatsRow>
         </GeneStats>
 
