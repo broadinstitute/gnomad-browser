@@ -24,6 +24,7 @@ export const types = keymirror({
   SET_VARIANT_SORT: null,
   TOGGLE_VARIANT_QC_FILTER: null,
   ORDER_VARIANTS_BY_POSITION: null,
+  TOGGLE_DENOVO_FILTER: null,
 })
 
 export const actions = {
@@ -105,6 +106,11 @@ export const actions = {
   toggleVariantQcFilter: () => {
     return {
       type: types.TOGGLE_VARIANT_QC_FILTER,
+    }
+  },
+  toggleVariantDeNovoFilter: () => {
+    return {
+      type: types.TOGGLE_DENOVO_FILTER,
     }
   },
 
@@ -250,6 +256,7 @@ export default function createVariantReducer({
     focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
+    variantDeNovoFilter: false,
     searchIndexed: OrderedMap(),
     definitions: Map(definitions),
   })
@@ -369,6 +376,9 @@ export default function createVariantReducer({
     [types.TOGGLE_VARIANT_QC_FILTER] (state) {
       return state.set('variantQcFilter', !state.get('variantQcFilter'))
     },
+    [types.TOGGLE_DENOVO_FILTER] (state) {
+      return state.set('variantDeNovoFilter', !state.get('variantDeNovoFilter'))
+    },
   }
 
   return function variants (state = new State(), action: Object): State {
@@ -439,6 +449,7 @@ export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
+export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
 export const definitions = state => state.variants.definitions
 
 export const filteredVariantsById = createSelector([
@@ -446,7 +457,8 @@ export const filteredVariantsById = createSelector([
   variantFilter,
   variantQcFilter,
   definitions,
-], (variants, variantFilter, variantQcFilter, definitions) => {
+  variantDeNovoFilter,
+], (variants, variantFilter, variantQcFilter, definitions, variantDeNovoFilter) => {
   let filteredVariants
   const consequenceKey = definitions.get('consequence') || 'consequence'
   if (variantFilter === 'all') {
@@ -460,6 +472,9 @@ export const filteredVariantsById = createSelector([
   }
   if (variantQcFilter) {
     filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
+  }
+  if (variantDeNovoFilter) {
+    filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
   }
   return filteredVariants
 })

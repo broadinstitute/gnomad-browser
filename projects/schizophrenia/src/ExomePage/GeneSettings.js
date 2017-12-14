@@ -30,6 +30,7 @@ Mousetrap.bind(['command+f', 'meta+s'], function(e) {  // eslint-disable-line
 const GeneSettings = ({
   searchVariants,
   setVariantFilter,
+  toggleVariantDeNovoFilter,
   // searchVariants
 }) => {
   const VariantCategoryButtonGroup = styled.div`
@@ -53,7 +54,7 @@ const GeneSettings = ({
       <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
       <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
       <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => {}}>De novo</VariantCatagoryButton>
+      <VariantCatagoryButton onClick={toggleVariantDeNovoFilter}>De novo</VariantCatagoryButton>
     </VariantCategoryButtonGroup>
   )
 
@@ -82,6 +83,7 @@ const GeneSettings = ({
 GeneSettings.propTypes = {
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
+  toggleVariantDeNovoFilter: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -96,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
     searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
+    toggleVariantDeNovoFilter: () => dispatch(variantActions.toggleVariantDeNovoFilter()),
   }
 }
 

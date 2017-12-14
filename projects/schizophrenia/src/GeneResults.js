@@ -1,18 +1,21 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { PureComponent } from 'react'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { List, Record } from 'immutable'
+import Highlighter from 'react-highlight-words'
 
 import { Table } from '@broad/table'
 
 import {
   screenSize,
   GenePage,
-  // Summary,
-  // TableSection,
+  Summary,
+  GeneSymbol,
+  TableSection,
+  Search,
 } from '@broad/ui'
 
 const schizophreniaGeneResultsQuery = gql`
@@ -33,7 +36,7 @@ const schizophreniaGeneResultsQuery = gql`
 `
 
 const GeneResult = Record({
-  gene_name: null,
+  gene_name: '',
   description: null,
   gene_id: null,
   case_lof: null,
@@ -49,7 +52,7 @@ const withQuery = graphql(schizophreniaGeneResultsQuery)
 
 const tableConfig = onHeaderClick => ({
   fields: [
-    { dataKey: 'gene_name', title: 'gene_name', dataType: 'string', onHeaderClick, width: 80 },
+    { dataKey: 'gene_name', title: 'gene_name', dataType: 'string', onHeaderClick, width: 80, searchable: true },
     { dataKey: 'description', title: 'description', dataType: 'string', onHeaderClick, width: 140 },
     { dataKey: 'gene_id', title: 'gene_id', dataType: 'string', onHeaderClick, width: 100 },
     { dataKey: 'case_lof', title: 'case_lof', dataType: 'integer', onHeaderClick, width: 60 },
@@ -63,33 +66,57 @@ const tableConfig = onHeaderClick => ({
 })
 
 
-const SchizophreniaGeneResultsTable = ({
-  data: { loading, schzGeneResults },
-  screenSize,
-}) => {
-  if (loading) {
-    return <div>Loading</div>
+class SchizophreniaGeneResults extends PureComponent {
+  state = {
+    searchText: '',
   }
-  const tableWidth = (screenSize.width * 0.8) + 40
-  const data = new List(schzGeneResults.map(e => new GeneResult(e)))
-  return (
-    <GenePage>
-      <Table
-        height={500}
-        width={tableWidth}
-        tableConfig={tableConfig(console.log)}
-        tableData={data}
-        remoteRowCount={data.size}
-        loadMoreRows={() => {}}
-        overscan={5}
-        loadLookAhead={0}
-        onRowClick={() => {}}
-        onRowHover={() => {}}
-        onScroll={() => {}}
-        searchText={''}
-      />
-    </GenePage>
-  )
+
+  searchGenes = searchText => this.setState({ searchText })
+
+  render () {
+    const {
+      data: { loading, schzGeneResults },
+      screenSize,
+    } = this.props
+
+    if (loading) {
+      return <div>Loading</div>
+    }
+
+    const tableWidth = (screenSize.width * 0.8) + 40
+    const data = new List(schzGeneResults.map(e => new GeneResult(e)))
+    const searchResults = data.filter((e) => {
+      if (e.gene_name) {
+        return e.gene_name.includes(this.state.searchText)
+      }
+      return false
+    })
+
+    return (
+      <GenePage>
+        <GeneSymbol>Exome meta-analysis results</GeneSymbol>
+        <Search
+          placeholder={'Search genes'}
+          onChange={this.searchGenes}
+        />
+        <Table
+          height={500}
+          width={tableWidth}
+          tableConfig={tableConfig(console.log)}
+          tableData={searchResults}
+          remoteRowCount={searchResults.size}
+          loadMoreRows={() => {}}
+          overscan={5}
+          loadLookAhead={0}
+          onRowClick={() => {}}
+          onRowHover={() => {}}
+          onScroll={() => {}}
+          searchText={this.state.searchText}
+          filteredIdList={new List(['test'])}
+        />
+      </GenePage>
+    )
+  }
 }
 
 const mapStatesToProps = state => ({
@@ -99,4 +126,4 @@ const mapStatesToProps = state => ({
 export default compose(
   connect(mapStatesToProps),
   withQuery
-)(SchizophreniaGeneResultsTable)
+)(SchizophreniaGeneResults)

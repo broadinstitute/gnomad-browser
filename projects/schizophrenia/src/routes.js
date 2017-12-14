@@ -30,7 +30,7 @@ const App = () => (
       <Route path="/" exact component={HomePage} />
       <Switch>
         <Route exact path="/gene-results" component={GeneResults} />
-        <Route path="/gene/:gene/:variantId" component={ExomePage} />
+        <Route path="/gene/:gene" component={ExomePage} />
         <Route exact path="/region/:regionId" component={GwasPage} />
         <Route exact path="/manhattan" component={ManhattanPage} />
       </Switch>

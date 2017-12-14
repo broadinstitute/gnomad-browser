@@ -90,11 +90,23 @@ print-keytable-schema:
 	print_keytable.py \
 	gs://schizophrenia-browser/171211/2017-12-11_release-v1-browser-variant-in-schema.kt
 
+# deprecated
 171212-load-data:
 	../../../hail-db-utils/submit_hail_v0.1.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster no-vep \
 	load_schizophrenia_data_171212.py
 
+# deprecated
 171214-export-gene-results:
 	../../../node_modules/.bin/babel-node export_gene_results_to_elastic.js
+
+171214-get-files:
+	gsutil -m cp -r gs://schizophrenia/browser/2017-12-14_release-v1-browser-merged-variant-table.kt gs://schizophrenia-browser/171214/ \
+	gsutil -m cp -r gs://schizophrenia/browser/2017-12-13-schema-single-gene-burden-results.kt gs://schizophrenia-browser/171214/
+
+171214-load-data:
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	load_schizophrenia_data_171214.py

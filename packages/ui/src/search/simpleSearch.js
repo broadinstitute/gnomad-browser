@@ -43,7 +43,7 @@ export const Search = ({
           type="text"
           name="search"
           autoComplete="off"
-          placeholder='Search variant table'
+          placeholder={placeholder}
           ref={e1 => {
             elem = e1
           }}

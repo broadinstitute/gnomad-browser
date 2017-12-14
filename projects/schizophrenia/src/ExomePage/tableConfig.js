@@ -2,19 +2,19 @@
 
 export default onHeaderClick => ({
   fields: [
-    {
-      dataKey: 'variant_id',
-      title: 'Variant Id ',
-      dataType: 'variantId',
-      width: 150,
-      onHeaderClick,
-    },
-    { dataKey: 'X', title: 'X', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'affected', title: 'affected', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'nonpsych_gnomad_AC', title: 'gnomad', dataType: 'integer', onHeaderClick, width: 60 },
-    // { dataKey: 'AF', title: 'AF total', dataType: 'float', onHeapderClick, width: 80 },
-    { dataKey: 'consequence', title: 'csq', dataType: 'string', onHeaderClick, width: 80, searchable: true },
-    { dataKey: 'MPC', title: 'mpc', dataType: 'string', onHeaderClick, width: 80, searchable: true },
-    { dataKey: 'basic_polyphen', title: 'polyphen', dataType: 'string', onHeaderClick, width: 80, searchable: true },
+    { dataKey: 'variant_id', title: 'variant_id', dataType: 'variantId', onHeaderClick, width: 120 },
+    { dataKey: 'ac_case', title: 'ac_case', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'an_case', title: 'an_case', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'ac_ctrl', title: 'ac_ctrl', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'an_ctrl', title: 'an_ctrl', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'ac_denovo', title: 'ac_denovo', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'ac_gnomad', title: 'ac_gnomad', dataType: 'integer', onHeaderClick, width: 60 },
+    { dataKey: 'cadd', title: 'cadd', dataType: 'float', onHeaderClick, width: 60 },
+    { dataKey: 'mpc', title: 'mpc', dataType: 'float', onHeaderClick, width: 60 },
+    { dataKey: 'consequence', title: 'consequence', dataType: 'string', onHeaderClick, width: 60 },
+    { dataKey: 'polyphen', title: 'polyphen', dataType: 'string', onHeaderClick, width: 60 },
+    { dataKey: 'pval', title: 'pval', dataType: 'float', onHeaderClick, width: 60 },
+    { dataKey: 'estimate', title: 'estimate', dataType: 'float', onHeaderClick, width: 60 },
+    { dataKey: 'allele_freq', title: 'allele_freq', dataType: 'float', onHeaderClick, width: 60 },
   ],
 })

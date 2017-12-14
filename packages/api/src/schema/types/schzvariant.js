@@ -245,20 +245,24 @@ export const schizophreniaExomeVariantsInRegion = {
 const schzRareVariantType = new GraphQLObjectType({
   name: 'schzRareVariantType',
   fields: () => ({
-    chrom: { type: GraphQLString },
     variant_id: { type: GraphQLString },
-    X:  { type: GraphQLString },
-    basic_gene_id: { type: GraphQLString },
     pos: { type: GraphQLInt },
-    MPC: { type: GraphQLFloat },
     xpos: { type: GraphQLFloat },
-    basic_polyphen: { type: GraphQLString },
-    affected: { type: GraphQLInt },
+    chrom: { type: GraphQLString },
+    ac_case: { type: GraphQLInt },
+    ac_ctrl: { type: GraphQLInt },
+    an_case: { type: GraphQLInt },
+    an_ctrl: { type: GraphQLInt },
+    gnomad: { type: GraphQLInt },
+    cadd: { type: GraphQLFloat },
+    mpc: { type: GraphQLFloat },
+    gene_id: { type: GraphQLString },
     consequence: { type: GraphQLString },
-    nonpsych_gnomad_AC: { type: GraphQLInt },
-    canonical_polyphen: { type: GraphQLString },
-    canonical_csq: { type: GraphQLString },
-    canonical_gene_id: { type: GraphQLString },
+    polyphen: { type: GraphQLString },
+    pval: { type: GraphQLFloat },
+    estimate: { type: GraphQLFloat },
+    ac_denovo: { type: GraphQLInt },
+    allele_freq: { type: GraphQLFloat },
   })
 })
 
@@ -273,7 +277,7 @@ export const schizophreniaRareVariants = {
         body: {
           query: {
             match: {
-              basic_gene_id: gene_id,
+              gene_id,
             },
           },
         },
@@ -282,11 +286,10 @@ export const schizophreniaRareVariants = {
           .map(v => v._source)
           .map(v => ({
             ...v,
-            basic_gene_id: v.basic_gene_id[0],
-            canonical_gene_id: v.canonical_gene_id[0],
-            variant_id: v.variantId,
+            gene_id: v.gene_id[0],
             chrom: v.contig,
-            consequence: v.basic_csq,
+            ac_gnomad: v.nonpsych_gnomad_AC,
+            cadd: v.cadd13_phred,
           }))
         resolve(variants)
       })

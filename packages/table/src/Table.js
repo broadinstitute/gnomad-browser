@@ -274,16 +274,18 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {dataRow[dataKey] === null ? '' : dataRow[dataKey]}
+          {/* {dataRow[dataKey] === null ? '' : dataRow[dataKey]} */}
+          {cellText}
         </div>
       )
     case 'float':
+      const output = cellText === null ? '' : cellText.toPrecision(3)
       return (
         <div
           style={cellStyle}
           key={`cell-${dataKey}-${i}`}
         >
-          {cellText.toPrecision(3)}
+          {output}
         </div>
       )
     case 'integer':

@@ -75,8 +75,8 @@ const SchizophreniaGeneViewer = ({
   const { transcript } = geneJS
   const variantsReversed = visibleVariants.reverse().map(variant => variant.set('allele_freq', 0.01)) // HACK
 
-  const cases = variantsReversed.filter(v => v.affected === 1)
-  const controls = variantsReversed.filter(v => v.affected === 0)
+  const cases = variantsReversed.filter(v => v.ac_case > 0)
+  const controls = variantsReversed.filter(v => v.ac_ctrl > 0)
 
   const consequenceTranslations = {
     all: 'All variants',
