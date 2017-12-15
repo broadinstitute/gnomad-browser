@@ -242,6 +242,49 @@ export const schizophreniaExomeVariantsInRegion = {
   }),
 }
 
+const schzGroupType = new GraphQLObjectType({
+  name: 'SchizophreniaGroup',
+  fields: () => ({
+    pos: { type: GraphQLInt },
+    xpos: { type: GraphQLFloat },
+    pval: { type: GraphQLFloat },
+    ac_case: { type: GraphQLInt },
+    contig: { type: GraphQLString },
+    beta: { type: GraphQLFloat },
+    variant_id: { type: GraphQLString },
+    an_ctrl: { type: GraphQLInt },
+    an_case: { type: GraphQLInt },
+    group: { type: GraphQLString },
+    ac_ctrl: { type: GraphQLInt },
+    allele_freq: { type: GraphQLFloat },
+  })
+})
+
+export const schzGroups = {
+  type: new GraphQLList(schzGroupType),
+  args: {
+    variant_id: { type: GraphQLString },
+  },
+  resolve: (obj, { variant_id }, { database: { elastic } }) => {
+    return new Promise((resolve, reject) => {
+      elastic.search({
+        index: 'schizophrenia_groups',
+        type: 'group',
+        size: 4000,
+        body: {
+          query: {
+            match: {
+              variant_id,
+            },
+          },
+        },
+      }).then((response) => {
+        resolve(response.hits.hits.map(h => h._source))
+      })
+    })
+  }
+}
+
 const schzRareVariantType = new GraphQLObjectType({
   name: 'schzRareVariantType',
   fields: () => ({
@@ -263,6 +306,8 @@ const schzRareVariantType = new GraphQLObjectType({
     estimate: { type: GraphQLFloat },
     ac_denovo: { type: GraphQLInt },
     allele_freq: { type: GraphQLFloat },
+    af_case: { type: GraphQLFloat },
+    af_ctrl: { type: GraphQLFloat },
   })
 })
 
@@ -290,6 +335,8 @@ export const schizophreniaRareVariants = {
             chrom: v.contig,
             ac_gnomad: v.nonpsych_gnomad_AC,
             cadd: v.cadd13_phred,
+            af_case: v.ac_case / v.an_case,
+            af_ctrl: v.ac_ctrl / v.an_ctrl,
           }))
         resolve(variants)
       })

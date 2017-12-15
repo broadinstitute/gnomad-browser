@@ -1,6 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import {
+  List,
+} from 'immutable'
+
 import { Provider } from 'react-redux'
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
@@ -51,6 +55,9 @@ const appSettings = {
       estimate: null,
       ac_denovo: null,
       allele_freq: null,
+      af_case: null,
+      af_ctrl: null,
+      datasets: new List(['schizophreniaRareVariants']),
     },
     schizophreniaGwasVariants: {
       id: null,

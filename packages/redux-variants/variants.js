@@ -31,7 +31,7 @@ export const actions = {
   setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
 
   setFocusedVariant: (variantId, history) => (dispatch, getState) => {
-    history.push(`/gene/BRCA2/${variantId}`)
+    // history.push(`/gene/BRCA2/${variantId}`)
     // HACK way to preserve table state when switching to variant table
     dispatch(tableActions.setCurrentTableIndex(
       getTableIndexByPosition(
@@ -411,6 +411,7 @@ const sortVariants = (variants, key, ascending) => {
 
 const byVariantDataset = state => state.variants.byVariantDataset
 export const hoveredVariant = state => state.variants.hoveredVariant
+export const focusedVariant = state => state.variants.focusedVariant
 export const selectedVariantDataset = state => state.variants.selectedVariantDataset
 export const variantDatasetKeys = state => state.variants.byVariantDataset.seqKey()
 
@@ -437,8 +438,8 @@ export const variantCount = createSelector(
 )
 
 export const singleVariantData = createSelector(
-  [hoveredVariant, allVariantsInCurrentDataset],
-  (hoveredVariant, variants) => variants.get(hoveredVariant)
+  [focusedVariant, allVariantsInCurrentDataset],
+  (focusedVariant, variants) => variants.get(focusedVariant)
 )
 
 /**

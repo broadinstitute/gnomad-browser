@@ -102,12 +102,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-    // setFocusedVariant: history => variantId =>
-    //   dispatch(variantActions.setFocusedVariant(variantId, history)),
+
     setFocusedVariant: history => (variantId, dataset) => {
       console.log(dataset)
       if (dataset === 'exacVariants') {
         window.open(`http://exac.broadinstitute.org/variant/${variantId}`)
+      } else if (dataset === 'schizophreniaRareVariants') {
+        dispatch(variantActions.setFocusedVariant(variantId, history))
       } else {
         window.open(`http://gnomad.broadinstitute.org/variant/${variantId}`)
       }

@@ -73,10 +73,10 @@ const SchizophreniaGeneViewer = ({
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const { transcript } = geneJS
-  const variantsReversed = visibleVariants.reverse().map(variant => variant.set('allele_freq', 0.01)) // HACK
+  const variantsReversed = visibleVariants.reverse()
 
-  const cases = variantsReversed.filter(v => v.ac_case > 0)
-  const controls = variantsReversed.filter(v => v.ac_ctrl > 0)
+  const cases = variantsReversed.filter(v => v.ac_case > 0).map(v => v.set('allele_freq', v.af_case))
+  const controls = variantsReversed.filter(v => v.ac_ctrl > 0).map(v => v.set('allele_freq', v.af_ctrl))
 
   const consequenceTranslations = {
     all: 'All variants',
@@ -102,18 +102,18 @@ const SchizophreniaGeneViewer = ({
         <VariantTrack
           key={'cases'}
           height={60}
-          markerConfig={{ disableScale: true, ...markerExacClassic }}
+          markerConfig={{ ...markerExacClassic }}
           variants={cases}
           title={`Cases|${consequenceTranslations[variantFilter]}|variants|(${cases.size})`}
         />
         <VariantTrack
           key={'controls'}
           height={60}
-          markerConfig={{ disableScale: true, ...markerExacClassic }}
+          markerConfig={{ ...markerExacClassic }}
           variants={controls}
           title={`Controls|${consequenceTranslations[variantFilter]}|variants|(${controls.size})`}
         />
-        <NavigatorTrackConnected title={'Viewing in table'} disableScale />
+        <NavigatorTrackConnected title={'Viewing in table'} />
       </RegionViewer>
     </div>
   )

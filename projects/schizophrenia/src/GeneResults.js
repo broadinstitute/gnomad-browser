@@ -100,7 +100,7 @@ class SchizophreniaGeneResults extends PureComponent {
           onChange={this.searchGenes}
         />
         <Table
-          height={500}
+          height={800}
           width={tableWidth}
           tableConfig={tableConfig(console.log)}
           tableData={searchResults}

@@ -461,3 +461,23 @@ test('aggregate consequences by interval', (assert) => {
   assert.end()
 })
 
+test.only('aggregate schizophrenia groups', (assert) => {
+  client.search({
+    index: 'schizophrenia_groups',
+    type: 'group',
+    body: {
+      aggregations: {
+        unique_groups: {
+          terms: {
+            field: 'group',
+            size: 1000,
+          },
+        },
+      },
+    }
+  }).then((response) => {
+    const buckets = response.aggregations.unique_groups
+    console.log(buckets)
+  })
+  assert.end()
+})

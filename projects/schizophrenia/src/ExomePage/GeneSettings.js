@@ -7,13 +7,15 @@ import Mousetrap from 'mousetrap'
 import {
   actions as variantActions,
   selectedVariantDataset,
+  variantDeNovoFilter,
+  variantFilter,
 } from '@broad/redux-variants'
 
 import { currentGene, geneData, exonPadding } from '@broad/redux-genes'
-import { MaterialButtonRaised } from '@broad/ui'
 import { Search } from '@broad/ui/src/search/simpleSearch'
 
 import {
+  MaterialButtonRaised,
   SettingsContainer,
   MenusContainer,
   SearchContainer,
@@ -31,6 +33,8 @@ const GeneSettings = ({
   searchVariants,
   setVariantFilter,
   toggleVariantDeNovoFilter,
+  variantDeNovoFilter,
+  variantFilter,
   // searchVariants
 }) => {
   const VariantCategoryButtonGroup = styled.div`
@@ -39,7 +43,10 @@ const GeneSettings = ({
   `
 
   const VariantCatagoryButton = MaterialButtonRaised.extend`
-    background-color: rgba(10, 121, 191, 0.1);
+    background-color: ${({ isActive }) => (
+    isActive ? 'rgba(10, 121, 191, 0.3)' : 'rgba(10, 121, 191, 0.1)'
+  )};
+
     margin-right: 10px;
     &:hover {
       background-color: rgba(10, 121, 191, 0.3);
@@ -51,10 +58,30 @@ const GeneSettings = ({
 
   const MaterialVariantCategoryButtonGroup = () => (
     <VariantCategoryButtonGroup>
-      <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={toggleVariantDeNovoFilter}>De novo</VariantCatagoryButton>
+      <VariantCatagoryButton
+        onClick={() => setVariantFilter('all')}
+        isActive={variantFilter === 'all'}
+      >
+        All<
+        /VariantCatagoryButton>
+      <VariantCatagoryButton
+        onClick={() => setVariantFilter('missenseOrLoF')}
+        isActive={variantFilter === 'missenseOrLoF'}
+      >
+        Missense + LoF
+      </VariantCatagoryButton>
+      <VariantCatagoryButton
+        onClick={() => setVariantFilter('lof')}
+        isActive={variantFilter === 'lof'}
+      >
+        LoF
+      </VariantCatagoryButton>
+      <VariantCatagoryButton
+        onClick={toggleVariantDeNovoFilter}
+        isActive={variantDeNovoFilter}
+      >
+        De novo
+      </VariantCatagoryButton>
     </VariantCategoryButtonGroup>
   )
 
@@ -92,6 +119,8 @@ const mapStateToProps = (state) => {
     exonPadding: exonPadding(state),
     selectedVariantDataset: selectedVariantDataset(state),
     geneData: geneData(state),
+    variantDeNovoFilter: variantDeNovoFilter(state),
+    variantFilter: variantFilter(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

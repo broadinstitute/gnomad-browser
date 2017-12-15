@@ -14,6 +14,7 @@ export {
   variantSortAscending,
   variantFilter,
   variantQcFilter,
+  variantDeNovoFilter,
   definitions,
   filteredVariantsById,
   visibleVariantsList,

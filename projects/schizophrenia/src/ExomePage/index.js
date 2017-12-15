@@ -23,6 +23,7 @@ import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
+import VariantDetails from './VariantPage'
 import { fetchSchz } from './fetch'
 
 const VariantTableWithRouter = withRouter(VariantTable)
@@ -56,6 +57,7 @@ const MainPage = ({
             )
           }}
         />
+        <VariantDetails />
       </TableSection>
     </GenePage>
   )

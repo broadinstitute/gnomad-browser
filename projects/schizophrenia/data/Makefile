@@ -104,6 +104,7 @@ print-keytable-schema:
 171214-get-files:
 	gsutil -m cp -r gs://schizophrenia/browser/2017-12-14_release-v1-browser-merged-variant-table.kt gs://schizophrenia-browser/171214/ \
 	gsutil -m cp -r gs://schizophrenia/browser/2017-12-13-schema-single-gene-burden-results.kt gs://schizophrenia-browser/171214/
+	gsutil -m cp -r gs://schizophrenia/browser/2017-12-14_release-v1-browser-merged-variant-table-by-analysis-group.kt gs://schizophrenia-browser/171214/
 
 171214-load-data:
 	../../../hail-db-utils/submit_hail_v0.1.py \
