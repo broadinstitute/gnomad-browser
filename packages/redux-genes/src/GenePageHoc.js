@@ -3,7 +3,8 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions as variantActions } from '@broad/redux-variants'

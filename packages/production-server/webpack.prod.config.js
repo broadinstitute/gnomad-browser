@@ -8,7 +8,8 @@ const serverConfig = {
   entry: {
     // app: ['./src/renderDom.js'],
     // vendor: ['babel-polyfill']
-    bundle: ['babel-polyfill', './src/renderDom.js'],
+    bundle: ['babel-polyfill', '../../projects/schizophrenia/src/index.js'],
+    // bundle: ['babel-polyfill', './src/renderDom.js'],
   },
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -21,14 +22,14 @@ const serverConfig = {
   plugins: config.plugins,
 }
 
-serverConfig.plugins.concat([
-  new webpack.optimize.UglifyJsPlugin({
-    beautify: false,
-    comments: false,
-    mangle: false,
-  }),
-  // new webpack.
-])
+// serverConfig.plugins.concat([
+//   new webpack.optimize.UglifyJsPlugin({
+//     beautify: false,
+//     comments: false,
+//     mangle: false,
+//   }),
+//   // new webpack.
+// ])
 
 serverConfig.module = config.module
 

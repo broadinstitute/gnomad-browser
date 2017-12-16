@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import R from 'ramda'
 import { scaleLinear } from 'd3-scale'
 import { max, min } from 'd3-array'

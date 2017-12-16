@@ -5,7 +5,7 @@ import GeneResults from './GeneResults'
 import GwasPage from './GwasPage'
 import HomePage from './HomePage'
 import ExomePage from './ExomePage'
-import ManhattanPage from './Manhattan'
+// import ManhattanPage from './Manhattan'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -32,7 +32,7 @@ const App = () => (
         <Route exact path="/results" component={GeneResults} />
         <Route path="/gene/:gene" component={ExomePage} />
         <Route exact path="/region/:regionId" component={GwasPage} />
-        <Route exact path="/manhattan" component={ManhattanPage} />
+        {/* <Route exact path="/manhattan" component={ManhattanPage} /> */}
       </Switch>
     </MainPanel>
   </Root>

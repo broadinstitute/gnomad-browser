@@ -6,7 +6,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
