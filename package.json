@@ -44,6 +44,7 @@
     "immutable": "^3.8.2",
     "jase": "^1.2.0",
     "json-loader": "^0.5.7",
+    "pm2": "^2.9.1",
     "react-hot-loader": "3.0.0-beta.7",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
