@@ -22,12 +22,12 @@ const defineEnvPlugin = new webpack.DefinePlugin({
 
 const entries = isDev ?
   [
-    // 'babel-polyfill',
+    'babel-polyfill',
     'react-hot-loader/patch',
     './src/index.js',
   ] :
   [
-    // 'babel-polyfill',
+    'babel-polyfill',
     './src/index.js',
   ]
 

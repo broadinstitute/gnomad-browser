@@ -4,15 +4,21 @@
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "dev": "pm2 start src/server.js --watch --interpreter ../../node_modules/.bin/babel-node",
-    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/example/test.js' | ../../node_modules/.bin/tspec"
+    "dev": "pm2 start src/server.js --watch --name appDev --interpreter ../../node_modules/.bin/babel-node",
+    "webpack": "../../node_modules/.bin/webpack -wd --config webpack.prod.config.js",
+    "build-webpack": "../../node_modules/.bin/webpack -p --config webpack.prod.config.js",
+    "build-node": "../../node_modules/.bin/babel src -d build --copy-files",
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/example/test.js' | ../../node_modules/.bin/tspec",
+    "start-prod": "NODE_ENV=production pm2 start build/server.js -i max --name appProd "
   },
   "files": [
     "lib"
   ],
   "dependencies": {
     "ejs": "^2.5.7",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "pm2": "^2.9.1"
