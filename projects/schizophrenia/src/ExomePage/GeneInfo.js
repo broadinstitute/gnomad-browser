@@ -115,17 +115,17 @@ const GeneInfo = ({ geneData, variantCount }) => {
           <GeneStatsRow>
             <GeneStatsTitleColumn><strong>Cases</strong></GeneStatsTitleColumn>
             <GeneStatsCell>{schzGeneResult.case_lof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResult.case_mpc}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.case_mpc ? schzGeneResult.case_mpc : 'N/A'}</GeneStatsCell>
           </GeneStatsRow>
           <GeneStatsRow>
             <GeneStatsTitleColumn><strong>Controls</strong></GeneStatsTitleColumn>
             <GeneStatsCell>{schzGeneResult.ctrl_lof}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResult.ctrl_mpc}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.ctrl_mpc ? schzGeneResult.ctrl_mpc: 'N/A'}</GeneStatsCell>
           </GeneStatsRow>
           <GeneStatsRow>
             <GeneStatsTitleColumn><strong>p-value</strong></GeneStatsTitleColumn>
             <GeneStatsCell>{schzGeneResult.pval_lof.toPrecision(3)}</GeneStatsCell>
-            <GeneStatsCell>{schzGeneResult.pval_mpc.toPrecision(3)}</GeneStatsCell>
+            <GeneStatsCell>{schzGeneResult.pval_mpc ? schzGeneResult.pval_mpc.toPrecision(3) : 'N/A'}</GeneStatsCell>
           </GeneStatsRow>
         </GeneStats>
 

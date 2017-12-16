@@ -98,7 +98,7 @@ print-keytable-schema:
 	load_schizophrenia_data_171212.py
 
 # deprecated
-171214-export-gene-results:
+171214-export-results:
 	../../../node_modules/.bin/babel-node export_gene_results_to_elastic.js
 
 171214-get-files:

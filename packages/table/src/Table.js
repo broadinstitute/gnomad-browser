@@ -39,6 +39,9 @@ const specialCellStyles = {
   variantId: {
     ...normalCellStyles.string,
   },
+  link: {
+    ...normalCellStyles.string,
+  },
   datasets: {
     ...normalCellStyles.string,
   },
@@ -185,6 +188,25 @@ const formatVariantId = (variantId, onRowClick, dataRow, searchText) => {
   )
 }
 
+const RowLink = styled.a`
+  color: rgba(70, 130, 180, 1);
+  cursor: pointer;
+  text-decoration: none;
+`
+
+const formatLink = (highlightedText, onRowClick, dataRow, searchText) => {
+  const text = highlightedText.props.textToHighlight
+  return (
+    <RowLink
+      key={`variant-id-${text}`}
+      // HACK
+      onClick={_ => onRowClick(text)}  // eslint-disable-line
+    >
+      {highlightedText}
+    </RowLink>
+  )
+}
+
 const lof = '#DD2C00'
 const missense = 'orange'
 const synonymous = '#2E7D32'
@@ -313,6 +335,15 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
           key={`cell-${dataKey}-${i}`}
         >
           {formatVariantId(cellText, onRowClick, dataRow, searchText)}
+        </div>
+      )
+    case 'link':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatLink(cellText, onRowClick, dataRow, searchText)}
         </div>
       )
     case 'consequence':

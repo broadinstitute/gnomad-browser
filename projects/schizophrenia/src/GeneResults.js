@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { withRouter, Route } from 'react-router-dom'
 import { List, Record } from 'immutable'
 import Highlighter from 'react-highlight-words'
 
@@ -52,7 +53,7 @@ const withQuery = graphql(schizophreniaGeneResultsQuery)
 
 const tableConfig = onHeaderClick => ({
   fields: [
-    { dataKey: 'gene_name', title: 'gene_name', dataType: 'string', onHeaderClick, width: 80, searchable: true },
+    { dataKey: 'gene_name', title: 'gene_name', dataType: 'link', onHeaderClick, width: 80, searchable: true },
     { dataKey: 'description', title: 'description', dataType: 'string', onHeaderClick, width: 140 },
     { dataKey: 'gene_id', title: 'gene_id', dataType: 'string', onHeaderClick, width: 100 },
     { dataKey: 'case_lof', title: 'case_lof', dataType: 'integer', onHeaderClick, width: 60 },
@@ -73,6 +74,8 @@ class SchizophreniaGeneResults extends PureComponent {
 
   searchGenes = searchText => this.setState({ searchText })
 
+  geneOnClick = geneName => this.props.history.push(`/gene/${geneName}`)
+
   render () {
     const {
       data: { loading, schzGeneResults },
@@ -92,6 +95,8 @@ class SchizophreniaGeneResults extends PureComponent {
       return false
     })
 
+    console.log(this.props.history)
+
     return (
       <GenePage>
         <GeneSymbol>Exome meta-analysis results</GeneSymbol>
@@ -108,7 +113,7 @@ class SchizophreniaGeneResults extends PureComponent {
           loadMoreRows={() => {}}
           overscan={5}
           loadLookAhead={0}
-          onRowClick={() => {}}
+          onRowClick={this.geneOnClick}
           onRowHover={() => {}}
           onScroll={() => {}}
           searchText={this.state.searchText}
@@ -124,6 +129,7 @@ const mapStatesToProps = state => ({
 })
 
 export default compose(
+  withRouter,
   connect(mapStatesToProps),
   withQuery
 )(SchizophreniaGeneResults)
