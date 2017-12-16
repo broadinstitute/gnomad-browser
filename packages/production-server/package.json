@@ -1,0 +1,20 @@
+{
+  "name": "@broad/production-server",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "pm2 start src/server.js --watch --interpreter ../../node_modules/.bin/babel-node",
+    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/example/test.js' | ../../node_modules/.bin/tspec"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "pm2": "^2.9.1"
+  }
+}
