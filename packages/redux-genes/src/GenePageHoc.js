@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions as variantActions } from '@broad/redux-variants'
-import { currentGene, geneData, isFetching, actions as geneActions } from './index'
+import { currentGene, isFetching, geneData, actions as geneActions } from './index'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {

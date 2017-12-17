@@ -7,6 +7,7 @@ import { GenePageHoc } from '@broad/redux-genes'
 import { VariantTable } from '@broad/table'
 
 import {
+  Loading,
   GenePage,
   Summary,
   TableSection,
@@ -23,20 +24,6 @@ import VariantPage from '../VariantPage'
 import tableConfig from '../tableConfig'
 import { fetchWithExac } from './fetch'
 import { exportFetch } from './exportFetch'
-
-const Loading = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 20px;
-  width: 100%;
-  height: 100%;
-
-  h1 {
-    font-weight: bold;
-  }
-`
 
 const Footer = styled.div`
   display: flex;

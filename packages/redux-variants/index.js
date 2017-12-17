@@ -2,6 +2,7 @@ export {
   types,
   actions,
   default as createVariantReducer,
+  isFetching,
   hoveredVariant,
   selectedVariantDataset,
   variantDatasetKeys,
@@ -25,4 +26,5 @@ export {
   sortedVariants,
   finalFilteredVariants,
   finalFilteredVariantsCount,
+  focusedVariant,
 } from './variants'

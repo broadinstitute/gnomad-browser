@@ -52,6 +52,7 @@ export {
 } from './genePage/userInterface'
 
 export {
+  Loading,
   GeneInfoWrapper,
   GeneNameWrapper,
   GeneSymbol,

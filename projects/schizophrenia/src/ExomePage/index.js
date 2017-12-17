@@ -14,6 +14,7 @@ import { GenePageHoc } from '@broad/redux-genes'
 import { VariantTable } from '@broad/table'
 
 import {
+  Loading,
   GenePage,
   Summary,
   TableSection,
@@ -33,7 +34,7 @@ const MainPage = ({
   isFetching,
 }) => {
   if (isFetching || !gene) {
-    return <div>Loading...!</div>
+    return <Loading><h1>Loading</h1></Loading>
   }
   return (
     <GenePage>

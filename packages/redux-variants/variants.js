@@ -391,6 +391,7 @@ export default function createVariantReducer({
 }
 
 const sortVariants = (variants, key, ascending) => {
+  if (variants.isEmpty()) return new List()
   if (typeof variants.first().get(key) === 'string') {
     return (
       ascending ?
@@ -417,6 +418,7 @@ const sortVariants = (variants, key, ascending) => {
  */
 
 const byVariantDataset = state => state.variants.byVariantDataset
+export const isFetching = state => state.variants.isFetching
 export const hoveredVariant = state => state.variants.hoveredVariant
 export const focusedVariant = state => state.variants.focusedVariant
 export const selectedVariantDataset = state => state.variants.selectedVariantDataset

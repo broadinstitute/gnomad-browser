@@ -29,6 +29,9 @@ import {
 import {
   finalFilteredVariants,
   variantFilter,
+  focusedVariant,
+  allVariantsInCurrentDataset,
+  actions as variantActions,
 } from '@broad/redux-variants'
 
 const paddingColor = '#5A5E5C'
@@ -66,6 +69,9 @@ const SchizophreniaGeneViewer = ({
   transcriptFanOut,
   toggleTranscriptFanOut,
   variantFilter,
+  allVariantsInCurrentDataset,
+  focusedVariant,
+  setFocusedVariant,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -74,6 +80,13 @@ const SchizophreniaGeneViewer = ({
   const canonicalExons = geneJS.transcript.exons
   const { transcript } = geneJS
   const variantsReversed = visibleVariants.reverse()
+
+  // HACK display variant with highest allele count to fill out variant section
+  console.log(allVariantsInCurrentDataset.has(focusedVariant))
+  if (!allVariantsInCurrentDataset.has(focusedVariant)) {
+    const maxAc = allVariantsInCurrentDataset.maxBy(variant => variant.get('ac_case'))
+    setFocusedVariant(maxAc.get('variant_id'))
+  }
 
   const cases = variantsReversed.filter(v => v.ac_case > 0).map(v => v.set('allele_freq', v.af_case))
   const controls = variantsReversed.filter(v => v.ac_ctrl > 0).map(v => v.set('allele_freq', v.af_ctrl))
@@ -135,8 +148,11 @@ export default connect(
     screenSize: screenSize(state),
     transcriptFanOut: transcriptFanOut(state),
     variantFilter: variantFilter(state),
+    focusedVariant: focusedVariant(state),
+    allVariantsInCurrentDataset: allVariantsInCurrentDataset(state),
   }),
   dispatch => ({
     toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
+    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId))
   })
 )(SchizophreniaGeneViewer)

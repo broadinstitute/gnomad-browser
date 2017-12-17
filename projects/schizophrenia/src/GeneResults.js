@@ -12,6 +12,7 @@ import { Table } from '@broad/table'
 
 import {
   screenSize,
+  Loading,
   GenePage,
   Summary,
   GeneSymbol,
@@ -113,7 +114,7 @@ class SchizophreniaGeneResults extends PureComponent {
     } = this.props
 
     if (loading) {
-      return <div>Loading</div>
+      return <Loading><h1>Loading</h1></Loading>
     }
 
     const tableWidth = (screenSize.width * 0.8) + 40
