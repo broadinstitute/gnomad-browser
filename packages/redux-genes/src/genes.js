@@ -90,7 +90,7 @@ export default function createGeneReducer(config) {
     currentGene: config.startingGene,
     currentTissue: null,
     currentTranscript: null,
-    transcriptFanOut: false,
+    transcriptFanOut: true,
     currentExon: null,
     currentConstrainedRegion: null,
     exonPadding: config.exonPadding || 75,

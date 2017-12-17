@@ -16,7 +16,6 @@ import {
   GenePage,
   Summary,
   GeneSymbol,
-  TableSection,
   Search,
 } from '@broad/ui'
 
@@ -57,21 +56,23 @@ const GeneResult = Record({
 
 const withQuery = graphql(schizophreniaGeneResultsQuery)
 
-const tableConfig = onHeaderClick => ({
-  fields: [
-    { dataKey: 'gene_name', title: 'gene_name', dataType: 'link', onHeaderClick, width: 80, searchable: true },
-    { dataKey: 'description', title: 'description', dataType: 'string', onHeaderClick, width: 140 },
-    { dataKey: 'gene_id', title: 'gene_id', dataType: 'string', onHeaderClick, width: 100 },
-    { dataKey: 'case_lof', title: 'case_lof', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'ctrl_lof', title: 'ctrl_lof', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'pval_lof', title: 'pval_lof', dataType: 'float', onHeaderClick, width: 80 },
-    { dataKey: 'case_mpc', title: 'case_mpc', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'ctrl_mpc', title: 'ctrl_mpc', dataType: 'integer', onHeaderClick, width: 60 },
-    { dataKey: 'pval_mpc', title: 'pval_mpc', dataType: 'float', onHeaderClick, width: 80 },
-    { dataKey: 'pval_meta', title: 'pval_meta', dataType: 'float', onHeaderClick, width: 80 },
-  ],
-})
-
+const tableConfig = (onHeaderClick, width) => {
+  const mediumSize = (width < 900)
+  return ({
+    fields: [
+      { dataKey: 'gene_name', title: 'gene_name', dataType: 'link', onHeaderClick, width: 80, searchable: true },
+      { dataKey: 'description', title: 'description', dataType: 'string', onHeaderClick, width: 140, disappear: mediumSize },
+      { dataKey: 'gene_id', title: 'gene_id', dataType: 'string', onHeaderClick, width: 100, disappear: mediumSize },
+      { dataKey: 'case_lof', title: 'case_lof', dataType: 'integer', onHeaderClick, width: 60 },
+      { dataKey: 'ctrl_lof', title: 'ctrl_lof', dataType: 'integer', onHeaderClick, width: 60 },
+      { dataKey: 'pval_lof', title: 'pval_lof', dataType: 'float', onHeaderClick, width: 80 },
+      { dataKey: 'case_mpc', title: 'case_mpc', dataType: 'integer', onHeaderClick, width: 60, disappear: mediumSize },
+      { dataKey: 'ctrl_mpc', title: 'ctrl_mpc', dataType: 'integer', onHeaderClick, width: 60, disappear: mediumSize },
+      { dataKey: 'pval_mpc', title: 'pval_mpc', dataType: 'float', onHeaderClick, width: 80 },
+      { dataKey: 'pval_meta', title: 'pval_meta', dataType: 'float', onHeaderClick, width: 80 },
+    ],
+  })
+}
 
 class SchizophreniaGeneResults extends PureComponent {
   state = {
@@ -140,7 +141,7 @@ class SchizophreniaGeneResults extends PureComponent {
           <Table
             height={800}
             width={tableWidth}
-            tableConfig={tableConfig(this.setSortState)}
+            tableConfig={tableConfig(this.setSortState, screenSize.width)}
             tableData={sortedData}
             remoteRowCount={sortedData.size}
             loadMoreRows={() => {}}

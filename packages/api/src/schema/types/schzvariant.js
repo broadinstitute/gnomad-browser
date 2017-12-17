@@ -296,7 +296,7 @@ const schzRareVariantType = new GraphQLObjectType({
     ac_ctrl: { type: GraphQLInt },
     an_case: { type: GraphQLInt },
     an_ctrl: { type: GraphQLInt },
-    gnomad: { type: GraphQLInt },
+    ac_gnomad: { type: GraphQLInt },
     cadd: { type: GraphQLFloat },
     mpc: { type: GraphQLFloat },
     gene_id: { type: GraphQLString },
@@ -310,6 +310,7 @@ const schzRareVariantType = new GraphQLObjectType({
     af_ctrl: { type: GraphQLFloat },
   })
 })
+
 
 export const schizophreniaRareVariants = {
   type: new GraphQLList(schzRareVariantType),

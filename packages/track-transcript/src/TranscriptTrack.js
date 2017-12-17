@@ -79,7 +79,7 @@ const GtexTitleText = styled.a`
   font-size: 13px;
   font-weight: normal;
   line-height: 8px;
-  margin-bottom: 0;
+  margin-bottom: 5px;
   margin-top: 0;
   margin-left: 6px;
   flex-shrink: 0;
@@ -189,7 +189,8 @@ const TranscriptRightPanel = ({
               href={`http://www.gtexportal.org/home/gene/${currentGene}`}
               target="_blank"
               >
-              Tissue-specific isoform expression
+              {/* Tissue-specific isoform expression */}
+              Isoform expression
               <QuestionMark topic={'gtex'} display={'inline'} />
             </GtexTitleText>
             <GtexTissueSelect

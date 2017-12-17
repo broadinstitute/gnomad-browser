@@ -82,7 +82,6 @@ const SchizophreniaGeneViewer = ({
   const variantsReversed = visibleVariants.reverse()
 
   // HACK display variant with highest allele count to fill out variant section
-  console.log(allVariantsInCurrentDataset.has(focusedVariant))
   if (!allVariantsInCurrentDataset.has(focusedVariant)) {
     const maxAc = allVariantsInCurrentDataset.maxBy(variant => variant.get('ac_case'))
     setFocusedVariant(maxAc.get('variant_id'))

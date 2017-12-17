@@ -36,7 +36,7 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         an_ctrl
         af_case
         af_ctrl
-        gnomad
+        ac_gnomad
         cadd
         mpc
         gene_id

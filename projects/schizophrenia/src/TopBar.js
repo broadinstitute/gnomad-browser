@@ -67,7 +67,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const TopBar = ({ history }) => {
+const TopBar = ({ history, setCurrentGene }) => {
   return (
     <TopBarContainer>
       <StyledLink to={'/'}>
@@ -81,6 +81,7 @@ const TopBar = ({ history }) => {
         <form onSubmit={(event) => {
           event.preventDefault()
           const geneName = event.target.elements[0].value
+          setCurrentGene(geneName)
           history.push(`/gene/${geneName}`)
         }}
         >

@@ -17,7 +17,6 @@ import {
   Loading,
   GenePage,
   Summary,
-  TableSection,
 } from '@broad/ui'
 
 import GeneInfo from './GeneInfo'
@@ -45,21 +44,19 @@ const MainPage = ({
       </Summary>
       <RegionViewer />
       <GeneSettings />
-      <TableSection>
-        <Route
-          exact
-          path="/gene/:gene"
-          render={() => {
-            return (
-              <VariantTableWithRouter
-                tableConfig={tableConfig}
-                height={600}
-              />
-            )
-          }}
-        />
-        <VariantDetails />
-      </TableSection>
+      <Route
+        exact
+        path="/gene/:gene"
+        render={() => {
+          return (
+            <VariantTableWithRouter
+              tableConfig={tableConfig}
+              height={600}
+            />
+          )
+        }}
+      />
+      <VariantDetails />
     </GenePage>
   )
 }

@@ -21,10 +21,11 @@ import {
 const VariantContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1000px;
+  width: 80%;
   min-height: 300px;
   ${'' /* margin-left: 50px; */}
   margin-top: 30px;
+  margin-right: 50px;
 `
 
 const SideBySide = styled.div`
@@ -32,6 +33,7 @@ const SideBySide = styled.div`
   flex-direction: row;
   width: 100%;
   align-items: space-between;
+
   ${'' /* s: space-between; */}
 `
 

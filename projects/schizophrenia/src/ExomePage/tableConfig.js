@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 export default (onHeaderClick, width) => {
-  const mediumSize = (width < 900)
+  const mediumSize = (width < 1000)
   return {
     fields: [{
         dataKey: 'variant_id',
@@ -35,7 +35,7 @@ export default (onHeaderClick, width) => {
         width: 60
       },
       // { dataKey: 'ac_denovo', title: 'ac_denovo', dataType: 'integer', onHeaderClick, width: 60 },
-      // { dataKey: 'ac_gnomad', title: 'ac_gnomad', dataType: 'integer', onHeaderClick, width: 60 },
+      { dataKey: 'ac_gnomad', title: 'gnomad', dataType: 'integer', onHeaderClick, width: 60 },
       {
         dataKey: 'cadd',
         title: 'cadd',
@@ -51,7 +51,7 @@ export default (onHeaderClick, width) => {
         width: 60
       }, {
         dataKey: 'consequence',
-        title: 'consequence',
+        title: 'csq',
         dataType: 'string',
         onHeaderClick,
         width: 60
@@ -76,14 +76,15 @@ export default (onHeaderClick, width) => {
         onHeaderClick,
         disappear: mediumSize,
         width: 60
-      }, {
-        dataKey: 'allele_freq',
-        title: 'allele_freq',
-        dataType: 'float',
-        onHeaderClick,
-        disappear: mediumSize,
-        width: 80
       },
+      // {
+      //   dataKey: 'allele_freq',
+      //   title: 'allele_freq',
+      //   dataType: 'float',
+      //   onHeaderClick,
+      //   disappear: mediumSize,
+      //   width: 80
+      // },
     ],
   }
 }
