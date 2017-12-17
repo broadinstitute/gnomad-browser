@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import { currentGene, actions as geneActions } from '@broad/redux-genes'
 
@@ -66,7 +67,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const TopBar = ({ setCurrentGene }) => {
+const TopBar = ({ history }) => {
   return (
     <TopBarContainer>
       <StyledLink to={'/'}>
@@ -79,13 +80,14 @@ const TopBar = ({ setCurrentGene }) => {
         </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()
-          setCurrentGene(event.target.elements[0].value)
+          const geneName = event.target.elements[0].value
+          history.push(`/gene/${geneName}`)
         }}
         >
           <SearchInput
             type="text"
             name="search"
-            placeholder="Search by gene, transcript, region, or variant"
+            placeholder="Search gene"
             list="genes"
           />
           <datalist id="genes">
@@ -129,7 +131,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCurrentGene: geneName => dispatch(activeActions.setCurrentGene(geneName)),
+    setCurrentGene: geneName => dispatch(geneActions.setCurrentGene(geneName)),
   }
 }
 
@@ -137,4 +139,4 @@ TopBar.propTypes = {
   setCurrentGene: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopBar))

@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { List, Record } from 'immutable'
 import Highlighter from 'react-highlight-words'
 
@@ -18,6 +18,11 @@ import {
   TableSection,
   Search,
 } from '@broad/ui'
+
+const ResultsSearchWrapper = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
+`
 
 const schizophreniaGeneResultsQuery = gql`
   {
@@ -70,9 +75,34 @@ const tableConfig = onHeaderClick => ({
 class SchizophreniaGeneResults extends PureComponent {
   state = {
     searchText: '',
+    sortKey: 'pval_meta',
+    sortAscending: true,
   }
 
-  searchGenes = searchText => this.setState({ searchText })
+  setSearchText = searchText => this.setState({ searchText })
+
+  setSortState = (sortKey) => {
+    this.setState({
+      sortKey,
+      sortAscending: !this.state.sortAscending
+    })
+  }
+
+  sortData = (data, key, ascending) => {
+    if (data.isEmpty()) return new List()
+    if (typeof data.first().get(key) === 'string') {
+      return (
+        ascending ?
+          data.sort((a, b) => a.get(key).localeCompare(b.get(key))) :
+          data.sort((a, b) => b.get(key).localeCompare(a.get(key)))
+      )
+    }
+    return (
+      ascending ?
+        data.sort((a, b) => a.get(key) - b.get(key)) :
+        data.sort((a, b) => b.get(key) - a.get(key))
+    )
+  }
 
   geneOnClick = geneName => this.props.history.push(`/gene/${geneName}`)
 
@@ -94,31 +124,34 @@ class SchizophreniaGeneResults extends PureComponent {
       }
       return false
     })
-
-    console.log(this.props.history)
+    const sortedData = this.sortData(searchResults, this.state.sortKey, this.state.sortAscending)
 
     return (
       <GenePage>
         <GeneSymbol>Exome meta-analysis results</GeneSymbol>
-        <Search
-          placeholder={'Search genes'}
-          onChange={this.searchGenes}
-        />
-        <Table
-          height={800}
-          width={tableWidth}
-          tableConfig={tableConfig(console.log)}
-          tableData={searchResults}
-          remoteRowCount={searchResults.size}
-          loadMoreRows={() => {}}
-          overscan={5}
-          loadLookAhead={0}
-          onRowClick={this.geneOnClick}
-          onRowHover={() => {}}
-          onScroll={() => {}}
-          searchText={this.state.searchText}
-          filteredIdList={new List(['test'])}
-        />
+        <ResultsSearchWrapper>
+          <Search
+            placeholder={'Search genes'}
+            onChange={this.setSearchText}
+          />
+        </ResultsSearchWrapper>
+        {sortedData.isEmpty() ? 'No results found' : (
+          <Table
+            height={800}
+            width={tableWidth}
+            tableConfig={tableConfig(this.setSortState)}
+            tableData={sortedData}
+            remoteRowCount={sortedData.size}
+            loadMoreRows={() => {}}
+            overscan={5}
+            loadLookAhead={0}
+            onRowClick={this.geneOnClick}
+            onRowHover={() => {}}
+            onScroll={() => {}}
+            searchText={this.state.searchText}
+            filteredIdList={new List(['test'])}
+          />
+        )}
       </GenePage>
     )
   }

@@ -1,0 +1,36 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: schema-browser
+  labels:
+    state: serving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: schema-browser
+  template:
+    metadata:
+      labels:
+        name: schema-browser
+    spec:
+      containers:
+      - name: schema-browser-pod
+        image: gcr.io/exac-gnomad/schema-browser
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: GNOMAD_API_URL
+          value: 'http://35.184.112.239'
+        - name: PORT
+          value: '80'
+        - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
+          value: 'THIS_STRING_IS_REPLACED_DURING_BUILD'
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "redis"
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

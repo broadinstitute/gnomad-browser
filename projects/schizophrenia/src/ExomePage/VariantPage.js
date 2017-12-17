@@ -23,8 +23,8 @@ const VariantContainer = styled.div`
   flex-direction: column;
   width: 1000px;
   min-height: 300px;
-  margin-left: 50px;
-  margin-top: 50px;
+  ${'' /* margin-left: 50px; */}
+  margin-top: 30px;
 `
 
 const SideBySide = styled.div`

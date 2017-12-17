@@ -95,9 +95,9 @@ window.addEventListener('resize', () => store.dispatch(userInterfaceActions.setS
   window.innerHeight,
   window.innerWidth
 )))
-
+console.log('API url', process.env.GNOMAD_API_URL)
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:8007' }),
+  link: new HttpLink({ uri: process.env.GNOMAD_API_URL }),
   // link: new HttpLink({ uri: API_URL }),
   cache: new InMemoryCache()
 })

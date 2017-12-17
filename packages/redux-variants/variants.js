@@ -391,6 +391,13 @@ export default function createVariantReducer({
 }
 
 const sortVariants = (variants, key, ascending) => {
+  if (typeof variants.first().get(key) === 'string') {
+    return (
+      ascending ?
+        variants.sort((a, b) => a.get(key).localeCompare(b.get(key))) :
+        variants.sort((a, b) => b.get(key).localeCompare(a.get(key)))
+    )
+  }
   if (key === 'variant_id') {
     return (
       ascending ?

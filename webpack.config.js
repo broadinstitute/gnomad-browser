@@ -72,7 +72,7 @@ const webpackConfig = {
   },
   plugins: [
     defineEnvPlugin,
-    new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8030 }),
+    // new BundleAnalyzerPlugin({ openAnalyzer: false, analyzerPort: 8030 }),
   ],
   resolve: {
     alias: {

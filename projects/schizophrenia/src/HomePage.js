@@ -24,12 +24,14 @@ const TitleGroup = styled.div`
 `
 
 const Title = styled.h1`
-  font-family: "HelveticaNeue-CondensedBold";
+  font-family: Roboto;
+  ${'' /* font-family: "HelveticaNeue-CondensedBold"; */}
   font-size: 60px;
   font-weight: bold;
   margin-bottom: 5px;
   padding-bottom: 0;
 `
+
 
 const Subtitle = styled.h2`
   padding: 0;
@@ -39,7 +41,7 @@ const Subtitle = styled.h2`
 
 const ParagraphText = styled.p`
   font-size: 20px;
-  font-family: Helvetica Neue;
+  font-family: Roboto;
 `
 
 const SearchContainer = styled.div`
@@ -70,7 +72,7 @@ const Announcement = styled.div`
 const AnnouncementHeader = styled.h3`
   font-size: 16px;
   font-weight: bold;
-  font-family: Helvetica Neue;
+  font-family: Roboto;
   align-self: center;
 `
 

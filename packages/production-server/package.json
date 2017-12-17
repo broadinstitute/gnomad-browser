@@ -9,7 +9,7 @@
     "build-webpack": "../../node_modules/.bin/webpack -p --config webpack.prod.config.js",
     "build-node": "../../node_modules/.bin/babel src -d build --copy-files",
     "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/example/test.js' | ../../node_modules/.bin/tspec",
-    "start-prod": "GNOMAD_API_URL='http://localhost:8007' NODE_ENV=production pm2 start build/server.js -i 2 --name appProd "
+    "start-prod": "pm2-docker start build/server.js -i 2"
   },
   "files": [
     "lib"
@@ -19,10 +19,8 @@
     "cors": "^2.8.4",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "pm2": "^2.9.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
-  },
-  "devDependencies": {
-    "pm2": "^2.9.1"
   }
 }
