@@ -81,7 +81,9 @@ class SchizophreniaGeneResults extends PureComponent {
     sortAscending: true,
   }
 
-  setSearchText = searchText => this.setState({ searchText })
+  setSearchText = searchText => this.setState({
+    searchText: String(searchText).toUpperCase(),
+   })
 
   setSortState = (sortKey) => {
     this.setState({

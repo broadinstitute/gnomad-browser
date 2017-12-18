@@ -80,7 +80,7 @@ const TopBar = ({ history, setCurrentGene }) => {
         </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()
-          const geneName = event.target.elements[0].value
+          const geneName = String(event.target.elements[0].value).toUpperCase()
           setCurrentGene(geneName)
           history.push(`/gene/${geneName}`)
         }}

@@ -12,6 +12,7 @@ node_modules
 resources/*
 *lib
 bundle.js
+bundle*.js
 untracked
 stats.txt
 logs

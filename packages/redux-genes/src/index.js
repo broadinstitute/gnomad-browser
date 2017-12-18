@@ -5,6 +5,7 @@ export {
   byGeneName,
   allGeneNames,
   isFetching,
+  geneNotFound,
   hasGeneData,
   geneData,
   currentGene,

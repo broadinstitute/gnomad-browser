@@ -291,6 +291,10 @@ export default function createVariantReducer({
     },
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
+      if (geneData === null) {
+        return state.set('isFetching', false)
+      }
+
       const withVariants = datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
         if (geneData.get(datasetKey) && variantDatasets[datasetKey]) {
@@ -393,10 +397,15 @@ export default function createVariantReducer({
 const sortVariants = (variants, key, ascending) => {
   if (variants.isEmpty()) return new List()
   if (typeof variants.first().get(key) === 'string') {
+    const sorted = variants.sort((a, b) => {
+      const first = typeof a.get(key) === 'string' ? a.get(key) : ''
+      const second = typeof b.get(key) === 'string' ? b.get(key) : ''
+      return first.localeCompare(second)
+    })
     return (
       ascending ?
-        variants.sort((a, b) => a.get(key).localeCompare(b.get(key))) :
-        variants.sort((a, b) => b.get(key).localeCompare(a.get(key)))
+        sorted :
+        sorted.reverse()
     )
   }
   if (key === 'variant_id') {

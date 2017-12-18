@@ -84,7 +84,8 @@ export const actions = {
 export default function createGeneReducer(config) {
   const variantDatasetKeys = Object.keys(config.variantDatasets)
   const State = Immutable.Record({
-    isFetching: false,
+    isFetching: true,
+    geneNotFound: false,
     byGeneName: Immutable.OrderedMap(),
     allGeneNames: Immutable.Set(),
     currentGene: config.startingGene,
@@ -98,9 +99,16 @@ export default function createGeneReducer(config) {
 
   const actionHandlers = {
     [types.REQUEST_GENE_DATA] (state) {
-      return state.set('isFetching', true)
+      return state
+        .set('isFetching', true)
+        .set('geneNotFound', false)
     },
     [types.RECEIVE_GENE_DATA] (state, { geneName, geneData }) {
+      if (geneData === null) {
+        return state
+          .set('isFetching', false)
+          .set('geneNotFound', true)
+      }
       const geneDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
         return acc.delete(variantDataKey)
       }, geneData)
@@ -143,6 +151,7 @@ export default function createGeneReducer(config) {
 }
 
 export const currentGene = state => state.genes.currentGene
+export const geneNotFound = state => state.genes.geneNotFound
 export const byGeneName = state => state.genes.byGeneName
 export const allGeneNames = state => state.genes.allGeneNames
 export const isFetching = state => state.genes.isFetching

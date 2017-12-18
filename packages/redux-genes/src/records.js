@@ -11,7 +11,8 @@ import {
 
 export const createRecords = (config) => {
   const State = Record({
-    isFetching: false,
+    isFetching: true,
+    geneNotFound: false,
     byGeneName: OrderedMap(),
     allGeneNames: Set(),
     currentGene: config.startingGene,

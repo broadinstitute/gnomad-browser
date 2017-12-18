@@ -8,7 +8,7 @@ const serverConfig = {
   entry: {
     // app: ['./src/renderDom.js'],
     // vendor: ['babel-polyfill']
-    bundle: ['babel-polyfill', '../../projects/schizophrenia/src/index.js'],
+    bundle1513561425: ['babel-polyfill', '../../projects/schizophrenia/src/index.js'],
     // bundle: ['babel-polyfill', './src/renderDom.js'],
   },
   output: {

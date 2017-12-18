@@ -31,9 +31,13 @@ const VariantTableWithRouter = withRouter(VariantTable)
 const MainPage = ({
   gene,
   isFetching,
+  geneNotFound,
 }) => {
-  if (isFetching || !gene) {
+  if (isFetching) {
     return <Loading><h1>Loading</h1></Loading>
+  }
+  if (geneNotFound) {
+    return <Loading><h1>Gene not found.</h1></Loading>
   }
   return (
     <GenePage>
