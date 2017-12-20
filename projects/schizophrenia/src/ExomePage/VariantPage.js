@@ -26,6 +26,7 @@ const VariantContainer = styled.div`
   ${'' /* margin-left: 50px; */}
   margin-top: 30px;
   margin-right: 50px;
+  margin-bottom: 100px;
 `
 
 const SideBySide = styled.div`

@@ -83,6 +83,9 @@ const GeneStatsTitleColumn = GeneStatsCell.extend`
 `
 
 const GeneInfo = ({ geneData, variantCount }) => {
+  if (!geneData) {
+    return <div></div>
+  }
   const {
     gene_name,
     gene_id,

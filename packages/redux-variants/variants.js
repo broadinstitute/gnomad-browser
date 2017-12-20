@@ -33,12 +33,12 @@ export const actions = {
   setFocusedVariant: (variantId, history) => (dispatch, getState) => {
     // history.push(`/gene/BRCA2/${variantId}`)
     // HACK way to preserve table state when switching to variant table
-    dispatch(tableActions.setCurrentTableIndex(
-      getTableIndexByPosition(
-        variantId.split('-')[1],
-        finalFilteredVariants(getState())
-      ) + 7
-    ))
+    // dispatch(tableActions.setCurrentTableIndex(
+    //   getTableIndexByPosition(
+    //     variantId.split('-')[1],
+    //     finalFilteredVariants(getState())
+    //   ) + 7
+    // ))
     dispatch(({ type: types.SET_FOCUSED_VARIANT, variantId }))
   },
 

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions as variantActions } from '@broad/redux-variants'
+import { actions as tableActions } from '@broad/table'
 import { currentGene, isFetching, geneData, geneNotFound, actions as geneActions } from './index'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
@@ -35,6 +36,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)
       this.props.resetSearchVariants()
+      this.props.resetFilter()
     }
   }
 
@@ -57,6 +59,9 @@ const mapDispatchToProps = (geneFetchFunction, exportFetch) => (dispatch) => {
     ),
     resetSearchVariants: () => dispatch(
       variantActions.searchVariantsRaw('')
+    ),
+    resetFilter: () => dispatch(
+      variantActions.setVariantFilter('all')
     ),
     exportVariantsToCsv: () => dispatch(
       variantActions.exportVariantsToCsv(exportFetch)

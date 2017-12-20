@@ -10,7 +10,7 @@ import {
   currentGene,
   geneData,
   isFetching,
-  actions as geneActions
+  actions as geneActions,
 } from '@broad/redux-genes'
 
 const PageContainer = ComposedComponent => class GenePage extends Component {
@@ -35,6 +35,7 @@ const PageContainer = ComposedComponent => class GenePage extends Component {
     if (currentGene !== nextProps.currentGene) {
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)
+      this.props.resetFilter()
     }
   }
 

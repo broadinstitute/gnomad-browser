@@ -8,12 +8,12 @@ const serverConfig = {
   entry: {
     // app: ['./src/renderDom.js'],
     // vendor: ['babel-polyfill']
-    bundle1513561425: ['babel-polyfill', '../../projects/schizophrenia/src/index.js'],
+    bundle: ['babel-polyfill', '../../projects/schizophrenia/src/index.js'],
     // bundle: ['babel-polyfill', './src/renderDom.js'],
   },
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: '[name].js',
+    filename: '[name]-1513741446.js',
   },
   // externals: {
   //   react: 'React',

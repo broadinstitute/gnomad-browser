@@ -3,7 +3,6 @@ import { OrderedMap, fromJS } from 'immutable'
 export const csq_order = [
   'lof', // category
   'transcript_ablation',
-  'splice', // category
   'splice_acceptor_variant',
   'splice_donor_variant',
   'stop_gained',
@@ -40,6 +39,7 @@ export const csq_order = [
   'intergenic_variant',
   'intron_variant',
   'splice_region_variant',
+  'splice', // category
   'upstream_gene_variant',
 ]
 

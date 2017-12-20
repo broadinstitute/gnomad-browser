@@ -41,6 +41,16 @@ const VariantTable = ({
   // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
   const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
   const tConfig = tableConfig(setVariantSort, tableWidth)
+  const variants2 = variants // HACK
+    .map((v) => {
+      if (v.ac_denovo) {
+        return v
+          .set('ac_case', v.ac_denovo)
+          .set('an_case', 46846) // HACK
+      }
+      return v
+    })
+
   // const paddingWidth = tConfig.fields.length * 40
   // const cellContentWidth = tConfig.fields.reduce((acc, field) =>
     // acc + field.width, 0)
@@ -52,7 +62,7 @@ const VariantTable = ({
         height={500}
         width={tableWidth}
         tableConfig={tConfig}
-        tableData={variants}
+        tableData={variants2}
         remoteRowCount={variants.size}
         loadMoreRows={() => {}}
         overscan={5}
