@@ -7,7 +7,7 @@ title: 'Gene constraint'
 
 ## Overall interpretation
 
-We developed metrics to measure a transcript's intolerance to variation by predicting the number of variants expected to be seen in the gnomAD dataset and comparing those expectations to the observed amount of variation. Transcripts that are significantly depleted of their expected variation are considered constrained--or intolerant--of such variation.
+We developed metrics to measure a transcript's intolerance to variation by predicting the number of variants expected to be seen in the gnomAD dataset and comparing those expectations to the observed amount of variation. Transcripts that are significantly depleted of their expected variation are considered constrained, or intolerant, of such variation.
 
 More specifically, for synonymous and missense variation, we created a signed Z score of the deviation of observed counts from the expected number. Positive Z scores indicate increased constraint (intolerance to variation) and therefore that the transcript had fewer variants than expected. Negative Z scores were given to transcripts that had more variants than expected.
 
@@ -31,7 +31,7 @@ We used a depth corrected probability of mutation for each gene to predict the e
 
 Higher (more positive) Z scores indicate that the transcript is more intolerant of variation (more constrained).
 
-To generate Z scores, we used a previously described -- but slightly modified -- sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z scores were then corrected by dividing each score by the standard deviation of all synonymous Z scores in between -5 and 5. For the missense Z scores, we took all Z scores between -5 and 0 and created a mirrored distribution. The missense Z scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
+To generate Z scores, we used a previously described, but slightly modified, sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z scores were then corrected by dividing each score by the standard deviation of all synonymous Z scores in between -5 and 5. For the missense Z scores, we took all Z scores between -5 and 0 and created a mirrored distribution. The missense Z scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
 
 For more information, see [Samocha et al Nature Genetics 2014](https://www.nature.com/articles/ng.3050) and [Lek et al Nature 2016](https://www.nature.com/articles/nature19057).
 
