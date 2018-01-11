@@ -17,8 +17,8 @@ More details can be found in [Samocha et al bioRxiv 2017](https://www.biorxiv.or
 
 Similar to the overall constraint analyses, we used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,621 transcripts. Additionally, we excluded:
 * 795 transcripts that had zero observed variants when removing exons with a median depth < 1
-* 251 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10e-4 and 10e-3, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10e-4 and 10e-3, respectively)
-* 310 transcripts with synonymous Z scores that were significantly high or significantly low (p < 10e-3)
+* 251 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10<sup>-4</sup> and 10<sup>-3</sup>, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10e<sup>-4</sup> and 10<sup>-3</sup>, respectively)
+* 310 transcripts with synonymous Z scores that were significantly high or significantly low (p < 10<sup>-3</sup>)
 
 This left 17,915 transcripts for regional constraint analyses.
 
