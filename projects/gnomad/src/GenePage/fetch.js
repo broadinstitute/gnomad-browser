@@ -5,9 +5,11 @@ const PUBLIC_API = 'http://gnomad-api.broadinstitute.org'
 // const API_URL = 'http://35.184.79.173'
 const API_URL = process.env.GNOMAD_API_URL
 
-export const fetchGnomadOnly = (geneName, url = API_URL) => {
+export const fetchGnomadOnly = (geneName, transcriptId) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
+    console.log(argument)
+    console.log(transcriptId)
   const query = `{
     gene(${argument}) {
       gene_id
@@ -29,7 +31,7 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
           strand
         }
       }
-      gnomadExomeVariants {
+      gnomadExomeVariants(transcriptId: "${transcriptId || undefined}") {
         variant_id
         rsid
         pos
@@ -46,7 +48,7 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
         lcr
         segdup
       }
-      gnomadGenomeVariants {
+      gnomadGenomeVariants(transcriptId: "${transcriptId || undefined}") {
         variant_id
         rsid
         pos
@@ -191,7 +193,7 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
 }
 `
   return new Promise((resolve, reject) => {
-    fetch(url)(query)
+    fetch(API_URL)(query)
       .then(data => resolve(data.data.gene))
       .catch((error) => {
         reject(error)
@@ -238,9 +240,9 @@ export const fetchExac = (geneName, url = PUBLIC_API) => {
   })
 }
 
-export function fetchWithExac(geneName, options) {
+export function fetchWithExac(geneName, transcriptId) {
   return Promise.all([
-    fetchGnomadOnly(geneName, options),
+    fetchGnomadOnly(geneName, transcriptId),
     fetchExac(geneName),
   ]).then(([localData, publicData]) => {
     return ({

@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 
 import { actions as variantActions } from '@broad/redux-variants'
 import { actions as tableActions } from '@broad/table'
-import { currentGene, isFetching, geneData, geneNotFound, actions as geneActions } from './index'
+import { currentGene, currentTranscript, isFetching, geneData, geneNotFound, actions as geneActions } from './index'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
@@ -30,8 +30,10 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchGeneIfNeeded, currentGene, history } = this.props
-    if (currentGene !== nextProps.currentGene) {
+    const { fetchGeneIfNeeded, currentGene, currentTranscript, history } = this.props
+    if (currentGene !== nextProps.currentGene ||
+      currentTranscript !== nextProps.currentTranscript
+    ) {
       // if(this.props.route.path == nextProps.route.path) return false
       history.push(`/gene/${nextProps.currentGene}`)
       fetchGeneIfNeeded(nextProps.currentGene)
@@ -50,6 +52,7 @@ const mapStateToProps = state => ({
   geneNotFound: geneNotFound(state),
   gene: geneData(state),
   currentGene: currentGene(state),
+  currentTranscript: currentTranscript(state),
 })
 
 const mapDispatchToProps = (geneFetchFunction, exportFetch) => (dispatch) => {

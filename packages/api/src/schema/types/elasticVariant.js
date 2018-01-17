@@ -123,7 +123,7 @@ export const lookupElasticVariantsByGeneId = ({
   index,
   obj,
   ctx,
-  // transcriptQuery,
+  transcriptQuery,
   category,
   variantIdListQuery,
 }) => {
@@ -180,10 +180,8 @@ export const lookupElasticVariantsByGeneId = ({
   fields.push(Object.keys(populations).map(population => `AN_${population}`))
   fields.push(Object.keys(populations).map(population => `Hom_${population}`))
   fields.push(Object.keys(populations).map(population => `Hemi_${population}`))
-
-  const transcriptQuery = 'ENST00000474231'
-
-  const currentTranscript = transcriptQuery || obj.canonical_transcript
+  console.log(transcriptQuery)
+  const currentTranscript = transcriptQuery !== 'undefined' ? transcriptQuery : obj.canonical_transcript
   console.log('current transcript: ', currentTranscript)
 
   return new Promise((resolve, reject) => {
@@ -234,7 +232,39 @@ export const lookupElasticVariantsByGeneId = ({
         if (reply) {
           const end = new Date().getTime()
           const time = end - start
-          const variants = JSON.parse(reply)
+          let variants = JSON.parse(reply)
+          if (!(transcriptQuery !== 'undefined')) {
+            resolve(variants)
+          }
+          variants = variants
+            .filter((variant) => {
+              let isInTranscript
+              filteredRegions.forEach((region) => {
+                if (region.start - padding < variant.pos && variant.pos < region.stop + padding) {
+                  isInTranscript = true
+                }
+              })
+              return isInTranscript
+            })
+            .map((variant) => {
+              const transcriptAnnotations = variant
+                .sorted_transcript_consequences
+                .find(transcript => transcript.transcript_id === currentTranscript)
+
+              const consequence = transcriptAnnotations.major_consequence
+              const hgvsc = transcriptAnnotations.hgvsc ? transcriptAnnotations.hgvsc.split(':')[1] : ''
+              const hgvsp = transcriptAnnotations.hgvsp ? transcriptAnnotations.hgvsp.split(':')[1] : ''
+              const lof = transcriptAnnotations.lof
+
+              return {
+                ...variant,
+                consequence,
+                hgvsp,
+                hgvsc,
+                lof,
+              }
+            })
+
           console.log(['variants', index, obj.gene_name, variantSubset, 'cache', totalBasePairs, variants.length, time].join(','))
           return resolve(variants)
         }

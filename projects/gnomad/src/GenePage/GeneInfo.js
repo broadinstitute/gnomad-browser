@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { geneData, regionalConstraint } from '@broad/redux-genes'
+import { geneData, regionalConstraint, currentTranscript } from '@broad/redux-genes'
 
 import {
   variantCount,
@@ -285,6 +285,7 @@ const GeneInfo = ({
   selectedVariantDataset,
   setSelectedVariantDataset,
   regionalConstraint,
+  currentTranscript,
 }) => {
   const {
     gene_name,
@@ -295,6 +296,7 @@ const GeneInfo = ({
     full_gene_name,
     omim_accession,
     exacv1_constraint,
+    canonical_transcript,
   } = geneData.toJS()
   return (
     <GeneInfoWrapper>
@@ -306,7 +308,10 @@ const GeneInfo = ({
         <GeneAttributes>
           <GeneAttributeKeys>
             <GeneAttributeKey>
-              Ensembl ID
+              Ensembl gene ID
+            </GeneAttributeKey>
+            <GeneAttributeKey>
+              Ensembl transcript ID
             </GeneAttributeKey>
             <GeneAttributeKey>
               Number of variants
@@ -331,6 +336,14 @@ const GeneInfo = ({
                 href={`http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${gene_id}`}
               >
                 {gene_id}
+              </a>
+            </GeneAttributeValue>
+            <GeneAttributeValue>
+              <a
+                target="_blank"
+                href={`http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${currentTranscript}`}
+              >
+                {currentTranscript || `${canonical_transcript} (canonical)`}
               </a>
             </GeneAttributeValue>
             <GeneAttributeValue>
@@ -429,6 +442,7 @@ export default connect(
     variantCount: variantCount(state),
     selectedVariantDataset: selectedVariantDataset(state),
     regionalConstraint: regionalConstraint(state),
+    currentTranscript: currentTranscript(state),
   }),
   dispatch => ({
     setSelectedVariantDataset: dataset =>

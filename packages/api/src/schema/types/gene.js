@@ -111,6 +111,7 @@ const geneType = new GraphQLObjectType({
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
       args: {
+        transcriptId: { type: GraphQLString },
         variantIdListQuery: {
           type: new GraphQLList(GraphQLString),
           description: 'Give a list of variant ids.'
@@ -120,19 +121,24 @@ const geneType = new GraphQLObjectType({
           description: 'Return variants by consequence category: all, lof, or lofAndMissense',
         },
       },
-      resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId({
+      resolve: (obj, args, ctx) => {
+        console.log(args)
+        return lookupElasticVariantsByGeneId({
           elasticClient: ctx.database.elastic,
           index: 'gnomad_exomes',
           obj,
           ctx,
+          transcriptQuery: args.transcriptId,
           category: args.category,
           variantIdListQuery: args.variantIdListQuery,
-        }),
+        })
+      }
+        ,
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
       args: {
+        transcriptId: { type: GraphQLString },
         category: {
           type: GraphQLString,
           description: 'Return variants by consequence category: all, lof, or lofAndMissense',
@@ -144,6 +150,7 @@ const geneType = new GraphQLObjectType({
           index: 'gnomad_genomes',
           obj,
           ctx,
+          transcriptQuery: args.transcriptId,
           category: args.category,
         }),
     },

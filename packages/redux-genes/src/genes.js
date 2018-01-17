@@ -38,8 +38,10 @@ export const actions = {
   fetchPageDataByGene (geneName, geneFetchFunction) {
     return (dispatch, getState) => {
       const state = getState()
+      const transcriptId = currentTranscript(state)
+      console.log('currentTranscript', transcriptId)
       dispatch(actions.requestGeneData(geneName))
-      geneFetchFunction(geneName)
+      geneFetchFunction(geneName, transcriptId)
         .then((geneData) => {
           dispatch(actions.receiveGeneData(geneName, geneData))
         })
@@ -118,7 +120,6 @@ export default function createGeneReducer(config) {
           .set('isFetching', false)
           .set('byGeneName', state.byGeneName.set(geneName, geneDataOnly))
           .set('allGeneNames', state.allGeneNames.add(geneName))
-          .set('currentTranscript', geneDataOnly.get('canonical_transcript'))
       )
     },
     [types.SET_CURRENT_TISSUE] (state, { tissueName }) {
