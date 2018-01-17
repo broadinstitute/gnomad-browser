@@ -11,6 +11,7 @@ export {
   currentGene,
   currentTissue,
   currentTranscript,
+  canonicalTranscript,
   transcriptFanOut,
   currentExon,
   exonPadding,

@@ -20,6 +20,7 @@ export const fetchGnomadOnly = (geneName, url = API_URL) => {
       xstop
       chrom
       strand
+      canonical_transcript
       transcript {
         exons {
           feature_type

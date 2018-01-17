@@ -20,6 +20,9 @@ const TranscriptLeftPanel = ({
   leftPanelWidth,
   fontSize,
   expandTranscriptButton,
+  currentTranscript,
+  canonicalTranscript,
+  onTranscriptNameClick,
 }) => {
   const TranscriptLeftAxis = styled.div`
     display: flex;
@@ -30,10 +33,38 @@ const TranscriptLeftPanel = ({
   width: 100%; /* Set by Redux */
   color: black;
   `
+
+  const TranscriptLink = styled.a`
+    text-decoration: none;
+    cursor: pointer;
+    background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1);' : 'none;'}
+    border-bottom: ${({ isSelected, isCanonical }) => {{
+      if (isSelected) {
+        return'1px solid red;'
+        return'1px solid #000;'
+      }
+      if (isCanonical) {
+        return'1px solid #000;'
+      }
+      return 'none'
+      }}}
+    ${'' /* border-radius: 3px; */}
+  `
+
+  const contents = expandTranscriptButton ||
+    <TranscriptLink
+      isSelected={currentTranscript === title}
+      isCanonical={canonicalTranscript === title}
+      onClick={() => {
+        onTranscriptNameClick(title)
+      }}
+    >
+      {title}
+    </TranscriptLink>
   return (
     <TranscriptLeftAxis style={{ width: leftPanelWidth }}>
       <TranscriptName style={{ fontSize }}>
-        {expandTranscriptButton || title}
+        {contents}
       </TranscriptName>
     </TranscriptLeftAxis>
   )
@@ -294,6 +325,9 @@ const Transcript = ({
   showRightPanel,
   showLeftPanel,
   currentGene,
+  onTranscriptNameClick,
+  currentTranscript,
+  canonicalTranscript,
   strand,
 }) => {
   const TranscriptContainer = styled.div`
@@ -335,6 +369,9 @@ const Transcript = ({
           leftPanelWidth={leftPanelWidth}
           title={title}
           fontSize={fontSize}
+          onTranscriptNameClick={onTranscriptNameClick}
+          currentTranscript={currentTranscript}
+          canonicalTranscript={canonicalTranscript}
           expandTranscriptButton={expandTranscriptButton}
         />}
       <div style={{ display: 'flex', justifyContent: 'center' }}>

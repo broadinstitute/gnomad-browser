@@ -118,6 +118,7 @@ export default function createGeneReducer(config) {
           .set('isFetching', false)
           .set('byGeneName', state.byGeneName.set(geneName, geneDataOnly))
           .set('allGeneNames', state.allGeneNames.add(geneName))
+          .set('currentTranscript', geneDataOnly.get('canonical_transcript'))
       )
     },
     [types.SET_CURRENT_TISSUE] (state, { tissueName }) {
@@ -164,6 +165,11 @@ export const exonPadding = state => state.genes.exonPadding
 export const geneData = createSelector(
   [byGeneName, currentGene],
   (byGeneName, currentGene) => byGeneName.get(currentGene),
+)
+
+export const canonicalTranscript = createSelector(
+  [geneData],
+  geneData => geneData.get('canonical_transcript')
 )
 
 export const transcripts = createSelector(

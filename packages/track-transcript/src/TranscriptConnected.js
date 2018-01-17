@@ -7,6 +7,7 @@ import {
   currentGene,
   currentTissue,
   currentTranscript,
+  canonicalTranscript,
   currentExon,
   transcripts,
   transcriptsGrouped,
@@ -18,6 +19,7 @@ const TranscriptConnected = ({
   ownProps,
   transcripts,
   currentTranscript,
+  canonicalTranscript,
   transcriptsGrouped,
   setCurrentTranscript,
   currentExon,
@@ -39,6 +41,7 @@ const TranscriptConnected = ({
       tissueStats={tissueStats}
       onTissueChange={setCurrentTissue}
       currentGene={currentGene}
+      canonicalTranscript={canonicalTranscript}
       {...ownProps}
     />
   )
@@ -48,6 +51,7 @@ TranscriptConnected.propTypes = {
   currentGene: PropTypes.string,
   currentTissue: PropTypes.string,
   currentTranscript: PropTypes.string,
+  canonicalTranscript: PropTypes.string,
   currentExon: PropTypes.string,
   transcripts: PropTypes.array.isRequired,
   transcriptsGrouped: PropTypes.object.isRequired,
@@ -60,6 +64,7 @@ TranscriptConnected.propTypes = {
 TranscriptConnected.defaultProps = {
   currentTissue: null,
   currentTranscript: null,
+  canonicalTranscript: null,
   currentExon: null,
 }
 
@@ -68,6 +73,7 @@ const mapStateToProps = (state, ownProps) => ({
   currentGene: currentGene(state),
   currentTissue: currentTissue(state),
   currentTranscript: currentTranscript(state),
+  canonicalTranscript: canonicalTranscript(state),
   currentExon: currentExon(state),
   transcripts: transcripts(state),
   transcriptsGrouped: transcriptsGrouped(state),
