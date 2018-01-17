@@ -223,7 +223,6 @@ export const lookupGeneByName = (db, gene_name) => {
   return new Promise((resolve, reject) => {
     db.collection('genes').findOne({ gene_name })
       .then((data) => {
-        console.log(data, gene_name)
         if (!data) {
           reject('Gene not found.')
         }

@@ -123,6 +123,7 @@ export const lookupElasticVariantsByGeneId = ({
   index,
   obj,
   ctx,
+  // transcriptQuery,
   category,
   variantIdListQuery,
 }) => {
@@ -180,10 +181,15 @@ export const lookupElasticVariantsByGeneId = ({
   fields.push(Object.keys(populations).map(population => `Hom_${population}`))
   fields.push(Object.keys(populations).map(population => `Hemi_${population}`))
 
+  const transcriptQuery = 'ENST00000474231'
+
+  const currentTranscript = transcriptQuery || obj.canonical_transcript
+  console.log('current transcript: ', currentTranscript)
+
   return new Promise((resolve, reject) => {
     return lookupExonsByTranscriptId(
       ctx.database.gnomad,
-      obj.canonical_transcript
+      currentTranscript,
     ).then((exons) => {
       const overrideCategory = false
       const padding = 75
@@ -196,7 +202,7 @@ export const lookupElasticVariantsByGeneId = ({
 
       // console.log('Total base pairs in variant query', totalBasePairs)
 
-      let variantSubset = 'all'
+      const variantSubset = 'all'
       // if (category && !overrideCategory) {
       //   variantSubset = category
       // } else if (totalBasePairs > 40000) {
@@ -268,16 +274,39 @@ export const lookupElasticVariantsByGeneId = ({
         }).then((response) => {
           const variants = response.hits.hits.map((v) => {
             const elastic_variant = v._source
+            const sortedTranscriptConsequences = JSON.parse(
+              elastic_variant.sortedTranscriptConsequences
+            )
+
+            const transcriptAnnotations = sortedTranscriptConsequences.find(transcript =>
+              transcript.transcript_id === currentTranscript)
+
+            const consequence = transcriptQuery ?
+              transcriptAnnotations.major_consequence :
+              elastic_variant.majorConsequence
+
+            const hgvsp = transcriptQuery ?
+              transcriptAnnotations.hgvsp :
+              elastic_variant.hgvsp
+
+            const hgvsc = transcriptQuery ?
+              transcriptAnnotations.hgvsc :
+              elastic_variant.hgvsc
+
+            const lof = transcriptQuery ?
+              transcriptAnnotations.lof :
+              elastic_variant.lof
+
             return ({
-              hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
-              hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-              consequence: elastic_variant.majorConsequence,
+              hgvsp: hgvsp ? hgvsp.split(':')[1] : '',
+              hgvsc: hgvsc ? hgvsc.split(':')[1] : '',
+              consequence,
               pos: elastic_variant.pos,
               xpos: elastic_variant.xpos,
               rsid: elastic_variant.rsid,
               variant_id: elastic_variant.variantId,
               id: elastic_variant.variantId,
-              lof: elastic_variant.lof,
+              lof,
               filters: elastic_variant.filters,
               allele_count: elastic_variant.AC,
               allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
@@ -290,7 +319,7 @@ export const lookupElasticVariantsByGeneId = ({
               hemi_count: elastic_variant.Hemi,
               lcr: elastic_variant.lcr,
               segdup: elastic_variant.segdup,
-              sorted_transcript_consequences: JSON.parse(elastic_variant.sortedTranscriptConsequences),
+              sorted_transcript_consequences: sortedTranscriptConsequences,
               quality_metrics: {
                 FS: elastic_variant.FS,
                 MQRankSum: elastic_variant.MQRankSum,

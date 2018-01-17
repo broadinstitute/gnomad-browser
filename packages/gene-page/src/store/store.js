@@ -13,7 +13,7 @@ import { reduxSearch, reducer as searchReducer } from 'redux-search'
 import { createVariantReducer } from '@broad/redux-variants'
 import { createGeneReducer } from '@broad/redux-genes'
 import { createRegionReducer } from '@broad/region'
-// import { createHelpReducer } from '@broad/help'
+import { createHelpReducer } from '@broad/help'
 import { createUserInterfaceReducer } from '@broad/ui'
 import { createTableReducer } from '@broad/table'
 import { createNavigatorReducer } from '@broad/track-navigator'
@@ -38,7 +38,7 @@ export default function createGenePageStore(appSettings, appReducers) {
     search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
-    // help: createHelpReducer(appSettings.docs),
+    help: createHelpReducer(appSettings.docs),
     ui: createUserInterfaceReducer(),
     navigator: createNavigatorReducer(),
     table: createTableReducer(),
