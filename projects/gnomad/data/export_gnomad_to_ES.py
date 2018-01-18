@@ -198,7 +198,7 @@ CADD_INFO_FIELDS = """
 """
 
 MPC_INFO_FIELDS = """
-    MPC: Stringroh,
+    MPC: String,
     fitted_score: Double,
     mis_badness: Double,
     obs_exp: Double,

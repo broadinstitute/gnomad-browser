@@ -109,14 +109,14 @@ const GenePageConnected = ({
           </ClassicExacButton>
         </BottomButtonSection>
       </TableSection>
-      <Footer>
+      {/* <Footer>
         <FooterItem>
           <HelpLink topic={'about-gnomad'}>About</HelpLink>
         </FooterItem>
         <FooterItem>
           <HelpLink topic={'terms'}>Terms</HelpLink>
         </FooterItem>
-      </Footer>
+      </Footer> */}
     </GenePage>
   )
 }

@@ -168,4 +168,4 @@ chunks: update-gnomad-api
 	@make \
 	API_URL=$(REMOTE_API) \
 	PRECACHE_GENES_ARGUMENTS="$(RESOURCES_PATH)/clean_genes_list_171112.json 5" \
-	precache-genes
+	precache-genesgnomad_exomes_202_37

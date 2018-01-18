@@ -125,7 +125,7 @@ const geneType = new GraphQLObjectType({
         console.log(args)
         return lookupElasticVariantsByGeneId({
           elasticClient: ctx.database.elastic,
-          index: 'gnomad_exomes',
+          index: 'gnomad_exomes_202_37',
           obj,
           ctx,
           transcriptQuery: args.transcriptId,
@@ -147,7 +147,7 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookupElasticVariantsByGeneId({
           elasticClient: ctx.database.elastic,
-          index: 'gnomad_genomes',
+          index: 'gnomad_genomes_202_37',
           obj,
           ctx,
           transcriptQuery: args.transcriptId,

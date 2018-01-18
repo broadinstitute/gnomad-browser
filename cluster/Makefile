@@ -41,6 +41,7 @@ dataproc-no-vep:
 	--project $(GCLOUD_PROJECT) \
 	--zone $(GCLOUD_ZONE) \
 	--machine-type $(DATAPROC_CLUSTER_MACHINE_TYPE) \
+	--max-idle 20m \
 	no-vep $(DATAPROC_CLUSTER_NUM_NODES)
 
 .PHONY: spark

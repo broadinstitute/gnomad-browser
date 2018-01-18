@@ -161,7 +161,7 @@ create-subset-dmd:
 annotate-gnomad:
 	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
-	--cluster $(DATAPROC_CLUSTER_NAME) \
+	--cluster vep-grch37 \
 	../../../hail-db-utils/add_annotations.py \
 	--genome-version 37 \
 	--exclude-dbnsfp \
@@ -188,11 +188,27 @@ variants-new:
 variants-dmd-exomes:
 	@make \
 	VDS_PATH=gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.vds \
-	VARIANTS_INDEX_NAME=gnomad_exomes \
+	VARIANTS_INDEX_NAME=gnomad_exomes_202_37 \
 	variants-new
 
 variants-dmd-genomes:
 	@make \
 	VDS_PATH=gs://gnomad-browser/datasets/gnomad.genomes.r2.0.2.sites.split.dmd.vds \
-	VARIANTS_INDEX_NAME=gnomad_genomes \
+	VARIANTS_INDEX_NAME=gnomad_genomes_202_37 \
 	variants-new
+
+variants-gnomad-exomes:
+	@make \
+	VDS_PATH=gs://gnomad-public/release/2.0.2/vds/exomes/gnomad.exomes.r2.0.2.sites.split.vds \
+	VARIANTS_INDEX_NAME=gnomad_exomes_202_37 \
+	variants-new
+
+variants-gnomad-genomes:
+	@make \
+	VDS_PATH=gs://gnomad-public/release/2.0.2/vds/genomes/gnomad.genomes.r2.0.2.sites.split.vds \
+	VARIANTS_INDEX_NAME=gnomad_genomes_202_37 \
+	variants-new
+
+variants-new-load-test: variants-dmd-exomes variants-dmd-genomes
+
+variants-new-load: variants-gnomad-exomes variants-gnomad-genomes

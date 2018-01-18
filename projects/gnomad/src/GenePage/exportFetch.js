@@ -4,8 +4,8 @@ const API_URL = process.env.GNOMAD_API_URL
 
 export const exportFetch = (variantIdList, dataset, url = API_URL) => {
   const datasetMap = {
-    gnomadExomeVariants: 'gnomad_exomes',
-    gnomadGenomeVariants: 'gnomad_genomes',
+    gnomadExomeVariants: 'gnomad_exomes_202_37',
+    gnomadGenomeVariants: 'gnomad_genomes_202_37',
   }
   const variables = {
     dataset: datasetMap[dataset],

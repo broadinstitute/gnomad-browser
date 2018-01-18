@@ -64,6 +64,9 @@ deploy-persistent-data-pods:
 	kubectl create -f kubernetes-elasticsearch-cluster/stateful/es-data-stateful.yaml
 	sleep 60
 
+set-throttle:
+	./set_throttle.sh
+
 reallocate-shards:
 	./reallocate.sh
 
