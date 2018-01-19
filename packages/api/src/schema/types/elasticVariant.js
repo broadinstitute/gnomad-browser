@@ -640,6 +640,7 @@ export const lookupElasticVariantByList = ({
   elasticClient,
   index,
   variantIdListQuery,
+  transcriptQuery,
 }) => {
   const fields = [
     'hgvsp',
@@ -718,7 +719,7 @@ export const lookupElasticVariantByList = ({
       sort: [{ xpos: { order: 'asc' } }],
     },
   }).then((response) => {
-    const variants = response.hits.hits.map((v) => {
+    let variants = response.hits.hits.map((v) => {
       const elastic_variant = v._source
       return ({
         hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
@@ -780,6 +781,30 @@ export const lookupElasticVariantByList = ({
         ), {}),
       })
     })
+    
+    if (transcriptQuery) {
+      variants = variants.map((v) => {
+        const transcriptAnnotation = v.sorted_transcript_consequences.find(
+          transcript => transcript.transcript_id === transcriptQuery
+        )
+
+        const {
+          major_consequence,
+          hgvsc,
+          hgvsp,
+          lof,
+        } = transcriptAnnotation
+
+        return {
+          ...v,
+          consequence: major_consequence,
+          hgvsc: hgvsc ? hgvsc.split(':')[1] : '',
+          hgvsp: hgvsp ? hgvsp.split(':')[1] : '',
+          lof,
+        }
+      })
+    }
+
     return variants
     }).catch(error => console.log(error))
 }
@@ -799,12 +824,17 @@ export const gnomadVariants = {
       type: GraphQLString,
       description: 'Return variants by consequence category: all, lof, or lofAndMissense',
     },
+    transcriptId: {
+      type: GraphQLString,
+      description: 'Return annotations for particular transcript',
+    },
   },
   resolve: (obj, args, ctx) => {
     return lookupElasticVariantByList({
       elasticClient: ctx.database.elastic,
       index: args.dataset,
       variantIdListQuery: args.variantIdList,
+      transcriptQuery: args.transcriptId,
     })
   }
 }

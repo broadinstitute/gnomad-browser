@@ -2,7 +2,7 @@ import fetch from 'graphql-fetch'
 
 const API_URL = process.env.GNOMAD_API_URL
 
-export const exportFetch = (variantIdList, dataset, url = API_URL) => {
+export const exportFetch = (variantIdList, transcriptId, dataset, url = API_URL) => {
   const datasetMap = {
     gnomadExomeVariants: 'gnomad_exomes_202_37',
     gnomadGenomeVariants: 'gnomad_genomes_202_37',
@@ -10,10 +10,11 @@ export const exportFetch = (variantIdList, dataset, url = API_URL) => {
   const variables = {
     dataset: datasetMap[dataset],
     variantIdList,
+    transcriptId,
   }
   const query = `
-    query fetchForExport ($dataset: String, $variantIdList: [String]) {
-      gnomadVariants(dataset: $dataset variantIdList: $variantIdList) {
+    query fetchForExport ($dataset: String, $variantIdList: [String], $transcriptId: String) {
+      gnomadVariants(dataset: $dataset variantIdList: $variantIdList transcriptId: $transcriptId) {
           variant_id
           rsid
           pos

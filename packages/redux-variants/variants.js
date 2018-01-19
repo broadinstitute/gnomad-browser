@@ -12,7 +12,7 @@ import {
 
 import { types as regionTypes } from '@broad/region'
 import { actions as tableActions } from '@broad/table'
-import { types as geneTypes } from '@broad/redux-genes'
+import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
 
 export const types = keymirror({
   REQUEST_VARIANTS: null,
@@ -194,12 +194,13 @@ export const actions = {
       const state = getState()
       const currentDataset = selectedVariantDataset(state)
       const filteredVariants = finalFilteredVariants(state)
+      const transcriptId = currentTranscript(state)
       const variantIds = filteredVariants.map(v => v.variant_id)
 
       if (currentDataset === 'gnomadCombinedVariants') {
         return Promise.all([
-          fetchFunction(variantIds, 'gnomadExomeVariants'),
-          fetchFunction(variantIds, 'gnomadGenomeVariants'),
+          fetchFunction(variantIds, transcriptId, 'gnomadExomeVariants'),
+          fetchFunction(variantIds, transcriptId, 'gnomadGenomeVariants'),
         ]).then((promiseArray) => {
           const [exomeData, genomeData] = promiseArray
           console.log(exomeData)
@@ -216,7 +217,7 @@ export const actions = {
         })
       }
 
-      fetchFunction(variantIds, currentDataset)
+      fetchFunction(variantIds, transcriptId, currentDataset)
         .then((data) => {
           const variantDataMap = flattenForCsv(data)
           exportToCsv(variantDataMap, currentDataset)
