@@ -15,3 +15,7 @@ export {
   HUMAN_CHROMOSOMES,
   HUMAN_CHROMOSOMES_WITH_MITO,
 } from './chromosomes'
+
+export {
+  gnomadExportCsvTranslations,
+} from './vcfFields'

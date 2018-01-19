@@ -32,3 +32,6 @@ export {
   isCategoryMissenseOrLoF,
 } from './constants/categoryDefinitions'
 
+export {
+  gnomadExportCsvTranslations
+} from './constants'

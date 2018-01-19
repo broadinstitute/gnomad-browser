@@ -7,7 +7,8 @@ import { createSearchAction, getSearchSelectors } from 'redux-search'
 import {
   isCategoryLoF,
   isCategoryMissenseOrLoF,
-  getTableIndexByPosition
+  getTableIndexByPosition,
+  gnomadExportCsvTranslations,
 } from '@broad/utilities'
 
 import { types as regionTypes } from '@broad/region'
@@ -176,6 +177,16 @@ export const actions = {
         })
       }
 
+      function formatData(data) {
+        const variants = fromJS(data)
+        const dictionary = OrderedMap(gnomadExportCsvTranslations)
+        const renamed = variants.map((variant) => {
+          return dictionary.mapEntries(([key, value]) => [value, variant.get(key)])
+          // return variant.mapKeys((key) => gnomadExportCsvTranslations[key])
+        })
+        return renamed.sort((a, b) => b.get('pos') - a.get('pos'))
+      }
+
       function exportToCsv (flattenedData, dataset) {
         const data = flattenedData.toIndexedSeq().map((variant) => {
           return variant.valueSeq().join(',')
@@ -213,13 +224,13 @@ export const actions = {
             return oldValue
           }, genomeDataMapFlattened)
           console.log(combined)
-          exportToCsv(combined, currentDataset)
+          exportToCsv(formatData(combined), currentDataset)
         })
       }
 
       fetchFunction(variantIds, transcriptId, currentDataset)
         .then((data) => {
-          const variantDataMap = flattenForCsv(data)
+          const variantDataMap = formatData(flattenForCsv(data))
           exportToCsv(variantDataMap, currentDataset)
         })
     }
