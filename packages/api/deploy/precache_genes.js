@@ -5,7 +5,6 @@ import { List, Range } from 'immutable'
 const API_URL = process.env.GNOMAD_API_URL
 const GENE_FILE_PATH = process.argv[2]
 const NUMBER_OF_CLIENTS = process.argv[3]
-const FETCH_TITAN = true
 
 const genes = List(JSON.parse(fs.readFileSync(GENE_FILE_PATH, 'utf8')))
 
@@ -173,8 +172,4 @@ function fetchConcurrent(genes, numberOfClients = 1) {
     })
 }
 
-if (FETCH_TITAN) {
-  fetchTitan()
-}
-
-// fetchConcurrent(genes, NUMBER_OF_CLIENTS)
+fetchConcurrent(genes, NUMBER_OF_CLIENTS)

@@ -39,7 +39,7 @@ delete-redis-containers:
 	@-kubectl delete -f redis-master.yaml
 	@-kubectl delete -f redis-sentinel-service.yaml
 	@-kubectl delete -f redis-controller.yaml
-	@-kubectl delete -f redis-sentinel-controller.yaml
+	@-kubectl delete -f redis-sentinel-controllerpickup.yaml
 
 delete-original-master:
 	# Delete the original master pod
