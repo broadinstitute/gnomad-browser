@@ -43,6 +43,7 @@ export const fetchGnomadOnly = (geneName, transcriptId) => {
         allele_num
         filters
         hom_count
+        hemi_count
         consequence
         lof
         lcr
@@ -60,6 +61,7 @@ export const fetchGnomadOnly = (geneName, transcriptId) => {
         allele_num
         filters
         hom_count
+        hemi_count
         consequence
         lof
         lcr
@@ -77,6 +79,7 @@ export const fetchGnomadOnly = (geneName, transcriptId) => {
         allele_num
         filters
         hom_count
+        hemi_count
         consequence
         lof
       }

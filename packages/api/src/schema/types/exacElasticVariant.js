@@ -43,6 +43,7 @@ export const lookupElasticVariantsByGeneId = ({
     'AN',
     'AF',
     'AC_Hom',
+    'AC_Hemi',
   ]
 
   return new Promise((resolve, reject) => {
@@ -149,6 +150,7 @@ export const lookupElasticVariantsByGeneId = ({
               allele_freq: elastic_variant['AF'],
               allele_num: elastic_variant['AN'],
               hom_count: elastic_variant['AC_Hom'],
+              hemi_count: elastic_variant['AC_Hemi'],
             })
           })
           return ctx.database.redis.set(
@@ -185,6 +187,7 @@ export const lookupElasticVariantsInRegion = ({
     'AN',
     'AF',
     'AC_Hom',
+    'AC_Hemi'
   ]
 
   const lofQuery = createConsequenceQuery(lofs)
@@ -250,6 +253,7 @@ export const lookupElasticVariantsInRegion = ({
           allele_freq: elastic_variant['AF'],
           allele_num: elastic_variant['AN'],
           hom_count: elastic_variant['AC_Hom'],
+          hemi_count: elastic_variant['AC_Hemi']
         })
       }))
     })

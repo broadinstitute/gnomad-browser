@@ -1,7 +1,7 @@
-export default (onHeaderClick, width) =>  {
+export default (onHeaderClick, width, currentChromosome) => {
   const mediumSize = (width < 900)
 
-  return ({
+  const tableConfig = ({
     fields: [
       {
         dataKey: 'variant_id',
@@ -74,7 +74,7 @@ export default (onHeaderClick, width) =>  {
         dataKey: 'allele_count',
         title: 'AC',
         dataType: 'integer',
-        width: mediumSize ? width * 0.03 : width * 0.05,
+        width: mediumSize ? width * 0.03 : width * 0.04,
         onHeaderClick,
       },
       {
@@ -89,16 +89,32 @@ export default (onHeaderClick, width) =>  {
         dataKey: 'allele_freq',
         title: 'AF',
         dataType: 'alleleFrequency',
-        width: mediumSize ? width * 0.14 : width * 0.05,
+        width: mediumSize ? width * 0.06 : width * 0.06,
         onHeaderClick,
-      },
+      }
+    ],
+  })
+  if (currentChromosome !== 'Y') {
+    tableConfig.fields.push(
       {
         dataKey: 'hom_count',
         title: 'Hom',
         dataType: 'integer',
-        width: mediumSize ? width * 0.05 : width * 0.05,
+        width: mediumSize ? width * 0.04 : width * 0.04,
         onHeaderClick,
-      },
-    ],
-  })
+      }
+    )
+  }
+  if (currentChromosome === 'X' || currentChromosome === 'Y') {
+    tableConfig.fields.push(
+      {
+        dataKey: currentChromosome === 'Y' ? 'allele_count' : 'hemi_count',
+        title: 'Hemi',
+        dataType: 'integer',
+        width: mediumSize ? width * 0.04 : width * 0.04,
+        onHeaderClick,
+      }
+    )
+  }
+  return tableConfig
 }

@@ -20,6 +20,8 @@ import {
   finalFilteredVariantsCount,
 } from '@broad/redux-variants'
 
+import { currentChromosome } from '@broad/redux-genes'
+
 import { Table } from './index'
 
 const VariantTable = ({
@@ -28,6 +30,7 @@ const VariantTable = ({
   setFocusedVariant,
   setHoveredVariant,
   setCurrentTableScrollData,
+  currentChromosome,
   tablePosition,
   searchText,
   title,
@@ -40,7 +43,7 @@ const VariantTable = ({
   const scrollBarWidth = 40
   // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
   const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
-  const tConfig = tableConfig(setVariantSort, tableWidth)
+  const tConfig = tableConfig(setVariantSort, tableWidth, currentChromosome)
   const variants2 = variants // HACK
     .map((v) => {
       if (v.ac_denovo) {
@@ -107,6 +110,7 @@ const mapStateToProps = (state) => {
     currentNavigatorPosition: state.navigator.currentNavigatorPosition,
     screenSize: screenSize(state),
     filteredIdList: filteredIdList(state),
+    currentChromosome: currentChromosome(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

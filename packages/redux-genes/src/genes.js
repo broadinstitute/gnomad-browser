@@ -168,6 +168,11 @@ export const geneData = createSelector(
   (byGeneName, currentGene) => byGeneName.get(currentGene),
 )
 
+export const currentChromosome = createSelector(
+  [geneData],
+  geneData => geneData.get('chrom')
+)
+
 export const canonicalTranscript = createSelector(
   [geneData],
   geneData => geneData.get('canonical_transcript')

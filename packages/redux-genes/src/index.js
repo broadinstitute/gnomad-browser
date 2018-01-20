@@ -10,6 +10,7 @@ export {
   geneData,
   currentGene,
   currentTissue,
+  currentChromosome,
   currentTranscript,
   canonicalTranscript,
   transcriptFanOut,
