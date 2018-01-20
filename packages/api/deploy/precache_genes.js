@@ -33,7 +33,7 @@ const exacVariant = `
 `
 
 const variantQuery = (includeExac = true) => `
-  gnomadExomeVariants(category: "${variantFilter}") {
+  gnomadExomeVariants(category: "${variantFilter}" transcriptId: "undefined") {
     variant_id
     rsid
     pos
@@ -50,7 +50,7 @@ const variantQuery = (includeExac = true) => `
     lcr
     segdup
   }
-  gnomadGenomeVariants(category: "${variantFilter}") {
+  gnomadGenomeVariants(category: "${variantFilter}" transcriptId: "undefined") {
     variant_id
     rsid
     pos

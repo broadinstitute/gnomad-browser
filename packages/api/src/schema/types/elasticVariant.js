@@ -199,7 +199,8 @@ export const lookupElasticVariantsByGeneId = ({
   fields.push(Object.keys(populations).map(population => `Hom_${population}`))
   fields.push(Object.keys(populations).map(population => `Hemi_${population}`))
 
-  const currentTranscript = transcriptQuery !== 'undefined' ? transcriptQuery : obj.canonical_transcript
+  const currentTranscript = transcriptQuery !== 'undefined' ?
+    transcriptQuery : obj.canonical_transcript
 
   const cachedLookupRequested = true
 
@@ -781,7 +782,7 @@ export const lookupElasticVariantByList = ({
         ), {}),
       })
     })
-    
+
     if (transcriptQuery) {
       variants = variants.map((v) => {
         const transcriptAnnotation = v.sorted_transcript_consequences.find(

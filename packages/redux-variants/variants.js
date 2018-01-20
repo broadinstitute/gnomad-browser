@@ -184,7 +184,7 @@ export const actions = {
           return dictionary.mapEntries(([key, value]) => [value, variant.get(key)])
           // return variant.mapKeys((key) => gnomadExportCsvTranslations[key])
         })
-        return renamed.sort((a, b) => b.get('pos') - a.get('pos'))
+        return renamed.sort((a, b) => b.get('XPOS') - a.get('XPOS'))
       }
 
       function exportToCsv (flattenedData, dataset) {

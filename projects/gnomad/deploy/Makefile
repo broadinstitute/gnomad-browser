@@ -21,7 +21,6 @@ SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format
 
 start-gnomad: build-javascript build-legacy 	create-gnomad-legacy gnomad-legacy-service
 
-
 context:
 	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE)
 	kubectl config set-context $(CLUSTER_NAME) \
