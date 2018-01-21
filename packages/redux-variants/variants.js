@@ -427,6 +427,26 @@ const sortVariants = (variants, key, ascending) => {
         variants.sort((a, b) => b.get('pos') - a.get('pos'))
     )
   }
+  if (key === 'datasets') {
+    return (
+      ascending ?
+        variants.sort((a, b) => a.get('datasets').first() - b.get('datasets').first()) :
+        variants.sort((a, b) => b.get('datasets').first() - a.get('datasets').first())
+    )
+  }
+  if (key === 'flags') {
+    return (
+      variants.sort((a, b) => {
+        const aFlags = List(['lcr', 'segdup', 'lof']).map(flag => a.get(flag)).filter(flag => flag !== null)
+        const bFlags = List(['lcr', 'segdup', 'lof']).map(flag => b.get(flag)).filter(flag => flag !== null)
+        return (
+          ascending ?
+            aFlags.first() - bFlags.first() :
+            bFlags.first() - aFlags.first()
+        )
+      })
+    )
+  }
   return (
     ascending ?
       variants.sort((a, b) => a.get(key) - b.get(key)) :
