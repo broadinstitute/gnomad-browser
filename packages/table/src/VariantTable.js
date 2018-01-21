@@ -20,7 +20,8 @@ import {
   finalFilteredVariantsCount,
 } from '@broad/redux-variants'
 
-import { currentChromosome } from '@broad/redux-genes'
+import { currentChromosome as geneChromosome } from '@broad/redux-genes'
+import { currentChromosome as regionChromosome } from '@broad/region'
 
 import { Table } from './index'
 
@@ -110,7 +111,7 @@ const mapStateToProps = (state) => {
     currentNavigatorPosition: state.navigator.currentNavigatorPosition,
     screenSize: screenSize(state),
     filteredIdList: filteredIdList(state),
-    currentChromosome: currentChromosome(state),
+    currentChromosome: geneChromosome(state) || regionChromosome(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {

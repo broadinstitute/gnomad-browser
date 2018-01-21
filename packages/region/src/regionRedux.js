@@ -118,3 +118,8 @@ export const regionData = createSelector(
   [byRegionName, currentRegion],
   (byRegionName, currentRegion) => byRegionName.get(currentRegion),
 )
+export const currentChromosome = createSelector(
+  [regionData],
+  regionData => regionData ? regionData.get('chrom') : null
+)
+

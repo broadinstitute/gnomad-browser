@@ -553,7 +553,6 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
 export const lookupElasticVariantsInRegion = ({
   elasticClient,
   index,
-  dataset,
   xstart,
   xstop,
   chrom,

@@ -170,7 +170,7 @@ export const geneData = createSelector(
 
 export const currentChromosome = createSelector(
   [geneData],
-  geneData => geneData.get('chrom')
+  geneData => geneData ? geneData.get('chrom') : null
 )
 
 export const canonicalTranscript = createSelector(

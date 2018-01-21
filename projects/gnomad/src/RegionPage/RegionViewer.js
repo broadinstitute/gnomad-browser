@@ -10,7 +10,7 @@ import { GenesTrack } from '@broad/track-genes'
 import { actions as geneActions } from '@broad/redux-genes'
 import { screenSize } from '@broad/ui'
 import { RegionViewer, regionData, markerExacClassic, attributeConfig } from '@broad/region'
-import { NavigatorConnected } from '@broad/track-navigator'
+import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
   finalFilteredVariants,
@@ -39,7 +39,7 @@ const RegionViewerConnected = ({
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
-  let partialFetcho
+  let partialFetch
   if ((regionData.get('stop') - regionData.get('start')) > 50000) {
     partialFetch = 'lof'
     variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
@@ -67,7 +67,7 @@ const RegionViewerConnected = ({
   const totalBp = stop - start
 
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
 
   const largeRegion = totalBp > 50000
   // const showVariants = !largeRegion
@@ -95,6 +95,7 @@ const RegionViewerConnected = ({
         regions={regions}
         regionAttributes={attributeConfig}
         featuresToDisplay={featuresToDisplay}
+        leftPanelWidth={100}
       >
         <CoverageTrack
           title={'Coverage'}
@@ -117,19 +118,19 @@ const RegionViewerConnected = ({
         {showStacked &&
           <StackedBarTrack height={150} data={buckets} />
         }
-        <NavigatorConnected title={'Viewing in table'} />
+        <NavigatorTrackConnected title={'Viewing in table'} />
       </RegionViewer>
     </div>
   )
 }
-RegionViewer.propTypes = {
+RegionViewerConnected.propTypes = {
   regionData: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
   onGeneClick: PropTypes.func,
   selectedVariantDataset: PropTypes.string.isRequired,
   screenSize: PropTypes.object.isRequired,
 }
-RegionViewer.defaultProps = {
+RegionViewerConnected.defaultProps = {
   coverageStyle: null,
   onGeneClick: () => {},
 }

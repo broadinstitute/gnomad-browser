@@ -93,9 +93,10 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
         const coverage_position = position._source
         return coverage_position
       })
+      const lookupId = obj ? obj.gene_name : `${chrom}-${intervals[0].start}-${intervals[0].stop}`
       const end = new Date().getTime()
       const time = end - timeStart
-      console.log(['coverage', index, obj.gene_name, 'exact', 'lookup', exonsBasePairsSize, coverage.length, time].join(','))
+      console.log(['coverage', index, lookupId , 'exact', 'lookup', exonsBasePairsSize, coverage.length, time].join(','))
       resolve(coverage)
       // return {
         // xpos: getXpos(chrom, coverage_position.pos),

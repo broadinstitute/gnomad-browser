@@ -216,7 +216,7 @@ const regionType = new GraphQLObjectType({
         if (obj.regionSize < 10000) {
           return lookupElasticVariantsInRegion({
             elasticClient: ctx.database.elastic,
-            index: 'gnomad',
+            index: 'gnomad_exomes_202_37',
             dataset: 'exomes',
             xstart: obj.xstart,
             xstop: obj.xstop,
@@ -225,7 +225,7 @@ const regionType = new GraphQLObjectType({
         }
         return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
-          index: 'gnomad',
+          index: 'gnomad_exomes_202_37',
           dataset: 'exomes',
           xstart: obj.xstart,
           xstop: obj.xstop,
@@ -240,7 +240,7 @@ const regionType = new GraphQLObjectType({
         if (obj.regionSize < 10000) {
           return lookupElasticVariantsInRegion({
             elasticClient: ctx.database.elastic,
-            index: 'gnomad',
+            index: 'gnomad_genomes_202_37',
             dataset: 'genomes',
             xstart: obj.xstart,
             xstop: obj.xstop,
@@ -249,7 +249,7 @@ const regionType = new GraphQLObjectType({
         }
         return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
-          index: 'gnomad',
+          index: 'gnomad_genomes_202_37',
           dataset: 'genomes',
           xstart: obj.xstart,
           xstop: obj.xstop,

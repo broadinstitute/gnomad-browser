@@ -9,6 +9,7 @@ export {
   allRegionNames,
   isFetching,
   regionData,
+  currentChromosome,
 } from './regionRedux'
 
 export {
