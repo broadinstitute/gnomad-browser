@@ -129,12 +129,14 @@ takedown-loading-nodes:
 
 load-gnomad-variants:
 	# make -C cluster dataproc-no-vep
-	make -C cluster/elasticsearch create-loading-nodes
-	make -C cluster/elasticsearch deploy-loading-data-pods
+	# make -C cluster/elasticsearch create-loading-nodes
+	# make -C cluster/elasticsearch deploy-loading-data-pods
 	make -C cluster/elasticsearch set-throttle
 	make -C projects/gnomad/data variants-new-load
+	# make -C projects/gnomad/data variants-new-load-only-exomes
 	make -C cluster/elasticsearch reallocate-shards
 	make takedown-loading-nodes
+	make -C packages/api/deploy chunks
 
 gnomad:
 	make -C cluster cluster
@@ -143,6 +145,7 @@ gnomad:
 	make -C cluster/redis start-redis
 	make -C packages/api/deploy start-api
 	make -C projects/gnomad/deploy start-gnomad
+
 
 start-dev:
 	make -C cluster cluster

@@ -172,7 +172,7 @@ annotate-gnomad:
 	gs://gnomad-browser/datasets/gnomad.exomes.r2.0.2.sites.split.dmd.annotated.vds
 
 variants-new:
-	../../../hail-db-utils/submit_hail_v0.1.py \
+	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
 	--cluster $(DATAPROC_CLUSTER_NAME) \
 	./export_gnomad_to_ES.py \
@@ -212,3 +212,4 @@ variants-gnomad-genomes:
 variants-new-load-test: variants-dmd-exomes variants-dmd-genomes
 
 variants-new-load: variants-gnomad-exomes variants-gnomad-genomes
+variants-new-load-only-exomes: variants-gnomad-exomes 

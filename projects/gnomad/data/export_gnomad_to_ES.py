@@ -137,7 +137,7 @@ GNOMAD_SCHEMA = {
 
 }
 
-if args.index == 'gnomad_exomes':
+if args.index == 'gnomad_exomes_202_37':
     GNOMAD_SCHEMA["info_fields"] += """
         AC_SAS: Int,
         AN_SAS: Int,

@@ -3,7 +3,7 @@ include ../../../cluster/config.sh
 # include ../../../cluster/Makefile
 
 POOL_NAME=redis
-PROJECT_NAME=gnomad-legacy
+PROJECT_NAME=gnomad-browser-v1
 
 IMAGE_PREFIX=gcr.io/$(GCLOUD_PROJECT)/$(PROJECT_NAME)
 VERSION=0
@@ -14,6 +14,7 @@ SOURCE_DIRECTORY=.
 LEGACY_DIRECTORY=/Users/msolomon/Projects/exacg/exac_gnomad_private
 # GNOMAD_EXTERNAL_IP=104.196.46.19
 # GNOMAD_EXTERNAL_IP=35.202.229.180
+GNOMAD_EXTERNAL=http://35.202.229.180/
 
 IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
@@ -49,15 +50,17 @@ pod-name:
 	kubectl get pods -o jsonpath={.items[*].spec.containers[*].name}
 
 copy-javascript:
-	kubectl cp /Users/msolomon/Projects/exacg/exac_gnomad_private/static/genepage.js gnomad-p-serve-2775023726-02vfk:/var/www/static/
+	kubectl cp /Users/msolomon/Projects/exacg/exac_gnomad_private/static/genepage.js gnomad-production-2775023726-02vfk:/var/www/static/
 
 update: build-javascript build-legacy update-gnomad-legacy
 
 copy: build-javascript copy-javascript
 
-gnomad-legacy-service: update
+gnomad-legacy-service:
 	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
-	kubectl expose deployment gnomad-p-serve \
-	--type="LoadBalancer"
-	# \
-	# --load-balancer-ip="(API_EXTERNAL_IP)"
+	kubectl expose deployment gnomad-production \
+	--type="LoadBalancer" \
+	--load-balancer-ip="$(GNOMAD_EXTERNAL)"
+
+test:
+	../../../node_modules/.bin/babel-node deploy

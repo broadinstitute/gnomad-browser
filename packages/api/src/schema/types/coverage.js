@@ -237,7 +237,8 @@ export const lookupCoverageByIntervalsWithBuckets = ({
         return resolve(coverage)
       } else {
         elasticClient.search({
-          index,
+          index: obj.gene_name === 'TTN' ? 'exome_coverage' : index, // HACK exacv1 coverage not working for TTN only
+          // index,
           type: 'position',
           size: EXPECTED_SCREEN_WIDTH,
           _source: fields,
