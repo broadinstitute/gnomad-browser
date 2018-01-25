@@ -17,5 +17,4 @@ Isoform expression values were calculated by the GTEx Analysis Working Group usi
 
 ### What is GTEx?
 
-From the [GTEx page](https://www.gtexportal.org/home/documentationPage):
-> The Genotype-Tissue Expression (GTEx) project is a large multi-tissue human transcriptome project. The dataset includes RNA-seq data accross hundreds of individuals and 53 tissue types. For more information, please visit https://www.gtexportal.org
+The Genotype-Tissue Expression (GTEx) project is a large multi-tissue human transcriptome project. The dataset includes RNA-seq data accross hundreds of individuals and 53 tissue types. For more information, please visit https://www.gtexportal.org
