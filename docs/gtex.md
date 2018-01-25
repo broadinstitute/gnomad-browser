@@ -5,24 +5,17 @@ title: 'GTEx tissue-specific isoform expression'
 
 # GTEx tissue-specific isoform expression
 
-GTEx tissue-specific isoform expression values are displayed next to the transcripts to make it easier to determine which isoforms may be biologically relevant at a glance.
+GTEx tissue-specific isoform expression values are displayed next to the transcripts to enable identification of isoforms that may be biologically relevant at a glance. 
 
-...more explanation on how to use this feature.
+While we hope the isoform expression data are useful for interpretation, please note that the calculations may not always reflect true biology, depending on many factors including gene size, number of annotated transcripts, as well as GC content. The calculations are based on unstranded RNA-seq data, which may obfuscate the quantification of antisense transcripts. 
 
-(Limitations, disclaimers, etc)
+
+## How the isoform-expression was calculated.
+
+Isoform expression values were calculated by the GTEx Analysis Working Group using RSEM v1.2.22 on the GTEx v7 dataset. Raw isoform quantification values are available for download here: https://www.gtexportal.org/home/datasets
+
 
 ### What is GTEx?
 
 From the [GTEx page](https://www.gtexportal.org/home/documentationPage):
-
-> Correlations between genotype and tissue-specific gene expression levels will help identify regions of the genome that influence whether and how much a gene is expressed. GTEx will help researchers to understand inherited susceptibility to disease and will be a resource database and tissue bank for many studies in the future.
-
-> The Genotype-Tissue Expression (GTEx) project aims to provide to the scientific community a resource with which to study human gene expression and regulation and its relationship to genetic variation. This project will collect and analyze multiple human tissues from donors who are also densely genotyped, to assess genetic variation within their genomes. By analyzing global RNA expression within individual tissues and treating the expression levels of genes as quantitative traits, variations in gene expression that are highly correlated with genetic variation can be identified as expression quantitative trait loci, or eQTLs.
-
-> Despite the rapid progress achieved using genome-wide association studies to identify genetic changes associated with common human diseases, such as heart disease, cancer, diabetes, asthma, and stroke, a large majority of these genetic changes lies outside of the protein-coding regions of genes and often even outside of the genes themselves, making it difficult to discern which genes are affected and by what mechanism. The comprehensive identification of human eQTLs will greatly help to identify genes whose expression is affected by genetic variation, and will provide a valuable basis on which to study the mechanism of that gene regulation.
-
-> The project will also involve consultation and research into the ethical, legal and social issues raised by the research, support for statistical methods development, and creation of a database to house existing and  [GTEx-generated eQTL data](http://www.ncbi.nlm.nih.gov/gtex/test/GTEX2/gtex.cgi). The database will allow users to view and download computed eQTL results and provide a controlled access system for de-identified individual-level genotype, expression, and clinical data. The associated tissue repository will also serve as a resource for many additional kinds of analyses.
-
-## How the data was calculated.
-
-todo
+> The Genotype-Tissue Expression (GTEx) project is a large multi-tissue human transcriptome project. The dataset includes RNA-seq data accross hundreds of individuals and 53 tissue types. For more information, please visit https://www.gtexportal.org
