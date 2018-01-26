@@ -21,6 +21,7 @@ export {
   transcriptsGrouped,
   tissueStats,
   regionalConstraint,
+  strand,
 } from './genes'
 
 export {

@@ -343,6 +343,7 @@ const Transcript = ({
     localHeight = height
   }
   let expandTranscriptButton
+  console.log(strand)
   if (isMaster) {
     localHeight = 80
     paddingTop = 0  // eslint-disable-line

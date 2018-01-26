@@ -173,6 +173,11 @@ export const currentChromosome = createSelector(
   geneData => geneData ? geneData.get('chrom') : null
 )
 
+export const strand = createSelector(
+  [geneData],
+  geneData => geneData ? geneData.get('strand') : null
+)
+
 export const canonicalTranscript = createSelector(
   [geneData],
   geneData => geneData.get('canonical_transcript')

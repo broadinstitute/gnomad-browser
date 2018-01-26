@@ -12,6 +12,7 @@ import {
   transcripts,
   transcriptsGrouped,
   tissueStats,
+  strand,
   actions as geneActions,
 } from '@broad/redux-genes'
 
@@ -27,6 +28,7 @@ const TranscriptConnected = ({
   currentTissue,
   setCurrentTissue,
   tissueStats,
+  strand,
   currentGene,
 }) => {
   return (
@@ -42,6 +44,7 @@ const TranscriptConnected = ({
       onTissueChange={setCurrentTissue}
       currentGene={currentGene}
       canonicalTranscript={canonicalTranscript}
+      strand={strand}
       {...ownProps}
     />
   )
@@ -53,6 +56,7 @@ TranscriptConnected.propTypes = {
   currentTranscript: PropTypes.string,
   canonicalTranscript: PropTypes.string,
   currentExon: PropTypes.string,
+  strand: PropTypes.string,
   transcripts: PropTypes.array.isRequired,
   transcriptsGrouped: PropTypes.object.isRequired,
   tissueStats: PropTypes.any.isRequired,
@@ -66,6 +70,7 @@ TranscriptConnected.defaultProps = {
   currentTranscript: null,
   canonicalTranscript: null,
   currentExon: null,
+  strand: null,
 }
 
 const mapStateToProps = (state, ownProps) => ({
@@ -78,6 +83,7 @@ const mapStateToProps = (state, ownProps) => ({
   transcripts: transcripts(state),
   transcriptsGrouped: transcriptsGrouped(state),
   tissueStats: tissueStats(state),
+  strand: strand(state),
 })
 
 export default connect(mapStateToProps, geneActions)(TranscriptConnected)
