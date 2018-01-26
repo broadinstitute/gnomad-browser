@@ -47,11 +47,21 @@ function getGnomadServerManifest ({
     .setIn(['spec', 'template', 'spec', 'volumes'], [readvizVolume])
 }
 
-const gnomadDevelopmentManifest = getGnomadServerManifest(developmentConfig)
-print(gnomadDevelopmentManifest)
+function deploy (config) {
+  const manifest = getGnomadServerManifest(config)
+  const { name } = config
+  k8s.extensions.namespaces.deployments.post({ body: manifest })
+    .then((response) => {
+      console.log(response)
+      k8s.listDeployments()
+      k8s.getDeploymentStatus(name)
+      setTimeout(() => {
+        console.log('Deleting')
+        k8s.extensions.namespaces.deployments.delete({ name, preservePods: false })
+          .then(response => k8s.listDeployments())
+      }, 5000)
+    }).catch(error => console.log(error))
+}
 
-k8s.extensions.namespaces.deployments.post({ body: gnomadDevelopmentManifest })
-  .then((response) => {
-    console.log(response)
-    k8s.getDeploymentStatus(developmentConfig.name)
-  }).catch(error => console.log(error))
+deploy(developmentConfig)
+

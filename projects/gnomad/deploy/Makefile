@@ -3,7 +3,7 @@ include ../../../cluster/config.sh
 # include ../../../cluster/Makefile
 
 POOL_NAME=redis
-PROJECT_NAME=gnomad-browser-v1
+PROJECT_NAME=gnomad-browser-beta
 
 IMAGE_PREFIX=gcr.io/$(GCLOUD_PROJECT)/$(PROJECT_NAME)
 VERSION=0
@@ -39,12 +39,12 @@ build-legacy:
 	gcloud docker -- push $(IMAGE_NAME)
 
 create-gnomad-legacy:
-	kubectl create -f gnomad-legacy-deployment.yaml
+	kubectl create -f gnomad-deployment.yaml
 
 update-gnomad-legacy:
 	# $(sed -ie "s/THIS_STRING_IS_REPLACED_DURING_BUILD/$(BUILD_TIME)/g" gnomad-api-controller.yml)
-	kubectl delete -f gnomad-legacy-deployment.yaml
-	kubectl create -f gnomad-legacy-deployment.yaml
+	kubectl delete -f gnomad-deployment.yaml
+	kubectl create -f gnomad-deployment.yaml
 
 pod-name:
 	kubectl get pods -o jsonpath={.items[*].spec.containers[*].name}
@@ -58,9 +58,9 @@ copy: build-javascript copy-javascript
 
 gnomad-legacy-service:
 	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
-	kubectl expose deployment gnomad-production \
+	kubectl expose deployment gnomad-browser-beta \
 	--type="LoadBalancer" \
-	--load-balancer-ip="$(GNOMAD_EXTERNAL)"
+	--load-balancer-ip="35.184.206.249"
 
 test:
 	../../../node_modules/.bin/babel-node deploy

@@ -41,7 +41,6 @@ export default class KubernetesClient {
       .then((response) => {
         console.log('Deployments')
         console.log('----------')
-
         response.items.forEach(item => console.log(item.metadata.name))
       })
   }

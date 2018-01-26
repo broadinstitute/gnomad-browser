@@ -125,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
       } else if (dataset === 'schizophreniaRareVariants') {
         dispatch(variantActions.setFocusedVariant(variantId, history))
       } else {
-        window.open(`http://gnomad.broadinstitute.org/variant/${variantId}`)
+        window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
       }
     },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
