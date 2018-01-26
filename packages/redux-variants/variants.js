@@ -306,6 +306,17 @@ export default function createVariantReducer({
       if (geneData === null) {
         return state.set('isFetching', false)
       }
+      const exons = geneData.getIn(['transcript', 'exons']).toJS()
+      const padding = 75
+      const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
+        .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+
+      let defaultFilter = 'all'
+      if (totalBasePairs > 40000) {
+        defaultFilter = 'lof'
+      } else if (totalBasePairs > 15000) {
+        defaultFilter = 'missenseOrLoF'
+      }
 
       const withVariants = datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
@@ -341,6 +352,7 @@ export default function createVariantReducer({
 
       return withVariants
         .set('searchIndexed', currentVariantDataset)
+        .set('variantFilter', defaultFilter)
     },
 
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
