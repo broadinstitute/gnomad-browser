@@ -10,6 +10,7 @@ import {
   List,
   fromJS,
   toJS,
+  Record,
 } from 'immutable'
 
 import {
@@ -37,7 +38,6 @@ const Cursor = styled.p`
 const variantTableQuery = gql`
   query VariantTable(
     $currentGene: String,
-    $currentTranscript: String,
     $cursor: String,
     $numberOfVariants: Int,
     $consequence: String,
@@ -70,15 +70,6 @@ const variantTableQuery = gql`
           lof
           transcriptId
         }
-        sortedTranscriptConsequences(
-          transcriptId: $currentTranscript
-        ) {
-          majorConsequence: major_consequence
-          hgvsc
-          hgvsp
-          lof
-          transcriptId: transcript_id
-        }
       }
     }
   }
@@ -93,7 +84,7 @@ const withQuery = graphql(variantTableQuery, {
   }) => ({
     variables: {
       currentGene,
-      // currentTranscript,
+      currentTranscript,
       numberOfVariants,
       consequence,
     },
@@ -137,6 +128,20 @@ const withQuery = graphql(variantTableQuery, {
   },
 })
 
+const Variant = Record({
+  variant_id: null,
+  variantId: null,
+  datasets: null,
+  flags: null,
+  consequence: null,
+  hgvsc: null,
+  hgvsp: null,
+  allele_count: null,
+  allele_num: null,
+  allele_freq: null,
+  hom_count: null,
+})
+
 const VariantTable = ({
   loading,
   variantResult,
@@ -151,8 +156,8 @@ const VariantTable = ({
   if (!variantResult) {
     return <div>Variants not found.</div>
   }
-  const tConfig = tableConfig(() => {}, 500)
-  const variants = variantResult.variants.map(variant => ({
+  const tConfig = tableConfig(() => {}, 700)
+  const variants = variantResult.variants.map(variant => new Variant({
     variant_id: variant.variantId,
     variantId: variant.variantId,
     datasets: [],
@@ -161,11 +166,10 @@ const VariantTable = ({
     hgvsc: variant.mainTranscript.hgvsc,
     hgvsp: variant.mainTranscript.hgvsp,
     allele_count: variant.totalCounts.alleleCount,
-    allele_um: variant.totalCounts.alleleNumber,
+    allele_num: variant.totalCounts.alleleNumber,
     allele_freq: variant.totalCounts.alleleFrequency,
     hom_count: variant.totalCounts.homozygotes,
   }))
-  console.log(variants)
   return (
     <Wrapper>
       <button
@@ -190,9 +194,9 @@ const VariantTable = ({
         tableConfig={tConfig}
         tableData={variants}
         remoteRowCount={variantResult.count}
-        // loadMoreRows={loadMoreVariants}
+        loadMoreRows={loadMoreVariants}
         overscan={5}
-        loadLookAhead={100}
+        loadLookAhead={25}
         onRowClick={() => {}}
         onRowHover={() => {}}
         // scrollToRow={tablePosition}

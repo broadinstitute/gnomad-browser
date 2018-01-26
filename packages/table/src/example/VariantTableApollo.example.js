@@ -29,6 +29,7 @@ const store = createStore(
     genes: createGeneReducer({
       startingGene: 'ENSG00000198947',
       startingTranscript: 'testing',
+      variantDatasets: {},
     }),
   }),
   applyMiddleware(thunk, logger)
@@ -47,7 +48,7 @@ const ExampleApp = () => (
         <Search onChange={gene => store.dispatch(geneActions.setCurrentTranscript(gene))} />
         <VariantTable
           store={store}
-          numberOfVariants={500}
+          numberOfVariants={50}
           tableConfig={tableConfig}
           consequence={'missense_variant'}
         />

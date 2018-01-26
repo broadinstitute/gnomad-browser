@@ -499,7 +499,12 @@ const headers = tableConfig => tableConfig.fields
   .map(field => getHeaderCell(field))
 
 const isRowLoaded = (tableData, loadLookAhead) => ({ index }) => {
-  return !!tableData[index + loadLookAhead]
+  if (Array.isArray(tableData)) return !!tableData[index + loadLookAhead]
+  else if (Immutable.List.isList(tableData)) {
+    console.log(index, loadLookAhead, tableData.get(index + loadLookAhead))
+    return tableData.get(index + loadLookAhead)
+  }
+  return false
 }
 
 const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowClick, onRowHover) =>
@@ -508,6 +513,9 @@ const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowCl
     if (Array.isArray(tableData)) tData = tableData[index]
     else if (Immutable.List.isList(tableData)) {
       tData = tableData.get(index)
+    }
+    if (!isRowLoaded(tableData, 25)) {
+      return <div>Loading</div>
     }
     const row = getDataRow(tableConfig, tData, searchText, index, showIndex, onRowClick, onRowHover)
     const localStyle = {
