@@ -202,8 +202,12 @@ export const transcriptsGrouped = createSelector(
 export const tissueStats = createSelector(
   [transcripts],
   (transcripts) => {
+    // console.log(transcripts)
     const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
+    delete maxValuesForTissue.geneId
+    delete maxValuesForTissue.transcriptId
     const tissues = Object.keys(maxValuesForTissue)
+    console.log(tissues)
     transcripts.forEach((transcript) => {
       tissues.forEach((tissue) => {
         const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
