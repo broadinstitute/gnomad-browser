@@ -16,6 +16,10 @@ clean:
 
 build: clean install lib
 
+docs:
+	git clone https://github.com/macarthur-lab/gnomad-docs; \
+	cp ./gnomad-docs/toc.json src/
+
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
 	# GNOMAD_API_URL='http://35.184.112.239' $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
@@ -24,4 +28,3 @@ serve:
 COMPONENT_NAME=$(shell basename `pwd`)
 
 .PHONY: install lib clean build serve prototype
-	

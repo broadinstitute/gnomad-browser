@@ -7,7 +7,7 @@ import { actions as userInterfaceActions } from '@broad/ui'
 
 import App from './routes'
 
-import toc from '../gnomad-docs/toc.json'
+import toc from './toc.json'
 
 const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
