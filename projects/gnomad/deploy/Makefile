@@ -54,6 +54,8 @@ copy-javascript:
 
 update: build-javascript build-legacy update-gnomad-legacy
 
+no-js: build-legacy update-gnomad-legacy
+
 copy: build-javascript copy-javascript
 
 gnomad-legacy-service:
