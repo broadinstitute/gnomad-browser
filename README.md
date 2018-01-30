@@ -1,6 +1,6 @@
 # gnomadjs
 
-JavaScript tools for exploring variant data
+JavaScript tools for exploring genomic data
 
 ## Requirements
 
@@ -12,7 +12,7 @@ yarn https://yarnpkg.com/en/
 
 To create a local instance of the new gnomAD gene page:
 
-`https://github.com/mattsolo1/gnomadjs.git`
+`git clone https://github.com/macarthur-lab/gnomadjs.git`
 
 `cd gnomadjs`
 
@@ -23,4 +23,3 @@ To create a local instance of the new gnomAD gene page:
 `npm start`
 
 Navigate to http://localhost:8008/gene/PCSK9
-
