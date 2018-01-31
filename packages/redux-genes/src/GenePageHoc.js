@@ -13,7 +13,7 @@ import { currentGene, currentTranscript, isFetching, geneData, geneNotFound, act
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
-    currentGene: PropTypes.string.isRequired,
+    currentGene: PropTypes.string,
     gene: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     fetchGeneIfNeeded: PropTypes.func.isRequired,
@@ -22,6 +22,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
   static defaultProps = {
     gene: null,
+    currentGene: null,
   }
 
   componentDidMount() {

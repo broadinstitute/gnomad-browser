@@ -6,12 +6,12 @@ const config = require('../../webpack.config')
 const umdConfig = {
   devtool: 'source-map',
   entry: {
-    genepage: ['babel-polyfill', './src/index.umd.js',]
+    genepage: ['babel-polyfill', './src/index.umd.js']
   },
   output: {
     path: '/Users/msolomon/Projects/exacg/exac_gnomad_private/static',
     // path: path.resolve(__dirname, 'dist/umd'),
-    filename: '[name]-1517243033.js',
+    filename: '[name]-1517353083.js',
     libraryTarget: 'umd',
     library: 'ReactGnomad',
   },
@@ -23,11 +23,11 @@ const umdConfig = {
 }
 
 umdConfig.plugins.concat([
-  new webpack.optimize.UglifyJsPlugin({
-    beautify: false,
-    comments: false,
-    mangle: false,
-  }),
+  // new webpack.optimize.UglifyJsPlugin({
+  //   beautify: false,
+  //   comments: false,
+  //   mangle: false,
+  // }),
 ])
 
 umdConfig.module = config.module

@@ -210,6 +210,11 @@ const TranscriptRightPanel = ({
     )
   }
   if (isMaster) {
+    const options = tissueStats.map((tpm, tissue) => (
+      <option key={`${tissue}-option`} value={tissue}>
+        {tissueMappings[tissue]} {`(${tpm})`}
+      </option>
+    )).toList().toJS()
     return (
       <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
         <TranscriptName>
@@ -228,11 +233,7 @@ const TranscriptRightPanel = ({
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}
             >
-              {tissueStats.map((tpm, tissue) => (
-                <option key={`${tissue}-option`} value={tissue}>
-                  {tissueMappings[tissue]} {`(${tpm})`}
-                </option>
-              ))}
+              {options}
             </GtexTissueSelect>
           </GtexTitleWrapper>
           <GtexPlotWrapper>
@@ -343,7 +344,6 @@ const Transcript = ({
     localHeight = height
   }
   let expandTranscriptButton
-  console.log(strand)
   if (isMaster) {
     localHeight = 80
     paddingTop = 0  // eslint-disable-line

@@ -248,7 +248,6 @@ export default function createVariantReducer({
   definitions
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
-  console.log(datasetKeys)
   const variantRecords = datasetKeys.reduce((acc, dataset) => {
     if (dataset in variantDatasets) {
       acc[dataset] = Record(variantDatasets[dataset])

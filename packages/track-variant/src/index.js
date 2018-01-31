@@ -150,7 +150,7 @@ const VariantExacClassic = ({
     ry = 5
     rx = 5
   }
-  const localColor = exacClassicColors[getCategoryFromConsequence(variant.get('consequence'))]
+  const localColor = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
   if (variant.allele_freq === 0) {
     // TODO add back hover effect
     return (
@@ -303,7 +303,7 @@ const VariantTrack = ({
           width={width}
           height={height}
         >
-          {variants.map((variant, index) => {
+          {variants.toJS().map((variant, index) => {
             const {
               markerType,
               yPositionSetting,

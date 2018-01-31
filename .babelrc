@@ -1,8 +1,17 @@
 {
   "presets": [
     "react",
-    "env",
-    "flow"
+    "flow",
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 10"]
+        },
+        "debug": true,
+        "useBuiltIns": true
+      }
+    ]
   ],
   "plugins": [
     "transform-object-rest-spread",
