@@ -33,7 +33,6 @@ export const actions = {
         if (response.errors) {
           console.log(response.errors)
         }
-        console.log('got the topics')
         dispatch(actions.receiveHelpData(response))
       }).catch(error => console.log(error))
     }

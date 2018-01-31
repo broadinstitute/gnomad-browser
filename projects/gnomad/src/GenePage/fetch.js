@@ -8,8 +8,6 @@ const API_URL = process.env.GNOMAD_API_URL
 export const fetchGnomadOnly = (geneName, transcriptId) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
-    console.log(argument)
-    console.log(transcriptId)
   const query = `{
     gene(${argument}) {
       gene_id

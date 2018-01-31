@@ -75,7 +75,7 @@ const datasetTranslation = {
   gnomadGenomeVariants: 'genomes_',
 }
 
-const formatDatasets = (dataRow, index) => dataRow.datasets.map((dataset) => {
+const formatDatasets = (dataRow, index) => dataRow.datasets.valueSeq().toJS().map((dataset) => {
   const { filters } = dataRow
   let border
   let backgroundColor

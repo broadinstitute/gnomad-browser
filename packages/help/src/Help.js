@@ -178,7 +178,6 @@ class Help extends Component {
   state = { searchTerm: '' }
 
   componentDidMount () {
-    console.log('mounting help')
     this.props.fetchDefaultHelpTopics(this.props.index)
   }
 
@@ -198,7 +197,6 @@ class Help extends Component {
   })}
 
   render() {
-    console.log(this.props)
     return (
       this.props.helpWindowOpen ?
         <HelpFloatingSection>
