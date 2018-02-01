@@ -91,7 +91,7 @@ const CoverageTrack = ({
       />
     )
   }
-  const renderAreaSmall= (dataset) => {
+  const renderAreaSmall = (dataset) => {
     return (
       <path
         key={`cov-series-${dataset.name}-area`}
@@ -138,13 +138,13 @@ const CoverageTrack = ({
   }
 
   const plots = dataConfig.datasets.map((dataset) => {
-    if (totalBp < 100) {
-      return renderBars(dataset)
-    }
-    if (totalBp < 2000) {
-      return renderAreaSmall(dataset)
-    }
     if (dataset.data) {
+      if (totalBp < 100) {
+        return renderBars(dataset)
+      }
+      if (totalBp < 2000) {
+        return renderAreaSmall(dataset)
+      }
       switch (dataset.type) {
         case 'area':
           return renderAreaLarge(dataset)
