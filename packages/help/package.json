@@ -21,7 +21,6 @@
     "styled-components": "^2.1.2"
   },
   "dependencies": {
-    "elasticsearch": "^13.3.1",
     "expect": "^21.2.1",
     "filequeue": "^0.5.0",
     "glob": "^7.1.2",

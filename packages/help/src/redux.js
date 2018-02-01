@@ -2,7 +2,7 @@ import { Record, OrderedMap, fromJS } from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import { searchHelpTopics, fetchDefaultTopics } from './example/fetch'
+import { fetchHelpTopics } from './fetchHelpTopics'
 
 const HelpEntry = Record({
   score: null,
@@ -24,21 +24,25 @@ export const actions = {
   toggleHelpWindow: () => ({ type: types.TOGGLE_HELP_WINDOW }),
   setHelpQuery: helpQuery => ({ type: types.SET_HELP_QUERY, helpQuery }),
   receiveHelpData: payload => ({ type: types.RECEIVE_HELP_DATA, payload }),
-  requestHelpData: () => ({ type: types.RECEIVE_HELP_DATA }),
+  requestHelpData: () => ({ type: types.REQUEST_HELP_DATA }),
 
   fetchDefaultHelpTopics (index) {
     return (dispatch, getState) => {
-      dispatch(actions.requestHelpData)
-      return fetchDefaultTopics(getState().help.defaultTopics, index).then((response) => {
+      dispatch(actions.requestHelpData())
+      return fetchHelpTopics(index, null, true).then((response) => {
+        if (response.errors) {
+          console.log(response.errors)
+        }
+        console.log('got the topics')
         dispatch(actions.receiveHelpData(response))
-      })
+      }).catch(error => console.log(error))
     }
   },
 
   fetchHelpTopicsIfNeeded (query, index) {
     return (dispatch) => {
-      dispatch(actions.requestHelpData)
-      return searchHelpTopics(query, index).then((response) => {
+      dispatch(actions.requestHelpData())
+      return fetchHelpTopics(index, query).then((response) => {
         dispatch(actions.receiveHelpData(response))
       })
     }
@@ -59,20 +63,12 @@ const actionHandlers = {
     return state.set('isFetching', true)
   },
   [types.RECEIVE_HELP_DATA] (state, { payload }) {
-    const hits = payload.get('hits')
-    const results = OrderedMap(hits.map(hit =>
-      [
-        hit.getIn(['_source', 'id']),
-        new HelpEntry({
-          id: hit.getIn(['_source', 'id']),
-          title: hit.getIn(['_source', 'title']),
-          htmlString: hit.getIn(['_source', 'htmlString']),
-          vcfkey: hit.getIn(['_source', 'vcfkey']),
-          score: hit.get('_score'),
-        })
-      ]
-    ))
-    return state.set('results', results)
+    const topics = payload.topics
+    const helpTopics = OrderedMap(topics.map(topic => ([
+      topic.id,
+      HelpEntry(topic)
+    ])))
+    return state.set('results', helpTopics)
   }
 }
 

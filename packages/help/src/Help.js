@@ -178,6 +178,7 @@ class Help extends Component {
   state = { searchTerm: '' }
 
   componentDidMount () {
+    console.log('mounting help')
     this.props.fetchDefaultHelpTopics(this.props.index)
   }
 

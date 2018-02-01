@@ -37,6 +37,8 @@ import {
  schzGroups,
 } from './types/schzvariant'
 
+import help from './types/help'
+
 const rootType = new GraphQLObjectType({
   name: 'Root',
   description: `
@@ -117,6 +119,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     gnomadVariants,
     schzGeneResults,
     schzGroups,
+    help,
   }),
 })
 
