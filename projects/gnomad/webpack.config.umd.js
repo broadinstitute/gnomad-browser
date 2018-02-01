@@ -11,7 +11,7 @@ const umdConfig = {
   output: {
     path: '/Users/msolomon/Projects/exacg/exac_gnomad_private/static',
     // path: path.resolve(__dirname, 'dist/umd'),
-    filename: '[name]-1517353083.js',
+    filename: '[name]-1517509708.js',
     libraryTarget: 'umd',
     library: 'ReactGnomad',
   },
@@ -23,11 +23,11 @@ const umdConfig = {
 }
 
 umdConfig.plugins.concat([
-  // new webpack.optimize.UglifyJsPlugin({
-  //   beautify: false,
-  //   comments: false,
-  //   mangle: false,
-  // }),
+  new webpack.optimize.UglifyJsPlugin({
+    beautify: false,
+    comments: false,
+    mangle: false,
+  }),
 ])
 
 umdConfig.module = config.module

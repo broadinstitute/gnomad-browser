@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build:es": "../../node_modules/.bin/cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore example",
-    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://35.184.112.239' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
-    "start": "../../node_modules/.bin/cross-env NODE_ENV=development GNOMAD_API_URL='http://35.184.112.239' ../../node_modules/.bin/webpack-dev-server --hot --config ../../webpack.config.js",
+    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
+    "start": "../../node_modules/.bin/cross-env NODE_ENV=development GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack-dev-server --hot --config ../../webpack.config.js",
     "prebuild": "../../node_modules/.bin/rimraf dist"
   },
   "files": [
