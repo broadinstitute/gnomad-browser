@@ -98,7 +98,7 @@ redis-flush-local:
 redis-dump-size:
 	kubectl exec -it redis-master -- ls -al --block-size=M /redis-master-data
 
-update: build-main redis-flush update-gnomad-api
+update: build-main update-gnomad-api
 	kubectl get pods
 
 dev:
