@@ -208,22 +208,35 @@ export const actions = {
       const transcriptId = currentTranscript(state)
       const variantIds = filteredVariants.map(v => v.variant_id)
 
+      function combinedAlleleFrequency(variant) {
+        return variant.get('allele_count') / variant.get('allele_num')
+      }
+      function combinedPopmaxFrequency(variant) {
+        const frequency = variant.get('popmax_ac') / variant.get('popmax_an')
+        return frequency || ''
+      }
+      function joinFilters(variant) {
+        return variant.get('filters').toJS().join('|')
+      }
+
       if (currentDataset === 'gnomadCombinedVariants') {
         return Promise.all([
           fetchFunction(variantIds, transcriptId, 'gnomadExomeVariants'),
           fetchFunction(variantIds, transcriptId, 'gnomadGenomeVariants'),
         ]).then((promiseArray) => {
           const [exomeData, genomeData] = promiseArray
-          console.log(exomeData)
           const exomeDataMapFlattened = flattenForCsv(exomeData)
           const genomeDataMapFlattened = flattenForCsv(genomeData)
+          console.log(exomeDataMapFlattened)
           const combined = exomeDataMapFlattened.mergeDeepWith((oldValue, newValue, key) => {
             if (combineKeys[key]) {
               return combineKeys[key](oldValue, newValue)
             }
             return oldValue
-          }, genomeDataMapFlattened)
-          console.log(combined)
+          }, genomeDataMapFlattened).map((value, key) => value
+          .set('allele_freq', combinedAlleleFrequency(value))
+          .set('popmax_af', combinedPopmaxFrequency(value))
+          .set('filters', joinFilters(value)))
           exportToCsv(formatData(combined), currentDataset)
         })
       }
