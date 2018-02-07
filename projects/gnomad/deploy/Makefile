@@ -23,12 +23,12 @@ SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format
 start-gnomad-prod: build-javascript build-legacy create-gnomad-prod gnomad-prod-service
 
 context:
-	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE)
+	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE) --project=$(GCLOUD_PROJECT)
 	kubectl config set-context $(CLUSTER_NAME) \
-	--cluster $(GKE_CLUSTER_NAME) \
-	--user $(GKE_CLUSTER_NAME) \
+	--cluster $(CLUSTER_NAME) \
+	--user $(CLUSTER_NAME) \
 	--namespace $(CLUSTER_NAMESPACE)
-	kubectl config use-context $(CLUSTER_NAME)
+	kubectl config use-context gke_$(GCLOUD_PROJECT)_$(GCLOUD_ZONE)_$(CLUSTER_NAME)
 
 build-javascript:
 	npm run build:umd
