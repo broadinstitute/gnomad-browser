@@ -100,7 +100,7 @@ const appSettings = {
         allele_num: sum,
         hom_count: sum,
         hemi_count: sum,
-        filter: concat,
+        filters: concat,
         // allele_freq: () => null,
         datasets: [],
       }

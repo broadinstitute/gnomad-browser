@@ -132,15 +132,20 @@ export const actions = {
 
   exportVariantsToCsv: (fetchFunction) => {
     const sum = (oldValue, newValue) => oldValue + newValue
-    const concat = (oldValue, newValue) => oldValue.concat(newValue)
+    const concat = (oldValue, newValue) => {
+      // console.log(oldValue, newValue)
+      // console.log(oldValue.concat(newValue))
+      return oldValue.concat(newValue)
+    }
     const combineKeys = {
       allele_count: sum,
       allele_num: sum,
       hom_count: sum,
-      filter: concat,
+      filters: concat,
       // allele_freq: () => null,
       datasets: [],
     }
+
     return (dispatch, getState) => {
       // function flatten (map) {
       //
@@ -228,15 +233,18 @@ export const actions = {
           const exomeDataMapFlattened = flattenForCsv(exomeData)
           const genomeDataMapFlattened = flattenForCsv(genomeData)
           console.log(exomeDataMapFlattened)
+          console.log(genomeDataMapFlattened)
+          console.log(combineKeys)
           const combined = exomeDataMapFlattened.mergeDeepWith((oldValue, newValue, key) => {
+            // console.log(key)
             if (combineKeys[key]) {
               return combineKeys[key](oldValue, newValue)
             }
             return oldValue
-          }, genomeDataMapFlattened).map((value, key) => value
-          .set('allele_freq', combinedAlleleFrequency(value))
-          .set('popmax_af', combinedPopmaxFrequency(value))
-          .set('filters', joinFilters(value)))
+          }, genomeDataMapFlattened).map(value => value
+            .set('allele_freq', combinedAlleleFrequency(value))
+            .set('popmax_af', combinedPopmaxFrequency(value))
+            .set('filters', joinFilters(value)))
           exportToCsv(formatData(combined), currentDataset)
         })
       }

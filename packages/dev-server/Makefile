@@ -1,5 +1,5 @@
 BINDIR=../../node_modules/.bin
-SERVER_FLAGS ?= --hot --config ../../webpack.config.js
+SERVER_FLAGS ?= --hot --port 8000 --config ../../webpack.config.js
 
 install:
 	yarn install
