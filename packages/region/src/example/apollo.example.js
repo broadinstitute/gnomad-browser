@@ -27,6 +27,8 @@ const Wrapper = styled.div`
   border: 1px solid #000;
 `
 
+const API_URL = 'http://gnomad-api2.broadinstitute.org'
+
 const attributeConfig = {
   CDS: {
     color: '#28BCCC',
@@ -52,14 +54,18 @@ const attributeConfig = {
 
 const store = createStore(
   combineReducers({
-    genes: createGeneReducer({ startingGene: 'DMD' }),
+    genes: createGeneReducer(
+      {
+        startingGene: 'DMD',
+        variantDatasets: {},
+      }
+    )
   }),
   applyMiddleware(thunk, logger)
 )
 
 const client = new ApolloClient({
-  // link: new HttpLink({ uri: 'http://localhost:8007' }),
-  link: new HttpLink({ uri: 'http://35.184.112.239' }),
+  link: new HttpLink({ uri: API_URL }),
   cache: new InMemoryCache()
 })
 

@@ -10,15 +10,14 @@ import fetch from 'graphql-fetch'
 
 import {
   currentGene,
-  canonicalExons,
-  hasGeneData,
+  geneData,
   exonPadding,
   actions as geneActions,
 } from '@broad/redux-genes'
 
 import RegionViewer from './RegionViewer'
 
-const API_URL = 'http://localhost:8007'
+const API_URL = 'http://gnomad-api2.broadinstitute.org'
 
 class GeneViewer extends PureComponent {
   componentDidMount() {
@@ -31,7 +30,6 @@ class GeneViewer extends PureComponent {
     const query = `{
       gene(gene_name: "${geneName}") {
         gene_name
-        strand
         transcript {
           exons {
             feature_type
@@ -55,17 +53,20 @@ class GeneViewer extends PureComponent {
   }
 
   render() {
-    const { exonPadding, hasGeneData, canonicalExons, children, ...rest } = this.props
+    const { exonPadding, geneData, children, ...rest } = this.props
 
-    if (!hasGeneData) {
+    if (!geneData) {
       return <div>Loading</div>
     }
+
+    const geneJS = geneData.toJS()
+    const canonicalExons = geneJS.transcript.exons
 
     return (
       <RegionViewer
         width={500}
         padding={exonPadding}
-        regions={canonicalExons.toJS()}
+        regions={canonicalExons}
         rightPanelWidth={100}
         {...rest}
       >
@@ -77,8 +78,7 @@ class GeneViewer extends PureComponent {
 
 const mapStateToProps = state => ({
   exonPadding: exonPadding(state),
-  hasGeneData: hasGeneData(state),
-  canonicalExons: canonicalExons(state),
+  geneData: geneData(state),
   currentGene: currentGene(state),
 })
 
