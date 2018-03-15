@@ -9,10 +9,10 @@ const umdConfig = {
     gnomadt2d: './src/index.umd.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public/static/js'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'ReactGnomad',
+    library: 'GnomadT2d',
   },
   externals: {
     react: 'React',

@@ -1,3 +1,3 @@
 export {
-  TestComponent,
+  default as TranscriptViewer,
 } from './component'

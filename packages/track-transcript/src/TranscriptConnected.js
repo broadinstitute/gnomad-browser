@@ -11,6 +11,7 @@ import {
   currentExon,
   transcripts,
   transcriptsGrouped,
+  transcriptFanOut,
   tissueStats,
   strand,
   actions as geneActions,
@@ -30,6 +31,8 @@ const TranscriptConnected = ({
   tissueStats,
   strand,
   currentGene,
+  transcriptFanOut,
+  toggleTranscriptFanOut,
 }) => {
   return (
     <TranscriptTrack
@@ -45,6 +48,8 @@ const TranscriptConnected = ({
       currentGene={currentGene}
       canonicalTranscript={canonicalTranscript}
       strand={strand}
+      transcriptFanOut={transcriptFanOut}
+      transcriptButtonOnClick={toggleTranscriptFanOut}
       {...ownProps}
     />
   )
@@ -83,6 +88,7 @@ const mapStateToProps = (state, ownProps) => ({
   transcripts: transcripts(state),
   transcriptsGrouped: transcriptsGrouped(state),
   tissueStats: tissueStats(state),
+  transcriptFanOut: transcriptFanOut(state),
   strand: strand(state),
 })
 
