@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import TestComponent from '../index'
 
 const ExampleWrapper = styled.div`
-  color: blue;
+  ${'' /* color: blue; */}
 `
 
 class TestExample extends PureComponent {
@@ -20,7 +20,7 @@ class TestExample extends PureComponent {
   render() {
     return (
       <ExampleWrapper>
-        <TestComponent message={this.state.answer} />
+        <TestComponent gene="PCSK9" />
       </ExampleWrapper>
     )
   }
