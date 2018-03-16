@@ -1,4 +1,2 @@
-import TestComponent from './component'
-
-export default TestComponent
-export { default as TestExample } from './example'
+export { default as TranscriptViewer } from './TranscriptViewer'
+export { default as TranscriptViewerExample } from './example'

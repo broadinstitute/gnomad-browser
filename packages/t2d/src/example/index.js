@@ -1,29 +1,8 @@
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
+import TranscriptViewerExample from './TranscriptViewerExample'
 
-import TestComponent from '../index'
+/**
+ * The development server will run whatever is default exported in this file
+ * when you start `make prototype`
+ */
 
-const ExampleWrapper = styled.div`
-  ${'' /* color: blue; */}
-`
-
-class TestExample extends PureComponent {
-  state = { answer: 32 }
-  async componentDidMount() {
-    this.setState({  // eslint-disable-line
-      answer: await this.asyncFunction()
-    })
-  }
-  asyncFunction = () => {
-    return Promise.resolve(37)
-  }
-  render() {
-    return (
-      <ExampleWrapper>
-        <TestComponent gene="PCSK9" />
-      </ExampleWrapper>
-    )
-  }
-}
-
-export default TestExample
+export default TranscriptViewerExample

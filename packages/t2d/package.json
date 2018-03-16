@@ -10,7 +10,8 @@
     "build": "make build",
     "lib": "make lib",
     "clean": "make clean",
-    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js"
+    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
+    "start": "../../node_modules/.bin/http-server ./public"
   },
   "peerDependencies": {
     "react": "^15.6.1",

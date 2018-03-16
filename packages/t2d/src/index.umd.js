@@ -1,3 +1,5 @@
-export {
-  default as TranscriptViewer,
-} from './component'
+/**
+ * After importing gnomadt2d.js, the component below is available as GnomadT2d.TranscriptViewer
+ */
+
+export { TranscriptViewer } from './index'
