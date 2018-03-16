@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const config = require('../../webpack.config')
 
 const umdConfig = {
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   /**
    * This will output a javascript bundle gnomadt2d.js in ./public/static/js
