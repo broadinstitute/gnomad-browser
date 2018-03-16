@@ -20,13 +20,13 @@ yarn https://yarnpkg.com/en/
 
 `yarn`
 
-`cd package/t2d`
+`cd packages/t2d`
 
 ## Developing a component
 
-As a first step, we'll show how to export a TranscriptViewer component which is similar to the one seen on from the gnomAD beta website (http://gnomad-beta.broadinstitute.org). This process can be generalized for sharing the structure viewer (in development).
+As a first step, we'll show how to export a TranscriptViewer component which is similar to the one seen on the gnomAD beta website (http://gnomad-beta.broadinstitute.org). This process can be generalized for sharing the structure viewer (in development).
 
-See the file `src/TranscriptViewer.js`. This contains a transcript viewer component built using `@broad/redux-genes`, `@broad/region`, and `@broad/track-transcript` libraries. You can edit those components in the packages folder. Data fetching and most default settings are handled by the components themselves. The component exported from this file looks like:
+See the file `src/TranscriptViewer.js`. This contains a transcript viewer that wraps `@broad/redux-genes`, `@broad/region`, and `@broad/track-transcript` libraries. You can edit those components in the packages folder. Data fetching and most default settings are handled by the components themselves. The component exported from this file looks like:
 
 ```javascript
 ...
@@ -69,7 +69,7 @@ To run this component in a development server, type `make prototype` in the t2d 
 
 ## Outputting a bundle
 
-To export `TranscriptViewer` in a javascript bundle, view `webpack.config.umd.js` to see how the bundle will be generated. You may want to read into webpack to see how this works.
+To export `TranscriptViewer` in a javascript bundle, we will use the config file `webpack.config.umd.js`. You may want to read into webpack to see how this works.
 
 You can compile the bundle by running `yarn build:umd` in the t2d directory.
 
@@ -79,4 +79,4 @@ Now that we have the bundle, we can embed the react component in any other webpa
 
 ## Next steps
 
-Now that we have this build process set up, we can move on to other things (like the structure viewer).
+Using this build process, any number of components developed using the new gnomAD browser framework can be exported.
