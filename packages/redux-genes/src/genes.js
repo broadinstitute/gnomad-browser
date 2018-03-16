@@ -127,6 +127,9 @@ export default function createGeneReducer(config) {
     [types.SET_CURRENT_GENE] (state, { geneName }) {
       return state.set('currentGene', geneName)
     },
+    [types.SET_EXON_PADDING] (state, { padding }) {
+      return state.set('exonPadding', padding)
+    },
     [types.SET_CURRENT_TRANSCRIPT] (state, { transcriptId }) {
       return state.set('currentTranscript', transcriptId)
     },

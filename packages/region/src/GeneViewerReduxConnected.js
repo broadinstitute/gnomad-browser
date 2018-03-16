@@ -26,7 +26,7 @@ class GeneViewer extends PureComponent {
   }
 
   fetchData = (geneName) => {
-    console.log(geneName)
+    // console.log(geneName)
     const query = `{
       gene(gene_name: "${geneName}") {
         gene_name
@@ -116,12 +116,12 @@ class GeneViewer extends PureComponent {
         }
       }
     }`
-    console.log(query)
+    // console.log(query)
     return new Promise((resolve, reject) => {
-      console.log(API_URL)
+      // console.log(API_URL)
       fetch(API_URL)(query)
         .then((data) => {
-          console.log(data)
+          // console.log(data)
           resolve(data.data.gene)
         })
         .catch((error) => {
