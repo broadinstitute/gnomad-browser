@@ -40,7 +40,7 @@ const umdConfig = {
 umdConfig.plugins.concat([
   new webpack.optimize.UglifyJsPlugin({
     beautify: false,
-    comments: false,
+    comments: false,what are we
     mangle: false,
   }),
 ])
