@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This folder contains components from the `gnomadjs` project designed for use in the Type II Diabetes (T2D) portal. There is a JavaScript bundling process for packaging code, and examples of how to embed components into another page.
+This folder contains components from the `gnomadjs` project designed for use in the Type II Diabetes (T2D) portal. Here we describe an example component, the development environment, a JavaScript bundling workflow for packaging code, and an example of how to embed the component into another page.
 
 ## Requirements
 
@@ -24,9 +24,9 @@ yarn https://yarnpkg.com/en/
 
 ## Developing a component
 
-As a first step, we'll show how to export a TranscriptViewer component which is similar to the one seen on the gnomAD beta website (http://gnomad-beta.broadinstitute.org). This process can be generalized for sharing the structure viewer (in development).
+As a first step, we'll work with a TranscriptViewer component which is similar to the one seen on the gnomAD beta website (http://gnomad-beta.broadinstitute.org). This process can be generalized for sharing any number of components such as the structure viewer (in development).
 
-See the file `src/TranscriptViewer.js`. This contains a transcript viewer that wraps `@broad/redux-genes`, `@broad/region`, and `@broad/track-transcript` libraries. You can edit those components in the packages folder. Data fetching and most default settings are handled by the components themselves. The component exported from this file looks like:
+See the file `src/TranscriptViewer.js`. This contains a transcript viewer that wraps `@broad/redux-genes`, `@broad/region`, and `@broad/track-transcript` libraries. You can edit those components in the packages folder if you wish, however data fetching and most default settings are handled by the components themselves. The wrapper component exported from this file looks like:
 
 ```javascript
 ...
@@ -65,7 +65,7 @@ export default TranscriptViewer
 
 The wrapped component takes a few props to set the gene, exonPadding, and component width, etc..  There are many more things you could set, but keeping it simple for now.
 
-To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`. Check out `src/example/TranscriptViewerExample.js` to try passing the component props, or try creating some kind of external control mechanism to feed data to the component. You have to know a little bit of React to do that. Watch how updates to any of the component src files will trigger hot reloading in the browser.
+To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`. Check out `src/example/TranscriptViewerExample.js` to try changing which props (such as the gene name) are passed to the component, or try creating some kind of external control mechanism to feed data to the component. You have to know a little bit of React to do that. Watch how updates to any of the component src files will trigger hot reloading in the browser.
 
 ## Outputting a bundle
 
@@ -75,8 +75,8 @@ You can compile the bundle by running `yarn build:umd` in the t2d directory.
 
 ## Embedding the component in another page
 
-Now that we have the bundle, we can embed the react component in any other webpage. See the example in `public/index`. Test by typing `yarn start` in the root t2d directory, navigate to `localhost:8080`.
+Now that we have the bundle, we can embed the react component in any other webpage, such as the T2D portal. See the example in `public/index`. Test by typing `yarn start` in the root t2d directory, navigate to `localhost:8080`.
 
 ## Next steps
 
-Using this build process, any number of components developed using the new gnomAD browser framework can be exported.
+Using this build process, any number of components developed using the new gnomAD browser framework can be exported and shared with the T2D portal.
