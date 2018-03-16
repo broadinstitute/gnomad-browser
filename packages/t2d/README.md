@@ -65,7 +65,13 @@ export default TranscriptViewer
 
 The wrapped component takes a few props to set the gene, exonPadding, and component width, etc..  There are many more things you could set, but keeping it simple for now.
 
-To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`. Check out `src/example/TranscriptViewerExample.js` to try changing which props (such as the gene name) are passed to the component, or try creating some kind of external control mechanism to feed data to the component. You have to know a little bit of React to do that. Watch how updates to any of the component src files will trigger hot reloading in the browser.
+To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`. 
+
+You should see this:
+
+![image](https://storage.googleapis.com/gnomad-browser/jars/transcripts.png)
+
+Check out `src/example/TranscriptViewerExample.js` to try changing which props (such as the gene name) are passed to the component, or try creating some kind of external control mechanism to feed data to the component. You have to know a little bit of React to do that. Watch how updates to any of the component src files will trigger hot reloading in the browser.
 
 ## Outputting a bundle
 
