@@ -19,7 +19,7 @@ build: clean install lib
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
 	cd ../dev-server ; \
-	$(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
+	NODE_ENV=development $(BINDIR)/webpack-dev-server $(SERVER_FLAGS)
 
 COMPONENT_NAME=$(shell basename `pwd`)
 

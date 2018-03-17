@@ -94,8 +94,6 @@ if (!isDev) {
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
     minimize: true,
     debug: false,
-  }))
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
     beautify: false,
     mangle: {
       screw_ie8: true,

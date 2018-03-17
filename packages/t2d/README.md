@@ -65,7 +65,7 @@ export default TranscriptViewer
 
 The wrapped component takes a few props to set the gene, exonPadding, and component width, etc..  There are many more things you could set, but keeping it simple for now.
 
-To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`. 
+To run this component in a development server, type `make prototype` in the t2d root directory and navigate to `localhost:8000`.
 
 You should see this:
 
@@ -122,7 +122,7 @@ const umdConfig = {
 umdConfig.plugins.concat([
   new webpack.optimize.UglifyJsPlugin({
     beautify: false,
-    comments: false,what are we
+    comments: false,
     mangle: false,
   }),
 ])
