@@ -1,5 +1,6 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-shadow */
+
 import React, { PropTypes } from 'react'
 import Immutable from 'immutable'
 import { Provider, connect } from 'react-redux'
@@ -20,10 +21,10 @@ const store = createTestStore()
 let StructureViewerExample = (props) => {
   return (
     <div>
-      <h1>Structure viewer example</h1>
+      {/* <h1>Structure viewer example</h1> */}
       <ProteinStructureViewer
-        height={800}
-        width={800}
+        height={600}
+        width={1000}
         backgroundColor={'white'}
         variantsData={[123, 124, 125]}
         {...props}
