@@ -134,7 +134,7 @@ class GeneViewer extends PureComponent {
     const { exonPadding, geneData, children, ...rest } = this.props
     console.log(geneData)
     if (!geneData) {
-      return <div>Loading</div>
+      return <div></div>
     }
 
     const geneJS = geneData.toJS()

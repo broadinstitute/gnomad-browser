@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Provider } from 'react-redux'
@@ -29,32 +29,40 @@ const store = createStore(
   applyMiddleware(thunk, logger)
 )
 
-const TranscriptViewer = ({ gene, exonPadding, width, trackHeight, showGtex }) => {
-  store.dispatch(actions.setCurrentGene(gene))
-  store.dispatch(actions.setExonPadding(exonPadding))
-  return (
-    <Provider store={store}>
-      <Wrapper>
-        <GeneViewer width={width}>
-          <TranscriptTrackConnected height={trackHeight} showRightPanel={showGtex} />
-        </GeneViewer>
-      </Wrapper>
-    </Provider>
-  )
-}
-TranscriptViewer.propTypes = {
-  gene: PropTypes.string,
-  exonPadding: PropTypes.number,
-  width: PropTypes.number,
-  trackHeight: PropTypes.number,
-  showGtex: PropTypes.bool,
-}
-TranscriptViewer.defaultProps = {
-  gene: 'DMD',
-  exonPadding: 75,
-  width: 700,
-  trackHeight: 10,
-  showGtex: false,
+class TranscriptViewer extends PureComponent {
+  static propTypes = {
+    gene: PropTypes.string,
+    exonPadding: PropTypes.number,
+    width: PropTypes.number,
+    trackHeight: PropTypes.number,
+    showGtex: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    gene: 'DMD',
+    exonPadding: 75,
+    width: 700,
+    trackHeight: 10,
+    showGtex: false,
+  }
+
+  componentWillMount() {
+    store.dispatch(actions.setCurrentGene(this.props.gene))
+    store.dispatch(actions.setExonPadding(this.props.exonPadding))
+  }
+
+  render() {
+    const { gene, exonPadding, width, trackHeight, showGtex } = this.props
+    return (
+      <Provider store={store}>
+        <Wrapper>
+          <GeneViewer width={width}>
+            <TranscriptTrackConnected height={trackHeight} showRightPanel={showGtex} />
+          </GeneViewer>
+        </Wrapper>
+      </Provider>
+    )
+  }
 }
 
 export default TranscriptViewer
