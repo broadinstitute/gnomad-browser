@@ -25,7 +25,8 @@
     <!-- The rest of the portal would be here -->
 
     <!-- This is the DOM element we'll attach our TranscriptViewer to -->
-    <div id="root"></div>
+    <div id="root1"></div>
+    <div id="root2"></div>
 
     <script type="text/javascript">
 
@@ -47,12 +48,15 @@
     }
 
     var transcriptViewer = React.createElement(GnomadT2d.TranscriptViewer, props)
+    var structureViewer = React.createElement(GnomadT2d.StructureViewer)
 
     /**
      * Render the component
      */
-    var root = document.getElementById('root')
-    ReactDOM.render(transcriptViewer, root)
+    var root1 = document.getElementById('root1')
+    var root2 = document.getElementById('root2')
+    ReactDOM.render(transcriptViewer, root1)
+    ReactDOM.render(structureViewer, root2)
   </script>
   </body>
 </html>
