@@ -1,0 +1,11 @@
+[submodule "kubernetes-elasticsearch-cluster"]
+    path = cluster/elasticsearch/kubernetes-elasticsearch-cluster
+    url = https://github.com/macarthur-lab/gnomadjs-elasticsearch.git
+
+[submodule "hail-db-utils"]
+    path = hail-db-utils
+    url = https://github.com/macarthur-lab/hail-elasticsearch-pipelines.git
+
+[submodule "gnomad-docs"]
+    path = projects/gnomad/gnomad-docs
+    url = https://github.com/macarthur-lab/gnomad-docs.git
