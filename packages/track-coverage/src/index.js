@@ -137,6 +137,40 @@ const CoverageTrack = ({
     })
   }
 
+  const legend = (
+    <ul
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        listStyleType: 'none',
+        margin: 0,
+        padding: 0,
+      }}
+    >
+      {dataConfig.datasets.map(dataset => (
+        <li
+          key={dataset.name}
+          style={{
+            display: 'flex',
+            marginLeft: '1em',
+          }}
+        >
+          <span
+            style={{
+              background: dataset.color,
+              border: '1px solid black',
+              display: 'inline-block',
+              height: '1em',
+              marginRight: '0.5em',
+              width: '1em',
+            }}
+          />
+          {dataset.name}
+        </li>
+      ))}
+    </ul>
+  )
+
   const plots = dataConfig.datasets.map((dataset) => {
     if (dataset.data) {
       if (totalBp < 100) {
@@ -169,81 +203,103 @@ const CoverageTrack = ({
   const incrementSize = Math.floor(yScaleDomainMax / yTickNumber)
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <div
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
-          width: leftPanelWidth,
+          marginLeft: leftPanelWidth,
+          width: `${width}px`,
         }}
       >
-        <svg width={50} height={yScaleRangeMax}>
-          <text
-            style={{
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAnchor: 'middle',
-            }}
-            x={10}
-            y={yScaleRangeMax / 2}
-            transform={`rotate(270 10 ${yScaleRangeMax / 2})`}
-          >
-            {title}
-          </text>
-          <g>
-            {/* <text
-              style={{
-                fontSize: '12px',
-                textAnchor: 'end',
-              }}
-              x={40}
-              y={yScaleRangeMax + 1}
-            >
-              0
-            </text> */}
-            {R.tail(range(yScaleDomainMin, yScaleDomainMax, incrementSize)).map(tick =>
-              (<g key={`ytick-${tick}`}>
-                <text
-                  style={{
-                    fontSize: '12px',
-                    textAnchor: 'end',
-                  }}
-                  x={40}
-                  y={yScaleRangeMax - (yScale(tick) - 4)}
-                >
-                  {yScaleDomainMax - tick}
-                </text>
-                <line
-                  x1={42}
-                  x2={48}
-                  y1={yScaleRangeMax - yScale(tick)}
-                  y2={yScaleRangeMax - yScale(tick)}
-                  stroke={'black'}
-                  strokeWidth={1}
-                  key={`coverage-y-axis-${tick}`}
-                />
-              </g>)
-            )}
-          </g>
-        </svg>
+        {legend}
       </div>
-      <div>
-        <svg
-          width={width}
-          height={height}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            width: leftPanelWidth,
+          }}
         >
-          <line
-            x1={0}
-            x2={width}
-            y1={yScaleRangeMax}
-            y2={yScaleRangeMax}
-            stroke={'black'}
-            strokeWidth={1}
-          />
-          <g>
-            {plots}
-          </g>
-        </svg>
+          <svg width={50} height={yScaleRangeMax}>
+            <text
+              style={{
+                fontSize: '14px',
+                fontWeight: 'bold',
+                textAnchor: 'middle',
+              }}
+              x={10}
+              y={yScaleRangeMax / 2}
+              transform={`rotate(270 10 ${yScaleRangeMax / 2})`}
+            >
+              {title}
+            </text>
+            <g>
+              {/* <text
+                style={{
+                  fontSize: '12px',
+                  textAnchor: 'end',
+                }}
+                x={40}
+                y={yScaleRangeMax + 1}
+              >
+                0
+              </text> */}
+              {R.tail(range(yScaleDomainMin, yScaleDomainMax, incrementSize)).map(tick =>
+                (<g key={`ytick-${tick}`}>
+                  <text
+                    style={{
+                      fontSize: '12px',
+                      textAnchor: 'end',
+                    }}
+                    x={40}
+                    y={yScaleRangeMax - (yScale(tick) - 4)}
+                  >
+                    {yScaleDomainMax - tick}
+                  </text>
+                  <line
+                    x1={42}
+                    x2={48}
+                    y1={yScaleRangeMax - yScale(tick)}
+                    y2={yScaleRangeMax - yScale(tick)}
+                    stroke={'black'}
+                    strokeWidth={1}
+                    key={`coverage-y-axis-${tick}`}
+                  />
+                </g>)
+              )}
+            </g>
+          </svg>
+        </div>
+        <div>
+          <svg
+            width={width}
+            height={height}
+          >
+            <line
+              x1={0}
+              x2={width}
+              y1={yScaleRangeMax}
+              y2={yScaleRangeMax}
+              stroke={'black'}
+              strokeWidth={1}
+            />
+            <g>
+              {plots}
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
   )
