@@ -102,6 +102,9 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
         // xpos: getXpos(chrom, coverage_position.pos),
         // ...coverage_position,
       // }
+    }).catch(error => {
+      console.log(error)
+      resolve([])
     })
   })
 }
@@ -173,7 +176,10 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
         }
       })
       resolve(positions)
-    }).catch(error => console.log(error))
+    }).catch(error => {
+      console.log(error)
+      resolve([])
+    })
   })
 }
 
@@ -286,7 +292,10 @@ export const lookupCoverageByIntervalsWithBuckets = ({
           })
         }).catch(error => console.log(error))
       }
-    }).catch(error => console.log(error))
+    }).catch(error => {
+      console.log(error)
+      resolve([])
+    })
   })
 }
 
