@@ -1,0 +1,37 @@
+{
+  "properties": {
+    "amino_acids": {
+      "type": "text"
+    },
+    "chisq_diff_null": {
+      "type": "float"
+    },
+    "chr": {
+      "type": "text"
+    },
+    "exp_mis": {
+      "type": "float"
+    },
+    "gene": {
+      "type": "text"
+    },
+    "genomic_end": {
+      "type": "long"
+    },
+    "genomic_start": {
+      "type": "long"
+    },
+    "obs_exp": {
+      "type": "float"
+    },
+    "obs_mis": {
+      "type": "long"
+    },
+    "region_name": {
+      "type": "text"
+    },
+    "transcript": {
+      "type": "text"
+    }
+  }
+}
