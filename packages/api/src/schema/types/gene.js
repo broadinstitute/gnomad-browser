@@ -191,7 +191,7 @@ const geneType = new GraphQLObjectType({
     exacv1_constraint: {
       type: constraintType,
       resolve: (obj, args, ctx) =>
-        lookUpConstraintByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
+        lookUpConstraintByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
     },
     exacv1_regional_constraint_regions: {
       type: new GraphQLList(fromRegionalConstraint.regionalConstraintRegion),

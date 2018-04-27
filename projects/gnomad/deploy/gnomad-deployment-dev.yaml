@@ -1,0 +1,45 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: gnomad-d-serve
+  labels:
+    state: serving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gnomad-d-serve
+  template:
+    metadata:
+      labels:
+        name: gnomad-d-serve
+    spec:
+      # volumes:
+      # - name: readviz
+      #   gcePersistentDisk:
+      #     pdName: gnomad-readviz-exons-gpd-3
+      #     fsType: ext4
+      #     readOnly: true
+      containers:
+      - name: gnomad-d-serve
+        image: gcr.io/exac-gnomad/gnomad-browser-beta
+        env:
+        - name: MONGO_HOST
+          value: gnomad-mongo
+        - name: MONGO_PORT
+          value: '27017'
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        # volumeMounts:
+        # - name: readviz
+        #   mountPath: /var/data/readviz
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - NET_ADMIN
+        imagePullPolicy: Always
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

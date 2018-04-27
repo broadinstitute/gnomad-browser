@@ -22,7 +22,7 @@ import GeneViewer from './RegionViewer'
 import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
-import { fetchWithExac } from './fetch'
+import { fetchGnomadGenePage } from './fetch'
 import { exportFetch } from './exportFetch'
 
 const Footer = styled.div`
@@ -129,4 +129,4 @@ GenePageConnected.defaultProps = {
   gene: null,
 }
 
-export default withRouter(GenePageHoc(GenePageConnected, fetchWithExac, exportFetch))
+export default withRouter(GenePageHoc(GenePageConnected, fetchGnomadGenePage, exportFetch))
