@@ -13,7 +13,7 @@ export const regionalConstraintRegion = new GraphQLObjectType({
   fields: () => ({
     transcript: { type: GraphQLString },
     gene: { type: GraphQLString },
-    chr: { type: GraphQLFloat },
+    chr: { type: GraphQLString },
     amino_acids: { type: GraphQLString },
     genomic_start: { type: GraphQLInt },
     genomic_end: { type: GraphQLInt },
