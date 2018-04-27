@@ -1,6 +1,6 @@
 import { loadCsvToElastic } from '@broad/api/utilities/elasticsearch'
 
-const filePath = '../../@broad/redux-fordist_constraint_official_fullgene_cleaned_missense_metrics_nosynoutliers.txt'
+const filePath = '../../../resources/fordist_constraint_official_fullgene_cleaned_missense_metrics_nosynoutliers.txt'
 
 const headers = [
   'transcript',

@@ -1,6 +1,6 @@
 import { loadCsvToElastic } from '@broad/api/utilities/elasticsearch'
 
-const filePath = '../../@broad/redux-fordist_constraint_official_regional_missense_cleaned_metrics_nosynoutliers.txt'
+const filePath = '../../../resources/fordist_constraint_official_regional_missense_cleaned_metrics_nosynoutliers.txt'
 
 const config = {
   address: '23.236.50.46:9200',
