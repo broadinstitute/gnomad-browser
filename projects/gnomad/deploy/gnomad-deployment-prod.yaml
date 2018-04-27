@@ -22,7 +22,7 @@ spec:
           fsType: ext4
           readOnly: true
       containers:
-      - name: gnomad-p-serve
+      - name: gnomad-d-serve
         image: gcr.io/exac-gnomad/gnomad-browser-beta
         env:
         - name: MONGO_HOST

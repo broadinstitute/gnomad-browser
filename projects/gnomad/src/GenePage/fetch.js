@@ -5,7 +5,7 @@ const PUBLIC_API = 'http://gnomad-api.broadinstitute.org'
 // const API_URL = 'http://35.184.79.173'
 const API_URL = process.env.GNOMAD_API_URL
 
-export const fetchGnomadOnly = (geneName, transcriptId) => {
+export const fetchGnomadGenePage = (geneName, transcriptId) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
   const query = `{
@@ -80,6 +80,29 @@ export const fetchGnomadOnly = (geneName, transcriptId) => {
         hemi_count
         consequence
         lof
+      }
+      exacv1_constraint {
+        mu_syn
+        exp_syn
+        cnv_z
+        pLI
+        syn_z
+        n_lof
+        n_mis
+        n_syn
+        lof_z
+        tx_start
+        mu_mis
+        transcript
+        n_cnv
+        exp_lof
+        mis_z
+        exp_cnv
+        tx_end
+        n_exons
+        mu_lof
+        bp
+        exp_mis
       }
       exacv1_regional_constraint_regions {
         transcript
@@ -200,55 +223,4 @@ export const fetchGnomadOnly = (geneName, transcriptId) => {
         reject(error)
       })
   })
-}
-export const fetchExac = (geneName, url = PUBLIC_API) => {
-  const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
-    `gene_name: "${geneName}"`
-  const query = `{
-    gene(${argument}) {
-      exacv1_constraint {
-        mu_syn
-        exp_syn
-        cnv_z
-        pLI
-        syn_z
-        n_lof
-        n_mis
-        n_syn
-        lof_z
-        tx_start
-        mu_mis
-        transcript
-        n_cnv
-        exp_lof
-        mis_z
-        exp_cnv
-        tx_end
-        n_exons
-        mu_lof
-        bp
-        exp_mis
-      }
-    }
-  }
-`
-  return new Promise((resolve, reject) => {
-    fetch(url)(query)
-      .then(data => resolve(data.data.gene))
-      .catch((error) => {
-        reject(error)
-      })
-  })
-}
-
-export function fetchWithExac(geneName, transcriptId) {
-  return Promise.all([
-    fetchGnomadOnly(geneName, transcriptId),
-    fetchExac(geneName),
-  ]).then(([localData, publicData]) => {
-    return ({
-      ...localData,
-      ...publicData,
-    })
-  }).catch(error => console.log(error))
 }
