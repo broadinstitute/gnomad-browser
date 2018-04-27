@@ -350,6 +350,7 @@ const Transcript = ({
     paddingBottom = 0  // eslint-disable-line
     expandTranscriptButton = (
       <TranscriptFlipOutButton
+        fanOutIsOpen={fanOutButtonOpen}
         strand={strand}
         onClick={fanOut}
       />

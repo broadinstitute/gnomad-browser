@@ -10,11 +10,6 @@ const TranscriptFlipOutButtonContainer = styled.div`
   height: 100%;
   width: 100%;
   border: 1px blue #000;
-
-  i {
-    margin-right: 10px;
-    color: rgb(66, 66, 66);
-  }
 `
 
 const TranscriptFlipOutButton = styled.button`
@@ -34,7 +29,7 @@ const TranscriptFlipOutButton = styled.button`
   }
 `
 
-const TranscriptFlipOut = ({ onClick, strand }) => {
+const TranscriptFlipOut = ({ fanOutIsOpen, onClick, strand }) => {
   let direction
   if (strand === '+') {
     direction = 'right'
@@ -43,25 +38,45 @@ const TranscriptFlipOut = ({ onClick, strand }) => {
   } else {
     direction = null
   }
+
+  const label = fanOutIsOpen
+    ? 'Hide alternate transcripts'
+    : 'Show alternate transcripts'
+
+  const icon = fanOutIsOpen
+    ? 'fa-caret-down'
+    : 'fa-caret-right'
+
   return (
     <TranscriptFlipOutButtonContainer>
       <TranscriptFlipOutButton
+        aria-label={label}
         onClick={onClick}
+        title={label}
       >
-        +
+        <i
+          aria-hidden
+          className={`fa ${icon}`}
+        />
       </TranscriptFlipOutButton>
       {direction && <i
         className={`fa fa-arrow-circle-${direction} fa-2x`}
         aria-hidden="true"
+        style={{
+          marginRight: '10px',
+          color: 'rgb(66, 66, 66)',
+        }}
       />}
     </TranscriptFlipOutButtonContainer>
   )
 }
 TranscriptFlipOut.propTypes = {
+  fanOutIsOpen: PropTypes.bool,
   onClick: PropTypes.func,
   strand: PropTypes.string,
 }
 TranscriptFlipOut.defaultProps = {
+  fanOutIsOpen: false,
   onClick: () => {},
   strand: null,
 }
