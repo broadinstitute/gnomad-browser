@@ -20,7 +20,7 @@ IMAGE_NAME="$(IMAGE_PREFIX)$(IMAGE_TAG)"
 
 SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.202.229.180)
 
-start-gnomad: build-javascript build-legacy 	create-gnomad-legacy gnomad-legacy-service
+start-gnomad-prod: build-javascript build-legacy create-gnomad-prod gnomad-prod-service
 
 context:
 	gcloud container clusters get-credentials $(CLUSTER_NAME) --zone=$(GCLOUD_ZONE)
@@ -38,13 +38,20 @@ build-legacy:
 		-t $(IMAGE_NAME) $(LEGACY_DIRECTORY)
 	gcloud docker -- push $(IMAGE_NAME)
 
-create-gnomad-legacy:
-	kubectl create -f gnomad-deployment.yaml
+create-gnomad-prod:
+	kubectl create -f gnomad-deployment-prod.yaml
 
-update-gnomad-legacy:
+create-gnomad-dev:
+	kubectl create -f gnomad-deployment-dev.yaml
+
+recreate-gnomad-prod:
 	# $(sed -ie "s/THIS_STRING_IS_REPLACED_DURING_BUILD/$(BUILD_TIME)/g" gnomad-api-controller.yml)
-	kubectl delete -f gnomad-deployment.yaml
-	kubectl create -f gnomad-deployment.yaml
+	kubectl delete -f gnomad-deployment-prod.yaml
+	kubectl create -f gnomad-deployment-prod.yaml
+
+recreate-gnomad-dev:
+	kubectl delete -f gnomad-deployment-dev.yaml
+	kubectl create -f gnomad-deployment-dev.yaml
 
 pod-name:
 	kubectl get pods -o jsonpath={.items[*].spec.containers[*].name}
@@ -52,17 +59,24 @@ pod-name:
 copy-javascript:
 	kubectl cp /Users/msolomon/Projects/exacg/exac_gnomad_private/static/genepage.js gnomad-production-2775023726-02vfk:/var/www/static/
 
-update: build-javascript build-legacy update-gnomad-legacy
+update-gnomad-prod: build-javascript build-legacy recreate-gnomad-prod
 
-no-js: build-legacy update-gnomad-legacy
+update-gnomad-dev: build-javascript build-legacy recreate-gnomad-dev
 
+# faster?
 copy: build-javascript copy-javascript
 
-gnomad-legacy-service:
+gnomad-prod-service:
 	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
-	kubectl expose deployment gnomad-browser-beta \
-	--type="LoadBalancer" \
+	kubectl expose deployment gnomad-p-serve \
+	--type="LoadBalancer"
 	--load-balancer-ip="35.184.206.249"
+
+gnomad-dev-service:
+	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
+	kubectl expose deployment gnomad-d-serve \
+	--type="LoadBalancer"
+	--load-balancer-ip="35.224.4.236"
 
 test:
 	../../../node_modules/.bin/babel-node deploy
