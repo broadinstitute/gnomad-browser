@@ -144,6 +144,7 @@ const HelpTopic = styled.div`
 const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   height: 50px;
   width: 100%;
   margin-top: 10px;
