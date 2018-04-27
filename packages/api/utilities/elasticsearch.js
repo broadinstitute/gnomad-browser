@@ -9,6 +9,7 @@ export function loadCsvToElastic({
   delimiter,
   indexName,
   typeName,
+  mapping,
 }) {
   const client = new elasticsearch.Client({ host: address })
   if (dropPreviousIndex) {
@@ -35,7 +36,21 @@ export function loadCsvToElastic({
         doc,
       ]
     }, [])
-    client.bulk({ body: data })
+
+    let putMapping
+    if (mapping) {
+      putMapping = client.indices.create({ index: indexName })
+        .then(() => client.indices.putMapping({
+          index: indexName,
+          type: typeName,
+          body: mapping,
+        }))
+    } else {
+      putMapping = Promise.resolve()
+    }
+
+    putMapping
+      .then(() => client.bulk({ body: data }))
       .then(response => console.log(response))
       .catch(error => console.log(error))
   }).on('error', error => console.log(error))
