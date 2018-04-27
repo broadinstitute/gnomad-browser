@@ -66,17 +66,19 @@ update-gnomad-dev: build-javascript build-legacy recreate-gnomad-dev
 # faster?
 copy: build-javascript copy-javascript
 
+delete-gcloud-forwarding-rule:
+	gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
+
 gnomad-prod-service:
-	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment gnomad-p-serve \
-	--type="LoadBalancer"
+	--type="LoadBalancer" \
 	--load-balancer-ip="35.184.206.249"
 
 gnomad-dev-service:
-	# gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
 	kubectl expose deployment gnomad-d-serve \
-	--type="LoadBalancer"
+	--type="LoadBalancer" \
 	--load-balancer-ip="35.224.4.236"
 
 test:
 	../../../node_modules/.bin/babel-node deploy
+	
