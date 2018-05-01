@@ -154,16 +154,12 @@ export const calculateOffsetRegions = (
 )(regions)
 
 export const calculatePositionOffset = R.curry((regions, position) => {
-  let result = 0
-  for (let i = 0; i < regions.length; i++) {
-    if (position >= regions[i].start && position <= regions[i].stop) {
-      result = {
-        offsetPosition: position - regions[i].offset,
-        color: regions[i].color,
-      }
-    }
+  const lastRegionBeforePosition = R.findLast(region => region.start <= position)(regions)
+  const region = R.defaultTo(regions[0])(lastRegionBeforePosition)
+  return {
+    offsetPosition: position - region.offset,
+    color: region.color,
   }
-  return result
 })
 
 export const invertPositionOffset = R.curry((regions, xScale, scaledPosition) => {

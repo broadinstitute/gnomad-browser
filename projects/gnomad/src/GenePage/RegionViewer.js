@@ -149,13 +149,13 @@ const GeneViewer = ({
               fill={'yellow'}
               stroke={'black'}
             /> */}
-            {regionalConstraintData.map((region, i) => {
+            {regionalConstraintData.map((region) => {
               const regionStart = strand === '+' ? region.genomic_start : region.genomic_end
               const regionStop = strand === '+' ? region.genomic_end : region.genomic_start
               const regionStartPos = positionOffset(regionStart).offsetPosition
               const regionStopPos = positionOffset(regionStop).offsetPosition
               return (
-                <g key={`${i}-region`}>
+                <g key={region.region_name}>
                   <RegionalConstraintRegion
                     x={xScale(regionStartPos)}
                     y={padding}
