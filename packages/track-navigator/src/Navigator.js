@@ -85,7 +85,7 @@ const ClickArea = ({
   if (variants.size === 0) {
     return <p></p>
   }
-  const numberOfVariantsVisibleInTable = 18
+  const numberOfVariantsVisibleInTable = 20
   const { scrollHeight, scrollTop } = currentTableScrollData
   const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
   let currentlyVisibleVariants
