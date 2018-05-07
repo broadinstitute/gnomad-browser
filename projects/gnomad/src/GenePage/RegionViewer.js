@@ -61,6 +61,11 @@ export const getCoverageConfig = (
   }
 }
 
+const RegionViewerWrapper = styled.div`
+  margin-left: 10px;
+  width: 100%;
+`
+
 const GeneViewer = ({
   gene,
   allVariants,
@@ -182,13 +187,6 @@ const GeneViewer = ({
       </RegionalConstraintTrackWrapper>
     )
   }
-
-  const RegionViewerWrapper = styled.div`
-    margin-left: 10px;
-    width: 100%;
-    padding-left: 0;
-    ${'' /* border: 5px solid orange; */}
-  `
 
   const RegionViewerSectionTitle = SectionTitle.extend`
     margin-left: 80px;
