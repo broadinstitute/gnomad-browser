@@ -137,9 +137,9 @@ const TranscriptRightPanel = ({
   masterHeight,
   currentGene,
 }) => {
-  const maxTissue = tissueStats.keySeq().first()
+  const allTissues = Array.from(tissueStats.keys()).sort()
   const maxTissueValue = tissueStats.first()
-  const selectedTissue = currentTissue || maxTissue
+  const selectedTissue = currentTissue || 'median-across-all'
   const padding = 10
 
   const gtexScale = scaleLinear()
@@ -148,7 +148,9 @@ const TranscriptRightPanel = ({
 
   const GtexPlot = () => {
     const { gtex_tissue_tpms_by_transcript } = transcript
-    const tpm = gtex_tissue_tpms_by_transcript[selectedTissue]
+    const tpm = selectedTissue === 'median-across-all'
+      ? R.median(allTissues.map(tissue => gtex_tissue_tpms_by_transcript[tissue]))
+      : gtex_tissue_tpms_by_transcript[selectedTissue]
 
     return (
       <svg height={flipOutExonThickness} width={rightPanelWidth}>
@@ -210,11 +212,11 @@ const TranscriptRightPanel = ({
     )
   }
   if (isMaster) {
-    const options = tissueStats.map((tpm, tissue) => (
+    const options = allTissues.map(tissue => (
       <option key={`${tissue}-option`} value={tissue}>
-        {tissueMappings[tissue]} {`(${tpm})`}
+        {tissueMappings[tissue]} {`(${tissueStats.get(tissue)})`}
       </option>
-    )).toList().toJS()
+    ))
     return (
       <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
         <TranscriptName>
@@ -233,7 +235,12 @@ const TranscriptRightPanel = ({
               onChange={event => onTissueChange(event.target.value)}
               value={selectedTissue}
             >
-              {options}
+              <option key="median-across-all" value="median-across-all">
+                Median across all tissues ({R.median(Array.from(tissueStats.values()))})
+              </option>
+              <optgroup label="Specific tissue">
+                {options}
+              </optgroup>
             </GtexTissueSelect>
           </GtexTitleWrapper>
           <GtexPlotWrapper>
