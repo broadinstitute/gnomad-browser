@@ -1,4 +1,4 @@
-.DS_Store
+'.DS_Store
 npm-debug.log
 __pycache__/
 *.pyc
@@ -8,6 +8,7 @@ __pycache__/
 env
 build
 dist
+.idea
 node_modules
 resources/*
 *lib
