@@ -9,7 +9,8 @@ about: Report a bug or unexpected behavior
   diagnose and fix the issue.
 
 * For concerns about data, check the frequently asked questions
-  (http://gnomad-beta.broadinstitute.org/faq) before filing an issue.
+  (http://gnomad-beta.broadinstitute.org/faq) or send an email to
+  exomeconsortium@gmail.com.
   
 -->
 
