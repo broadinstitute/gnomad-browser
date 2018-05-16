@@ -4,7 +4,8 @@
   diagnose and fix the issue.
 
 * For concerns about data, check the frequently asked questions
-  (http://gnomad.broadinstitute.org/faq) before filing an issue.
+  (http://gnomad.broadinstitute.org/faq) or send an email to
+  exomeconsortium@gmail.com.
   
 -->
 
