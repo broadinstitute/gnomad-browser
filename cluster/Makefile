@@ -34,7 +34,7 @@ context:
 	--cluster $(GKE_CLUSTER_NAME) \
 	--user $(GKE_CLUSTER_NAME) \
 	--namespace $(CLUSTER_NAMESPACE)
-	kubectl config use-context $(CLUSTER_NAME)
+	kubectl config use-context gke_$(GCLOUD_PROJECT)_$(GCLOUD_ZONE)_$(CLUSTER_NAME)
 
 dataproc-no-vep:
 	../hail-db-utils/create_cluster_without_VEP.py \
