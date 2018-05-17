@@ -1,5 +1,5 @@
 import React from 'react'
-import { TrafficBar } from '@broad/plot-traffic'
+
 import { generateComponentAsPDF } from '../index'
 
 const TestComponent = ({ message }) => {
@@ -9,7 +9,7 @@ const TestComponent = ({ message }) => {
 }
 
 const options = {
-  component: TrafficBar,
+  component: TestComponent,
   props: { message: 'hello' },
   fileName: 'test.pdf',
 }
