@@ -6,7 +6,9 @@
   "files": [
     "lib"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "mousetrap": "^1.6.1"
+  },
   "devDependencies": {},
   "peerDependencies": {
     "prop-types": "^15.5.10",
