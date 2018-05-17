@@ -28,10 +28,6 @@ watch:
 	@echo "  $(P) watch $(WATCH_FLAGS)"
 	@$(BIN_DIR)/watch $(WATCH_FLAGS)
 
-pdf:
-	./node_modules/.bin/babel-node node_modules/@broad/test/src/example
-	open /Users/msolomon/gnomadjs/packages/@broad/dev-server/node_modules/@broad/test/src/tmp/test.pdf
-
 serve:
 	@echo "  $(P) serve $(SERVER_FLAGS)" ; \
 	lsof -ti:8010 | xargs kill ; \

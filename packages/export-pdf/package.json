@@ -3,16 +3,18 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
+  "scripts": {
+    "example": "babel-node src/example/index.js"
+  },
   "files": [
     "lib"
   ],
   "localDependencies": {},
   "dependencies": {
-    "html-pdf": "^2.1.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "html-pdf": "^2.1.0"
   },
   "peerDependencies": {
-    "react": "^15.5.4"
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   }
 }

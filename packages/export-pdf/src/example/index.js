@@ -1,5 +1,4 @@
 import React from 'react'
-import InlineCss from 'react-inline-css'
 import { TrafficBar } from '@broad/plot-traffic'
 import { generateComponentAsPDF } from '../index'
 
