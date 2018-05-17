@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import Mousetrap from 'mousetrap'
 
 import {
   actions as variantActions,
@@ -30,13 +29,6 @@ import {
 } from '@broad/ui'
 
 import { QuestionMark } from '@broad/help'
-
-let findInput
-
-Mousetrap.bind(['command+f', 'meta+s'], (e) => {
-  e.preventDefault()
-  findInput.focus()
-})
 
 const GeneSettings = ({
   exonPadding,
@@ -146,11 +138,9 @@ const GeneSettings = ({
           </form>
           <SearchContainer>
             <Search
-              listName={'search table'}
-              options={['Variant ID', 'RSID', 'HGVSp']}
               placeholder={'Search variant table'}
-              reference={findInput}
               onChange={searchVariants}
+              withKeyboardShortcuts
             />
           </SearchContainer>
         </DataSelectionGroup>

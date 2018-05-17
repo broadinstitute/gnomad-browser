@@ -34,7 +34,6 @@
     "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
     "keymirror": "^0.1.1",
-    "mousetrap": "^1.6.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
     "react": "^15.5.4",
