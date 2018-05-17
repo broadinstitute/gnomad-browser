@@ -82,8 +82,6 @@ class T2dComponentsShowcase extends PureComponent {
         </ButtonGroup>
         <ControlPanel>
           <Search
-            listName={'search table'}
-            options={['Gene name']}
             placeholder={'Search gene'}
             onChange={this.setCurrentGene}
           />

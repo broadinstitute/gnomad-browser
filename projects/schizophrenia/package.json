@@ -6,7 +6,7 @@
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "GNOMAD_API_URL='http://localhost:8007' ../../node_modules/.bin/webpack-dev-server --port 8012 --hot --config ../../webpack.config.js"
+    "start": "GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack-dev-server --port 8012 --hot --config ../../webpack.config.js"
 
   },
   "files": [
@@ -27,7 +27,6 @@
     "d3-shape": "^1.2.0",
     "graphql-fetch": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "mousetrap": "^1.6.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
     "react": "^15.5.4",

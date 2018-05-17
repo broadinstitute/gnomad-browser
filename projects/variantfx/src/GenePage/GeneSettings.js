@@ -2,30 +2,21 @@ import React, { PropTypes } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import Mousetrap from 'mousetrap'
-
 import {
   actions as variantActions,
   selectedVariantDataset,
 } from '@broad/redux-variants'
 
 import { geneData, currentGene, exonPadding } from '@broad/redux-genes'
-import { Search } from '@broad/ui/src/search/simpleSearch'
 
 import {
   MaterialButtonRaised,
   SettingsContainer,
   MenusContainer,
+  Search,
   SearchContainer,
   DataSelectionGroup,
 } from '@broad/ui'
-
-let findInput
-
-Mousetrap.bind(['command+f', 'meta+s'], function(e) {  // eslint-disable-line
-  e.preventDefault()
-  findInput.focus()
-})
 
 const GeneSettings = ({
   searchVariants,
@@ -65,11 +56,9 @@ const GeneSettings = ({
         <DataSelectionGroup>
           <SearchContainer>
             <Search
-              listName={'search table'}
-              options={['Variant ID', 'RSID', 'HGVSp']}
               placeholder={'Search variant table'}
-              reference={findInput}
               onChange={searchVariants}
+              withKeyboardShortcuts
             />
           </SearchContainer>
         </DataSelectionGroup>
