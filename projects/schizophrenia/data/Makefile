@@ -111,3 +111,9 @@ print-keytable-schema:
 	--project $(GCLOUD_PROJECT) \
 	--cluster no-vep \
 	load_schizophrenia_data_171214.py
+
+180512-load-data:
+	../../../hail-db-utils/submit_hail_v0.1.py \
+	--project $(GCLOUD_PROJECT) \
+	--cluster no-vep \
+	load_schizophrenia_data_180512.py
