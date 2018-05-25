@@ -17,8 +17,23 @@ import App from './routes'
 
 const API_URL = process.env.GNOMAD_API_URL
 
+const consequencePresentation = {
+  mis: 'missense',
+  ns: 'inframe indel',
+  syn: 'synonymous',
+  splice: 'splice region',
+  lof: 'loss of function',
+}
+
 const appSettings = {
-  searchIndexes: ['variant_id', 'rsid', 'consequence'],
+  searchIndexes: ({ resources, indexDocument, state }) => {
+    resources.forEach(variant => {
+      indexDocument(variant.get('id'), variant.get('variant_id'))
+      if (variant.get('hgvsc_canonical')) {
+        indexDocument(variant.get('id'), variant.get('hgvsc_canonical'))
+      }
+    })
+  },
   searchResourceSelector: (resourceName, state) => {
     return state.variants.searchIndexed
   },
