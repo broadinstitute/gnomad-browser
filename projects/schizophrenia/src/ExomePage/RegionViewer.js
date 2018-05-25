@@ -64,6 +64,20 @@ const attributeConfig = {
 }
 
 class SchizophreniaGeneViewer extends PureComponent {
+  componentDidMount() {
+    const {
+      allVariantsInCurrentDataset,
+      focusedVariant,
+      setFocusedVariant,
+    } = this.props
+
+    // HACK display variant with highest allele count to fill out variant section
+    if (!allVariantsInCurrentDataset.has(focusedVariant)) {
+      const maxAc = allVariantsInCurrentDataset.maxBy(variant => variant.get('ac_case'))
+      setFocusedVariant(maxAc.get('variant_id'))
+    }
+  }
+
   render() {
     const {
       gene,
@@ -90,14 +104,6 @@ class SchizophreniaGeneViewer extends PureComponent {
     console.log(variantsReversed)
     if (variantsReversed.isEmpty()) {
       return <Loading />
-    }
-
-    setCurrentTableScrollData({ scrollHeight: 1, scrollTop: 2 })
-
-    // HACK display variant with highest allele count to fill out variant section
-    if (!allVariantsInCurrentDataset.has(focusedVariant)) {
-      const maxAc = allVariantsInCurrentDataset.maxBy(variant => variant.get('ac_case'))
-      setFocusedVariant(maxAc.get('variant_id'))
     }
 
     const cases = variantsReversed
