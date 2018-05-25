@@ -10,8 +10,6 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
-import elasticsearch from 'elasticsearch'
-
 const schzVariantType = new GraphQLObjectType({
   name: 'schzVariant',
   fields: () => ({
@@ -245,18 +243,39 @@ export const schizophreniaExomeVariantsInRegion = {
 const schzGroupType = new GraphQLObjectType({
   name: 'SchizophreniaGroup',
   fields: () => ({
-    pos: { type: GraphQLInt },
-    xpos: { type: GraphQLFloat },
-    pval: { type: GraphQLFloat },
+    ac: { type: GraphQLInt },
     ac_case: { type: GraphQLInt },
-    contig: { type: GraphQLString },
-    beta: { type: GraphQLFloat },
-    variant_id: { type: GraphQLString },
-    an_ctrl: { type: GraphQLInt },
-    an_case: { type: GraphQLInt },
-    group: { type: GraphQLString },
     ac_ctrl: { type: GraphQLInt },
-    allele_freq: { type: GraphQLFloat },
+    af: { type: GraphQLFloat },
+    allele_freq: {
+      type: GraphQLFloat,
+      resolve: obj => obj.af,
+    },
+    af_case: { type: GraphQLFloat },
+    af_ctrl: { type: GraphQLFloat },
+    an: { type: GraphQLInt },
+    an_case: { type: GraphQLInt },
+    an_ctrl: { type: GraphQLInt },
+    analysis_group: { type: GraphQLString },
+    beta: {
+      type: GraphQLFloat,
+      resolve: obj => obj.se,
+    },
+    contig: { type: GraphQLString },
+    est: { type: GraphQLFloat },
+    group: {
+      type: GraphQLString,
+      resolve: obj => obj.analysis_group,
+    },
+    p: { type: GraphQLFloat },
+    pval: {
+      type: GraphQLFloat,
+      resolve: obj => obj.p,
+    },
+    pos: { type: GraphQLInt },
+    se: { type: GraphQLFloat },
+    variant_id: { type: GraphQLString },
+    xpos: { type: GraphQLFloat },
   })
 })
 
@@ -268,8 +287,8 @@ export const schzGroups = {
   resolve: (obj, { variant_id }, { database: { elastic } }) => {
     return new Promise((resolve, reject) => {
       elastic.search({
-        index: 'schizophrenia_groups',
-        type: 'group',
+        index: 'schizophrenia_exome_variants_groups',
+        type: 'schizophrenia_exome_group',
         size: 4000,
         body: {
           query: {
@@ -288,26 +307,69 @@ export const schzGroups = {
 const schzRareVariantType = new GraphQLObjectType({
   name: 'schzRareVariantType',
   fields: () => ({
-    variant_id: { type: GraphQLString },
-    pos: { type: GraphQLInt },
-    xpos: { type: GraphQLFloat },
-    chrom: { type: GraphQLString },
+    ac: { type: GraphQLInt },
     ac_case: { type: GraphQLInt },
     ac_ctrl: { type: GraphQLInt },
-    an_case: { type: GraphQLInt },
-    an_ctrl: { type: GraphQLInt },
-    ac_gnomad: { type: GraphQLInt },
-    cadd: { type: GraphQLFloat },
-    mpc: { type: GraphQLFloat },
-    gene_id: { type: GraphQLString },
-    consequence: { type: GraphQLString },
-    polyphen: { type: GraphQLString },
-    pval: { type: GraphQLFloat },
-    estimate: { type: GraphQLFloat },
-    ac_denovo: { type: GraphQLInt },
-    allele_freq: { type: GraphQLFloat },
     af_case: { type: GraphQLFloat },
     af_ctrl: { type: GraphQLFloat },
+    allele_freq: {
+      type: GraphQLFloat,
+      resolve: obj => obj.af,
+    },
+    an: { type: GraphQLInt },
+    an_case: { type: GraphQLInt },
+    an_ctrl: { type: GraphQLInt },
+    cadd: { type: GraphQLFloat },
+    canonical_transcript_id: { type: GraphQLString },
+    chrom: {
+      type: GraphQLString,
+      resolve: obj => obj.contig,
+    },
+    comment: { type: GraphQLString },
+    consequence: {
+      type: GraphQLString,
+      resolve: obj => obj.csq_analysis,
+    },
+    csq_analysis: { type: GraphQLString },
+    csq_canonical: { type: GraphQLString },
+    csq_worst: { type: GraphQLString },
+    estimate: {
+      type: GraphQLFloat,
+      resolve: obj => obj.est,
+    },
+    flags: { type: GraphQLString },
+    gene_id: { type: GraphQLString },
+    gene_name: { type: GraphQLString },
+    hgvsc: { type: GraphQLString },
+    hgvsc_canonical: {
+      type: GraphQLString,
+      resolve: obj => obj.hgvsc_canonical.split(':')[1],
+    },
+    hgvsp: { type: GraphQLString },
+    hgvsp_canonical: {
+      type: GraphQLString,
+      resolve: obj => obj.hgvsp_canonical.split(':')[1],
+    },
+    i2: { type: GraphQLInt },
+    in_analysis: { type: GraphQLBoolean },
+    mpc: { type: GraphQLFloat },
+    n_analysis_groups: { type: GraphQLInt },
+    ac_denovo: {
+      type: GraphQLInt,
+      resolve: obj => obj.n_denovos,
+    },
+    polyphen: { type: GraphQLString },
+    pos: { type: GraphQLInt },
+    pval_meta: {
+      type: GraphQLFloat,
+      resolve: obj => obj.pmeta,
+    },
+    qp: { type: GraphQLInt },
+    se: { type: GraphQLInt },
+    source: { type: GraphQLString },
+    transcript_id: { type: GraphQLString },
+    variant_id: { type: GraphQLString },
+    xpos: { type: GraphQLFloat },
   })
 })
 
@@ -317,8 +379,8 @@ export const schizophreniaRareVariants = {
   resolve: ({ gene_id }, args, { database: { elastic } }) => {
     return new Promise((resolve, reject) => {
       elastic.search({
-        index: 'schizophrenia_variants',
-        type: 'schizophrenia_variant',
+        index: 'schizophrenia_exome_variants_results',
+        type: 'schizophrenia_exome_variant',
         size: 10000,
         body: {
           query: {
@@ -328,17 +390,7 @@ export const schizophreniaRareVariants = {
           },
         },
       }).then((response) => {
-        const variants = response.hits.hits
-          .map(v => v._source)
-          .map(v => ({
-            ...v,
-            gene_id: v.gene_id[0],
-            chrom: v.contig,
-            ac_gnomad: v.nonpsych_gnomad_AC,
-            cadd: v.cadd13_phred,
-            af_case: v.ac_case / v.an_case,
-            af_ctrl: v.ac_ctrl / v.an_ctrl,
-          }))
+        const variants = response.hits.hits.map(v => v._source)
         resolve(variants)
       })
     })
