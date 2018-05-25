@@ -32,6 +32,12 @@ const appSettings = {
       if (variant.get('hgvsc_canonical')) {
         indexDocument(variant.get('id'), variant.get('hgvsc_canonical'))
       }
+      if (variant.get('hgvsp_canonical')) {
+        indexDocument(variant.get('id'), variant.get('hgvsp_canonical'))
+      }
+      if (variant.get('consequence')) {
+        indexDocument(variant.get('id'), consequencePresentation[variant.get('consequence')])
+      }
     })
   },
   searchResourceSelector: (resourceName, state) => {

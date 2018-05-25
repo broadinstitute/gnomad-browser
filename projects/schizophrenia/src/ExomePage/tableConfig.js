@@ -15,12 +15,14 @@ export default (onHeaderClick, width) => {
         dataType: 'string',
         width: 80,
         onHeaderClick,
+        searchable: true,
       }, {
         dataKey: 'hgvsp_canonical',
         title: 'HGVSp',
         dataType: 'string',
         width: 80,
         onHeaderClick,
+        searchable: true,
       }, {
         dataKey: 'ac_case',
         title: 'AC Case',
