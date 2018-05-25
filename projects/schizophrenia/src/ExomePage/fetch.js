@@ -26,26 +26,45 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         pval_meta
       }
       schizophreniaRareVariants {
-        variant_id
-        pos
-        xpos
-        chrom
+        ac
         ac_case
         ac_ctrl
-        an_case
-        an_ctrl
         af_case
         af_ctrl
-        ac_gnomad
-        cadd
-        mpc
-        gene_id
-        consequence
-        polyphen
-        pval
-        estimate
-        ac_denovo
         allele_freq
+        an
+        an_case
+        an_ctrl
+        cadd
+        canonical_transcript_id
+        chrom
+        comment
+        consequence
+        csq_analysis
+        csq_canonical
+        csq_worst
+        estimate
+        flags
+        gene_id
+        gene_name
+        hgvsc
+        hgvsc_canonical
+        hgvsp
+        hgvsp_canonical
+        i2
+        in_analysis
+        mpc
+        n_analysis_groups
+        ac_denovo
+        polyphen
+        pos
+        pval_meta
+        qp
+        se
+        source
+        transcript_id
+        variant_id
+        xpos
       }
       schizophreniaGwasVariants {
         variant_id
