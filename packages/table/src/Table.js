@@ -30,6 +30,9 @@ const normalCellStyles = {
   float: {
     ...abstractCellStyle,
   },
+  exponential: {
+    ...abstractCellStyle,
+  },
 }
 
 const specialCellStyles = {
@@ -270,6 +273,17 @@ const formatAlleleFrequency = (dataRow, dataKey) => {
   return Number((dataRow['allele_count'] / dataRow['allele_num']).toPrecision(4)).toExponential()  // eslint-disable-line
 }
 
+const formatExponential = (number) => {
+  if (number === null) {
+    return ''
+  }
+  const truncated = Number(number.toPrecision(3))
+  if (truncated === 0) {
+    return '0'
+  }
+  return truncated.toExponential()
+}
+
 
 const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
   // if (condition) {
@@ -298,6 +312,15 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
         >
           {/* {dataRow[dataKey] === null ? '' : dataRow[dataKey]} */}
           {cellText}
+        </div>
+      )
+    case 'exponential':
+      return (
+        <div
+          style={cellStyle}
+          key={`cell-${dataKey}-${i}`}
+        >
+          {formatExponential(cellText)}
         </div>
       )
     case 'float':
