@@ -18,7 +18,6 @@ const ManhattanPlot = ({
   sexChromosomes = false,
   showAxisBounds = false,
 }) => {
-  console.log(data)
   const padding = 60
   const yData = R.pluck('-log10p', data)
 
@@ -36,7 +35,7 @@ const ManhattanPlot = ({
     .domain([min(yData), max(yData) + (max(yData) * 0.1)])
     .range([height - padding, 10])
 
-  const Background = () => (
+  const background = (
     <rect
       x={0}
       y={0}
@@ -47,7 +46,7 @@ const ManhattanPlot = ({
     />
   )
 
-  const AxisBackgroundY = () => (
+  const yAxisBackground = (
     <rect
       x={0}
       y={0}
@@ -58,7 +57,7 @@ const ManhattanPlot = ({
     />
   )
 
-  const AxisBackgroundX = () => (
+  const xAxisBackground = (
     <rect
       x={0}
       y={height - padding}
@@ -69,7 +68,7 @@ const ManhattanPlot = ({
     />
   )
 
-  const Title = () => (
+  const titleText = (
     <text
       className={'title'}
       x={width / 2}
@@ -79,9 +78,7 @@ const ManhattanPlot = ({
     </text>
   )
 
-
-
-  const Ylabel = () => (
+  const yAxisLabel = (
     <text
       x={5}
       y={height / 2}
@@ -91,38 +88,36 @@ const ManhattanPlot = ({
     </text>
   )
 
-  const Yticks = () => {
-    return (
-      <g>
-        {yScale.ticks().map((t) => {
-          return (
-            <g key={t}>
-              <line
-                x1={padding}
-                x2={width}
-                y1={yScale(t)}
-                y2={yScale(t)}
-                stroke={'#BDBDBD'}
-              />
-              <text
-                className={'yTickText'}
-                style={{ textAnchor: 'middle' }}
-                x={padding - 15}
-                y={yScale(t) + 5}
-              >
-                {t}
-              </text>
-            </g>
-          )
-        })}
-      </g>
-    )
-  }
+  const yAxisTicks = (
+    <g>
+      {yScale.ticks().map((t) => {
+        return (
+          <g key={t}>
+            <line
+              x1={padding}
+              x2={width}
+              y1={yScale(t)}
+              y2={yScale(t)}
+              stroke={'#BDBDBD'}
+            />
+            <text
+              className={'yTickText'}
+              textAnchor={'middle'}
+              x={padding - 15}
+              y={yScale(t) + 5}
+            >
+              {t}
+            </text>
+          </g>
+        )
+      })}
+    </g>
+  )
 
-  const Xlabel = () => (
+  const xAxisLabel = (
     <text
       className={'xLabel'}
-      style={{ textAnchor: 'middle' }}
+      textAnchor={'middle'}
       x={width / 2}
       y={height - (padding / 4)}
     >
@@ -130,44 +125,42 @@ const ManhattanPlot = ({
     </text>
   )
 
-  const Xticks = () => {
-    const snpsSplitByChrom = plotChromosomes.map(chr =>
-      ({
-        name: chr,
-        data: data.filter(snp => chr === `chr${snp.chromosome}`),
-      })
-    )
-    const chrWithPos = snpsSplitByChrom.reduce((acc, chr, i) => {
-      const count = chr.data.length
-      if (i === 0) return [{ name: chr.name, pos: xScale(count - (count / 2)), count }]
-      const previousCount = acc[i - 1].count
-      const currentCount = previousCount + count
-      const pos = xScale(currentCount - (count / 2))
-      return [...acc, { name: chr.name, pos, count: currentCount }]
-    }, [])
-    return (
-      <g>
-        {chrWithPos.map(chr => (
-          <text
-            key={chr.name}
-            className={'chromosomeLabel'}
-            style={{ textAnchor: 'middle' }}
-            x={chr.pos}
-            y={height - (padding + 20)}
-          >
-            {chr.name.replace('chr', '')}
-          </text>
-        ))}
-      </g>
-    )
-  }
+  const snpsSplitByChrom = plotChromosomes.map(chr =>
+    ({
+      name: chr,
+      data: data.filter(snp => chr === `chr${snp.chromosome}`),
+    })
+  )
+  const chrWithPos = snpsSplitByChrom.reduce((acc, chr, i) => {
+    const count = chr.data.length
+    if (i === 0) return [{ name: chr.name, pos: xScale(count - (count / 2)), count }]
+    const previousCount = acc[i - 1].count
+    const currentCount = previousCount + count
+    const pos = xScale(currentCount - (count / 2))
+    return [...acc, { name: chr.name, pos, count: currentCount }]
+  }, [])
+
+  const xAxisTicks = (
+    <g>
+      {chrWithPos.map(chr => (
+        <text
+          key={chr.name}
+          className={'chromosomeLabel'}
+          textAnchor={'middle'}
+          x={chr.pos}
+          y={height - (padding + 20)}
+        >
+          {chr.name.replace('chr', '')}
+        </text>
+      ))}
+    </g>
+  )
 
   const snps = data.map((snp, i) => {
     const color = chromosomeColors[`chr${snp.chromosome}`]
     return (
       <circle
         key={`snp-${snp}-${i}`}
-        onClick={() => console.log(snp.chromosome, snp.pos)}
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
         r={2}
@@ -180,16 +173,18 @@ const ManhattanPlot = ({
   return (
     <div>
       <svg width={width} height={height}>
-        {showAxisBounds &&
-          <Background /> &&
-          <AxisBackgroundY /> &&
-          <AxisBackgroundX />
-        }
-        <Title />
-        <Ylabel />
-        <Yticks />
-        <Xlabel />
-        <Xticks />
+        {showAxisBounds && (
+          <g>
+            {background}
+            {yAxisBackground}
+            {xAxisBackground}
+          </g>
+        )}
+        {titleText}
+        {yAxisLabel}
+        {yAxisTicks}
+        {xAxisLabel}
+        {xAxisTicks}
         {snps}
       </svg>
     </div>
