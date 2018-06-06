@@ -10,6 +10,15 @@ import {
   HUMAN_AUTOSOMES,
 } from '@broad/utilities/src/constants'
 
+
+function randomColor() {
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
+  return `rgb(${r},${g},${b})`
+}
+
+
 const ManhattanPlot = ({
   data,
   title = '',
@@ -22,10 +31,8 @@ const ManhattanPlot = ({
   const yData = R.pluck('-log10p', data)
 
   const plotChromosomes = sexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
-  const rgb = () => Math.floor(Math.random() * 256)
-  const colorCode = () => `rgb(${rgb()}, ${rgb()}, ${rgb()})`
   const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
-    ({ ...acc, [chr]: colorCode() }), {})
+    ({ ...acc, [chr.replace('chr', '')]: randomColor() }), {})
 
   const xScale = scaleLinear()
     .domain([0, data.length])
@@ -157,7 +164,7 @@ const ManhattanPlot = ({
   )
 
   const snps = data.map((snp, i) => {
-    const color = chromosomeColors[`chr${snp.chromosome}`]
+    const color = chromosomeColors[snp.chromosome]
     return (
       <circle
         key={`snp-${snp}-${i}`}
