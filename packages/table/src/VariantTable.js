@@ -42,23 +42,9 @@ const VariantTable = ({
   filteredIdList,
 }) => {
   const scrollBarWidth = 40
-  // const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
   const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
   const tConfig = tableConfig(setVariantSort, tableWidth, currentChromosome)
-  const variants2 = variants // HACK
-    .map((v) => {
-      if (v.ac_denovo) {
-        return v
-          .set('ac_case', v.ac_denovo)
-          .set('an_case', 46846) // HACK
-      }
-      return v
-    })
 
-  // const paddingWidth = tConfig.fields.length * 40
-  // const cellContentWidth = tConfig.fields.reduce((acc, field) =>
-    // acc + field.width, 0)
-  // const tableHeight = screenSize.width - 700
   return (
     <div>
       <Table
@@ -66,7 +52,7 @@ const VariantTable = ({
         height={500}
         width={tableWidth}
         tableConfig={tConfig}
-        tableData={variants2}
+        tableData={variants}
         remoteRowCount={variants.size}
         loadMoreRows={() => {}}
         overscan={5}
