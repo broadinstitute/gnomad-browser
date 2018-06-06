@@ -130,32 +130,29 @@ const ManhattanPlot = ({
     </text>
   )
 
-  const snpsSplitByChrom = plotChromosomes.map(chr =>
-    ({
-      name: chr,
-      data: data.filter(snp => chr === `chr${snp.chromosome}`),
-    })
-  )
-  const chrWithPos = snpsSplitByChrom.reduce((acc, chr, i) => {
-    const count = chr.data.length
-    if (i === 0) return [{ name: chr.name, pos: xScale(count - (count / 2)), count }]
-    const previousCount = acc[i - 1].count
-    const currentCount = previousCount + count
-    const pos = xScale(currentCount - (count / 2))
-    return [...acc, { name: chr.name, pos, count: currentCount }]
-  }, [])
+  const snpsPerChromosome = {}
+  data.forEach((snp) => {
+    snpsPerChromosome[snp.chromosome] = (snpsPerChromosome[snp.chromosome] || 0) + 1
+  })
+
+  const chromosomeXPos = {}
+  plotChromosomes.reduce((acc, chromosome) => {
+    const snpsForChromosome = snpsPerChromosome[chromosome.replace('chr', '')]
+    chromosomeXPos[chromosome] = xScale((acc + (snpsForChromosome / 2)))
+    return acc + snpsForChromosome
+  }, 0)
 
   const xAxisTicks = (
     <g>
-      {chrWithPos.map(chr => (
+      {plotChromosomes.map(chr => (
         <text
-          key={chr.name}
+          key={chr}
           className={'chromosomeLabel'}
           textAnchor={'middle'}
-          x={chr.pos}
+          x={chromosomeXPos[chr]}
           y={height - (padding + 20)}
         >
-          {chr.name.replace('chr', '')}
+          {chr.replace('chr', '')}
         </text>
       ))}
     </g>
