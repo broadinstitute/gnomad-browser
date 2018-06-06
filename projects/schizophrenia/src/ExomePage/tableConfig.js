@@ -1,9 +1,8 @@
-/* eslint-disable max-len */
-/* eslint-disable indent */
 export default (onHeaderClick, width) => {
   const mediumSize = (width < 1100)
   return {
-    fields: [{
+    fields: [
+      {
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
@@ -24,6 +23,12 @@ export default (onHeaderClick, width) => {
         onHeaderClick,
         searchable: true,
       }, {
+        dataKey: 'consequence',
+        title: 'Consequence',
+        dataType: 'consequence',
+        onHeaderClick,
+        width: 100
+      }, {
         dataKey: 'ac_case',
         title: 'AC Case',
         dataType: 'integer',
@@ -35,12 +40,6 @@ export default (onHeaderClick, width) => {
         dataType: 'integer',
         onHeaderClick,
         width: 60
-      }, {
-        dataKey: 'af_case',
-        title: 'AF Case',
-        dataType: 'exponential',
-        onHeaderClick,
-        width: 70
       }, {
         dataKey: 'ac_ctrl',
         title: 'AC Ctrl',
@@ -54,42 +53,32 @@ export default (onHeaderClick, width) => {
         onHeaderClick,
         width: 60
       }, {
+        dataKey: 'af_case',
+        title: 'AF Case',
+        dataType: 'exponential',
+        onHeaderClick,
+        width: 70
+      }, {
         dataKey: 'af_ctrl',
         title: 'AF Ctrl',
         dataType: 'exponential',
         onHeaderClick,
         width: 70
-      },
-      {
-        dataKey: 'consequence',
-        title: 'Consequence',
-        dataType: 'consequence',
+      }, {
+        dataKey: 'estimate',
+        title: 'Estimate',
+        dataType: 'float',
         onHeaderClick,
-        width: 100
-      },
-      {
+        disappear: mediumSize,
+        width: 60
+      }, {
         dataKey: 'pval_meta',
         title: 'P-Val',
         dataType: 'float',
         onHeaderClick,
         disappear: mediumSize,
         width: 60
-      }, {
-        dataKey: 'estimate',
-        title: 'Estimate',
-        dataType: 'float',
-        onHeaderClick,
-        disappear: width < 1200,
-        width: 60
       },
-      // {
-      //   dataKey: 'allele_freq',
-      //   title: 'allele_freq',
-      //   dataType: 'float',
-      //   onHeaderClick,
-      //   disappear: mediumSize,
-      //   width: 80
-      // },
     ],
   }
 }
