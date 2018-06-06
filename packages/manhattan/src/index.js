@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import PropTypes from 'prop-types'
 import R from 'ramda'
@@ -21,16 +20,16 @@ function randomColor() {
 
 const ManhattanPlot = ({
   data,
-  title = '',
-  width = 900,
-  height = 500,
-  sexChromosomes = false,
-  showAxisBounds = false,
+  title,
+  width,
+  height,
+  includeSexChromosomes,
+  showAxisBounds,
 }) => {
   const padding = 60
   const yData = R.pluck('-log10p', data)
 
-  const plotChromosomes = sexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
+  const plotChromosomes = includeSexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
   const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
     ({ ...acc, [chr.replace('chr', '')]: randomColor() }), {})
 
@@ -167,7 +166,7 @@ const ManhattanPlot = ({
     const color = chromosomeColors[snp.chromosome]
     return (
       <circle
-        key={`snp-${snp}-${i}`}
+        key={snp.snp}
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
         r={2}
@@ -197,7 +196,27 @@ const ManhattanPlot = ({
     </div>
   )
 }
+
 ManhattanPlot.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({
+    snp: PropTypes.string.isRequired,
+    chromosome: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 'X', 'Y']).isRequired,
+    pos: PropTypes.number.isRequired,
+    '-log10p': PropTypes.number.isRequired,
+  })).isRequired,
+  height: PropTypes.number,
+  includeSexChromosomes: PropTypes.bool,
+  showAxisBounds: PropTypes.bool,
+  title: PropTypes.string,
+  width: PropTypes.number,
 }
+
+ManhattanPlot.defaultProps = {
+  height: 500,
+  includeSexChromosomes: false,
+  showAxisBounds: false,
+  title: '',
+  width: 900,
+}
+
 export default ManhattanPlot
