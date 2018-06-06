@@ -67,7 +67,7 @@ const ManhattanPlot = ({
       x={0}
       y={height - padding}
       width={width}
-      height={height}
+      height={padding}
       fill={'none'}
       stroke={'black'}
     />
