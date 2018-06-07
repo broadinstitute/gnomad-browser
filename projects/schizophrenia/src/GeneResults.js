@@ -19,6 +19,15 @@ import {
   Search,
 } from '@broad/ui'
 
+
+function isEmpty(val) {
+  return (
+    val === undefined
+    || val === null
+    || val === ''
+  )
+}
+
 const ResultsSearchWrapper = styled.div`
   margin-bottom: 10px;
   margin-top: 10px;
@@ -83,7 +92,7 @@ class SchizophreniaGeneResults extends PureComponent {
 
   setSearchText = searchText => this.setState({
     searchText: String(searchText).toUpperCase(),
-   })
+  })
 
   setSortState = (sortKey) => {
     this.setState({
@@ -93,19 +102,32 @@ class SchizophreniaGeneResults extends PureComponent {
   }
 
   sortData = (data, key, ascending) => {
-    if (data.isEmpty()) return new List()
-    if (typeof data.first().get(key) === 'string') {
-      return (
-        ascending ?
-          data.sort((a, b) => a.get(key).localeCompare(b.get(key))) :
-          data.sort((a, b) => b.get(key).localeCompare(a.get(key)))
-      )
+    if (data.isEmpty()) {
+      return new List()
     }
-    return (
-      ascending ?
-        data.sort((a, b) => a.get(key) - b.get(key)) :
-        data.sort((a, b) => b.get(key) - a.get(key))
-    )
+
+    const comparator = (typeof data.first().get(key) === 'string')
+      ? (a, b) => a.localeCompare(b)
+      : (a, b) => a - b
+
+    const sorter = ascending
+      ? comparator
+      : (a, b) => comparator(b, a)
+
+    return data.sort((resultA, resultB) => {
+      const sortValA = resultA.get(key)
+      const sortValB = resultB.get(key)
+
+      if (isEmpty(sortValA)) {
+        return 1
+      }
+
+      if (isEmpty(sortValB)) {
+        return -1
+      }
+
+      return sorter(sortValA, sortValB)
+    })
   }
 
   geneOnClick = geneName => this.props.history.push(`/gene/${geneName}`)
