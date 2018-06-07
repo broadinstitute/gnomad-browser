@@ -71,7 +71,7 @@ const VariantTable = ({
         loadMoreRows={() => {}}
         overscan={5}
         loadLookAhead={0}
-        onRowClick={setFocusedVariant(history)}
+        onRowClick={setFocusedVariant}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         onScroll={setCurrentTableScrollData}
@@ -118,12 +118,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
 
-    setFocusedVariant: history => (variantId, dataset) => {
-      console.log(dataset)
+    setFocusedVariant: (variantId, dataset) => {
       if (dataset === 'exacVariants') {
         window.open(`http://exac.broadinstitute.org/variant/${variantId}`)
       } else if (dataset === 'schizophreniaRareVariants') {
-        dispatch(variantActions.setFocusedVariant(variantId, history))
+        dispatch(variantActions.setFocusedVariant(variantId))
       } else {
         window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
       }

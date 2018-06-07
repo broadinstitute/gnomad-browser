@@ -31,17 +31,7 @@ export const types = keymirror({
 export const actions = {
   setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
 
-  setFocusedVariant: (variantId, history) => (dispatch, getState) => {
-    // history.push(`/gene/BRCA2/${variantId}`)
-    // HACK way to preserve table state when switching to variant table
-    // dispatch(tableActions.setCurrentTableIndex(
-    //   getTableIndexByPosition(
-    //     variantId.split('-')[1],
-    //     finalFilteredVariants(getState())
-    //   ) + 7
-    // ))
-    dispatch(({ type: types.SET_FOCUSED_VARIANT, variantId }))
-  },
+  setFocusedVariant: variantId => ({ type: types.SET_FOCUSED_VARIANT, variantId }),
 
   setSelectedVariantDataset: variantDataset =>
     ({ type: types.SET_SELECTED_VARIANT_DATASET, variantDataset }),
