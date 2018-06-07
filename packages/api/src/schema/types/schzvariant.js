@@ -343,12 +343,12 @@ const schzRareVariantType = new GraphQLObjectType({
     hgvsc: { type: GraphQLString },
     hgvsc_canonical: {
       type: GraphQLString,
-      resolve: obj => obj.hgvsc_canonical.split(':')[1],
+      resolve: obj => obj.hgvsc_canonical ? obj.hgvsc_canonical.split(':')[1] : null,
     },
     hgvsp: { type: GraphQLString },
     hgvsp_canonical: {
       type: GraphQLString,
-      resolve: obj => obj.hgvsp_canonical.split(':')[1],
+      resolve: obj => obj.hgvsp_canonical ? obj.hgvsp_canonical.split(':')[1] : null
     },
     i2: { type: GraphQLInt },
     in_analysis: { type: GraphQLBoolean },
