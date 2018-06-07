@@ -12,7 +12,6 @@ import {
 } from '@broad/utilities'
 
 import { types as regionTypes } from '@broad/region'
-import { actions as tableActions } from '@broad/table'
 import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
 
 export const types = keymirror({
