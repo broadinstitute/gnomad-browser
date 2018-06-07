@@ -150,7 +150,7 @@ const ManhattanPlot = ({
           className={'chromosomeLabel'}
           textAnchor={'middle'}
           x={chromosomeXPos[chr]}
-          y={height - (padding + 20)}
+          y={(height - padding) + 20}
         >
           {chr.replace('chr', '')}
         </text>
