@@ -438,52 +438,57 @@ export default function createVariantReducer({
   }
 }
 
-const sortVariants = (variants, key, ascending) => {
-  if (variants.isEmpty()) return new List()
-  if (typeof variants.first().get(key) === 'string') {
-    const sorted = variants.sort((a, b) => {
-      const first = typeof a.get(key) === 'string' ? a.get(key) : ''
-      const second = typeof b.get(key) === 'string' ? b.get(key) : ''
-      return first.localeCompare(second)
-    })
-    return (
-      ascending ?
-        sorted :
-        sorted.reverse()
-    )
-  }
-  if (key === 'variant_id') {
-    return (
-      ascending ?
-        variants.sort((a, b) => a.get('pos') - b.get('pos')) :
-        variants.sort((a, b) => b.get('pos') - a.get('pos'))
-    )
-  }
-  if (key === 'datasets') {
-    return (
-      ascending ?
-        variants.sort((a, b) => a.get('datasets').first() - b.get('datasets').first()) :
-        variants.sort((a, b) => b.get('datasets').first() - a.get('datasets').first())
-    )
-  }
-  if (key === 'flags') {
-    return (
-      variants.sort((a, b) => {
-        const aFlags = List(['lcr', 'segdup', 'lof']).map(flag => a.get(flag)).filter(flag => flag !== null)
-        const bFlags = List(['lcr', 'segdup', 'lof']).map(flag => b.get(flag)).filter(flag => flag !== null)
-        return (
-          ascending ?
-            aFlags.first() - bFlags.first() :
-            bFlags.first() - aFlags.first()
-        )
-      })
-    )
-  }
+function isEmpty(val) {
   return (
-    ascending ?
-      variants.sort((a, b) => a.get(key) - b.get(key)) :
-      variants.sort((a, b) => b.get(key) - a.get(key))
+    val === undefined
+    || val === null
+    || val === ''
   )
+}
+
+const sortVariants = (variants, key, ascending) => {
+  if (variants.isEmpty()) {
+    return new List()
+  }
+
+  let getSortVal = variant => variant.get(key)
+  let comparator = (a, b) => a - b
+
+  if (typeof variants.first().get(key) === 'string') {
+    getSortVal = variant => typeof variant.get(key) === 'string' ? variant.get(key) : ''
+    comparator = (a, b) => a.localeCompare(b)
+  }
+  else if (key === 'variant_id') {
+    getSortVal = variant => variant.get('pos')
+  }
+  else if (key === 'datasets') {
+    getSortVal = variant => variant.get('datasets').first()
+  }
+  else if (key === 'flags') {
+    getSortVal = variant =>
+      List(['lcr', 'segdup', 'lof'])
+        .map(flag => variant.get(flag))
+        .filter(flag => flag !== null)
+        .first()
+  }
+
+  const sorter = ascending
+    ? comparator
+    : (a, b) => comparator(b, a)
+
+  return variants.sort((variantA, variantB) => {
+    const sortValA = getSortVal(variantA)
+    const sortValB = getSortVal(variantB)
+
+    // Always sort variants with no data for the selected field to the bottom of the list.
+    if (isEmpty(sortValA)) {
+      return 1
+    }
+    if (isEmpty(sortValB)) {
+      return -1
+    }
+    return sorter(sortValA, sortValB)
+  })
 }
 
 /**
