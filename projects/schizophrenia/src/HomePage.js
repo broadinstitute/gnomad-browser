@@ -8,24 +8,18 @@ const HomePageWrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80%;
   align-items: center;
-  margin-top: 80px;
-  margin-left: 50px;
-  margin-right: 50px;
-  ${'' /* border: 1px solid blue; */}
+  margin: 80px 50px 50px;
 `
 
 const TitleGroup = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 60%;
-  ${'' /* border: 1px solid red; */}
 `
 
 const Title = styled.h1`
   font-family: Roboto;
-  ${'' /* font-family: "HelveticaNeue-CondensedBold"; */}
   font-size: 60px;
   font-weight: bold;
   margin-bottom: 5px;
@@ -56,7 +50,6 @@ const Announcements = styled.div`
   align-self: center;
   margin-top: 10px;
   width: 100%;
-${'' /* border: 1px soliinspectord #000; */}
 `
 
 const AnnouncementsTitle = styled.h2`
@@ -83,9 +76,6 @@ const AnnouncementParagraphText = ParagraphText.extend`
 const Logos = styled.div`
   display: flex;
   margin-top: 20px;
-  ${'' /* width: 100%; */}
-  ${'' /* border: 1px solid #000; */}
-
 `
 
 const imageSettings = {
