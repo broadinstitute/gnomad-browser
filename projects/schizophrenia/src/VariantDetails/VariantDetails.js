@@ -11,27 +11,41 @@ import AnalysisGroupsTable from './AnalysisGroupsTable'
 const VariantContainer = styled.div`
   display: flex;
   flex-direction: column;
+  font-size: 16px;
   margin: 30px 50px 100px 0;
   min-height: 300px;
   width: 80%;
 `
 
-const SideBySide = styled.div`
-  align-items: space-between;
+const Column = styled.div``
+
+const Columns = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
-`
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-const VariantDetails = styled.div`
-  width: 50%;
+  ${Column} {
+    flex-basis: calc(33% - 1em);
+  }
+
+  @media(max-width: 1024px) {
+    ${Column} {
+      flex-basis: calc(50% - 1em);
+    }
+  }
+
+  @media(max-width: 600px) {
+    ${Column} {
+      flex-basis: 100%;
+    }
+  }
 `
 
 const VariantAttributes = styled.div`
   align-items: space-between;
   display: flex;
   flex-direction: column;
-  font-size: 16px;
   margin: 10px 0;
 `
 
@@ -113,10 +127,9 @@ const Variant = ({ variant }) => {
   return (
     <VariantContainer>
       <h1>{variant.variant_id}</h1>
-      <SideBySide>
-        <VariantDetails>
-          <Link href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>View in gnomAD</Link>
-
+      <Link href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>View in gnomAD</Link>
+      <Columns>
+        <Column>
           <VariantAttributes>
             <h2>Statistics</h2>
             <VariantAttribute>
@@ -133,6 +146,29 @@ const Variant = ({ variant }) => {
             </VariantAttribute>
           </VariantAttributes>
 
+          {variant.pval_meta !== null && (
+            <VariantAttributes>
+              <h2>Analysis</h2>
+              <VariantAttribute>
+                <strong>Meta P-Value:</strong> {Number(variant.pval_meta.toPrecision(3)).toExponential()}
+              </VariantAttribute>
+              <VariantAttribute>
+                <strong>Estimate:</strong> {Number(variant.estimate.toPrecision(3)).toExponential()}
+              </VariantAttribute>
+              <VariantAttribute>
+                <strong>SE:</strong> {variant.se}
+              </VariantAttribute>
+              <VariantAttribute>
+                <strong>Qp:</strong> {variant.qp}
+              </VariantAttribute>
+              <VariantAttribute>
+                <strong>I2:</strong> {variant.i2}
+              </VariantAttribute>
+            </VariantAttributes>
+          )}
+        </Column>
+
+        <Column>
           <VariantAttributes>
             <h2>Annotations</h2>
             <VariantAttribute>
@@ -166,29 +202,10 @@ const Variant = ({ variant }) => {
               <strong>Comment:</strong> {variant.comment}
             </VariantAttribute>
           </VariantAttributes>
+        </Column>
 
-          {variant.pval_meta !== null && (
-            <VariantAttributes>
-              <h2>Analysis</h2>
-              <VariantAttribute>
-                <strong>Meta P-Value:</strong> {Number(variant.pval_meta.toPrecision(3)).toExponential()}
-              </VariantAttribute>
-              <VariantAttribute>
-                <strong>Estimate:</strong> {Number(variant.estimate.toPrecision(3)).toExponential()}
-              </VariantAttribute>
-              <VariantAttribute>
-                <strong>SE:</strong> {variant.se}
-              </VariantAttribute>
-              <VariantAttribute>
-                <strong>Qp:</strong> {variant.qp}
-              </VariantAttribute>
-              <VariantAttribute>
-                <strong>I2:</strong> {variant.i2}
-              </VariantAttribute>
-            </VariantAttributes>
-          )}
-
-          {variant.transcript_id && (
+        {variant.transcript_id && (
+          <Column>
             <VariantAttributes>
               <h2>Transcripts</h2>
               {variant.transcript_id.split(',').map(tID => (
@@ -205,12 +222,13 @@ const Variant = ({ variant }) => {
                 </VariantAttribute>
               ))}
             </VariantAttributes>
-          )}
-        </VariantDetails>
+          </Column>
+        )}
+      </Columns>
 
-        <AnalysisGroupsTable variantId={variant.variant_id} />
+      <h2>Analysis Groups</h2>
+      <AnalysisGroupsTable variantId={variant.variant_id} />
 
-      </SideBySide>
     </VariantContainer>
   )
 }
