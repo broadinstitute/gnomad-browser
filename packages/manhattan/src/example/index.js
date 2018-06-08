@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import ManhattanPlot from '../index'
 
 import data from '@resources/gwas-eg.json'  // eslint-disable-line
@@ -6,7 +6,7 @@ import data from '@resources/gwas-eg.json'  // eslint-disable-line
 const ManhattanPlotExample = () => {
   return (
     <div>
-      <ManhattanPlot data={data} />
+      <ManhattanPlot data={data} onClickPoint={console.log} />
     </div>
   )
 }

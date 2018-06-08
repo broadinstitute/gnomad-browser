@@ -19,10 +19,11 @@ function randomColor() {
 
 const ManhattanPlot = ({
   data,
-  title,
-  width,
   height,
   includeSexChromosomes,
+  onClickPoint,
+  title,
+  width,
 }) => {
   const padding = 60
 
@@ -124,16 +125,20 @@ const ManhattanPlot = ({
     </g>
   )
 
+  const clickHandler = e => onClickPoint(e.target.getAttribute('data-id'))
+
   const snps = data.map((snp, i) => {
     const color = chromosomeColors[snp.chromosome]
     return (
       <circle
         key={snp.snp}
+        data-id={snp.snp}
         cx={xScale(i)}
         cy={yScale(snp['-log10p'])}
         r={2}
         fill={color}
         stroke={'black'}
+        onClick={clickHandler}
       />
     )
   })
@@ -161,6 +166,7 @@ ManhattanPlot.propTypes = {
   })).isRequired,
   height: PropTypes.number,
   includeSexChromosomes: PropTypes.bool,
+  onClickPoint: PropTypes.func,
   title: PropTypes.string,
   width: PropTypes.number,
 }
@@ -168,6 +174,7 @@ ManhattanPlot.propTypes = {
 ManhattanPlot.defaultProps = {
   height: 500,
   includeSexChromosomes: false,
+  onClickPoint: () => {},
   title: '',
   width: 900,
 }
