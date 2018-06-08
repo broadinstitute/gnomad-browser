@@ -27,8 +27,12 @@ export function VariantAttribute({ children, label }) {
 }
 
 VariantAttribute.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   label: PropTypes.string.isRequired,
+}
+
+VariantAttribute.defaultProps = {
+  children: null,
 }
 
 export function VariantAttributeList({ children, label }) {
