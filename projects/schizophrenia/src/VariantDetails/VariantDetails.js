@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { singleVariantData } from '@broad/redux-variants'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
+import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
 
 
 const VariantContainer = styled.div`
@@ -24,6 +25,7 @@ const Columns = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin: 1em 0;
 
   ${Column} {
     flex-basis: calc(33% - 1em);
@@ -42,21 +44,15 @@ const Columns = styled.div`
   }
 `
 
-const VariantAttributes = styled.div`
-  align-items: space-between;
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
-`
-
-const VariantAttribute = styled.div`
-  margin-bottom: 2px;
-`
-
 const TranscriptAttributes = styled.dl`
-  margin-top: 0;
-  dt, dd {
+  margin: 0 0 0.25em 0.5em;
+
+  dt {
     display: inline;
+  }
+  dd {
+    display: inline;
+    margin-left: 0.25em;
   }
 `
 
@@ -103,6 +99,10 @@ function formatPolyPhen(abbreviation) {
   }
 }
 
+function formatAlleleFrequency(frequency) {
+  return Number(frequency.toPrecision(4)).toExponential()
+}
+
 const Variant = ({ variant }) => {
   if (!variant) {
     return null
@@ -130,98 +130,93 @@ const Variant = ({ variant }) => {
       <Link href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>View in gnomAD</Link>
       <Columns>
         <Column>
-          <VariantAttributes>
-            <h2>Statistics</h2>
-            <VariantAttribute>
-              <strong>Cases:</strong> {variant.ac_case} / {variant.an_case} ({Number(variant.af_case.toPrecision(4)).toExponential()})
+          <VariantAttributeList label="Statistics">
+            <VariantAttribute label="Cases">
+              {variant.ac_case} / {variant.an_case} ({formatAlleleFrequency(variant.af_case)})
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>Controls:</strong> {variant.ac_ctrl} / {variant.an_ctrl}  ({Number(variant.af_ctrl.toPrecision(4)).toExponential()})
+            <VariantAttribute label="Controls">
+              {variant.ac_ctrl} / {variant.an_ctrl} ({formatAlleleFrequency(variant.af_ctrl)})
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>N analysis groups:</strong> {variant.n_analysis_groups}
+            <VariantAttribute label="N analysis groups">
+              {variant.n_analysis_groups}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>N denovos:</strong> {variant.ac_denovo}
+            <VariantAttribute label="N denovos">
+              {variant.ac_denovo}
             </VariantAttribute>
-          </VariantAttributes>
+          </VariantAttributeList>
 
           {variant.pval_meta !== null && (
-            <VariantAttributes>
-              <h2>Analysis</h2>
-              <VariantAttribute>
-                <strong>Meta P-Value:</strong> {Number(variant.pval_meta.toPrecision(3)).toExponential()}
+            <VariantAttributeList label="Analysis">
+              <VariantAttribute label="Meta P-Value">
+                {Number(variant.pval_meta.toPrecision(3)).toExponential()}
               </VariantAttribute>
-              <VariantAttribute>
-                <strong>Estimate:</strong> {Number(variant.estimate.toPrecision(3)).toExponential()}
+              <VariantAttribute label="Estimate">
+                {Number(variant.estimate.toPrecision(3)).toExponential()}
               </VariantAttribute>
-              <VariantAttribute>
-                <strong>SE:</strong> {variant.se}
+              <VariantAttribute label="SE">
+                {variant.se}
               </VariantAttribute>
-              <VariantAttribute>
-                <strong>Qp:</strong> {variant.qp}
+              <VariantAttribute label="Qp">
+                {variant.qp}
               </VariantAttribute>
-              <VariantAttribute>
-                <strong>I2:</strong> {variant.i2}
+              <VariantAttribute label="I2">
+                {variant.i2}
               </VariantAttribute>
-            </VariantAttributes>
+            </VariantAttributeList>
           )}
         </Column>
 
         <Column>
-          <VariantAttributes>
-            <h2>Annotations</h2>
-            <VariantAttribute>
-              <strong>HGVSc:</strong> {variant.hgvsc_canonical}
+          <VariantAttributeList label="Annotations">
+            <VariantAttribute label="HGVSc">
+              {variant.hgvsc_canonical}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>HGVSp:</strong> {variant.hgvsp_canonical}
+            <VariantAttribute label="HGVSp">
+              {variant.hgvsp_canonical}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>Consequence:</strong> {formatConsequence(variant.consequence)}
+            <VariantAttribute label="Consequence">
+              {formatConsequence(variant.consequence)}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>MPC:</strong> {variant.mpc}
+            <VariantAttribute label="MPC">
+              {variant.mpc}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>CADD:</strong> {variant.cadd}
+            <VariantAttribute label="CADD">
+              {variant.cadd}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>PolyPhen:</strong> {formatPolyPhen(variant.polyphen)}
+            <VariantAttribute label="PolyPhen">
+              {formatPolyPhen(variant.polyphen)}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>Flags:</strong> {variant.flags}
+            <VariantAttribute label="Flags">
+              {variant.flags}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>Source:</strong> {variant.source}
+            <VariantAttribute label="Source">
+              {variant.source}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>In analysis:</strong> {variant.in_analysis}
+            <VariantAttribute label="In analysis">
+              {variant.in_analysis}
             </VariantAttribute>
-            <VariantAttribute>
-              <strong>Comment:</strong> {variant.comment}
+            <VariantAttribute label="Comment">
+              {variant.comment}
             </VariantAttribute>
-          </VariantAttributes>
+          </VariantAttributeList>
         </Column>
 
         {variant.transcript_id && (
           <Column>
-            <VariantAttributes>
-              <h2>Transcripts</h2>
+            <VariantAttributeList label="Transcripts">
               {variant.transcript_id.split(',').map(tID => (
-                <VariantAttribute key={tID}>
-                  <strong>{tID}</strong>
+                <VariantAttribute key={tID} label={tID}>
                   <TranscriptAttributes>
                     <div>
-                      <dt>HGVSc</dt><dd>{transcriptHGVSc[tID]}</dd>
+                      <dt>HGVSc:</dt><dd>{transcriptHGVSc[tID]}</dd>
                     </div>
                     <div>
-                      <dt>HGVSp</dt><dd>{transcriptHGVSp[tID]}</dd>
+                      <dt>HGVSp:</dt><dd>{transcriptHGVSp[tID]}</dd>
                     </div>
                   </TranscriptAttributes>
                 </VariantAttribute>
               ))}
-            </VariantAttributes>
+            </VariantAttributeList>
           </Column>
         )}
       </Columns>
