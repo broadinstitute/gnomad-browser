@@ -19,11 +19,11 @@ import {
   Summary,
 } from '@broad/ui'
 
+import VariantDetails from '../VariantDetails'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
-import VariantDetails from './VariantPage'
 import { fetchSchz } from './fetch'
 
 const VariantTableWithRouter = withRouter(VariantTable)
