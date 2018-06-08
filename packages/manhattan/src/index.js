@@ -23,7 +23,6 @@ const ManhattanPlot = ({
   width,
   height,
   includeSexChromosomes,
-  showAxisBounds,
 }) => {
   const padding = 60
 
@@ -39,39 +38,6 @@ const ManhattanPlot = ({
   const yScale = scaleLinear()
     .domain([yExtent[0], yExtent[1] * 1.1])
     .range([height - padding, 10])
-
-  const background = (
-    <rect
-      x={0}
-      y={0}
-      width={width}
-      height={height}
-      fill={'none'}
-      stroke={'black'}
-    />
-  )
-
-  const yAxisBackground = (
-    <rect
-      x={0}
-      y={0}
-      width={padding}
-      height={height}
-      fill={'white'}
-      stroke={'black'}
-    />
-  )
-
-  const xAxisBackground = (
-    <rect
-      x={0}
-      y={height - padding}
-      width={width}
-      height={padding}
-      fill={'none'}
-      stroke={'black'}
-    />
-  )
 
   const titleText = (
     <text
@@ -175,13 +141,6 @@ const ManhattanPlot = ({
   return (
     <div>
       <svg width={width} height={height}>
-        {showAxisBounds && (
-          <g>
-            {background}
-            {yAxisBackground}
-            {xAxisBackground}
-          </g>
-        )}
         {titleText}
         {yAxisLabel}
         {yAxisTicks}
@@ -202,7 +161,6 @@ ManhattanPlot.propTypes = {
   })).isRequired,
   height: PropTypes.number,
   includeSexChromosomes: PropTypes.bool,
-  showAxisBounds: PropTypes.bool,
   title: PropTypes.string,
   width: PropTypes.number,
 }
@@ -210,7 +168,6 @@ ManhattanPlot.propTypes = {
 ManhattanPlot.defaultProps = {
   height: 500,
   includeSexChromosomes: false,
-  showAxisBounds: false,
   title: '',
   width: 900,
 }
