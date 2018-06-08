@@ -37,8 +37,9 @@ const ManhattanPlot = ({
 
   const yExtent = extent(data, d => d['-log10p'])
   const yScale = scaleLinear()
-    .domain([yExtent[0], yExtent[1] * 1.1])
+    .domain(yExtent)
     .range([height - padding, 10])
+    .nice()
 
   const titleText = (
     <text
