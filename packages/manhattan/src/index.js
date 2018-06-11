@@ -29,7 +29,7 @@ const ManhattanPlot = ({
 
   const plotChromosomes = includeSexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
   const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
-    ({ ...acc, [chr.replace('chr', '')]: randomColor() }), {})
+    ({ ...acc, [chr]: randomColor() }), {})
 
   const xScale = scaleLinear()
     .domain([0, data.length])
@@ -105,7 +105,7 @@ const ManhattanPlot = ({
 
   const chromosomeXPos = {}
   plotChromosomes.reduce((acc, chromosome) => {
-    const snpsForChromosome = snpsPerChromosome[chromosome.replace('chr', '')]
+    const snpsForChromosome = snpsPerChromosome[chromosome]
     chromosomeXPos[chromosome] = xScale((acc + (snpsForChromosome / 2)))
     return acc + snpsForChromosome
   }, 0)
@@ -120,7 +120,7 @@ const ManhattanPlot = ({
           x={chromosomeXPos[chr]}
           y={(height - padding) + 20}
         >
-          {chr.replace('chr', '')}
+          {chr}
         </text>
       ))}
     </g>
@@ -161,7 +161,7 @@ const ManhattanPlot = ({
 ManhattanPlot.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     snp: PropTypes.string.isRequired,
-    chromosome: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 'X', 'Y']).isRequired,
+    chromosome: PropTypes.oneOf(HUMAN_CHROMOSOMES).isRequired,
     pos: PropTypes.number.isRequired,
     '-log10p': PropTypes.number.isRequired,
   })).isRequired,
