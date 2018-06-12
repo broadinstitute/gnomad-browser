@@ -31,8 +31,25 @@ const ManhattanPlot = ({
   const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
     ({ ...acc, [chr]: randomColor() }), {})
 
+  const chromPositionExtent = plotChromosomes.reduce(
+    (acc, chr) => ({ ...acc, [chr]: { min: Infinity, max: -Infinity } }),
+    {}
+  )
+
+  data.forEach((d) => {
+    chromPositionExtent[d.chromosome].min = Math.min(chromPositionExtent[d.chromosome].min, d.pos)
+    chromPositionExtent[d.chromosome].max = Math.max(chromPositionExtent[d.chromosome].max, d.pos)
+  })
+
+  const chromOffset = {}
+  let cumulativePosition = 0
+  plotChromosomes.forEach((chr) => {
+    chromOffset[chr] = cumulativePosition
+    cumulativePosition += chromPositionExtent[chr].max - chromPositionExtent[chr].min
+  })
+
   const xScale = scaleLinear()
-    .domain([0, data.length])
+    .domain([0, cumulativePosition])
     .range([0 + padding, width])
 
   const yExtent = extent(data, d => d['-log10p'])
@@ -98,18 +115,6 @@ const ManhattanPlot = ({
     </text>
   )
 
-  const snpsPerChromosome = {}
-  data.forEach((snp) => {
-    snpsPerChromosome[snp.chromosome] = (snpsPerChromosome[snp.chromosome] || 0) + 1
-  })
-
-  const chromosomeXPos = {}
-  plotChromosomes.reduce((acc, chromosome) => {
-    const snpsForChromosome = snpsPerChromosome[chromosome]
-    chromosomeXPos[chromosome] = xScale((acc + (snpsForChromosome / 2)))
-    return acc + snpsForChromosome
-  }, 0)
-
   const xAxisTicks = (
     <g>
       {plotChromosomes.map(chr => (
@@ -117,7 +122,9 @@ const ManhattanPlot = ({
           key={chr}
           className={'chromosomeLabel'}
           textAnchor={'middle'}
-          x={chromosomeXPos[chr]}
+          x={xScale(
+            chromOffset[chr] + ((chromPositionExtent[chr].max - chromPositionExtent[chr].min) / 2)
+          )}
           y={(height - padding) + 20}
         >
           {chr}
@@ -128,13 +135,13 @@ const ManhattanPlot = ({
 
   const clickHandler = e => onClickPoint(e.target.getAttribute('data-id'))
 
-  const snps = data.map((snp, i) => {
+  const snps = data.map((snp) => {
     const color = chromosomeColors[snp.chromosome]
     return (
       <circle
         key={snp.snp}
         data-id={snp.snp}
-        cx={xScale(i)}
+        cx={xScale(chromOffset[snp.chromosome] + snp.pos)}
         cy={yScale(snp['-log10p'])}
         r={2}
         fill={color}
