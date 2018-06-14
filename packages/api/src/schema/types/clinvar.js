@@ -1,14 +1,11 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
-
 import {
   GraphQLObjectType,
-  GraphQLInt,
   GraphQLFloat,
   GraphQLString,
-  GraphQLList,
-  GraphQLBoolean,
 } from 'graphql'
+
+import { fetchAllSearchResults } from '../../utilities/elasticsearch'
+
 
 const clinvarType = new GraphQLObjectType({
   name: 'ClinvarType',
@@ -21,7 +18,6 @@ const clinvarType = new GraphQLObjectType({
     variant_id: { type: GraphQLString },
     measureset_type: { type: GraphQLString },
     measureset_id: { type: GraphQLString },
-    // rcv: { type: GraphQLInt },
     allele_id: { type: GraphQLString },
     symbol: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
@@ -41,14 +37,13 @@ const clinvarType = new GraphQLObjectType({
     prevalence: { type: GraphQLString },
     disease_mechanism: { type: GraphQLString },
     origin: { type: GraphQLString },
-    // xref: { type: GraphQLString },
   }),
 })
 
 export default clinvarType
 
 
-export const lookupClinvarVariantsByGeneName = (client, dataset, gene_name) => {
+export async function lookupClinvarVariantsByGeneName(client, geneName) {
   const fields = [
     'chrom',
     'pos',
@@ -56,7 +51,6 @@ export const lookupClinvarVariantsByGeneName = (client, dataset, gene_name) => {
     'alt',
     'MEASURESET_TYPE',
     'MEASURESET_ID',
-    // 'RCV',
     'ALLELE_ID',
     'SYMBOL',
     'HGVS_C',
@@ -76,61 +70,57 @@ export const lookupClinvarVariantsByGeneName = (client, dataset, gene_name) => {
     'PREVALENCE',
     'DISEASE_MECHANISM',
     'ORIGIN',
-    // 'XREFS',
   ]
-  return new Promise((resolve, reject) => {
-    client.search({
+
+  const esVariants = await fetchAllSearchResults(
+    client,
+    {
       index: 'clinvar',
       type: 'variant',
-      size: 1000,
       _source: fields,
       body: {
         query: {
           bool: {
             must: [
-              { term: { SYMBOL: gene_name } },
+              { term: { SYMBOL: geneName } },
               { exists: { field: 'HGVS_P' } },
             ],
           },
         },
-        sort: [ { xpos: { order: "asc" }}],
+        sort: [
+          { xpos: { order: 'asc' } },
+        ],
       },
-    }).then(response => {
-      console.log(response)
-      resolve(response.hits.hits.map(v => {
-        const elastic_variant = v._source
-        return ({
-          chrom: elastic_variant.chrom,
-          pos: elastic_variant.pos,
-          xpos: elastic_variant.xpos,
-          ref: elastic_variant.ref,
-          alt: elastic_variant.alt,
-          variant_id: `${elastic_variant.chrom}-${elastic_variant.pos}-${elastic_variant.ref}-${elastic_variant.alt}`,
-          measureset_type: elastic_variant.MEASURESET_TYPE,
-          measureset_id: elastic_variant.MEASURESET_ID,
-          // rcv: elastic_variant.RCV,
-          allele_id: elastic_variant.ALLELE_ID,
-          symbol: elastic_variant.SYMBOL,
-          hgvsc: elastic_variant.HGVS_C,
-          hgvsp: elastic_variant.HGVS_P,
-          molecular_consequence: elastic_variant.MOLECULAR_CONSEQUENCE,
-          clinical_significance: elastic_variant.CLINICAL_SIGNIFICANCE,
-          pathogenic: elastic_variant.PATHOGENIC,
-          benign: elastic_variant.BENIGN,
-          inflicted: elastic_variant.CONFLICTED,
-          review_status: elastic_variant.REVIEW_STATUS,
-          gold_stars: elastic_variant.GOLD_STARS,
-          all_submitters: elastic_variant.ALL_SUBMITTERS,
-          all_traits: elastic_variant.ALL_TRAITS,
-          all_pmids: elastic_variant.ALL_PMIDS,
-          inheritance_modes: elastic_variant.INHERITANCE_MODES,
-          age_of_onset: elastic_variant.AGE_OF_ONSET,
-          prevalence: elastic_variant.PREVALENCE,
-          disease_mechanism: elastic_variant.DISEASE_MECHANISM,
-          origin: elastic_variant.ORIGIN,
-          // xref: elastic_variant.XREFS,
-        })
-      }))
-    })
-  })
+    }
+  )
+
+  return esVariants.map(esVariant => ({
+    age_of_onset: esVariant.AGE_OF_ONSET,
+    all_submitters: esVariant.ALL_SUBMITTERS,
+    all_pmids: esVariant.ALL_PMIDS,
+    all_traits: esVariant.ALL_TRAITS,
+    allele_id: esVariant.ALLELE_ID,
+    alt: esVariant.alt,
+    benign: esVariant.BENIGN,
+    chrom: esVariant.chrom,
+    clinical_significance: esVariant.CLINICAL_SIGNIFICANCE,
+    disease_mechanism: esVariant.DISEASE_MECHANISM,
+    gold_stars: esVariant.GOLD_STARS,
+    hgvsc: esVariant.HGVS_C,
+    hgvsp: esVariant.HGVS_P,
+    inflicted: esVariant.CONFLICTED,
+    inheritance_modes: esVariant.INHERITANCE_MODES,
+    measureset_type: esVariant.MEASURESET_TYPE,
+    measureset_id: esVariant.MEASURESET_ID,
+    molecular_consequence: esVariant.MOLECULAR_CONSEQUENCE,
+    origin: esVariant.ORIGIN,
+    pathogenic: esVariant.PATHOGENIC,
+    pos: esVariant.pos,
+    prevalence: esVariant.PREVALENCE,
+    ref: esVariant.ref,
+    review_status: esVariant.REVIEW_STATUS,
+    symbol: esVariant.SYMBOL,
+    variant_id: `${esVariant.chrom}-${esVariant.pos}-${esVariant.ref}-${esVariant.alt}`,
+    xpos: esVariant.xpos,
+  }))
 }
