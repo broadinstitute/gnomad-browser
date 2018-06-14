@@ -172,7 +172,7 @@ const geneType = new GraphQLObjectType({
     clinvar_variants: {
       type: new GraphQLList(clinvarType),
       resolve: (obj, args, ctx) =>
-        lookupClinvarVariantsByGeneName(ctx.database.elastic, 'clinvar', obj.gene_name),
+        lookupClinvarVariantsByGeneName(ctx.database.elastic, obj.gene_name),
     },
     transcript: {
       type: transcriptType,
