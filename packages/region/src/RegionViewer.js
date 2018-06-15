@@ -7,7 +7,8 @@ import {
   calculatePositionOffset,
   invertPositionOffset,
   calculateXScale,
-} from '@broad/utilities/src/coordinates'  // eslint-disable-line
+} from '@broad/utilities/src/coordinates'
+
 
 const RegionViewerWrapper = styled.div`
   display: flex;
@@ -30,7 +31,6 @@ class RegionViewer extends Component {
     leftPanelWidth: PropTypes.number.isRequired,
     rightPanelWidth: PropTypes.number.isRequired,
     exonSubset: PropTypes.array,
-    broadcast: PropTypes.func,
     featuresToDisplay: PropTypes.array,
   }
 
@@ -38,8 +38,6 @@ class RegionViewer extends Component {
     exonSubset: null,
     leftPanelWidth: 100,
     rightPanelWidth: 150,
-    onRegionClick: () => {},
-    broadcast: () => {},
     featuresToDisplay: ['CDS'],
     regionAttributes: {
       CDS: {
@@ -65,43 +63,7 @@ class RegionViewer extends Component {
     },
   }
 
-  state = {
-    rightPanelWidth: 150,
-    ready: false,
-  }
-
-  // componentWillMount () {
-  //   this.broadcastOffsetRegions()
-  // }
-  //
-  // componentDidUpdate () {
-  //   this.broadcastOffsetRegions()
-  // }
-
-  setWidth = (event, newValue) => {
-    const newWidth = 800 * newValue
-    this.setState({ width: newWidth })
-  }
-
-  setLeftPanelWidth = (event, newValue) => {
-    const leftPanelWidth = Math.floor(400 * newValue)
-    this.setState({ leftPanelWidth })
-  }
-
-  broadcastOffsetRegions = () => {
-    if (this.props.regions) {
-      const offsetRegions = calculateOffsetRegions(
-        this.props.featuresToDisplay,
-        this.props.regionAttributes,
-        this.props.padding,
-        this.props.regions,
-        this.props.exonSubset
-      )
-      this.props.broadcast({ offsetRegions })
-    }
-  }
-
-  renderChildren = (childProps) => {
+  renderChildren(childProps) {
     // eslint-disable-next-line
     return React.Children.map(this.props.children, (child) => {
       if (child) {
@@ -111,8 +73,8 @@ class RegionViewer extends Component {
   }
 
   render() {
-    const { featuresToDisplay } = this.props
     const {
+      featuresToDisplay,
       regions,
       regionAttributes,
       width,

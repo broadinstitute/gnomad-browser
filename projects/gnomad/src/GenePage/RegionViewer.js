@@ -212,7 +212,6 @@ const GeneViewer = ({
         padding={exonPadding}
         regions={canonicalExons}
         regionAttributes={attributeConfig}
-        // broadcast={setRegionViewerAttributes}
       >
         <CoverageTrack
           title={'Coverage'}
@@ -251,7 +250,6 @@ GeneViewer.propTypes = {
   gene: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
-  // setRegionViewerAttributes: PropTypes.func.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
   variantFilter: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
