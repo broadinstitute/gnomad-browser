@@ -24,8 +24,6 @@ import { actions as tableActions } from '@broad/table'
 import {
   geneData,
   exonPadding,
-  transcriptFanOut,
-  actions as geneActions
 } from '@broad/redux-genes'
 
 import {
@@ -84,8 +82,6 @@ class SchizophreniaGeneViewer extends PureComponent {
       visibleVariants,
       exonPadding,
       screenSize,
-      transcriptFanOut,
-      toggleTranscriptFanOut,
       variantFilter,
       allVariantsInCurrentDataset,
       focusedVariant,
@@ -144,8 +140,6 @@ class SchizophreniaGeneViewer extends PureComponent {
           <TranscriptTrackConnected
             height={12}
             showRightPanel={!smallScreen}
-            transcriptFanOut={transcriptFanOut}
-            transcriptButtonOnClick={toggleTranscriptFanOut}
           />
           <VariantTrack
             key={'cases'}
@@ -173,8 +167,6 @@ SchizophreniaGeneViewer.propTypes = {
   exonPadding: PropTypes.number.isRequired,
   variantFilter: PropTypes.string.isRequired,
   screenSize: PropTypes.object.isRequired,
-  transcriptFanOut: PropTypes.bool.isRequired,
-  toggleTranscriptFanOut: PropTypes.func.isRequired,
 }
 export default connect(
   state => ({
@@ -182,15 +174,12 @@ export default connect(
     exonPadding: exonPadding(state),
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
-    transcriptFanOut: transcriptFanOut(state),
     variantFilter: variantFilter(state),
     focusedVariant: focusedVariant(state),
     allVariantsInCurrentDataset: allVariantsInCurrentDataset(state),
   }),
   dispatch => ({
-    toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
     setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
     setCurrentTableScrollData: data => dispatch(tableActions.setCurrentTableScrollData(data))
-
   })
 )(SchizophreniaGeneViewer)
