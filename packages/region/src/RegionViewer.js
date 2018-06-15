@@ -12,13 +12,8 @@ import {
 const RegionViewerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-left: 10px;
-  padding-bottom: 10px;
-`
-
-const RegionArea = styled.div`
-  flex-direction: column;
+  margin: 0 auto 10px;
+  width: ${props => props.width}px;
 `
 
 const exonColor = '#212121'
@@ -154,10 +149,8 @@ class RegionViewer extends Component {
     }
 
     return (
-      <RegionViewerWrapper>
-        <RegionArea width={width + leftPanelWidth + rightPanelWidth}>
-          {this.renderChildren(childProps)}
-        </RegionArea>
+      <RegionViewerWrapper width={width + leftPanelWidth + rightPanelWidth}>
+        {this.renderChildren(childProps)}
       </RegionViewerWrapper>
     )
   }
