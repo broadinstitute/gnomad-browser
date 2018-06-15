@@ -13,9 +13,7 @@ import { screenSize, SectionTitle } from '@broad/ui'
 import {
   geneData,
   regionalConstraint,
-  transcriptFanOut,
   exonPadding,
-  actions as geneActions,
 } from '@broad/redux-genes'
 
 import {
@@ -73,8 +71,6 @@ const GeneViewer = ({
   exonPadding,
   regionalConstraint,
   screenSize,
-  transcriptFanOut,
-  toggleTranscriptFanOut,
   variantFilter,
 }) => {
   const smallScreen = screenSize.width < 900
@@ -229,8 +225,6 @@ const GeneViewer = ({
         <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
-          transcriptFanOut={transcriptFanOut}
-          transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack
@@ -262,8 +256,6 @@ GeneViewer.propTypes = {
   variantFilter: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
   screenSize: PropTypes.object.isRequired,
-  transcriptFanOut: PropTypes.bool.isRequired,
-  toggleTranscriptFanOut: PropTypes.func.isRequired,
 }
 export default connect(
   state => ({
@@ -273,12 +265,6 @@ export default connect(
     selectedVariantDataset: selectedVariantDataset(state),
     regionalConstraint: regionalConstraint(state),
     screenSize: screenSize(state),
-    transcriptFanOut: transcriptFanOut(state),
     variantFilter: variantFilter(state),
-  }),
-  dispatch => ({
-    // setRegionViewerAttributes: regionViewerAttributes =>
-    //   dispatch(activeActions.setRegionViewerAttributes(regionViewerAttributes)),
-    toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
   })
 )(GeneViewer)
