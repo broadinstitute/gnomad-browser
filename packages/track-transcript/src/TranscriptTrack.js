@@ -96,35 +96,22 @@ const GtexTitleWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   width: 100%;
   height: 70%;
-  font-size: 14px;
   padding-left: 10px;
 `
 
-const GtexPlotWrapper = styled.div`
-  ${'' /* margin-bottom: 5px; */}
-`
+const GtexPlotWrapper = styled.div``
 
 const GtexTitleText = styled.a`
   font-size: 13px;
-  font-weight: normal;
-  line-height: 8px;
   margin-bottom: 5px;
-  margin-top: 0;
-  margin-left: 6px;
-  flex-shrink: 0;
   text-decoration: none;
   color: #428bca;
 `
 const GtexTissueSelect = styled.select`
   max-width: 100%;
-  ${'' /* height: 100%; */}
   font-size: 12px;
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-shrink: 0;
 `
 
 const TranscriptRightPanel = ({
