@@ -37,7 +37,7 @@ class RegionViewer extends Component {
   static defaultProps = {
     exonSubset: null,
     leftPanelWidth: 100,
-    rightPanelWidth: 150,
+    rightPanelWidth: 160,
     featuresToDisplay: ['CDS'],
     regionAttributes: {
       CDS: {
