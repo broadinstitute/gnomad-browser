@@ -22,8 +22,6 @@ import { screenSize } from '@broad/ui'
 import {
   geneData,
   exonPadding,
-  transcriptFanOut,
-  actions as geneActions
 } from '@broad/redux-genes'
 
 import {
@@ -62,8 +60,6 @@ const GeneRegion = ({
   visibleVariants,
   exonPadding,
   screenSize,
-  transcriptFanOut,
-  toggleTranscriptFanOut,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -106,8 +102,6 @@ const GeneRegion = ({
         <TranscriptTrackConnected
           height={12}
           showRightPanel={!smallScreen}
-          transcriptFanOut={transcriptFanOut}
-          transcriptButtonOnClick={toggleTranscriptFanOut}
         />
         {allTrack}
         <NavigatorTrackConnected noVariants />
@@ -120,8 +114,6 @@ GeneRegion.propTypes = {
   visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
   screenSize: PropTypes.object.isRequired,
-  transcriptFanOut: PropTypes.bool.isRequired,
-  toggleTranscriptFanOut: PropTypes.func.isRequired,
 }
 export default connect(
   state => ({
@@ -129,9 +121,5 @@ export default connect(
     exonPadding: exonPadding(state),
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
-    transcriptFanOut: transcriptFanOut(state),
-  }),
-  dispatch => ({
-    toggleTranscriptFanOut: () => dispatch(geneActions.toggleTranscriptFanOut()),
   })
 )(GeneRegion)
