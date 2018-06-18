@@ -1,0 +1,16 @@
+{
+  "name": "@broad/track-regional-constraint",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/RegionalConstraintTrack.js",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "prop-types": "^15.5.10"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4",
+    "styled-components": "^2.1.2"
+  }
+}
