@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
+
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +39,7 @@ export default function RegionalConstraintTrack({
     <Container>
       <LeftPanel width={leftPanelWidth}>
         <p>Regional constraint</p>
+        <QuestionMark topic="regional-constraint" display="inline" />
       </LeftPanel>
       <CenterPanel width={width}>
         <svg height={height} width={width}>
