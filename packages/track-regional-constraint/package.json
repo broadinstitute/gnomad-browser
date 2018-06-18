@@ -7,6 +7,7 @@
     "lib"
   ],
   "dependencies": {
+    "@broad/help": "*",
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
