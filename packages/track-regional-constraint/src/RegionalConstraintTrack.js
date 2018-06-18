@@ -38,7 +38,7 @@ export default function RegionalConstraintTrack({
   return (
     <Container>
       <LeftPanel width={leftPanelWidth}>
-        <p>Regional constraint</p>
+        <p>Regional missense constraint</p>
         <QuestionMark topic="regional-constraint" display="inline" />
       </LeftPanel>
       <CenterPanel width={width}>
