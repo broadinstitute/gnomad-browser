@@ -61,10 +61,8 @@ export default function RegionalConstraintTrack({
                   y={0}
                   width={regionStopPos - regionStartPos}
                   height={height}
-                  fill="rgb(255, 88, 63)"
-                  strokeWidth={1}
+                  fill="rgba(255, 88, 63, 0.2)"
                   stroke="black"
-                  opacity={0.2}
                 />
               </g>
             )
