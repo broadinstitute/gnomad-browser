@@ -7,12 +7,14 @@
     "lib"
   ],
   "dependencies": {
-    "mousetrap": "^1.6.1"
+    "mousetrap": "^1.6.1",
+    "react-popper": "^1.0.0"
   },
   "devDependencies": {},
   "peerDependencies": {
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "styled-components": "^2.1.2"
   }
 }
