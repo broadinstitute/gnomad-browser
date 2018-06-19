@@ -87,20 +87,33 @@ export default function RegionalConstraintTrack({
 
             const regionStartPos = xScale(positionOffset(regionStart).offsetPosition)
             const regionStopPos = xScale(positionOffset(regionStop).offsetPosition)
+            const regionWidth = regionStopPos - regionStartPos
 
             return (
               <WithRegionTooltip
                 key={region.region_name}
                 region={region}
               >
-                <rect
-                  x={regionStartPos}
-                  y={0}
-                  width={regionStopPos - regionStartPos}
-                  height={height}
-                  fill="rgba(255, 88, 63, 0.2)"
-                  stroke="black"
-                />
+                <g>
+                  <rect
+                    x={regionStartPos}
+                    y={0}
+                    width={regionWidth}
+                    height={height}
+                    fill="rgba(255, 88, 63, 0.2)"
+                    stroke="black"
+                  />
+                  {(regionWidth > 30) && (
+                    <text
+                      x={(regionStartPos + regionStopPos) / 2}
+                      y={height / 2}
+                      dy="0.33em"
+                      textAnchor="middle"
+                    >
+                      {region.obs_exp.toFixed(2)}
+                    </text>
+                  )}
+                </g>
               </WithRegionTooltip>
             )
           })}
