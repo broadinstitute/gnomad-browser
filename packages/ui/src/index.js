@@ -65,3 +65,7 @@ export {
   GeneAttributeValue,
   ItemWrapper,
 } from './genePage/geneInfoStyles'
+
+export {
+  withTooltip
+} from './tooltip/withTooltip'
