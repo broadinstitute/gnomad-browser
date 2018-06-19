@@ -25,7 +25,6 @@ import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
 import { fetchRegion } from './fetch'
 
-const VariantTableWithRouter = withRouter(VariantTable)
 
 const RegionPage = ({
   regionData,
@@ -45,14 +44,7 @@ const RegionPage = ({
         <Route
           exact
           path="/region/:regionId"
-          render={() => {
-            return (
-              <VariantTableWithRouter
-                tableConfig={tableConfig}
-                height={400}
-              />
-            )
-          }}
+          render={() => <VariantTable tableConfig={tableConfig} />}
         />
       </TableSection>
     </GenePage>
