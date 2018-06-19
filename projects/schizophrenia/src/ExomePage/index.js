@@ -26,7 +26,6 @@ import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
 import { fetchSchz } from './fetch'
 
-const VariantTableWithRouter = withRouter(VariantTable)
 
 const MainPage = ({
   gene,
@@ -51,14 +50,7 @@ const MainPage = ({
       <Route
         exact
         path="/gene/:gene"
-        render={() => {
-          return (
-            <VariantTableWithRouter
-              tableConfig={tableConfig}
-              height={600}
-            />
-          )
-        }}
+        render={() => <VariantTable tableConfig={tableConfig} />}
       />
       <VariantDetails />
     </GenePage>

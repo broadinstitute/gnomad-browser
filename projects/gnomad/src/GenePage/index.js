@@ -53,8 +53,6 @@ const BottomButtonSection = styled.div`
   margin-top: 20px;
 `
 
-const VariantTableWithRouter = withRouter(VariantTable)
-
 // const loading_gifs = [
 //   'http://www.skirlrecords.com/sites/all/themes/valx/imgs/loading.gif',
 //   'https://thumbs.gfycat.com/ClearcutGoldenKittiwake-size_restricted.gif',
@@ -92,16 +90,7 @@ const GenePageConnected = ({
         <Route
           exact
           path="/gene/:gene"
-          render={() => {
-            return (
-              <div>
-                <VariantTableWithRouter
-                  tableConfig={tableConfig}
-                />
-              </div>
-
-            )
-          }}
+          render={() => <VariantTable tableConfig={tableConfig} />}
         />
         <BottomButtonSection>
           <ClassicExacButton onClick={exportVariantsToCsv}>
