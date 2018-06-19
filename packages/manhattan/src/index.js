@@ -135,14 +135,14 @@ const ManhattanPlot = ({
 
   const clickHandler = e => onClickPoint(e.target.getAttribute('data-id'))
 
-  const snps = data.map((snp) => {
-    const color = chromosomeColors[snp.chromosome]
+  const renderedPoints = data.map((dataPoint) => {
+    const color = chromosomeColors[dataPoint.chromosome]
     return (
       <circle
-        key={snp.snp}
-        data-id={snp.snp}
-        cx={xScale(chromOffset[snp.chromosome] + snp.pos)}
-        cy={yScale(snp['-log10p'])}
+        key={dataPoint.id}
+        data-id={dataPoint.id}
+        cx={xScale(chromOffset[dataPoint.chromosome] + dataPoint.pos)}
+        cy={yScale(dataPoint['-log10p'])}
         r={2}
         fill={color}
         stroke={'black'}
@@ -159,7 +159,7 @@ const ManhattanPlot = ({
         {yAxisTicks}
         {xAxisLabel}
         {xAxisTicks}
-        {snps}
+        {renderedPoints}
       </svg>
     </div>
   )
@@ -167,7 +167,7 @@ const ManhattanPlot = ({
 
 ManhattanPlot.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    snp: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     chromosome: PropTypes.oneOf(HUMAN_CHROMOSOMES).isRequired,
     pos: PropTypes.number.isRequired,
     '-log10p': PropTypes.number.isRequired,
