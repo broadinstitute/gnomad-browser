@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "@broad/help": "*",
+    "@broad/ui": "*",
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {

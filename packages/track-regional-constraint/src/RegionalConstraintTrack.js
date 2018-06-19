@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
+import { withTooltip } from '@broad/ui'
 
 
 const Container = styled.div`
@@ -24,6 +25,39 @@ const CenterPanel = styled.div`
   align-items: center;
   width: ${props => props.width}px;
 `
+
+
+const RegionAttributeList = styled.dl`
+  margin: 0;
+
+  div {
+    margin-bottom: 0.25em;
+  }
+
+  dt {
+    display: inline;
+    font-weight: bold;
+  }
+
+  dd {
+    display: inline;
+    margin-left: 0.5em;
+  }
+`
+
+
+const WithRegionTooltip = withTooltip(({ region }) => (
+  <RegionAttributeList>
+    <div>
+      <dt>O/E missense:</dt>
+      <dd>{region.obs_exp && region.obs_exp.toFixed(4)}</dd>
+    </div>
+    <div>
+      <dt>&chi;<sup>2</sup>:</dt>
+      <dd>{region.chisq_diff_null && region.chisq_diff_null.toFixed(4)}</dd>
+    </div>
+  </RegionAttributeList>
+))
 
 
 export default function RegionalConstraintTrack({
@@ -55,7 +89,10 @@ export default function RegionalConstraintTrack({
             const regionStopPos = xScale(positionOffset(regionStop).offsetPosition)
 
             return (
-              <g key={region.region_name}>
+              <WithRegionTooltip
+                key={region.region_name}
+                region={region}
+              >
                 <rect
                   x={regionStartPos}
                   y={0}
@@ -64,7 +101,7 @@ export default function RegionalConstraintTrack({
                   fill="rgba(255, 88, 63, 0.2)"
                   stroke="black"
                 />
-              </g>
+              </WithRegionTooltip>
             )
           })}
         </svg>
