@@ -37,7 +37,6 @@ const VariantTable = ({
   title,
   height,
   tableConfig,
-  history,
   screenSize,
   filteredIdList,
 }) => {
@@ -78,7 +77,6 @@ VariantTable.propTypes = {
   title: PropTypes.string,
   height: PropTypes.number,
   tableConfig: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
   screenSize: PropTypes.object.isRequired,
   filteredIdList: PropTypes.any.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
