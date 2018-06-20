@@ -16,7 +16,7 @@ import { createRegionReducer } from '@broad/region'
 import { createHelpReducer } from '@broad/help'
 import { createUserInterfaceReducer } from '@broad/ui'
 import { createTableReducer } from '@broad/table'
-import { createNavigatorReducer } from '@broad/track-navigator'
+
 
 const logger = createLogger()
 
@@ -40,7 +40,6 @@ export default function createGenePageStore(appSettings, appReducers) {
     regions: createRegionReducer(appSettings),
     help: createHelpReducer(appSettings.docs),
     ui: createUserInterfaceReducer(),
-    navigator: createNavigatorReducer(),
     table: createTableReducer(),
     ...appReducers,
   })

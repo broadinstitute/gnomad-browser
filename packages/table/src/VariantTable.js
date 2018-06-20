@@ -92,7 +92,6 @@ const mapStateToProps = (state) => {
     variantCount: finalFilteredVariantsCount(state),
     tablePosition: currentTableIndex(state),
     searchText: variantSearchText(state),
-    currentNavigatorPosition: state.navigator.currentNavigatorPosition,
     screenSize: screenSize(state),
     filteredIdList: filteredIdList(state),
     currentChromosome: geneChromosome(state) || regionChromosome(state),
