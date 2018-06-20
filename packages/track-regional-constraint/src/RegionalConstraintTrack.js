@@ -46,6 +46,22 @@ const RegionAttributeList = styled.dl`
 `
 
 
+function regionColor(region) {
+  if (region.obs_exp > 0.6 || region.chisq_diff_null < 10.8) {
+    return '#e2e2e2'
+  }
+
+  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
+  if (region.obs_exp > 0.4) {
+    return '#ffeda0'
+  }
+  if (region.obs_exp > 0.2) {
+    return '#feb24c'
+  }
+  return '#f03b20'
+}
+
+
 const WithRegionTooltip = withTooltip(({ region }) => (
   <RegionAttributeList>
     <div>
@@ -100,7 +116,7 @@ export default function RegionalConstraintTrack({
                     y={0}
                     width={regionWidth}
                     height={height}
-                    fill="rgba(255, 88, 63, 0.2)"
+                    fill={regionColor(region)}
                     stroke="black"
                   />
                   {(regionWidth > 30) && (
