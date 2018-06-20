@@ -170,7 +170,6 @@ class SchizophreniaGeneResults extends PureComponent {
             remoteRowCount={sortedData.size}
             loadMoreRows={() => {}}
             overscan={5}
-            loadLookAhead={0}
             onRowClick={this.geneOnClick}
             onRowHover={() => {}}
             onScroll={() => {}}
