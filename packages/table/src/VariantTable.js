@@ -55,7 +55,6 @@ const VariantTable = ({
         remoteRowCount={variants.size}
         loadMoreRows={() => {}}
         overscan={5}
-        loadLookAhead={0}
         onRowClick={setFocusedVariant}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}

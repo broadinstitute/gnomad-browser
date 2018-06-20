@@ -582,7 +582,6 @@ class InfiniteTableExample extends Component {
           remoteRowCount={this.state.totalVariantCount}
           loadMoreRows={this.fetchMoreData}
           overscan={60}
-          loadLookAhead={1000}
           showIndex
         />
       </div>
