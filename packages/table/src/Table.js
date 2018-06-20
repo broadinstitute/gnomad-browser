@@ -529,39 +529,44 @@ const headers = tableConfig => tableConfig.fields
   .filter(field => !field.disappear)
   .map(field => getHeaderCell(field))
 
-const isRowLoaded = (tableData, loadLookAhead) => ({ index }) => {
-  if (Array.isArray(tableData)) return !!tableData[index + loadLookAhead]
-  else if (Immutable.List.isList(tableData)) {
-    // Console.log(index, loadLookAhead, tableData.get(index + loadLookAhead))
-    return tableData.get(index + loadLookAhead)
+
+function getRowData(tableData, rowIndex) {
+  if (Array.isArray(tableData)) {
+    return tableData[rowIndex]
   }
-  return false
+
+  if (Immutable.List.isList(tableData)) {
+    return tableData.get(rowIndex)
+  }
+
+  return undefined
 }
 
-const tableRowRenderer = (tableConfig, tableData, searchText, showIndex, onRowClick, onRowHover) =>
-  ({ key, index, style }) => {
-    let tData
-    if (Array.isArray(tableData)) tData = tableData[index]
-    else if (Immutable.List.isList(tableData)) {
-      tData = tableData.get(index)
-    }
-    if (!isRowLoaded(tableData, 25)) {
-      return <div>Loading</div>
-    }
-    const row = getDataRow(tableConfig, tData, searchText, index, showIndex, onRowClick, onRowHover)
+
+function tableRowRenderer (tableConfig, tableData, searchText, showIndex, onRowClick, onRowHover) {
+  return function({ key, index, style }) {
+    const rowData = getRowData(tableData, index)
+
+    const renderedRowContent = rowData
+      ? getDataRow(tableConfig, rowData, searchText, index, showIndex, onRowClick, onRowHover)
+      : 'Loading'
+
     const localStyle = {
       ...style,
       borderTop: '1px solid #E0E0E0',
     }
+
     return (
       <div
         key={key}
         style={localStyle}
       >
-        {row}
+        {renderedRowContent}
       </div>
     )
   }
+}
+
 
 const indexHeader = (
   <div
@@ -619,7 +624,6 @@ const Table = ({
   height,
   tableConfig,
   tableData,
-  loadLookAhead,
   loadMoreRows,
   remoteRowCount,
   overscan,
@@ -635,7 +639,8 @@ const Table = ({
   if (searchText !== '' && filteredIdList.size === 0) {
     return <NoVariants width={width} height={height}>No variants found</NoVariants>
   }
-  const isRowTableLoaded = isRowLoaded(tableData, loadLookAhead)
+
+  const isRowLoaded = ({ index }) => Boolean(getRowData(tableData, index))
 
   const rowRenderer = tableRowRenderer(
     tableConfig,
@@ -651,7 +656,7 @@ const Table = ({
     <div>
       <TableHeaders title={title} tableConfig={tableConfig} showIndex={showIndex} />
       <InfiniteLoader
-        isRowLoaded={isRowTableLoaded}
+        isRowLoaded={isRowLoaded}
         loadMoreRows={loadMoreRows}
         rowCount={remoteRowCount}
       >
@@ -691,7 +696,6 @@ Table.defaultProps = {
   width: null,
   loadMoreRows: () => { },
   overscan: 10,
-  loadLookAhead: 0,
   showIndex: false,
   scrollToRow: 0,
   setHoveredVariant: () => { },
