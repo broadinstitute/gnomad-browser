@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
+  actions as tableActions,
   currentTableIndex,
   currentTableScrollData,
 } from '@broad/table'
@@ -15,21 +16,16 @@ import {
   hoveredVariant,
   variantSortKey,
   finalFilteredVariants,
-  // actions as variantActions,
+  types as variantActionTypes
 } from '@broad/redux-variants'
 
-import {
-  NavigatorTrack,
-  actions as navigatorActions,
-  currentNavigatorPosition,
-} from './index'
+import NavigatorTrack from './Navigator'
 
 const Navigator = ({
   currentTableIndex,
   currentTableScrollData,
   hoveredVariant,
   onNavigatorClick,
-  currentNavigatorPosition,
   variants,
   variantSortKey,
   ownProps,
@@ -39,7 +35,6 @@ const Navigator = ({
       title={''}
       height={60}
       onNavigatorClick={onNavigatorClick}
-      currentNavigatorPosition={currentNavigatorPosition}
       scrollSync={currentTableIndex}
       currentTableScrollData={currentTableScrollData}
       variants={variants}
@@ -52,7 +47,6 @@ const Navigator = ({
 Navigator.propTypes = {
   currentTableIndex: PropTypes.number.isRequired,
   currentTableScrollData: PropTypes.object.isRequired,
-  currentNavigatorPosition: PropTypes.number.isRequired,
   hoveredVariant: PropTypes.string.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
   variants: PropTypes.any.isRequired,
@@ -63,7 +57,6 @@ Navigator.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   currentTableIndex: currentTableIndex(state),
   currentTableScrollData: currentTableScrollData(state),
-  currentNavigatorPosition: currentNavigatorPosition(state),
   hoveredVariant: hoveredVariant(state),
   variantSortKey: variantSortKey(state),
   // variants: visibleVariants(state),
@@ -73,8 +66,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 
 const mapDispatchToProps = dispatch => ({
-  onNavigatorClick: (tableIndex, position) =>
-    dispatch(navigatorActions.onNavigatorClick(tableIndex, position))
+  onNavigatorClick: (tableIndex) => {
+    dispatch({ type: variantActionTypes.ORDER_VARIANTS_BY_POSITION })
+    dispatch(tableActions.setCurrentTableIndex(tableIndex))
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigator)
