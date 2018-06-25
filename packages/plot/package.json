@@ -6,11 +6,6 @@
   "files": [
     "lib"
   ],
-  "scripts": {
-    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './tests/vx.test.js' | ../../node_modules/.bin/tspec",
-    "test:data": "../../node_modules/.bin/babel-node tests/getTestData",
-    "test:watch": "../../node_modules/.bin/watch 'npm run test' tests -d"
-  },
   "localDependencies": {},
   "exampleDependencies": {},
   "dependencies": {
