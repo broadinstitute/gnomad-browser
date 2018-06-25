@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "src/index.js",
-  "scripts": {
-    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/genes.spec.js' | ../../node_modules/.bin/tspec",
-    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d"
-  },
   "files": [
     "lib"
   ],
@@ -29,8 +25,7 @@
     "react-redux": "^5.0.6",
     "redux": "3.6.0",
     "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1",
-    "tape-promise": "^2.0.1"
+    "reselect": "^3.0.1"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

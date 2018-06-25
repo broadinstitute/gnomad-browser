@@ -3,11 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
-  "scripts": {
-    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/GenesTrackStacked.test.js' | ../../node_modules/.bin/tspec",
-    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d",
-    "test:data": "../../node_modules/.bin/babel-node src/example/getTestData"
-  },
   "files": [
     "lib"
   ],
