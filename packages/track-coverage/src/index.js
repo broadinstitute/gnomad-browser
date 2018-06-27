@@ -4,7 +4,6 @@ import R from 'ramda'
 
 import { area, line } from 'd3-shape'
 import { range } from 'd3-array'
-import { path } from 'd3-path'
 import { scaleLinear } from 'd3-scale'
 
 import { getMaxMeanFromCoverageDatasets } from '@broad/utilities/src/plotting'
