@@ -99,7 +99,7 @@ const TranscriptDrawing = ({
         stroke={'#BDBDBD'}
         strokeWidth={2}
       />
-      {regions.map((region, i) => {  // eslint-disable-line
+      {regions.map((region) => {
         const start = positionOffset(region.start)
         const stop = positionOffset(region.stop)
         let localThickness
@@ -117,10 +117,11 @@ const TranscriptDrawing = ({
               y2={height / 2}
               stroke={start.color}
               strokeWidth={localThickness}
-              key={`${i}-rectangle2`}
+              key={`${region.start}`}
             />
           )
         }
+        return null
       })}
     </svg>
   )
