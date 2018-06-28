@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-mixed-operators
- */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -159,7 +157,6 @@ const Transcript = ({
   tissueStats,
   onTissueChange,
   showRightPanel,
-  showLeftPanel,
   currentGene,
   onTranscriptNameClick,
   currentTranscript,
@@ -185,7 +182,6 @@ const Transcript = ({
       />
     )
   }
-  showLeftPanel = true
 
   const rightPanel = isMaster
     ? (
@@ -216,16 +212,16 @@ const Transcript = ({
         opacity,
       }}
     >
-      {showLeftPanel &&
-        <TranscriptLeftPanel
-          leftPanelWidth={leftPanelWidth}
-          title={title}
-          fontSize={fontSize}
-          onTranscriptNameClick={onTranscriptNameClick}
-          currentTranscript={currentTranscript}
-          canonicalTranscript={canonicalTranscript}
-          expandTranscriptButton={expandTranscriptButton}
-        />}
+      <TranscriptLeftPanel
+        leftPanelWidth={leftPanelWidth}
+        title={title}
+        fontSize={fontSize}
+        onTranscriptNameClick={onTranscriptNameClick}
+        currentTranscript={currentTranscript}
+        canonicalTranscript={canonicalTranscript}
+        expandTranscriptButton={expandTranscriptButton}
+      />
+
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <TranscriptDrawing
           width={width}
@@ -258,8 +254,8 @@ const TranscriptGroupWrapper = styled.div`
 const TranscriptTrackContainer = styled.div`
   display: flex;
   flex-direction: column;
-  /*border: 1px solid orange;*/
 `
+
 
 export default class TranscriptTrack extends Component {
   static PropTypes = {
@@ -271,21 +267,9 @@ export default class TranscriptTrack extends Component {
     positionOffset: PropTypes.func,  // eslint-disable-line
   }
 
-  state = {
-    fanOutButtonOpen: true,
-  }
-
   config = {
     stiffness: 1000,
     damping: 50,
-  }
-
-  fanOut = () => {
-    if (!this.state.fanOutButtonOpen) {
-      this.setState({ fanOutButtonOpen: true })
-    } else {
-      this.setState({ fanOutButtonOpen: false })
-    }
   }
 
   initialTranscriptStyles = () => ({
@@ -296,8 +280,7 @@ export default class TranscriptTrack extends Component {
     opacity: 1,
   })
 
-  finalTranscriptStyles = (childIndex) => {
-    const deltaY = (childIndex + 1) * 2  // eslint-disable-line
+  finalTranscriptStyles = () => {
     return {
       top: spring(this.props.height, this.config),
       paddingTop: 2,
@@ -322,7 +305,7 @@ export default class TranscriptTrack extends Component {
   renderAlternateTranscripts() {
     const alternateTranscriptIds = Object.keys(this.props.transcriptsGrouped)
 
-    return alternateTranscriptIds.map((transcriptId, index) => {
+    return alternateTranscriptIds.map((transcriptId) => {
       const transcript = this.props.transcriptsGrouped[transcriptId]
       const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
 
@@ -331,7 +314,7 @@ export default class TranscriptTrack extends Component {
       }
 
       const style = this.props.transcriptFanOut
-        ? this.finalTranscriptStyles(index)
+        ? this.finalTranscriptStyles()
         : this.initialTranscriptStyles()
 
       return (
