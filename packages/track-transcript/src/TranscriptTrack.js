@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Motion, spring } from 'react-motion'
 import R from 'ramda'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
@@ -24,6 +23,7 @@ const TranscriptLeftAxis = styled.div`
 const TranscriptName = styled.div`
   color: black;
   display: flex;
+  font-size: 11px;
   width: 100%;
 `
 
@@ -46,7 +46,6 @@ const TranscriptLink = styled.a`
 const TranscriptLeftPanel = ({
   title,
   leftPanelWidth,
-  fontSize,
   expandTranscriptButton,
   currentTranscript,
   canonicalTranscript,
@@ -64,7 +63,7 @@ const TranscriptLeftPanel = ({
     </TranscriptLink>
   return (
     <TranscriptLeftAxis width={leftPanelWidth}>
-      <TranscriptName style={{ fontSize }}>
+      <TranscriptName>
         {contents}
       </TranscriptName>
     </TranscriptLeftAxis>
@@ -131,8 +130,8 @@ const TranscriptDrawing = ({
 const TranscriptContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding-bottom: 3px;
-  padding-top: 3px;
+  padding-bottom: 2px;
+  padding-top: 2px;
 `
 
 
@@ -146,11 +145,6 @@ const Transcript = ({
   positionOffset,
   isMaster,
   fanOut,
-  motionHeight,
-  paddingTop,
-  paddingBottom,
-  fontSize,
-  opacity,
   rightPanelWidth,
   fanOutButtonOpen,
   transcript,
@@ -164,17 +158,8 @@ const Transcript = ({
   canonicalTranscript,
   strand,
 }) => {
-  let localHeight
-  if (motionHeight !== undefined) {
-    localHeight = motionHeight
-  } else {
-    localHeight = height
-  }
   let expandTranscriptButton
   if (isMaster) {
-    localHeight = 80
-    paddingTop = 0  // eslint-disable-line
-    paddingBottom = 0  // eslint-disable-line
     expandTranscriptButton = (
       <TranscriptFlipOutButton
         fanOutIsOpen={fanOutButtonOpen}
@@ -205,34 +190,25 @@ const Transcript = ({
     )
 
   return (
-    <TranscriptContainer
-      style={{
-        height: localHeight,
-        paddingTop,
-        paddingBottom,
-        opacity,
-      }}
-    >
+    <TranscriptContainer>
       <TranscriptLeftPanel
         leftPanelWidth={leftPanelWidth}
         title={title}
-        fontSize={fontSize}
         onTranscriptNameClick={onTranscriptNameClick}
         currentTranscript={currentTranscript}
         canonicalTranscript={canonicalTranscript}
         expandTranscriptButton={expandTranscriptButton}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <TranscriptDrawing
-          width={width}
-          height={localHeight}
-          regions={regions}
-          xScale={xScale}
-          positionOffset={positionOffset}
-          isMaster={isMaster}
-        />
-      </div>
+      <TranscriptDrawing
+        width={width}
+        height={height}
+        regions={regions}
+        xScale={xScale}
+        positionOffset={positionOffset}
+        isMaster={isMaster}
+      />
+
       {showRightPanel && fanOutButtonOpen && rightPanel}
     </TranscriptContainer>
   )
@@ -268,35 +244,13 @@ export default class TranscriptTrack extends Component {
     positionOffset: PropTypes.func,  // eslint-disable-line
   }
 
-  config = {
-    stiffness: 1000,
-    damping: 50,
-  }
-
-  initialTranscriptStyles = () => ({
-    top: spring(0, this.config),
-    paddingTop: 0,
-    paddingBottom: 0,
-    fontSize: 0,
-    opacity: 1,
-  })
-
-  finalTranscriptStyles = () => {
-    return {
-      top: spring(this.props.height, this.config),
-      paddingTop: 2,
-      paddingBottom: 2,
-      fontSize: 11,
-      opacity: 1,
-    }
-  }
-
   renderCanonicalTranscript() {
     return (
       <Transcript
         {...this.props}
         fanOut={this.props.transcriptButtonOnClick}
         fanOutButtonOpen={this.props.transcriptFanOut}
+        height={80}
         isMaster
         regions={this.props.offsetRegions}
       />
@@ -314,35 +268,15 @@ export default class TranscriptTrack extends Component {
         return null
       }
 
-      const style = this.props.transcriptFanOut
-        ? this.finalTranscriptStyles()
-        : this.initialTranscriptStyles()
-
       return (
-        <Motion style={style} key={transcriptId}>
-          {({
-            top,
-            paddingTop,
-            paddingBottom,
-            fontSize,
-            opacity,
-          }) => {
-            return (
-              <Transcript
-                {...this.props}
-                title={transcriptId}
-                motionHeight={top}
-                paddingTop={paddingTop}
-                paddingBottom={paddingBottom}
-                fontSize={fontSize}
-                opacity={opacity}
-                regions={transcriptExonsFiltered}
-                fanOutButtonOpen={this.props.transcriptFanOut}
-                transcript={transcript}
-              />
-            )
-          }}
-        </Motion>
+        <Transcript
+          {...this.props}
+          key={transcriptId}
+          title={transcriptId}
+          regions={transcriptExonsFiltered}
+          fanOutButtonOpen={this.props.transcriptFanOut}
+          transcript={transcript}
+        />
       )
     })
   }
@@ -353,7 +287,7 @@ export default class TranscriptTrack extends Component {
         {this.renderCanonicalTranscript()}
         {this.props.transcriptsGrouped && (
           <TranscriptGroupWrapper>
-            {this.renderAlternateTranscripts()}
+            {this.props.transcriptFanOut && this.renderAlternateTranscripts()}
           </TranscriptGroupWrapper>
         )}
       </TranscriptTrackContainer>
