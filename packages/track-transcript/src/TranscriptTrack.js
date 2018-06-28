@@ -255,69 +255,13 @@ const TranscriptGroupWrapper = styled.div`
 `
 
 
-const TranscriptGroup = ({
-  transcriptsGrouped,
-  fanOutButtonOpen,
-  initialTranscriptStyles,
-  finalTranscriptStyles,
-  ...rest
-}) => {
-  const transcriptGroup = (
-    <TranscriptGroupWrapper>
-      {Object.keys(transcriptsGrouped).map((transcript, index) => {
-        const transcriptExonsFiltered = transcriptsGrouped[transcript].exons
-          .filter(exon => exon.feature_type === 'CDS')
-        if (R.isEmpty(transcriptExonsFiltered)) {
-          return  // eslint-disable-line
-        }
-        const style = fanOutButtonOpen ?
-          finalTranscriptStyles(index) : initialTranscriptStyles()
-        return (  // eslint-disable-line
-          <Motion style={style} key={transcript}>
-            {({
-              top,
-              paddingTop,
-              paddingBottom,
-              fontSize,
-              opacity,
-            }) => {
-              return (
-                <Transcript
-                  title={transcript}
-                  motionHeight={top}
-                  paddingTop={paddingTop}
-                  paddingBottom={paddingBottom}
-                  fontSize={fontSize}
-                  opacity={opacity}
-                  regions={transcriptExonsFiltered}
-                  fanOutButtonOpen={fanOutButtonOpen}
-                  transcript={transcriptsGrouped[transcript]}
-                  {...rest}
-                />
-              )
-            }}
-          </Motion>
-        )
-      })}
-    </TranscriptGroupWrapper>
-  )
-  return <div>{transcriptGroup}</div>
-}
-TranscriptGroup.propTypes = {
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number, // eslint-disable-line
-  leftPanelWidth: PropTypes.number, // eslint-disable-line
-  xScale: PropTypes.func, // eslint-disable-line
-  positionOffset: PropTypes.func,  // eslint-disable-line
-}
-
 const TranscriptTrackContainer = styled.div`
   display: flex;
   flex-direction: column;
   /*border: 1px solid orange;*/
 `
 
-class TranscriptTrack extends Component {
+export default class TranscriptTrack extends Component {
   static PropTypes = {
     height: PropTypes.number.isRequired,
     width: PropTypes.number, // eslint-disable-line
@@ -363,32 +307,72 @@ class TranscriptTrack extends Component {
     }
   }
 
-  render() {
-    let transcriptGroup
-    if (this.props.transcriptsGrouped) {
-      transcriptGroup = (
-        <TranscriptGroup
-          transcriptsGrouped={this.props.geneExons}
-          fanOutButtonOpen={this.props.transcriptFanOut}
-          initialTranscriptStyles={this.initialTranscriptStyles}
-          finalTranscriptStyles={this.finalTranscriptStyles}
-          {...this.props}
-        />
+  renderCanonicalTranscript() {
+    return (
+      <Transcript
+        {...this.props}
+        fanOut={this.props.transcriptButtonOnClick}
+        fanOutButtonOpen={this.props.transcriptFanOut}
+        isMaster
+        regions={this.props.offsetRegions}
+      />
+    )
+  }
+
+  renderAlternateTranscripts() {
+    const alternateTranscriptIds = Object.keys(this.props.transcriptsGrouped)
+
+    return alternateTranscriptIds.map((transcriptId, index) => {
+      const transcript = this.props.transcriptsGrouped[transcriptId]
+      const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
+
+      if (R.isEmpty(transcriptExonsFiltered)) {
+        return null
+      }
+
+      const style = this.props.transcriptFanOut
+        ? this.finalTranscriptStyles(index)
+        : this.initialTranscriptStyles()
+
+      return (
+        <Motion style={style} key={transcriptId}>
+          {({
+            top,
+            paddingTop,
+            paddingBottom,
+            fontSize,
+            opacity,
+          }) => {
+            return (
+              <Transcript
+                {...this.props}
+                title={transcriptId}
+                motionHeight={top}
+                paddingTop={paddingTop}
+                paddingBottom={paddingBottom}
+                fontSize={fontSize}
+                opacity={opacity}
+                regions={transcriptExonsFiltered}
+                fanOutButtonOpen={this.props.transcriptFanOut}
+                transcript={transcript}
+              />
+            )
+          }}
+        </Motion>
       )
-    }
+    })
+  }
+
+  render() {
     return (
       <TranscriptTrackContainer>
-        <Transcript
-          isMaster
-          fanOut={this.props.transcriptButtonOnClick}
-          fanOutButtonOpen={this.props.transcriptFanOut}
-          regions={this.props.offsetRegions}
-          {...this.props}
-        />
-        {transcriptGroup}
+        {this.renderCanonicalTranscript()}
+        {this.props.transcriptsGrouped && (
+          <TranscriptGroupWrapper>
+            {this.renderAlternateTranscripts()}
+          </TranscriptGroupWrapper>
+        )}
       </TranscriptTrackContainer>
     )
   }
 }
-
-export default TranscriptTrack
