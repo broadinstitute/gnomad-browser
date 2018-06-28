@@ -5,13 +5,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Motion, spring } from 'react-motion'
-import { scaleLinear } from 'd3-scale'
 import R from 'ramda'
 
-import { tissueMappings } from '@broad/utilities/src/constants/gtex'
-import { QuestionMark } from '@broad/help'
-
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
+
+import {
+  TissueIsoformExpressionPlotHeader,
+  TissueIsoformExpressionPlot
+} from './GTEx'
 
 const flipOutExonThickness = 10
 
@@ -40,14 +41,14 @@ const TranscriptLeftPanel = ({
     background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1);' : 'none;'}
     border-bottom: ${({ isSelected, isCanonical }) => {{
       if (isSelected) {
-        return'1px solid red;'
-        return'1px solid #000;'
+        return'1px solid red'
+        return'1px solid #000'
       }
       if (isCanonical) {
-        return'1px solid #000;'
+        return'1px solid #000'
       }
       return 'none'
-      }}}
+      }}};
     ${'' /* border-radius: 3px; */}
   `
 
@@ -75,177 +76,6 @@ TranscriptLeftPanel.propTypes = {
 }
 TranscriptLeftPanel.defaultProps = {
   title: '',
-}
-
-const TranscriptRightPanelWrapper = styled.div`
-  display: flex;
-  width: 100%; /* Set by Redux */
-  height: 100%;
-  ${'' /* border: 1px solid blue; */}
-
-`
-const TranscriptName = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%; /* Set by Redux */
-  color: black;
-  ${'' /* border: 3px solid blue; */}
-`
-
-const GtexTitleWrapper = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 70%;
-  padding-left: 10px;
-`
-
-const GtexPlotWrapper = styled.div``
-
-const GtexTitleText = styled.a`
-  font-size: 13px;
-  margin-bottom: 5px;
-  text-decoration: none;
-  color: #428bca;
-`
-const GtexTissueSelect = styled.select`
-  max-width: 100%;
-  font-size: 12px;
-`
-
-const TranscriptRightPanel = ({
-  rightPanelWidth,
-  transcript,
-  fanOutButtonOpen,
-  currentTissue,
-  tissueStats,
-  onTissueChange,
-  isMaster,
-  masterHeight,
-  currentGene,
-}) => {
-  const allTissues = Array.from(tissueStats.keys()).sort()
-  const maxTissueValue = tissueStats.first()
-  const selectedTissue = currentTissue || 'median-across-all'
-  const padding = 10
-
-  const gtexScale = scaleLinear()
-    .domain([0, maxTissueValue + (maxTissueValue * 0.3)])
-    .range([padding, rightPanelWidth - padding])
-
-  const GtexPlot = () => {
-    const { gtex_tissue_tpms_by_transcript } = transcript
-    const tpm = selectedTissue === 'median-across-all'
-      ? R.median(allTissues.map(tissue => gtex_tissue_tpms_by_transcript[tissue]))
-      : gtex_tissue_tpms_by_transcript[selectedTissue]
-
-    return (
-      <svg height={flipOutExonThickness} width={rightPanelWidth}>
-        <line
-          x1={padding}
-          x2={rightPanelWidth - padding}
-          y1={flipOutExonThickness / 2}
-          y2={flipOutExonThickness / 2}
-          stroke={'black'}
-          strokeDasharray="1.5"
-        />
-        <circle
-          cx={gtexScale(tpm)}
-          cy={flipOutExonThickness / 2}
-          r={5}
-          fill={'black'}
-          onClick={() => onTissueChange('hello')}
-        />
-      </svg>
-    )
-  }
-
-  const GtexPlotAxis = () => {
-    const axisHeight = masterHeight / 3
-    return (
-      <svg height={axisHeight} width={rightPanelWidth}>
-        <line
-          x1={padding}
-          x2={rightPanelWidth - padding}
-          y1={axisHeight - axisHeight / 3}
-          y2={axisHeight - axisHeight / 3}
-          stroke={'black'}
-          strokeWidth={1}
-        />
-        {gtexScale.ticks(5).map((x) => {
-          const xPos = gtexScale(x)
-          return (
-            <g key={`${x}-tick`}>
-              <line
-                x1={xPos}
-                x2={xPos}
-                y1={axisHeight - 5 - axisHeight / 3}
-                y2={axisHeight + 5 - axisHeight / 3}
-                stroke={'black'}
-                key={`${x}-xtick`}
-              />
-              <text
-                x={xPos}
-                y={axisHeight - 6 - axisHeight / 3}
-                textAnchor={'middle'}
-                fontSize={8}
-              >
-                {x}
-              </text>
-            </g>
-          )
-        })}
-      </svg>
-    )
-  }
-  if (isMaster) {
-    const options = allTissues.map(tissue => (
-      <option key={`${tissue}-option`} value={tissue}>
-        {tissueMappings[tissue]} {`(${tissueStats.get(tissue)})`}
-      </option>
-    ))
-    return (
-      <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
-        <TranscriptName>
-          <GtexTitleWrapper>
-            {/* <GtexTitleText>GTEx (mTPM)</GtexTitleText> */}
-            {/* <GtexTitleText>GTEx tissue-specific isoform expression (median TPM)</GtexTitleText> */}
-            <GtexTitleText
-              href={`http://www.gtexportal.org/home/gene/${currentGene}`}
-              target="_blank"
-              >
-              {/* Tissue-specific isoform expression */}
-              Isoform expression
-              <QuestionMark topic={'gtex'} display={'inline'} />
-            </GtexTitleText>
-            <GtexTissueSelect
-              onChange={event => onTissueChange(event.target.value)}
-              value={selectedTissue}
-            >
-              <option key="median-across-all" value="median-across-all">
-                Median across all tissues ({R.median(Array.from(tissueStats.values()))})
-              </option>
-              <optgroup label="Specific tissue">
-                {options}
-              </optgroup>
-            </GtexTissueSelect>
-          </GtexTitleWrapper>
-          <GtexPlotWrapper>
-            <GtexPlotAxis />
-          </GtexPlotWrapper>
-        </TranscriptName>
-      </TranscriptRightPanelWrapper>
-    )
-  }
-
-  return (
-    <TranscriptRightPanelWrapper style={{ width: rightPanelWidth }}>
-      <TranscriptName>
-        <GtexPlot />
-      </TranscriptName>
-    </TranscriptRightPanelWrapper>
-  )
 }
 
 const TranscriptDrawing = ({
@@ -315,7 +145,6 @@ const Transcript = ({
   fanOutButtonOpen,
   transcript,
   currentTissue,
-  maxTissue,
   tissueStats,
   onTissueChange,
   showRightPanel,
@@ -352,6 +181,27 @@ const Transcript = ({
     )
   }
   showLeftPanel = true
+
+  const rightPanel = isMaster
+    ? (
+      <TissueIsoformExpressionPlotHeader
+        currentGene={currentGene}
+        currentTissue={currentTissue}
+        onTissueChange={onTissueChange}
+        tissueStats={tissueStats}
+        width={rightPanelWidth}
+      />
+    )
+    : (
+      <TissueIsoformExpressionPlot
+        currentTissue={currentTissue}
+        height={flipOutExonThickness}
+        tissueStats={tissueStats}
+        transcript={transcript}
+        width={rightPanelWidth}
+      />
+    )
+
   return (
     <TranscriptContainer
       style={{
@@ -381,21 +231,7 @@ const Transcript = ({
           isMaster={isMaster}
         />
       </div>
-      {showRightPanel && fanOutButtonOpen &&
-        <TranscriptRightPanel
-          rightPanelWidth={rightPanelWidth}
-          title={title}
-          fontSize={fontSize}
-          transcript={transcript}
-          currentTissue={currentTissue}
-          maxTissue={maxTissue}
-          tissueStats={tissueStats}
-          onTissueChange={onTissueChange}
-          fanOutButtonOpen={fanOutButtonOpen}
-          isMaster={isMaster}
-          masterHeight={localHeight}
-          currentGene={currentGene}
-        />}
+      {showRightPanel && fanOutButtonOpen && rightPanel}
     </TranscriptContainer>
   )
 }
