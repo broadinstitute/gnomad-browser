@@ -14,7 +14,36 @@ import {
   TissueIsoformExpressionPlot
 } from './GTEx'
 
+
 const flipOutExonThickness = 10
+
+
+const TranscriptLeftAxis = styled.div`
+  display: flex;
+  width: ${props => props.width}px;
+`
+
+const TranscriptName = styled.div`
+  color: black;
+  display: flex;
+  width: 100%;
+`
+
+const TranscriptLink = styled.a`
+  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1);' : 'none;'}
+  border-bottom: ${({ isSelected, isCanonical }) => {
+    if (isSelected) {
+      return '1px solid red'
+    }
+    if (isCanonical) {
+      return '1px solid #000'
+    }
+    return 'none'
+  }};
+  cursor: pointer;
+  text-decoration: none;
+`
+
 
 const TranscriptLeftPanel = ({
   title,
@@ -25,33 +54,6 @@ const TranscriptLeftPanel = ({
   canonicalTranscript,
   onTranscriptNameClick,
 }) => {
-  const TranscriptLeftAxis = styled.div`
-    display: flex;
-    width: 100%; /* Set by Redux */
-  `
-  const TranscriptName = styled.div`
-  display: flex;
-  width: 100%; /* Set by Redux */
-  color: black;
-  `
-
-  const TranscriptLink = styled.a`
-    text-decoration: none;
-    cursor: pointer;
-    background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1);' : 'none;'}
-    border-bottom: ${({ isSelected, isCanonical }) => {{
-      if (isSelected) {
-        return'1px solid red'
-        return'1px solid #000'
-      }
-      if (isCanonical) {
-        return'1px solid #000'
-      }
-      return 'none'
-      }}};
-    ${'' /* border-radius: 3px; */}
-  `
-
   const contents = expandTranscriptButton ||
     <TranscriptLink
       isSelected={currentTranscript === title}
@@ -63,7 +65,7 @@ const TranscriptLeftPanel = ({
       {title}
     </TranscriptLink>
   return (
-    <TranscriptLeftAxis style={{ width: leftPanelWidth }}>
+    <TranscriptLeftAxis width={leftPanelWidth}>
       <TranscriptName style={{ fontSize }}>
         {contents}
       </TranscriptName>
@@ -126,6 +128,15 @@ const TranscriptDrawing = ({
   )
 }
 
+
+const TranscriptContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 3px;
+  padding-top: 3px;
+`
+
+
 const Transcript = ({
   width,
   height,
@@ -155,12 +166,6 @@ const Transcript = ({
   canonicalTranscript,
   strand,
 }) => {
-  const TranscriptContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    padding-bottom: 3px;
-    padding-top: 3px;
-  `
   let localHeight
   if (motionHeight !== undefined) {
     localHeight = motionHeight
@@ -243,6 +248,13 @@ Transcript.propTypes = {
   positionOffset: PropTypes.func,  // eslint-disable-line
 }
 
+
+const TranscriptGroupWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+
 const TranscriptGroup = ({
   transcriptsGrouped,
   fanOutButtonOpen,
@@ -250,10 +262,6 @@ const TranscriptGroup = ({
   finalTranscriptStyles,
   ...rest
 }) => {
-  const TranscriptGroupWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-  `
   const transcriptGroup = (
     <TranscriptGroupWrapper>
       {Object.keys(transcriptsGrouped).map((transcript, index) => {
