@@ -8,13 +8,7 @@ import {
   HUMAN_AUTOSOMES,
 } from '@broad/utilities/src/constants'
 
-
-function randomColor() {
-  const r = Math.floor(Math.random() * 256)
-  const g = Math.floor(Math.random() * 256)
-  const b = Math.floor(Math.random() * 256)
-  return `rgb(${r},${g},${b})`
-}
+import { colorByChromosome } from './colorScales';
 
 
 export const ManhattanPlot = ({
@@ -22,14 +16,13 @@ export const ManhattanPlot = ({
   height,
   includeSexChromosomes,
   onClickPoint,
+  pointColor,
   title,
   width,
 }) => {
   const padding = 60
 
   const plotChromosomes = includeSexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
-  const chromosomeColors = plotChromosomes.reduce((acc, chr) =>
-    ({ ...acc, [chr]: randomColor() }), {})
 
   const chromPositionExtent = plotChromosomes.reduce(
     (acc, chr) => ({ ...acc, [chr]: { min: Infinity, max: -Infinity } }),
@@ -136,7 +129,6 @@ export const ManhattanPlot = ({
   const clickHandler = e => onClickPoint(e.target.getAttribute('data-id'))
 
   const renderedPoints = data.map((dataPoint) => {
-    const color = chromosomeColors[dataPoint.chromosome]
     return (
       <circle
         key={dataPoint.id}
@@ -144,8 +136,7 @@ export const ManhattanPlot = ({
         cx={xScale(chromOffset[dataPoint.chromosome] + dataPoint.pos)}
         cy={yScale(dataPoint['-log10p'])}
         r={2}
-        fill={color}
-        stroke={'black'}
+        fill={pointColor(dataPoint)}
         onClick={clickHandler}
       />
     )
@@ -175,6 +166,7 @@ ManhattanPlot.propTypes = {
   height: PropTypes.number,
   includeSexChromosomes: PropTypes.bool,
   onClickPoint: PropTypes.func,
+  pointColor: PropTypes.func,
   title: PropTypes.string,
   width: PropTypes.number,
 }
@@ -183,6 +175,7 @@ ManhattanPlot.defaultProps = {
   height: 500,
   includeSexChromosomes: false,
   onClickPoint: () => {},
+  pointColor: colorByChromosome(['rgb(139,53,40)', 'rgb(60,100,166)']),
   title: '',
   width: 900,
 }
