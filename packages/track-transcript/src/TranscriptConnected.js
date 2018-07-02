@@ -6,8 +6,6 @@ import {
   currentTissue,
   currentTranscript,
   canonicalTranscript,
-  currentExon,
-  transcripts,
   transcriptsGrouped,
   transcriptFanOut,
   tissueStats,
@@ -23,8 +21,6 @@ const mapStateToProps = state => ({
   currentTissue: currentTissue(state),
   currentTranscript: currentTranscript(state),
   canonicalTranscript: canonicalTranscript(state),
-  currentExon: currentExon(state),
-  transcripts: transcripts(state),
   transcriptsGrouped: transcriptsGrouped(state),
   tissueStats: tissueStats(state),
   transcriptFanOut: transcriptFanOut(state),
@@ -32,7 +28,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onExonClick: bindActionCreators(geneActions.setCurrentExon, dispatch),
   onTissueChange: bindActionCreators(geneActions.setCurrentTissue, dispatch),
   onTranscriptNameClick: bindActionCreators(geneActions.setCurrentTranscript, dispatch),
   transcriptButtonOnClick: bindActionCreators(geneActions.toggleTranscriptFanOut, dispatch),
