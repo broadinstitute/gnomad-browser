@@ -54,7 +54,7 @@ const TranscriptDrawing = ({
   regions,
   xScale,
   positionOffset,
-  isMaster,
+  regionStrokeWidth,
 }) => {
   return (
     <svg
@@ -72,12 +72,6 @@ const TranscriptDrawing = ({
       {regions.map((region) => {
         const start = positionOffset(region.start)
         const stop = positionOffset(region.stop)
-        let localThickness
-        if (isMaster) {
-          localThickness = region.thickness
-        } else {
-          localThickness = flipOutExonThickness
-        }
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (
             <line
@@ -86,7 +80,7 @@ const TranscriptDrawing = ({
               y1={height / 2}
               y2={height / 2}
               stroke={start.color}
-              strokeWidth={localThickness}
+              strokeWidth={regionStrokeWidth || region.thickness}
               key={`${region.start}`}
             />
           )
@@ -112,66 +106,28 @@ const Transcript = ({
   leftPanelWidth,
   regions,
   xScale,
-  title,
   positionOffset,
-  isMaster,
-  fanOut,
   rightPanelWidth,
-  fanOutButtonOpen,
   transcript,
   currentTissue,
   tissueStats,
-  onTissueChange,
   showRightPanel,
-  currentGene,
   onTranscriptNameClick,
   currentTranscript,
   canonicalTranscript,
-  strand,
 }) => {
-  const leftPanelContent = isMaster
-    ? (
-      <TranscriptFlipOutButton
-        fanOutIsOpen={fanOutButtonOpen}
-        strand={strand}
-        onClick={fanOut}
-      />
-    ) : (
-      <TranscriptLink
-        isCanonical={canonicalTranscript === title}
-        isSelected={currentTranscript === title}
-        onClick={() => {
-          onTranscriptNameClick(title)
-        }}
-      >
-        {title}
-      </TranscriptLink>
-    )
-
-  const rightPanel = isMaster
-    ? (
-      <TissueIsoformExpressionPlotHeader
-        currentGene={currentGene}
-        currentTissue={currentTissue}
-        onTissueChange={onTissueChange}
-        tissueStats={tissueStats}
-        width={rightPanelWidth}
-      />
-    )
-    : (
-      <TissueIsoformExpressionPlot
-        currentTissue={currentTissue}
-        height={flipOutExonThickness}
-        tissueStats={tissueStats}
-        transcript={transcript}
-        width={rightPanelWidth}
-      />
-    )
-
   return (
     <TranscriptContainer>
       <TranscriptLeftPanel width={leftPanelWidth}>
-        {leftPanelContent}
+        <TranscriptLink
+          isCanonical={canonicalTranscript === transcript.transcript_id}
+          isSelected={currentTranscript === transcript.transcript_id}
+          onClick={() => {
+            onTranscriptNameClick(transcript.transcript_id)
+          }}
+        >
+          {transcript.transcript_id}
+        </TranscriptLink>
       </TranscriptLeftPanel>
 
       <TranscriptDrawing
@@ -180,10 +136,18 @@ const Transcript = ({
         regions={regions}
         xScale={xScale}
         positionOffset={positionOffset}
-        isMaster={isMaster}
+        regionStrokeWidth={flipOutExonThickness}
       />
 
-      {showRightPanel && fanOutButtonOpen && rightPanel}
+      {showRightPanel && (
+        <TissueIsoformExpressionPlot
+          currentTissue={currentTissue}
+          height={flipOutExonThickness}
+          tissueStats={tissueStats}
+          transcript={transcript}
+          width={rightPanelWidth}
+        />
+      )}
     </TranscriptContainer>
   )
 }
@@ -220,14 +184,33 @@ export default class TranscriptTrack extends Component {
 
   renderCanonicalTranscript() {
     return (
-      <Transcript
-        {...this.props}
-        fanOut={this.props.transcriptButtonOnClick}
-        fanOutButtonOpen={this.props.transcriptFanOut}
-        height={80}
-        isMaster
-        regions={this.props.offsetRegions}
-      />
+      <TranscriptContainer>
+        <TranscriptLeftPanel width={this.props.leftPanelWidth}>
+          <TranscriptFlipOutButton
+            fanOutIsOpen={this.props.transcriptFanOut}
+            strand={this.props.strand}
+            onClick={this.props.transcriptButtonOnClick}
+          />
+        </TranscriptLeftPanel>
+
+        <TranscriptDrawing
+          height={80}
+          positionOffset={this.props.positionOffset}
+          regions={this.props.offsetRegions}
+          width={this.props.width}
+          xScale={this.props.xScale}
+        />
+
+        {this.props.showRightPanel && this.props.transcriptFanOut && (
+          <TissueIsoformExpressionPlotHeader
+            currentGene={this.props.currentGene}
+            currentTissue={this.props.currentTissue}
+            onTissueChange={this.props.onTissueChange}
+            tissueStats={this.props.tissueStats}
+            width={this.props.rightPanelWidth}
+          />
+        )}
+      </TranscriptContainer>
     )
   }
 
@@ -246,9 +229,8 @@ export default class TranscriptTrack extends Component {
         <Transcript
           {...this.props}
           key={transcriptId}
-          title={transcriptId}
           regions={transcriptExonsFiltered}
-          fanOutButtonOpen={this.props.transcriptFanOut}
+          showRightPanel={this.props.showRightPanel && this.props.transcriptFanOut}
           transcript={transcript}
         />
       )
