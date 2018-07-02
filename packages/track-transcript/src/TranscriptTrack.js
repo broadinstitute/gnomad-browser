@@ -193,12 +193,6 @@ Transcript.defaultProps = {
 }
 
 
-const TranscriptGroupWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-
 const TranscriptTrackContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -268,6 +262,10 @@ export default class TranscriptTrack extends Component {
   }
 
   renderAlternateTranscripts() {
+    if (!this.props.transcriptsGrouped || !this.props.transcriptFanOut) {
+      return null
+    }
+
     const alternateTranscriptIds = Object.keys(this.props.transcriptsGrouped)
 
     return alternateTranscriptIds.map((transcriptId) => {
@@ -304,11 +302,7 @@ export default class TranscriptTrack extends Component {
     return (
       <TranscriptTrackContainer>
         {this.renderCanonicalTranscript()}
-        {this.props.transcriptsGrouped && (
-          <TranscriptGroupWrapper>
-            {this.props.transcriptFanOut && this.renderAlternateTranscripts()}
-          </TranscriptGroupWrapper>
-        )}
+        {this.renderAlternateTranscripts()}
       </TranscriptTrackContainer>
     )
   }
