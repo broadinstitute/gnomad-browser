@@ -50,7 +50,7 @@ const appSettings = {
   },
   projectDefaults: {
     startingGene: '',
-    startingVariant: '',
+    startingVariant: null,
     startingPadding: 75,
     startingVariantDataset: 'schizophreniaRareVariants',
     startingQcFilter: false,
