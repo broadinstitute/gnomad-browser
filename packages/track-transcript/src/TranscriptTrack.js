@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -91,6 +90,22 @@ const TranscriptDrawing = ({
   )
 }
 
+TranscriptDrawing.propTypes = {
+  height: PropTypes.number.isRequired,
+  positionOffset: PropTypes.func.isRequired,
+  regions: PropTypes.arrayOf(PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  })).isRequired,
+  regionStrokeWidth: PropTypes.number,
+  width: PropTypes.number.isRequired,
+  xScale: PropTypes.func.isRequired,
+}
+
+TranscriptDrawing.defaultProps = {
+  regionStrokeWidth: undefined,
+}
+
 
 const TranscriptContainer = styled.div`
   display: flex;
@@ -151,12 +166,30 @@ const Transcript = ({
     </TranscriptContainer>
   )
 }
+
 Transcript.propTypes = {
+  canonicalTranscript: PropTypes.string.isRequired,
+  currentTissue: PropTypes.string,
+  currentTranscript: PropTypes.string,
   height: PropTypes.number.isRequired,
-  width: PropTypes.number, // eslint-disable-line
-  leftPanelWidth: PropTypes.number, // eslint-disable-line
-  xScale: PropTypes.func, // eslint-disable-line
-  positionOffset: PropTypes.func,  // eslint-disable-line
+  leftPanelWidth: PropTypes.number.isRequired,
+  onTranscriptNameClick: PropTypes.func.isRequired,
+  positionOffset: PropTypes.func.isRequired,
+  regions: PropTypes.arrayOf(PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  })).isRequired,
+  rightPanelWidth: PropTypes.number.isRequired,
+  showRightPanel: PropTypes.bool.isRequired,
+  tissueStats: PropTypes.object.isRequired,
+  transcript: PropTypes.object.isRequired,
+  width: PropTypes.number.isRequired,
+  xScale: PropTypes.func.isRequired,
+}
+
+Transcript.defaultProps = {
+  currentTissue: null,
+  currentTranscript: null,
 }
 
 
@@ -173,13 +206,33 @@ const TranscriptTrackContainer = styled.div`
 
 
 export default class TranscriptTrack extends Component {
-  static PropTypes = {
+  static propTypes = {
+    canonicalTranscript: PropTypes.string.isRequired,
+    currentGene: PropTypes.string,
+    currentTissue: PropTypes.string,
+    currentTranscript: PropTypes.string,
     height: PropTypes.number.isRequired,
-    width: PropTypes.number, // eslint-disable-line
-    leftPanelWidth: PropTypes.number, // eslint-disable-line
-    rightPanelWidth: PropTypes.number, // eslint-disable-line
-    xScale: PropTypes.func, // eslint-disable-line
-    positionOffset: PropTypes.func,  // eslint-disable-line
+    leftPanelWidth: PropTypes.number.isRequired,
+    offsetRegions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onTissueChange: PropTypes.func.isRequired,
+    onTranscriptNameClick: PropTypes.func.isRequired,
+    positionOffset: PropTypes.func.isRequired,
+    rightPanelWidth: PropTypes.number.isRequired,
+    showRightPanel: PropTypes.bool,
+    strand: PropTypes.string.isRequired,
+    tissueStats: PropTypes.object.isRequired,
+    transcriptButtonOnClick: PropTypes.func.isRequired,
+    transcriptFanOut: PropTypes.bool.isRequired,
+    transcriptsGrouped: PropTypes.object.isRequired,
+    width: PropTypes.number.isRequired,
+    xScale: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    currentGene: null,
+    currentTissue: null,
+    currentTranscript: null,
+    showRightPanel: true,
   }
 
   renderCanonicalTranscript() {
@@ -227,11 +280,21 @@ export default class TranscriptTrack extends Component {
 
       return (
         <Transcript
-          {...this.props}
           key={transcriptId}
+          canonicalTranscript={this.props.canonicalTranscript}
+          currentTissue={this.props.currentTissue}
+          currentTranscript={this.props.currentTranscript}
+          height={this.props.height}
+          leftPanelWidth={this.props.leftPanelWidth}
+          onTranscriptNameClick={this.props.onTranscriptNameClick}
+          positionOffset={this.props.positionOffset}
           regions={transcriptExonsFiltered}
+          rightPanelWidth={this.props.rightPanelWidth}
           showRightPanel={this.props.showRightPanel && this.props.transcriptFanOut}
+          tissueStats={this.props.tissueStats}
           transcript={transcript}
+          xScale={this.props.xScale}
+          width={this.props.width}
         />
       )
     })
