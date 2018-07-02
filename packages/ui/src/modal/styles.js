@@ -47,5 +47,6 @@ export const ModalHeaderCloseButton = styled.button`
 
 
 export const underlayStyle = {
-  paddingTop: '2em',
+  boxSizing: 'border-box',
+  padding: '2em 0',
 }
