@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onTissueChange: bindActionCreators(geneActions.setCurrentTissue, dispatch),
-  onTranscriptNameClick: bindActionCreators(geneActions.setCurrentTranscript, dispatch),
+  setCurrentTranscript: bindActionCreators(geneActions.setCurrentTranscript, dispatch),
   transcriptButtonOnClick: bindActionCreators(geneActions.toggleTranscriptFanOut, dispatch),
 })
 
