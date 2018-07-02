@@ -22,19 +22,22 @@ const TranscriptLeftPanel = styled.div`
 `
 
 
-const TranscriptLink = styled.a`
-  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
-  border-bottom: ${({ isSelected, isCanonical }) => {
+const TranscriptIdButton = styled.button`
+  -webkit-appearance: none;
+  background: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
+  border-color: ${({ isSelected, isCanonical }) => {
     if (isSelected) {
-      return '1px solid red'
+      return 'red'
     }
     if (isCanonical) {
-      return '1px solid #000'
+      return 'black'
     }
-    return 'none'
+    return '#fff0'
   }};
+  border-style: solid;
+  border-width: 0 0 1px 0;
   cursor: pointer;
-  text-decoration: none;
+  padding: 0;
 `
 
 
@@ -127,22 +130,17 @@ const Transcript = ({
   currentTissue,
   tissueStats,
   showRightPanel,
-  onTranscriptNameClick,
   currentTranscript,
   canonicalTranscript,
+  renderTranscriptId,
 }) => {
   return (
     <TranscriptContainer>
       <TranscriptLeftPanel width={leftPanelWidth}>
-        <TranscriptLink
-          isCanonical={canonicalTranscript === transcript.transcript_id}
-          isSelected={currentTranscript === transcript.transcript_id}
-          onClick={() => {
-            onTranscriptNameClick(transcript.transcript_id)
-          }}
-        >
-          {transcript.transcript_id}
-        </TranscriptLink>
+        {renderTranscriptId(transcript.transcript_id, {
+          isCanonical: canonicalTranscript === transcript.transcript_id,
+          isSelected: currentTranscript === transcript.transcript_id,
+        })}
       </TranscriptLeftPanel>
 
       <TranscriptDrawing
@@ -173,12 +171,12 @@ Transcript.propTypes = {
   currentTranscript: PropTypes.string,
   height: PropTypes.number.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
-  onTranscriptNameClick: PropTypes.func.isRequired,
   positionOffset: PropTypes.func.isRequired,
   regions: PropTypes.arrayOf(PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   })).isRequired,
+  renderTranscriptId: PropTypes.func.isRequired,
   rightPanelWidth: PropTypes.number.isRequired,
   showRightPanel: PropTypes.bool.isRequired,
   tissueStats: PropTypes.object.isRequired,
@@ -209,9 +207,10 @@ export default class TranscriptTrack extends Component {
     leftPanelWidth: PropTypes.number.isRequired,
     offsetRegions: PropTypes.arrayOf(PropTypes.object).isRequired,
     onTissueChange: PropTypes.func.isRequired,
-    onTranscriptNameClick: PropTypes.func.isRequired,
     positionOffset: PropTypes.func.isRequired,
+    renderTranscriptId: PropTypes.func,
     rightPanelWidth: PropTypes.number.isRequired,
+    setCurrentTranscript: PropTypes.func.isRequired,
     showRightPanel: PropTypes.bool,
     strand: PropTypes.string.isRequired,
     tissueStats: PropTypes.object.isRequired,
@@ -226,6 +225,7 @@ export default class TranscriptTrack extends Component {
     currentGene: null,
     currentTissue: null,
     currentTranscript: null,
+    renderTranscriptId: undefined,
     showRightPanel: true,
   }
 
@@ -261,6 +261,18 @@ export default class TranscriptTrack extends Component {
     )
   }
 
+  renderTranscriptId = (transcriptId, { isCanonical, isSelected }) => {
+    return (
+      <TranscriptIdButton
+        isCanonical={isCanonical}
+        isSelected={isSelected}
+        onClick={() => this.props.setCurrentTranscript(transcriptId)}
+      >
+        {transcriptId}
+      </TranscriptIdButton>
+    )
+  }
+
   renderAlternateTranscripts() {
     if (!this.props.transcriptsGrouped || !this.props.transcriptFanOut) {
       return null
@@ -287,6 +299,7 @@ export default class TranscriptTrack extends Component {
           onTranscriptNameClick={this.props.onTranscriptNameClick}
           positionOffset={this.props.positionOffset}
           regions={transcriptExonsFiltered}
+          renderTranscriptId={this.props.renderTranscriptId || this.renderTranscriptId}
           rightPanelWidth={this.props.rightPanelWidth}
           showRightPanel={this.props.showRightPanel && this.props.transcriptFanOut}
           tissueStats={this.props.tissueStats}
