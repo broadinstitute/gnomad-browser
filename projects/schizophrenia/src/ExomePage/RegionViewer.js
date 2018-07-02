@@ -29,9 +29,7 @@ import {
 import {
   finalFilteredVariants,
   variantFilter,
-  focusedVariant,
   allVariantsInCurrentDataset,
-  actions as variantActions,
 } from '@broad/redux-variants'
 
 const paddingColor = '#5A5E5C'
@@ -62,20 +60,6 @@ const attributeConfig = {
 }
 
 class SchizophreniaGeneViewer extends PureComponent {
-  componentDidMount() {
-    const {
-      allVariantsInCurrentDataset,
-      focusedVariant,
-      setFocusedVariant,
-    } = this.props
-
-    // HACK display variant with highest allele count to fill out variant section
-    if (!allVariantsInCurrentDataset.has(focusedVariant)) {
-      const maxAc = allVariantsInCurrentDataset.maxBy(variant => variant.get('ac_case'))
-      setFocusedVariant(maxAc.get('variant_id'))
-    }
-  }
-
   render() {
     const {
       gene,
@@ -84,8 +68,6 @@ class SchizophreniaGeneViewer extends PureComponent {
       screenSize,
       variantFilter,
       allVariantsInCurrentDataset,
-      focusedVariant,
-      setFocusedVariant,
       setCurrentTableScrollData,
     } = this.props
 
@@ -175,11 +157,9 @@ export default connect(
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
     variantFilter: variantFilter(state),
-    focusedVariant: focusedVariant(state),
     allVariantsInCurrentDataset: allVariantsInCurrentDataset(state),
   }),
   dispatch => ({
-    setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
     setCurrentTableScrollData: data => dispatch(tableActions.setCurrentTableScrollData(data))
   })
 )(SchizophreniaGeneViewer)
