@@ -15,17 +15,13 @@ import {
 const flipOutExonThickness = 10
 
 
-const TranscriptLeftAxis = styled.div`
-  display: flex;
-  width: ${props => props.width}px;
-`
-
-const TranscriptName = styled.div`
+const TranscriptLeftPanel = styled.div`
   color: black;
   display: flex;
   font-size: 11px;
-  width: 100%;
+  width: ${props => props.width}px;
 `
+
 
 const TranscriptLink = styled.a`
   background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
@@ -42,19 +38,6 @@ const TranscriptLink = styled.a`
   text-decoration: none;
 `
 
-
-const TranscriptLeftPanel = ({
-  children,
-  width,
-}) => {
-  return (
-    <TranscriptLeftAxis width={width}>
-      <TranscriptName>
-        {children}
-      </TranscriptName>
-    </TranscriptLeftAxis>
-  )
-}
 
 TranscriptLeftPanel.propTypes = {
   children: PropTypes.node,
