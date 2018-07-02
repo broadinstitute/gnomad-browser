@@ -340,9 +340,11 @@ const NavigatorTrack = (props) => {
   )
 }
 NavigatorTrack.propTypes = {
-  height: PropTypes.number.isRequired,
+  height: PropTypes.number,
   width: PropTypes.number,  // eslint-disable-line
 }
-NavigatorTrack.defaultProps = {}
+NavigatorTrack.defaultProps = {
+  height: 60,
+}
 
 export default NavigatorTrack
