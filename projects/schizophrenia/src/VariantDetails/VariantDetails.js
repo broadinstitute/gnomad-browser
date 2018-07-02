@@ -3,7 +3,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { singleVariantData } from '@broad/redux-variants'
+import { actions as variantActions, singleVariantData, focusedVariant } from '@broad/redux-variants'
+import { InfoModal } from '@broad/ui'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
 import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
@@ -12,10 +13,7 @@ import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
 const VariantContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 16px;
-  margin: 30px 50px 100px 0;
   min-height: 300px;
-  width: 80%;
 `
 
 const Column = styled.div``
@@ -104,10 +102,6 @@ function formatAlleleFrequency(frequency) {
 }
 
 const Variant = ({ variant }) => {
-  if (!variant) {
-    return null
-  }
-
   const transcriptHGVSc = {}
   if (variant.hgvsc) {
     variant.hgvsc.split(',').forEach((s) => {
@@ -126,7 +120,6 @@ const Variant = ({ variant }) => {
 
   return (
     <VariantContainer>
-      <h1>{variant.variant_id}</h1>
       <Link href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>View in gnomAD</Link>
       <Columns>
         <Column>
@@ -229,11 +222,23 @@ const Variant = ({ variant }) => {
 }
 
 Variant.propTypes = {
-  variant: PropTypes.object,
+  variant: PropTypes.object.isRequired,
 }
 
-Variant.defaultProps = {
-  variant: null,
-}
 
-export default connect(state => ({ variant: singleVariantData(state) }))(Variant)
+export default connect(
+  state => ({
+    variantId: focusedVariant(state),
+    variant: singleVariantData(state),
+  }),
+  dispatch => ({
+    clearFocusedVariant: () => dispatch(variantActions.setFocusedVariant(null)),
+  })
+)(({ clearFocusedVariant, variant, variantId }) => variantId && (
+  <InfoModal
+    onRequestClose={clearFocusedVariant}
+    title={variantId}
+  >
+    {variant && <Variant variant={variant} />}
+  </InfoModal>
+))
