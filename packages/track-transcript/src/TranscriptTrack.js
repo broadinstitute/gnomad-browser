@@ -28,7 +28,7 @@ const TranscriptName = styled.div`
 `
 
 const TranscriptLink = styled.a`
-  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1);' : 'none;'}
+  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
   border-bottom: ${({ isSelected, isCanonical }) => {
     if (isSelected) {
       return '1px solid red'
@@ -44,37 +44,25 @@ const TranscriptLink = styled.a`
 
 
 const TranscriptLeftPanel = ({
-  title,
-  leftPanelWidth,
-  expandTranscriptButton,
-  currentTranscript,
-  canonicalTranscript,
-  onTranscriptNameClick,
+  children,
+  width,
 }) => {
-  const contents = expandTranscriptButton ||
-    <TranscriptLink
-      isSelected={currentTranscript === title}
-      isCanonical={canonicalTranscript === title}
-      onClick={() => {
-        onTranscriptNameClick(title)
-      }}
-    >
-      {title}
-    </TranscriptLink>
   return (
-    <TranscriptLeftAxis width={leftPanelWidth}>
+    <TranscriptLeftAxis width={width}>
       <TranscriptName>
-        {contents}
+        {children}
       </TranscriptName>
     </TranscriptLeftAxis>
   )
 }
+
 TranscriptLeftPanel.propTypes = {
-  title: PropTypes.string,
-  leftPanelWidth: PropTypes.number.isRequired,
+  children: PropTypes.node,
+  width: PropTypes.number.isRequired,
 }
+
 TranscriptLeftPanel.defaultProps = {
-  title: '',
+  children: undefined,
 }
 
 const TranscriptDrawing = ({
@@ -158,16 +146,24 @@ const Transcript = ({
   canonicalTranscript,
   strand,
 }) => {
-  let expandTranscriptButton
-  if (isMaster) {
-    expandTranscriptButton = (
+  const leftPanelContent = isMaster
+    ? (
       <TranscriptFlipOutButton
         fanOutIsOpen={fanOutButtonOpen}
         strand={strand}
         onClick={fanOut}
       />
+    ) : (
+      <TranscriptLink
+        isCanonical={canonicalTranscript === title}
+        isSelected={currentTranscript === title}
+        onClick={() => {
+          onTranscriptNameClick(title)
+        }}
+      >
+        {title}
+      </TranscriptLink>
     )
-  }
 
   const rightPanel = isMaster
     ? (
@@ -191,14 +187,9 @@ const Transcript = ({
 
   return (
     <TranscriptContainer>
-      <TranscriptLeftPanel
-        leftPanelWidth={leftPanelWidth}
-        title={title}
-        onTranscriptNameClick={onTranscriptNameClick}
-        currentTranscript={currentTranscript}
-        canonicalTranscript={canonicalTranscript}
-        expandTranscriptButton={expandTranscriptButton}
-      />
+      <TranscriptLeftPanel width={leftPanelWidth}>
+        {leftPanelContent}
+      </TranscriptLeftPanel>
 
       <TranscriptDrawing
         width={width}
