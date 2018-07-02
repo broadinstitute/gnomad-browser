@@ -67,5 +67,9 @@ export {
 } from './genePage/geneInfoStyles'
 
 export {
+  InfoModal
+} from './modal/InfoModal'
+
+export {
   withTooltip
 } from './tooltip/withTooltip'
