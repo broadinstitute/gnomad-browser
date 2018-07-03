@@ -296,7 +296,6 @@ export default class TranscriptTrack extends Component {
           currentTranscript={this.props.currentTranscript}
           height={this.props.height}
           leftPanelWidth={this.props.leftPanelWidth}
-          onTranscriptNameClick={this.props.onTranscriptNameClick}
           positionOffset={this.props.positionOffset}
           regions={transcriptExonsFiltered}
           renderTranscriptId={this.props.renderTranscriptId || this.renderTranscriptId}
