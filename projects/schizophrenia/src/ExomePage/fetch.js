@@ -2,7 +2,7 @@ import fetch from 'graphql-fetch'
 
 const API_URL = process.env.GNOMAD_API_URL
 
-export const fetchSchz = (geneName, options, url = API_URL) => {
+export const fetchSchz = (geneName) => {
   const query = `{
     gene(gene_name: "${geneName}") {
       gene_id
@@ -13,6 +13,8 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
       stop
       xstart
       xstop
+      canonical_transcript
+      strand
       schzGeneResult {
         gene_name
         description
@@ -181,11 +183,6 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
   }
 }`
 
-  return new Promise((resolve, reject) => {
-    fetch(url)(query)
-      .then(data => resolve(data.data.gene))
-      .catch((error) => {
-        reject(error)
-      })
-  })
+  return fetch(API_URL)(query)
+    .then(data => data.data.gene)
 }
