@@ -1,8 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
-import { actions as geneActions } from '@broad/redux-genes'
+
 
 const HomePageWrapper = styled.section`
   display: flex;
@@ -87,7 +85,7 @@ const imageSettings = {
 
 }
 
-const HomePage = ({ setCurrentGene }) => {
+const HomePage = () => {
   return (
     <HomePageWrapper>
       <TitleGroup>
@@ -148,12 +146,5 @@ const HomePage = ({ setCurrentGene }) => {
     </HomePageWrapper>
   )
 }
-HomePage.propTypes = {
-  setCurrentGene: PropTypes.func.isRequired,
-}
 
-export default connect(null, (dispatch) => {
-  return {
-    setCurrentGene: geneName => dispatch(geneActions.setCurrentGene(geneName)),
-  }
-})(HomePage)
+export default HomePage
