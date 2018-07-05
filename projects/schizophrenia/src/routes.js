@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom'
 import GeneResults from './GeneResults'
 import HomePage from './HomePage'
 import ExomePage from './ExomePage'
-// import ManhattanPage from './Manhattan'
 import TopBar from './TopBar'
 
 const Root = styled.div`
@@ -30,7 +29,6 @@ const App = () => (
       <Switch>
         <Route exact path="/results" component={GeneResults} />
         <Route path="/gene/:gene" component={ExomePage} />
-        {/* <Route exact path="/manhattan" component={ManhattanPage} /> */}
       </Switch>
     </MainPanel>
   </Root>
