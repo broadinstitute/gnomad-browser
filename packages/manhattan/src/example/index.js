@@ -1,6 +1,6 @@
 import React from 'react'
 
-import data from '@resources/gwas-eg.json'  // eslint-disable-line
+import data from '@resources/gwas-eg.json'
 
 import ManhattanPlot from '../index'
 

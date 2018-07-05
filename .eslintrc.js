@@ -1,3 +1,6 @@
+const path = require('path')
+
+
 module.exports = {
   extends: 'airbnb',
   env: {
@@ -41,4 +44,11 @@ module.exports = {
       experimentalObjectRestSpread: true,
     },
   },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: path.resolve(__dirname, 'webpack.config.js'),
+      }
+    }
+  }
 }
