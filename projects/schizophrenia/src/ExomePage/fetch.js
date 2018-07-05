@@ -66,24 +66,6 @@ export const fetchSchz = (geneName, options, url = API_URL) => {
         variant_id
         xpos
       }
-      schizophreniaGwasVariants {
-        variant_id
-        chr
-        pos
-        ref
-        alt
-        n_study
-        study
-        p_value
-        scz_af
-        hc_af
-        odds_ratio
-        se
-        qp
-        i_squared
-        mhtp
-        comment
-      }
       transcripts {
         _id
         start
