@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { List, Record } from 'immutable'
-import Highlighter from 'react-highlight-words'
 
 import { Table } from '@broad/table'
 

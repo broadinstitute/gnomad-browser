@@ -7,41 +7,33 @@
   "license": "MIT",
   "scripts": {
     "start": "GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack-dev-server --port 8012 --hot --config ../../webpack.config.js"
-
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@broad/gene-page": "*",
+    "@broad/redux-genes": "*",
+    "@broad/redux-variants": "*",
     "@broad/region": "*",
     "@broad/table": "*",
-    "@broad/track-coverage": "*",
     "@broad/track-navigator": "*",
     "@broad/track-transcript": "*",
     "@broad/track-variant": "*",
     "@broad/ui": "*",
-    "@broad/utilities": "*",
-    "d3-array": "^1.2.0",
-    "d3-scale": "^1.0.6",
-    "d3-shape": "^1.2.0",
+    "apollo-cache-inmemory": "^1.1.1",
+    "apollo-client": "^2.0.3",
+    "apollo-link-http": "^1.2.0",
     "graphql-fetch": "^1.0.1",
-    "isomorphic-fetch": "^2.2.1",
+    "graphql-tag": "^2.5.0",
+    "immutable": "^4.0.0-rc.9",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
     "react": "^15.5.4",
+    "react-apollo": "^2.0.1",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0",
-    "redux-logger": "^3.0.1",
-    "redux-throttle": "^0.1.1",
-    "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1",
-    "styled-components": "^2.1.2",
-    "throttle-debounce": "^1.0.1"
-  },
-  "devDependencies": {
-    "react-hot-loader": "^3.0.0-beta.6",
-    "@broad/api": "*"
-  }}
+    "styled-components": "^2.1.2"
+  }
+}
