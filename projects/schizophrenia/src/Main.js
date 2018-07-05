@@ -99,34 +99,7 @@ const appSettings = {
       xpos: null,
       datasets: new List(['schizophreniaRareVariants']),
     },
-    schizophreniaGwasVariants: {
-      id: null,
-      variant_id: null,
-      chr: null,
-      pos: null,
-      xpos: null,
-      ref: null,
-      alt: null,
-      n_study: null,
-      study: null,
-      p_value: null,
-      scz_af: null,
-      hc_af: null,
-      odds_ratio: null,
-      se: null,
-      qp: null,
-      i_squared: null,
-      mhtp: null,
-      comment: null,
-      '-log10p': null,
-    },
   },
-  // combinedDatasets: {
-  //   schizophreniaCombinedVariants: {
-  //     sources: ['schizophreniaExomeVariants', 'schizophreniaGwas'],
-  //     combineKeys: {}
-  //   }
-  // }
 }
 
 const store = createGenePageStore(appSettings)
