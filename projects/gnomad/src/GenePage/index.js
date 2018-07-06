@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { withRouter, Route } from 'react-router-dom'
 
 import { GenePageHoc } from '@broad/redux-genes'
+import { actions as variantActions } from '@broad/redux-variants'
 import { VariantTable } from '@broad/table'
 
 import {
@@ -53,16 +55,17 @@ const BottomButtonSection = styled.div`
   margin-top: 20px;
 `
 
-// const loading_gifs = [
-//   'http://www.skirlrecords.com/sites/all/themes/valx/imgs/loading.gif',
-//   'https://thumbs.gfycat.com/ClearcutGoldenKittiwake-size_restricted.gif',
-//   'https://i2.wp.com/media.boingboing.net/wp-content/uploads/2015/10/tumblr_nlohpxGdBi1tlivlxo1_12801.gif?w=970',
-// ]
+const ExportVariantsButton = connect(
+  null,
+  dispatch => ({
+    onClick: () => dispatch(variantActions.exportVariantsToCsv(exportFetch)),
+  })
+)(ClassicExacButton)
+
 
 const GenePageConnected = ({
   gene,
   isFetching,
-  exportVariantsToCsv,
 }) => {
   if (isFetching || !gene) {
     return (
@@ -93,9 +96,9 @@ const GenePageConnected = ({
           render={() => <VariantTable tableConfig={tableConfig} />}
         />
         <BottomButtonSection>
-          <ClassicExacButton onClick={exportVariantsToCsv}>
+          <ExportVariantsButton>
             Export variants
-          </ClassicExacButton>
+          </ExportVariantsButton>
         </BottomButtonSection>
       </TableSection>
       {/* <Footer>
@@ -118,4 +121,4 @@ GenePageConnected.defaultProps = {
   gene: null,
 }
 
-export default withRouter(GenePageHoc(GenePageConnected, fetchGnomadGenePage, exportFetch))
+export default withRouter(GenePageHoc(GenePageConnected, fetchGnomadGenePage))
