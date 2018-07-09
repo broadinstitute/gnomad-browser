@@ -51,7 +51,16 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
     this.props.fetchGeneData(this.props.geneName, this.props.transcriptId)
       .then((geneData) => {
-        const loadError = !geneData ? 'Gene not found' : null
+        let loadError = null
+        if (!geneData) {
+          loadError = 'Gene not found'
+        }
+        if (
+          this.props.transcriptId
+          && !geneData.transcripts.map(t => t.transcript_id).includes(this.props.transcriptId)
+        ) {
+          loadError = 'Transcript not found'
+        }
         if (!this.mounted) {
           return
         }
