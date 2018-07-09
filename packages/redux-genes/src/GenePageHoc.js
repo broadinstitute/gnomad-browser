@@ -112,14 +112,9 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
 const mapDispatchToProps = geneFetchFunction => dispatch => ({
   fetchGeneData(geneName, transcriptId) {
-    return dispatch((thunkDispatch, getState) => {
+    return dispatch((thunkDispatch) => {
       thunkDispatch(geneActions.setCurrentGene(geneName))
       thunkDispatch(geneActions.setCurrentTranscript(transcriptId))
-
-      const state = getState()
-      if (state.genes.allGeneNames[geneName]) {
-        return Promise.resolve(state.genes.byGeneName.get(geneName))
-      }
 
       thunkDispatch(geneActions.requestGeneData(geneName))
       return geneFetchFunction(geneName, transcriptId)
