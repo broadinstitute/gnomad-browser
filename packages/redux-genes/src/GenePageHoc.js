@@ -1,80 +1,138 @@
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable no-shadow */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { actions as variantActions } from '@broad/redux-variants'
-import { actions as tableActions } from '@broad/table'
-import { currentGene, currentTranscript, isFetching, geneData, geneNotFound, actions as geneActions } from './index'
+import { Loading } from '@broad/ui'
+
+import { actions as geneActions } from './genes'
+
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
-    currentGene: PropTypes.string,
-    gene: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    fetchGeneIfNeeded: PropTypes.func.isRequired,
-    resetSearchVariants: PropTypes.func.isRequired,
+    geneName: PropTypes.string.isRequired,
+    loadGeneData: PropTypes.func.isRequired,
+    transcriptId: PropTypes.string,
   }
 
   static defaultProps = {
-    gene: null,
-    currentGene: null,
+    transcriptId: undefined,
+  }
+
+  state = {
+    geneData: null,
+    isLoading: false,
+    loadError: null,
   }
 
   componentDidMount() {
-    const { currentGene, match, fetchGeneIfNeeded } = this.props
-    fetchGeneIfNeeded(currentGene, match, history)
+    this.mounted = true
+    this.loadGeneData()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { fetchGeneIfNeeded, currentGene, currentTranscript, history } = this.props
-    if (currentGene !== nextProps.currentGene ||
-      currentTranscript !== nextProps.currentTranscript
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.geneName !== prevProps.geneName
+      || this.props.transcriptId !== prevProps.transcriptId
     ) {
-      // if(this.props.route.path == nextProps.route.path) return false
-      history.push(`/gene/${nextProps.currentGene}`)
-      fetchGeneIfNeeded(nextProps.currentGene)
-      this.props.resetSearchVariants()
-      this.props.resetFilter()
+      this.loadGeneData()
     }
   }
 
+  componentWillUnmount() {
+    this.mounted = false
+  }
+
+  loadGeneData() {
+    this.setState({
+      isLoading: true,
+      loadError: null,
+    })
+
+    this.props.loadGeneData(this.props.geneName, this.props.transcriptId)
+      .then((geneData) => {
+        const loadError = !geneData ? 'Gene not found' : null
+        if (!this.mounted) {
+          return
+        }
+        this.setState({
+          geneData,
+          isLoading: false,
+          loadError,
+        })
+      })
+      .catch(() => {
+        if (!this.mounted) {
+          return
+        }
+        this.setState({
+          geneData: null,
+          isLoading: false,
+          loadError: 'Unable to load gene data'
+        })
+      })
+  }
+
   render() {
-    return <ComposedComponent {...this.props} />
+    if (this.state.isLoading) {
+      return (
+        <Loading>
+          <h1>Loading...</h1>
+        </Loading>
+      )
+    }
+
+    if (this.state.loadError) {
+      return (
+        <Loading>
+          <h1>{this.state.loadError}</h1>
+        </Loading>
+      )
+    }
+
+    if (this.state.geneData) {
+      return (
+        <ComposedComponent gene={this.state.geneData} />
+      )
+    }
+
+    return null
   }
 }
 
-const mapStateToProps = state => ({
-  isFetching: isFetching(state),
-  geneNotFound: geneNotFound(state),
-  gene: geneData(state),
-  currentGene: currentGene(state),
-  currentTranscript: currentTranscript(state),
+
+const mapDispatchToProps = geneFetchFunction => dispatch => ({
+  loadGeneData(geneName, transcriptId) {
+    return dispatch((thunkDispatch, getState) => {
+      thunkDispatch(geneActions.setCurrentGene(geneName))
+      thunkDispatch(geneActions.setCurrentTranscript(transcriptId))
+
+      const state = getState()
+      if (state.genes.allGeneNames[geneName]) {
+        return Promise.resolve(state.genes.byGeneName.get(geneName))
+      }
+
+      thunkDispatch(geneActions.requestGeneData(geneName))
+      return geneFetchFunction(geneName, transcriptId)
+        .then((geneData) => {
+          thunkDispatch(geneActions.receiveGeneData(geneName, geneData))
+
+          // Reset variant filters when loading a new gene
+          thunkDispatch(variantActions.searchVariantsRaw(''))
+          thunkDispatch(variantActions.setVariantFilter('all'))
+
+          return geneData
+        })
+    })
+  },
 })
 
-const mapDispatchToProps = geneFetchFunction => (dispatch) => {
-  return {
-    fetchGeneIfNeeded: (currentGene, match) => dispatch(
-      geneActions.fetchGeneIfNeeded(currentGene, match, geneFetchFunction)
-    ),
-    resetSearchVariants: () => dispatch(
-      variantActions.searchVariantsRaw('')
-    ),
-    resetFilter: () => dispatch(
-      variantActions.setVariantFilter('all')
-    ),
-  }
-}
 
 const GenePageHOC = (
   ComposedComponent,
   geneFetchFunction
 ) => connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps(geneFetchFunction)
 )(GenePageContainer(ComposedComponent))
 
