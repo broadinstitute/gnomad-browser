@@ -10,8 +10,8 @@ import { actions as geneActions } from './genes'
 
 const GenePageContainer = ComposedComponent => class GenePage extends Component {
   static propTypes = {
+    fetchGeneData: PropTypes.func.isRequired,
     geneName: PropTypes.string.isRequired,
-    loadGeneData: PropTypes.func.isRequired,
     transcriptId: PropTypes.string,
   }
 
@@ -49,7 +49,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
       loadError: null,
     })
 
-    this.props.loadGeneData(this.props.geneName, this.props.transcriptId)
+    this.props.fetchGeneData(this.props.geneName, this.props.transcriptId)
       .then((geneData) => {
         const loadError = !geneData ? 'Gene not found' : null
         if (!this.mounted) {
@@ -102,7 +102,7 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
 
 const mapDispatchToProps = geneFetchFunction => dispatch => ({
-  loadGeneData(geneName, transcriptId) {
+  fetchGeneData(geneName, transcriptId) {
     return dispatch((thunkDispatch, getState) => {
       thunkDispatch(geneActions.setCurrentGene(geneName))
       thunkDispatch(geneActions.setCurrentTranscript(transcriptId))
