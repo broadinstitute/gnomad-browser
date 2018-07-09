@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
@@ -64,6 +65,24 @@ const RegionViewerWrapper = styled.div`
   margin-left: 10px;
   width: 100%;
 `
+
+
+const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
+  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
+  border-bottom: ${({ isSelected, isCanonical }) => {
+    if (isSelected) {
+      return '1px solid red'
+    }
+    if (isCanonical) {
+      return '1px solid black'
+    }
+    return 'none'
+  }};
+  color: rgb(70, 130, 180);
+  cursor: pointer;
+  text-decoration: none;
+`
+
 
 const GeneViewer = ({
   gene,
@@ -137,6 +156,15 @@ const GeneViewer = ({
         />
         <TranscriptTrackConnected
           height={12}
+          renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
+            <TranscriptLink
+              to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
+              isCanonical={isCanonical}
+              isSelected={isSelected}
+            >
+              {transcriptId}
+            </TranscriptLink>
+          )}
           showRightPanel={!smallScreen}
         />
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&

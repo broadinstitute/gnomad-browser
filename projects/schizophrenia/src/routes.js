@@ -28,7 +28,10 @@ const App = () => (
       <Route path="/" exact component={HomePage} />
       <Switch>
         <Route exact path="/results" component={GeneResults} />
-        <Route path="/gene/:gene" component={ExomePage} />
+        <Route
+          path="/gene/:gene"
+          render={({ match }) => <ExomePage geneName={match.params.gene} />}
+        />
       </Switch>
     </MainPanel>
   </Root>
