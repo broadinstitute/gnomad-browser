@@ -1,10 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 
-import { currentGene, actions as geneActions } from '@broad/redux-genes'
 
 const TopBarContainer = styled.div`
   display: flex;
@@ -70,7 +68,7 @@ const MenuItem = styled.a`
   }
 `
 
-const TopBar = ({ setCurrentGene }) => {
+const TopBar = ({ history }) => {
   return (
     <TopBarContainer>
       <Logo>
@@ -82,7 +80,8 @@ const TopBar = ({ setCurrentGene }) => {
         </SearchIconContainer>
         <form onSubmit={(event) => {
           event.preventDefault()
-          setCurrentGene(event.target.elements[0].value)
+          const geneName = event.target.elements[0].value
+          history.push(`/gene/${geneName}`)
         }}
         >
           <SearchInput
@@ -123,19 +122,10 @@ const TopBar = ({ setCurrentGene }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    currentGene: currentGene(state),
-  }
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setCurrentGene: geneName => dispatch(geneActions.setCurrentGene(geneName)),
-  }
-}
-
 TopBar.propTypes = {
-  setCurrentGene: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
+export default withRouter(TopBar)

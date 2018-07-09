@@ -1,15 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { withRouter, Route } from 'react-router-dom'
 
 import { GenePageHoc } from '@broad/redux-genes'
 import { actions as variantActions } from '@broad/redux-variants'
 import { VariantTable } from '@broad/table'
 
 import {
-  Loading,
   GenePage,
   Summary,
   TableSection,
@@ -21,7 +18,6 @@ import { HelpLink } from '@broad/help'
 import GeneInfo from './GeneInfo'
 import Settings from '../Settings'
 import GeneViewer from './RegionViewer'
-import VariantPage from '../VariantPage'
 
 import tableConfig from '../tableConfig'
 import { fetchGnomadGenePage } from './fetch'
@@ -63,18 +59,7 @@ const ExportVariantsButton = connect(
 )(ClassicExacButton)
 
 
-const GenePageConnected = ({
-  gene,
-  isFetching,
-}) => {
-  if (isFetching || !gene) {
-    return (
-      <Loading>
-        {/* <img src={loading_gifs[Math.floor(Math.random() * loading_gifs.length)]} alt=""/> */}
-        <h1>Loading...</h1>
-      </Loading>
-    )
-  }
+const GenePageConnected = () => {
   return (
     <GenePage>
       <Summary>
@@ -82,19 +67,8 @@ const GenePageConnected = ({
       </Summary>
       <GeneViewer />
       <TableSection>
-        {/* <SectionTitle>Variant table</SectionTitle> */}
         <Settings />
-        <Route path={'/gene/:gene/:variantId'} component={VariantPage} />
-        {/* <Route
-          exact
-          path="/gene/:gene"
-          component={Table}
-        /> */}
-        <Route
-          exact
-          path="/gene/:gene"
-          render={() => <VariantTable tableConfig={tableConfig} />}
-        />
+        <VariantTable tableConfig={tableConfig} />
         <BottomButtonSection>
           <ExportVariantsButton>
             Export variants
@@ -113,12 +87,4 @@ const GenePageConnected = ({
   )
 }
 
-GenePageConnected.propTypes = {
-  gene: PropTypes.object,
-  isFetching: PropTypes.bool.isRequired,
-}
-GenePageConnected.defaultProps = {
-  gene: null,
-}
-
-export default withRouter(GenePageHoc(GenePageConnected, fetchGnomadGenePage))
+export default GenePageHoc(GenePageConnected, fetchGnomadGenePage)
