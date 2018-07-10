@@ -27,43 +27,6 @@ export const actions = {
     regionId,
     regionData: Immutable.fromJS(regionData),
   }),
-
-  fetchPageDataByRegionName (regionId, regionFetchFunction) {
-    return (dispatch) => {
-      dispatch(actions.requestRegionData(regionId))
-      regionFetchFunction(regionId)
-        .then((regionData) => {
-          dispatch(actions.receiveRegionData(regionId, regionData))
-        })
-    }
-  },
-
-  shouldFetchRegion (state, currentRegion) {
-    const region = state.regions.allRegionNames[currentRegion]
-    if (!region) {
-      return true
-    }
-    if (state.regions.isFetching) {
-      return false
-    }
-    console.log('fetching')
-    return false
-  },
-
-  fetchRegionIfNeeded (currentRegion, match, regionFetchFunction) {
-    if (match) {
-      if (match.params.regionId) {
-        return (dispatch) => {
-          dispatch(actions.setCurrentRegion(match.params.regionId))
-        }
-      }
-    }
-    return (dispatch, getState) => {  // eslint-disable-line
-      if (actions.shouldFetchRegion(getState(), currentRegion)) {
-        return dispatch(actions.fetchPageDataByRegionName(currentRegion, regionFetchFunction))
-      }
-    }
-  }
 }
 
 export default function createRegionReducer({

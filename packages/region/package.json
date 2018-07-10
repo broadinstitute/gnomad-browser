@@ -8,6 +8,8 @@
   ],
   "dependencies": {
     "@broad/redux-genes": "*",
+    "@broad/redux-variants": "*",
+    "@broad/ui": "*",
     "@broad/utilities": "*",
     "react-apollo": "^2.0.1",
     "react-redux": "^5.0.6"
