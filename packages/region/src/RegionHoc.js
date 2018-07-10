@@ -1,87 +1,106 @@
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable no-shadow */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { currentGene } from '@broad/redux-genes'
+import { actions as variantActions } from '@broad/redux-variants'
+import { Loading } from '@broad/ui'
 
-import {
-  actions as variantActions,
-} from '@broad/redux-variants'
+import { actions as regionActions } from './regionRedux'
 
-import {
-  currentRegion,
-  regionData,
-  isFetching,
-  actions as regionActions
-} from './index'
 
 const RegionPageContainer = ComposedComponent => class RegionPage extends Component {
   static propTypes = {
-    currentRegion: PropTypes.string.isRequired,
-    currentGene: PropTypes.string.isRequired,
-    regionData: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    fetchRegionIfNeeded: PropTypes.func.isRequired,
-    setVariantDataset: PropTypes.func,
+    fetchRegionData: PropTypes.func.isRequired,
+    regionId: PropTypes.string.isRequired,
   }
-  static defaultProps = {
+
+  state = {
+    isLoading: false,
+    loadError: null,
     regionData: null,
-    setVariantDataset: () => {},
   }
 
   componentDidMount() {
-    const { currentRegion, match, fetchRegionIfNeeded } = this.props
-    fetchRegionIfNeeded(currentRegion, match, history)
-    this.props.setVariantDataset()
+    this.mounted = true
+    this.loadRegionData()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { fetchRegionIfNeeded, currentRegion, currentGene, history } = this.props
-    if (currentRegion !== nextProps.currentRegion) {
-      history.push(`/region/${nextProps.currentRegion}`)
-      fetchRegionIfNeeded(nextProps.currentRegion)
-    }
-    if (currentGene !== nextProps.currentGene) {
-      history.push(`/gene/${nextProps.currentGene}`)
-      location.reload()
-    }
+  componentWillUnmount() {
+    this.mounted = false
+  }
+
+  loadRegionData() {
+    this.setState({
+      isLoading: true,
+      loadError: null,
+    })
+
+    this.props.fetchRegionData(this.props.regionId)
+      .then(
+        (regionData) => {
+          if (!this.mounted) {
+            return
+          }
+          this.setState({
+            isLoading: false,
+            regionData,
+          })
+        },
+        () => {
+          if (!this.mounted) {
+            return
+          }
+          this.setState({
+            isLoading: false,
+            loadError: 'Unable to load region data',
+          })
+        }
+      )
   }
 
   render() {
-    return <ComposedComponent {...this.props} />
+    if (this.state.isLoading) {
+      return (
+        <Loading><h1>Loading...</h1></Loading>
+      )
+    }
+
+    if (this.state.loadError) {
+      return (
+        <Loading><h1>{this.state.loadError}</h1></Loading>
+      )
+    }
+
+    if (this.state.regionData) {
+      return (
+        <ComposedComponent regionData={this.state.regionData} />
+      )
+    }
+
+    return null
   }
 }
 
-const mapStateToProps = state => ({
-  isFetching: isFetching(state),
-  regionData: regionData(state),
-  currentRegion: currentRegion(state),
-  currentGene: currentGene(state),
-})
 
-const mapDispatchToProps = (regionFetchFunction, variantDataset) => (dispatch) => {
-  return {
-    fetchRegionIfNeeded: (currentRegion, match) => dispatch(
-      regionActions.fetchRegionIfNeeded(currentRegion, match, regionFetchFunction)
-    ),
-    setVariantDataset: () => dispatch(
-      variantActions.setSelectedVariantDataset(variantDataset)
-    )
-  }
-}
-
-const RegionHOC = (
+export const RegionHoc = (
   ComposedComponent,
   regionFetchFunction,
   variantDataset
 ) => connect(
-  mapStateToProps,
-  mapDispatchToProps(regionFetchFunction, variantDataset)
-)(RegionPageContainer(ComposedComponent))
+  null,
+  dispatch => ({
+    fetchRegionData(regionId) {
+      return dispatch((thunkDispatch) => {
+        thunkDispatch(regionActions.setCurrentRegion(regionId))
+        thunkDispatch(variantActions.setSelectedVariantDataset(variantDataset))
 
-export default RegionHOC
+        thunkDispatch(regionActions.requestRegionData(regionId))
+        return regionFetchFunction(regionId)
+          .then((regionData) => {
+            thunkDispatch(regionActions.receiveRegionData(regionId, regionData))
+            return regionData
+          })
+      })
+    }
+  })
+)(RegionPageContainer(ComposedComponent))
