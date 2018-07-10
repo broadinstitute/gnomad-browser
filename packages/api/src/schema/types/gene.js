@@ -32,7 +32,7 @@ import {
 import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import * as fromExacVariant from './exacElasticVariant'
-import clinvarType, { lookupClinvarVariantsByGeneName } from './clinvar'
+import clinvarType, { lookupClinvarVariantsByGeneId } from './clinvar'
 
 import * as fromRegionalConstraint from './regionalConstraint'
 
@@ -172,7 +172,7 @@ const geneType = new GraphQLObjectType({
     clinvar_variants: {
       type: new GraphQLList(clinvarType),
       resolve: (obj, args, ctx) =>
-        lookupClinvarVariantsByGeneName(ctx.database.elastic, obj.gene_name),
+        lookupClinvarVariantsByGeneId(ctx.database.elastic, obj.gene_id),
     },
     transcript: {
       type: transcriptType,
