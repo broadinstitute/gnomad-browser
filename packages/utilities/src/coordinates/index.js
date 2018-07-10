@@ -155,10 +155,27 @@ export const calculateOffsetRegions = (
 
 export const calculatePositionOffset = R.curry((regions, position) => {
   const lastRegionBeforePosition = R.findLast(region => region.start <= position)(regions)
-  const region = R.defaultTo(regions[0])(lastRegionBeforePosition)
+
+  if (lastRegionBeforePosition) {
+    // Position is within a region
+    if (position < lastRegionBeforePosition.stop) {
+      return {
+        offsetPosition: position - lastRegionBeforePosition.offset,
+        color: lastRegionBeforePosition.color,
+      }
+    }
+
+    // Position is between regions
+    return {
+      offsetPosition: lastRegionBeforePosition.stop - lastRegionBeforePosition.offset,
+      color: lastRegionBeforePosition.color,
+    }
+  }
+
+  // Position is before first region
   return {
-    offsetPosition: position - region.offset,
-    color: region.color,
+    offsetPosition: regions[0].start - regions[0].offset,
+    color: regions[0].color,
   }
 })
 
