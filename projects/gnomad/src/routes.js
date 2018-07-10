@@ -38,7 +38,11 @@ const App = () => (
           path="/gene/:gene"
           render={({ match }) => <GenePage geneName={match.params.gene} />}
         />
-        <Route exact path="/region/:regionId" component={RegionPage} />
+        <Route
+          exact
+          path="/region/:regionId"
+          render={({ match }) => <RegionPage regionId={match.params.regionId} />}
+        />
       </Switch>
       {/* <Route path="/variant/:variant" component={GenePage} /> */}
       {/* <Route path="/rsid/:rsid" component={GenePage} /> */}

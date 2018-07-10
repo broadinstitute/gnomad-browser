@@ -1,13 +1,14 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
 
 import CoverageTrack from '@broad/track-coverage'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import StackedBarTrack from '@broad/track-stacked-bar'
 import { GenesTrack } from '@broad/track-genes'
 
-import { actions as geneActions } from '@broad/redux-genes'
 import { screenSize } from '@broad/ui'
 import { RegionViewer, regionData, attributeConfig } from '@broad/region'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
@@ -23,8 +24,8 @@ import { getCoverageConfig } from '../GenePage/RegionViewer'
 const RegionViewerConnected = ({
   regionData,
   allVariants,
+  history,
   selectedVariantDataset,
-  onGeneClick,
   screenSize,
   variantFilter,
 }) => {
@@ -103,11 +104,17 @@ const RegionViewerConnected = ({
           yMax={110}
           totalBp={totalBp}
         />
-        <GenesTrack onGeneClick={onGeneClick} genes={genes} />
+
+        <GenesTrack
+          genes={genes}
+          onGeneClick={geneName => history.push(`/gene/${geneName}`)}
+        />
+
         <VariantAlleleFrequencyTrack
           title={`${datasetTranslations[selectedVariantDataset]}\n${consequenceTranslations[variantFilter]}\n(${allVariants.size})`}
           variants={variantsReversed.toJS()}
         />
+
         {showStacked &&
           <StackedBarTrack height={150} data={buckets} />
         }
@@ -119,24 +126,24 @@ const RegionViewerConnected = ({
 RegionViewerConnected.propTypes = {
   regionData: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
-  onGeneClick: PropTypes.func,
+  history: PropTypes.object.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
   screenSize: PropTypes.object.isRequired,
 }
 RegionViewerConnected.defaultProps = {
   coverageStyle: null,
-  onGeneClick: () => {},
 }
 
-export default connect(
-  state => ({
-    regionData: regionData(state),
-    allVariants: finalFilteredVariants(state),
-    selectedVariantDataset: selectedVariantDataset(state),
-    screenSize: screenSize(state),
-    variantFilter: variantFilter(state),
-  }),
-  dispatch => ({
-    onGeneClick: geneName => dispatch(geneActions.setCurrentGene(geneName)),
-  })
+
+export default compose(
+  withRouter,
+  connect(
+    state => ({
+      regionData: regionData(state),
+      allVariants: finalFilteredVariants(state),
+      selectedVariantDataset: selectedVariantDataset(state),
+      screenSize: screenSize(state),
+      variantFilter: variantFilter(state),
+    })
+  )
 )(RegionViewerConnected)

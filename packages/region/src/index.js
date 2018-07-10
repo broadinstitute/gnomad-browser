@@ -16,9 +16,7 @@ export {
   attributeConfig,
 } from './regionViewerStyles'
 
-export {
-  default as RegionHoc,
-} from './RegionHoc'
+export { RegionHoc } from './RegionHoc'
 
 export {
   default as RegionViewer,
