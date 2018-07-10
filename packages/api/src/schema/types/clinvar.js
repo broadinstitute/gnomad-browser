@@ -1,6 +1,7 @@
 import {
-  GraphQLObjectType,
   GraphQLFloat,
+  GraphQLInt,
+  GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
 
@@ -9,81 +10,62 @@ import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 
 const clinvarType = new GraphQLObjectType({
   name: 'ClinvarType',
-  fields: () => ({
+  fields: {
+    allele_id: { type: GraphQLInt },
     chrom: { type: GraphQLString },
-    pos: { type: GraphQLFloat },
-    xpos: { type: GraphQLFloat },
-    ref: { type: GraphQLString },
-    alt: { type: GraphQLString },
-    variant_id: { type: GraphQLString },
-    measureset_type: { type: GraphQLString },
-    measureset_id: { type: GraphQLString },
-    allele_id: { type: GraphQLString },
-    symbol: { type: GraphQLString },
-    hgvsc: { type: GraphQLString },
-    hgvsp: { type: GraphQLString },
-    molecular_consequence: { type: GraphQLString },
     clinical_significance: { type: GraphQLString },
-    pathogenic: { type: GraphQLString },
-    benign: { type: GraphQLString },
-    inflicted: { type: GraphQLString },
+    domains: { type: GraphQLString },
+    gene_ids: { type: GraphQLString },
+    main_transcript_amino_acids: { type: GraphQLString },
+    main_transcript_biotype: { type: GraphQLString },
+    main_transcript_canonical: { type: GraphQLInt },
+    main_transcript_category: { type: GraphQLString },
+    main_transcript_cdna_end: { type: GraphQLInt },
+    main_transcript_cdna_start: { type: GraphQLInt },
+    main_transcript_codons: { type: GraphQLString },
+    main_transcript_distance: { type: GraphQLInt },
+    main_transcript_domains: { type: GraphQLString },
+    main_transcript_exon: { type: GraphQLString },
+    main_transcript_gene_id: { type: GraphQLString },
+    main_transcript_gene_symbol: { type: GraphQLString },
+    main_transcript_gene_symbol_source: { type: GraphQLString },
+    main_transcript_hgnc_id: { type: GraphQLString },
+    main_transcript_hgvs: { type: GraphQLString },
+    main_transcript_hgvsc: { type: GraphQLString },
+    main_transcript_hgvsp: { type: GraphQLString },
+    main_transcript_lof: { type: GraphQLString },
+    main_transcript_lof_filter: { type: GraphQLString },
+    main_transcript_lof_flags: { type: GraphQLString },
+    main_transcript_lof_info: { type: GraphQLString },
+    main_transcript_major_consequence: { type: GraphQLString },
+    main_transcript_major_consequence_rank: { type: GraphQLInt },
+    main_transcript_protein_id: { type: GraphQLString },
+    main_transcript_transcript_id: { type: GraphQLString },
+    pos: { type: GraphQLFloat },
+    ref: { type: GraphQLString },
     review_status: { type: GraphQLString },
-    gold_stars: { type: GraphQLString },
-    all_submitters: { type: GraphQLString },
-    all_traits: { type: GraphQLString },
-    all_pmids: { type: GraphQLString },
-    inheritance_modes: { type: GraphQLString },
-    age_of_onset: { type: GraphQLString },
-    prevalence: { type: GraphQLString },
-    disease_mechanism: { type: GraphQLString },
-    origin: { type: GraphQLString },
-  }),
+    transcript_consequence_terms: { type: GraphQLString },
+    transcript_ids: { type: GraphQLString },
+    variant_id: { type: GraphQLString },
+    xpos: { type: GraphQLFloat },
+  },
 })
 
 export default clinvarType
 
 
-export async function lookupClinvarVariantsByGeneName(client, geneName) {
-  const fields = [
-    'chrom',
-    'pos',
-    'ref',
-    'alt',
-    'MEASURESET_TYPE',
-    'MEASURESET_ID',
-    'ALLELE_ID',
-    'SYMBOL',
-    'HGVS_C',
-    'HGVS_P',
-    'MOLECULAR_CONSEQUENCE',
-    'CLINICAL_SIGNIFICANCE',
-    'PATHOGENIC',
-    'BENIGN',
-    'CONFLICTED',
-    'REVIEW_STATUS',
-    'GOLD_STARS',
-    'ALL_SUBMITTERS',
-    'ALL_TRAITS',
-    'ALL_PMIDS',
-    'INHERITANCE_MODES',
-    'AGE_OF_ONSET',
-    'PREVALENCE',
-    'DISEASE_MECHANISM',
-    'ORIGIN',
-  ]
-
-  const esVariants = await fetchAllSearchResults(
+export function lookupClinvarVariantsByGeneId(client, geneId) {
+  return fetchAllSearchResults(
     client,
     {
-      index: 'clinvar',
+      index: 'clinvar_grch37',
       type: 'variant',
-      _source: fields,
       body: {
         query: {
           bool: {
-            must: [
-              { term: { SYMBOL: geneName } },
-              { exists: { field: 'HGVS_P' } },
+            filter: [
+              { term: { gene_ids: geneId } },
+              { exists: { field: 'main_transcript_hgvsp' } },
             ],
           },
         },
@@ -93,34 +75,4 @@ export async function lookupClinvarVariantsByGeneName(client, geneName) {
       },
     }
   )
-
-  return esVariants.map(esVariant => ({
-    age_of_onset: esVariant.AGE_OF_ONSET,
-    all_submitters: esVariant.ALL_SUBMITTERS,
-    all_pmids: esVariant.ALL_PMIDS,
-    all_traits: esVariant.ALL_TRAITS,
-    allele_id: esVariant.ALLELE_ID,
-    alt: esVariant.alt,
-    benign: esVariant.BENIGN,
-    chrom: esVariant.chrom,
-    clinical_significance: esVariant.CLINICAL_SIGNIFICANCE,
-    disease_mechanism: esVariant.DISEASE_MECHANISM,
-    gold_stars: esVariant.GOLD_STARS,
-    hgvsc: esVariant.HGVS_C,
-    hgvsp: esVariant.HGVS_P,
-    inflicted: esVariant.CONFLICTED,
-    inheritance_modes: esVariant.INHERITANCE_MODES,
-    measureset_type: esVariant.MEASURESET_TYPE,
-    measureset_id: esVariant.MEASURESET_ID,
-    molecular_consequence: esVariant.MOLECULAR_CONSEQUENCE,
-    origin: esVariant.ORIGIN,
-    pathogenic: esVariant.PATHOGENIC,
-    pos: esVariant.pos,
-    prevalence: esVariant.PREVALENCE,
-    ref: esVariant.ref,
-    review_status: esVariant.REVIEW_STATUS,
-    symbol: esVariant.SYMBOL,
-    variant_id: `${esVariant.chrom}-${esVariant.pos}-${esVariant.ref}-${esVariant.alt}`,
-    xpos: esVariant.xpos,
-  }))
 }
