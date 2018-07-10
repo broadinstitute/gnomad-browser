@@ -65,7 +65,6 @@ export function lookupClinvarVariantsByGeneId(client, geneId) {
           bool: {
             filter: [
               { term: { gene_ids: geneId } },
-              { exists: { field: 'main_transcript_hgvsp' } },
             ],
           },
         },
