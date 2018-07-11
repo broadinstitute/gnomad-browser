@@ -7,6 +7,9 @@ import {
   MaterialCheckbox,
 } from '../index'
 
+import SegmentedControlExample from './SegmentedControlExample'
+
+
 const ExampleContainer = styled.section`
   display: flex;
   flex-direction: column;
@@ -32,6 +35,9 @@ const UiExample = () => {
       </ExampleItem>
       <ExampleItem>
         <MaterialCheckbox label="Checkbox" />
+      </ExampleItem>
+      <ExampleItem>
+        <SegmentedControlExample />
       </ExampleItem>
     </ExampleContainer>
   )
