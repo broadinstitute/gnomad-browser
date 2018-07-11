@@ -8,6 +8,7 @@ import {
 } from '../index'
 
 import SegmentedControlExample from './SegmentedControlExample'
+import TooltipExample from './TooltipExample'
 
 
 const ExampleContainer = styled.section`
@@ -38,6 +39,9 @@ const UiExample = () => {
       </ExampleItem>
       <ExampleItem>
         <SegmentedControlExample />
+      </ExampleItem>
+      <ExampleItem>
+        <TooltipExample />
       </ExampleItem>
     </ExampleContainer>
   )
