@@ -64,7 +64,7 @@ export function lookupClinvarVariantsByGeneId(client, geneId) {
         query: {
           bool: {
             filter: [
-              { term: { gene_ids: geneId } },
+              { term: { main_transcript_gene_id: geneId } },
             ],
           },
         },
