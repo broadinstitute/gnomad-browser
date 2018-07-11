@@ -20,6 +20,10 @@ class TooltipAnchor extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.removeTooltip()
+  }
+
   referenceElementRef = (el) => {
     this.referenceElement = el
   }
