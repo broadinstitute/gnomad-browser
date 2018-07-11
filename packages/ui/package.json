@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "mousetrap": "^1.6.1",
+    "polished": "^1.9.3",
     "react-aria-modal": "^2.12.2",
     "react-popper": "^1.0.0"
   },

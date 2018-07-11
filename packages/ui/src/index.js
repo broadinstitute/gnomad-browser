@@ -70,6 +70,8 @@ export {
   InfoModal
 } from './modal/InfoModal'
 
+export { SegmentedControl } from './SegmentedControl'
+
 export {
   withTooltip
 } from './tooltip/withTooltip'
