@@ -102,7 +102,7 @@ const GeneInfo = ({
             <GeneAttributeValue>
               <a
                 target="_blank"
-                href={`http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start - 1}-${stop}&hgt.customText=http://personal.broadinstitute.org/ruderfer/exac/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed`}
+                href={`http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start - 1}-${stop}`}
               >
                 {`${chrom}:${start}:${stop}`}
               </a>
