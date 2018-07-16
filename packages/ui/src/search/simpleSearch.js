@@ -4,26 +4,43 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const SearchWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
   font-size: 14px;
-  align-items: center;
+  position: relative;
+  width: 210px;
 `
 
 const SearchInput = styled.input`
-  height: 25px;
-  width: 210px;
-  border: 0;
-  border-bottom: 1px solid #000;
-  background-color: transparent;
-  text-indent: 5px;
-  -webkit-transition: width 0.4s ease-in-out;
+  appearance: none;
+  background: none;
+  border-color: #000;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  box-sizing: border-box;
+  padding: 0.25em 0.75em;
   transition: width 0.4s ease-in-out;
+  width: 100%;
+
+  &:focus {
+    border-color: rgb(70, 130, 180);
+    box-shadow: 0 0.3em 0.2em -0.2em rgba(70, 130, 180, 0.5);
+    padding-right: 1.75em;
+  }
 `
 
 const ClearSearchButton = styled.button`
-  margin-left: 5px;
-  height: 20px;
+  appearance: none;
+  background: none;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 1.5em;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &:active, &:hover {
+    color: rgb(40, 94, 142);
+  }
 `
 
 const SEARCH_KEYBOARD_SHORTCUTS = ['command+f', 'meta+s']
@@ -87,10 +104,13 @@ export class Search extends Component {
           type="text"
           value={this.state.value}
         />
-        <ClearSearchButton
-          onClick={this.onClear}
-          type="button"
-        >Clear</ClearSearchButton>
+        {this.state.value && (
+          <ClearSearchButton
+            aria-label="Clear"
+            onClick={this.onClear}
+            type="button"
+          >&times;</ClearSearchButton>
+        )}
       </SearchWrapper>
     )
   }
