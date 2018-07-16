@@ -89,6 +89,12 @@ export class Search extends Component {
     this.props.onChange('')
   }
 
+  onKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      this.onClear()
+    }
+  }
+
   inputRef = (el) => {
     this.input = el
   }
@@ -99,6 +105,7 @@ export class Search extends Component {
         <SearchInput
           autoComplete="off"
           onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
           placeholder={this.props.placeholder}
           innerRef={this.inputRef}
           type="text"
