@@ -57,19 +57,12 @@ const VariantExacClassic = ({
   circleStrokeWidth,
   variant,
   afScale,
-  disableScale,
 }) => {
   const exacClassicColors = {
     all: '#757575',
     missense: '#F0C94D',
     lof: '#FF583F',
     synonymous: 'green',
-  }
-  let ry = afScale(variant.allele_freq)
-  let rx = 3
-  if (disableScale) {
-    ry = 5
-    rx = 5
   }
   const localColor = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
   if (variant.allele_freq === 0) {
@@ -89,8 +82,8 @@ const VariantExacClassic = ({
     <ellipse
       cx={xScale(offsetPosition)}
       cy={yPosition}
-      ry={ry}
-      rx={rx}
+      ry={afScale(variant.allele_freq)}
+      rx={3}
       opacity={0.7}
       fill={localColor}
       strokeWidth={circleStrokeWidth || 0}
