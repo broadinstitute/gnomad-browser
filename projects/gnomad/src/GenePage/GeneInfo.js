@@ -93,7 +93,8 @@ const GeneInfo = ({
                 target="_blank"
                 href={`http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${currentTranscript}`}
               >
-                {currentTranscript || `${canonical_transcript} (canonical)`}
+                {currentTranscript || canonical_transcript}
+                {(currentTranscript === null || currentTranscript === canonical_transcript) && ' (canonical)'}
               </a>
             </GeneAttributeValue>
             <GeneAttributeValue>
