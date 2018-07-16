@@ -90,42 +90,6 @@ VariantAxis.propTypes = {
   leftPanelWidth: PropTypes.number.isRequired,
 }
 
-const VariantAlleleFrequency = ({
-  xScale,
-  offsetPosition,
-  yPosition,
-  color,
-  // circleRadius,
-  circleStroke,
-  circleStrokeWidth,
-  variant,
-  afScale,
-}) => {
-  if (variant.allele_freq === 0) {
-    // TODO add back hover effect
-    return (
-      <circle
-        cx={xScale(offsetPosition)}
-        cy={yPosition}
-        r={1}
-        fill={'white'}
-        strokeWidth={circleStrokeWidth || 0}
-        stroke={circleStroke || 0}
-      />
-    )
-  }
-  return (
-    <circle
-      cx={xScale(offsetPosition)}
-      cy={yPosition}
-      r={afScale(variant.allele_freq)}
-      fill={color}
-      strokeWidth={circleStrokeWidth || 0}
-      stroke={circleStroke || 0}
-    />
-  )
-}
-
 const VariantExacClassic = ({
   xScale,
   offsetPosition,
@@ -198,42 +162,13 @@ const VariantCircle = ({
   )
 }
 
-const VariantTick = ({
-  xScale,
-  offsetPosition,
-  yPosition,
-  color,
-  tickHeight,
-  tickWidth,
-  tickStroke,
-  tickStrokeWidth,
-}) => {
-  return (
-    <rect
-      x={xScale(offsetPosition)}
-      y={yPosition}
-      width={tickWidth}
-      height={tickHeight * 2}
-      fill={color}
-      strokeWidth={tickStrokeWidth || 0}
-      stroke={tickStroke || 0}
-    />
-  )
-}
-
 const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
   switch (markerType) {
-    case 'af':
-      return <VariantAlleleFrequency key={markerKey} {...rest} />
     case 'circle':
       return <VariantCircle key={markerKey} {...rest} />
-    case 'tick':
-      return <VariantTick key={markerKey} {...rest} />
     case 'exacClassic':
-      return <VariantExacClassic key={markerKey} {...rest} />
-    // case
     default:
-      return <VariantCircle key={markerKey} {...rest} />
+      return <VariantExacClassic key={markerKey} {...rest} />
   }
 }
 

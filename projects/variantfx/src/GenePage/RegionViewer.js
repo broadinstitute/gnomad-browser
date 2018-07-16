@@ -75,6 +75,7 @@ const GeneRegion = ({
     circleRadius: 3,
     circleStroke: 'black',
     circleStrokeWidth: 1,
+    markerType: 'circle',
     yPositionSetting: 'center',
     fillColor: '#757575',
   }
