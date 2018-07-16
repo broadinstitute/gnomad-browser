@@ -4,6 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
+import { withTooltip } from '@broad/ui'
 import { tissueMappings } from '@broad/utilities/src/constants/gtex'
 
 
@@ -144,6 +145,13 @@ TissueIsoformExpressionPlotHeader.defaultProps = {
 }
 
 
+const WithExpressionTooltip = withTooltip(
+  ({ expression, transcriptId }) => (
+    <span><strong>{transcriptId}:</strong> {expression}</span>
+  )
+)
+
+
 export function TissueIsoformExpressionPlot({
   currentTissue,
   height,
@@ -178,12 +186,17 @@ export function TissueIsoformExpressionPlot({
           stroke={'black'}
           strokeDasharray="1.5"
         />
-        <circle
-          cx={gtexScale(tpm)}
-          cy={height / 2}
-          r={5}
-          fill={'black'}
-        />
+        <WithExpressionTooltip
+          expression={tpm}
+          transcriptId={transcript.transcript_id}
+        >
+          <circle
+            cx={gtexScale(tpm)}
+            cy={height / 2}
+            r={5}
+            fill={'black'}
+          />
+        </WithExpressionTooltip>
       </svg>
     </Wrapper>
   )
