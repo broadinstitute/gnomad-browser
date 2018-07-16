@@ -1,10 +1,4 @@
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-
-/* eslint-disable import/extensions */
-
+import { median } from 'd3-array'
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
@@ -187,8 +181,22 @@ export const canonicalTranscript = createSelector(
 
 export const transcripts = createSelector(
   [geneData],
-  geneData => geneData.get('transcripts').toJS()
+  geneData => geneData.get('transcripts').toJS().map((transcript) => {
+    const { gtex_tissue_tpms_by_transcript, ...rest } = transcript
+    const tissueExpressionValues = Object.values(gtex_tissue_tpms_by_transcript)
+
+    return {
+      ...rest,
+      gtexTissueExpression: {
+        aggregate: {
+          median: median(tissueExpressionValues),
+        },
+        individual: gtex_tissue_tpms_by_transcript,
+      },
+    }
+  })
 )
+
 export const transcriptsGrouped = createSelector(
   [transcripts],
   (transcripts) => {
@@ -204,11 +212,11 @@ export const transcriptsGrouped = createSelector(
 export const tissueStats = createSelector(
   [transcripts],
   (transcripts) => {
-    const maxValuesForTissue = transcripts[0].gtex_tissue_tpms_by_transcript
+    const maxValuesForTissue = transcripts[0].gtexTissueExpression.individual
     const tissues = Object.keys(maxValuesForTissue)
     transcripts.forEach((transcript) => {
       tissues.forEach((tissue) => {
-        const nextValue = transcript.gtex_tissue_tpms_by_transcript[tissue]
+        const nextValue = transcript.gtexTissueExpression.individual[tissue]
         if (nextValue > maxValuesForTissue[tissue]) {
           maxValuesForTissue[tissue] = nextValue
         }
