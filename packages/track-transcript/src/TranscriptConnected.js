@@ -6,9 +6,9 @@ import {
   currentTissue,
   currentTranscript,
   canonicalTranscript,
+  maxTissueExpressions,
   transcriptsGrouped,
   transcriptFanOut,
-  tissueStats,
   strand,
   actions as geneActions,
 } from '@broad/redux-genes'
@@ -21,8 +21,8 @@ const mapStateToProps = state => ({
   currentTissue: currentTissue(state),
   currentTranscript: currentTranscript(state),
   canonicalTranscript: canonicalTranscript(state),
+  maxTissueExpressions: maxTissueExpressions(state),
   transcriptsGrouped: transcriptsGrouped(state),
-  tissueStats: tissueStats(state),
   transcriptFanOut: transcriptFanOut(state),
   strand: strand(state),
 })
