@@ -48,7 +48,6 @@ export const markerExacClassic = {
   circleRadius: 3,
   circleStroke: 'black',
   circleStrokeWidth: 0.5,
-  yPositionSetting: 'center',
   fillColor: '#757575',
   afMax: 0.001,
 }
