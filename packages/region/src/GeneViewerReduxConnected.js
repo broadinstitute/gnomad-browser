@@ -110,8 +110,6 @@ class GeneViewer extends PureComponent {
             uterus
             vagina
             wholeBlood
-            transcriptId
-            geneId
           }
         }
       }

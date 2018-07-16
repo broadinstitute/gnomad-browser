@@ -209,8 +209,6 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
           uterus
           vagina
           wholeBlood
-          transcriptId
-          geneId
         }
       }
     }
