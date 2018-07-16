@@ -46,14 +46,19 @@ export function TissueIsoformExpressionPlotHeader({
   onTissueChange,
   width,
 }) {
-  const allTissues = Object.keys(maxTissueExpressions.individual).sort()
-  const maxTissueValue = Object.values(maxTissueExpressions.individual).reduce((a, b) => Math.max(a, b), -Infinity)
   const selectedTissue = currentTissue || 'median-across-all'
+  const maxExpressionValue = selectedTissue === 'median-across-all'
+    ? maxTissueExpressions.aggregate.median
+    : maxTissueExpressions.individual[selectedTissue]
+
+  const allTissues = Object.keys(maxTissueExpressions.individual).sort()
+
   const padding = 10
 
   const gtexScale = scaleLinear()
-    .domain([0, maxTissueValue + (maxTissueValue * 0.3)])
+    .domain([0, maxExpressionValue])
     .range([padding, width - padding])
+    .nice()
 
   const plotAxis = (
     <svg height={30} width={width}>
@@ -146,13 +151,17 @@ export function TissueIsoformExpressionPlot({
   transcript,
   width,
 }) {
-  const maxTissueValue = Object.values(maxTissueExpressions.individual).reduce((a, b) => Math.max(a, b), -Infinity)
   const selectedTissue = currentTissue || 'median-across-all'
+  const maxExpressionValue = selectedTissue === 'median-across-all'
+    ? maxTissueExpressions.aggregate.median
+    : maxTissueExpressions.individual[selectedTissue]
+
   const padding = 10
 
   const gtexScale = scaleLinear()
-    .domain([0, maxTissueValue + (maxTissueValue * 0.3)])
+    .domain([0, maxExpressionValue])
     .range([padding, width - padding])
+    .nice()
 
   const tpm = selectedTissue === 'median-across-all'
     ? transcript.gtexTissueExpression.aggregate.median
