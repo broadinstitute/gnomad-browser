@@ -1,6 +1,5 @@
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
-import R from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -115,7 +114,7 @@ export function TissueIsoformExpressionPlotHeader({
           value={selectedTissue}
         >
           <option key="median-across-all" value="median-across-all">
-            Median across all tissues ({R.median(Array.from(tissueStats.values()))})
+            Median across all tissues
           </option>
           <optgroup label="Specific tissue">
             {options}
@@ -147,7 +146,6 @@ export function TissueIsoformExpressionPlot({
   currentTissue,
   tissueStats,
 }) {
-  const allTissues = Array.from(tissueStats.keys()).sort()
   const maxTissueValue = tissueStats.first()
   const selectedTissue = currentTissue || 'median-across-all'
   const padding = 10
@@ -156,10 +154,9 @@ export function TissueIsoformExpressionPlot({
     .domain([0, maxTissueValue + (maxTissueValue * 0.3)])
     .range([padding, width - padding])
 
-  const { gtex_tissue_tpms_by_transcript } = transcript
   const tpm = selectedTissue === 'median-across-all'
-    ? R.median(allTissues.map(tissue => gtex_tissue_tpms_by_transcript[tissue]))
-    : gtex_tissue_tpms_by_transcript[selectedTissue]
+    ? transcript.gtexTissueExpression.aggregate.median
+    : transcript.gtexTissueExpression.individual[selectedTissue]
 
   return (
     <Wrapper width={width}>
