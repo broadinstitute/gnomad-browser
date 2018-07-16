@@ -2,12 +2,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { scaleLinear, scaleLog } from 'd3-scale'
-import { max, min } from 'd3-array'
+import { scaleLog } from 'd3-scale'
 
 import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
-
-const yPad = 10
 
 const Axis = ({ title }) => {
   return <div>{title}</div>
@@ -16,33 +13,8 @@ Axis.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
-const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
+const VariantAxis = ({ title, height, leftPanelWidth }) => {
   const [dataset, subset, variant, count] = title.split('|')
-  const YTicks = trackYScale ? () => {
-    return (
-      <g>
-        {trackYScale.ticks().map((t) => {
-          return (
-            <g key={t}>
-              <line
-                x1={leftPanelWidth - 10}
-                x2={leftPanelWidth - 5}
-                y1={trackYScale(t)}
-                y2={trackYScale(t)}
-                stroke={'black'}
-              />
-              <text
-                x={leftPanelWidth - 30}
-                y={trackYScale(t) + 5}
-              >
-                {t}
-              </text>
-            </g>
-          )
-        })}
-      </g>
-    )
-  } : null
   const YAxis = () => {
     return dataset ? (
       <svg width={leftPanelWidth} height={height}>
@@ -67,7 +39,6 @@ const VariantAxis = ({ title, height, leftPanelWidth, trackYScale }) => {
         >
           {count}
         </text>
-        {trackYScale && <YTicks />}
       </svg>
     ) : (
       <svg width={leftPanelWidth} height={height}>
@@ -172,32 +143,9 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
   }
 }
 
-const setYPosition = (height, ySetting, markerConfig, variant, trackYScale) => {
-  const maxHeight = height - yPad
-  const minHeight = yPad
-  switch (ySetting) {
-    case 'random':
-      return Math.floor((Math.random() * (maxHeight - minHeight)) + minHeight)
-    case 'center':
-      return Math.floor((maxHeight + minHeight) / 2)
-    case 'attribute':
-      return trackYScale(variant[markerConfig.yPositionAttribute])
-    default:
-      return Math.floor((Math.random() * (maxHeight - minHeight)) + minHeight)
-  }
-}
-
 const lofColors = {
   HC: '#FF583F',
   LC: '#F0C94D',
-}
-
-function getTrackYScale (markerConfig, variants, height) {
-  const yData = variants.map(variant => variant[markerConfig.yPositionAttribute])
-  const yScale = scaleLinear()
-    .domain([min(yData), max(yData) + (max(yData) * 0.1)])
-    .range([height - yPad, yPad])
-  return yScale
 }
 
 const VariantTrack = ({
@@ -211,11 +159,6 @@ const VariantTrack = ({
   color,
   ...rest
 }) => {
-  const trackYScale = markerConfig.yPositionSetting === 'attribute' ?
-    getTrackYScale(markerConfig, variants, height) : null
-  const localTitle = markerConfig.yPositionSetting === 'attribute' ?
-    markerConfig.yPositionAttribute : title
-
   const VariantTrackContainer = styled.div`
     display: flex;
     align-items: center;
@@ -229,8 +172,7 @@ const VariantTrack = ({
       <VariantAxis
         height={height}
         leftPanelWidth={leftPanelWidth}
-        title={localTitle}
-        trackYScale={trackYScale}
+        title={title}
       />
       <div>
         <svg
@@ -240,18 +182,11 @@ const VariantTrack = ({
           {variants.toJS().map((variant, index) => {
             const {
               markerType,
-              yPositionSetting,
               fillColor,
               afMax,
             } = markerConfig
 
-            const yPosition = setYPosition(
-              height,
-              yPositionSetting,
-              markerConfig,
-              variant,
-              trackYScale
-            )
+            const yPosition = Math.floor(height / 2)
 
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
@@ -303,7 +238,6 @@ VariantTrack.defaultProps = {
     radius: 3,
     stroke: 'black',
     strokeWidth: 1,
-    yPositionSetting: 'random',
     fillColor: null,
   },
 }
