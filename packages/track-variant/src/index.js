@@ -96,7 +96,7 @@ const VariantCircle = ({
   xScale,
   offsetPosition,
   yPosition,
-  color,
+  fillColor,
   circleRadius,
   circleStroke,
   circleStrokeWidth,
@@ -106,7 +106,7 @@ const VariantCircle = ({
       cx={xScale(offsetPosition)}
       cy={yPosition}
       r={circleRadius || 2}
-      fill={color}
+      fill={fillColor}
       strokeWidth={circleStrokeWidth || 0}
       stroke={circleStroke || 0}
     />
@@ -123,10 +123,6 @@ const getVariantMarker = ({ markerType, markerKey, ...rest }) => {
   }
 }
 
-const lofColors = {
-  HC: '#FF583F',
-  LC: '#F0C94D',
-}
 
 const VariantTrack = ({
   title,
@@ -162,7 +158,6 @@ const VariantTrack = ({
           {variants.toJS().map((variant, index) => {
             const {
               markerType,
-              fillColor,
               afMax,
             } = markerConfig
 
@@ -170,7 +165,6 @@ const VariantTrack = ({
 
             const regionViewerAttributes = positionOffset(variant.pos)
             const markerKey = `${title.replace(' ', '_')}-${index}-${markerType}`
-            const localColor = fillColor === 'lof' ? lofColors[variant.first_lof_flag] : '#757575'
 
             // if (regionViewerAttributes === 0) return  // TODO: what is this for
             const afScale =
@@ -186,7 +180,6 @@ const VariantTrack = ({
               ...regionViewerAttributes,
               ...rest,
               ...markerConfig,
-              color: localColor,
               markerKey,
               yPosition,
               variant,
@@ -218,7 +211,7 @@ VariantTrack.defaultProps = {
     radius: 3,
     stroke: 'black',
     strokeWidth: 1,
-    fillColor: null,
+    fillColor: '#757575',
   },
 }
 
