@@ -2,7 +2,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import R from 'ramda'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { max, min } from 'd3-array'
 
@@ -259,7 +258,7 @@ const lofColors = {
 }
 
 function getTrackYScale (markerConfig, variants, height) {
-  const yData = R.pluck(markerConfig.yPositionAttribute, variants)
+  const yData = variants.map(variant => variant[markerConfig.yPositionAttribute])
   const yScale = scaleLinear()
     .domain([min(yData), max(yData) + (max(yData) * 0.1)])
     .range([height - yPad, yPad])
