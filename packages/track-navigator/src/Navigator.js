@@ -79,7 +79,6 @@ const ClickArea = ({
   hoveredVariant,
   variantSortKey, // TODO
   noVariants,
-  disableScale,
 }) => {
 
   if (variants.size === 0) {
@@ -144,7 +143,7 @@ const ClickArea = ({
         {v.variant_id === hoveredVariant && <ellipse
           cx={v.x}
           cy={height / 2.5}
-          ry={disableScale ? 10 : afScale(v.allele_freq) + 4}
+          ry={afScale(v.allele_freq) + 4}
           rx={10}
           fill={'rgba(0,0,0,0)'}
           strokeWidth={1}
@@ -154,8 +153,8 @@ const ClickArea = ({
         <ellipse
           cx={v.x}
           cy={height / 2.5}
-          ry={disableScale ? 5 : afScale(v.allele_freq)}
-          rx={disableScale ? 5 : 3}
+          ry={afScale(v.allele_freq)}
+          rx={3}
           fill={localColor}
           strokeWidth={0.5}
           stroke={'black'}
