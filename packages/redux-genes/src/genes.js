@@ -1,4 +1,4 @@
-import { median } from 'd3-array'
+import { max, median } from 'd3-array'
 import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
@@ -209,20 +209,24 @@ export const transcriptsGrouped = createSelector(
   }
 )
 
-export const tissueStats = createSelector(
+export const maxTissueExpressions = createSelector(
   [transcripts],
   (transcripts) => {
-    const maxValuesForTissue = transcripts[0].gtexTissueExpression.individual
-    const tissues = Object.keys(maxValuesForTissue)
-    transcripts.forEach((transcript) => {
-      tissues.forEach((tissue) => {
-        const nextValue = transcript.gtexTissueExpression.individual[tissue]
-        if (nextValue > maxValuesForTissue[tissue]) {
-          maxValuesForTissue[tissue] = nextValue
-        }
-      })
-    })
-    return Immutable.Map(maxValuesForTissue).sort().reverse()
+    const tissues = Object.keys(transcripts[0].gtexTissueExpression.individual)
+
+    const maxExpressionByTissue = tissues.reduce((acc, tissue) => ({
+      ...acc,
+      [tissue]: max(transcripts, t => t.gtexTissueExpression.individual[tissue]),
+    }), {})
+
+    const maxMedianExpression = max(transcripts, t => t.gtexTissueExpression.aggregate.median)
+
+    return {
+      aggregate: {
+        median: maxMedianExpression,
+      },
+      individual: maxExpressionByTissue,
+    }
   }
 )
 

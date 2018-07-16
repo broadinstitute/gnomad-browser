@@ -42,12 +42,12 @@ const Wrapper = styled.div`
 export function TissueIsoformExpressionPlotHeader({
   currentGene,
   currentTissue,
+  maxTissueExpressions,
   onTissueChange,
-  tissueStats,
   width,
 }) {
-  const allTissues = Array.from(tissueStats.keys()).sort()
-  const maxTissueValue = tissueStats.first()
+  const allTissues = Object.keys(maxTissueExpressions.individual).sort()
+  const maxTissueValue = Object.values(maxTissueExpressions.individual).reduce((a, b) => Math.max(a, b), -Infinity)
   const selectedTissue = currentTissue || 'median-across-all'
   const padding = 10
 
@@ -93,7 +93,7 @@ export function TissueIsoformExpressionPlotHeader({
 
   const options = allTissues.map(tissue => (
     <option key={`${tissue}-option`} value={tissue}>
-      {tissueMappings[tissue]} {`(${tissueStats.get(tissue)})`}
+      {tissueMappings[tissue]} {`(${maxTissueExpressions.individual[tissue]})`}
     </option>
   ))
 
@@ -114,7 +114,7 @@ export function TissueIsoformExpressionPlotHeader({
           value={selectedTissue}
         >
           <option key="median-across-all" value="median-across-all">
-            Median across all tissues
+            Median across all tissues ({maxTissueExpressions.aggregate.median})
           </option>
           <optgroup label="Specific tissue">
             {options}
@@ -129,8 +129,8 @@ export function TissueIsoformExpressionPlotHeader({
 TissueIsoformExpressionPlotHeader.propTypes = {
   currentGene: PropTypes.string.isRequired,
   currentTissue: PropTypes.string,
+  maxTissueExpressions: PropTypes.object.isRequired,
   onTissueChange: PropTypes.func.isRequired,
-  tissueStats: PropTypes.object.isRequired,
   width: PropTypes.number.isRequired,
 }
 
@@ -140,13 +140,13 @@ TissueIsoformExpressionPlotHeader.defaultProps = {
 
 
 export function TissueIsoformExpressionPlot({
-  height,
-  width,
-  transcript,
   currentTissue,
-  tissueStats,
+  height,
+  maxTissueExpressions,
+  transcript,
+  width,
 }) {
-  const maxTissueValue = tissueStats.first()
+  const maxTissueValue = Object.values(maxTissueExpressions.individual).reduce((a, b) => Math.max(a, b), -Infinity)
   const selectedTissue = currentTissue || 'median-across-all'
   const padding = 10
 
@@ -181,11 +181,11 @@ export function TissueIsoformExpressionPlot({
 }
 
 TissueIsoformExpressionPlot.propTypes = {
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  transcript: PropTypes.object.isRequired,
   currentTissue: PropTypes.string,
-  tissueStats: PropTypes.object.isRequired,
+  height: PropTypes.number.isRequired,
+  maxTissueExpressions: PropTypes.object.isRequired,
+  transcript: PropTypes.object.isRequired,
+  width: PropTypes.number.isRequired,
 }
 
 TissueIsoformExpressionPlot.defaultProps = {

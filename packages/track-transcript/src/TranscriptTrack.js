@@ -128,7 +128,7 @@ const Transcript = ({
   rightPanelWidth,
   transcript,
   currentTissue,
-  tissueStats,
+  maxTissueExpressions,
   showRightPanel,
   currentTranscript,
   canonicalTranscript,
@@ -156,7 +156,7 @@ const Transcript = ({
         <TissueIsoformExpressionPlot
           currentTissue={currentTissue}
           height={flipOutExonThickness}
-          tissueStats={tissueStats}
+          maxTissueExpressions={maxTissueExpressions}
           transcript={transcript}
           width={rightPanelWidth}
         />
@@ -171,6 +171,7 @@ Transcript.propTypes = {
   currentTranscript: PropTypes.string,
   height: PropTypes.number.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
+  maxTissueExpressions: PropTypes.object.isRequired,
   positionOffset: PropTypes.func.isRequired,
   regions: PropTypes.arrayOf(PropTypes.shape({
     start: PropTypes.number.isRequired,
@@ -179,7 +180,6 @@ Transcript.propTypes = {
   renderTranscriptId: PropTypes.func.isRequired,
   rightPanelWidth: PropTypes.number.isRequired,
   showRightPanel: PropTypes.bool.isRequired,
-  tissueStats: PropTypes.object.isRequired,
   transcript: PropTypes.object.isRequired,
   width: PropTypes.number.isRequired,
   xScale: PropTypes.func.isRequired,
@@ -205,6 +205,7 @@ export default class TranscriptTrack extends Component {
     currentTranscript: PropTypes.string,
     height: PropTypes.number.isRequired,
     leftPanelWidth: PropTypes.number.isRequired,
+    maxTissueExpressions: PropTypes.object.isRequired,
     offsetRegions: PropTypes.arrayOf(PropTypes.object).isRequired,
     onTissueChange: PropTypes.func.isRequired,
     positionOffset: PropTypes.func.isRequired,
@@ -213,7 +214,6 @@ export default class TranscriptTrack extends Component {
     setCurrentTranscript: PropTypes.func.isRequired,
     showRightPanel: PropTypes.bool,
     strand: PropTypes.string.isRequired,
-    tissueStats: PropTypes.object.isRequired,
     transcriptButtonOnClick: PropTypes.func.isRequired,
     transcriptFanOut: PropTypes.bool.isRequired,
     transcriptsGrouped: PropTypes.object.isRequired,
@@ -252,8 +252,8 @@ export default class TranscriptTrack extends Component {
           <TissueIsoformExpressionPlotHeader
             currentGene={this.props.currentGene}
             currentTissue={this.props.currentTissue}
+            maxTissueExpressions={this.props.maxTissueExpressions}
             onTissueChange={this.props.onTissueChange}
-            tissueStats={this.props.tissueStats}
             width={this.props.rightPanelWidth}
           />
         )}
@@ -296,12 +296,12 @@ export default class TranscriptTrack extends Component {
           currentTranscript={this.props.currentTranscript}
           height={this.props.height}
           leftPanelWidth={this.props.leftPanelWidth}
+          maxTissueExpressions={this.props.maxTissueExpressions}
           positionOffset={this.props.positionOffset}
           regions={transcriptExonsFiltered}
           renderTranscriptId={this.props.renderTranscriptId || this.renderTranscriptId}
           rightPanelWidth={this.props.rightPanelWidth}
           showRightPanel={this.props.showRightPanel && this.props.transcriptFanOut}
-          tissueStats={this.props.tissueStats}
           transcript={transcript}
           xScale={this.props.xScale}
           width={this.props.width}
