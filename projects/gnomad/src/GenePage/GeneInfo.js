@@ -91,7 +91,7 @@ const GeneInfo = ({
             <GeneAttributeValue>
               <a
                 target="_blank"
-                href={`http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${currentTranscript}`}
+                href={`http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript || canonical_transcript}`}
               >
                 {currentTranscript || `${canonical_transcript} (canonical)`}
               </a>
