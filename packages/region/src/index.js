@@ -1,5 +1,3 @@
-// import RegionViewer from './RegionViewer'
-
 export {
   types,
   actions,
@@ -15,7 +13,6 @@ export {
 export {
   coverageConfigClassic,
   coverageConfigNew,
-  markerConfigOther,
   markerExacClassic,
   attributeConfig,
 } from './regionViewerStyles'
@@ -26,7 +23,6 @@ export {
 
 export {
   default as RegionViewer,
-  // RegionViewer as default,
 } from './RegionViewer'
 
 export {
