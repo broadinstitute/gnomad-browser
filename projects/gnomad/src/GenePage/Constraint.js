@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import {
   SectionTitle,
   ItemWrapper,
@@ -13,7 +14,6 @@ import {
   TableTitleColumn,
 } from '@broad/ui'
 
-import { QuestionMark } from '@broad/help'
 
 const ConstraintTabletop = styled.div`
   display: flex;
@@ -70,12 +70,22 @@ const ConstraintTableHeader = ({ selectedVariantDataset, setSelectedVariantDatas
   </ConstraintTabletop>
 )
 
+ConstraintTableHeader.propTypes = {
+  selectedVariantDataset: PropTypes.string.isRequired,
+  setSelectedVariantDataset: PropTypes.string.isRequired,
+}
+
+
 export const ConstraintTable = ({
   constraintData,
-  ...rest
+  selectedVariantDataset,
+  setSelectedVariantDataset,
 }) => (
   <ItemWrapper>
-    <ConstraintTableHeader {...rest} />
+    <ConstraintTableHeader
+      selectedVariantDataset={selectedVariantDataset}
+      setSelectedVariantDataset={setSelectedVariantDataset}
+    />
     <Table>
       <TableRows>
         <TableHeader>
@@ -106,32 +116,36 @@ export const ConstraintTable = ({
           <TableCell width={'20%'}>{constraintData.n_lof}</TableCell>
           <TableCell width={'20%'}>pLI = {constraintData.pLI.toFixed(2)}</TableCell>
         </TableRow>
-        {/* <TableRow>
-          <TableTitleColumn />
-          <TableCell>CNV</TableCell>
-          <TableCell>{constraintData.exp_cnv ? constraintData.exp_cnv.toFixed(1) : 'N/A'}</TableCell>
-          <TableCell>{constraintData.n_cnv || 'N/A'}</TableCell>
-          <TableCell>Z = {constraintData.cnv_z ? constraintData.cnv_z.toFixed(1) : 'N/A'}</TableCell>
-        </TableRow> */}
       </TableRows>
     </Table>
   </ItemWrapper>
 )
-ConstraintTable.propTypes = { constraintData: PropTypes.object.isRequired }
+
+ConstraintTable.propTypes = {
+  constraintData: PropTypes.object.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
+  setSelectedVariantDataset: PropTypes.func.isRequired,
+}
+
 
 const PlaceholderTable = Table.extend`
   opacity: 0.4;
 `
 
 const ConstraintMessage = TableCell.extend`
-  width: 100%;
   text-align: center;
-  cursor: pointer;
 `
 
-export const ConstraintTablePlaceholder = props => (
+export const ConstraintTablePlaceholder = ({
+  message,
+  selectedVariantDataset,
+  setSelectedVariantDataset,
+}) => (
   <ItemWrapper>
-    <ConstraintTableHeader {...props} />
+    <ConstraintTableHeader
+      selectedVariantDataset={selectedVariantDataset}
+      setSelectedVariantDataset={setSelectedVariantDataset}
+    />
     <PlaceholderTable>
       <TableRows>
         <TableHeader>
@@ -144,33 +158,25 @@ export const ConstraintTablePlaceholder = props => (
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Synonymous</TableCell>
-
+          <TableCell width={'60%'} />
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>Missense</TableCell>
-          {/* <ConstraintMessage
-            onClick={() => setSelectedVariantDataset('exacVariants')}
-          >
-            Click here to see ExAC values.
-          </ConstraintMessage> */}
-          <ConstraintMessage>{props.message}</ConstraintMessage>
-          <TableCell />
+          <ConstraintMessage width={'60%'}>{message}</ConstraintMessage>
         </TableRow>
         <TableRow>
           <TableTitleColumn />
           <TableCell width={'40%'}>LoF</TableCell>
-          <TableCell />
-          {/* {regionalConstraint.length > 0 ? <ConstraintMessage onClick={() => setSelectedVariantDataset('exacVariants')}>Also, this gene exhibits regional constraint.</ConstraintMessage> : <TableCell />} */}
+          <TableCell width={'60%'} />
         </TableRow>
-        {/* <TableRow>
-          <TableTitleColumn />
-          <TableCell>CNV</TableCell>
-          <TableCell />
-          <TableCell />
-          <TableCell />
-        </TableRow> */}
       </TableRows>
     </PlaceholderTable>
   </ItemWrapper>
 )
+
+ConstraintTablePlaceholder.propTypes = {
+  message: PropTypes.string.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
+  setSelectedVariantDataset: PropTypes.func.isRequired,
+}
