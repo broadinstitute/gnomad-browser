@@ -6,17 +6,16 @@ import { scaleLog } from 'd3-scale'
 
 import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
 
-const Axis = ({ title }) => {
-  return <div>{title}</div>
-}
-Axis.propTypes = {
-  title: PropTypes.string.isRequired,
-}
 
 const VariantAxis = ({ title, height, leftPanelWidth }) => {
   const [dataset, subset, variant, count] = title.split('|')
-  const YAxis = () => {
-    return dataset ? (
+
+  if (!dataset) {
+    return <div style={{ width: leftPanelWidth }} />
+  }
+
+  return (
+    <div style={{ width: leftPanelWidth }}>
       <svg width={leftPanelWidth} height={height}>
         <text
           x={0}
@@ -40,22 +39,10 @@ const VariantAxis = ({ title, height, leftPanelWidth }) => {
           {count}
         </text>
       </svg>
-    ) : (
-      <svg width={leftPanelWidth} height={height}>
-      </svg>
-    )
-  }
-  return (
-    <div
-      style={{ width: leftPanelWidth }}
-    >
-      <YAxis />
-      {/*<div style={{ fontSize: 12 }}>
-        {title}
-      </div>*/}
     </div>
   )
 }
+
 VariantAxis.propTypes = {
   title: PropTypes.string.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
