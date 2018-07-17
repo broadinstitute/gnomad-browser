@@ -43,15 +43,6 @@ export const coverageConfigNew = (exome_coverage, genome_coverage) => {
   ] }
 }
 
-export const markerExacClassic = {
-  markerType: 'exacClassic',
-  circleRadius: 3,
-  circleStroke: 'black',
-  circleStrokeWidth: 0.5,
-  fillColor: '#757575',
-  afMax: 0.001,
-}
-
 export const attributeConfig = {
   CDS: {
     color: '#424242',
