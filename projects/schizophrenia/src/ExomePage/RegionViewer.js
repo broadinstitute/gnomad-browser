@@ -11,12 +11,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
-import { RegionViewer, markerExacClassic } from '@broad/region'
+import { RegionViewer } from '@broad/region'
 
-import VariantTrack from '@broad/track-variant'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
-
+import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize, Loading } from '@broad/ui'
 
 import { actions as tableActions } from '@broad/table'
@@ -123,19 +122,13 @@ class SchizophreniaGeneViewer extends PureComponent {
             height={12}
             showRightPanel={!smallScreen}
           />
-          <VariantTrack
-            key={'cases'}
-            height={60}
-            markerConfig={{ ...markerExacClassic }}
-            variants={cases}
-            title={`Cases|${consequenceTranslations[variantFilter]}|variants|(${cases.size})`}
+          <VariantAlleleFrequencyTrack
+            title={`Cases\n${consequenceTranslations[variantFilter]}\n(${cases.size})`}
+            variants={cases.toJS()}
           />
-          <VariantTrack
-            key={'controls'}
-            height={60}
-            markerConfig={{ ...markerExacClassic }}
-            variants={controls}
-            title={`Controls|${consequenceTranslations[variantFilter]}|variants|(${controls.size})`}
+          <VariantAlleleFrequencyTrack
+            title={`Controls\n${consequenceTranslations[variantFilter]}\n(${controls.size})`}
+            variants={controls.toJS()}
           />
           <NavigatorTrackConnected title={'Viewing in table'} />
         </RegionViewer>

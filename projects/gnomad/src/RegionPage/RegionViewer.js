@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import CoverageTrack from '@broad/track-coverage'
-import VariantTrack from '@broad/track-variant'
+import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import StackedBarTrack from '@broad/track-stacked-bar'
 import { GenesTrack } from '@broad/track-genes'
 
 import { actions as geneActions } from '@broad/redux-genes'
 import { screenSize } from '@broad/ui'
-import { RegionViewer, regionData, markerExacClassic, attributeConfig } from '@broad/region'
+import { RegionViewer, regionData, attributeConfig } from '@broad/region'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
@@ -70,8 +70,6 @@ const RegionViewerConnected = ({
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
 
   const largeRegion = totalBp > 50000
-  // const showVariants = !largeRegion
-  const showVariants = true
   const showStacked = largeRegion
 
   const datasetTranslations = {
@@ -106,15 +104,10 @@ const RegionViewerConnected = ({
           totalBp={totalBp}
         />
         <GenesTrack onGeneClick={onGeneClick} genes={genes} />
-        {showVariants &&
-          <VariantTrack
-            key={'All-variants'}
-            title={`${datasetTranslations[selectedVariantDataset]}|${consequenceTranslations[variantFilter]}|variants|(${allVariants.size})`}
-            height={60}
-            color={'#75757'}
-            markerConfig={markerExacClassic}
-            variants={variantsReversed}
-          />}
+        <VariantAlleleFrequencyTrack
+          title={`${datasetTranslations[selectedVariantDataset]}\n${consequenceTranslations[variantFilter]}\n(${allVariants.size})`}
+          variants={variantsReversed.toJS()}
+        />
         {showStacked &&
           <StackedBarTrack height={150} data={buckets} />
         }

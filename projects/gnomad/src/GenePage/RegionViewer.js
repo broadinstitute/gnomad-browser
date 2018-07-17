@@ -8,7 +8,7 @@ import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
-import VariantTrack from '@broad/track-variant'
+import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 // import StackedBarTrack from '@broad/track-stacked-bar'
 import { screenSize, SectionTitle } from '@broad/ui'
 
@@ -28,7 +28,6 @@ import {
   RegionViewer,
   coverageConfigClassic,
   coverageConfigNew,
-  markerExacClassic,
   attributeConfig,
 } from '@broad/region'
 
@@ -108,8 +107,6 @@ const GeneViewer = ({
   const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
     .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
 
-  const showVariants = true
-
   const coverageConfig = getCoverageConfig(
     selectedVariantDataset,
     exacv1_coverage,
@@ -174,15 +171,10 @@ const GeneViewer = ({
             strand={strand}
           />}
 
-        {showVariants &&
-          <VariantTrack
-            key={'All-variants'}
-            title={`${datasetTranslations[selectedVariantDataset]}|${consequenceTranslations[variantFilter]}|variants|(${allVariants.size})`}
-            height={60}
-            color={'#75757'}
-            markerConfig={markerExacClassic}
-            variants={variantsReversed}
-          />}
+        <VariantAlleleFrequencyTrack
+          title={`${datasetTranslations[selectedVariantDataset]}\n${consequenceTranslations[variantFilter]}\n(${allVariants.size})`}
+          variants={variantsReversed.toJS()}
+        />
         <NavigatorTrackConnected title={'Viewing in table'} />
       </RegionViewer>
     </RegionViewerWrapper>
