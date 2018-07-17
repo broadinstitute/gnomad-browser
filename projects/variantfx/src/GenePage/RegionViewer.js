@@ -13,9 +13,9 @@ import { connect } from 'react-redux'
 
 import { RegionViewer } from '@broad/region'
 
-import VariantTrack from '@broad/track-variant'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
+import { VariantPositionTrack } from '@broad/track-variant'
 
 import { screenSize } from '@broad/ui'
 
@@ -68,28 +68,6 @@ const GeneRegion = ({
   const canonicalExons = geneJS.transcript.exons
   const variantsReversed = visibleVariants.reverse()
 
-
-  const modifiedVariants = variantsReversed
-
-  const markerConfigOther = {
-    circleRadius: 3,
-    circleStroke: 'black',
-    circleStrokeWidth: 1,
-    markerType: 'circle',
-    fillColor: '#757575',
-  }
-
-  const allTrack = (
-    <VariantTrack
-      key={'All-variants'}
-      // title={`other (${otherVariants.size})`
-      height={10}
-      color={'#75757'}
-      markerConfig={markerConfigOther}
-      variants={modifiedVariants}
-    />
-  )
-
   return (
     <div>
       <RegionViewer
@@ -103,7 +81,10 @@ const GeneRegion = ({
           height={12}
           showRightPanel={!smallScreen}
         />
-        {allTrack}
+        <VariantPositionTrack
+          variantColor={'#757575'}
+          variants={variantsReversed.toJS()}
+        />
         <NavigatorTrackConnected noVariants />
       </RegionViewer>
     </div>
