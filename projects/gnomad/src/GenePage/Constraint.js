@@ -72,7 +72,7 @@ const ConstraintTableHeader = ({ selectedVariantDataset, setSelectedVariantDatas
 
 ConstraintTableHeader.propTypes = {
   selectedVariantDataset: PropTypes.string.isRequired,
-  setSelectedVariantDataset: PropTypes.string.isRequired,
+  setSelectedVariantDataset: PropTypes.func.isRequired,
 }
 
 
