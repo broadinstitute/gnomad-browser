@@ -13,7 +13,6 @@ export {
 export {
   coverageConfigClassic,
   coverageConfigNew,
-  markerExacClassic,
   attributeConfig,
 } from './regionViewerStyles'
 

@@ -5,7 +5,6 @@ import RegionViewer from '@broad/region'
 import {
   // coverageConfigClassic,
   // coverageConfigNew,
-  // markerExacClassic,
   attributeConfig,
 } from '@broad/gene-page/src/presentation/RegionViewerStyles'
 
