@@ -2,7 +2,6 @@ export {
   types,
   actions,
   default as createVariantReducer,
-  isFetching,
   hoveredVariant,
   selectedVariantDataset,
   variantDatasetKeys,
