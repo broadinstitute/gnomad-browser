@@ -98,6 +98,15 @@ export const RegionHoc = (
         return regionFetchFunction(regionId)
           .then((regionData) => {
             thunkDispatch(regionActions.receiveRegionData(regionId, regionData))
+
+            const defaultVariantFilter = (regionData.stop - regionData.start) > 50000
+              ? 'lof'
+              : 'all'
+
+            // Reset variant filters when loading a new region
+            thunkDispatch(variantActions.searchVariantsRaw(''))
+            thunkDispatch(variantActions.setVariantFilter(defaultVariantFilter))
+
             return regionData
           })
       })
