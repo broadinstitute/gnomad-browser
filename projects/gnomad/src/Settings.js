@@ -46,34 +46,31 @@ const GeneSettings = ({
     setExonPadding(padding)
   }
 
-  const ClassicVariantCategoryButtonGroup = () => (
-    <ClassicExacButtonGroup>
-      <ClassicExacButtonFirst
-        isActive={variantFilter === 'all'}
-        onClick={() => setVariantFilter('all')}
-      >
-        All
-      </ClassicExacButtonFirst>
-      <ClassicExacButton
-        isActive={variantFilter === 'missenseOrLoF'}
-        onClick={() => setVariantFilter('missenseOrLoF')}
-      >
-        Missense + LoF
-      </ClassicExacButton>
-      <ClassicExacButtonLast
-        isActive={variantFilter === 'lof'}
-        onClick={() => setVariantFilter('lof')}
-      >
-        LoF
-      </ClassicExacButtonLast>
-    </ClassicExacButtonGroup>
-  )
-
   return (
     <SettingsContainer>
       <MenusContainer>
         <DataSelectionGroup>
-          <ClassicVariantCategoryButtonGroup />
+          <ClassicExacButtonGroup>
+            <ClassicExacButtonFirst
+              isActive={variantFilter === 'all'}
+              onClick={() => setVariantFilter('all')}
+            >
+              All
+            </ClassicExacButtonFirst>
+            <ClassicExacButton
+              isActive={variantFilter === 'missenseOrLoF'}
+              onClick={() => setVariantFilter('missenseOrLoF')}
+            >
+              Missense + LoF
+            </ClassicExacButton>
+            <ClassicExacButtonLast
+              isActive={variantFilter === 'lof'}
+              onClick={() => setVariantFilter('lof')}
+            >
+              LoF
+            </ClassicExacButtonLast>
+          </ClassicExacButtonGroup>
+
           <DataSelectionContainer>
             <select
               onChange={event => setSelectedVariantDataset(event.target.value)}
