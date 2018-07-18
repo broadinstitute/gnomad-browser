@@ -28,7 +28,6 @@ import {
 import {
   finalFilteredVariants,
   variantFilter,
-  allVariantsInCurrentDataset,
 } from '@broad/redux-variants'
 
 const paddingColor = '#5A5E5C'
@@ -66,7 +65,6 @@ class SchizophreniaGeneViewer extends PureComponent {
       exonPadding,
       screenSize,
       variantFilter,
-      allVariantsInCurrentDataset,
       setCurrentTableScrollData,
     } = this.props
 
@@ -150,7 +148,6 @@ export default connect(
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
     variantFilter: variantFilter(state),
-    allVariantsInCurrentDataset: allVariantsInCurrentDataset(state),
   }),
   dispatch => ({
     setCurrentTableScrollData: data => dispatch(tableActions.setCurrentTableScrollData(data))
