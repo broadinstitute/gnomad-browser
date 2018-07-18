@@ -123,7 +123,22 @@ const mapDispatchToProps = geneFetchFunction => dispatch => ({
 
           // Reset variant filters when loading a new gene
           thunkDispatch(variantActions.searchVariantsRaw(''))
-          thunkDispatch(variantActions.setVariantFilter('all'))
+
+          let defaultVariantFilter = 'all'
+          if (geneData) {
+            const exons = geneData.transcript.exons
+            const padding = 75
+            const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
+              .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
+
+            if (totalBasePairs > 100000) {
+              defaultVariantFilter = 'lof'
+            } else if (totalBasePairs > 40000) {
+              defaultVariantFilter = 'missenseOrLoF'
+            }
+          }
+
+          thunkDispatch(variantActions.setVariantFilter(defaultVariantFilter))
 
           return geneData
         })
