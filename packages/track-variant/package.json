@@ -9,6 +9,7 @@
   "dependencies": {
     "@broad/utilities": "*",
     "d3-scale": "^1.0.6",
+    "polished": "^1.9.3",
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
