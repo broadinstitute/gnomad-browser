@@ -8,7 +8,7 @@ const API_URL = process.env.GNOMAD_API_URL
 export const fetchRegion = (regionId, url = API_URL) => {
   const [chrom, start, stop] = regionId.split('-')
   const query = `{
-  region(start: ${Number(start)}, stop: ${Number(stop)}, chrom: ${Number(chrom)}) {
+  region(start: ${Number(start)}, stop: ${Number(stop)}, chrom: "${chrom}") {
     start
     stop
     xstop
