@@ -426,20 +426,14 @@ const byVariantDataset = state => state.variants.byVariantDataset
 export const hoveredVariant = state => state.variants.hoveredVariant
 export const focusedVariant = state => state.variants.focusedVariant
 export const selectedVariantDataset = state => state.variants.selectedVariantDataset
-export const variantDatasetKeys = state => state.variants.byVariantDataset.seqKey()
 
-export const allVariantsInCurrentDataset = createSelector(
+const allVariantsInCurrentDataset = createSelector(
   [selectedVariantDataset, byVariantDataset],
   (selectedVariantDataset, byVariantDataset) =>
     byVariantDataset.get(selectedVariantDataset)
 )
 
-export const createVariantDatasetSelector = variantDataset => createSelector(
-  [byVariantDataset],
-  byVariantDataset => sortVariants(byVariantDataset.get(variantDataset).toList(), 'pos', true)
-)
-
-export const allVariantsInCurrentDatasetAsList = createSelector(
+const allVariantsInCurrentDatasetAsList = createSelector(
   [selectedVariantDataset, byVariantDataset],
   (selectedVariantDataset, byVariantDataset) =>
     sortVariants(byVariantDataset.get(selectedVariantDataset).toList(), 'pos', true)
@@ -460,13 +454,13 @@ export const singleVariantData = createSelector(
  */
 
 export const variantSortKey = state => state.variants.variantSortKey
-export const variantSortAscending = state => state.variants.variantSortAscending
+const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
-export const definitions = state => state.variants.definitions
+const definitions = state => state.variants.definitions
 
-export const filteredVariantsById = createSelector([
+const filteredVariantsById = createSelector([
   allVariantsInCurrentDataset,
   variantFilter,
   variantQcFilter,
@@ -493,9 +487,6 @@ export const filteredVariantsById = createSelector([
   return filteredVariants
 })
 
-export const visibleVariantsList = createSelector(
-  [filteredVariantsById], filteredVariantsById => filteredVariantsById.toList()
-)
 
 /**
  * Redux search selectors
@@ -508,16 +499,6 @@ const searchSelectors = getSearchSelectors({
   resourceSelector,
 })
 export const variantSearchText = searchSelectors.text
-export const variantSearchResult = createSelector(
-  [searchSelectors.result, variantSearchText, variantCount],
-  (result, variantSearchText, variantCount) => {
-    if (result.length !== variantCount && variantSearchText === '') {
-      return []
-    }
-    return result
-  }
-)
-export const isSearching = state => state.search.variants.isSearching
 
 export const filteredIdList = createSelector(
   [state => state.search.variants.result],
@@ -526,7 +507,7 @@ export const filteredIdList = createSelector(
   }
 )
 
-export const sortedVariants = createSelector(
+const sortedVariants = createSelector(
   [
     filteredVariantsById,
     variantSortKey,
@@ -562,17 +543,3 @@ export const finalFilteredVariantsCount = createSelector(
   [finalFilteredVariants],
   finalFilteredVariants => finalFilteredVariants.size
 )
-
-// export const variantsFilteredByActiveInterval = createSelector(
-//   [
-//     state => state.variants.byVariantDataset.get('variants'),
-//     regionViewerIntervals
-//   ],
-//   (variants, intervals) => variants.take(10).filter(({ pos }) => {
-//     console.log(intervals)
-//     const inIntervals = intervals.some(([start, stop]) =>
-//       start < pos && pos < stop).sort((a, b) => a.pos - b.pos)
-//     console.log(inIntervals)
-//     return inIntervals
-//   })
-// )
