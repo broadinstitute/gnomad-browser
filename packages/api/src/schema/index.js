@@ -3,7 +3,6 @@ import {
   GraphQLObjectType,
   GraphQLFloat,
   GraphQLString,
-  GraphQLInt,
   GraphQLNonNull,
 } from 'graphql'
 
@@ -80,7 +79,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         start: { type: new GraphQLNonNull(GraphQLFloat) },
         stop: { type: new GraphQLNonNull(GraphQLFloat) },
-        chrom: { type: new GraphQLNonNull(GraphQLInt) },
+        chrom: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args) => ({
         start: args.start,
