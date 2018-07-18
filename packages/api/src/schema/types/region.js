@@ -38,7 +38,7 @@ const regionType = new GraphQLObjectType({
     stop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     xstop: { type: GraphQLFloat },
-    chrom: { type: GraphQLInt },
+    chrom: { type: GraphQLString },
     regionSize: { type: GraphQLInt },
     genes: {
       type: new GraphQLList(geneType),
