@@ -40,12 +40,6 @@ const RegionViewerConnected = ({
     gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
-  let partialFetch
-  if ((regionData.get('stop') - regionData.get('start')) > 50000) {
-    partialFetch = 'lof'
-    variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
-  }
-
   const variantsReversed = allVariants.reverse()
 
   const coverageConfig = getCoverageConfig(
