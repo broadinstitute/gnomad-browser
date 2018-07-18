@@ -13,13 +13,11 @@ import {
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
-
   SettingsContainer,
   MenusContainer,
   SearchContainer,
   DataSelectionGroup,
   DataSelectionContainer,
-
   Search,
 } from '@broad/ui'
 
@@ -72,20 +70,20 @@ const GeneSettings = ({
           </DataSelectionContainer>
         </DataSelectionGroup>
         <DataSelectionGroup>
-          <form>
-            <div>
+          <span>
+            <label htmlFor="qcFilter">
               <input
                 id="qcFilter"
                 type="checkbox"
                 checked={!variantQcFilter}
-                onChange={event => toggleVariantQcFilter()}
+                style={{ marginRight: '5px' }}
+                onChange={toggleVariantQcFilter}
               />
-              <label style={{ marginLeft: '5px' }} htmlFor="qcFilter">
-                Include filtered variants
-              </label>
-              <QuestionMark topic={'include-filtered-variants'} display={'inline'} />
-            </div>
-          </form>
+              Include filtered variants
+            </label>
+            <QuestionMark topic={'include-filtered-variants'} display={'inline'} />
+          </span>
+
           <SearchContainer>
             <Search
               placeholder={'Search variant table'}
