@@ -10,8 +10,7 @@ import {
   variantSearchText,
 } from '@broad/redux-variants'
 
-import { actions as geneActions, geneData, exonPadding } from '@broad/redux-genes'
-import { regionData } from '@broad/region'
+import { actions as geneActions, exonPadding } from '@broad/redux-genes'
 
 import {
   ClassicExacButton,
@@ -41,41 +40,10 @@ const GeneSettings = ({
   toggleVariantQcFilter,
   variantQcFilter,
   variantSearchText,
-  geneData,
-  regionData,
 }) => {
   const setPadding = (event, newValue) => {
     const padding = Math.floor(1000 * newValue)
     setExonPadding(padding)
-  }
-  let partialFetch
-  if (regionData) {
-    if ((regionData.get('stop') - regionData.get('start')) > 50000) {
-      partialFetch = 'lof'
-      variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
-    }
-  }
-
-  let totalBasePairs
-  if (geneData) {
-    const exons = geneData.getIn(['transcript', 'exons']).toJS()
-
-    const padding = 75
-    totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-      .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-  }
-
-  if (totalBasePairs > 100000) {
-    partialFetch = 'lof'
-    variantFilter = partialFetch  // eslint-disable-line
-  } else if (totalBasePairs > 40000) {
-    partialFetch = 'missenseOrLoF'
-    variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
-  } else if (regionData) {
-    if ((regionData.get('stop') - regionData.get('start')) > 50000) {
-      partialFetch = 'lof'
-      variantFilter = variantFilter === 'all' ? partialFetch : variantFilter  // eslint-disable-line
-    }
   }
 
   const ClassicVariantCategoryButtonGroup = () => (
@@ -83,14 +51,12 @@ const GeneSettings = ({
       <ClassicExacButtonFirst
         isActive={variantFilter === 'all'}
         onClick={() => setVariantFilter('all')}
-        disabled={(partialFetch === 'lof' || partialFetch === 'missenseOrLoF')}
       >
         All
       </ClassicExacButtonFirst>
       <ClassicExacButton
         isActive={variantFilter === 'missenseOrLoF'}
         onClick={() => setVariantFilter('missenseOrLoF')}
-        disabled={(partialFetch === 'lof')}
       >
         Missense + LoF
       </ClassicExacButton>
@@ -165,8 +131,6 @@ const mapStateToProps = (state) => {
     variantQcFilter: variantQcFilter(state),
     variantFilter: variantFilter(state),
     // variantSearchText: variantSearchText(state),
-    geneData: geneData(state),
-    regionData: regionData(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
