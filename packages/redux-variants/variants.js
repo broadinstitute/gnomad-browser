@@ -15,8 +15,6 @@ import { types as regionTypes } from '@broad/region'
 import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
 
 export const types = keymirror({
-  REQUEST_VARIANTS: null,
-  RECEIVE_VARIANTS: null,
   SET_HOVERED_VARIANT: null,
   SET_FOCUSED_VARIANT: null,
   SET_SELECTED_VARIANT_DATASET: null,
@@ -34,51 +32,6 @@ export const actions = {
 
   setSelectedVariantDataset: variantDataset =>
     ({ type: types.SET_SELECTED_VARIANT_DATASET, variantDataset }),
-
-  requestVariants: () => ({
-    type: types.REQUEST_VARIANTS,
-    // payload: { xstart, xstop },
-  }),
-
-  receiveVariants: variantData => ({
-    type: types.REQUEST_VARIANTS,
-    payload: fromJS(variantData),
-  }),
-
-  fetchVariantsByGene (geneName, fetchFunction) {
-    return (dispatch, getState) => {
-      const state = getState()
-      // const options = {
-      //   variantFilter: variantFilter(state),
-      // }
-      dispatch(actions.requestVariants(geneName))
-      fetchFunction(geneName)
-        .then((variantData) => {
-          dispatch(actions.receiveVariants(variantData))
-        })
-    }
-  },
-
-  fetchVariantsByStartStop(variantFetchFunction, xstart, xstop) {
-    return (dispatch) => {
-      dispatch(actions.requestVariantsByPosition(xstart, xstop))
-      variantFetchFunction(xstart, xstop).then((variantData) => {
-        dispatch(actions.receiveVariants(variantData))
-      })
-    }
-  },
-
-  shouldFetchVariants (state, xstart, xstop) {
-    return true
-  },
-
-  fetchVariantsIfNeeded(xstart, xstop, variantFetchFunction) {
-    return (dispatch, getState) => {  // eslint-disable-line
-      if (actions.shouldFetchVariants(getState(), xstart, xstop)) {
-        return dispatch(actions.fetchVariantsByStartStop(variantFetchFunction, xstart, xstop))
-      }
-    }
-  },
 
   setVariantFilter: (filter) => {
     return {
@@ -267,7 +220,6 @@ export default function createVariantReducer({
     return acc
   }, {})
   const State = Record({
-    isFetching: false,
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>
       (acc.set(dataset, OrderedMap())), OrderedMap()),
     variantSortKey: 'pos',
@@ -300,21 +252,7 @@ export default function createVariantReducer({
         .set('searchIndexed', variants)
     },
 
-    [types.RECEIVE_VARIANTS] (state, payload) {
-      return datasetKeys.reduce((nextState, dataset) => {
-        return nextState.byVariantDataset.set(
-          dataset,
-          nextState.byVariantDataset
-            .get(dataset)
-            .merge(payload[dataset].map(v => ([v.variant_id, v])))
-        )
-      }, state).set('isFetching', false)
-    },
-
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
-      if (geneData === null) {
-        return state.set('isFetching', false)
-      }
       const exons = geneData.getIn(['transcript', 'exons']).toJS()
       const padding = 75
       const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
@@ -485,7 +423,6 @@ const sortVariants = (variants, key, ascending) => {
  */
 
 const byVariantDataset = state => state.variants.byVariantDataset
-export const isFetching = state => state.variants.isFetching
 export const hoveredVariant = state => state.variants.hoveredVariant
 export const focusedVariant = state => state.variants.focusedVariant
 export const selectedVariantDataset = state => state.variants.selectedVariantDataset
