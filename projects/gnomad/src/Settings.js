@@ -1,17 +1,13 @@
 import React, { PropTypes } from 'react'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
 
+import { QuestionMark } from '@broad/help'
 import {
   actions as variantActions,
   selectedVariantDataset,
   variantFilter,
   variantQcFilter,
-  variantSearchText,
 } from '@broad/redux-variants'
-
-import { actions as geneActions, exonPadding } from '@broad/redux-genes'
-
 import {
   ClassicExacButton,
   ClassicExacButtonFirst,
@@ -27,25 +23,16 @@ import {
   Search,
 } from '@broad/ui'
 
-import { QuestionMark } from '@broad/help'
 
 const GeneSettings = ({
-  exonPadding,
   selectedVariantDataset,
-  setExonPadding,
   searchVariants,
   setVariantFilter,
   variantFilter,
   setSelectedVariantDataset,
   toggleVariantQcFilter,
   variantQcFilter,
-  variantSearchText,
 }) => {
-  const setPadding = (event, newValue) => {
-    const padding = Math.floor(1000 * newValue)
-    setExonPadding(padding)
-  }
-
   return (
     <SettingsContainer>
       <MenusContainer>
@@ -113,26 +100,24 @@ const GeneSettings = ({
 }
 
 GeneSettings.propTypes = {
-  selectedVariantDataset: PropTypes.string.isRequired,
-  exonPadding: PropTypes.number.isRequired,
-  setExonPadding: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
-  setVariantFilter: PropTypes.func.isRequired,
+  selectedVariantDataset: PropTypes.string.isRequired,
   setSelectedVariantDataset: PropTypes.func.isRequired,
+  setVariantFilter: PropTypes.func.isRequired,
+  toggleVariantQcFilter: PropTypes.func.isRequired,
+  variantFilter: PropTypes.string.isRequired,
+  variantQcFilter: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
-    exonPadding: exonPadding(state),
     selectedVariantDataset: selectedVariantDataset(state),
     variantQcFilter: variantQcFilter(state),
     variantFilter: variantFilter(state),
-    // variantSearchText: variantSearchText(state),
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    setExonPadding: padding => dispatch(geneActions.setExonPadding(padding)),
     setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
     searchVariants: searchText =>
       dispatch(variantActions.searchVariants(searchText)),
