@@ -433,15 +433,9 @@ const allVariantsInCurrentDataset = createSelector(
     byVariantDataset.get(selectedVariantDataset)
 )
 
-const allVariantsInCurrentDatasetAsList = createSelector(
-  [selectedVariantDataset, byVariantDataset],
-  (selectedVariantDataset, byVariantDataset) =>
-    sortVariants(byVariantDataset.get(selectedVariantDataset).toList(), 'pos', true)
-)
-
 export const variantCount = createSelector(
-  [allVariantsInCurrentDatasetAsList],
-  variants => variants.size
+  [selectedVariantDataset, byVariantDataset],
+  (selectedVariantDataset, byVariantDataset) => byVariantDataset.get(selectedVariantDataset).size
 )
 
 export const singleVariantData = createSelector(
