@@ -229,7 +229,7 @@ export default class TranscriptTrack extends Component {
     showRightPanel: true,
   }
 
-  renderCanonicalTranscript() {
+  renderRegions() {
     return (
       <TranscriptContainer>
         <TranscriptLeftPanel width={this.props.leftPanelWidth}>
@@ -273,14 +273,10 @@ export default class TranscriptTrack extends Component {
     )
   }
 
-  renderAlternateTranscripts() {
-    if (!this.props.transcriptsGrouped || !this.props.transcriptFanOut) {
-      return null
-    }
+  renderTranscripts() {
+    const transcriptIds = Object.keys(this.props.transcriptsGrouped)
 
-    const alternateTranscriptIds = Object.keys(this.props.transcriptsGrouped)
-
-    return alternateTranscriptIds.map((transcriptId) => {
+    return transcriptIds.map((transcriptId) => {
       const transcript = this.props.transcriptsGrouped[transcriptId]
       const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
 
@@ -313,8 +309,8 @@ export default class TranscriptTrack extends Component {
   render() {
     return (
       <TranscriptTrackContainer>
-        {this.renderCanonicalTranscript()}
-        {this.renderAlternateTranscripts()}
+        {this.renderRegions()}
+        {this.props.transcriptFanOut && this.renderTranscripts()}
       </TranscriptTrackContainer>
     )
   }
