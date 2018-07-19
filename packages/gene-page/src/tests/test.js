@@ -14,7 +14,10 @@ const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
-  searchIndexes: ['variant_id'],
+  variantSearchPredicate(variant, query) {
+    return variant.get('variant_id').toLowerCase().includes(query)
+  },
+  variantSearchFields: ['variant_id'],
   logger: false,
   projectDefaults: {
     startingGene: 'ARSF',

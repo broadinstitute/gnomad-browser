@@ -2,7 +2,6 @@
 import keymirror from 'keymirror'
 import { Record, Set, OrderedMap, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
-import { createSearchAction, getSearchSelectors } from 'redux-search'
 
 import {
   isCategoryLoF,
@@ -19,6 +18,7 @@ export const types = keymirror({
   SET_FOCUSED_VARIANT: null,
   SET_SELECTED_VARIANT_DATASET: null,
   SET_VARIANT_FILTER: null,
+  SET_VARIANT_SEARCH_QUERY: null,
   SET_VARIANT_SORT: null,
   TOGGLE_VARIANT_QC_FILTER: null,
   ORDER_VARIANTS_BY_POSITION: null,
@@ -57,11 +57,12 @@ export const actions = {
     }
   },
 
-  searchVariantsRaw: createSearchAction('variants'),
-
-  searchVariants(text) {
+  searchVariants(query) {
     const thunk = (dispatch) => {
-      return dispatch(actions.searchVariantsRaw(text))
+      return dispatch({
+        type: types.SET_VARIANT_SEARCH_QUERY,
+        query,
+      })
     }
     thunk.meta = {
       debounce: {
@@ -202,6 +203,7 @@ export const actions = {
 
 export default function createVariantReducer({
   variantDatasets,
+  variantSearchPredicate,
   combinedDatasets = {},
   projectDefaults: {
     startingVariant,
@@ -230,8 +232,9 @@ export default function createVariantReducer({
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
     variantDeNovoFilter: false,
-    searchIndexed: OrderedMap(),
     definitions: Map(definitions),
+    searchPredicate: variantSearchPredicate,
+    searchQuery: '',
   })
 
   const actionHandlers = {
@@ -243,13 +246,12 @@ export default function createVariantReducer({
       return state.set('focusedVariant', variantId)
     },
 
-    [types.SET_SELECTED_VARIANT_DATASET] (state, { variantDataset }) {
-      const variants = state
-        .getIn(['byVariantDataset', variantDataset])
+    [types.SET_VARIANT_SEARCH_QUERY] (state, { query }) {
+      return state.set('searchQuery', query)
+    },
 
-      return state
-        .set('selectedVariantDataset', variantDataset)
-        .set('searchIndexed', variants)
+    [types.SET_SELECTED_VARIANT_DATASET] (state, { variantDataset }) {
+      return state.set('selectedVariantDataset', variantDataset)
     },
 
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
@@ -293,13 +295,7 @@ export default function createVariantReducer({
           )
       }, state)
 
-      const currentVariantDataset = withVariants
-        .get('byVariantDataset')
-        .get(withVariants.selectedVariantDataset)
-
-      return withVariants
-        .set('searchIndexed', currentVariantDataset)
-        .set('variantFilter', defaultFilter)
+      return withVariants.set('variantFilter', defaultFilter)
     },
 
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
@@ -415,7 +411,7 @@ const sortVariants = (variants, key, ascending) => {
       return -1
     }
     return sorter(sortValA, sortValB)
-  })
+  }).toList()
 }
 
 /**
@@ -453,6 +449,8 @@ export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
 const definitions = state => state.variants.definitions
+const searchPredicate = state => state.variants.searchPredicate
+export const variantSearchQuery = state => state.variants.get('searchQuery')
 
 const filteredVariantsById = createSelector([
   allVariantsInCurrentDataset,
@@ -460,7 +458,9 @@ const filteredVariantsById = createSelector([
   variantQcFilter,
   definitions,
   variantDeNovoFilter,
-], (variants, variantFilter, variantQcFilter, definitions, variantDeNovoFilter) => {
+  searchPredicate,
+  variantSearchQuery,
+], (variants, variantFilter, variantQcFilter, definitions, variantDeNovoFilter, searchPredicate, searchQuery) => {
   let filteredVariants
   const consequenceKey = definitions.get('consequence') || 'consequence'
   if (variantFilter === 'all') {
@@ -478,30 +478,16 @@ const filteredVariantsById = createSelector([
   if (variantDeNovoFilter) {
     filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
   }
+
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase()
+    filteredVariants = filteredVariants.filter(v => searchPredicate(v, query))
+  }
+
   return filteredVariants
 })
 
-
-/**
- * Redux search selectors
- */
-
-const resourceSelector = (resourceName, state) => state.variants.searchIndexed
-
-const searchSelectors = getSearchSelectors({
-  resourceName: 'variants',
-  resourceSelector,
-})
-export const variantSearchText = searchSelectors.text
-
-export const filteredIdList = createSelector(
-  [state => state.search.variants.result],
-  (result) => {
-    return List(result)
-  }
-)
-
-const sortedVariants = createSelector(
+export const finalFilteredVariants = createSelector(
   [
     filteredVariantsById,
     variantSortKey,
@@ -519,21 +505,4 @@ const sortedVariants = createSelector(
     )
     return sortedVariants
   }
-)
-
-export const finalFilteredVariants = createSelector(
-  [sortedVariants, filteredIdList, selectedVariantDataset],
-  (variants, filteredIdList) => {
-    if (filteredIdList.size !== 0 || variants.size === 0) {
-      return variants.filter((v) => {
-        return filteredIdList.includes(v.get('id'))
-      }).toList()
-    }
-    return variants.toList()
-  }
-)
-
-export const finalFilteredVariantsCount = createSelector(
-  [finalFilteredVariants],
-  finalFilteredVariants => finalFilteredVariants.size
 )

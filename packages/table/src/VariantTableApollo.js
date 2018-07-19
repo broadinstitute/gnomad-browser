@@ -201,7 +201,6 @@ const VariantTable = ({
         // scrollToRow={tablePosition}
         onScroll={() => {}}
         searchText={''}
-        // filteredIdList={filteredIdList}
       />
     </Wrapper>
   )

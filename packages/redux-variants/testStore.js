@@ -15,7 +15,6 @@ import thunk from 'redux-thunk'
 import throttle from 'redux-throttle'
 import createDebounce from 'redux-debounced'
 import { createLogger } from 'redux-logger'
-import { reduxSearch, reducer as searchReducer } from 'redux-search'
 
 
 import createVariantReducer, {
@@ -42,7 +41,6 @@ export default function createGenePageStore(appSettings, appReducers) {
   const rootReducer = combineReducers({
     active: createActiveReducer(appSettings),
     genes: createGeneReducer(appSettings),
-    search: searchReducer,
     variants: createVariantReducer(appSettings),
     regions: createRegionReducer(appSettings),
     help: createHelpReducer(appSettings.docs),
@@ -50,13 +48,7 @@ export default function createGenePageStore(appSettings, appReducers) {
   })
 
   const finalCreateStore = compose(
-    applyMiddleware(...middlewares),
-    reduxSearch({
-      resourceIndexes: {
-        variants: appSettings.searchIndexes,
-      },
-      resourceSelector: appSettings.searchResourceSelector,
-    }),
+    applyMiddleware(...middlewares)
   )(createStore)
 
   return finalCreateStore(rootReducer)

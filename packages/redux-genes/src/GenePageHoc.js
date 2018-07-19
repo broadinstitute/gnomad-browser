@@ -122,7 +122,7 @@ const mapDispatchToProps = geneFetchFunction => dispatch => ({
           thunkDispatch(geneActions.receiveGeneData(geneName, geneData))
 
           // Reset variant filters when loading a new gene
-          thunkDispatch(variantActions.searchVariantsRaw(''))
+          thunkDispatch(variantActions.searchVariants(''))
 
           let defaultVariantFilter = 'all'
           if (geneData) {

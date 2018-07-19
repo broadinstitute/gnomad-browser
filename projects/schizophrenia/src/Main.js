@@ -26,22 +26,14 @@ const consequencePresentation = {
 }
 
 const appSettings = {
-  searchIndexes: ({ resources, indexDocument, state }) => {
-    resources.forEach(variant => {
-      indexDocument(variant.get('id'), variant.get('variant_id'))
-      if (variant.get('hgvsc_canonical')) {
-        indexDocument(variant.get('id'), variant.get('hgvsc_canonical'))
-      }
-      if (variant.get('hgvsp_canonical')) {
-        indexDocument(variant.get('id'), variant.get('hgvsp_canonical'))
-      }
-      if (variant.get('consequence')) {
-        indexDocument(variant.get('id'), consequencePresentation[variant.get('consequence')])
-      }
-    })
-  },
-  searchResourceSelector: (resourceName, state) => {
-    return state.variants.searchIndexed
+  variantSearchPredicate(variant, query) {
+    const consequenceCategoryLabel = consequencePresentation[variant.get('consequence')] || ''
+    return (
+      variant.get('variant_id').toLowerCase().includes(query)
+      || (variant.get('hgvsc_canonical') || '').toLowerCase().includes(query)
+      || (variant.get('hgvsp_canonical') || '').toLowerCase().includes(query)
+      || consequenceCategoryLabel.includes(query)
+    )
   },
   logger: true,
   docs: {

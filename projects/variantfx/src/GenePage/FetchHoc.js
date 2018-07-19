@@ -61,7 +61,7 @@ const mapDispatchToProps = geneFetchFunction => (dispatch) => {
       geneActions.fetchGeneIfNeeded(currentGene, match, geneFetchFunction)
     ),
     resetSearchVariants: () => dispatch(
-      variantActions.searchVariantsRaw('')
+      variantActions.searchVariants('')
     ),
   }
 }

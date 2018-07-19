@@ -173,7 +173,6 @@ class SchizophreniaGeneResults extends PureComponent {
             onRowHover={() => {}}
             onScroll={() => {}}
             searchText={this.state.searchText}
-            filteredIdList={new List(['test'])}
           />
         )}
       </GenePage>

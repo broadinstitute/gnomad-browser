@@ -10,9 +10,7 @@ export {
   variantFilter,
   variantQcFilter,
   variantDeNovoFilter,
-  variantSearchText,
-  filteredIdList,
+  variantSearchQuery,
   finalFilteredVariants,
-  finalFilteredVariantsCount,
   focusedVariant,
 } from './variants'
