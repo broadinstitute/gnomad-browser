@@ -7,17 +7,15 @@
     "lib"
   ],
   "dependencies": {
-    "@broad/utilities": "0.0.1",
-    "d3-array": "^1.2.0",
+    "@broad/redux-variants": "*",
+    "@broad/table": "*",
+    "@broad/utilities": "*",
     "d3-scale": "^1.0.6",
-    "d3-shape": "^1.2.0",
+    "prop-types": "^15.5.10",
     "react-cursor-position": "^2.1.0"
   },
   "peerDependencies": {
-    "@broad/track-region": "*",
-    "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "ramda": "^0.24.1",
     "styled-components": "^2.1.2"
   }
 }
