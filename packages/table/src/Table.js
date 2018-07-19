@@ -607,17 +607,7 @@ const TableHeaders = ({ title, tableConfig, showIndex }) => (
   </div>
 )
 
-const NoVariants = styled.div`
-  display: flex;
-  align-items: center;
-  height: ${props => props.height}px;
-  width: ${props => props.width}px;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 20px;
-  border: 1px dashed gray;
-  margin-top: 20px;
-`
+
 
 const Table = ({
   title,
@@ -634,12 +624,7 @@ const Table = ({
   onScroll,
   searchText,
   width,
-  filteredIdList,
 }) => {
-  if (searchText !== '' && filteredIdList.size === 0) {
-    return <NoVariants width={width} height={height}>No variants found</NoVariants>
-  }
-
   const isRowLoaded = ({ index }) => Boolean(getRowData(tableData, index))
 
   const rowRenderer = tableRowRenderer(

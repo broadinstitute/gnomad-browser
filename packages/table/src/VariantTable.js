@@ -8,14 +8,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { actions as tableActions, currentTableIndex } from '@broad/table'
 import { screenSize } from '@broad/ui'
 
 import {
   actions as variantActions,
-  variantSearchText,
-  filteredIdList,
+  variantSearchQuery,
   finalFilteredVariants,
   finalFilteredVariantsCount,
 } from '@broad/redux-variants'
@@ -25,6 +25,20 @@ import { currentChromosome as regionChromosome } from '@broad/region'
 
 import { Table } from './index'
 
+
+const NoVariants = styled.div`
+  display: flex;
+  align-items: center;
+  height: ${props => props.height}px;
+  width: ${props => props.width}px;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  border: 1px dashed gray;
+  margin-top: 20px;
+`
+
+
 const VariantTable = ({
   variants,
   setVariantSort,
@@ -33,15 +47,19 @@ const VariantTable = ({
   setCurrentTableScrollData,
   currentChromosome,
   tablePosition,
-  searchText,
+  searchQuery,
   title,
   height,
   tableConfig,
   screenSize,
-  filteredIdList,
 }) => {
   const scrollBarWidth = 40
   const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
+
+  if (variants.size === 0) {
+    return <NoVariants height={500} width={tableWidth}>No variants found</NoVariants>
+  }
+
   const tConfig = tableConfig(setVariantSort, tableWidth, currentChromosome)
 
   return (
@@ -59,8 +77,7 @@ const VariantTable = ({
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
         onScroll={setCurrentTableScrollData}
-        searchText={searchText}
-        filteredIdList={filteredIdList}
+        searchText={searchQuery}
       />
     </div>
   )
@@ -72,12 +89,11 @@ VariantTable.propTypes = {
   setFocusedVariant: PropTypes.func.isRequired,
   setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
-  searchText: PropTypes.string.isRequired,
+  searchQuery: PropTypes.string.isRequired,
   title: PropTypes.string,
   height: PropTypes.number,
   tableConfig: PropTypes.func.isRequired,
   screenSize: PropTypes.object.isRequired,
-  filteredIdList: PropTypes.any.isRequired,
   // setVisibleInTable: PropTypes.func.isRequired,
 }
 
@@ -88,11 +104,9 @@ VariantTable.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     variants: finalFilteredVariants(state),
-    variantCount: finalFilteredVariantsCount(state),
     tablePosition: currentTableIndex(state),
-    searchText: variantSearchText(state),
+    searchQuery: variantSearchQuery(state),
     screenSize: screenSize(state),
-    filteredIdList: filteredIdList(state),
     currentChromosome: geneChromosome(state) || regionChromosome(state),
   }
 }

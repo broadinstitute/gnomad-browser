@@ -17,7 +17,6 @@
     "@broad/utilities": "*",
     "keymirror": "^0.1.1",
     "immutable": "^4.0.0-rc.9",
-    "redux-search": "^2.3.3",
     "reselect": "^3.0.1"
   }
 }

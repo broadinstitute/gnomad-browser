@@ -104,7 +104,7 @@ export const RegionHoc = (
               : 'all'
 
             // Reset variant filters when loading a new region
-            thunkDispatch(variantActions.searchVariantsRaw(''))
+            thunkDispatch(variantActions.searchVariants(''))
             thunkDispatch(variantActions.setVariantFilter(defaultVariantFilter))
 
             return regionData

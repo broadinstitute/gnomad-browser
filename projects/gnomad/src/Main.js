@@ -13,9 +13,14 @@ const sum = (oldValue, newValue) => oldValue + newValue
 const concat = (oldValue, newValue) => oldValue.concat(newValue)
 
 const appSettings = {
-  searchIndexes: ['variant_id', 'rsid', 'consequence', 'hgvsp', 'hgvsc'],
-  searchResourceSelector: (resourceName, state) => {
-    return state.variants.searchIndexed
+  variantSearchPredicate(variant, query) {
+    return (
+      variant.get('variant_id').toLowerCase().includes(query)
+      || (variant.get('rsid') || '').toLowerCase().includes(query)
+      || (variant.get('consequence') || '').toLowerCase().includes(query)
+      || (variant.get('hgvsp') || '').toLowerCase().includes(query)
+      || (variant.get('hgvsc') || '').toLowerCase().includes(query)
+    )
   },
   logger: true,
   docs: {
