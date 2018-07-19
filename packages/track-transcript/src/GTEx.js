@@ -40,6 +40,16 @@ const Wrapper = styled.div`
 `
 
 
+const getTissueExpressionValue = (tissueExpressions, tissueOrMetric) => {
+  const isAggregate = tissueOrMetric.indexOf('aggregate-') === 0
+  if (isAggregate) {
+    const metric = tissueOrMetric.slice(10)
+    return tissueExpressions.aggregate[metric]
+  }
+  return tissueExpressions.individual[tissueOrMetric]
+}
+
+
 export function TissueIsoformExpressionPlotHeader({
   currentGene,
   currentTissue,
@@ -47,10 +57,8 @@ export function TissueIsoformExpressionPlotHeader({
   onTissueChange,
   width,
 }) {
-  const selectedTissue = currentTissue || 'median-across-all'
-  const maxExpressionValue = selectedTissue === 'median-across-all'
-    ? maxTissueExpressions.aggregate.median
-    : maxTissueExpressions.individual[selectedTissue]
+  const selectedTissue = currentTissue || 'aggregate-median'
+  const maxExpressionValue = getTissueExpressionValue(maxTissueExpressions, selectedTissue)
 
   const allTissues = Object.keys(maxTissueExpressions.individual).sort()
 
@@ -119,9 +127,14 @@ export function TissueIsoformExpressionPlotHeader({
           onChange={event => onTissueChange(event.target.value)}
           value={selectedTissue}
         >
-          <option key="median-across-all" value="median-across-all">
-            Median across all tissues ({maxTissueExpressions.aggregate.median})
-          </option>
+          <optgroup label="Across all tissues">
+            <option key="aggregate-mean" value="aggregate-mean">
+              Mean ({maxTissueExpressions.aggregate.mean.toFixed(3)})
+            </option>
+            <option key="aggregate-median" value="aggregate-median">
+              Median ({maxTissueExpressions.aggregate.median.toFixed(3)})
+            </option>
+          </optgroup>
           <optgroup label="Specific tissue">
             {options}
           </optgroup>
@@ -159,10 +172,8 @@ export function TissueIsoformExpressionPlot({
   transcript,
   width,
 }) {
-  const selectedTissue = currentTissue || 'median-across-all'
-  const maxExpressionValue = selectedTissue === 'median-across-all'
-    ? maxTissueExpressions.aggregate.median
-    : maxTissueExpressions.individual[selectedTissue]
+  const selectedTissue = currentTissue || 'aggregate-median'
+  const maxExpressionValue = getTissueExpressionValue(maxTissueExpressions, selectedTissue)
 
   const padding = 10
 
@@ -171,9 +182,7 @@ export function TissueIsoformExpressionPlot({
     .range([padding, width - padding])
     .nice()
 
-  const tpm = selectedTissue === 'median-across-all'
-    ? transcript.gtexTissueExpression.aggregate.median
-    : transcript.gtexTissueExpression.individual[selectedTissue]
+  const tpm = getTissueExpressionValue(transcript.gtexTissueExpression, selectedTissue)
 
   return (
     <Wrapper width={width}>
