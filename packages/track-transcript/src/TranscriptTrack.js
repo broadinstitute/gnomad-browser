@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import R from 'ramda'
 
 import TranscriptFlipOutButton from './transcriptFlipOutButton'
 
@@ -280,7 +279,7 @@ export default class TranscriptTrack extends Component {
       const transcript = this.props.transcriptsGrouped[transcriptId]
       const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
 
-      if (R.isEmpty(transcriptExonsFiltered)) {
+      if (transcriptExonsFiltered.length === 0) {
         return null
       }
 
