@@ -145,6 +145,33 @@ const ClickArea = ({
   )
 }
 
+ClickArea.propTypes = {
+  currentTableScrollData: PropTypes.shape({
+    scrollHeight: PropTypes.number.isRequired,
+    scrollTop: PropTypes.number.isRequired,
+  }).isRequired,
+  height: PropTypes.number,
+  hoveredVariant: PropTypes.string.isRequired,
+  invertOffset: PropTypes.func.isRequired,
+  isPositionOutside: PropTypes.bool,
+  onNavigatorClick: PropTypes.func.isRequired,
+  position: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }),
+  positionOffset: PropTypes.func.isRequired,
+  variants: PropTypes.object.isRequired,
+  width: PropTypes.number.isRequired,
+  xScale: PropTypes.func.isRequired,
+}
+
+ClickArea.defaultProps = {
+  height: 60,
+  isPositionOutside: true,
+  position: undefined,
+}
+
+
 const NavigatorTrackContainer = styled.div`
   display: flex;
 `
@@ -173,7 +200,23 @@ const NavigatorTrack = (props) => {
 }
 
 NavigatorTrack.propTypes = {
-  width: PropTypes.number,
+  currentTableScrollData: PropTypes.shape({
+    scrollHeight: PropTypes.number.isRequired,
+    scrollTop: PropTypes.number.isRequired,
+  }).isRequired,
+  hoveredVariant: PropTypes.string.isRequired,
+  invertOffset: PropTypes.func.isRequired,
+  leftPanelWidth: PropTypes.number.isRequired,
+  onNavigatorClick: PropTypes.func.isRequired,
+  positionOffset: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  variants: PropTypes.object.isRequired,
+  width: PropTypes.number.isRequired,
+  xScale: PropTypes.func.isRequired,
+}
+
+NavigatorTrack.defaultProps = {
+  title: '',
 }
 
 export default NavigatorTrack
