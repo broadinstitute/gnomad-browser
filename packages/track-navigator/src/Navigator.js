@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
+import PositionAxis from './PositionAxis'
+
 
 const ClickArea = ({
   height,
@@ -71,7 +73,7 @@ const ClickArea = ({
       <g key={`variant-${v}-${i}`}>
         {v.variant_id === hoveredVariant && <ellipse
           cx={v.x}
-          cy={height / 2.5}
+          cy={height / 2}
           ry={afScale(v.allele_freq) + 4}
           rx={10}
           fill={'rgba(0,0,0,0)'}
@@ -81,7 +83,7 @@ const ClickArea = ({
         />}
         <ellipse
           cx={v.x}
-          cy={height / 2.5}
+          cy={height / 2}
           ry={afScale(v.allele_freq)}
           rx={3}
           fill={localColor}
@@ -93,125 +95,53 @@ const ClickArea = ({
     )
   })
 
-  const PositionMarks = () => {
-    const tickHeight = 3
-    const numberOfTicks = 10
-    const textRotationDegrees = 0
-    const textXOffsetFromTick = 0
-    const textYOffsetFromTick = 7
-    const tickPositions = range(0, width, width / numberOfTicks)
-    const tickGenomePositions = tickPositions.map(t => ({ x: t, label: invertOffset(t) }))
-
-    const tickDrawing = (x, genomePositionLabel) => (
-      <g key={`tick-${x}-axis`}>
-        <line
-          className={'xTickLine'}
-          x1={x}
-          x2={x}
-          y1={height - 2}
-          y2={height - 2 - tickHeight}
-          stroke={'black'}
-          strokeWidth={1}
-        />
-        <text
-          style={{ textAnchor: 'center', fontSize: '10px' }}
-          x={x + textXOffsetFromTick}
-          y={height - textYOffsetFromTick}
-          transform={`rotate(${360 - textRotationDegrees} ${x} ${height})`}
-        >
-          {genomePositionLabel}
-        </text>
-      </g>
-    )
-
-    const axisTicksDrawing = R.tail(tickGenomePositions.map(
-      ({ x, label }) => tickDrawing(x, label))
-    )
-
-    return (
-      <g>
-        <line
-          className={'xAxisLine'}
-          x1={0 + 2}
-          x2={width - 2}
-          y1={height - 1}
-          y2={height - 1}
-          stroke={'black'}
-          strokeWidth={1}
-        />
-        <line
-          className={'yAxisLine'}
-          x1={1}
-          x2={1}
-          y1={height - 7}
-          y2={height}
-          stroke={'black'}
-          strokeWidth={1}
-        />
-        <line
-          className={'yAxisLine'}
-          x1={width - 1}
-          x2={width - 1}
-          y1={height - 7}
-          y2={height}
-          stroke={'black'}
-          strokeWidth={1}
-        />
-        {axisTicksDrawing}
-      </g>
-    )
-  }
-
-  const navigatorBoxBottomPadding = 20
-  const navigatorBoxTopPadding = 4
-
   return (
-    <svg
-      className={'areaClick'}
-      width={width}
-      height={height}
-      onClick={(_) => {
+    <div
+      onClick={() => {
         const genomePos = invertOffset(position.x)
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
-      onTouchStart={(_) => {
+      onTouchStart={() => {
         const genomePos = invertOffset(position.x)
         const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
         onNavigatorClick(tableIndex, genomePos)
       }}
-      style={{
-        cursor: 'pointer',
-      }}
-
+      style={{ cursor: 'pointer', width: `${width}px` }}
     >
-      <rect
-        className={'navigatorContainerRect'}
-        x={0}
-        y={0}
-        width={width}
-        height={height}
-        fill={'none'}
-      />
+      <svg height={height} width={width}>
+        <rect
+          className={'navigatorContainerRect'}
+          x={0}
+          y={0}
+          width={width}
+          height={height}
+          fill={'none'}
+        />
 
-      {!isPositionOutside &&
-      <rect
-        className={'cursorPositionRect'}
-        x={position.x - 15}
-        y={0 + navigatorBoxTopPadding}
-        width={30}
-        height={height - navigatorBoxBottomPadding}
-        strokeDasharray={'5, 5'}
-        fill={'none'}
-        stroke={'black'}
-        strokeWidth={'1px'}
-        style={{
-          cursor: 'pointer',
-        }}
-      />}
-      {variantMarks}
-      <PositionMarks />
-    </svg>
+        {!isPositionOutside &&
+        <rect
+          className={'cursorPositionRect'}
+          x={position.x - 15}
+          y={0}
+          width={30}
+          height={height}
+          strokeDasharray={'5, 5'}
+          fill={'none'}
+          stroke={'black'}
+          strokeWidth={'1px'}
+          style={{
+            cursor: 'pointer',
+          }}
+        />}
+        {variantMarks}
+      </svg>
+      <PositionAxis
+        height={height}
+        invertOffset={invertOffset}
+        width={width}
+      />
+    </div>
   )
 }
 
