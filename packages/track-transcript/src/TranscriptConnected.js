@@ -7,7 +7,7 @@ import {
   currentTranscript,
   canonicalTranscript,
   maxTissueExpressions,
-  transcriptsGrouped,
+  transcripts,
   transcriptFanOut,
   strand,
   actions as geneActions,
@@ -22,7 +22,7 @@ const mapStateToProps = state => ({
   currentTranscript: currentTranscript(state),
   canonicalTranscript: canonicalTranscript(state),
   maxTissueExpressions: maxTissueExpressions(state),
-  transcriptsGrouped: transcriptsGrouped(state),
+  transcripts: transcripts(state),
   transcriptFanOut: transcriptFanOut(state),
   strand: strand(state),
 })
