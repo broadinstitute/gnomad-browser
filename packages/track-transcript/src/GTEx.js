@@ -57,7 +57,7 @@ export function TissueIsoformExpressionPlotHeader({
   onTissueChange,
   width,
 }) {
-  const selectedTissue = currentTissue || 'aggregate-median'
+  const selectedTissue = currentTissue || 'aggregate-mean'
   const maxExpressionValue = getTissueExpressionValue(maxTissueExpressions, selectedTissue)
 
   const allTissues = Object.keys(maxTissueExpressions.individual).sort()
@@ -172,7 +172,7 @@ export function TissueIsoformExpressionPlot({
   transcript,
   width,
 }) {
-  const selectedTissue = currentTissue || 'aggregate-median'
+  const selectedTissue = currentTissue || 'aggregate-mean'
   const maxExpressionValue = getTissueExpressionValue(maxTissueExpressions, selectedTissue)
 
   const padding = 10
