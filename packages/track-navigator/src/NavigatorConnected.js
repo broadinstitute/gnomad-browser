@@ -4,7 +4,6 @@ import {
   finalFilteredVariants,
   hoveredVariant,
   types as variantActionTypes,
-  variantSortKey,
 } from '@broad/redux-variants'
 import {
   actions as tableActions,
@@ -20,7 +19,6 @@ const mapStateToProps = state => ({
   hoveredVariant: hoveredVariant(state),
   scrollSync: currentTableIndex(state),
   variants: finalFilteredVariants(state),
-  variantSortKey: variantSortKey(state),
 })
 
 
