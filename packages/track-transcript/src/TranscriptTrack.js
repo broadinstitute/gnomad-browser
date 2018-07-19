@@ -273,7 +273,26 @@ export default class TranscriptTrack extends Component {
   }
 
   renderTranscripts() {
-    return this.props.transcripts.map((transcript) => {
+    // Sort transcripts by isCanonical, mean expression, transcript ID
+    const sortedTranscripts = this.props.transcripts.sort((t1, t2) => {
+      if (t1.transcript_id === this.props.canonicalTranscript) {
+        return -1
+      }
+      if (t2.transcript_id === this.props.canonicalTranscript) {
+        return 1
+      }
+
+      const t1Mean = t1.gtexTissueExpression.aggregate.mean
+      const t2Mean = t2.gtexTissueExpression.aggregate.mean
+
+      if (t1Mean === t2Mean) {
+        return t1.transcript_id.localeCompare(t2.transcript_id)
+      }
+
+      return t2Mean - t1Mean
+    })
+
+    return sortedTranscripts.map((transcript) => {
       const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
 
       if (transcriptExonsFiltered.length === 0) {
