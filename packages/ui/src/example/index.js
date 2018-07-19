@@ -1,12 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import {
-  MaterialButton,
-  MaterialButtonRaised,
-  MaterialCheckbox,
-} from '../index'
-
+import { MaterialButtonRaised } from '../index'
 import SegmentedControlExample from './SegmentedControlExample'
 import TooltipExample from './TooltipExample'
 
@@ -29,13 +24,7 @@ const UiExample = () => {
   return (
     <ExampleContainer>
       <ExampleItem>
-        <MaterialButton>Flat Button</MaterialButton>
-      </ExampleItem>
-      <ExampleItem>
         <MaterialButtonRaised>Raised Button</MaterialButtonRaised>
-      </ExampleItem>
-      <ExampleItem>
-        <MaterialCheckbox label="Checkbox" />
       </ExampleItem>
       <ExampleItem>
         <SegmentedControlExample />
