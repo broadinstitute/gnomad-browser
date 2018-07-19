@@ -19,7 +19,6 @@ export {
   exonPadding,
   transcripts,
   canonicalExons,
-  transcriptsGrouped,
   regionalConstraint,
   strand,
 } from './genes'

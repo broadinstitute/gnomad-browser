@@ -197,18 +197,6 @@ export const transcripts = createSelector(
   })
 )
 
-export const transcriptsGrouped = createSelector(
-  [transcripts],
-  (transcripts) => {
-    return transcripts.reduce((acc, transcript) => {
-      return {
-        ...acc,
-        [transcript.transcript_id]: transcript,
-      }
-    }, {})
-  }
-)
-
 export const maxTissueExpressions = createSelector(
   [transcripts],
   (transcripts) => {
