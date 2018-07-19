@@ -1,18 +1,12 @@
 export {
-  MaterialButton,
   MaterialButtonRaised,
 } from './material/button'
-
-export {
-  default as MaterialCheckbox,
-} from './material/checkbox'
 
 export {
   ClassicExacButton,
   ClassicExacButtonFirst,
   ClassicExacButtonLast,
   ClassicExacButtonGroup,
-  ClassicVariantCategoryButtonGroup,
 } from './classicExac/button'
 
 export {
@@ -29,7 +23,6 @@ export {
   TableHeader,
   TableCell,
   TableTitleColumn,
-  ExampleTable,
 } from './tables/simpleTable'
 
 export {
