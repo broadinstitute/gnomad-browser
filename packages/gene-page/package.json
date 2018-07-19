@@ -29,7 +29,6 @@
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
     "prop-types": "^15.5.10",
-    "redux-debounced": "^0.4.0",
-    "redux-search": "^2.3.3"
+    "redux-debounced": "^0.4.0"
   }
 }

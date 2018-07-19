@@ -7,9 +7,12 @@ import { variantfx } from './redux'
 import App from './routes'
 
 const appSettings = {
-  searchIndexes: ['variant_id', 'HGVSc', 'Consequence'],
-  searchResourceSelector: (resourceName, state) => {
-    return state.variants.searchIndexed
+  variantSearchPredicate(variant, query) {
+    return (
+      variant.get('variant_id').toLowerCase().includes(query)
+      || (variant.get('HGVSc') || '').toLowerCase().includes(query)
+      || (variant.get('Consequence') || '').toLowerCase().includes(query)
+    )
   },
   logger: true,
   docs: {
