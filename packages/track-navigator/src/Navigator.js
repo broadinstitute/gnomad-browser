@@ -1,22 +1,11 @@
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-shadow */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-case-declarations */
-/* eslint-disable react/prop-types */
-
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import ReactCursorPosition from 'react-cursor-position'
-import R from 'ramda'
-import { getTableIndexByPosition } from '@broad/utilities/src/variant'
-import { range } from 'd3-array'
-import { line } from 'd3-shape'
 import { scaleLog } from 'd3-scale'
+import PropTypes from 'prop-types'
+import React from 'react'
+import ReactCursorPosition from 'react-cursor-position'
+import styled from 'styled-components'
 
 import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
+import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 const NavigatorAxisName = styled.div`
   display: flex;
@@ -26,31 +15,6 @@ const NavigatorAxisName = styled.div`
   margin-left: 30;
   width: ${props => props.leftPanelWidth}px;
 `
-
-//
-// const AreaClick = styled.div`
-//   border: 1px solid yellow;
-// `
-//
-// const NavigatorContainerRect = styled.div`
-//   fill: #DAEDE2;
-//   stroke: red;
-// `
-//
-// const CursorPositionRect = styled.div`
-//   fill: #EA2E49;
-//   stroke: black;
-//   stroke-width: 1px;
-//   cursor: pointer;
-// `
-//
-// const TablePositionRect = styled.div`
-//   fill: green;
-//   stroke: black;
-//   stroke-width: 1px;
-// `
-//
-
 
 const NavigatorAxis = ({ title, height, leftPanelWidth }) => {
   return (
@@ -71,18 +35,13 @@ const ClickArea = ({
   xScale,
   position, // active mouse position from ReactCursorPosition
   isPositionOutside, // from ReactCursorPosition
-  // scrollSync, // position in from table
   currentTableScrollData,
   onNavigatorClick,
-  variantPlotData, // TODO
   variants,
   hoveredVariant,
-  variantSortKey, // TODO
-  noVariants,
 }) => {
-
   if (variants.size === 0) {
-    return <p></p>
+    return <div />
   }
   const numberOfVariantsVisibleInTable = 20
   const { scrollHeight, scrollTop } = currentTableScrollData
@@ -91,25 +50,14 @@ const ClickArea = ({
 
   if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
     currentlyVisibleVariants = variants.slice(0, numberOfVariantsVisibleInTable).toJS()
-    // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   } else {
     currentlyVisibleVariants = variants.slice(
       scrollSync, scrollSync + numberOfVariantsVisibleInTable
     ).toJS()
-    // .filter(v => !isNaN(xScale(positionOffset(v.pos).offsetPosition)))
   }
   if (currentlyVisibleVariants.length === 0) {
-    return <p></p>
+    return <div />
   }
-  const tablePositionStart = R.head(currentlyVisibleVariants).pos
-  const tablePositionStop = R.last(currentlyVisibleVariants).pos
-
-  const tableRectPadding = 10
-  const tableRectStart = xScale(
-    positionOffset(tablePositionStart).offsetPosition
-  ) - tableRectPadding
-  const tableRectStop = xScale(positionOffset(tablePositionStop).offsetPosition)
-  const tableRectWidth = tableRectStop - (tableRectStart + tableRectPadding) // TODO
 
   const variantPositions = currentlyVisibleVariants.map(v => ({
     x: xScale(positionOffset(v.pos).offsetPosition),
@@ -163,28 +111,6 @@ const ClickArea = ({
       </g>
     )
   })
-
-
-  // let allVariantMarks
-  // if (variants.size < 300) {
-  //   const allVariantPositions = variants.map((v) => {
-  //     return ({
-  //       x: xScale(positionOffset(v.pos).offsetPosition),
-  //       variant_id: v.variant_id,
-  //       allele_freq: v.allele_freq,
-  //     })
-  //   }).filter(v => !isNaN(v.x))
-  //   allVariantMarks = allVariantPositions.map((v, i) => (
-  //     <g key={`variant-${v}-${i}`}>
-  //       <circle
-  //         cx={v.x}
-  //         cy={height / 2.5}
-  //         r={afScale(v.allele_freq)}
-  //         fill={'grey'}
-  //       />
-  //     </g>
-  //   ))
-  // }
 
   const PositionMarks = () => {
     const tickHeight = 3
@@ -286,15 +212,6 @@ const ClickArea = ({
         height={height}
         fill={'none'}
       />
-    {/*!noVariants && variantSortKey === 'pos' &&
-      <rect
-        className={'tablePositionRect'}
-        x={tableRectStart}
-        y={0 + navigatorBoxTopPadding}
-        width={tableRectWidth}
-        height={height - navigatorBoxBottomPadding}
-        strokeDasharray={'5, 5'}
-      />*/}
 
       {!isPositionOutside &&
       <rect
@@ -311,8 +228,7 @@ const ClickArea = ({
           cursor: 'pointer',
         }}
       />}
-      {/* {!noVariants && variants.size < 300 && allVariantMarks} */}
-      {!noVariants && variantMarks}
+      {variantMarks}
       <PositionMarks />
     </svg>
   )
@@ -321,7 +237,6 @@ const ClickArea = ({
 const NavigatorTrackContainer = styled.div`
   display: flex;
   align-items: center;
-  ${'' /* border: 1px solid blue; */}
 `
 
 const NavigatorTrack = (props) => {
@@ -340,7 +255,7 @@ const NavigatorTrack = (props) => {
 }
 NavigatorTrack.propTypes = {
   height: PropTypes.number,
-  width: PropTypes.number,  // eslint-disable-line
+  width: PropTypes.number,
 }
 NavigatorTrack.defaultProps = {
   height: 60,
