@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 export const ClassicExacButton = styled.button`
@@ -47,11 +46,3 @@ export const ClassicExacButtonGroup = styled.div`
   display: flex;
   flex-direction: row;
 `
-
-export const ClassicVariantCategoryButtonGroup = () => (
-  <ClassicExacButtonGroup>
-    <ClassicExacButtonFirst>All</ClassicExacButtonFirst>
-    <ClassicExacButton>Missense + LoF</ClassicExacButton>
-    <ClassicExacButtonLast>LoF</ClassicExacButtonLast>
-  </ClassicExacButtonGroup>
-)
