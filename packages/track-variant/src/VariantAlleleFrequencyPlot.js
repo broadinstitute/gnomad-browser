@@ -67,12 +67,9 @@ export class VariantAlleleFrequencyPlot extends Component {
   }
 
   canvasRef = (el) => {
-    if (el) {
-      this.ctx = el.getContext('2d')
-      this.ctx.scale(CANVAS_SCALE, CANVAS_SCALE)
-    } else {
-      this.ctx = null
-    }
+    this.ctx = el
+      ? el.getContext('2d')
+      : null
   }
 
   draw() {
@@ -86,6 +83,7 @@ export class VariantAlleleFrequencyPlot extends Component {
 
     const markerY = height / 2
 
+    this.ctx.setTransform(CANVAS_SCALE, 0, 0, CANVAS_SCALE, 0, 0)
     this.ctx.clearRect(0, 0, width, height)
     this.ctx.lineWidth = 0.5
     this.ctx.strokeStyle = '#000'
