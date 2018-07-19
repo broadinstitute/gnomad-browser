@@ -215,7 +215,7 @@ export default class TranscriptTrack extends Component {
     strand: PropTypes.string.isRequired,
     transcriptButtonOnClick: PropTypes.func.isRequired,
     transcriptFanOut: PropTypes.bool.isRequired,
-    transcriptsGrouped: PropTypes.object.isRequired,
+    transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
     xScale: PropTypes.func.isRequired,
   }
@@ -273,10 +273,7 @@ export default class TranscriptTrack extends Component {
   }
 
   renderTranscripts() {
-    const transcriptIds = Object.keys(this.props.transcriptsGrouped)
-
-    return transcriptIds.map((transcriptId) => {
-      const transcript = this.props.transcriptsGrouped[transcriptId]
+    return this.props.transcripts.map((transcript) => {
       const transcriptExonsFiltered = transcript.exons.filter(exon => exon.feature_type === 'CDS')
 
       if (transcriptExonsFiltered.length === 0) {
@@ -285,7 +282,7 @@ export default class TranscriptTrack extends Component {
 
       return (
         <Transcript
-          key={transcriptId}
+          key={transcript.transcript_id}
           canonicalTranscript={this.props.canonicalTranscript}
           currentTissue={this.props.currentTissue}
           currentTranscript={this.props.currentTranscript}
