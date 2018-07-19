@@ -7,25 +7,6 @@ import styled from 'styled-components'
 import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
-const NavigatorAxisName = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 12px;
-  margin-left: 30;
-  width: ${props => props.leftPanelWidth}px;
-`
-
-const NavigatorAxis = ({ title, height, leftPanelWidth }) => {
-  return (
-    <NavigatorAxisName leftPanelWidth={leftPanelWidth} height={height}>
-      {title}
-    </NavigatorAxisName>
-  )
-}
-NavigatorAxis.propTypes = {
-  leftPanelWidth: PropTypes.number.isRequired,
-}
 
 const ClickArea = ({
   height,
@@ -236,29 +217,33 @@ const ClickArea = ({
 
 const NavigatorTrackContainer = styled.div`
   display: flex;
-  align-items: center;
 `
+
+
+const LeftPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 60px;
+  justify-content: center;
+  width: ${props => props.width}px;
+`
+
 
 const NavigatorTrack = (props) => {
   return (
     <NavigatorTrackContainer>
-      <NavigatorAxis
-        title={props.title}
-        height={props.height}
-        leftPanelWidth={props.leftPanelWidth}
-      />
+      <LeftPanel width={props.leftPanelWidth}>
+        {props.title}
+      </LeftPanel>
       <ReactCursorPosition className={'cursorPosition'}>
         <ClickArea {...props} />
       </ReactCursorPosition>
     </NavigatorTrackContainer>
   )
 }
+
 NavigatorTrack.propTypes = {
-  height: PropTypes.number,
   width: PropTypes.number,
-}
-NavigatorTrack.defaultProps = {
-  height: 60,
 }
 
 export default NavigatorTrack
