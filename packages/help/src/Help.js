@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable template-curly-spacing */
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'

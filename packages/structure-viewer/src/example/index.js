@@ -1,7 +1,7 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-shadow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Immutable from 'immutable'
 import { Provider, connect } from 'react-redux'
 
