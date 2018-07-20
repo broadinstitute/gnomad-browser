@@ -160,11 +160,11 @@ const GeneInfo = ({
                   <TableCell width={'100px'}>{translations[category]}</TableCell>
                   {['OR', 'EF', 'CE'].map((calculation) => {
                     const calculationValue = currentGeneDiseaseData.get(`${category}_${calculation}`)
-                    return calculationValue ?
+                    return (
                       <TableCell key={`burden-${category}-${calculation}`} width={'70px'}>
-                        {calculationValue.toPrecision(3)}
+                        {calculationValue ? calculationValue.toPrecision(3) : 'N/A'}
                       </TableCell>
-                      : <TableCell width={'70px'}>{'N/A'}</TableCell>
+                    )
                   })}
                 </TableRow>
               ))}
@@ -202,7 +202,7 @@ const GeneInfo = ({
 
               </TableHeader>
               {Object.keys(COHORTS).map(cohort => (
-                <TableRow>
+                <TableRow key={cohort}>
                   <TableCell width={COHORT_TABLE_COHORT_WIDTH}>{COHORTS[cohort]}</TableCell>
                   <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get(`${cohort}_DIS_Ind`)}</TableCell>
                   {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
@@ -222,7 +222,7 @@ const GeneInfo = ({
                 ))}
               </TableRowTotal>
               {Object.keys(COHORTS).slice(0, 3).map(cohort => (
-                <TableRow>
+                <TableRow key={cohort}>
                   <TableCell width={COHORT_TABLE_COHORT_WIDTH}>{COHORTS[cohort]}</TableCell>
                   <TableCell width={COHORT_TABLE_COLUMN_WIDTH}>{currentGeneDiseaseData.get(`${cohort}_HVO_Ind`)}</TableCell>
                   {['PTV', 'MIS', 'ONT', 'PAL'].map(csq => (
