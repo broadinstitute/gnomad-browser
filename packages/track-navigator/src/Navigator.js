@@ -18,26 +18,19 @@ const ClickArea = ({
   xScale,
   position, // active mouse position from ReactCursorPosition
   isPositionOutside, // from ReactCursorPosition
-  currentTableScrollData,
   onNavigatorClick,
   variants,
+  visibleVariantWindow,
   hoveredVariant,
 }) => {
   if (variants.size === 0) {
     return <div />
   }
-  const numberOfVariantsVisibleInTable = 20
-  const { scrollHeight, scrollTop } = currentTableScrollData
-  const scrollSync = Math.floor((scrollTop / scrollHeight) * variants.size)
-  let currentlyVisibleVariants
 
-  if (variants.size < scrollSync + numberOfVariantsVisibleInTable) {
-    currentlyVisibleVariants = variants.slice(0, numberOfVariantsVisibleInTable).toJS()
-  } else {
-    currentlyVisibleVariants = variants.slice(
-      scrollSync, scrollSync + numberOfVariantsVisibleInTable
-    ).toJS()
-  }
+  const currentlyVisibleVariants = variants
+    .slice(visibleVariantWindow[0], visibleVariantWindow[1])
+    .toJS()
+
   if (currentlyVisibleVariants.length === 0) {
     return <div />
   }
@@ -146,10 +139,6 @@ const ClickArea = ({
 }
 
 ClickArea.propTypes = {
-  currentTableScrollData: PropTypes.shape({
-    scrollHeight: PropTypes.number.isRequired,
-    scrollTop: PropTypes.number.isRequired,
-  }).isRequired,
   height: PropTypes.number,
   hoveredVariant: PropTypes.string.isRequired,
   invertOffset: PropTypes.func.isRequired,
@@ -161,6 +150,7 @@ ClickArea.propTypes = {
   }),
   positionOffset: PropTypes.func.isRequired,
   variants: PropTypes.object.isRequired,
+  visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
   width: PropTypes.number.isRequired,
   xScale: PropTypes.func.isRequired,
 }
@@ -200,10 +190,6 @@ const NavigatorTrack = (props) => {
 }
 
 NavigatorTrack.propTypes = {
-  currentTableScrollData: PropTypes.shape({
-    scrollHeight: PropTypes.number.isRequired,
-    scrollTop: PropTypes.number.isRequired,
-  }).isRequired,
   hoveredVariant: PropTypes.string.isRequired,
   invertOffset: PropTypes.func.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
@@ -211,6 +197,7 @@ NavigatorTrack.propTypes = {
   positionOffset: PropTypes.func.isRequired,
   title: PropTypes.string,
   variants: PropTypes.object.isRequired,
+  visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
   width: PropTypes.number.isRequired,
   xScale: PropTypes.func.isRequired,
 }
