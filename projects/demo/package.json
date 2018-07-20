@@ -4,7 +4,6 @@
   "license": "MIT",
   "localDependencies": {
     "@broad/manhattan": "0.0.1",
-    "@broad/fetch-hoc": "0.0.1",
     "@broad/pdf-export": "0.0.1",
     "@broad/plot": "0.0.1",
     "@broad/region": "0.0.1",
