@@ -41,7 +41,6 @@ const geneType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLString },
     omim_description: { type: GraphQLString },
-    stop: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     omim_accession: { type: GraphQLString },
     chrom: { type: GraphQLString },
@@ -51,6 +50,7 @@ const geneType = new GraphQLObjectType({
     other_names: { type: new GraphQLList(GraphQLString) },
     canonical_transcript: { type: GraphQLString },
     start: { type: GraphQLInt },
+    stop: { type: GraphQLInt },
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
