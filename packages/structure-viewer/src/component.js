@@ -2,7 +2,8 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable react/prop-types */
 
-import React, { PropTypes, Component } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import pv from 'bio-pv'
 
