@@ -48,7 +48,7 @@ export class VariantAlleleFrequencyPlot extends Component {
     positionOffset: PropTypes.func.isRequired,
     variants: PropTypes.arrayOf(
       PropTypes.shape({
-        allele_freq: PropTypes.number.isRequired,
+        allele_freq: PropTypes.number,
         consequence: PropTypes.string,
         pos: PropTypes.number.isRequired,
         variant_id: PropTypes.string.isRequired,
@@ -95,12 +95,13 @@ export class VariantAlleleFrequencyPlot extends Component {
       let rx
       let ry
 
-      if (variant.allele_freq === 0) {
+      if (!variant.allele_freq) {
         fill = 'white'
         rx = 1
         ry = 1
       } else {
-        fill = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
+        const category = getCategoryFromConsequence(variant.consequence) || 'all'
+        fill = exacClassicColors[category]
         rx = 3
         ry = alleleFrequencyScale(variant.allele_freq)
       }

@@ -38,8 +38,8 @@ VariantAlleleFrequencyTrack.propTypes = {
   title: PropTypes.string,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
-      allele_freq: PropTypes.number.isRequired,
-      consequence: PropTypes.string.isRequired,
+      allele_freq: PropTypes.number,
+      consequence: PropTypes.string,
       pos: PropTypes.number.isRequired,
       variant_id: PropTypes.string.isRequired,
     })
