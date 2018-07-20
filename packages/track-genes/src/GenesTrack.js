@@ -1,8 +1,43 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 import { formatGenes, createTracks } from './index'
+
+
+const GeneTrackWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+`
+
+
+const GeneTrackLeft = styled.div`
+  height: 100%;
+  width: ${props => props.width}px;
+`
+
+
+const GeneTrackData = styled.div`
+  height: 100%;
+`
+
+
+const GeneTrackTitle = styled.div``
+
+
+const GeneTrackTitleText = styled.div`
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+`
+
+const GeneGroup = styled.g`
+  &:hover {
+    fill: red;
+    cursor: pointer;
+  }
+`
 
 const GenesTrack = ({
   genes,
@@ -12,44 +47,11 @@ const GenesTrack = ({
   onGeneClick,
 }) => {
   const GENE_TRACK_HEIGHT = 50
-  const GENE_TRACK_PADDING = 3
-
-  const GeneTrackWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-  `
-
-  const GeneTrackLeft = styled.div`
-    height: 100%;
-    width: ${leftPanelWidth}px;
-  `
-
-  const GeneTrackData = styled.div`
-    height: 100%;
-  `
-
-  const GeneTrackTitle = styled.div`
-    height: ${GENE_TRACK_HEIGHT + 3}px;
-  `
-  const GeneTrackTitleText = styled.div`
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-  `
-
-  const GeneGroup = styled.g`
-    &:hover {
-      fill: red;
-      cursor: pointer;
-    }
-  `
-
   const tracksToMap = createTracks(formatGenes(genes), xScale).toJS()
 
   return (
     <GeneTrackWrapper>
-      <GeneTrackLeft>
+      <GeneTrackLeft width={leftPanelWidth}>
         <GeneTrackTitle>
           <GeneTrackTitleText>Genes</GeneTrackTitleText>
         </GeneTrackTitle>
