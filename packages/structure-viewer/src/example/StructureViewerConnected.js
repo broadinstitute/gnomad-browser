@@ -1,6 +1,6 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-shadow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import * as reduxFunctions from '@broad/structure-viewer/src/redux'

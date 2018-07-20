@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
-import React, { PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import R from 'ramda'
 
 import { area, line, curveCatmullRom } from 'd3-shape'
