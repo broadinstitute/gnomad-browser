@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import RegionViewer from '@broad/region'
 
-import  GenesTrack  from '../GenesTrack'
+import { RegionViewer } from '@broad/region'
 
-import regionData from '@resources/2-175000717-180995530.json'  // eslint-disable-line
+import regionData from '@resources/2-175000717-180995530.json'
+
+import { GenesTrack } from '..'
+
 
 const Wrapper = styled.div`
   padding-left: 50px;
@@ -25,7 +27,8 @@ const featuresToDisplay = ['default']
 const { genes } = regionData
 console.log(genes)
 
-export default () => {
+
+const GenesTrackExample = () => {
   return (
     <Wrapper>
       <RegionViewer
@@ -34,9 +37,13 @@ export default () => {
         regions={regions}
         featuresToDisplay={featuresToDisplay}
       >
-        <GenesTrack genes={genes}/>
+        <GenesTrack
+          genes={genes}
+          onGeneClick={console.log}
+        />
       </RegionViewer>
     </Wrapper>
   )
 }
 
+export default GenesTrackExample
