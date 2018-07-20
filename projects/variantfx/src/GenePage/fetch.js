@@ -151,6 +151,8 @@ const fetchGeneData = (geneName, url = PUBLIC_API_URL) => {
       stop
       xstart
       xstop
+      strand
+      canonical_transcript
       transcripts {
         _id
         start
