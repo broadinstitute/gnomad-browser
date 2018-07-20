@@ -2,3 +2,5 @@ node_modules
 
 packages/**/lib
 projects/**/dist
+
+packages/api/build
