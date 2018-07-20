@@ -7,19 +7,26 @@ import {
 } from '@broad/redux-variants'
 import {
   actions as tableActions,
-  currentTableIndex,
   currentTableScrollData,
 } from '@broad/table'
 
 import NavigatorTrack from './Navigator'
 
 
-const mapStateToProps = state => ({
-  currentTableScrollData: currentTableScrollData(state),
-  hoveredVariant: hoveredVariant(state),
-  scrollSync: currentTableIndex(state),
-  variants: finalFilteredVariants(state),
-})
+const mapStateToProps = (state) => {
+  const variants = finalFilteredVariants(state)
+
+  const { scrollHeight, scrollTop } = currentTableScrollData(state)
+  const tableIndex = Math.floor((scrollTop / scrollHeight) * variants.size)
+  const visibleVariantWindow = [tableIndex, tableIndex + 20]
+
+  return {
+    currentTableScrollData: currentTableScrollData(state),
+    hoveredVariant: hoveredVariant(state),
+    variants: finalFilteredVariants(state),
+    visibleVariantWindow,
+  }
+}
 
 
 const mapDispatchToProps = dispatch => ({
