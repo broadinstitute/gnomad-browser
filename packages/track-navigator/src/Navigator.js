@@ -1,6 +1,6 @@
 import { scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { Component } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
 import styled from 'styled-components'
 
@@ -10,155 +10,181 @@ import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 import PositionAxis from './PositionAxis'
 
 
-const ClickArea = ({
-  height,
-  width,
-  positionOffset,
-  invertOffset,
-  xScale,
-  position, // active mouse position from ReactCursorPosition
-  isPositionOutside, // from ReactCursorPosition
-  onNavigatorClick,
-  variants,
-  visibleVariantWindow,
-  hoveredVariant,
-}) => {
-  if (variants.size === 0) {
-    return <div />
+const afScale = scaleLog()
+  .domain([0.000010, 0.001])
+  .range([4, 12])
+
+
+const exacClassicColors = {
+  all: '#757575',
+  missense: '#F0C94D',
+  lof: '#FF583F',
+  synonymous: 'green',
+}
+
+
+class Navigator extends Component {
+  static propTypes = {
+    height: PropTypes.number,
+    hoveredVariant: PropTypes.string.isRequired,
+    invertOffset: PropTypes.func.isRequired,
+    isPositionOutside: PropTypes.bool,
+    onNavigatorClick: PropTypes.func.isRequired,
+    position: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+    }),
+    positionOffset: PropTypes.func.isRequired,
+    variants: PropTypes.object.isRequired,
+    visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
+    width: PropTypes.number.isRequired,
+    xScale: PropTypes.func.isRequired,
   }
 
-  const currentlyVisibleVariants = variants
-    .slice(visibleVariantWindow[0], visibleVariantWindow[1])
-    .toJS()
-
-  if (currentlyVisibleVariants.length === 0) {
-    return <div />
+  static defaultProps = {
+    height: 60,
+    isPositionOutside: true,
+    position: undefined,
   }
 
-  const variantPositions = currentlyVisibleVariants.map(v => ({
-    x: xScale(positionOffset(v.pos).offsetPosition),
-    variant_id: v.variant_id,
-    color: v.variant_id === hoveredVariant ? 'yellow' : 'red',
-    allele_freq: v.allele_freq,
-    consequence: v.consequence,
-  })).filter(v => v.allele_freq !== 0).filter(v => !isNaN(v.x))
+  onClick = () => {
+    const {
+      invertOffset,
+      onNavigatorClick,
+      position,
+      variants,
+    } = this.props
 
-  const afScale =
-    scaleLog()
-      .domain([
-        0.000010,
-        0.001,
-      ])
-      .range([4, 12])
-
-  const exacClassicColors = {
-    all: '#757575',
-    missense: '#F0C94D',
-    lof: '#FF583F',
-    synonymous: 'green',
+    const genomePos = invertOffset(position.x)
+    const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
+    onNavigatorClick(tableIndex, genomePos)
   }
 
-  const variantMarks = variantPositions.map((v, i) => {
-    const localColor = exacClassicColors[getCategoryFromConsequence(
-      v.consequence
-    )]
+  renderCursor() {
+    const {
+      height,
+      isPositionOutside,
+      position,
+    } = this.props
+
+    if (isPositionOutside) {
+      return null
+    }
+
     return (
-      <g key={`variant-${v}-${i}`}>
-        {v.variant_id === hoveredVariant && <ellipse
-          cx={v.x}
-          cy={height / 2}
-          ry={afScale(v.allele_freq) + 4}
-          rx={10}
-          fill={'rgba(0,0,0,0)'}
-          strokeWidth={1}
-          stroke={'black'}
-          strokeDasharray={'3, 3'}
-        />}
-        <ellipse
-          cx={v.x}
-          cy={height / 2}
-          ry={afScale(v.allele_freq)}
-          rx={3}
-          fill={localColor}
-          strokeWidth={0.5}
-          stroke={'black'}
-          opacity={0.7}
-        />
-      </g>
-    )
-  })
-
-  return (
-    <div
-      onClick={() => {
-        const genomePos = invertOffset(position.x)
-        const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
-        onNavigatorClick(tableIndex, genomePos)
-      }}
-      onTouchStart={() => {
-        const genomePos = invertOffset(position.x)
-        const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
-        onNavigatorClick(tableIndex, genomePos)
-      }}
-      style={{ cursor: 'pointer', width: `${width}px` }}
-    >
-      <svg height={height} width={width}>
-        <rect
-          className={'navigatorContainerRect'}
-          x={0}
-          y={0}
-          width={width}
-          height={height}
-          fill={'none'}
-        />
-
-        {!isPositionOutside &&
-        <rect
-          className={'cursorPositionRect'}
-          x={position.x - 15}
-          y={0}
-          width={30}
-          height={height}
-          strokeDasharray={'5, 5'}
-          fill={'none'}
-          stroke={'black'}
-          strokeWidth={'1px'}
-          style={{
-            cursor: 'pointer',
-          }}
-        />}
-        {variantMarks}
-      </svg>
-      <PositionAxis
+      <rect
+        x={position.x - 15}
+        y={0}
+        width={30}
         height={height}
-        invertOffset={invertOffset}
-        width={width}
+        fill="none"
+        stroke="black"
+        strokeDasharray="5, 5"
+        strokeWidth={1}
+        style={{ cursor: 'pointer' }}
       />
-    </div>
-  )
-}
+    )
+  }
 
-ClickArea.propTypes = {
-  height: PropTypes.number,
-  hoveredVariant: PropTypes.string.isRequired,
-  invertOffset: PropTypes.func.isRequired,
-  isPositionOutside: PropTypes.bool,
-  onNavigatorClick: PropTypes.func.isRequired,
-  position: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  }),
-  positionOffset: PropTypes.func.isRequired,
-  variants: PropTypes.object.isRequired,
-  visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
-  width: PropTypes.number.isRequired,
-  xScale: PropTypes.func.isRequired,
-}
+  renderHoveredVariant(visibleVariants) {
+    const {
+      height,
+      hoveredVariant,
+      positionOffset,
+      xScale,
+    } = this.props
 
-ClickArea.defaultProps = {
-  height: 60,
-  isPositionOutside: true,
-  position: undefined,
+    const variant = visibleVariants.find(v => v.variant_id === hoveredVariant)
+    if (!variant) {
+      return null
+    }
+
+    if (variant.allele_freq === 0) {
+      return null
+    }
+
+    const x = xScale(positionOffset(variant.pos).offsetPosition)
+
+    return (
+      <ellipse
+        cx={x}
+        cy={height / 2}
+        rx={10}
+        ry={afScale(variant.allele_freq) + 4}
+        fill="none"
+        stroke="black"
+        strokeDasharray="3, 3"
+        strokeWidth={1}
+      />
+    )
+  }
+
+  renderVisibleVariants(visibleVariants) {
+    const {
+      height,
+      positionOffset,
+      xScale,
+    } = this.props
+
+    return visibleVariants.filter(v => v.allele_freq !== 0).map((variant) => {
+      const color = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
+      const x = xScale(positionOffset(variant.pos).offsetPosition)
+
+      return (
+        <ellipse
+          key={variant.variant_id}
+          cx={x}
+          cy={height / 2}
+          rx={3}
+          ry={afScale(variant.allele_freq)}
+          fill={color}
+          opacity={0.7}
+          stroke="black"
+          strokeWidth={0.5}
+        />
+      )
+    })
+  }
+
+  render() {
+    const {
+      height,
+      invertOffset,
+      variants,
+      visibleVariantWindow,
+      width,
+    } = this.props
+
+    if (variants.size === 0) {
+      return <div />
+    }
+
+    const visibleVariants = variants
+      .slice(visibleVariantWindow[0], visibleVariantWindow[1])
+      .toJS()
+
+    if (visibleVariants.length === 0) {
+      return <div />
+    }
+
+    return (
+      <div
+        onClick={this.onClick}
+        onTouchStart={this.onClick}
+        style={{ cursor: 'pointer', width: `${width}px` }}
+      >
+        <svg height={height} width={width}>
+          {this.renderVisibleVariants(visibleVariants)}
+          {this.renderHoveredVariant(visibleVariants)}
+          {this.renderCursor()}
+        </svg>
+        <PositionAxis
+          invertOffset={invertOffset}
+          width={width}
+        />
+      </div>
+    )
+  }
 }
 
 
@@ -183,7 +209,16 @@ const NavigatorTrack = (props) => {
         {props.title}
       </LeftPanel>
       <ReactCursorPosition className={'cursorPosition'}>
-        <ClickArea {...props} />
+        <Navigator
+          hoveredVariant={props.hoveredVariant}
+          invertOffset={props.invertOffset}
+          onNavigatorClick={props.onNavigatorClick}
+          positionOffset={props.positionOffset}
+          variants={props.variants}
+          visibleVariantWindow={props.visibleVariantWindow}
+          width={props.width}
+          xScale={props.xScale}
+        />
       </ReactCursorPosition>
     </NavigatorTrackContainer>
   )
