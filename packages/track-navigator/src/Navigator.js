@@ -99,9 +99,9 @@ class Navigator extends Component {
       return null
     }
 
-    if (variant.allele_freq === 0) {
-      return null
-    }
+    const ry = (variant.allele_freq === 0)
+      ? 4
+      : afScale(variant.allele_freq) + 4
 
     const x = xScale(positionOffset(variant.pos).offsetPosition)
 
@@ -110,7 +110,7 @@ class Navigator extends Component {
         cx={x}
         cy={height / 2}
         rx={10}
-        ry={afScale(variant.allele_freq) + 4}
+        ry={ry}
         fill="none"
         stroke="black"
         strokeDasharray="3, 3"
@@ -126,8 +126,20 @@ class Navigator extends Component {
       xScale,
     } = this.props
 
-    return visibleVariants.filter(v => v.allele_freq !== 0).map((variant) => {
-      const color = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
+    return visibleVariants.map((variant) => {
+      let fill
+      let rx
+      let ry
+      if (variant.allele_freq === 0) {
+        fill = 'white'
+        rx = 1
+        ry = 1
+      } else {
+        fill = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
+        rx = 3
+        ry = afScale(variant.allele_freq)
+      }
+
       const x = xScale(positionOffset(variant.pos).offsetPosition)
 
       return (
@@ -135,9 +147,9 @@ class Navigator extends Component {
           key={variant.variant_id}
           cx={x}
           cy={height / 2}
-          rx={3}
-          ry={afScale(variant.allele_freq)}
-          fill={color}
+          rx={rx}
+          ry={ry}
+          fill={fill}
           opacity={0.7}
           stroke="black"
           strokeWidth={0.5}
