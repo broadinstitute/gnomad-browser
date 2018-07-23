@@ -20,8 +20,6 @@ import { lookupExonsByTranscriptId } from './exon'
 // import qualityMetricsType from './qualityMetrics'
 // import mnpType from './mnp'
 
-import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
-
 const lofs = [
   'transcript_ablation',
   'splice_acceptor_variant',

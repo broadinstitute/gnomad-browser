@@ -10,12 +10,12 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
+import CATEGORY_DEFINITIONS from '@broad/utilities/src/constants/categoryDefinitions'
+
 import vepType from './vep'
 import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
 import mnpType from './mnp'
-
-import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
 
 const variantType = new GraphQLObjectType({
   name: 'Variant',
