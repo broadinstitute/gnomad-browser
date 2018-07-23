@@ -15,6 +15,20 @@ const afScale = scaleLog()
   .range([4, 12])
 
 
+const NavigatorContainer = styled.div`
+  cursor: pointer;
+  position: relative;
+  width: ${props => props.width}px;
+`
+
+
+const NavigatorOverlay = styled.svg`
+  left: 0;
+  position: absolute;
+  top: 0;
+`
+
+
 class Navigator extends Component {
   static propTypes = {
     height: PropTypes.number,
@@ -152,21 +166,21 @@ class Navigator extends Component {
     }
 
     return (
-      <div
+      <NavigatorContainer
         onClick={this.onClick}
         onTouchStart={this.onClick}
-        style={{ cursor: 'pointer', position: 'relative', width: `${width}px` }}
+        width={width}
       >
         {this.renderVisibleVariants(visibleVariants)}
-        <svg height={height} width={width} style={{ position: 'absolute', top: 0, left: 0 }}>
+        <NavigatorOverlay height={height} width={width}>
           {this.renderHoveredVariant(visibleVariants)}
           {this.renderCursor()}
-        </svg>
+        </NavigatorOverlay>
         <PositionAxis
           invertOffset={invertOffset}
           width={width}
         />
-      </div>
+      </NavigatorContainer>
     )
   }
 }
