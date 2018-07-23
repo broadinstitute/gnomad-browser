@@ -10,8 +10,6 @@ import Redis from 'ioredis'
 
 import gnomadSchema from './schema'
 
-import sczMockDb from './mockdata/meta'
-
 const app = express()
 app.use(compression())
 app.use(cors());
@@ -40,7 +38,6 @@ app.use(cors());
       context: {
         database: {
           gnomad,
-          sczMockDb,
           elastic,
           redis,
         },

@@ -70,14 +70,6 @@ const schzVariantType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'Additional information about this variant using controlled vocabulary, including "denovo", "hemizygous", and "TDT"',
     },
-    // populations: {
-    //   type: new GraphQLList(metaVariantPopulationType),
-    //   description: 'Individual population statistics',
-    // },
-    // studies: {
-    //   type: new GraphQLList(metaVariantPopulationType),
-    //   description: 'Individual study statistics',
-    // },
   }),
 })
 
