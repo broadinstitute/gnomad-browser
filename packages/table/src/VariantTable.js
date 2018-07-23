@@ -17,7 +17,6 @@ import {
   actions as variantActions,
   variantSearchQuery,
   finalFilteredVariants,
-  finalFilteredVariantsCount,
 } from '@broad/redux-variants'
 
 import { currentChromosome as geneChromosome } from '@broad/redux-genes'
@@ -94,7 +93,6 @@ VariantTable.propTypes = {
   height: PropTypes.number,
   tableConfig: PropTypes.func.isRequired,
   screenSize: PropTypes.object.isRequired,
-  // setVisibleInTable: PropTypes.func.isRequired,
 }
 
 VariantTable.defaultProps = {
