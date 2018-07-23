@@ -29,7 +29,6 @@ import {
   schizophreniaGwasVariants,
 } from './schzvariant'
 
-import minimalVariantType, { lookupMinimalVariants } from './minimalVariant'
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import * as fromExacVariant from './exacElasticVariant'
 import clinvarType, { lookupClinvarVariantsByGeneId } from './clinvar'
