@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import ReactCursorPosition from 'react-cursor-position'
 import styled from 'styled-components'
 
-import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
+import { VariantAlleleFrequencyPlot } from '@broad/track-variant'
 import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 import PositionAxis from './PositionAxis'
@@ -13,14 +13,6 @@ import PositionAxis from './PositionAxis'
 const afScale = scaleLog()
   .domain([0.000010, 0.001])
   .range([4, 12])
-
-
-const exacClassicColors = {
-  all: '#757575',
-  missense: '#F0C94D',
-  lof: '#FF583F',
-  synonymous: 'green',
-}
 
 
 class Navigator extends Component {
@@ -123,39 +115,19 @@ class Navigator extends Component {
     const {
       height,
       positionOffset,
+      width,
       xScale,
     } = this.props
 
-    return visibleVariants.map((variant) => {
-      let fill
-      let rx
-      let ry
-      if (variant.allele_freq === 0) {
-        fill = 'white'
-        rx = 1
-        ry = 1
-      } else {
-        fill = exacClassicColors[getCategoryFromConsequence(variant.consequence)]
-        rx = 3
-        ry = afScale(variant.allele_freq)
-      }
-
-      const x = xScale(positionOffset(variant.pos).offsetPosition)
-
-      return (
-        <ellipse
-          key={variant.variant_id}
-          cx={x}
-          cy={height / 2}
-          rx={rx}
-          ry={ry}
-          fill={fill}
-          opacity={0.7}
-          stroke="black"
-          strokeWidth={0.5}
-        />
-      )
-    })
+    return (
+      <VariantAlleleFrequencyPlot
+        height={height}
+        positionOffset={positionOffset}
+        variants={visibleVariants}
+        width={width}
+        xScale={xScale}
+      />
+    )
   }
 
   render() {
@@ -183,10 +155,10 @@ class Navigator extends Component {
       <div
         onClick={this.onClick}
         onTouchStart={this.onClick}
-        style={{ cursor: 'pointer', width: `${width}px` }}
+        style={{ cursor: 'pointer', position: 'relative', width: `${width}px` }}
       >
-        <svg height={height} width={width}>
-          {this.renderVisibleVariants(visibleVariants)}
+        {this.renderVisibleVariants(visibleVariants)}
+        <svg height={height} width={width} style={{ position: 'absolute', top: 0, left: 0 }}>
           {this.renderHoveredVariant(visibleVariants)}
           {this.renderCursor()}
         </svg>
