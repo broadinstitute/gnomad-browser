@@ -5,7 +5,7 @@
 
 import { getXpos } from '@broad/utilities/lib/variant'
 import { lookupExonsByTranscriptId } from './exon'
-import CATEGORY_DEFINITIONS from '../constants/variantCategoryDefinitions'
+
 
 const lofs = [
   'transcript_ablation',
