@@ -91,9 +91,9 @@ class Navigator extends Component {
       return null
     }
 
-    const ry = (variant.allele_freq === 0)
-      ? 4
-      : afScale(variant.allele_freq) + 4
+    const ry = variant.allele_freq
+      ? afScale(variant.allele_freq) + 4
+      : 4
 
     const x = xScale(positionOffset(variant.pos).offsetPosition)
 
