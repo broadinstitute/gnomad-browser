@@ -48,9 +48,6 @@ const elasticFields = [
 
 export default coverageType
 
-export const lookupCoverageByStartStop = (db, collection, xstart, xstop) =>
-  db.collection(collection).find({ xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }).toArray()
-
 export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom, obj }) => {
   const timeStart = new Date().getTime() // NOTE: timer
   const padding = 75
@@ -297,9 +294,4 @@ export const lookupCoverageByIntervalsWithBuckets = ({
       resolve([])
     })
   })
-}
-
-export const lookUpCoverageByExonsWithBuckets = ({ elasticClient, index, exons, chrom }) => {
-  const codingRegions = exons.filter(region => region.feature_type === 'CDS')
-  return lookupCoverageByIntervalsWithBuckets({ elasticClient, index, intervals: codingRegions, chrom })
 }
