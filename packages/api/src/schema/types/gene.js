@@ -20,8 +20,6 @@ import variantType, {
 import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsByGeneId } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
-import cnvsGene, { lookUpCnvsGeneByGeneName } from './cnvs_genes'
-import cnvsExons, { lookUpCnvsExonsByTranscriptId } from './cnvs_exons'
 
 import {
   schzGeneResult,
@@ -207,11 +205,6 @@ const geneType = new GraphQLObjectType({
         elasticClient: ctx.database.elastic,
         geneName: obj.gene_name,
       }),
-    },
-    exacv1_cnvs_exons: {
-      type: new GraphQLList(cnvsExons),
-      resolve: (obj, args, ctx) =>
-        lookUpCnvsExonsByTranscriptId(ctx.database.exacv1, obj.canonical_transcript),
     },
     schzGeneResult,
     schizophreniaRareVariants,
