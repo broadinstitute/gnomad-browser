@@ -10,7 +10,6 @@ import {
 } from 'graphql'
 
 import coverageType, {
-  lookupCoverageByStartStop,
   lookupCoverageByIntervals,
   lookupCoverageBuckets,
 } from './coverage'

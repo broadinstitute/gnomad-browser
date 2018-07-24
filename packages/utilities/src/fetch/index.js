@@ -12,14 +12,6 @@ export const fetchAllByGeneName = (geneName, url = API_URL) => {
       gene_name
       start
       stop
-      exome_coverage {
-        pos
-        mean
-      }
-      genome_coverage {
-        pos
-        mean
-      }
       transcript {
         exons {
           feature_type

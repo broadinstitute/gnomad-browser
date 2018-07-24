@@ -24,14 +24,6 @@ const geneQuery = geneName => `
       gene_name
       start
       stop
-      exome_coverage {
-        pos
-        mean
-      }
-      genome_coverage {
-        pos
-        mean
-      }
       transcript {
         exons {
           feature_type
