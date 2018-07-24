@@ -8,12 +8,6 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import coverageType, {
-  lookupCoverageByStartStop,
-  lookupCoverageBuckets,
-  lookupCoverageByIntervals,
-  lookupCoverageByIntervalsWithBuckets,
-} from './coverage'
 import variantType, {
   lookupVariantsByGeneId,
 } from './variant'
@@ -53,54 +47,6 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
-    // exome_coverage: {
-    //   type: new GraphQLList(coverageType),
-    //   resolve: (obj, args, ctx) =>
-    //     lookupCoverageByStartStop(ctx.database.gnomad, 'exome_coverage', obj.xstart, obj.xstop),
-    // },
-    genome_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        // if ((obj.stop - obj.start) > 1000) {
-        //   return lookupCoverageBuckets({
-        //     elasticClient: ctx.database.elastic,
-        //     index: 'genome_coverage',
-        //     intervals: [{ start: obj.start, stop: obj.stop }],
-        //     chrom: obj.chrom,
-        //   })
-        // }
-        return lookupCoverageByIntervalsWithBuckets({
-          elasticClient: ctx.database.elastic,
-          index: 'genome_coverage',
-          intervals: [{ start: obj.start, stop: obj.stop }],
-          chrom: obj.chrom,
-        })
-      }
-    },
-    exome_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        if ((obj.stop - obj.start) > 10000) {
-          return lookupCoverageBuckets({
-            elasticClient: ctx.database.elastic,
-            index: 'genome_coverage',
-            intervals: [{ start: obj.start, stop: obj.stop }],
-            chrom: obj.chrom,
-          })
-        }
-        return lookupCoverageByIntervals({
-          elasticClient: ctx.database.elastic,
-          index: 'exome_coverage',
-          intervals: [{ start: obj.start, stop: obj.stop }],
-          chrom: obj.chrom,
-        })
-      }
-    },
-    // exacv1_coverage: {
-    //   type: new GraphQLList(coverageType),
-    //   resolve: (obj, args, ctx) =>
-    //     lookupCoverageByStartStop(ctx.database.exacv1, 'base_coverage', obj.xstart, obj.xstop),
-    // },
     exome_variants: {
       type: new GraphQLList(variantType),
       args: { consequence: { type: GraphQLString } },
