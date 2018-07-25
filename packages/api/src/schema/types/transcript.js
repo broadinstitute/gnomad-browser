@@ -9,7 +9,6 @@ import {
 } from 'graphql'
 
 import coverageType, { lookUpCoverageByExons } from './coverage'
-import variantType, { lookupVariantsByTranscriptId } from './variant'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
 
@@ -26,16 +25,6 @@ const transcriptType = new GraphQLObjectType({
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
     xstop: { type: GraphQLFloat },
-    exome_variants: {
-      type: new GraphQLList(variantType),
-      resolve: (obj, args, ctx) =>
-          lookupVariantsByTranscriptId(ctx.database.gnomad, 'exome_variants', obj.transcript_id),
-    },
-    genome_variants: {
-      type: new GraphQLList(variantType),
-      resolve: (obj, args, ctx) =>
-        lookupVariantsByTranscriptId(ctx.database.gnomad, 'genome_variants', obj.transcript_id),
-    },
     exons: {
       type: new GraphQLList(exonType),
       resolve: (obj, args, ctx) =>

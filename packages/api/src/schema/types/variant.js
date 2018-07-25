@@ -10,8 +10,6 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
-import CATEGORY_DEFINITIONS from '@broad/utilities/src/constants/categoryDefinitions'
-
 import vepType from './vep'
 import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
@@ -86,30 +84,6 @@ export const lookupVariant = (db, collection, variant_id) => {
 export const lookupVariantRsid = (db, collection, rsid) => {
   return db.collection(collection).findOne({ rsid })
 }
-
-export const lookupVariantsByGeneId = (db, collection, gene_id, consequence) => {
-  if (consequence) {
-    return db.collection(collection).find({
-      genes: gene_id,
-      vep_annotations: {
-        '$elemMatch': {
-          'Consequence': {
-            '$in': CATEGORY_DEFINITIONS[consequence],
-          },
-        },
-      },
-    }).toArray()
-  }
-  return db.collection(collection).find({ genes: gene_id }).toArray()
-}
-
-export const lookupVariantsByTranscriptId = (db, collection, transcript_id) =>
-  db.collection(collection).find({ transcripts: transcript_id }).toArray()
-
-export const lookupVariantsByStartStop = (db, collection, xstart, xstop) =>
-  db.collection(collection).find(
-    { xpos: { '$gte': Number(xstart), '$lte': Number(xstop) } }
-  ).toArray()
 
 export const variantResolver = (obj, args, ctx) => {  // eslint-disable-line
   let database

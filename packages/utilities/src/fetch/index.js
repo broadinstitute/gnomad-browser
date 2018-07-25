@@ -30,28 +30,6 @@ export const fetchAllByGeneName = (geneName, url = API_URL) => {
         chrom
         gene_id
       }
-      exome_variants {
-        chrom
-        pos
-        ref
-        alt
-        variant_id
-        allele_num
-        allele_freq
-        allele_count
-        hom_count
-      }
-      genome_variants {
-        chrom
-        pos
-        ref
-        alt
-        variant_id
-        allele_num
-        allele_freq
-        allele_count
-        hom_count
-      }
   }
 }`
   return new Promise((resolve, reject) => {
