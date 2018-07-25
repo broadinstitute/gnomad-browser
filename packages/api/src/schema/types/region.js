@@ -14,8 +14,6 @@ import coverageType, {
   lookupCoverageBuckets,
 } from './coverage'
 
-import variantType, { lookupVariantsByStartStop } from './variant'
-
 import elasticVariantType, {
   lookupElasticVariantsByInterval,
   lookupElasticVariantsInRegion,

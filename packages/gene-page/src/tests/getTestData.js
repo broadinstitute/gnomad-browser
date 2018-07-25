@@ -11,22 +11,6 @@ export const fetchData = (geneName, url = API_URL) => {
       gene_name
       xstart
       xstop
-      exome_variants {
-        variant_id
-        pos
-        xpos
-        allele_count
-        allele_freq
-        filter
-      }
-      genome_variants {
-        variant_id
-        pos
-        xpos
-        allele_count
-        allele_freq
-        filter
-      }
   }
 }
 `

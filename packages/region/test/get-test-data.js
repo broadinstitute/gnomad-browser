@@ -33,43 +33,6 @@ const geneQuery = geneName => `
       chrom
       gene_id
     }
-    exome_variants {
-      chrom
-      pos
-      ref
-      alt
-      variant_id
-      allele_num
-      allele_freq
-      allele_count
-      hom_count
-    }
-    genome_variants {
-      chrom
-      pos
-      ref
-      alt
-      variant_id
-      allele_num
-      allele_freq
-      allele_count
-      hom_count
-    }
-    exacv1_coverage {
-      pos
-      mean
-    }
-    exacv1_variants {
-      chrom
-      pos
-      ref
-      alt
-      variant_id
-      allele_num
-      allele_freq
-      allele_count
-      hom_count
-    }
 }}
 `
 export const testGenes = [
