@@ -8,9 +8,6 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import variantType, {
-  lookupVariantsByGeneId,
-} from './variant'
 import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsByGeneId } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
@@ -45,12 +42,6 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
-    exome_variants: {
-      type: new GraphQLList(variantType),
-      args: { consequence: { type: GraphQLString } },
-      resolve: (obj, args, ctx) =>
-          lookupVariantsByGeneId(ctx.database.gnomad, 'exome_variants', obj.gene_id, args.consequence),
-    },
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
       args: {
