@@ -15,10 +15,6 @@ import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
 import { lookupExonsByTranscriptId } from './exon'
 
-// import vepType from './vep'
-// import populationType from './populations'
-// import qualityMetricsType from './qualityMetrics'
-// import mnpType from './mnp'
 
 const lofs = [
   'transcript_ablation',
