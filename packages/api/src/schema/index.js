@@ -1,6 +1,7 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
+  GraphQLEnumType,
   GraphQLFloat,
   GraphQLString,
   GraphQLNonNull,
@@ -17,10 +18,6 @@ import transcriptType, {
   lookupTranscriptsByTranscriptId,
 } from './types/transcript'
 
-import variantType, {
-  variantResolver,
-} from './types/variant'
-
 import regionType from './types/region'
 
 import {
@@ -35,6 +32,12 @@ import {
 } from './types/schzvariant'
 
 import help from './types/help'
+
+import { VariantInterface } from './types/variant'
+
+import { ExacVariantType, fetchExacVariant } from './datasets/exac'
+import { GnomadVariantType, fetchGnomadVariant } from './datasets/gnomad'
+
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -90,16 +93,21 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
-      type: variantType,
+      type: VariantInterface,
       args: {
-        id: { type: GraphQLString },
-        rsid: { type: GraphQLString },
-        source: {
-          type: GraphQLString,
-          description: 'Please specify genome, exome, or exacv1',
+        dataset: {
+          type: new GraphQLEnumType({ values: { exac: {}, gnomad: {} } })
         },
+        variantId: { type: GraphQLString },
       },
-      resolve: variantResolver,
+      resolve: async (obj, args, ctx) => {
+        const { dataset, variantId } = args
+        const variantData = (dataset === 'exac')
+          ? await fetchExacVariant(variantId, ctx)
+          : await fetchGnomadVariant(variantId, ctx)
+        variantData.dataset = dataset
+        return variantData
+      },
     },
     variants,
     // gnomadGenomeVariants,
@@ -111,6 +119,9 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
   }),
 })
 
-const Schema = new GraphQLSchema({ query: rootType })
+const Schema = new GraphQLSchema({
+  query: rootType,
+  types: [ExacVariantType, GnomadVariantType],
+})
 
 export default Schema
