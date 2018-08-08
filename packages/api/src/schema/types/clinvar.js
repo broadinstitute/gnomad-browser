@@ -5,6 +5,8 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import GraphQLJSON from 'graphql-type-json'
+
 import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 
 
@@ -44,7 +46,7 @@ const clinvarType = new GraphQLObjectType({
     pos: { type: GraphQLFloat },
     ref: { type: GraphQLString },
     review_status: { type: GraphQLString },
-    transcript_consequence_terms: { type: GraphQLString },
+    transcript_consequences: { type: GraphQLJSON },
     transcript_ids: { type: GraphQLString },
     variant_id: { type: GraphQLString },
     xpos: { type: GraphQLFloat },
@@ -54,8 +56,8 @@ const clinvarType = new GraphQLObjectType({
 export default clinvarType
 
 
-export function lookupClinvarVariantsByGeneId(client, geneId, transcriptId) {
-  return fetchAllSearchResults(
+export async function lookupClinvarVariantsByGeneId(client, geneId, transcriptId) {
+  const variants = await fetchAllSearchResults(
     client,
     {
       index: 'clinvar_grch37',
@@ -75,4 +77,12 @@ export function lookupClinvarVariantsByGeneId(client, geneId, transcriptId) {
       },
     }
   )
+
+  return variants.map((variant) => {
+    const { transcript_id_to_consequence_json, ...rest } = variant
+    return {
+      ...rest,
+      transcript_consequences: JSON.parse(transcript_id_to_consequence_json),
+    }
+  })
 }
