@@ -30,6 +30,7 @@
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
     "graphql-tester": "0.0.5",
+    "graphql-type-json": "0.1.4",
     "immutable": "^4.0.0-rc.9",
     "ioredis": "^3.1.4",
     "isomorphic-fetch": "^2.2.1",
