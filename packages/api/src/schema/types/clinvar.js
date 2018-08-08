@@ -18,6 +18,7 @@ const clinvarType = new GraphQLObjectType({
     clinical_significance: { type: GraphQLString },
     domains: { type: GraphQLString },
     gene_ids: { type: GraphQLString },
+    gold_stars: { type: GraphQLInt },
     main_transcript_amino_acids: { type: GraphQLString },
     main_transcript_biotype: { type: GraphQLString },
     main_transcript_canonical: { type: GraphQLInt },
