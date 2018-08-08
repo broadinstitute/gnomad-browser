@@ -105,8 +105,13 @@ const geneType = new GraphQLObjectType({
     },
     clinvar_variants: {
       type: new GraphQLList(clinvarType),
-      resolve: (obj, args, ctx) =>
-        lookupClinvarVariantsByGeneId(ctx.database.elastic, obj.gene_id),
+      args: {
+        transcriptId: { type: GraphQLString },
+      },
+      resolve: (obj, args, ctx) => {
+        const transcriptId = args.transcriptId || obj.canonical_transcript
+        return lookupClinvarVariantsByGeneId(ctx.database.elastic, obj.gene_id, transcriptId)
+      },
     },
     transcript: {
       type: transcriptType,

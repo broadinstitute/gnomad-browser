@@ -54,7 +54,7 @@ const clinvarType = new GraphQLObjectType({
 export default clinvarType
 
 
-export function lookupClinvarVariantsByGeneId(client, geneId) {
+export function lookupClinvarVariantsByGeneId(client, geneId, transcriptId) {
   return fetchAllSearchResults(
     client,
     {
@@ -64,7 +64,8 @@ export function lookupClinvarVariantsByGeneId(client, geneId) {
         query: {
           bool: {
             filter: [
-              { term: { main_transcript_gene_id: geneId } },
+              { term: { gene_ids: geneId } },
+              { term: { transcript_ids: transcriptId } },
             ],
           },
         },
