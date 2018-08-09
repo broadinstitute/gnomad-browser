@@ -13,6 +13,7 @@ import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize, SectionTitle } from '@broad/ui'
 
 import {
+  currentTranscript,
   geneData,
   regionalConstraint,
   exonPadding,
@@ -29,6 +30,9 @@ import {
   coverageConfigNew,
   attributeConfig,
 } from '@broad/region'
+
+import ClinVarTrack from './ClinVarTrack'
+
 
 const COVERAGE_TRACK_HEIGHT = 200
 const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
@@ -83,6 +87,7 @@ const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {.
 
 
 const GeneViewer = ({
+  currentTranscript,
   gene,
   allVariants,
   selectedVariantDataset,
@@ -94,6 +99,8 @@ const GeneViewer = ({
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
 
   const geneJS = gene.toJS()
+  const currentTranscriptId = currentTranscript || gene.get('canonical_transcript')
+
   const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
   const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
@@ -156,6 +163,9 @@ const GeneViewer = ({
           )}
           showRightPanel={!smallScreen}
         />
+
+        <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />
+
         {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
           <RegionalConstraintTrack
             height={15}
@@ -172,7 +182,9 @@ const GeneViewer = ({
     </RegionViewerWrapper>
   )
 }
+
 GeneViewer.propTypes = {
+  currentTranscript: PropTypes.string,
   gene: PropTypes.object.isRequired,
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
@@ -180,8 +192,14 @@ GeneViewer.propTypes = {
   regionalConstraint: PropTypes.array.isRequired,
   screenSize: PropTypes.object.isRequired,
 }
+
+GeneViewer.defaultProps = {
+  currentTranscript: undefined,
+}
+
 export default connect(
   state => ({
+    currentTranscript: currentTranscript(state),
     gene: geneData(state),
     exonPadding: exonPadding(state),
     allVariants: finalFilteredVariants(state),

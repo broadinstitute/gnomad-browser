@@ -8,6 +8,9 @@ const API_URL = process.env.GNOMAD_API_URL
 export const fetchGnomadGenePage = (geneName, transcriptId) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
+
+  const transcriptQuery = transcriptId ? `(transcriptId: "${transcriptId}")` : ''
+
   const query = `{
     gene(${argument}) {
       gene_id
@@ -28,6 +31,12 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
           stop
           strand
         }
+      }
+      clinvar_variants${transcriptQuery} {
+        clinicalSignificance
+        majorConsequence
+        pos
+        variantId
       }
       gnomadExomeVariants(transcriptId: "${transcriptId || undefined}") {
         variant_id
