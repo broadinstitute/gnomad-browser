@@ -57,7 +57,7 @@ export const StackedVariantsPlot = ({
       <g>
         {points.map(point => (
           <path
-            key={point.data.variant_id}
+            key={point.data.variantId}
             d={symbolPath}
             transform={`translate(${point.x},${height - point.y})`}
             fill={symbolColor(point.data)}
@@ -85,7 +85,7 @@ StackedVariantsPlot.propTypes = {
   variantLayers: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.shape({
-        variant_id: PropTypes.string.isRequired,
+        variantId: PropTypes.string.isRequired,
         pos: PropTypes.number.isRequired,
       })
     )
