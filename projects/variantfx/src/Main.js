@@ -61,7 +61,6 @@ const appSettings = {
       rsid: null,
       filter: null,
       pos: null,
-      xpos: null,
       DP: null,
       FS: null,
       MLEAC: null,
