@@ -7,7 +7,7 @@ import {
   GraphQLNonNull,
 } from 'graphql'
 
-import { getXpos } from '@broad/utilities/lib/variant'
+import { getXpos } from '../utilities/variant'
 
 import geneType, {
   lookupGeneByGeneId,
