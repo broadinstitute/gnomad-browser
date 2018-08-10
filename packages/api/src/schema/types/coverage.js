@@ -8,7 +8,7 @@ import {
 
 // import { List, fromJS } from 'immutable'
 
-import { getXpos } from '@broad/utilities/lib/variant'
+import { getXpos } from '../../utilities/variant'
 
 const coverageType = new GraphQLObjectType({
   name: 'Coverage',
