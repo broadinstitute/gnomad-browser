@@ -1,5 +1,4 @@
 import fetch from 'graphql-fetch'
-import { getXpos } from '@broad/utilities/src/variant'
 
 // import TestData from '@resources/1505910855-variantfx-myh7.json'
 // export default () => new Promise(resolve => resolve(TestData))
@@ -283,7 +282,6 @@ export default function fetchData(geneName) {
         rsid: ID,
         filter: FILTER,
         pos: POS,
-        xpos: getXpos(getXpos, getXpos),
         ...VEP[0],
         ...rest,
       })
