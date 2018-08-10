@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable dot-notation */
 
-import { getXpos } from '@broad/utilities/lib/variant'
+import { getXpos } from '../../utilities/variant'
 import { lookupExonsByTranscriptId } from './exon'
 
 

@@ -7,7 +7,7 @@ import {
   GraphQLString,
 } from 'graphql'
 
-import { getXpos } from '@broad/utilities'
+import { getXpos } from '../../utilities/variant'
 
 import { VariantInterface } from '../types/variant'
 import {
