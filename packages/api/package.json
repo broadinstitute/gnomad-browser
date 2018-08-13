@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "compression": "^1.7.1",
     "core-js": "^2.5.0",
     "cors": "^2.8.1",
