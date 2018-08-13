@@ -25,6 +25,7 @@
     "compression": "^1.7.1",
     "core-js": "^2.5.0",
     "cors": "^2.8.1",
+    "csvtojson": "^1.1.7",
     "elasticsearch": "^13.3.1",
     "express": "^4.14.0",
     "express-graphql": "^0.5.4",
@@ -38,16 +39,9 @@
     "lodash.capitalize": "^4.2.1",
     "lodash.snakecase": "^4.1.1",
     "mongodb": "^2.2.11",
-    "nodemon": "^1.11.0",
     "ramda": "^0.22.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.0",
-    "babel-eslint": "^7.1.0",
-    "babel-plugin-transform-object-rest-spread": "^6.16.0",
-    "babel-polyfill": "^6.16.0",
-    "babel-preset-latest": "^6.16.0",
-    "csvtojson": "^1.1.7"
+    "nodemon": "^1.11.0"
   }
 }
