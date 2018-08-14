@@ -21,7 +21,6 @@
     "apollo-client": "^2.0.3",
     "apollo-link-http": "^1.2.0",
     "graphql-tag": "^2.5.0",
-    "expect": "^21.2.1",
     "immutable": "^4.0.0-rc.9",
     "keymirror": "^0.1.1",
     "react-redux": "^5.0.6",

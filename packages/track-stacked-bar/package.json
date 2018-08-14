@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
-  "scripts": {
-    "test:data": "../../node_modules/.bin/babel-node src/example/getTestData"
-  },
   "files": [
     "lib"
   ],

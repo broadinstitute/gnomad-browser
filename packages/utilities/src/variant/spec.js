@@ -1,11 +1,7 @@
-/* eslint-disable dot-notation */
-
-import expect from 'expect'
-import R from 'ramda'
-
 import { getPositionsToFetch } from './index'
 
-describe.only('getPositionsToFetch', () => {
+
+describe('getPositionsToFetch', () => {
   const initialPositionsWithData = [
     1055505222,
     1055505223,
