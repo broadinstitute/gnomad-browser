@@ -1,15 +1,11 @@
-/* eslint-disable dot-notation */
-
-import expect from 'expect'
-import R from 'ramda'
+import testData from '@resources/region-viewer-full-BRCA2-v1.json'
 
 import { getMaxMeanFromCoverageDatasets } from './index'
 
-import testData from 'data/region-viewer-full-BRCA2-v1.json'
 
 const { exome_coverage, genome_coverage, exacv1_coverage } = testData.gene
 
-describe.only('getMaxFromCoverageDatasets', () => {
+describe('getMaxFromCoverageDatasets', () => {
   it('get maximum Y value from multiple coverage data sets', () => {
     const dataConfig1 = {
       datasets: [

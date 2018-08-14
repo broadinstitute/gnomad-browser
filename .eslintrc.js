@@ -4,7 +4,6 @@ const path = require('path')
 module.exports = {
   extends: 'airbnb',
   env: {
-    mocha: true,
     browser: true,
   },
   parser: 'babel-eslint',
@@ -39,6 +38,14 @@ module.exports = {
       functions: 'never',
     }],
   },
+  overrides: [
+    {
+      files: ['**/*spec.js', '**/*test.js'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true,

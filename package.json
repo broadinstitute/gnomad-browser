@@ -45,6 +45,7 @@
     "http-server": "^0.11.1",
     "immutable": "^3.8.2",
     "jase": "^1.2.0",
+    "jest": "^23.5.0",
     "js-yaml": "^3.10.0",
     "json-loader": "^0.5.7",
     "kubernetes-client": "^3.18.0",
@@ -58,12 +59,13 @@
     "stylelint-config-standard": "^17.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^0.4.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.8.0",
     "watch": "^1.0.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.8.2"
+  },
+  "scripts": {
+    "test": "jest"
   },
   "repository": "https://github.com/mattsolo1/gnomadjs.git"
 }

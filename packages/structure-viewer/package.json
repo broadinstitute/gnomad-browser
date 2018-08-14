@@ -6,10 +6,6 @@
   "files": [
     "lib"
   ],
-  "scripts": {
-    "test": "../../node_modules/.bin/babel-node --inspect node_modules/.bin/tape './src/redux.test.js' | ./node_modules/.bin/tspec",
-    "test:watch": "../../node_modules/.bin/watch 'npm run test' src -d"
-  },
   "localDependencies": {},
   "dependencies": {
     "bio-pv": "^1.8.1",
@@ -27,11 +23,5 @@
   },
   "peerDependencies": {
     "styled-components": "^2.1.2"
-  },
-  "devDependencies": {
-    "sleep-promise": "^2.0.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.7.0",
-    "tape-async": "^2.3.0"
   }
 }

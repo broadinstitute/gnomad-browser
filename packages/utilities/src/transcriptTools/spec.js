@@ -1,13 +1,10 @@
-/* eslint-disable dot-notation */
-
-import expect from 'expect'
-import R from 'ramda'
-import data from 'data/transcript-tools-CD33.json'  // eslint-disable-line
+import data from '@resources/transcript-tools-CD33.json'
 
 import {
   getTranscriptsfromExons,
   groupExonsByTranscript,
 } from './index'
+
 
 const exonList = data.gene.exons
 

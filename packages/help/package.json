@@ -3,14 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
-  "scripts": {
-    "test": "../../node_modules/.bin/babel-node --inspect ../../node_modules/.bin/tape './src/example/test.js' | ../../node_modules/.bin/tspec",
-    "test:watch": "../../node_modules/.bin/watch 'npm test' src -d",
-    "test:data": "../../node_modules/.bin/babel-node src/example/loadTestData",
-    "test:gnomad": "../../node_modules/.bin/babel-node src/example/loadGnomadTestData",
-    "test:markdown": "./node_modules/.bin/mocha",
-    "test:markdown:watch": "../../node_modules/.bin/watch --ignoreDirectoryPattern '/testHtml/' 'npm run test:markdown' src -d"
-  },
   "files": [
     "lib"
   ],
@@ -21,12 +13,10 @@
     "styled-components": "^2.1.2"
   },
   "dependencies": {
-    "expect": "^21.2.1",
     "filequeue": "^0.5.0",
     "glob": "^7.1.2",
     "immutable": "^3.8.2",
     "lodash.debounce": "^4.0.8",
-    "mocha": "^4.0.1",
     "moment": "^2.19.1",
     "node-uuid": "^1.4.8",
     "ramda": "^0.25.0",
@@ -38,7 +28,6 @@
     "remark-highlight.js": "^4.0.1",
     "remark-html": "^5.0.0",
     "remark-toc": "^3.1.0",
-    "remark-yaml-meta": "^0.1.0",
-    "tape-promise": "^2.0.1"
+    "remark-yaml-meta": "^0.1.0"
   }
 }
