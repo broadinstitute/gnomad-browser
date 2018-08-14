@@ -117,13 +117,10 @@ export const actions = {
        </queryRefinement>
       </orgPdbCompositeQuery>`
       dispatch(actions.startPdbSearch(currentGene))
-      superagent.post('http://www.rcsb.org/pdb/rest/search') // ?sortfield=Residue Count
+      return superagent.post('http://www.rcsb.org/pdb/rest/search') // ?sortfield=Residue Count
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(query)
-        .end((error, response) => {
-          if (error) {
-            console.log('error', error)
-          }
+        .then((response) => {
           const results = R.reject(
             R.isEmpty,
             response.text.split('\n')

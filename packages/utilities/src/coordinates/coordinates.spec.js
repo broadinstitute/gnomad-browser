@@ -1,6 +1,6 @@
-import expect from 'expect'
 import R from 'ramda'
-import ppara from 'data/PPARA-transcript.json'  // eslint-disable-line
+
+import ppara from '@resources/PPARA-transcript.json'
 
 import {
   filterRegions,
@@ -9,6 +9,7 @@ import {
   addPadding,
   applyExonSubset,
 } from './index'
+
 
 describe('ppara data', () => {
   it('has fields', () => {

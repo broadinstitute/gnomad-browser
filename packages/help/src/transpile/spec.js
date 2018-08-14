@@ -1,6 +1,6 @@
 // @flow
 import path from 'path'
-import expect from 'expect'
+
 import {
   filePaths,
   md2html,
@@ -8,6 +8,7 @@ import {
   compile,
   prepareDocumentForElastic,
 } from './index'
+
 
 const mdDirectory = path.resolve(
   __dirname,
@@ -17,14 +18,15 @@ const htmlDirectory = path.resolve(
   __dirname,
   '../example/testHtml'
 )
+
 describe('filePaths', () => {
   it(`given an absolute path to a directory,
      returns an array of file paths matching extension`, (done) => {
       filePaths(mdDirectory, '.md')
         .then((paths) => {
-          // expect(path.basename(paths[0])).toBe(
-          //   'simpleTest.md'
-          // )
+          expect(path.basename(paths[0])).toBe(
+            'ancestry.md'
+          )
           done()
         })
         .catch(error => console.log(error))
@@ -42,7 +44,7 @@ describe('md2html', () => {
       expect(result.htmlString).toBe('<p>I am using <strong>markdown</strong>.</p>\n')
       expect(result.filename).toBe('simpleTest')
       done()
-    }).catch(console.log)
+    })
   })
 })
 
@@ -58,7 +60,7 @@ describe('writeHtml', () => {
       .then((data) => {
         expect(data.htmlFilePath).toBe(path.join(htmlDirectory, 'simpleTest.html'))
         done()
-      }).catch(console.log)
+      })
   })
 })
 
@@ -71,9 +73,7 @@ describe('compile', () => {
     }
     compile(options)
       .then((results) => {
-        // expect(
-        //   results.map(result => result.htmlFilePath).length
-        // ).toBe(1)
+        expect(results).toHaveLength(3)
         done()
       })
   })
@@ -91,7 +91,7 @@ describe('writeHtml', () => {
       .then((data) => {
         expect(data.htmlFilePath).toBe(path.join(htmlDirectory, 'simpleTest.html'))
         done()
-      }).catch(console.log)
+      })
   })
 })
 
@@ -105,12 +105,9 @@ describe('prepareDocumentForElastic.', () => {
     md2html(config, filePath).then((result) => {
       const elasticDocument = prepareDocumentForElastic(result)
       expect(Object.keys(elasticDocument)).toEqual(
-        ['vcfkey', 'title', 'index', 'created', 'modified', 'htmlString']
+        ['vcfkey', 'title', 'index', 'created', 'modified', 'htmlString', 'id']
       )
 
-      done()
-    }).catch((error) => {
-      console.log(error)
       done()
     })
   })
