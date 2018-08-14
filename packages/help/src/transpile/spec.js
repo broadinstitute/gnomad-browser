@@ -7,7 +7,6 @@ import {
   writeHtml,
   compile,
   prepareDocumentForElastic,
-  batchLoadDocumentsToElastic,
 } from './index'
 
 const mdDirectory = path.resolve(
@@ -114,57 +113,5 @@ describe('prepareDocumentForElastic.', () => {
       console.log(error)
       done()
     })
-  })
-})
-
-describe('batchLoadDocumentsToElastic.', () => {
-  it('given a configuration file, compiles md to html and load elasticsearch', (done) => {
-    const config = {
-      mdReadDirectory: mdDirectory,
-      htmlWriteDirectory: htmlDirectory,
-      filterSettings: { onlyPublic: false },
-      elasticSettings: {
-        address: '23.236.50.46:9200',
-        dropPreviousIndex: true,
-        indexName: 'gnomad_help',
-        typeName: 'entry',
-      }
-    }
-    batchLoadDocumentsToElastic(config)
-      .then((results) => {
-        expect(
-          Object.keys(results[0])
-        ).toEqual(['vcfkey', 'topic', 'index', 'created', 'modified', 'htmlString', 'id'])
-        done()
-      }).catch((error) => {
-        console.log(error)
-        done()
-      })
-  })
-})
-
-describe.only('load gnomad.', () => {
-  it('given a configuration file, compiles md to html and load elasticsearch', (done) => {
-    const config = {
-      mdReadDirectory: '/Users/msolomon/gnomadjs/projects/gnomad/gnomad-docs/docs',
-      htmlWriteDirectory: '/tmp',
-      filterSettings: { onlyPublic: false },
-      elasticSettings: {
-        address: '23.236.50.46:9200',
-        dropPreviousIndex: true,
-        indexName: 'gnomad_help',
-        typeName: 'entry',
-      }
-    }
-    batchLoadDocumentsToElastic(config)
-      .then((results) => {
-        expect(
-          Object.keys(results[0])
-        ).toEqual(['vcfkey', 'title', 'index', 'created', 'modified', 'htmlString', 'id'])
-        done()
-      }).catch((error) => {
-        console.log(error)
-        done()
-      })
   })
 })
