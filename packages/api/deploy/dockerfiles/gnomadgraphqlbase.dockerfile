@@ -8,16 +8,5 @@ COPY package.json /var/www/
 
 WORKDIR /var/www
 
-# Install development dependencies too
-RUN npm install
 
-# RUN npm run build
-
-COPY lib/utilities/ /var/www/node_modules/@broad/utilities
-COPY lib/utilities/ /var/www/node_modules/@broad/utilities
-WORKDIR /var/www/node_modules/@broad/utilities
-RUN npm install
-WORKDIR /var/www
-
-# RUN ls /var/www/node_modules
-RUN ls /var/www/node_modules/@broad
+RUN npm install --production
