@@ -2,10 +2,6 @@ FROM gcr.io/exac-gnomad/gnomad-api-base
 
 MAINTAINER MacArthur Lab
 
-# ENV NODE_ENV=production GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac
+COPY build /var/www/build
 
-COPY . /var/www
-WORKDIR /var/www
-
-ENTRYPOINT ["npm"]
-CMD ["run", "docker"]
+CMD ["node", "build/server.js"]
