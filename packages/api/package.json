@@ -15,7 +15,6 @@
     "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js",
     "flush": "redis-cli flushall",
-    "docker": "node build/server.js",
     "mappings": "curl -XGET 'elastic:9200/*/_mapping?pretty' > src/elastic-mappings/mappings.json"
   },
   "keywords": [],
