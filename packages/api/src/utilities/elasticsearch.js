@@ -3,7 +3,7 @@
  *
  * @param {elasticsearch.Client} esClient Elasticsearch client
  * @param {Object} searchParams Argument to elasticsearch.Client#search
- * @return {Object[]} Search results
+ * @return {Object[]} Combined list of hits from all responses
  */
 export async function fetchAllSearchResults(esClient, searchParams) {
   let allResults = []
@@ -22,9 +22,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
 
   while (responseQueue.length) {
     const response = responseQueue.shift()
-    const pageResults = response.hits.hits.map(doc => doc._source)
-
-    allResults = allResults.concat(pageResults)
+    allResults = allResults.concat(response.hits.hits)
 
     if (allResults.length === response.hits.total) {
       // eslint-disable-next-line no-await-in-loop
