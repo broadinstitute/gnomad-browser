@@ -8,6 +8,12 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
+import {
+  ClinvarVariantType,
+  fetchClinvarVariantsInGene,
+  fetchClinvarVariantsInTranscript,
+} from '../datasets/clinvar'
+
 import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsByGeneId } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
@@ -20,7 +26,6 @@ import {
 
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import * as fromExacVariant from './exacElasticVariant'
-import clinvarType, { lookupClinvarVariantsByGeneId } from './clinvar'
 
 import * as fromRegionalConstraint from './regionalConstraint'
 
@@ -104,13 +109,14 @@ const geneType = new GraphQLObjectType({
         }),
     },
     clinvar_variants: {
-      type: new GraphQLList(clinvarType),
+      type: new GraphQLList(ClinvarVariantType),
       args: {
         transcriptId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
-        const transcriptId = args.transcriptId || obj.canonical_transcript
-        return lookupClinvarVariantsByGeneId(ctx.database.elastic, obj.gene_id, transcriptId)
+        return args.transcriptId
+          ? fetchClinvarVariantsInTranscript(args.transcriptId, ctx)
+          : fetchClinvarVariantsInGene(obj.gene_id, ctx)
       },
     },
     transcript: {
