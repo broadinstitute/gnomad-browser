@@ -55,7 +55,7 @@ export const ExacVariantType = new GraphQLObjectType({
     populations: { type: new GraphQLList(PopulationType) },
     qualityMetrics: { type: VariantQualityMetricsType },
     rsid: { type: GraphQLString },
-    transcriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
+    sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },
   isTypeOf: variantData => variantData.dataset === 'exac',
 })
@@ -134,6 +134,6 @@ export const fetchExacVariant = async (variantId, ctx) => {
       },
     },
     rsid: variantData.rsid,
-    transcriptConsequences: JSON.parse(variantData.sortedTranscriptConsequences),
+    sortedTranscriptConsequences: JSON.parse(variantData.sortedTranscriptConsequences),
   }
 }
