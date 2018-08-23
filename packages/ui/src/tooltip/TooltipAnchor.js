@@ -10,8 +10,13 @@ import { Arrow, Container } from './styles'
 
 export class TooltipAnchor extends Component {
   static propTypes = {
+    childRefPropName: PropTypes.string,
     children: PropTypes.node.isRequired,
     tooltipComponent: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    childRefPropName: 'ref',
   }
 
   componentDidUpdate() {
@@ -80,7 +85,7 @@ export class TooltipAnchor extends Component {
       {
         onMouseEnter: this.renderTooltipInPortal,
         onMouseLeave: this.removeTooltip,
-        ref: this.referenceElementRef,
+        [this.props.childRefPropName]: this.referenceElementRef,
       }
     )
   }
