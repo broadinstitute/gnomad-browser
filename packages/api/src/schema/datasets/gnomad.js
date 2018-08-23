@@ -114,8 +114,8 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
   }
 
   /* eslint-disable no-underscore-dangle */
-  const exomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_exomes_202_37') || {})._source || {}
-  const genomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_genomes_202_37') || {})._source || {}
+  const exomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_exomes_202_37') || {})._source
+  const genomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_genomes_202_37') || {})._source
   /* eslint-enable no-underscore-dangle */
   const commonData = exomeData || genomeData
 
@@ -128,20 +128,24 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
     variantId: commonData.variantId,
     xpos: commonData.xpos,
     // gnomAD specific fields
-    exome: {
-      ac: exomeData.AC,
-      an: exomeData.AN,
-      filters: exomeData.filters,
-      populations: extractPopulationData(GNOMAD_POPULATION_IDS, exomeData),
-      qualityMetrics: extractQualityMetrics(exomeData),
-    },
-    genome: {
-      ac: genomeData.AC,
-      an: genomeData.AN,
-      filters: genomeData.filters,
-      populations: extractPopulationData(GNOMAD_POPULATION_IDS, genomeData),
-      qualityMetrics: extractQualityMetrics(genomeData),
-    },
+    exome: exomeData
+      ? {
+        ac: exomeData.AC,
+        an: exomeData.AN,
+        filters: exomeData.filters,
+        populations: extractPopulationData(GNOMAD_POPULATION_IDS, exomeData),
+        qualityMetrics: extractQualityMetrics(exomeData),
+      }
+      : null,
+    genome: genomeData
+      ? {
+        ac: genomeData.AC,
+        an: genomeData.AN,
+        filters: genomeData.filters,
+        populations: extractPopulationData(GNOMAD_POPULATION_IDS, genomeData),
+        qualityMetrics: extractQualityMetrics(genomeData),
+      }
+      : null,
     rsid: commonData.rsid,
     sortedTranscriptConsequences: JSON.parse(commonData.sortedTranscriptConsequences),
   }
