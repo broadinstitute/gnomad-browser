@@ -56,7 +56,7 @@ export const GnomadVariantType = new GraphQLObjectType({
       }),
     },
     rsid: { type: GraphQLString },
-    transcriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
+    sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },
   isTypeOf: variantData => variantData.dataset === 'gnomad',
 })
@@ -143,6 +143,6 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
       qualityMetrics: extractQualityMetrics(genomeData),
     },
     rsid: commonData.rsid,
-    transcriptConsequences: JSON.parse(commonData.sortedTranscriptConsequences),
+    sortedTranscriptConsequences: JSON.parse(commonData.sortedTranscriptConsequences),
   }
 }
