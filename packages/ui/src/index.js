@@ -65,6 +65,5 @@ export {
 
 export { SegmentedControl } from './SegmentedControl'
 
-export {
-  withTooltip
-} from './tooltip/withTooltip'
+export { TooltipAnchor } from './tooltip/TooltipAnchor'
+export { withTooltip } from './tooltip/withTooltip'
