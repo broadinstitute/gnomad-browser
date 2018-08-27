@@ -45,6 +45,7 @@ export const VariantQualityMetricsType = new GraphQLObjectType({
           MQRankSum: { type: GraphQLFloat },
           QD: { type: GraphQLFloat },
           ReadPosRankSum: { type: GraphQLFloat },
+          SiteQuality: { type: GraphQLFloat },
           VQSLOD: { type: GraphQLFloat },
         }
       })

@@ -9,6 +9,11 @@ import {
 
 import { getXpos } from '../utilities/variant'
 
+import {
+  AggregateQualityMetricsType,
+  resolveAggregateQualityMetrics,
+} from './datasets/aggregateQualityMetrics'
+
 import geneType, {
   lookupGeneByGeneId,
   lookupGeneByName,
@@ -45,6 +50,23 @@ const rootType = new GraphQLObjectType({
 The fields below allow for different ways to look up gnomAD data. Click on the the Gene, Variant, or Region types to see more information.
   `,
   fields: () => ({
+    aggregateQualityMetrics: {
+      type: AggregateQualityMetricsType,
+      args: {
+        dataset: {
+          type: new GraphQLEnumType({
+            name: 'AggregateQualityMetricsDataset',
+            values: { gnomadExomes: {}, gnomadGenomes: {} },
+          }),
+        },
+      },
+      resolve: (obj, args, ctx) => {
+        return resolveAggregateQualityMetrics(ctx, {
+          gnomadExomes: 'exome_metrics',
+          gnomadGenomes: 'genome_metrics',
+        }[args.dataset])
+      },
+    },
     gene: {
       description: 'Look up variant data by gene name. Example: PCSK9.',
       type: geneType,

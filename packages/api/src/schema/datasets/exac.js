@@ -130,6 +130,7 @@ export const fetchExacVariant = async (variantId, ctx) => {
         MQRankSum: variantData.MQRankSum,
         QD: variantData.QD,
         ReadPosRankSum: variantData.ReadPosRankSum,
+        SiteQuality: variantData.qual,
         VQSLOD: variantData.VQSLOD,
       },
     },
