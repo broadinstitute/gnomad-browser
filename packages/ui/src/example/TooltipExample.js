@@ -1,16 +1,18 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
-import { withTooltip } from '..'
+import { TooltipAnchor } from '..'
 
+const BasicTooltip = ({ tooltip }) => <span>{tooltip}</span>
 
-const WithTooltip = withTooltip(props => <span>{props.tooltip}</span>)
+BasicTooltip.propTypes = {
+  tooltip: PropTypes.string.isRequired,
+}
 
-
-const TextWithTooltip = ({ text }) => (
-  <WithTooltip tooltip={text}>
-    <span>{text}</span>
-  </WithTooltip>
+const TooltipExample = () => (
+  <TooltipAnchor tooltip="A tooltip" tooltipComponent={BasicTooltip}>
+    <span>Hover here</span>
+  </TooltipAnchor>
 )
 
-
-export default () => <TextWithTooltip text="Hello world" />
+export default TooltipExample
