@@ -2,6 +2,8 @@ export {
   MaterialButtonRaised,
 } from './material/button'
 
+export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
+
 export {
   ClassicExacButton,
   ClassicExacButtonFirst,
