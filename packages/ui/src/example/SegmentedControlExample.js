@@ -2,18 +2,13 @@ import React, { Component } from 'react'
 
 import { SegmentedControl } from '..'
 
-
 export default class SegmentedControlExample extends Component {
   state = {
-    options: [
-      { value: 'foo' },
-      { value: 'bar' },
-      { value: 'baz' },
-    ],
+    options: [{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }],
     value: 'foo',
   }
 
-  onChange = (value) => {
+  onChange = value => {
     this.setState({ value })
   }
 
