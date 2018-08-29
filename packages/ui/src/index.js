@@ -61,6 +61,8 @@ export {
   ItemWrapper,
 } from './genePage/geneInfoStyles'
 
+export { Checkbox } from './Checkbox'
+
 export {
   InfoModal
 } from './modal/InfoModal'
