@@ -67,6 +67,8 @@ export { Checkbox } from './Checkbox'
 
 export { ExternalLink, Link } from './Link'
 
+export { List, ListItem, OrderedList } from './List'
+
 export {
   InfoModal
 } from './modal/InfoModal'
