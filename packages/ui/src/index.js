@@ -65,6 +65,8 @@ export { Badge } from './Badge'
 
 export { Checkbox } from './Checkbox'
 
+export { ExternalLink, Link } from './Link'
+
 export {
   InfoModal
 } from './modal/InfoModal'
