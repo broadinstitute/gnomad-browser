@@ -12,7 +12,6 @@ const SegmentedControlContainer = styled.span`
   border-radius: 0.5em;
   box-shadow: ${props => props.isFocused ? `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}` : 'none'};
   color: ${props => props.textColor};
-  cursor: pointer;
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
@@ -25,7 +24,8 @@ const SegmentedControlContainer = styled.span`
 
   label {
     border: 1px solid transparent;
-    padding: 0.25em 0.75em;
+    cursor: pointer;
+    padding: 0.375em 0.75em;
 
     &:first-of-type {
       border-bottom-left-radius: 0.5em;
