@@ -32,10 +32,12 @@ export class InfoModal extends Component {
     children: PropTypes.node,
     onRequestClose: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    width: PropTypes.string,
   }
 
   static defaultProps = {
     children: undefined,
+    width: 'auto',
   }
 
   id = getId()
@@ -53,6 +55,7 @@ export class InfoModal extends Component {
 
     return (
       <AriaModal
+        dialogStyle={{ width: this.props.width }}
         getApplicationNode={getApplicationNode}
         initialFocus={`#${this.withIdPrefix('close')}`}
         onExit={onRequestClose}
