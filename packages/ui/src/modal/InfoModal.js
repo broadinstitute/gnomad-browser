@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import AriaModal from 'react-aria-modal'
 
+import { Button } from '../Button'
 import {
   ModalBody,
   ModalContent,
@@ -73,13 +74,12 @@ export class InfoModal extends Component {
             {children}
           </ModalBody>
           <ModalFooter>
-            <button
+            <Button
               id={this.withIdPrefix('close')}
               onClick={onRequestClose}
-              type="button"
             >
               Ok
-            </button>
+            </Button>
           </ModalFooter>
         </ModalContent>
       </AriaModal>

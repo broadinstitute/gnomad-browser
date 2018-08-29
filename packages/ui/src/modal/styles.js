@@ -36,9 +36,15 @@ export const ModalHeaderCloseButton = styled.button`
   background: none;
   border: none;
   color: #0008;
+  cursor: pointer;
+  font-size: 16px;
   margin: -1rem -1rem -1rem auto;
   padding: 1rem;
   -webkit-appearance: none;
+
+  &:focus {
+    color: #000;
+  }
 
   &:hover {
     color: #000;
