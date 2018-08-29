@@ -61,6 +61,8 @@ export {
   ItemWrapper,
 } from './genePage/geneInfoStyles'
 
+export { Badge } from './Badge'
+
 export { Checkbox } from './Checkbox'
 
 export {
