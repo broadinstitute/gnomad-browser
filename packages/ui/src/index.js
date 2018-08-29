@@ -73,6 +73,8 @@ export {
   InfoModal
 } from './modal/InfoModal'
 
+export { Page, PageHeading, SectionHeading } from './Page'
+
 export { SegmentedControl } from './SegmentedControl'
 
 export { TooltipAnchor } from './tooltip/TooltipAnchor'
