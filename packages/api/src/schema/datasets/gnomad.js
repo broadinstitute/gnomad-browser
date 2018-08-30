@@ -17,7 +17,7 @@ export const GnomadVariantType = new GraphQLObjectType({
   name: 'gnomadVariant',
   interfaces: [VariantInterface],
   fields: {
-    // common variant fields
+    // variant interface fields
     alt: { type: new GraphQLNonNull(GraphQLString) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
@@ -81,9 +81,7 @@ export const GnomadVariantType = new GraphQLObjectType({
   isTypeOf: variantData => variantData.dataset === 'gnomad',
 })
 
-
 const GNOMAD_POPULATION_IDS = ['AFR', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
-
 
 const extractQualityMetrics = variantData => ({
   genotypeDepth: {
@@ -114,7 +112,6 @@ const extractQualityMetrics = variantData => ({
   },
 })
 
-
 export const fetchGnomadVariant = async (variantId, ctx) => {
   const response = await ctx.database.elastic.search({
     index: ['gnomad_exomes_202_37', 'gnomad_genomes_202_37'],
@@ -123,11 +120,11 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
       query: {
         bool: {
           filter: {
-            term: { variantId }
+            term: { variantId },
           },
         },
       },
-    }
+    },
   })
 
   if (response.hits.hits.length === 0) {
@@ -135,47 +132,51 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
   }
 
   /* eslint-disable no-underscore-dangle */
-  const exomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_exomes_202_37') || {})._source
-  const genomeData = (response.hits.hits.find(hit => hit._index === 'gnomad_genomes_202_37') || {})._source
-  /* eslint-enable no-underscore-dangle */
-  const commonData = exomeData || genomeData
+  const exomeDoc = response.hits.hits.find(hit => hit._index === 'gnomad_exomes_202_37')
+  const exomeData = exomeDoc ? exomeDoc._source : undefined
 
-  const commonVariantFields = {
-    alt: commonData.alt,
-    chrom: commonData.contig,
-    pos: commonData.pos,
-    ref: commonData.ref,
-    variantId: commonData.variantId,
-    xpos: commonData.xpos,
+  const genomeDoc = response.hits.hits.find(hit => hit._index === 'gnomad_genomes_202_37')
+  const genomeData = genomeDoc ? genomeDoc._source : undefined
+
+  /* eslint-enable no-underscore-dangle */
+  const sharedData = exomeData || genomeData
+
+  const sharedVariantFields = {
+    alt: sharedData.alt,
+    chrom: sharedData.contig,
+    pos: sharedData.pos,
+    ref: sharedData.ref,
+    variantId: sharedData.variantId,
+    xpos: sharedData.xpos,
   }
 
   return {
-    // common variant fields
-    ...commonVariantFields,
+    // variant interface fields
+    ...sharedVariantFields,
     // gnomAD specific fields
     exome: exomeData
       ? {
-        // Include common variant fields so that the reads data resolver can access them.
-        ...commonVariantFields,
-        ac: exomeData.AC,
-        an: exomeData.AN,
-        filters: exomeData.filters,
-        populations: extractPopulationData(GNOMAD_POPULATION_IDS, exomeData),
-        qualityMetrics: extractQualityMetrics(exomeData),
-      }
+          // Include variant fields so that the reads data resolver can access them.
+          ...sharedVariantFields,
+          ac: exomeData.AC,
+          an: exomeData.AN,
+          filters: exomeData.filters,
+          populations: extractPopulationData(GNOMAD_POPULATION_IDS, exomeData),
+          qualityMetrics: extractQualityMetrics(exomeData),
+        }
       : null,
     genome: genomeData
       ? {
-        // Include common variant fields so that the reads data resolver can access them.
-        ...commonVariantFields,
-        ac: genomeData.AC,
-        an: genomeData.AN,
-        filters: genomeData.filters,
-        populations: extractPopulationData(GNOMAD_POPULATION_IDS, genomeData),
-        qualityMetrics: extractQualityMetrics(genomeData),
-      }
+          // Include variant fields so that the reads data resolver can access them.
+          ...sharedVariantFields,
+          ac: genomeData.AC,
+          an: genomeData.AN,
+          filters: genomeData.filters,
+          populations: extractPopulationData(GNOMAD_POPULATION_IDS, genomeData),
+          qualityMetrics: extractQualityMetrics(genomeData),
+        }
       : null,
-    rsid: commonData.rsid,
-    sortedTranscriptConsequences: JSON.parse(commonData.sortedTranscriptConsequences),
+    rsid: sharedData.rsid,
+    sortedTranscriptConsequences: JSON.parse(sharedData.sortedTranscriptConsequences),
   }
 }
