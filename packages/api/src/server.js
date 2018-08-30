@@ -6,6 +6,7 @@ import elasticsearch from 'elasticsearch'
 import graphQLHTTP from 'express-graphql'
 import cors from 'cors'
 import Redis from 'ioredis'
+import serveStatic from 'serve-static'
 
 import gnomadSchema from './schema'
 
@@ -42,10 +43,11 @@ app.use(cors());
         },
       },
     }))
-    app.use('/export', (request, response) => {
-      console.log(request)
-      response.send('hello!')
-    })
+
+    if (process.env.READS_DIR) {
+      app.use('/reads', serveStatic(process.env.READS_DIR, { acceptRanges: true }))
+    }
+
     app.listen(process.env.GRAPHQL_PORT, () =>
       console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
   } catch (error) {
