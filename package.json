@@ -34,6 +34,7 @@
     "elasticsearch": "^13.3.1",
     "eslint": "^4.6.1",
     "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-prettier": "^3.0.1",
     "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-graphql": "^1.4.1",
     "eslint-plugin-import": "^2.7.0",

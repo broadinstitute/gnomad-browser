@@ -1,7 +1,11 @@
 const path = require('path')
 
 module.exports = {
-  extends: 'airbnb',
+  extends: [
+    'airbnb',
+    'prettier',
+    'prettier/react',
+  ],
   env: {
     browser: true,
   },
@@ -10,10 +14,7 @@ module.exports = {
     'prettier',
   ],
   rules: {
-     // Avoid conflict with Prettier
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: false }],
     'prettier/prettier': 'error',
-    'semi': [2, 'never'],
     'no-shadow': 0,
     'no-console': 0,
     'func-names': 0,
@@ -23,8 +24,6 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/href-no-hash': 0,
     'import/no-mutable-exports': 0,
-    'no-confusing-arrow': 0,
-    'space-before-function-paren': 0,
     'no-use-before-define': 0,
     'no-unused-vars': ['error', {
       ignoreRestSiblings: true,
@@ -33,13 +32,6 @@ module.exports = {
     'import/prefer-default-export': 0,
     // 'import/no-extraneous-dependencies': ['error', {'devDependencies': ['**/*.test.js', '**/*.spec.js', '**/*.example.js']}],
     'import/no-extraneous-dependencies': 0,
-    'comma-dangle': ['error', {
-      arrays: 'only-multiline',
-      objects: 'only-multiline',
-      imports: 'only-multiline',
-      exports: 'only-multiline',
-      functions: 'never',
-    }],
   },
   overrides: [
     {
