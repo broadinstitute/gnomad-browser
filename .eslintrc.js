@@ -1,16 +1,20 @@
 const path = require('path')
 
-
 module.exports = {
   extends: 'airbnb',
   env: {
     browser: true,
   },
   parser: 'babel-eslint',
+  plugins: [
+    'prettier',
+  ],
   rules: {
+     // Avoid conflict with Prettier
+    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: false }],
+    'prettier/prettier': 'error',
     'semi': [2, 'never'],
     'no-shadow': 0,
-    'arrow-body-style': 0,
     'no-console': 0,
     'func-names': 0,
     'spaced-comment': 0,
@@ -19,7 +23,6 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/href-no-hash': 0,
     'import/no-mutable-exports': 0,
-    'no-multiple-empty-lines': 0,
     'no-confusing-arrow': 0,
     'space-before-function-paren': 0,
     'no-use-before-define': 0,
