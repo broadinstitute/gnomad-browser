@@ -36,12 +36,12 @@ export const GnomadVariantType = new GraphQLObjectType({
           qualityMetrics: { type: VariantQualityMetricsType },
           reads: {
             type: ReadsType,
-            resolve: obj => {
+            resolve: async obj => {
               if (!process.env.READS_DIR) {
                 return null
               }
               try {
-                return resolveReads(process.env.READS_DIR, 'combined_bams_exomes', obj)
+                return await resolveReads(process.env.READS_DIR, 'combined_bams_exomes', obj)
               } catch (err) {
                 throw Error('Unable to load reads data')
               }
@@ -61,12 +61,12 @@ export const GnomadVariantType = new GraphQLObjectType({
           qualityMetrics: { type: VariantQualityMetricsType },
           reads: {
             type: ReadsType,
-            resolve: obj => {
+            resolve: async obj => {
               if (!process.env.READS_DIR) {
                 return null
               }
               try {
-                return resolveReads(process.env.READS_DIR, 'combined_bams_genomes', obj)
+                return await resolveReads(process.env.READS_DIR, 'combined_bams_genomes', obj)
               } catch (err) {
                 throw Error('Unable to load reads data')
               }
