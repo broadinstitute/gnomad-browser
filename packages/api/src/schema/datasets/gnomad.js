@@ -8,16 +8,10 @@ import {
 } from 'graphql'
 
 import { VariantInterface } from '../types/variant'
-import {
-  extractPopulationData,
-  PopulationType,
-} from './shared/population'
-import {
-  parseHistogram,
-  VariantQualityMetricsType,
-} from './shared/qualityMetrics'
+import { extractPopulationData, PopulationType } from './shared/population'
+import { resolveReads, ReadsType } from './shared/reads'
+import { parseHistogram, VariantQualityMetricsType } from './shared/qualityMetrics'
 import { TranscriptConsequenceType } from './shared/transcriptConsequence'
-
 
 export const GnomadVariantType = new GraphQLObjectType({
   name: 'gnomadVariant',
@@ -40,6 +34,19 @@ export const GnomadVariantType = new GraphQLObjectType({
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(PopulationType) },
           qualityMetrics: { type: VariantQualityMetricsType },
+          reads: {
+            type: ReadsType,
+            resolve: obj => {
+              if (!process.env.READS_DIR) {
+                return null
+              }
+              try {
+                return resolveReads(process.env.READS_DIR, 'combined_bams_exomes', obj)
+              } catch (err) {
+                throw Error('Unable to load reads data')
+              }
+            },
+          },
         },
       }),
     },
@@ -52,6 +59,19 @@ export const GnomadVariantType = new GraphQLObjectType({
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(PopulationType) },
           qualityMetrics: { type: VariantQualityMetricsType },
+          reads: {
+            type: ReadsType,
+            resolve: obj => {
+              if (!process.env.READS_DIR) {
+                return null
+              }
+              try {
+                return resolveReads(process.env.READS_DIR, 'combined_bams_genomes', obj)
+              } catch (err) {
+                throw Error('Unable to load reads data')
+              }
+            },
+          },
         },
       }),
     },
@@ -120,17 +140,23 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
   /* eslint-enable no-underscore-dangle */
   const commonData = exomeData || genomeData
 
-  return {
-    // common variant fields
+  const commonVariantFields = {
     alt: commonData.alt,
     chrom: commonData.contig,
     pos: commonData.pos,
     ref: commonData.ref,
     variantId: commonData.variantId,
     xpos: commonData.xpos,
+  }
+
+  return {
+    // common variant fields
+    ...commonVariantFields,
     // gnomAD specific fields
     exome: exomeData
       ? {
+        // Include common variant fields so that the reads data resolver can access them.
+        ...commonVariantFields,
         ac: exomeData.AC,
         an: exomeData.AN,
         filters: exomeData.filters,
@@ -140,6 +166,8 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
       : null,
     genome: genomeData
       ? {
+        // Include common variant fields so that the reads data resolver can access them.
+        ...commonVariantFields,
         ac: genomeData.AC,
         an: genomeData.AN,
         filters: genomeData.filters,
