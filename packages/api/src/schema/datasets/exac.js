@@ -10,22 +10,15 @@ import {
 import { getXpos } from '../../utilities/variant'
 
 import { VariantInterface } from '../types/variant'
-import {
-  extractPopulationData,
-  PopulationType,
-} from './shared/population'
-import {
-  parseHistogram,
-  VariantQualityMetricsType,
-} from './shared/qualityMetrics'
+import { extractPopulationData, PopulationType } from './shared/population'
+import { parseHistogram, VariantQualityMetricsType } from './shared/qualityMetrics'
 import { TranscriptConsequenceType } from './shared/transcriptConsequence'
-
 
 export const ExacVariantType = new GraphQLObjectType({
   name: 'ExacVariant',
   interfaces: [VariantInterface],
   fields: {
-    // common variant fields
+    // variant interface fields
     alt: { type: new GraphQLNonNull(GraphQLString) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
@@ -60,9 +53,7 @@ export const ExacVariantType = new GraphQLObjectType({
   isTypeOf: variantData => variantData.dataset === 'exac',
 })
 
-
 const EXAC_POPULATION_IDS = ['AFR', 'AMR', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
-
 
 export const fetchExacVariant = async (variantId, ctx) => {
   const response = await ctx.database.elastic.search({
@@ -73,11 +64,11 @@ export const fetchExacVariant = async (variantId, ctx) => {
       query: {
         bool: {
           filter: {
-            term: { variantId }
+            term: { variantId },
           },
         },
       },
-    }
+    },
   })
 
   if (response.hits.hits.length === 0) {
@@ -88,7 +79,7 @@ export const fetchExacVariant = async (variantId, ctx) => {
   const variantData = response.hits.hits[0]._source
 
   return {
-    // common variant fields
+    // variant interface fields
     alt: variantData.alt,
     chrom: variantData.contig,
     pos: variantData.start,
