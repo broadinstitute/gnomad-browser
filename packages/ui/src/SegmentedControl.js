@@ -3,29 +3,29 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-
 const SegmentedControlContainer = styled.span`
-  background-color: ${props => props.backgroundColor};
-  border-color: ${props => props.borderColor};
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  box-shadow: ${props => props.isFocused ? `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}` : 'none'};
-  color: ${props => props.textColor};
+  position: relative;
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
-  position: relative;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: ${props => props.backgroundColor};
+  border-color: ${props => props.borderColor};
+  box-shadow: ${props =>
+    props.isFocused ? `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}` : 'none'};
+  color: ${props => props.textColor};
   user-select: none;
 
   input {
-    ${hideVisually()}
+    ${hideVisually()};
   }
 
   label {
+    padding: 0.375em 0.75em;
     border: 1px solid transparent;
     cursor: pointer;
-    padding: 0.375em 0.75em;
 
     &:first-of-type {
       border-bottom-left-radius: 0.5em;
@@ -39,10 +39,9 @@ const SegmentedControlContainer = styled.span`
   }
 
   input:checked + label {
-    background-color: ${props => darken(0.15, props.backgroundColor)}
+    background-color: ${props => darken(0.15, props.backgroundColor)};
   }
 `
-
 
 export class SegmentedControl extends Component {
   static propTypes = {
@@ -55,19 +54,11 @@ export class SegmentedControl extends Component {
       PropTypes.shape({
         disabled: PropTypes.bool,
         label: PropTypes.string,
-        value: PropTypes.oneOfType([
-          PropTypes.bool,
-          PropTypes.number,
-          PropTypes.string,
-        ]),
+        value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
       })
     ).isRequired,
     textColor: PropTypes.string,
-    value: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
+    value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]).isRequired,
   }
 
   static defaultProps = {
@@ -85,7 +76,7 @@ export class SegmentedControl extends Component {
     this.setState({ isFocused: false })
   }
 
-  onChange = (e) => {
+  onChange = e => {
     const selectedIndex = parseInt(e.target.value, 10)
     const selectedOption = this.props.options[selectedIndex]
     this.props.onChange(selectedOption.value)
@@ -96,15 +87,7 @@ export class SegmentedControl extends Component {
   }
 
   render() {
-    const {
-      backgroundColor,
-      borderColor,
-      disabled,
-      id,
-      options,
-      textColor,
-      value,
-    } = this.props
+    const { backgroundColor, borderColor, disabled, id, options, textColor, value } = this.props
 
     return (
       <SegmentedControlContainer
@@ -125,12 +108,9 @@ export class SegmentedControl extends Component {
             onChange={this.onChange}
             onFocus={this.onFocus}
           />,
-          <label
-            key={`${opt.value}-label`}
-            htmlFor={`segmented-control-input-${id}-${opt.value}`}
-          >
+          <label key={`${opt.value}-label`} htmlFor={`segmented-control-input-${id}-${opt.value}`}>
             {opt.label || opt.value}
-          </label>
+          </label>,
         ])}
       </SegmentedControlContainer>
     )
