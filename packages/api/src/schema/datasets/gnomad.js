@@ -25,6 +25,7 @@ export const GnomadVariantType = new GraphQLObjectType({
     variantId: { type: new GraphQLNonNull(GraphQLString) },
     xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // gnomAD specific fields
+    colocatedVariants: { type: new GraphQLList(GraphQLString) },
     exome: {
       type: new GraphQLObjectType({
         name: 'GnomadVariantExomeData',
@@ -112,7 +113,7 @@ const extractQualityMetrics = variantData => ({
   },
 })
 
-export const fetchGnomadVariant = async (variantId, ctx) => {
+const fetchVariantData = async (variantId, ctx) => {
   const response = await ctx.database.elastic.search({
     index: ['gnomad_exomes_202_37', 'gnomad_genomes_202_37'],
     type: 'variant',
@@ -127,10 +128,6 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
     },
   })
 
-  if (response.hits.hits.length === 0) {
-    throw Error('Variant not found')
-  }
-
   /* eslint-disable no-underscore-dangle */
   const exomeDoc = response.hits.hits.find(hit => hit._index === 'gnomad_exomes_202_37')
   const exomeData = exomeDoc ? exomeDoc._source : undefined
@@ -138,7 +135,50 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
   const genomeDoc = response.hits.hits.find(hit => hit._index === 'gnomad_genomes_202_37')
   const genomeData = genomeDoc ? genomeDoc._source : undefined
 
-  /* eslint-enable no-underscore-dangle */
+  return {
+    exomeData,
+    genomeData,
+  }
+}
+
+const fetchColocatedVariants = async (variantId, ctx) => {
+  const parts = variantId.split('-')
+  const contig = parts[0]
+  const pos = parts[1]
+
+  const response = await ctx.database.elastic.search({
+    index: ['gnomad_exomes_202_37', 'gnomad_genomes_202_37'],
+    type: 'variant',
+    _source: ['variantId'],
+    body: {
+      query: {
+        bool: {
+          filter: [{ term: { contig } }, { term: { pos } }],
+        },
+      },
+    },
+  })
+
+  return response.hits.hits
+    .map(doc => doc._source.variantId)
+    .filter(otherVariantId => otherVariantId !== variantId)
+    .sort()
+    .filter(
+      (otherVariantId, index, allOtherVariantIds) =>
+        otherVariantId !== allOtherVariantIds[index + 1]
+    )
+}
+
+export const fetchGnomadVariant = async (variantId, ctx) => {
+  const [{ exomeData, genomeData }, colocatedVariants] = await Promise.all([
+    fetchVariantData(variantId, ctx),
+    fetchColocatedVariants(variantId, ctx),
+  ])
+
+  if (!exomeData && !genomeData) {
+    throw Error('Variant not found')
+  }
+
   const sharedData = exomeData || genomeData
 
   const sharedVariantFields = {
@@ -154,6 +194,7 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
     // variant interface fields
     ...sharedVariantFields,
     // gnomAD specific fields
+    colocatedVariants,
     exome: exomeData
       ? {
           // Include variant fields so that the reads data resolver can access them.
