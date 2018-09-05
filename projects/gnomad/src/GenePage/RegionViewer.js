@@ -21,7 +21,6 @@ import {
 import {
   finalFilteredVariants,
   selectedVariantDataset,
-  variantFilter,
 } from '@broad/redux-variants'
 
 import {
@@ -90,7 +89,6 @@ const GeneViewer = ({
   exonPadding,
   regionalConstraint,
   screenSize,
-  variantFilter,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -126,12 +124,6 @@ const GeneViewer = ({
     gnomadGenomeVariants: 'gnomAD genomes',
     gnomadCombinedVariants: 'gnomAD',
     exacVariants: 'ExAC',
-  }
-  const consequenceTranslations = {
-    all: 'All variants',
-    gnomadGenomeVariants: 'gnomAD genomes',
-    missenseOrLoF: 'Missense/LoF',
-    lof: 'LoF',
   }
 
   return (
@@ -172,7 +164,7 @@ const GeneViewer = ({
           />}
 
         <VariantAlleleFrequencyTrack
-          title={`${datasetTranslations[selectedVariantDataset]}\n${consequenceTranslations[variantFilter]}\n(${allVariants.size})`}
+          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
           variants={variantsReversed.toJS()}
         />
         <NavigatorTrackConnected title={'Viewing in table'} />
@@ -185,7 +177,6 @@ GeneViewer.propTypes = {
   allVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
-  variantFilter: PropTypes.string.isRequired,
   regionalConstraint: PropTypes.array.isRequired,
   screenSize: PropTypes.object.isRequired,
 }
@@ -197,6 +188,5 @@ export default connect(
     selectedVariantDataset: selectedVariantDataset(state),
     regionalConstraint: regionalConstraint(state),
     screenSize: screenSize(state),
-    variantFilter: variantFilter(state),
   })
 )(GeneViewer)
