@@ -10,10 +10,7 @@ import {
   variantQcFilter,
 } from '@broad/redux-variants'
 import {
-  ClassicExacButton,
-  ClassicExacButtonFirst,
-  ClassicExacButtonLast,
-  ClassicExacButtonGroup,
+  ConsequenceCategoriesControl,
   SettingsContainer,
   MenusContainer,
   SearchContainer,
@@ -34,62 +31,11 @@ const GeneSettings = ({
   <SettingsContainer>
     <MenusContainer>
       <DataSelectionGroup>
-        <ClassicExacButtonGroup>
-          <ClassicExacButtonFirst
-            isActive={
-              variantFilter.lof &&
-              variantFilter.missense &&
-              variantFilter.synonymous &&
-              variantFilter.other
-            }
-            onClick={() =>
-              setVariantFilter({
-                lof: true,
-                missense: true,
-                synonymous: true,
-                other: true,
-              })
-            }
-          >
-            All
-          </ClassicExacButtonFirst>
-          <ClassicExacButton
-            isActive={
-              variantFilter.lof &&
-              variantFilter.missense &&
-              !variantFilter.synonymous &&
-              !variantFilter.other
-            }
-            onClick={() =>
-              setVariantFilter({
-                lof: true,
-                missense: true,
-                synonymous: false,
-                other: false,
-              })
-            }
-          >
-            Missense + LoF
-          </ClassicExacButton>
-          <ClassicExacButtonLast
-            isActive={
-              variantFilter.lof &&
-              !variantFilter.missense &&
-              !variantFilter.synonymous &&
-              !variantFilter.other
-            }
-            onClick={() =>
-              setVariantFilter({
-                lof: true,
-                missense: false,
-                synonymous: false,
-                other: false,
-              })
-            }
-          >
-            LoF
-          </ClassicExacButtonLast>
-        </ClassicExacButtonGroup>
+        <ConsequenceCategoriesControl
+          categorySelections={variantFilter}
+          id="variant-filter"
+          onChange={setVariantFilter}
+        />
 
         <DataSelectionContainer>
           <select

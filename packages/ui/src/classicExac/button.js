@@ -26,23 +26,3 @@ export const ClassicExacButton = styled.button`
     disabled ? '#FAFAFA' : 'white'
   )};
 `
-
-export const ClassicExacButtonFirst = ClassicExacButton.extend`
-  border-bottom-left-radius: 4px;
-  border-top-left-radius: 4px;
-  ${'' /* border-right-width: 1.5px; */}
-  ${'' /* border-right-color: rgb(40, 94, 142); */}
-  border-right-style: solid;
-`
-
-export const ClassicExacButtonLast = ClassicExacButton.extend`
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  ${'' /* border-left-width: 1.5px; */}
-  ${'' /* border-left-color: rgb(40, 94, 142); */}
-`
-
-export const ClassicExacButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-`
