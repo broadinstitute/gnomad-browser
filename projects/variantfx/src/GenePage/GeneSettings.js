@@ -29,7 +29,7 @@ const GeneSettings = ({
     flex-direction: row;
   `
 
-  const VariantCatagoryButton = MaterialButtonRaised.extend`
+  const VariantCategoryButton = MaterialButtonRaised.extend`
     background-color: rgba(10, 121, 191, 0.1);
     margin-right: 10px;
     &:hover {
@@ -42,9 +42,42 @@ const GeneSettings = ({
 
   const MaterialVariantCategoryButtonGroup = () => (
     <VariantCategoryButtonGroup>
-      <VariantCatagoryButton onClick={() => setVariantFilter('all')}>All</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('missenseOrLoF')}>Missense + LoF</VariantCatagoryButton>
-      <VariantCatagoryButton onClick={() => setVariantFilter('lof')}>LoF</VariantCatagoryButton>
+      <VariantCategoryButton
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: true,
+            synonymous: true,
+            other: true,
+          })
+        }
+      >
+        All
+      </VariantCategoryButton>
+      <VariantCategoryButton
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: true,
+            synonymous: false,
+            other: false,
+          })
+        }
+      >
+        Missense + LoF
+      </VariantCategoryButton>
+      <VariantCategoryButton
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: false,
+            synonymous: false,
+            other: false,
+          })
+        }
+      >
+        LoF
+      </VariantCategoryButton>
     </VariantCategoryButtonGroup>
   )
 

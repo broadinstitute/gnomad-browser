@@ -99,9 +99,20 @@ export const RegionHoc = (
           .then((regionData) => {
             thunkDispatch(regionActions.receiveRegionData(regionId, regionData))
 
-            const defaultVariantFilter = (regionData.stop - regionData.start) > 50000
-              ? 'lof'
-              : 'all'
+            let defaultVariantFilter = {
+              lof: true,
+              missense: true,
+              synonymous: true,
+              other: true,
+            }
+            if (regionData.stop - regionData.start > 50000) {
+              defaultVariantFilter = {
+                lof: true,
+                missense: false,
+                synonymous: false,
+                other: false,
+              }
+            }
 
             // Reset variant filters when loading a new region
             thunkDispatch(variantActions.searchVariants(''))

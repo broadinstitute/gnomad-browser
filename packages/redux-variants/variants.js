@@ -3,15 +3,9 @@ import keymirror from 'keymirror'
 import { Record, Set, OrderedMap, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import {
-  isCategoryLoF,
-  isCategoryMissenseOrLoF,
-  getTableIndexByPosition,
-  gnomadExportCsvTranslations,
-} from '@broad/utilities'
-
-import { types as regionTypes } from '@broad/region'
 import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
+import { types as regionTypes } from '@broad/region'
+import { getCategoryFromConsequence, gnomadExportCsvTranslations } from '@broad/utilities'
 
 export const types = keymirror({
   SET_HOVERED_VARIANT: null,
@@ -33,12 +27,10 @@ export const actions = {
   setSelectedVariantDataset: variantDataset =>
     ({ type: types.SET_SELECTED_VARIANT_DATASET, variantDataset }),
 
-  setVariantFilter: (filter) => {
-    return {
-      type: types.SET_VARIANT_FILTER,
-      filter,
-    }
-  },
+  setVariantFilter: filter => ({
+    type: types.SET_VARIANT_FILTER,
+    filter,
+  }),
 
   setVariantSort: (key) => {
     return {
@@ -226,7 +218,12 @@ export default function createVariantReducer({
       (acc.set(dataset, OrderedMap())), OrderedMap()),
     variantSortKey: 'pos',
     variantSortAscending: true,
-    variantFilter: 'all',
+    variantFilter: {
+      lof: true,
+      missense: true,
+      synonymous: true,
+      other: true,
+    },
     hoveredVariant: startingVariant,
     focusedVariant: startingVariant,
     selectedVariantDataset: startingVariantDataset,
@@ -438,40 +435,63 @@ const definitions = state => state.variants.definitions
 const searchPredicate = state => state.variants.searchPredicate
 export const variantSearchQuery = state => state.variants.get('searchQuery')
 
-const filteredVariantsById = createSelector([
-  allVariantsInCurrentDataset,
-  variantFilter,
-  variantQcFilter,
-  definitions,
-  variantDeNovoFilter,
-  searchPredicate,
-  variantSearchQuery,
-], (variants, variantFilter, variantQcFilter, definitions, variantDeNovoFilter, searchPredicate, searchQuery) => {
-  let filteredVariants
-  const consequenceKey = definitions.get('consequence') || 'consequence'
-  if (variantFilter === 'all') {
-    filteredVariants = variants
-  }
-  if (variantFilter === 'lof') {
-    filteredVariants = variants.filter(v => isCategoryLoF(v.get(consequenceKey)))
-  }
-  if (variantFilter === 'missenseOrLoF') {
-    filteredVariants = variants.filter(v => isCategoryMissenseOrLoF(v.get(consequenceKey)))
-  }
-  if (variantQcFilter) {
-    filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
-  }
-  if (variantDeNovoFilter) {
-    filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
-  }
+const filteredVariantsById = createSelector(
+  [
+    allVariantsInCurrentDataset,
+    variantFilter,
+    variantQcFilter,
+    definitions,
+    variantDeNovoFilter,
+    searchPredicate,
+    variantSearchQuery,
+  ],
+  (
+    variants,
+    variantFilter,
+    variantQcFilter,
+    definitions,
+    variantDeNovoFilter,
+    searchPredicate,
+    searchQuery
+  ) => {
+    let filteredVariants
+    const consequenceKey = definitions.get('consequence') || 'consequence'
 
-  if (searchQuery) {
-    const query = searchQuery.toLowerCase()
-    filteredVariants = filteredVariants.filter(v => searchPredicate(v, query))
-  }
+    if (
+      variantFilter.lof &&
+      variantFilter.missense &&
+      variantFilter.synonymous &&
+      variantFilter.other
+    ) {
+      filteredVariants = variants
+    } else {
+      const isCategoryIncluded = {
+        lof: variantFilter.lof,
+        missense: variantFilter.missense,
+        synonymous: variantFilter.synonymous,
+        all: variantFilter.other,
+      }
+      filteredVariants = variants.filter(variant => {
+        const category = getCategoryFromConsequence(variant.get(consequenceKey)) || 'all'
+        return isCategoryIncluded[category]
+      })
+    }
 
-  return filteredVariants
-})
+    if (variantQcFilter) {
+      filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
+    }
+    if (variantDeNovoFilter) {
+      filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      filteredVariants = filteredVariants.filter(v => searchPredicate(v, query))
+    }
+
+    return filteredVariants
+  }
+)
 
 export const finalFilteredVariants = createSelector(
   [

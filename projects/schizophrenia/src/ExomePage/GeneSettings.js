@@ -21,68 +21,98 @@ import {
   DataSelectionGroup,
 } from '@broad/ui'
 
+const VariantCategoryButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const VariantCategoryButton = MaterialButtonRaised.extend`
+  margin-right: 10px;
+  background-color: ${({ isActive }) =>
+    isActive ? 'rgba(10, 121, 191, 0.3)' : 'rgba(10, 121, 191, 0.1)'};
+
+  &:hover {
+    background-color: rgba(10, 121, 191, 0.3);
+  }
+
+  &:active {
+    background-color: rgba(10, 121, 191, 0.5);
+  }
+`
+
 const GeneSettings = ({
   searchVariants,
   setVariantFilter,
   toggleVariantDeNovoFilter,
   variantDeNovoFilter,
   variantFilter,
-  // searchVariants
 }) => {
-  const VariantCategoryButtonGroup = styled.div`
-    display: flex;
-    flex-direction: row;
-  `
-
-  const VariantCatagoryButton = MaterialButtonRaised.extend`
-    background-color: ${({ isActive }) => (
-    isActive ? 'rgba(10, 121, 191, 0.3)' : 'rgba(10, 121, 191, 0.1)'
-  )};
-
-    margin-right: 10px;
-    &:hover {
-      background-color: rgba(10, 121, 191, 0.3);
-    }
-    &:active {
-      background-color: rgba(10, 121, 191, 0.5);
-    }
-  `
-
-  const MaterialVariantCategoryButtonGroup = () => (
+  const variantCategoryButtonGroup = (
     <VariantCategoryButtonGroup>
-      <VariantCatagoryButton
-        onClick={() => setVariantFilter('all')}
-        isActive={variantFilter === 'all'}
+      <VariantCategoryButton
+        isActive={
+          variantFilter.lof &&
+          variantFilter.missense &&
+          variantFilter.synonymous &&
+          variantFilter.other
+        }
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: true,
+            synonymous: true,
+            other: true,
+          })
+        }
       >
-        All<
-        /VariantCatagoryButton>
-      <VariantCatagoryButton
-        onClick={() => setVariantFilter('missenseOrLoF')}
-        isActive={variantFilter === 'missenseOrLoF'}
+        All
+      </VariantCategoryButton>
+      <VariantCategoryButton
+        isActive={
+          variantFilter.lof &&
+          variantFilter.missense &&
+          !variantFilter.synonymous &&
+          !variantFilter.other
+        }
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: true,
+            synonymous: false,
+            other: false,
+          })
+        }
       >
         Missense + LoF
-      </VariantCatagoryButton>
-      <VariantCatagoryButton
-        onClick={() => setVariantFilter('lof')}
-        isActive={variantFilter === 'lof'}
+      </VariantCategoryButton>
+      <VariantCategoryButton
+        isActive={
+          variantFilter.lof &&
+          !variantFilter.missense &&
+          !variantFilter.synonymous &&
+          !variantFilter.other
+        }
+        onClick={() =>
+          setVariantFilter({
+            lof: true,
+            missense: false,
+            synonymous: false,
+            other: false,
+          })
+        }
       >
         LoF
-      </VariantCatagoryButton>
-      <VariantCatagoryButton
-        onClick={toggleVariantDeNovoFilter}
-        isActive={variantDeNovoFilter}
-      >
+      </VariantCategoryButton>
+      <VariantCategoryButton isActive={variantDeNovoFilter} onClick={toggleVariantDeNovoFilter}>
         De novo
-      </VariantCatagoryButton>
+      </VariantCategoryButton>
     </VariantCategoryButtonGroup>
   )
 
   return (
     <SettingsContainer>
       <MenusContainer>
-        <DataSelectionGroup>
-          <MaterialVariantCategoryButtonGroup />
-        </DataSelectionGroup>
+        <DataSelectionGroup>{variantCategoryButtonGroup}</DataSelectionGroup>
         <DataSelectionGroup>
           <SearchContainer>
             <Search
@@ -101,6 +131,13 @@ GeneSettings.propTypes = {
   searchVariants: PropTypes.func.isRequired,
   setVariantFilter: PropTypes.func.isRequired,
   toggleVariantDeNovoFilter: PropTypes.func.isRequired,
+  variantDeNovoFilter: PropTypes.bool.isRequired,
+  variantFilter: PropTypes.shape({
+    lof: PropTypes.bool.isRequired,
+    missense: PropTypes.bool.isRequired,
+    synonymous: PropTypes.bool.isRequired,
+    other: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 const mapStateToProps = (state) => {
