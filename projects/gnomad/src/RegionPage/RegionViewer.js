@@ -16,7 +16,6 @@ import { NavigatorTrackConnected } from '@broad/track-navigator'
 import {
   finalFilteredVariants,
   selectedVariantDataset,
-  variantFilter,
 } from '@broad/redux-variants'
 
 import { getCoverageConfig } from '../GenePage/RegionViewer'
@@ -27,7 +26,6 @@ const RegionViewerConnected = ({
   history,
   selectedVariantDataset,
   screenSize,
-  variantFilter,
 }) => {
   const {
     chrom,
@@ -73,12 +71,6 @@ const RegionViewerConnected = ({
     gnomadCombinedVariants: 'gnomAD',
     exacVariants: 'ExAC',
   }
-  const consequenceTranslations = {
-    all: 'All variants',
-    gnomadGenomeVariants: 'gnomAD genomes',
-    missenseOrLoF: 'Missense/LoF',
-    lof: 'LoF',
-  }
 
   return (
     <div>
@@ -105,7 +97,7 @@ const RegionViewerConnected = ({
         />
 
         <VariantAlleleFrequencyTrack
-          title={`${datasetTranslations[selectedVariantDataset]}\n${consequenceTranslations[variantFilter]}\n(${allVariants.size})`}
+          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
           variants={variantsReversed.toJS()}
         />
 
@@ -137,7 +129,6 @@ export default compose(
       allVariants: finalFilteredVariants(state),
       selectedVariantDataset: selectedVariantDataset(state),
       screenSize: screenSize(state),
-      variantFilter: variantFilter(state),
     })
   )
 )(RegionViewerConnected)

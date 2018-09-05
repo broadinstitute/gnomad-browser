@@ -22,6 +22,7 @@ export {
 } from './exalt'
 
 export {
+  getCategoryFromConsequence,
   isCategoryLoF,
   isCategoryMissenseOrLoF,
 } from './constants/categoryDefinitions'

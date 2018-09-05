@@ -98,12 +98,6 @@ class SchizophreniaGeneViewer extends PureComponent {
       .filter(v => v.ac_ctrl > 0)
       .map(v => v.set('allele_freq', v.af_ctrl))
 
-    const consequenceTranslations = {
-      all: 'All variants',
-      missenseOrLoF: 'Missense/LoF',
-      lof: 'LoF',
-    }
-
     // const casesCount = cases.reduce((acc, v) => acc + v.ac_case, 0)
     // const controlsCount = controls.reduce((acc, v) => acc + v.ac_ctrl, 0)
 
@@ -121,11 +115,11 @@ class SchizophreniaGeneViewer extends PureComponent {
             showRightPanel={!smallScreen}
           />
           <VariantAlleleFrequencyTrack
-            title={`Cases\n${consequenceTranslations[variantFilter]}\n(${cases.size})`}
+            title={`Cases\n(${cases.size})`}
             variants={cases.toJS()}
           />
           <VariantAlleleFrequencyTrack
-            title={`Controls\n${consequenceTranslations[variantFilter]}\n(${controls.size})`}
+            title={`Controls\n(${controls.size})`}
             variants={controls.toJS()}
           />
           <NavigatorTrackConnected title={'Viewing in table'} />
@@ -138,7 +132,12 @@ SchizophreniaGeneViewer.propTypes = {
   gene: PropTypes.object.isRequired,
   visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
-  variantFilter: PropTypes.string.isRequired,
+  variantFilter: PropTypes.shape({
+    lof: PropTypes.bool.isRequired,
+    missense: PropTypes.bool.isRequired,
+    synonymous: PropTypes.bool.isRequired,
+    other: PropTypes.bool.isRequired,
+  }).isRequired,
   screenSize: PropTypes.object.isRequired,
 }
 export default connect(

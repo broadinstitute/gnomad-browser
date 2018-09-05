@@ -112,36 +112,27 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
 
 const mapDispatchToProps = geneFetchFunction => dispatch => ({
   fetchGeneData(geneName, transcriptId) {
-    return dispatch((thunkDispatch) => {
+    return dispatch(thunkDispatch => {
       thunkDispatch(geneActions.setCurrentGene(geneName))
       thunkDispatch(geneActions.setCurrentTranscript(transcriptId))
 
       thunkDispatch(geneActions.requestGeneData(geneName))
-      return geneFetchFunction(geneName, transcriptId)
-        .then((geneData) => {
-          thunkDispatch(geneActions.receiveGeneData(geneName, geneData))
+      return geneFetchFunction(geneName, transcriptId).then(geneData => {
+        thunkDispatch(geneActions.receiveGeneData(geneName, geneData))
 
-          // Reset variant filters when loading a new gene
-          thunkDispatch(variantActions.searchVariants(''))
+        // Reset variant filters when loading a new gene
+        thunkDispatch(variantActions.searchVariants(''))
+        thunkDispatch(
+          variantActions.setVariantFilter({
+            lof: true,
+            missense: true,
+            synonymous: true,
+            other: true,
+          })
+        )
 
-          let defaultVariantFilter = 'all'
-          if (geneData) {
-            const exons = geneData.transcript.exons
-            const padding = 75
-            const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-              .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-
-            if (totalBasePairs > 100000) {
-              defaultVariantFilter = 'lof'
-            } else if (totalBasePairs > 40000) {
-              defaultVariantFilter = 'missenseOrLoF'
-            }
-          }
-
-          thunkDispatch(variantActions.setVariantFilter(defaultVariantFilter))
-
-          return geneData
-        })
+        return geneData
+      })
     })
   },
 })
