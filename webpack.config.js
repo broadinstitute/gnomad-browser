@@ -17,7 +17,7 @@ const defineEnvPlugin = new webpack.DefinePlugin({
   'process.env.PROJECT_DEFAULTS': JSON.stringify(process.env.PROJECT_DEFAULTS),
   'process.env.API_URL': JSON.stringify(API_URL),
   'process.env.GNOMAD_API_URL': JSON.stringify(process.env.GNOMAD_API_URL),
-
+  'process.env.VARIANT_FX_API_URL': JSON.stringify(process.env.VARIANT_FX_API_URL || 'http://variantfx.org:4000/graphql'),
 })
 
 const entries = isDev ?

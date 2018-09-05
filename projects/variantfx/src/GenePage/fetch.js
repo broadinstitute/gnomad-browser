@@ -5,7 +5,7 @@ import fetch from 'graphql-fetch'
 
 const PUBLIC_API_URL = 'http://gnomad-api2.broadinstitute.org/'
 const LOCAL_API_URL = 'http://localhost:8007'
-const VARIANT_FX_API_URL = 'http://variantfx.org:4000/graphql'
+const VARIANT_FX_API_URL = process.env.VARIANT_FX_API_URL
 
 const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
   const query = `{
