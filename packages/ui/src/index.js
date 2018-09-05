@@ -4,15 +4,12 @@ export {
 
 export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
 
-export {
-  ClassicExacButton,
-  ClassicExacButtonFirst,
-  ClassicExacButtonLast,
-  ClassicExacButtonGroup,
-} from './classicExac/button'
+export { ClassicExacButton } from './classicExac/button'
+
+export { ConsequenceCategoriesControl } from './ConsequenceCategoriesControl'
 
 export {
-  Search,
+  Search
 } from './search/simpleSearch'
 
 export {
