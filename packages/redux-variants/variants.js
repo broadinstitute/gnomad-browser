@@ -193,16 +193,25 @@ export const actions = {
   }
 }
 
+const defaultVariantMatchesConsequenceCategoryFilter = (variant, selectedConsequenceCategories) => {
+  let category = getCategoryFromConsequence(variant.consequence) || 'other'
+  if (category === 'all') {
+    category = 'other'
+  }
+
+  return selectedConsequenceCategories[category]
+}
+
 export default function createVariantReducer({
   variantDatasets,
+  variantMatchesConsequenceCategoryFilter,
   variantSearchPredicate,
   combinedDatasets = {},
   projectDefaults: {
     startingVariant,
     startingVariantDataset,
     startingQcFilter,
-  },
-  definitions
+  }
 }) {
   const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
   const variantRecords = datasetKeys.reduce((acc, dataset) => {
@@ -229,7 +238,8 @@ export default function createVariantReducer({
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
     variantDeNovoFilter: false,
-    definitions: Map(definitions),
+    variantMatchesConsequenceCategoryFilter:
+      variantMatchesConsequenceCategoryFilter || defaultVariantMatchesConsequenceCategoryFilter,
     searchPredicate: variantSearchPredicate,
     searchQuery: '',
   })
@@ -431,7 +441,8 @@ const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
-const definitions = state => state.variants.definitions
+const variantMatchesConsequenceCategoryFilter = state =>
+  state.variants.variantMatchesConsequenceCategoryFilter
 const searchPredicate = state => state.variants.searchPredicate
 export const variantSearchQuery = state => state.variants.get('searchQuery')
 
@@ -440,8 +451,8 @@ const filteredVariantsById = createSelector(
     allVariantsInCurrentDataset,
     variantFilter,
     variantQcFilter,
-    definitions,
     variantDeNovoFilter,
+    variantMatchesConsequenceCategoryFilter,
     searchPredicate,
     variantSearchQuery,
   ],
@@ -449,32 +460,20 @@ const filteredVariantsById = createSelector(
     variants,
     variantFilter,
     variantQcFilter,
-    definitions,
     variantDeNovoFilter,
+    variantMatchesConsequenceCategoryFilter,
     searchPredicate,
     searchQuery
   ) => {
-    let filteredVariants
-    const consequenceKey = definitions.get('consequence') || 'consequence'
+    let filteredVariants = variants
 
-    if (
-      variantFilter.lof &&
-      variantFilter.missense &&
-      variantFilter.synonymous &&
-      variantFilter.other
-    ) {
-      filteredVariants = variants
-    } else {
-      const isCategoryIncluded = {
-        lof: variantFilter.lof,
-        missense: variantFilter.missense,
-        synonymous: variantFilter.synonymous,
-        all: variantFilter.other,
-      }
-      filteredVariants = variants.filter(variant => {
-        const category = getCategoryFromConsequence(variant.get(consequenceKey)) || 'all'
-        return isCategoryIncluded[category]
-      })
+    const isEveryConsequenceCategorySelected =
+      variantFilter.lof && variantFilter.missense && variantFilter.synonymous && variantFilter.other
+
+    if (!isEveryConsequenceCategorySelected) {
+      filteredVariants = variants.filter(variant =>
+        variantMatchesConsequenceCategoryFilter(variant, variantFilter)
+      )
     }
 
     if (variantQcFilter) {
