@@ -77,13 +77,13 @@ export function getCategoryFromConsequence(consequence) {
 }
 
 export function isCategoryLoF(consequence) {
-  return CATEGORY_DEFINITIONS_MAP.get('lof').contains(consequence)
+  return consequence.split('&').some(csq => CATEGORY_DEFINITIONS_MAP.get('lof').contains(csq))
 }
 export function isCategoryMissense(consequence) {
-  return CATEGORY_DEFINITIONS_MAP.get('missense').contains(consequence)
+  return consequence.split('&').some(csq => CATEGORY_DEFINITIONS_MAP.get('missense').contains(csq))
 }
 export function isCategoryMissenseOrLoF(consequence) {
-  return CATEGORY_DEFINITIONS_MAP.get('missenseAndLof').contains(consequence)
+  return consequence.split('&').some(consequence => CATEGORY_DEFINITIONS_MAP.get('missenseAndLof').contains(csq))
 }
 
 
