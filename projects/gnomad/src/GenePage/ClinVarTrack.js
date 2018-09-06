@@ -66,6 +66,72 @@ const CenterPanel = styled.div`
   padding-top: 10px;
 `
 
+const ClinVarVariantAttributeList = styled.dl`
+  margin: 0.5em 0;
+
+  div {
+    margin-bottom: 0.25em;
+  }
+
+  dt,
+  dd {
+    display: inline;
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin: 0 0 0 0.5em;
+  }
+`
+
+const ClinVarVariantAttribute = ({ label, value }) => (
+  <div>
+    <dt>{label}:</dt>
+    <dd>{value || '-'}</dd>
+  </div>
+)
+
+ClinVarVariantAttribute.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.any,
+}
+
+ClinVarVariantAttribute.defaultProps = {
+  value: undefined,
+}
+
+const ClinVarTooltip = ({ variant }) => (
+  <div>
+    <strong>{variant.variantId}</strong>
+    <ClinVarVariantAttributeList>
+      <ClinVarVariantAttribute label="Clinical Signficance" value={variant.clinicalSignificance} />
+      <ClinVarVariantAttribute label="Consequence" value={variant.majorConsequence} />
+      <ClinVarVariantAttribute label="Gold stars" value={variant.goldStars} />
+    </ClinVarVariantAttributeList>
+    Click to view in ClinVar
+  </div>
+)
+
+ClinVarTooltip.propTypes = {
+  variant: PropTypes.shape({
+    alleleId: PropTypes.number.isRequired,
+    clinicalSignificance: PropTypes.string,
+    consequence: PropTypes.string,
+    goldStars: PropTypes.number,
+    variantId: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+const onClickVariant = variant => {
+  const clinVarWindow = window.open()
+  // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+  clinVarWindow.opener = null
+  clinVarWindow.location = `http://www.ncbi.nlm.nih.gov/clinvar/?term=${variant.alleleId}[alleleid]`
+}
+
 class ClinVarTrack extends Component {
   state = {
     isExpanded: false,
@@ -174,8 +240,10 @@ class ClinVarTrack extends Component {
 
     return (
       <StackedVariantsPlot
+        onClickVariant={onClickVariant}
         positionOffset={positionOffset}
         symbolColor={variantColor}
+        tooltipComponent={ClinVarTooltip}
         variantLayers={layers}
         width={width}
         xScale={xScale}
@@ -232,8 +300,10 @@ ClinVarTrack.propTypes = {
   positionOffset: PropTypes.func,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
+      alleleId: PropTypes.number.isRequired,
       clinicalSignificance: PropTypes.string,
       consequence: PropTypes.string,
+      goldStars: PropTypes.number,
       pos: PropTypes.number.isRequired,
       variantId: PropTypes.string.isRequired,
     })

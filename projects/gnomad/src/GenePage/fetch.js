@@ -33,7 +33,9 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         }
       }
       clinvar_variants${transcriptQuery} {
+        alleleId
         clinicalSignificance
+        goldStars
         majorConsequence
         pos
         variantId

@@ -2,6 +2,7 @@ import { symbol, symbolStar } from 'd3-shape'
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { TooltipAnchor } from '@broad/ui'
 
 const layoutStackedPoints = (dataLayers, scale, spacing) => {
   const rows = []
@@ -37,11 +38,13 @@ const layoutStackedPoints = (dataLayers, scale, spacing) => {
 
 
 export const StackedVariantsPlot = ({
+  onClickVariant,
   positionOffset,
   symbolColor,
   symbolSize,
   symbolSpacing,
   symbolType,
+  tooltipComponent,
   variantLayers,
   width,
   xScale,
@@ -56,13 +59,19 @@ export const StackedVariantsPlot = ({
     <svg height={height} width={width}>
       <g>
         {points.map(point => (
-          <path
+          <TooltipAnchor
             key={point.data.variantId}
-            d={symbolPath}
-            transform={`translate(${point.x},${height - point.y})`}
-            fill={symbolColor(point.data)}
-            stroke={'none'}
-          />
+            tooltipComponent={tooltipComponent}
+            variant={point.data}
+          >
+            <path
+              d={symbolPath}
+              transform={`translate(${point.x},${height - point.y})`}
+              fill={symbolColor(point.data)}
+              stroke={'none'}
+              onClick={() => onClickVariant(point.data)}
+            />
+          </TooltipAnchor>
         ))}
       </g>
       <line
@@ -77,11 +86,13 @@ export const StackedVariantsPlot = ({
 }
 
 StackedVariantsPlot.propTypes = {
+  onClickVariant: PropTypes.func,
   positionOffset: PropTypes.func.isRequired,
   symbolColor: PropTypes.func,
   symbolSize: PropTypes.number,
   symbolSpacing: PropTypes.number,
   symbolType: PropTypes.object,
+  tooltipComponent: PropTypes.func.isRequired,
   variantLayers: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.shape({
@@ -95,6 +106,7 @@ StackedVariantsPlot.propTypes = {
 }
 
 StackedVariantsPlot.defaultProps = {
+  onClickVariant: () => {},
   symbolColor: () => '#000',
   symbolSize: 12,
   symbolSpacing: 6,
