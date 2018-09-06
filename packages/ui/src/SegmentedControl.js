@@ -26,6 +26,8 @@ const SegmentedControlContainer = styled.span`
     padding: 0.375em 0.75em;
     border: 1px solid transparent;
     cursor: pointer;
+    margin: 0; /* override Bootstrap styles from gnomad_browser */
+    font-weight: normal; /* override Bootstrap styles from gnomad_browser */
 
     &:first-of-type {
       border-bottom-left-radius: 0.5em;
