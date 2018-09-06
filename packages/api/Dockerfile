@@ -1,16 +1,10 @@
-FROM node:5.10.0
+FROM node:7.5.0
 
-MAINTAINER Matthew Solomonson
+LABEL maintainer="MacArthur Lab"
 
-ENV NODE_ENV=production PORT=9000 MONGO_URL=mongodb://localhost:27017/exac
-
-COPY . /var/www
 WORKDIR /var/www
+COPY package.json /var/www/
+RUN npm install --production
+COPY build /var/www/build
 
-RUN npm install --dev \
-    && npm run build
-
-EXPOSE 80
-
-ENTRYPOINT ["npm"]
-CMD ["run", "prod"]
+CMD ["node", "build/server.js"]
