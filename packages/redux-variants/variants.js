@@ -409,7 +409,7 @@ export const hoveredVariant = state => state.variants.hoveredVariant
 export const focusedVariant = state => state.variants.focusedVariant
 export const selectedVariantDataset = state => state.variants.selectedVariantDataset
 
-const allVariantsInCurrentDataset = createSelector(
+export const allVariantsInCurrentDataset = createSelector(
   [selectedVariantDataset, byVariantDataset],
   (selectedVariantDataset, byVariantDataset) =>
     byVariantDataset.get(selectedVariantDataset)

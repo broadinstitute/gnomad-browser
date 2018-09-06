@@ -2,7 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { singleVariantData } from '@broad/redux-variants'
+import {
+  allVariantsInCurrentDataset,
+  hoveredVariant,
+} from '@broad/redux-variants'
 
 import {
   Table,
@@ -186,6 +189,11 @@ Variant.propTypes = {
   variant: PropTypes.object.isRequired,
   currentDisease: PropTypes.string.isRequired,
 }
+
+const singleVariantData = createSelector(
+  [hoveredVariant, allVariantsInCurrentDataset],
+  (hoveredVariant, variants) => variants.get(hoveredVariant)
+)
 
 export default connect(
   state => ({
