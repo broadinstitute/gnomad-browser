@@ -4,6 +4,7 @@ export {
   default as createVariantReducer,
   hoveredVariant,
   selectedVariantDataset,
+  allVariantsInCurrentDataset,
   variantCount,
   singleVariantData,
   variantSortKey,
