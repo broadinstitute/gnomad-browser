@@ -2,11 +2,24 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import createGenePageStore from '@broad/gene-page/src/store/store'
+import { getCategoryFromConsequence } from '@broad/utilities'
 import { actions as userInterfaceActions } from '@broad/ui'
 import { variantfx } from './redux'
 import App from './routes'
 
 const appSettings = {
+  variantMatchesConsequenceCategoryFilter(variant, selectedCategories) {
+    const consequences = variant.Consequence.split('&')
+    const categories = consequences.map(consequence => {
+      let category = getCategoryFromConsequence(consequence) || 'other'
+      if (category === 'all') {
+        category = 'other'
+      }
+      return category
+    })
+
+    return categories.some(category => selectedCategories[category])
+  },
   variantSearchPredicate(variant, query) {
     return (
       variant.get('variant_id').toLowerCase().includes(query)
@@ -24,9 +37,6 @@ const appSettings = {
     startingVariant: '14-23902914-C-G',
     startingPadding: 75,
     startingVariantDataset: 'variants',
-  },
-  definitions: {
-    consequence: 'Consequence',
   },
   variantDatasets: {
     variants: {
