@@ -1,23 +1,21 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
+import thunk from 'redux-thunk'
+import styled from 'styled-components'
+
 import { createGeneReducer } from '@broad/redux-genes'
-
-
-import { TranscriptTrack } from '@broad/track-transcript'
 import PositionTableTrack from '@broad/track-position-table'
+import { TranscriptTrackConnected } from '@broad/track-transcript'
 
-import GeneViewer from '../GeneViewerReduxConnected'
+import { GeneViewer } from '..'
 
 const logger = createLogger()
 
 const Wrapper = styled.div`
-  padding-left: 50px;
-  padding-top: 50px;
-  ${'' /* border: 1px solid #000; */}
+  width: 1000px;
+  margin: 50px auto;
 `
 
 const attributeConfig = {
@@ -45,7 +43,10 @@ const attributeConfig = {
 
 const store = createStore(
   combineReducers({
-    genes: createGeneReducer({ startingGene: 'DMD' }),
+    genes: createGeneReducer({
+      startingGene: 'DMD',
+      variantDatasets: {},
+    }),
   }),
   applyMiddleware(thunk, logger)
 )
@@ -54,15 +55,8 @@ const ExampleApp = () => (
   <Provider store={store}>
     <Wrapper>
       <GeneViewer width={1000} regionAttributes={attributeConfig}>
-        <TranscriptTrack
-          title={''}
-          height={50}
-        />
-        <PositionTableTrack
-          title={''}
-          height={50}
-          leftPanelWidth={100}
-        />
+        <TranscriptTrackConnected height={12} />
+        <PositionTableTrack height={50} leftPanelWidth={100} title="" />
       </GeneViewer>
     </Wrapper>
   </Provider>

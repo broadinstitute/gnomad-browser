@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@broad/region'
+import { RegionViewer } from '@broad/region-viewer'
 
 import regionData from '@resources/2-175000717-180995530.json'
 

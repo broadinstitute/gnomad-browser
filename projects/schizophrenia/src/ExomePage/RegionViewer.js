@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
-import { RegionViewer } from '@broad/region'
+import { RegionViewer } from '@broad/region-viewer'
 
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'

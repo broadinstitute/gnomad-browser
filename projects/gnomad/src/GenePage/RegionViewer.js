@@ -28,7 +28,7 @@ import {
   coverageConfigClassic,
   coverageConfigNew,
   attributeConfig,
-} from '@broad/region'
+} from '@broad/region-viewer'
 
 const COVERAGE_TRACK_HEIGHT = 200
 const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17

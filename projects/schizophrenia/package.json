@@ -16,6 +16,7 @@
     "@broad/redux-genes": "*",
     "@broad/redux-variants": "*",
     "@broad/region": "*",
+    "@broad/region-viewer": "*",
     "@broad/table": "*",
     "@broad/track-navigator": "*",
     "@broad/track-transcript": "*",
