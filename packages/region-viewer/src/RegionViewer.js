@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import {
@@ -9,12 +9,11 @@ import {
   calculateXScale,
 } from '@broad/utilities/src/coordinates'
 
-
 const RegionViewerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 auto 10px;
   width: ${props => props.width}px;
+  margin: 0 auto 10px;
 `
 
 const exonColor = '#212121'
@@ -22,54 +21,56 @@ const paddingColor = '#BDBDBD'
 const masterExonThickness = '25px'
 const masterPaddingThickness = '5px'
 
-class RegionViewer extends Component {
+const defaultRegionAttributes = {
+  CDS: {
+    color: exonColor,
+    thickness: masterExonThickness,
+  },
+  start_pad: {
+    color: paddingColor,
+    thickness: masterPaddingThickness,
+  },
+  end_pad: {
+    color: paddingColor,
+    thickness: masterPaddingThickness,
+  },
+  intron: {
+    color: paddingColor,
+    thickness: masterPaddingThickness,
+  },
+  default: {
+    color: 'grey',
+    thickness: masterPaddingThickness,
+  },
+}
+
+export class RegionViewer extends Component {
   static propTypes = {
-    regions: PropTypes.array.isRequired,
-    regionAttributes: PropTypes.object,
-    padding: PropTypes.number.isRequired,
-    width: PropTypes.number.isRequired,
-    leftPanelWidth: PropTypes.number.isRequired,
-    rightPanelWidth: PropTypes.number.isRequired,
+    children: PropTypes.node,
     exonSubset: PropTypes.array,
     featuresToDisplay: PropTypes.array,
+    leftPanelWidth: PropTypes.number.isRequired,
+    padding: PropTypes.number.isRequired,
+    regionAttributes: PropTypes.object,
+    regions: PropTypes.array.isRequired,
+    rightPanelWidth: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
+    children: undefined,
     exonSubset: null,
-    leftPanelWidth: 100,
-    rightPanelWidth: 160,
     featuresToDisplay: ['CDS'],
-    regionAttributes: {
-      CDS: {
-        color: exonColor,
-        thickness: masterExonThickness,
-      },
-      start_pad: {
-        color: paddingColor,
-        thickness: masterPaddingThickness,
-      },
-      end_pad: {
-        color: paddingColor,
-        thickness: masterPaddingThickness,
-      },
-      intron: {
-        color: paddingColor,
-        thickness: masterPaddingThickness,
-      },
-      default: {
-        color: 'grey',
-        thickness: masterPaddingThickness,
-      },
-    },
+    leftPanelWidth: 100,
+    regionAttributes: defaultRegionAttributes,
+    rightPanelWidth: 160,
   }
 
   renderChildren(childProps) {
-    // eslint-disable-next-line
-    return React.Children.map(this.props.children, (child) => {
-      if (child) {
-        return React.cloneElement(child, childProps)
-      }
-    })
+    return React.Children.map(
+      this.props.children,
+      child => (child ? React.cloneElement(child, childProps) : null)
+    )
   }
 
   render() {
@@ -117,4 +118,3 @@ class RegionViewer extends Component {
     )
   }
 }
-export default RegionViewer

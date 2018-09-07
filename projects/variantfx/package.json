@@ -19,6 +19,7 @@
   "dependencies": {
     "@broad/gene-page": "*",
     "@broad/region": "*",
+    "@broad/region-viewer": "*",
     "@broad/track-coverage": "*",
     "@broad/track-navigator": "*",
     "@broad/track-transcript": "*",

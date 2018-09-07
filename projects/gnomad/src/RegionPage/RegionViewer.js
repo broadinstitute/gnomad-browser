@@ -10,7 +10,8 @@ import StackedBarTrack from '@broad/track-stacked-bar'
 import { GenesTrack } from '@broad/track-genes'
 
 import { screenSize } from '@broad/ui'
-import { RegionViewer, regionData, attributeConfig } from '@broad/region'
+import { regionData } from '@broad/region'
+import { RegionViewer, attributeConfig } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {

@@ -1,47 +1,46 @@
-/* eslint-disable camelcase */
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
 const masterPaddingThickness = '3px'
 
-export const coverageConfigClassic = (exome_coverage, genome_coverage) => {
-  return { datasets: [
+export const coverageConfigClassic = (exomeCoverage, genomeCoverage) => ({
+  datasets: [
     {
-      name: 'exome',
-      data: exome_coverage,
-      type: 'area',
       color: 'rgba(70, 130, 180, 1)',
+      data: exomeCoverage,
+      name: 'exome',
       opacity: 1,
+      type: 'area',
     },
     {
-      name: 'genome',
-      data: genome_coverage,
-      type: 'line',
       color: 'rgba(115, 171, 61,  1)',
+      data: genomeCoverage,
+      name: 'genome',
+      opacity: 1,
       strokeWidth: 5,
-      opacity: 1,
+      type: 'line',
     },
-  ] }
-}
+  ],
+})
 
-export const coverageConfigNew = (exome_coverage, genome_coverage) => {
-  return { datasets: [
+export const coverageConfigNew = (exomeCoverage, genomeCoverage) => ({
+  datasets: [
     {
-      name: 'exome',
-      data: exome_coverage,
-      type: 'area',
       color: 'rgba(70, 130, 180, 1)',
+      data: exomeCoverage,
+      name: 'exome',
       opacity: 0.7,
+      type: 'area',
     },
     {
-      name: 'genome',
-      data: genome_coverage,
-      type: 'area',
       color: 'rgba(115, 171, 61,  1)',
-      strokeWidth: 4,
+      data: genomeCoverage,
+      name: 'genome',
       opacity: 0.5,
+      strokeWidth: 4,
+      type: 'area',
     },
-  ] }
-}
+  ],
+})
 
 export const attributeConfig = {
   CDS: {
