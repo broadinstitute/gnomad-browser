@@ -7,24 +7,19 @@
     "lib"
   ],
   "dependencies": {
+    "@broad/redux-genes": "*",
+    "@broad/redux-variants": "*",
+    "@broad/region": "*",
+    "@broad/ui": "*",
     "immutable": "^3.8.1",
+    "keymirror": "^0.1.1",
+    "prop-types": "^15.5.10",
     "react-highlight-words": "^0.8.0",
+    "react-redux": "^5.0.6",
     "react-virtualized": "^9.8.0"
   },
-  "devDependencies": {
-    "@broad/utilities": "*",
-    "@broad/region": "*",
-    "@broad/track-transcript": "*",
-    "@broad/track-variant": "*",
-    "@broad/plot": "*",
-    "@broad/track-transcript": "*",
-    "@broad/track-position-table": "*",
-    "graphql-fetch": "^1.0.1"
-  },
   "peerDependencies": {
-    "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "ramda": "^0.24.1",
     "styled-components": "^2.1.2"
   }
 }
