@@ -1,29 +1,22 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable no-shadow */
 /* eslint-disable comma-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { actions as tableActions, currentTableIndex } from '@broad/table'
-import { screenSize } from '@broad/ui'
-
+import { currentChromosome as geneChromosome } from '@broad/redux-genes'
 import {
   actions as variantActions,
   variantSearchQuery,
   finalFilteredVariants,
 } from '@broad/redux-variants'
-
-import { currentChromosome as geneChromosome } from '@broad/redux-genes'
 import { currentChromosome as regionChromosome } from '@broad/region'
+import { screenSize } from '@broad/ui'
 
-import { Table } from './index'
-
+import Table from './Table'
+import { actions as tableActions, currentTableIndex } from './tableRedux'
 
 const NoVariants = styled.div`
   display: flex;

@@ -2,12 +2,12 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { InfiniteLoader, List, AutoSizer } from 'react-virtualized'
-import Highlighter from 'react-highlight-words'
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
+import React from 'react'
+import Highlighter from 'react-highlight-words'
+import { InfiniteLoader, List } from 'react-virtualized'
+import styled from 'styled-components'
 
 const abstractCellStyle = {
   paddingLeft: 10,
