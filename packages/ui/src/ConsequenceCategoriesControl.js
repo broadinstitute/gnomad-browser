@@ -80,6 +80,16 @@ export class ConsequenceCategoriesControl extends Component {
   }
 
   onKeyPress = e => {
+    // Ignore keypresses in input elements
+    if (
+      e.target.tagName === 'INPUT' ||
+      e.target.tagName === 'SELECT' ||
+      e.target.tagName === 'TEXTAREA' ||
+      e.target.isContentEditable
+    ) {
+      return
+    }
+
     const key = e.key.toLowerCase()
     if (key in KEYBOARD_SHORTCUTS) {
       const toggledCategory = KEYBOARD_SHORTCUTS[key]
