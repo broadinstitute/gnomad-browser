@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { attributeConfig, RegionViewer } from '@broad/region'
+import { attributeConfig, RegionViewer } from '@broad/region-viewer'
 import exampleData from '@resources/region-viewer-full-PCSK9-v1.json'
 
 import CoverageTrack from '../index'

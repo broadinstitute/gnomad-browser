@@ -5,7 +5,7 @@ import R from 'ramda'
 import Slider from 'material-ui/Slider'
 
 import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
-import RegionViewer from '@broad/region'
+import { RegionViewer } from '@broad/region-viewer'
 import TranscriptTrack from '@broad/track-transcript'
 import PositionTableTrack from '@broad/track-position-table'
 

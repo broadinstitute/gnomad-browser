@@ -1,0 +1,20 @@
+{
+  "name": "@broad/region-viewer",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/index.js",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@broad/redux-genes": "*",
+    "@broad/utilities": "*",
+    "graphql-fetch": "^1.0.1",
+    "prop-types": "^15.5.10",
+    "react-redux": "^5.0.6"
+  },
+  "peerDependencies": {
+    "react": "^15.5.4",
+    "styled-components": "^2.1.2"
+  }
+}

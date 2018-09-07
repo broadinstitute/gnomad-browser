@@ -13,7 +13,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 /**
  * Components
  */
-import RegionViewerDemo from '@broad/region/src/example'
+import RegionViewerDemo from '@broad/region-viewer/src/example'
 import CoverageTrackDemo from '@broad/track-coverage/src/example'
 import TranscriptTrackDemo from '@broad/track-transcript/src/example'
 import SashimiTrackDemo from '@broad/track-sashimi/src/example'

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
 import { createGeneReducer, actions } from '@broad/redux-genes'
-import { GeneViewer } from '@broad/region'
+import { GeneViewer } from '@broad/region-viewer'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 
 const Wrapper = styled.div`
