@@ -16,6 +16,7 @@ import {
   Summary,
   GeneSymbol,
   Search,
+  TableSection,
 } from '@broad/ui'
 
 
@@ -141,7 +142,6 @@ class SchizophreniaGeneResults extends PureComponent {
       return <Loading><h1>Loading</h1></Loading>
     }
 
-    const tableWidth = (screenSize.width * 0.8) + 40
     const data = new List(schzGeneResults.map(e => new GeneResult(e)))
     const searchResults = data.filter((e) => {
       if (e.gene_name) {
@@ -161,19 +161,20 @@ class SchizophreniaGeneResults extends PureComponent {
           />
         </ResultsSearchWrapper>
         {sortedData.isEmpty() ? 'No results found' : (
-          <Table
-            height={800}
-            width={tableWidth}
-            tableConfig={tableConfig(this.setSortState, screenSize.width)}
-            tableData={sortedData}
-            remoteRowCount={sortedData.size}
-            loadMoreRows={() => {}}
-            overscan={5}
-            onRowClick={this.geneOnClick}
-            onRowHover={() => {}}
-            onScroll={() => {}}
-            searchText={this.state.searchText}
-          />
+          <TableSection>
+            <Table
+              height={800}
+              tableConfig={tableConfig(this.setSortState, screenSize.width)}
+              tableData={sortedData}
+              remoteRowCount={sortedData.size}
+              loadMoreRows={() => {}}
+              overscan={5}
+              onRowClick={this.geneOnClick}
+              onRowHover={() => {}}
+              onScroll={() => {}}
+              searchText={this.state.searchText}
+            />
+          </TableSection>
         )}
       </GenePage>
     )

@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 
 import { currentChromosome as geneChromosome } from '@broad/redux-genes'
@@ -13,7 +14,6 @@ import {
   finalFilteredVariants,
 } from '@broad/redux-variants'
 import { currentChromosome as regionChromosome } from '@broad/region'
-import { screenSize } from '@broad/ui'
 
 import Table from './Table'
 import { actions as tableActions, currentTableIndex } from './tableRedux'
@@ -22,7 +22,6 @@ const NoVariants = styled.div`
   display: flex;
   align-items: center;
   height: ${props => props.height}px;
-  width: ${props => props.width}px;
   justify-content: center;
   font-weight: bold;
   font-size: 20px;
@@ -41,25 +40,20 @@ const VariantTable = ({
   tablePosition,
   searchQuery,
   title,
-  height,
   tableConfig,
-  screenSize,
+  size,
 }) => {
-  const scrollBarWidth = 40
-  const tableWidth = (screenSize.width * 0.8) + scrollBarWidth
-
   if (variants.size === 0) {
-    return <NoVariants height={500} width={tableWidth}>No variants found</NoVariants>
+    return <NoVariants height={500}>No variants found</NoVariants>
   }
 
-  const tConfig = tableConfig(setVariantSort, tableWidth, currentChromosome)
+  const tConfig = tableConfig(setVariantSort, size.width, currentChromosome)
 
   return (
     <div>
       <Table
         title={title}
         height={500}
-        width={tableWidth}
         tableConfig={tConfig}
         tableData={variants}
         remoteRowCount={variants.size}
@@ -83,21 +77,21 @@ VariantTable.propTypes = {
   tablePosition: PropTypes.number.isRequired,
   searchQuery: PropTypes.string.isRequired,
   title: PropTypes.string,
-  height: PropTypes.number,
   tableConfig: PropTypes.func.isRequired,
-  screenSize: PropTypes.object.isRequired,
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+  }),
 }
 
 VariantTable.defaultProps = {
+  size: undefined,
   title: '',
-  height: 400,
 }
 const mapStateToProps = (state) => {
   return {
     variants: finalFilteredVariants(state),
     tablePosition: currentTableIndex(state),
     searchQuery: variantSearchQuery(state),
-    screenSize: screenSize(state),
     currentChromosome: geneChromosome(state) || regionChromosome(state),
   }
 }
@@ -120,4 +114,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VariantTable)
+export default withSize()(connect(mapStateToProps, mapDispatchToProps)(VariantTable))
