@@ -47,13 +47,8 @@ export const Summary = styled.div`
 `
 
 export const TableSection = styled.div`
-  ${'' /* border: 1px solid green; */}
-  margin-bottom: 25px;
-  @media (max-width: 900px) {
-    margin-left: 5px;
-    align-items: center;
-    margin-top: 10px;
-  }
+  width: calc(80% + 40px);
+  margin: 0 auto 25px;
 `
 
 export const SettingsContainer = styled.div`

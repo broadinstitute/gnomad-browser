@@ -2,10 +2,7 @@ import React from 'react'
 
 import { GenePageHoc } from '@broad/redux-genes'
 import { VariantTable } from '@broad/table'
-import {
-  GenePage,
-  Summary,
-} from '@broad/ui'
+import { GenePage, Summary, TableSection } from '@broad/ui'
 
 import VariantDetails from '../VariantDetails'
 import GeneInfo from './GeneInfo'
@@ -14,19 +11,18 @@ import RegionViewer from './RegionViewer'
 import tableConfig from './tableConfig'
 import { fetchSchz } from './fetch'
 
-
-const MainPage = () => {
-  return (
-    <GenePage>
-      <Summary>
-        <GeneInfo />
-      </Summary>
-      <RegionViewer />
+const MainPage = () => (
+  <GenePage>
+    <Summary>
+      <GeneInfo />
+    </Summary>
+    <RegionViewer />
+    <TableSection>
       <GeneSettings />
       <VariantTable tableConfig={tableConfig} />
-      <VariantDetails />
-    </GenePage>
-  )
-}
+    </TableSection>
+    <VariantDetails />
+  </GenePage>
+)
 
 export default GenePageHoc(MainPage, fetchSchz)

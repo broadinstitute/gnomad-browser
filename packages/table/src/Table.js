@@ -6,6 +6,7 @@ import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Highlighter from 'react-highlight-words'
+import { withSize } from 'react-sizeme'
 import { InfiniteLoader, List } from 'react-virtualized'
 import styled from 'styled-components'
 
@@ -582,15 +583,6 @@ const indexHeader = (
   </div>
 )
 
-const getDefaultWidth = (tableConfig) => {
-  const scrollBarWidth = 40
-  const paddingWidth = tableConfig.fields.length * 40
-  const cellContentWidth = tableConfig.fields.reduce((acc, field) =>
-    acc + field.width, 0)
-  const calculatedWidth = scrollBarWidth + paddingWidth + cellContentWidth
-  return calculatedWidth
-}
-
 const HeadersContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -623,7 +615,7 @@ const Table = ({
   onRowHover,
   onScroll,
   searchText,
-  width,
+  size,
 }) => {
   const isRowLoaded = ({ index }) => Boolean(getRowData(tableData, index))
 
@@ -636,7 +628,6 @@ const Table = ({
     onRowHover
   )
 
-  const defaultWidth = getDefaultWidth(tableConfig)
   return (
     <div>
       <TableHeaders title={title} tableConfig={tableConfig} showIndex={showIndex} />
@@ -654,7 +645,7 @@ const Table = ({
             rowHeight={25}
             rowRenderer={rowRenderer}
             overscanRowCount={overscan}
-            width={width}
+            width={size.width}
             scrollToIndex={scrollToRow}
             onScroll={onScroll}
           />
@@ -665,7 +656,6 @@ const Table = ({
 }
 Table.propTypes = {
   height: PropTypes.number.isRequired,
-  width: PropTypes.number, // eslint-disable-line
   tableConfig: PropTypes.object.isRequired,
   tableData: PropTypes.any.isRequired,
   remoteRowCount: PropTypes.number.isRequired,
@@ -676,9 +666,11 @@ Table.propTypes = {
   onRowClick: PropTypes.func,
   // onRowHover: PropTypes.func,
   searchText: PropTypes.string,
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+  }),
 }
 Table.defaultProps = {
-  width: null,
   loadMoreRows: () => { },
   overscan: 10,
   showIndex: false,
@@ -686,6 +678,7 @@ Table.defaultProps = {
   setHoveredVariant: () => { },
   onRowClick: () => {},
   searchText: '',
+  size: undefined,
 }
 
-export default Table
+export default withSize()(Table)
