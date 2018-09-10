@@ -49,6 +49,12 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
     MQ
     MQ0
     QD
+    EGY_DCM_AFR_AC
+    EGY_DCM_AFR_AN
+    EGY_HCM_AFR_AC
+    EGY_HCM_AFR_AN
+    EGY_HVO_AFR_AC
+    EGY_HVO_AFR_AN
     EGY_DCM_HH
     EGY_HCM_HH
     EGY_HVO_HH
@@ -128,6 +134,7 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
     OMG_DCM_UNK_AC
     OMG_DCM_UNK_AN
     GNO_HVO_UNK_AC
+    GNO_HVO_UNK_AN
     GNO_HVO_UNK_AF
     CTL_AC
     HCM_AC
