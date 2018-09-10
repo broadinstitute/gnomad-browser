@@ -8,8 +8,8 @@ export const POPULATIONS = {
   EAS: 'East Asian',
   FIN: 'European (Finnish)',
   NFE: 'European',
-  LAT: 'Latvian',
-  SAS: 'South asian',
+  LAT: 'Latino/Latin American',
+  SAS: 'South Asian',
   OTH: 'Other',
   UNK: 'Unknown',
 }
