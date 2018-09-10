@@ -164,6 +164,13 @@ const appSettings = {
       OMG_DCM_UNK_AN: null,
       GNO_HVO_UNK_AC: null,
       GNO_HVO_UNK_AF: null,
+      CTL_AC: null,
+      HCM_AC: null,
+      DCM_AC: null,
+      HCM_AN: null,
+      DCM_AN: null,
+      CTL_AN: null,
+      allele_freq: null,
     },
   }
 }

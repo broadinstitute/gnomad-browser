@@ -28,6 +28,10 @@ import {
   finalFilteredVariants,
 } from '@broad/redux-variants'
 
+import {
+  currentGeneDiseaseData,
+} from '../redux'
+
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
 const masterPaddingThickness = '3px'
@@ -60,6 +64,7 @@ const GeneRegion = ({
   visibleVariants,
   exonPadding,
   screenSize,
+  currentGeneDiseaseData,
 }) => {
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -67,6 +72,15 @@ const GeneRegion = ({
   const geneJS = gene.toJS()
   const canonicalExons = geneJS.transcript.exons
   const variantsReversed = visibleVariants.reverse()
+
+  const disease = currentGeneDiseaseData.get('Disease')
+  const cases = variantsReversed
+    .filter(v => v[`${disease}_AC`] > 0)
+    .map(v => v.set('allele_freq', v[`${disease}_AC`] / v[`${disease}_AN`]))
+
+  const controls = variantsReversed
+    .filter(v => v.CTL_AC > 0)
+    .map(v => v.set('allele_freq', v.CTL_AC / v.CTL_AN))
 
   return (
     <div>
@@ -83,7 +97,13 @@ const GeneRegion = ({
         />
         <VariantPositionTrack
           variantColor={'#757575'}
-          variants={variantsReversed.toJS()}
+          variants={cases.toJS()}
+          title={`Cases (${cases.size})`}
+        />
+        <VariantPositionTrack
+          variantColor={'#757575'}
+          variants={controls.toJS()}
+          title={`Controls (${controls.size})`}
         />
         <NavigatorTrackConnected noVariants />
       </RegionViewer>
@@ -95,6 +115,7 @@ GeneRegion.propTypes = {
   visibleVariants: PropTypes.any.isRequired,
   exonPadding: PropTypes.number.isRequired,
   screenSize: PropTypes.object.isRequired,
+  currentGeneDiseaseData: PropTypes.any.isRequired,
 }
 export default connect(
   state => ({
@@ -102,5 +123,6 @@ export default connect(
     exonPadding: exonPadding(state),
     visibleVariants: finalFilteredVariants(state),
     screenSize: screenSize(state),
+    currentGeneDiseaseData: currentGeneDiseaseData(state),
   })
 )(GeneRegion)
