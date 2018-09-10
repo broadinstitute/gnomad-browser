@@ -62,6 +62,8 @@ export { Badge } from './Badge'
 
 export { Checkbox } from './Checkbox'
 
+export { Combobox } from './Combobox'
+
 export { ExternalLink, Link } from './Link'
 
 export { List, ListItem, OrderedList } from './List'
