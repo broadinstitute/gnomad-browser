@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { currentGene, actions as activeActions } from '@broad/redux-genes'
+
+import 'datalist-polyfill'
 
 import {
   DataSelectionContainer,
@@ -15,18 +17,32 @@ import {
   actions as variantFxActions,
 } from './redux'
 
+const GENES = [
+  "ACTC1",
+  "CSRP3",
+  "LMNA",
+  "MYBPC3",
+  "MYH7",
+  "MYL2",
+  "MYL3",
+  "PLN",
+  "TNNC1",
+  "TNNI3",
+  "TNNT2",
+  "TPM1",
+  "TTN",
+]
+
 const TopBarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
   height: 40px;
-  padding-top: 10px;
+  padding-top: 20px;
   margin-bottom: 20px;
   border-bottom: 1px solid #000;
   background-color: #B71C1C;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 `
 
 const Logo = styled.div`
@@ -42,7 +58,41 @@ const Search = styled.div`
   font-size: 15px;
 `
 
-const SearchInput = styled.input`
+const SearchIconContainer = styled.span`
+  position: absolute;
+  left: 7px;
+  font-size: 15px;
+`
+
+function Input({
+  history,
+  currentGene,
+  setCurrentGene,
+}) {
+  function onChoose(e) {
+    const geneName = e.target.value.toUpperCase()
+    if (currentGene !== geneName && GENES.includes(geneName)) {
+      e.target.blur()
+      if (currentGene) {
+        setCurrentGene(geneName)
+      }
+      history.push(`/gene/${geneName}`)
+    }
+  }
+
+  return (
+    <input
+      onChange={onChoose}
+      onSelect={onChoose}
+      type="text"
+      name="search"
+      placeholder="Search gene"
+      list="genes"
+    />
+  )
+}
+
+const SearchInput = styled(Input)`
   height: 20px;
   width: 275px;
   background-color: white;
@@ -66,10 +116,11 @@ const MenuItem = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: white;
 `
 
 const TopBar = ({
+  history,
+  currentGene,
   setCurrentGene,
   uniqueGeneDiseaseNames,
   currentDisease,
@@ -79,7 +130,7 @@ const TopBar = ({
     <TopBarContainer>
       <StyledLink to={'/'}>
         <Logo>
-        VariantFX
+          VariantFX
         </Logo>
       </StyledLink>
       <DataSelectionContainer>
@@ -92,31 +143,22 @@ const TopBar = ({
         </select>
       </DataSelectionContainer>
       <Search>
-        {/* <SearchIconContainer>
-        </SearchIconContainer> */}
-        <form onSubmit={(event) => {
-          event.preventDefault()
-          setCurrentGene(event.target.elements[0].value)
-        }}
-        >
+        <form>
           <SearchInput
-            type="text"
-            name="search"
-            placeholder="Search by gene, transcript, region, or variant"
-            list="genes"
+            history={history}
+            currentGene={currentGene}
+            setCurrentGene={setCurrentGene}
           />
           <datalist id="genes">
-            {uniqueGeneDiseaseNames.map(gene => (
-              <option key={`${gene}`} value={gene} />
-            ))}
+            {GENES.map(gene => <option value={gene} key={gene}/>)}
           </datalist>
         </form>
       </Search>
       <Menu>
-        <MenuItem><StyledLink to={'/about'}> About </StyledLink></MenuItem>
-        <MenuItem><StyledLink to={'/terms'}> Terms </StyledLink></MenuItem>
-        <MenuItem><StyledLink to={'/contact'}> Contact </StyledLink></MenuItem>
-        <MenuItem><StyledLink to={'/faq'}> FAQ </StyledLink></MenuItem>
+        <StyledLink to={'/about'}><MenuItem>About</MenuItem></StyledLink>
+        <StyledLink to={'/terms'}><MenuItem>Terms</MenuItem></StyledLink>
+        <StyledLink to={'/contact'}><MenuItem>Contact</MenuItem></StyledLink>
+        <StyledLink to={'/faq'}><MenuItem>FAQ</MenuItem></StyledLink>
       </Menu>
     </TopBarContainer>
   )
@@ -143,4 +185,4 @@ TopBar.propTypes = {
   currentDisease: PropTypes.string.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopBar))
