@@ -162,6 +162,8 @@ const appSettings = {
       OMG_HCM_UNK_AN: null,
       OMG_DCM_UNK_AC: null,
       OMG_DCM_UNK_AN: null,
+      GNO_HVO_UNK_AC: null,
+      GNO_HVO_UNK_AF: null,
     },
   }
 }
