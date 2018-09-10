@@ -26,9 +26,11 @@ import {
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
+import VariantPage from './Variant'
 import tableConfig from './tableConfig'
 import fetchFunction from './fetch'
 
+const VariantTableWithRouter = withRouter(VariantTable)
 
 const SectionTitleIndent = SectionTitle.extend`
   margin-left: 70px;
@@ -73,7 +75,17 @@ const Page = ({
         <Route
           exact
           path="/gene/:gene"
-          render={() => <VariantTable tableConfig={tableConfig} />}
+          render={() => {
+            return (
+              <div>
+                <VariantTableWithRouter
+                  tableConfig={tableConfig}
+                  height={600}
+                />
+                <VariantPage />
+              </div>
+            )
+          }}
         />
       </TableSection>
     </GenePage>
