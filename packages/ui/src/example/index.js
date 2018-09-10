@@ -14,6 +14,7 @@ import {
   TextButton,
 } from '..'
 import CheckboxExample from './CheckboxExample'
+import ComboboxExample from './ComboboxExample'
 import ConsequenceCategoriesControlExample from './ConsequenceCategoriesControlExample'
 import InfoModalExample from './InfoModalExample'
 import SegmentedControlExample from './SegmentedControlExample'
@@ -50,6 +51,11 @@ const UiExample = () => (
     <Section>
       <SectionHeading>Checkbox</SectionHeading>
       <CheckboxExample />
+    </Section>
+
+    <Section>
+      <SectionHeading>Combobox</SectionHeading>
+      <ComboboxExample />
     </Section>
 
     <Section>
