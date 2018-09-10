@@ -9,6 +9,7 @@
   "dependencies": {
     "@broad/help": "*",
     "@broad/ui": "*",
+    "polished": "^1.9.3",
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
