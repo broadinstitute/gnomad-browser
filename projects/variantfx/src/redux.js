@@ -2,8 +2,6 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import GENE_DISEASES from '@resources/171030-gene-disease-data.json'  // eslint-disable-line
-
 import { currentGene } from '@broad/redux-genes'
 
 export const types = keymirror({
@@ -17,15 +15,20 @@ export const actions = {
 const actionHandlers = {
   [types.SET_CURRENT_DISEASE] (state, { disease }) {
     return state.set('currentDisease', disease)
+  },
+  RECEIVE_GENE_DISEASES(state, {genediseases}) {
+    return state
+      .set('geneDiseases', Immutable.Map(genediseases.map(gd => [`${gd.Gene}-${gd.Disease}`, Immutable.Map(gd)])))
+      .set('uniqueGeneDiseaseNames', Immutable.Set(genediseases.map(gd => gd.Gene)))
+      .set('uniqueGeneDiseaseDiseases', Immutable.Set(genediseases.map(gd => gd.Disease)))
   }
 }
 
 const State = Immutable.Record({
-  geneDiseases: Immutable.Map(GENE_DISEASES.data.genediseases.map(gd =>
-    [`${gd.Gene}-${gd.Disease}`, Immutable.Map(gd)])),
+  geneDiseases: Immutable.Map(),
   currentDisease: 'HCM',
-  uniqueGeneDiseaseNames: Immutable.Set(GENE_DISEASES.data.genediseases.map(gd => gd.Gene)),
-  uniqueGeneDiseaseDiseases: Immutable.Set(GENE_DISEASES.data.genediseases.map(gd => gd.Disease)),
+  uniqueGeneDiseaseNames: Immutable.Set(),
+  uniqueGeneDiseaseDiseases: Immutable.Set(),
 })
 
 export function variantfx (state = new State(), action: Object): State {
