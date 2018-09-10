@@ -6,11 +6,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { createSelector } from 'reselect'
 
 import { geneData } from '@broad/redux-genes'
 
 import {
-  variantCount,
+  allVariantsInCurrentDataset,
 } from '@broad/redux-variants'
 
 import {
@@ -262,6 +263,10 @@ GeneInfo.propTypes = {
   currentGeneDiseaseData: PropTypes.any.isRequired,
   variantCount: PropTypes.number.isRequired,
 }
+const variantCount = createSelector(
+  [currentGeneDiseaseData, allVariantsInCurrentDataset],
+  (geneDisease, variants) => variants.filter(v => v[`${geneDisease.get('Disease')}_AC`] > 0 || v.CTL_AC > 0).size
+)
 export default connect(
   state => ({
     gene: geneData(state),
