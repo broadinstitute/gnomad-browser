@@ -34,7 +34,7 @@ const appSettings = {
   },
   projectDefaults: {
     startingGene: '',
-    startingVariant: '14-23902914-C-G',
+    startingVariant: '',
     startingPadding: 75,
     startingVariantDataset: 'variants',
   },
