@@ -63,19 +63,27 @@ function regionColor(region) {
   return region.chisq_diff_null < 10.8 ? transparentize(0.8, color) : color
 }
 
+const renderNumber = number =>
+  number === undefined || number === null ? '-' : number.toPrecision(4)
+
 const WithRegionTooltip = withTooltip(({ region }) => (
   <RegionAttributeList>
     <div>
       <dt>O/E missense:</dt>
-      <dd>{region.obs_exp && region.obs_exp.toFixed(4)}</dd>
+      <dd>{renderNumber(region.obs_exp)}</dd>
     </div>
     <div>
-      <dt>&chi;<sup>2</sup>:</dt>
-      <dd>{region.chisq_diff_null && region.chisq_diff_null.toFixed(4)}</dd>
+      <dt>
+        &chi;
+        <sup>2</sup>:
+      </dt>
+      <dd>
+        {renderNumber(region.chisq_diff_null)}
+        {region.chisq_diff_null !== null && region.chisq_diff_null < 10.8 && ' (not significant)'}
+      </dd>
     </div>
   </RegionAttributeList>
 ))
-
 
 export default function RegionalConstraintTrack({
   height,
