@@ -90,7 +90,7 @@ const ClinVarVariantAttributeList = styled.dl`
 const ClinVarVariantAttribute = ({ label, value }) => (
   <div>
     <dt>{label}:</dt>
-    <dd>{value || '-'}</dd>
+    <dd>{value === undefined || value === null ? '-' : value}</dd>
   </div>
 )
 
