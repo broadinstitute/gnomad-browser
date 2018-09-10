@@ -20,6 +20,7 @@ export const COHORTS = {
   SGP: 'NHCS, Singapore',
   LMM: 'LMM, USA',
   OMG: 'Oxford, UK',
+  GNO: 'gnomAD',
 }
 
 export const STATS = {
