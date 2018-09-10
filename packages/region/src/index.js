@@ -3,9 +3,6 @@ export {
   actions,
   default as createRegionReducer,
   currentRegion,
-  byRegionName,
-  allRegionNames,
-  isFetching,
   regionData,
   currentChromosome,
 } from './regionRedux'
