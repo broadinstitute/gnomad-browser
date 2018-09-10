@@ -90,7 +90,6 @@ export function groupFieldsByDisease (variant) {
             allele_num: disease_counts.allele_num + cohorts[cohort].cohort_totals.allele_num,
           }
         }, { allele_count: 0, allele_num: 0 })
-        console.log(cohorts)
         return {
           disease_totals,
           ages,
@@ -136,7 +135,7 @@ export function processCardioVariant(rawVariant) {
     ExAC_MAF,
     PUBMED,
     ...rest
-  } = rawVariant
+  } = rawVariant.toJS()
   return {
     variant_id,
     chrom,

@@ -59,12 +59,21 @@ const VariantAttribute = styled.div`
   margin-bottom: 2px;
 `
 
+const TableRowTotal = TableRow.extend`
+  border-top: 1px solid #000;
+`
+
+const VariantTableTitleColumn = TableTitleColumn.extend`
+  width: 120px;
+`
+
+const VariantTableCell = TableCell.extend`
+  width: 60px;
+`
+
 const Variant = ({ variant, currentDisease }) => {
-  if (!variant) {
-    return <div />
-  }
-  const processedVariant = processCardioVariant(variant)
-  console.log(processedVariant.diseases[currentDisease])
+  const cohorts = Object.keys(COHORTS).reduce((a, e) => ({[e]: {populations: POPULATIONS}, ...a}), {})
+  const processedVariant = variant ? processCardioVariant(variant) : {diseases: {[currentDisease]: {cohorts}, HVO: {cohorts}}}
   return (
     <VariantContainer>
       <VariantTitle>{processedVariant.variant_id}</VariantTitle>
@@ -91,12 +100,12 @@ const Variant = ({ variant, currentDisease }) => {
               {' '}
             </VerticalLabelText>
           </TableVerticalLabel>
-          <TableVerticalLabel height={155}>
+          <TableVerticalLabel height={125}>
             <VerticalLabelText>
               HCM cases
             </VerticalLabelText>
           </TableVerticalLabel>
-          <TableVerticalLabel height={35}>
+          <TableVerticalLabel height={85}>
             <VerticalLabelText>
               Controls
             </VerticalLabelText>
@@ -104,14 +113,14 @@ const Variant = ({ variant, currentDisease }) => {
         </VerticalTextLabels>
         <TableRows>
           <TableHeader>
-            <TableTitleColumn>Cohort</TableTitleColumn>
+            <VariantTableTitleColumn>Cohort</VariantTableTitleColumn>
             {Object.keys(POPULATIONS).map(pop => (
-              <TableCell>{POPULATIONS[pop]}</TableCell>
+              <VariantTableCell key={pop}>{POPULATIONS[pop]}</VariantTableCell>
             ))}
           </TableHeader>
-          {Object.keys(COHORTS).map(cohort => (
-            <TableRow>
-              <TableTitleColumn><strong>{COHORTS[cohort]}</strong></TableTitleColumn>
+          {['RBH', 'EGY', 'SGP', 'LMM', 'OMG'].map(cohort => (
+            <TableRow key={cohort} style={{borderBottomColor: cohort === 'OMG' ? 'black': 'lightgrey'}}>
+              <VariantTableTitleColumn><strong>{COHORTS[cohort]}</strong></VariantTableTitleColumn>
               {Object.keys(POPULATIONS).map((pop) => {
                 const popCounts = processedVariant
                   .diseases[currentDisease]
@@ -120,73 +129,52 @@ const Variant = ({ variant, currentDisease }) => {
                 if (Object.keys(popCounts).length !== 0) {
                   if (popCounts.pop_freq !== undefined) {
                     return (
-                      <TableCell>
+                      <VariantTableCell key={cohort + '-' + pop}>
                         {`${popCounts.pop_ac} (${popCounts.pop_freq.toPrecision(3)})`}
-                      </TableCell>
+                      </VariantTableCell>
                     )
                   }
                 }
                 return (
-                  <TableCell>
+                  <VariantTableCell key={cohort + '-' + pop}>
                     ...
-                  </TableCell>
+                  </VariantTableCell>
                 )
               })}
             </TableRow>
           ))}
-          <TableRow>
-            <TableTitleColumn><strong>HVO (Healthy)</strong></TableTitleColumn>
-            {Object.keys(POPULATIONS).map((pop) => {
-              const popCounts = processedVariant
-                .diseases.HVO
-                .cohorts.RBH
-                .populations[pop]
-              if (Object.keys(popCounts).length !== 0) {
-                if (popCounts.pop_freq !== undefined) {
-                  return (
-                    <TableCell>
-                      {`${popCounts.pop_ac} (${popCounts.pop_freq.toPrecision(3)})`}
-                    </TableCell>
-                  )
+          {['RBH', 'EGY', 'SGP', 'GNO'].map(cohort => (//TODO
+            <TableRow key={cohort}>
+              <VariantTableTitleColumn><strong>{COHORTS[cohort]}</strong></VariantTableTitleColumn>
+              {Object.keys(POPULATIONS).map((pop) => {
+                const popCounts = processedVariant
+                  .diseases['HVO']
+                  .cohorts[cohort]
+                  .populations[pop]
+                if (Object.keys(popCounts).length !== 0) {
+                  if (popCounts.pop_freq !== undefined) {
+                    return (
+                      <VariantTableCell key={cohort + '-' + pop}>
+                        {`${popCounts.pop_ac} (${popCounts.pop_freq.toPrecision(3)})`}
+                      </VariantTableCell>
+                    )
+                  }
                 }
-              }
-              return (
-                <TableCell>
-                  ...
-                </TableCell>
-              )
-            })}
-          </TableRow>
-          {/* <TableRow>
-            <TableTitleColumn><strong>Gnomad</strong></TableTitleColumn>
-            {Object.keys(POPULATIONS).map((pop) => {
-              const popCounts = processedVariant
-                .diseases['HVO']
-                .cohorts['RBH']
-                .populations[pop]
-              if (Object.keys(popCounts).length !== 0) {
-                if (popCounts.pop_freq !== undefined) {
-                  return (
-                    <TableCell>
-                      {`${popCounts.pop_ac} (${popCounts.pop_freq.toPrecision(3)})`}
-                    </TableCell>
-                  )
-                }
-              }
-              return (
-                <TableCell>
-                  ...
-                </TableCell>
-              )
-            })}
-          </TableRow> */}
+                return (
+                  <VariantTableCell key={cohort + '-' + pop}>
+                    …
+                  </VariantTableCell>
+                )
+              })}
+            </TableRow>
+          ))}
         </TableRows>
       </Table>
     </VariantContainer>
   )
 }
 Variant.propTypes = {
-  variant: PropTypes.object.isRequired,
+  variant: PropTypes.object,
   currentDisease: PropTypes.string.isRequired,
 }
 
