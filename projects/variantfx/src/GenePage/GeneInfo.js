@@ -154,18 +154,18 @@ const GeneInfo = ({
               <TableHeader>
                 <TableCell width={'100px'} />
                 {['OR', 'EF', 'CE'].map(calculation =>
-                  (<TableCell key={`header-${calculation}`} width={'70px'}>{translations[calculation]}</TableCell>))}
+                  (<TableCell key={`header-${calculation}`} width={'130px'}>{translations[calculation]}</TableCell>))}
               </TableHeader>
               {['PTV', 'MIS', 'PAL'].map(category => (
                 <TableRow key={`burden-${category}`}>
                   <TableCell width={'100px'}>{translations[category]}</TableCell>
                   {['OR', 'EF', 'CE'].map((calculation) => {
                     const calculationValue = currentGeneDiseaseData.get(`${category}_${calculation}`)
-                    return (
-                      <TableCell key={`burden-${category}-${calculation}`} width={'70px'}>
-                        {calculationValue ? calculationValue.toPrecision(3) : 'N/A'}
+                    return calculationValue ?
+                      <TableCell key={`burden-${category}-${calculation}`} width={'130px'}>
+                        {calculationValue.toPrecision(3)}{calculation === 'CE' || ' (' + currentGeneDiseaseData.get(`${category}_${calculation}_lb`).toPrecision(3) + ' - ' + currentGeneDiseaseData.get(`${category}_${calculation}_ub`).toPrecision(3) + ')'}
                       </TableCell>
-                    )
+                      : <TableCell width={'130px'}>{'N/A'}</TableCell>
                   })}
                 </TableRow>
               ))}
