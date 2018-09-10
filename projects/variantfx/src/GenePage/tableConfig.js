@@ -47,5 +47,19 @@ export default onHeaderClick => ({
       onHeaderClick,
       width: 250
     },
+    {
+      dataKey: 'GNO_HVO_UNK_AC',
+      title: 'gnomAD AC',
+      dataType: 'integer',
+      onHeaderClick,
+      width: 100
+    },
+    {
+      dataKey: 'GNO_HVO_UNK_AF',
+      title: 'gnomAD AF',
+      dataType: 'float',
+      onHeaderClick,
+      width: 100
+    },
   ],
 })
