@@ -1,3 +1,4 @@
+import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -45,22 +46,22 @@ const RegionAttributeList = styled.dl`
   }
 `
 
-
 function regionColor(region) {
-  if (region.obs_exp > 0.6 || region.chisq_diff_null < 10.8) {
-    return '#e2e2e2'
+  let color
+  if (region.obs_exp > 0.6) {
+    color = '#e2e2e2'
   }
-
   // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
   if (region.obs_exp > 0.4) {
-    return '#ffeda0'
+    color = '#ffeda0'
   }
   if (region.obs_exp > 0.2) {
-    return '#feb24c'
+    color = '#feb24c'
   }
-  return '#f03b20'
-}
+  color = '#f03b20'
 
+  return region.chisq_diff_null < 10.8 ? transparentize(0.8, color) : color
+}
 
 const WithRegionTooltip = withTooltip(({ region }) => (
   <RegionAttributeList>
