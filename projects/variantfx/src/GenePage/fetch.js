@@ -129,6 +129,12 @@ const fetchVariantData = (geneName, url = VARIANT_FX_API_URL) => {
     OMG_DCM_UNK_AN
     GNO_HVO_UNK_AC
     GNO_HVO_UNK_AF
+    CTL_AC
+    HCM_AC
+    DCM_AC
+    HCM_AN
+    DCM_AN
+    CTL_AN
   }
 }`
 
@@ -273,6 +279,12 @@ export default function fetchData(geneName) {
       ID,
       FILTER,
       POS,
+      CTL_AC,
+      HCM_AC,
+      DCM_AC,
+      HCM_AN,
+      DCM_AN,
+      CTL_AN,
       VEP,
       ...rest
     }) => {
@@ -284,6 +296,13 @@ export default function fetchData(geneName) {
         rsid: ID,
         filter: FILTER,
         pos: POS,
+        CTL_AC,
+        HCM_AC,
+        DCM_AC,
+        HCM_AN,
+        DCM_AN,
+        CTL_AN,
+        allele_freq: (CTL_AC + HCM_AC + DCM_AC) / (HCM_AN + DCM_AN + CTL_AN),
         ...VEP[0],
         ...rest,
       })
