@@ -109,35 +109,6 @@ regional-constraint-gene-stats:
 regional-constraint-regional-missense:
 	../../../node_modules/.bin/babel-node export_regional_constraint_regional_missense.js
 
-dataproc-exacv1:
-	../../../hail-db-utils/create_cluster.GRCh37.py \
-	--project $(GCLOUD_PROJECT) \
-	--zone $(GCLOUD_ZONE) \
-	--machine-type n1-standard-4 \
-	--num-workers 10
-
-vep-annotate-exacv1:
-	../../../hail-db-utils/submit.py \
-	--project $(GCLOUD_PROJECT) \
-	--cluster vep-grch37 \
-	../../../hail-db-utils/run_vep.py \
-	gs://gnomad-browser/datasets/ExAC.r1.sites.vds \
-	gs://gnomad-browser/datasets/ExAC.r1.sites.vep.vds
-
-variants-exac:
-	../../../hail-db-utils/submit.py \
-	--project $(GCLOUD_PROJECT) \
-	--cluster $(DATAPROC_CLUSTER_NAME) \
-	export_exacv1_to_ES.py \
-	--host $(ES_HOST_IP) \
-	--port 9200 \
-	--block-size 200 \
-	--genome_version 37 \
-	--index exacv1 \
-	--index-type variant \
-	--exacv1-vds gs://gnomad-browser/datasets/ExAC.r1.sites.vep.vds \
-	--num-shards 5
-
 create-subset-vds:
 	../../../hail-db-utils/submit.py \
 	--project $(GCLOUD_PROJECT) \
@@ -212,4 +183,4 @@ variants-gnomad-genomes:
 variants-new-load-test: variants-dmd-exomes variants-dmd-genomes
 
 variants-new-load: variants-gnomad-exomes variants-gnomad-genomes
-variants-new-load-only-exomes: variants-gnomad-exomes 
+variants-new-load-only-exomes: variants-gnomad-exomes
