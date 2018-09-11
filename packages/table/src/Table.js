@@ -234,8 +234,8 @@ const consequencePresentation = {
   splice_acceptor_variant: { name: 'splice acceptor', color: lof },
   frameshift_variant: { name: 'frameshift', color: lof },
   stop_gained: { name: 'stop gained', color: lof },
-  stop_lost: { name: 'stop lost', color: lof },
-  start_lost: { name: 'start lost', color: lof },
+  stop_lost: { name: 'stop lost', color: missense },
+  start_lost: { name: 'start lost', color: missense },
   lof: { name: 'loss of function', color: lof },
 }
 
