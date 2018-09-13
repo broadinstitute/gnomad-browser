@@ -15,5 +15,5 @@ const config = {
 
 loadCsvToElastic(config)
 
-// http://elastic:9200/regional_constraint/regional_missense/_search
+// http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/regional_constraint/regional_missense/_search
 
