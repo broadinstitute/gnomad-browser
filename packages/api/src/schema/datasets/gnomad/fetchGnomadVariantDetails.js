@@ -1,86 +1,5 @@
-import {
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql'
-
-import { VariantInterface } from '../types/variant'
-import { extractPopulationData, PopulationType } from './shared/population'
-import { resolveReads, ReadsType } from './shared/reads'
-import { parseHistogram, VariantQualityMetricsType } from './shared/qualityMetrics'
-import { TranscriptConsequenceType } from './shared/transcriptConsequence'
-
-export const GnomadVariantType = new GraphQLObjectType({
-  name: 'gnomadVariant',
-  interfaces: [VariantInterface],
-  fields: {
-    // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
-    chrom: { type: new GraphQLNonNull(GraphQLString) },
-    pos: { type: new GraphQLNonNull(GraphQLInt) },
-    ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
-    // gnomAD specific fields
-    colocatedVariants: { type: new GraphQLList(GraphQLString) },
-    exome: {
-      type: new GraphQLObjectType({
-        name: 'GnomadVariantExomeData',
-        fields: {
-          ac: { type: GraphQLInt },
-          an: { type: GraphQLInt },
-          filters: { type: new GraphQLList(GraphQLString) },
-          populations: { type: new GraphQLList(PopulationType) },
-          qualityMetrics: { type: VariantQualityMetricsType },
-          reads: {
-            type: ReadsType,
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(process.env.READS_DIR, 'combined_bams_exomes', obj)
-              } catch (err) {
-                throw Error('Unable to load reads data')
-              }
-            },
-          },
-        },
-      }),
-    },
-    genome: {
-      type: new GraphQLObjectType({
-        name: 'GnomadVariantGenomeData',
-        fields: {
-          ac: { type: GraphQLInt },
-          an: { type: GraphQLInt },
-          filters: { type: new GraphQLList(GraphQLString) },
-          populations: { type: new GraphQLList(PopulationType) },
-          qualityMetrics: { type: VariantQualityMetricsType },
-          reads: {
-            type: ReadsType,
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(process.env.READS_DIR, 'combined_bams_genomes', obj)
-              } catch (err) {
-                throw Error('Unable to load reads data')
-              }
-            },
-          },
-        },
-      }),
-    },
-    rsid: { type: GraphQLString },
-    sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
-  },
-  isTypeOf: variantData => variantData.dataset === 'gnomad',
-})
+import { extractPopulationData } from '../shared/population'
+import { parseHistogram } from '../shared/qualityMetrics'
 
 const GNOMAD_POPULATION_IDS = ['AFR', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
 
@@ -113,7 +32,7 @@ const extractQualityMetrics = variantData => ({
   },
 })
 
-const fetchVariantData = async (variantId, ctx) => {
+const fetchGnomadVariantData = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
     index: ['gnomad_exomes_202_37', 'gnomad_genomes_202_37'],
     type: 'variant',
@@ -141,7 +60,7 @@ const fetchVariantData = async (variantId, ctx) => {
   }
 }
 
-const fetchColocatedVariants = async (variantId, ctx) => {
+const fetchColocatedVariants = async (ctx, variantId) => {
   const parts = variantId.split('-')
   const contig = parts[0]
   const pos = parts[1]
@@ -169,10 +88,10 @@ const fetchColocatedVariants = async (variantId, ctx) => {
     )
 }
 
-export const fetchGnomadVariant = async (variantId, ctx) => {
+const fetchGnomadVariantDetails = async (ctx, variantId) => {
   const [{ exomeData, genomeData }, colocatedVariants] = await Promise.all([
-    fetchVariantData(variantId, ctx),
-    fetchColocatedVariants(variantId, ctx),
+    fetchGnomadVariantData(ctx, variantId),
+    fetchColocatedVariants(ctx, variantId),
   ])
 
   if (!exomeData && !genomeData) {
@@ -191,6 +110,7 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
   }
 
   return {
+    gqlType: 'GnomadVariantDetails',
     // variant interface fields
     ...sharedVariantFields,
     // gnomAD specific fields
@@ -221,3 +141,5 @@ export const fetchGnomadVariant = async (variantId, ctx) => {
     sortedTranscriptConsequences: JSON.parse(sharedData.sortedTranscriptConsequences),
   }
 }
+
+export default fetchGnomadVariantDetails
