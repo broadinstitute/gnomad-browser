@@ -9,13 +9,13 @@
     "build": "npm run clean && npm run build-server",
     "start": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=12000 build/server.js",
     "mongo": "mongod --dbpath /Users/msolomon/Projects/exacg/database",
-    "dev": "nodemon --exec NODE_ENV=development ELASTICSEARCH_URL=http://elastic:9200 GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
-    "dev:flush": "redis-cli flushall && ELASTICSEARCH_URL=http://elastic:9200 GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
-    "dev:cache": "nodemon --exec ELASTICSEARCH_URL=http://elastic:9200 GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
+    "dev": "nodemon --exec NODE_ENV=development ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
+    "dev:flush": "redis-cli flushall && ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
+    "dev:cache": "nodemon --exec ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
     "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
     "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js",
     "flush": "redis-cli flushall",
-    "mappings": "curl -XGET 'elastic:9200/*/_mapping?pretty' > src/elastic-mappings/mappings.json"
+    "mappings": "curl -XGET 'localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/*/_mapping?pretty' > src/elastic-mappings/mappings.json"
   },
   "keywords": [],
   "author": "",

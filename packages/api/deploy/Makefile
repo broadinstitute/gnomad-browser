@@ -27,11 +27,7 @@ gnomad-api-service:
 	--type="LoadBalancer"
 
 set-max-result:
-	curl -XPUT "http://elastic:9200/*/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
-
-set-elastic-connect-timeout:
-	#  this doesn't work, must be set in elasticsearch.yaml
-	curl -XPUT "http://elastic:9200/_cluster/settings" -d '{ "transient" : { "transport.tcp.connect_timeout" : "60s" } }'
+	curl -XPUT "http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/*/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
 
 redis-interactive:
 	kubectl exec -it redis-master -- redis-cli
