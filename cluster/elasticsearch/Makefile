@@ -10,7 +10,7 @@ LOCAL_SSD_COUNT=1
 
 ES_SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=23.236.50.46)
 
-persistent: create-persistent-nodes delete-es-forwarding-rule deploy-persistent-all
+persistent: create-persistent-nodes deploy-persistent-all
 
 load: create-loading-nodes deploy-loading-all
 

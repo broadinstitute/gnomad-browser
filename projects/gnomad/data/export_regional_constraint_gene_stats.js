@@ -31,4 +31,4 @@ const config = {
 
 loadCsvToElastic(config)
 
-// http://elastic:9200/regional_constraint/gene_stats/_search
+// http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/regional_constraint/gene_stats/_search
