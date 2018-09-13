@@ -1,61 +1,11 @@
-import {
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql'
+import { getXpos } from '../../../utilities/variant'
 
-import { getXpos } from '../../utilities/variant'
-
-import { VariantInterface } from '../types/variant'
-import { extractPopulationData, PopulationType } from './shared/population'
-import { parseHistogram, VariantQualityMetricsType } from './shared/qualityMetrics'
-import { TranscriptConsequenceType } from './shared/transcriptConsequence'
-
-export const ExacVariantType = new GraphQLObjectType({
-  name: 'ExacVariant',
-  interfaces: [VariantInterface],
-  fields: {
-    // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
-    chrom: { type: new GraphQLNonNull(GraphQLString) },
-    pos: { type: new GraphQLNonNull(GraphQLInt) },
-    ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
-    // ExAC specific fields
-    ac: {
-      type: new GraphQLObjectType({
-        name: 'ExacVariantAlleleCount',
-        fields: {
-          raw: { type: GraphQLInt },
-          adj: { type: GraphQLInt },
-        },
-      }),
-    },
-    an: {
-      type: new GraphQLObjectType({
-        name: 'ExacVariantAlleleNumber',
-        fields: {
-          raw: { type: GraphQLInt },
-          adj: { type: GraphQLInt },
-        },
-      }),
-    },
-    filters: { type: new GraphQLList(GraphQLString) },
-    populations: { type: new GraphQLList(PopulationType) },
-    qualityMetrics: { type: VariantQualityMetricsType },
-    rsid: { type: GraphQLString },
-    sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
-  },
-  isTypeOf: variantData => variantData.dataset === 'exac',
-})
+import { extractPopulationData } from '../shared/population'
+import { parseHistogram } from '../shared/qualityMetrics'
 
 const EXAC_POPULATION_IDS = ['AFR', 'AMR', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
 
-export const fetchExacVariant = async (variantId, ctx) => {
+const fetchExacVariantDetails = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
     index: 'exacv1',
     type: 'variant',
@@ -79,6 +29,7 @@ export const fetchExacVariant = async (variantId, ctx) => {
   const variantData = response.hits.hits[0]._source
 
   return {
+    gqlType: 'ExacVariantDetails',
     // variant interface fields
     alt: variantData.alt,
     chrom: variantData.contig,
@@ -129,3 +80,5 @@ export const fetchExacVariant = async (variantId, ctx) => {
     sortedTranscriptConsequences: JSON.parse(variantData.sortedTranscriptConsequences),
   }
 }
+
+export default fetchExacVariantDetails
