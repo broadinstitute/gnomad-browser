@@ -40,9 +40,8 @@ import help from './types/help'
 
 import { VariantInterface } from './types/variant'
 
-import { ExacVariantType, fetchExacVariant } from './datasets/exac'
-import { GnomadVariantType, fetchGnomadVariant } from './datasets/gnomad'
-
+import { datasetArgumentTypeForMethod } from './datasets/datasetArgumentTypes'
+import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -117,18 +116,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
       type: VariantInterface,
       args: {
-        dataset: {
-          type: new GraphQLEnumType({ values: { exac: {}, gnomad: {} } })
-        },
+        dataset: { type: datasetArgumentTypeForMethod('fetchVariantDetails') },
         variantId: { type: GraphQLString },
       },
-      resolve: async (obj, args, ctx) => {
+      resolve: (obj, args, ctx) => {
         const { dataset, variantId } = args
-        const variantData = (dataset === 'exac')
-          ? await fetchExacVariant(variantId, ctx)
-          : await fetchGnomadVariant(variantId, ctx)
-        variantData.dataset = dataset
-        return variantData
+        const fetchVariantDetails = datasetsConfig[dataset].fetchVariantDetails
+        return fetchVariantDetails(ctx, variantId)
       },
     },
     variants,
@@ -143,7 +137,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
 
 const Schema = new GraphQLSchema({
   query: rootType,
-  types: [ExacVariantType, GnomadVariantType],
+  types: datasetSpecificTypes,
 })
 
 export default Schema
