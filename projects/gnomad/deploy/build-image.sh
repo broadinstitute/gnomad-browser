@@ -9,7 +9,7 @@ cd "${DEPLOY_DIR}/.."
 source "../../cluster/config.sh"
 IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser-beta"
 
-# If GNOMAD_BROWSER_DIR is not net, then assume gnomad_browser is checked out side by side
+# If GNOMAD_BROWSER_DIR is not set, then assume gnomad_browser is checked out side by side
 # with gnomadjs and get absolute path (required by webpack)
 GNOMAD_BROWSER_DIR="${GNOMAD_BROWSER_DIR:-$(cd ../../../gnomad_browser && pwd)}"
 
