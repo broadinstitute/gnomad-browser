@@ -343,6 +343,21 @@ VEP_FIELDS = [
     "ancestral",
 ]
 
+
+def split_position_start(position):
+    return hl.or_missing(
+        hl.is_defined(position),
+        hl.bind(lambda start: hl.cond(start == "?", hl.null(hl.tint), hl.int(start)), position.split("-")[0]),
+    )
+
+
+def split_position_end(position):
+    return hl.or_missing(
+        hl.is_defined(position),
+        hl.bind(lambda start: hl.cond(start == "?", hl.null(hl.tint), hl.int(start)), position.split("-")[-1]),
+    )
+
+
 # Format VEP annotations to mimic the output of hail.vep
 mt = mt.annotate_rows(
     vep=hl.struct(
@@ -365,12 +380,8 @@ mt = mt.annotate_rows(
                 biotype=annotation.BIOTYPE,
                 canonical=annotation.CANONICAL == "YES",
                 # cDNA_position may contain either "start-end" or, when start == end, "start"
-                cdna_start=hl.or_missing(
-                    hl.is_defined(annotation.cDNA_position), hl.int(annotation.cDNA_position.split("-")[0])
-                ),
-                cdna_end=hl.or_missing(
-                    hl.is_defined(annotation.cDNA_position), hl.int(annotation.cDNA_position.split("-")[-1])
-                ),
+                cdna_start=split_position_start(annotation.cDNA_position),
+                cdna_end=split_position_end(annotation.cDNA_position),
                 codons=annotation.Codons,
                 consequence_terms=annotation.Consequence.split("&"),
                 distance=hl.int(annotation.DISTANCE),
@@ -395,12 +406,8 @@ mt = mt.annotate_rows(
                 ),
                 protein_id=annotation.ENSP,
                 # Protein_position may contain either "start-end" or, when start == end, "start"
-                protein_start=hl.or_missing(
-                    hl.is_defined(annotation.Protein_position), hl.int(annotation.Protein_position.split("-")[0])
-                ),
-                protein_end=hl.or_missing(
-                    hl.is_defined(annotation.Protein_position), hl.int(annotation.Protein_position.split("-")[-1])
-                ),
+                protein_start=split_position_start(annotation.Protein_position),
+                protein_end=split_position_end(annotation.Protein_position),
                 # SIFT field contains "sift_prediction(sift_score)"
                 sift_prediction=hl.or_missing(hl.is_defined(annotation.SIFT), annotation.SIFT.split("\\(")[0]),
                 transcript_id=annotation.Feature,
