@@ -23,13 +23,13 @@ source "../../cluster/config.sh"
 IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser-beta"
 
 # Push to container registry
-gcloud docker -- push ${IMAGE_NAME}/${DEPLOY_TAG}
+gcloud docker -- push "${IMAGE_NAME}:${DEPLOY_TAG}"
 
 DEPLOYMENT="gnomad-${ENVIRONMENT}-serve"
 CONTAINER="gnomad-${ENVIRONMENT}-serve"
 
 # Update deployment
-kubectl set image "deployment/${DEPLOYMENT}" "${CONTAINER}=${IMAGE_NAME}/${DEPLOY_TAG}"
+kubectl set image "deployment/${DEPLOYMENT}" "${CONTAINER}=${IMAGE_NAME}:${DEPLOY_TAG}"
 
 # Wait for rollout to finish
 kubectl rollout status "deployment/${DEPLOYMENT}"
