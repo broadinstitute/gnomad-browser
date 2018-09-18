@@ -67,7 +67,8 @@ export class Combobox extends Component {
   }
 
   onSelect = value => {
-    this.setState({ inputValue: value })
+    const selectedOption = this.props.options.find(opt => opt.value === value)
+    this.setState({ inputValue: selectedOption.label })
     this.props.onChange(value)
   }
 
