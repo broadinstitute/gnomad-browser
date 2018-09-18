@@ -76,23 +76,18 @@ export class Combobox extends Component {
   renderInput = props => {
     // eslint-disable-next-line react/prop-types
     const { ref, ...rest } = props
-    return (
-      <Input
-        {...rest}
-        id={this.props.id}
-        innerRef={ref}
-        onBlur={e => {
-          props.onBlur(e)
-          this.setState({ inputValue: this.props.value })
-        }}
-      />
-    )
+    return <Input {...rest} id={this.props.id} innerRef={ref} />
   }
 
   render() {
     return (
       <Autocomplete
         getItemValue={item => item.value}
+        inputProps={{
+          onBlur: () => {
+            this.setState({ inputValue: this.props.value })
+          },
+        }}
         items={this.props.options}
         menuStyle={menuStyle}
         renderInput={this.renderInput}
