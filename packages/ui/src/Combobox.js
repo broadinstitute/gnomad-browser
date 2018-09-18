@@ -5,6 +5,8 @@ import Autocomplete from 'react-autocomplete'
 import styled from 'styled-components'
 
 const Input = styled.input`
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 0.375em 1.5em 0.375em 0.75em;
   border-color: #6c757d;
   border-style: solid;
@@ -49,10 +51,12 @@ export class Combobox extends Component {
       PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
     ).isRequired,
     value: PropTypes.string.isRequired,
+    width: PropTypes.string,
   }
 
   static defaultProps = {
     id: undefined,
+    width: undefined,
   }
 
   constructor(props) {
@@ -97,6 +101,10 @@ export class Combobox extends Component {
         )}
         shouldItemRender={this.shouldItemRender}
         value={this.state.inputValue}
+        wrapperStyle={{
+          display: 'inline-block',
+          width: this.props.width,
+        }}
         onChange={this.onChange}
         onSelect={this.onSelect}
       />
