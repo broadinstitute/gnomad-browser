@@ -3087,6 +3087,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.0.0"
     whatwg-url "^6.4.0"
 
+datalist-polyfill@^1.20.1:
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/datalist-polyfill/-/datalist-polyfill-1.22.1.tgz#c91c504144117e689d49d347f61e348dc5aafa37"
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
