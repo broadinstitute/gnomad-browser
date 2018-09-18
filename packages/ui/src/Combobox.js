@@ -29,6 +29,7 @@ const Input = styled.input`
 const Item = styled.div`
   padding: 0.375em 0.75em;
   background: ${props => (props.isHighlighted ? transparentize(0.5, '#428bca') : 'none')};
+  cursor: pointer;
   font-size: 14px;
 `
 
