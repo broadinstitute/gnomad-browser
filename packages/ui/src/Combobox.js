@@ -93,6 +93,9 @@ export class Combobox extends Component {
           onBlur: () => {
             this.setState({ inputValue: this.props.value })
           },
+          onFocus: () => {
+            this.setState({ inputValue: '' })
+          },
         }}
         items={this.props.options}
         menuStyle={menuStyle}
