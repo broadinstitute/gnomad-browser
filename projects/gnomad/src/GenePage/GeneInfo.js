@@ -1,24 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable camelcase */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { geneData, regionalConstraint, currentTranscript } from '@broad/redux-genes'
+import { currentTranscript, geneData } from '@broad/redux-genes'
+import { variantCount } from '@broad/redux-variants'
 
 import {
-  variantCount,
-  selectedVariantDataset,
-  actions as variantActions,
-} from '@broad/redux-variants'
-
-import {
-  GeneInfoWrapper,
-  GeneNameWrapper,
-  GeneSymbol,
-  GeneLongName,
-  GeneDetails,
   GeneAttributes,
   GeneAttributeKeys,
   GeneAttributeKey,
@@ -26,178 +13,89 @@ import {
   GeneAttributeValue,
 } from '@broad/ui'
 
-
-import { ConstraintTable, ConstraintTablePlaceholder } from './Constraint'
-
-const GeneInfo = ({
-  geneData,
-  variantCount,
-  selectedVariantDataset,
-  setSelectedVariantDataset,
-  regionalConstraint,
-  currentTranscript,
-}) => {
+const GeneInfo = ({ currentTranscript, gene, variantCount }) => {
   const {
-    gene_name,
-    gene_id,
+    canonical_transcript: canonicalTranscript,
+    chrom,
+    gene_name: geneName,
+    gene_id: geneId,
+    omim_accession: omimAccession,
     start,
     stop,
-    chrom,
-    full_gene_name,
-    omim_accession,
-    exacv1_constraint,
-    canonical_transcript,
-  } = geneData.toJS()
+  } = gene
+
+  const ensemblGeneUrl = `http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
+  const ensemblTranscriptUrl = `http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript ||
+    canonicalTranscript}`
+  const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start -
+    1}-${stop}`
+  const geneCardsUrl = `http://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneName}`
+  const omimUrl = `http://omim.org/entry/${omimAccession}`
+
   return (
-    <GeneInfoWrapper>
-      <GeneNameWrapper>
-        <GeneSymbol>{gene_name}</GeneSymbol>
-        <GeneLongName>{full_gene_name}</GeneLongName>
-      </GeneNameWrapper>
-      <GeneDetails>
-        <GeneAttributes>
-          <GeneAttributeKeys>
-            <GeneAttributeKey>
-              Ensembl gene ID
-            </GeneAttributeKey>
-            <GeneAttributeKey>
-              Ensembl transcript ID
-            </GeneAttributeKey>
-            <GeneAttributeKey>
-              Number of variants
-            </GeneAttributeKey>
-            <GeneAttributeKey>
-              UCSC Browser
-            </GeneAttributeKey>
-            <GeneAttributeKey>
-              GeneCards
-            </GeneAttributeKey>
-            <GeneAttributeKey>
-              OMIM
-            </GeneAttributeKey>
-            {/* <GeneAttributeKey>
-              External references
-            </GeneAttributeKey> */}
-          </GeneAttributeKeys>
-          <GeneAttributeValues>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${gene_id}`}
-              >
-                {gene_id}
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript || canonical_transcript}`}
-              >
-                {currentTranscript || canonical_transcript}
-                {(currentTranscript === null || currentTranscript === canonical_transcript) && ' (canonical)'}
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              {variantCount}
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start - 1}-${stop}`}
-              >
-                {`${chrom}:${start}:${stop}`}
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene_name}`}
-              >
-                {gene_name}
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://omim.org/entry/${omim_accession}`}
-              >
-                {omim_accession || 'N/A'}
-              </a>
-            </GeneAttributeValue>
-            {/* <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://en.wikipedia.org/wiki/${gene_name}`}
-              >
-                PubMed
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://en.wikipedia.org/wiki/${gene_name}`}
-              >
-                Wikipedia
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://www.wikigenes.org/?search=${gene_name}`}
-              >
-                Wikigenes
-              </a>
-            </GeneAttributeValue>
-            <GeneAttributeValue>
-              <a
-                target="_blank"
-                href={`http://www.gtexportal.org/home/gene/${gene_name}`}
-              >
-                GTEx (Expression)
-              </a>
-            </GeneAttributeValue> */}
-          </GeneAttributeValues>
-        </GeneAttributes>
-        {selectedVariantDataset === 'exacVariants' && exacv1_constraint &&
-          <ConstraintTable
-            constraintData={exacv1_constraint}
-            setSelectedVariantDataset={setSelectedVariantDataset}
-            selectedVariantDataset={selectedVariantDataset}
-          />}
-        {selectedVariantDataset === 'exacVariants' && !exacv1_constraint &&
-        <ConstraintTablePlaceholder
-          message={'ExAC constraint not available for this gene'}
-          setSelectedVariantDataset={setSelectedVariantDataset}
-          selectedVariantDataset={selectedVariantDataset}
-        />}
-        {selectedVariantDataset === 'gnomadCombinedVariants' &&
-          <ConstraintTablePlaceholder
-            message={'gnomAD constraint coming soon!'}
-            setSelectedVariantDataset={setSelectedVariantDataset}
-            selectedVariantDataset={selectedVariantDataset}
-          />}
-      </GeneDetails>
-    </GeneInfoWrapper>
+    <GeneAttributes>
+      <GeneAttributeKeys>
+        <GeneAttributeKey>Ensembl gene ID</GeneAttributeKey>
+        <GeneAttributeKey>Ensembl transcript ID</GeneAttributeKey>
+        <GeneAttributeKey>Number of variants</GeneAttributeKey>
+        <GeneAttributeKey>UCSC Browser</GeneAttributeKey>
+        <GeneAttributeKey>GeneCards</GeneAttributeKey>
+        <GeneAttributeKey>OMIM</GeneAttributeKey>
+      </GeneAttributeKeys>
+      <GeneAttributeValues>
+        <GeneAttributeValue>
+          <a target="_blank" href={ensemblGeneUrl}>
+            {geneId}
+          </a>
+        </GeneAttributeValue>
+        <GeneAttributeValue>
+          <a target="_blank" href={ensemblTranscriptUrl}>
+            {currentTranscript || canonicalTranscript}
+            {(currentTranscript === null || currentTranscript === canonicalTranscript) &&
+              ' (canonical)'}
+          </a>
+        </GeneAttributeValue>
+        <GeneAttributeValue>{variantCount}</GeneAttributeValue>
+        <GeneAttributeValue>
+          <a target="_blank" href={ucscUrl}>
+            {`${chrom}:${start}:${stop}`}
+          </a>
+        </GeneAttributeValue>
+        <GeneAttributeValue>
+          <a target="_blank" href={geneCardsUrl}>
+            {geneName}
+          </a>
+        </GeneAttributeValue>
+        <GeneAttributeValue>
+          <a target="_blank" href={omimUrl}>
+            {omimAccession || 'N/A'}
+          </a>
+        </GeneAttributeValue>
+      </GeneAttributeValues>
+    </GeneAttributes>
   )
 }
 
 GeneInfo.propTypes = {
-  geneData: PropTypes.object.isRequired,
+  currentTranscript: PropTypes.string,
+  gene: PropTypes.shape({
+    canonical_transcript: PropTypes.string.isRequired,
+    chrom: PropTypes.string.isRequired,
+    gene_name: PropTypes.string.isRequired,
+    gene_id: PropTypes.string.isRequired,
+    omim_accession: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
   variantCount: PropTypes.number.isRequired,
-  selectedVariantDataset: PropTypes.string.isRequired,
-  regionalConstraint: PropTypes.array,
 }
 
-export default connect(
-  state => ({
-    geneData: geneData(state),
-    variantCount: variantCount(state),
-    selectedVariantDataset: selectedVariantDataset(state),
-    regionalConstraint: regionalConstraint(state),
-    currentTranscript: currentTranscript(state),
-  }),
-  dispatch => ({
-    setSelectedVariantDataset: dataset =>
-      dispatch(variantActions.setSelectedVariantDataset(dataset)),
-  })
-)(GeneInfo)
+GeneInfo.defaultProps = {
+  currentTranscript: undefined,
+}
+
+export default connect(state => ({
+  currentTranscript: currentTranscript(state),
+  gene: geneData(state).toJS(),
+  variantCount: variantCount(state),
+}))(GeneInfo)
