@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 export const Page = styled.div`
@@ -9,14 +11,58 @@ export const Page = styled.div`
   font-size: 14px;
 `
 
-export const PageHeading = styled.h1`
+const PageHeadingWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding-bottom: 0.5em;
   border-bottom: 1px solid #ccc;
-  margin: 0.5em 0 1em;
+  margin: 0.67em 0;
   font-size: 36px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    border-bottom: none;
+  }
 `
+const PageHeadingText = styled.h1`
+  margin: 0;
+  font-size: 1em;
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em;
+  }
+`
+
+const PageControlsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+`
+
+export const PageHeading = ({ children, renderPageControls }) => (
+  <PageHeadingWrapper>
+    <PageHeadingText>{children}</PageHeadingText>
+    {renderPageControls && <PageControlsWrapper>{renderPageControls()}</PageControlsWrapper>}
+  </PageHeadingWrapper>
+)
+
+PageHeading.propTypes = {
+  children: PropTypes.node.isRequired,
+  renderPageControls: PropTypes.func,
+}
+
+PageHeading.defaultProps = {
+  renderPageControls: undefined,
+}
 
 export const SectionHeading = styled.h2`
   margin: 0 0 0.5em;
-  font-size: 24px;
+  font-size: 18px;
 `

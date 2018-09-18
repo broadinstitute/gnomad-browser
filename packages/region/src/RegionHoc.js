@@ -73,7 +73,7 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
 
     if (this.state.regionData) {
       return (
-        <ComposedComponent regionData={this.state.regionData} />
+        <ComposedComponent region={this.state.regionData} />
       )
     }
 
