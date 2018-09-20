@@ -1,8 +1,4 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable dot-notation */
-
+import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import { getXpos } from '../../utilities/variant'
 import { lookupExonsByTranscriptId } from './exon'
 
@@ -167,13 +163,7 @@ export const lookupElasticVariantsByGeneId = ({
   }).catch(error => console.log(error))
 }
 
-export const lookupElasticVariantsInRegion = ({
-  elasticClient,
-  numberOfVariants,
-  start,
-  stop,
-  chrom,
-}) => {
+export const lookupElasticVariantsInRegion = async ({ elasticClient, start, stop, chrom }) => {
   const fields = [
     'hgvsp',
     'hgvsc',
@@ -187,75 +177,42 @@ export const lookupElasticVariantsInRegion = ({
     'AN',
     'AF',
     'AC_Hom',
-    'AC_Hemi'
+    'AC_Hemi',
   ]
 
-  const lofQuery = createConsequenceQuery(lofs)
-  const missenseQuery = createConsequenceQuery([...lofs, 'missense_variant'])
-
-  let consequenceQuery = createConsequenceQuery([])
-
-  if ((stop - start) > 50000) {
-    consequenceQuery = missenseQuery
-  }
-  if ((stop - start) > 200000) {
-    consequenceQuery = lofQuery
-  }
-  console.log(chrom)
-    return new Promise((resolve, _) => {
-    elasticClient.search({
-      index: 'exacv1',
-      type: 'variant',
-      size: numberOfVariants,
-      _source: fields,
-      body: {
-        query: {
-          bool: {
-            filter: {
-              bool: {
-                must: [
-                  {
-                    bool: {
-                      must: { range: { start: { gte: start, lte: stop } } },
-                    }
-                  },
-                  {
-                    bool: {
-                      must: { term: { contig: chrom } },
-                    }
-                  }
-                ],
-                should: consequenceQuery,
-              },
-            },
-          },
+  const hits = await fetchAllSearchResults(elasticClient, {
+    index: 'exacv1',
+    type: 'variant',
+    size: 1000,
+    _source: fields,
+    body: {
+      query: {
+        bool: {
+          filter: [{ range: { start: { gte: start, lte: stop } } }, { term: { contig: chrom } }],
         },
-        sort: [{ start: { order: 'asc' } }],
       },
-    }).then((response) => {
-      resolve(response.hits.hits.map((v) => {
-        const elastic_variant = v._source
-        return ({
-          hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
-          hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-          // chrom: elastic_variant.contig,
-          // ref: elastic_variant.ref,
-          // alt: elastic_variant.alt,
-          consequence: elastic_variant.majorConsequence,
-          pos: elastic_variant.start,
-          xpos: getXpos(elastic_variant.chrom, elastic_variant.start),
-          rsid: elastic_variant.rsid,
-          variant_id: elastic_variant.variantId,
-          id: elastic_variant.variantId,
-          lof: elastic_variant.lof,
-          filters: elastic_variant.filters,
-          allele_count: elastic_variant['AC'],
-          allele_freq: elastic_variant['AF'],
-          allele_num: elastic_variant['AN'],
-          hom_count: elastic_variant['AC_Hom'],
-          hemi_count: elastic_variant['AC_Hemi']
-        })
-      }))
-    })
+      sort: [{ start: { order: 'asc' } }],
+    },
+  })
+
+  return hits.map(hit => {
+    const variant = hit._source // eslint-disable-line no-underscore-dangle
+    return {
+      hgvsp: variant.hgvsp ? variant.hgvsp.split(':')[1] : '',
+      hgvsc: variant.hgvsc ? variant.hgvsc.split(':')[1] : '',
+      consequence: variant.majorConsequence,
+      pos: variant.start,
+      xpos: getXpos(variant.chrom, variant.start),
+      rsid: variant.rsid,
+      variant_id: variant.variantId,
+      id: variant.variantId,
+      lof: variant.lof,
+      filters: variant.filters,
+      allele_count: variant.AC,
+      allele_freq: variant.AF,
+      allele_num: variant.AN,
+      hom_count: variant.AC_Hom,
+      hemi_count: variant.AC_Hemi,
+    }
   })
 }

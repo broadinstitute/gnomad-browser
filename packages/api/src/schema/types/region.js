@@ -23,6 +23,9 @@ import * as fromExacVariant from './exacElasticVariant'
 
 import geneType, { lookupGenesByInterval } from './gene'
 
+// Individual variants can only be returned for regions smaller than this
+const FETCH_VARIANTS_REGION_SIZE_LIMIT = 10000
+
 const regionType = new GraphQLObjectType({
   name: 'Region',
   fields: () => ({
@@ -100,72 +103,53 @@ const regionType = new GraphQLObjectType({
     gnomadExomeVariants: {
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) => {
-        console.log(obj.regionSize)
-        if (obj.regionSize < 10000) {
-          return lookupElasticVariantsInRegion({
-            elasticClient: ctx.database.elastic,
-            index: 'gnomad_exomes_202_37',
-            dataset: 'exomes',
-            xstart: obj.xstart,
-            xstop: obj.xstop,
-            numberOfVariants: 5000,
-          })
+        if (obj.regionSize > FETCH_VARIANTS_REGION_SIZE_LIMIT) {
+          throw Error(
+            `Variants can only be returned by for regions smaller than ${FETCH_VARIANTS_REGION_SIZE_LIMIT} base pairs`
+          )
         }
+
         return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
           index: 'gnomad_exomes_202_37',
-          dataset: 'exomes',
           xstart: obj.xstart,
           xstop: obj.xstop,
-          numberOfVariants: 5000,
         })
-      }
+      },
     },
     gnomadGenomeVariants: {
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) => {
-        console.log(obj.regionSize)
-        if (obj.regionSize < 10000) {
-          return lookupElasticVariantsInRegion({
-            elasticClient: ctx.database.elastic,
-            index: 'gnomad_genomes_202_37',
-            dataset: 'genomes',
-            xstart: obj.xstart,
-            xstop: obj.xstop,
-            numberOfVariants: 5000,
-          })
+        if (obj.regionSize > FETCH_VARIANTS_REGION_SIZE_LIMIT) {
+          throw Error(
+            `Variants can only be returned by for regions smaller than ${FETCH_VARIANTS_REGION_SIZE_LIMIT} base pairs`
+          )
         }
+
         return lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
           index: 'gnomad_genomes_202_37',
-          dataset: 'genomes',
           xstart: obj.xstart,
           xstop: obj.xstop,
-          numberOfVariants: 5000,
         })
-      }
+      },
     },
     exacVariants: {
       type: new GraphQLList(elasticVariantType),
       resolve: (obj, args, ctx) => {
-        console.log(obj.regionSize)
-        if (obj.regionSize < 10000) {
-          return fromExacVariant.lookupElasticVariantsInRegion({
-            elasticClient: ctx.database.elastic,
-            start: obj.start,
-            stop: obj.stop,
-            chrom: obj.chrom,
-            numberOfVariants: 5000,
-          })
+        if (obj.regionSize > FETCH_VARIANTS_REGION_SIZE_LIMIT) {
+          throw Error(
+            `Variants can only be returned by for regions smaller than ${FETCH_VARIANTS_REGION_SIZE_LIMIT} base pairs`
+          )
         }
+
         return fromExacVariant.lookupElasticVariantsInRegion({
           elasticClient: ctx.database.elastic,
           start: obj.start,
           stop: obj.stop,
           chrom: obj.chrom,
-          numberOfVariants: 5000,
         })
-      }
+      },
     },
   }),
 })
