@@ -290,7 +290,7 @@ export default function createVariantReducer({
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
-        if (variantDatasets[datasetKey]) {
+        if (regionData.get(datasetKey) && variantDatasets[datasetKey]) {
           regionData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant
