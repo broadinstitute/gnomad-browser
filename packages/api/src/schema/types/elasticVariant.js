@@ -1,7 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
-/* eslint-disable no-underscore-dangle */
-
 import {
   GraphQLObjectType,
   GraphQLInt,
@@ -11,6 +7,7 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 
+import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import populationType from './populations'
 import qualityMetricsType from './qualityMetrics'
 import { lookupExonsByTranscriptId } from './exon'
@@ -544,15 +541,7 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
   })
 }
 
-export const lookupElasticVariantsInRegion = ({
-  elasticClient,
-  index,
-  xstart,
-  xstop,
-  chrom,
-  numberOfVariants,
-  filter,
-}) => {
+export const lookupElasticVariantsInRegion = async ({ elasticClient, index, xstart, xstop }) => {
   const fields = [
     'hgvsp',
     'hgvsc',
@@ -571,62 +560,43 @@ export const lookupElasticVariantsInRegion = ({
     'Hom',
   ]
 
-  const lofQuery = createConsequenceQuery(lofs)
-  const missenseQuery = createConsequenceQuery([...lofs, 'missense_variant'])
-
-  let consequenceQuery = createConsequenceQuery([])
-
-  if ((xstop - xstart) > 50000) {
-    consequenceQuery = missenseQuery
-  }
-  if ((xstop - xstart) > 200000) {
-    consequenceQuery = lofQuery
-  }
-
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index,
-      type: 'variant',
-      size: numberOfVariants,
-      _source: fields,
-      body: {
-        query: {
-          bool: {
-            filter: {
-              bool: {
-                must: [
-                  { range: { xpos: { gte: xstart, lte: xstop } } },
-                ],
-                should: consequenceQuery,
-              },
-            },
+  const hits = await fetchAllSearchResults(elasticClient, {
+    index,
+    type: 'variant',
+    size: 10000,
+    _source: fields,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            range: { xpos: { gte: xstart, lte: xstop } },
           },
         },
-        sort: [{ xpos: { order: 'asc' } }],
       },
-    }).then((response) => {
-      resolve(response.hits.hits.map((v) => {
-        const elastic_variant = v._source
-        return ({
-          hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
-          hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-          consequence: elastic_variant.majorConsequence,
-          pos: elastic_variant.pos,
-          xpos: elastic_variant.xpos,
-          rsid: elastic_variant.rsid,
-          variant_id: elastic_variant.variantId,
-          id: elastic_variant.variantId,
-          lof: elastic_variant.lof,
-          filters: elastic_variant.filters.map(filter => `${index.split('_')[1]}_${filter}`), // HACK,
-          allele_count: elastic_variant.AC,
-          allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
-          allele_num: elastic_variant.AN,
-          hom_count: elastic_variant.Hom,
-          lcr: elastic_variant.lcr,
-          segdup: elastic_variant.segdup,
-        })
-      }))
-    })
+      sort: [{ xpos: { order: 'asc' } }],
+    },
+  })
+
+  return hits.map(hit => {
+    const variant = hit._source // eslint-disable-line no-underscore-dangle
+    return {
+      hgvsp: variant.hgvsp ? variant.hgvsp.split(':')[1] : '',
+      hgvsc: variant.hgvsc ? variant.hgvsc.split(':')[1] : '',
+      consequence: variant.majorConsequence,
+      pos: variant.pos,
+      xpos: variant.xpos,
+      rsid: variant.rsid,
+      variant_id: variant.variantId,
+      id: variant.variantId,
+      lof: variant.lof,
+      filters: variant.filters.map(filter => `${index.split('_')[1]}_${filter}`), // HACK,
+      allele_count: variant.AC,
+      allele_freq: variant.AF ? variant.AF : 0,
+      allele_num: variant.AN,
+      hom_count: variant.Hom,
+      lcr: variant.lcr,
+      segdup: variant.segdup,
+    }
   })
 }
 
