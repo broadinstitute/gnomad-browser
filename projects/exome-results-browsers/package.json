@@ -1,0 +1,43 @@
+{
+  "name": "exome-results-browsers",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "./start.sh",
+    "build": "./build.sh"
+  },
+  "dependencies": {
+    "compression": "^1.7.1",
+    "elasticsearch": "^13.3.1",
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.4",
+    "graphql": "^0.7.2",
+    "mongodb": "^2.2.11",
+    "serve-static": "^1.13.2"
+  },
+  "devDependencies": {
+    "@broad/gene-page": "*",
+    "@broad/redux-genes": "*",
+    "@broad/redux-variants": "*",
+    "@broad/region-viewer": "*",
+    "@broad/table": "*",
+    "@broad/track-navigator": "*",
+    "@broad/track-transcript": "*",
+    "@broad/track-variant": "*",
+    "@broad/ui": "*",
+    "apollo-cache-inmemory": "^1.1.1",
+    "apollo-client": "^2.0.3",
+    "apollo-link-http": "^1.2.0",
+    "graphql-fetch": "^1.0.1",
+    "graphql-tag": "^2.5.0",
+    "immutable": "^4.0.0-rc.9",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-apollo": "^2.0.1",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
+    "react-router-dom": "^4.1.1",
+    "styled-components": "^2.1.2"
+  }
+}

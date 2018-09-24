@@ -102,7 +102,8 @@ const mapDispatchToProps = (dispatch) => {
     setFocusedVariant: (variantId, dataset) => {
       if (dataset === 'exacVariants') {
         window.open(`http://exac.broadinstitute.org/variant/${variantId}`)
-      } else if (dataset === 'schizophreniaRareVariants') {
+      } else if (dataset === 'variants' || dataset === 'schizophreniaRareVariants') {
+        // Hack to show modal in exome results browsers
         dispatch(variantActions.setFocusedVariant(variantId))
       } else {
         window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
