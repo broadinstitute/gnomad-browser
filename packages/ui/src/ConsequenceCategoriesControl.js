@@ -1,4 +1,4 @@
-import { hideVisually, transparentize } from 'polished'
+import { darken, hideVisually, transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -19,6 +19,30 @@ const categoryLabels = {
   other: 'Other',
 }
 
+const Button = styled.button`
+  box-sizing: border-box;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.75em;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  line-height: 18px;
+  outline: none;
+
+  &:active,
+  &:hover {
+    border-color: ${darken(0.15, '#ddd')};
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2em ${transparentize(0.5, '#ddd')};
+  }
+`
+
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `
@@ -31,8 +55,9 @@ const CheckboxIcon = styled.span`
   padding: 0.375em 0.5em;
 `
 
-const Label = styled.label`
+const CategoryWrapper = styled.span`
   display: inline-flex;
+  align-items: center;
   overflow: hidden;
   border-color: ${props => props.borderColor};
   border-style: solid;
@@ -41,8 +66,6 @@ const Label = styled.label`
     `linear-gradient(to right, ${props.backgroundColor}, ${
       props.backgroundColor
     } 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`};
-  cursor: pointer;
-  user-select: none;
 
   &:focus-within {
     box-shadow: ${props => `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}`};
@@ -57,6 +80,13 @@ const Label = styled.label`
     border-top-right-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
   }
+`
+
+const Label = styled.label`
+  margin: 0; /* Override Bootstrap in gnomad_browser */
+  font-size: 14px;
+  font-weight: normal; /* Override Bootstrap in gnomad_browser */
+  user-select: none;
 `
 
 const LabelText = styled.span`
@@ -105,24 +135,40 @@ export class ConsequenceCategoriesControl extends Component {
     return (
       <div>
         {categories.map(category => (
-          <Label
+          <CategoryWrapper
             key={category}
             backgroundColor={transparentize(0.5, categoryColors[category])}
             borderColor={categoryColors[category]}
-            htmlFor={`${id}-${category}`}
           >
-            <Checkbox
-              checked={categorySelections[category]}
-              id={`${id}-${category}`}
-              type="checkbox"
-              onChange={e => onChange({ ...categorySelections, [category]: e.target.checked })}
-            />
-            <CheckboxIcon
-              aria-hidden
-              className={`fa ${categorySelections[category] ? 'fa-check-square-o' : 'fa-square-o'}`}
-            />
-            <LabelText>{categoryLabels[category]}</LabelText>
-          </Label>
+            <Label htmlFor={`${id}-${category}`}>
+              <Checkbox
+                checked={categorySelections[category]}
+                id={`${id}-${category}`}
+                type="checkbox"
+                onChange={e => onChange({ ...categorySelections, [category]: e.target.checked })}
+              />
+              <CheckboxIcon
+                aria-hidden
+                className={`fa ${
+                  categorySelections[category] ? 'fa-check-square-o' : 'fa-square-o'
+                }`}
+              />
+              <LabelText>{categoryLabels[category]}</LabelText>
+            </Label>
+            <Button
+              onClick={() =>
+                onChange({
+                  lof: false,
+                  missense: false,
+                  synonymous: false,
+                  other: false,
+                  [category]: true,
+                })
+              }
+            >
+              only
+            </Button>
+          </CategoryWrapper>
         ))}
       </div>
     )
