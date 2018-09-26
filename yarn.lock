@@ -38,6 +38,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@fortawesome/fontawesome-free@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.3.1.tgz#5466b8f31c1f493a96754c1426c25796d0633dd9"
+
 "@types/async@2.0.45":
   version "2.0.45"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.45.tgz#0cfe971d7ed5542695740338e0455c91078a0e83"
@@ -6430,7 +6434,7 @@ loader-runner@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.3.0.tgz#f482aea82d543e07921700d5a46ef26fdac6b8a2"
 
-loader-utils@^0.2.15, loader-utils@^0.2.16:
+loader-utils@^0.2.11, loader-utils@^0.2.15, loader-utils@^0.2.16:
   version "0.2.17"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.17.tgz#f86e6374d43205a6e6c60e9196f17c0299bfb348"
   dependencies:
@@ -9957,6 +9961,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
+simple-html-tokenizer@^0.1.1:
+  version "0.1.1"
+  resolved "http://registry.npmjs.org/simple-html-tokenizer/-/simple-html-tokenizer-0.1.1.tgz#05c2eec579ffffe145a030ac26cfea61b980fabe"
+
 sisteransi@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-0.1.1.tgz#5431447d5f7d1675aac667ccd0b865a4994cb3ce"
@@ -10682,6 +10690,14 @@ supports-color@^5.4.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
   dependencies:
     has-flag "^3.0.0"
+
+svg-inline-loader@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/svg-inline-loader/-/svg-inline-loader-0.8.0.tgz#7e9d905d80d0b4e68d2df21afcd08ee9e9a3ea6e"
+  dependencies:
+    loader-utils "^0.2.11"
+    object-assign "^4.0.1"
+    simple-html-tokenizer "^0.1.1"
 
 svg-tags@^1.0.0:
   version "1.0.0"

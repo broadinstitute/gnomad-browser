@@ -7,6 +7,7 @@
     "lib"
   ],
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "mousetrap": "^1.6.1",
     "polished": "^1.9.3",
     "prop-types": "^15.5.10",
