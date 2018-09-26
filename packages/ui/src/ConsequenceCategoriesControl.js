@@ -1,3 +1,4 @@
+import Check from 'svg-inline-loader!@fortawesome/fontawesome-free/svgs/solid/check.svg'
 import { darken, hideVisually, transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -41,18 +42,33 @@ const Button = styled.button`
   &:focus {
     box-shadow: 0 0 0 0.2em ${transparentize(0.5, '#ddd')};
   }
+
+  ::-moz-focus-inner {
+    border: 0;
+  }
+`
+
+const CheckboxIcon = styled.span`
+  display: inline-block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  border-width: 1px;
+  margin: 0 0.7em;
+  border-color: #000;
+  border-radius: 3px;
+  border-style: solid;
+  font-size: 10px;
 `
 
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
-`
 
-const CheckboxIcon = styled.span`
-  position: relative;
-  top: 1px;
-  left: 1px;
-  width: 1em;
-  padding: 0.375em 0.5em;
+  :focus + ${CheckboxIcon} {
+    border-color: #428bca;
+    box-shadow: 0 0 0 0.2em #428bca;
+  }
 `
 
 const CategoryWrapper = styled.span`
@@ -62,14 +78,6 @@ const CategoryWrapper = styled.span`
   border-color: ${props => props.borderColor};
   border-style: solid;
   border-width: 1px;
-  background: ${props =>
-    `linear-gradient(to right, ${props.backgroundColor}, ${
-      props.backgroundColor
-    } 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`};
-
-  &:focus-within {
-    box-shadow: ${props => `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}`};
-  }
 
   &:first-child {
     border-top-left-radius: 0.5em;
@@ -83,7 +91,13 @@ const CategoryWrapper = styled.span`
 `
 
 const Label = styled.label`
+  display: inline-flex;
+  align-items: center;
   margin: 0; /* Override Bootstrap in gnomad_browser */
+  background: ${props =>
+    `linear-gradient(to right, ${props.backgroundColor}, ${
+      props.backgroundColor
+    } 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`};
   font-size: 14px;
   font-weight: normal; /* Override Bootstrap in gnomad_browser */
   user-select: none;
@@ -135,12 +149,11 @@ export class ConsequenceCategoriesControl extends Component {
     return (
       <div>
         {categories.map(category => (
-          <CategoryWrapper
-            key={category}
-            backgroundColor={transparentize(0.5, categoryColors[category])}
-            borderColor={categoryColors[category]}
-          >
-            <Label htmlFor={`${id}-${category}`}>
+          <CategoryWrapper key={category} borderColor={categoryColors[category]}>
+            <Label
+              htmlFor={`${id}-${category}`}
+              backgroundColor={transparentize(0.5, categoryColors[category])}
+            >
               <Checkbox
                 checked={categorySelections[category]}
                 id={`${id}-${category}`}
@@ -149,9 +162,9 @@ export class ConsequenceCategoriesControl extends Component {
               />
               <CheckboxIcon
                 aria-hidden
-                className={`fa ${
-                  categorySelections[category] ? 'fa-check-square-o' : 'fa-square-o'
-                }`}
+                dangerouslySetInnerHTML={{
+                  __html: categorySelections[category] ? Check : null,
+                }}
               />
               <LabelText>{categoryLabels[category]}</LabelText>
             </Label>
