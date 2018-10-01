@@ -14,6 +14,8 @@
 # cluster stop $CLUSTER_NAME
 #
 
+import argparse
+
 import hail as hl
 
 from hail_scripts.v02.utils.computed_fields import (
@@ -32,6 +34,13 @@ from hail_scripts.v02.utils.computed_fields import (
 )
 
 
+p = argparse.ArgumentParser()
+p.add_argument(
+    "--output-url", help="URL to write Hail table to", default="gs://gnomad-browser/datasets/ExAC.r1.sites.vep.ht"
+)
+p.add_argument("--subset", help="Filter variants to this chrom:start-end range")
+args = p.parse_args()
+
 hl.init(log="/tmp/hail.log")
 
 print("\n=== Importing VCF ===")
@@ -41,6 +50,11 @@ mt = hl.import_vcf(EXAC_VCF_URL, force_bgz=True, min_partitions=2000, skip_inval
 
 # Drop entry values
 mt = mt.drop("AD", "DP", "GQ", "GT", "MIN_DP", "PL", "SB")
+
+if args.subset:
+    print(f"\n=== Filtering to interval {args.subset} ===")
+    subset_interval = hl.parse_locus_interval(args.subset)
+    mt = mt.filter_rows(subset_interval.contains(mt.locus))
 
 print("\n=== Splitting multiallelic variants ===")
 
@@ -525,4 +539,4 @@ mt = mt.select_rows(
 rows = mt.rows()
 rows = rows.order_by(rows.variant_id).drop("locus", "alleles")
 
-rows.write("gs://gnomad-browser/datasets/ExAC.r1.sites.vep.ht")
+rows.write(args.output_url)
