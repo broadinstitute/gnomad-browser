@@ -11,7 +11,7 @@
 # gcloud dataproc jobs submit pyspark \
 #   --cluster=$CLUSTER_NAME \
 #   --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
-#   ./export_exac_ht_to_es.py -- --host=$ELASTICSEARCH_IP
+#   ./export_ht_to_es.py -- --ht-url=$HAIL_TABLE_URL --host=$ELASTICSEARCH_IP
 # cluster stop $CLUSTER_NAME
 #
 
@@ -23,21 +23,20 @@ from hail_scripts.v02.utils.elasticsearch_client import ElasticsearchClient
 
 
 p = argparse.ArgumentParser()
-p.add_argument("-H", "--host", help="Elasticsearch host or IP", required=True)
-p.add_argument("-p", "--port", help="Elasticsearch port", default=9200, type=int)
-p.add_argument("-i", "--index-name", help="Elasticsearch index name", default="exac_v1_variants")
-p.add_argument("-t", "--index-type", help="Elasticsearch index type", default="variant")
-p.add_argument("-s", "--num-shards", help="Number of elasticsearch shards", default=1, type=int)
-p.add_argument("-b", "--es-block-size", help="Elasticsearch block size to use when exporting", default=200, type=int)
+p.add_argument("--ht-url", help="URL of Hail table to export", required=True)
+p.add_argument("--host", help="Elasticsearch host or IP", required=True)
+p.add_argument("--port", help="Elasticsearch port", default=9200, type=int)
+p.add_argument("--index-name", help="Elasticsearch index name", default="exac_v1_variants")
+p.add_argument("--index-type", help="Elasticsearch index type", default="variant")
+p.add_argument("--num-shards", help="Number of elasticsearch shards", default=1, type=int)
+p.add_argument("--es-block-size", help="Elasticsearch block size to use when exporting", default=200, type=int)
 args = p.parse_args()
 
 hl.init(log="/tmp/hail.log")
 
 print("\n=== Importing Hail table ===")
 
-# This file is created from the ExAC VCF by export_exac_vcf_to_ht.py
-EXAC_HT_URL = "gs://gnomad-browser/datasets/ExAC.r1.sites.vep.ht"
-ds = hl.read_table(EXAC_HT_URL)
+ds = hl.read_table(args.ht_url)
 
 print("\n=== Exporting to Elasticsearch ===")
 
