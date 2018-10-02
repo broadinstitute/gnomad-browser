@@ -10,13 +10,9 @@ import App from './routes'
 const appSettings = {
   variantMatchesConsequenceCategoryFilter(variant, selectedCategories) {
     const consequences = variant.Consequence.split('&')
-    const categories = consequences.map(consequence => {
-      let category = getCategoryFromConsequence(consequence) || 'other'
-      if (category === 'all') {
-        category = 'other'
-      }
-      return category
-    })
+    const categories = consequences.map(
+      consequence => getCategoryFromConsequence(consequence) || 'other'
+    )
 
     return categories.some(category => selectedCategories[category])
   },

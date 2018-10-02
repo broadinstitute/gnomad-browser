@@ -3,16 +3,14 @@ import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { getCategoryFromConsequence } from '@broad/utilities/src/constants/categoryDefinitions'
-
+import { getCategoryFromConsequence } from '@broad/utilities'
 
 const exacClassicColors = {
-  all: transparentize(0.3, '#757575'),
-  missense: transparentize(0.3, '#F0C94D'),
   lof: transparentize(0.3, '#FF583F'),
+  missense: transparentize(0.3, '#F0C94D'),
   synonymous: transparentize(0.3, 'green'),
+  other: transparentize(0.3, '#757575'),
 }
-
 
 const alleleFrequencyScale = scaleLog()
   .domain([0.000010, 0.001])
@@ -100,7 +98,7 @@ export class VariantAlleleFrequencyPlot extends Component {
         rx = 1
         ry = 1
       } else {
-        const category = getCategoryFromConsequence(variant.consequence) || 'all'
+        const category = getCategoryFromConsequence(variant.consequence) || 'other'
         fill = exacClassicColors[category]
         rx = 3
         ry = alleleFrequencyScale(variant.allele_freq)
