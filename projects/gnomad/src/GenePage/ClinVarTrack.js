@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { variantFilter } from '@broad/redux-variants'
 import { StackedVariantsPlot } from '@broad/track-variant'
 import { SegmentedControl } from '@broad/ui'
-import { getCategoryFromConsequence } from '@broad/utilities'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 function isPathogenicOrLikelyPathogenic(clinvarVariant) {
   return (
@@ -108,7 +108,10 @@ const ClinVarTooltip = ({ variant }) => (
     <strong>{variant.variantId}</strong>
     <ClinVarVariantAttributeList>
       <ClinVarVariantAttribute label="Clinical Signficance" value={variant.clinicalSignificance} />
-      <ClinVarVariantAttribute label="Consequence" value={variant.majorConsequence} />
+      <ClinVarVariantAttribute
+        label="Consequence"
+        value={getLabelForConsequenceTerm(variant.majorConsequence)}
+      />
       <ClinVarVariantAttribute label="Gold stars" value={variant.goldStars} />
     </ClinVarVariantAttributeList>
     Click to view in ClinVar

@@ -1,4 +1,10 @@
 export {
+  getCategoryFromConsequence,
+  getLabelForConsequenceTerm,
+  registerConsequences,
+} from './consequences'
+
+export {
   fetchAllByGeneName,
   fetchTranscriptsByGeneName,
   fetchTestData,
@@ -20,12 +26,6 @@ export {
 export {
   processVariantsList
 } from './exalt'
-
-export {
-  getCategoryFromConsequence,
-  isCategoryLoF,
-  isCategoryMissenseOrLoF,
-} from './constants/categoryDefinitions'
 
 export {
   gnomadExportCsvTranslations
