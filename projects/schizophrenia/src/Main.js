@@ -13,26 +13,51 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import createGenePageStore from '@broad/gene-page/src/store/store'
 import { actions as userInterfaceActions } from '@broad/ui'
+import { getLabelForConsequenceTerm, registerConsequences } from '@broad/utilities'
 import App from './routes'
 
 const API_URL = process.env.GNOMAD_API_URL
 
-const consequencePresentation = {
-  mis: 'missense',
-  ns: 'inframe indel',
-  syn: 'synonymous',
-  splice: 'splice region',
-  lof: 'loss of function',
-}
+registerConsequences([
+  {
+    term: 'lof',
+    label: 'loss of function',
+    category: 'lof',
+  },
+  {
+    term: 'mis',
+    label: 'missense',
+    category: 'missense',
+  },
+  {
+    term: 'ns',
+    label: 'inframe indel',
+    category: 'missense',
+  },
+  {
+    term: 'syn',
+    label: 'synonymous',
+    category: 'synonymous',
+  },
+  {
+    term: 'splice',
+    label: 'splice region',
+    category: 'other',
+  },
+])
 
 const appSettings = {
   variantSearchPredicate(variant, query) {
-    const consequenceCategoryLabel = consequencePresentation[variant.get('consequence')] || ''
     return (
-      variant.get('variant_id').toLowerCase().includes(query)
-      || (variant.get('hgvsc_canonical') || '').toLowerCase().includes(query)
-      || (variant.get('hgvsp_canonical') || '').toLowerCase().includes(query)
-      || consequenceCategoryLabel.includes(query)
+      variant
+        .get('variant_id')
+        .toLowerCase()
+        .includes(query) ||
+      (variant.get('hgvsc_canonical') || '').toLowerCase().includes(query) ||
+      (variant.get('hgvsp_canonical') || '').toLowerCase().includes(query) ||
+      getLabelForConsequenceTerm(variant.get('consequence') || '')
+        .toLowerCase()
+        .includes(query)
     )
   },
   logger: true,

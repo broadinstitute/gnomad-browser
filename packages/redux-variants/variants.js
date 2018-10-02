@@ -194,11 +194,7 @@ export const actions = {
 }
 
 const defaultVariantMatchesConsequenceCategoryFilter = (variant, selectedConsequenceCategories) => {
-  let category = getCategoryFromConsequence(variant.consequence) || 'other'
-  if (category === 'all') {
-    category = 'other'
-  }
-
+  const category = getCategoryFromConsequence(variant.consequence) || 'other'
   return selectedConsequenceCategories[category]
 }
 

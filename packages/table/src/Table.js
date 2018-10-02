@@ -10,6 +10,8 @@ import { withSize } from 'react-sizeme'
 import { InfiniteLoader, List } from 'react-virtualized'
 import styled from 'styled-components'
 
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+
 const abstractCellStyle = {
   paddingLeft: 10,
   paddingRight: 10,
@@ -211,52 +213,23 @@ const formatLink = (highlightedText, onRowClick, dataRow, searchText) => {
   )
 }
 
-const lof = '#DD2C00'
-const missense = 'orange'
-const synonymous = '#2E7D32'
-const other = '#424242'
-const consequencePresentation = {
-  mis: { name: 'missense', color: missense },
-  missense_variant: { name: 'missense', color: missense },
-  ns: { name: 'inframe indel', color: missense },
-  inframe_insertion: { name: 'inframe insertion', color: missense },
-  inframe_deletion: { name: 'inframe deletion', color: missense },
-  syn: { name: 'synonymous', color: synonymous },
-  synonymous_variant: { name: 'synonymous', color: synonymous },
-  upstream_gene_variant: { name: 'upstream gene', color: other },
-  downstream_gene_variant: { name: 'downstream gene', color: other },
-  intron_variant: { name: 'intron', color: other },
-  '3_prime_UTR_variant': { name: "3' UTR", color: other },
-  '5_prime_UTR_variant': { name: "5' UTR", color: other },
-  splice: { name: 'splice region', color: other },
-  splice_region_variant: { name: 'splice region', color: other },
-  splice_donor_variant: { name: 'splice donor', color: lof },
-  splice_acceptor_variant: { name: 'splice acceptor', color: lof },
-  frameshift_variant: { name: 'frameshift', color: lof },
-  stop_gained: { name: 'stop gained', color: lof },
-  stop_lost: { name: 'stop lost', color: missense },
-  start_lost: { name: 'start lost', color: missense },
-  lof: { name: 'loss of function', color: lof },
+const categoryColors = {
+  lof: '#DD2C00',
+  missense: 'orange',
+  synonymous: '#2E7D32',
+  other: '#424242',
 }
 
-const getConsequenceColor = (consequence) => {
-  if (!consequence) {
+const getConsequenceColor = consequenceTerm => {
+  if (!consequenceTerm) {
     return 'gray'
   }
-  if (consequence in consequencePresentation) {
-    return consequencePresentation[consequence].color
-  }
-  return other
+  const category = getCategoryFromConsequence(consequenceTerm) || 'other'
+  return categoryColors[category]
 }
-const getConsequenceName = (consequence) => {
-  if (!consequence) {
-    return 'N/A'
-  }
-  if (consequence in consequencePresentation) {
-    return consequencePresentation[consequence].name
-  }
-  return consequence
-}
+
+const getConsequenceName = consequenceTerm =>
+  consequenceTerm ? getLabelForConsequenceTerm(consequenceTerm) : 'N/A'
 
 const formatConsequence = (consequence, index, searchText) => {
   return (
