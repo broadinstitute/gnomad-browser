@@ -21,11 +21,6 @@ import elasticVariantType, {
 
 import * as fromExacVariant from './exacElasticVariant'
 
-import {
-  schizophreniaGwasVariants,
-  schizophreniaExomeVariantsInRegion,
-} from './schzvariant'
-
 import geneType, { lookupGenesByInterval } from './gene'
 
 const regionType = new GraphQLObjectType({
@@ -276,8 +271,6 @@ const regionType = new GraphQLObjectType({
         })
       }
     },
-    schizophreniaGwasVariants,
-    schizophreniaExomeVariants: schizophreniaExomeVariantsInRegion,
   }),
 })
 
