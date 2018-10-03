@@ -31,11 +31,6 @@ import {
 
 import { gnomadVariants } from './types/elasticVariant'
 
-import {
- schzGeneResults,
- schzGroups,
-} from './types/schzvariant'
-
 import help from './types/help'
 
 import { VariantInterface } from './types/variant'
@@ -129,8 +124,6 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     // gnomadGenomeVariants,
     // gnomadCombinedVariants,
     gnomadVariants,
-    schzGeneResults,
-    schzGroups,
     help,
   }),
 })

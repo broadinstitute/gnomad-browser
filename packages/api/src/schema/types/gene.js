@@ -18,12 +18,6 @@ import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsBy
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 
-import {
-  schzGeneResult,
-  schizophreniaRareVariants,
-  schizophreniaGwasVariants,
-} from './schzvariant'
-
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
 import * as fromExacVariant from './exacElasticVariant'
 
@@ -154,9 +148,6 @@ const geneType = new GraphQLObjectType({
         geneName: obj.gene_name,
       }),
     },
-    schzGeneResult,
-    schizophreniaRareVariants,
-    schizophreniaGwasVariants,
   }),
 })
 
