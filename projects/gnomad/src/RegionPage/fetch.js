@@ -80,6 +80,8 @@ export const fetchRegion = (regionId, url = API_URL) => {
       hom_count
       consequence
       lof
+      lcr
+      segdup
     }
     gnomadExomeVariants {
       variant_id
@@ -95,6 +97,8 @@ export const fetchRegion = (regionId, url = API_URL) => {
       hom_count
       consequence
       lof
+      lcr
+      segdup
     }
     exacVariants {
       variant_id
