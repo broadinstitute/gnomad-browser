@@ -55,13 +55,6 @@ class GeneViewer extends PureComponent {
     }
 
     const cases = variantsReversed
-      .map(v => {
-        if (v.ac_denovo) {
-          const cases = v.ac_case ? v.ac_case : 0
-          return v.set('ac_case', v.ac_denovo + cases).set('an_case', 46846) // HACK
-        }
-        return v
-      })
       .filter(v => v.ac_case > 0)
       .map(v => v.set('allele_freq', v.af_case))
 
