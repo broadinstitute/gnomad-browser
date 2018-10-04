@@ -10,6 +10,7 @@
     "@broad/redux-genes": "*",
     "@broad/redux-variants": "*",
     "@broad/region": "*",
+    "@broad/ui": "*",
     "@broad/utilities": "*",
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
