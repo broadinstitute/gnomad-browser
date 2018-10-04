@@ -1,4 +1,1 @@
-import Example from './VariantTableApollo.example'
-// import Example from './redux.example'
-
-export default Example
+export default from './VariantTableRedux.example'

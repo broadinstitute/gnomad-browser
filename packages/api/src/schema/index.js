@@ -25,10 +25,6 @@ import transcriptType, {
 
 import regionType from './types/region'
 
-import {
-  variants,
- } from './types/gnomadVariants'
-
 import { gnomadVariants } from './types/elasticVariant'
 
 import help from './types/help'
@@ -120,9 +116,6 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         return fetchVariantDetails(ctx, variantId)
       },
     },
-    variants,
-    // gnomadGenomeVariants,
-    // gnomadCombinedVariants,
     gnomadVariants,
     help,
   }),
