@@ -163,6 +163,22 @@ export const lookupElasticVariantsByGeneId = ({
   }).catch(error => console.log(error))
 }
 
+export const countExacVariantsInRegion = async ({ elasticClient, start, stop, chrom }) => {
+  const response = await elasticClient.count({
+    index: 'exacv1',
+    type: 'variant',
+    body: {
+      query: {
+        bool: {
+          filter: [{ range: { start: { gte: start, lte: stop } } }, { term: { contig: chrom } }],
+        },
+      },
+    },
+  })
+
+  return response.count
+}
+
 export const lookupElasticVariantsInRegion = async ({ elasticClient, start, stop, chrom }) => {
   const fields = [
     'hgvsp',

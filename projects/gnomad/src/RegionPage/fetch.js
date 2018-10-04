@@ -1,60 +1,7 @@
 import fetch from 'graphql-fetch'
 
-const variantsQuery = `
-gnomadGenomeVariants {
-  variant_id
-  rsid
-  pos
-  xpos
-  hgvsc
-  hgvsp
-  allele_count
-  allele_freq
-  allele_num
-  filters
-  hom_count
-  consequence
-  lof
-  lcr
-  segdup
-}
-gnomadExomeVariants {
-  variant_id
-  rsid
-  pos
-  xpos
-  hgvsc
-  hgvsp
-  allele_count
-  allele_freq
-  allele_num
-  filters
-  hom_count
-  consequence
-  lof
-  lcr
-  segdup
-}
-exacVariants {
-  variant_id
-  rsid
-  pos
-  xpos
-  hgvsc
-  hgvsp
-  allele_count
-  allele_freq
-  allele_num
-  filters
-  hom_count
-  consequence
-  lof
-}
-`
-
 export const fetchRegion = regionId => {
   const [chrom, start, stop] = regionId.split('-')
-  const regionSize = Number(stop) - Number(start)
   const query = `{
   region(start: ${start}, stop: ${stop}, chrom: "${chrom}") {
     start
@@ -101,11 +48,59 @@ export const fetchRegion = regionId => {
       pos
       mean
     }
-    ${regionSize <= 10000 ? variantsQuery : ''}
+    gnomadGenomeVariants {
+      variant_id
+      rsid
+      pos
+      xpos
+      hgvsc
+      hgvsp
+      allele_count
+      allele_freq
+      allele_num
+      filters
+      hom_count
+      consequence
+      lof
+      lcr
+      segdup
+    }
+    gnomadExomeVariants {
+      variant_id
+      rsid
+      pos
+      xpos
+      hgvsc
+      hgvsp
+      allele_count
+      allele_freq
+      allele_num
+      filters
+      hom_count
+      consequence
+      lof
+      lcr
+      segdup
+    }
+    exacVariants {
+      variant_id
+      rsid
+      pos
+      xpos
+      hgvsc
+      hgvsp
+      allele_count
+      allele_freq
+      allele_num
+      filters
+      hom_count
+      consequence
+      lof
+    }
   }
 
 }
 `
 
-  return fetch(process.env.GNOMAD_API_URL)(query).then(data => data.data.region)
+  return fetch(process.env.GNOMAD_API_URL)(query)
 }
