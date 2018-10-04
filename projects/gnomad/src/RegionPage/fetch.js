@@ -1,11 +1,6 @@
 import fetch from 'graphql-fetch'
 
-// const LOCAL_API_URL = 'http://gnomad-api.broadinstitute.org/'
-// const API_URL = 'http://localhost:8007'
-// const API_URL = 'http://35.185.9.245'
-const API_URL = process.env.GNOMAD_API_URL
-
-export const fetchRegion = (regionId, url = API_URL) => {
+export const fetchRegion = regionId => {
   const [chrom, start, stop] = regionId.split('-')
   const query = `{
   region(start: ${Number(start)}, stop: ${Number(stop)}, chrom: "${chrom}") {
@@ -38,19 +33,6 @@ export const fetchRegion = (regionId, url = API_URL) => {
           stop
           chrom
           gene_id
-        }
-      }
-    }
-    gnomad_consequence_buckets {
-      total_consequence_counts {
-        consequence
-        count
-      }
-      buckets {
-        pos
-        bucket_consequence_counts {
-          consequence
-          count
         }
       }
     }
@@ -119,15 +101,6 @@ export const fetchRegion = (regionId, url = API_URL) => {
 
 }
 `
-  return new Promise((resolve, reject) => {
-    fetch(url)(query)
-      .then(data => {
-        resolve(data.data.region)
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
+
+  return fetch(process.env.GNOMAD_API_URL)(query).then(data => data.data.region)
 }
-
-
