@@ -9,7 +9,6 @@ import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
-// import StackedBarTrack from '@broad/track-stacked-bar'
 import { screenSize, SectionTitle } from '@broad/ui'
 
 import {
