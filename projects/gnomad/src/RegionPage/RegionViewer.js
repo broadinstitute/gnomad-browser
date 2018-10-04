@@ -59,6 +59,7 @@ const RegionViewerConnected = ({
   ]
 
   const totalBp = stop - start
+  const showVariants = totalBp <= 10000
 
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
@@ -94,12 +95,14 @@ const RegionViewerConnected = ({
           onGeneClick={geneName => history.push(`/gene/${geneName}`)}
         />
 
-        <VariantAlleleFrequencyTrack
-          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
-          variants={variantsReversed.toJS()}
-        />
+        {showVariants && (
+          <VariantAlleleFrequencyTrack
+            title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
+            variants={variantsReversed.toJS()}
+          />
+        )}
 
-        <NavigatorTrackConnected title={'Viewing in table'} />
+        {showVariants && <NavigatorTrackConnected title="Viewing in table" />}
       </RegionViewer>
     </div>
   )
