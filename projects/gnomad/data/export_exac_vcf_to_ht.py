@@ -504,7 +504,10 @@ mt = mt.select_rows(
     AN_FEMALE=mt.info.AN_FEMALE,
     AC_MALE=mt.info.AC_MALE,
     AN_MALE=mt.info.AN_MALE,
-    flags=hl.struct(lc_lof=get_expr_for_lc_lof_flag(mt.vep), lof_flag=get_expr_for_loftee_flag_flag(mt.vep)),
+    flags=hl.struct(
+        lc_lof=get_expr_for_lc_lof_flag(mt.sortedTranscriptConsequences),
+        lof_flag=get_expr_for_loftee_flag_flag(mt.sortedTranscriptConsequences),
+    ),
     populations=hl.struct(
         **{
             pop_id: hl.struct(
