@@ -4,7 +4,13 @@ import styled from 'styled-components'
 
 import { TooltipAnchor } from './tooltip/TooltipAnchor'
 
-const TextTooltip = ({ text }) => <span>{text}</span>
+const TextTooltipWrapper = styled.span`
+  line-height: 1.5;
+  text-align: center;
+  white-space: pre-line;
+`
+
+const TextTooltip = ({ text }) => <TextTooltipWrapper>{text}</TextTooltipWrapper>
 
 TextTooltip.propTypes = {
   text: PropTypes.string.isRequired,

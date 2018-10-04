@@ -10,6 +10,7 @@ import { withSize } from 'react-sizeme'
 import { InfiniteLoader, List } from 'react-virtualized'
 import styled from 'styled-components'
 
+import { Badge } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 const abstractCellStyle = {
@@ -113,35 +114,30 @@ const formatDatasets = (dataRow, index) => dataRow.datasets.valueSeq().toJS().ma
   )
 })
 
-const flagConfig = {
-  lcr: { color: 'gray', abbreviation: 'LCR', border: '1px solid #000' },
-  segdup: { color: 'gray', abbreviation: 'SEGDUP', border: '1px solid #000' },
-  lof: { color: '#d9534f', abbreviation: 'LC LoF', border: '1px solid #000' },
-
+const flagProps = {
+  lcr: {
+    children: 'LCR',
+    level: 'info',
+    tooltip: 'Found in a low complexity region\nVariant annotation or quality dubious',
+  },
+  segdup: {
+    children: 'SEGDUP',
+    level: 'info',
+    tooltip: 'Found in a segmental duplication region\nVariant annotation or quality dubious',
+  },
+  lof: {
+    children: 'LC LoF',
+    level: 'error',
+    tooltip: 'Low-confidence LoF\nVariant annotation or quality dubious',
+  },
 }
 
 const formatFlags = (dataRow, index) => {
-  return ['lcr', 'segdup', 'lof']
-    .filter((flag) => {
-      return dataRow.get(flag) === true || dataRow.get(flag) === 'LC'
-    })
-    .map((flag) => {
-      return (
-        <span
-          key={`${flag}${index}`}
-          style={{
-            border: flagConfig[flag].border,
-            borderRadius: 3,
-            color: 'white',
-            marginLeft: 10,
-            padding: '1px 4px 1px 4px',
-            backgroundColor: flagConfig[flag].color,
-          }}
-        >
-          {flagConfig[flag].abbreviation}
-        </span>
-      )
-    })
+  const variantFlags = ['lcr', 'segdup', 'lof'].filter(
+    flag => dataRow.get(flag) === true || dataRow.get(flag) === 'LC'
+  )
+
+  return variantFlags.map(flag => <Badge key={flag} {...flagProps[flag]} />)
 }
 
 const formatFitler = (filters, index) => filters.map(filter => (
