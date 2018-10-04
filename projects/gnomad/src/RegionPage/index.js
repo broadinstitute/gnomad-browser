@@ -34,10 +34,14 @@ const RegionPage = ({ region }) => (
       </div>
     </RegionInfoSection>
     <RegionViewer coverageStyle={'new'} />
-    <TableSection>
-      <Settings />
-      <VariantTable tableConfig={tableConfig} />
-    </TableSection>
+    {region.stop - region.start <= 10000 ? (
+      <TableSection>
+        <Settings />
+        <VariantTable tableConfig={tableConfig} />
+      </TableSection>
+    ) : (
+      <p>To view variants, select a region smaller than 10,000 base pairs</p>
+    )}
   </GenePage>
 )
 
