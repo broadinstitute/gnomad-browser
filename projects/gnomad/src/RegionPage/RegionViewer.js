@@ -6,7 +6,6 @@ import { compose } from 'redux'
 
 import CoverageTrack from '@broad/track-coverage'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
-import StackedBarTrack from '@broad/track-stacked-bar'
 import { GenesTrack } from '@broad/track-genes'
 
 import { screenSize } from '@broad/ui'
@@ -36,7 +35,6 @@ const RegionViewerConnected = ({
     genome_coverage,
     exacv1_coverage,
     genes,
-    gnomad_consequence_buckets: { buckets },
   } = regionData.toJS()
 
   const variantsReversed = allVariants.reverse()
@@ -50,21 +48,20 @@ const RegionViewerConnected = ({
 
   const featuresToDisplay = ['default']
 
-  const regions = [{
-    chrom,
-    start,
-    stop,
-    feature_type: 'default',
-    strand: '+',
-  }]
+  const regions = [
+    {
+      chrom,
+      start,
+      stop,
+      feature_type: 'default',
+      strand: '+',
+    },
+  ]
 
   const totalBp = stop - start
 
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
-
-  const largeRegion = totalBp > 50000
-  const showStacked = largeRegion
 
   const datasetTranslations = {
     gnomadExomeVariants: 'gnomAD exomes',
@@ -102,9 +99,6 @@ const RegionViewerConnected = ({
           variants={variantsReversed.toJS()}
         />
 
-        {showStacked &&
-          <StackedBarTrack height={150} data={buckets} />
-        }
         <NavigatorTrackConnected title={'Viewing in table'} />
       </RegionViewer>
     </div>

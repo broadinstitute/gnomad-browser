@@ -24,7 +24,6 @@
     "@broad/track-genes": "*",
     "@broad/track-navigator": "*",
     "@broad/track-regional-constraint": "*",
-    "@broad/track-stacked-bar": "*",
     "@broad/track-transcript": "*",
     "@broad/track-variant": "*",
     "@broad/ui": "*",
