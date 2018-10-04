@@ -17,6 +17,7 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
   state = {
     isLoading: false,
     loadError: null,
+    queryErrors: null,
     regionData: null,
   }
 
@@ -37,12 +38,14 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
 
     this.props.fetchRegionData(this.props.regionId)
       .then(
-        (regionData) => {
+        response => {
+          const regionData = response.data.region
           if (!this.mounted) {
             return
           }
           this.setState({
             isLoading: false,
+            queryErrors: response.errors,
             regionData,
           })
         },
@@ -72,9 +75,7 @@ const RegionPageContainer = ComposedComponent => class RegionPage extends Compon
     }
 
     if (this.state.regionData) {
-      return (
-        <ComposedComponent region={this.state.regionData} />
-      )
+      return <ComposedComponent errors={this.state.queryErrors} region={this.state.regionData} />
     }
 
     return null
@@ -96,7 +97,8 @@ export const RegionHoc = (
 
         thunkDispatch(regionActions.requestRegionData(regionId))
         return regionFetchFunction(regionId)
-          .then((regionData) => {
+          .then(response => {
+            const regionData = response.data.region
             thunkDispatch(regionActions.receiveRegionData(regionId, regionData))
 
             let defaultVariantFilter = {
@@ -118,7 +120,7 @@ export const RegionHoc = (
             thunkDispatch(variantActions.searchVariants(''))
             thunkDispatch(variantActions.setVariantFilter(defaultVariantFilter))
 
-            return regionData
+            return response
           })
       })
     }

@@ -26,6 +26,7 @@ const RegionViewerConnected = ({
   history,
   selectedVariantDataset,
   screenSize,
+  showVariants,
 }) => {
   const {
     chrom,
@@ -59,7 +60,6 @@ const RegionViewerConnected = ({
   ]
 
   const totalBp = stop - start
-  const showVariants = totalBp <= 10000
 
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
@@ -113,6 +113,7 @@ RegionViewerConnected.propTypes = {
   history: PropTypes.object.isRequired,
   selectedVariantDataset: PropTypes.string.isRequired,
   screenSize: PropTypes.object.isRequired,
+  showVariants: PropTypes.bool.isRequired,
 }
 RegionViewerConnected.defaultProps = {
   coverageStyle: null,
