@@ -13,17 +13,17 @@ import {
   GeneAttributeValue,
 } from '@broad/ui'
 
-const RegionInfo = ({ region, variantCount }) => {
+const RegionInfo = ({ region, showVariants, variantCount }) => {
   const { start, stop } = region
   return (
     <GeneAttributes>
       <GeneAttributeKeys>
         <GeneAttributeKey>Region size</GeneAttributeKey>
-        <GeneAttributeKey>Total variants</GeneAttributeKey>
+        {showVariants && <GeneAttributeKey>Total variants</GeneAttributeKey>}
       </GeneAttributeKeys>
       <GeneAttributeValues>
         <GeneAttributeValue>{(stop - start).toLocaleString()} BP</GeneAttributeValue>
-        <GeneAttributeValue>{variantCount.toLocaleString()}</GeneAttributeValue>
+        {showVariants && <GeneAttributeValue>{variantCount.toLocaleString()}</GeneAttributeValue>}
       </GeneAttributeValues>
     </GeneAttributes>
   )
@@ -34,6 +34,7 @@ RegionInfo.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
+  showVariants: PropTypes.bool.isRequired,
   variantCount: PropTypes.number.isRequired,
 }
 

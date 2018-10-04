@@ -25,32 +25,49 @@ const RegionInfoSection = styled.div`
   margin-bottom: 10px;
 `
 
-const RegionPage = ({ region }) => (
-  <GenePage>
-    <RegionInfoSection>
-      <GnomadPageHeading>{`${region.chrom}-${region.start}-${region.stop}`}</GnomadPageHeading>
-      <div>
-        <RegionInfo />
-      </div>
-    </RegionInfoSection>
-    <RegionViewer coverageStyle={'new'} />
-    {region.stop - region.start <= 10000 ? (
-      <TableSection>
-        <Settings />
-        <VariantTable tableConfig={tableConfig} />
-      </TableSection>
-    ) : (
-      <p>To view variants, select a region smaller than 10,000 base pairs</p>
-    )}
-  </GenePage>
-)
+const tooManyVariantsError = /Individual variants can only be returned for regions with fewer than \d+ variants/
+
+const RegionPage = ({ errors, region }) => {
+  const showVariants = !(errors && errors.some(err => tooManyVariantsError.test(err.message)))
+  return (
+    <GenePage>
+      <RegionInfoSection>
+        <GnomadPageHeading>{`${region.chrom}-${region.start}-${region.stop}`}</GnomadPageHeading>
+        <div>
+          <RegionInfo showVariants={showVariants} />
+        </div>
+      </RegionInfoSection>
+      <RegionViewer coverageStyle={'new'} showVariants={showVariants} />
+      {showVariants ? (
+        <TableSection>
+          <Settings />
+          <VariantTable tableConfig={tableConfig} />
+        </TableSection>
+      ) : (
+        <p>
+          This region has too many variants to display. To view individual variants, select a
+          smaller region.
+        </p>
+      )}
+    </GenePage>
+  )
+}
 
 RegionPage.propTypes = {
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      message: PropTypes.string.isRequired,
+    })
+  ),
   region: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
+}
+
+RegionPage.defaultProps = {
+  errors: null,
 }
 
 export default RegionHoc(RegionPage, fetchRegion, 'gnomadCombinedVariants')

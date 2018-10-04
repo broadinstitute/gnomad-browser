@@ -541,6 +541,24 @@ export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset,
   })
 }
 
+export const countVariantsInRegion = async ({ elasticClient, index, xstart, xstop }) => {
+  const response = await elasticClient.count({
+    index,
+    type: 'variant',
+    body: {
+      query: {
+        bool: {
+          filter: {
+            range: { xpos: { gte: xstart, lte: xstop } },
+          },
+        },
+      },
+    },
+  })
+
+  return response.count
+}
+
 export const lookupElasticVariantsInRegion = async ({ elasticClient, index, xstart, xstop }) => {
   const fields = [
     'hgvsp',
