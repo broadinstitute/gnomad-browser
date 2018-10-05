@@ -7,14 +7,14 @@ const EXAC_POPULATION_IDS = ['AFR', 'AMR', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
 
 const fetchExacVariantDetails = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: 'exacv1',
+    index: 'exac_v1_variants',
     type: 'variant',
     size: 1,
     body: {
       query: {
         bool: {
           filter: {
-            term: { variantId },
+            term: { variant_id: variantId },
           },
         },
       },
@@ -35,19 +35,28 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     chrom: variantData.contig,
     pos: variantData.start,
     ref: variantData.ref,
-    variantId: variantData.variantId,
-    xpos: getXpos(variantData.contig, variantData.start),
+    variantId: variantData.variant_id,
+    xpos: variantData.xpos,
     // ExAC specific fields
     ac: {
       raw: variantData.AC,
       adj: variantData.AC_Adj,
+      hemi: variantData.AC_Hemi,
+      hom: variantData.AC_Hom,
     },
     an: {
       raw: variantData.AN,
       adj: variantData.AN_Adj,
     },
     filters: variantData.filters,
-    populations: extractPopulationData(EXAC_POPULATION_IDS, variantData),
+    flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
+    populations: EXAC_POPULATION_IDS.map(popId => ({
+      id: popId,
+      ac: (variantData.populations[popId] || {}).AC,
+      an: (variantData.populations[popId] || {}).AN,
+      hemi: (variantData.populations[popId] || {}).hemi,
+      hom: (variantData.populations[popId] || {}).hom,
+    })),
     qualityMetrics: {
       genotypeDepth: {
         all: parseHistogram(variantData.DP_HIST[0]),
@@ -77,7 +86,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
       },
     },
     rsid: variantData.rsid,
-    sortedTranscriptConsequences: JSON.parse(variantData.sortedTranscriptConsequences),
+    sortedTranscriptConsequences: variantData.sortedTranscriptConsequences,
   }
 }
 

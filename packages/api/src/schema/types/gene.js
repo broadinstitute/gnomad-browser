@@ -8,6 +8,9 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
+import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import datasetsConfig from '../datasets/datasetsConfig'
+
 import {
   ClinvarVariantType,
   fetchClinvarVariantsInGene,
@@ -22,6 +25,8 @@ import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVari
 import * as fromExacVariant from './exacElasticVariant'
 
 import * as fromRegionalConstraint from './regionalConstraint'
+
+import { VariantSummaryType } from './variant'
 
 const geneType = new GraphQLObjectType({
   name: 'Gene',
@@ -147,6 +152,16 @@ const geneType = new GraphQLObjectType({
         elasticClient: ctx.database.elastic,
         geneName: obj.gene_name,
       }),
+    },
+    variants: {
+      type: new GraphQLList(VariantSummaryType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchVariantsByGene') },
+      },
+      resolve: (obj, args, ctx) => {
+        const fetchVariantsByGene = datasetsConfig[args.dataset].fetchVariantsByGene
+        return fetchVariantsByGene(ctx, obj.gene_id, obj.canonical_transcript)
+      },
     },
   }),
 })

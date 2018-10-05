@@ -30,6 +30,8 @@ const ExacVariantDetailsType = new GraphQLObjectType({
         fields: {
           raw: { type: GraphQLInt },
           adj: { type: GraphQLInt },
+          hemi: { type: GraphQLInt },
+          hom: { type: GraphQLInt },
         },
       }),
     },
@@ -43,6 +45,7 @@ const ExacVariantDetailsType = new GraphQLObjectType({
       }),
     },
     filters: { type: new GraphQLList(GraphQLString) },
+    flags: { type: new GraphQLList(GraphQLString) },
     populations: { type: new GraphQLList(PopulationType) },
     qualityMetrics: { type: VariantQualityMetricsType },
     rsid: { type: GraphQLString },
