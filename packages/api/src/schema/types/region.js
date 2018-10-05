@@ -9,6 +9,9 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import datasetsConfig from '../datasets/datasetsConfig'
+
 import coverageType, {
   lookupCoverageByIntervals,
   lookupCoverageBuckets,
@@ -22,6 +25,8 @@ import elasticVariantType, {
 import * as fromExacVariant from './exacElasticVariant'
 
 import geneType, { lookupGenesByInterval } from './gene'
+
+import { VariantSummaryType } from './variant'
 
 // Individual variants will only be returned if a region has fewer than this many variants
 const FETCH_INDIVIDUAL_VARIANTS_LIMIT = 30000
@@ -161,6 +166,24 @@ const regionType = new GraphQLObjectType({
         }
 
         return fromExacVariant.lookupElasticVariantsInRegion(queryArgs)
+      },
+    },
+    variants: {
+      type: new GraphQLList(VariantSummaryType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchVariantsByRegion') },
+      },
+      resolve: async (obj, args, ctx) => {
+        const countVariantsInRegion = datasetsConfig[args.dataset].countVariantsInRegion
+        const fetchVariantsByRegion = datasetsConfig[args.dataset].fetchVariantsByRegion
+
+        const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
+        if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
+          throw Error(
+            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
+          )
+        }
+        return fetchVariantsByRegion(ctx, obj)
       },
     },
   }),
