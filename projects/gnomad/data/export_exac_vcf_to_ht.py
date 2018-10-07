@@ -29,7 +29,6 @@ from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_start_pos,
     get_expr_for_variant_id,
     get_expr_for_vep_sorted_transcript_consequences_array,
-    get_expr_for_worst_transcript_consequence_annotations_struct,
     get_expr_for_xpos,
 )
 
@@ -530,9 +529,6 @@ mt = mt.select_rows(
     pos=get_expr_for_start_pos(mt),
     ref=get_expr_for_ref_allele(mt),
     original_alt_alleles=get_expr_for_original_alt_alleles_set(mt),
-    main_transcript=get_expr_for_worst_transcript_consequence_annotations_struct(
-        vep_sorted_transcript_consequences_root=mt.sortedTranscriptConsequences
-    ),
     sortedTranscriptConsequences=mt.sortedTranscriptConsequences,
     variant_id=get_expr_for_variant_id(mt),
     xpos=get_expr_for_xpos(mt),
