@@ -32,8 +32,8 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     gqlType: 'ExacVariantDetails',
     // variant interface fields
     alt: variantData.alt,
-    chrom: variantData.contig,
-    pos: variantData.start,
+    chrom: variantData.chrom,
+    pos: variantData.pos,
     ref: variantData.ref,
     variantId: variantData.variant_id,
     xpos: variantData.xpos,
