@@ -52,10 +52,10 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
     populations: EXAC_POPULATION_IDS.map(popId => ({
       id: popId,
-      ac: (variantData.populations[popId] || {}).AC,
-      an: (variantData.populations[popId] || {}).AN,
-      hemi: (variantData.populations[popId] || {}).hemi,
-      hom: (variantData.populations[popId] || {}).hom,
+      ac: (variantData.populations[popId] || {}).AC || 0,
+      an: (variantData.populations[popId] || {}).AN || 0,
+      hemi: (variantData.populations[popId] || {}).hemi || 0,
+      hom: (variantData.populations[popId] || {}).hom || 0,
     })),
     qualityMetrics: {
       genotypeDepth: {
