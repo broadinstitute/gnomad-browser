@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import keymirror from 'keymirror'
-import { Record, Set, OrderedMap, Map, List, fromJS } from 'immutable'
+import { Record, OrderedMap, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
@@ -263,9 +263,8 @@ export default function createVariantReducer({
         if (geneData.get(datasetKey) && variantDatasets[datasetKey]) {
           geneData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
-              variant
-                .set('id', variant.get('variant_id'))
-                .set('datasets', Set([datasetKey])))
+              variant.set('id', variant.get('variant_id'))
+            )
           })
         } else if (combinedDatasets[datasetKey]) {
           const sources = combinedDatasets[datasetKey].sources
@@ -293,9 +292,8 @@ export default function createVariantReducer({
         if (regionData.get(datasetKey) && variantDatasets[datasetKey]) {
           regionData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
-              variant
-                .set('id', variant.get('variant_id'))
-                .set('datasets', Set([datasetKey])))
+              variant.set('id', variant.get('variant_id'))
+            )
           })
         } else if (combinedDatasets[datasetKey]) {
           const sources = combinedDatasets[datasetKey].sources
