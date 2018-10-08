@@ -140,8 +140,14 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(VariantSummaryType),
       args: {
         dataset: { type: datasetArgumentTypeForMethod('fetchVariantsByGene') },
+        transcriptId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
+        if (args.transcriptId) {
+          const fetchVariantsByTranscript = datasetsConfig[args.dataset].fetchVariantsByTranscript
+          return fetchVariantsByTranscript(ctx, args.transcriptId, obj)
+        }
+
         const fetchVariantsByGene = datasetsConfig[args.dataset].fetchVariantsByGene
         return fetchVariantsByGene(ctx, obj.gene_id, obj.canonical_transcript)
       },
