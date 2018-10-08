@@ -76,21 +76,21 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         lcr
         segdup
       }
-      exacVariants {
-        variant_id
-        rsid
-        pos
-        xpos
+      exacVariants: variants(dataset:exac) {
+        allele_count: ac
+        hemi_count: ac_hemi
+        hom_count: ac_hom
+        allele_num: an
+        allele_freq: af
+        consequence
+        filters
+        flags
         hgvsc
         hgvsp
-        allele_count
-        allele_freq
-        allele_num
-        filters
-        hom_count
-        hemi_count
-        consequence
-        lof
+        pos
+        rsid
+        variant_id: variantId
+        xpos
       }
       exacv1_constraint {
         mu_syn
