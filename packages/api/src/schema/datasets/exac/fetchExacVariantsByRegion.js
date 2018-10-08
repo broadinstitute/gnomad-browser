@@ -24,18 +24,21 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       'chrom',
       'filters',
       'flags',
-      'main_transcript.hgvs',
-      'main_transcript.hgvsc',
-      'main_transcript.hgvsp',
-      'main_transcript.major_consequence',
       'pos',
       'ref',
       'rsid',
       'variant_id',
       'xpos',
     ],
-
     body: {
+      script_fields: {
+        csq: {
+          script: {
+            lang: 'painless',
+            inline: 'params._source.sortedTranscriptConsequences[0]',
+          },
+        },
+      },
       query: {
         bool: {
           filter: [{ term: { chrom } }, rangeQuery],
@@ -63,12 +66,12 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       ac_hom: variantData.AC_Hom,
       af: variantData.AN_Adj === 0 ? 0 : variantData.AC_Adj / variantData.AN_Adj,
       an: variantData.AN_Adj,
-      consequence: variantData.main_transcript.major_consequence,
+      consequence: hit.fields.csq[0].major_consequence,
       filters: variantData.filters,
       flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
-      hgvs: variantData.main_transcript.hgvs,
-      hgvc: variantData.main_transcript.hgvsc,
-      hgvp: variantData.main_transcript.hgvsp,
+      hgvs: hit.fields.csq[0].hgvs,
+      hgvc: hit.fields.csq[0].hgvsc,
+      hgvp: hit.fields.csq[0].hgvsp,
       rsid: variantData.rsid,
     }
   })
