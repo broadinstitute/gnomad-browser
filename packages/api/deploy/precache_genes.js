@@ -14,25 +14,7 @@ console.log(`Loading ${genes.size} genes`)
 
 const variantFilter = 'all'
 
-const exacVariant = `
-  exacVariants {
-    variant_id
-    rsid
-    pos
-    xpos
-    hgvsc
-    hgvsp
-    allele_count
-    allele_freq
-    allele_num
-    filters
-    hom_count
-    consequence
-    lof
-  }
-`
-
-const variantQuery = (includeExac = true) => `
+const variantQuery = () => `
   gnomadExomeVariants(category: "${variantFilter}" transcriptId: "undefined") {
     variant_id
     rsid
@@ -67,7 +49,6 @@ const variantQuery = (includeExac = true) => `
     lcr
     segdup
   }
-  ${includeExac ? exacVariant : ''}
 `
 
 export const fetchData = (geneName, includeExac = true, url = API_URL) => {
@@ -116,7 +97,6 @@ const testGenes = List([
 const variantDataSets = [
   'gnomadExomeVariants',
   'gnomadGenomeVariants',
-  'exacVariants',
 ]
 
 function fetchGeneList(genes = testGenes, includeExac = true) {
