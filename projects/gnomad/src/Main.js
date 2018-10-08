@@ -10,9 +10,6 @@ import App from './routes'
 
 import toc from './toc.json'
 
-const sum = (oldValue, newValue) => oldValue + newValue
-const concat = (oldValue, newValue) => oldValue.concat(newValue)
-
 const appSettings = {
   variantSearchPredicate(variant, query) {
     return (
@@ -42,7 +39,7 @@ const appSettings = {
     startingQcFilter: true,
   },
   variantDatasets: {
-    gnomadExomeVariants: {
+    gnomadCombinedVariants: {
       id: null,
       variant_id: null,
       rsid: null,
@@ -57,29 +54,7 @@ const appSettings = {
       hom_count: null,
       hemi_count: null,
       consequence: null,
-      lof: null,
-      lcr: null,
-      segdup: null,
-      datasets: [],
-    },
-    gnomadGenomeVariants: {
-      id: null,
-      variant_id: null,
-      rsid: null,
-      pos: null,
-      xpos: null,
-      hgvsc: null,
-      hgvsp: null,
-      allele_count: null,
-      allele_freq: null,
-      allele_num: null,
-      filters: null,
-      hom_count: null,
-      hemi_count: null,
-      consequence: null,
-      lof: null,
-      lcr: null,
-      segdup: null,
+      flags: [],
       datasets: [],
     },
     exacVariants: {
@@ -101,20 +76,6 @@ const appSettings = {
       datasets: [],
     },
   },
-  combinedDatasets: {
-    gnomadCombinedVariants: {
-      sources: ['gnomadExomeVariants', 'gnomadGenomeVariants'],
-      combineKeys: {
-        allele_count: sum,
-        allele_num: sum,
-        hom_count: sum,
-        hemi_count: sum,
-        filters: concat,
-        // allele_freq: () => null,
-        datasets: [],
-      }
-    }
-  }
 }
 
 const store = createGenePageStore(appSettings)

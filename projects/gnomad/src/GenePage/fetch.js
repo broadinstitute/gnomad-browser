@@ -40,41 +40,24 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         pos
         variantId
       }
-      gnomadExomeVariants(transcriptId: "${transcriptId || undefined}") {
-        variant_id
-        rsid
-        pos
-        xpos
+      gnomadCombinedVariants: variants(dataset: gnomad_r2_0_2${
+        transcriptId ? `, transcriptId: "${transcriptId}"` : ''
+      }) {
+        allele_count: ac
+        hemi_count: ac_hemi
+        hom_count: ac_hom
+        allele_num: an
+        allele_freq: af
+        consequence
+        datasets
+        filters
+        flags
         hgvsc
         hgvsp
-        allele_count
-        allele_freq
-        allele_num
-        filters
-        hom_count
-        hemi_count
-        consequence
-        lof
-        lcr
-        segdup
-      }
-      gnomadGenomeVariants(transcriptId: "${transcriptId || undefined}") {
-        variant_id
-        rsid
         pos
+        rsid
+        variant_id: variantId
         xpos
-        hgvsc
-        hgvsp
-        allele_count
-        allele_freq
-        allele_num
-        filters
-        hom_count
-        hemi_count
-        consequence
-        lof
-        lcr
-        segdup
       }
       exacVariants: variants(dataset:exac) {
         allele_count: ac
@@ -83,6 +66,7 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         allele_num: an
         allele_freq: af
         consequence
+        datasets
         filters
         flags
         hgvsc

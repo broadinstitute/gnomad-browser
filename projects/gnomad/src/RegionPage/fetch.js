@@ -48,39 +48,22 @@ export const fetchRegion = regionId => {
       pos
       mean
     }
-    gnomadGenomeVariants {
-      variant_id
-      rsid
-      pos
-      xpos
+    gnomadCombinedVariants: variants(dataset: gnomad_r2_0_2) {
+      allele_count: ac
+      hemi_count: ac_hemi
+      hom_count: ac_hom
+      allele_num: an
+      allele_freq: af
+      consequence
+      datasets
+      filters
+      flags
       hgvsc
       hgvsp
-      allele_count
-      allele_freq
-      allele_num
-      filters
-      hom_count
-      consequence
-      lof
-      lcr
-      segdup
-    }
-    gnomadExomeVariants {
-      variant_id
-      rsid
       pos
+      rsid
+      variant_id: variantId
       xpos
-      hgvsc
-      hgvsp
-      allele_count
-      allele_freq
-      allele_num
-      filters
-      hom_count
-      consequence
-      lof
-      lcr
-      segdup
     }
     exacVariants: variants(dataset:exac) {
       allele_count: ac
@@ -89,6 +72,7 @@ export const fetchRegion = regionId => {
       allele_num: an
       allele_freq: af
       consequence
+      datasets
       filters
       flags
       hgvsc

@@ -38,6 +38,7 @@ export const VariantSummaryType = new GraphQLObjectType({
     an: { type: GraphQLInt },
     af: { type: GraphQLFloat },
     consequence: { type: GraphQLString },
+    datasets: { type: new GraphQLList(GraphQLString) },
     filters: { type: new GraphQLList(GraphQLString) },
     flags: { type: new GraphQLList(GraphQLString) },
     hgvs: { type: GraphQLString },
