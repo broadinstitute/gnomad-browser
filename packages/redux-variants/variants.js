@@ -377,11 +377,27 @@ const sortVariants = (variants, key, ascending) => {
     getSortVal = variant => variant.get('datasets').first()
   }
   else if (key === 'flags') {
-    getSortVal = variant =>
-      List(['lcr', 'segdup', 'lof'])
-        .map(flag => variant.get(flag))
-        .filter(flag => flag !== null)
-        .first()
+    getSortVal = variant => {
+      const flags = []
+
+      if (variant.get('flags', []).includes('lcr') || variant.get('lcr')) {
+        flags.push('lcr')
+      }
+      if (variant.get('flags', []).includes('segdup') || variant.get('segdup')) {
+        flags.push('segdup')
+      }
+      // FIXME: Remove this second condition (#248)
+      // Kept to preserve functionality for gnomAD 2.0.2 variants, which don't have the
+      // correct flag value computed
+      if (variant.get('flags', []).includes('lc_lof') || variant.get('lof') === 'LC') {
+        flags.push('lc_lof')
+      }
+      if (variant.get('flags', []).includes('lof_flag')) {
+        flags.push('lof_flag')
+      }
+
+      return flags.length
+    }
   }
 
   const sorter = ascending
