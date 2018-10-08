@@ -70,8 +70,8 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       filters: variantData.filters,
       flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
       hgvs: hit.fields.csq[0].hgvs,
-      hgvc: hit.fields.csq[0].hgvsc,
-      hgvp: hit.fields.csq[0].hgvsp,
+      hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
+      hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
       rsid: variantData.rsid,
     }
   })
