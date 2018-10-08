@@ -37,6 +37,7 @@ hl.init(log="/tmp/hail.log")
 print("\n=== Importing Hail table ===")
 
 ds = hl.read_table(args.ht_url)
+ds = ds.select_globals()
 
 print("\n=== Exporting to Elasticsearch ===")
 
