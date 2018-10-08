@@ -125,17 +125,36 @@ const flagProps = {
     level: 'info',
     tooltip: 'Found in a segmental duplication region\nVariant annotation or quality dubious',
   },
-  lof: {
+  lc_lof: {
     children: 'LC LoF',
     level: 'error',
     tooltip: 'Low-confidence LoF\nVariant annotation or quality dubious',
   },
+  lof_flag: {
+    children: 'LoF flag',
+    level: 'warning',
+    tooltip: 'Flagged by LOFTEE\nVariant annotation or quality dubious',
+  },
 }
 
-const formatFlags = (dataRow, index) => {
-  const variantFlags = ['lcr', 'segdup', 'lof'].filter(
-    flag => dataRow.get(flag) === true || dataRow.get(flag) === 'LC'
-  )
+const formatFlags = dataRow => {
+  const variantFlags = []
+
+  if (dataRow.get('flags', []).includes('lcr') || dataRow.get('lcr')) {
+    variantFlags.push('lcr')
+  }
+  if (dataRow.get('flags', []).includes('segdup') || dataRow.get('segdup')) {
+    variantFlags.push('segdup')
+  }
+  // FIXME: Remove this second condition (#248)
+  // Kept to preserve functionality for gnomAD 2.0.2 variants, which don't have the
+  // correct flag value computed
+  if (dataRow.get('flags', []).includes('lc_lof') || dataRow.get('lof') === 'LC') {
+    variantFlags.push('lc_lof')
+  }
+  if (dataRow.get('flags', []).includes('lof_flag')) {
+    variantFlags.push('lof_flag')
+  }
 
   return variantFlags.map(flag => <Badge key={flag} {...flagProps[flag]} />)
 }
