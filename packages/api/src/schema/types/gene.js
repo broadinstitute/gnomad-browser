@@ -22,7 +22,6 @@ import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 
 import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
-import * as fromExacVariant from './exacElasticVariant'
 
 import * as fromRegionalConstraint from './regionalConstraint'
 
@@ -88,22 +87,6 @@ const geneType = new GraphQLObjectType({
           obj,
           ctx,
           transcriptQuery: args.transcriptId,
-          category: args.category,
-        }),
-    },
-    exacVariants: {
-      type: new GraphQLList(elasticVariantType),
-      args: {
-        category: {
-          type: GraphQLString,
-          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
-        },
-      },
-      resolve: (obj, args, ctx) =>
-        fromExacVariant.lookupElasticVariantsByGeneId({
-          elasticClient: ctx.database.elastic,
-          obj,
-          ctx,
           category: args.category,
         }),
     },

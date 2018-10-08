@@ -22,8 +22,6 @@ import elasticVariantType, {
   lookupElasticVariantsInRegion,
 } from './elasticVariant'
 
-import * as fromExacVariant from './exacElasticVariant'
-
 import geneType, { lookupGenesByInterval } from './gene'
 
 import { VariantSummaryType } from './variant'
@@ -145,27 +143,6 @@ const regionType = new GraphQLObjectType({
         }
 
         return lookupElasticVariantsInRegion(queryArgs)
-      },
-    },
-    exacVariants: {
-      type: new GraphQLList(elasticVariantType),
-      resolve: async (obj, args, ctx) => {
-        const queryArgs = {
-          elasticClient: ctx.database.elastic,
-          start: obj.start,
-          stop: obj.stop,
-          chrom: obj.chrom,
-        }
-
-        const numVariantsInRegion = await fromExacVariant.countExacVariantsInRegion(queryArgs)
-
-        if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
-          throw Error(
-            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
-          )
-        }
-
-        return fromExacVariant.lookupElasticVariantsInRegion(queryArgs)
       },
     },
     variants: {
