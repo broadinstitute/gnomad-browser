@@ -61,8 +61,9 @@ const RegionViewerConnected = ({
 
   const totalBp = stop - start
 
+  // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 300
+  const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
   const datasetTranslations = {
     gnomadExomeVariants: 'gnomAD exomes',
@@ -72,39 +73,37 @@ const RegionViewerConnected = ({
   }
 
   return (
-    <div>
-      <RegionViewer
-        width={regionViewerWidth}
-        padding={0}
-        regions={regions}
-        regionAttributes={attributeConfig}
-        featuresToDisplay={featuresToDisplay}
-        leftPanelWidth={100}
-      >
-        <CoverageTrack
-          title={'Coverage'}
-          height={200}
-          dataConfig={coverageConfig}
-          yTickNumber={11}
-          yMax={110}
-          totalBp={totalBp}
+    <RegionViewer
+      width={regionViewerWidth}
+      padding={0}
+      regions={regions}
+      regionAttributes={attributeConfig}
+      featuresToDisplay={featuresToDisplay}
+      leftPanelWidth={100}
+    >
+      <CoverageTrack
+        title={'Coverage'}
+        height={200}
+        dataConfig={coverageConfig}
+        yTickNumber={11}
+        yMax={110}
+        totalBp={totalBp}
+      />
+
+      <GenesTrack
+        genes={genes}
+        onGeneClick={geneName => history.push(`/gene/${geneName}`)}
+      />
+
+      {showVariants && (
+        <VariantAlleleFrequencyTrack
+          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
+          variants={variantsReversed.toJS()}
         />
+      )}
 
-        <GenesTrack
-          genes={genes}
-          onGeneClick={geneName => history.push(`/gene/${geneName}`)}
-        />
-
-        {showVariants && (
-          <VariantAlleleFrequencyTrack
-            title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
-            variants={variantsReversed.toJS()}
-          />
-        )}
-
-        {showVariants && <NavigatorTrackConnected title="Viewing in table" />}
-      </RegionViewer>
-    </div>
+      {showVariants && <NavigatorTrackConnected title="Viewing in table" />}
+    </RegionViewer>
   )
 }
 RegionViewerConnected.propTypes = {
