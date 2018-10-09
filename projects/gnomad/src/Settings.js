@@ -13,7 +13,7 @@ const SettingsWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1300px) {
     flex-direction: column;
     align-items: center;
 
