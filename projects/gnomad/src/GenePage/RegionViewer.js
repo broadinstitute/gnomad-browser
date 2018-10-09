@@ -126,6 +126,7 @@ const GeneViewer = ({
       padding={exonPadding}
       regions={canonicalExons}
       regionAttributes={attributeConfig}
+      rightPanelWidth={smallScreen ? 0 : 160}
     >
       <CoverageTrack
         title={'Coverage'}

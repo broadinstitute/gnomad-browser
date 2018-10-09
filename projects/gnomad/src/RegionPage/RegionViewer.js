@@ -79,7 +79,7 @@ const RegionViewerConnected = ({
       regions={regions}
       regionAttributes={attributeConfig}
       featuresToDisplay={featuresToDisplay}
-      leftPanelWidth={100}
+      rightPanelWidth={smallScreen ? 0 : 160}
     >
       <CoverageTrack
         title={'Coverage'}
