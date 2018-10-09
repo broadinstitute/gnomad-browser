@@ -147,7 +147,7 @@ class ClinVarTrack extends Component {
     const nBins = 100
     const binWidth = width / nBins
     const binPadding = 1
-    const bins = [...Array(nBins)].map(() => ({ lof: 0, missense: 0, synonymous: 0, all: 0 }))
+    const bins = [...Array(nBins)].map(() => ({ lof: 0, missense: 0, synonymous: 0, other: 0 }))
 
     const variantBinIndex = variant => {
       const variantPosition = xScale(positionOffset(variant.pos).offsetPosition)
@@ -157,15 +157,15 @@ class ClinVarTrack extends Component {
     variants.forEach(variant => {
       const category = variant.majorConsequence
         ? getCategoryFromConsequence(variant.majorConsequence)
-        : 'all'
+        : 'other'
 
       bins[variantBinIndex(variant)][category] += 1
     })
 
-    const categories = ['lof', 'missense', 'synonymous', 'all']
+    const categories = ['lof', 'missense', 'synonymous', 'other']
 
     const maxVariantsInBin = bins.reduce((max, bin) => {
-      const binTotal = bin.lof + bin.missense + bin.synonymous + bin.all
+      const binTotal = bin.lof + bin.missense + bin.synonymous + bin.other
       return Math.max(max, binTotal)
     }, -Infinity)
 
@@ -223,13 +223,13 @@ class ClinVarTrack extends Component {
       lof: [],
       missense: [],
       synonymous: [],
-      all: [],
+      other: [],
     }
 
     variants.forEach(variant => {
       const category = variant.majorConsequence
         ? getCategoryFromConsequence(variant.majorConsequence)
-        : 'all'
+        : 'other'
 
       variantsByConsequence[category].push(variant)
     })
@@ -238,7 +238,7 @@ class ClinVarTrack extends Component {
       variantsByConsequence.lof,
       variantsByConsequence.missense,
       variantsByConsequence.synonymous,
-      variantsByConsequence.all,
+      variantsByConsequence.other,
     ]
 
     return (
@@ -261,10 +261,10 @@ class ClinVarTrack extends Component {
       lof: variantFilter.lof,
       missense: variantFilter.missense,
       synonymous: variantFilter.synonymous,
-      all: variantFilter.other,
+      other: variantFilter.other,
     }
     const matchesConsequenceFilter = variant => {
-      const category = getCategoryFromConsequence(variant.majorConsequence) || 'all'
+      const category = getCategoryFromConsequence(variant.majorConsequence) || 'other'
       return isCategoryIncluded[category]
     }
 
