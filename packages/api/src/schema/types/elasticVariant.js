@@ -107,8 +107,6 @@ const elasticVariantType = new GraphQLObjectType({
   }),
 })
 
-export default elasticVariantType
-
 export const lookupElasticVariantsByGeneId = ({
   elasticClient,
   index,
@@ -474,91 +472,6 @@ export const lookupElasticVariantsByGeneId = ({
   }).catch(error => console.log(error))
 }
 
-export const lookupElasticVariantsByInterval = ({ elasticClient, index, dataset, intervals }) => {
-  const regionRangeQueries = intervals.map(({ xstart, xstop }) => (
-    { range: { xpos: { gte: xstart, lte: xstop } } }
-  ))
-
-  const fields = [
-    'hgvsp',
-    'hgvsc',
-    'majorConsequence',
-    'pos',
-    'xpos',
-    'rsid',
-    'variantId',
-    'variantId',
-    'lof',
-    'lcr',
-    'segdup',
-    'AC',
-    'AF',
-    'AN',
-    'Hom',
-  ]
-
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index,
-      type: 'variant',
-      size: 5000,
-      _source: fields,
-      body: {
-        query: {
-          bool: {
-            filter: {
-              bool: {
-                should: regionRangeQueries
-              },
-            },
-          },
-        },
-        sort: [{ xpos: { order: 'asc' } }],
-      },
-    }).then((response) => {
-      resolve(response.hits.hits.map((v) => {
-        const elastic_variant = v._source
-        return ({
-          hgvsp: elastic_variant.hgvsp ? elastic_variant.hgvsp.split(':')[1] : '',
-          hgvsc: elastic_variant.hgvsc ? elastic_variant.hgvsc.split(':')[1] : '',
-          consequence: elastic_variant.majorConsequence,
-          pos: elastic_variant.pos,
-          xpos: elastic_variant.xpos,
-          rsid: elastic_variant.rsid,
-          variant_id: elastic_variant.variantId,
-          id: elastic_variant.variantId,
-          lof: elastic_variant.lof,
-          filters: elastic_variant.filters,
-          allele_count: elastic_variant.AC,
-          allele_freq: elastic_variant.AF ? elastic_variant.AF : 0,
-          allele_num: elastic_variant.AN,
-          hom_count: elastic_variant.Hom,
-          lcr: elastic_variant.lcr,
-          segdup: elastic_variant.segdup,
-        })
-      }))
-    })
-  })
-}
-
-export const countVariantsInRegion = async ({ elasticClient, index, xstart, xstop }) => {
-  const response = await elasticClient.count({
-    index,
-    type: 'variant',
-    body: {
-      query: {
-        bool: {
-          filter: {
-            range: { xpos: { gte: xstart, lte: xstop } },
-          },
-        },
-      },
-    },
-  })
-
-  return response.count
-}
-
 export const lookupElasticVariantsInRegion = async ({ elasticClient, index, xstart, xstop }) => {
   const fields = [
     'hgvsp',
@@ -618,7 +531,7 @@ export const lookupElasticVariantsInRegion = async ({ elasticClient, index, xsta
   })
 }
 
-export const lookupElasticVariantByList = ({
+const lookupElasticVariantByList = ({
   elasticClient,
   index,
   variantIdListQuery,
