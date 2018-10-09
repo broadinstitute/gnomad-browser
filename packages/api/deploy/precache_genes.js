@@ -12,45 +12,6 @@ const genes = List(JSON.parse(fs.readFileSync(GENE_FILE_PATH, 'utf8')))
 
 console.log(`Loading ${genes.size} genes`)
 
-const variantFilter = 'all'
-
-const variantQuery = () => `
-  gnomadExomeVariants(category: "${variantFilter}" transcriptId: "undefined") {
-    variant_id
-    rsid
-    pos
-    xpos
-    hgvsc
-    hgvsp
-    allele_count
-    allele_freq
-    allele_num
-    filters
-    hom_count
-    consequence
-    lof
-    lcr
-    segdup
-  }
-  gnomadGenomeVariants(category: "${variantFilter}" transcriptId: "undefined") {
-    variant_id
-    rsid
-    pos
-    xpos
-    hgvsc
-    hgvsp
-    allele_count
-    allele_freq
-    allele_num
-    filters
-    hom_count
-    consequence
-    lof
-    lcr
-    segdup
-  }
-`
-
 export const fetchData = (geneName, includeExac = true, url = API_URL) => {
   const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
     `gene_name: "${geneName}"`
@@ -62,7 +23,9 @@ export const fetchData = (geneName, includeExac = true, url = API_URL) => {
 
   const query = `{
     gene(${argument}) {
-      ${variantQuery(includeExac)}
+      gnomadVariants: variants(dataset: gnomad_r2_0_2) {
+        variantId
+      }
       transcript {
         genome_coverage {
           pos
@@ -94,11 +57,6 @@ const testGenes = List([
   'DMD',
 ])
 
-const variantDataSets = [
-  'gnomadExomeVariants',
-  'gnomadGenomeVariants',
-]
-
 function fetchGeneList(genes = testGenes, includeExac = true) {
   if (genes.size === 0) {
     console.log('done')
@@ -109,15 +67,13 @@ function fetchGeneList(genes = testGenes, includeExac = true) {
 
   fetchData(gene, includeExac)
     .then((response) => {
-      const variantCounts = variantDataSets.map((dataset) => {
-        return response[dataset].length
-      })
+      const variantCount = response.gnomadVariants.length
       const coverageCounts = Object.keys(response.transcript).map((dataset) => {
         return response.transcript[dataset].length
       })
       const end = new Date().getTime()
       const time = end - start
-      console.log([end, genes.size, gene, ...variantCounts, ...coverageCounts, time].join(','))
+      console.log([end, genes.size, gene, variantCount, ...coverageCounts, time].join(','))
       fetchGeneList(genes.rest())
     })
     .catch((error) => {

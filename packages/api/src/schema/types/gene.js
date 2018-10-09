@@ -21,8 +21,6 @@ import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsBy
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 
-import elasticVariantType, { lookupElasticVariantsByGeneId } from './elasticVariant'
-
 import * as fromRegionalConstraint from './regionalConstraint'
 
 import { VariantSummaryType } from './variant'
@@ -45,51 +43,6 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
-    gnomadExomeVariants: {
-      type: new GraphQLList(elasticVariantType),
-      args: {
-        transcriptId: { type: GraphQLString },
-        variantIdListQuery: {
-          type: new GraphQLList(GraphQLString),
-          description: 'Give a list of variant ids.'
-        },
-        category: {
-          type: GraphQLString,
-          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
-        },
-      },
-      resolve: (obj, args, ctx) => {
-        return lookupElasticVariantsByGeneId({
-          elasticClient: ctx.database.elastic,
-          index: 'gnomad_exomes_202_37',
-          obj,
-          ctx,
-          transcriptQuery: args.transcriptId,
-          category: args.category,
-          variantIdListQuery: args.variantIdListQuery,
-        })
-      }
-        ,
-    },
-    gnomadGenomeVariants: {
-      type: new GraphQLList(elasticVariantType),
-      args: {
-        transcriptId: { type: GraphQLString },
-        category: {
-          type: GraphQLString,
-          description: 'Return variants by consequence category: all, lof, or lofAndMissense',
-        },
-      },
-      resolve: (obj, args, ctx) =>
-        lookupElasticVariantsByGeneId({
-          elasticClient: ctx.database.elastic,
-          index: 'gnomad_genomes_202_37',
-          obj,
-          ctx,
-          transcriptQuery: args.transcriptId,
-          category: args.category,
-        }),
-    },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantType),
       args: {

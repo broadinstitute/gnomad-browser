@@ -16,12 +16,6 @@ import coverageType, {
   lookupCoverageByIntervals,
   lookupCoverageBuckets,
 } from './coverage'
-
-import elasticVariantType, {
-  countVariantsInRegion,
-  lookupElasticVariantsInRegion,
-} from './elasticVariant'
-
 import geneType, { lookupGenesByInterval } from './gene'
 
 import { VariantSummaryType } from './variant'
@@ -102,48 +96,6 @@ const regionType = new GraphQLObjectType({
           chrom: obj.chrom,
         })
       }
-    },
-    gnomadExomeVariants: {
-      type: new GraphQLList(elasticVariantType),
-      resolve: async (obj, args, ctx) => {
-        const queryArgs = {
-          elasticClient: ctx.database.elastic,
-          index: 'gnomad_exomes_202_37',
-          xstart: obj.xstart,
-          xstop: obj.xstop,
-        }
-
-        const numVariantsInRegion = await countVariantsInRegion(queryArgs)
-
-        if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
-          throw Error(
-            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
-          )
-        }
-
-        return lookupElasticVariantsInRegion(queryArgs)
-      },
-    },
-    gnomadGenomeVariants: {
-      type: new GraphQLList(elasticVariantType),
-      resolve: async (obj, args, ctx) => {
-        const queryArgs = {
-          elasticClient: ctx.database.elastic,
-          index: 'gnomad_genomes_202_37',
-          xstart: obj.xstart,
-          xstop: obj.xstop,
-        }
-
-        const numVariantsInRegion = await countVariantsInRegion(queryArgs)
-
-        if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
-          throw Error(
-            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
-          )
-        }
-
-        return lookupElasticVariantsInRegion(queryArgs)
-      },
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
