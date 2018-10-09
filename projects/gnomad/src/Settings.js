@@ -9,11 +9,22 @@ import { Checkbox, ConsequenceCategoriesControl, Search } from '@broad/ui'
 
 const SettingsWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1300px) and (min-width: 1101px) {
+    > div {
+      &:nth-child(2) {
+        order: 3;
+        width: 50%;
+        margin-top: 1em;
+      }
+    }
+  }
+
+  @media (max-width: 1100px) {
     flex-direction: column;
     align-items: center;
 
