@@ -58,7 +58,7 @@ const GeneInfo = ({ currentTranscript, gene, variantCount }) => {
         <GeneAttributeValue>{variantCount}</GeneAttributeValue>
         <GeneAttributeValue>
           <a target="_blank" href={ucscUrl}>
-            {`${chrom}:${start}:${stop}`}
+            {`${chrom}:${start}-${stop}`}
           </a>
         </GeneAttributeValue>
         <GeneAttributeValue>
