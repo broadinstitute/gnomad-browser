@@ -7,7 +7,7 @@ import { QuestionMark } from '@broad/help'
 import { GenePageHoc } from '@broad/redux-genes'
 import { actions as variantActions } from '@broad/redux-variants'
 import { VariantTable } from '@broad/table'
-import { ClassicExacButton, GenePage, SectionHeading, TableSection } from '@broad/ui'
+import { ClassicExacButton, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
 import Settings from '../Settings'
@@ -32,18 +32,6 @@ const ExportVariantsButton = connect(
   })
 )(ClassicExacButton)
 
-/**
- * FIXME
- * This section previously had a 97% width left aligned div nested in a 90% width centered div.
- * This imitates the same layout with fewer elements. The horizontal alignment of various sections
- * needs to be made consistent.
- */
-const GeneInfoSection = styled.div`
-  width: 87%;
-  padding-right: 3%;
-  margin-bottom: 10px;
-`
-
 const GeneFullName = styled.span`
   font-size: 22px;
   font-weight: 400;
@@ -64,8 +52,8 @@ const GenePageConnected = ({ gene }) => {
   console.log(gene)
   const { gene_name: geneSymbol, full_gene_name: fullGeneName } = gene
   return (
-    <GenePage>
-      <GeneInfoSection>
+    <TrackPage>
+      <TrackPageSection>
         <GnomadPageHeading>
           {geneSymbol} <GeneFullName>{fullGeneName}</GeneFullName>
         </GnomadPageHeading>
@@ -78,16 +66,16 @@ const GenePageConnected = ({ gene }) => {
             <ConstraintTableOrPlaceholder />
           </div>
         </GeneInfoColumnWrapper>
-      </GeneInfoSection>
+      </TrackPageSection>
       <GeneViewer />
-      <TableSection>
+      <TrackPageSection>
         <Settings />
         <VariantTable tableConfig={tableConfig} />
         <BottomButtonSection>
           <ExportVariantsButton>Export variants</ExportVariantsButton>
         </BottomButtonSection>
-      </TableSection>
-    </GenePage>
+      </TrackPageSection>
+    </TrackPage>
   )
 }
 
