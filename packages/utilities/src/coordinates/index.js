@@ -40,7 +40,7 @@ export const calculateRegionDistances = regions =>
     if (i === 0) {
       return {
         ...region,
-        previousRegionDistance: 0,
+        previousRegionDistance: Infinity,
       }
     }
     return {
@@ -63,12 +63,7 @@ export const addPadding = R.curry((padding, regions) => {
       start: region.stop + 1,
       stop: region.stop + padding,
     }
-    if (i === 0) {
-      return [
-        region,
-        endPad,
-      ]
-    }
+
     // check if total padding greater than distance between exons
     if (region.previousRegionDistance < padding * 2) {
       return [
