@@ -202,22 +202,21 @@ export default function createVariantReducer({
   variantDatasets,
   variantMatchesConsequenceCategoryFilter,
   variantSearchPredicate,
-  combinedDatasets = {},
   projectDefaults: {
     startingVariant,
     startingVariantDataset,
     startingQcFilter,
   }
 }) {
-  const datasetKeys = Object.keys(variantDatasets).concat(Object.keys(combinedDatasets))
-  const variantRecords = datasetKeys.reduce((acc, dataset) => {
-    if (dataset in variantDatasets) {
-      acc[dataset] = Record(variantDatasets[dataset])
-    } else if (dataset in combinedDatasets) {
-      acc[dataset] = Record(combinedDatasets[dataset].schema)
-    }
-    return acc
-  }, {})
+  const datasetKeys = Object.keys(variantDatasets)
+  const variantRecords = datasetKeys.reduce(
+    (acc, dataset) => ({
+      ...acc,
+      [dataset]: Record(variantDatasets[dataset]),
+    }),
+    {}
+  )
+
   const State = Record({
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>
       (acc.set(dataset, OrderedMap())), OrderedMap()),
@@ -260,24 +259,12 @@ export default function createVariantReducer({
     [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
-        if (geneData.get(datasetKey) && variantDatasets[datasetKey]) {
+        if (geneData.get(datasetKey)) {
           geneData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant.set('id', variant.get('variant_id'))
             )
           })
-        } else if (combinedDatasets[datasetKey]) {
-          const sources = combinedDatasets[datasetKey].sources
-          const combineKeys = combinedDatasets[datasetKey].combineKeys
-
-          variantMap = sources.reduce((acc, dataset) => {
-            return acc.mergeDeepWith((oldValue, newValue, key) => {
-              if (combineKeys[key]) {
-                return combineKeys[key](oldValue, newValue)
-              }
-              return oldValue
-            }, nextState.byVariantDataset.get(dataset))
-          }, OrderedMap())
         }
         return nextState
           .set('byVariantDataset', nextState.byVariantDataset
@@ -289,26 +276,13 @@ export default function createVariantReducer({
     [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
         let variantMap = {}
-        if (regionData.get(datasetKey) && variantDatasets[datasetKey]) {
+        if (regionData.get(datasetKey)) {
           regionData.get(datasetKey).forEach((variant) => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant.set('id', variant.get('variant_id'))
             )
           })
-        } else if (combinedDatasets[datasetKey]) {
-          const sources = combinedDatasets[datasetKey].sources
-          const combineKeys = combinedDatasets[datasetKey].combineKeys
-
-          variantMap = sources.reduce((acc, dataset) => {
-            return acc.mergeDeepWith((oldValue, newValue, key) => {
-              if (combineKeys[key]) {
-                return combineKeys[key](oldValue, newValue)
-              }
-              return oldValue
-            }, nextState.byVariantDataset.get(dataset))
-          }, OrderedMap())
         }
-
         return nextState.set('byVariantDataset', nextState.byVariantDataset
           .set(datasetKey, OrderedMap(variantMap))
         )
