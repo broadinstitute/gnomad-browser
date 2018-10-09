@@ -20,6 +20,17 @@ const categoryLabels = {
   other: 'Other',
 }
 
+// The max-width styles here are based on the filter settings
+// layout in the gnomAD browser.
+
+const ConsequenceCategoriesControlWrapper = styled.div`
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+`
+
 const Button = styled.button`
   box-sizing: border-box;
   width: 35px;
@@ -73,6 +84,7 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 
 const CategoryWrapper = styled.span`
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   overflow: hidden;
   border-color: ${props => props.borderColor};
@@ -88,16 +100,23 @@ const CategoryWrapper = styled.span`
     border-top-right-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
   }
+
+  @media (max-width: 700px) {
+    margin-bottom: 0.25em;
+    border-radius: 0.5em;
+  }
 `
 
 const Label = styled.label`
   display: inline-flex;
+  flex-grow: 1;
   align-items: center;
   margin: 0; /* Override Bootstrap in gnomad_browser */
   background: ${props =>
     `linear-gradient(to right, ${props.backgroundColor}, ${
       props.backgroundColor
     } 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`};
+  background-repeat: no-repeat;
   font-size: 14px;
   font-weight: normal; /* Override Bootstrap in gnomad_browser */
   user-select: none;
@@ -147,7 +166,7 @@ export class ConsequenceCategoriesControl extends Component {
     const { categorySelections, id, onChange } = this.props
 
     return (
-      <div>
+      <ConsequenceCategoriesControlWrapper>
         {categories.map(category => (
           <CategoryWrapper key={category} borderColor={categoryColors[category]}>
             <Label
@@ -183,7 +202,7 @@ export class ConsequenceCategoriesControl extends Component {
             </Button>
           </CategoryWrapper>
         ))}
-      </div>
+      </ConsequenceCategoriesControlWrapper>
     )
   }
 }
