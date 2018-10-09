@@ -14,6 +14,7 @@ const RegionViewerWrapper = styled.div`
   flex-direction: column;
   width: ${props => props.width}px;
   margin: 0 auto 10px;
+  font-size: 12px;
 `
 
 const exonColor = '#212121'

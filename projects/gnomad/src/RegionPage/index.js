@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import styled from 'styled-components'
 
 import { RegionHoc } from '@broad/region'
 import { VariantTable } from '@broad/table'
-import { GenePage, TableSection } from '@broad/ui'
+import { TrackPage, TrackPageSection } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
 import Settings from '../Settings'
@@ -13,43 +12,31 @@ import { fetchRegion } from './fetch'
 import RegionInfo from './RegionInfo'
 import RegionViewer from './RegionViewer'
 
-/**
- * FIXME
- * This section previously had a 97% width left aligned div nested in a 90% width centered div.
- * This imitates the same layout with fewer elements. The horizontal alignment of various sections
- * needs to be made consistent.
- */
-const RegionInfoSection = styled.div`
-  width: 87%;
-  padding-right: 3%;
-  margin-bottom: 10px;
-`
-
 const tooManyVariantsError = /Individual variants can only be returned for regions with fewer than \d+ variants/
 
 const RegionPage = ({ errors, region }) => {
   const showVariants = !(errors && errors.some(err => tooManyVariantsError.test(err.message)))
   return (
-    <GenePage>
-      <RegionInfoSection>
+    <TrackPage>
+      <TrackPageSection>
         <GnomadPageHeading>{`${region.chrom}-${region.start}-${region.stop}`}</GnomadPageHeading>
         <div>
           <RegionInfo showVariants={showVariants} />
         </div>
-      </RegionInfoSection>
+      </TrackPageSection>
       <RegionViewer coverageStyle={'new'} showVariants={showVariants} />
       {showVariants ? (
-        <TableSection>
+        <TrackPageSection>
           <Settings />
           <VariantTable tableConfig={tableConfig} />
-        </TableSection>
+        </TrackPageSection>
       ) : (
         <p>
           This region has too many variants to display. To view individual variants, select a
           smaller region.
         </p>
       )}
-    </GenePage>
+    </TrackPage>
   )
 }
 

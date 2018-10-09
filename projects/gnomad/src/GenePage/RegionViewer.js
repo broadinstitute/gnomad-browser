@@ -9,7 +9,7 @@ import { TranscriptTrackConnected } from '@broad/track-transcript'
 import CoverageTrack from '@broad/track-coverage'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
-import { screenSize, SectionTitle } from '@broad/ui'
+import { screenSize } from '@broad/ui'
 
 import {
   currentTranscript,
@@ -62,12 +62,6 @@ export const getCoverageConfig = (
   }
 }
 
-const RegionViewerWrapper = styled.div`
-  margin-left: 10px;
-  width: 100%;
-`
-
-
 const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
   background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
   border-bottom: ${({ isSelected, isCanonical }) => {
@@ -94,8 +88,9 @@ const GeneViewer = ({
   regionalConstraint,
   screenSize,
 }) => {
+  // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+  const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
   const geneJS = gene.toJS()
   const currentTranscriptId = currentTranscript || gene.get('canonical_transcript')
@@ -118,13 +113,6 @@ const GeneViewer = ({
     genome_coverage
   )
 
-  const RegionViewerSectionTitle = SectionTitle.extend`
-    margin-left: 80px;
-    @media (max-width: 900px) {
-      margin-left: 0;
-    }
-  `
-
   const datasetTranslations = {
     gnomadExomeVariants: 'gnomAD exomes',
     gnomadGenomeVariants: 'gnomAD genomes',
@@ -133,52 +121,49 @@ const GeneViewer = ({
   }
 
   return (
-    <RegionViewerWrapper>
-      {/* <RegionViewerSectionTitle>Positional data</RegionViewerSectionTitle> */}
-      <RegionViewer
-        width={regionViewerWidth}
-        padding={exonPadding}
-        regions={canonicalExons}
-        regionAttributes={attributeConfig}
-      >
-        <CoverageTrack
-          title={'Coverage'}
-          height={200}
-          dataConfig={coverageConfig}
-          yTickNumber={11}
-          yMax={110}
-          totalBp={totalBasePairs}
-        />
-        <TranscriptTrackConnected
-          height={12}
-          renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
-            <TranscriptLink
-              to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
-              isCanonical={isCanonical}
-              isSelected={isSelected}
-            >
-              {transcriptId}
-            </TranscriptLink>
-          )}
-          showRightPanel={!smallScreen}
-        />
+    <RegionViewer
+      width={regionViewerWidth}
+      padding={exonPadding}
+      regions={canonicalExons}
+      regionAttributes={attributeConfig}
+    >
+      <CoverageTrack
+        title={'Coverage'}
+        height={200}
+        dataConfig={coverageConfig}
+        yTickNumber={11}
+        yMax={110}
+        totalBp={totalBasePairs}
+      />
+      <TranscriptTrackConnected
+        height={12}
+        renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
+          <TranscriptLink
+            to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
+            isCanonical={isCanonical}
+            isSelected={isSelected}
+          >
+            {transcriptId}
+          </TranscriptLink>
+        )}
+        showRightPanel={!smallScreen}
+      />
 
-        <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />
+      <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />
 
-        {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
-          <RegionalConstraintTrack
-            height={15}
-            regionalConstraintData={regionalConstraint}
-            strand={strand}
-          />}
+      {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
+        <RegionalConstraintTrack
+          height={15}
+          regionalConstraintData={regionalConstraint}
+          strand={strand}
+        />}
 
-        <VariantAlleleFrequencyTrack
-          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
-          variants={variantsReversed.toJS()}
-        />
-        <NavigatorTrackConnected title={'Viewing in table'} />
-      </RegionViewer>
-    </RegionViewerWrapper>
+      <VariantAlleleFrequencyTrack
+        title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
+        variants={variantsReversed.toJS()}
+      />
+      <NavigatorTrackConnected title={'Viewing in table'} />
+    </RegionViewer>
   )
 }
 
