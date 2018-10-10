@@ -8,6 +8,8 @@ import { types as regionTypes } from '@broad/region'
 import { getCategoryFromConsequence, gnomadExportCsvTranslations } from '@broad/utilities'
 
 export const types = keymirror({
+  REQUEST_VARIANTS: null,
+  RECEIVE_VARIANTS: null,
   SET_HOVERED_VARIANT: null,
   SET_FOCUSED_VARIANT: null,
   SET_SELECTED_VARIANT_DATASET: null,
@@ -20,6 +22,13 @@ export const types = keymirror({
 })
 
 export const actions = {
+  requestVariants: () => ({ type: types.REQUEST_VARIANTS }),
+
+  receiveVariants: variantData => ({
+    type: types.RECEIVE_VARIANTS,
+    variantData: fromJS(variantData),
+  }),
+
   setHoveredVariant: variantId => ({ type: types.SET_HOVERED_VARIANT, variantId }),
 
   setFocusedVariant: variantId => ({ type: types.SET_FOCUSED_VARIANT, variantId }),
@@ -159,7 +168,7 @@ export const actions = {
         return variant.get('filters').toJS().join('|')
       }
 
-      if (currentDataset === 'gnomadCombinedVariants') {
+      if (currentDataset === 'gnomad_r2_0_2') {
         return Promise.all([
           fetchFunction(variantIds, transcriptId, 'gnomadExomeVariants'),
           fetchFunction(variantIds, transcriptId, 'gnomadGenomeVariants'),
@@ -219,7 +228,7 @@ export default function createVariantReducer({
 
   const State = Record({
     byVariantDataset: datasetKeys.reduce((acc, dataset) =>
-      (acc.set(dataset, OrderedMap())), OrderedMap()),
+      (acc.set(dataset, Map())), Map()),
     variantSortKey: 'pos',
     variantSortAscending: true,
     variantFilter: {
@@ -230,6 +239,7 @@ export default function createVariantReducer({
     },
     hoveredVariant: startingVariant,
     focusedVariant: startingVariant,
+    isLoadingVariants: false,
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
     variantDeNovoFilter: false,
@@ -256,37 +266,67 @@ export default function createVariantReducer({
       return state.set('selectedVariantDataset', variantDataset)
     },
 
-    [geneTypes.RECEIVE_GENE_DATA] (state, { geneData }) {
+    [geneTypes.RECEIVE_GENE_DATA](state, { geneData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
-        let variantMap = {}
         if (geneData.get(datasetKey)) {
-          geneData.get(datasetKey).forEach((variant) => {
+          const variantMap = {}
+          geneData.get(datasetKey).forEach(variant => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant.set('id', variant.get('variant_id'))
             )
           })
+          return nextState.set(
+            'byVariantDataset',
+            nextState.byVariantDataset.set(datasetKey, Map(variantMap))
+          )
         }
         return nextState
-          .set('byVariantDataset', nextState.byVariantDataset
-            .set(datasetKey, OrderedMap(variantMap))
-          )
       }, state)
     },
 
-    [regionTypes.RECEIVE_REGION_DATA] (state, { regionData }) {
+    [regionTypes.RECEIVE_REGION_DATA](state, { regionData }) {
       return datasetKeys.reduce((nextState, datasetKey) => {
-        let variantMap = {}
         if (regionData.get(datasetKey)) {
-          regionData.get(datasetKey).forEach((variant) => {
+          const variantMap = {}
+          regionData.get(datasetKey).forEach(variant => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant.set('id', variant.get('variant_id'))
             )
           })
+          return nextState.set(
+            'byVariantDataset',
+            nextState.byVariantDataset.set(datasetKey, Map(variantMap))
+          )
         }
-        return nextState.set('byVariantDataset', nextState.byVariantDataset
-          .set(datasetKey, OrderedMap(variantMap))
-        )
+        return nextState
       }, state)
+    },
+
+    [types.REQUEST_VARIANTS](state) {
+      return state.set('isLoadingVariants', true)
+    },
+
+    [types.RECEIVE_VARIANTS](state, { variantData }) {
+      return datasetKeys
+        .reduce((nextState, datasetKey) => {
+          if (variantData.get(datasetKey)) {
+            const variantMap = {}
+            variantData.get(datasetKey).forEach(variant => {
+              variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
+                variant.set('id', variant.get('variant_id'))
+              )
+            })
+            return nextState.set(
+              'byVariantDataset',
+              nextState.byVariantDataset.set(datasetKey, Map(variantMap))
+            )
+          }
+          return nextState.set(
+            'byVariantDataset',
+            nextState.byVariantDataset.set(datasetKey, Map({}))
+          )
+        }, state)
+        .set('isLoadingVariants', false)
     },
 
     [types.SET_VARIANT_FILTER] (state, { filter }) {
@@ -395,6 +435,7 @@ const sortVariants = (variants, key, ascending) => {
  * Variant selectors
  */
 
+export const isLoadingVariants = state => state.variants.isLoadingVariants
 const byVariantDataset = state => state.variants.byVariantDataset
 export const hoveredVariant = state => state.variants.hoveredVariant
 export const focusedVariant = state => state.variants.focusedVariant
