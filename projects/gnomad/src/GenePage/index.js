@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { GenePageHoc } from '@broad/redux-genes'
 import { actions as variantActions } from '@broad/redux-variants'
 import { VariantTable } from '@broad/table'
 import { ClassicExacButton, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
@@ -15,8 +14,11 @@ import tableConfig from '../tableConfig'
 import { ConstraintTableOrPlaceholder } from './Constraint'
 import { exportFetch } from './exportFetch'
 import { fetchGnomadGenePage } from './fetch'
+import fetchVariantsByGene from './fetchVariantsByGene'
+import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'
 import GeneViewer from './RegionViewer'
+import StatusMessage from '../StatusMessage'
 
 const BottomButtonSection = styled.div`
   display: flex;
@@ -48,26 +50,52 @@ const GeneInfoColumnWrapper = styled.div`
   }
 `
 
-const GenePageConnected = ({ gene }) => {
-  console.log(gene)
-  const { gene_name: geneSymbol, full_gene_name: fullGeneName } = gene
-  return (
-    <TrackPage>
-      <TrackPageSection>
-        <GnomadPageHeading>
-          {geneSymbol} <GeneFullName>{fullGeneName}</GeneFullName>
-        </GnomadPageHeading>
-        <GeneInfoColumnWrapper>
-          <GeneInfo />
-          <div>
-            <SectionHeading>
-              Gene Constraint <QuestionMark display="inline" topic="gene-constraint" />
-            </SectionHeading>
-            <ConstraintTableOrPlaceholder />
-          </div>
-        </GeneInfoColumnWrapper>
-      </TrackPageSection>
-      <GeneViewer />
+/* eslint-disable class-methods-use-this */
+class GenePage extends Component {
+  static propTypes = {
+    datasetId: PropTypes.string.isRequired,
+    geneIdOrName: PropTypes.string.isRequired,
+    transcriptId: PropTypes.string,
+  }
+
+  static defaultProps = {
+    transcriptId: undefined,
+  }
+
+  renderGene = ({ gene, isLoadingVariants }) => {
+    const { gene_name: geneSymbol, full_gene_name: fullGeneName } = gene
+    return (
+      <TrackPage>
+        <TrackPageSection>
+          <GnomadPageHeading>
+            {geneSymbol} <GeneFullName>{fullGeneName}</GeneFullName>
+          </GnomadPageHeading>
+          <GeneInfoColumnWrapper>
+            <GeneInfo />
+            <div>
+              <SectionHeading>
+                Gene Constraint <QuestionMark display="inline" topic="gene-constraint" />
+              </SectionHeading>
+              <ConstraintTableOrPlaceholder />
+            </div>
+          </GeneInfoColumnWrapper>
+        </TrackPageSection>
+        <GeneViewer />
+        {this.renderVariantTableSection({ isLoadingVariants })}
+      </TrackPage>
+    )
+  }
+
+  renderVariantTableSection({ isLoadingVariants }) {
+    if (isLoadingVariants) {
+      return (
+        <TrackPageSection>
+          <StatusMessage>Loading variants...</StatusMessage>
+        </TrackPageSection>
+      )
+    }
+
+    return (
       <TrackPageSection>
         <Settings />
         <VariantTable tableConfig={tableConfig} />
@@ -75,15 +103,22 @@ const GenePageConnected = ({ gene }) => {
           <ExportVariantsButton>Export variants</ExportVariantsButton>
         </BottomButtonSection>
       </TrackPageSection>
-    </TrackPage>
-  )
+    )
+  }
+
+  render() {
+    return (
+      <GeneDataContainer
+        datasetId={this.props.datasetId}
+        fetchGene={fetchGnomadGenePage}
+        fetchVariants={fetchVariantsByGene}
+        geneIdOrName={this.props.geneIdOrName}
+        transcriptId={this.props.transcriptId}
+      >
+        {this.renderGene}
+      </GeneDataContainer>
+    )
+  }
 }
 
-GenePageConnected.propTypes = {
-  gene: PropTypes.shape({
-    gene_name: PropTypes.string.isRequired,
-    full_gene_name: PropTypes.string.isRequired,
-  }).isRequired,
-}
-
-export default GenePageHoc(GenePageConnected, fetchGnomadGenePage)
+export default GenePage

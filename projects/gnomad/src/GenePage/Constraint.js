@@ -90,7 +90,7 @@ export const ConstraintTableOrPlaceholder = connect(state => ({
   geneData: geneData(state).toJS(),
   selectedVariantDataset: selectedVariantDataset(state),
 }))(({ geneData, selectedVariantDataset }) => {
-  if (selectedVariantDataset === 'exacVariants') {
+  if (selectedVariantDataset === 'exac') {
     const exacConstraint = geneData.exacv1_constraint
     if (!exacConstraint) {
       return <ConstraintTablePlaceholder message="ExAC constraint not available for this gene" />
@@ -98,9 +98,5 @@ export const ConstraintTableOrPlaceholder = connect(state => ({
     return <ConstraintTable constraintData={exacConstraint} />
   }
 
-  if (selectedVariantDataset === 'gnomadCombinedVariants') {
-    return <ConstraintTablePlaceholder message="gnomAD constraint coming soon!" />
-  }
-
-  return null
+  return <ConstraintTablePlaceholder message="gnomAD constraint coming soon!" />
 })
