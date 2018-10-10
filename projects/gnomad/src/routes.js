@@ -1,6 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
+import queryString from 'query-string'
 import { Route, Switch } from 'react-router-dom'
+import styled from 'styled-components'
+
 import { Help, HelpButton } from '@broad/help'
 
 import GenePage from './GenePage'
@@ -10,16 +12,19 @@ import TopBar from './TopBar'
 const Root = styled.div`
   display: flex;
   flex-direction: row;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  height: 100%;
   width: 100%;
-  background-color: #FAFAFA;;
+  height: 100%;
+  background-color: #fafafa;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
 `
 
 const MainPanel = styled.div`
   width: 100%;
 `
+
+const defaultDataset = 'gnomad_r2_0_2'
+
 const App = () => (
   <Root>
     <MainPanel>
@@ -29,19 +34,35 @@ const App = () => (
         <Route
           exact
           path="/gene/:gene/transcript/:transcriptId"
-          render={({ match }) => (
-            <GenePage geneName={match.params.gene} transcriptId={match.params.transcriptId} />
-          )}
+          render={({ location, match }) => {
+            const params = queryString.parse(location.search)
+            const datasetId = params.dataset || defaultDataset
+            return (
+              <GenePage
+                datasetId={datasetId}
+                geneIdOrName={match.params.gene}
+                transcriptId={match.params.transcriptId}
+              />
+            )
+          }}
         />
         <Route
           exact
           path="/gene/:gene"
-          render={({ match }) => <GenePage geneName={match.params.gene} />}
+          render={({ location, match }) => {
+            const params = queryString.parse(location.search)
+            const datasetId = params.dataset || defaultDataset
+            return <GenePage datasetId={datasetId} geneIdOrName={match.params.gene} />
+          }}
         />
         <Route
           exact
           path="/region/:regionId"
-          render={({ match }) => <RegionPage regionId={match.params.regionId} />}
+          render={({ location, match }) => {
+            const params = queryString.parse(location.search)
+            const datasetId = params.dataset || defaultDataset
+            return <RegionPage datasetId={datasetId} regionId={match.params.regionId} />
+          }}
         />
       </Switch>
       {/* <Route path="/variant/:variant" component={GenePage} /> */}

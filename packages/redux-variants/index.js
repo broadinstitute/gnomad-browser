@@ -12,6 +12,7 @@ export {
   variantQcFilter,
   variantDeNovoFilter,
   variantSearchQuery,
+  isLoadingVariants,
   finalFilteredVariants,
   focusedVariant,
 } from './variants'

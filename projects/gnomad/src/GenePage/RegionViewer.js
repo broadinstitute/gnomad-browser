@@ -20,6 +20,7 @@ import {
 
 import {
   finalFilteredVariants,
+  isLoadingVariants,
   selectedVariantDataset,
 } from '@broad/redux-variants'
 
@@ -30,6 +31,7 @@ import {
   attributeConfig,
 } from '@broad/region-viewer'
 
+import datasetLabels from '../datasetLabels'
 import ClinVarTrack from './ClinVarTrack'
 
 
@@ -41,26 +43,6 @@ export const TOTAL_REGION_VIEWER_HEIGHT =
   COVERAGE_TRACK_HEIGHT +
   REGIONAL_CONSTRAINED_TRACK_HEIGHT +
   VARIANT_TRACK_HEIGHT
-
-export const getCoverageConfig = (
-  selectedVariantDataset,
-  exacv1_coverage,
-  exome_coverage,
-  genome_coverage
-) => {
-  switch (selectedVariantDataset) {
-    case 'exacVariants':
-      return coverageConfigClassic(exacv1_coverage)
-    case 'gnomadExomeVariants':
-      return coverageConfigNew(exome_coverage)
-    case 'gnomadGenomeVariants':
-      return coverageConfigNew(null, genome_coverage)
-    case 'gnomadCombinedVariants':
-      return coverageConfigNew(exome_coverage, genome_coverage)
-    default:
-      return coverageConfigNew(exome_coverage, genome_coverage)
-  }
-}
 
 const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
   background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
@@ -85,6 +67,7 @@ const GeneViewer = ({
   allVariants,
   selectedVariantDataset,
   exonPadding,
+  isLoadingVariants,
   regionalConstraint,
   screenSize,
 }) => {
@@ -106,19 +89,10 @@ const GeneViewer = ({
   const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
     .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
 
-  const coverageConfig = getCoverageConfig(
-    selectedVariantDataset,
-    exacv1_coverage,
-    exome_coverage,
-    genome_coverage
-  )
-
-  const datasetTranslations = {
-    gnomadExomeVariants: 'gnomAD exomes',
-    gnomadGenomeVariants: 'gnomAD genomes',
-    gnomadCombinedVariants: 'gnomAD',
-    exacVariants: 'ExAC',
-  }
+  const coverageConfig =
+    selectedVariantDataset === 'exac'
+      ? coverageConfigClassic(exacv1_coverage)
+      : coverageConfigNew(exome_coverage, genome_coverage)
 
   return (
     <RegionViewer
@@ -150,20 +124,25 @@ const GeneViewer = ({
         showRightPanel={!smallScreen}
       />
 
-      <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />
+      {!isLoadingVariants && <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />}
 
-      {regionalConstraint.length > 0 && selectedVariantDataset === 'exacVariants' &&
-        <RegionalConstraintTrack
-          height={15}
-          regionalConstraintData={regionalConstraint}
-          strand={strand}
-        />}
+      {!isLoadingVariants &&
+        regionalConstraint.length > 0 &&
+        selectedVariantDataset === 'exac' && (
+          <RegionalConstraintTrack
+            height={15}
+            regionalConstraintData={regionalConstraint}
+            strand={strand}
+          />
+        )}
 
-      <VariantAlleleFrequencyTrack
-        title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
-        variants={variantsReversed.toJS()}
-      />
-      <NavigatorTrackConnected title={'Viewing in table'} />
+      {!isLoadingVariants && (
+        <VariantAlleleFrequencyTrack
+          title={`${datasetLabels[selectedVariantDataset]}\n(${allVariants.size})`}
+          variants={variantsReversed.toJS()}
+        />
+      )}
+      {!isLoadingVariants && <NavigatorTrackConnected title={'Viewing in table'} />}
     </RegionViewer>
   )
 }
@@ -189,6 +168,7 @@ export default connect(
     exonPadding: exonPadding(state),
     allVariants: finalFilteredVariants(state),
     selectedVariantDataset: selectedVariantDataset(state),
+    isLoadingVariants: isLoadingVariants(state),
     regionalConstraint: regionalConstraint(state),
     screenSize: screenSize(state),
   })

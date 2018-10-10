@@ -40,42 +40,6 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         pos
         variantId
       }
-      gnomadCombinedVariants: variants(dataset: gnomad_r2_0_2${
-        transcriptId ? `, transcriptId: "${transcriptId}"` : ''
-      }) {
-        allele_count: ac
-        hemi_count: ac_hemi
-        hom_count: ac_hom
-        allele_num: an
-        allele_freq: af
-        consequence
-        datasets
-        filters
-        flags
-        hgvsc
-        hgvsp
-        pos
-        rsid
-        variant_id: variantId
-        xpos
-      }
-      exacVariants: variants(dataset:exac) {
-        allele_count: ac
-        hemi_count: ac_hemi
-        hom_count: ac_hom
-        allele_num: an
-        allele_freq: af
-        consequence
-        datasets
-        filters
-        flags
-        hgvsc
-        hgvsp
-        pos
-        rsid
-        variant_id: variantId
-        xpos
-      }
       exacv1_constraint {
         mu_syn
         exp_syn
@@ -209,11 +173,5 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
     }
 }
 `
-  return new Promise((resolve, reject) => {
-    fetch(API_URL)(query)
-      .then(data => resolve(data.data.gene))
-      .catch((error) => {
-        reject(error)
-      })
-  })
+  return fetch(API_URL)(query)
 }

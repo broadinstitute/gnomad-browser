@@ -10,7 +10,12 @@ import { GenesTrack } from '@broad/track-genes'
 
 import { screenSize } from '@broad/ui'
 import { regionData } from '@broad/region'
-import { RegionViewer, attributeConfig } from '@broad/region-viewer'
+import {
+  RegionViewer,
+  attributeConfig,
+  coverageConfigClassic,
+  coverageConfigNew,
+} from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
@@ -18,7 +23,7 @@ import {
   selectedVariantDataset,
 } from '@broad/redux-variants'
 
-import { getCoverageConfig } from '../GenePage/RegionViewer'
+import datasetLabels from '../datasetLabels'
 
 const RegionViewerConnected = ({
   regionData,
@@ -40,12 +45,10 @@ const RegionViewerConnected = ({
 
   const variantsReversed = allVariants.reverse()
 
-  const coverageConfig = getCoverageConfig(
-    selectedVariantDataset,
-    exacv1_coverage,
-    exome_coverage,
-    genome_coverage
-  )
+  const coverageConfig =
+    selectedVariantDataset === 'exac'
+      ? coverageConfigClassic(exacv1_coverage)
+      : coverageConfigNew(exome_coverage, genome_coverage)
 
   const featuresToDisplay = ['default']
 
@@ -64,13 +67,6 @@ const RegionViewerConnected = ({
   // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
-
-  const datasetTranslations = {
-    gnomadExomeVariants: 'gnomAD exomes',
-    gnomadGenomeVariants: 'gnomAD genomes',
-    gnomadCombinedVariants: 'gnomAD',
-    exacVariants: 'ExAC',
-  }
 
   return (
     <RegionViewer
@@ -97,7 +93,7 @@ const RegionViewerConnected = ({
 
       {showVariants && (
         <VariantAlleleFrequencyTrack
-          title={`${datasetTranslations[selectedVariantDataset]}\n(${allVariants.size})`}
+          title={`${datasetLabels[selectedVariantDataset]}\n(${allVariants.size})`}
           variants={variantsReversed.toJS()}
         />
       )}
