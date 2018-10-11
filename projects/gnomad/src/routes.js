@@ -5,19 +5,16 @@ import styled from 'styled-components'
 
 import { Help, HelpButton } from '@broad/help'
 
+import AboutPage from './AboutPage'
+import ContactPage from './ContactPage'
+import DownloadsPage from './DownloadsPage'
+import FAQPage from './FAQPage'
 import GenePage from './GenePage'
+import HomePage from './HomePage'
 import RegionPage from './RegionPage'
-import TopBar from './TopBar'
+import TermsPage from './TermsPage'
 
-const Root = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  background-color: #fafafa;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-`
+import NavBar from './NavBar'
 
 const MainPanel = styled.div`
   width: 100%;
@@ -26,11 +23,11 @@ const MainPanel = styled.div`
 const defaultDataset = 'gnomad_r2_0_2'
 
 const App = () => (
-  <Root>
+  <div>
     <MainPanel>
-      {/* <TopBar /> */}
-      {/* <Route exact path="/" component={GenePage} /> */}
+      <NavBar />
       <Switch>
+        <Route exact path="/" component={HomePage} />
         <Route
           exact
           path="/gene/:gene/transcript/:transcriptId"
@@ -64,13 +61,18 @@ const App = () => (
             return <RegionPage datasetId={datasetId} regionId={match.params.regionId} />
           }}
         />
+        <Route exact path="/about" component={AboutPage} />
+        <Route exact path="/downloads" component={DownloadsPage} />
+        <Route exact path="/terms" component={TermsPage} />
+        <Route exact path="/contact" component={ContactPage} />
+        <Route exact path="/faq" component={FAQPage} />
       </Switch>
       {/* <Route path="/variant/:variant" component={GenePage} /> */}
       {/* <Route path="/rsid/:rsid" component={GenePage} /> */}
     </MainPanel>
     <Help index={'gnomad_help'} />
     <HelpButton />
-  </Root>
+  </div>
 )
 
 export default App
