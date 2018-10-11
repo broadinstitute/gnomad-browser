@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 const Input = styled.input`
   box-sizing: border-box;
+  width: 100%;
   max-width: 100%;
   padding: 0.375em 1.5em 0.375em 0.75em;
   border-color: #6c757d;
@@ -51,12 +52,14 @@ export class Combobox extends Component {
     options: PropTypes.arrayOf(
       PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
     ).isRequired,
+    placeholder: PropTypes.string,
     value: PropTypes.string.isRequired,
     width: PropTypes.string,
   }
 
   static defaultProps = {
     id: undefined,
+    placeholder: undefined,
     width: undefined,
   }
 
@@ -96,6 +99,7 @@ export class Combobox extends Component {
           onFocus: () => {
             this.setState({ inputValue: '' })
           },
+          placeholder: this.props.placeholder,
         }}
         items={this.props.options}
         menuStyle={menuStyle}
