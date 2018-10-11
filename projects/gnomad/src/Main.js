@@ -40,7 +40,15 @@ const appSettings = {
   variantDatasets: {},
 }
 
-const variantDatasets = ['exac', 'gnomad_r2_0_2']
+const variantDatasets = [
+  'exac',
+  'gnomad_r2_0_2',
+  'gnomad_r2_1',
+  'gnomad_r2_1_controls',
+  'gnomad_r2_1_non_cancer',
+  'gnomad_r2_1_non_neuro',
+  'gnomad_r2_1_non_topmed',
+]
 variantDatasets.forEach(datasetId => {
   appSettings.variantDatasets[datasetId] = {
     allele_count: null,
@@ -69,7 +77,6 @@ window.addEventListener('resize', () => store.dispatch(
     window.innerHeight,
     window.innerWidth)
 ))
-
 
 const Main = () => (
   <Provider store={store}>

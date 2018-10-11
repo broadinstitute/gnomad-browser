@@ -10,6 +10,19 @@ import { Combobox, PageHeading } from '@broad/ui'
 
 import datasetLabels from './datasetLabels'
 
+const datasetOptions = [
+  'gnomad_r2_1',
+  'gnomad_r2_1_controls',
+  'gnomad_r2_1_non_cancer',
+  'gnomad_r2_1_non_neuro',
+  'gnomad_r2_1_non_topmed',
+  'gnomad_r2_0_2',
+  'exac',
+].map(datasetId => ({
+  label: datasetLabels[datasetId],
+  value: datasetId,
+}))
+
 const GnomadPageHeading = withRouter(
   connect(state => ({ selectedVariantDataset: selectedVariantDataset(state) }))(
     ({ children, history, selectedVariantDataset }) => (
@@ -26,10 +39,7 @@ const GnomadPageHeading = withRouter(
               // the browser's forward/back buttons.
               // This is likely a bug in Combobox.
               key={selectedVariantDataset}
-              options={['gnomad_r2_0_2', 'exac'].map(datasetId => ({
-                label: datasetLabels[datasetId],
-                value: datasetId,
-              }))}
+              options={datasetOptions}
               value={datasetLabels[selectedVariantDataset]}
               width="150px"
               onChange={datasetId => {
