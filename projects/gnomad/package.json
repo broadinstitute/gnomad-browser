@@ -2,19 +2,23 @@
   "name": "gnomad",
   "version": "0.0.1",
   "description": "",
+  "private": true,
   "main": "dist/es/index.js",
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "build:es": "../../node_modules/.bin/cross-env NODE_ENV=production cross-env BABEL_ENV=es babel src --out-dir dist/es --copy-files --ignore example",
+    "build": "./build.sh",
     "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
-    "start": "../../node_modules/.bin/cross-env NODE_ENV=development GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack-dev-server --hot --config ../../webpack.config.js",
-    "prebuild": "../../node_modules/.bin/rimraf dist"
+    "start": "./start.sh"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
+    "compression": "^1.7.1",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
     "@broad/gene-page": "*",
     "@broad/region": "*",
     "@broad/region-viewer": "*",
@@ -38,6 +42,9 @@
     "prop-types": "^15.5.10",
     "query-string": "5",
     "ramda": "^0.24.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.10",
@@ -49,9 +56,6 @@
     "reselect": "^3.0.1",
     "styled-components": "^2.1.2",
     "throttle-debounce": "^1.0.1"
-  },
-  "devDependencies": {
-    "react-hot-loader": "^3.0.0-beta.6"
   },
   "peerDependencies": {
     "react": "^15.5.4",
