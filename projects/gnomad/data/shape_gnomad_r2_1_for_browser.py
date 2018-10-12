@@ -101,19 +101,15 @@ ds = ds.transmute(
             n_larger=ds[f"{histogram}_n_larger"],
             n_smaller=ds[f"{histogram}_n_smaller"],
         )
-        for histogram in ["ab_hist_alt", "dp_hist_all", "dp_hist_alt", "gq_hist_all", "gq_hist_alt"]
-    }
-)
-
-# TODO: These should also have bin_edges fields
-ds = ds.transmute(
-    **{
-        histogram: hl.struct(
-            bin_freq=ds[f"{histogram}_bin_freq"],
-            n_larger=ds[f"{histogram}_n_larger"],
-            n_smaller=ds[f"{histogram}_n_smaller"],
-        )
-        for histogram in ["gnomad_age_hist_het", "gnomad_age_hist_hom"]
+        for histogram in [
+            "ab_hist_alt",
+            "dp_hist_all",
+            "dp_hist_alt",
+            "gq_hist_all",
+            "gq_hist_alt",
+            "gnomad_age_hist_het",
+            "gnomad_age_hist_hom",
+        ]
     }
 )
 
