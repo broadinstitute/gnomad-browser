@@ -1,10 +1,11 @@
 import {
-  GraphQLSchema,
-  GraphQLObjectType,
   GraphQLEnumType,
   GraphQLFloat,
-  GraphQLString,
+  GraphQLList,
   GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
 } from 'graphql'
 
 import { getXpos } from '../utilities/variant'
@@ -28,7 +29,7 @@ import regionType from './types/region'
 import { gnomadVariants } from './types/elasticVariant'
 
 import help from './types/help'
-
+import { SearchResultType, resolveSearchResults } from './types/search'
 import { VariantInterface } from './types/variant'
 
 import { datasetArgumentTypeForMethod } from './datasets/datasetArgumentTypes'
@@ -102,6 +103,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         xstop: getXpos(args.chrom, args.stop),
         regionSize: args.stop - args.start,
       }),
+    },
+    searchResults: {
+      type: new GraphQLList(SearchResultType),
+      args: {
+        query: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (obj, args, ctx) => resolveSearchResults(ctx, args.query),
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
