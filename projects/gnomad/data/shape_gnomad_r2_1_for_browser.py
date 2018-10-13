@@ -127,7 +127,7 @@ ds = ds.annotate(
 # Subsets #
 ###########
 
-all_subsets = ["gnomad", "controls", "non_neuro", "non_topmed"]
+all_subsets = ["gnomad", "controls", "non_cancer", "non_neuro", "non_topmed"]
 
 # There is no separate non-cancer subset for genome data. All genome samples are non-cancer.
 subsets = [s for s in all_subsets if f"{s}_AC_adj" in ds.row_value.dtype.fields]
