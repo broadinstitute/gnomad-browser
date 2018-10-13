@@ -4,10 +4,17 @@ import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
 
 import InfoPage from './InfoPage'
 import Link from './Link'
+import Searchbox from './Searchbox'
 
 export default () => (
   <InfoPage>
     <PageHeading>gnomAD Browser</PageHeading>
+
+    <Searchbox width="100%" />
+    <p>
+      Examples - Gene: <Link to="/gene/PCSK9">PCSK9</Link>, Variant:{' '}
+      <Link to="/variant/1-55516888-G-GA">1-55516888-G-GA</Link>
+    </p>
 
     <SectionHeading>About gnomAD</SectionHeading>
     <p>
