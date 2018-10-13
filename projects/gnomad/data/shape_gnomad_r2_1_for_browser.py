@@ -22,7 +22,6 @@ from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_contig,
     get_expr_for_lc_lof_flag,
     get_expr_for_loftee_flag_flag,
-    get_expr_for_original_alt_alleles_set,
     get_expr_for_ref_allele,
     get_expr_for_start_pos,
     get_expr_for_variant_id,
@@ -159,13 +158,16 @@ def expr_for_field_with_subpopulations(row, subset, field):
                             (
                                 (subpop, row[f"{subset}_{field}_{pop}_{subpop}"])
                                 for subpop in subpopulations[pop]
-                                if f"{subset}_{field}_{pop}_{subpop}" in row.row_value.dtype.fields # A subpopulation is not guaranteed to be present in all subsets
+                                if f"{subset}_{field}_{pop}_{subpop}"
+                                in row.row_value.dtype.fields  # A subpopulation is not guaranteed to be present in all subsets
                             ),
                             total=row[f"{subset}_{field}_{pop}"],
                         )
                     ),
                 )
                 for pop in populations
+                if f"{subset}_{field}_{pop}"
+                in row.row_value.dtype.fields  # Some populations are not present in genomes
             ),
             total=row[f"{subset}_{field}"],
             female=row[f"{subset}_{field}_female"],
@@ -185,7 +187,12 @@ faf_fields = ["faf95_adj", "faf99_adj"]
 def expr_for_faf_field(row, subset, field):
     return hl.struct(
         **dict(
-            ((pop, row[f"{subset}_{field}_{pop}"]) for pop in ["afr", "amr", "eas", "nfe", "sas"]),
+            (
+                (pop, row[f"{subset}_{field}_{pop}"])
+                for pop in ["afr", "amr", "eas", "nfe", "sas"]
+                if f"{subset}_{field}_{pop}"
+                in row.row_value.dtype.fields  # Some populations are not present in genomes
+            ),
             total=row[f"{subset}_{field}"],
         )
     )
