@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types'
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Combobox } from '@broad/ui'
+import Searchbox from './Searchbox'
 
 const NavBarWrapper = styled.div`
   display: flex;
@@ -44,45 +43,12 @@ const MenuExternalLink = styled.a`
   text-decoration: none;
 `
 
-const genes = [
-  'PCSK9',
-  'ZNF658',
-  'MYH9',
-  'FMR1',
-  'BRCA2',
-  'CFTR',
-  'FBN1',
-  'TP53',
-  'SCN5A',
-  'MYH7',
-  'MYBPC3',
-  'ARSF',
-  'CD33',
-  'DMD',
-  'TTN',
-  'USH2A',
-]
-
-const NavBar = ({ history }) => (
+const NavBar = () => (
   <NavBarWrapper>
     <MenuLink to="/">
       <Logo>gnomAD browser</Logo>
     </MenuLink>
-    <Combobox
-      id="navbar-search"
-      // Clear input when URL changes
-      key={history.location.pathname}
-      options={genes.map(gene => ({
-        label: gene,
-        value: gene,
-      }))}
-      placeholder="Search by gene, transcript, region, or variant"
-      value=""
-      width="320px"
-      onSelect={gene => {
-        history.push(`/gene/${gene}`)
-      }}
-    />
+    <Searchbox id="navbar-search" width="320px" />
     <Menu>
       <li>
         <MenuLink to="/about">About</MenuLink>
@@ -106,10 +72,4 @@ const NavBar = ({ history }) => (
   </NavBarWrapper>
 )
 
-NavBar.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-}
-
-export default withRouter(NavBar)
+export default NavBar
