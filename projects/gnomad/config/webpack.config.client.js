@@ -27,6 +27,10 @@ const config = {
         exclude: /node_modules\/(?!p-cancelable)/,
         use: 'babel-loader',
       },
+      {
+        test: /\.(gif|jpg|png)$/,
+        use: 'file-loader',
+      },
     ],
   },
   output: {
