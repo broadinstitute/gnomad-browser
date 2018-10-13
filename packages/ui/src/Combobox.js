@@ -48,7 +48,8 @@ const menuStyle = {
 export class Combobox extends Component {
   static propTypes = {
     id: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(
       PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
     ).isRequired,
@@ -59,6 +60,7 @@ export class Combobox extends Component {
 
   static defaultProps = {
     id: undefined,
+    onChange: () => {},
     placeholder: undefined,
     width: undefined,
   }
@@ -72,12 +74,12 @@ export class Combobox extends Component {
 
   onChange = (e, inputValue) => {
     this.setState({ inputValue })
+    this.props.onChange(inputValue)
   }
 
-  onSelect = value => {
-    const selectedOption = this.props.options.find(opt => opt.value === value)
-    this.setState({ inputValue: selectedOption.label })
-    this.props.onChange(value)
+  onSelect = (value, item) => {
+    this.setState({ inputValue: item.label })
+    this.props.onSelect(value, item)
   }
 
   shouldItemRender = item => item.label.toLowerCase().includes(this.state.inputValue.toLowerCase())

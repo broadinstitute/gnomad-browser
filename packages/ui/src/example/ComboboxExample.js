@@ -11,7 +11,7 @@ export default class ComboboxExample extends Component {
     return (
       <Combobox
         options={['foo', 'bar', 'baz', 'qux'].map(s => ({ label: s, value: s }))}
-        onChange={value => {
+        onSelect={value => {
           this.setState({ value })
         }}
         value={this.state.value}

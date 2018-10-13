@@ -79,7 +79,7 @@ const NavBar = ({ history }) => (
       placeholder="Search by gene, transcript, region, or variant"
       value=""
       width="320px"
-      onChange={gene => {
+      onSelect={gene => {
         history.push(`/gene/${gene}`)
       }}
     />
