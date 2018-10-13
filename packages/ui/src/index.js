@@ -74,6 +74,8 @@ export {
 
 export { Page, PageHeading, SectionHeading, TrackPage, TrackPageSection } from './Page'
 
+export { Searchbox } from './Searchbox'
+
 export { SegmentedControl } from './SegmentedControl'
 
 export { TooltipAnchor } from './tooltip/TooltipAnchor'
