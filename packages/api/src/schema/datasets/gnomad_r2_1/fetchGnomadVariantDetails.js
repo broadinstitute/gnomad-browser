@@ -114,7 +114,7 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
   })
 
   return response.hits.hits
-    .map(doc => doc._source.variantId) // eslint-disable-line
+    .map(doc => doc._source.variant_id) // eslint-disable-line
     .filter(otherVariantId => otherVariantId !== variantId)
     .sort()
     .filter(
