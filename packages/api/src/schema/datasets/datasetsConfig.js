@@ -10,8 +10,10 @@ import fetchGnomad202VariantsByGene from './gnomad_r2_0_2/fetchGnomadVariantsByG
 import fetchGnomad202VariantsByRegion from './gnomad_r2_0_2/fetchGnomadVariantsByRegion'
 import fetchGnomad202VariantsByTranscript from './gnomad_r2_0_2/fetchGnomadVariantsByTranscript'
 
+import Gnomad21VariantDetailsType from './gnomad_r2_1/GnomadVariantDetailsType'
 import countGnomad21VariantsInRegion from './gnomad_r2_1/countGnomadVariantsInRegion'
 import fetchGnomad21AggregateQualityMetrics from './gnomad_r2_1/fetchGnomadAggregateQualityMetrics'
+import fetchGnomad21VariantDetails from './gnomad_r2_1/fetchGnomadVariantDetails'
 import fetchGnomad21VariantsByGene from './gnomad_r2_1/fetchGnomadVariantsByGene'
 import fetchGnomad21VariantsByRegion from './gnomad_r2_1/fetchGnomadVariantsByRegion'
 import fetchGnomad21VariantsByTranscript from './gnomad_r2_1/fetchGnomadVariantsByTranscript'
@@ -34,9 +36,11 @@ const datasetsConfig = {
   gnomad_r2_1: {
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, 'gnomad'),
     fetchAggregateQualityMetrics: fetchGnomad21AggregateQualityMetrics,
+    fetchVariantDetails: (...args) => fetchGnomad21VariantDetails(...args, 'gnomad'),
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, 'gnomad'),
     fetchVariantsByRegion: (...args) => fetchGnomad21VariantsByRegion(...args, 'gnomad'),
     fetchVariantsByTranscript: (...args) => fetchGnomad21VariantsByTranscript(...args, 'gnomad'),
+    variantDetailsType: Gnomad21VariantDetailsType,
   },
 }
 
@@ -46,6 +50,7 @@ gnomadSubsets.forEach(subset => {
   datasetsConfig[`gnomad_r2_1_${subset}`] = {
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, subset),
     fetchAggregateQualityMetrics: fetchGnomad21AggregateQualityMetrics,
+    fetchVariantDetails: (...args) => fetchGnomad21VariantDetails(...args, subset),
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, subset),
     fetchVariantsByRegion: (...args) => fetchGnomad21VariantsByRegion(...args, subset),
     fetchVariantsByTranscript: (...args) => fetchGnomad21VariantsByTranscript(...args, subset),
@@ -54,4 +59,4 @@ gnomadSubsets.forEach(subset => {
 
 export default datasetsConfig
 
-export const datasetSpecificTypes = [/*ExacVariantDetailsType,*/]
+export const datasetSpecificTypes = [/*ExacVariantDetailsType,*/ Gnomad21VariantDetailsType]
