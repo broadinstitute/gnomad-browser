@@ -4,6 +4,7 @@ import { Link as RRLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Link as StyledLink, ListItem, OrderedList } from '@broad/ui'
+import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
@@ -51,7 +52,7 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
     {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
         <TranscriptConsequenceListItem key={consequenceTerm}>
-          <h3>{consequenceTerm}</h3>
+          <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
           <OrderedList>
             {groupConsequences(consequences, 'gene_id').map(
               ({ value: geneId, consequences: consequencesInGene }) => {
@@ -64,7 +65,7 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
                     <OrderedList>
                       {consequencesInGene.map(csq => (
                         <ListItem key={csq.transcript_id}>
-                          <Link to={`/gene/${geneId}/${csq.transcript_id}`}>
+                          <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
                             {csq.transcript_id}
                           </Link>
                         </ListItem>

@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Loading, Page, PageHeading, SectionHeading } from '@broad/ui'
+import { Loading, Page, SectionHeading } from '@broad/ui'
 
+import GnomadPageHeading from '../GnomadPageHeading'
 import { ReferenceList } from './ReferenceList'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
@@ -31,10 +32,20 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
-export const GnomadVariantPage = ({ variantId }) => (
+const variantPageDatasets = [
+  'gnomad_r2_1',
+  'gnomad_r2_1_controls',
+  'gnomad_r2_1_non_cancer',
+  'gnomad_r2_1_non_neuro',
+  'gnomad_r2_1_non_topmed',
+]
+
+const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
-    <PageHeading>Variant: {variantId}</PageHeading>
-    <VariantDetailsQuery dataset="gnomad" variantId={variantId}>
+    <GnomadPageHeading datasetOptions={variantPageDatasets} selectedDataset={datasetId}>
+      Variant: {variantId}
+    </GnomadPageHeading>
+    <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
         if (loading) {
           return <Loading>Loading...</Loading>
@@ -85,7 +96,7 @@ export const GnomadVariantPage = ({ variantId }) => (
             </ResponsiveSection>
             <ResponsiveSection>
               <SectionHeading>Site Quality Metrics</SectionHeading>
-              <GnomadSiteQualityMetrics variant={variant} />
+              <GnomadSiteQualityMetrics datasetId={datasetId} variant={variant} />
             </ResponsiveSection>
             <Section>
               <SectionHeading>Read Data</SectionHeading>
@@ -99,5 +110,8 @@ export const GnomadVariantPage = ({ variantId }) => (
 )
 
 GnomadVariantPage.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variantId: PropTypes.string.isRequired,
 }
+
+export default GnomadVariantPage

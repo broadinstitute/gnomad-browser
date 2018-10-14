@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 
@@ -95,7 +96,7 @@ const mapStateToProps = (state) => {
     currentChromosome: geneChromosome(state) || regionChromosome(state),
   }
 }
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setVariantSort: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
 
@@ -106,7 +107,11 @@ const mapDispatchToProps = (dispatch) => {
         // Hack to show modal in exome results browsers
         dispatch(variantActions.setFocusedVariant(variantId))
       } else {
-        window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
+        const nextLocation = Object.assign({}, ownProps.history.location, {
+          pathname: `/variant/${variantId}`,
+        })
+        ownProps.history.push(nextLocation)
+        // window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
       }
     },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
@@ -115,4 +120,11 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default withSize()(connect(mapStateToProps, mapDispatchToProps)(VariantTable))
+export default withSize()(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(VariantTable)
+  )
+)

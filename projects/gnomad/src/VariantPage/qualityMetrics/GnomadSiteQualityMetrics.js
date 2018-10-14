@@ -15,7 +15,6 @@ const ControlSection = styled.div`
 
 const availableMetrics = [
   'SiteQuality',
-  'GQ_MEDIAN',
   'FS',
   'MQRankSum',
   'InbreedingCoeff',
@@ -25,11 +24,7 @@ const availableMetrics = [
   'DP',
   'BaseQRankSum',
   'MQ',
-  'AS_RF',
-  'DP_MEDIAN',
-  'AB_MEDIAN',
   'ClippingRankSum',
-  'DREF_MEDIAN',
 ]
 
 export class GnomadSiteQualityMetrics extends Component {
@@ -37,14 +32,14 @@ export class GnomadSiteQualityMetrics extends Component {
     super(props)
 
     this.state = {
-      selectedDataset: props.variant.exome ? 'gnomadExomes' : 'gnomadGenomes',
+      selectedDataset: props.variant.exome ? 'exome' : 'genome',
       selectedMetric: 'SiteQuality',
     }
   }
 
   render() {
     return (
-      <AggregateQualityMetricsQuery dataset={this.state.selectedDataset}>
+      <AggregateQualityMetricsQuery datasetId={this.props.datasetId}>
         {({ data, error, loading }) => {
           if (loading) {
             return <p>Loading...</p>
@@ -53,12 +48,8 @@ export class GnomadSiteQualityMetrics extends Component {
             return <p>Unable to load metrics</p>
           }
 
-          const variantData =
-            this.state.selectedDataset === 'gnomadExomes'
-              ? this.props.variant.exome
-              : this.props.variant.genome
-
-          const metricData = data.aggregateQualityMetrics
+          const variantData = this.props.variant[this.state.selectedDataset]
+          const metricData = data.aggregateQualityMetrics[this.state.selectedDataset]
 
           let selectedMetricBins
           let selectedSiteQualityBinDescription
@@ -66,22 +57,34 @@ export class GnomadSiteQualityMetrics extends Component {
             const variantAlleleFreq = variantData.ac / variantData.an
 
             if (variantAlleleFreq === 1) {
-              selectedMetricBins = metricData.SiteQuality.singleton.bins
+              selectedMetricBins = metricData.siteQuality.singleton.bins
               selectedSiteQualityBinDescription = 'singleton variants'
             } else if (variantAlleleFreq === 2) {
-              selectedMetricBins = metricData.SiteQuality.doubleton.bins
+              selectedMetricBins = metricData.siteQuality.doubleton.bins
               selectedSiteQualityBinDescription = 'doubleton variants'
             } else {
-              const selectedAlleleFreqBin = metricData.SiteQuality.af_bins.find(
+              const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
                 bin => bin.min_af <= variantAlleleFreq && variantAlleleFreq < bin.max_af
               )
-              selectedMetricBins = selectedAlleleFreqBin.bins
+              selectedMetricBins = selectedAlleleFreqBin.histogram.bin_freq.map((n, i) => ({
+                x0: selectedAlleleFreqBin.histogram.bin_edges[i],
+                x1: selectedAlleleFreqBin.histogram.bin_edges[i + 1],
+                n,
+              }))
               selectedSiteQualityBinDescription = `variants with ${
                 selectedAlleleFreqBin.min_af
               } < AF < ${selectedAlleleFreqBin.max_af}`
             }
           } else {
-            selectedMetricBins = metricData[this.state.selectedMetric].bins
+            const histogram = metricData.otherMetrics.find(
+              m => m.metric === this.state.selectedMetric
+            ).histogram
+
+            selectedMetricBins = histogram.bin_freq.map((n, i) => ({
+              x0: histogram.bin_edges[i],
+              x1: histogram.bin_edges[i + 1],
+              n,
+            }))
           }
 
           return (
@@ -118,11 +121,11 @@ export class GnomadSiteQualityMetrics extends Component {
                     this.setState({ selectedDataset })
                   }}
                   options={[
-                    { disabled: !this.props.variant.exome, label: 'Exomes', value: 'gnomadExomes' },
+                    { disabled: !this.props.variant.exome, label: 'Exomes', value: 'exome' },
                     {
                       disabled: !this.props.variant.genome,
                       label: 'Genomes',
-                      value: 'gnomadGenomes',
+                      value: 'genome',
                     },
                   ]}
                   value={this.state.selectedDataset}
@@ -166,6 +169,7 @@ const variantSiteQualityMetricsPropType = PropTypes.shape({
 })
 
 GnomadSiteQualityMetrics.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
     exome: PropTypes.shape({
       qualityMetrics: PropTypes.shape({

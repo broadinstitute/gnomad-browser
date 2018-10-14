@@ -59,8 +59,8 @@ export class PopulationsTable extends Component {
         name: PropTypes.string.isRequired,
         ac: PropTypes.number.isRequired,
         an: PropTypes.number.isRequired,
-        hemi: PropTypes.number.isRequired,
-        hom: PropTypes.number.isRequired,
+        ac_hemi: PropTypes.number.isRequired,
+        ac_hom: PropTypes.number.isRequired,
       })
     ).isRequired,
     showHemizygotes: PropTypes.bool,
@@ -117,8 +117,8 @@ export class PopulationsTable extends Component {
     const totalAlleleNumber = populations.map(pop => pop.an).reduce((acc, n) => acc + n)
     const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
 
-    const totalHemizygotes = populations.map(pop => pop.hemi).reduce((acc, n) => acc + n)
-    const totalHomozygotes = populations.map(pop => pop.hom).reduce((acc, n) => acc + n)
+    const totalHemizygotes = populations.map(pop => pop.ac_hemi).reduce((acc, n) => acc + n)
+    const totalHomozygotes = populations.map(pop => pop.ac_hom).reduce((acc, n) => acc + n)
 
     const { showHemizygotes, showHomozygotes } = this.props
 
@@ -129,8 +129,8 @@ export class PopulationsTable extends Component {
             {this.renderColumnHeader('name', 'Population')}
             {this.renderColumnHeader('ac', 'Allele Count')}
             {this.renderColumnHeader('an', 'Allele Number')}
-            {showHemizygotes && this.renderColumnHeader('hemi', 'Number of Homogzygotes')}
-            {showHomozygotes && this.renderColumnHeader('hom', 'Number of Hemizygotes')}
+            {showHomozygotes && this.renderColumnHeader('ac_hom', 'Number of Homozygotes')}
+            {showHemizygotes && this.renderColumnHeader('ac_hemi', 'Number of Hemigzygotes')}
             {this.renderColumnHeader('af', 'Allele Frequency')}
           </tr>
         </thead>
@@ -140,8 +140,8 @@ export class PopulationsTable extends Component {
               <th role="rowheader">{pop.name}</th>
               <td role="gridcell">{pop.ac}</td>
               <td role="gridcell">{pop.an}</td>
-              {showHemizygotes && <td role="gridcell">{pop.hemi}</td>}
-              {showHomozygotes && <td role="gridcell">{pop.hom}</td>}
+              {showHomozygotes && <td role="gridcell">{pop.ac_hom}</td>}
+              {showHemizygotes && <td role="gridcell">{pop.ac_hemi}</td>}
               <td role="gridcell">{pop.af.toPrecision(4)}</td>
             </tr>
           ))}
@@ -151,8 +151,8 @@ export class PopulationsTable extends Component {
             <th role="rowheader">Total</th>
             <td role="gridcell">{totalAlleleCount}</td>
             <td role="gridcell">{totalAlleleNumber}</td>
-            {showHemizygotes && <td role="gridcell">{totalHemizygotes}</td>}
             {showHomozygotes && <td role="gridcell">{totalHomozygotes}</td>}
+            {showHemizygotes && <td role="gridcell">{totalHemizygotes}</td>}
             <td role="gridcell">{totalAlleleFrequency.toPrecision(4)}</td>
           </tr>
         </tfoot>
