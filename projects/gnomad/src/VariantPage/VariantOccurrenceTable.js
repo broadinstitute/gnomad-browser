@@ -86,6 +86,16 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
           <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>
           <td>{totalAlleleFrequency.toPrecision(4)}</td>
         </tr>
+        <tr>
+          <th scope="row">
+            Filtering AF
+            <br />
+            (95% confidence)
+          </th>
+          <td>{isPresentInExome && variant.exome.faf95.toPrecision(4)}</td>
+          <td>{isPresentInGenome && variant.genome.faf95.toPrecision(4)}</td>
+          <td />
+        </tr>
       </tbody>
     </Table>
   )
@@ -96,10 +106,12 @@ GnomadVariantOccurrenceTable.propTypes = {
     exome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
+      faf95: PropTypes.number.isRequired,
     }),
     genome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
+      faf95: PropTypes.number.isRequired,
     }),
   }).isRequired,
 }

@@ -158,6 +158,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: exomeData.AN_adj.total,
           ac_hemi: exomeData.nonpar ? exomeData.AC_adj.male : 0,
           ac_hom: exomeData.nhomalt_adj.total,
+          faf95: exomeData.faf95_adj.total,
+          faf99: exomeData.faf99_adj.total,
           filters: exomeData.filters,
           populations: formatPopulations(exomeData),
           qualityMetrics: {
@@ -185,6 +187,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: genomeData.AN_adj.total,
           ac_hemi: genomeData.nonpar ? genomeData.AC_adj.male : 0,
           ac_hom: genomeData.nhomalt_adj.total,
+          faf95: genomeData.faf95_adj.total,
+          faf99: genomeData.faf99_adj.total,
           filters: genomeData.filters,
           populations: formatPopulations(genomeData),
           qualityMetrics: {

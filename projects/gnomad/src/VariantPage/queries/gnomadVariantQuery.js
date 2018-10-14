@@ -13,6 +13,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         an
         ac_hemi
         ac_hom
+        faf95
         filters
         populations {
           id
@@ -76,6 +77,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         an
         ac_hemi
         ac_hom
+        faf95
         filters
         populations {
           id
