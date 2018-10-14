@@ -8,6 +8,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
     variantId
     xpos
     ... on GnomadVariantDetails {
+      colocatedVariants
       exome {
         ac
         an

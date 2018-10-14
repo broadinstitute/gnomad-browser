@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 import React from 'react'
 import styled from 'styled-components'
 
 import { Loading, Page, SectionHeading } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
+import Link from '../Link'
 import { ReferenceList } from './ReferenceList'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
@@ -69,6 +71,21 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           <VariantDetailsContainer>
             <ResponsiveSection>
               <GnomadVariantOccurrenceTable variant={variant} />
+
+              {variant.colocatedVariants.length > 0 && (
+                <div>
+                  <p>
+                    <strong>This variant is multiallelic. Other alt alleles are:</strong>
+                  </p>
+                  <ul>
+                    {variant.colocatedVariants.map(variantId => (
+                      <li key={variantId}>
+                        <Link to={`/variant/${variantId}`}>{variantId}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </ResponsiveSection>
             <ResponsiveSection>
               <SectionHeading>References</SectionHeading>
