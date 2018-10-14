@@ -28,7 +28,9 @@ class RegionPage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <GnomadPageHeading>{this.props.regionId}</GnomadPageHeading>
+          <GnomadPageHeading selectedDataset={this.props.datasetId}>
+            {this.props.regionId}
+          </GnomadPageHeading>
           <div>
             <RegionInfo showVariants={!tooManyVariants} />
           </div>

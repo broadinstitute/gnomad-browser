@@ -67,7 +67,7 @@ class GenePage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <GnomadPageHeading>
+          <GnomadPageHeading selectedDataset={this.props.datasetId}>
             {geneSymbol} <GeneFullName>{fullGeneName}</GeneFullName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
