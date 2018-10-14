@@ -1,5 +1,4 @@
 import {
-  GraphQLEnumType,
   GraphQLFloat,
   GraphQLList,
   GraphQLNonNull,
@@ -10,10 +9,7 @@ import {
 
 import { getXpos } from '../utilities/variant'
 
-import {
-  AggregateQualityMetricsType,
-  resolveAggregateQualityMetrics,
-} from './datasets/aggregateQualityMetrics'
+import { AggregateQualityMetricsType } from './datasets/aggregateQualityMetrics'
 
 import geneType, {
   lookupGeneByGeneId,
@@ -44,18 +40,12 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     aggregateQualityMetrics: {
       type: AggregateQualityMetricsType,
       args: {
-        dataset: {
-          type: new GraphQLEnumType({
-            name: 'AggregateQualityMetricsDataset',
-            values: { gnomadExomes: {}, gnomadGenomes: {} },
-          }),
-        },
+        dataset: { type: datasetArgumentTypeForMethod('fetchAggregateQualityMetrics') },
       },
       resolve: (obj, args, ctx) => {
-        return resolveAggregateQualityMetrics(ctx, {
-          gnomadExomes: 'exome_metrics',
-          gnomadGenomes: 'genome_metrics',
-        }[args.dataset])
+        const fetchAggregateQualityMetrics =
+          datasetsConfig[args.dataset].fetchAggregateQualityMetrics
+        return fetchAggregateQualityMetrics(ctx)
       },
     },
     gene: {

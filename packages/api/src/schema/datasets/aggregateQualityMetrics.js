@@ -1,37 +1,31 @@
-import {
-  GraphQLFloat,
-  GraphQLList,
-  GraphQLObjectType,
-} from 'graphql'
-
-
-const QualityMetricHistogramBinType = new GraphQLObjectType({
-  name: 'AggregateQualityMetricHistogramBin',
-  fields: {
-    x0: { type: GraphQLFloat },
-    x1: { type: GraphQLFloat },
-    n: { type: GraphQLFloat },
-  },
-})
-
+import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
 const QualityMetricHistogramType = new GraphQLObjectType({
   name: 'AggregateQualityMetricHistogram',
   fields: {
-    bins: { type: new GraphQLList(QualityMetricHistogramBinType) },
+    bin_edges: { type: new GraphQLList(GraphQLFloat) },
+    bin_freq: { type: new GraphQLList(GraphQLFloat) },
+    n_smaller: { type: GraphQLInt },
+    n_larger: { type: GraphQLInt },
   },
 })
 
+const AggregateQualityMetricType = new GraphQLObjectType({
+  name: 'AggregateQualityMetric',
+  fields: {
+    metric: { type: GraphQLString },
+    histogram: { type: QualityMetricHistogramType },
+  },
+})
 
 const SiteQualityAlleleFrequencyBinType = new GraphQLObjectType({
   name: 'AggregateSiteQualityAlleleFrequencyBin',
   fields: {
     min_af: { type: GraphQLFloat },
     max_af: { type: GraphQLFloat },
-    bins: { type: new GraphQLList(QualityMetricHistogramBinType) },
+    histogram: { type: QualityMetricHistogramType },
   },
 })
-
 
 const SiteQualityMetricType = new GraphQLObjectType({
   name: 'AggregateSiteQualityMetric',
@@ -42,46 +36,32 @@ const SiteQualityMetricType = new GraphQLObjectType({
   },
 })
 
-
 export const AggregateQualityMetricsType = new GraphQLObjectType({
   name: 'AggregateQualityMetrics',
   fields: {
-    AB_MEDIAN: { type: QualityMetricHistogramType },
-    AS_RF: { type: QualityMetricHistogramType },
-    BaseQRankSum: { type: QualityMetricHistogramType },
-    ClippingRankSum: { type: QualityMetricHistogramType },
-    DP: { type: QualityMetricHistogramType },
-    DP_MEDIAN: { type: QualityMetricHistogramType },
-    DREF_MEDIAN: { type: QualityMetricHistogramType },
-    FS: { type: QualityMetricHistogramType },
-    GQ_MEDIAN: { type: QualityMetricHistogramType },
-    InbreedingCoeff: { type: QualityMetricHistogramType },
-    MQ: { type: QualityMetricHistogramType },
-    MQRankSum: { type: QualityMetricHistogramType },
-    QD: { type: QualityMetricHistogramType },
-    ReadPosRankSum: { type: QualityMetricHistogramType },
-    SiteQuality: { type: SiteQualityMetricType },
-    VQSLOD: { type: QualityMetricHistogramType },
+    exome: {
+      type: new GraphQLObjectType({
+        name: 'AggregateQualityMetricsExome',
+        fields: {
+          siteQuality: { type: SiteQualityMetricType },
+          otherMetrics: { type: new GraphQLList(AggregateQualityMetricType) },
+        },
+      }),
+    },
+    genome: {
+      type: new GraphQLObjectType({
+        name: 'AggregateQualityMetricsGenome',
+        fields: {
+          siteQuality: { type: SiteQualityMetricType },
+          otherMetrics: { type: new GraphQLList(AggregateQualityMetricType) },
+        },
+      }),
+    },
   },
 })
 
-
-const formatMetricBins = metric => metric.hist.map((n, i) => ({
-  x0: metric.mids[i],
-  x1: metric.mids[i + 1],
-  n,
-}))
-
-
-const scaleBins = bins => bins.map(bin => ({
-  x0: Math.exp(bin.x0),
-  x1: Math.exp(bin.x1),
-  n: bin.n,
-}))
-
-
-const SITE_QUALITY_AF_BINS = [
-  [0, 0.0005],
+const SITE_QUALITY_ALLELE_FREQUENCY_BINS = [
+  [0, 0.00005],
   [0.00005, 0.0001],
   [0.0001, 0.0002],
   [0.0002, 0.0005],
@@ -97,36 +77,41 @@ const SITE_QUALITY_AF_BINS = [
   [0.5, 1],
 ]
 
+const scaleBins = histogram => ({
+  ...histogram,
+  bin_edges: histogram.bin_edges.map(n => 10 ** n),
+})
 
-export const resolveAggregateQualityMetrics = async (ctx, collectionName) => {
-  const allMetrics = await ctx.database.gnomad.collection(collectionName).find().toArray()
+const metricsToScale = ['DP']
 
-  const metricsByName = allMetrics.reduce((acc, m) => ({ ...acc, [m.metric]: m }), {})
+export const formatAggregateQualityMetrics = metricsList => {
+  const siteQualityMetrics = metricsList.filter(m => m.metric.startsWith('binned_'))
+  const otherMetrics = metricsList.filter(m => !m.metric.startsWith('binned_'))
 
-  return ({
-    AB_MEDIAN: { bins: formatMetricBins(metricsByName.AB_MEDIAN) },
-    AS_RF: { bins: formatMetricBins(metricsByName.AS_RF) },
-    BaseQRankSum: { bins: formatMetricBins(metricsByName.BaseQRankSum) },
-    ClippingRankSum: { bins: formatMetricBins(metricsByName.ClippingRankSum) },
-    DP: { bins: scaleBins(formatMetricBins(metricsByName.DP)) },
-    DP_MEDIAN: { bins: formatMetricBins(metricsByName.DP_MEDIAN) },
-    DREF_MEDIAN: { bins: formatMetricBins(metricsByName.DREF_MEDIAN) },
-    FS: { bins: formatMetricBins(metricsByName.FS) },
-    GQ_MEDIAN: { bins: formatMetricBins(metricsByName.GQ_MEDIAN) },
-    InbreedingCoeff: { bins: formatMetricBins(metricsByName.InbreedingCoeff) },
-    MQ: { bins: formatMetricBins(metricsByName.MQ) },
-    MQRankSum: { bins: formatMetricBins(metricsByName.MQRankSum) },
-    QD: { bins: formatMetricBins(metricsByName.QD) },
-    ReadPosRankSum: { bins: formatMetricBins(metricsByName.ReadPosRankSum) },
-    SiteQuality: {
-      singleton: { bins: scaleBins(formatMetricBins(metricsByName.binned_singleton)) },
-      doubleton: { bins: scaleBins(formatMetricBins(metricsByName.binned_doubleton)) },
-      af_bins: SITE_QUALITY_AF_BINS.map(afBin => ({
+  const siteQualityByMetric = siteQualityMetrics.reduce((acc, m) => ({ ...acc, [m.metric]: m }), {})
+
+  const emptySiteQualityHistogram = scaleBins({
+    bin_edges: [...Array(37)].map((_, i) => 1 + i * 0.25),
+    bin_freq: [...Array(36)].map(() => 0),
+    n_smaller: 0,
+    n_larger: 0,
+  })
+
+  return {
+    siteQuality: {
+      singleton: scaleBins(siteQualityByMetric.binned_singleton),
+      doubleton: scaleBins(siteQualityByMetric.binned_doubleton),
+      af_bins: SITE_QUALITY_ALLELE_FREQUENCY_BINS.map(afBin => ({
         min_af: afBin[0],
         max_af: afBin[1],
-        bins: scaleBins(formatMetricBins(metricsByName[`binned_${afBin[1]}`])),
+        histogram: siteQualityByMetric[`binned_${afBin[1]}`]
+          ? scaleBins(siteQualityByMetric[`binned_${afBin[1]}`])
+          : emptySiteQualityHistogram,
       })),
     },
-    VQSLOD: { bins: formatMetricBins(metricsByName.VQSLOD) },
-  })
+    otherMetrics: otherMetrics.map(m => ({
+      metric: m.metric,
+      histogram: metricsToScale.includes(m.metric) ? scaleBins(m) : m,
+    })),
+  }
 }
