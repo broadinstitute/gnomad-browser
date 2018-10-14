@@ -96,25 +96,41 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
   const chrom = parts[0]
   const pos = Number(parts[1])
 
-  const response = await ctx.database.elastic.search({
-    index: ['gnomad_exomes_2_1', 'gnomad_genomes_2_1'],
-    type: 'variant',
-    _source: ['variant_id'],
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { chrom } },
-            { term: { pos } },
-            { range: { [`${subset}.AC_adj.total`]: { gt: 0 } } },
-          ],
-        },
-      },
-    },
-  })
+  const requests = [
+    { index: 'gnomad_exomes_2_1', subset },
+    // All genome samples are non_cancer, so separate non-cancer numbers are not stored
+    { index: 'gnomad_genomes_2_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
+  ]
 
-  return response.hits.hits
-    .map(doc => doc._source.variant_id) // eslint-disable-line
+  const [exomeResponse, genomeResponse] = await Promise.all(
+    requests.map(({ index, subset: requestSubset }) =>
+      ctx.database.elastic.search({
+        index,
+        type: 'variant',
+        _source: ['variant_id'],
+        body: {
+          query: {
+            bool: {
+              filter: [
+                { term: { chrom } },
+                { term: { pos } },
+                { range: { [`${requestSubset}.AC_adj.total`]: { gt: 0 } } },
+              ],
+            },
+          },
+        },
+      })
+    )
+  )
+
+  /* eslint-disable no-underscore-dangle */
+  const exomeVariants = exomeResponse.hits.hits.map(doc => doc._source.variant_id)
+  const genomeVariants = genomeResponse.hits.hits.map(doc => doc._source.variant_id)
+  /* eslint-enable no-underscore-dangle */
+
+  const combinedVariants = exomeVariants.concat(genomeVariants)
+
+  return combinedVariants
     .filter(otherVariantId => otherVariantId !== variantId)
     .sort()
     .filter(
