@@ -68,7 +68,7 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
 
         // eslint-disable-next-line no-underscore-dangle
         const isExomeVariant = hit._index === 'gnomad_exomes_2_1'
-        const filterPrefix = isExomeVariant ? 'exome' : 'genome'
+        const filterPrefix = isExomeVariant ? 'exomes' : 'genomes'
         const dataset = isExomeVariant ? 'gnomadExomeVariants' : 'gnomadGenomeVariants'
 
         const ac = variantData[subset].AC_adj.total
