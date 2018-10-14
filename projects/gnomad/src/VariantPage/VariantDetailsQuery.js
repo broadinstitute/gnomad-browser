@@ -6,10 +6,10 @@ import { Query } from '../Query'
 import exacVariantQuery from './queries/exacVariantQuery'
 import gnomadVariantQuery from './queries/gnomadVariantQuery'
 
-export const VariantDetailsQuery = ({ children, dataset, variantId }) => (
+export const VariantDetailsQuery = ({ children, datasetId, variantId }) => (
   <Query
-    query={dataset === 'exac' ? exacVariantQuery : gnomadVariantQuery}
-    variables={{ variantId }}
+    query={datasetId === 'exac' ? exacVariantQuery : gnomadVariantQuery}
+    variables={{ datasetId, variantId }}
   >
     {children}
   </Query>
@@ -17,6 +17,6 @@ export const VariantDetailsQuery = ({ children, dataset, variantId }) => (
 
 VariantDetailsQuery.propTypes = {
   children: PropTypes.func.isRequired,
-  dataset: PropTypes.oneOf(['exac', 'gnomad']).isRequired,
+  datasetId: PropTypes.string.isRequired,
   variantId: PropTypes.string.isRequired,
 }

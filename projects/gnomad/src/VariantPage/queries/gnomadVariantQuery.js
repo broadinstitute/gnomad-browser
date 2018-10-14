@@ -1,138 +1,144 @@
 export default `
-query GnomadVariant($variantId: String!) {
-  variant(dataset: gnomad, variantId: $variantId) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVariantDetails!) {
+  variant(variantId: $variantId, dataset: $datasetId) {
     alt
     chrom
     pos
     ref
     variantId
     xpos
-    ...on GnomadVariantDetails {
+    ... on GnomadVariantDetails {
       exome {
         ac
         an
+        ac_hemi
+        ac_hom
         filters
         populations {
           id
           ac
           an
-          hemi
-          hom
+          ac_hemi
+          ac_hom
+          subpopulations {
+            id
+            ac
+            an
+          }
         }
         qualityMetrics {
           genotypeDepth {
-            all
-            alt
+            all {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
           }
           genotypeQuality {
-            all
-            alt
+            all {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
           }
           siteQualityMetrics {
-            AB_MEDIAN
-            AS_RF
             BaseQRankSum
             ClippingRankSum
             DP
-            DP_MEDIAN
-            DREF_MEDIAN
             FS
-            GQ_MEDIAN
             InbreedingCoeff
             MQ
             MQRankSum
             QD
             ReadPosRankSum
             SiteQuality
+            SOR
             VQSLOD
           }
-        }
-        reads {
-          het {
-            available
-            readGroups
-          }
-          hom {
-            available
-            readGroups
-          }
-          hemi {
-            available
-            readGroups
-          }
-          bamPath
-          indexPath
         }
       }
       genome {
         ac
         an
+        ac_hemi
+        ac_hom
         filters
         populations {
           id
           ac
           an
-          hemi
-          hom
+          ac_hemi
+          ac_hom
+          subpopulations {
+            id
+            ac
+            an
+          }
         }
         qualityMetrics {
           genotypeDepth {
-            all
-            alt
+            all {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
           }
           genotypeQuality {
-            all
-            alt
+            all {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
           }
           siteQualityMetrics {
-            AB_MEDIAN
-            AS_RF
             BaseQRankSum
             ClippingRankSum
             DP
-            DP_MEDIAN
-            DREF_MEDIAN
             FS
-            GQ_MEDIAN
             InbreedingCoeff
             MQ
             MQRankSum
             QD
             ReadPosRankSum
             SiteQuality
+            SOR
             VQSLOD
           }
         }
-        reads {
-          het {
-            available
-            readGroups
-          }
-          hom {
-            available
-            readGroups
-          }
-          hemi {
-            available
-            readGroups
-          }
-          bamPath
-          indexPath
-        }
       }
+      flags
       rsid
       sortedTranscriptConsequences {
-        amino_acids
-        biotype
-        category
-        cdna_start
-        cdna_end
-        codons
-        consequence_terms
-        domains
         gene_id
         gene_symbol
-        gene_symbol_source
         hgvs
         hgvsc
         hgvsp
@@ -141,8 +147,6 @@ query GnomadVariant($variantId: String!) {
         lof_filter
         lof_info
         major_consequence
-        major_consequence_rank
-        protein_id
         transcript_id
       }
     }

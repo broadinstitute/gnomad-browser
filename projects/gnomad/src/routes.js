@@ -13,6 +13,7 @@ import GenePage from './GenePage'
 import HomePage from './HomePage'
 import RegionPage from './RegionPage'
 import TermsPage from './TermsPage'
+import VariantPage from './VariantPage/VariantPage'
 
 import NavBar from './NavBar'
 
@@ -59,6 +60,15 @@ const App = () => (
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
             return <RegionPage datasetId={datasetId} regionId={match.params.regionId} />
+          }}
+        />
+        <Route
+          exact
+          path="/variant/:variantId"
+          render={({ location, match }) => {
+            const params = queryString.parse(location.search)
+            const datasetId = params.dataset || defaultDataset
+            return <VariantPage datasetId={datasetId} variantId={match.params.variantId} />
           }}
         />
         <Route exact path="/about" component={AboutPage} />

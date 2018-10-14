@@ -75,14 +75,14 @@ export class GnomadPopulationsTable extends Component {
             name: POPULATION_NAMES[pop.id],
             ac: 0,
             an: 0,
-            hemi: 0,
-            hom: 0,
+            ac_hemi: 0,
+            ac_hom: 0,
           }
         }
         acc[pop.id].ac += pop.ac
         acc[pop.id].an += pop.an
-        acc[pop.id].hemi += pop.hemi
-        acc[pop.id].hom += pop.hom
+        acc[pop.id].ac_hemi += pop.ac_hemi
+        acc[pop.id].ac_hom += pop.ac_hom
         return acc
       }, {})
     )

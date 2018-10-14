@@ -27,14 +27,14 @@ export class GnomadGenotypeQualityMetrics extends Component {
     const variant = this.props.variant
     const variantData = variant[this.state.selectedDataset]
 
-    const metricValues =
+    const histogramData =
       this.state.selectedMetric === 'quality'
         ? variantData.qualityMetrics.genotypeQuality[this.state.selectedSamples]
         : variantData.qualityMetrics.genotypeDepth[this.state.selectedSamples]
 
-    const bins = metricValues.map((n, i) => ({
-      x0: i * 5,
-      x1: (i + 1) * 5,
+    const bins = histogramData.bin_freq.map((n, i) => ({
+      x0: histogramData.bin_edges[i],
+      x1: histogramData.bin_edges[i + 1],
       n,
     }))
 
@@ -85,14 +85,21 @@ export class GnomadGenotypeQualityMetrics extends Component {
   }
 }
 
+const histogramPropType = PropTypes.shape({
+  bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+  bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+  n_smaller: PropTypes.number.isRequired,
+  n_larger: PropTypes.number.isRequired,
+})
+
 const genotypeQualityMetricPropType = PropTypes.shape({
   genotypeDepth: PropTypes.shape({
-    all: PropTypes.arrayOf(PropTypes.number).isRequired,
-    alt: PropTypes.arrayOf(PropTypes.number).isRequired,
+    all: histogramPropType,
+    alt: histogramPropType,
   }).isRequired,
   genotypeQuality: PropTypes.shape({
-    all: PropTypes.arrayOf(PropTypes.number).isRequired,
-    alt: PropTypes.arrayOf(PropTypes.number).isRequired,
+    all: histogramPropType,
+    alt: histogramPropType,
   }).isRequired,
 })
 
