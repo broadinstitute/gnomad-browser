@@ -73,8 +73,8 @@ export class PopulationsTable extends Component {
   }
 
   state = {
-    sortBy: 'name',
-    sortAscending: true,
+    sortBy: 'af',
+    sortAscending: false,
   }
 
   setSortBy(sortBy) {
