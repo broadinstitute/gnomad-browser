@@ -21,8 +21,7 @@ const appSettings = {
       getLabelForConsequenceTerm(variant.get('consequence'))
         .toLowerCase()
         .includes(query) ||
-      (variant.get('hgvsp') || '').toLowerCase().includes(query) ||
-      (variant.get('hgvsc') || '').toLowerCase().includes(query)
+      (variant.get('hgvs') || '').toLowerCase().includes(query)
     )
   },
   logger: true,

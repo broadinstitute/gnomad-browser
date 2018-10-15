@@ -9,6 +9,7 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataType: 'variantId',
         width: mediumSize ? width * 0.3 : width * 0.15,
         onHeaderClick,
+        searchable: true,
       },
       {
         dataKey: 'datasets',
