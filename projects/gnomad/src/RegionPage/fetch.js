@@ -36,18 +36,6 @@ export const fetchRegion = regionId => {
         }
       }
     }
-    exome_coverage {
-      pos
-      mean
-    }
-    genome_coverage {
-      pos
-      mean
-    }
-    exacv1_coverage {
-      pos
-      mean
-    }
   }
 
 }

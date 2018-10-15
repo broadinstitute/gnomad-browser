@@ -83,18 +83,6 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
           stop
           strand
         }
-        genome_coverage {
-          pos
-          mean
-        }
-        exome_coverage {
-          pos
-          mean
-        }
-        exacv1_coverage {
-          pos
-          mean
-        }
       }
       transcripts {
         start

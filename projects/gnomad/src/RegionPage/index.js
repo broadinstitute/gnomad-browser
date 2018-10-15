@@ -35,7 +35,11 @@ class RegionPage extends Component {
             <RegionInfo showVariants={!tooManyVariants} />
           </div>
         </TrackPageSection>
-        <RegionViewer coverageStyle={'new'} showVariants={!isLoadingVariants && !tooManyVariants} />
+        <RegionViewer
+          coverageStyle={'new'}
+          datasetId={this.props.datasetId}
+          showVariants={!isLoadingVariants && !tooManyVariants}
+        />
         {this.renderVariants({ isLoadingVariants, tooManyVariants })}
       </TrackPage>
     )

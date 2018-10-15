@@ -63,7 +63,7 @@ class GenePage extends Component {
   }
 
   renderGene = ({ gene, isLoadingVariants }) => {
-    const { gene_name: geneSymbol, full_gene_name: fullGeneName } = gene
+    const { gene_id: geneId, gene_name: geneSymbol, full_gene_name: fullGeneName } = gene
     return (
       <TrackPage>
         <TrackPageSection>
@@ -80,7 +80,7 @@ class GenePage extends Component {
             </div>
           </GeneInfoColumnWrapper>
         </TrackPageSection>
-        <GeneViewer />
+        <GeneViewer datasetId={this.props.datasetId} geneId={geneId} />
         {this.renderVariantTableSection({ isLoadingVariants })}
       </TrackPage>
     )
