@@ -54,15 +54,22 @@ export class GnomadSiteQualityMetrics extends Component {
           let selectedMetricBins
           let selectedSiteQualityBinDescription
           if (this.state.selectedMetric === 'SiteQuality') {
-            const variantAlleleFreq = variantData.ac / variantData.an
-
-            if (variantAlleleFreq === 1) {
-              selectedMetricBins = metricData.siteQuality.singleton.bins
+            if (variantData.ac === 1) {
+              selectedMetricBins = metricData.siteQuality.singleton.bin_freq.map((n, i) => ({
+                x0: metricData.siteQuality.singleton.bin_edges[i],
+                x1: metricData.siteQuality.singleton.bin_edges[i + 1],
+                n,
+              }))
               selectedSiteQualityBinDescription = 'singleton variants'
-            } else if (variantAlleleFreq === 2) {
-              selectedMetricBins = metricData.siteQuality.doubleton.bins
+            } else if (variantData.ac === 2) {
+              selectedMetricBins = metricData.siteQuality.doubleton.bin_freq.map((n, i) => ({
+                x0: metricData.siteQuality.doubleton.bin_edges[i],
+                x1: metricData.siteQuality.doubleton.bin_edges[i + 1],
+                n,
+              }))
               selectedSiteQualityBinDescription = 'doubleton variants'
             } else {
+              const variantAlleleFreq = variantData.ac / variantData.an
               const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
                 bin => bin.min_af <= variantAlleleFreq && variantAlleleFreq < bin.max_af
               )
