@@ -22,8 +22,7 @@ const fetchVariantsByGene = (geneIdOrName, transcriptId, datasetId) => {
         datasets
         filters
         flags
-        hgvsc
-        hgvsp
+        hgvs
         pos
         rsid
         variant_id: variantId

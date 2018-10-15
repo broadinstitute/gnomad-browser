@@ -59,6 +59,7 @@ variantDatasets.forEach(datasetId => {
     filters: [],
     flags: [],
     hemi_count: null,
+    hgvs: null,
     hgvsc: null,
     hgvsp: null,
     hom_count: null,
