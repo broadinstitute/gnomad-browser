@@ -55,6 +55,17 @@ const Table = styled.table`
 `
 
 const TogglePopulationButton = TextButton.extend`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: ${props => (props.isExpanded ? '15px' : '10px')};
+  background-image: ${props =>
+    props.isExpanded
+      ? 'url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7)'
+      : 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAVCAYAAABhe09AAAAATElEQVQoU2NkQAOM9BFQ1jXYf/fyBUeYbYzKugb/GRgYDsAEYQIgBWBBZAGwIIoA438GhAoQ586VCxAVMA5ID6OKjoEDSAZuLV18CwAQVSMV/9L8fgAAAABJRU5ErkJggg==)'};
+  background-position: center left ${props => (props.isExpanded ? '-5px' : '0')};
+  background-repeat: no-repeat;
+  color: inherit;
   text-align: left;
 `
 
@@ -125,11 +136,15 @@ export class PopulationsTable extends Component {
   }
 
   renderPopulationRowHeader(pop) {
-    const colSpan = this.state.expandedPopulations[pop.name] ? 1 : 2
-    const rowSpan = this.state.expandedPopulations[pop.name] ? pop.subpopulations.length + 1 : 1
+    const isExpanded = this.state.expandedPopulations[pop.name]
+    const colSpan = isExpanded ? 1 : 2
+    const rowSpan = isExpanded ? pop.subpopulations.length + 1 : 1
     return (
       <th colSpan={colSpan} rowSpan={rowSpan} role="rowheader">
-        <TogglePopulationButton onClick={() => this.togglePopulationExpanded(pop.name)}>
+        <TogglePopulationButton
+          isExpanded={isExpanded}
+          onClick={() => this.togglePopulationExpanded(pop.name)}
+        >
           {pop.name}
         </TogglePopulationButton>
       </th>
@@ -218,7 +233,7 @@ export class PopulationsTable extends Component {
         ))}
         <tfoot>
           <tr role="row">
-            <th role="rowheader">Total</th>
+            <th colSpan={2} role="rowheader">Total</th>
             <td role="gridcell">{totalAlleleCount}</td>
             <td role="gridcell">{totalAlleleNumber}</td>
             {showHomozygotes && <td role="gridcell">{totalHomozygotes}</td>}
