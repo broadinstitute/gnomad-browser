@@ -27,6 +27,7 @@ const GnomadSubpopulationType = new GraphQLObjectType({
     id: { type: new GraphQLNonNull(GraphQLString) },
     ac: { type: new GraphQLNonNull(GraphQLInt) },
     an: { type: new GraphQLNonNull(GraphQLInt) },
+    ac_hom: { type: new GraphQLNonNull(GraphQLInt) },
   },
 })
 
