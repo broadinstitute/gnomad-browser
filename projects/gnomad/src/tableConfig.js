@@ -1,7 +1,7 @@
 export default (onHeaderClick, width, currentChromosome) => {
-  const mediumSize = (width < 900)
+  const mediumSize = width < 900
 
-  const tableConfig = ({
+  const tableConfig = {
     fields: [
       {
         dataKey: 'variant_id',
@@ -9,24 +9,7 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataType: 'variantId',
         width: mediumSize ? width * 0.3 : width * 0.15,
         onHeaderClick,
-        // searchable: true,
       },
-      // {
-      //   dataKey: 'rsid',
-      //   title: 'RSID',
-      //   dataType: 'string',
-      //   width: width * 0.07,
-      //   onHeaderClick,
-      //   searchable: true,
-      //   disappear: mediumSize,
-      // },
-      // {
-      //   dataKey: 'filters',
-      //   title: 'Filters',
-      //   dataType: 'filter',
-      //   width: 70,
-      //   onHeaderClick,
-      // },
       {
         dataKey: 'datasets',
         title: 'Source',
@@ -48,18 +31,17 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'hgvsp',
         title: 'HGVSp',
         dataType: 'string',
-        width: mediumSize ? width * 0.1 : width * 0.10,
+        width: mediumSize ? width * 0.1 : width * 0.1,
         onHeaderClick,
         disappear: mediumSize,
         searchable: true,
       },
       {
         dataKey: 'consequence',
-        title: 'Consequence',
+        title: 'Annotation',
         dataType: 'consequence',
-        width: mediumSize ? width * 0.17 : width * 0.10,
+        width: mediumSize ? width * 0.17 : width * 0.1,
         onHeaderClick,
-        // searchable: true,
       },
       {
         dataKey: 'flags',
@@ -68,18 +50,17 @@ export default (onHeaderClick, width, currentChromosome) => {
         width: width * 0.07,
         disappear: mediumSize,
         onHeaderClick,
-        // searchable: true,
       },
       {
         dataKey: 'allele_count',
-        title: 'AC',
+        title: 'Allele Count',
         dataType: 'integer',
         width: mediumSize ? width * 0.03 : width * 0.04,
         onHeaderClick,
       },
       {
         dataKey: 'allele_num',
-        title: 'AN',
+        title: 'Allele Number',
         dataType: 'integer',
         width: width * 0.05,
         onHeaderClick,
@@ -87,34 +68,33 @@ export default (onHeaderClick, width, currentChromosome) => {
       },
       {
         dataKey: 'allele_freq',
-        title: 'AF',
+        title: 'Allele Frequency',
         dataType: 'alleleFrequency',
         width: mediumSize ? width * 0.06 : width * 0.06,
         onHeaderClick,
-      }
+      },
     ],
-  })
+  }
+
   if (currentChromosome !== 'Y') {
-    tableConfig.fields.push(
-      {
-        dataKey: 'hom_count',
-        title: 'Hom',
-        dataType: 'integer',
-        width: mediumSize ? width * 0.04 : width * 0.04,
-        onHeaderClick,
-      }
-    )
+    tableConfig.fields.push({
+      dataKey: 'hom_count',
+      title: 'Number of Homozygotes',
+      dataType: 'integer',
+      width: mediumSize ? width * 0.04 : width * 0.04,
+      onHeaderClick,
+    })
   }
+
   if (currentChromosome === 'X' || currentChromosome === 'Y') {
-    tableConfig.fields.push(
-      {
-        dataKey: currentChromosome === 'Y' ? 'allele_count' : 'hemi_count',
-        title: 'Hemi',
-        dataType: 'integer',
-        width: mediumSize ? width * 0.04 : width * 0.04,
-        onHeaderClick,
-      }
-    )
+    tableConfig.fields.push({
+      dataKey: currentChromosome === 'Y' ? 'allele_count' : 'hemi_count',
+      title: 'Number of Hemizygotes',
+      dataType: 'integer',
+      width: mediumSize ? width * 0.04 : width * 0.04,
+      onHeaderClick,
+    })
   }
+
   return tableConfig
 }

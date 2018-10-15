@@ -479,15 +479,17 @@ const HeaderButtonContainer = styled.div`
 `
 
 const HeaderButton = styled.button`
+  border: 1px solid #fafafa;
   border-radius: 3px;
-  font-weight: bold;
+  background-color: #fafafa;
   color: rgb(66, 66, 66);
-  background-color: #FAFAFA;
-  border: 1px solid #FAFAFA;
+  cursor: pointer;
+  font-weight: bold;
+
   &:hover {
-    color: #FAFAFA;
-    background-color: rgb(66, 66, 66);
-    border: 1px solid rgb(66, 66, 66);
+    border: 1px solid #424242;
+    background-color: #424242;
+    color: #fafafa;
   }
 `
 
@@ -497,19 +499,10 @@ const getHeaderCell = field => (
       width: field.width + 20,
       maxWidth: field.width + 20,
       minWidth: field.width + 20,
-
     }}
     key={`${field.title}-header-cell`}
   >
-    <HeaderButton
-      style={{
-        cursor: 'pointer',
-        ...abstractCellStyle
-      }}
-      onClick={e => field.onHeaderClick(field.dataKey)}
-    >
-      {field.title}
-    </HeaderButton>
+    <HeaderButton onClick={e => field.onHeaderClick(field.dataKey)}>{field.title}</HeaderButton>
   </HeaderButtonContainer>
 )
 
@@ -574,6 +567,7 @@ const indexHeader = (
 const HeadersContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   font-weight: bold;
 `
 
