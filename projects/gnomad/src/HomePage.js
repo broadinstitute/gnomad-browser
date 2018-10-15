@@ -34,7 +34,7 @@ export default () => (
       community.
     </p>
     <p>
-      The data set provided on this website spans 123,136 exome sequences and 15,496 whole-genome
+      The data set provided on this website spans 125,748 exome sequences and 15,708 whole-genome
       sequences from unrelated individuals sequenced as part of various disease-specific and
       population genetic studies. The gnomAD Principal Investigators and groups that have
       contributed data to the current release are listed{' '}
