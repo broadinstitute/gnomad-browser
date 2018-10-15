@@ -339,11 +339,11 @@ export default function createVariantReducer({
         .set('variantSortAscending', true)
     },
 
-    [types.SET_VARIANT_SORT] (state, { key }) {
+    [types.SET_VARIANT_SORT](state, { key }) {
       if (key === state.get('variantSortKey')) {
         return state.set('variantSortAscending', !state.get('variantSortAscending'))
       }
-      return state.set('variantSortKey', key)
+      return state.set('variantSortKey', key).set('variantSortAscending', false)
     },
     [types.TOGGLE_VARIANT_QC_FILTER] (state) {
       return state.set('variantQcFilter', !state.get('variantQcFilter'))
