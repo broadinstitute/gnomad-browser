@@ -105,6 +105,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               <GnomadPopulationsTable
                 exomePopulations={variant.exome ? variant.exome.populations : []}
                 genomePopulations={variant.genome ? variant.genome.populations : []}
+                showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
               />
             </ResponsiveSection>
             <ResponsiveSection>
