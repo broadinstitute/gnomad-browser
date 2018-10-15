@@ -47,7 +47,7 @@ export const BarGraph = withSize()(
 
     const xDomain = [min(bins, bin => bin.x0), max(bins, bin => bin.x1)]
 
-    const yDomain = [0, max(bins, bin => bin.n)]
+    const yDomain = [0, max(bins, bin => bin.n) || 1]
 
     const xScale = (logScale ? scaleLog() : scaleLinear())
       .domain(xDomain)
