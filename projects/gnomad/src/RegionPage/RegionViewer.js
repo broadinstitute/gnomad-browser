@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 
-import CoverageTrack from '@broad/track-coverage'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { GenesTrack } from '@broad/track-genes'
 
@@ -24,8 +23,10 @@ import {
 } from '@broad/redux-variants'
 
 import datasetLabels from '../datasetLabels'
+import CoverageTrack from './CoverageTrack'
 
 const RegionViewerConnected = ({
+  datasetId,
   regionData,
   allVariants,
   history,
@@ -78,11 +79,10 @@ const RegionViewerConnected = ({
       rightPanelWidth={smallScreen ? 0 : 160}
     >
       <CoverageTrack
-        title={'Coverage'}
-        height={200}
-        dataConfig={coverageConfig}
-        yTickNumber={11}
-        yMax={110}
+        datasetId={datasetId}
+        chrom={chrom}
+        start={start}
+        stop={stop}
         totalBp={totalBp}
       />
 

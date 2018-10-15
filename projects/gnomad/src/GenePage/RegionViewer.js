@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
-import CoverageTrack from '@broad/track-coverage'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
@@ -23,17 +22,12 @@ import {
   selectedVariantDataset,
 } from '@broad/redux-variants'
 
-import {
-  RegionViewer,
-  coverageConfigClassic,
-  coverageConfigNew,
-  attributeConfig,
-} from '@broad/region-viewer'
+import { RegionViewer, attributeConfig } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
+import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
-
 
 const COVERAGE_TRACK_HEIGHT = 200
 const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
@@ -66,6 +60,8 @@ const GeneViewer = ({
   isLoadingVariants,
   regionalConstraint,
   screenSize,
+  datasetId,
+  geneId,
 }) => {
   // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
@@ -76,19 +72,12 @@ const GeneViewer = ({
 
   const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
-  const { exome_coverage, genome_coverage, exacv1_coverage } = transcript
   const variantsReversed = allVariants.reverse()
-
 
   const { exons } = transcript
   const padding = 75
   const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
     .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-
-  const coverageConfig =
-    selectedVariantDataset === 'exac'
-      ? coverageConfigClassic(exacv1_coverage)
-      : coverageConfigNew(exome_coverage, genome_coverage)
 
   return (
     <RegionViewer
@@ -98,14 +87,7 @@ const GeneViewer = ({
       regionAttributes={attributeConfig}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
-      <CoverageTrack
-        title={'Coverage'}
-        height={200}
-        dataConfig={coverageConfig}
-        yTickNumber={11}
-        yMax={110}
-        totalBp={totalBasePairs}
-      />
+      <CoverageTrack datasetId={datasetId} geneId={geneId} totalBp={totalBasePairs} />
       <TranscriptTrackConnected
         height={12}
         renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
