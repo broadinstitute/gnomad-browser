@@ -40,6 +40,26 @@ const regionType = new GraphQLObjectType({
         xstop: obj.xstop,
       })
     },
+    ex_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchExomeCoverageByRegion') },
+      },
+      resolve: (obj, args, ctx) => {
+        const fetchExomeCoverageByRegion = datasetsConfig[args.dataset].fetchExomeCoverageByRegion
+        return fetchExomeCoverageByRegion(ctx, obj)
+      },
+    },
+    ge_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchGenomeCoverageByRegion') },
+      },
+      resolve: (obj, args, ctx) => {
+        const fetchGenomeCoverageByRegion = datasetsConfig[args.dataset].fetchGenomeCoverageByRegion
+        return fetchGenomeCoverageByRegion(ctx, obj)
+      },
+    },
     exome_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
