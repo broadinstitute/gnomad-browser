@@ -87,9 +87,12 @@ export class GnomadSiteQualityMetrics extends Component {
             }))
           }
 
+          const graphColor = this.state.selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
+
           return (
             <div>
               <BarGraph
+                barColor={graphColor}
                 bins={selectedMetricBins}
                 highlightValue={
                   variantData.qualityMetrics.siteQualityMetrics[this.state.selectedMetric]
