@@ -48,7 +48,7 @@ const elasticFields = [
 
 export default coverageType
 
-export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom, obj }) => {
+export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom, obj, type = 'position' }) => {
   const timeStart = new Date().getTime() // NOTE: timer
   const padding = 75
   const regionRangeQueries = intervals.map(({ start, stop }) => (
@@ -67,7 +67,7 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
   return new Promise((resolve, _) => {
     elasticClient.search({
       index,
-      type: 'position',
+      type,
       size: totalBasePairs,
       _source: fields,
       body: {
@@ -106,13 +106,14 @@ export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chr
   })
 }
 
-export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj, ctx }) => {
+export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj, ctx, type = 'position' }) => {
   const codingRegions = exons.filter(region => region.feature_type === 'CDS')
   // return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
   // return lookupCoverageByIntervalsWithBuckets({ elasticClient, index, intervals: codingRegions, chrom })
   return lookupCoverageByIntervalsWithBuckets({
     elasticClient,
     index,
+    type,
     intervals: codingRegions,
     start: obj.start,
     stop: obj.stop,
@@ -122,7 +123,7 @@ export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj,
   })
 }
 
-export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }) => {
+export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom, type = 'position' }) => {
   const { start, stop } = intervals[0] // HACK
   const intervalSize = Math.floor((stop - start) / 2000)
   const regionRangeQueries = intervals.map(({ start, stop }) => (
@@ -136,7 +137,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
     elasticClient.search({
       index,
       // size: totalBasePairs,
-      type: 'position',
+      type,
       body: {
         query: {
           bool: {
@@ -183,6 +184,7 @@ export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom }
 export const lookupCoverageByIntervalsWithBuckets = ({
   elasticClient,
   index,
+  type = 'position',
   intervals,
   chrom,
   start,
@@ -216,7 +218,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
   const cacheKey = `${index}-coverage-${obj.gene_name}`
 
   if (totalBasePairs < 5000) {
-    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom, obj })
+    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom, obj, type })
   }
 
   const timeStart = new Date().getTime() // NOTE: timer
@@ -242,7 +244,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
         elasticClient.search({
           index: obj.gene_name === 'TTN' ? 'exome_coverage' : index, // HACK exacv1 coverage not working for TTN only
           // index,
-          type: 'position',
+          type,
           size: EXPECTED_SCREEN_WIDTH,
           _source: fields,
           body: {

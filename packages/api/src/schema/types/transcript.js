@@ -8,6 +8,8 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
+import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import datasetsConfig from '../datasets/datasetsConfig'
 import coverageType, { lookUpCoverageByExons } from './coverage'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
@@ -29,6 +31,28 @@ const transcriptType = new GraphQLObjectType({
       type: new GraphQLList(exonType),
       resolve: (obj, args, ctx) =>
        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
+    },
+    ex_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchExomeCoverageByTranscript') },
+      },
+      resolve: (obj, args, ctx) => {
+        const fetchExomeCoverageByTranscript =
+          datasetsConfig[args.dataset].fetchExomeCoverageByTranscript
+        return fetchExomeCoverageByTranscript(ctx, obj)
+      },
+    },
+    ge_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: datasetArgumentTypeForMethod('fetchGenomeCoverageByTranscript') },
+      },
+      resolve: (obj, args, ctx) => {
+        const fetchGenomeCoverageByTranscript =
+          datasetsConfig[args.dataset].fetchGenomeCoverageByTranscript
+        return fetchGenomeCoverageByTranscript(ctx, obj)
+      },
     },
     genome_coverage: {
       type: new GraphQLList(coverageType),
