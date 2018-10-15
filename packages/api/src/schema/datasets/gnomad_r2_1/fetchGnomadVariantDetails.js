@@ -29,6 +29,7 @@ const formatPopulations = variantData =>
       id: subPopId.toUpperCase(),
       ac: (variantData.AC_adj[popId] || {})[subPopId] || 0,
       an: (variantData.AN_adj[popId] || {})[subPopId] || 0,
+      ac_hom: (variantData.nhomalt_adj[popId] || {})[subPopId] || 0,
     })),
   }))
 

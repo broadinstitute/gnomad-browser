@@ -26,6 +26,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             id
             ac
             an
+            ac_hom
           }
         }
         qualityMetrics {
@@ -90,6 +91,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             id
             ac
             an
+            ac_hom
           }
         }
         qualityMetrics {
