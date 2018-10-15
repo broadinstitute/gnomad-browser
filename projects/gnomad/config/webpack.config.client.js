@@ -7,6 +7,7 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const definitions = {
   'process.env.GNOMAD_API_URL': JSON.stringify(process.env.GNOMAD_API_URL),
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 }
 
 const config = {
