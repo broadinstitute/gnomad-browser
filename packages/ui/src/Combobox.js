@@ -16,11 +16,9 @@ const Input = styled.input`
   background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
   background-position: center right;
   background-repeat: no-repeat;
-  color: ${props => props.textColor};
   cursor: pointer;
   font-size: 1em;
   outline: none;
-  user-select: none;
 
   &:focus {
     box-shadow: 0 0 0 0.2em ${transparentize(0.5, '#428bca')};
