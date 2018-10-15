@@ -40,73 +40,76 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-export const BarGraph = withSize()(({ bins, highlightValue, logScale, size, xLabel, yLabel }) => {
-  const height = 250
-  const width = size.width
+export const BarGraph = withSize()(
+  ({ barColor, bins, highlightValue, logScale, size, xLabel, yLabel }) => {
+    const height = 250
+    const width = size.width
 
-  const xDomain = [min(bins, bin => bin.x0), max(bins, bin => bin.x1)]
+    const xDomain = [min(bins, bin => bin.x0), max(bins, bin => bin.x1)]
 
-  const yDomain = [0, max(bins, bin => bin.n)]
+    const yDomain = [0, max(bins, bin => bin.n)]
 
-  const xScale = (logScale ? scaleLog() : scaleLinear())
-    .domain(xDomain)
-    .range([0, width - (margin.left + margin.right)])
+    const xScale = (logScale ? scaleLog() : scaleLinear())
+      .domain(xDomain)
+      .range([0, width - (margin.left + margin.right)])
 
-  const yScale = scaleLinear()
-    .domain(yDomain)
-    .range([height - (margin.top + margin.bottom), margin.top])
+    const yScale = scaleLinear()
+      .domain(yDomain)
+      .range([height - (margin.top + margin.bottom), margin.top])
 
-  return (
-    <GraphWrapper>
-      <svg height={height} width={width}>
-        <AxisBottom
-          label={xLabel}
-          labelProps={labelProps}
-          left={margin.left}
-          top={height - margin.bottom}
-          scale={xScale}
-          stroke="#333"
-        />
-        <AxisLeft
-          label={yLabel}
-          labelProps={labelProps}
-          left={margin.left}
-          tickFormat={tickFormat}
-          top={margin.top}
-          scale={yScale}
-          stroke="#333"
-        />
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          {bins.map(bin => (
-            <rect
-              key={bin.x0}
-              x={xScale(bin.x0)}
-              y={yScale(bin.n)}
-              height={yScale(0) - yScale(bin.n)}
-              width={xScale(bin.x1) - xScale(bin.x0)}
-              fill="#428bca"
-              stroke="#333"
-            />
-          ))}
-          {highlightValue !== undefined && (
-            <line
-              x1={xScale(highlightValue)}
-              y1={yScale(yDomain[1])}
-              x2={xScale(highlightValue)}
-              y2={yScale(0)}
-              stroke="#dd2c00"
-              strokeWidth={3}
-            />
-          )}
-        </g>
-      </svg>
-    </GraphWrapper>
-  )
-})
+    return (
+      <GraphWrapper>
+        <svg height={height} width={width}>
+          <AxisBottom
+            label={xLabel}
+            labelProps={labelProps}
+            left={margin.left}
+            top={height - margin.bottom}
+            scale={xScale}
+            stroke="#333"
+          />
+          <AxisLeft
+            label={yLabel}
+            labelProps={labelProps}
+            left={margin.left}
+            tickFormat={tickFormat}
+            top={margin.top}
+            scale={yScale}
+            stroke="#333"
+          />
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            {bins.map(bin => (
+              <rect
+                key={bin.x0}
+                x={xScale(bin.x0)}
+                y={yScale(bin.n)}
+                height={yScale(0) - yScale(bin.n)}
+                width={xScale(bin.x1) - xScale(bin.x0)}
+                fill={barColor}
+                stroke="#333"
+              />
+            ))}
+            {highlightValue !== undefined && (
+              <line
+                x1={xScale(highlightValue)}
+                y1={yScale(yDomain[1])}
+                x2={xScale(highlightValue)}
+                y2={yScale(0)}
+                stroke="#dd2c00"
+                strokeWidth={3}
+              />
+            )}
+          </g>
+        </svg>
+      </GraphWrapper>
+    )
+  }
+)
 
 BarGraph.displayName = 'BarGraph'
 
 BarGraph.propTypes = {
+  barColor: PropTypes.string,
   bins: PropTypes.arrayOf(
     PropTypes.shape({
       x0: PropTypes.number.isRequired,
@@ -124,6 +127,7 @@ BarGraph.propTypes = {
 }
 
 BarGraph.defaultProps = {
+  barColor: '#428bca',
   highlightValue: undefined,
   logScale: false,
   xLabel: undefined,

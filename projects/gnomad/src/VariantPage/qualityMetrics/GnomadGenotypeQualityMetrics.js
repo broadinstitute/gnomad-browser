@@ -42,9 +42,11 @@ export class GnomadGenotypeQualityMetrics extends Component {
 
     const yLabel = this.state.selectedSamples === 'all' ? 'All Individuals' : 'Variant carriers'
 
+    const graphColor = this.state.selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
+
     return (
       <div>
-        <BarGraph bins={bins} xLabel={xLabel} yLabel={yLabel} />
+        <BarGraph barColor={graphColor} bins={bins} xLabel={xLabel} yLabel={yLabel} />
 
         <ControlSection>
           <SegmentedControl
