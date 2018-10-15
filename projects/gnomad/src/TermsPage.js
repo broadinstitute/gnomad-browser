@@ -62,7 +62,11 @@ export default () => (
     <blockquote>
       The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups that
       provided exome and genome variant data to this resource. A full list of contributing groups
-      can be found at <Link to="/about">http://gnomad.broadinstitute.org/about</Link>.
+      can be found at{' '}
+      <Link preserveSelectedDataset={false} to="/about">
+        http://gnomad.broadinstitute.org/about
+      </Link>
+      .
     </blockquote>
 
     <SectionHeading>Data Generation</SectionHeading>

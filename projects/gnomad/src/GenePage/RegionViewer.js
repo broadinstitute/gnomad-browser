@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
@@ -32,6 +31,7 @@ import {
 } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
+import Link from '../Link'
 import ClinVarTrack from './ClinVarTrack'
 
 
@@ -45,7 +45,6 @@ export const TOTAL_REGION_VIEWER_HEIGHT =
   VARIANT_TRACK_HEIGHT
 
 const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
-  background-color: ${({ isSelected }) => isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none'};
   border-bottom: ${({ isSelected, isCanonical }) => {
     if (isSelected) {
       return '1px solid red'
@@ -55,11 +54,8 @@ const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {.
     }
     return 'none'
   }};
-  color: rgb(70, 130, 180);
-  cursor: pointer;
-  text-decoration: none;
+  background-color: ${({ isSelected }) => (isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none')};
 `
-
 
 const GeneViewer = ({
   currentTranscript,
