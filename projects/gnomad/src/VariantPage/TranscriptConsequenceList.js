@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Link as RRLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Link as StyledLink, ListItem, OrderedList } from '@broad/ui'
+import { ListItem, OrderedList } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
+
+import Link from '../Link'
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
@@ -27,8 +28,6 @@ const groupConsequences = (consequences, key) => {
     consequences: groupedConsequences[value],
   }))
 }
-
-const Link = StyledLink.withComponent(RRLink)
 
 const TranscriptConsequenceListContainer = styled.ol`
   display: flex;
