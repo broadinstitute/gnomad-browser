@@ -45,7 +45,7 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
             csq: {
               script: {
                 lang: 'painless',
-                inline: 'params._source.sortedTranscriptConsequences[0]',
+                inline: 'params._source.sortedTranscriptConsequences?.get(0)',
               },
             },
           },
@@ -74,6 +74,8 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
         const ac = variantData[subset].AC_adj.total
         const an = variantData[subset].AN_adj.total
 
+        const csq = hit.fields.csq[0] || {}
+
         return {
           gqlType: 'VariantSummary',
           // variant interface fields
@@ -89,13 +91,13 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
           ac_hom: variantData[subset].nhomalt_adj.total,
           an,
           af: an ? ac / an : 0,
-          consequence: hit.fields.csq[0].major_consequence,
+          consequence: csq.major_consequence,
           datasets: [dataset],
           filters: (variantData.filters || []).map(f => `${filterPrefix}_${f}`),
           flags: ['lcr', 'segdup', 'lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
-          hgvs: hit.fields.csq[0].hgvs,
-          hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
-          hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
+          hgvs: csq.hgvs,
+          hgvsc: csq.hgvsc ? csq.hgvsc.split(':')[1] : null,
+          hgvsp: csq.hgvsp ? csq.hgvsp.split(':')[1] : null,
           rsid: variantData.rsid,
         }
       })
