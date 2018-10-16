@@ -20,7 +20,7 @@ const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) 
       query: {
         bool: {
           filter: [
-            { term: { contig: chrom } },
+            { term: { chrom } },
             rangeQuery,
             // FIXME: This should query based on the requested subset's AC
             // However, there is no non_cancer field for genomes and we need to query
