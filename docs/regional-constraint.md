@@ -5,6 +5,8 @@ title: 'Regional constraint'
 
 # Regional constraint
 
+Important: Currently regional constraint is only available / displayed when selecting the ExAC dataset. In addition, it is only displayed for gene that exhibit regional missense constraint.
+
 ## Overall interpretation
 
 We searched for regions within transcripts that were intolerant of missense variation within the ExAC dataset. We used the observed and expected missense variation in each transcript in a likelihood ratio test to identify those transcipts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of expected missense variation). Missense constraint values closer to zero indicate increased intolerance against missense variation.
