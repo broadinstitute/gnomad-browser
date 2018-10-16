@@ -35,7 +35,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
         csq: {
           script: {
             lang: 'painless',
-            inline: 'params._source.sortedTranscriptConsequences[0]',
+            inline: 'params._source.sortedTranscriptConsequences?.get(0)',
           },
         },
       },
@@ -51,6 +51,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
   return hits.map(hit => {
     // eslint-disable-next-line no-underscore-dangle
     const variantData = hit._source
+    const csq = hit.fields.csq[0] || {}
     return {
       gqlType: 'VariantSummary',
       // variant interface fields
@@ -66,13 +67,13 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       ac_hom: variantData.AC_Hom,
       af: variantData.AN_Adj === 0 ? 0 : variantData.AC_Adj / variantData.AN_Adj,
       an: variantData.AN_Adj,
-      consequence: hit.fields.csq[0].major_consequence,
+      consequence: csq.major_consequence,
       datasets: ['exacVariants'],
       filters: variantData.filters,
       flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
-      hgvs: hit.fields.csq[0].hgvs,
-      hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
-      hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
+      hgvs: csq.hgvs,
+      hgvsc: csq.hgvsc ? csq.hgvsc.split(':')[1] : null,
+      hgvsp: csq.hgvsp ? csq.hgvsp.split(':')[1] : null,
       rsid: variantData.rsid,
     }
   })
