@@ -200,11 +200,7 @@ const formatVariantId = (variantId, onRowClick, dataRow, searchText) => {
       // HACK
       onClick={_ => onRowClick(variantId, dataRow.get('datasets').first())}  // eslint-disable-line
     >
-      {/* <Highlighter
-        searchWords={searchText.split(/\s+/)}
-        textToHighlight={variantId}
-      /> */}
-      {variantId}
+      <Highlighter searchWords={searchText.split(/\s+/)} textToHighlight={variantId} />
     </VariantId>
   )
 }
