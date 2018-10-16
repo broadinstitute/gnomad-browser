@@ -8,6 +8,20 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
     variantId
     xpos
     ... on GnomadVariantDetails {
+      age_distribution {
+        het {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+        hom {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+      }
       colocatedVariants
       exome {
         ac
