@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { currentTranscript, geneData } from '@broad/redux-genes'
-import { variantCount } from '@broad/redux-variants'
+import { isLoadingVariants, variantCount } from '@broad/redux-variants'
 
 import {
   GeneAttributes,
@@ -13,7 +13,7 @@ import {
   GeneAttributeValue,
 } from '@broad/ui'
 
-const GeneInfo = ({ currentTranscript, gene, variantCount }) => {
+const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) => {
   const {
     canonical_transcript: canonicalTranscript,
     chrom,
@@ -56,7 +56,9 @@ const GeneInfo = ({ currentTranscript, gene, variantCount }) => {
           </a>
         </GeneAttributeValue>
         <GeneAttributeValue>
-          {variantCount.toLocaleString()} (including filtered variants)
+          {isLoadingVariants
+            ? '—'
+            : `${variantCount.toLocaleString()} (including filtered variants)`}
         </GeneAttributeValue>
         <GeneAttributeValue>
           <a target="_blank" href={ucscUrl}>
@@ -99,5 +101,6 @@ GeneInfo.defaultProps = {
 export default connect(state => ({
   currentTranscript: currentTranscript(state),
   gene: geneData(state).toJS(),
+  isLoadingVariants: isLoadingVariants(state),
   variantCount: variantCount(state),
 }))(GeneInfo)
