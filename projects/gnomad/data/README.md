@@ -48,7 +48,9 @@ displayed in the browser. Replace `$HT_URL` with the location to store the Hail 
       --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
       ./projects/gnomad/data/export_ht_to_es.py -- \
       --ht-url=$HT_URL \
-      --host=$ELASTICSEARCH_IP
+      --host=$ELASTICSEARCH_IP \
+      --index-name=exac_v1_variants \
+      --index-type=variant
    ```
 
 5. Tear down Dataproc cluster
