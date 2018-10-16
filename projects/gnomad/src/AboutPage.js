@@ -375,7 +375,7 @@ export default () => (
             <p>Michael Boehnke</p>
           </li>
           <li>
-            <p>Michael O&gt;Donovan</p>
+            <p>Michael O&apos;Donovan</p>
           </li>
           <li>
             <p>Michael Owen</p>
@@ -721,7 +721,7 @@ export default () => (
             <p>Amanda Wang</p>
           </li>
           <li>
-            <p>Anne O&gt;Donnell-Luria</p>
+            <p>Anne O&apos;Donnell-Luria</p>
           </li>
           <li>
             <p>Ben Neale</p>
