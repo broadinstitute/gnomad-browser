@@ -41,7 +41,6 @@ const appSettings = {
 
 const variantDatasets = [
   'exac',
-  'gnomad_r2_0_2',
   'gnomad_r2_1',
   'gnomad_r2_1_controls',
   'gnomad_r2_1_non_cancer',
