@@ -42,7 +42,6 @@ const ControlSection = styled.div`
 `
 
 const combinePopulations = populations => {
-  console.log(populations)
   const combined = Object.values(
     populations.reduce((acc, pop) => {
       if (!acc[pop.id]) {
@@ -69,7 +68,6 @@ const combinePopulations = populations => {
       return acc
     }, {})
   )
-  console.log(combined)
   return combined
 }
 
