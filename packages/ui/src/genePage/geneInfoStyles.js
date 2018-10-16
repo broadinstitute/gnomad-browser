@@ -89,7 +89,7 @@ export const GeneAttributeKeys = styled.strong`
   display: flex;
   flex-direction: column;
   ${'' /* border: 2px solid red; */}
-  width: 50%;
+  width: 170px;
   ${'' /* width: 50%; */}
   ${'' /* justify-content: flex-end; */}
   ${'' /* align-items: flex-end; */}
@@ -100,7 +100,7 @@ export const GeneAttributeValues = styled.div`
   display: flex;
   flex-direction: column;
   ${'' /* border: 2px solid orange; */}
-  width: 50%;
+  width: 230px;
   ${'' /* justify-content: flex-end; */}
 `
 

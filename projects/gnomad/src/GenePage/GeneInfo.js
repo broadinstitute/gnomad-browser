@@ -55,7 +55,9 @@ const GeneInfo = ({ currentTranscript, gene, variantCount }) => {
               ' (canonical)'}
           </a>
         </GeneAttributeValue>
-        <GeneAttributeValue>{variantCount}</GeneAttributeValue>
+        <GeneAttributeValue>
+          {variantCount.toLocaleString()} (including filtered variants)
+        </GeneAttributeValue>
         <GeneAttributeValue>
           <a target="_blank" href={ucscUrl}>
             {`${chrom}:${start}-${stop}`}

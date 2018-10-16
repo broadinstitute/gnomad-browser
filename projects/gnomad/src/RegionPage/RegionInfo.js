@@ -23,7 +23,11 @@ const RegionInfo = ({ region, showVariants, variantCount }) => {
       </GeneAttributeKeys>
       <GeneAttributeValues>
         <GeneAttributeValue>{(stop - start).toLocaleString()} BP</GeneAttributeValue>
-        {showVariants && <GeneAttributeValue>{variantCount.toLocaleString()}</GeneAttributeValue>}
+        {showVariants && (
+          <GeneAttributeValue>
+            {variantCount.toLocaleString()} (including filtered variants)
+          </GeneAttributeValue>
+        )}
       </GeneAttributeValues>
     </GeneAttributes>
   )
