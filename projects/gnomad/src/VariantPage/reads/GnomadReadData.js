@@ -180,16 +180,16 @@ export class GnomadReadData extends Component {
     const browserConfig = {
       locus: `${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`,
       reference: {
-        fastaURL: `${API_URL}/reads/hg19.fa`,
+        fastaURL: `${API_URL}/reads/gnomad_r2_1/hg19.fa`,
         id: 'hg19',
-        indexURL: `${API_URL}/reads/hg19.fa.fai`,
+        indexURL: `${API_URL}/reads/gnomad_r2_1/hg19.fa.fai`,
       },
       tracks: [
         {
           displayMode: 'SQUISHED',
           name: 'gencode v19',
           removable: false,
-          url: `${API_URL}/reads/gencode.v19.sorted.bed`,
+          url: `${API_URL}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
         },
       ],
     }

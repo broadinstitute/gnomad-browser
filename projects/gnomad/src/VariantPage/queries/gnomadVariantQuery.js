@@ -73,6 +73,25 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             VQSLOD
           }
         }
+        reads {
+          het {
+            available
+            expected
+            readGroups
+          }
+          hom {
+            available
+            expected
+            readGroups
+          }
+          hemi {
+            available
+            expected
+            readGroups
+          }
+          bamPath
+          indexPath
+        }
       }
       genome {
         ac
@@ -137,6 +156,25 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             SOR
             VQSLOD
           }
+        }
+        reads {
+          het {
+            available
+            expected
+            readGroups
+          }
+          hom {
+            available
+            expected
+            readGroups
+          }
+          hemi {
+            available
+            expected
+            readGroups
+          }
+          bamPath
+          indexPath
         }
       }
       flags
