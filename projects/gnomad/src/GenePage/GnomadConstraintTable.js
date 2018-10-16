@@ -1,42 +1,42 @@
 import React from 'react'
-
-import { Table, TableCell, TableHeader, TableRow as UITableRow, TableRows } from '@broad/ui'
+import styled from 'styled-components'
 
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const TableRow = UITableRow.extend`
-  height: 35px;
-`
+const Table = styled.table`
+  border-collapse: collapse;
+  border-spacing: 0;
 
-const ConstraintTable = Table.extend`
-  ${TableCell} {
-    &:nth-child(1) {
-      width: 25%;
-    }
-    &:nth-child(2),
-    &:nth-child(3) {
-      width: 17.5%;
-    }
-    &:nth-child(4) {
-      width: 22%;
-    }
-    &:nth-child(5) {
-      width: 18%;
-    }
+  td,
+  th {
+    padding: 0.5em 20px 0.5em 0;
+    text-align: left;
+  }
 
-    @media (max-width: 900px) {
-      &:nth-child(1) {
-        width: 30%;
-      }
-      &:nth-child(2),
-      &:nth-child(3) {
-        width: 20%;
-      }
-      &:nth-child(4) {
-        width: 30%;
-      }
-      &:nth-child(5) {
+  thead {
+    th {
+      border-bottom: 1px solid #000;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+  }
+
+  tbody {
+    td,
+    th {
+      border-bottom: 1px solid #ccc;
+      font-weight: normal;
+    }
+  }
+
+  @media (max-width: 600px) {
+    td,
+    th {
+      padding-right: 10px;
+
+      /* Drop sparkline column */
+      &:nth-child(6) {
         display: none;
       }
     }
@@ -57,14 +57,15 @@ const constraintQuery = `
         oe_lof_lower
         oe_lof_upper
         oe_mis
+        oe_mis_lower
+        oe_mis_upper
         oe_syn
+        oe_syn_lower
+        oe_syn_upper
         lof_z
         mis_z
         syn_z
-        gene_issues
         pLI
-        pNull
-        pRec
       }
     }
   }
@@ -124,44 +125,63 @@ const GnomadConstraintTable = ({ transcriptId }) => (
       const lofMetricStyle = constraintData.oe_lof_upper < 0.35 ? { color: '#ff583f' } : {}
 
       return (
-        <ConstraintTable>
-          <TableRows>
-            <TableHeader>
-              <TableCell width={'25%'}>Category</TableCell>
-              <TableCell width={'17.5%'}>Exp. no. variants</TableCell>
-              <TableCell width={'17.5%'}>Obs. no. variants</TableCell>
-              <TableCell width={'22%'}>Constraint metric</TableCell>
-              <TableCell width={'18%'} />
-            </TableHeader>
-            <TableRow>
-              <TableCell width={'25%'}>Synonymous</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.exp_syn.toFixed(1)}</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.obs_syn}</TableCell>
-              <TableCell width={'22%'}>Z = {constraintData.syn_z.toFixed(2)}</TableCell>
-              <TableCell width={'18%'} />
-            </TableRow>
-            <TableRow>
-              <TableCell width={'25%'}>Missense</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.exp_mis.toFixed(1)}</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.obs_mis}</TableCell>
-              <TableCell width={'22%'}>Z = {constraintData.mis_z.toFixed(2)}</TableCell>
-              <TableCell width={'18%'} />
-            </TableRow>
-            <TableRow>
-              <TableCell width={'25%'}>LoF</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.exp_lof.toFixed(1)}</TableCell>
-              <TableCell width={'17.5%'}>{constraintData.obs_lof}</TableCell>
-              <TableCell width={'22%'}>
+        <Table>
+          <thead>
+            <tr>
+              <th role="columnheader">Category</th>
+              <th role="columnheader">Exp. no. variants</th>
+              <th role="columnheader">Obs. no. variants</th>
+              <th colSpan={2} role="columnheader">
+                Constraint metrics
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th role="rowheader">Synonymous</th>
+              <td>{constraintData.exp_syn.toFixed(1)}</td>
+              <td>{constraintData.obs_syn}</td>
+              <td>Z = {constraintData.syn_z.toFixed(2)}</td>
+              <td>
+                o/e = {constraintData.oe_syn.toFixed(2)}
+                <br /> ({constraintData.oe_syn_lower.toFixed(2)} -{' '}
+                {constraintData.oe_syn_upper.toFixed(2)})
+              </td>
+              <td>
+                <Graph value={constraintData.oe_syn} width={55} />
+              </td>
+            </tr>
+            <tr>
+              <th role="rowheader">Missense</th>
+              <td>{constraintData.exp_mis.toFixed(1)}</td>
+              <td>{constraintData.obs_mis}</td>
+              <td>Z = {constraintData.mis_z.toFixed(2)}</td>
+              <td>
+                o/e = {constraintData.oe_mis.toFixed(2)}
+                <br /> ({constraintData.oe_mis_lower.toFixed(2)} -{' '}
+                {constraintData.oe_mis_upper.toFixed(2)})
+              </td>
+              <td>
+                <Graph value={constraintData.oe_mis} width={55} />
+              </td>
+            </tr>
+            <tr>
+              <th role="rowheader">LoF</th>
+              <td>{constraintData.exp_lof.toFixed(1)}</td>
+              <td>{constraintData.obs_lof}</td>
+              <td>pLI = {constraintData.pLI.toFixed(2)}</td>
+              <td>
                 <span style={lofMetricStyle}>o/e = {constraintData.oe_lof.toFixed(2)}</span>
                 <br /> ({constraintData.oe_lof_lower.toFixed(2)} -{' '}
                 {constraintData.oe_lof_upper.toFixed(2)})
-              </TableCell>
-              <TableCell width={'18%'}>
+              </td>
+              <td>
                 <Graph value={constraintData.oe_lof} width={55} />
-              </TableCell>
-            </TableRow>
-          </TableRows>
-        </ConstraintTable>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       )
     }}
   </Query>

@@ -44,7 +44,7 @@ const GeneInfoColumnWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     flex-direction: column;
     align-items: center;
   }

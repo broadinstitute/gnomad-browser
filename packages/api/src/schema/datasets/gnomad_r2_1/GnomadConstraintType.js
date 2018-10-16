@@ -16,7 +16,11 @@ const GnomadConstraintType = new GraphQLObjectType({
     oe_lof_lower: { type: GraphQLFloat },
     oe_lof_upper: { type: GraphQLFloat },
     oe_mis: { type: GraphQLFloat },
+    oe_mis_lower: { type: GraphQLFloat },
+    oe_mis_upper: { type: GraphQLFloat },
     oe_syn: { type: GraphQLFloat },
+    oe_syn_lower: { type: GraphQLFloat },
+    oe_syn_upper: { type: GraphQLFloat },
     // Z
     lof_z: { type: GraphQLFloat },
     mis_z: { type: GraphQLFloat },
