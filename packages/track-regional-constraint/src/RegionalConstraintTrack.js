@@ -47,18 +47,17 @@ const RegionAttributeList = styled.dl`
 `
 
 function regionColor(region) {
+  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
   let color
   if (region.obs_exp > 0.6) {
     color = '#e2e2e2'
-  }
-  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
-  if (region.obs_exp > 0.4) {
+  } else if (region.obs_exp > 0.4) {
     color = '#ffeda0'
-  }
-  if (region.obs_exp > 0.2) {
+  } else if (region.obs_exp > 0.2) {
     color = '#feb24c'
+  } else {
+    color = '#f03b20'
   }
-  color = '#f03b20'
 
   return region.chisq_diff_null < 10.8 ? transparentize(0.8, color) : color
 }
