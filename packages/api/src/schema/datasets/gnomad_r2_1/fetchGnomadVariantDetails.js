@@ -166,6 +166,10 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     // variant interface fields
     ...sharedVariantFields,
     // gnomAD specific fields
+    age_distribution: {
+      het: formatHistogram(sharedData.gnomad_age_hist_het),
+      hom: formatHistogram(sharedData.gnomad_age_hist_hom),
+    },
     colocatedVariants,
     exome: exomeData
       ? {

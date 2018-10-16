@@ -98,6 +98,15 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
     variantId: { type: new GraphQLNonNull(GraphQLString) },
     xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // gnomAD specific fields
+    age_distribution: {
+      type: new GraphQLObjectType({
+        name: 'GnomadVariantDetailsAgeDistribution',
+        fields: {
+          het: { type: HistogramType },
+          hom: { type: HistogramType },
+        },
+      }),
+    },
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
     exome: {
       type: new GraphQLObjectType({
