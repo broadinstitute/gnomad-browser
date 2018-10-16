@@ -73,7 +73,6 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         transcript_id: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => {
-        console.log(ctx)
         return lookupTranscriptsByTranscriptId(ctx.database.gnomad, args.transcript_id)
       },
     },
