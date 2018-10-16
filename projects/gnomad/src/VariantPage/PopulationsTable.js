@@ -43,6 +43,12 @@ const Table = styled.table`
       border-bottom: 1px solid #ccc;
       font-weight: normal;
     }
+
+    tr.border {
+      td {
+        border-bottom: 2px solid #aaa;
+      }
+    }
   }
 
   tfoot {
@@ -208,7 +214,11 @@ export class PopulationsTable extends Component {
         </thead>
         {populations.map(pop => (
           <tbody key={pop.name}>
-            <tr key={pop.name} role="row">
+            <tr
+              key={pop.name}
+              className={this.state.expandedPopulations[pop.name] ? 'border' : undefined}
+              role="row"
+            >
               {this.renderPopulationRowHeader(pop)}
               {this.state.expandedPopulations[pop.name] && <td role="gridcell">Overall</td>}
               <td role="gridcell">{pop.ac}</td>
@@ -219,8 +229,12 @@ export class PopulationsTable extends Component {
             </tr>
             {pop.subpopulations &&
               this.state.expandedPopulations[pop.name] &&
-              pop.subpopulations.map(subPop => (
-                <tr key={`${pop.name}-${subPop.name}`} role="row">
+              pop.subpopulations.map((subPop, i) => (
+                <tr
+                  key={`${pop.name}-${subPop.name}`}
+                  className={i === pop.subpopulations.length - 3 ? 'border' : undefined}
+                  role="row"
+                >
                   <td role="gridcell">{subPop.name}</td>
                   <td role="gridcell">{subPop.ac}</td>
                   <td role="gridcell">{subPop.an}</td>
