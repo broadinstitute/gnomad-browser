@@ -159,7 +159,10 @@ class ClinVarTrack extends Component {
         ? getCategoryFromConsequence(variant.majorConsequence)
         : 'other'
 
-      bins[variantBinIndex(variant)][category] += 1
+      const binIndex = variantBinIndex(variant)
+      if (binIndex >= 0 && binIndex < bins.length) {
+        bins[binIndex][category] += 1
+      }
     })
 
     const categories = ['lof', 'missense', 'synonymous', 'other']
