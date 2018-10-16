@@ -51,11 +51,11 @@ const CreditsSection = styled.div`
     ${({ noPaddingOnMobile }) =>
       noPaddingOnMobile
         ? `
-        h4 { 
-          margin-top: 0; 
-          margin-bottom: 0; 
-          font-size: 0 
-        } 
+        h4 {
+          margin-top: 0;
+          margin-bottom: 0;
+          font-size: 0
+        }
 
         ul {
           margin-top: 0;
@@ -63,7 +63,7 @@ const CreditsSection = styled.div`
         }
       `
         : ''}
-  
+
     ${({ noBottomUlPaddingOnMobile }) =>
       noBottomUlPaddingOnMobile ? 'ul { margin-bottom: 0 }' : ''};
   }
@@ -143,7 +143,7 @@ export default () => (
     <p>
       The aggregation and release of summary data from the exomes and genomes collected by the
       Genome Aggregation Database has been approved by the Partners IRB (protocol 2013P001339,
-      &quotLarge-scale aggregation of human genomic data&quot).
+      &quot;Large-scale aggregation of human genomic data&quot;).
     </p>
     <p>
       For bug reports, please file an issue on{' '}
