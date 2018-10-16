@@ -46,6 +46,54 @@ const TranscriptConsequenceListItem = styled.li`
   flex-basis: 250px;
 `
 
+const colors = {
+  red: '#FF583F',
+  yellow: '#F0C94D',
+  green: 'green',
+}
+
+const ConsequenceDetails = ({ consequence }) => {
+  if (consequence.major_consequence === 'missense_variant') {
+    const polyphenColor =
+      {
+        benign: colors.green,
+        possibly_damaging: colors.yellow,
+      }[consequence.polyphen_prediction] || colors.red
+
+    const siftColor = consequence.sift_prediction === 'tolerated' ? colors.green : colors.red
+
+    return (
+      <span>
+        {consequence.hgvs}
+        <br />
+        Polyphen: <span style={{ color: polyphenColor }}>{consequence.polyphen_prediction}</span>;
+        SIFT: <span style={{ color: siftColor }}>{consequence.sift_prediction}</span>
+      </span>
+    )
+  }
+
+  if (consequence.lof) {
+    const lofColor = consequence.lof === 'HC' ? colors.green : colors.red
+    return (
+      <span>
+        {consequence.hgvs}
+        <br />
+        LoF:{' '}
+        <span style={{ color: lofColor }}>
+          {consequence.lof === 'HC'
+            ? 'High-confidence'
+            : `Low-confidence (${consequence.lof_filter})`}
+        </span>
+        {consequence.lof_flags && (
+          <span style={{ color: colors.yellow }}>Flag: {consequence.lof_flags}</span>
+        )}
+      </span>
+    )
+  }
+
+  return null
+}
+
 export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
   <TranscriptConsequenceListContainer>
     {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
@@ -66,7 +114,10 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
                         <ListItem key={csq.transcript_id}>
                           <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
                             {csq.transcript_id}
+                            {csq.canonical && ' *'}
                           </Link>
+                          <br />
+                          <ConsequenceDetails consequence={csq} />
                         </ListItem>
                       ))}
                     </OrderedList>

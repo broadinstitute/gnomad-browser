@@ -180,6 +180,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
       flags
       rsid
       sortedTranscriptConsequences {
+        canonical
         gene_id
         gene_symbol
         hgvs
@@ -190,6 +191,8 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         lof_filter
         lof_info
         major_consequence
+        polyphen_prediction
+        sift_prediction
         transcript_id
       }
     }

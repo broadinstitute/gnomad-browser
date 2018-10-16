@@ -1,4 +1,5 @@
 import {
+  GraphQLBoolean,
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
@@ -11,6 +12,7 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
   fields: {
     amino_acids: { type: GraphQLString },
     biotype: { type: GraphQLString },
+    canonical: { type: GraphQLBoolean },
     category: { type: GraphQLString },
     cdna_start: { type: GraphQLInt },
     cdna_end: { type: GraphQLInt },
@@ -29,7 +31,9 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
     lof_info: { type: GraphQLString },
     major_consequence: { type: GraphQLString },
     major_consequence_rank: { type: GraphQLInt },
+    polyphen_prediction: { type: GraphQLString },
     protein_id: { type: GraphQLString },
+    sift_prediction: { type: GraphQLString },
     transcript_id: { type: GraphQLString },
   },
 })
