@@ -10,6 +10,8 @@ import {
 
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
+import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
+import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
 import coverageType, { lookUpCoverageByExons } from './coverage'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
@@ -98,6 +100,10 @@ const transcriptType = new GraphQLObjectType({
           })
         })
       }
+    },
+    gnomad_constraint: {
+      type: GnomadConstraintType,
+      resolve: (obj, args, ctx) => fetchGnomadConstraintByTranscript(ctx, obj.transcript_id),
     },
     gtex_tissue_tpms_by_transcript: {
       type: fromGtex.tissuesByTranscript,
