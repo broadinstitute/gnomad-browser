@@ -43,8 +43,6 @@ const ClearSearchButton = styled.button`
   }
 `
 
-const SEARCH_KEYBOARD_SHORTCUTS = ['command+f', 'meta+s']
-
 export class Search extends Component {
   static propTypes = {
     placeholder: PropTypes.string,
@@ -63,7 +61,7 @@ export class Search extends Component {
 
   componentDidMount() {
     if (this.props.withKeyboardShortcuts) {
-      Mousetrap.bind(SEARCH_KEYBOARD_SHORTCUTS, (e) => {
+      Mousetrap.bind('/', (e) => {
         if (this.input) {
           e.preventDefault()
           this.input.focus()
@@ -74,7 +72,7 @@ export class Search extends Component {
 
   componentWillUnmount() {
     if (this.boundKeyboardShortcuts) {
-      Mousetrap.unbind(SEARCH_KEYBOARD_SHORTCUTS)
+      Mousetrap.unbind('/')
     }
   }
 
