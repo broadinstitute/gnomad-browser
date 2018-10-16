@@ -57,7 +57,6 @@ GnomadPageHeading.defaultProps = {
     'gnomad_r2_1_non_cancer',
     'gnomad_r2_1_non_neuro',
     'gnomad_r2_1_non_topmed',
-    'gnomad_r2_0_2',
     'exac',
   ],
 }
