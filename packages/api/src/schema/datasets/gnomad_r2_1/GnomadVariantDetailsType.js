@@ -119,7 +119,11 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
                 return null
               }
               try {
-                return await resolveReads(process.env.READS_DIR, 'combined_bams_exomes', obj)
+                return await resolveReads(
+                  process.env.READS_DIR,
+                  'gnomad_r2_1/combined_bams_exomes',
+                  obj
+                )
               } catch (err) {
                 throw Error('Unable to load reads data')
               }
@@ -149,7 +153,11 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
                 return null
               }
               try {
-                return await resolveReads(process.env.READS_DIR, 'combined_bams_genomes', obj)
+                return await resolveReads(
+                  process.env.READS_DIR,
+                  'gnomad_r2_1/combined_bams_genomes',
+                  obj
+                )
               } catch (err) {
                 throw Error('Unable to load reads data')
               }
