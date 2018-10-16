@@ -77,7 +77,7 @@ export class Combobox extends Component {
 
   onSelect = (value, item) => {
     this.setState({ inputValue: item.label })
-    this.props.onSelect(value, item)
+    this.props.onSelect(item.value, item)
   }
 
   shouldItemRender = item => item.label.toLowerCase().includes(this.state.inputValue.toLowerCase())
@@ -91,7 +91,7 @@ export class Combobox extends Component {
   render() {
     return (
       <Autocomplete
-        getItemValue={item => item.value}
+        getItemValue={item => item.label}
         inputProps={{
           onBlur: () => {
             this.setState({ inputValue: this.props.value })
