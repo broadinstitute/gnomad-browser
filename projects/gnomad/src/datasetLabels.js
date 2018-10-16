@@ -1,5 +1,5 @@
 const datasetLabels = {
-  exac: 'ExAC',
+  exac: 'ExAC v1.0',
   gnomad_r2_1: 'gnomAD v2.1',
   gnomad_r2_1_controls: 'gnomAD v2.1 (controls)',
   gnomad_r2_1_non_cancer: 'gnomAD v2.1 (non-cancer)',
