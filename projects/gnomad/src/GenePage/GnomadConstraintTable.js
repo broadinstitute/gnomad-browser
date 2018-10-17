@@ -85,25 +85,30 @@ const pointColor = obsExp => {
   return '#f03b20'
 }
 
-const Graph = ({ width, value }) => {
-  const height = 16
-  const xPadding = 10
+const Graph = ({ value, lower, upper }) => {
+  const width = 60
+  const xPadding = 13
+
+  const x = n => Math.max(0, Math.min(xPadding + n * (width - xPadding * 2), width - xPadding))
+
+  const y = 18
 
   return (
-    <svg height={height} width={width}>
-      <text x={0} y={12} fontSize="12px" textAnchor="start">
+    <svg height={30} width={width}>
+      <text x={0} y={26} fontSize="12px" textAnchor="start">
         0
       </text>
-      <line x1={xPadding} y1={height / 2} x2={width - xPadding} y2={height / 2} stroke="#333" />
-      <circle
-        cx={value * (width - xPadding * 2) + xPadding}
-        cy={height / 2}
-        r={3}
-        strokeWidth={0.5}
-        stroke="#333"
-        fill={pointColor(value)}
-      />
-      <text x={width} y={12} fontSize="12px" textAnchor="end">
+      <line x1={xPadding} y1={25} x2={width - xPadding} y2={25} stroke="#333" />
+
+      <rect x={x(lower)} y={y - 7} height={14} width={x(upper) - x(lower)} fill="#aaa" />
+
+      {value >= 1 ? (
+        <path d="M 47,14 52,18 47,22 z" fill="#e2e2e2" strokeWidth={1} stroke="#000" />
+      ) : (
+        <circle cx={x(value)} cy={y} r={3} strokeWidth={1} stroke="#000" fill={pointColor(value)} />
+      )}
+
+      <text x={width} y={26} fontSize="12px" textAnchor="end">
         1
       </text>
     </svg>
@@ -153,7 +158,11 @@ const GnomadConstraintTable = ({ transcriptId }) => (
                 {constraintData.oe_syn_upper.toFixed(2)})
               </td>
               <td>
-                <Graph value={constraintData.oe_syn} width={55} />
+                <Graph
+                  lower={constraintData.oe_syn_lower}
+                  upper={constraintData.oe_syn_upper}
+                  value={constraintData.oe_syn}
+                />
               </td>
             </tr>
             <tr>
@@ -167,7 +176,11 @@ const GnomadConstraintTable = ({ transcriptId }) => (
                 {constraintData.oe_mis_upper.toFixed(2)})
               </td>
               <td>
-                <Graph value={constraintData.oe_mis} width={55} />
+                <Graph
+                  lower={constraintData.oe_mis_lower}
+                  upper={constraintData.oe_mis_upper}
+                  value={constraintData.oe_mis}
+                />
               </td>
             </tr>
             <tr>
@@ -181,7 +194,11 @@ const GnomadConstraintTable = ({ transcriptId }) => (
                 {constraintData.oe_lof_upper.toFixed(2)})
               </td>
               <td>
-                <Graph value={constraintData.oe_lof} width={55} />
+                <Graph
+                  lower={constraintData.oe_lof_lower}
+                  upper={constraintData.oe_lof_upper}
+                  value={constraintData.oe_lof}
+                />
               </td>
             </tr>
           </tbody>
