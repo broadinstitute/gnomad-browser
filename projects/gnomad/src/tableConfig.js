@@ -7,14 +7,14 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
-        width: mediumSize ? width * 0.3 : width * 0.15,
+        minWidth: 100,
         onHeaderClick,
       },
       {
         dataKey: 'datasets',
         title: 'Source',
         dataType: 'datasets',
-        width: width * 0.06,
+        minWidth: 80,
         disappear: mediumSize,
         onHeaderClick,
       },
@@ -22,7 +22,7 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'hgvs',
         title: 'Consequence',
         dataType: 'string',
-        width: width * 0.08,
+        minWidth: 100,
         onHeaderClick,
         searchable: true,
         disappear: mediumSize,
@@ -31,37 +31,37 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'consequence',
         title: 'Annotation',
         dataType: 'consequence',
-        width: mediumSize ? width * 0.17 : width * 0.1,
+        minWidth: 110,
         onHeaderClick,
       },
       {
         dataKey: 'flags',
         title: 'Flags',
         dataType: 'flags',
-        width: width * 0.07,
+        minWidth: 100,
         disappear: mediumSize,
         onHeaderClick,
       },
       {
         dataKey: 'allele_count',
-        title: 'Allele Count',
+        title: width < 600 ? 'AC' : 'Allele Count',
         dataType: 'integer',
-        width: mediumSize ? width * 0.03 : width * 0.04,
+        minWidth: width < 600 ? 55 : 90,
         onHeaderClick,
       },
       {
         dataKey: 'allele_num',
-        title: 'Allele Number',
+        title: width < 600 ? 'AN' : 'Allele Number',
         dataType: 'integer',
-        width: width * 0.05,
+        minWidth: width < 600 ? 55 : 90,
         onHeaderClick,
         disappear: mediumSize,
       },
       {
         dataKey: 'allele_freq',
-        title: 'Allele Frequency',
+        title: width < 600 ? 'AF' : 'Allele Frequency',
         dataType: 'alleleFrequency',
-        width: mediumSize ? width * 0.06 : width * 0.06,
+        minWidth: width < 600 ? 55 : 90,
         onHeaderClick,
       },
     ],
@@ -70,9 +70,9 @@ export default (onHeaderClick, width, currentChromosome) => {
   if (currentChromosome !== 'Y') {
     tableConfig.fields.push({
       dataKey: 'hom_count',
-      title: 'Number of Homozygotes',
+      title: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
       dataType: 'integer',
-      width: mediumSize ? width * 0.04 : width * 0.04,
+      minWidth: width < 600 ? 55 : 90,
       onHeaderClick,
     })
   }
@@ -80,12 +80,27 @@ export default (onHeaderClick, width, currentChromosome) => {
   if (currentChromosome === 'X' || currentChromosome === 'Y') {
     tableConfig.fields.push({
       dataKey: currentChromosome === 'Y' ? 'allele_count' : 'hemi_count',
-      title: 'Number of Hemizygotes',
+      title: width < 600 ? 'No. Hem' : 'Number of Hemizygotes',
       dataType: 'integer',
-      width: mediumSize ? width * 0.04 : width * 0.04,
+      minWidth: 55,
       onHeaderClick,
     })
   }
+
+  const minTableWidth = tableConfig.fields
+    .filter(f => !f.disappear)
+    .reduce((sum, f) => sum + f.minWidth + 20, 0)
+
+  const totalGrowthFactors = tableConfig.fields.reduce((sum, f) => sum + (f.grow || 0), 0) || 1
+
+  const remainingWidth = width - minTableWidth
+
+  tableConfig.width = Math.max(minTableWidth, width)
+
+  tableConfig.fields = tableConfig.fields.map(f => ({
+    ...f,
+    width: f.minWidth + (remainingWidth * (f.grow || 0)) / totalGrowthFactors,
+  }))
 
   return tableConfig
 }
