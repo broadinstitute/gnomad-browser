@@ -24,7 +24,8 @@
           "relatedness-filtering",
           "vep",
           "gene-constraint",
-          "regional-constraint"
+          "regional-constraint",
+          "faf"
         ]
       },
       {
@@ -51,7 +52,6 @@
           "browser-vcf-disagreements",
           "variant-annotation",
           "evs",
-          "what-happened-to-subsets",
           "cancer-samples",
           "how-do-you-pronounce-gnomad",
           "how-do-you-capitalize-gnomad"
