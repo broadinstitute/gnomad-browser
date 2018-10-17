@@ -83,7 +83,7 @@ export default () => (
       The data set provided on this website spans 125,748 exomes and 15,708 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies,
       totalling 141,456 individuals.{' '}
-      <ExternalLink href="http://macarthurlab.org/2018/10/09/gnomad-v2-1">
+      <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
         This blog post
       </ExternalLink>{' '}
       describes the latest release. We have removed individuals known to be affected by severe
