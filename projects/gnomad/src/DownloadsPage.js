@@ -235,10 +235,11 @@ const createVcfLink = file => {
   const fileSize = file[0]
   const url = file[1]
   const chrom = /chr(\w+)/.exec(url)[0]
+  const dataset = /vcf\/(\w+)\/gnomad/.exec(url)[0]
   const tabixUrl = `${url}.tbi`
   console.log(chrom)
   return (
-    <li>
+    <li key={`${dataset}-${chrom}`}>
       <ExternalLink href={url}>{`${chrom} sites VCF (${fileSize}) `}</ExternalLink>
       <ExternalLink href={tabixUrl}>{`(.tbi)`}</ExternalLink>
     </li>
@@ -250,10 +251,10 @@ export default () => (
     <PageHeading>Downloads</PageHeading>
     <p>
       The variant dataset files below contain all subsets and are large in size. We recommend using{' '}
-      <ExternalLink href={'https://hail.is/'}>Hail</ExternalLink> to work with gnomAD data. It is
-      easiest download these files in parallel on the commandline using{' '}
-      <ExternalLink href={'https://cloud.google.com/storage/docs/gsutil'}>gsutils</ExternalLink>.
-      After installing gsutils, start navigating with this command:
+      <ExternalLink href={'https://Hail.is/'}>Hail</ExternalLink> to work with gnomAD data. It is
+      easiest to download these files in parallel on the commandline using{' '}
+      <ExternalLink href={'https://cloud.google.com/storage/docs/gsutil'}>gsutil</ExternalLink>.
+      After installing gsutil, start navigating with this command:
     </p>
 
     <code>gsutil ls gs://gnomad-public/release/2.1</code>
@@ -262,7 +263,7 @@ export default () => (
       <SequencingMethodSection>
         <h2>Exomes</h2>
         <DownloadSection>
-          <h3>Sites hail table</h3>
+          <h3>Sites Hail Table</h3>
           <ul>
             <li>
               <ExternalLink
@@ -276,7 +277,7 @@ export default () => (
           </ul>
         </DownloadSection>
         <DownloadSection>
-          <h3>Coverage hail table</h3>
+          <h3>Coverage Hail Table</h3>
           <ul>
             <li>
               <ExternalLink
@@ -297,7 +298,7 @@ export default () => (
       <SequencingMethodSection>
         <h2>Genomes</h2>
         <DownloadSection>
-          <h3>Sites hail table</h3>
+          <h3>Sites Hail Table</h3>
           <ul>
             <li>
               <ExternalLink
@@ -311,7 +312,7 @@ export default () => (
           </ul>
         </DownloadSection>
         <DownloadSection>
-          <h3>Coverage hail table</h3>
+          <h3>Coverage Hail Table</h3>
           <ul>
             <li>
               <ExternalLink
