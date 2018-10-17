@@ -237,7 +237,6 @@ const createVcfLink = file => {
   const chrom = /chr(\w+)/.exec(url)[0]
   const dataset = /vcf\/(\w+)\/gnomad/.exec(url)[0]
   const tabixUrl = `${url}.tbi`
-  console.log(chrom)
   return (
     <li key={`${dataset}-${chrom}`}>
       <ExternalLink href={url}>{`${chrom} sites VCF (${fileSize}) `}</ExternalLink>
@@ -251,8 +250,8 @@ export default () => (
     <PageHeading>Downloads</PageHeading>
     <p>
       The variant dataset files below contain all subsets and are large in size. We recommend using{' '}
-      <ExternalLink href={'https://Hail.is/'}>Hail</ExternalLink> to work with gnomAD data. It is
-      easiest to download these files in parallel on the commandline using{' '}
+      <ExternalLink href={'https://Hail.is/'}>Hail 0.2</ExternalLink> to work with gnomAD data. It
+      is easiest to download these files in parallel on the commandline using{' '}
       <ExternalLink href={'https://cloud.google.com/storage/docs/gsutil'}>gsutil</ExternalLink>.
       After installing gsutil, start navigating with this command:
     </p>
