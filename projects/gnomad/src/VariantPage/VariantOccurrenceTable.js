@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { Badge } from '@broad/ui'
 
 import QCFilter from '../QCFilter'
@@ -88,7 +89,7 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
         </tr>
         <tr>
           <th scope="row">
-            Filtering AF
+            Filtering AF <QuestionMark display="inline" topic="faf" />
             <br />
             (95% confidence)
           </th>
