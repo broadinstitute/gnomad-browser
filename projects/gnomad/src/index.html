@@ -20,5 +20,22 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <%
+      if (htmlWebpackPlugin.options.gaTrackingId) {
+    %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= htmlWebpackPlugin.options.gaTrackingId %>"></script>
+    <script>
+      window.gaTrackingId = '<%= htmlWebpackPlugin.options.gaTrackingId %>';
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '<%= htmlWebpackPlugin.options.gaTrackingId %>', { send_page_view: false });
+      window.gtag = gtag;
+    </script>
+    <%
+      }
+    %>
   </body>
 </html>
