@@ -13,7 +13,7 @@ const HomePage = InfoPage.extend`
   flex-direction: column;
   align-items: center;
   max-width: 740px;
-  margin-top: 60px;
+  margin-top: 90px;
 `
 
 const HeadingContainer = styled.div`
@@ -21,7 +21,7 @@ const HeadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 60%;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 `
 
 const SubHeading = styled.h2`
