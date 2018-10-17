@@ -20,7 +20,7 @@ const HeadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 60%;
+  width: 100%;
   margin-bottom: 40px;
 `
 
@@ -36,9 +36,9 @@ const SubHeading = styled.h2`
 export default () => (
   <HomePage>
     <HeadingContainer>
-      <GnomadHeading width={'100%'} />
+      <GnomadHeading width="60%" />
       <SubHeading>genome aggregation database</SubHeading>
-      <Searchbox width="70%" />
+      <Searchbox width="100%" />
       <p>
         Examples - Gene:{' '}
         <Link preserveSelectedDataset={false} to="/gene/PCSK9">
