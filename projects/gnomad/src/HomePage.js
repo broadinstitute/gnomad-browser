@@ -25,6 +25,7 @@ const HeadingContainer = styled.div`
 `
 
 const SubHeading = styled.h2`
+  text-align: center;
   padding-top: 0;
   padding-bottom: 0;
   font-size: 1.2em;

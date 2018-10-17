@@ -23,8 +23,9 @@ gnomad-api:
 # 	kubectl create -f gnomad-api-svc.yaml
 
 gnomad-api-service:
-	@-kubectl expose deployment $(PROJECT_NAME) \
-	--type="LoadBalancer"
+	kubectl expose deployment $(PROJECT_NAME) \
+	--type="LoadBalancer" \
+	--load-balancer-ip="35.185.72.124"
 
 set-max-result:
 	curl -XPUT "http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/*/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
