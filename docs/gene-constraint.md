@@ -5,9 +5,14 @@ title: 'Gene constraint'
 
 #  Gene constraint
 
-The gene constraint table was generated differently for gnomAD 2.1 and ExAC. Therefore, the metric displayed in the table will change depending on the dataset selected. Below are expanations relative to the constraint numbers shown in the gnomAD and ExAC datasets.
+With gnomAD, we have shifted from using the _probability of being loss-of-function intolerant_ (`pLI`) score developed with ExAC and now recommend using the _observed / expected_ score. For this reason, the constraint table displayed on the browser (unless the ExAC data is selected) now also shows the _observed / expected_ (`oe`) metric. It is very important to note that the scale of `oe` is very different from that of `pLI`; in particular low `oe` values are indicative of strong intolerance. In addition, while `pLI` incorporated the uncertainty around low counts (i.e a gene with low expected count could not have a high `pLI`), `oe`does not. Therefore, the `oe` metric comes with a 90% CI. It is important to consider the confidence interval when using `oe`.
+The change from `pLI` to `oe`was motivated mainly by its easier interpretation and its continuity across the spectrum of selection. As an example, let’s take a gene with a `pLI` of 0.8: this means that this gene cannot be categorized as a highly likely haploinsufficient gene based on our data. However, it is unclear whether this value was obtained because of sample size or because there were too many loss-of-function (LoF) variants observed in the gene. In addition, if the cause was the latter, `pLI` doesn’t tell much about the overall selection against loss-of-function in this gene. On the other hand, a gene with an LoF  `oe` of 0.4 can clearly be interpreted as a gene where only 40% of the expected loss-of-function variants were observed and therefore is likely under selection against LoF variants. In addition, the 90% CI allows us to clearly distinguish cases where there is a lot of uncertainty about the constraint for that gene due to sample size.
+Since `pLI` > 0.9 is widely used in research and clinical interpretation of Mendelian cases, we suggest using the upper bound of the `oe` confidence interval < 0.35 if a hard threshold is needed. Note that we also provide `pLI` values computed with gnomAD.
 
-## gnomAD
+The sections below give an explanation of both the _observed / expected_ and the _probability of being loss-of-function intolerant_ scores.
+
+
+## Observed / expected (`oe`)
 
 The constraint score shown in gnomAD is the ratio of the observed / expected (`oe`) number of loss-of-function variants in that gene. The expected counts are based on a mutational model that takes sequence context, coverage and methylation into account. 
 
@@ -16,7 +21,7 @@ Observed/expected (`oe`) is a continuous measure of how tolerant a gene is to a 
 
 Although `oe` is a continuous value,  we understand that it can be useful to use a threshold for certain applications. In particular, for the interpretation of Mendelian diseases cases, we suggest using the upper bound of the `oe` CI < 0.35 as a threshold if needed. Again, ideally `oe` should be used as a continuous value rather than a cutoff and evaluating the `oe` 90% CI is a must.
 
-## ExAC 
+## Probability of being loss-of-function intolerant (`pLI`)
 ### Overall interpretation
 
 We developed metrics to measure a transcript's intolerance to variation by predicting the number of variants expected to be seen in the gnomAD dataset and comparing those expectations to the observed amount of variation. Transcripts that are significantly depleted of their expected variation are considered constrained, or intolerant, of such variation.
