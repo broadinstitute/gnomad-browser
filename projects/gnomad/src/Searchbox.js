@@ -1,4 +1,5 @@
 import fetch from 'graphql-fetch'
+import queryString from 'query-string'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
@@ -25,7 +26,14 @@ export default withRouter(props => {
       key={history.location.pathname}
       {...rest}
       fetchSearchResults={fetchSearchResults}
-      onSelect={url => history.push(url)}
+      onSelect={url => {
+        const currentParams = queryString.parse(location.search)
+        const nextParams = { dataset: currentParams.dataset }
+        history.push({
+          pathname: url,
+          search: queryString.stringify(nextParams),
+        })
+      }}
       placeholder="Search by gene, region, or variant"
     />
   )
