@@ -96,20 +96,6 @@ export default () => (
       <Answer>Version 19 (annotated with VEP version 85).</Answer>
 
       <Question>
-        Why does the browser seem to disagree with the gnomAD VCF at this multiallelic site?
-      </Question>
-      <Answer>
-        Due to the limitations of the VCF format, multi-allelic variants are put together on one VCF
-        line. This inevitably adds complexity to otherwise simple variants, and thus when parsing
-        onto the browser, we apply a{' '}
-        <ExternalLink href="http://www.cureffi.org/2014/04/24/converting-genetic-variants-to-their-minimal-representation/">
-          minimal representation
-        </ExternalLink>{' '}
-        script. For instance, a variant whose REF is GC and ALT alleles are TC,G - the first ALT
-        allele is actually a SNP and will be represented in the browser as G&emdash;&gt;T.
-      </Answer>
-
-      <Question>
         Are all the individuals in the{' '}
         <ExternalLink href="http://evs.gs.washington.edu/EVS/">Exome Variant Server</ExternalLink>{' '}
         included?
@@ -134,7 +120,7 @@ export default () => (
       <Question>What ethnicities are represented in the &quot;other&quot; population?</Question>
       <Answer>
         Individuals were classified as &quot;other&quot; if they did not unambiguously cluster with
-        the major populations (i.e. NFE, FIN, AFR, SAS, EAS, ASJ or AMR) in a principal component
+        the major populations (i.e. afr, asj, amr, eas, fin, nfe, sas) in a principal component
         analysis (PCA).
       </Answer>
     </dl>
