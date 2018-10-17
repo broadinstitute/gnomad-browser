@@ -147,10 +147,7 @@ export default () => (
     </p>
     <p>
       For bug reports, please file an issue on{' '}
-      <ExternalLink href="https://github.com/macarthur-lab/gnomad_browser/issues">
-        Github
-      </ExternalLink>
-      .
+      <ExternalLink href="https://github.com/macarthur-lab/gnomadjs/issues">Github</ExternalLink>.
     </p>
     <Credits>
       <CreditsSection noBottomUlPaddingOnMobile>
