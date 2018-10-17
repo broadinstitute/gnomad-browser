@@ -19,6 +19,7 @@ app.use(cors());
     const gnomad = await MongoClient.connect(process.env.GNOMAD_MONGO_URL)
     const elastic = await new elasticsearch.Client({
       host: process.env.ELASTICSEARCH_URL,
+      keepAlive: false,
       requestTimeout: 500000,
       // log: 'trace',
     })
