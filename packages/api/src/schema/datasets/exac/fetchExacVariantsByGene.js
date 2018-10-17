@@ -1,15 +1,27 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
+import { mergeOverlappingRegions } from '../../../utilities/region'
 import { lookupExonsByGeneId } from '../../types/exon'
 
 const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
   const geneExons = await lookupExonsByGeneId(ctx.database.gnomad, geneId)
   const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
+  const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
   const padding = 75
-  const rangeQueries = filteredRegions.map(region => ({
+  const paddedRegions = sortedRegions.map(r => ({
+    ...r,
+    start: r.start - padding,
+    stop: r.stop + padding,
+    xstart: r.xstart - padding,
+    xstop: r.xstop + padding,
+  }))
+
+  const mergedRegions = mergeOverlappingRegions(paddedRegions)
+
+  const rangeQueries = mergedRegions.map(region => ({
     range: {
       pos: {
-        gte: region.start - padding,
-        lte: region.stop + padding,
+        gte: region.start,
+        lte: region.stop,
       },
     },
   }))
