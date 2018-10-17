@@ -41,13 +41,48 @@ const labelProps = {
 }
 
 export const BarGraph = withSize()(
-  ({ barColor, bins, highlightValue, logScale, size, xLabel, yLabel }) => {
+  ({ barColor, bins, highlightValue, logScale, nLarger, nSmaller, size, xLabel, yLabel }) => {
     const height = 250
     const width = size.width
 
-    const xDomain = [min(bins, bin => bin.x0), max(bins, bin => bin.x1)]
+    const binsCopy = [...bins]
 
-    const yDomain = [0, max(bins, bin => bin.n) || 1]
+    if (nSmaller) {
+      binsCopy.unshift({
+        x0: binsCopy[0].x0 - (binsCopy[0].x1 - binsCopy[0].x0),
+        x1: binsCopy[0].x0,
+        n: nSmaller,
+      })
+    }
+
+    if (nLarger) {
+      binsCopy.push({
+        x0: binsCopy[binsCopy.length - 1].x1,
+        x1:
+          binsCopy[binsCopy.length - 1].x1 +
+          binsCopy[binsCopy.length - 1].x1 -
+          binsCopy[binsCopy.length - 1].x0,
+        n: nLarger,
+      })
+    }
+
+    const xTickFormat = logScale
+      ? undefined
+      : (val, i) => {
+          if (i === 0 && nSmaller) {
+            return `<${bins[0].x0}`
+          }
+
+          if (i === binsCopy.length && nLarger) {
+            return `>${bins[bins.length - 1].x1}`
+          }
+
+          return val
+        }
+
+    const xDomain = [min(binsCopy, bin => bin.x0), max(binsCopy, bin => bin.x1)]
+
+    const yDomain = [0, max(binsCopy, bin => bin.n) || 1]
 
     const xScale = (logScale ? scaleLog() : scaleLinear())
       .domain(xDomain)
@@ -67,6 +102,7 @@ export const BarGraph = withSize()(
             top={height - margin.bottom}
             scale={xScale}
             stroke="#333"
+            tickFormat={xTickFormat}
           />
           <AxisLeft
             label={yLabel}
@@ -78,7 +114,7 @@ export const BarGraph = withSize()(
             stroke="#333"
           />
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {bins.map(bin => (
+            {binsCopy.map(bin => (
               <rect
                 key={bin.x0}
                 x={xScale(bin.x0)}
@@ -119,6 +155,8 @@ BarGraph.propTypes = {
   ),
   highlightValue: PropTypes.number,
   logScale: PropTypes.bool,
+  nLarger: PropTypes.number,
+  nSmaller: PropTypes.number,
   size: PropTypes.shape({
     width: PropTypes.number.isRequired,
   }),
@@ -130,6 +168,8 @@ BarGraph.defaultProps = {
   barColor: '#428bca',
   highlightValue: undefined,
   logScale: false,
+  nLarger: undefined,
+  nSmaller: undefined,
   xLabel: undefined,
   yLabel: undefined,
 }

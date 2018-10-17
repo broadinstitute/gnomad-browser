@@ -36,7 +36,13 @@ export default class GnomadAgeDistribution extends Component {
 
     return (
       <div>
-        <BarGraph bins={bins} xLabel="Age" yLabel="Individuals" />
+        <BarGraph
+          bins={bins}
+          nLarger={histogramData.n_larger}
+          nSmaller={histogramData.n_smaller}
+          xLabel="Age"
+          yLabel="Individuals"
+        />
 
         <ControlSection>
           <SegmentedControl
