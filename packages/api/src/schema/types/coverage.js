@@ -228,7 +228,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
     'mean',
   ]
 
-  return new Promise((resolve, _) => {
+  return new Promise((resolve, reject) => {
     // console.log('searching')
     // if (totalBasePairs > 150000 && index === 'exacv1_coverage') {
     //   resolve([])
@@ -242,8 +242,7 @@ export const lookupCoverageByIntervalsWithBuckets = ({
         return resolve(coverage)
       } else {
         elasticClient.search({
-          index: obj.gene_name === 'TTN' ? 'exome_coverage' : index, // HACK exacv1 coverage not working for TTN only
-          // index,
+          index,
           type,
           size: EXPECTED_SCREEN_WIDTH,
           _source: fields,
@@ -288,12 +287,9 @@ export const lookupCoverageByIntervalsWithBuckets = ({
             const time = end - timeStart
             console.log(['coverage', index, obj.gene_name, 'bucket', 'lookup', totalBasePairs, intervalsOnly.length, time].join(','))
             return resolve(intervalsOnly)
-          })
-        }).catch(error => console.log(error))
+          }, reject)
+        }, reject)
       }
-    }).catch(error => {
-      console.log(error)
-      resolve([])
-    })
+    }, reject)
   })
 }
