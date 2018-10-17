@@ -16,7 +16,7 @@ const HomePage = InfoPage.extend`
   margin-top: 60px;
 `
 
-const LogoContainer = styled.div`
+const HeadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,32 +34,49 @@ const SubHeading = styled.h2`
 
 export default () => (
   <HomePage>
-    <LogoContainer>
+    <HeadingContainer>
       <GnomadHeading width={'100%'} />
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="70%" />
       <p>
-        Examples - Gene: <Link to="/gene/PCSK9">PCSK9</Link>, Variant:{' '}
-        <Link to="/variant/1-55516888-G-GA">1-55516888-G-GA</Link>
+        Examples - Gene:{' '}
+        <Link preserveSelectedDataset={false} to="/gene/PCSK9">
+          PCSK9
+        </Link>
+        , Variant:{' '}
+        <Link preserveSelectedDataset={false} to="/variant/1-55516888-G-GA">
+          1-55516888-G-GA
+        </Link>
       </p>
-    </LogoContainer>
+    </HeadingContainer>
 
     <p>
-      The <Link to="/about">Genome Aggregation Database</Link> (gnomAD) is a resource developed by
-      an international coalition of investigators, with the goal of aggregating and harmonizing both
-      exome and genome sequencing data from a wide variety of large-scale sequencing projects, and
-      making summary data available for the wider scientific community.
+      The{' '}
+      <Link preserveSelectedDataset={false} to="/about">
+        Genome Aggregation Database
+      </Link>{' '}
+      (gnomAD) is a resource developed by an international coalition of investigators, with the goal
+      of aggregating and harmonizing both exome and genome sequencing data from a wide variety of
+      large-scale sequencing projects, and making summary data available for the wider scientific
+      community.
     </p>
     <p>
       The data set provided on this website spans 125,748 exome sequences and 15,708 whole-genome
       sequences from unrelated individuals sequenced as part of various disease-specific and
       population genetic studies. The gnomAD Principal Investigators and groups that have
-      contributed data to the current release are listed <Link to="/about">here</Link>.
+      contributed data to the current release are listed{' '}
+      <Link preserveSelectedDataset={false} to="/about">
+        here
+      </Link>
+      .
     </p>
     <p>
       All data here are released for the benefit of the wider biomedical community, without
-      restriction on use - see the terms of use <Link to="/terms">here</Link>. Sign up for our
-      mailing list for future release announcements{' '}
+      restriction on use - see the terms of use{' '}
+      <Link preserveSelectedDataset={false} to="/terms">
+        here
+      </Link>
+      . Sign up for our mailing list for future release announcements{' '}
       <ExternalLink href="https://groups.google.com/forum/#!forum/exac_data_announcements">
         here
       </ExternalLink>
