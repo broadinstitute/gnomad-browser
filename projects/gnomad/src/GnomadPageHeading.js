@@ -27,7 +27,7 @@ const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selec
             value: datasetId,
           }))}
           value={datasetLabels[selectedDataset]}
-          width="150px"
+          width="220px"
           onSelect={datasetId => {
             const nextLocation = Object.assign(history.location, {
               search: queryString.stringify({ dataset: datasetId }),
