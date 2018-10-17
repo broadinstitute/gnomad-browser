@@ -20,7 +20,8 @@ app.use(cors());
     const elastic = await new elasticsearch.Client({
       host: process.env.ELASTICSEARCH_URL,
       keepAlive: false,
-      requestTimeout: 500000,
+      maxRetries: 1,
+      requestTimeout: 45000,
       // log: 'trace',
     })
     const isDev = process.env.NODE_ENV === 'development'
