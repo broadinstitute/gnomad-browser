@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Button } from '@broad/ui'
+import { Button, ExternalLink } from '@broad/ui'
 
 import Searchbox from './Searchbox'
 
@@ -15,9 +15,7 @@ const NavBarWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
   padding: 0.5em 30px;
-  margin-bottom: 20px;
   background-color: black;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
 
   @media (max-width: 900px) {
     flex-direction: column;
@@ -83,6 +81,22 @@ const MenuExternalLink = styled.a`
   text-decoration: none;
 `
 
+const OuterWrapper = styled.div`
+  margin-bottom: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+`
+
+const Notice = styled.div`
+  padding: 0.5em;
+  background: #428bca;
+  color: white;
+  text-align: center;
+
+  a {
+    color: white !important;
+  }
+`
+
 class NavBar extends Component {
   state = {
     menuExpanded: false,
@@ -94,35 +108,43 @@ class NavBar extends Component {
 
   render() {
     return (
-      <NavBarWrapper>
-        <LogoWrapper>
-          <MenuLink to="/">
-            <Logo>gnomAD browser</Logo>
-          </MenuLink>
-          <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
-        </LogoWrapper>
-        <Searchbox id="navbar-search" width="320px" />
-        <Menu isExpanded={this.state.menuExpanded}>
-          <li>
-            <MenuLink to="/about">About</MenuLink>
-          </li>
-          <li>
-            <MenuLink to="/downloads">Downloads</MenuLink>
-          </li>
-          <li>
-            <MenuLink to="/terms">Terms</MenuLink>
-          </li>
-          <li>
-            <MenuLink to="/contact">Contact</MenuLink>
-          </li>
-          <li>
-            <MenuExternalLink href="https://macarthurlab.org/jobs/">Jobs</MenuExternalLink>
-          </li>
-          <li>
-            <MenuLink to="/faq">FAQ</MenuLink>
-          </li>
-        </Menu>
-      </NavBarWrapper>
+      <OuterWrapper>
+        <NavBarWrapper>
+          <LogoWrapper>
+            <MenuLink to="/">
+              <Logo>gnomAD browser</Logo>
+            </MenuLink>
+            <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
+          </LogoWrapper>
+          <Searchbox id="navbar-search" width="320px" />
+          <Menu isExpanded={this.state.menuExpanded}>
+            <li>
+              <MenuLink to="/about">About</MenuLink>
+            </li>
+            <li>
+              <MenuLink to="/downloads">Downloads</MenuLink>
+            </li>
+            <li>
+              <MenuLink to="/terms">Terms</MenuLink>
+            </li>
+            <li>
+              <MenuLink to="/contact">Contact</MenuLink>
+            </li>
+            <li>
+              <MenuExternalLink href="https://macarthurlab.org/jobs/">Jobs</MenuExternalLink>
+            </li>
+            <li>
+              <MenuLink to="/faq">FAQ</MenuLink>
+            </li>
+          </Menu>
+        </NavBarWrapper>
+        <Notice>
+          This is a new version of the gnomAD browser. The old version is available at{' '}
+          <ExternalLink href="http://gnomad-old.broadinstitute.org">
+            http://gnomad-old.broadinstitute.org
+          </ExternalLink>
+        </Notice>
+      </OuterWrapper>
     )
   }
 }
