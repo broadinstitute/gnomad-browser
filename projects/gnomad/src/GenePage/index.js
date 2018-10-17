@@ -20,6 +20,10 @@ import StatusMessage from '../StatusMessage'
 const GeneFullName = styled.span`
   font-size: 22px;
   font-weight: 400;
+
+  @media (max-width: 900px) {
+    text-align: center;
+  }
 `
 
 const GeneInfoColumnWrapper = styled.div`
