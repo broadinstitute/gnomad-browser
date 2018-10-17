@@ -8,7 +8,6 @@
   "license": "MIT",
   "scripts": {
     "build": "./build.sh",
-    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
     "start": "./start.sh"
   },
   "files": [
