@@ -577,7 +577,9 @@ const TableHeaders = ({ title, tableConfig, showIndex }) => (
   </div>
 )
 
-
+const TableWrapper = styled.div`
+  overflow-x: scroll;
+`
 
 const Table = ({
   title,
@@ -607,29 +609,31 @@ const Table = ({
   )
 
   return (
-    <div>
-      <TableHeaders title={title} tableConfig={tableConfig} showIndex={showIndex} />
-      <InfiniteLoader
-        isRowLoaded={isRowLoaded}
-        loadMoreRows={loadMoreRows}
-        rowCount={remoteRowCount}
-      >
-        {({ onRowsRendered, registerChild }) => (
-          <List
-            height={height}
-            onRowsRendered={onRowsRendered}
-            ref={registerChild}
-            rowCount={remoteRowCount}
-            rowHeight={25}
-            rowRenderer={rowRenderer}
-            overscanRowCount={overscan}
-            width={size.width}
-            scrollToIndex={scrollToRow}
-            onScroll={onScroll}
-          />
-        )}
-      </InfiniteLoader>
-    </div>
+    <TableWrapper>
+      <div>
+        <TableHeaders title={title} tableConfig={tableConfig} showIndex={showIndex} />
+        <InfiniteLoader
+          isRowLoaded={isRowLoaded}
+          loadMoreRows={loadMoreRows}
+          rowCount={remoteRowCount}
+        >
+          {({ onRowsRendered, registerChild }) => (
+            <List
+              height={height}
+              onRowsRendered={onRowsRendered}
+              ref={registerChild}
+              rowCount={remoteRowCount}
+              rowHeight={25}
+              rowRenderer={rowRenderer}
+              overscanRowCount={overscan}
+              width={tableConfig.width}
+              scrollToIndex={scrollToRow}
+              onScroll={onScroll}
+            />
+          )}
+        </InfiniteLoader>
+      </div>
+    </TableWrapper>
   )
 }
 Table.propTypes = {
