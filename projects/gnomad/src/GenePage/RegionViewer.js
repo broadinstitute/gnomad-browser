@@ -28,6 +28,7 @@ import datasetLabels from '../datasetLabels'
 import Link from '../Link'
 import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
+import StatusMessage from '../StatusMessage'
 
 const COVERAGE_TRACK_HEIGHT = 200
 const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
@@ -79,6 +80,9 @@ const GeneViewer = ({
   const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
     .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
 
+  const hasCodingExons = exons.some(exon => exon.feature_type === 'CDS')
+  console.warn(hasCodingExons)
+
   return (
     <RegionViewer
       width={regionViewerWidth}
@@ -87,20 +91,31 @@ const GeneViewer = ({
       regionAttributes={attributeConfig}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
-      <CoverageTrack datasetId={datasetId} geneId={geneId} totalBp={totalBasePairs} />
-      <TranscriptTrackConnected
-        height={12}
-        renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
-          <TranscriptLink
-            to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
-            isCanonical={isCanonical}
-            isSelected={isSelected}
-          >
-            {transcriptId}
-          </TranscriptLink>
-        )}
-        showRightPanel={!smallScreen}
-      />
+      {hasCodingExons && (
+        <CoverageTrack datasetId={datasetId} geneId={geneId} totalBp={totalBasePairs} />
+      )}
+
+      {hasCodingExons && (
+        <TranscriptTrackConnected
+          height={12}
+          renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
+            <TranscriptLink
+              to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
+              isCanonical={isCanonical}
+              isSelected={isSelected}
+            >
+              {transcriptId}
+            </TranscriptLink>
+          )}
+          showRightPanel={!smallScreen}
+        />
+      )}
+
+      {!hasCodingExons && (
+        <StatusMessage>
+          Coverage &amp; transcripts not shown for genes with no coding exons
+        </StatusMessage>
+      )}
 
       {!isLoadingVariants && <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />}
 

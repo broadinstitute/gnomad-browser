@@ -120,6 +120,10 @@ const GnomadConstraintTable = ({ transcriptId }) => (
         return <StatusMessage>Unable to load constraint</StatusMessage>
       }
 
+      if (!data.transcript.gnomad_constraint) {
+        return <StatusMessage>No constraint data for this gene</StatusMessage>
+      }
+
       const constraintData = data.transcript.gnomad_constraint
 
       const lofMetricStyle = constraintData.oe_lof_upper < 0.35 ? { color: '#ff583f' } : {}
