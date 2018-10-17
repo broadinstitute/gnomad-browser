@@ -12,11 +12,10 @@ const FEATURES_TO_DISPLAY = [
   // 'exon',
 ]
 
-export const filterRegions = R.curry((featureList, regions) =>
-  regions.filter(
-    region => R.contains(region.feature_type, featureList),
-  ),
-)
+export const filterRegions = featureTypes => regions => {
+  const filteredRegions = regions.filter(r => featureTypes.includes(r.feature_type))
+  return filteredRegions.length ? filteredRegions : regions
+}
 
 export const applyExonSubset = R.curry((exonSubset, regions) => {
   if (exonSubset) {
@@ -124,10 +123,19 @@ export const defaultAttributeConfig = {
 export const assignAttributes = R.curry((attributeConfig, regions) => {
   return regions.map(region => {
     const { feature_type } = region
+
+    if (attributeConfig[feature_type]) {
+      return {
+        ...region,
+        color: attributeConfig[feature_type].color,
+        thickness: attributeConfig[feature_type].thickness,
+      }
+    }
+
     return {
       ...region,
-      color: attributeConfig[feature_type].color,
-      thickness: attributeConfig[feature_type].thickness,
+      color: attributeConfig.default.color,
+      thickness: attributeConfig.default.thickness,
     }
   })
 })
