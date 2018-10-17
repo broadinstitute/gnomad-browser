@@ -1,38 +1,21 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { actions as variantActions } from '@broad/redux-variants'
 import { VariantTable } from '@broad/table'
-import { ClassicExacButton, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
+import { SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
 import Settings from '../Settings'
 import tableConfig from '../tableConfig'
 import { ConstraintTableOrPlaceholder } from './Constraint'
-import { exportFetch } from './exportFetch'
 import { fetchGnomadGenePage } from './fetch'
 import fetchVariantsByGene from './fetchVariantsByGene'
 import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'
 import GeneViewer from './RegionViewer'
 import StatusMessage from '../StatusMessage'
-
-const BottomButtonSection = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-`
-
-const ExportVariantsButton = connect(
-  null,
-  dispatch => ({
-    onClick: () => dispatch(variantActions.exportVariantsToCsv(exportFetch)),
-  })
-)(ClassicExacButton)
 
 const GeneFullName = styled.span`
   font-size: 22px;
@@ -99,9 +82,6 @@ class GenePage extends Component {
       <TrackPageSection>
         <Settings />
         <VariantTable tableConfig={tableConfig} />
-        <BottomButtonSection>
-          <ExportVariantsButton>Export variants</ExportVariantsButton>
-        </BottomButtonSection>
       </TrackPageSection>
     )
   }
