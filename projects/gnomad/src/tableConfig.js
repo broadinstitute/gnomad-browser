@@ -7,7 +7,7 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
-        minWidth: 100,
+        minWidth: 130,
         onHeaderClick,
       },
       {
