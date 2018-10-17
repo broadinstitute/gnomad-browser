@@ -12,9 +12,9 @@ The gene constraint table was generated differently for gnomAD 2.1 and ExAC. The
 The constraint score shown in gnomAD is the ratio of the observed / expected (`oe`) number of loss-of-function variants in that gene. The expected counts are based on a mutational model that takes sequence context, coverage and methylation into account. 
 
 ### Interpretation
-Observed/expected (`oe`) is a continuous measure of how tolerant a gene is to a certain class of variation (e.g. loss-of-function). When a gene has a low `oe` value, it is under stronger selection for that class of variation than a gene with a higher value. Because counts depend on gene size and sample size, the precision of the `oe` values varies a lot from one gene to the next. Therefore in addition to the `oe` value, we also display the 95% confidence interval (CI) for each of the `oe` values. When evaluating how constrained a gene is, it is essential to take the 95% CI into consideration.
+Observed/expected (`oe`) is a continuous measure of how tolerant a gene is to a certain class of variation (e.g. loss-of-function). When a gene has a low `oe` value, it is under stronger selection for that class of variation than a gene with a higher value. Because counts depend on gene size and sample size, the precision of the `oe` values varies a lot from one gene to the next. Therefore in addition to the `oe` value, we also display the 90% confidence interval (CI) for each of the `oe` values. When evaluating how constrained a gene is, it is essential to take the 90% CI into consideration.
 
-Although `oe` is a continuous value,  we understand that it can be useful to use a threshold for certain applications. In particular, for the interpretation of Mendelian diseases cases, we suggest using the upper bound of the `oe` CI < 0.35 as a threshold if needed. Again, ideally `oe` should be used as a continuous value rather than a cutoff and evaluating the `oe` 95% CI is a must.
+Although `oe` is a continuous value,  we understand that it can be useful to use a threshold for certain applications. In particular, for the interpretation of Mendelian diseases cases, we suggest using the upper bound of the `oe` CI < 0.35 as a threshold if needed. Again, ideally `oe` should be used as a continuous value rather than a cutoff and evaluating the `oe` 90% CI is a must.
 
 ## ExAC 
 ### Overall interpretation
