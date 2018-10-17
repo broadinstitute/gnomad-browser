@@ -2,10 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Loading, Page, SectionHeading } from '@broad/ui'
+import { Page, SectionHeading } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
+import StatusMessage from '../StatusMessage'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
@@ -51,15 +52,15 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
     <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
         if (loading) {
-          return <Loading>Loading...</Loading>
+          return <StatusMessage>Loading variant...</StatusMessage>
         }
 
         if (error) {
-          return <Loading>Error</Loading>
+          return <StatusMessage>Unable to load variant</StatusMessage>
         }
 
         if (!data.variant) {
-          return <Loading>Variant not found</Loading>
+          return <StatusMessage>Variant not found</StatusMessage>
         }
 
         const variant = data.variant
