@@ -25,6 +25,17 @@ const defaultDataset = 'gnomad_r2_1'
 
 const App = () => (
   <div>
+    <Route
+      path="/"
+      render={({ location }) => {
+        if (window.gtag) {
+          window.gtag('config', window.gaTrackingId, {
+            page_path: location.pathname,
+          })
+        }
+        return null
+      }}
+    />
     <MainPanel>
       <NavBar />
       <Switch>

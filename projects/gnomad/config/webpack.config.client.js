@@ -10,6 +10,11 @@ const definitions = {
   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 }
 
+const gaTrackingId = process.env.GA_TRACKING_ID
+if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
+  console.log('\nWarning: No GA tracking ID for production build\n')
+}
+
 const config = {
   devServer: {
     historyApiFallback: true,
@@ -43,6 +48,7 @@ const config = {
     new webpack.DefinePlugin(definitions),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.html'),
+      gaTrackingId: process.env.GA_TRACKING_ID,
     }),
   ],
 }
