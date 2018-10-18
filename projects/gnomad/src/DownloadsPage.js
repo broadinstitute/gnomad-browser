@@ -330,5 +330,23 @@ export default () => (
         </DownloadSection>
       </SequencingMethodSection>
     </Downloads>
+
+    <SequencingMethodSection>
+      <h2>Other</h2>
+      <DownloadSection>
+        <h3>Gene constraint Hail Table</h3>
+        <ul>
+          <li>
+            <ExternalLink
+              href={
+                'https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/ht/constraint/'
+              }
+            >
+              gs://gnomad-public/release/2.1/ht/constraint/constraint.ht
+            </ExternalLink>
+          </li>
+        </ul>
+      </DownloadSection>
+    </SequencingMethodSection>
   </InfoPage>
 )
