@@ -24,6 +24,7 @@ export const mergeOverlappingRegions = (sortedRegions) => {
 
     if (nextRegion.xstart <= (previousRegion.xstop + 1)) {
       if (nextRegion.xstop > previousRegion.xstop) {
+        previousRegion.stop = nextRegion.stop
         previousRegion.xstop = nextRegion.xstop
       }
     } else {
