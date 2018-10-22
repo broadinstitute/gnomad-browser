@@ -1,6 +1,7 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
 import { lookupExonsByGeneId } from '../../types/exon'
+import POPULATIONS from './populations'
 
 const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
   const geneExons = await lookupExonsByGeneId(ctx.database.gnomad, geneId)
@@ -39,6 +40,7 @@ const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
       'chrom',
       'filters',
       'flags',
+      'populations',
       'pos',
       'ref',
       'rsid',
@@ -103,6 +105,13 @@ const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
       hgvs: hit.fields.csq[0].hgvs,
       hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
       hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
+      populations: POPULATIONS.map(popId => ({
+        id: popId,
+        ac: variantData.populations[popId].AC || 0,
+        an: variantData.populations[popId].AN || 0,
+        ac_hemi: variantData.populations[popId].hemi || 0,
+        ac_hom: variantData.populations[popId].hom || 0,
+      })),
       rsid: variantData.rsid,
     }
   })

@@ -1,6 +1,7 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { lookupExonsByTranscriptId } from '../../types/exon'
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
+import POPULATIONS from './populations'
 
 const fetchGnomadVariantsByTranscript = async (ctx, transcriptId, gene, subset) => {
   const geneExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
@@ -28,10 +29,9 @@ const fetchGnomadVariantsByTranscript = async (ctx, transcriptId, gene, subset) 
         type: 'variant',
         size: 10000,
         _source: [
-          `${subset}.AC_adj.total`,
-          `${subset}.AC_adj.male`,
-          `${subset}.AN_adj.total`,
-          `${subset}.nhomalt_adj.total`,
+          `${subset}.AC_adj`,
+          `${subset}.AN_adj`,
+          `${subset}.nhomalt_adj`,
           'alt',
           'chrom',
           'filters',
@@ -110,6 +110,13 @@ const fetchGnomadVariantsByTranscript = async (ctx, transcriptId, gene, subset) 
           hgvs: hit.fields.csq[0].hgvs,
           hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
           hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
+          populations: POPULATIONS.map(popId => ({
+            id: popId.toUpperCase(),
+            ac: (variantData[subset].AC_adj[popId] || {}).total || 0,
+            an: (variantData[subset].AN_adj[popId] || {}).total || 0,
+            ac_hemi: variantData.nonpar ? (variantData[subset].AC_adj[popId] || {}).male || 0 : 0,
+            ac_hom: (variantData[subset].nhomalt_adj[popId] || {}).total || 0,
+          })),
           rsid: variantData.rsid,
         }
       })

@@ -1,4 +1,5 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
+import POPULATIONS from './populations'
 
 const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
   const padding = 75
@@ -24,6 +25,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       'chrom',
       'filters',
       'flags',
+      'populations',
       'pos',
       'ref',
       'rsid',
@@ -74,6 +76,13 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       hgvs: csq.hgvs,
       hgvsc: csq.hgvsc ? csq.hgvsc.split(':')[1] : null,
       hgvsp: csq.hgvsp ? csq.hgvsp.split(':')[1] : null,
+      populations: POPULATIONS.map(popId => ({
+        id: popId,
+        ac: variantData.populations[popId].AC || 0,
+        an: variantData.populations[popId].AN || 0,
+        ac_hemi: variantData.populations[popId].hemi || 0,
+        ac_hom: variantData.populations[popId].hom || 0,
+      })),
       rsid: variantData.rsid,
     }
   })

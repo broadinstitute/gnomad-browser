@@ -1,5 +1,6 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { lookupExonsByTranscriptId } from '../../types/exon'
+import POPULATIONS from './populations'
 
 const fetchExacVariantsByTranscript = async (ctx, transcriptId) => {
   const geneExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
@@ -27,6 +28,7 @@ const fetchExacVariantsByTranscript = async (ctx, transcriptId) => {
       'chrom',
       'filters',
       'flags',
+      'populations',
       'pos',
       'ref',
       'rsid',
@@ -91,6 +93,13 @@ const fetchExacVariantsByTranscript = async (ctx, transcriptId) => {
       hgvs: hit.fields.csq[0].hgvs,
       hgvsc: hit.fields.csq[0].hgvsc ? hit.fields.csq[0].hgvsc.split(':')[1] : null,
       hgvsp: hit.fields.csq[0].hgvsp ? hit.fields.csq[0].hgvsp.split(':')[1] : null,
+      populations: POPULATIONS.map(popId => ({
+        id: popId,
+        ac: variantData.populations[popId].AC || 0,
+        an: variantData.populations[popId].AN || 0,
+        ac_hemi: variantData.populations[popId].hemi || 0,
+        ac_hom: variantData.populations[popId].hom || 0,
+      })),
       rsid: variantData.rsid,
     }
   })
