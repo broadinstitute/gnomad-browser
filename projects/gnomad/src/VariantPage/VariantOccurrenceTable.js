@@ -94,7 +94,9 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
             (95% confidence)
           </th>
           <td>{isPresentInExome && variant.exome.faf95 && variant.exome.faf95.toPrecision(4)}</td>
-          <td>{isPresentInGenome && variant.genome.faf95 && variant.exome.faf95.toPrecision(4)}</td>
+          <td>
+            {isPresentInGenome && variant.genome.faf95 && variant.genome.faf95.toPrecision(4)}
+          </td>
           <td />
         </tr>
       </tbody>
