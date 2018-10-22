@@ -1,5 +1,6 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
+import POPULATIONS from './populations'
 
 const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) => {
   const padding = 75
@@ -25,10 +26,9 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
         type: 'variant',
         size: 10000,
         _source: [
-          `${subset}.AC_adj.total`,
-          `${subset}.AC_adj.male`,
-          `${subset}.AN_adj.total`,
-          `${subset}.nhomalt_adj.total`,
+          `${subset}.AC_adj`,
+          `${subset}.AN_adj`,
+          `${subset}.nhomalt_adj`,
           'alt',
           'chrom',
           'filters',
@@ -98,6 +98,13 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
           hgvs: csq.hgvs,
           hgvsc: csq.hgvsc ? csq.hgvsc.split(':')[1] : null,
           hgvsp: csq.hgvsp ? csq.hgvsp.split(':')[1] : null,
+          populations: POPULATIONS.map(popId => ({
+            id: popId.toUpperCase(),
+            ac: (variantData[subset].AC_adj[popId] || {}).total || 0,
+            an: (variantData[subset].AN_adj[popId] || {}).total || 0,
+            ac_hemi: variantData.nonpar ? (variantData[subset].AC_adj[popId] || {}).male || 0 : 0,
+            ac_hom: (variantData[subset].nhomalt_adj[popId] || {}).total || 0,
+          })),
           rsid: variantData.rsid,
         }
       })

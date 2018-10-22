@@ -44,6 +44,20 @@ export const VariantSummaryType = new GraphQLObjectType({
     hgvs: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
+    populations: {
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: 'VariantPopulations',
+          fields: {
+            id: { type: new GraphQLNonNull(GraphQLString) },
+            ac: { type: new GraphQLNonNull(GraphQLInt) },
+            an: { type: new GraphQLNonNull(GraphQLInt) },
+            ac_hemi: { type: new GraphQLNonNull(GraphQLInt) },
+            ac_hom: { type: new GraphQLNonNull(GraphQLInt) },
+          },
+        })
+      ),
+    },
     rsid: { type: GraphQLString },
   },
   isTypeOf: variantData => variantData.gqlType === 'VariantSummary',
