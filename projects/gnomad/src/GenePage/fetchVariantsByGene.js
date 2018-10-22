@@ -23,6 +23,13 @@ const fetchVariantsByGene = (geneIdOrName, transcriptId, datasetId) => {
         filters
         flags
         hgvs
+        populations {
+          id
+          ac
+          an
+          ac_hemi
+          ac_hom
+        }
         pos
         rsid
         variant_id: variantId
