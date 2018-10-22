@@ -23,6 +23,8 @@ const fetchVariantsByGene = (geneIdOrName, transcriptId, datasetId) => {
         filters
         flags
         hgvs
+        hgvsc
+        hgvsp
         populations {
           id
           ac
