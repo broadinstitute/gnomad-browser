@@ -16,6 +16,8 @@ const fetchVariantsByRegion = (regionId, datasetId) => {
         filters
         flags
         hgvs
+        hgvsc
+        hgvsp
         populations {
           id
           ac
