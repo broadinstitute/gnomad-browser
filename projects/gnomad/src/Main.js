@@ -61,6 +61,7 @@ variantDatasets.forEach(datasetId => {
     hgvsc: null,
     hgvsp: null,
     hom_count: null,
+    populations: [],
     id: null,
     variant_id: null,
     rsid: null,
