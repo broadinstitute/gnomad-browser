@@ -6,6 +6,8 @@ import { QuestionMark } from '@broad/help'
 import { VariantTable } from '@broad/table'
 import { SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
+import datasetLabels from '../datasetLabels'
+import ExportVariantsButton from '../ExportVariantsButton'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Settings from '../Settings'
 import tableConfig from '../tableConfig'
@@ -68,12 +70,12 @@ class GenePage extends Component {
           </GeneInfoColumnWrapper>
         </TrackPageSection>
         <GeneViewer datasetId={this.props.datasetId} geneId={geneId} />
-        {this.renderVariantTableSection({ isLoadingVariants })}
+        {this.renderVariantTableSection({ gene, isLoadingVariants })}
       </TrackPage>
     )
   }
 
-  renderVariantTableSection({ isLoadingVariants }) {
+  renderVariantTableSection({ gene, isLoadingVariants }) {
     if (isLoadingVariants) {
       return (
         <TrackPageSection>
@@ -85,6 +87,11 @@ class GenePage extends Component {
     return (
       <TrackPageSection>
         <Settings />
+        <div>
+          <ExportVariantsButton
+            exportFileName={`${datasetLabels[this.props.datasetId]} ${gene.gene_id}`}
+          />
+        </div>
         <VariantTable tableConfig={tableConfig} />
       </TrackPageSection>
     )
