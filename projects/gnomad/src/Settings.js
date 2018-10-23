@@ -13,6 +13,7 @@ const SettingsWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1em;
 
   @media (max-width: 1300px) and (min-width: 1101px) {
     > div {

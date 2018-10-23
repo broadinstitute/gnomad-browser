@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import { VariantTable } from '@broad/table'
 import { TrackPage, TrackPageSection } from '@broad/ui'
 
+import datasetLabels from '../datasetLabels'
+import ExportVariantsButton from '../ExportVariantsButton'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Settings from '../Settings'
 import StatusMessage from '../StatusMessage'
@@ -70,6 +72,11 @@ class RegionPage extends Component {
     return (
       <TrackPageSection>
         <Settings />
+        <div>
+          <ExportVariantsButton
+            exportFileName={`${datasetLabels[this.props.datasetId]} ${this.props.regionId}`}
+          />
+        </div>
         <VariantTable tableConfig={tableConfig} />
       </TrackPageSection>
     )
