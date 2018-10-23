@@ -65,7 +65,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       xpos: variantData.xpos,
       // other fields
       ac: variantData.AC_Adj,
-      ac_hemi: variantData.AC_Hemi,
+      ac_hemi: variantData.AC_Hemi || 0,
       ac_hom: variantData.AC_Hom,
       af: variantData.AN_Adj === 0 ? 0 : variantData.AC_Adj / variantData.AN_Adj,
       an: variantData.AN_Adj,
