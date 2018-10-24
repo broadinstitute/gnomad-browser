@@ -120,11 +120,6 @@ const flagProps = {
     level: 'info',
     tooltip: 'Found in a low complexity region\nVariant annotation or quality dubious',
   },
-  segdup: {
-    children: 'SEGDUP',
-    level: 'info',
-    tooltip: 'Found in a segmental duplication region\nVariant annotation or quality dubious',
-  },
   lc_lof: {
     children: 'LC LoF',
     level: 'error',
@@ -142,9 +137,6 @@ const formatFlags = dataRow => {
 
   if (dataRow.get('flags', []).includes('lcr') || dataRow.get('lcr')) {
     variantFlags.push('lcr')
-  }
-  if (dataRow.get('flags', []).includes('segdup') || dataRow.get('segdup')) {
-    variantFlags.push('segdup')
   }
   // FIXME: Remove this second condition (#248)
   // Kept to preserve functionality for gnomAD 2.0.2 variants, which don't have the
