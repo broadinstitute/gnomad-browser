@@ -395,9 +395,6 @@ const sortVariants = (variants, key, ascending) => {
       if (variant.get('flags', []).includes('lcr') || variant.get('lcr')) {
         flags.push('lcr')
       }
-      if (variant.get('flags', []).includes('segdup') || variant.get('segdup')) {
-        flags.push('segdup')
-      }
       // FIXME: Remove this second condition (#248)
       // Kept to preserve functionality for gnomAD 2.0.2 variants, which don't have the
       // correct flag value computed
