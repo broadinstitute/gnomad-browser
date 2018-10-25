@@ -46,7 +46,13 @@ export class Searchbox extends Component {
 
   render() {
     return (
-      <Combobox {...this.props} onChange={this.onChange} options={this.state.options} value="" />
+      <Combobox
+        {...this.props}
+        onChange={this.onChange}
+        options={this.state.options}
+        renderAllOptions
+        value=""
+      />
     )
   }
 }
