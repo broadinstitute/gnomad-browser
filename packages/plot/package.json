@@ -6,8 +6,6 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
-  "exampleDependencies": {},
   "dependencies": {
     "@vx/vx": "^0.0.140",
     "d3-array": "^1.2.0",

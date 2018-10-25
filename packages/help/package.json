@@ -6,7 +6,6 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
   "peerDependencies": {
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
