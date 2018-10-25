@@ -52,7 +52,6 @@
     "js-yaml": "^3.10.0",
     "json-loader": "^0.5.7",
     "kubernetes-client": "^3.18.0",
-    "pm2": "^2.9.1",
     "prettier": "1.14.2",
     "react-hot-loader": "3.0.0-beta.7",
     "redux": "^3.7.2",
