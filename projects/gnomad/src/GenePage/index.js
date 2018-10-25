@@ -92,6 +92,11 @@ class GenePage extends Component {
             exportFileName={`${datasetLabels[this.props.datasetId]} ${gene.gene_id}`}
           />
         </div>
+        {!this.props.transcriptId && (
+          <p style={{ marginBottom: 0 }}>
+            † denotes a consequence that is for a non-canonical transcript
+          </p>
+        )}
         <VariantTable tableConfig={tableConfig} />
       </TrackPageSection>
     )

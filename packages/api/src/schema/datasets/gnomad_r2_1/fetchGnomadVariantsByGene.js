@@ -116,6 +116,8 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
           an,
           af: an ? ac / an : 0,
           consequence: hit.fields.csq[0].major_consequence,
+          consequence_in_canonical_transcript:
+            hit.fields.csq[0].transcript_id === canonicalTranscriptId,
           datasets: [dataset],
           filters: (variantData.filters || []).map(f => `${filterPrefix}_${f}`),
           flags: ['lcr', 'segdup', 'lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
