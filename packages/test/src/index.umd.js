@@ -1,3 +1,0 @@
-export {
-  TestComponent,
-} from './component'
