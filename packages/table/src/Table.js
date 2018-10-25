@@ -10,7 +10,7 @@ import { withSize } from 'react-sizeme'
 import { InfiniteLoader, List } from 'react-virtualized'
 import styled from 'styled-components'
 
-import { Badge } from '@broad/ui'
+import { Badge, TooltipAnchor } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 const abstractCellStyle = {
@@ -269,6 +269,19 @@ const formatExponential = (number) => {
   return truncated.toExponential()
 }
 
+const TextTooltipWrapper = styled.span`
+  line-height: 1.5;
+  text-align: center;
+  white-space: pre-line;
+`
+
+const TextTooltip = ({ text }) => <TextTooltipWrapper>{text}</TextTooltipWrapper>
+
+const NonCanonicalMarker = () => (
+  <TooltipAnchor text="Consequence is for non-canonical transcript" tooltipComponent={TextTooltip}>
+    <span>†</span>
+  </TooltipAnchor>
+)
 
 const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
   // if (condition) {
@@ -281,12 +294,29 @@ const getDataCell = (field, dataRow, searchText, i, onRowClick) => {
     maxWidth: width,
     minWidth: width,
   }
-  const cellText = field.searchable ? (
-    <Highlighter
-      searchWords={searchText.split(/\s+/)}
-      textToHighlight={`${dataRow[dataKey] || ''}`}
-    />
-  ) : dataRow[dataKey]
+
+  let cellText
+
+  if (dataKey === 'hgvs' && dataRow.isCanon === false) {
+    cellText = (
+      <span>
+        <Highlighter
+          searchWords={searchText.split(/\s+/)}
+          textToHighlight={`${dataRow[dataKey] || ''}`}
+        />{' '}
+        <NonCanonicalMarker />
+      </span>
+    )
+  } else if (field.searchable) {
+    cellText = (
+      <Highlighter
+        searchWords={searchText.split(/\s+/)}
+        textToHighlight={`${dataRow[dataKey] || ''}`}
+      />
+    )
+  } else {
+    cellText = dataRow[dataKey]
+  }
 
   switch (dataType) {
     case 'string':

@@ -99,6 +99,8 @@ const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
       af: variantData.AN_Adj === 0 ? 0 : variantData.AC_Adj / variantData.AN_Adj,
       an: variantData.AN_Adj,
       consequence: hit.fields.csq[0].major_consequence,
+      consequence_in_canonical_transcript:
+        hit.fields.csq[0].transcript_id === canonicalTranscriptId,
       datasets: ['exacVariants'],
       filters: variantData.filters,
       flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),

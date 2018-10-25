@@ -1,4 +1,5 @@
 import {
+  GraphQLBoolean,
   GraphQLFloat,
   GraphQLInt,
   GraphQLInterfaceType,
@@ -38,6 +39,7 @@ export const VariantSummaryType = new GraphQLObjectType({
     an: { type: GraphQLInt },
     af: { type: GraphQLFloat },
     consequence: { type: GraphQLString },
+    consequence_in_canonical_transcript: { type: GraphQLBoolean },
     datasets: { type: new GraphQLList(GraphQLString) },
     filters: { type: new GraphQLList(GraphQLString) },
     flags: { type: new GraphQLList(GraphQLString) },

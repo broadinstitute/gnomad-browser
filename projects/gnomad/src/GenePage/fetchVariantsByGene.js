@@ -19,6 +19,7 @@ const fetchVariantsByGene = (geneIdOrName, transcriptId, datasetId) => {
         allele_num: an
         allele_freq: af
         consequence
+        isCanon: consequence_in_canonical_transcript
         datasets
         filters
         flags
