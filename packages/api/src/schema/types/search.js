@@ -109,11 +109,34 @@ export const resolveSearchResults = async (ctx, query) => {
     geneNameCounts[gene.gene_name_upper] += 1
   })
 
-  return matchingGenes.map(gene => ({
+  const geneResults = matchingGenes.map(gene => ({
     label:
       geneNameCounts[gene.gene_name_upper] > 1
         ? `${gene.gene_name_upper} (${gene.gene_id})`
         : gene.gene_name_upper,
     url: `/gene/${gene.gene_id}`,
   }))
+
+  if (geneResults.length < 5 && /^rs[0-9]/i.test(query)) {
+    const response = await ctx.database.elastic.search({
+      index: 'gnomad_exomes_2_1,gnomad_genomes_2_1',
+      type: 'variant',
+      _source: ['rsid', 'variant_id'],
+      body: {
+        query: {
+          term: { rsid: query.toLowerCase() },
+        },
+      },
+      size: 5 - geneResults.length,
+    })
+
+    const variantResults = response.hits.hits.map(doc => ({
+      label: `${doc._source.variant_id} (${doc._source.rsid})`, // eslint-disable-line no-underscore-dangle
+      url: `/variant/${doc._source.variant_id}`, // eslint-disable-line no-underscore-dangle
+    }))
+
+    return geneResults.concat(variantResults)
+  }
+
+  return geneResults
 }
