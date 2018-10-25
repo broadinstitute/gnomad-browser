@@ -7,6 +7,7 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataKey: 'variant_id',
         title: 'Variant ID',
         dataType: 'variantId',
+        grow: 1,
         minWidth: 130,
         onHeaderClick,
       },
@@ -15,17 +16,16 @@ export default (onHeaderClick, width, currentChromosome) => {
         title: 'Source',
         dataType: 'datasets',
         minWidth: 80,
-        disappear: mediumSize,
         onHeaderClick,
       },
       {
         dataKey: 'hgvs',
         title: 'Consequence',
         dataType: 'string',
-        minWidth: 100,
+        grow: 1,
+        minWidth: 140,
         onHeaderClick,
         searchable: true,
-        disappear: mediumSize,
       },
       {
         dataKey: 'consequence',
@@ -39,7 +39,6 @@ export default (onHeaderClick, width, currentChromosome) => {
         title: 'Flags',
         dataType: 'flags',
         minWidth: 100,
-        disappear: mediumSize,
         onHeaderClick,
       },
       {
@@ -55,7 +54,6 @@ export default (onHeaderClick, width, currentChromosome) => {
         dataType: 'integer',
         minWidth: width < 600 ? 55 : 90,
         onHeaderClick,
-        disappear: mediumSize,
       },
       {
         dataKey: 'allele_freq',
@@ -87,13 +85,11 @@ export default (onHeaderClick, width, currentChromosome) => {
     })
   }
 
-  const minTableWidth = tableConfig.fields
-    .filter(f => !f.disappear)
-    .reduce((sum, f) => sum + f.minWidth + 20, 0)
+  const minTableWidth = tableConfig.fields.reduce((sum, f) => sum + f.minWidth + 20, 0)
 
   const totalGrowthFactors = tableConfig.fields.reduce((sum, f) => sum + (f.grow || 0), 0) || 1
 
-  const remainingWidth = width - minTableWidth
+  const remainingWidth = Math.max(width - minTableWidth, 0)
 
   tableConfig.width = Math.max(minTableWidth, width)
 
