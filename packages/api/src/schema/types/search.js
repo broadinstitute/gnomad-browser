@@ -32,7 +32,23 @@ export const isRegionId = str => {
   return true
 }
 
-const VARIANT_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9]+)([-:]([acgt]+)?([-:]([acgt]+)?)?)?$/i
+export const normalizeRegionId = regionId => {
+  const parts = regionId.split(/[-:]/)
+  const chrom = parts[0].toUpperCase().replace(/^CHR/, '')
+  let start = Number(parts[1])
+  let end
+
+  if (parts[2]) {
+    end = Number(parts[2])
+  } else {
+    start -= 20
+    end = start + 40
+  }
+
+  return `${chrom}-${start}-${end}`
+}
+
+const VARIANT_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9]+)[-:]([acgt]+)[-:]([acgt]+)$/i
 
 export const isVariantId = str => {
   const match = VARIANT_ID_REGEX.exec(str)
@@ -49,28 +65,34 @@ export const isVariantId = str => {
   return true
 }
 
-export const resolveSearchResults = async (ctx, query) => {
-  const upperCaseQuery = query.toUpperCase()
+export const normalizeVariantId = variantId =>
+  variantId
+    .toUpperCase()
+    .replace(/:/g, '-')
+    .replace(/^CHR/, '')
 
+export const resolveSearchResults = async (ctx, query) => {
   if (isVariantId(query)) {
+    const variantId = normalizeVariantId(query)
     return [
       {
-        label: upperCaseQuery,
-        url: `/variant/${upperCaseQuery}`,
+        label: variantId,
+        url: `/variant/${variantId}`,
       },
     ]
   }
 
   if (isRegionId(query)) {
+    const regionId = normalizeRegionId(query)
     return [
       {
-        label: upperCaseQuery,
-        url: `/region/${upperCaseQuery}`,
+        label: regionId,
+        url: `/region/${regionId}`,
       },
     ]
   }
 
-  const startsWithQuery = { $regex: `^${upperCaseQuery}` }
+  const startsWithQuery = { $regex: `^${query.toUpperCase()}` }
   const matchingGenes = await ctx.database.gnomad
     .collection('genes')
     .find({

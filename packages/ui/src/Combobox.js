@@ -52,6 +52,7 @@ export class Combobox extends Component {
       PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
     ).isRequired,
     placeholder: PropTypes.string,
+    renderAllOptions: PropTypes.bool,
     value: PropTypes.string.isRequired,
     width: PropTypes.string,
   }
@@ -60,6 +61,7 @@ export class Combobox extends Component {
     id: undefined,
     onChange: () => {},
     placeholder: undefined,
+    renderAllOptions: false,
     width: undefined,
   }
 
@@ -80,7 +82,10 @@ export class Combobox extends Component {
     this.props.onSelect(item.value, item)
   }
 
-  shouldItemRender = item => item.label.toLowerCase().includes(this.state.inputValue.toLowerCase())
+  shouldItemRender = item =>
+    this.props.renderAllOptions
+      ? true
+      : item.label.toLowerCase().includes(this.state.inputValue.toLowerCase())
 
   renderInput = props => {
     // eslint-disable-next-line react/prop-types
