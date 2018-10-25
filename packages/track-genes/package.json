@@ -6,7 +6,6 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
   "dependencies": {},
   "peerDependencies": {
     "@broad/region": "*",

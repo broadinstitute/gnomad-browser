@@ -6,7 +6,6 @@
   "files": [
     "lib"
   ],
-  "localDependencies": {},
   "dependencies": {
     "@vx/axis": "^0.0.142",
     "@vx/scale": "^0.0.140",
