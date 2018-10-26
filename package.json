@@ -22,6 +22,7 @@
     "babel-eslint": "^8.0.0",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
+    "babel-plugin-inline-react-svg": "^1.0.1",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-styled-components": "^1.8.0",
     "core-js": "^2.5.7",
@@ -40,8 +41,7 @@
     "stylelint-config-idiomatic-css": "^1.0.6",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^0.4.0",
-    "svg-inline-loader": "^0.8.0"
+    "stylelint-processor-styled-components": "^0.4.0"
   },
   "scripts": {
     "lint:css": "stylelint './**/*.js'",

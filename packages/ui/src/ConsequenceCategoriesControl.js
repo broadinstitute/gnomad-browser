@@ -1,4 +1,4 @@
-import Check from 'svg-inline-loader!@fortawesome/fontawesome-free/svgs/solid/check.svg'
+import Check from '@fortawesome/fontawesome-free/svgs/solid/check.svg'
 import { darken, hideVisually, transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -179,12 +179,7 @@ export class ConsequenceCategoriesControl extends Component {
                 type="checkbox"
                 onChange={e => onChange({ ...categorySelections, [category]: e.target.checked })}
               />
-              <CheckboxIcon
-                aria-hidden
-                dangerouslySetInnerHTML={{
-                  __html: categorySelections[category] ? Check : null,
-                }}
-              />
+              <CheckboxIcon aria-hidden>{categorySelections[category] && <Check />}</CheckboxIcon>
               <LabelText>{categoryLabels[category]}</LabelText>
             </Label>
             <Button
