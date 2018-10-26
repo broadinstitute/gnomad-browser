@@ -10,14 +10,19 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js'],
+    bundle: ['react-hot-loader/patch', './src/index.js'],
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules\/(?!p-cancelable)/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            rootMode: 'upward',
+          },
+        },
       },
     ],
   },

@@ -5,24 +5,15 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
-    "build-server": "../../node_modules/.bin/babel -d ./build ./src -s --copy-files",
+    "build-server": "babel --root-mode=upward -d ./build ./src -s --copy-files",
     "build": "npm run clean && npm run build-server",
-    "start": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=12000 build/server.js",
-    "mongo": "mongod --dbpath /Users/msolomon/Projects/exacg/database",
-    "dev": "nodemon --exec NODE_ENV=development ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
-    "dev:flush": "redis-cli flushall && ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
-    "dev:cache": "nodemon --exec ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac EXACV1_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node src/server.js --max_old_space_size=4096",
-    "vm": "nodemon --exec GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac babel-node src/server.js --max_old_space_size=4096",
-    "prod": "GRAPHQL_PORT=8000 MONGO_URL=mongodb://localhost:27017/exac node --max_old_space_size=65536  build/server.js",
-    "flush": "redis-cli flushall"
+    "dev": "nodemon --exec NODE_ENV=development ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node --config-file=../../babel.config.js src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "compression": "^1.7.1",
-    "core-js": "^2.5.0",
     "cors": "^2.8.1",
     "csvtojson": "^1.1.7",
     "elasticsearch": "^13.3.1",

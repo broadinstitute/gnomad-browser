@@ -14,16 +14,19 @@ const webpackConfig = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: isDev
-      ? ['babel-polyfill', 'react-hot-loader/patch', './src/index.js']
-      : ['babel-polyfill', './src/index.js'],
+    bundle: isDev ? ['react-hot-loader/patch', './src/index.js'] : ['./src/index.js'],
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules\/(?!p-cancelable)/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            rootMode: 'upward',
+          },
+        },
       },
     ],
   },
