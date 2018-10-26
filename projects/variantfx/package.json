@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8013 --hot --disable-host-check",
-    "test": "../../node_modules/.bin/babel-node --inspect ./node_modules/.bin/tape './tests/groupings.test.js' | tspec",
-    "test:data": "../../node_modules/.bin/babel-node tests/getTestData",
+    "test": "babel-node --config-file=../../babel.config.js --inspect ./node_modules/.bin/tape './tests/groupings.test.js' | tspec",
+    "test:data": "babel-node --config-file=../../babel.config.js tests/getTestData",
     "test:watch": "watch 'npm run test' tests -d"
   },
   "files": [

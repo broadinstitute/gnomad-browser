@@ -20,7 +20,12 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules\/(?!p-cancelable)/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            rootMode: 'upward',
+          },
+        },
       },
     ],
   },

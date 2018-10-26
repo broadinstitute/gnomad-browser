@@ -93,7 +93,7 @@ genes-fetched:
 
 precache-genes:
 	# sleep 10
-	GNOMAD_API_URL=$(API_URL) $(BIN_DIR)/babel-node precache_genes.js $(PRECACHE_GENES_ARGUMENTS) 2>&1 | tee $(CLIENT_LOG_FILE_PATH)
+	GNOMAD_API_URL=$(API_URL) $(BIN_DIR)/babel-node --config-file=../../../babel.config.js precache_genes.js $(PRECACHE_GENES_ARGUMENTS) 2>&1 | tee $(CLIENT_LOG_FILE_PATH)
 
 precache-genes-local: redis-flush-local
 	@make \
