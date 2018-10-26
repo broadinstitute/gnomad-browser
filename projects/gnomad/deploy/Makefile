@@ -33,6 +33,3 @@ gnomad-dev-service:
 	kubectl expose deployment gnomad-d-serve \
 	--type="LoadBalancer" \
 	--load-balancer-ip="104.196.202.92"
-
-test:
-	../../../node_modules/.bin/babel-node deploy
