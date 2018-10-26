@@ -16,9 +16,11 @@
     "transform-object-rest-spread",
     "transform-class-properties",
     "styled-components",
-    [ "babel-plugin-webpack-alias", {
-      "findConfig": "true",
-      "config": "webpack.config.js"
-      }]
+    ["module-resolver", {
+      "cwd": "babelrc",
+      "alias": {
+        "@resources": "./resources"
+      }
+    }]
   ]
 }
