@@ -4,22 +4,25 @@ JavaScript tools for exploring genomic data
 
 ## Requirements
 
-node https://nodejs.org/en/download/
-
-yarn https://yarnpkg.com/en/
+* [Node.js](https://nodejs.org)
+* [yarn](https://yarnpkg.com)
 
 ## Getting started
 
-To create a local instance of the new gnomAD gene page:
+Clone repository and download dependencies:
 
-`git clone https://github.com/macarthur-lab/gnomadjs.git`
+```shell
+git clone --recursive https://github.com/macarthur-lab/gnomadjs.git
+cd gnomadjs
+yarn
+```
 
-`cd gnomadjs`
+To start a local instance of the gnomAD browser UI which fetches data
+from gnomad.broadinstitute.org:
 
-`yarn`
+```shell
+cd gnomadjs/projects/gnomad
+yarn start
+```
 
-`cd projects/gnomad`
-
-`npm start`
-
-Navigate to http://localhost:8008/gene/PCSK9
+Open http://localhost:8008 in a web browser.
