@@ -7,17 +7,26 @@
     "lib"
   ],
   "scripts": {
-    "build": "make build",
-    "lib": "make lib",
-    "clean": "make clean",
-    "build:umd": "../../node_modules/.bin/cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api2.broadinstitute.org' ../../node_modules/.bin/webpack --config webpack.config.umd.js",
-    "start": "../../node_modules/.bin/http-server ./public"
+    "build:umd": ".cross-env NODE_ENV=production GNOMAD_API_URL='http://gnomad-api.broadinstitute.org' webpack",
+    "start": "http-server ./public"
+  },
+  "devDependencies": {
+    "@broad/redux-genes": "*",
+    "@broad/region-viewer": "*",
+    "@broad/structure-viewer": "*",
+    "@broad/track-transcript": "*",
+    "cross-env": "^5.0.5",
+    "http-server": "^0.11.1",
+    "prop-types": "^15.5.10",
+    "react-redux": "^5.0.4",
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.1",
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^2.1.2",
+    "webpack": "^3.6.0"
   },
   "peerDependencies": {
-    "react": "^15.6.1",
-    "styled-components": "^2.1.2"
-  },
-  "dependencies": {
-    "http-server": "^0.11.1"
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   }
 }
