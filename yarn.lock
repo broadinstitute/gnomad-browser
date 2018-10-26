@@ -376,15 +376,11 @@ apollo-link-dedup@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/apollo-link-dedup/-/apollo-link-dedup-1.0.2.tgz#bab659dde41f8dd627839142d4dad90e55251110"
 
-apollo-link-error@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.0.1.tgz#c0185d95477318f029900aff3bdf07853d19e442"
-
 apollo-link-http@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.2.0.tgz#48464c2ebfa6474f7a89908696827d66b2deb5cc"
 
-apollo-link@^1.0.0, apollo-link@^1.0.3:
+apollo-link@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.0.3.tgz#759c36abeeb99e227eca45f919ee07fb8fee911e"
   dependencies:
@@ -1338,7 +1334,7 @@ babel-template@7.0.0-beta.0:
     babylon "7.0.0-beta.22"
     lodash "^4.2.0"
 
-babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0, babel-template@^6.3.0, babel-template@^6.7.0:
+babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0, babel-template@^6.3.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.26.0.tgz#de03e2d16396b069f46dd9fff8521fb1a0e35e02"
   dependencies:
@@ -3600,10 +3596,6 @@ extglob@^2.0.4:
 extsprintf@1.3.0, extsprintf@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
-
-faker@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
 
 fast-deep-equal@^1.0.0:
   version "1.0.0"
@@ -7404,7 +7396,7 @@ react-cursor-position@^2.1.0:
     object.omit "^3.0.0"
     prop-types "^15.6.0"
 
-react-deep-force-update@^2.0.1, react-deep-force-update@^2.1.1:
+react-deep-force-update@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.1.tgz#8ea4263cd6455a050b37445b3f08fd839d86e909"
 
@@ -7434,17 +7426,6 @@ react-highlight-words@^0.8.0:
   dependencies:
     highlight-words-core "^1.0.2"
     prop-types "^15.5.8"
-
-react-hot-loader@3.0.0-beta.7:
-  version "3.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.7.tgz#d5847b8165d731c4d5b30d86d5d4716227a0fa83"
-  dependencies:
-    babel-template "^6.7.0"
-    global "^4.3.0"
-    react-deep-force-update "^2.0.1"
-    react-proxy "^3.0.0-alpha.0"
-    redbox-react "^1.3.6"
-    source-map "^0.4.4"
 
 react-hot-loader@^3.0.0-beta.6:
   version "3.1.3"
@@ -9735,13 +9716,6 @@ warning@^3.0.0:
   resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
   dependencies:
     loose-envify "^1.0.0"
-
-watch@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/watch/-/watch-1.0.2.tgz#340a717bde765726fa0aa07d721e0147a551df0c"
-  dependencies:
-    exec-sh "^0.2.0"
-    minimist "^1.2.0"
 
 watch@~0.18.0:
   version "0.18.0"
