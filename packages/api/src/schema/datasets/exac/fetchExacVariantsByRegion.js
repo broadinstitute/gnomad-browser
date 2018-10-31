@@ -2,16 +2,6 @@ import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import POPULATIONS from './populations'
 
 const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
-  const padding = 75
-  const rangeQuery = {
-    range: {
-      pos: {
-        gte: start - padding,
-        lte: stop + padding,
-      },
-    },
-  }
-
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: 'exac_v1_variants',
     type: 'variant',
@@ -43,7 +33,17 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       },
       query: {
         bool: {
-          filter: [{ term: { chrom } }, rangeQuery],
+          filter: [
+            { term: { chrom } },
+            {
+              range: {
+                pos: {
+                  gte: start,
+                  lte: stop,
+                },
+              },
+            },
+          ],
         },
       },
       sort: [{ pos: { order: 'asc' } }],

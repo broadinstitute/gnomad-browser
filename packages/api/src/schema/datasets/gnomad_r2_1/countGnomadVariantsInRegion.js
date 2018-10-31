@@ -3,16 +3,6 @@
 // return individual variants for a region.
 // https://www.elastic.co/guide/en/elasticsearch/guide/current/cardinality.html
 const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) => {
-  const padding = 75
-  const rangeQuery = {
-    range: {
-      pos: {
-        gte: start - padding,
-        lte: stop + padding,
-      },
-    },
-  }
-
   const response = await ctx.database.elastic.search({
     index: 'gnomad_exomes_2_1,gnomad_genomes_2_1',
     type: 'variant',
@@ -21,7 +11,14 @@ const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) 
         bool: {
           filter: [
             { term: { chrom } },
-            rangeQuery,
+            {
+              range: {
+                pos: {
+                  gte: start,
+                  lte: stop,
+                },
+              },
+            },
             // FIXME: This should query based on the requested subset's AC
             // However, there is no non_cancer field for genomes and we need to query
             // across both indices for the cardinality aggregation to work.

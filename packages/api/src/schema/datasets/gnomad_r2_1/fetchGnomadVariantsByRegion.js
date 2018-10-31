@@ -3,16 +3,6 @@ import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSum
 import POPULATIONS from './populations'
 
 const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) => {
-  const padding = 75
-  const rangeQuery = {
-    range: {
-      pos: {
-        gte: start - padding,
-        lte: stop + padding,
-      },
-    },
-  }
-
   const requests = [
     { index: 'gnomad_exomes_2_1', subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
@@ -53,7 +43,14 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
             bool: {
               filter: [
                 { term: { chrom } },
-                rangeQuery,
+                {
+                  range: {
+                    pos: {
+                      gte: start,
+                      lte: stop,
+                    },
+                  },
+                },
                 { range: { [`${subset}.AC_adj.total`]: { gt: 0 } } },
               ],
             },
