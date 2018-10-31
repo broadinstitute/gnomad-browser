@@ -19,16 +19,9 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
-    'no-shadow': 0,
     'no-console': 0,
     'func-names': 0,
-    'spaced-comment': 0,
-    'react/forbid-prop-types': 0,
-    'no-plusplus': 0,
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-    'jsx-a11y/href-no-hash': 0,
-    'import/no-mutable-exports': 0,
-    'no-use-before-define': 0,
+    'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
     'no-unused-vars': ['error', {
       ignoreRestSiblings: true,
       varsIgnorePattern: '',
