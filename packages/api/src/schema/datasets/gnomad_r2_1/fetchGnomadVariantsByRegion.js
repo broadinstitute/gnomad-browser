@@ -51,7 +51,7 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
                     },
                   },
                 },
-                { range: { [`${subset}.AC_adj.total`]: { gt: 0 } } },
+                { range: { [`${subset}.AC_raw`]: { gt: 0 } } },
               ],
             },
           },
