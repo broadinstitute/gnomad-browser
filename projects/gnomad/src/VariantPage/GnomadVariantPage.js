@@ -15,6 +15,7 @@ import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetr
 import { GnomadReadData } from './reads/GnomadReadData'
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import { VariantDetailsQuery } from './VariantDetailsQuery'
+import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 
 const Section = styled.section`
@@ -93,7 +94,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
         }
 
         if (!data.variant) {
-          return <StatusMessage>Variant not found</StatusMessage>
+          return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
         const variant = data.variant
