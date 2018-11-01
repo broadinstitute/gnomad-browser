@@ -80,7 +80,7 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
                   },
                 },
                 { bool: { should: rangeQueries } },
-                { range: { [`${subset}.AC_adj.total`]: { gt: 0 } } },
+                { range: { [`${subset}.AC_raw`]: { gt: 0 } } },
               ],
             },
           },

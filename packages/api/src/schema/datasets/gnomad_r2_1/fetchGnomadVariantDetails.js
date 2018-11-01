@@ -73,7 +73,7 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
               bool: {
                 filter: [
                   { term: { variant_id: variantId } },
-                  { range: { [`${requestSubset}.AC_adj.total`]: { gt: 0 } } },
+                  { range: { [`${requestSubset}.AC_raw`]: { gt: 0 } } },
                 ],
               },
             },
@@ -115,7 +115,7 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
               filter: [
                 { term: { chrom } },
                 { term: { pos } },
-                { range: { [`${requestSubset}.AC_adj.total`]: { gt: 0 } } },
+                { range: { [`${requestSubset}.AC_raw`]: { gt: 0 } } },
               ],
             },
           },

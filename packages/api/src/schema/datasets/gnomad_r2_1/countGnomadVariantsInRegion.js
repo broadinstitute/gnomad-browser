@@ -28,7 +28,7 @@ const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) 
             // A possible solution is adding a non_cancer field to the genomes index as
             // an alias to the gnomad field.
             // https://www.elastic.co/guide/en/elasticsearch/reference/current/alias.html
-            { range: { [`gnomad.AC_adj.total`]: { gt: 0 } } },
+            { range: { [`gnomad.AC_raw`]: { gt: 0 } } },
           ],
         },
       },
