@@ -86,7 +86,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
       },
     },
     rsid: variantData.rsid,
-    sortedTranscriptConsequences: variantData.sortedTranscriptConsequences,
+    sortedTranscriptConsequences: variantData.sortedTranscriptConsequences || [],
   }
 }
 

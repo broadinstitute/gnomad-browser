@@ -229,7 +229,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
         }
       : null,
     rsid: sharedData.rsid,
-    sortedTranscriptConsequences: sharedData.sortedTranscriptConsequences,
+    sortedTranscriptConsequences: sharedData.sortedTranscriptConsequences || [],
   }
 }
 
