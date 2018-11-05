@@ -24,7 +24,7 @@ const config = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: path.resolve(__dirname, '../src/index.js'),
+    bundle: path.resolve(__dirname, '../src/client/index.js'),
   },
   module: {
     rules: [
@@ -52,7 +52,7 @@ const config = {
   plugins: [
     new webpack.DefinePlugin(definitions),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/index.html'),
+      template: path.resolve(__dirname, '../src/client/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,
     }),
   ],

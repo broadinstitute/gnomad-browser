@@ -7,7 +7,7 @@ const projectDirectory = path.resolve(__dirname, '..')
 const config = {
   devtool: 'source-map',
   entry: {
-    server: [path.resolve(__dirname, '../server/server.js')],
+    server: [path.resolve(__dirname, '../src/server/server.js')],
   },
   externals(context, request, callback) {
     // Do not bundle dependencies
