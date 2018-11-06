@@ -291,7 +291,17 @@ export default () => (
         </DownloadSection>
         <DownloadSection>
           <h3>VCFs</h3>
-          <ul>{exomesVcfs.map(createVcfLink)}</ul>
+          <ul>
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.vcf.bgz">
+                All chromosomes (59.23 GiB){' '}
+              </ExternalLink>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+            </li>
+            {exomesVcfs.map(createVcfLink)}
+          </ul>
         </DownloadSection>
       </SequencingMethodSection>
       <SequencingMethodSection>
@@ -326,7 +336,25 @@ export default () => (
         </DownloadSection>
         <DownloadSection>
           <h3>VCFs</h3>
-          <ul>{genomesVcfs.map(createVcfLink)}</ul>
+          <ul>
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.vcf.bgz">
+                All chromosomes (464.36 GiB){' '}
+              </ExternalLink>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+            </li>
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.exome_calling_intervals.sites.vcf.bgz">
+                Exome calling intervals (9.76 GiB){' '}
+              </ExternalLink>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.exome_calling_intervals.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+            </li>
+            {genomesVcfs.map(createVcfLink)}
+          </ul>
         </DownloadSection>
       </SequencingMethodSection>
     </Downloads>
