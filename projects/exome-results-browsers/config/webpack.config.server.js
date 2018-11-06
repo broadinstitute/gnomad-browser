@@ -7,6 +7,8 @@ const { aliases, definitions } = require('./sharedConfig')
 
 const projectDirectory = path.resolve(__dirname, '..')
 
+const isDev = process.env.NODE_ENV === 'development'
+
 const config = {
   devtool: 'source-map',
   entry: {
@@ -18,6 +20,7 @@ const config = {
       ? callback(null, `commonjs ${request}`)
       : callback()
   },
+  mode: isDev ? 'development' : 'production',
   node: false, // Do not replace Node builtins
   output: {
     path: path.resolve(__dirname, '../dist'),

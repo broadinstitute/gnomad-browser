@@ -7,7 +7,6 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const definitions = {
   'process.env.GNOMAD_API_URL': JSON.stringify(process.env.GNOMAD_API_URL),
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 }
 
 const gaTrackingId = process.env.GA_TRACKING_ID
@@ -26,6 +25,7 @@ const config = {
   entry: {
     bundle: path.resolve(__dirname, '../src/client/index.js'),
   },
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -60,8 +60,6 @@ const config = {
 
 if (isDev) {
   config.entry.bundle = ['react-hot-loader/patch', config.entry.bundle]
-} else {
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin())
 }
 
 module.exports = config

@@ -15,6 +15,7 @@ module.exports = {
     react: 'React',
     'react-dom': 'ReactDOM',
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -43,13 +44,5 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.GNOMAD_API_URL': JSON.stringify(process.env.GNOMAD_API_URL),
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      mangle: false,
-    }),
-  ],
-  resolve: {
-    alias: {},
-  },
+  ]
 }

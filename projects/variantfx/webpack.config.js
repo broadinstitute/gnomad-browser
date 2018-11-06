@@ -16,6 +16,7 @@ const webpackConfig = {
   entry: {
     bundle: isDev ? ['react-hot-loader/patch', './src/index.js'] : ['./src/index.js'],
   },
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -45,24 +46,6 @@ const webpackConfig = {
       ),
     }),
   ],
-}
-
-if (!isDev) {
-  webpackConfig.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      compress: {
-        screw_ie8: true,
-      },
-      debug: false,
-      mangle: {
-        screw_ie8: true,
-        keep_fnames: true,
-      },
-      minimize: true,
-    })
-  )
 }
 
 module.exports = webpackConfig
