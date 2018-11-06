@@ -12,6 +12,7 @@ module.exports = {
   entry: {
     bundle: ['react-hot-loader/patch', './src/index.js'],
   },
+  mode: 'development',
   module: {
     rules: [
       {

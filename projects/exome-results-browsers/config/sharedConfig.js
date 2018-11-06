@@ -11,7 +11,6 @@ const aliases = {
 
 const definitions = {
   BROWSER_CONFIG: JSON.stringify(browserConfig),
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 }
 
 module.exports = {
