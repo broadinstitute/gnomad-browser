@@ -6,7 +6,6 @@ export {
   allGeneNames,
   isFetching,
   geneNotFound,
-  hasGeneData,
   geneData,
   currentGene,
   currentTissue,
@@ -18,7 +17,6 @@ export {
   currentExon,
   exonPadding,
   transcripts,
-  canonicalExons,
   regionalConstraint,
   strand,
 } from './genes'

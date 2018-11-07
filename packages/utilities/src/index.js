@@ -7,7 +7,6 @@ export {
 export {
   fetchAllByGeneName,
   fetchTranscriptsByGeneName,
-  fetchTestData,
   test,
 } from './fetch'
 
