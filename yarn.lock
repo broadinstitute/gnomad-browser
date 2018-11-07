@@ -5525,7 +5525,7 @@ he@^0.5.0:
   resolved "https://registry.yarnpkg.com/he/-/he-0.5.0.tgz#2c05ffaef90b68e860f3fd2b54ef580989277ee2"
   integrity sha1-LAX/rvkLaOhg8/0rVO9YCYknfuI=
 
-highlight-words-core@^1.0.2, highlight-words-core@^1.1.0:
+highlight-words-core@^1.0.2, highlight-words-core@^1.1.0, highlight-words-core@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/highlight-words-core/-/highlight-words-core-1.2.0.tgz#232bec301cbf2a4943d335dc748ce70e9024f3b1"
   integrity sha512-nu5bMsWIgpsrlXEMNKSvbJMeUPhFxCOVT28DnI8UCVfhm3e98LC8oeyMNrc7E18+QQ4l/PvbeN7ojyN4XsmBdA==
@@ -7631,6 +7631,11 @@ memoize-one@^3.1.1:
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-3.1.1.tgz#ef609811e3bc28970eac2884eece64d167830d17"
   integrity sha512-YqVh744GsMlZu6xkhGslPSqSurOv6P+kLN2J3ysBZfagLcL5FdRK/0UpgLoL8hwjjEvvAVkjJZyFP+1T6p1vgA==
 
+memoize-one@^4.0.0:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-4.0.3.tgz#cdfdd942853f1a1b4c71c5336b8c49da0bf0273c"
+  integrity sha512-QmpUu4KqDmX0plH4u+tf0riMc1KHE1+lw95cMrLlXQAFOx/xnBtwhZ52XJxd9X2O6kwKBqX32kmhbhlobD0cuw==
+
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
@@ -9505,6 +9510,15 @@ react-highlight-words@^0.10.0:
   integrity sha512-/5jh6a8pir3baCOMC5j88MBmNciSwG5bXWNAAtbtDb3WYJoGn82e2zLCQFnghIBWod1h5y6/LRO8TS6ERbN5aQ==
   dependencies:
     highlight-words-core "^1.1.0"
+    prop-types "^15.5.8"
+
+react-highlight-words@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.14.0.tgz#a1a40ff0a49ce78e7feb375a4e0a5fd1ca9c9609"
+  integrity sha512-DNp1zAIiNqs1nunFv5K67ca0KVSKihbmpZLNwqQj61yMK6zf8YHoGrpLlEt7WEqj1227FOm41FuXiv9KZgcwdA==
+  dependencies:
+    highlight-words-core "^1.2.0"
+    memoize-one "^4.0.0"
     prop-types "^15.5.8"
 
 react-highlight-words@^0.8.0:

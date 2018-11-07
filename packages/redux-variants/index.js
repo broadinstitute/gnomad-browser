@@ -8,6 +8,7 @@ export {
   variantCount,
   singleVariantData,
   variantSortKey,
+  variantSortAscending,
   variantFilter,
   variantQcFilter,
   variantDeNovoFilter,

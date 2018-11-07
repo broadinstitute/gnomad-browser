@@ -459,7 +459,7 @@ export const singleVariantData = createSelector(
  */
 
 export const variantSortKey = state => state.variants.variantSortKey
-const variantSortAscending = state => state.variants.variantSortAscending
+export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
