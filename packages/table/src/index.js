@@ -11,5 +11,5 @@ export {
   actions,
   default as createTableReducer,
   currentTableIndex,
-  currentTableScrollData,
+  currentTableScrollWindow,
 } from './tableRedux'
