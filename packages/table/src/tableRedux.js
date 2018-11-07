@@ -3,7 +3,7 @@ import keymirror from 'keymirror'
 
 export const types = keymirror({
   SET_CURRENT_TABLE_INDEX: null,
-  SET_CURRENT_TABLE_SCROLL_DATA: null,
+  SET_CURRENT_TABLE_SCROLL_WINDOW: null,
 })
 
 export const actions = {
@@ -11,28 +11,32 @@ export const actions = {
     type: types.SET_CURRENT_TABLE_INDEX,
     tableIndex,
   }),
-
-  setCurrentTableScrollData: tableScrollData => (dispatch) => {
-    return dispatch(({
-      type: types.SET_CURRENT_TABLE_SCROLL_DATA,
-      tableScrollData,
-    }))
-  },
+  setCurrentTableScrollWindow: ({ startIndex, stopIndex }) => ({
+    type: types.SET_CURRENT_TABLE_SCROLL_WINDOW,
+    startIndex,
+    stopIndex,
+  }),
 }
 
 const actionHandlers = {
   [types.SET_CURRENT_TABLE_INDEX] (state, { tableIndex }) {
     return state.set('currentTableIndex', tableIndex)
   },
-  [types.SET_CURRENT_TABLE_SCROLL_DATA] (state, { tableScrollData }) {
-    return state.set('currentTableScrollData', tableScrollData)
+  [types.SET_CURRENT_TABLE_SCROLL_WINDOW](state, { startIndex, stopIndex }) {
+    return state.set('currentTableScrollWindow', {
+      startIndex,
+      stopIndex,
+    })
   },
 }
 
 export default function createTableReducer () {
   const State = Immutable.Record({
     currentTableIndex: 0,
-    currentTableScrollData: { scrollHeight: 1, scrollTop: 2 },
+    currentTableScrollWindow: {
+      startIndex: 0,
+      stopIndex: 20,
+    },
   })
   function reducer (state = new State(), action: Object): State {
     const { type } = action
@@ -45,4 +49,4 @@ export default function createTableReducer () {
 }
 
 export const currentTableIndex = state => state.table.currentTableIndex
-export const currentTableScrollData = state => state.table.currentTableScrollData
+export const currentTableScrollWindow = state => state.table.currentTableScrollWindow

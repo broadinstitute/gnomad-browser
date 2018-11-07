@@ -33,10 +33,10 @@ const NoVariants = styled.div`
 
 const VariantTable = ({
   variants,
+  setCurrentTableScrollWindow,
   setVariantSort,
   setFocusedVariant,
   setHoveredVariant,
-  setCurrentTableScrollData,
   currentChromosome,
   tablePosition,
   searchQuery,
@@ -63,7 +63,13 @@ const VariantTable = ({
         onRowClick={setFocusedVariant}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
-        onScroll={setCurrentTableScrollData}
+        onScroll={({ scrollHeight, scrollTop }) => {
+          const startIndex = Math.floor((scrollTop / scrollHeight) * variants.size)
+          setCurrentTableScrollWindow({
+            startIndex,
+            stopIndex: startIndex + 20,
+          })
+        }}
         searchText={searchQuery}
       />
     </div>
@@ -71,10 +77,10 @@ const VariantTable = ({
 }
 VariantTable.propTypes = {
   variants: PropTypes.any.isRequired,
+  setCurrentTableScrollWindow: PropTypes.func.isRequired,
   setVariantSort: PropTypes.func.isRequired,
   setHoveredVariant: PropTypes.func.isRequired,
   setFocusedVariant: PropTypes.func.isRequired,
-  setCurrentTableScrollData: PropTypes.func.isRequired,
   tablePosition: PropTypes.number.isRequired,
   searchQuery: PropTypes.string.isRequired,
   title: PropTypes.string,
@@ -115,8 +121,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       }
     },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
-    setCurrentTableScrollData: scrollData =>
-      dispatch(tableActions.setCurrentTableScrollData(scrollData)),
+    setCurrentTableScrollWindow: scrollWindow =>
+      dispatch(tableActions.setCurrentTableScrollWindow(scrollWindow)),
   }
 }
 
