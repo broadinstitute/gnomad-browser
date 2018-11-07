@@ -3,7 +3,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { GenePageHoc } from '@broad/redux-genes'
-import { VariantTable } from '@broad/table'
 import { GenePage, PageHeading, TableSection } from '@broad/ui'
 
 import VariantDetails from '../VariantDetails/VariantDetails'
@@ -11,7 +10,7 @@ import fetchGeneData from './fetchGeneData'
 import GeneInfo from './GeneInfo'
 import GeneSettings from './GeneSettings'
 import RegionViewer from './RegionViewer'
-import tableConfig from './tableConfig'
+import VariantTable from './VariantTable'
 
 const GeneFullName = styled.span`
   font-size: 22px;
@@ -36,7 +35,7 @@ const GenePageConnected = ({ gene }) => {
       <RegionViewer />
       <TableSection>
         <GeneSettings />
-        <VariantTable tableConfig={tableConfig} />
+        <VariantTable />
       </TableSection>
       <VariantDetails />
     </GenePage>

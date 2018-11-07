@@ -16,6 +16,7 @@ const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 1em;
 `
 
 const VariantCategoryButton = MaterialButtonRaised.extend`

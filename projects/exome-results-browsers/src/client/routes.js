@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import GenePage from './GenePage/GenePage'
-import GeneResults from './GeneResults'
+import GeneResultsPage from './GeneResultsPage'
 import HomePage from './HomePage'
 import TopBar from './TopBar'
 
@@ -20,7 +20,7 @@ const App = () => (
     <TopBar />
     <Route path="/" exact component={HomePage} />
     <Switch>
-      <Route path="/results" component={GeneResults} />
+      <Route path="/results" component={GeneResultsPage} />
       <Route path="/gene/:gene" render={({ match }) => <GenePage geneName={match.params.gene} />} />
     </Switch>
   </Root>
