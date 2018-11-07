@@ -1,3 +1,5 @@
+import './polyfills'
+
 export {
   MaterialButtonRaised,
 } from './material/button'
@@ -63,6 +65,8 @@ export { Badge } from './Badge'
 export { Checkbox } from './Checkbox'
 
 export { Combobox } from './Combobox'
+
+export { Grid } from './Grid'
 
 export { ExternalLink, Link } from './Link'
 

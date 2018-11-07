@@ -14,7 +14,9 @@
     "prop-types": "^15.5.10",
     "react-aria-modal": "^2.12.2",
     "react-autocomplete": "^1.8.1",
-    "react-popper": "^1.0.0"
+    "react-popper": "^1.0.0",
+    "react-sizeme": "^2.5.2",
+    "react-window": "^1.2.2"
   },
   "peerDependencies": {
     "react": "^15.5.4",
