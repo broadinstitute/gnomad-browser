@@ -16,6 +16,7 @@ import {
 import CheckboxExample from './CheckboxExample'
 import ComboboxExample from './ComboboxExample'
 import ConsequenceCategoriesControlExample from './ConsequenceCategoriesControlExample'
+import GridExample from './GridExample'
 import InfoModalExample from './InfoModalExample'
 import SegmentedControlExample from './SegmentedControlExample'
 import TooltipExample from './TooltipExample'
@@ -61,6 +62,11 @@ const UiExample = () => (
     <Section>
       <SectionHeading>Consequence Category Filter</SectionHeading>
       <ConsequenceCategoriesControlExample />
+    </Section>
+
+    <Section>
+      <SectionHeading>Grid</SectionHeading>
+      <GridExample />
     </Section>
 
     <Section>
