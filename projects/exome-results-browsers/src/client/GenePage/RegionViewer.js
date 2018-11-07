@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { geneData, exonPadding } from '@broad/redux-genes'
-import { finalFilteredVariants, variantFilter } from '@broad/redux-variants'
+import { finalFilteredVariants } from '@broad/redux-variants'
 import { RegionViewer } from '@broad/region-viewer'
-import { actions as tableActions } from '@broad/table'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
@@ -77,7 +76,7 @@ class GeneViewer extends PureComponent {
             title={`Controls\n(${controls.size})`}
             variants={controls.toJS()}
           />
-          <NavigatorTrackConnected title={'Viewing in table'} />
+          <NavigatorTrackConnected title="Viewing in table" />
         </RegionViewer>
       </div>
     )
@@ -91,15 +90,9 @@ GeneViewer.propTypes = {
   visibleVariants: PropTypes.any.isRequired,
 }
 
-export default connect(
-  state => ({
-    gene: geneData(state),
-    exonPadding: exonPadding(state),
-    visibleVariants: finalFilteredVariants(state),
-    screenSize: screenSize(state),
-    variantFilter: variantFilter(state),
-  }),
-  dispatch => ({
-    setCurrentTableScrollData: data => dispatch(tableActions.setCurrentTableScrollData(data)),
-  })
-)(GeneViewer)
+export default connect(state => ({
+  gene: geneData(state),
+  exonPadding: exonPadding(state),
+  visibleVariants: finalFilteredVariants(state),
+  screenSize: screenSize(state),
+}))(GeneViewer)
