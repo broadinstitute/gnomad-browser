@@ -32,7 +32,7 @@ const NavigatorOverlay = styled.svg`
 class Navigator extends Component {
   static propTypes = {
     height: PropTypes.number,
-    hoveredVariant: PropTypes.string.isRequired,
+    hoveredVariant: PropTypes.string,
     invertOffset: PropTypes.func.isRequired,
     isPositionOutside: PropTypes.bool,
     onNavigatorClick: PropTypes.func.isRequired,
@@ -49,6 +49,7 @@ class Navigator extends Component {
 
   static defaultProps = {
     height: 60,
+    hoveredVariant: null,
     isPositionOutside: true,
     position: undefined,
   }
@@ -147,6 +148,7 @@ class Navigator extends Component {
   render() {
     const {
       height,
+      hoveredVariant,
       invertOffset,
       variants,
       visibleVariantWindow,
@@ -173,7 +175,7 @@ class Navigator extends Component {
       >
         {this.renderVisibleVariants(visibleVariants)}
         <NavigatorOverlay height={height} width={width}>
-          {this.renderHoveredVariant(visibleVariants)}
+          {hoveredVariant && this.renderHoveredVariant(visibleVariants)}
           {this.renderCursor()}
         </NavigatorOverlay>
         <PositionAxis
@@ -223,7 +225,7 @@ const NavigatorTrack = (props) => {
 }
 
 NavigatorTrack.propTypes = {
-  hoveredVariant: PropTypes.string.isRequired,
+  hoveredVariant: PropTypes.string,
   invertOffset: PropTypes.func.isRequired,
   leftPanelWidth: PropTypes.number.isRequired,
   onNavigatorClick: PropTypes.func.isRequired,
@@ -236,6 +238,7 @@ NavigatorTrack.propTypes = {
 }
 
 NavigatorTrack.defaultProps = {
+  hoveredVariant: null,
   title: '',
 }
 
