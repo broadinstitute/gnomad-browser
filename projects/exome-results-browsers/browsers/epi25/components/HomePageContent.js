@@ -9,6 +9,6 @@ const HomePageContentWrapper = styled.div`
 
 export default () => (
   <HomePageContentWrapper>
-    <PageHeading>EPI25K</PageHeading>
+    <PageHeading>Epi25</PageHeading>
   </HomePageContentWrapper>
 )

@@ -1,6 +1,6 @@
 module.exports = {
-  pageTitle: 'epi25k',
-  navBarTitle: 'EPI25K',
+  pageTitle: 'Epi25',
+  navBarTitle: 'Epi25',
   navBarColor: 'red',
   elasticsearch: {
     analysisGroups: {
