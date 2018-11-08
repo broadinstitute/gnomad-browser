@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -115,6 +116,42 @@ const Graph = ({ value, lower, upper }) => {
   )
 }
 
+Graph.propTypes = {
+  value: PropTypes.number.isRequired,
+  lower: PropTypes.number.isRequired,
+  upper: PropTypes.number.isRequired,
+}
+
+const renderNumber = (num, precision) => (num === null ? '—' : num.toFixed(precision))
+
+const renderOECell = (constraintData, category, style) => {
+  const value = constraintData[`oe_${category}`]
+  const lower = constraintData[`oe_${category}_lower`]
+  const upper = constraintData[`oe_${category}_upper`]
+
+  return (
+    <td>
+      <span style={style}>o/e = {value === null ? '—' : value.toFixed(2)}</span>
+      <br />
+      {lower !== null && upper !== null && `(${lower.toFixed(2)} - ${upper.toFixed(2)})`}
+    </td>
+  )
+}
+
+const renderOEGraphCell = (constraintData, category) => {
+  const value = constraintData[`oe_${category}`]
+  const lower = constraintData[`oe_${category}_lower`]
+  const upper = constraintData[`oe_${category}_upper`]
+
+  return (
+    <td>
+      {value !== null &&
+        lower !== null &&
+        upper !== null && <Graph lower={lower} upper={upper} value={value} />}
+    </td>
+  )
+}
+
 const GnomadConstraintTable = ({ transcriptId }) => (
   <Query query={constraintQuery} variables={{ transcriptId }}>
     {({ data, error, loading }) => {
@@ -131,7 +168,10 @@ const GnomadConstraintTable = ({ transcriptId }) => (
 
       const constraintData = data.transcript.gnomad_constraint
 
-      const lofMetricStyle = constraintData.oe_lof_upper < 0.35 ? { color: '#ff583f' } : {}
+      const lofMetricStyle =
+        constraintData.oe_lof_upper !== null && constraintData.oe_lof_upper < 0.35
+          ? { color: '#ff583f' }
+          : {}
 
       return (
         <Table>
@@ -149,57 +189,27 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <tbody>
             <tr>
               <th role="rowheader">Synonymous</th>
-              <td>{constraintData.exp_syn.toFixed(1)}</td>
-              <td>{constraintData.obs_syn}</td>
-              <td>Z = {constraintData.syn_z.toFixed(2)}</td>
-              <td>
-                o/e = {constraintData.oe_syn.toFixed(2)}
-                <br /> ({constraintData.oe_syn_lower.toFixed(2)} -{' '}
-                {constraintData.oe_syn_upper.toFixed(2)})
-              </td>
-              <td>
-                <Graph
-                  lower={constraintData.oe_syn_lower}
-                  upper={constraintData.oe_syn_upper}
-                  value={constraintData.oe_syn}
-                />
-              </td>
+              <td>{renderNumber(constraintData.exp_syn, 1)}</td>
+              <td>{renderNumber(constraintData.obs_syn, 0)}</td>
+              <td>Z = {renderNumber(constraintData.syn_z, 2)}</td>
+              {renderOECell(constraintData, 'syn')}
+              {renderOEGraphCell(constraintData, 'syn')}
             </tr>
             <tr>
               <th role="rowheader">Missense</th>
-              <td>{constraintData.exp_mis.toFixed(1)}</td>
-              <td>{constraintData.obs_mis}</td>
-              <td>Z = {constraintData.mis_z.toFixed(2)}</td>
-              <td>
-                o/e = {constraintData.oe_mis.toFixed(2)}
-                <br /> ({constraintData.oe_mis_lower.toFixed(2)} -{' '}
-                {constraintData.oe_mis_upper.toFixed(2)})
-              </td>
-              <td>
-                <Graph
-                  lower={constraintData.oe_mis_lower}
-                  upper={constraintData.oe_mis_upper}
-                  value={constraintData.oe_mis}
-                />
-              </td>
+              <td>{renderNumber(constraintData.exp_mis, 1)}</td>
+              <td>{renderNumber(constraintData.obs_mis, 0)}</td>
+              <td>Z = {renderNumber(constraintData.mis_z, 2)}</td>
+              {renderOECell(constraintData, 'mis')}
+              {renderOEGraphCell(constraintData, 'mis')}
             </tr>
             <tr>
               <th role="rowheader">LoF</th>
-              <td>{constraintData.exp_lof.toFixed(1)}</td>
-              <td>{constraintData.obs_lof}</td>
-              <td>pLI = {constraintData.pLI.toFixed(2)}</td>
-              <td>
-                <span style={lofMetricStyle}>o/e = {constraintData.oe_lof.toFixed(2)}</span>
-                <br /> ({constraintData.oe_lof_lower.toFixed(2)} -{' '}
-                {constraintData.oe_lof_upper.toFixed(2)})
-              </td>
-              <td>
-                <Graph
-                  lower={constraintData.oe_lof_lower}
-                  upper={constraintData.oe_lof_upper}
-                  value={constraintData.oe_lof}
-                />
-              </td>
+              <td>{renderNumber(constraintData.exp_lof, 1)}</td>
+              <td>{renderNumber(constraintData.obs_lof, 0)}</td>
+              <td>pLI = {renderNumber(constraintData.pLI, 2)}</td>
+              {renderOECell(constraintData, 'lof', lofMetricStyle)}
+              {renderOEGraphCell(constraintData, 'lof')}
             </tr>
           </tbody>
         </Table>
@@ -207,5 +217,9 @@ const GnomadConstraintTable = ({ transcriptId }) => (
     }}
   </Query>
 )
+
+GnomadConstraintTable.propTypes = {
+  transcriptId: PropTypes.string.isRequired,
+}
 
 export default GnomadConstraintTable
