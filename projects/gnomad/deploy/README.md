@@ -25,13 +25,8 @@ environment to deploy to ("p" for production or "d" for development).
 
 ## Run image locally
 
-To run the browser with Flask's debug server in Docker on macOS using a local instance of Mongo:
+To run the browser locally from the Docker image:
 
 ```shell
-docker run --rm -ti --init \
-   -p 5000:5000 \
-   -e "MONGO_HOST=host.docker.internal" \
-   -e "MONGO_PORT=27017" \
-   gcr.io/exac-gnomad/gnomad-browser-beta \
-   python exac.py --host=0.0.0.0
+docker run --rm -ti --init -p 8000:80 gcr.io/exac-gnomad/gnomad-browser-beta
 ```
