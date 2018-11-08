@@ -24,6 +24,6 @@
    gcloud dataproc jobs submit pyspark \
       --cluster=epi25-data \
       --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
-      ./projects/exome-results/browsers/epi25k/load_gene_results_to_es.py -- \
+      ./projects/exome-results/browsers/epi25/load_gene_results_to_es.py -- \
          --host=$ELASTICSEARCH_IP
    ```
