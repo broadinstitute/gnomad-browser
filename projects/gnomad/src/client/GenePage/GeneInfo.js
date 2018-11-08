@@ -6,6 +6,7 @@ import { currentTranscript, geneData } from '@broad/redux-genes'
 import { isLoadingVariants, variantCount } from '@broad/redux-variants'
 
 import {
+  ExternalLink,
   GeneAttributes,
   GeneAttributeKeys,
   GeneAttributeKey,
@@ -44,16 +45,14 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
       </GeneAttributeKeys>
       <GeneAttributeValues>
         <GeneAttributeValue>
-          <a target="_blank" href={ensemblGeneUrl}>
-            {geneId}
-          </a>
+          <ExternalLink href={ensemblGeneUrl}>{geneId}</ExternalLink>
         </GeneAttributeValue>
         <GeneAttributeValue>
-          <a target="_blank" href={ensemblTranscriptUrl}>
+          <ExternalLink href={ensemblTranscriptUrl}>
             {currentTranscript || canonicalTranscript}
             {(currentTranscript === null || currentTranscript === canonicalTranscript) &&
               ' (canonical)'}
-          </a>
+          </ExternalLink>
         </GeneAttributeValue>
         <GeneAttributeValue>
           {isLoadingVariants
@@ -61,19 +60,13 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
             : `${variantCount.toLocaleString()} (including filtered variants)`}
         </GeneAttributeValue>
         <GeneAttributeValue>
-          <a target="_blank" href={ucscUrl}>
-            {`${chrom}:${start}-${stop}`}
-          </a>
+          <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
         </GeneAttributeValue>
         <GeneAttributeValue>
-          <a target="_blank" href={geneCardsUrl}>
-            {geneName}
-          </a>
+          <ExternalLink href={geneCardsUrl}>{geneName}</ExternalLink>
         </GeneAttributeValue>
         <GeneAttributeValue>
-          <a target="_blank" href={omimUrl}>
-            {omimAccession || 'N/A'}
-          </a>
+          {omimAccession ? <ExternalLink href={omimUrl}>{omimAccession}</ExternalLink> : '—'}
         </GeneAttributeValue>
       </GeneAttributeValues>
     </GeneAttributes>
@@ -87,7 +80,7 @@ GeneInfo.propTypes = {
     chrom: PropTypes.string.isRequired,
     gene_name: PropTypes.string.isRequired,
     gene_id: PropTypes.string.isRequired,
-    omim_accession: PropTypes.string.isRequired,
+    omim_accession: PropTypes.string,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
