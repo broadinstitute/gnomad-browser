@@ -19,6 +19,7 @@ import ConsequenceCategoriesControlExample from './ConsequenceCategoriesControlE
 import GridExample from './GridExample'
 import InfoModalExample from './InfoModalExample'
 import SegmentedControlExample from './SegmentedControlExample'
+import TabsExample from './TabsExample'
 import TooltipExample from './TooltipExample'
 
 const Section = styled.section`
@@ -91,6 +92,11 @@ const UiExample = () => (
     <Section>
       <SectionHeading>Segmented Control</SectionHeading>
       <SegmentedControlExample />
+    </Section>
+
+    <Section>
+      <SectionHeading>Tabs</SectionHeading>
+      <TabsExample />
     </Section>
 
     <Section>

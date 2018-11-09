@@ -3110,7 +3110,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.6.0:
+create-react-class@^15.6.0, create-react-class@^15.6.2:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -4823,6 +4823,11 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.4"
+
+focus-group@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/focus-group/-/focus-group-0.2.3.tgz#956a1124a1495f7d0f4f2dd4c612502abf4a45f9"
+  integrity sha1-lWoRJKFJX30PTy3UxhJQKr9KRfk=
 
 focus-trap-react@^3.0.4:
   version "3.1.2"
@@ -9466,6 +9471,15 @@ react-aria-modal@^2.12.2:
     focus-trap-react "^3.0.4"
     no-scroll "^2.0.0"
     react-displace "^2.3.0"
+
+react-aria-tabpanel@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-aria-tabpanel/-/react-aria-tabpanel-4.4.0.tgz#cb3799ea7e44550eb0eb3a96239ca0f677819382"
+  integrity sha512-mnwXP/BjaY4JZsR0cqlVupKhptWlIofl5/DsIoqsNYGb6y6idVP7aSr2vYUdJ4t8eEsXZqSwU3w45AGv5S9OyA==
+  dependencies:
+    create-react-class "^15.6.2"
+    focus-group "^0.2.2"
+    prop-types "^15.6.0"
 
 react-autocomplete@^1.8.1:
   version "1.8.1"
