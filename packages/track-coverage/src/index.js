@@ -6,7 +6,7 @@ import { area, line } from 'd3-shape'
 import { range } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 
-import { getMaxMeanFromCoverageDatasets } from '@broad/utilities/src/plotting'
+import getMaxMeanFromCoverageDatasets from './getMaxMeanFromCoverageDatasets'
 
 const CoverageTrack = ({
   title,

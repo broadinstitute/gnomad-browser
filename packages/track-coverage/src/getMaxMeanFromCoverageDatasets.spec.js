@@ -1,9 +1,12 @@
 import testData from '@resources/region-viewer-full-BRCA2-v1.json'
 
-import { getMaxMeanFromCoverageDatasets } from './index'
+import getMaxMeanFromCoverageDatasets from './getMaxMeanFromCoverageDatasets'
 
-
-const { exome_coverage, genome_coverage, exacv1_coverage } = testData.gene
+const {
+  exome_coverage: exomeCoverage,
+  genome_coverage: genomeCoverage,
+  exacv1_coverage: exacCoverage,
+} = testData.gene
 
 describe('getMaxFromCoverageDatasets', () => {
   it('get maximum Y value from multiple coverage data sets', () => {
@@ -11,14 +14,14 @@ describe('getMaxFromCoverageDatasets', () => {
       datasets: [
         {
           name: 'exome',
-          data: exome_coverage,
+          data: exomeCoverage,
           type: 'area',
           color: 'rgba(70, 130, 180, 1)',
           opacity: 0.5,
         },
         {
           name: 'genome',
-          data: genome_coverage,
+          data: genomeCoverage,
           type: 'area',
           color: 'rgba(115, 171, 61,  1)',
           strokeWidth: 4,
@@ -26,28 +29,28 @@ describe('getMaxFromCoverageDatasets', () => {
         },
       ],
     }
-    expect(
-      getMaxMeanFromCoverageDatasets(dataConfig1),
-    ).toBe(90.57)
+
+    expect(getMaxMeanFromCoverageDatasets(dataConfig1)).toBe(90.57)
+
     const dataConfig2 = {
       datasets: [
         {
           name: 'exacv1',
-          data: exacv1_coverage,
+          data: exacCoverage,
           type: 'area',
           color: 'yellow',
           opacity: 0.5,
         },
         {
           name: 'exome',
-          data: exome_coverage,
+          data: exomeCoverage,
           type: 'area',
           color: 'rgba(70, 130, 180, 1)',
           opacity: 0.5,
         },
         {
           name: 'genome',
-          data: genome_coverage,
+          data: genomeCoverage,
           type: 'area',
           color: 'rgba(115, 171, 61,  1)',
           strokeWidth: 4,
@@ -55,8 +58,7 @@ describe('getMaxFromCoverageDatasets', () => {
         },
       ],
     }
-    expect(
-      getMaxMeanFromCoverageDatasets(dataConfig2),
-    ).toBe(97.88)
+
+    expect(getMaxMeanFromCoverageDatasets(dataConfig2)).toBe(97.88)
   })
 })
