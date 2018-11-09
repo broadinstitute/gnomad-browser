@@ -8,13 +8,23 @@ module.exports = {
       type: 'epi_exome_group',
     },
     geneResults: {
-      index: 'epi_exome_gene_results_180925',
+      index: 'epi_exome_gene_results_181107',
       type: 'result',
     },
     variants: {
       index: 'epi_exome_variants_results_180925',
       type: 'epi_exome_variant',
     },
+  },
+  geneResults: {
+    categories: [
+      { id: 'lof', label: 'LoF' },
+      { id: 'mpc', label: 'MPC' },
+      { id: 'infrIndel', label: 'Infr Indel' },
+    ],
+  },
+  analysisGroups: {
+    overallGroup: 'EPI',
   },
   consequences: [
     {

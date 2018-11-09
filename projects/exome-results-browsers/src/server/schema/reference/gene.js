@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import { GeneResultType, fetchGeneResultByGeneId } from '../analysis/geneResult'
+import { GeneResultType, fetchOverallGeneResultByGeneId } from '../analysis/geneResult'
 import { VariantType, fetchVariantsByGeneId } from '../analysis/variant'
 import { TranscriptType, fetchTranscriptById, fetchTranscriptsByGeneId } from './transcript'
 
@@ -23,9 +23,9 @@ export const GeneType = new GraphQLObjectType({
       type: new GraphQLList(TranscriptType),
       resolve: (obj, args, ctx) => fetchTranscriptsByGeneId(ctx, obj.gene_id),
     },
-    geneResult: {
+    overallGeneResult: {
       type: GeneResultType,
-      resolve: (obj, args, ctx) => fetchGeneResultByGeneId(ctx, obj.gene_id),
+      resolve: (obj, args, ctx) => fetchOverallGeneResultByGeneId(ctx, obj.gene_id),
     },
     variants: {
       type: new GraphQLList(VariantType),

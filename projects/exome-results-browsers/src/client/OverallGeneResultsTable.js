@@ -24,6 +24,73 @@ const renderExponentialNumberCell = (row, key) => {
   return truncated.toExponential()
 }
 
+let columns = [
+  {
+    key: 'gene_name',
+    heading: 'Gene Name',
+    isSortable: true,
+    minWidth: 100,
+    searchable: true,
+    render: row => (
+      <Link className="grid-cell-content" to={`/gene/${row.gene_name}`}>
+        {row.gene_name}
+      </Link>
+    ),
+  },
+  {
+    key: 'gene_description',
+    heading: 'Description',
+    isSortable: true,
+    minWidth: 140,
+  },
+  {
+    key: 'gene_id',
+    heading: 'Gene ID',
+    isSortable: true,
+    minWidth: 140,
+  },
+]
+
+const {
+  geneResults: { categories },
+} = BROWSER_CONFIG
+
+categories.forEach(({ id, label }) => {
+  columns = [
+    ...columns,
+    {
+      key: `xcase_${id}`,
+      heading: `Case ${label}`,
+      isSortable: true,
+      minWidth: 60,
+    },
+    {
+      key: `xctrl_${id}`,
+      heading: `Ctrl ${label}`,
+      isSortable: true,
+      minWidth: 60,
+    },
+    {
+      key: `pval_${id}`,
+      heading: `P-Val ${label}`,
+      isSortable: true,
+      minWidth: 80,
+      render: renderExponentialNumberCell,
+    },
+  ]
+})
+
+columns = [
+  ...columns,
+  {
+    key: 'pval_meta',
+    heading: 'P-Val Meta',
+    isSortable: true,
+    minWidth: 80,
+    render: renderExponentialNumberCell,
+  },
+]
+
 class GeneResultsTable extends PureComponent {
   static propTypes = {
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -79,74 +146,6 @@ class GeneResultsTable extends PureComponent {
   }
 
   render() {
-    const columns = [
-      {
-        key: 'gene_name',
-        heading: 'Gene Name',
-        isSortable: true,
-        minWidth: 80,
-        searchable: true,
-        render: row => <Link to={`/gene/${row.gene_name}`}>{row.gene_name}</Link>,
-      },
-      {
-        key: 'description',
-        heading: 'Description',
-        isSortable: true,
-        minWidth: 140,
-      },
-      {
-        key: 'gene_id',
-        heading: 'Gene ID',
-        isSortable: true,
-        minWidth: 120,
-      },
-      {
-        key: 'case_lof',
-        heading: 'Case LOF',
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: 'ctrl_lof',
-        heading: 'Ctrl LOF',
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: 'pval_lof',
-        heading: 'P-Val LOF',
-        isSortable: true,
-        minWidth: 80,
-        render: renderExponentialNumberCell,
-      },
-      {
-        key: 'case_mpc',
-        heading: 'Case MPC',
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: 'ctrl_mpc',
-        heading: 'Ctrl MPC',
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: 'pval_mpc',
-        heading: 'P-Val MPC',
-        isSortable: true,
-        minWidth: 80,
-        render: renderExponentialNumberCell,
-      },
-      {
-        key: 'pval_meta',
-        heading: 'P-Val Meta',
-        isSortable: true,
-        minWidth: 80,
-        render: renderExponentialNumberCell,
-      },
-    ]
-
     const results = this.getRenderedResults()
 
     const { sortKey, sortAscending } = this.state
@@ -163,7 +162,7 @@ class GeneResultsTable extends PureComponent {
             columns={columns}
             data={results}
             numRowsRendered={32}
-            rowKey={variant => variant.gene_id}
+            rowKey={result => `${result.gene_name}-${result.gene_id}`}
             sortKey={sortKey}
             sortOrder={sortAscending ? 'ascending' : 'descending'}
             onRequestSort={this.setSortKey}
