@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import GenePage from './GenePage/GenePage'
-import GeneResultsPage from './GeneResultsPage'
+import OverallGeneResultsPage from './OverallGeneResultsPage'
 import HomePage from './HomePage'
 import TopBar from './TopBar'
 
@@ -12,7 +12,7 @@ const Root = styled.div`
   height: 100%;
   background-color: #fafafa;
   font-family: Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
 `
 
 const App = () => (
@@ -20,7 +20,7 @@ const App = () => (
     <TopBar />
     <Route path="/" exact component={HomePage} />
     <Switch>
-      <Route path="/results" component={GeneResultsPage} />
+      <Route path="/results" component={OverallGeneResultsPage} />
       <Route path="/gene/:gene" render={({ match }) => <GenePage geneName={match.params.gene} />} />
     </Switch>
   </Root>

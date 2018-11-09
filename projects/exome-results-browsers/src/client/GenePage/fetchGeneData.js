@@ -8,16 +8,16 @@ export default geneName => {
       full_gene_name
       canonical_transcript
       strand
-      geneResult {
-        gene_name
-        description
+      overallGeneResult {
         gene_id
-        case_lof
-        ctrl_lof
-        pval_lof
-        case_mpc
-        ctrl_mpc
-        pval_mpc
+        gene_name
+        gene_description
+        categories {
+          id
+          xcase
+          xctrl
+          pval
+        }
         pval_meta
       }
       variants {

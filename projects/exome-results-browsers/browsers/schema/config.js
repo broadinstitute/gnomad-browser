@@ -8,13 +8,19 @@ module.exports = {
       type: 'schizophrenia_exome_group',
     },
     geneResults: {
-      index: 'schizophrenia_gene_results_171214',
+      index: 'schizophrenia_gene_results_171213',
       type: 'result',
     },
     variants: {
       index: 'schizophrenia_exome_variants_results',
       type: 'schizophrenia_exome_variant',
     },
+  },
+  geneResults: {
+    categories: [{ id: 'lof', label: 'LoF' }, { id: 'mpc', label: 'MPC' }],
+  },
+  analysisGroups: {
+    overallGroup: 'all',
   },
   consequences: [
     {
