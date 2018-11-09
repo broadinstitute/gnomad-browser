@@ -13,9 +13,5 @@ export {
 export { tissueLabels } from './constants/gtex'
 
 export {
-  processVariantsList
-} from './exalt'
-
-export {
   gnomadExportCsvTranslations
-} from './constants'
+} from './constants/vcfFields'
