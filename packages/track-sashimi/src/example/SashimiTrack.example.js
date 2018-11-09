@@ -4,9 +4,7 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import Slider from 'material-ui/Slider'
 
-import { groupExonsByTranscript } from '@broad/utilities/src/transcriptTools'
 import { RegionViewer } from '@broad/region-viewer'
-import TranscriptTrack from '@broad/track-transcript'
 import PositionTableTrack from '@broad/track-position-table'
 
 import SashimiTrack from '../index'
@@ -47,8 +45,6 @@ class SashimiTrackExample extends Component {
     const {
       transcript: { exons },
     } = this.state.geneData
-    const geneExons = this.state.geneData.exons
-    const transcriptsGrouped = groupExonsByTranscript(geneExons)
     const regionAttributesConfig = {
       CDS: {
         color: '#9B988F',
@@ -134,10 +130,6 @@ class SashimiTrackExample extends Component {
             coverageColour={'#FF0001'}
             junctions={junctions_patient}
           />
-          <TranscriptTrack
-              height={10}
-              transcriptsGrouped={transcriptsGrouped}
-            />
           <PositionTableTrack
             title={''}
             height={50}

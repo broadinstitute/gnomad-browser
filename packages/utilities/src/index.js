@@ -5,10 +5,6 @@ export {
 } from './consequences'
 
 export {
-  groupExonsByTranscript,
-} from './transcriptTools'
-
-export {
   processVariantsList
 } from './exalt'
 
