@@ -1,21 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable arrow-parens */
-/* eslint-disable no-shadow */
 import R from 'ramda'
 import { scaleLinear, scaleBand } from 'd3-scale'
 
-// const EXON_PADDING = 50
-const FEATURES_TO_DISPLAY = [
-  'CDS',
-  // 'padding'
-  // 'UTR',
-  // 'exon',
-]
+const FEATURES_TO_DISPLAY = ['CDS']
 
-export const filterRegions = featureTypes => regions => {
+export const filterRegions = R.curry((featureTypes, regions) => {
   const filteredRegions = regions.filter(r => featureTypes.includes(r.feature_type))
   return filteredRegions.length ? filteredRegions : regions
-}
+})
 
 export const applyExonSubset = R.curry((exonSubset, regions) => {
   if (exonSubset) {
@@ -28,9 +19,12 @@ export const applyExonSubset = R.curry((exonSubset, regions) => {
 export const flipOrderIfNegativeStrand = regions => {
   if (R.all(region => region.strand === '-', regions)) {
     return R.reverse(regions)
-  } else if (R.all(region => region.strand === '+', regions)) {
+  }
+
+  if (R.all(region => region.strand === '+', regions)) {
     return regions
   }
+
   throw Error('There is mix of (+) and (-) strands...')
 }
 
@@ -50,7 +44,7 @@ export const calculateRegionDistances = regions =>
 
 export const addPadding = R.curry((padding, regions) => {
   if (padding === 0) return regions
-  return regions.reduce((acc, region, i) => {
+  return regions.reduce((acc, region) => {
     const startPad = {
       feature_type: 'start_pad',
       start: region.start - padding,
@@ -76,16 +70,11 @@ export const addPadding = R.curry((padding, regions) => {
         endPad,
       ]
     }
-    return [
-      ...acc,
-      startPad,
-      region,
-      endPad,
-    ]
+    return [...acc, startPad, region, endPad]
   }, [])
 })
 
-export const calculateOffset = R.curry((regions) =>
+export const calculateOffset = R.curry(regions =>
   regions.reduce((acc, region, i) => {
     if (i === 0) return [{ ...region, offset: 0 }]
     return [
@@ -95,7 +84,8 @@ export const calculateOffset = R.curry((regions) =>
         offset: acc[i - 1].offset + (region.start - acc[i - 1].stop),
       },
     ]
-  }, []))
+  }, [])
+)
 
 export const defaultAttributeConfig = {
   CDS: {
@@ -120,15 +110,15 @@ export const defaultAttributeConfig = {
   },
 }
 
-export const assignAttributes = R.curry((attributeConfig, regions) => {
-  return regions.map(region => {
-    const { feature_type } = region
+export const assignAttributes = R.curry((attributeConfig, regions) =>
+  regions.map(region => {
+    const featureType = region.feature_type
 
-    if (attributeConfig[feature_type]) {
+    if (attributeConfig[featureType]) {
       return {
         ...region,
-        color: attributeConfig[feature_type].color,
-        thickness: attributeConfig[feature_type].thickness,
+        color: attributeConfig[featureType].color,
+        thickness: attributeConfig[featureType].thickness,
       }
     }
 
@@ -138,7 +128,7 @@ export const assignAttributes = R.curry((attributeConfig, regions) => {
       thickness: attributeConfig.default.thickness,
     }
   })
-})
+)
 
 export const calculateOffsetRegions = (
   featuresToDisplay = FEATURES_TO_DISPLAY,
@@ -146,15 +136,16 @@ export const calculateOffsetRegions = (
   padding = 50,
   regions,
   exonSubset
-) => R.pipe(
-  filterRegions(featuresToDisplay),
-  applyExonSubset(exonSubset),
-  flipOrderIfNegativeStrand,
-  calculateRegionDistances,
-  addPadding(padding),
-  calculateOffset,
-  assignAttributes(attributeConfig),
-)(regions)
+) =>
+  R.pipe(
+    filterRegions(featuresToDisplay),
+    applyExonSubset(exonSubset),
+    flipOrderIfNegativeStrand,
+    calculateRegionDistances,
+    addPadding(padding),
+    calculateOffset,
+    assignAttributes(attributeConfig)
+  )(regions)
 
 export const calculatePositionOffset = R.curry((regions, position) => {
   const lastRegionBeforePosition = R.findLast(region => region.start <= position)(regions)
@@ -185,8 +176,9 @@ export const calculatePositionOffset = R.curry((regions, position) => {
 export const invertPositionOffset = R.curry((regions, xScale, scaledPosition) => {
   let result = 0
   for (let i = 0; i < regions.length; i++) {
-    if (scaledPosition >= xScale(regions[i].start - regions[i].offset)
-      && scaledPosition <= xScale(regions[i].stop - regions[i].offset)
+    if (
+      scaledPosition >= xScale(regions[i].start - regions[i].offset) &&
+      scaledPosition <= xScale(regions[i].stop - regions[i].offset)
     ) {
       result = Math.floor(xScale.invert(scaledPosition) + regions[i].offset)
     }
@@ -200,7 +192,7 @@ export const calculateXScale = (width, offsetRegions, band = null) => {
       .domain([
         offsetRegions[0].start,
         offsetRegions[offsetRegions.length - 1].stop -
-        offsetRegions[offsetRegions.length - 1].offset,
+          offsetRegions[offsetRegions.length - 1].offset,
       ])
       .rangeRound([0, width])
       .padding(band)
@@ -208,8 +200,7 @@ export const calculateXScale = (width, offsetRegions, band = null) => {
   return scaleLinear()
     .domain([
       offsetRegions[0].start,
-      offsetRegions[offsetRegions.length - 1].stop -
-      offsetRegions[offsetRegions.length - 1].offset,
+      offsetRegions[offsetRegions.length - 1].stop - offsetRegions[offsetRegions.length - 1].offset,
     ])
     .range([0, width])
 }
