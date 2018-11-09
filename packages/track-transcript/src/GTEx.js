@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { withTooltip } from '@broad/ui'
-import { tissueMappings } from '@broad/utilities/src/constants/gtex'
+import { tissueLabels } from '@broad/utilities'
 
 
 const GtexTitleWrapper = styled.div`
@@ -107,7 +107,7 @@ export function TissueIsoformExpressionPlotHeader({
 
   const options = allTissues.map(tissue => (
     <option key={`${tissue}-option`} value={tissue}>
-      {tissueMappings[tissue]} {`(${maxTissueExpressions.individual[tissue]})`}
+      {tissueLabels[tissue]} {`(${maxTissueExpressions.individual[tissue]})`}
     </option>
   ))
 

@@ -1,7 +1,4 @@
-import {
-  HUMAN_CHROMOSOMES,
-} from '@broad/utilities/src/constants'
-
+import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 
 export function colorByChromosome(colors) {
   const CHROMOSOME_COLORS = HUMAN_CHROMOSOMES.reduce((acc, chr, i) => ({
