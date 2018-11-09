@@ -82,5 +82,7 @@ export { Searchbox } from './Searchbox'
 
 export { SegmentedControl } from './SegmentedControl'
 
+export { Tabs } from './Tabs'
+
 export { TooltipAnchor } from './tooltip/TooltipAnchor'
 export { withTooltip } from './tooltip/withTooltip'
