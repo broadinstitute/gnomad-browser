@@ -3,13 +3,9 @@ import PropTypes from 'prop-types'
 import { scaleLinear } from 'd3-scale'
 import { extent } from 'd3-array'
 
-import {
-  HUMAN_CHROMOSOMES,
-  HUMAN_AUTOSOMES,
-} from '@broad/utilities/src/constants'
+import { HUMAN_AUTOSOMES, HUMAN_CHROMOSOMES } from '@broad/utilities'
 
-import { colorByChromosome } from './colorScales';
-
+import { colorByChromosome } from './colorScales'
 
 export const ManhattanPlot = ({
   data,

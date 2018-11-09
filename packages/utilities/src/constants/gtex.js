@@ -1,4 +1,4 @@
-export const tissueMappings = {
+export const tissueLabels = {
   adiposeSubcutaneous: 'Adipose subcutaneous',
   adiposeVisceralOmentum: 'Adipose visceral omentum',
   adrenalGland: 'Adrenal gland',
