@@ -9,10 +9,6 @@ export {
 } from './transcriptTools'
 
 export {
-  getMaxMeanFromCoverageDatasets,
-} from './plotting'
-
-export {
   getTableIndexByPosition,
 } from './variant'
 
