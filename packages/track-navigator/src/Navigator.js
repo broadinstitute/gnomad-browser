@@ -5,7 +5,6 @@ import ReactCursorPosition from 'react-cursor-position'
 import styled from 'styled-components'
 
 import { VariantAlleleFrequencyPlot } from '@broad/track-variant'
-import { getTableIndexByPosition } from '@broad/utilities/src/variant'
 
 import PositionAxis from './PositionAxis'
 
@@ -28,6 +27,22 @@ const NavigatorOverlay = styled.svg`
   top: 0;
 `
 
+const getTableIndexByPosition = (position, variants) => {
+  if (variants.size) {
+    return variants.findIndex((variant, i) => {
+      if (variants.get(i + 1)) {
+        return position >= variant.pos && position <= variants.get(i + 1).pos
+      }
+      return variants.size - 1
+    })
+  }
+  return variants.findIndex((variant, i) => {
+    if (variants[i + 1]) {
+      return position >= variant.pos && position <= variants[i + 1].pos
+    }
+    return variants.length - 1
+  })
+}
 
 class Navigator extends Component {
   static propTypes = {

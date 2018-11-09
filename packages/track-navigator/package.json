@@ -10,7 +10,6 @@
     "@broad/redux-variants": "*",
     "@broad/table": "*",
     "@broad/track-variant": "*",
-    "@broad/utilities": "*",
     "d3-scale": "^1.0.6",
     "prop-types": "^15.5.10",
     "react-cursor-position": "^2.1.0"

@@ -9,10 +9,6 @@ export {
 } from './transcriptTools'
 
 export {
-  getTableIndexByPosition,
-} from './variant'
-
-export {
   processVariantsList
 } from './exalt'
 
