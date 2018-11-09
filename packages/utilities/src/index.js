@@ -11,7 +11,3 @@ export {
 } from './constants/chromosomes'
 
 export { tissueLabels } from './constants/gtex'
-
-export {
-  gnomadExportCsvTranslations
-} from './constants/vcfFields'

@@ -1,11 +1,11 @@
 /* eslint-disable no-shadow */
 import keymirror from 'keymirror'
-import { Record, OrderedMap, Map, List, fromJS } from 'immutable'
+import { Record, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import { types as geneTypes, currentTranscript } from '@broad/redux-genes'
+import { types as geneTypes } from '@broad/redux-genes'
 import { types as regionTypes } from '@broad/region'
-import { getCategoryFromConsequence, gnomadExportCsvTranslations } from '@broad/utilities'
+import { getCategoryFromConsequence } from '@broad/utilities'
 
 export const types = keymirror({
   REQUEST_VARIANTS: null,
@@ -73,133 +73,6 @@ export const actions = {
     }
     return thunk
   },
-
-  exportVariantsToCsv: (fetchFunction) => {
-    const sum = (oldValue, newValue) => oldValue + newValue
-    const concat = (oldValue, newValue) => {
-      // console.log(oldValue, newValue)
-      // console.log(oldValue.concat(newValue))
-      return oldValue.concat(newValue)
-    }
-    const combineKeys = {
-      allele_count: sum,
-      allele_num: sum,
-      hom_count: sum,
-      filters: concat,
-      // allele_freq: () => null,
-      datasets: [],
-    }
-
-    return (dispatch, getState) => {
-      // function flatten (map) {
-      //
-      // }
-      const populations = new Map({
-        NFE: 'european_non_finnish',
-        EAS: 'east_asian',
-        OTH: 'other',
-        AFR: 'african',
-        AMR: 'latino',
-        SAS: 'south_asian',
-        FIN: 'european_finnish',
-        ASJ: 'ashkenazi_jewish',
-      })
-
-      const popDatatypes = ['pop_acs', 'pop_ans', 'pop_homs', 'pop_hemi']
-
-      function flattenForCsv (data) {
-        const dataMap = new Map(fromJS(data).map(v => List([v.get('variant_id'), v])))
-
-        const qualityMetricKeys = dataMap.first().get('quality_metrics').keySeq()
-        return dataMap.map((value) => {
-          const flattened = popDatatypes.reduce((acc, popDatatype) => {
-            return populations.valueSeq().reduce((acc, popKey) => {
-              return acc.set(`${popDatatype}_${popKey}`, acc.getIn([popDatatype, popKey]))
-            }, acc)
-          }, value)
-          const deletePopMap = popDatatypes.reduce((acc, popDatatype) =>
-            acc.delete(popDatatype), flattened)
-          const flattenedQualityMetrics = qualityMetricKeys.reduce((acc, key) => {
-            return acc.set(`quality_metrics_${key}`, acc.getIn(['quality_metrics', key]))
-          }, deletePopMap)
-          return flattenedQualityMetrics.delete('quality_metrics')
-        })
-      }
-
-      function formatData(data) {
-        const variants = fromJS(data)
-        const dictionary = OrderedMap(gnomadExportCsvTranslations)
-        const renamed = variants.map((variant) => {
-          return dictionary.mapEntries(([key, value]) => [value, variant.get(key)])
-          // return variant.mapKeys((key) => gnomadExportCsvTranslations[key])
-        })
-        return renamed.sort((a, b) => b.get('XPOS') - a.get('XPOS'))
-      }
-
-      function exportToCsv (flattenedData, dataset) {
-        const data = flattenedData.toIndexedSeq().map((variant) => {
-          return variant.valueSeq().join(',')
-        }).join('\r\n')
-        const headers = flattenedData.first().keySeq().join(',')
-        const csv = `data:text/csv;charset=utf-8,${headers}\n${data}\r\n`
-        const encodedUri = encodeURI(csv)
-        // window.open(encodedUri)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', `${dataset}_${new Date().getTime()}`)
-        document.body.appendChild(link)
-        link.click()
-      }
-
-      const state = getState()
-      const currentDataset = selectedVariantDataset(state)
-      const filteredVariants = finalFilteredVariants(state)
-      const transcriptId = currentTranscript(state)
-      const variantIds = filteredVariants.map(v => v.variant_id)
-
-      function combinedAlleleFrequency(variant) {
-        return variant.get('allele_count') / variant.get('allele_num')
-      }
-      function combinedPopmaxFrequency(variant) {
-        const frequency = variant.get('popmax_ac') / variant.get('popmax_an')
-        return frequency || ''
-      }
-      function joinFilters(variant) {
-        return variant.get('filters').toJS().join('|')
-      }
-
-      if (currentDataset === 'gnomad_r2_0_2') {
-        return Promise.all([
-          fetchFunction(variantIds, transcriptId, 'gnomadExomeVariants'),
-          fetchFunction(variantIds, transcriptId, 'gnomadGenomeVariants'),
-        ]).then((promiseArray) => {
-          const [exomeData, genomeData] = promiseArray
-          const exomeDataMapFlattened = flattenForCsv(exomeData)
-          const genomeDataMapFlattened = flattenForCsv(genomeData)
-          console.log(exomeDataMapFlattened)
-          console.log(genomeDataMapFlattened)
-          console.log(combineKeys)
-          const combined = exomeDataMapFlattened.mergeDeepWith((oldValue, newValue, key) => {
-            // console.log(key)
-            if (combineKeys[key]) {
-              return combineKeys[key](oldValue, newValue)
-            }
-            return oldValue
-          }, genomeDataMapFlattened).map(value => value
-            .set('allele_freq', combinedAlleleFrequency(value))
-            .set('popmax_af', combinedPopmaxFrequency(value))
-            .set('filters', joinFilters(value)))
-          exportToCsv(formatData(combined), currentDataset)
-        })
-      }
-
-      fetchFunction(variantIds, transcriptId, currentDataset)
-        .then((data) => {
-          const variantDataMap = formatData(flattenForCsv(data))
-          exportToCsv(variantDataMap, currentDataset)
-        })
-    }
-  }
 }
 
 const defaultVariantMatchesConsequenceCategoryFilter = (variant, selectedConsequenceCategories) => {
