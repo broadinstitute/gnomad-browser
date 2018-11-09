@@ -5,8 +5,5 @@
   "license": "MIT",
   "files": [
     "lib"
-  ],
-  "dependencies": {
-    "graphql-fetch": "^1.0.1"
-  }
+  ]
 }
