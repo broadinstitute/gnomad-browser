@@ -7,9 +7,6 @@
     "lib"
   ],
   "dependencies": {
-    "config": "^1.26.1",
-    "graphql-fetch": "^1.0.1",
-    "immutable": "^3.8.2",
-    "isomorphic-fetch": "^2.2.1"
+    "graphql-fetch": "^1.0.1"
   }
 }
