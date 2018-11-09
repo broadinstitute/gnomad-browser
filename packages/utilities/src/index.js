@@ -5,12 +5,6 @@ export {
 } from './consequences'
 
 export {
-  fetchAllByGeneName,
-  fetchTranscriptsByGeneName,
-  test,
-} from './fetch'
-
-export {
   groupExonsByTranscript,
 } from './transcriptTools'
 
