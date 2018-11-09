@@ -76,3 +76,23 @@ export const fetchAllOverallGeneResults = async ctx => {
 
   return hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
 }
+
+export const fetchGroupGeneResultsByGeneId = async (ctx, geneId) => {
+  const response = await ctx.database.elastic.search({
+    index: BROWSER_CONFIG.elasticsearch.geneResults.index,
+    type: BROWSER_CONFIG.elasticsearch.geneResults.type,
+    size: 100,
+    body: {
+      query: {
+        bool: {
+          must_not: {
+            term: { analysis_group: BROWSER_CONFIG.analysisGroups.overallGroup },
+          },
+          filter: { term: { gene_id: geneId } },
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
+}
