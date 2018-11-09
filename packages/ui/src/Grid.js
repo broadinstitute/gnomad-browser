@@ -19,13 +19,10 @@ const baseCellStyle = css`
   flex-grow: 0;
   flex-shrink: 0;
   align-items: center;
-  overflow: hidden;
   box-sizing: border-box;
   width: ${props => props.width}px;
   padding: 0 0.5em;
   outline: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   &:focus {
     box-shadow: inset 0 0 0 2px ${transparentize(0.5, '#428bca')};
@@ -344,7 +341,7 @@ export class Grid extends Component {
         isRowHeader: false,
         isSortable: false,
         minWidth: 100,
-        render: rowData => rowData[column.key],
+        render: rowData => <div className="grid-cell-content">{rowData[column.key]}</div>,
       }
 
       return { ...columnDefaults, ...column }
