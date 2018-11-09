@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Table = styled.table`
+  min-width: 325px;
   border-collapse: collapse;
   border-spacing: 0;
 
