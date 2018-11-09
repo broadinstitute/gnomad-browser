@@ -20,6 +20,19 @@ export default geneName => {
         }
         pval_meta
       }
+      groupGeneResults {
+        gene_id
+        gene_name
+        gene_description
+        analysis_group
+        categories {
+          id
+          xcase
+          xctrl
+          pval
+        }
+        pval_meta
+      }
       variants {
         ac
         ac_case
