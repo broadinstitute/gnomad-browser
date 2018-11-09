@@ -7,7 +7,7 @@ import {
   calculatePositionOffset,
   invertPositionOffset,
   calculateXScale,
-} from '@broad/utilities/src/coordinates'
+} from './coordinates'
 
 const RegionViewerWrapper = styled.div`
   display: flex;
