@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import Autocomplete from 'react-autocomplete'
 import styled from 'styled-components'
 
-const Input = styled.input`
+export const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -25,14 +25,14 @@ const Input = styled.input`
   }
 `
 
-const Item = styled.div`
+export const Item = styled.div`
   padding: 0.375em 0.75em;
   background: ${props => (props.isHighlighted ? transparentize(0.5, '#428bca') : 'none')};
   cursor: pointer;
   font-size: 14px;
 `
 
-const menuStyle = {
+export const menuStyle = {
   position: 'fixed',
   zIndex: 1,
   overflow: 'auto',
@@ -52,7 +52,6 @@ export class Combobox extends Component {
       PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
     ).isRequired,
     placeholder: PropTypes.string,
-    renderAllOptions: PropTypes.bool,
     value: PropTypes.string.isRequired,
     width: PropTypes.string,
   }
@@ -61,7 +60,6 @@ export class Combobox extends Component {
     id: undefined,
     onChange: () => {},
     placeholder: undefined,
-    renderAllOptions: false,
     width: undefined,
   }
 
@@ -82,10 +80,10 @@ export class Combobox extends Component {
     this.props.onSelect(item.value, item)
   }
 
-  shouldItemRender = item =>
-    this.props.renderAllOptions
-      ? true
-      : item.label.toLowerCase().includes(this.state.inputValue.toLowerCase())
+  shouldItemRender = item => {
+    const { inputValue } = this.state
+    return item.label.toLowerCase().includes(inputValue.toLowerCase())
+  }
 
   renderInput = props => {
     // eslint-disable-next-line react/prop-types

@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { Combobox } from './Combobox'
+import Autocomplete from 'react-autocomplete'
+
+import { Input, Item, menuStyle } from './Combobox'
 
 const debounce = (fn, ms) => {
   let timeout
@@ -44,27 +46,48 @@ class CancelablePromise {
   }
 }
 
+const renderInput = props => {
+  // eslint-disable-next-line react/prop-types
+  const { id, ref, ...rest } = props
+  return <Input {...rest} id={id} innerRef={ref} />
+}
+
+const renderItem = (item, isHighlighted) => <Item isHighlighted={isHighlighted}>{item.label}</Item>
+
 export class Searchbox extends Component {
   static propTypes = {
     fetchSearchResults: PropTypes.func.isRequired,
+    id: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    width: PropTypes.string,
+  }
+
+  static defaultProps = {
+    id: undefined,
+    placeholder: undefined,
+    width: undefined,
   }
 
   state = {
+    inputValue: '',
     options: [],
   }
 
-  onChange = debounce(query => {
+  fetchSearchResults = debounce(query => {
+    const { fetchSearchResults } = this.props
+
     if (this.searchRequest) {
       this.searchRequest.cancel()
     }
 
     if (!query) {
+      this.setState({ options: [] })
       return
     }
 
     this.searchRequest = new CancelablePromise((resolve, reject) => {
-      this.props.fetchSearchResults(query).then(resolve, reject)
+      fetchSearchResults(query).then(resolve, reject)
     })
 
     this.searchRequest.then(results => {
@@ -72,14 +95,37 @@ export class Searchbox extends Component {
     })
   }, 400)
 
+  onChange = (e, inputValue) => {
+    this.setState({ inputValue })
+    this.fetchSearchResults(inputValue)
+  }
+
+  onSelect = (value, item) => {
+    const { onSelect } = this.props
+    this.setState({ inputValue: item.label })
+    onSelect(item.value, item)
+  }
+
   render() {
+    const { id, placeholder, width } = this.props
+    const { inputValue, options } = this.state
+
     return (
-      <Combobox
-        {...this.props}
+      <Autocomplete
+        getItemValue={item => item.label}
+        inputProps={{ id, placeholder }}
+        items={options}
+        menuStyle={menuStyle}
+        renderInput={renderInput}
+        renderItem={renderItem}
+        shouldItemRender={() => true}
+        value={inputValue}
+        wrapperStyle={{
+          display: 'inline-block',
+          width,
+        }}
         onChange={this.onChange}
-        options={this.state.options}
-        renderAllOptions
-        value=""
+        onSelect={this.onSelect}
       />
     )
   }
