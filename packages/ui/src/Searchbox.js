@@ -5,6 +5,10 @@ import Autocomplete from 'react-autocomplete'
 
 import { Input, Item, menuStyle } from './Combobox'
 
+const PlaceholderItem = Item.extend`
+  color: rgba(0, 0, 0, 0.5);
+`
+
 const debounce = (fn, ms) => {
   let timeout
 
@@ -52,7 +56,11 @@ const renderInput = props => {
   return <Input {...rest} id={id} innerRef={ref} />
 }
 
-const renderItem = (item, isHighlighted) => <Item isHighlighted={isHighlighted}>{item.label}</Item>
+const renderItem = (item, isHighlighted) => (
+  <Item key={item.value} isHighlighted={isHighlighted}>
+    {item.label}
+  </Item>
+)
 
 export class Searchbox extends Component {
   static propTypes = {
@@ -71,6 +79,7 @@ export class Searchbox extends Component {
 
   state = {
     inputValue: '',
+    isFetching: false,
     options: [],
   }
 
@@ -82,7 +91,7 @@ export class Searchbox extends Component {
     }
 
     if (!query) {
-      this.setState({ options: [] })
+      this.setState({ isFetching: false, options: [] })
       return
     }
 
@@ -91,12 +100,15 @@ export class Searchbox extends Component {
     })
 
     this.searchRequest.then(results => {
-      this.setState({ options: results })
+      this.setState({ isFetching: false, options: results })
     })
   }, 400)
 
   onChange = (e, inputValue) => {
     this.setState({ inputValue })
+    if (inputValue !== '') {
+      this.setState({ isFetching: true })
+    }
     this.fetchSearchResults(inputValue)
   }
 
@@ -104,6 +116,25 @@ export class Searchbox extends Component {
     const { onSelect } = this.props
     this.setState({ inputValue: item.label })
     onSelect(item.value, item)
+  }
+
+  renderMenu = (items, inputValue, style) => {
+    const { isFetching } = this.state
+    let menuContent
+    if (inputValue === '') {
+      return <div />
+    }
+
+    if (items.length === 0) {
+      if (isFetching) {
+        menuContent = <PlaceholderItem>Searching...</PlaceholderItem>
+      } else {
+        menuContent = <PlaceholderItem>No results found</PlaceholderItem>
+      }
+    } else {
+      menuContent = items
+    }
+    return <div style={{ ...style, ...menuStyle }}>{menuContent}</div>
   }
 
   render() {
@@ -115,9 +146,9 @@ export class Searchbox extends Component {
         getItemValue={item => item.label}
         inputProps={{ id, placeholder }}
         items={options}
-        menuStyle={menuStyle}
         renderInput={renderInput}
         renderItem={renderItem}
+        renderMenu={this.renderMenu}
         shouldItemRender={() => true}
         value={inputValue}
         wrapperStyle={{
