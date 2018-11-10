@@ -3,7 +3,11 @@ import React, { Component } from 'react'
 
 import Autocomplete from 'react-autocomplete'
 
-import { Input, Item, menuStyle } from './Combobox'
+import { Input as ComboboxInput, Item, menuStyle } from './Combobox'
+
+const SearchboxInput = ComboboxInput.extend`
+  ${props => (props.hasResults ? '' : 'background-image: none')};
+`
 
 const PlaceholderItem = Item.extend`
   color: rgba(0, 0, 0, 0.5);
@@ -53,7 +57,7 @@ class CancelablePromise {
 const renderInput = props => {
   // eslint-disable-next-line react/prop-types
   const { id, ref, ...rest } = props
-  return <Input {...rest} id={id} innerRef={ref} />
+  return <SearchboxInput {...rest} id={id} innerRef={ref} />
 }
 
 const renderItem = (item, isHighlighted) => (
@@ -144,7 +148,11 @@ export class Searchbox extends Component {
     return (
       <Autocomplete
         getItemValue={item => item.label}
-        inputProps={{ id, placeholder }}
+        inputProps={{
+          hasResults: options.length > 0,
+          id,
+          placeholder,
+        }}
         items={options}
         renderInput={renderInput}
         renderItem={renderItem}
