@@ -18,7 +18,7 @@ export const isRegionId = str => {
 
   const chrom = match[2].toLowerCase()
   const chromNumber = Number(chrom)
-  if (!isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
     return false
   }
 
@@ -41,8 +41,8 @@ export const normalizeRegionId = regionId => {
   if (parts[2]) {
     end = Number(parts[2])
   } else {
-    start -= 20
-    end = start + 40
+    end = start + 20
+    start = Math.max(start - 20, 0)
   }
 
   return `${chrom}-${start}-${end}`
@@ -58,7 +58,7 @@ export const isVariantId = str => {
 
   const chrom = match[2].toLowerCase()
   const chromNumber = Number(chrom)
-  if (!isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
     return false
   }
 
