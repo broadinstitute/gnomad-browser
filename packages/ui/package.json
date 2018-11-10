@@ -9,7 +9,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
     "mousetrap": "^1.6.1",
-    "p-cancelable": "^0.5.1",
     "polished": "^1.9.3",
     "prop-types": "^15.5.10",
     "react-aria-modal": "^2.12.2",

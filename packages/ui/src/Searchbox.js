@@ -1,4 +1,3 @@
-import PCancelable from 'p-cancelable'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -12,6 +11,36 @@ const debounce = (fn, ms) => {
       clearTimeout(timeout)
     }
     timeout = setTimeout(() => fn(...args), ms)
+  }
+}
+
+class CancelablePromise {
+  isCanceled = false
+
+  constructor(executor) {
+    this.promise = new Promise((resolve, reject) => {
+      const wrappedResolve = value => {
+        if (!this.isCanceled) {
+          resolve(value)
+        }
+      }
+
+      const wrappedReject = value => {
+        if (!this.isCanceled) {
+          reject(value)
+        }
+      }
+
+      return executor(wrappedResolve, wrappedReject)
+    })
+  }
+
+  cancel() {
+    this.isCanceled = true
+  }
+
+  then(onFulfilled, onRejected) {
+    return this.promise.then(onFulfilled, onRejected)
   }
 }
 
@@ -34,8 +63,7 @@ export class Searchbox extends Component {
       return
     }
 
-    this.searchRequest = new PCancelable((resolve, reject, onCancel) => {
-      onCancel.shouldReject = false // eslint-disable-line no-param-reassign
+    this.searchRequest = new CancelablePromise((resolve, reject) => {
       this.props.fetchSearchResults(query).then(resolve, reject)
     })
 
