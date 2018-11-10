@@ -93,6 +93,33 @@ export const resolveSearchResults = async (ctx, query) => {
   }
 
   const startsWithQuery = { $regex: `^${query.toUpperCase()}` }
+
+  if (/^ensg[0-9]/i.test(query)) {
+    const matchingGenes = await ctx.database.gnomad
+      .collection('genes')
+      .find({ gene_id: startsWithQuery })
+      .limit(5)
+      .toArray()
+
+    return matchingGenes.map(gene => ({
+      label: `${gene.gene_id} (${gene.gene_name_upper})`,
+      url: `/gene/${gene.gene_id}`,
+    }))
+  }
+
+  if (/^enst[0-9]/i.test(query)) {
+    const matchingTranscripts = await ctx.database.gnomad
+      .collection('transcripts')
+      .find({ transcript_id: startsWithQuery })
+      .limit(5)
+      .toArray()
+
+    return matchingTranscripts.map(transcript => ({
+      label: `${transcript.transcript_id}`,
+      url: `/gene/${transcript.gene_id}/transcript/${transcript.transcript_id}`,
+    }))
+  }
+
   const matchingGenes = await ctx.database.gnomad
     .collection('genes')
     .find({
