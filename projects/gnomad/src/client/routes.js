@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Help, HelpButton } from '@broad/help'
+import { normalizeRegionId, normalizeVariantId } from '@broad/utilities'
 
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'
@@ -70,7 +71,8 @@ const App = () => (
           render={({ location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
-            return <RegionPage datasetId={datasetId} regionId={match.params.regionId} />
+            const regionId = normalizeRegionId(match.params.regionId)
+            return <RegionPage datasetId={datasetId} regionId={regionId} />
           }}
         />
         <Route
@@ -79,7 +81,8 @@ const App = () => (
           render={({ location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
-            return <VariantPage datasetId={datasetId} variantId={match.params.variantId} />
+            const variantId = normalizeVariantId(match.params.variantId)
+            return <VariantPage datasetId={datasetId} variantId={variantId} />
           }}
         />
         <Route exact path="/about" component={AboutPage} />
