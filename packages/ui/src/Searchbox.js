@@ -147,7 +147,11 @@ export class Searchbox extends Component {
 
     return (
       <Autocomplete
-        getItemValue={item => item.label}
+        // Returning the input value for every item's display value makes Autocomplete's autohighlight
+        // work for results whose display value doesn't match the input text (for example, when
+        // normalized variant IDs are returned in search results).
+        // https://github.com/reactjs/react-autocomplete/blob/41388f7/lib/Autocomplete.js#L404-L410
+        getItemValue={() => inputValue}
         inputProps={{
           hasResults: options.length > 0,
           id,
