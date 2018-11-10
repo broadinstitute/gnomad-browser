@@ -41,6 +41,7 @@ describe('normalizeRegionId', () => {
     { input: 'chrX-23532-', normalized: 'X-23512-23552' },
     { input: '2-35324:', normalized: '2-35304-35344' },
     { input: 'y-712321-811232', normalized: 'Y-712321-811232' },
+    { input: '3-10', normalized: '3-0-30' },
   ]
 
   testCases.forEach(({ input, normalized }) => {
