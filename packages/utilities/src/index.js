@@ -11,3 +11,5 @@ export {
 } from './constants/chromosomes'
 
 export { tissueLabels } from './constants/gtex'
+
+export { isRegionId, normalizeRegionId, isVariantId, normalizeVariantId } from './identifiers'
