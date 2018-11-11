@@ -84,6 +84,7 @@ export class Searchbox extends Component {
   state = {
     inputValue: '',
     isFetching: false,
+    isOpen: false,
     options: [],
   }
 
@@ -116,6 +117,12 @@ export class Searchbox extends Component {
     this.fetchSearchResults(inputValue)
   }
 
+  onMenuVisibilityChange = isOpen => {
+    this.setState(state => ({
+      isOpen: isOpen || state.isFetching,
+    }))
+  }
+
   onSelect = (value, item) => {
     const { onSelect } = this.props
     this.setState({ inputValue: item.label })
@@ -143,7 +150,7 @@ export class Searchbox extends Component {
 
   render() {
     const { id, placeholder, width } = this.props
-    const { inputValue, options } = this.state
+    const { inputValue, isOpen, options } = this.state
 
     return (
       <Autocomplete
@@ -158,6 +165,7 @@ export class Searchbox extends Component {
           placeholder,
         }}
         items={options}
+        open={isOpen}
         renderInput={renderInput}
         renderItem={renderItem}
         renderMenu={this.renderMenu}
@@ -168,6 +176,7 @@ export class Searchbox extends Component {
           width,
         }}
         onChange={this.onChange}
+        onMenuVisibilityChange={this.onMenuVisibilityChange}
         onSelect={this.onSelect}
       />
     )
