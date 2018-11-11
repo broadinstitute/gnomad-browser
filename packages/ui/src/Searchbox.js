@@ -88,8 +88,10 @@ export class Searchbox extends Component {
     options: [],
   }
 
+  selectOnSearchResponse = false
+
   fetchSearchResults = debounce(query => {
-    const { fetchSearchResults } = this.props
+    const { fetchSearchResults, onSelect } = this.props
 
     if (this.searchRequest) {
       this.searchRequest.cancel()
@@ -106,15 +108,28 @@ export class Searchbox extends Component {
 
     this.searchRequest.then(results => {
       this.setState({ isFetching: false, options: results })
+      if (this.selectOnSearchResponse) {
+        onSelect(results[0].value, results[0])
+      }
+      this.selectOnSearchResponse = false
     })
   }, 400)
 
   onChange = (e, inputValue) => {
     this.setState({ inputValue })
+    // Set isFetching here instead of in fetchSearchResults so that the "Searching..." message's
+    // appearance is not delayed by the debounce on fetchSearchResults
     if (inputValue !== '') {
       this.setState({ isFetching: true })
+      this.selectOnSearchResponse = false
     }
     this.fetchSearchResults(inputValue)
+  }
+
+  onKeyDown = e => {
+    if (e.key === 'Enter') {
+      this.selectOnSearchResponse = true
+    }
   }
 
   onMenuVisibilityChange = isOpen => {
@@ -163,6 +178,7 @@ export class Searchbox extends Component {
           hasResults: options.length > 0,
           id,
           placeholder,
+          onKeyDown: this.onKeyDown,
         }}
         items={options}
         open={isOpen}
