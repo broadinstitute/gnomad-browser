@@ -20,7 +20,7 @@ module.exports = {
     categories: [
       { id: 'lof', label: 'LoF' },
       { id: 'mpc', label: 'MPC' },
-      { id: 'infrIndel', label: 'Infr Indel' },
+      { id: 'infrIndel', label: 'Inframe Indel' },
     ],
   },
   analysisGroups: {
