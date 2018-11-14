@@ -33,6 +33,25 @@ const formatPopulations = variantData =>
     })),
   }))
 
+const formatFilteringAlleleFrequency = fafData => {
+  const { total, ...populations } = fafData
+
+  let popmax = 0
+  let popmaxPopulation = null
+
+  Object.keys(populations).forEach(pop => {
+    if (fafData[pop] > popmax) {
+      popmax = fafData[pop]
+      popmaxPopulation = pop.toUpperCase()
+    }
+  })
+
+  return {
+    popmax,
+    popmax_population: popmaxPopulation,
+  }
+}
+
 const fetchGnomadVariantData = async (ctx, variantId, subset) => {
   const requests = [
     { index: 'gnomad_exomes_2_1', subset },
@@ -179,8 +198,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: exomeData.AN_adj.total,
           ac_hemi: exomeData.nonpar ? exomeData.AC_adj.male : 0,
           ac_hom: exomeData.nhomalt_adj.total,
-          faf95: exomeData.faf95_adj.total,
-          faf99: exomeData.faf99_adj.total,
+          faf95: formatFilteringAlleleFrequency(exomeData.faf95_adj),
+          faf99: formatFilteringAlleleFrequency(exomeData.faf99_adj),
           filters: exomeData.filters,
           populations: formatPopulations(exomeData),
           qualityMetrics: {
@@ -208,8 +227,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: genomeData.AN_adj.total,
           ac_hemi: genomeData.nonpar ? genomeData.AC_adj.male : 0,
           ac_hom: genomeData.nhomalt_adj.total,
-          faf95: genomeData.faf95_adj.total,
-          faf99: genomeData.faf99_adj.total,
+          faf95: formatFilteringAlleleFrequency(genomeData.faf95_adj),
+          faf99: formatFilteringAlleleFrequency(genomeData.faf99_adj),
           filters: genomeData.filters,
           populations: formatPopulations(genomeData),
           qualityMetrics: {

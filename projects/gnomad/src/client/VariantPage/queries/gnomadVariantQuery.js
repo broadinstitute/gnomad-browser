@@ -28,7 +28,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         an
         ac_hemi
         ac_hom
-        faf95
+        faf95 {
+          popmax
+          popmax_population
+        }
         filters
         populations {
           id
@@ -112,7 +115,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         an
         ac_hemi
         ac_hom
-        faf95
+        faf95 {
+          popmax
+          popmax_population
+        }
         filters
         populations {
           id

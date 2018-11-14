@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { Badge } from '@broad/ui'
+import { Badge, TooltipAnchor } from '@broad/ui'
 
 import QCFilter from '../QCFilter'
 
@@ -27,6 +27,10 @@ const Table = styled.table`
   }
 `
 
+const NoWrap = styled.span`
+  white-space: nowrap;
+`
+
 const renderGnomadVariantFlag = (variant, exomeOrGenome) => {
   if (!variant[exomeOrGenome]) {
     return <Badge level="error">No variant</Badge>
@@ -37,6 +41,40 @@ const renderGnomadVariantFlag = (variant, exomeOrGenome) => {
   }
   return filters.map(filter => <QCFilter key={filter} filter={filter} />)
 }
+
+const POPULATION_NAMES = {
+  AFR: 'African',
+  AMR: 'Latino',
+  ASJ: 'Ashkenazi Jewish',
+  EAS: 'East Asian',
+  FIN: 'European (Finnish)',
+  NFE: 'European (non-Finnish)',
+  OTH: 'Other',
+  SAS: 'South Asian',
+}
+
+const TextTooltip = ({ tooltip }) => <span>{tooltip}</span>
+
+const FilteringAlleleFrequencyValue = styled.span`
+  border-bottom: 1px dashed #000;
+`
+
+const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation }) => {
+  if (popmaxPopulation) {
+    return (
+      <TooltipAnchor
+        childRefPropName="innerRef"
+        tooltip={POPULATION_NAMES[popmaxPopulation]}
+        tooltipComponent={TextTooltip}
+      >
+        <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+      </TooltipAnchor>
+    )
+  }
+  return <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+}
+
+const renderFilteringAlleleFrequency = faf => <FilteringAlleleFrequency {...faf} />
 
 export const GnomadVariantOccurrenceTable = ({ variant }) => {
   const isPresentInExome = Boolean(variant.exome)
@@ -89,14 +127,14 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
         </tr>
         <tr>
           <th scope="row">
-            Filtering AF <QuestionMark display="inline" topic="faf" />
+            <NoWrap>
+              Popmax Filtering AF <QuestionMark display="inline" padding="0" topic="faf" />
+            </NoWrap>
             <br />
             (95% confidence)
           </th>
-          <td>{isPresentInExome && variant.exome.faf95 && variant.exome.faf95.toPrecision(4)}</td>
-          <td>
-            {isPresentInGenome && variant.genome.faf95 && variant.genome.faf95.toPrecision(4)}
-          </td>
+          <td>{isPresentInExome && renderFilteringAlleleFrequency(variant.exome.faf95)}</td>
+          <td>{isPresentInGenome && renderFilteringAlleleFrequency(variant.genome.faf95)}</td>
           <td />
         </tr>
       </tbody>
@@ -109,12 +147,18 @@ GnomadVariantOccurrenceTable.propTypes = {
     exome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
-      faf95: PropTypes.number,
+      faf95: PropTypes.shape({
+        popmax: PropTypes.number.isRequired,
+        popmax_population: PropTypes.string,
+      }).isRequired,
     }),
     genome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
-      faf95: PropTypes.number,
+      faf95: PropTypes.shape({
+        popmax: PropTypes.number.isRequired,
+        popmax_population: PropTypes.string,
+      }).isRequired,
     }),
   }).isRequired,
 }
