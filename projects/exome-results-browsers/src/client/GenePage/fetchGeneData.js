@@ -12,6 +12,7 @@ export default geneName => {
         gene_id
         gene_name
         gene_description
+        analysis_group
         categories {
           id
           xcase
