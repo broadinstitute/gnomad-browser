@@ -17,6 +17,7 @@ module.exports = {
     },
   },
   geneResults: {
+    resultsPageHeading: 'Exome meta-analysis results',
     categories: [{ id: 'lof', label: 'LoF' }, { id: 'mpc', label: 'MPC' }],
   },
   analysisGroups: {
