@@ -1,7 +1,7 @@
 module.exports = {
-  pageTitle: 'Epi25',
-  navBarTitle: 'Epi25',
-  navBarColor: 'red',
+  pageTitle: 'Epi25 WES browser',
+  navBarTitle: 'Epi25 WES browser',
+  navBarColor: '#4e3c81',
   elasticsearch: {
     analysisGroups: {
       index: 'epi_exome_variants_groups_180925',
