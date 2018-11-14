@@ -86,6 +86,14 @@ const GnomadVariantQualityMetricsType = new GraphQLObjectType({
   },
 })
 
+const GnomadVariantFilteringAlleleFrequencyType = new GraphQLObjectType({
+  name: 'GnomadVariantFilteringAlleleFrequency',
+  fields: {
+    popmax: { type: GraphQLFloat },
+    popmax_population: { type: GraphQLString },
+  },
+})
+
 const GnomadVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadVariantDetails',
   interfaces: [VariantInterface],
@@ -116,8 +124,8 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           an: { type: GraphQLInt },
           ac_hemi: { type: GraphQLInt },
           ac_hom: { type: GraphQLInt },
-          faf95: { type: GraphQLFloat },
-          faf99: { type: GraphQLFloat },
+          faf95: { type: GnomadVariantFilteringAlleleFrequencyType },
+          faf99: { type: GnomadVariantFilteringAlleleFrequencyType },
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(GnomadPopulationType) },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
@@ -150,8 +158,8 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           an: { type: GraphQLInt },
           ac_hemi: { type: GraphQLInt },
           ac_hom: { type: GraphQLInt },
-          faf95: { type: GraphQLFloat },
-          faf99: { type: GraphQLFloat },
+          faf95: { type: GnomadVariantFilteringAlleleFrequencyType },
+          faf99: { type: GnomadVariantFilteringAlleleFrequencyType },
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(GnomadPopulationType) },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
