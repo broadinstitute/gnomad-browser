@@ -25,7 +25,7 @@ const geneResultsQuery = `
 
 const OverallGeneResultsPage = () => (
   <Page>
-    <PageHeading>Exome meta-analysis results</PageHeading>
+    <PageHeading>{BROWSER_CONFIG.geneResults.resultsPageHeading}</PageHeading>
     <Query query={geneResultsQuery}>
       {({ data, error, loading }) => {
         if (loading) {

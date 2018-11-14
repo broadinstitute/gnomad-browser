@@ -17,6 +17,7 @@ module.exports = {
     },
   },
   geneResults: {
+    resultsPageHeading: 'Epi25 WES: gene burden results',
     categories: [
       { id: 'lof', label: 'LoF' },
       { id: 'mpc', label: 'MPC' },
