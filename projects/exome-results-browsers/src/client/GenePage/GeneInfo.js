@@ -61,8 +61,8 @@ const GeneInfo = ({ geneData, variantCount }) => {
           <Tabs
             tabs={[
               {
-                id: 'overall',
-                label: 'Overall',
+                id: overallGeneResult.analysis_group,
+                label: overallGeneResult.analysis_group,
                 render: () => <GeneResultsTable geneResult={overallGeneResult} />,
               },
               ...groupGeneResults.map(result => ({
