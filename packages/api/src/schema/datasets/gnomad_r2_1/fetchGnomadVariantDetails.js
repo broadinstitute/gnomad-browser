@@ -33,21 +33,30 @@ const formatPopulations = variantData =>
     })),
   }))
 
-const formatFilteringAlleleFrequency = fafData => {
-  const { total, ...populations } = fafData
+const formatFilteringAlleleFrequency = (variantData, fafField) => {
+  const fafData = variantData[fafField]
+  const { total, ...populationFAFs } = variantData[fafField]
 
-  let popmax = 0
+  let popmaxFAF = -Infinity
   let popmaxPopulation = null
 
-  Object.keys(populations).forEach(pop => {
-    if (fafData[pop] > popmax) {
-      popmax = fafData[pop]
-      popmaxPopulation = pop.toUpperCase()
-    }
-  })
+  Object.keys(populationFAFs)
+    // gnomAD 2.1.0 calculated FAF for singleton variants.
+    // This filters out those invalid FAFs.
+    .filter(popId => variantData.AC_adj[popId].total > 1)
+    .forEach(popId => {
+      if (populationFAFs[popId] > popmaxFAF) {
+        popmaxFAF = fafData[popId]
+        popmaxPopulation = popId.toUpperCase()
+      }
+    })
+
+  if (popmaxFAF === -Infinity) {
+    popmaxFAF = null
+  }
 
   return {
-    popmax,
+    popmax: popmaxFAF,
     popmax_population: popmaxPopulation,
   }
 }
@@ -198,8 +207,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: exomeData.AN_adj.total,
           ac_hemi: exomeData.nonpar ? exomeData.AC_adj.male : 0,
           ac_hom: exomeData.nhomalt_adj.total,
-          faf95: formatFilteringAlleleFrequency(exomeData.faf95_adj),
-          faf99: formatFilteringAlleleFrequency(exomeData.faf99_adj),
+          faf95: formatFilteringAlleleFrequency(exomeData, 'faf95_adj'),
+          faf99: formatFilteringAlleleFrequency(exomeData, 'faf99_adj'),
           filters: exomeData.filters,
           populations: formatPopulations(exomeData),
           qualityMetrics: {
@@ -227,8 +236,8 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           an: genomeData.AN_adj.total,
           ac_hemi: genomeData.nonpar ? genomeData.AC_adj.male : 0,
           ac_hom: genomeData.nhomalt_adj.total,
-          faf95: formatFilteringAlleleFrequency(genomeData.faf95_adj),
-          faf99: formatFilteringAlleleFrequency(genomeData.faf99_adj),
+          faf95: formatFilteringAlleleFrequency(genomeData, 'faf95_adj'),
+          faf99: formatFilteringAlleleFrequency(genomeData, 'faf99_adj'),
           filters: genomeData.filters,
           populations: formatPopulations(genomeData),
           qualityMetrics: {

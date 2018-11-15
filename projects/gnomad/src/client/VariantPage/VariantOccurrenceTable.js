@@ -60,18 +60,33 @@ const FilteringAlleleFrequencyValue = styled.span`
 `
 
 const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation }) => {
-  if (popmaxPopulation) {
-    return (
-      <TooltipAnchor
-        childRefPropName="innerRef"
-        tooltip={POPULATION_NAMES[popmaxPopulation]}
-        tooltipComponent={TextTooltip}
-      >
-        <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
-      </TooltipAnchor>
-    )
+  if (popmax === null) {
+    return <span>—</span>
   }
-  return <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+
+  if (popmax === 0) {
+    return <span>0</span>
+  }
+
+  return (
+    <TooltipAnchor
+      childRefPropName="innerRef"
+      tooltip={POPULATION_NAMES[popmaxPopulation]}
+      tooltipComponent={TextTooltip}
+    >
+      <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+    </TooltipAnchor>
+  )
+}
+
+FilteringAlleleFrequency.propTypes = {
+  popmax: PropTypes.number,
+  popmax_population: PropTypes.string,
+}
+
+FilteringAlleleFrequency.defaultProps = {
+  popmax: null,
+  popmax_population: null,
 }
 
 const renderFilteringAlleleFrequency = faf => <FilteringAlleleFrequency {...faf} />
@@ -148,7 +163,7 @@ GnomadVariantOccurrenceTable.propTypes = {
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
       faf95: PropTypes.shape({
-        popmax: PropTypes.number.isRequired,
+        popmax: PropTypes.number,
         popmax_population: PropTypes.string,
       }).isRequired,
     }),
@@ -156,7 +171,7 @@ GnomadVariantOccurrenceTable.propTypes = {
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
       faf95: PropTypes.shape({
-        popmax: PropTypes.number.isRequired,
+        popmax: PropTypes.number,
         popmax_population: PropTypes.string,
       }).isRequired,
     }),
