@@ -18,7 +18,7 @@ export const ReferenceList = ({ variant }) => {
     <List>
       <ListItem>
         {variant.rsid && variant.rsid !== '.' ? (
-          <ExternalLink href={dbsnpURL}>dbSNP</ExternalLink>
+          <ExternalLink href={dbsnpURL}>dbSNP ({variant.rsid})</ExternalLink>
         ) : (
           'Not found in dbSNP'
         )}
