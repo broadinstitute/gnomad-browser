@@ -25,8 +25,8 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
     stop,
   } = gene
 
-  const ensemblGeneUrl = `http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
-  const ensemblTranscriptUrl = `http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript ||
+  const ensemblGeneUrl = `http://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
+  const ensemblTranscriptUrl = `http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript ||
     canonicalTranscript}`
   const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start -
     1}-${stop}`
