@@ -51,3 +51,36 @@ export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
 
   return variants
 }
+
+export const fetchGnomadMNVsByVariantId = async (ctx, variantId) => {
+  const response = await ctx.database.elastic.search({
+    index: 'gnomad_exome_mnvs_2_1',
+    type: 'mnv',
+    _source: ['AC_mnv', 'category', 'snp1_variant_id', 'snp2_variant_id'],
+    body: {
+      query: {
+        bool: {
+          filter: {
+            bool: {
+              should: [
+                { term: { snp1_variant_id: variantId } },
+                { term: { snp2_variant_id: variantId } },
+              ],
+            },
+          },
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(hit => {
+    const mnv = hit._source // eslint-disable-line no-underscore-dangle
+
+    const otherVariant = mnv.snp1_variant_id === variantId ? 'snp2' : 'snp1'
+    return {
+      ac: mnv.AC_mnv,
+      category: mnv.category,
+      otherVariantId: mnv[`${otherVariant}_variant_id`],
+    }
+  })
+}
