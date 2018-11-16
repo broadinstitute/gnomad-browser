@@ -57,3 +57,52 @@ displayed in the browser. Replace `$HT_URL` with the location to store the Hail 
    ```shell
    cluster stop load-exac
    ```
+
+## Supporting data
+
+### gnomAD multi-nucleotide variants
+
+1. Create a Dataproc cluster using [cloudtools](https://pypi.org/project/cloudtools/).
+   ```shell
+   cluster start \
+     --packages=elasticsearch \
+     --max-idle=30m \
+     --num-workers=2 \
+     gnomad-mnvs
+   ```
+
+2. Download https://github.com/macarthur-lab/hail-elasticsearch-pipelines and zip the contents.
+This repository contains helper functions used in the following Hail scripts.
+   ```shell
+   git clone https://github.com/macarthur-lab/hail-elasticsearch-pipelines.git
+   cd hail-elasticsearch-pipelines
+   zip -r hail_scripts.zip hail_scripts
+   ```
+
+3. Prepare the MNV data for the browser. Replace `$HT_URL` with the location to store the Hail table.
+   ```shell
+   gcloud dataproc jobs submit pyspark \
+     --cluster=gnomad-mnvs \
+     --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
+     ./projects/gnomad/data/prepare_gnomad_mnvs.py -- \
+     --input-url=gs://gnomad-qingbowang/MNV/to_public/gnomad_mnv_exome.ht \
+     --output-url=$HT_URL
+   ```
+
+4. Load the Hail table into Elasticsearch. Use the `$HT_URL` from step 3 and replace
+`$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
+   ```shell
+   gcloud dataproc jobs submit pyspark \
+      --cluster=gnomad-mnvs \
+      --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
+      ./projects/gnomad/data/export_ht_to_es.py -- \
+      --ht-url=$HT_URL \
+      --host=$ELASTICSEARCH_IP \
+      --index-name=gnomad_exome_mnvs_2_1 \
+      --index-type=mnv
+   ```
+
+5. Tear down Dataproc cluster
+   ```shell
+   cluster stop gnomad-mnvs
+   ```
