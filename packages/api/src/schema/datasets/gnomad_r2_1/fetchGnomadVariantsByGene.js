@@ -1,6 +1,10 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
 import { lookupExonsByGeneId } from '../../types/exon'
+import {
+  annotateVariantsWithMNVFlag,
+  fetchGnomadMNVsByIntervals,
+} from './gnomadMultiNucleotideVariants'
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import POPULATIONS from './populations'
 
@@ -137,7 +141,13 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
     })
   )
 
-  return mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+  const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+
+  // TODO: This can be fetched in parallel with exome/genome data
+  const mnvs = await fetchGnomadMNVsByIntervals(ctx, paddedRegions)
+  annotateVariantsWithMNVFlag(combinedVariants, mnvs)
+
+  return combinedVariants
 }
 
 export default fetchGnomadVariantsByGene

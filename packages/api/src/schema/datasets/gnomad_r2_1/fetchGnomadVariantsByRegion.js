@@ -1,4 +1,9 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
+import { getXpos } from '../../../utilities/variant'
+import {
+  annotateVariantsWithMNVFlag,
+  fetchGnomadMNVsByIntervals,
+} from './gnomadMultiNucleotideVariants'
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import POPULATIONS from './populations'
 
@@ -108,7 +113,15 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
     })
   )
 
-  return mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+  const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+
+  // TODO: This can be fetched in parallel with exome/genome data
+  const mnvs = await fetchGnomadMNVsByIntervals(ctx, [
+    { xstart: getXpos(chrom, start), xstop: getXpos(chrom, stop) },
+  ])
+  annotateVariantsWithMNVFlag(combinedVariants, mnvs)
+
+  return combinedVariants
 }
 
 export default fetchGnomadVariantsByRegion
