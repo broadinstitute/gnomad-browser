@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Link as StyledLink, List, ListItem, Page, SectionHeading } from '@broad/ui'
+import { Badge, Link as StyledLink, List, ListItem, Page, SectionHeading } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -35,6 +35,12 @@ const VariantDetailsContainer = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+`
+
+const MNVList = styled.ul`
+  li {
+    margin-bottom: 0.5em;
+  }
 `
 
 const variantPageDatasets = [
@@ -120,6 +126,26 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {variant.multiNucleotideVariants.length > 0 && (
+                <div>
+                  <MNVList>
+                    {variant.multiNucleotideVariants.map(({ ac, category, otherVariantId }) => (
+                      <li key={otherVariantId}>
+                        {category === 'Unchanged' ? (
+                          <Badge level="info">Note</Badge>
+                        ) : (
+                          <Badge level="warning">Warning</Badge>
+                        )}{' '}
+                        This variant is found in phase with{' '}
+                        <Link to={`/variant/${otherVariantId}`}>{otherVariantId}</Link> in {ac}{' '}
+                        individual(s)
+                        {category !== 'Unchanged' && ', altering its functional interpretation'}.
+                      </li>
+                    ))}
+                  </MNVList>
                 </div>
               )}
             </ResponsiveSection>
