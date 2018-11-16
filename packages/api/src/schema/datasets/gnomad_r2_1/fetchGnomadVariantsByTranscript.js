@@ -1,17 +1,29 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { lookupExonsByTranscriptId } from '../../types/exon'
+import {
+  annotateVariantsWithMNVFlag,
+  fetchGnomadMNVsByIntervals,
+} from './gnomadMultiNucleotideVariants'
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import POPULATIONS from './populations'
 
 const fetchGnomadVariantsByTranscript = async (ctx, transcriptId, gene, subset) => {
-  const geneExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
-  const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
+  const transcriptExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
+  const filteredRegions = transcriptExons.filter(exon => exon.feature_type === 'CDS')
   const padding = 75
-  const rangeQueries = filteredRegions.map(region => ({
+  const paddedRegions = filteredRegions.map(r => ({
+    ...r,
+    start: r.start - padding,
+    stop: r.stop + padding,
+    xstart: r.xstart - padding,
+    xstop: r.xstop + padding,
+  }))
+
+  const rangeQueries = paddedRegions.map(region => ({
     range: {
       pos: {
-        gte: region.start - padding,
-        lte: region.stop + padding,
+        gte: region.start,
+        lte: region.stop,
       },
     },
   }))
@@ -123,7 +135,13 @@ const fetchGnomadVariantsByTranscript = async (ctx, transcriptId, gene, subset) 
     })
   )
 
-  return mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+  const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
+
+  // TODO: This can be fetched in parallel with exome/genome data
+  const mnvs = await fetchGnomadMNVsByIntervals(ctx, paddedRegions)
+  annotateVariantsWithMNVFlag(combinedVariants, mnvs)
+
+  return combinedVariants
 }
 
 export default fetchGnomadVariantsByTranscript
