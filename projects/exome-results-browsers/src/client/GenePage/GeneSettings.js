@@ -3,10 +3,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { currentGene, geneData, exonPadding } from '@broad/redux-genes'
 import {
   actions as variantActions,
-  selectedVariantDataset,
   variantDeNovoFilter,
   variantFilter,
 } from '@broad/redux-variants'
@@ -118,10 +116,6 @@ GeneSettings.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  currentGene: currentGene(state),
-  exonPadding: exonPadding(state),
-  selectedVariantDataset: selectedVariantDataset(state),
-  geneData: geneData(state),
   variantDeNovoFilter: variantDeNovoFilter(state),
   variantFilter: variantFilter(state),
 })
