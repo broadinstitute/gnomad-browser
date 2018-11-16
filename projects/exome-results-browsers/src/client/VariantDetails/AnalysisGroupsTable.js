@@ -25,8 +25,8 @@ export function BaseAnalysisGroupsTable({ groups }) {
           <TableCell width={'60px'}>Beta</TableCell>
         </TableHeader>
         {groups.map(group => (
-          <TableRow key={group.group}>
-            <TableCell width={'200px'}>{group.group}</TableCell>
+          <TableRow key={group.analysis_group}>
+            <TableCell width={'200px'}>{group.analysis_group}</TableCell>
             <TableCell width={'60px'}>{group.ac_case}</TableCell>
             <TableCell width={'60px'}>{group.an_case}</TableCell>
             <TableCell width={'60px'}>{group.ac_ctrl}</TableCell>
@@ -37,8 +37,8 @@ export function BaseAnalysisGroupsTable({ groups }) {
             <TableCell width={'60px'}>
               {group.an_ctrl === 0 ? 0 : formatExponential(group.ac_ctrl / group.an_ctrl)}
             </TableCell>
-            <TableCell width={'60px'}>{group.pval}</TableCell>
-            <TableCell width={'60px'}>{group.beta}</TableCell>
+            <TableCell width={'60px'}>{group.p}</TableCell>
+            <TableCell width={'60px'}>{group.se}</TableCell>
           </TableRow>
         ))}
       </TableRows>
@@ -49,13 +49,13 @@ export function BaseAnalysisGroupsTable({ groups }) {
 BaseAnalysisGroupsTable.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
-      group: PropTypes.string.isRequired,
+      analysis_group: PropTypes.string.isRequired,
       ac_case: PropTypes.number.isRequired,
       an_case: PropTypes.number.isRequired,
       ac_ctrl: PropTypes.number.isRequired,
       an_ctrl: PropTypes.number.isRequired,
-      pval: PropTypes.number,
-      beta: PropTypes.number,
+      p: PropTypes.number,
+      se: PropTypes.number,
     })
   ).isRequired,
 }
@@ -63,18 +63,13 @@ BaseAnalysisGroupsTable.propTypes = {
 const analysisGroupsQuery = gql`
   query AnalysisGroups($variantId: String) {
     groups: analysisGroups(variant_id: $variantId) {
-      pos
-      xpos
-      pval
+      analysis_group
       ac_case
-      contig
-      beta
-      variant_id
-      an_ctrl
       an_case
-      group
       ac_ctrl
-      allele_freq
+      an_ctrl
+      p
+      se
     }
   }
 `
