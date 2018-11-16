@@ -6,60 +6,36 @@ export const VariantType = new GraphQLObjectType({
     ac: { type: GraphQLInt },
     ac_case: { type: GraphQLInt },
     ac_ctrl: { type: GraphQLInt },
+    af: { type: GraphQLFloat },
     af_case: { type: GraphQLFloat },
     af_ctrl: { type: GraphQLFloat },
-    allele_freq: {
-      type: GraphQLFloat,
-      resolve: obj => obj.af,
-    },
     an: { type: GraphQLInt },
     an_case: { type: GraphQLInt },
     an_ctrl: { type: GraphQLInt },
     cadd: { type: GraphQLFloat },
     canonical_transcript_id: { type: GraphQLString },
-    chrom: {
-      type: GraphQLString,
-      resolve: obj => obj.contig,
-    },
+    chrom: { type: GraphQLString },
     comment: { type: GraphQLString },
-    consequence: {
-      type: GraphQLString,
-      resolve: obj => obj.csq_analysis,
-    },
+    consequence: { type: GraphQLString },
     csq_analysis: { type: GraphQLString },
     csq_canonical: { type: GraphQLString },
     csq_worst: { type: GraphQLString },
-    estimate: {
-      type: GraphQLFloat,
-      resolve: obj => obj.est,
-    },
+    estimate: { type: GraphQLFloat },
     flags: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
-    hgvsc_canonical: {
-      type: GraphQLString,
-      resolve: obj => (obj.hgvsc_canonical ? obj.hgvsc_canonical.split(':')[1] : null),
-    },
+    hgvsc_canonical: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
-    hgvsp_canonical: {
-      type: GraphQLString,
-      resolve: obj => (obj.hgvsp_canonical ? obj.hgvsp_canonical.split(':')[1] : null),
-    },
+    hgvsp_canonical: { type: GraphQLString },
     i2: { type: GraphQLInt },
     in_analysis: { type: GraphQLBoolean },
     mpc: { type: GraphQLFloat },
     n_analysis_groups: { type: GraphQLInt },
-    ac_denovo: {
-      type: GraphQLInt,
-      resolve: obj => obj.n_denovos,
-    },
+    ac_denovo: { type: GraphQLInt },
     polyphen: { type: GraphQLString },
     pos: { type: GraphQLInt },
-    pval_meta: {
-      type: GraphQLFloat,
-      resolve: obj => obj.pmeta,
-    },
+    pval_meta: { type: GraphQLFloat },
     qp: { type: GraphQLInt },
     se: { type: GraphQLInt },
     source: { type: GraphQLString },
@@ -82,5 +58,18 @@ export const fetchVariantsByGeneId = async (ctx, geneId) => {
       },
     },
   })
-  return response.hits.hits.map(hit => hit._source) // eslint-disable-line no-underscore-dangle
+  return response.hits.hits.map(hit => {
+    const doc = hit._source // eslint-disable-line no-underscore-dangle
+
+    return {
+      ...doc,
+      ac_denovo: doc.n_denovos,
+      chrom: doc.contig,
+      consequence: doc.csq_analysis,
+      hgvsc_canonical: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
+      hgvsp_canonical: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
+      estimate: doc.est,
+      pval_meta: doc.pmeta,
+    }
+  })
 }
