@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { actions as variantActions, singleVariantData, focusedVariant } from '@broad/redux-variants'
 import { InfoModal } from '@broad/ui'
+import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
 import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
@@ -58,26 +59,6 @@ const Link = styled.a`
   cursor: pointer;
   text-decoration: none;
 `
-
-function formatConsequence(abbreviation) {
-  if (!abbreviation) {
-    return ''
-  }
-  switch (abbreviation) {
-    case 'mis':
-      return 'Missense'
-    case 'ns':
-      return 'Inframe indel'
-    case 'syn':
-      return 'Synonymous'
-    case 'splice':
-      return 'Splice region'
-    case 'lof':
-      return 'Loss of function'
-    default:
-      return abbreviation
-  }
-}
 
 function formatPolyPhen(abbreviation) {
   if (!abbreviation) {
@@ -156,7 +137,7 @@ const Variant = ({ variant }) => {
             <VariantAttribute label="HGVSc">{variant.hgvsc_canonical}</VariantAttribute>
             <VariantAttribute label="HGVSp">{variant.hgvsp_canonical}</VariantAttribute>
             <VariantAttribute label="Consequence">
-              {formatConsequence(variant.consequence)}
+              {getLabelForConsequenceTerm(variant.consequence)}
             </VariantAttribute>
             <VariantAttribute label="MPC">{variant.mpc}</VariantAttribute>
             <VariantAttribute label="CADD">{variant.cadd}</VariantAttribute>
