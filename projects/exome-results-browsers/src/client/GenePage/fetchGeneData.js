@@ -38,9 +38,10 @@ export default geneName => {
         ac
         ac_case
         ac_ctrl
+        ac_denovo
+        allele_freq: af
         af_case
         af_ctrl
-        allele_freq
         an
         an_case
         an_ctrl
@@ -64,7 +65,6 @@ export default geneName => {
         in_analysis
         mpc
         n_analysis_groups
-        ac_denovo
         polyphen
         pos
         pval_meta
