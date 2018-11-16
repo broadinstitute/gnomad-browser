@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { actions as variantActions, singleVariantData, focusedVariant } from '@broad/redux-variants'
-import { InfoModal } from '@broad/ui'
+import { ExternalLink, InfoModal } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
@@ -54,12 +54,6 @@ const TranscriptAttributes = styled.dl`
   }
 `
 
-const Link = styled.a`
-  color: rgba(70, 130, 180, 1);
-  cursor: pointer;
-  text-decoration: none;
-`
-
 function formatPolyPhen(abbreviation) {
   if (!abbreviation) {
     return ''
@@ -99,9 +93,9 @@ const Variant = ({ variant }) => {
 
   return (
     <VariantContainer>
-      <Link href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>
+      <ExternalLink href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>
         View in gnomAD
-      </Link>
+      </ExternalLink>
       <Columns>
         <Column>
           <VariantAttributeList label="Statistics">
