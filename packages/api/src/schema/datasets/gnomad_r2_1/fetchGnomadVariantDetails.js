@@ -1,3 +1,5 @@
+import { fetchGnomadMNVsByVariantId } from './gnomadMultiNucleotideVariants'
+
 const formatHistogram = histogramData => ({
   bin_edges: histogramData.bin_edges.split('|').map(s => Number(s)),
   bin_freq: histogramData.bin_freq.split('|').map(s => Number(s)),
@@ -169,10 +171,13 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
 }
 
 const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
-  const [{ exomeData, genomeData }, colocatedVariants] = await Promise.all([
-    fetchGnomadVariantData(ctx, variantId, subset),
-    fetchColocatedVariants(ctx, variantId, subset),
-  ])
+  const [{ exomeData, genomeData }, colocatedVariants, multiNucleotideVariants] = await Promise.all(
+    [
+      fetchGnomadVariantData(ctx, variantId, subset),
+      fetchColocatedVariants(ctx, variantId, subset),
+      fetchGnomadMNVsByVariantId(ctx, variantId),
+    ]
+  )
 
   if (!exomeData && !genomeData) {
     throw Error('Variant not found')
@@ -199,6 +204,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
       hom: formatHistogram(sharedData.gnomad_age_hist_hom),
     },
     colocatedVariants,
+    multiNucleotideVariants,
     exome: exomeData
       ? {
           // Include variant fields so that the reads data resolver can access them.

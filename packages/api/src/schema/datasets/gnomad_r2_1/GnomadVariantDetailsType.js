@@ -94,6 +94,15 @@ const GnomadVariantFilteringAlleleFrequencyType = new GraphQLObjectType({
   },
 })
 
+const GnomadMultiNucleotideVariantType = new GraphQLObjectType({
+  name: 'GnomadMultiNucleotideVariant',
+  fields: {
+    ac: { type: GraphQLInt },
+    category: { type: GraphQLString },
+    otherVariantId: { type: GraphQLString },
+  },
+})
+
 const GnomadVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadVariantDetails',
   interfaces: [VariantInterface],
@@ -116,6 +125,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
       }),
     },
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
+    multiNucleotideVariants: { type: new GraphQLList(GnomadMultiNucleotideVariantType) },
     exome: {
       type: new GraphQLObjectType({
         name: 'GnomadVariantDetailsExomeData',
