@@ -23,6 +23,11 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
         }
       }
       colocatedVariants
+      multiNucleotideVariants {
+        ac
+        category
+        otherVariantId
+      }
       exome {
         ac
         an

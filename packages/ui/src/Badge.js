@@ -24,6 +24,7 @@ const BADGE_COLOR = {
 }
 
 const BadgeWrapper = styled.span`
+  display: inline-block;
   padding: 0.25em 0.4em;
   border: 1px solid #000;
   border-radius: 0.3em;
