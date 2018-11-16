@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { geneData, exonPadding } from '@broad/redux-genes'
+import { geneData } from '@broad/redux-genes'
 import { finalFilteredVariants } from '@broad/redux-variants'
 import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
@@ -39,7 +39,7 @@ const attributeConfig = {
 
 class GeneViewer extends PureComponent {
   render() {
-    const { gene, visibleVariants, exonPadding, screenSize } = this.props
+    const { gene, visibleVariants, screenSize } = this.props
 
     const smallScreen = screenSize.width < 900
     const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
@@ -65,7 +65,7 @@ class GeneViewer extends PureComponent {
       <div>
         <RegionViewer
           width={regionViewerWidth}
-          padding={exonPadding}
+          padding={75}
           regions={canonicalExons}
           regionAttributes={attributeConfig}
           leftPanelWidth={100}
@@ -84,7 +84,6 @@ class GeneViewer extends PureComponent {
 }
 
 GeneViewer.propTypes = {
-  exonPadding: PropTypes.number.isRequired,
   gene: PropTypes.object.isRequired,
   screenSize: PropTypes.object.isRequired,
   visibleVariants: PropTypes.any.isRequired,
@@ -92,7 +91,6 @@ GeneViewer.propTypes = {
 
 export default connect(state => ({
   gene: geneData(state),
-  exonPadding: exonPadding(state),
   visibleVariants: finalFilteredVariants(state),
   screenSize: screenSize(state),
 }))(GeneViewer)

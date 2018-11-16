@@ -34,9 +34,8 @@ const appSettings = {
     index: null,
   },
   projectDefaults: {
-    startingGene: '',
+    startingGene: null,
     startingVariant: null,
-    startingPadding: 75,
     startingVariantDataset: 'variants',
     startingQcFilter: false,
   },
