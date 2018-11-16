@@ -11,7 +11,6 @@ import { TranscriptType, fetchTranscriptById, fetchTranscriptsByGeneId } from '.
 export const GeneType = new GraphQLObjectType({
   name: 'Gene',
   fields: {
-    _id: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
     full_gene_name: { type: GraphQLString },
