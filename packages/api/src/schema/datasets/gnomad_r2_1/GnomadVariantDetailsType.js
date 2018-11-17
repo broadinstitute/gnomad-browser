@@ -10,6 +10,7 @@ import {
 import { VariantInterface } from '../../types/variant'
 import { resolveReads, ReadsType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
+import { GnomadMultiNucleotideVariantType } from './gnomadMultiNucleotideVariants'
 
 const HistogramType = new GraphQLObjectType({
   name: 'Histogram',
@@ -91,15 +92,6 @@ const GnomadVariantFilteringAlleleFrequencyType = new GraphQLObjectType({
   fields: {
     popmax: { type: GraphQLFloat },
     popmax_population: { type: GraphQLString },
-  },
-})
-
-const GnomadMultiNucleotideVariantType = new GraphQLObjectType({
-  name: 'GnomadMultiNucleotideVariant',
-  fields: {
-    ac: { type: GraphQLInt },
-    category: { type: GraphQLString },
-    otherVariantId: { type: GraphQLString },
   },
 })
 
