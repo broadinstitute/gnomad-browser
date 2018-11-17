@@ -165,6 +165,9 @@ class GnomadMultiNucleotideVariantsSection extends Component {
 
     return (
       <div>
+        <p>
+          <strong>This variant&apos;s consequence may be affected by other variants:</strong>
+        </p>
         <MNVList>
           {multiNucleotideVariants.map(mnv => {
             const { ac, category, otherVariantId } = mnv
