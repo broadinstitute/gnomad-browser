@@ -8,120 +8,62 @@ import {
   variantDeNovoFilter,
   variantFilter,
 } from '@broad/redux-variants'
-import { MaterialButtonRaised, Search } from '@broad/ui'
+import { Checkbox, ConsequenceCategoriesControl, Search } from '@broad/ui'
 
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 1em;
 `
 
-const VariantCategoryButton = MaterialButtonRaised.extend`
-  margin-right: 10px;
-  background-color: ${({ isActive }) =>
-    isActive ? 'rgba(10, 121, 191, 0.3)' : 'rgba(10, 121, 191, 0.1)'};
-
-  &:hover {
-    background-color: rgba(10, 121, 191, 0.3);
-  }
-
-  &:active {
-    background-color: rgba(10, 121, 191, 0.5);
-  }
-`
-
 const GeneSettings = ({
+  consequenceFilter,
+  deNovoFilter,
   searchVariants,
-  setVariantFilter,
-  toggleVariantDeNovoFilter,
-  variantDeNovoFilter,
-  variantFilter,
+  setConsequenceFilter,
+  toggleDeNovoFilter,
 }) => (
   <SettingsWrapper>
-    <div>
-      <VariantCategoryButton
-        isActive={
-          variantFilter.lof &&
-          variantFilter.missense &&
-          variantFilter.synonymous &&
-          variantFilter.other
-        }
-        onClick={() =>
-          setVariantFilter({
-            lof: true,
-            missense: true,
-            synonymous: true,
-            other: true,
-          })
-        }
-      >
-        All
-      </VariantCategoryButton>
-      <VariantCategoryButton
-        isActive={
-          variantFilter.lof &&
-          variantFilter.missense &&
-          !variantFilter.synonymous &&
-          !variantFilter.other
-        }
-        onClick={() =>
-          setVariantFilter({
-            lof: true,
-            missense: true,
-            synonymous: false,
-            other: false,
-          })
-        }
-      >
-        Missense + LoF
-      </VariantCategoryButton>
-      <VariantCategoryButton
-        isActive={
-          variantFilter.lof &&
-          !variantFilter.missense &&
-          !variantFilter.synonymous &&
-          !variantFilter.other
-        }
-        onClick={() =>
-          setVariantFilter({
-            lof: true,
-            missense: false,
-            synonymous: false,
-            other: false,
-          })
-        }
-      >
-        LoF
-      </VariantCategoryButton>
-      <VariantCategoryButton isActive={variantDeNovoFilter} onClick={toggleVariantDeNovoFilter}>
-        De novo
-      </VariantCategoryButton>
-    </div>
-    <Search placeholder={'Search variant table'} onChange={searchVariants} withKeyboardShortcuts />
+    <ConsequenceCategoriesControl
+      categorySelections={consequenceFilter}
+      id="variant-filter"
+      onChange={setConsequenceFilter}
+    />
+    <Checkbox
+      checked={deNovoFilter}
+      id="denovo-filter"
+      label="Show only de novo variants"
+      onChange={toggleDeNovoFilter}
+    />
+    <Search placeholder="Search variant table" onChange={searchVariants} withKeyboardShortcuts />
   </SettingsWrapper>
 )
 
 GeneSettings.propTypes = {
-  searchVariants: PropTypes.func.isRequired,
-  setVariantFilter: PropTypes.func.isRequired,
-  toggleVariantDeNovoFilter: PropTypes.func.isRequired,
-  variantDeNovoFilter: PropTypes.bool.isRequired,
-  variantFilter: PropTypes.shape({
+  consequenceFilter: PropTypes.shape({
     lof: PropTypes.bool.isRequired,
     missense: PropTypes.bool.isRequired,
     synonymous: PropTypes.bool.isRequired,
     other: PropTypes.bool.isRequired,
   }).isRequired,
+  deNovoFilter: PropTypes.bool.isRequired,
+  searchVariants: PropTypes.func.isRequired,
+  setConsequenceFilter: PropTypes.func.isRequired,
+  toggleDeNovoFilter: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
+  consequenceFilter: variantFilter(state),
+  deNovoFilter: variantDeNovoFilter(state),
   variantDeNovoFilter: variantDeNovoFilter(state),
-  variantFilter: variantFilter(state),
 })
+
 const mapDispatchToProps = dispatch => ({
-  setVariantFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
   searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
+  setConsequenceFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
+  toggleDeNovoFilter: () => dispatch(variantActions.toggleVariantDeNovoFilter()),
   toggleVariantDeNovoFilter: () => dispatch(variantActions.toggleVariantDeNovoFilter()),
 })
 
