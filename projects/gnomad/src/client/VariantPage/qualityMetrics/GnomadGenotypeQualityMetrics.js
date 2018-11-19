@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { SegmentedControl } from '@broad/ui'
 
-import { BarGraph } from './BarGraph'
+import Histogram from '../Histogram'
 
 const ControlSection = styled.div`
   display: flex;
@@ -24,62 +24,65 @@ export class GnomadGenotypeQualityMetrics extends Component {
   }
 
   render() {
-    const variant = this.props.variant
-    const variantData = variant[this.state.selectedDataset]
+    const { variant } = this.props
+    const { selectedDataset, selectedMetric, selectedSamples } = this.state
+
+    const variantData = variant[selectedDataset]
 
     const histogramData =
-      this.state.selectedMetric === 'quality'
-        ? variantData.qualityMetrics.genotypeQuality[this.state.selectedSamples]
-        : variantData.qualityMetrics.genotypeDepth[this.state.selectedSamples]
+      selectedMetric === 'quality'
+        ? variantData.qualityMetrics.genotypeQuality[selectedSamples]
+        : variantData.qualityMetrics.genotypeDepth[selectedSamples]
 
-    const bins = histogramData.bin_freq.map((n, i) => ({
-      x0: histogramData.bin_edges[i],
-      x1: histogramData.bin_edges[i + 1],
-      n,
-    }))
+    const xLabel = selectedMetric === 'quality' ? 'Genotype Quality' : 'Depth'
 
-    const xLabel = this.state.selectedMetric === 'quality' ? 'Genotype Quality' : 'Depth'
+    const yLabel = selectedSamples === 'all' ? 'All Individuals' : 'Variant carriers'
 
-    const yLabel = this.state.selectedSamples === 'all' ? 'All Individuals' : 'Variant carriers'
-
-    const graphColor = this.state.selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
+    const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
     return (
       <div>
-        <BarGraph barColor={graphColor} bins={bins} xLabel={xLabel} yLabel={yLabel} />
+        <Histogram
+          barColor={graphColor}
+          binEdges={histogramData.bin_edges}
+          binValues={histogramData.bin_freq}
+          nLarger={histogramData.n_larger}
+          xLabel={xLabel}
+          yLabel={yLabel}
+        />
 
         <ControlSection>
           <SegmentedControl
             id="genotype-quality-metrics-sample"
-            onChange={selectedSamples => {
-              this.setState({ selectedSamples })
+            onChange={samples => {
+              this.setState({ selectedSamples: samples })
             }}
             options={[{ label: 'All', value: 'all' }, { label: 'Variant Carriers', value: 'alt' }]}
-            value={this.state.selectedSamples}
+            value={selectedSamples}
           />
 
           <SegmentedControl
             id="genotype-quality-metrics-metric"
-            onChange={selectedMetric => {
-              this.setState({ selectedMetric })
+            onChange={metric => {
+              this.setState({ selectedMetric: metric })
             }}
             options={[
               { label: 'Genotype Quality', value: 'quality' },
               { label: 'Depth', value: 'depth' },
             ]}
-            value={this.state.selectedMetric}
+            value={selectedMetric}
           />
 
           <SegmentedControl
             id="genotype-quality-metrics-dataset"
-            onChange={selectedDataset => {
-              this.setState({ selectedDataset })
+            onChange={dataset => {
+              this.setState({ selectedDataset: dataset })
             }}
             options={[
               { disabled: !variant.exome, label: 'Exomes', value: 'exome' },
               { disabled: !variant.genome, label: 'Genomes', value: 'genome' },
             ]}
-            value={this.state.selectedDataset}
+            value={selectedDataset}
           />
         </ControlSection>
       </div>
