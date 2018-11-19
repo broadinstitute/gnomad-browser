@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { GenePageHoc } from '@broad/redux-genes'
-import { GenePage, PageHeading, TableSection } from '@broad/ui'
+import { PageHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
 import VariantDetails from '../VariantDetails/VariantDetails'
 import fetchGeneData from './fetchGeneData'
@@ -17,28 +17,23 @@ const GeneFullName = styled.span`
   font-weight: 400;
 `
 
-const GeneInfoSection = styled.div`
-  width: 85%;
-  margin-bottom: 1em;
-`
-
 const GenePageConnected = ({ gene }) => {
   const { gene_name: geneName, full_gene_name: fullGeneName } = gene
   return (
-    <GenePage>
-      <GeneInfoSection>
+    <TrackPage>
+      <TrackPageSection>
         <PageHeading>
           {geneName} <GeneFullName>{fullGeneName}</GeneFullName>
         </PageHeading>
         <GeneInfo />
-      </GeneInfoSection>
+      </TrackPageSection>
       <RegionViewer />
-      <TableSection>
+      <TrackPageSection>
         <GeneSettings />
         <VariantTable />
-      </TableSection>
+      </TrackPageSection>
       <VariantDetails />
-    </GenePage>
+    </TrackPage>
   )
 }
 

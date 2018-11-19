@@ -42,7 +42,7 @@ class GeneViewer extends PureComponent {
     const { gene, visibleVariants, screenSize } = this.props
 
     const smallScreen = screenSize.width < 900
-    const regionViewerWidth = smallScreen ? screenSize.width - 150 : screenSize.width - 330
+    const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
     const geneJS = gene.toJS()
     const canonicalExons = geneJS.transcript.exons
@@ -62,23 +62,22 @@ class GeneViewer extends PureComponent {
       .map(v => v.set('allele_freq', v.af_ctrl))
 
     return (
-      <div>
-        <RegionViewer
-          width={regionViewerWidth}
-          padding={75}
-          regions={canonicalExons}
-          regionAttributes={attributeConfig}
-          leftPanelWidth={100}
-        >
-          <TranscriptTrackConnected height={12} showRightPanel={!smallScreen} />
-          <VariantAlleleFrequencyTrack title={`Cases\n(${cases.size})`} variants={cases.toJS()} />
-          <VariantAlleleFrequencyTrack
-            title={`Controls\n(${controls.size})`}
-            variants={controls.toJS()}
-          />
-          <NavigatorTrackConnected title="Viewing in table" />
-        </RegionViewer>
-      </div>
+      <RegionViewer
+        width={regionViewerWidth}
+        padding={75}
+        regions={canonicalExons}
+        regionAttributes={attributeConfig}
+        leftPanelWidth={100}
+        rightPanelWidth={smallScreen ? 0 : 160}
+      >
+        <TranscriptTrackConnected height={12} showRightPanel={!smallScreen} />
+        <VariantAlleleFrequencyTrack title={`Cases\n(${cases.size})`} variants={cases.toJS()} />
+        <VariantAlleleFrequencyTrack
+          title={`Controls\n(${controls.size})`}
+          variants={controls.toJS()}
+        />
+        <NavigatorTrackConnected title="Viewing in table" />
+      </RegionViewer>
     )
   }
 }
