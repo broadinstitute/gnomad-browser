@@ -5,12 +5,23 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { injectGlobal } from 'styled-components'
 
 import createGenePageStore from '@broad/gene-page/src/store/store'
 import { actions as userInterfaceActions } from '@broad/ui'
 import { getLabelForConsequenceTerm, registerConsequences } from '@broad/utilities'
 
 import App from './routes'
+
+// eslint-disable-next-line no-unused-expressions
+injectGlobal`
+  html,
+  body {
+    background-color: #fafafa;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+  }
+`
 
 registerConsequences(BROWSER_CONFIG.consequences)
 
