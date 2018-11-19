@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { SegmentedControl } from '@broad/ui'
 
-import { BarGraph } from './qualityMetrics/BarGraph'
+import Histogram from './Histogram'
 
 const ControlSection = styled.div`
   display: flex;
@@ -12,6 +13,25 @@ const ControlSection = styled.div`
 `
 
 export default class GnomadAgeDistribution extends Component {
+  static propTypes = {
+    variant: PropTypes.shape({
+      age_distribution: PropTypes.shape({
+        het: PropTypes.shape({
+          bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+          bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+          n_smaller: PropTypes.number,
+          n_larger: PropTypes.number,
+        }).isRequired,
+        hom: PropTypes.shape({
+          bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+          bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+          n_smaller: PropTypes.number,
+          n_larger: PropTypes.number,
+        }).isRequired,
+      }),
+    }).isRequired,
+  }
+
   constructor(props) {
     super(props)
 
@@ -21,25 +41,19 @@ export default class GnomadAgeDistribution extends Component {
   }
 
   render() {
-    const variant = this.props.variant
+    const { variant } = this.props
+    const { selectedType } = this.state
 
-    const histogramData =
-      this.state.selectedType === 'het'
-        ? variant.age_distribution.het
-        : variant.age_distribution.hom
-
-    const bins = histogramData.bin_freq.map((n, i) => ({
-      x0: histogramData.bin_edges[i],
-      x1: histogramData.bin_edges[i + 1],
-      n,
-    }))
+    const selectedAgeDistribution =
+      selectedType === 'het' ? variant.age_distribution.het : variant.age_distribution.hom
 
     return (
       <div>
-        <BarGraph
-          bins={bins}
-          nLarger={histogramData.n_larger}
-          nSmaller={histogramData.n_smaller}
+        <Histogram
+          binEdges={selectedAgeDistribution.bin_edges}
+          binValues={selectedAgeDistribution.bin_freq}
+          nSmaller={selectedAgeDistribution.n_smaller}
+          nLarger={selectedAgeDistribution.n_larger}
           xLabel="Age"
           yLabel="Individuals"
         />
@@ -47,14 +61,14 @@ export default class GnomadAgeDistribution extends Component {
         <ControlSection>
           <SegmentedControl
             id="age-distribution-type"
-            onChange={selectedType => {
-              this.setState({ selectedType })
+            onChange={type => {
+              this.setState({ selectedType: type })
             }}
             options={[
               { label: 'Heterozygotes', value: 'het' },
               { label: 'Homozygotes', value: 'hom' },
             ]}
-            value={this.state.selectedType}
+            value={selectedType}
           />
         </ControlSection>
       </div>
