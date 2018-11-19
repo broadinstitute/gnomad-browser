@@ -153,7 +153,7 @@ class GeneResultsTable extends PureComponent {
     return (
       <div>
         <ResultsSearchWrapper>
-          <Search placeholder="Search genes" onChange={this.setSearchText} />
+          <Search placeholder="Search results by gene" onChange={this.setSearchText} />
         </ResultsSearchWrapper>
         {results.length === 0 ? (
           'No results found'

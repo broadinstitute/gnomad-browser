@@ -1,7 +1,8 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { AnalysisGroupType, fetchAnalysisGroupsForVariant } from './analysis/analysisGroup'
 import { GeneResultType, fetchAllOverallGeneResults } from './analysis/geneResult'
+import { SearchResultType, fetchSearchResults } from './analysis/search'
 import { GeneType, fetchGeneById, fetchGeneByName } from './reference/gene'
 
 export const RootType = new GraphQLObjectType({
@@ -34,6 +35,13 @@ export const RootType = new GraphQLObjectType({
         variant_id: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => fetchAnalysisGroupsForVariant(ctx, args.variant_id),
+    },
+    search: {
+      type: new GraphQLList(SearchResultType),
+      args: {
+        query: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (obj, args, ctx) => fetchSearchResults(ctx, args.query),
     },
   },
 })

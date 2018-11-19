@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Button } from '@broad/ui'
 
 import Link from './Link'
+import Searchbox from './Searchbox'
 
 const TopBarWrapper = styled.div`
   display: flex;
@@ -40,13 +41,6 @@ const TitleWrapper = styled.div`
 
 const Title = styled.span`
   font-size: 1.5em;
-`
-
-const SearchInput = styled.input`
-  width: 275px;
-  padding: 0.375em 0;
-  background-color: white;
-  font-size: 14px;
 `
 
 const ToggleMenuButton = Button.extend`
@@ -106,34 +100,7 @@ class TopBar extends Component {
           <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
         </TitleWrapper>
 
-        <form
-          onSubmit={event => {
-            const { history } = this.props
-            event.preventDefault()
-            const geneName = event.target.elements[0].value
-            history.push(`/gene/${geneName}`)
-          }}
-        >
-          <SearchInput type="text" name="search" placeholder="Search genes" list="genes" />
-          <datalist id="genes">
-            <option value="PCSK9" />
-            <option value="ZNF658" />
-            <option value="MYH9" />
-            <option value="FMR1" />
-            <option value="BRCA2" />
-            <option value="CFTR" />
-            <option value="FBN1" />
-            <option value="TP53" />
-            <option value="SCN5A" />
-            <option value="MYH7" />
-            <option value="MYBPC3" />
-            <option value="ARSF" />
-            <option value="CD33" />
-            <option value="DMD" />
-            <option value="TTN" />
-            <option value="USH2A" />
-          </datalist>
-        </form>
+        <Searchbox id="navbar-search" width="320px" />
 
         <Menu isExpanded={isMenuExpanded}>
           <li>
