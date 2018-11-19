@@ -29,7 +29,7 @@ const yTickFormat = n => {
 }
 
 const margin = {
-  bottom: 50,
+  bottom: 55,
   left: 60,
   right: 10,
   top: 10,
@@ -73,16 +73,27 @@ const Histogram = withSize()(
       .domain(yDomain)
       .range([height - (margin.top + margin.bottom), margin.top])
 
+    const bandWidth = xBandScale.bandwidth()
+
     return (
       <GraphWrapper>
         <svg height={height} width={width}>
           <AxisBottom
             label={xLabel}
+            labelOffset={25}
             labelProps={labelProps}
             left={margin.left}
             top={height - margin.bottom}
             scale={xBandScale}
             stroke="#333"
+            tickLabelProps={value => ({
+              dx: '-0.25em',
+              dy: '0.25em',
+              fill: '#000',
+              fontSize: 10,
+              textAnchor: 'end',
+              transform: `translate(0, 0), rotate(-40 ${xBandScale(value) + bandWidth / 2}, 0)`,
+            })}
             tickLength={3}
           />
           <AxisLeft
@@ -90,6 +101,13 @@ const Histogram = withSize()(
             labelProps={labelProps}
             left={margin.left}
             tickFormat={yTickFormat}
+            tickLabelProps={() => ({
+              dx: '-0.25em',
+              dy: '0.25em',
+              fill: '#000',
+              fontSize: 10,
+              textAnchor: 'end',
+            })}
             top={margin.top}
             scale={yScale}
             stroke="#333"
@@ -101,7 +119,7 @@ const Histogram = withSize()(
                 x={xBandScale(bin.label)}
                 y={yScale(bin.value)}
                 height={yScale(0) - yScale(bin.value)}
-                width={xBandScale.bandwidth()}
+                width={bandWidth}
                 fill={barColor}
                 stroke="#333"
               />
