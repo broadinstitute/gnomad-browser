@@ -99,6 +99,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             MQRankSum
             QD
             ReadPosRankSum
+            RF
             SiteQuality
             SOR
             VQSLOD
@@ -186,6 +187,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             MQRankSum
             QD
             ReadPosRankSum
+            RF
             SiteQuality
             SOR
             VQSLOD

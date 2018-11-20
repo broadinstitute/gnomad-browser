@@ -78,6 +78,7 @@ const GnomadVariantQualityMetricsType = new GraphQLObjectType({
           MQRankSum: { type: GraphQLFloat },
           QD: { type: GraphQLFloat },
           ReadPosRankSum: { type: GraphQLFloat },
+          RF: { type: GraphQLFloat },
           SiteQuality: { type: GraphQLFloat },
           SOR: { type: GraphQLFloat },
           VQSLOD: { type: GraphQLFloat },

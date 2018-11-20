@@ -84,6 +84,10 @@ const scaleBins = histogram => ({
 
 const metricsToScale = ['DP']
 
+const metricAlias = {
+  rf_tp_probability: 'RF',
+}
+
 export const formatAggregateQualityMetrics = metricsList => {
   const siteQualityMetrics = metricsList.filter(m => m.metric.startsWith('binned_'))
   const otherMetrics = metricsList.filter(m => !m.metric.startsWith('binned_'))
@@ -110,7 +114,7 @@ export const formatAggregateQualityMetrics = metricsList => {
       })),
     },
     otherMetrics: otherMetrics.map(m => ({
-      metric: m.metric,
+      metric: metricAlias[m.metric] || m.metric,
       histogram: metricsToScale.includes(m.metric) ? scaleBins(m) : m,
     })),
   }

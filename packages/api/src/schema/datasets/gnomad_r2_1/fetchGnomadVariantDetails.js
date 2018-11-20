@@ -93,6 +93,7 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
             'pos',
             'qual',
             'ref',
+            'rf_tp_probability',
             'rsid',
             'sortedTranscriptConsequences',
             'variant_id',
@@ -228,6 +229,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
             },
             siteQualityMetrics: {
               ...exomeData.allele_info,
+              RF: exomeData.rf_tp_probability,
               SiteQuality: exomeData.qual,
             },
           },
@@ -257,6 +259,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
             },
             siteQualityMetrics: {
               ...genomeData.allele_info,
+              RF: genomeData.rf_tp_probability,
               SiteQuality: genomeData.qual,
             },
           },

@@ -25,6 +25,7 @@ const availableMetrics = [
   'BaseQRankSum',
   'MQ',
   'ClippingRankSum',
+  'RF',
 ]
 
 export class GnomadSiteQualityMetrics extends Component {
@@ -38,8 +39,11 @@ export class GnomadSiteQualityMetrics extends Component {
   }
 
   render() {
+    const { datasetId, variant } = this.props
+    const { selectedDataset, selectedMetric } = this.state
+
     return (
-      <AggregateQualityMetricsQuery datasetId={this.props.datasetId}>
+      <AggregateQualityMetricsQuery datasetId={datasetId}>
         {({ data, error, loading }) => {
           if (loading) {
             return <p>Loading...</p>
@@ -48,12 +52,12 @@ export class GnomadSiteQualityMetrics extends Component {
             return <p>Unable to load metrics</p>
           }
 
-          const variantData = this.props.variant[this.state.selectedDataset]
-          const metricData = data.aggregateQualityMetrics[this.state.selectedDataset]
+          const variantData = variant[selectedDataset]
+          const metricData = data.aggregateQualityMetrics[selectedDataset]
 
           let selectedMetricBins
           let selectedSiteQualityBinDescription
-          if (this.state.selectedMetric === 'SiteQuality') {
+          if (selectedMetric === 'SiteQuality') {
             if (variantData.ac === 1) {
               selectedMetricBins = metricData.siteQuality.singleton.bin_freq.map((n, i) => ({
                 x0: metricData.siteQuality.singleton.bin_edges[i],
@@ -83,9 +87,7 @@ export class GnomadSiteQualityMetrics extends Component {
               } < AF < ${selectedAlleleFreqBin.max_af}`
             }
           } else {
-            const histogram = metricData.otherMetrics.find(
-              m => m.metric === this.state.selectedMetric
-            ).histogram
+            const { histogram } = metricData.otherMetrics.find(m => m.metric === selectedMetric)
 
             selectedMetricBins = histogram.bin_freq.map((n, i) => ({
               x0: histogram.bin_edges[i],
@@ -94,20 +96,16 @@ export class GnomadSiteQualityMetrics extends Component {
             }))
           }
 
-          const graphColor = this.state.selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
+          const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
           return (
             <div>
               <BarGraph
                 barColor={graphColor}
                 bins={selectedMetricBins}
-                highlightValue={
-                  variantData.qualityMetrics.siteQualityMetrics[this.state.selectedMetric]
-                }
-                logScale={
-                  this.state.selectedMetric === 'SiteQuality' || this.state.selectedMetric === 'DP'
-                }
-                xLabel={this.state.selectedMetric}
+                highlightValue={variantData.qualityMetrics.siteQualityMetrics[selectedMetric]}
+                logScale={selectedMetric === 'SiteQuality' || selectedMetric === 'DP'}
+                xLabel={selectedMetric}
                 yLabel="Variants"
               />
 
@@ -116,29 +114,32 @@ export class GnomadSiteQualityMetrics extends Component {
                   onChange={e => {
                     this.setState({ selectedMetric: e.target.value })
                   }}
-                  value={this.state.selectedMetric}
+                  value={selectedMetric}
                 >
-                  {availableMetrics.map(metric => (
-                    <option key={metric} value={metric}>
-                      {metric} ({variantData.qualityMetrics.siteQualityMetrics[metric]})
-                    </option>
-                  ))}
+                  {availableMetrics.map(metric => {
+                    const metricValue = variantData.qualityMetrics.siteQualityMetrics[metric]
+                    return (
+                      <option key={metric} value={metric}>
+                        {metric} ({metricValue.toPrecision(4).replace(/\.?0+$/, '')})
+                      </option>
+                    )
+                  })}
                 </select>
 
                 <SegmentedControl
                   id="site-quality-metrics-dataset"
-                  onChange={selectedDataset => {
-                    this.setState({ selectedDataset })
+                  onChange={dataset => {
+                    this.setState({ selectedDataset: dataset })
                   }}
                   options={[
-                    { disabled: !this.props.variant.exome, label: 'Exomes', value: 'exome' },
+                    { disabled: !variant.exome, label: 'Exomes', value: 'exome' },
                     {
-                      disabled: !this.props.variant.genome,
+                      disabled: !variant.genome,
                       label: 'Genomes',
                       value: 'genome',
                     },
                   ]}
-                  value={this.state.selectedDataset}
+                  value={selectedDataset}
                 />
               </ControlSection>
 
@@ -146,7 +147,7 @@ export class GnomadSiteQualityMetrics extends Component {
                 Note: These are site-level quality metrics, they may be unpredictable for
                 multi-allelic sites.
               </p>
-              {this.state.selectedMetric === 'SiteQuality' && (
+              {selectedMetric === 'SiteQuality' && (
                 <p>
                   This is the site quality distribution for all {selectedSiteQualityBinDescription}.
                 </p>
@@ -160,22 +161,23 @@ export class GnomadSiteQualityMetrics extends Component {
 }
 
 const variantSiteQualityMetricsPropType = PropTypes.shape({
-  SiteQuality: PropTypes.number,
-  GQ_MEDIAN: PropTypes.number,
-  FS: PropTypes.number,
-  MQRankSum: PropTypes.number,
-  InbreedingCoeff: PropTypes.number,
-  ReadPosRankSum: PropTypes.number,
-  VQSLOD: PropTypes.number,
-  QD: PropTypes.number,
-  DP: PropTypes.number,
-  BaseQRankSum: PropTypes.number,
-  MQ: PropTypes.number,
-  AS_RF: PropTypes.number,
-  DP_MEDIAN: PropTypes.number,
   AB_MEDIAN: PropTypes.number,
+  AS_RF: PropTypes.number,
+  BaseQRankSum: PropTypes.number,
   ClippingRankSum: PropTypes.number,
+  DP: PropTypes.number,
+  DP_MEDIAN: PropTypes.number,
   DREF_MEDIAN: PropTypes.number,
+  FS: PropTypes.number,
+  GQ_MEDIAN: PropTypes.number,
+  InbreedingCoeff: PropTypes.number,
+  MQ: PropTypes.number,
+  MQRankSum: PropTypes.number,
+  QD: PropTypes.number,
+  ReadPosRankSum: PropTypes.number,
+  RF: PropTypes.number,
+  SiteQuality: PropTypes.number,
+  VQSLOD: PropTypes.number,
 })
 
 GnomadSiteQualityMetrics.propTypes = {
