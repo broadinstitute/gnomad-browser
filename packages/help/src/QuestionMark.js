@@ -12,6 +12,10 @@ const QuestionMarkContainer = styled.span`
   padding-right: ${props => props.padding};
   cursor: pointer;
   color: rgb(66, 66, 66);
+
+  @media print {
+    display: none;
+  }
 `
 
 const QuestionMark = ({
