@@ -57,6 +57,19 @@ const TextTooltip = ({ tooltip }) => <span>{tooltip}</span>
 
 const FilteringAlleleFrequencyValue = styled.span`
   border-bottom: 1px dashed #000;
+
+  @media print {
+    border-bottom: none;
+  }
+`
+
+const FilteringAlleleFrequencyPopulation = styled.div`
+  display: none;
+  white-space: nowrap;
+
+  @media print {
+    display: block;
+  }
 `
 
 const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation }) => {
@@ -69,13 +82,18 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
   }
 
   return (
-    <TooltipAnchor
-      childRefPropName="innerRef"
-      tooltip={POPULATION_NAMES[popmaxPopulation]}
-      tooltipComponent={TextTooltip}
-    >
-      <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
-    </TooltipAnchor>
+    <span>
+      <TooltipAnchor
+        childRefPropName="innerRef"
+        tooltip={POPULATION_NAMES[popmaxPopulation]}
+        tooltipComponent={TextTooltip}
+      >
+        <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+      </TooltipAnchor>
+      <FilteringAlleleFrequencyPopulation>
+        {POPULATION_NAMES[popmaxPopulation]}
+      </FilteringAlleleFrequencyPopulation>
+    </span>
   )
 }
 
@@ -88,8 +106,6 @@ FilteringAlleleFrequency.defaultProps = {
   popmax: null,
   popmax_population: null,
 }
-
-const renderFilteringAlleleFrequency = faf => <FilteringAlleleFrequency {...faf} />
 
 export const GnomadVariantOccurrenceTable = ({ variant }) => {
   const isPresentInExome = Boolean(variant.exome)
@@ -148,8 +164,8 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
             <br />
             (95% confidence)
           </th>
-          <td>{isPresentInExome && renderFilteringAlleleFrequency(variant.exome.faf95)}</td>
-          <td>{isPresentInGenome && renderFilteringAlleleFrequency(variant.genome.faf95)}</td>
+          <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
+          <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
           <td />
         </tr>
       </tbody>
