@@ -120,7 +120,7 @@ export class GnomadSiteQualityMetrics extends Component {
                     const metricValue = variantData.qualityMetrics.siteQualityMetrics[metric]
                     return (
                       <option key={metric} value={metric}>
-                        {metric} ({metricValue.toPrecision(4).replace(/\.?0+$/, '')})
+                        {metric} ({metricValue.toPrecision(4).replace(/\.0+$/, '')})
                       </option>
                     )
                   })}
