@@ -6,6 +6,10 @@ export const Link = styled.a`
   color: #428bca;
   text-decoration: none;
 
+  &:visited {
+    color: #428bca;
+  }
+
   &:active,
   &:hover {
     color: #be4248;
@@ -13,10 +17,6 @@ export const Link = styled.a`
 
   &:focus {
     text-decoration: underline;
-  }
-
-  &:visited {
-    color: #428bca;
   }
 `
 
