@@ -19,6 +19,7 @@ const StyledTab = styled(Tab)`
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
   outline: none;
+  cursor: pointer;
 
   &:focus {
     box-shadow: 0 0 0 0.2em ${transparentize(0.5, '#428bca')};
