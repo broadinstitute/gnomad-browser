@@ -1,36 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import styled from 'styled-components'
+
+import { BaseTable } from '@broad/ui'
 
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const Table = styled.table`
-  border-collapse: collapse;
-  border-spacing: 0;
-
-  td,
-  th {
-    padding: 0.5em 20px 0.5em 0;
-    text-align: left;
-  }
-
-  thead {
-    th {
-      border-bottom: 1px solid #000;
-      background-position: center right;
-      background-repeat: no-repeat;
-    }
-  }
-
-  tbody {
-    td,
-    th {
-      border-bottom: 1px solid #ccc;
-      font-weight: normal;
-    }
-  }
-
+const Table = BaseTable.extend`
   @media (max-width: 600px) {
     td,
     th {
@@ -177,10 +153,10 @@ const GnomadConstraintTable = ({ transcriptId }) => (
         <Table>
           <thead>
             <tr>
-              <th role="columnheader">Category</th>
-              <th role="columnheader">Exp. no. variants</th>
-              <th role="columnheader">Obs. no. variants</th>
-              <th colSpan={2} role="columnheader">
+              <th scope="col">Category</th>
+              <th scope="col">Exp. no. variants</th>
+              <th scope="col">Obs. no. variants</th>
+              <th colSpan={2} scope="col">
                 Constraint metrics
               </th>
               <th />
@@ -188,7 +164,7 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           </thead>
           <tbody>
             <tr>
-              <th role="rowheader">Synonymous</th>
+              <th scope="row">Synonymous</th>
               <td>{renderNumber(constraintData.exp_syn, 1)}</td>
               <td>{renderNumber(constraintData.obs_syn, 0)}</td>
               <td>Z = {renderNumber(constraintData.syn_z, 2)}</td>
@@ -196,7 +172,7 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               {renderOEGraphCell(constraintData, 'syn')}
             </tr>
             <tr>
-              <th role="rowheader">Missense</th>
+              <th scope="row">Missense</th>
               <td>{renderNumber(constraintData.exp_mis, 1)}</td>
               <td>{renderNumber(constraintData.obs_mis, 0)}</td>
               <td>Z = {renderNumber(constraintData.mis_z, 2)}</td>
@@ -204,7 +180,7 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               {renderOEGraphCell(constraintData, 'mis')}
             </tr>
             <tr>
-              <th role="rowheader">LoF</th>
+              <th scope="row">LoF</th>
               <td>{renderNumber(constraintData.exp_lof, 1)}</td>
               <td>{renderNumber(constraintData.obs_lof, 0)}</td>
               <td>pLI = {renderNumber(constraintData.pLI, 2)}</td>

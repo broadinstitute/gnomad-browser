@@ -1,62 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
-import { TextButton } from '@broad/ui'
+import { BaseTable, TextButton } from '@broad/ui'
 
-const Table = styled.table`
-  border-collapse: collapse;
-  border-spacing: 0;
-
-  td,
-  th {
-    padding: 0.5em 20px 0.5em 0;
-    text-align: left;
-  }
-
-  thead {
-    th {
-      border-bottom: 1px solid #000;
-      background-position: center right;
-      background-repeat: no-repeat;
-
-      &[aria-sort='ascending'] {
-        background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
-      }
-
-      &[aria-sort='descending'] {
-        background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
-      }
-
-      span[role='button'] {
-        cursor: pointer;
-        display: inline-block;
-        user-select: none;
-        width: 100%;
-      }
-    }
-  }
-
-  tbody {
-    td,
-    th {
-      border-bottom: 1px solid #ccc;
-      font-weight: normal;
-    }
-
-    tr.border {
-      td {
-        border-bottom: 2px solid #aaa;
-      }
-    }
-  }
-
-  tfoot {
-    td,
-    th {
-      border-top: 1px solid #ccc;
-      font-weight: bold;
-    }
+const Table = BaseTable.extend`
+  tr.border td {
+    border-bottom: 2px solid #aaa;
   }
 `
 
@@ -133,10 +82,10 @@ export class PopulationsTable extends Component {
     }
 
     return (
-      <th colSpan={colSpan} aria-sort={ariaSortAttr} role="columnheader">
-        <span role="button" tabIndex="0" onClick={() => this.setSortBy(key)}>
+      <th colSpan={colSpan} aria-sort={ariaSortAttr} scope="col">
+        <button type="button" onClick={() => this.setSortBy(key)}>
           {label}
-        </span>
+        </button>
       </th>
     )
   }
@@ -146,7 +95,7 @@ export class PopulationsTable extends Component {
     const colSpan = isExpanded ? 1 : 2
     const rowSpan = isExpanded ? pop.subpopulations.length + 1 : 1
     return (
-      <th colSpan={colSpan} rowSpan={rowSpan} role="rowheader">
+      <th colSpan={colSpan} rowSpan={rowSpan} scope="row">
         <TogglePopulationButton
           isExpanded={isExpanded}
           onClick={() => this.togglePopulationExpanded(pop.name)}
@@ -201,9 +150,9 @@ export class PopulationsTable extends Component {
     const { showHemizygotes, showHomozygotes } = this.props
 
     return (
-      <Table role="grid">
+      <Table>
         <thead>
-          <tr role="row">
+          <tr>
             {this.renderColumnHeader('name', 'Population', 2)}
             {this.renderColumnHeader('ac', 'Allele Count')}
             {this.renderColumnHeader('an', 'Allele Number')}
@@ -217,15 +166,14 @@ export class PopulationsTable extends Component {
             <tr
               key={pop.name}
               className={this.state.expandedPopulations[pop.name] ? 'border' : undefined}
-              role="row"
             >
               {this.renderPopulationRowHeader(pop)}
-              {this.state.expandedPopulations[pop.name] && <td role="gridcell">Overall</td>}
-              <td role="gridcell">{pop.ac}</td>
-              <td role="gridcell">{pop.an}</td>
-              {showHomozygotes && <td role="gridcell">{pop.ac_hom}</td>}
-              {showHemizygotes && <td role="gridcell">{pop.ac_hemi}</td>}
-              <td role="gridcell">{pop.af.toPrecision(4)}</td>
+              {this.state.expandedPopulations[pop.name] && <td>Overall</td>}
+              <td>{pop.ac}</td>
+              <td>{pop.an}</td>
+              {showHomozygotes && <td>{pop.ac_hom}</td>}
+              {showHemizygotes && <td>{pop.ac_hemi}</td>}
+              <td>{pop.af.toPrecision(4)}</td>
             </tr>
             {pop.subpopulations &&
               this.state.expandedPopulations[pop.name] &&
@@ -233,26 +181,27 @@ export class PopulationsTable extends Component {
                 <tr
                   key={`${pop.name}-${subPop.name}`}
                   className={i === pop.subpopulations.length - 3 ? 'border' : undefined}
-                  role="row"
                 >
-                  <td role="gridcell">{subPop.name}</td>
-                  <td role="gridcell">{subPop.ac}</td>
-                  <td role="gridcell">{subPop.an}</td>
-                  {showHomozygotes && <td role="gridcell">{subPop.ac_hom}</td>}
-                  {showHemizygotes && <td role="gridcell">&mdash;</td>}
-                  <td role="gridcell">{subPop.af.toPrecision(4)}</td>
+                  <td>{subPop.name}</td>
+                  <td>{subPop.ac}</td>
+                  <td>{subPop.an}</td>
+                  {showHomozygotes && <td>{subPop.ac_hom}</td>}
+                  {showHemizygotes && <td>&mdash;</td>}
+                  <td>{subPop.af.toPrecision(4)}</td>
                 </tr>
               ))}
           </tbody>
         ))}
         <tfoot>
-          <tr role="row">
-            <th colSpan={2} role="rowheader">Total</th>
-            <td role="gridcell">{totalAlleleCount}</td>
-            <td role="gridcell">{totalAlleleNumber}</td>
-            {showHomozygotes && <td role="gridcell">{totalHomozygotes}</td>}
-            {showHemizygotes && <td role="gridcell">{totalHemizygotes}</td>}
-            <td role="gridcell">{totalAlleleFrequency.toPrecision(4)}</td>
+          <tr>
+            <th colSpan={2} scope="row">
+              Total
+            </th>
+            <td>{totalAlleleCount}</td>
+            <td>{totalAlleleNumber}</td>
+            {showHomozygotes && <td>{totalHomozygotes}</td>}
+            {showHemizygotes && <td>{totalHemizygotes}</td>}
+            <td>{totalAlleleFrequency.toPrecision(4)}</td>
           </tr>
         </tfoot>
       </Table>
