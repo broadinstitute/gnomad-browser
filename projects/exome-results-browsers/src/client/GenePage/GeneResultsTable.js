@@ -1,30 +1,10 @@
+import PropTypes from 'prop-types'
 import React from 'react'
-import styled from 'styled-components'
 
-const Table = styled.table`
+import { BaseTable } from '@broad/ui'
+
+const Table = BaseTable.extend`
   min-width: 325px;
-  border-collapse: collapse;
-  border-spacing: 0;
-
-  td,
-  th {
-    padding: 0.5em 20px 0.5em 0;
-    text-align: left;
-  }
-
-  thead {
-    th {
-      border-bottom: 1px solid #000;
-    }
-  }
-
-  tbody {
-    td,
-    th {
-      border-bottom: 1px solid #ccc;
-      font-weight: normal;
-    }
-  }
 `
 
 const GeneResultsTable = ({ geneResult }) => (
@@ -54,5 +34,18 @@ const GeneResultsTable = ({ geneResult }) => (
     </Table>
   </div>
 )
+
+GeneResultsTable.propTypes = {
+  geneResult: PropTypes.shape({
+    categories: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        xcase: PropTypes.number,
+        xctrl: PropTypes.number,
+        pval: PropTypes.number,
+      })
+    ),
+  }).isRequired,
+}
 
 export default GeneResultsTable
