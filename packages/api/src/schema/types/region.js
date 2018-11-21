@@ -12,10 +12,7 @@ import {
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 
-import coverageType, {
-  lookupCoverageByIntervals,
-  lookupCoverageBuckets,
-} from './coverage'
+import coverageType from './coverage'
 import geneType, { lookupGenesByInterval } from './gene'
 
 import { VariantSummaryType } from './variant'
@@ -59,25 +56,6 @@ const regionType = new GraphQLObjectType({
         const fetchGenomeCoverageByRegion = datasetsConfig[args.dataset].fetchGenomeCoverageByRegion
         return fetchGenomeCoverageByRegion(ctx, obj)
       },
-    },
-    exacv1_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        if ((obj.stop - obj.start) > 1600) {
-          return lookupCoverageBuckets({
-            elasticClient: ctx.database.elastic,
-            index: 'exacv1_coverage',
-            intervals: [{ start: obj.start, stop: obj.stop }],
-            chrom: obj.chrom,
-          })
-        }
-        return lookupCoverageByIntervals({
-          elasticClient: ctx.database.elastic,
-          index: 'exacv1_coverage',
-          intervals: [{ start: obj.start, stop: obj.stop }],
-          chrom: obj.chrom,
-        })
-      }
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),

@@ -12,7 +12,7 @@ import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
-import coverageType, { lookUpCoverageByExons } from './coverage'
+import coverageType from './coverage'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
 
@@ -55,21 +55,6 @@ const transcriptType = new GraphQLObjectType({
           datasetsConfig[args.dataset].fetchGenomeCoverageByTranscript
         return fetchGenomeCoverageByTranscript(ctx, obj)
       },
-    },
-    exacv1_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        return lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id).then((exons) => {
-          return lookUpCoverageByExons({
-            elasticClient: ctx.database.elastic,
-            index: 'exacv1_coverage',
-            exons,
-            chrom: obj.chrom,
-            obj,
-            ctx,
-          })
-        })
-      }
     },
     gnomad_constraint: {
       type: GnomadConstraintType,
