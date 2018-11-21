@@ -60,44 +60,6 @@ const regionType = new GraphQLObjectType({
         return fetchGenomeCoverageByRegion(ctx, obj)
       },
     },
-    exome_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        if ((obj.stop - obj.start) > 1600) {
-          return lookupCoverageBuckets({
-            elasticClient: ctx.database.elastic,
-            index: 'exome_coverage',
-            intervals: [{ start: obj.start, stop: obj.stop }],
-            chrom: obj.chrom,
-          })
-        }
-        return lookupCoverageByIntervals({
-          elasticClient: ctx.database.elastic,
-          index: 'exome_coverage',
-          intervals: [{ start: obj.start, stop: obj.stop }],
-          chrom: obj.chrom,
-        })
-      }
-    },
-    genome_coverage: {
-      type: new GraphQLList(coverageType),
-      resolve: (obj, args, ctx) => {
-        if ((obj.stop - obj.start) > 1600) {
-          return lookupCoverageBuckets({
-            elasticClient: ctx.database.elastic,
-            index: 'genome_coverage',
-            intervals: [{ start: obj.start, stop: obj.stop }],
-            chrom: obj.chrom,
-          })
-        }
-        return lookupCoverageByIntervals({
-          elasticClient: ctx.database.elastic,
-          index: 'genome_coverage',
-          intervals: [{ start: obj.start, stop: obj.stop }],
-          chrom: obj.chrom,
-        })
-      }
-    },
     exacv1_coverage: {
       type: new GraphQLList(coverageType),
       resolve: (obj, args, ctx) => {
