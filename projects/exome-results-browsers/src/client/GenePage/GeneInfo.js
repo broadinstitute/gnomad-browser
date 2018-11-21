@@ -7,6 +7,7 @@ import { geneData } from '@broad/redux-genes'
 import { variantCount } from '@broad/redux-variants'
 import { SectionHeading, Tabs } from '@broad/ui'
 
+import sortByGroup from '../sortByGroup'
 import GeneResultsTable from './GeneResultsTable'
 
 const GeneInfoWrapper = styled.div`
@@ -65,7 +66,7 @@ const GeneInfo = ({ geneData, variantCount }) => {
                 label: overallGeneResult.analysis_group,
                 render: () => <GeneResultsTable geneResult={overallGeneResult} />,
               },
-              ...groupGeneResults.map(result => ({
+              ...sortByGroup(groupGeneResults).map(result => ({
                 id: result.analysis_group,
                 label: result.analysis_group,
                 render: () => <GeneResultsTable geneResult={result} />,

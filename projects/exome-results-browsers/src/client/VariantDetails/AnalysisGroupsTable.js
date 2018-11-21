@@ -5,6 +5,8 @@ import { graphql } from 'react-apollo'
 
 import { BaseTable } from '@broad/ui'
 
+import sortByGroup from '../sortByGroup'
+
 function formatExponential(number) {
   return Number(number.toPrecision(4)).toExponential()
 }
@@ -26,7 +28,7 @@ export function BaseAnalysisGroupsTable({ groups }) {
         </tr>
       </thead>
       <tbody>
-        {groups.map(group => (
+        {sortByGroup([...groups]).map(group => (
           <tr key={group.analysis_group}>
             <th scope="row">{group.analysis_group}</th>
             <td>{group.ac_case}</td>

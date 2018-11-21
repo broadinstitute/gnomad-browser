@@ -25,6 +25,7 @@ module.exports = {
     ],
   },
   analysisGroups: {
+    order: ['EPI', 'EE', 'GGE', 'NAFE'],
     overallGroup: 'EPI',
   },
   consequences: [
