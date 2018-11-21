@@ -4,76 +4,84 @@ import { connect } from 'react-redux'
 
 import { currentTranscript, geneData } from '@broad/redux-genes'
 import { selectedVariantDataset } from '@broad/redux-variants'
-import { Table, TableCell, TableHeader, TableRow, TableRows } from '@broad/ui'
+import { BaseTable } from '@broad/ui'
 
 import GnomadConstraintTable from './GnomadConstraintTable'
 
 const ConstraintTable = ({ constraintData }) => (
-  <Table>
-    <TableRows>
-      <TableHeader>
-        <TableCell width={'25%'}>Category</TableCell>
-        <TableCell width={'20%'}>Exp. no. variants</TableCell>
-        <TableCell width={'20%'}>Obs. no. variants</TableCell>
-        <TableCell width={'35%'}>Constraint metric</TableCell>
-      </TableHeader>
-      <TableRow>
-        <TableCell width={'25%'}>Synonymous</TableCell>
-        <TableCell width={'20%'}>{constraintData.exp_syn.toFixed(1)}</TableCell>
-        <TableCell width={'20%'}>{constraintData.n_syn}</TableCell>
-        <TableCell width={'35%'}>Z = {constraintData.syn_z.toFixed(2)}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell width={'25%'}>Missense</TableCell>
-        <TableCell width={'20%'}>{constraintData.exp_mis.toFixed(1)}</TableCell>
-        <TableCell width={'20%'}>{constraintData.n_mis}</TableCell>
-        <TableCell width={'35%'}>Z = {constraintData.mis_z.toFixed(2)}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell width={'25%'}>LoF</TableCell>
-        <TableCell width={'20%'}>{constraintData.exp_lof.toFixed(1)}</TableCell>
-        <TableCell width={'20%'}>{constraintData.n_lof}</TableCell>
-        <TableCell width={'35%'}>pLI = {constraintData.pLI.toFixed(2)}</TableCell>
-      </TableRow>
-    </TableRows>
-  </Table>
+  <BaseTable>
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Exp. no. variants</th>
+        <th scope="col">Obs. no. variants</th>
+        <th scope="col">Constraint metric</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Synonymous</th>
+        <td>{constraintData.exp_syn.toFixed(1)}</td>
+        <td>{constraintData.n_syn}</td>
+        <td>Z = {constraintData.syn_z.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <th scope="row">Missense</th>
+        <td>{constraintData.exp_mis.toFixed(1)}</td>
+        <td>{constraintData.n_mis}</td>
+        <td>Z = {constraintData.mis_z.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <th scope="row">LoF</th>
+        <td>{constraintData.exp_lof.toFixed(1)}</td>
+        <td>{constraintData.n_lof}</td>
+        <td>pLI = {constraintData.pLI.toFixed(2)}</td>
+      </tr>
+    </tbody>
+  </BaseTable>
 )
 
 ConstraintTable.propTypes = {
-  constraintData: PropTypes.object.isRequired,
+  constraintData: PropTypes.shape({
+    exp_syn: PropTypes.number.isRequired,
+    n_syn: PropTypes.number.isRequired,
+    syn_z: PropTypes.number.isRequired,
+    exp_mis: PropTypes.number.isRequired,
+    n_mis: PropTypes.number.isRequired,
+    mis_z: PropTypes.number.isRequired,
+    exp_lof: PropTypes.number.isRequired,
+    n_lof: PropTypes.number.isRequired,
+    pLI: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
-const PlaceholderTable = Table.extend`
-  opacity: 0.4;
-`
-
-const ConstraintMessage = TableCell.extend`
-  text-align: center;
-`
-
 const ConstraintTablePlaceholder = ({ message }) => (
-  <PlaceholderTable>
-    <TableRows>
-      <TableHeader>
-        <TableCell width={'40%'}>Category</TableCell>
-        <TableCell>Exp. no. variants</TableCell>
-        <TableCell>Obs. no. variants</TableCell>
-        <TableCell>Constraint metric</TableCell>
-      </TableHeader>
-      <TableRow>
-        <TableCell width={'40%'}>Synonymous</TableCell>
-        <TableCell width={'60%'} />
-      </TableRow>
-      <TableRow>
-        <TableCell width={'40%'}>Missense</TableCell>
-        <ConstraintMessage width={'60%'}>{message}</ConstraintMessage>
-      </TableRow>
-      <TableRow>
-        <TableCell width={'40%'}>LoF</TableCell>
-        <TableCell width={'60%'} />
-      </TableRow>
-    </TableRows>
-  </PlaceholderTable>
+  <BaseTable style={{ opacity: 0.4 }}>
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Exp. no. variants</th>
+        <th scope="col">Obs. no. variants</th>
+        <th scope="col">Constraint metric</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Synonymous</th>
+        <td colSpan={3} />
+      </tr>
+      <tr>
+        <th scope="row">Missense</th>
+        <td colSpan={3} style={{ textAlign: 'center' }}>
+          {message}
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">LoF</th>
+        <td colSpan={3} />
+      </tr>
+    </tbody>
+  </BaseTable>
 )
 
 ConstraintTablePlaceholder.propTypes = {
