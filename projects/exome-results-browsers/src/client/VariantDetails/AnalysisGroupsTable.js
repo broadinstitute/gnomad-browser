@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { graphql } from 'react-apollo'
 
-import { Table, TableCell, TableHeader, TableRow, TableRows } from '@broad/ui'
+import { BaseTable } from '@broad/ui'
 
 function formatExponential(number) {
   return Number(number.toPrecision(4)).toExponential()
@@ -11,38 +11,36 @@ function formatExponential(number) {
 
 export function BaseAnalysisGroupsTable({ groups }) {
   return (
-    <Table>
-      <TableRows>
-        <TableHeader>
-          <TableCell width={'200px'}>Group</TableCell>
-          <TableCell width={'60px'}>AC Case</TableCell>
-          <TableCell width={'60px'}>AN Case</TableCell>
-          <TableCell width={'60px'}>AC Ctrl</TableCell>
-          <TableCell width={'60px'}>AN Ctrl</TableCell>
-          <TableCell width={'60px'}>AF Case</TableCell>
-          <TableCell width={'60px'}>AF Ctrl</TableCell>
-          <TableCell width={'60px'}>P-value</TableCell>
-          <TableCell width={'60px'}>Beta</TableCell>
-        </TableHeader>
+    <BaseTable>
+      <thead>
+        <tr>
+          <th scope="col">Group</th>
+          <th scope="col">AC Case</th>
+          <th scope="col">AN Case</th>
+          <th scope="col">AC Ctrl</th>
+          <th scope="col">AN Ctrl</th>
+          <th scope="col">AF Case</th>
+          <th scope="col">AF Ctrl</th>
+          <th scope="col">P-value</th>
+          <th scope="col">Beta</th>
+        </tr>
+      </thead>
+      <tbody>
         {groups.map(group => (
-          <TableRow key={group.analysis_group}>
-            <TableCell width={'200px'}>{group.analysis_group}</TableCell>
-            <TableCell width={'60px'}>{group.ac_case}</TableCell>
-            <TableCell width={'60px'}>{group.an_case}</TableCell>
-            <TableCell width={'60px'}>{group.ac_ctrl}</TableCell>
-            <TableCell width={'60px'}>{group.an_ctrl}</TableCell>
-            <TableCell width={'60px'}>
-              {group.an_case === 0 ? 0 : formatExponential(group.ac_case / group.an_case)}
-            </TableCell>
-            <TableCell width={'60px'}>
-              {group.an_ctrl === 0 ? 0 : formatExponential(group.ac_ctrl / group.an_ctrl)}
-            </TableCell>
-            <TableCell width={'60px'}>{group.p}</TableCell>
-            <TableCell width={'60px'}>{group.se}</TableCell>
-          </TableRow>
+          <tr key={group.analysis_group}>
+            <th scope="row">{group.analysis_group}</th>
+            <td>{group.ac_case}</td>
+            <td>{group.an_case}</td>
+            <td>{group.ac_ctrl}</td>
+            <td>{group.an_ctrl}</td>
+            <td>{group.an_case === 0 ? 0 : formatExponential(group.ac_case / group.an_case)}</td>
+            <td>{group.an_ctrl === 0 ? 0 : formatExponential(group.ac_ctrl / group.an_ctrl)}</td>
+            <td>{group.p}</td>
+            <td>{group.se}</td>
+          </tr>
         ))}
-      </TableRows>
-    </Table>
+      </tbody>
+    </BaseTable>
   )
 }
 
