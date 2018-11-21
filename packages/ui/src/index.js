@@ -82,6 +82,8 @@ export { Searchbox } from './Searchbox'
 
 export { SegmentedControl } from './SegmentedControl'
 
+export { BaseTable } from './Table'
+
 export { Tabs } from './Tabs'
 
 export { TooltipAnchor } from './tooltip/TooltipAnchor'
