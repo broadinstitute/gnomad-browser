@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Badge, InfoModal, TextButton } from '@broad/ui'
+import { Badge, BaseTable, InfoModal, TextButton } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 import Link from '../Link'
@@ -10,31 +10,6 @@ import Link from '../Link'
 const MNVList = styled.ul`
   li {
     margin-bottom: 0.5em;
-  }
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-  border-spacing: 0;
-
-  td,
-  th {
-    padding: 0.5em 20px 0.5em 0;
-    text-align: left;
-  }
-
-  thead {
-    th {
-      border-bottom: 1px solid #000;
-    }
-  }
-
-  tbody {
-    td,
-    th {
-      border-bottom: 1px solid #ccc;
-      font-weight: normal;
-    }
   }
 `
 
@@ -109,7 +84,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
         <p>
           <strong>Category:</strong> {category}
         </p>
-        <Table>
+        <BaseTable>
           <thead>
             <tr>
               <th>Variant</th>
@@ -150,7 +125,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
               <td>{mnvAminoAcidChange}</td>
             </tr>
           </tbody>
-        </Table>
+        </BaseTable>
       </InfoModal>
     )
   }
