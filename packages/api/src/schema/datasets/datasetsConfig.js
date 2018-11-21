@@ -11,11 +11,6 @@ import fetchExacVariantsByGene from './exac/fetchExacVariantsByGene'
 import fetchExacVariantsByRegion from './exac/fetchExacVariantsByRegion'
 import fetchExacVariantsByTranscript from './exac/fetchExacVariantsByTranscript'
 
-import countGnomad202VariantsInRegion from './gnomad_r2_0_2/countGnomadVariantsInRegion'
-import fetchGnomad202VariantsByGene from './gnomad_r2_0_2/fetchGnomadVariantsByGene'
-import fetchGnomad202VariantsByRegion from './gnomad_r2_0_2/fetchGnomadVariantsByRegion'
-import fetchGnomad202VariantsByTranscript from './gnomad_r2_0_2/fetchGnomadVariantsByTranscript'
-
 import Gnomad21VariantDetailsType from './gnomad_r2_1/GnomadVariantDetailsType'
 import countGnomad21VariantsInRegion from './gnomad_r2_1/countGnomadVariantsInRegion'
 import {
@@ -42,12 +37,6 @@ const datasetsConfig = {
     fetchVariantsByRegion: fetchExacVariantsByRegion,
     fetchVariantsByTranscript: fetchExacVariantsByTranscript,
     // variantDetailsType: ExacVariantDetailsType,
-  },
-  gnomad_r2_0_2: {
-    countVariantsInRegion: countGnomad202VariantsInRegion,
-    fetchVariantsByGene: fetchGnomad202VariantsByGene,
-    fetchVariantsByRegion: fetchGnomad202VariantsByRegion,
-    fetchVariantsByTranscript: fetchGnomad202VariantsByTranscript,
   },
   gnomad_r2_1: {
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, 'gnomad'),
