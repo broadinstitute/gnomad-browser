@@ -20,7 +20,7 @@ export function VariantAttribute({ children, label }) {
   return (
     <VariantAttributeListItem>
       <VariantAttributeLabel>{label}:</VariantAttributeLabel>
-      <VariantAttributeValue>{children}</VariantAttributeValue>
+      <VariantAttributeValue>{children === null ? '—' : children}</VariantAttributeValue>
     </VariantAttributeListItem>
   )
 }

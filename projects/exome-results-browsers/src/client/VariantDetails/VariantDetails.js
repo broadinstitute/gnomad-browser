@@ -74,6 +74,13 @@ function formatAlleleFrequency(frequency) {
   return Number(frequency.toPrecision(4)).toExponential()
 }
 
+const formatInAnalysisFlag = inAnalysis => {
+  if (inAnalysis === null) {
+    return '—'
+  }
+  return inAnalysis ? 'Yes' : 'No'
+}
+
 const Variant = ({ variant }) => {
   const transcriptHGVSc = {}
   if (variant.hgvsc) {
@@ -138,7 +145,9 @@ const Variant = ({ variant }) => {
             <VariantAttribute label="PolyPhen">{formatPolyPhen(variant.polyphen)}</VariantAttribute>
             <VariantAttribute label="Flags">{variant.flags}</VariantAttribute>
             <VariantAttribute label="Source">{variant.source}</VariantAttribute>
-            <VariantAttribute label="In analysis">{variant.in_analysis}</VariantAttribute>
+            <VariantAttribute label="In analysis">
+              {formatInAnalysisFlag(variant.in_analysis)}
+            </VariantAttribute>
             <VariantAttribute label="Comment">{variant.comment}</VariantAttribute>
           </VariantAttributeList>
         </Column>
