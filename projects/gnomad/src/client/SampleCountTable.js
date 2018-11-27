@@ -16,6 +16,8 @@ const sampleCounts = {
       oth: 3070,
     },
     genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
+    exomesTotal: 125748,
+    genomesTotal: 15708,
   },
   controls: {
     exomes: {
@@ -29,6 +31,8 @@ const sampleCounts = {
       oth: 957,
     },
     genomes: { afr: 1287, amr: 123, asj: 19, eas: 458, fin: 581, nfe: 2762, sas: '*', oth: 212 },
+    exomesTotal: 54704,
+    genomesTotal: 5442,
   },
   noncancer: {
     exomes: {
@@ -42,6 +46,8 @@ const sampleCounts = {
       oth: 2810,
     },
     genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
+    exomesTotal: 118479,
+    genomesTotal: 15708,
   },
   nonneuro: {
     exomes: {
@@ -55,6 +61,8 @@ const sampleCounts = {
       sas: 15304,
     },
     genomes: { afr: 1694, amr: 277, asj: 123, eas: 780, fin: 582, nfe: 6813, sas: '*', oth: 367 },
+    exomesTotal: 104068,
+    genomesTotal: 10636,
   },
   nontopmed: {
     exomes: {
@@ -68,6 +76,8 @@ const sampleCounts = {
       oth: 3032,
     },
     genomes: { afr: 4278, amr: 405, asj: 69, eas: 761, fin: 1738, nfe: 5547, sas: '*', oth: 506 },
+    exomesTotal: 122439,
+    genomesTotal: 13304,
   },
 }
 
@@ -142,6 +152,21 @@ export default () => (
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <td>{sampleCounts.gnomad.exomesTotal}</td>
+            <td>{sampleCounts.gnomad.genomesTotal}</td>
+            <td>{sampleCounts.controls.exomesTotal}</td>
+            <td>{sampleCounts.controls.genomesTotal}</td>
+            <td>{sampleCounts.noncancer.exomesTotal}</td>
+            <td>{sampleCounts.noncancer.genomesTotal}</td>
+            <td>{sampleCounts.nonneuro.exomesTotal}</td>
+            <td>{sampleCounts.nonneuro.genomesTotal}</td>
+            <td>{sampleCounts.nontopmed.exomesTotal}</td>
+            <td>{sampleCounts.nontopmed.genomesTotal}</td>
+          </tr>
+        </tfoot>
       </BaseTable>
     </TableViewport>
     <p>
