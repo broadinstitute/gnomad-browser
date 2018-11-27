@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
 
 import InfoPage from './InfoPage'
+import SampleCountTable from './SampleCountTable'
 
 const Question = styled.dt`
   margin-bottom: 0.5em;
@@ -115,6 +116,11 @@ export default () => (
         (&quot;germline&quot;) samples from TCGA. We excluded any sample labeled as tumor. However,
         note that some sample/label swaps may have occurred in TCGA; in addition, it is possible
         that in some patients the blood samples are contaminated by circulating tumor cells.
+      </Answer>
+
+      <Question>What populations are represented in the gnomAD data?</Question>
+      <Answer>
+        <SampleCountTable />
       </Answer>
 
       <Question>What ethnicities are represented in the &quot;other&quot; population?</Question>
