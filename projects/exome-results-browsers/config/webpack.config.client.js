@@ -1,9 +1,6 @@
 const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
-
-const { aliases, browserConfig, definitions } = require('./sharedConfig')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -47,14 +44,14 @@ const config = {
     filename: '[name].js',
   },
   plugins: [
-    new webpack.DefinePlugin(definitions),
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
-      title: browserConfig.pageTitle,
     }),
   ],
   resolve: {
-    alias: aliases,
+    alias: {
+      '@browser': path.resolve(__dirname, '../browsers', process.env.BROWSER, 'src'),
+    },
   },
 }
 

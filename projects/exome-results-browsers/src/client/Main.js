@@ -11,6 +11,8 @@ import { createGenePageStore } from '@broad/gene-page'
 import { actions as userInterfaceActions } from '@broad/ui'
 import { getLabelForConsequenceTerm, registerConsequences } from '@broad/utilities'
 
+import browserConfig from '@browser/config'
+
 import App from './routes'
 
 // eslint-disable-next-line no-unused-expressions
@@ -23,7 +25,9 @@ injectGlobal`
   }
 `
 
-registerConsequences(BROWSER_CONFIG.consequences)
+document.title = browserConfig.pageTitle
+
+registerConsequences(browserConfig.consequences)
 
 const appSettings = {
   variantSearchPredicate(variant, query) {

@@ -6,17 +6,22 @@ in `./src` with browser specific configuration and components in `./browsers/*`.
 
 <a name="f1">1</a>: https://tarjindersingh.github.io/schema-content/schema.html
 
-Building the project loads a configuration object from `./browsers/${BROWSER}/config.js`
-and makes that object available to both client and server code as a global variable
-`BROWSER_CONFIG`.
+Any module located in `./browsers/${BROWSER}/src` can be imported in either the client
+or server using the `@browser` webpack alias. This allows some components to have
+browser-specific implementations.
 
-In `./src/client` code, components with browser specific implementations can be imported
-using the `@browser-components` webpack alias.
+At minimum, each browser must contain in its `src` directory two files:
+* config.js - Exports an object. Configuration schema explained below.
+* HomePageContent.js - Exports a React component.
 
 ## Getting started
 
 For each of the scripts below, the `$BROWSER` argument must be the name of one of the
 subdirectories of `./browsers`.
+
+### Browser configuration
+
+TODO
 
 ### Development
 ```

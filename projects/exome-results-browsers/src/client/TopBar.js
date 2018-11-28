@@ -5,6 +5,8 @@ import styled from 'styled-components'
 
 import { Button } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import Link from './Link'
 import Searchbox from './Searchbox'
 
@@ -14,7 +16,7 @@ const TopBarWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background-color: ${BROWSER_CONFIG.navBarColor || '#000'};
+  background-color: ${browserConfig.navBarColor || '#000'};
 
   @media (max-width: 900px) {
     flex-direction: column;
@@ -95,7 +97,7 @@ class TopBar extends Component {
       <TopBarWrapper>
         <TitleWrapper>
           <Link to="/">
-            <Title>{BROWSER_CONFIG.navBarTitle}</Title>
+            <Title>{browserConfig.navBarTitle}</Title>
           </Link>
           <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
         </TitleWrapper>

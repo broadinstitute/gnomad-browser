@@ -3,6 +3,8 @@ import React from 'react'
 
 import { BaseTable } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 const Table = BaseTable.extend`
   min-width: 325px;
 `
@@ -19,7 +21,7 @@ const GeneResultsTable = ({ geneResult }) => (
         </tr>
       </thead>
       <tbody>
-        {BROWSER_CONFIG.geneResults.categories.map(({ id, label }) => {
+        {browserConfig.geneResults.categories.map(({ id, label }) => {
           const resultCategory = geneResult.categories.find(c => c.id === id)
           return (
             <tr key={id}>
