@@ -12,7 +12,7 @@ const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selec
   <PageHeading
     renderPageControls={() => (
       <div>
-        {/* eslint-disable jsx-a11y/label-has-for */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
         <label htmlFor="dataset-selector">Current Dataset </label>
         <Combobox
           id="dataset-selector"
@@ -23,12 +23,12 @@ const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selec
           // This is likely a bug in Combobox.
           key={selectedDataset}
           options={datasetOptions.map(datasetId => ({
+            datasetId,
             label: datasetLabels[datasetId],
-            value: datasetId,
           }))}
           value={datasetLabels[selectedDataset]}
           width="220px"
-          onSelect={datasetId => {
+          onSelect={({ datasetId }) => {
             const nextLocation = Object.assign(history.location, {
               search: queryString.stringify({ dataset: datasetId }),
             })
@@ -36,7 +36,7 @@ const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selec
           }}
         />
 
-        <QuestionMark topic={'dataset-selection'} display={'inline'} />
+        <QuestionMark topic="dataset-selection" display="inline" />
       </div>
     )}
   >

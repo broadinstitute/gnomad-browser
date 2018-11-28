@@ -8,13 +8,14 @@ export default class ComboboxExample extends Component {
   }
 
   render() {
+    const { value } = this.state
     return (
       <Combobox
-        options={['foo', 'bar', 'baz', 'qux'].map(s => ({ label: s, value: s }))}
-        onSelect={value => {
-          this.setState({ value })
+        options={['foo', 'bar', 'baz', 'qux'].map(s => ({ label: s }))}
+        onSelect={selectedOption => {
+          this.setState({ value: selectedOption.label })
         }}
-        value={this.state.value}
+        value={value}
       />
     )
   }

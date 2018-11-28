@@ -48,9 +48,7 @@ export class Combobox extends Component {
     id: PropTypes.string,
     onChange: PropTypes.func,
     onSelect: PropTypes.func.isRequired,
-    options: PropTypes.arrayOf(
-      PropTypes.shape({ label: PropTypes.string.isRequired, value: PropTypes.string.isRequired })
-    ).isRequired,
+    options: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string.isRequired })).isRequired,
     placeholder: PropTypes.string,
     value: PropTypes.string.isRequired,
     width: PropTypes.string,
@@ -66,18 +64,20 @@ export class Combobox extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      inputValue: this.props.value,
+      inputValue: props.value,
     }
   }
 
   onChange = (e, inputValue) => {
+    const { onChange } = this.props
     this.setState({ inputValue })
-    this.props.onChange(inputValue)
+    onChange(inputValue)
   }
 
   onSelect = (value, item) => {
+    const { onSelect } = this.props
     this.setState({ inputValue: item.label })
-    this.props.onSelect(item.value, item)
+    onSelect(item)
   }
 
   shouldItemRender = item => {
@@ -86,35 +86,39 @@ export class Combobox extends Component {
   }
 
   renderInput = props => {
+    const { id } = this.props
     // eslint-disable-next-line react/prop-types
     const { ref, ...rest } = props
-    return <Input {...rest} id={this.props.id} innerRef={ref} />
+    return <Input {...rest} id={id} innerRef={ref} />
   }
 
   render() {
+    const { options, placeholder, value, width } = this.props
+    const { inputValue } = this.state
+
     return (
       <Autocomplete
         getItemValue={item => item.label}
         inputProps={{
           onBlur: () => {
-            this.setState({ inputValue: this.props.value })
+            this.setState({ inputValue: value })
           },
           onFocus: () => {
             this.setState({ inputValue: '' })
           },
-          placeholder: this.props.placeholder,
+          placeholder,
         }}
-        items={this.props.options}
+        items={options}
         menuStyle={menuStyle}
         renderInput={this.renderInput}
         renderItem={(item, isHighlighted) => (
           <Item isHighlighted={isHighlighted}>{item.label}</Item>
         )}
         shouldItemRender={this.shouldItemRender}
-        value={this.state.inputValue}
+        value={inputValue}
         wrapperStyle={{
           display: 'inline-block',
-          width: this.props.width,
+          width,
         }}
         onChange={this.onChange}
         onSelect={this.onSelect}
