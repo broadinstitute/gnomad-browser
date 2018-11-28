@@ -13,8 +13,7 @@
     "express": "^4.14.0",
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
-    "mongodb": "^2.2.11",
-    "serve-static": "^1.13.2"
+    "mongodb": "^2.2.11"
   },
   "devDependencies": {
     "@broad/gene-page": "*",
