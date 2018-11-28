@@ -1,5 +1,7 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 
+import browserConfig from '@browser/config'
+
 export const SearchResultType = new GraphQLObjectType({
   name: 'SearchResult',
   fields: {
@@ -10,8 +12,8 @@ export const SearchResultType = new GraphQLObjectType({
 
 export const fetchSearchResults = async (ctx, query) => {
   const response = await ctx.database.elastic.search({
-    index: BROWSER_CONFIG.elasticsearch.geneResults.index,
-    type: BROWSER_CONFIG.elasticsearch.geneResults.type,
+    index: browserConfig.elasticsearch.geneResults.index,
+    type: browserConfig.elasticsearch.geneResults.type,
     size: 5,
     _source: ['gene_id', 'gene_name'],
     body: {
@@ -26,7 +28,7 @@ export const fetchSearchResults = async (ctx, query) => {
             },
           },
           filter: {
-            term: { analysis_group: BROWSER_CONFIG.analysisGroups.overallGroup },
+            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
           },
         },
       },

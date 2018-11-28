@@ -1,5 +1,7 @@
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import browserConfig from '@browser/config'
+
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: {
@@ -47,8 +49,8 @@ export const VariantType = new GraphQLObjectType({
 
 export const fetchVariantsByGeneId = async (ctx, geneId) => {
   const response = await ctx.database.elastic.search({
-    index: BROWSER_CONFIG.elasticsearch.variants.index,
-    type: BROWSER_CONFIG.elasticsearch.variants.type,
+    index: browserConfig.elasticsearch.variants.index,
+    type: browserConfig.elasticsearch.variants.type,
     size: 10000,
     body: {
       query: {

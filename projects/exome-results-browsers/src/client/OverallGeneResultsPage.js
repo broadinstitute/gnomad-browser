@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Page, PageHeading } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import OverallGeneResultsTable from './OverallGeneResultsTable'
 import Query from './Query'
 import StatusMessage from './StatusMessage'
@@ -25,7 +27,7 @@ const geneResultsQuery = `
 
 const OverallGeneResultsPage = () => (
   <Page>
-    <PageHeading>{BROWSER_CONFIG.geneResults.resultsPageHeading}</PageHeading>
+    <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
     <Query query={geneResultsQuery}>
       {({ data, error, loading }) => {
         if (loading) {

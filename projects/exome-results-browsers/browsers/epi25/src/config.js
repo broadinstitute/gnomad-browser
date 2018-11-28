@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   pageTitle: 'Epi25 WES browser',
   navBarTitle: 'Epi25 WES browser',
   navBarColor: '#4e3c81',

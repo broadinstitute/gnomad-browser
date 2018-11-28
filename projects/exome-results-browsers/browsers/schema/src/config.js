@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   pageTitle: 'schema',
   navBarTitle: 'Schizophrenia exome meta-analysis',
   navBarColor: '#0a79bf',

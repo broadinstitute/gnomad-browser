@@ -1,9 +1,6 @@
 const path = require('path')
 
-const webpack = require('webpack')
-
 const pkg = require('../package.json')
-const { aliases, definitions } = require('./sharedConfig')
 
 const projectDirectory = path.resolve(__dirname, '..')
 
@@ -27,9 +24,10 @@ const config = {
     publicPath: '/',
     filename: '[name].js',
   },
-  plugins: [new webpack.DefinePlugin(definitions)],
   resolve: {
-    alias: aliases,
+    alias: {
+      '@browser': path.resolve(__dirname, '../browsers', process.env.BROWSER, 'src'),
+    },
   },
   target: 'node',
 }

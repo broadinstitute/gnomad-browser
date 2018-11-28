@@ -1,4 +1,6 @@
-const groupOrder = BROWSER_CONFIG.analysisGroups.order
+import browserConfig from '@browser/config'
+
+const groupOrder = browserConfig.analysisGroups.order
 
 let sortFunction
 if (groupOrder) {
@@ -14,6 +16,7 @@ if (groupOrder) {
   sortFunction = (groupA, groupB) => groupA.localeCompare(groupB)
 }
 
-const sortByGroup = (list, key = 'analysis_group') => list.sort((a, b) => sortFunction(a[key], b[key]))
+const sortByGroup = (list, key = 'analysis_group') =>
+  list.sort((a, b) => sortFunction(a[key], b[key]))
 
 export default sortByGroup

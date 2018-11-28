@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 import { Grid, Search } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import Link from './Link'
 
 const ResultsSearchWrapper = styled.div`
@@ -51,11 +53,7 @@ let columns = [
   },
 ]
 
-const {
-  geneResults: { categories },
-} = BROWSER_CONFIG
-
-categories.forEach(({ id, label }) => {
+browserConfig.geneResults.categories.forEach(({ id, label }) => {
   columns = [
     ...columns,
     {

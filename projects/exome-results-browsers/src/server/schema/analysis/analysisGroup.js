@@ -1,5 +1,7 @@
 import { GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import browserConfig from '@browser/config'
+
 export const AnalysisGroupType = new GraphQLObjectType({
   name: 'AnalysisGroup',
   fields: {
@@ -21,8 +23,8 @@ export const AnalysisGroupType = new GraphQLObjectType({
 
 export const fetchAnalysisGroupsForVariant = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: BROWSER_CONFIG.elasticsearch.analysisGroups.index,
-    type: BROWSER_CONFIG.elasticsearch.analysisGroups.type,
+    index: browserConfig.elasticsearch.analysisGroups.index,
+    type: browserConfig.elasticsearch.analysisGroups.type,
     size: 100,
     body: {
       query: {

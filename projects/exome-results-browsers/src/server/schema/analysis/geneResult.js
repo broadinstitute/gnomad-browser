@@ -1,5 +1,7 @@
 import { GraphQLInt, GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import browserConfig from '@browser/config'
+
 import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 
 const GeneResultCategoryType = new GraphQLObjectType({
@@ -30,7 +32,7 @@ const shapeGeneResult = doc => ({
   gene_description: doc.description,
   analysis_group: doc.analysis_group,
   pval_meta: doc.pval_meta,
-  categories: BROWSER_CONFIG.geneResults.categories.map(category => ({
+  categories: browserConfig.geneResults.categories.map(category => ({
     id: category.id,
     xcase: doc[`xcase_${category.id}`],
     xctrl: doc[`xctrl_${category.id}`],
@@ -40,15 +42,15 @@ const shapeGeneResult = doc => ({
 
 export const fetchOverallGeneResultByGeneId = async (ctx, geneId) => {
   const response = await ctx.database.elastic.search({
-    index: BROWSER_CONFIG.elasticsearch.geneResults.index,
-    type: BROWSER_CONFIG.elasticsearch.geneResults.type,
+    index: browserConfig.elasticsearch.geneResults.index,
+    type: browserConfig.elasticsearch.geneResults.type,
     size: 1,
     body: {
       query: {
         bool: {
           filter: [
             { term: { gene_id: geneId } },
-            { term: { analysis_group: BROWSER_CONFIG.analysisGroups.overallGroup } },
+            { term: { analysis_group: browserConfig.analysisGroups.overallGroup } },
           ],
         },
       },
@@ -59,14 +61,14 @@ export const fetchOverallGeneResultByGeneId = async (ctx, geneId) => {
 
 export const fetchAllOverallGeneResults = async ctx => {
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: BROWSER_CONFIG.elasticsearch.geneResults.index,
-    type: BROWSER_CONFIG.elasticsearch.geneResults.type,
+    index: browserConfig.elasticsearch.geneResults.index,
+    type: browserConfig.elasticsearch.geneResults.type,
     size: 10000,
     body: {
       query: {
         bool: {
           filter: {
-            term: { analysis_group: BROWSER_CONFIG.analysisGroups.overallGroup },
+            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
           },
         },
       },
@@ -79,14 +81,14 @@ export const fetchAllOverallGeneResults = async ctx => {
 
 export const fetchGroupGeneResultsByGeneId = async (ctx, geneId) => {
   const response = await ctx.database.elastic.search({
-    index: BROWSER_CONFIG.elasticsearch.geneResults.index,
-    type: BROWSER_CONFIG.elasticsearch.geneResults.type,
+    index: browserConfig.elasticsearch.geneResults.index,
+    type: browserConfig.elasticsearch.geneResults.type,
     size: 100,
     body: {
       query: {
         bool: {
           must_not: {
-            term: { analysis_group: BROWSER_CONFIG.analysisGroups.overallGroup },
+            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
           },
           filter: { term: { gene_id: geneId } },
         },
