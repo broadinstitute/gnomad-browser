@@ -50,6 +50,7 @@ export class Combobox extends Component {
     onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string.isRequired })).isRequired,
     placeholder: PropTypes.string,
+    renderOption: PropTypes.func,
     value: PropTypes.string.isRequired,
     width: PropTypes.string,
   }
@@ -58,6 +59,7 @@ export class Combobox extends Component {
     id: undefined,
     onChange: () => {},
     placeholder: undefined,
+    renderOption: option => option.label,
     width: undefined,
   }
 
@@ -93,7 +95,7 @@ export class Combobox extends Component {
   }
 
   render() {
-    const { options, placeholder, value, width } = this.props
+    const { options, placeholder, renderOption, value, width } = this.props
     const { inputValue } = this.state
 
     return (
@@ -112,7 +114,7 @@ export class Combobox extends Component {
         menuStyle={menuStyle}
         renderInput={this.renderInput}
         renderItem={(item, isHighlighted) => (
-          <Item isHighlighted={isHighlighted}>{item.label}</Item>
+          <Item isHighlighted={isHighlighted}>{renderOption(item)}</Item>
         )}
         shouldItemRender={this.shouldItemRender}
         value={inputValue}
