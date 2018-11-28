@@ -82,6 +82,42 @@ export default () => (
       </Answer>
     </dl>
 
+    <SectionHeading>Constraint</SectionHeading>
+    <dl>
+      <Question>How was the expected number of variants determined?</Question>
+      <Answer>
+        We used a depth corrected probability of mutation for each gene to predict the expected
+        variant counts. More details can be found in section 4.1 of the supplement in{' '}
+        <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
+          Lek et al
+        </ExternalLink>
+        . Note that the expected variant counts for bases with a median depth &lt;1 were removed
+        from the totals.
+      </Answer>
+
+      <Question>Which variants are included in the observed counts?</Question>
+      <Answer>
+        We included single nucleotide changes that occurred in the canonical transcript that were
+        found at a frequency of &lt;0.1%, passed all filters, and at sites with a median depth
+        &ge;1. The counts represent the number of unique variants and not the allele count of said
+        variants.
+      </Answer>
+
+      <Question>
+        Why are there fewer variants in the constraint table than depicted on the gene page?
+      </Question>
+      <Answer>
+        We only included variants that were found in the canonical transcript of the gene. On the
+        gene page, variants found in all transcripts are depicted. Additionally, both observed and
+        expected variant counts were removed for sites with a median depth &lt;1.
+      </Answer>
+
+      <Question>What is included in LoF?</Question>
+      <Answer>
+        Nonsense, splice acceptor, and splice donor variants caused by single nucleotide changes.
+      </Answer>
+    </dl>
+
     <SectionHeading>Technical details</SectionHeading>
     <dl>
       <Question>What genome build is the gnomAD data based on?</Question>
