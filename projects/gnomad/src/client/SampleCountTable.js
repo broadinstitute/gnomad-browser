@@ -3,83 +3,7 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@broad/ui'
 
-const sampleCounts = {
-  gnomad: {
-    exomes: {
-      afr: 8128,
-      amr: 17296,
-      asj: 5040,
-      eas: 9197,
-      fin: 10824,
-      nfe: 56885,
-      sas: 15308,
-      oth: 3070,
-    },
-    genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
-    exomesTotal: 125748,
-    genomesTotal: 15708,
-  },
-  controls: {
-    exomes: {
-      afr: 3582,
-      amr: 8556,
-      asj: 1160,
-      eas: 4523,
-      fin: 6697,
-      nfe: 21384,
-      sas: 7845,
-      oth: 957,
-    },
-    genomes: { afr: 1287, amr: 123, asj: 19, eas: 458, fin: 581, nfe: 2762, sas: '*', oth: 212 },
-    exomesTotal: 54704,
-    genomesTotal: 5442,
-  },
-  noncancer: {
-    exomes: {
-      afr: 7451,
-      amr: 17130,
-      asj: 4786,
-      eas: 8846,
-      fin: 10816,
-      nfe: 51377,
-      sas: 15263,
-      oth: 2810,
-    },
-    genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
-    exomesTotal: 118479,
-    genomesTotal: 15708,
-  },
-  nonneuro: {
-    exomes: {
-      afr: 8109,
-      amr: 15262,
-      asj: 3106,
-      eas: 6708,
-      fin: 8367,
-      nfe: 44779,
-      oth: 2433,
-      sas: 15304,
-    },
-    genomes: { afr: 1694, amr: 277, asj: 123, eas: 780, fin: 582, nfe: 6813, sas: '*', oth: 367 },
-    exomesTotal: 104068,
-    genomesTotal: 10636,
-  },
-  nontopmed: {
-    exomes: {
-      afr: 6013,
-      amr: 17229,
-      asj: 4999,
-      eas: 9195,
-      fin: 10823,
-      nfe: 55840,
-      sas: 15308,
-      oth: 3032,
-    },
-    genomes: { afr: 4278, amr: 405, asj: 69, eas: 761, fin: 1738, nfe: 5547, sas: '*', oth: 506 },
-    exomesTotal: 122439,
-    genomesTotal: 13304,
-  },
-}
+import sampleCounts from './sampleCounts'
 
 const populationNames = {
   afr: 'African/African American',
@@ -139,32 +63,32 @@ export default () => (
           {['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'sas', 'oth'].map(popId => (
             <tr key={popId}>
               <th scope="row">{populationNames[popId]}</th>
-              <td>{sampleCounts.gnomad.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad.genomes[popId]}</td>
-              <td>{sampleCounts.controls.exomes[popId]}</td>
-              <td>{sampleCounts.controls.genomes[popId]}</td>
-              <td>{sampleCounts.noncancer.exomes[popId]}</td>
-              <td>{sampleCounts.noncancer.genomes[popId]}</td>
-              <td>{sampleCounts.nonneuro.exomes[popId]}</td>
-              <td>{sampleCounts.nonneuro.genomes[popId]}</td>
-              <td>{sampleCounts.nontopmed.exomes[popId]}</td>
-              <td>{sampleCounts.nontopmed.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId]}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <th scope="row">Total</th>
-            <td>{sampleCounts.gnomad.exomesTotal}</td>
-            <td>{sampleCounts.gnomad.genomesTotal}</td>
-            <td>{sampleCounts.controls.exomesTotal}</td>
-            <td>{sampleCounts.controls.genomesTotal}</td>
-            <td>{sampleCounts.noncancer.exomesTotal}</td>
-            <td>{sampleCounts.noncancer.genomesTotal}</td>
-            <td>{sampleCounts.nonneuro.exomesTotal}</td>
-            <td>{sampleCounts.nonneuro.genomesTotal}</td>
-            <td>{sampleCounts.nontopmed.exomesTotal}</td>
-            <td>{sampleCounts.nontopmed.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1.exomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_controls.exomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_controls.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_cancer.exomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_cancer.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_neuro.exomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_neuro.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_topmed.exomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_topmed.genomesTotal}</td>
           </tr>
         </tfoot>
       </BaseTable>
