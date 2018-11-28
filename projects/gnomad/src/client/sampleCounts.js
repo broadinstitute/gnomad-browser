@@ -13,6 +13,7 @@ const sampleCounts = {
     genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
     exomesTotal: 125748,
     genomesTotal: 15708,
+    total: 141456,
   },
   gnomad_r2_1_controls: {
     exomes: {
@@ -28,6 +29,7 @@ const sampleCounts = {
     genomes: { afr: 1287, amr: 123, asj: 19, eas: 458, fin: 581, nfe: 2762, sas: '*', oth: 212 },
     exomesTotal: 54704,
     genomesTotal: 5442,
+    total: 60146,
   },
   gnomad_r2_1_non_cancer: {
     exomes: {
@@ -43,6 +45,7 @@ const sampleCounts = {
     genomes: { afr: 4359, amr: 424, asj: 145, eas: 780, fin: 1738, nfe: 7718, sas: '*', oth: 544 },
     exomesTotal: 118479,
     genomesTotal: 15708,
+    total: 134187,
   },
   gnomad_r2_1_non_neuro: {
     exomes: {
@@ -58,6 +61,7 @@ const sampleCounts = {
     genomes: { afr: 1694, amr: 277, asj: 123, eas: 780, fin: 582, nfe: 6813, sas: '*', oth: 367 },
     exomesTotal: 104068,
     genomesTotal: 10636,
+    total: 114704,
   },
   gnomad_r2_1_non_topmed: {
     exomes: {
@@ -73,6 +77,10 @@ const sampleCounts = {
     genomes: { afr: 4278, amr: 405, asj: 69, eas: 761, fin: 1738, nfe: 5547, sas: '*', oth: 506 },
     exomesTotal: 122439,
     genomesTotal: 13304,
+    total: 135743,
+  },
+  exac: {
+    total: 60706,
   },
 }
 
