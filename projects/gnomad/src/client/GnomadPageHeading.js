@@ -2,11 +2,28 @@ import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { Combobox, PageHeading } from '@broad/ui'
 
 import datasetLabels from './datasetLabels'
+import sampleCounts from './sampleCounts'
+
+const DatasetDetail = styled.div`
+  margin-top: 0.375em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+`
+
+/* eslint-disable-next-line react/prop-types */
+const renderDatasetOption = ({ datasetId, label }) => (
+  <div>
+    {label}
+    <DatasetDetail>{sampleCounts[datasetId].total.toLocaleString()} samples</DatasetDetail>
+  </div>
+)
 
 const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selectedDataset }) => (
   <PageHeading
@@ -26,6 +43,7 @@ const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selec
             datasetId,
             label: datasetLabels[datasetId],
           }))}
+          renderOption={renderDatasetOption}
           value={datasetLabels[selectedDataset]}
           width="220px"
           onSelect={({ datasetId }) => {
