@@ -12,6 +12,7 @@ export {
   variantFilter,
   variantQcFilter,
   variantDeNovoFilter,
+  variantInAnalysisFilter,
   variantSearchQuery,
   isLoadingVariants,
   finalFilteredVariants,

@@ -221,6 +221,13 @@ class VariantTable extends Component {
         minWidth: 60,
         render: renderNumberCell,
       },
+      {
+        key: 'in_analysis',
+        heading: 'In Analysis',
+        isSortable: true,
+        minWidth: 60,
+        render: (row, key) => row[key] && 'yes',
+      },
     ]
 
     return (
