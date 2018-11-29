@@ -113,11 +113,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         // Hack to show modal in exome results browsers
         dispatch(variantActions.setFocusedVariant(variantId))
       } else {
-        const nextLocation = Object.assign({}, ownProps.history.location, {
-          pathname: `/variant/${variantId}`,
-        })
-        ownProps.history.push(nextLocation)
-        // window.open(`http://gnomad-beta.broadinstitute.org/variant/${variantId}`)
+        const variantPageUrl = `/variant/${variantId}${ownProps.history.location.search}`
+        window.open(variantPageUrl)
       }
     },
     setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
