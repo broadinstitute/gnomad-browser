@@ -19,6 +19,7 @@ export const types = keymirror({
   TOGGLE_VARIANT_QC_FILTER: null,
   ORDER_VARIANTS_BY_POSITION: null,
   TOGGLE_DENOVO_FILTER: null,
+  TOGGLE_IN_ANALYSIS_FILTER: null,
 })
 
 export const actions = {
@@ -55,6 +56,12 @@ export const actions = {
   toggleVariantDeNovoFilter: () => {
     return {
       type: types.TOGGLE_DENOVO_FILTER,
+    }
+  },
+
+  toggleVariantInAnalysisFilter() {
+    return {
+      type: types.TOGGLE_IN_ANALYSIS_FILTER,
     }
   },
 
@@ -116,6 +123,7 @@ export default function createVariantReducer({
     selectedVariantDataset: startingVariantDataset,
     variantQcFilter: startingQcFilter,
     variantDeNovoFilter: false,
+    variantInAnalysisFilter: false,
     variantMatchesConsequenceCategoryFilter:
       variantMatchesConsequenceCategoryFilter || defaultVariantMatchesConsequenceCategoryFilter,
     searchPredicate: variantSearchPredicate,
@@ -224,6 +232,9 @@ export default function createVariantReducer({
     [types.TOGGLE_DENOVO_FILTER] (state) {
       return state.set('variantDeNovoFilter', !state.get('variantDeNovoFilter'))
     },
+    [types.TOGGLE_IN_ANALYSIS_FILTER](state) {
+      return state.set('variantInAnalysisFilter', !state.get('variantInAnalysisFilter'))
+    },
   }
 
   return function variants (state = new State(), action: Object): State {
@@ -319,6 +330,7 @@ export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
+export const variantInAnalysisFilter = state => state.variants.variantInAnalysisFilter
 const variantMatchesConsequenceCategoryFilter = state =>
   state.variants.variantMatchesConsequenceCategoryFilter
 const searchPredicate = state => state.variants.searchPredicate
@@ -330,6 +342,7 @@ const filteredVariantsById = createSelector(
     variantFilter,
     variantQcFilter,
     variantDeNovoFilter,
+    variantInAnalysisFilter,
     variantMatchesConsequenceCategoryFilter,
     searchPredicate,
     variantSearchQuery,
@@ -339,6 +352,7 @@ const filteredVariantsById = createSelector(
     variantFilter,
     variantQcFilter,
     variantDeNovoFilter,
+    variantInAnalysisFilter,
     variantMatchesConsequenceCategoryFilter,
     searchPredicate,
     searchQuery
@@ -359,6 +373,9 @@ const filteredVariantsById = createSelector(
     }
     if (variantDeNovoFilter) {
       filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
+    }
+    if (variantInAnalysisFilter) {
+      filteredVariants = filteredVariants.filter(v => v.get('in_analysis'))
     }
 
     if (searchQuery) {
