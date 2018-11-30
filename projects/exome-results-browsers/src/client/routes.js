@@ -9,8 +9,20 @@ import TopBar from './TopBar'
 const App = () => (
   <div>
     <TopBar />
-    <Route path="/" exact component={HomePage} />
+    {window.gtag && (
+      <Route
+        path="/"
+        render={({ location }) => {
+          window.gtag('config', window.gaTrackingId, {
+            anonymize_ip: true,
+            page_path: location.pathname,
+          })
+          return null
+        }}
+      />
+    )}
     <Switch>
+      <Route path="/" exact component={HomePage} />
       <Route path="/results" component={GeneResultsPage} />
       <Route path="/gene/:gene" render={({ match }) => <GenePage geneName={match.params.gene} />} />
     </Switch>

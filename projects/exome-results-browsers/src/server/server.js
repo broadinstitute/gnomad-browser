@@ -27,6 +27,7 @@ app.use(compression())
   const mongo = await MongoClient.connect(process.env.MONGO_URL)
 
   const html = await renderTemplate({
+    gaTrackingId: process.env.GA_TRACKING_ID,
     title: browserConfig.pageTitle,
   })
 
