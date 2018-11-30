@@ -8,7 +8,7 @@ import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
-import { screenSize, Loading } from '@broad/ui'
+import { screenSize } from '@broad/ui'
 
 const paddingColor = '#5A5E5C'
 const masterExonThickness = '20px'
@@ -47,11 +47,6 @@ class GeneViewer extends PureComponent {
     const geneJS = gene.toJS()
     const canonicalExons = geneJS.transcript.exons
     const variantsReversed = visibleVariants.reverse()
-
-    console.log(variantsReversed)
-    if (variantsReversed.isEmpty()) {
-      return <Loading />
-    }
 
     const cases = variantsReversed
       .filter(v => v.ac_case > 0)
