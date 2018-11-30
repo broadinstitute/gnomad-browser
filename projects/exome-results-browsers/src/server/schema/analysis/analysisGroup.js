@@ -1,6 +1,20 @@
-import { GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
+import {
+  GraphQLEnumType,
+  GraphQLFloat,
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 
 import browserConfig from '@browser/config'
+
+export const AnalysisGroupArgumentType = new GraphQLEnumType({
+  name: 'AnalysisGroupId',
+  values: browserConfig.analysisGroups.selectableGroups.reduce(
+    (values, analysisGroup) => ({ ...values, [analysisGroup]: {} }),
+    {}
+  ),
+})
 
 export const AnalysisGroupType = new GraphQLObjectType({
   name: 'AnalysisGroup',

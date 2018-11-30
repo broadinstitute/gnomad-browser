@@ -22,6 +22,7 @@ export default {
   },
   analysisGroups: {
     overallGroup: 'all',
+    selectableGroups: ['all'],
   },
   consequences: [
     {

@@ -10,7 +10,7 @@ import StatusMessage from './StatusMessage'
 
 const geneResultsQuery = `
   {
-    overallGeneResults {
+    geneResults(analysis_group: ${browserConfig.analysisGroups.overallGroup}) {
       gene_id
       gene_name
       gene_description
@@ -38,7 +38,7 @@ const OverallGeneResultsPage = () => (
           return <StatusMessage>Unable to load gene results</StatusMessage>
         }
 
-        const shapedResults = data.overallGeneResults.map(result => {
+        const shapedResults = data.geneResults.map(result => {
           const resultCopy = { ...result }
           result.categories.forEach(c => {
             resultCopy[`xcase_${c.id}`] = c.xcase

@@ -1,6 +1,6 @@
 import browserConfig from '@browser/config'
 
-const groupOrder = browserConfig.analysisGroups.order
+const groupOrder = browserConfig.analysisGroups.selectableGroups
 
 let sortFunction
 if (groupOrder) {
