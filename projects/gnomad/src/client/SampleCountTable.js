@@ -70,16 +70,16 @@ const SampleCountTable = () => (
           {['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'sas', 'oth'].map(popId => (
             <tr key={popId}>
               <th scope="row">{populationNames[popId]}</th>
-              <td>{sampleCounts.gnomad_r2_1.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId].toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
@@ -87,32 +87,32 @@ const SampleCountTable = () => (
           {['female', 'male'].map(popId => (
             <tr key={popId}>
               <th scope="row">{popId.charAt(0).toUpperCase() + popId.slice(1)}</th>
-              <td>{sampleCounts.gnomad_r2_1.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId]}</td>
-              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId].toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <th scope="row">Total</th>
-            <td>{sampleCounts.gnomad_r2_1.exomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1.genomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_controls.exomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_controls.genomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_cancer.exomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_cancer.genomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_neuro.exomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_neuro.genomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_topmed.exomesTotal}</td>
-            <td>{sampleCounts.gnomad_r2_1_non_topmed.genomesTotal}</td>
+            <td>{sampleCounts.gnomad_r2_1.exomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_controls.exomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_controls.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_cancer.exomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_cancer.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_neuro.exomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_neuro.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_topmed.exomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r2_1_non_topmed.genomesTotal.toLocaleString()}</td>
           </tr>
         </tfoot>
       </BaseTable>
