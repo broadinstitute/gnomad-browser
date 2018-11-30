@@ -2,6 +2,11 @@ const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+if (process.env.BROWSER === undefined) {
+  console.error('BROWSER environment variable must be set')
+  process.exit(1)
+}
+
 const isDev = process.env.NODE_ENV === 'development'
 
 const config = {

@@ -2,6 +2,11 @@ const path = require('path')
 
 const pkg = require('../package.json')
 
+if (process.env.BROWSER === undefined) {
+  console.error('BROWSER environment variable must be set')
+  process.exit(1)
+}
+
 const projectDirectory = path.resolve(__dirname, '..')
 
 const isDev = process.env.NODE_ENV === 'development'
