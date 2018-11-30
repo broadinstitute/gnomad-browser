@@ -25,8 +25,8 @@ export default {
     ],
   },
   analysisGroups: {
-    order: ['EPI', 'EE', 'GGE', 'NAFE'],
     overallGroup: 'EPI',
+    selectableGroups: ['EPI', 'EE', 'GGE', 'NAFE'],
   },
   consequences: [
     {

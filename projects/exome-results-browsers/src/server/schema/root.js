@@ -1,7 +1,11 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import { AnalysisGroupType, fetchAnalysisGroupsForVariant } from './analysis/analysisGroup'
-import { GeneResultType, fetchAllOverallGeneResults } from './analysis/geneResult'
+import {
+  AnalysisGroupArgumentType,
+  AnalysisGroupType,
+  fetchAnalysisGroupsForVariant,
+} from './analysis/analysisGroup'
+import { GeneResultType, fetchAllGeneResultsForAnalysisGroup } from './analysis/geneResult'
 import { SearchResultType, fetchSearchResults } from './analysis/search'
 import { GeneType, fetchGeneById, fetchGeneByName } from './reference/gene'
 
@@ -25,9 +29,12 @@ export const RootType = new GraphQLObjectType({
         throw Error('One of "gene_id" or "gene_name" required')
       },
     },
-    overallGeneResults: {
+    geneResults: {
       type: new GraphQLList(GeneResultType),
-      resolve: (obj, args, ctx) => fetchAllOverallGeneResults(ctx),
+      args: {
+        analysis_group: { type: new GraphQLNonNull(AnalysisGroupArgumentType) },
+      },
+      resolve: (obj, args, ctx) => fetchAllGeneResultsForAnalysisGroup(ctx, args.analysis_group),
     },
     analysisGroups: {
       type: new GraphQLList(AnalysisGroupType),

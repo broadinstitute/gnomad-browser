@@ -40,6 +40,26 @@ const shapeGeneResult = doc => ({
   })),
 })
 
+export const fetchAllGeneResultsForAnalysisGroup = async (ctx, analysisGroup) => {
+  const hits = await fetchAllSearchResults(ctx.database.elastic, {
+    index: browserConfig.elasticsearch.geneResults.index,
+    type: browserConfig.elasticsearch.geneResults.type,
+    size: 10000,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            term: { analysis_group: analysisGroup },
+          },
+        },
+      },
+      sort: [{ pval_meta: { order: 'asc' } }],
+    },
+  })
+
+  return hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
+}
+
 export const fetchOverallGeneResultByGeneId = async (ctx, geneId) => {
   const response = await ctx.database.elastic.search({
     index: browserConfig.elasticsearch.geneResults.index,
@@ -57,26 +77,6 @@ export const fetchOverallGeneResultByGeneId = async (ctx, geneId) => {
     },
   })
   return shapeGeneResult(response.hits.hits[0]._source) // eslint-disable-line no-underscore-dangle
-}
-
-export const fetchAllOverallGeneResults = async ctx => {
-  const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: browserConfig.elasticsearch.geneResults.index,
-    type: browserConfig.elasticsearch.geneResults.type,
-    size: 10000,
-    body: {
-      query: {
-        bool: {
-          filter: {
-            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
-          },
-        },
-      },
-      sort: [{ pval_meta: { order: 'asc' } }],
-    },
-  })
-
-  return hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
 }
 
 export const fetchGroupGeneResultsByGeneId = async (ctx, geneId) => {
