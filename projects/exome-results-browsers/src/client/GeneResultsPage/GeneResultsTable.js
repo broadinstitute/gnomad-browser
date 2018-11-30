@@ -1,18 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 
-import { Grid, Search } from '@broad/ui'
+import { Grid } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
 import Link from '../Link'
-
-const ResultsSearchWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1em;
-`
 
 const renderExponentialNumberCell = (row, key) => {
   const number = row[key]
@@ -95,15 +88,9 @@ class GeneResultsTable extends PureComponent {
   }
 
   state = {
-    searchText: '',
     sortKey: 'pval_meta',
     sortAscending: true,
   }
-
-  setSearchText = searchText =>
-    this.setState({
-      searchText: String(searchText).toUpperCase(),
-    })
 
   setSortKey = sortKey => {
     this.setState(state => ({
@@ -115,9 +102,7 @@ class GeneResultsTable extends PureComponent {
 
   getRenderedResults() {
     const { results } = this.props
-    const { searchText, sortKey, sortAscending } = this.state
-
-    const filteredResults = results.filter(result => (result.gene_name || '').includes(searchText))
+    const { sortKey, sortAscending } = this.state
 
     const comparator = ['gene_name', 'description', 'gene_id'].includes(sortKey)
       ? (a, b) => a.localeCompare(b)
@@ -125,7 +110,7 @@ class GeneResultsTable extends PureComponent {
 
     const orderedComparator = sortAscending ? comparator : (a, b) => comparator(b, a)
 
-    const sortedResults = filteredResults.sort((resultA, resultB) => {
+    const sortedResults = results.sort((resultA, resultB) => {
       const sortValA = resultA[sortKey]
       const sortValB = resultB[sortKey]
 
@@ -150,9 +135,6 @@ class GeneResultsTable extends PureComponent {
 
     return (
       <div>
-        <ResultsSearchWrapper>
-          <Search placeholder="Search results by gene" onChange={this.setSearchText} />
-        </ResultsSearchWrapper>
         {results.length === 0 ? (
           'No results found'
         ) : (
