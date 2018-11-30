@@ -37,6 +37,7 @@
     "eslint-plugin-react": "^7.11.1",
     "jest": "^23.6.0",
     "prettier": "1.14.3",
+    "raw-loader": "^0.5.1",
     "stylelint": "^9.7.1",
     "stylelint-config-idiomatic-css": "^1.0.6",
     "stylelint-config-standard": "^18.2.0",

@@ -1,6 +1,7 @@
 const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 
 if (process.env.BROWSER === undefined) {
   console.error('BROWSER environment variable must be set')
@@ -14,7 +15,7 @@ const config = {
     historyApiFallback: true,
     port: 8012,
     proxy: {
-      '/api': 'http://localhost:8007',
+      '/': 'http://localhost:8007',
     },
     publicPath: '/',
     stats: 'errors-only',
@@ -49,9 +50,18 @@ const config = {
     filename: '[name].js',
   },
   plugins: [
+    // Inject the JS bundle into the server's HTML template
     new HtmlWebpackPlugin({
-      template: './src/client/index.html',
+      filename: path.resolve(__dirname, '../dist/index.ejs'),
+      // If no loader is specified, HtmlWebpackPlugin will render the template using Lodash.
+      // Using raw-loader here skips the compile time render so that we can render the
+      // template at run time.
+      template: 'raw-loader!./src/server/index.ejs',
+      // Since the server reads the template file, it needs to be written to disk when
+      // using webpack-dev-server.
+      alwaysWriteToDisk: true,
     }),
+    new HtmlWebpackHarddiskPlugin(),
   ],
   resolve: {
     alias: {
