@@ -6,7 +6,7 @@ import { Grid, Search } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
-import Link from './Link'
+import Link from '../Link'
 
 const ResultsSearchWrapper = styled.div`
   display: flex;

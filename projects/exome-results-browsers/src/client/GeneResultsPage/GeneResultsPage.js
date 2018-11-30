@@ -4,9 +4,9 @@ import { Page, PageHeading } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
-import OverallGeneResultsTable from './OverallGeneResultsTable'
-import Query from './Query'
-import StatusMessage from './StatusMessage'
+import Query from '../Query'
+import StatusMessage from '../StatusMessage'
+import GeneResultsTable from './GeneResultsTable'
 
 const geneResultsQuery = `
   {
@@ -25,7 +25,7 @@ const geneResultsQuery = `
   }
 `
 
-const OverallGeneResultsPage = () => (
+const GeneResultsPage = () => (
   <Page>
     <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
     <Query query={geneResultsQuery}>
@@ -48,10 +48,10 @@ const OverallGeneResultsPage = () => (
           return resultCopy
         })
 
-        return <OverallGeneResultsTable results={shapedResults} />
+        return <GeneResultsTable results={shapedResults} />
       }}
     </Query>
   </Page>
 )
 
-export default OverallGeneResultsPage
+export default GeneResultsPage
