@@ -19,9 +19,16 @@ const populationNames = {
 const TableViewport = styled.div`
   overflow-x: auto;
   width: 100%;
+
+  tbody tr:last-child {
+    th,
+    td {
+      border-bottom-color: #000;
+    }
+  }
 `
 
-export default () => (
+const SampleCountTable = () => (
   <div>
     <TableViewport>
       <BaseTable>
@@ -76,6 +83,23 @@ export default () => (
             </tr>
           ))}
         </tbody>
+        <tbody>
+          {['female', 'male'].map(popId => (
+            <tr key={popId}>
+              <th scope="row">{popId.charAt(0).toUpperCase() + popId.slice(1)}</th>
+              <td>{sampleCounts.gnomad_r2_1.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_controls.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_cancer.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_neuro.genomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.exomes[popId]}</td>
+              <td>{sampleCounts.gnomad_r2_1_non_topmed.genomes[popId]}</td>
+            </tr>
+          ))}
+        </tbody>
         <tfoot>
           <tr>
             <th scope="row">Total</th>
@@ -98,3 +122,5 @@ export default () => (
     </p>
   </div>
 )
+
+export default SampleCountTable
