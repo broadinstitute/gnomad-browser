@@ -5831,10 +5831,10 @@ ignore@^4.0.0, ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-igv@^2.0.0-rc2:
-  version "2.0.0-rc2"
-  resolved "https://registry.yarnpkg.com/igv/-/igv-2.0.0-rc2.tgz#a6082dd1ee8c8a5f247bda02ab6d1bf57c72ef8f"
-  integrity sha1-pggt0e6Mil8ke9oCq20b9Xxy748=
+igv@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/igv/-/igv-2.1.0.tgz#1b3b18a2fa1ae1a6c9beb7772f4181ac7eb48a64"
+  integrity sha512-VI2ywuI2FYt2ZkyUO2dMk3xrLpZ5hxSGzDyMgKad95lwzmZNe0nK2ZpY/N8VobEjey/8gozIfk7PCTtYp/SFSA==
 
 immutable@^3.8.1, immutable@^3.8.2:
   version "3.8.2"
