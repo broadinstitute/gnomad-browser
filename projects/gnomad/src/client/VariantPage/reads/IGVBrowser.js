@@ -30,8 +30,10 @@ const IGVWrapper = styled.div`
  */
 export class IGVBrowser extends Component {
   componentDidMount() {
+    const { config, onCreateBrowser } = this.props
+
     const browserConfig = {
-      ...this.props.config,
+      ...config,
       promisified: true,
     }
 
@@ -47,12 +49,12 @@ export class IGVBrowser extends Component {
       resetButton.className = 'igv-app-icon fa fa-mail-reply'
       resetButton.style.margin = '0 10px'
       resetButton.addEventListener('click', () => {
-        browser.search(this.props.config.locus)
+        browser.search(config.locus)
       })
 
-      this.el.querySelector('#igv-search-container').appendChild(resetButton)
+      this.el.querySelector('.igv-search-container').appendChild(resetButton)
 
-      this.props.onCreateBrowser(browser)
+      onCreateBrowser(browser)
     })
   }
 
@@ -73,7 +75,8 @@ export class IGVBrowser extends Component {
 }
 
 IGVBrowser.propTypes = {
-  config: PropTypes.object.isRequired,
+  // Documentation for IGV config at https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0
+  config: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onCreateBrowser: PropTypes.func,
 }
 
