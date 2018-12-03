@@ -36,6 +36,7 @@ describe('normalizeRegionId', () => {
     { input: 'chr1-13414', normalized: '1-13394-13434' },
     { input: '1-15342343-15342563', normalized: '1-15342343-15342563' },
     { input: '1:15342343-15342563', normalized: '1-15342343-15342563' },
+    { input: '1:00042343-00042563', normalized: '1-42343-42563' },
     { input: 'CHR3-12433-19000', normalized: '3-12433-19000' },
     { input: '3:2592432', normalized: '3-2592412-2592452' },
     { input: 'chrX-23532-', normalized: 'X-23512-23552' },
@@ -56,6 +57,7 @@ describe('isVariantId', () => {
     'chr1-13414-a-c',
     'chr1:13414:a:c',
     '1-15342343-cagc-t',
+    '2-000123-A-G',
     'CHR3-12433-A-GATC',
   ]
 
@@ -77,6 +79,7 @@ describe('normalizeVariantId', () => {
     { input: 'chr1-13414-a-c', normalized: '1-13414-A-C' },
     { input: 'chr1:13414:a:c', normalized: '1-13414-A-C' },
     { input: '1-15342343-cagc-t', normalized: '1-15342343-CAGC-T' },
+    { input: '1-00042343-G-T', normalized: '1-42343-G-T' },
     { input: 'CHR3-12433-A-GATC', normalized: '3-12433-A-GATC' },
   ]
 
