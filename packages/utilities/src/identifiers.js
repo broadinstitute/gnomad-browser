@@ -60,3 +60,4 @@ export const normalizeVariantId = variantId =>
     .toUpperCase()
     .replace(/:/g, '-')
     .replace(/^CHR/, '')
+    .replace(/-0+([1-9][0-9]*)/, '-$1')
