@@ -85,7 +85,7 @@ This repository contains helper functions used in the following Hail scripts.
      --cluster=gnomad-mnvs \
      --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
      ./projects/gnomad/data/prepare_gnomad_mnvs.py -- \
-     --input-url=gs://gnomad-qingbowang/MNV/to_public/gnomad_mnv_exome.ht \
+     --input-url=gs://gnomad-qingbowang/MNV/to_public/mnv_exome_beta.tsv \
      --output-url=$HT_URL
    ```
 
