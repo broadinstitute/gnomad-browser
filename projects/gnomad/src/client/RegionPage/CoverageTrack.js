@@ -7,13 +7,13 @@ import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
-query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $exomeCoverageDatasetId: DatasetsSupportingFetchExomeCoverageByRegion!, $genomeCoverageDatasetId: DatasetsSupportingFetchGenomeCoverageByRegion!) {
+query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $datasetId: DatasetId!) {
   region(chrom: $chrom, start: $start, stop: $stop) {
-    ex_coverage(dataset: $exomeCoverageDatasetId) {
+    ex_coverage(dataset: $datasetId) {
       pos
       mean
     }
-    ge_coverage(dataset: $genomeCoverageDatasetId) {
+    ge_coverage(dataset: $datasetId) {
       pos
       mean
     }
@@ -31,8 +31,7 @@ export default ({ datasetId, chrom, start, stop, ...props }) => {
         chrom,
         start,
         stop,
-        exomeCoverageDatasetId: coverageDatasetId,
-        genomeCoverageDatasetId: coverageDatasetId,
+        datasetId: coverageDatasetId,
       }}
     >
       {({ data, error, loading }) => {

@@ -1,295 +1,87 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
+import { GraphQLFloat, GraphQLObjectType } from 'graphql'
 
-import {
-  GraphQLObjectType,
-  GraphQLFloat,
-} from 'graphql'
-
-// import { List, fromJS } from 'immutable'
-
+import { extendRegions, mergeOverlappingRegions, totalRegionSize } from '../../utilities/region'
 import { getXpos } from '../../utilities/variant'
 
 const coverageType = new GraphQLObjectType({
   name: 'Coverage',
-  fields: () => ({
-    // _id: { type: GraphQLString },
-    // 10: { type: GraphQLFloat },
-    xpos: { type: GraphQLFloat },
-    // 15: { type: GraphQLFloat },
-    // 25: { type: GraphQLFloat },
-    // 30: { type: GraphQLFloat },
-    // median: { type: GraphQLFloat },
+  fields: {
     pos: { type: GraphQLFloat },
-    // 50: { type: GraphQLFloat },
-    // 1: { type: GraphQLFloat },
-    // 5: { type: GraphQLFloat },
-    // 20: { type: GraphQLFloat },
-    // 100: { type: GraphQLFloat },
+    xpos: { type: GraphQLFloat },
     mean: { type: GraphQLFloat },
-  }),
+  },
 })
-
-const elasticFields = [
-  'over50',
-  'pos',
-  'over20',
-  'mean',
-  'over10',
-  'over15',
-  'over5',
-  'over1',
-  'over25',
-  'chrom',
-  'median',
-  'over30',
-  'over100',
-]
 
 export default coverageType
 
-export const lookupCoverageByIntervals = ({ elasticClient, index, intervals, chrom, obj, type = 'position' }) => {
-  const timeStart = new Date().getTime() // NOTE: timer
-  const padding = 75
-  const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start - padding, lte: stop + padding } } }
-  ))
-  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
-    (acc + (stop - start + (padding * 2))), 0)
-  const exonsBasePairsSize = intervals.reduce((acc, { start, stop }) =>
-    (acc + (stop - start)), 0)
-  // console.log('Total base pairs in query', totalBasePairs)
-
-  const fields = [
-    'pos',
-    'mean',
-  ]
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index,
-      type,
-      size: totalBasePairs,
-      _source: fields,
-      body: {
-        query: {
-          bool: {
-            must: [
-              { term: { chrom } },
-            ],
-            filter: {
-              bool: {
-                should: regionRangeQueries,
-              },
-            },
-          },
-        },
-        sort: [{ pos: { order: 'asc' } }],
-      },
-    }).then((response) => {
-      const coverage = response.hits.hits.map((position) => {
-        const coverage_position = position._source
-        return coverage_position
-      })
-      const lookupId = obj ? obj.gene_name : `${chrom}-${intervals[0].start}-${intervals[0].stop}`
-      const end = new Date().getTime()
-      const time = end - timeStart
-      console.log(['coverage', index, lookupId , 'exact', 'lookup', exonsBasePairsSize, coverage.length, time].join(','))
-      resolve(coverage)
-      // return {
-        // xpos: getXpos(chrom, coverage_position.pos),
-        // ...coverage_position,
-      // }
-    }).catch(error => {
-      console.log(error)
-      resolve([])
-    })
-  })
-}
-
-export const lookUpCoverageByExons = ({ elasticClient, index, exons, chrom, obj, ctx, type = 'position' }) => {
-  const codingRegions = exons.filter(region => region.feature_type === 'CDS')
-  // return lookupCoverageByIntervals({ elasticClient, index, intervals: codingRegions, chrom })
-  // return lookupCoverageByIntervalsWithBuckets({ elasticClient, index, intervals: codingRegions, chrom })
-  return lookupCoverageByIntervalsWithBuckets({
-    elasticClient,
+const fetchCoverage = async (ctx, { index, type = 'position', chrom, regions, bucketSize }) => {
+  const response = await ctx.database.elastic.search({
     index,
     type,
-    intervals: codingRegions,
-    start: obj.start,
-    stop: obj.stop,
-    chrom,
-    obj,
-    ctx,
-  })
-}
-
-export const lookupCoverageBuckets = ({ elasticClient, index, intervals, chrom, type = 'position' }) => {
-  const { start, stop } = intervals[0] // HACK
-  const intervalSize = Math.floor((stop - start) / 2000)
-  const regionRangeQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
-  ))
-  const totalBasePairs = intervals.reduce((acc, { start, stop }) =>
-    (acc + (stop - start)), 0)
-
-  // console.log('Total base pairs in query', totalBasePairs)
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index,
-      // size: totalBasePairs,
-      type,
-      body: {
-        query: {
-          bool: {
-            must: [
-              { term: { chrom } },
-            ],
-            filter: {
+    size: 0,
+    _source: ['pos', 'mean'],
+    body: {
+      query: {
+        bool: {
+          filter: [
+            { term: { chrom } },
+            {
               bool: {
-                should: regionRangeQueries,
+                should: regions.map(({ start, stop }) => ({
+                  range: { pos: { gte: start, lte: stop } },
+                })),
               },
             },
-          },
+          ],
         },
-        aggregations: {
-          genome_coverage_downsampled: {
-            histogram: {
-              field: 'pos',
-              interval: intervalSize,
-            },
-            aggregations: {
-              bucket_stats: { stats: { field: 'mean' } },
-            },
-          },
-        },
-        sort: [{ pos: { order: 'asc' } }],
       },
-    }).then((response) => {
-      const { buckets } = response.aggregations.genome_coverage_downsampled
-      const positions = buckets.map((bucket) => {
-        return {
-          xpos: getXpos(chrom, bucket.key),
-          pos: bucket.key,
-          mean: bucket.bucket_stats.avg,
-        }
-      })
-      resolve(positions)
-    }).catch(error => {
-      console.log(error)
-      resolve([])
-    })
+      aggregations: {
+        downsampled_coverage: {
+          histogram: {
+            field: 'pos',
+            interval: bucketSize,
+          },
+          aggregations: {
+            mean: { avg: { field: 'mean' } },
+          },
+        },
+      },
+    },
+  })
+
+  const { buckets } = response.aggregations.downsampled_coverage
+  const downsampledCoverage = buckets.map(bucket => ({
+    pos: bucket.key,
+    xpos: getXpos(chrom, bucket.key),
+    mean: bucket.mean.value,
+  }))
+
+  return downsampledCoverage
+}
+
+export const fetchCoverageByTranscript = async (ctx, { index, type, chrom, exons }) => {
+  const paddedExons = extendRegions(75, exons)
+  const mergedExons = mergeOverlappingRegions(paddedExons.sort((a, b) => a.start - b.start))
+  const totalIntervalSize = totalRegionSize(mergedExons)
+  const bucketSize = totalIntervalSize < 5000 ? 1 : Math.floor(totalIntervalSize / 1000)
+  return fetchCoverage(ctx, {
+    index,
+    type,
+    chrom,
+    regions: mergedExons,
+    bucketSize,
   })
 }
 
-export const lookupCoverageByIntervalsWithBuckets = ({
-  elasticClient,
-  index,
-  type = 'position',
-  intervals,
-  chrom,
-  start,
-  stop,
-  ctx,
-  obj,
-}) => {
-  const exonsOnly = true
-  const transcriptBasePairsSize = stop - start
-  const wholeTranscriptQuery = [{ range: { pos: { gte: start - 100, lte: stop + 100 } } }]
-
-  const exonsBasePairsSize = intervals.reduce((acc, { start, stop }) =>
-    (acc + (stop - start)), 0)
-  const exonQueries = intervals.map(({ start, stop }) => (
-    { range: { pos: { gte: start - 100, lte: stop + 100 } } }
-  ))
-
-  // const totalBasePairs = exonsBasePairsSize
-  const totalBasePairs = exonsOnly ? exonsBasePairsSize : transcriptBasePairsSize
-  const intervalQuery = exonsOnly ? exonQueries : wholeTranscriptQuery
-
-  const EXPECTED_SCREEN_WIDTH = 1000
-  const intervalAggregationSize = Math.floor((totalBasePairs) / EXPECTED_SCREEN_WIDTH)
-
-  // console.log('Total transcript base pairs: ', transcriptBasePairsSize)
-  // console.log('Total exon base pairs: ', exonsBasePairsSize)
-  // console.log('Querying exons only: ', exonsOnly)
-  // console.log('Expected screen width: ', EXPECTED_SCREEN_WIDTH)
-  // console.log('Interval aggregation size', intervalAggregationSize)
-
-  const cacheKey = `${index}-coverage-${obj.gene_name}`
-
-  if (totalBasePairs < 5000) {
-    return lookupCoverageByIntervals({ elasticClient, index, intervals, chrom, obj, type })
-  }
-
-  const timeStart = new Date().getTime() // NOTE: timer
-
-  const fields = [
-    'pos',
-    'mean',
-  ]
-
-  return new Promise((resolve, reject) => {
-    // console.log('searching')
-    // if (totalBasePairs > 150000 && index === 'exacv1_coverage') {
-    //   resolve([])
-    // }
-    return ctx.database.redis.get(cacheKey).then((reply) => {
-      if (reply) {
-        const end = new Date().getTime()
-        const time = end - timeStart
-        const coverage = JSON.parse(reply)
-        console.log(['coverage', index, obj.gene_name, 'bucket', 'cache', totalBasePairs, coverage.length, time].join(','))
-        return resolve(coverage)
-      } else {
-        elasticClient.search({
-          index,
-          type,
-          size: EXPECTED_SCREEN_WIDTH,
-          _source: fields,
-          body: {
-            query: {
-              bool: {
-                must: [
-                  { term: { chrom } },
-                ],
-                filter: {
-                  bool: {
-                    should: intervalQuery,
-                  },
-                },
-              },
-            },
-            aggregations: {
-              genome_coverage_downsampled: {
-                histogram: {
-                  field: 'pos',
-                  interval: intervalAggregationSize,
-                },
-                aggregations: {
-                  bucket_stats: { stats: { field: 'mean' } },
-                },
-              },
-            },
-            sort: [{ pos: { order: 'asc' } }],
-          },
-        }).then((response) => {
-          const { buckets } = response.aggregations.genome_coverage_downsampled
-          const intervalsOnly = buckets.filter(bucket => bucket.bucket_stats.avg !== null).map((bucket) => {
-            return {
-              xpos: getXpos(chrom, bucket.key),
-              pos: bucket.key,
-              mean: bucket.bucket_stats.avg,
-            }
-          })
-
-          return ctx.database.redis.set(cacheKey, JSON.stringify(intervalsOnly)).then(() => {
-            const end = new Date().getTime()
-            const time = end - timeStart
-            console.log(['coverage', index, obj.gene_name, 'bucket', 'lookup', totalBasePairs, intervalsOnly.length, time].join(','))
-            return resolve(intervalsOnly)
-          }, reject)
-        }, reject)
-      }
-    }, reject)
+export const fetchCoverageByRegion = (ctx, { index, type, region }) => {
+  const { chrom, start, stop } = region
+  const regionSize = stop - start + 150
+  const bucketSize = Math.max(1, Math.floor(regionSize / 2000))
+  return fetchCoverage(ctx, {
+    index,
+    type,
+    chrom,
+    regions: [{ start: start - 75, stop: stop + 75 }],
+    bucketSize,
   })
 }

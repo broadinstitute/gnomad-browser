@@ -7,14 +7,14 @@ import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
-query Coverage($geneId: String!, $exomeCoverageDatasetId: DatasetsSupportingFetchExomeCoverageByTranscript!, $genomeCoverageDatasetId: DatasetsSupportingFetchGenomeCoverageByTranscript!) {
+query Coverage($geneId: String!, $datasetId: DatasetId!) {
   gene(gene_id: $geneId) {
     transcript {
-      ex_coverage(dataset: $exomeCoverageDatasetId) {
+      ex_coverage(dataset: $datasetId) {
         pos
         mean
       }
-      ge_coverage(dataset: $genomeCoverageDatasetId) {
+      ge_coverage(dataset: $datasetId) {
         pos
         mean
       }
@@ -31,8 +31,7 @@ export default ({ datasetId, geneId, ...props }) => {
       query={coverageQuery}
       variables={{
         geneId,
-        exomeCoverageDatasetId: coverageDatasetId,
-        genomeCoverageDatasetId: coverageDatasetId,
+        datasetId: coverageDatasetId,
       }}
     >
       {({ data, error, loading }) => {
