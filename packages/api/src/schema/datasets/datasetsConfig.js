@@ -1,11 +1,5 @@
 // import ExacVariantDetailsType from './exac/ExacVariantDetailsType'
 import countExacVariantsInRegion from './exac/countExacVariantsInRegion'
-import {
-  fetchExacExomeCoverageByTranscript,
-  fetchExacGenomeCoverageByTranscript,
-  fetchExacExomeCoverageByRegion,
-  fetchExacGenomeCoverageByRegion,
-} from './exac/fetchExacCoverage'
 // import fetchExacVariantDetails from './exac/fetchExacVariantDetails'
 import fetchExacVariantsByGene from './exac/fetchExacVariantsByGene'
 import fetchExacVariantsByRegion from './exac/fetchExacVariantsByRegion'
@@ -13,12 +7,6 @@ import fetchExacVariantsByTranscript from './exac/fetchExacVariantsByTranscript'
 
 import Gnomad21VariantDetailsType from './gnomad_r2_1/GnomadVariantDetailsType'
 import countGnomad21VariantsInRegion from './gnomad_r2_1/countGnomadVariantsInRegion'
-import {
-  fetchGnomadExomeCoverageByTranscript,
-  fetchGnomadGenomeCoverageByTranscript,
-  fetchGnomadExomeCoverageByRegion,
-  fetchGnomadGenomeCoverageByRegion,
-} from './gnomad_r2_1/fetchGnomadCoverage'
 import fetchGnomad21AggregateQualityMetrics from './gnomad_r2_1/fetchGnomadAggregateQualityMetrics'
 import fetchGnomad21VariantDetails from './gnomad_r2_1/fetchGnomadVariantDetails'
 import fetchGnomad21VariantsByGene from './gnomad_r2_1/fetchGnomadVariantsByGene'
@@ -28,28 +16,24 @@ import fetchGnomad21VariantsByTranscript from './gnomad_r2_1/fetchGnomadVariants
 const datasetsConfig = {
   exac: {
     countVariantsInRegion: countExacVariantsInRegion,
-    fetchExomeCoverageByTranscript: fetchExacExomeCoverageByTranscript,
-    fetchGenomeCoverageByTranscript: fetchExacGenomeCoverageByTranscript,
-    fetchExomeCoverageByRegion: fetchExacExomeCoverageByRegion,
-    fetchGenomeCoverageByRegion: fetchExacGenomeCoverageByRegion,
     // fetchVariantDetails: fetchExacVariantDetails,
     fetchVariantsByGene: fetchExacVariantsByGene,
     fetchVariantsByRegion: fetchExacVariantsByRegion,
     fetchVariantsByTranscript: fetchExacVariantsByTranscript,
     // variantDetailsType: ExacVariantDetailsType,
+    exomeCoverageIndex: { index: 'exacv1_coverage', type: 'position' },
+    genomeCoverageIndex: {},
   },
   gnomad_r2_1: {
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, 'gnomad'),
     fetchAggregateQualityMetrics: fetchGnomad21AggregateQualityMetrics,
-    fetchExomeCoverageByTranscript: fetchGnomadExomeCoverageByTranscript,
-    fetchGenomeCoverageByTranscript: fetchGnomadGenomeCoverageByTranscript,
-    fetchExomeCoverageByRegion: fetchGnomadExomeCoverageByRegion,
-    fetchGenomeCoverageByRegion: fetchGnomadGenomeCoverageByRegion,
     fetchVariantDetails: (...args) => fetchGnomad21VariantDetails(...args, 'gnomad'),
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, 'gnomad'),
     fetchVariantsByRegion: (...args) => fetchGnomad21VariantsByRegion(...args, 'gnomad'),
     fetchVariantsByTranscript: (...args) => fetchGnomad21VariantsByTranscript(...args, 'gnomad'),
     variantDetailsType: Gnomad21VariantDetailsType,
+    exomeCoverageIndex: { index: 'gnomad_exome_coverage_2_1', type: 'variant' },
+    genomeCoverageIndex: { index: 'gnomad_genome_coverage_2_1', type: 'variant' },
   },
 }
 

@@ -8,11 +8,12 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import { withCache } from '../../utilities/redis'
+import { AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
-import coverageType from './coverage'
+import coverageType, { fetchCoverageByTranscript } from './coverage'
 import exonType, { lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
 
@@ -37,23 +38,43 @@ const transcriptType = new GraphQLObjectType({
     ex_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchExomeCoverageByTranscript') },
+        dataset: { type: AnyDatasetArgumentType },
       },
-      resolve: (obj, args, ctx) => {
-        const fetchExomeCoverageByTranscript =
-          datasetsConfig[args.dataset].fetchExomeCoverageByTranscript
-        return fetchExomeCoverageByTranscript(ctx, obj)
+      resolve: async (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `${index}-coverage-${obj.gene_name}`, async () => {
+          const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
+          return fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: exons.filter(exon => exon.feature_type === 'CDS'),
+          })
+        })
       },
     },
     ge_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchGenomeCoverageByTranscript') },
+        dataset: { type: AnyDatasetArgumentType },
       },
-      resolve: (obj, args, ctx) => {
-        const fetchGenomeCoverageByTranscript =
-          datasetsConfig[args.dataset].fetchGenomeCoverageByTranscript
-        return fetchGenomeCoverageByTranscript(ctx, obj)
+      resolve: async (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `${index}-coverage-${obj.gene_name}`, async () => {
+          const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
+          return fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: exons.filter(exon => exon.feature_type === 'CDS'),
+          })
+        })
       },
     },
     gnomad_constraint: {

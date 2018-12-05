@@ -9,10 +9,10 @@ import {
   GraphQLString,
 } from 'graphql'
 
-import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import { datasetArgumentTypeForMethod, AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 
-import coverageType from './coverage'
+import coverageType, { fetchCoverageByRegion } from './coverage'
 import geneType, { lookupGenesByInterval } from './gene'
 
 import { VariantSummaryType } from './variant'
@@ -40,21 +40,35 @@ const regionType = new GraphQLObjectType({
     ex_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchExomeCoverageByRegion') },
+        dataset: { type: AnyDatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
-        const fetchExomeCoverageByRegion = datasetsConfig[args.dataset].fetchExomeCoverageByRegion
-        return fetchExomeCoverageByRegion(ctx, obj)
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return fetchCoverageByRegion(ctx, {
+          index,
+          type,
+          region: obj,
+        })
       },
     },
     ge_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchGenomeCoverageByRegion') },
+        dataset: { type: AnyDatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
-        const fetchGenomeCoverageByRegion = datasetsConfig[args.dataset].fetchGenomeCoverageByRegion
-        return fetchGenomeCoverageByRegion(ctx, obj)
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return fetchCoverageByRegion(ctx, {
+          index,
+          type,
+          region: obj,
+        })
       },
     },
     variants: {

@@ -2,8 +2,8 @@ import { GraphQLEnumType } from 'graphql'
 
 import datasetsConfig from './datasetsConfig'
 
-export const AllDatasetsArgumentType = new GraphQLEnumType({
-  name: 'AnyDataset',
+export const AnyDatasetArgumentType = new GraphQLEnumType({
+  name: 'DatasetId',
   values: Object.keys(datasetsConfig).reduce(
     (values, datasetId) => ({ ...values, [datasetId]: {} }),
     {}
