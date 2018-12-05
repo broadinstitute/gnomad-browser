@@ -117,13 +117,14 @@ export class Searchbox extends Component {
 
   onChange = (e, inputValue) => {
     this.setState({ inputValue })
+    const trimmedValue = inputValue.trim()
     // Set isFetching here instead of in fetchSearchResults so that the "Searching..." message's
     // appearance is not delayed by the debounce on fetchSearchResults
-    if (inputValue !== '') {
+    if (trimmedValue !== '') {
       this.setState({ isFetching: true })
       this.selectOnSearchResponse = false
     }
-    this.fetchSearchResults(inputValue)
+    this.fetchSearchResults(trimmedValue)
   }
 
   onKeyDown = e => {
