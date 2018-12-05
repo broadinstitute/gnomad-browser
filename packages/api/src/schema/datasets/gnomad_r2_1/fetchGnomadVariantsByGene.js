@@ -144,7 +144,7 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
   const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
 
   // TODO: This can be fetched in parallel with exome/genome data
-  const mnvs = await fetchGnomadMNVsByIntervals(ctx, paddedRegions)
+  const mnvs = await fetchGnomadMNVsByIntervals(ctx, mergedRegions)
   annotateVariantsWithMNVFlag(combinedVariants, mnvs)
 
   return combinedVariants
