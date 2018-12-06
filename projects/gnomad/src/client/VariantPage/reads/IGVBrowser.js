@@ -1,4 +1,4 @@
-import igv from 'igv'
+import igv from 'igv/dist/igv'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
