@@ -15,6 +15,8 @@ import { actions as tableActions, currentTableIndex } from '@broad/table'
 import { Grid, TextButton } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
+import browserConfig from '@browser/config'
+
 const NoVariants = styled.div`
   display: flex;
   justify-content: center;
@@ -114,6 +116,7 @@ class VariantTable extends Component {
       {
         key: 'variant_id',
         heading: 'Variant ID',
+        tooltip: browserConfig.variantTable.tooltips.variant_id,
         isRowHeader: true,
         isSortable: true,
         minWidth: 130,
@@ -126,6 +129,7 @@ class VariantTable extends Component {
       },
       {
         key: 'hgvsc_canonical',
+        tooltip: browserConfig.variantTable.tooltips.hgvsc_canonical,
         heading: 'HGVSc',
         minWidth: 140,
         grow: 2,
@@ -141,6 +145,7 @@ class VariantTable extends Component {
       {
         key: 'hgvsp_canonical',
         heading: 'HGVSp',
+        tooltip: browserConfig.variantTable.tooltips.hgvsp_canonical,
         isSortable: true,
         minWidth: 140,
         grow: 2,
@@ -155,6 +160,7 @@ class VariantTable extends Component {
       {
         key: 'consequence',
         heading: 'Consequence',
+        tooltip: browserConfig.variantTable.tooltips.consequence,
         isSortable: true,
         minWidth: 110,
         render: row => (
@@ -172,30 +178,35 @@ class VariantTable extends Component {
       {
         key: 'ac_case',
         heading: 'AC Case',
+        tooltip: browserConfig.variantTable.tooltips.ac_case,
         isSortable: true,
         minWidth: 60,
       },
       {
         key: 'an_case',
         heading: 'AN Case',
+        tooltip: browserConfig.variantTable.tooltips.an_case,
         isSortable: true,
         minWidth: 60,
       },
       {
         key: 'ac_ctrl',
         heading: 'AC Ctrl',
+        tooltip: browserConfig.variantTable.tooltips.ac_ctrl,
         isSortable: true,
         minWidth: 60,
       },
       {
         key: 'an_ctrl',
         heading: 'AN Ctrl',
+        tooltip: browserConfig.variantTable.tooltips.an_ctrl,
         isSortable: true,
         minWidth: 60,
       },
       {
         key: 'af_case',
         heading: 'AF Case',
+        tooltip: browserConfig.variantTable.tooltips.af_case,
         isSortable: true,
         minWidth: 70,
         render: renderExponentialNumberCell,
@@ -203,6 +214,7 @@ class VariantTable extends Component {
       {
         key: 'af_ctrl',
         heading: 'AF Ctrl',
+        tooltip: browserConfig.variantTable.tooltips.af_ctrl,
         isSortable: true,
         minWidth: 70,
         render: renderExponentialNumberCell,
@@ -210,6 +222,7 @@ class VariantTable extends Component {
       {
         key: 'estimate',
         heading: 'Estimate',
+        tooltip: browserConfig.variantTable.tooltips.estimate,
         isSortable: true,
         minWidth: 60,
         render: renderNumberCell,
@@ -217,6 +230,7 @@ class VariantTable extends Component {
       {
         key: 'pval_meta',
         heading: 'P-Val',
+        tooltip: browserConfig.variantTable.tooltips.pval_meta,
         isSortable: true,
         minWidth: 60,
         render: renderNumberCell,
@@ -224,6 +238,7 @@ class VariantTable extends Component {
       {
         key: 'in_analysis',
         heading: 'In Analysis',
+        tooltip: browserConfig.variantTable.tooltips.in_analysis,
         isSortable: true,
         minWidth: 60,
         render: (row, key) => row[key] && 'yes',

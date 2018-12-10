@@ -61,4 +61,7 @@ export default {
       category: 'other',
     },
   ],
+  variantTable: {
+    tooltips: {},
+  },
 }
