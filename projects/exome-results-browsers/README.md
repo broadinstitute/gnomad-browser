@@ -12,6 +12,7 @@ browser-specific implementations.
 
 At minimum, each browser must contain in its `src` directory two files:
 * config.js - Exports an object. Configuration schema explained below.
+* help.js - Exports an object.
 * HomePageContent.js - Exports a React component.
 
 ## Getting started
