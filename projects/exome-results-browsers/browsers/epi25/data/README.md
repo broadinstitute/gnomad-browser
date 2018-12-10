@@ -4,6 +4,7 @@
    ```shell
    cluster start \
       --max-idle=30m \
+      --packages=elasticsearch \
       --version=0.1 \
       --zone=$GCLOUD_ZONE \
       epi25-data
@@ -26,4 +27,14 @@
       --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
       ./projects/exome-results/browsers/epi25/load_gene_results_to_es.py -- \
          --host=$ELASTICSEARCH_IP
+   ```
+
+4. Submit variant results loading script.
+   ```
+   gcloud dataproc jobs submit pyspark \
+      --cluster=epi25-data \
+      --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
+      ./projects/exome-results/browsers/epi25/load_variant_results.py -- \
+         --host=$ELASTICSEARCH_IP \
+         --index=epi25_variant_results_2018_11_27
    ```
