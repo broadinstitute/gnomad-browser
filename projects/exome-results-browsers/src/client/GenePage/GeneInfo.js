@@ -7,6 +7,7 @@ import { geneData } from '@broad/redux-genes'
 import { variantCount } from '@broad/redux-variants'
 import { SectionHeading, Tabs } from '@broad/ui'
 
+import { HelpPopup } from '../help'
 import sortByGroup from '../sortByGroup'
 import GeneResultsTable from './GeneResultsTable'
 
@@ -57,7 +58,9 @@ const GeneInfo = ({ geneData, variantCount }) => {
         </GeneAttribute>
       </GeneAttributes>
       <GeneResultsWrapper>
-        <SectionHeading>Gene Result</SectionHeading>
+        <SectionHeading>
+          Gene Result <HelpPopup topic="geneResult" />
+        </SectionHeading>
         {groupGeneResults.length > 0 ? (
           <Tabs
             tabs={[
