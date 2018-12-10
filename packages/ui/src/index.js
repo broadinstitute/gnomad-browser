@@ -86,5 +86,7 @@ export { BaseTable } from './Table'
 
 export { Tabs } from './Tabs'
 
+export { DefaultTooltip } from './tooltip/DefaultTooltip'
 export { TooltipAnchor } from './tooltip/TooltipAnchor'
+export { TooltipHint } from './tooltip/TooltipHint'
 export { withTooltip } from './tooltip/withTooltip'
