@@ -6,6 +6,9 @@ import styled, { css } from 'styled-components'
 import { SizeMe } from 'react-sizeme'
 import { FixedSizeList } from 'react-window'
 
+import { TooltipAnchor } from './tooltip/TooltipAnchor'
+import { TooltipHint } from './tooltip/TooltipHint'
+
 const baseRowStyle = css`
   display: flex;
   flex-direction: row;
@@ -93,6 +96,19 @@ const ColumnHeader = styled.div`
   }
 `
 
+const HeadingTooltipWrapper = styled.span`
+  max-width: 300px;
+  line-height: 1.5;
+`
+
+export const GridHeadingTooltip = ({ tooltip }) => (
+  <HeadingTooltipWrapper>{tooltip}</HeadingTooltipWrapper>
+)
+
+GridHeadingTooltip.propTypes = {
+  tooltip: PropTypes.string.isRequired,
+}
+
 // TODO: Replace this with React.createRef
 const createRef = () => {
   let currentValue = null
@@ -166,6 +182,7 @@ export class Grid extends Component {
         isSortable: PropTypes.bool,
         minWidth: PropTypes.number,
         render: PropTypes.func,
+        tooltip: PropTypes.string,
       })
     ).isRequired,
     data: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -338,6 +355,7 @@ export class Grid extends Component {
       const columnDefaults = {
         grow: 1,
         heading: column.key,
+        tooltip: undefined,
         isRowHeader: false,
         isSortable: false,
         minWidth: 100,
@@ -388,29 +406,49 @@ export class Grid extends Component {
             return (
               <GridHorizontalViewport>
                 <HeaderRow aria-rowindex={1} height={rowHeight} role="row">
-                  {columns.map((column, columnIndex) => (
-                    <ColumnHeader
-                      key={column.key}
-                      aria-colindex={columnIndex + 1}
-                      aria-sort={ariaSortAttr(column)}
-                      data-cell={`${columnIndex},0`}
-                      role="columnheader"
-                      tabIndex={-1}
-                      width={columnWidths[columnIndex]}
-                    >
-                      {column.isSortable ? (
+                  {columns.map((column, columnIndex) => {
+                    let content = column.heading
+                    if (column.tooltip) {
+                      content = <TooltipHint>{content}</TooltipHint>
+                    }
+                    if (column.isSortable) {
+                      content = (
                         <button
                           tabIndex={-1}
                           type="button"
                           onClick={() => onRequestSort(column.key)}
                         >
-                          {column.heading}
+                          {content}
                         </button>
-                      ) : (
-                        column.heading
-                      )}
-                    </ColumnHeader>
-                  ))}
+                      )
+                    } else {
+                      content = <span>{content}</span>
+                    }
+                    if (column.tooltip) {
+                      content = (
+                        <TooltipAnchor
+                          tooltip={column.tooltip}
+                          tooltipComponent={GridHeadingTooltip}
+                        >
+                          {content}
+                        </TooltipAnchor>
+                      )
+                    }
+
+                    return (
+                      <ColumnHeader
+                        key={column.key}
+                        aria-colindex={columnIndex + 1}
+                        aria-sort={ariaSortAttr(column)}
+                        data-cell={`${columnIndex},0`}
+                        role="columnheader"
+                        tabIndex={-1}
+                        width={columnWidths[columnIndex]}
+                      >
+                        {content}
+                      </ColumnHeader>
+                    )
+                  })}
                 </HeaderRow>
                 <FixedSizeList
                   height={numRowsRendered * rowHeight}

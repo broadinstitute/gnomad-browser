@@ -5,18 +5,19 @@ import ReactDOM from 'react-dom'
 // TODO: After upgrading to React 16, use react-popper's Manager/Popper/Reference
 import { InnerPopper } from 'react-popper/lib/cjs/Popper'
 
+import { DefaultTooltip } from './DefaultTooltip'
 import { Arrow, Container } from './styles'
-
 
 export class TooltipAnchor extends Component {
   static propTypes = {
     childRefPropName: PropTypes.string,
     children: PropTypes.node.isRequired,
-    tooltipComponent: PropTypes.func.isRequired,
+    tooltipComponent: PropTypes.func,
   }
 
   static defaultProps = {
     childRefPropName: 'ref',
+    tooltipComponent: DefaultTooltip,
   }
 
   componentDidUpdate() {
@@ -29,7 +30,7 @@ export class TooltipAnchor extends Component {
     this.removeTooltip()
   }
 
-  referenceElementRef = (el) => {
+  referenceElementRef = el => {
     this.referenceElement = el
   }
 
@@ -66,27 +67,20 @@ export class TooltipAnchor extends Component {
     // TODO: After upgrading to React 16, use ReactDOM.createPortal
     ReactDOM.unstable_renderSubtreeIntoContainer(
       this,
-      (
-        <InnerPopper
-          placement="top"
-          positionFixed
-          referenceElement={this.referenceElement}
-        >
-          {this.renderTooltipContent}
-        </InnerPopper>
-      ),
+      <InnerPopper placement="top" positionFixed referenceElement={this.referenceElement}>
+        {this.renderTooltipContent}
+      </InnerPopper>,
       this.containerElement
     )
   }
 
   render() {
-    return React.cloneElement(
-      React.Children.only(this.props.children),
-      {
-        onMouseEnter: this.renderTooltipInPortal,
-        onMouseLeave: this.removeTooltip,
-        [this.props.childRefPropName]: this.referenceElementRef,
-      }
-    )
+    const { children, childRefPropName } = this.props
+    const child = React.Children.only(children)
+    return React.cloneElement(child, {
+      onMouseEnter: this.renderTooltipInPortal,
+      onMouseLeave: this.removeTooltip,
+      [childRefPropName]: this.referenceElementRef,
+    })
   }
 }
