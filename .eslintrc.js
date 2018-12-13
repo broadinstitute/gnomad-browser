@@ -1,9 +1,3 @@
-const babelConfig = require('./babel.config')
-
-const moduleResolverPluginConfig = babelConfig.plugins.find(
-  pluginConfig => Array.isArray(pluginConfig) && pluginConfig[0] === 'module-resolver'
-)
-
 module.exports = {
   extends: [
     'airbnb',
@@ -40,13 +34,5 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: '2018',
-  },
-  settings: {
-    'import/resolver': {
-      // eslint-import-resolver-babel-module does not support babel.config.js so
-      // alias configuration must be duplicated here
-      // https://github.com/tleunen/eslint-import-resolver-babel-module/issues/89
-      'babel-module': moduleResolverPluginConfig[1],
-    },
   },
 }
