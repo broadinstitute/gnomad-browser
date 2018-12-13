@@ -62,7 +62,6 @@ export class RegionViewer extends Component {
         feature_type: PropTypes.string.isRequired,
         start: PropTypes.number.isRequired,
         stop: PropTypes.number.isRequired,
-        strand: PropTypes.oneOf(['+', '-']).isRequired,
       })
     ).isRequired,
     rightPanelWidth: PropTypes.number,

@@ -12,7 +12,6 @@ export const trackPropTypes = {
       offset: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
-      strand: PropTypes.oneOf(['+', '-']),
       thickness: PropTypes.string.isRequired,
     })
   ),
