@@ -48,7 +48,6 @@ const defaultRegionAttributes = {
 export class RegionViewer extends Component {
   static propTypes = {
     children: PropTypes.node,
-    exonSubset: PropTypes.arrayOf(PropTypes.number),
     featuresToDisplay: PropTypes.arrayOf(PropTypes.string),
     leftPanelWidth: PropTypes.number,
     padding: PropTypes.number.isRequired,
@@ -72,7 +71,6 @@ export class RegionViewer extends Component {
 
   static defaultProps = {
     children: undefined,
-    exonSubset: null,
     featuresToDisplay: ['CDS'],
     leftPanelWidth: 100,
     regionAttributes: defaultRegionAttributes,
@@ -93,7 +91,6 @@ export class RegionViewer extends Component {
       regions,
       regionAttributes,
       width,
-      exonSubset,
       padding,
       leftPanelWidth,
       rightPanelWidth,
@@ -103,8 +100,7 @@ export class RegionViewer extends Component {
       featuresToDisplay,
       regionAttributes,
       padding,
-      regions,
-      exonSubset
+      regions
     )
 
     const positionOffset = calculatePositionOffset(offsetRegions)

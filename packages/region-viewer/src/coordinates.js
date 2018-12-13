@@ -8,14 +8,6 @@ export const filterRegions = R.curry((featureTypes, regions) => {
   return filteredRegions.length ? filteredRegions : regions
 })
 
-export const applyExonSubset = R.curry((exonSubset, regions) => {
-  if (exonSubset) {
-    const [start, stop] = exonSubset
-    return regions.slice(start, stop)
-  }
-  return regions
-})
-
 export const flipOrderIfNegativeStrand = regions => {
   if (R.all(region => region.strand === '-', regions)) {
     return R.reverse(regions)
@@ -134,12 +126,10 @@ export const calculateOffsetRegions = (
   featuresToDisplay = FEATURES_TO_DISPLAY,
   attributeConfig = defaultAttributeConfig,
   padding = 50,
-  regions,
-  exonSubset
+  regions
 ) =>
   R.pipe(
     filterRegions(featuresToDisplay),
-    applyExonSubset(exonSubset),
     flipOrderIfNegativeStrand,
     calculateRegionDistances,
     addPadding(padding),
