@@ -44,7 +44,6 @@ const attributeConfig = {
 const store = createStore(
   combineReducers({
     genes: createGeneReducer({
-      startingGene: 'DMD',
       variantDatasets: {},
     }),
   }),
@@ -54,9 +53,9 @@ const store = createStore(
 const ExampleApp = () => (
   <Provider store={store}>
     <Wrapper>
-      <GeneViewer width={1000} regionAttributes={attributeConfig}>
+      <GeneViewer geneName="PCSK9" regionAttributes={attributeConfig} width={1000}>
         <TranscriptTrackConnected height={12} />
-        <PositionTableTrack height={50} leftPanelWidth={100} title="" />
+        <PositionTableTrack />
       </GeneViewer>
     </Wrapper>
   </Provider>

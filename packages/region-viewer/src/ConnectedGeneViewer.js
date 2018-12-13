@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { actions as geneActions, currentGene, exonPadding, geneData } from '@broad/redux-genes'
+import { actions as geneActions, geneData } from '@broad/redux-genes'
 
 import { RegionViewer } from './RegionViewer'
 
-const API_URL = 'http://gnomad-api2.broadinstitute.org/'
+const API_URL = 'http://gnomad-api.broadinstitute.org/'
 
 const fetchGeneData = geneName => {
   const query = `{
@@ -100,52 +100,58 @@ const fetchGeneData = geneName => {
     }
   }`
 
-  return fetch(API_URL)(query).then(data => data.data.gene)
+  return fetch(API_URL)(query)
 }
 
 class GeneViewer extends PureComponent {
   static propTypes = {
-    children: PropTypes.node,
-    currentGene: PropTypes.string.isRequired,
-    exonPadding: PropTypes.number.isRequired,
-    fetchPageDataByGene: PropTypes.func.isRequired,
-    geneData: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    children: undefined,
+    geneName: PropTypes.string.isRequired,
+    loadGene: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
-    const { currentGene, fetchPageDataByGene } = this.props
-    fetchPageDataByGene(currentGene, fetchGeneData)
+    const { loadGene } = this.props
+    loadGene()
+  }
+
+  componentDidUpdate(prevProps) {
+    const { geneName, loadGene } = this.props
+    if (geneName !== prevProps.geneName) {
+      loadGene()
+    }
   }
 
   render() {
-    const { children, exonPadding, geneData, ...rest } = this.props
+    const { children, gene, ...rest } = this.props
 
-    if (!geneData) {
-      return <div />
+    if (!gene) {
+      return null
     }
 
-    const geneJS = geneData.toJS()
-    const canonicalExons = geneJS.transcript.exons
+    const canonicalTranscriptExons = gene.toJS().transcript.exons
 
     return (
-      <RegionViewer {...rest} padding={exonPadding} regions={canonicalExons}>
+      <RegionViewer {...rest} padding={75} regions={canonicalTranscriptExons}>
         {children}
       </RegionViewer>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  exonPadding: exonPadding(state),
-  geneData: geneData(state),
-  currentGene: currentGene(state),
-})
-
 export default connect(
-  mapStateToProps,
-  geneActions
+  state => ({
+    gene: geneData(state),
+  }),
+  (dispatch, ownProps) => ({
+    loadGene() {
+      return dispatch(thunkDispatch => {
+        thunkDispatch(geneActions.setCurrentGene(ownProps.geneName))
+        thunkDispatch(geneActions.requestGeneData(ownProps.geneName))
+        return fetchGeneData(ownProps.geneName).then(response => {
+          thunkDispatch(geneActions.receiveGeneData(ownProps.geneName, response.data.gene))
+          return response
+        })
+      })
+    },
+  })
 )(GeneViewer)
