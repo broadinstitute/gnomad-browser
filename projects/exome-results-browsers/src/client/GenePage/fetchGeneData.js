@@ -34,47 +34,6 @@ export default geneName => {
         }
         pval_meta
       }
-      variants {
-        ac
-        ac_case
-        ac_ctrl
-        ac_denovo
-        allele_freq: af
-        af_case
-        af_ctrl
-        an
-        an_case
-        an_ctrl
-        cadd
-        canonical_transcript_id
-        chrom
-        comment
-        consequence
-        csq_analysis
-        csq_canonical
-        csq_worst
-        estimate
-        flags
-        gene_id
-        gene_name
-        hgvsc
-        hgvsc_canonical
-        hgvsp
-        hgvsp_canonical
-        i2
-        in_analysis
-        mpc
-        n_analysis_groups
-        polyphen
-        pos
-        pval_meta
-        qp
-        se
-        source
-        transcript_id
-        variant_id
-        xpos
-      }
       transcripts {
         transcript_id
         exons {
@@ -149,5 +108,5 @@ export default geneName => {
   }
 }`
 
-  return fetch('/api')(query).then(data => data.data.gene)
+  return fetch('/api')(query)
 }

@@ -2,18 +2,12 @@ import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLStr
 
 import browserConfig from '@browser/config'
 
+import { fetchAllSearchResults } from '../../utilities/elasticsearch'
+
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: {
-    ac: { type: GraphQLInt },
-    ac_case: { type: GraphQLInt },
-    ac_ctrl: { type: GraphQLInt },
-    af: { type: GraphQLFloat },
-    af_case: { type: GraphQLFloat },
-    af_ctrl: { type: GraphQLFloat },
-    an: { type: GraphQLInt },
-    an_case: { type: GraphQLInt },
-    an_ctrl: { type: GraphQLInt },
+    // variant level fields
     cadd: { type: GraphQLFloat },
     canonical_transcript_id: { type: GraphQLString },
     chrom: { type: GraphQLString },
@@ -22,7 +16,6 @@ export const VariantType = new GraphQLObjectType({
     csq_analysis: { type: GraphQLString },
     csq_canonical: { type: GraphQLString },
     csq_worst: { type: GraphQLString },
-    estimate: { type: GraphQLFloat },
     flags: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
@@ -30,48 +23,107 @@ export const VariantType = new GraphQLObjectType({
     hgvsc_canonical: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
     hgvsp_canonical: { type: GraphQLString },
-    i2: { type: GraphQLInt },
     in_analysis: { type: GraphQLBoolean },
     mpc: { type: GraphQLFloat },
-    n_analysis_groups: { type: GraphQLInt },
-    ac_denovo: { type: GraphQLInt },
     polyphen: { type: GraphQLString },
     pos: { type: GraphQLInt },
-    pval_meta: { type: GraphQLFloat },
-    qp: { type: GraphQLInt },
-    se: { type: GraphQLInt },
     source: { type: GraphQLString },
     transcript_id: { type: GraphQLString },
     variant_id: { type: GraphQLString },
     xpos: { type: GraphQLFloat },
+    // group level fields
+    analysis_group: { type: GraphQLString },
+    ac: { type: GraphQLInt },
+    ac_case: { type: GraphQLInt },
+    ac_ctrl: { type: GraphQLInt },
+    ac_denovo: { type: GraphQLInt },
+    af: { type: GraphQLFloat },
+    af_case: { type: GraphQLFloat },
+    af_ctrl: { type: GraphQLFloat },
+    an: { type: GraphQLInt },
+    an_case: { type: GraphQLInt },
+    an_ctrl: { type: GraphQLInt },
+    estimate: { type: GraphQLFloat },
+    i2: { type: GraphQLInt },
+    pval_meta: { type: GraphQLFloat },
+    qp: { type: GraphQLInt },
+    se: { type: GraphQLInt },
   },
 })
 
-export const fetchVariantsByGeneId = async (ctx, geneId) => {
-  const response = await ctx.database.elastic.search({
+export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
+  const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: browserConfig.elasticsearch.variants.index,
     type: browserConfig.elasticsearch.variants.type,
     size: 10000,
     body: {
       query: {
-        match: {
-          gene_id: geneId,
+        bool: {
+          filter: [
+            { term: { gene_id: geneId } },
+            {
+              bool: {
+                should: [
+                  { range: { [`groups.${analysisGroup}.ac_case`]: { gt: 0 } } },
+                  { range: { [`groups.${analysisGroup}.ac_ctrl`]: { gt: 0 } } },
+                ],
+              },
+            },
+          ],
         },
       },
     },
   })
-  return response.hits.hits.map(hit => {
+
+  return hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
 
+    const totalAC = doc.groups[analysisGroup].ac_case + doc.groups[analysisGroup].ac_ctrl
+    const totalAN = doc.groups[analysisGroup].an_case + doc.groups[analysisGroup].an_ctrl
+    const totalAF = totalAN === 0 ? 0 : totalAC / totalAN
+
     return {
-      ...doc,
+      // variant level fields
       ac_denovo: doc.n_denovos,
-      chrom: doc.contig,
+      cadd: doc.cadd,
+      canonical_transcript_id: doc.canonical_transcript_id,
+      chrom: doc.chrom,
+      comment: doc.comment,
       consequence: doc.csq_analysis,
+      csq_analysis: doc.csq_analysis,
+      csq_canonical: doc.csq_canonical,
+      csq_worst: doc.csq_worst,
+      flags: doc.flags,
+      gene_id: doc.gene_id,
+      gene_name: doc.gene_name,
+      hgvsc: doc.hgvsc,
       hgvsc_canonical: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
+      hgvsp: doc.hgvsp,
       hgvsp_canonical: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
-      estimate: doc.est,
-      pval_meta: doc.pmeta,
+      in_analysis: doc.in_analysis,
+      mpc: doc.mpc,
+      polyphen: doc.polyphen,
+      pos: doc.pos,
+      source: doc.source,
+      transcript_id: doc.transcript_id,
+      variant_id: doc.variant_id,
+      xpos: doc.xpos,
+      // group level fields
+      ac: totalAC,
+      ac_case: doc.groups[analysisGroup].ac_case,
+      ac_ctrl: doc.groups[analysisGroup].ac_ctrl,
+      af: totalAF,
+      af_case: doc.groups[analysisGroup].af_case,
+      af_ctrl: doc.groups[analysisGroup].af_ctrl,
+      an: totalAN,
+      an_case: doc.groups[analysisGroup].an_case,
+      an_ctrl: doc.groups[analysisGroup].an_ctrl,
+      analysis_group: doc.analysis_group,
+      estimate: doc.groups[analysisGroup].est,
+      i2: doc.groups[analysisGroup].i2,
+      pval_meta: doc.groups[analysisGroup].p,
+      qp: doc.groups[analysisGroup].qp,
+      se: doc.groups[analysisGroup].se,
     }
   })
 }

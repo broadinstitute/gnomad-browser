@@ -3,17 +3,13 @@ export default {
   navBarTitle: 'Epi25 WES browser',
   navBarColor: '#4e3c81',
   elasticsearch: {
-    analysisGroups: {
-      index: 'epi_exome_variants_groups_180925',
-      type: 'epi_exome_group',
-    },
     geneResults: {
-      index: 'epi_exome_gene_results_181107',
+      index: 'epi25_gene_results_181107',
       type: 'result',
     },
     variants: {
-      index: 'epi_exome_variants_results_180925',
-      type: 'epi_exome_variant',
+      index: 'epi25_variant_results_2018_11_27',
+      type: 'variant',
     },
   },
   geneResults: {
@@ -26,7 +22,7 @@ export default {
   },
   analysisGroups: {
     overallGroup: 'EPI',
-    selectableGroups: ['EPI', 'EE', 'GGE', 'NAFE'],
+    selectableGroups: ['EPI', 'DEE', 'GGE', 'NAFE'],
   },
   consequences: [
     {
@@ -35,6 +31,10 @@ export default {
     },
     {
       term: 'inframe indel',
+      category: 'missense',
+    },
+    {
+      term: 'missense',
       category: 'missense',
     },
     {
@@ -52,6 +52,10 @@ export default {
     {
       term: 'synonymous',
       category: 'synonymous',
+    },
+    {
+      term: 'splice_region',
+      category: 'other',
     },
   ],
 }

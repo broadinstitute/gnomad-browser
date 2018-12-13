@@ -37,9 +37,9 @@ export const AnalysisGroupType = new GraphQLObjectType({
 
 export const fetchAnalysisGroupsForVariant = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: browserConfig.elasticsearch.analysisGroups.index,
-    type: browserConfig.elasticsearch.analysisGroups.type,
-    size: 100,
+    index: browserConfig.elasticsearch.variants.index,
+    type: browserConfig.elasticsearch.variants.type,
+    size: 1,
     body: {
       query: {
         match: {
@@ -48,5 +48,15 @@ export const fetchAnalysisGroupsForVariant = async (ctx, variantId) => {
       },
     },
   })
-  return response.hits.hits.map(hit => hit._source) // eslint-disable-line no-underscore-dangle
+
+  if (!response.hits.hits.length) {
+    throw Error('Variant not found')
+  }
+
+  const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
+
+  return Object.keys(doc.groups).map(group => ({
+    analysis_group: group,
+    ...doc.groups[group],
+  }))
 }

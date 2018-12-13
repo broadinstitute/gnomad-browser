@@ -9,7 +9,9 @@ import {
   variantInAnalysisFilter,
   variantFilter,
 } from '@broad/redux-variants'
-import { Checkbox, ConsequenceCategoriesControl, Search } from '@broad/ui'
+import { Checkbox, Combobox, ConsequenceCategoriesControl, Search } from '@broad/ui'
+
+import browserConfig from '@browser/config'
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -32,11 +34,29 @@ const FiltersWrapper = styled.div`
   @media (max-width: 1350px) {
     flex-direction: column;
   }
+
+  @media (max-width: 700px) {
+    align-items: center;
+  }
 `
 
-const OtherFiltersWrapper = styled.div`
+const AnalysisGroupMenuWrapper = styled.div`
+  margin-top: 1em;
+`
+
+const FiltersFirstColumn = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 700px) {
+    align-items: center;
+  }
+`
+
+const FiltersSecondColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   label {
     margin-bottom: 0.375em;
@@ -44,6 +64,7 @@ const OtherFiltersWrapper = styled.div`
 
   @media (max-width: 1350px) {
     flex-direction: row;
+    justify-content: flex-start;
     margin-top: 1em;
 
     label {
@@ -70,20 +91,40 @@ const GeneSettings = ({
   consequenceFilter,
   deNovoFilter,
   inAnalysisFilter,
+  onChangeAnalysisGroup,
   searchVariants,
+  selectedAnalysisGroup,
   setConsequenceFilter,
   toggleDeNovoFilter,
   toggleInAnalysisFilter,
 }) => (
   <SettingsWrapper>
     <FiltersWrapper>
-      <ConsequenceCategoriesControl
-        categorySelections={consequenceFilter}
-        id="variant-filter"
-        onChange={setConsequenceFilter}
-      />
+      <FiltersFirstColumn>
+        <ConsequenceCategoriesControl
+          categorySelections={consequenceFilter}
+          id="variant-filter"
+          onChange={setConsequenceFilter}
+        />
 
-      <OtherFiltersWrapper>
+        {browserConfig.analysisGroups.selectableGroups.length > 1 && (
+          <AnalysisGroupMenuWrapper>
+            {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
+            <label htmlFor="analysis-group">Current analysis group </label>
+            <Combobox
+              id="analysis-group"
+              options={browserConfig.analysisGroups.selectableGroups.map(group => ({
+                id: group,
+                label: group,
+              }))}
+              onSelect={option => onChangeAnalysisGroup(option.id)}
+              value={selectedAnalysisGroup}
+            />
+          </AnalysisGroupMenuWrapper>
+        )}
+      </FiltersFirstColumn>
+
+      <FiltersSecondColumn>
         <Checkbox
           checked={deNovoFilter}
           id="denovo-filter"
@@ -96,7 +137,7 @@ const GeneSettings = ({
           label="Show only variants in analysis"
           onChange={toggleInAnalysisFilter}
         />
-      </OtherFiltersWrapper>
+      </FiltersSecondColumn>
     </FiltersWrapper>
 
     <SearchWrapper>
@@ -114,7 +155,9 @@ GeneSettings.propTypes = {
   }).isRequired,
   deNovoFilter: PropTypes.bool.isRequired,
   inAnalysisFilter: PropTypes.bool.isRequired,
+  onChangeAnalysisGroup: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
+  selectedAnalysisGroup: PropTypes.string.isRequired,
   setConsequenceFilter: PropTypes.func.isRequired,
   toggleDeNovoFilter: PropTypes.func.isRequired,
   toggleInAnalysisFilter: PropTypes.func.isRequired,
