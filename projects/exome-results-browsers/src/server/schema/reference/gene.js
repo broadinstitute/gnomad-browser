@@ -1,5 +1,6 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { AnalysisGroupArgumentType } from '../analysis/analysisGroup'
 import {
   GeneResultType,
   fetchOverallGeneResultByGeneId,
@@ -36,7 +37,10 @@ export const GeneType = new GraphQLObjectType({
     },
     variants: {
       type: new GraphQLList(VariantType),
-      resolve: (obj, args, ctx) => fetchVariantsByGeneId(ctx, obj.gene_id),
+      args: {
+        analysis_group: { type: new GraphQLNonNull(AnalysisGroupArgumentType) },
+      },
+      resolve: (obj, args, ctx) => fetchVariantsByGeneId(ctx, obj.gene_id, args.analysis_group),
     },
   },
 })

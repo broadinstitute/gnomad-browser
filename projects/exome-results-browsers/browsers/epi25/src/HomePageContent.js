@@ -32,17 +32,17 @@ export default () => (
     <p>
       In the current release, we report gene burden results of ultra-rare deleterious variants
       (PTVs, missense variants with MPC&ge;2, and inframe indels not present in the DiscovEHR
-      database) in three primary epilepsy types: epileptic encephalopathy (EE, N=1,021), genetic
-      generalized epilepsy (GGE, N=3,108), non-acquired focal epilepsy (NAFE, N=3,597), as well as
-      the full epilepsy cohort (EPI, N=9,170). Each subgroup was compared against 8,364 controls
-      aggregated from independent sources. Due to differences in ancestry and exome capture
-      technologies across cohorts, we implemented stringent QC procedures to minimize confounding
-      between cases and controls to arrive at the current dataset of 17,606 unrelated individuals of
-      European descent. Details of variant-calling, QC, and analysis pipelines can be
-      found on bioRxiv and GitHub. The current findings recapitulate candidate genes for screened EE
-      patients and highlight a growing evidence of cation channel genes in the etiology of GGE and
-      NAFE. With the continuing effort to recruit samples, many from non-European populations, we
-      anticipate a boost in the detection power to identify risk-conferring genes in the coming
+      database) in three primary epilepsy types: developmental and epileptic encephalopathy (DEE,
+      N=1,021), genetic generalized epilepsy (GGE, N=3,108), non-acquired focal epilepsy (NAFE,
+      N=3,597), as well as the full epilepsy cohort (EPI, N=9,170). Each subgroup was compared
+      against 8,364 controls aggregated from independent sources. Due to differences in ancestry and
+      exome capture technologies across cohorts, we implemented stringent QC procedures to minimize
+      confounding between cases and controls to arrive at the current dataset of 17,606 unrelated
+      individuals of European descent. Details of variant-calling, QC, and analysis pipelines can be
+      found on bioRxiv and GitHub. The current findings recapitulate candidate genes for screened
+      DEE patients and highlight a growing evidence of cation channel genes in the etiology of GGE
+      and NAFE. With the continuing effort to recruit samples, many from non-European populations,
+      we anticipate a boost in the detection power to identify risk-conferring genes in the coming
       years.
     </p>
     <p>
@@ -50,10 +50,10 @@ export default () => (
       principal investigators, NHGRI (CCDG), and the Stanley Center at the Broad Institute. We are
       especially grateful to all the{' '}
       <ExternalLink href="http://epi-25.org/epi25-members/">consortium members</ExternalLink> and
-      patients for their gracious contribution to make this collaboration possible.  We welcome any
+      patients for their gracious contribution to make this collaboration possible. We welcome any
       feedback! You can contact us by{' '}
       <ExternalLink href="mailto:yfeng@broadinstitute.org">email</ExternalLink>
-       if you have any questions or suggestions.
+      if you have any questions or suggestions.
     </p>
     <p>Last Update: 11/10/2018</p>
   </HomePageContentWrapper>
