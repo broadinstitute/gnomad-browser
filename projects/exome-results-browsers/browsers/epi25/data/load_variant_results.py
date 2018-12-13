@@ -71,6 +71,7 @@ variant_results = variant_results.rename(
     }
 )
 
+variant_results = variant_results.annotate('analysis_group = if (analysis_group == "EE") "DEE" else analysis_group')
 
 variants = variant_annotations.key_by("v")
 analysis_groups = variant_results.query("analysis_group.collectAsSet()")
