@@ -69,52 +69,8 @@ export const calculateOffset = R.curry(regions =>
   }, [])
 )
 
-export const defaultAttributeConfig = {
-  CDS: {
-    color: '#FFB33D',
-    thickness: '30px',
-  },
-  start_pad: {
-    color: '#28BCCC',
-    thickness: '5px',
-  },
-  end_pad: {
-    color: '#BEEB9F',
-    thickness: '5px',
-  },
-  intron: {
-    color: '#FF9559',
-    thickness: '5px',
-  },
-  default: {
-    color: '#grey',
-    thickness: '5px',
-  },
-}
-
-export const assignAttributes = R.curry((attributeConfig, regions) =>
-  regions.map(region => {
-    const featureType = region.feature_type
-
-    if (attributeConfig[featureType]) {
-      return {
-        ...region,
-        color: attributeConfig[featureType].color,
-        thickness: attributeConfig[featureType].thickness,
-      }
-    }
-
-    return {
-      ...region,
-      color: attributeConfig.default.color,
-      thickness: attributeConfig.default.thickness,
-    }
-  })
-)
-
 export const calculateOffsetRegions = (
   featuresToDisplay = FEATURES_TO_DISPLAY,
-  attributeConfig = defaultAttributeConfig,
   padding = 50,
   regions
 ) =>
@@ -123,8 +79,7 @@ export const calculateOffsetRegions = (
     sortRegions,
     calculateRegionDistances,
     addPadding(padding),
-    calculateOffset,
-    assignAttributes(attributeConfig)
+    calculateOffset
   )(regions)
 
 export const calculatePositionOffset = R.curry((regions, position) => {
@@ -135,21 +90,18 @@ export const calculatePositionOffset = R.curry((regions, position) => {
     if (position < lastRegionBeforePosition.stop) {
       return {
         offsetPosition: position - lastRegionBeforePosition.offset,
-        color: lastRegionBeforePosition.color,
       }
     }
 
     // Position is between regions
     return {
       offsetPosition: lastRegionBeforePosition.stop - lastRegionBeforePosition.offset,
-      color: lastRegionBeforePosition.color,
     }
   }
 
   // Position is before first region
   return {
     offsetPosition: regions[0].start - regions[0].offset,
-    color: regions[0].color,
   }
 })
 

@@ -9,7 +9,7 @@ import { GenesTrack } from '@broad/track-genes'
 
 import { screenSize } from '@broad/ui'
 import { regionData } from '@broad/region'
-import { RegionViewer, attributeConfig } from '@broad/region-viewer'
+import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
@@ -54,7 +54,6 @@ const RegionViewerConnected = ({
       width={regionViewerWidth}
       padding={0}
       regions={regions}
-      regionAttributes={attributeConfig}
       featuresToDisplay={featuresToDisplay}
       rightPanelWidth={smallScreen ? 0 : 160}
     >

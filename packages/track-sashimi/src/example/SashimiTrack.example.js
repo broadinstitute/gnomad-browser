@@ -45,28 +45,6 @@ class SashimiTrackExample extends Component {
     const {
       transcript: { exons },
     } = this.state.geneData
-    const regionAttributesConfig = {
-      CDS: {
-        color: '#9B988F',
-        thickness: '30px',
-      },
-      start_pad: {
-        color: '#e0e0e0',
-        thickness: '3px',
-      },
-      end_pad: {
-        color: '#e0e0e0',
-        thickness: '3px',
-      },
-      intron: {
-        color: '#e0e0e0',
-        thickness: '3px',
-      },
-      default: {
-        color: '#grey',
-        thickness: '3px',
-      },
-    }
 
     const junctionSelection = ['578', '1514', '181']
 
@@ -109,12 +87,7 @@ class SashimiTrackExample extends Component {
           }}
           onChange={this.setPadding}
         />
-        <RegionViewer
-          width={1000}
-          regions={exons}
-          regionAttributes={regionAttributesConfig}
-          padding={this.state.padding}
-        >
+        <RegionViewer width={1000} regions={exons} padding={this.state.padding}>
           <SashimiTrack
             height={200}
             domainMax={750}

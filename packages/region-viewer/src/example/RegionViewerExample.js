@@ -18,29 +18,6 @@ const Wrapper = styled.div`
   margin: 50px auto;
 `
 
-const attributeConfig = {
-  CDS: {
-    color: '#28BCCC',
-    thickness: '30px',
-  },
-  start_pad: {
-    color: '#FFB33D',
-    thickness: '5px',
-  },
-  end_pad: {
-    color: '#BEEB9F',
-    thickness: '5px',
-  },
-  intron: {
-    color: '#FF9559',
-    thickness: '5px',
-  },
-  default: {
-    color: '#grey',
-    thickness: '5px',
-  },
-}
-
 const store = createStore(
   combineReducers({
     genes: createGeneReducer({
@@ -53,7 +30,7 @@ const store = createStore(
 const ExampleApp = () => (
   <Provider store={store}>
     <Wrapper>
-      <GeneViewer geneName="PCSK9" regionAttributes={attributeConfig} width={1000}>
+      <GeneViewer geneName="PCSK9" width={1000}>
         <TranscriptTrackConnected height={12} />
         <PositionTableTrack />
       </GeneViewer>

@@ -81,7 +81,7 @@ const PositionTableTrack = ({
             </thead>
             <tbody>
               {offsetRegions.map((region, i) =>
-                (<tr style={{ backgroundColor: region.color }} key={`${region.start}-row`}>
+                (<tr key={`${region.start}-row`}>
                   <td>{i}</td>
                   <td>{region.feature_type}</td>
                   <td>{region.start}</td>

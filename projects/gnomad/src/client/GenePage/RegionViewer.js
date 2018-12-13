@@ -22,7 +22,7 @@ import {
   selectedVariantDataset,
 } from '@broad/redux-variants'
 
-import { RegionViewer, attributeConfig } from '@broad/region-viewer'
+import { RegionViewer } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
@@ -83,7 +83,6 @@ const GeneViewer = ({
       width={regionViewerWidth}
       padding={exonPadding}
       regions={canonicalExons}
-      regionAttributes={attributeConfig}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
       {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
