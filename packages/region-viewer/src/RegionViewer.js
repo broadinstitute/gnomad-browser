@@ -48,13 +48,25 @@ const defaultRegionAttributes = {
 export class RegionViewer extends Component {
   static propTypes = {
     children: PropTypes.node,
-    exonSubset: PropTypes.array,
-    featuresToDisplay: PropTypes.array,
-    leftPanelWidth: PropTypes.number.isRequired,
+    exonSubset: PropTypes.arrayOf(PropTypes.number),
+    featuresToDisplay: PropTypes.arrayOf(PropTypes.string),
+    leftPanelWidth: PropTypes.number,
     padding: PropTypes.number.isRequired,
-    regionAttributes: PropTypes.object,
-    regions: PropTypes.array.isRequired,
-    rightPanelWidth: PropTypes.number.isRequired,
+    regionAttributes: PropTypes.objectOf(
+      PropTypes.shape({
+        color: PropTypes.string.isRequired,
+        thickness: PropTypes.string.isRequired,
+      })
+    ),
+    regions: PropTypes.arrayOf(
+      PropTypes.shape({
+        feature_type: PropTypes.string.isRequired,
+        start: PropTypes.number.isRequired,
+        stop: PropTypes.number.isRequired,
+        strand: PropTypes.oneOf(['+', '-']).isRequired,
+      })
+    ).isRequired,
+    rightPanelWidth: PropTypes.number,
     width: PropTypes.number.isRequired,
   }
 
@@ -68,8 +80,9 @@ export class RegionViewer extends Component {
   }
 
   renderChildren(childProps) {
+    const { children } = this.props
     return React.Children.map(
-      this.props.children,
+      children,
       child => (child ? React.cloneElement(child, childProps) : null)
     )
   }
