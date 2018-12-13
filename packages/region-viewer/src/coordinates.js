@@ -1,5 +1,5 @@
 import R from 'ramda'
-import { scaleLinear, scaleBand } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 
 const FEATURES_TO_DISPLAY = ['CDS']
 
@@ -186,21 +186,10 @@ export const invertPositionOffset = R.curry((regions, xScale, scaledPosition) =>
   return result
 })
 
-export const calculateXScale = (width, offsetRegions, band = null) => {
-  if (band) {
-    return scaleBand()
-      .domain([
-        offsetRegions[0].start,
-        offsetRegions[offsetRegions.length - 1].stop -
-          offsetRegions[offsetRegions.length - 1].offset,
-      ])
-      .rangeRound([0, width])
-      .padding(band)
-  }
-  return scaleLinear()
+export const calculateXScale = (width, offsetRegions) =>
+  scaleLinear()
     .domain([
       offsetRegions[0].start,
       offsetRegions[offsetRegions.length - 1].stop - offsetRegions[offsetRegions.length - 1].offset,
     ])
     .range([0, width])
-}
