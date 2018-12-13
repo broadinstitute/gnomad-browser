@@ -8,17 +8,7 @@ export const filterRegions = R.curry((featureTypes, regions) => {
   return filteredRegions.length ? filteredRegions : regions
 })
 
-export const flipOrderIfNegativeStrand = regions => {
-  if (R.all(region => region.strand === '-', regions)) {
-    return R.reverse(regions)
-  }
-
-  if (R.all(region => region.strand === '+', regions)) {
-    return regions
-  }
-
-  throw Error('There is mix of (+) and (-) strands...')
-}
+const sortRegions = regions => [...regions].sort((r1, r2) => r1.start - r2.start)
 
 export const calculateRegionDistances = regions =>
   regions.map((region, i) => {
@@ -130,7 +120,7 @@ export const calculateOffsetRegions = (
 ) =>
   R.pipe(
     filterRegions(featuresToDisplay),
-    flipOrderIfNegativeStrand,
+    sortRegions,
     calculateRegionDistances,
     addPadding(padding),
     calculateOffset,
