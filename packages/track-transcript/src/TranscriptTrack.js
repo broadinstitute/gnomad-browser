@@ -49,6 +49,29 @@ TranscriptLeftPanel.defaultProps = {
   children: undefined,
 }
 
+const featureStyles = {
+  CDS: {
+    color: '#424242',
+    thickness: '20px',
+  },
+  start_pad: {
+    color: '#5A5E5C',
+    thickness: '3px',
+  },
+  end_pad: {
+    color: '#5A5E5C',
+    thickness: '3px',
+  },
+  intron: {
+    color: '#5A5E5C',
+    thickness: '3px',
+  },
+  default: {
+    color: 'grey',
+    thickness: '3px',
+  },
+}
+
 const TranscriptDrawing = ({
   width,
   height,
@@ -73,6 +96,7 @@ const TranscriptDrawing = ({
       {regions.map((region) => {
         const start = positionOffset(region.start)
         const stop = positionOffset(region.stop)
+        const styles = featureStyles[region.feature_type] || featureStyles.default
         if (start.offsetPosition !== undefined && stop.offsetPosition !== undefined) {
           return (
             <line
@@ -80,8 +104,8 @@ const TranscriptDrawing = ({
               x2={xScale(stop.offsetPosition)}
               y1={height / 2}
               y2={height / 2}
-              stroke={start.color}
-              strokeWidth={regionStrokeWidth || region.thickness}
+              stroke={styles.color}
+              strokeWidth={regionStrokeWidth || styles.thickness}
               key={`${region.start}`}
             />
           )
@@ -95,10 +119,13 @@ const TranscriptDrawing = ({
 TranscriptDrawing.propTypes = {
   height: PropTypes.number.isRequired,
   positionOffset: PropTypes.func.isRequired,
-  regions: PropTypes.arrayOf(PropTypes.shape({
-    start: PropTypes.number.isRequired,
-    stop: PropTypes.number.isRequired,
-  })).isRequired,
+  regions: PropTypes.arrayOf(
+    PropTypes.shape({
+      feature_type: PropTypes.string,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+    })
+  ).isRequired,
   regionStrokeWidth: PropTypes.number,
   width: PropTypes.number.isRequired,
   xScale: PropTypes.func.isRequired,

@@ -10,33 +10,6 @@ import { TranscriptTrackConnected } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
 
-const paddingColor = '#5A5E5C'
-const masterExonThickness = '20px'
-const masterPaddingThickness = '3px'
-
-const attributeConfig = {
-  CDS: {
-    color: '#424242',
-    thickness: masterExonThickness,
-  },
-  start_pad: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  end_pad: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  intron: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  default: {
-    color: 'grey',
-    thickness: masterPaddingThickness,
-  },
-}
-
 class GeneViewer extends PureComponent {
   render() {
     const { gene, visibleVariants, screenSize } = this.props
@@ -61,7 +34,6 @@ class GeneViewer extends PureComponent {
         width={regionViewerWidth}
         padding={75}
         regions={canonicalExons}
-        regionAttributes={attributeConfig}
         leftPanelWidth={100}
         rightPanelWidth={smallScreen ? 0 : 160}
       >

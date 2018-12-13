@@ -1,6 +1,6 @@
 import R from 'ramda'
 
-import { addPadding, assignAttributes, calculateOffset, filterRegions } from './coordinates'
+import { addPadding, calculateOffset, filterRegions } from './coordinates'
 
 const REGIONS = [
   {
@@ -148,45 +148,6 @@ describe('calculateOffset', () => {
   })
 })
 
-describe('assignAttributes', () => {
-  const filteredRegions = filterRegions(['CDS'], REGIONS)
-  const offsetRegions = calculateOffset(filteredRegions)
-
-  const defaultAttributeConfig = {
-    CDS: {
-      color: '#FFB33D',
-      thickness: '30px',
-    },
-    start_pad: {
-      color: '#28BCCC',
-      thickness: '5px',
-    },
-    end_pad: {
-      color: '#BEEB9F',
-      thickness: '5px',
-    },
-    intron: {
-      color: '#FF9559',
-      thickness: '5px',
-    },
-    default: {
-      color: '#grey',
-      thickness: '5px',
-    },
-  }
-
-  it('has keys', () => {
-    expect(Object.keys(assignAttributes(defaultAttributeConfig, offsetRegions)[0])).toEqual([
-      'feature_type',
-      'start',
-      'stop',
-      'offset',
-      'color',
-      'thickness',
-    ])
-  })
-})
-
 describe('addPadding', () => {
   const filteredRegions = filterRegions(['CDS'], REGIONS)
   const add50Bases = addPadding(50)
@@ -220,8 +181,7 @@ describe('addPadding', () => {
   it('offset added', () => {
     R.pipe(
       add50Bases,
-      calculateOffset,
-      assignAttributes
+      calculateOffset
     )(filteredRegions)
   })
 })

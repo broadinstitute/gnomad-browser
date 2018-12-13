@@ -17,46 +17,12 @@ const RegionViewerWrapper = styled.div`
   font-size: 12px;
 `
 
-const exonColor = '#212121'
-const paddingColor = '#BDBDBD'
-const masterExonThickness = '25px'
-const masterPaddingThickness = '5px'
-
-const defaultRegionAttributes = {
-  CDS: {
-    color: exonColor,
-    thickness: masterExonThickness,
-  },
-  start_pad: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  end_pad: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  intron: {
-    color: paddingColor,
-    thickness: masterPaddingThickness,
-  },
-  default: {
-    color: 'grey',
-    thickness: masterPaddingThickness,
-  },
-}
-
 export class RegionViewer extends Component {
   static propTypes = {
     children: PropTypes.node,
     featuresToDisplay: PropTypes.arrayOf(PropTypes.string),
     leftPanelWidth: PropTypes.number,
     padding: PropTypes.number.isRequired,
-    regionAttributes: PropTypes.objectOf(
-      PropTypes.shape({
-        color: PropTypes.string.isRequired,
-        thickness: PropTypes.string.isRequired,
-      })
-    ),
     regions: PropTypes.arrayOf(
       PropTypes.shape({
         feature_type: PropTypes.string.isRequired,
@@ -72,7 +38,6 @@ export class RegionViewer extends Component {
     children: undefined,
     featuresToDisplay: ['CDS'],
     leftPanelWidth: 100,
-    regionAttributes: defaultRegionAttributes,
     rightPanelWidth: 160,
   }
 
@@ -88,19 +53,13 @@ export class RegionViewer extends Component {
     const {
       featuresToDisplay,
       regions,
-      regionAttributes,
       width,
       padding,
       leftPanelWidth,
       rightPanelWidth,
     } = this.props
 
-    const offsetRegions = calculateOffsetRegions(
-      featuresToDisplay,
-      regionAttributes,
-      padding,
-      regions
-    )
+    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
 
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)

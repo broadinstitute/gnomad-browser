@@ -7,12 +7,10 @@ export const trackPropTypes = {
   // used only by track-coverage, track-transcript, and track-position-table
   offsetRegions: PropTypes.arrayOf(
     PropTypes.shape({
-      color: PropTypes.string.isRequired,
       feature_type: PropTypes.string.isRequired,
       offset: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
-      thickness: PropTypes.string.isRequired,
     })
   ),
   positionOffset: PropTypes.func,
