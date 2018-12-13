@@ -17,7 +17,6 @@ const SashimiTrack = ({
   leftPanelWidth,
   xScale,
   positionOffset,
-  padding,
   domainMax,
   coverage,
   coverageColour,

@@ -16,21 +16,10 @@ export const trackPropTypes = {
       thickness: PropTypes.string.isRequired,
     })
   ),
-  // unused
-  padding: PropTypes.number,
   positionOffset: PropTypes.func,
-  // unused
-  regionAttributes: PropTypes.objectOf(
-    PropTypes.shape({
-      color: PropTypes.string.isRequired,
-      thickness: PropTypes.string.isRequired,
-    })
-  ),
   rightPanelWidth: PropTypes.number,
   width: PropTypes.number,
   xScale: PropTypes.func,
-  // unused
-  xScaleBand: PropTypes.func,
 }
 
 export const getTrackProps = props => {
@@ -38,13 +27,10 @@ export const getTrackProps = props => {
     invertOffset,
     leftPanelWidth,
     offsetRegions,
-    padding,
     positionOffset,
-    regionAttributes,
     rightPanelWidth,
     width,
     xScale,
-    xScaleBand,
     ...rest
   } = props
 
@@ -53,13 +39,10 @@ export const getTrackProps = props => {
       invertOffset,
       leftPanelWidth,
       offsetRegions,
-      padding,
       positionOffset,
-      regionAttributes,
       rightPanelWidth,
       width,
       xScale,
-      xScaleBand,
     },
     others: rest,
   }

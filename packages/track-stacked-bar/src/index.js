@@ -23,12 +23,9 @@ const TrackStackedBar = ({
   leftPanelWidth,
   positionOffset,
   // invertOffset,
-  // xScaleBand,
   xScale,
   width,
   // offsetRegions,
-  // regionAttributes,
-  // padding,
   hideIntrons,
 }) => {
   const margin = {
