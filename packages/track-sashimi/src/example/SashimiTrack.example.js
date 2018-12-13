@@ -113,7 +113,6 @@ class SashimiTrackExample extends Component {
           width={1000}
           regions={exons}
           regionAttributes={regionAttributesConfig}
-          exonSubset={[4, 7]}
           padding={this.state.padding}
         >
           <SashimiTrack

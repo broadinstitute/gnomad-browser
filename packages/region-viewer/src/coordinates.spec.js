@@ -1,12 +1,6 @@
 import R from 'ramda'
 
-import {
-  addPadding,
-  applyExonSubset,
-  assignAttributes,
-  calculateOffset,
-  filterRegions,
-} from './coordinates'
+import { addPadding, assignAttributes, calculateOffset, filterRegions } from './coordinates'
 
 const REGIONS = [
   {
@@ -111,17 +105,6 @@ describe('filterRegions', () => {
         R.all(feature => feature === 'CDS')
       )(filterRegions(['CDS'], REGIONS))
     ).toBe(true)
-  })
-})
-
-describe('applyExonSubset', () => {
-  it('returns a subset of exons, given an array', () => {
-    const func = R.pipe(
-      filterRegions(['CDS']),
-      applyExonSubset([2, 5])
-    )
-    const result = func(REGIONS)
-    expect(result.length).toBe(3)
   })
 })
 
