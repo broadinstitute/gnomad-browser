@@ -66,9 +66,12 @@ class GeneViewer extends PureComponent {
         rightPanelWidth={smallScreen ? 0 : 160}
       >
         <TranscriptTrackConnected height={12} showRightPanel={!smallScreen} />
-        <VariantAlleleFrequencyTrack title={`Cases\n(${cases.size})`} variants={cases.toJS()} />
         <VariantAlleleFrequencyTrack
-          title={`Controls\n(${controls.size})`}
+          title={`Cases\n(${cases.size} variants)`}
+          variants={cases.toJS()}
+        />
+        <VariantAlleleFrequencyTrack
+          title={`Controls\n(${controls.size} variants)`}
           variants={controls.toJS()}
         />
         <NavigatorTrackConnected title="Viewing in table" />
