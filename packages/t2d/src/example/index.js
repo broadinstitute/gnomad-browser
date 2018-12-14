@@ -6,10 +6,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
-import {
-  MaterialButtonRaised,
-  Search,
-} from '@broad/ui'
+import { MaterialButtonRaised, SearchInput } from '@broad/ui'
 
 import TranscriptViewerExample from './TranscriptViewerExample'
 import StructureViewerExample from './StructureViewerExample'
@@ -81,10 +78,7 @@ class T2dComponentsShowcase extends PureComponent {
           </Button>
         </ButtonGroup>
         <ControlPanel>
-          <Search
-            placeholder={'Search gene'}
-            onChange={this.setCurrentGene}
-          />
+          <SearchInput placeholder="Search gene" onChange={this.setCurrentGene} />
         </ControlPanel>
         <SelectedComponent
           currentGene={this.state.currentGene}

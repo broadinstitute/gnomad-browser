@@ -10,9 +10,7 @@ export { ClassicExacButton } from './classicExac/button'
 
 export { ConsequenceCategoriesControl } from './ConsequenceCategoriesControl'
 
-export {
-  Search
-} from './search/simpleSearch'
+export { SearchInput } from './SearchInput'
 
 export {
   Table,

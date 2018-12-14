@@ -14,7 +14,7 @@ import {
   MaterialButtonRaised,
   SettingsContainer,
   MenusContainer,
-  Search,
+  SearchInput,
   SearchContainer,
   DataSelectionGroup,
 } from '@broad/ui'
@@ -89,8 +89,8 @@ const GeneSettings = ({
         </DataSelectionGroup>
         <DataSelectionGroup>
           <SearchContainer>
-            <Search
-              placeholder={'Search variant table'}
+            <SearchInput
+              placeholder="Search variant table"
               onChange={searchVariants}
               withKeyboardShortcuts
             />
