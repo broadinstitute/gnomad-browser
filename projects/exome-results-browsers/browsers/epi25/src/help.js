@@ -7,8 +7,8 @@ const help = {
       <div>
         <p>
           These tables display the case-control gene burden for the full epilepsy cohort (EPI) and
-          for each of the primary epilepsy types (EE, GGE, and NAFE). Cases in the EPI table
-          includes all 9,170 epilepsy patients (1,021 with EE, 3,108 with GGE, 3,597 with NAFE, and
+          for each of the primary epilepsy types (DEE, GGE, and NAFE). Cases in the EPI table
+          includes all 9,170 epilepsy patients (1,021 with DEE, 3,108 with GGE, 3,597 with NAFE, and
           1,444 with other epilepsy syndromes). Each of the case groups is compared against 8,364
           controls without known neuropsychiatric conditions.
         </p>
