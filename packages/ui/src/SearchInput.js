@@ -3,47 +3,49 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-const SearchWrapper = styled.div`
-  font-size: 14px;
+const Wrapper = styled.div`
   position: relative;
   width: 210px;
+  border-bottom: 1px solid #000;
+  font-size: 14px;
 `
 
-const SearchInput = styled.input`
+const Input = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.375em 0.75em;
+  border: 1px solid transparent;
+  border-radius: 0.25em;
   appearance: none;
   background: none;
-  border-color: #000;
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  box-sizing: border-box;
-  padding: 0.25em 0.75em;
-  transition: width 0.4s ease-in-out;
-  width: 100%;
 
   &:focus {
+    outline: none;
     border-color: rgb(70, 130, 180);
-    box-shadow: 0 0.3em 0.2em -0.2em rgba(70, 130, 180, 0.5);
+    box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
     padding-right: 1.75em;
   }
 `
 
-const ClearSearchButton = styled.button`
+const ClearButton = styled.button.attrs({ type: 'button' })`
+  position: absolute;
+  top: 0;
+  right: 0;
+  box-sizing: border-box;
+  height: 100%;
+  border: none;
   appearance: none;
   background: none;
-  border: none;
-  box-sizing: border-box;
   cursor: pointer;
-  height: 1.5em;
-  position: absolute;
-  right: 0;
-  top: 0;
+  outline: none;
 
-  &:active, &:hover {
+  &:active,
+  &:hover {
     color: rgb(40, 94, 142);
   }
 `
 
-export class Search extends Component {
+export class SearchInput extends Component {
   static propTypes = {
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -60,8 +62,9 @@ export class Search extends Component {
   }
 
   componentDidMount() {
-    if (this.props.withKeyboardShortcuts) {
-      Mousetrap.bind('/', (e) => {
+    const { withKeyboardShortcuts } = this.props
+    if (withKeyboardShortcuts) {
+      Mousetrap.bind('/', e => {
         if (this.input) {
           e.preventDefault()
           this.input.focus()
@@ -76,47 +79,50 @@ export class Search extends Component {
     }
   }
 
-  onChange = (e) => {
-    const value = e.target.value
+  onChange = e => {
+    const { onChange } = this.props
+    const { value } = e.target
     this.setState({ value })
-    this.props.onChange(value)
+    onChange(value)
   }
 
   onClear = () => {
+    const { onChange } = this.props
     this.setState({ value: '' })
-    this.props.onChange('')
+    onChange('')
   }
 
-  onKeyDown = (e) => {
+  onKeyDown = e => {
     if (e.key === 'Escape') {
       this.onClear()
     }
   }
 
-  inputRef = (el) => {
+  inputRef = el => {
     this.input = el
   }
 
   render() {
+    const { placeholder } = this.props
+    const { value } = this.state
+
     return (
-      <SearchWrapper>
-        <SearchInput
+      <Wrapper>
+        <Input
           autoComplete="off"
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
-          placeholder={this.props.placeholder}
+          placeholder={placeholder}
           innerRef={this.inputRef}
           type="text"
-          value={this.state.value}
+          value={value}
         />
-        {this.state.value && (
-          <ClearSearchButton
-            aria-label="Clear"
-            onClick={this.onClear}
-            type="button"
-          >&times;</ClearSearchButton>
+        {value && (
+          <ClearButton aria-label="Clear" tabIndex={-1} onClick={this.onClear}>
+            &times;
+          </ClearButton>
         )}
-      </SearchWrapper>
+      </Wrapper>
     )
   }
 }

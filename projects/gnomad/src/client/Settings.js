@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { actions as variantActions, variantFilter, variantQcFilter } from '@broad/redux-variants'
-import { Checkbox, ConsequenceCategoriesControl, Search } from '@broad/ui'
+import { Checkbox, ConsequenceCategoriesControl, SearchInput } from '@broad/ui'
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -62,7 +62,11 @@ const GeneSettings = ({
     </div>
 
     <div>
-      <Search placeholder="Search variant table" onChange={searchVariants} withKeyboardShortcuts />
+      <SearchInput
+        placeholder="Search variant table"
+        onChange={searchVariants}
+        withKeyboardShortcuts
+      />
     </div>
   </SettingsWrapper>
 )

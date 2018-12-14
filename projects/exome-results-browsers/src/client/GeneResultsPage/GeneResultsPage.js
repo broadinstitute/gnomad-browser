@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Combobox, Page, PageHeading, Search } from '@broad/ui'
+import { Combobox, Page, PageHeading, SearchInput } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
@@ -75,7 +75,7 @@ class GeneResultsPage extends Component {
         <ControlSection>
           {this.renderAnalysisGroupMenu()}
 
-          <Search
+          <SearchInput
             placeholder="Search results by gene"
             onChange={value => {
               this.setState({ searchText: value.toUpperCase() })

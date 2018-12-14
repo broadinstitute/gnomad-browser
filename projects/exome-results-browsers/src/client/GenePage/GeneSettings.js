@@ -9,7 +9,7 @@ import {
   variantInAnalysisFilter,
   variantFilter,
 } from '@broad/redux-variants'
-import { Checkbox, Combobox, ConsequenceCategoriesControl, Search } from '@broad/ui'
+import { Checkbox, Combobox, ConsequenceCategoriesControl, SearchInput } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
@@ -141,7 +141,11 @@ const GeneSettings = ({
     </FiltersWrapper>
 
     <SearchWrapper>
-      <Search placeholder="Search variant table" onChange={searchVariants} withKeyboardShortcuts />
+      <SearchInput
+        placeholder="Search variant table"
+        onChange={searchVariants}
+        withKeyboardShortcuts
+      />
     </SearchWrapper>
   </SettingsWrapper>
 )
