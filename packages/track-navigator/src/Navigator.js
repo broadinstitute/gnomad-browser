@@ -146,17 +146,9 @@ class Navigator extends Component {
       width,
     } = this.props
 
-    if (variants.size === 0) {
-      return <div />
-    }
-
     const visibleVariants = variants
       .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
       .toJS()
-
-    if (visibleVariants.length === 0) {
-      return <div />
-    }
 
     return (
       <NavigatorContainer
