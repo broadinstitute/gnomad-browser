@@ -8,11 +8,26 @@ import { InfoModal } from '@broad/ui'
 import helpConfig from '@browser/help'
 
 const Button = styled.button`
+  display: inline-flex;
+  align-items: center;
+  outline: none;
   padding: 0 3px;
   border: none;
   background: none;
   cursor: pointer;
   font-size: inherit;
+
+  svg {
+    position: relative;
+    top: 0.11em;
+    width: 0.9em;
+    height: 0.9em;
+    border-radius: 0.45em;
+  }
+
+  &:focus svg {
+    box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
+  }
 `
 
 const HelpModalContent = styled.div`
@@ -46,7 +61,7 @@ export class HelpPopup extends Component {
             this.setState({ isOpen: true })
           }}
         >
-          <QuestionMark style={{ height: '14px', width: '14px' }} />
+          <QuestionMark />
         </Button>
         {isOpen && (
           <InfoModal
