@@ -61,6 +61,14 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           }
         }
         qualityMetrics {
+          alleleBalance {
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+          }
           genotypeDepth {
             all {
               bin_edges
@@ -149,6 +157,14 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           }
         }
         qualityMetrics {
+          alleleBalance {
+            alt {
+              bin_edges
+              bin_freq
+              n_smaller
+              n_larger
+            }
+          }
           genotypeDepth {
             all {
               bin_edges

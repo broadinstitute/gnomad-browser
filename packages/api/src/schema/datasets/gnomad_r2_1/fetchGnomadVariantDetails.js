@@ -78,6 +78,7 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
           type: 'variant',
           _source: [
             requestSubset,
+            'ab_hist_alt',
             'allele_info',
             'alt',
             'chrom',
@@ -219,6 +220,9 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           filters: exomeData.filters,
           populations: formatPopulations(exomeData),
           qualityMetrics: {
+            alleleBalance: {
+              alt: formatHistogram(exomeData.ab_hist_alt),
+            },
             genotypeDepth: {
               all: formatHistogram(exomeData.dp_hist_all),
               alt: formatHistogram(exomeData.dp_hist_alt),
@@ -249,6 +253,9 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           filters: genomeData.filters,
           populations: formatPopulations(genomeData),
           qualityMetrics: {
+            alleleBalance: {
+              alt: formatHistogram(genomeData.ab_hist_alt),
+            },
             genotypeDepth: {
               all: formatHistogram(genomeData.dp_hist_all),
               alt: formatHistogram(genomeData.dp_hist_alt),
