@@ -1,11 +1,10 @@
-import gql from 'graphql-tag'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { graphql } from 'react-apollo'
 
 import { BaseTable } from '@broad/ui'
 
 import sortByGroup from '../sortByGroup'
+import Query from '../Query'
 
 function formatExponential(number) {
   return Number(number.toPrecision(4)).toExponential()
@@ -60,7 +59,7 @@ BaseAnalysisGroupsTable.propTypes = {
   ).isRequired,
 }
 
-const analysisGroupsQuery = gql`
+const analysisGroupsQuery = `
   query AnalysisGroups($variantId: String) {
     groups: analysisGroups(variant_id: $variantId) {
       analysis_group
@@ -74,16 +73,24 @@ const analysisGroupsQuery = gql`
   }
 `
 
-const ConnectedAnalysisGroupsTable = graphql(analysisGroupsQuery, {
-  options: ({ variantId }) => ({
-    variables: { variantId },
-    errorPolicy: 'ignore',
-  }),
-})(({ data: { loading, groups } }) => {
-  if (loading) {
-    return <span>Loading groups...</span>
-  }
-  return <BaseAnalysisGroupsTable groups={groups} />
-})
+const ConnectedAnalysisGroupsTable = ({ variantId }) => (
+  <Query query={analysisGroupsQuery} variables={{ variantId }}>
+    {({ data, error, loading }) => {
+      if (loading) {
+        return <span>Loading groups...</span>
+      }
+
+      if (error) {
+        return <span>Unable to load groups</span>
+      }
+
+      return <BaseAnalysisGroupsTable groups={data.groups} />
+    }}
+  </Query>
+)
+
+ConnectedAnalysisGroupsTable.propTypes = {
+  variantId: PropTypes.string.isRequired,
+}
 
 export default ConnectedAnalysisGroupsTable
