@@ -18,7 +18,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
 
     this.state = {
       selectedDataset: props.variant.exome ? 'exome' : 'genome',
-      selectedMetric: 'quality', // 'quality' or 'depth'
+      selectedMetric: 'genotypeQuality', // 'genotypeQality', 'genotypeDepth', or 'alleleBalance'
       selectedSamples: 'all', // 'all' or 'alt'
     }
   }
@@ -27,14 +27,13 @@ export class GnomadGenotypeQualityMetrics extends Component {
     const { variant } = this.props
     const { selectedDataset, selectedMetric, selectedSamples } = this.state
 
-    const variantData = variant[selectedDataset]
+    const histogramData = variant[selectedDataset].qualityMetrics[selectedMetric][selectedSamples]
 
-    const histogramData =
-      selectedMetric === 'quality'
-        ? variantData.qualityMetrics.genotypeQuality[selectedSamples]
-        : variantData.qualityMetrics.genotypeDepth[selectedSamples]
-
-    const xLabel = selectedMetric === 'quality' ? 'Genotype Quality' : 'Depth'
+    const xLabel = {
+      genotypeQuality: 'Genotype Quality',
+      genotypeDepth: 'Depth',
+      alleleBalance: 'Allele Balance',
+    }[selectedMetric]
 
     const yLabel = selectedSamples === 'all' ? 'All Individuals' : 'Variant carriers'
 
@@ -57,21 +56,33 @@ export class GnomadGenotypeQualityMetrics extends Component {
             onChange={samples => {
               this.setState({ selectedSamples: samples })
             }}
-            options={[{ label: 'All', value: 'all' }, { label: 'Variant Carriers', value: 'alt' }]}
+            options={[
+              { label: 'All', value: 'all', disabled: selectedMetric === 'alleleBalance' },
+              { label: 'Variant Carriers', value: 'alt' }
+            ]}
             value={selectedSamples}
           />
 
-          <SegmentedControl
+          <select
             id="genotype-quality-metrics-metric"
-            onChange={metric => {
-              this.setState({ selectedMetric: metric })
+            onChange={e => {
+              const metric = e.target.value
+              this.setState(state => {
+                const update = { selectedMetric: metric }
+                // "All" data is not available for allele balance
+                if (metric === 'alleleBalance') {
+                  update.selectedSamples = 'alt'
+                }
+                return update
+              })
             }}
-            options={[
-              { label: 'Genotype Quality', value: 'quality' },
-              { label: 'Depth', value: 'depth' },
-            ]}
             value={selectedMetric}
-          />
+          >
+
+            <option value="genotypeQuality">Genotype Quality</option>
+            <option value="genotypeDepth">Depth</option>
+            <option value="alleleBalance">Allele Balance</option>
+          </select>
 
           <SegmentedControl
             id="genotype-quality-metrics-dataset"
@@ -98,6 +109,9 @@ const histogramPropType = PropTypes.shape({
 })
 
 const genotypeQualityMetricPropType = PropTypes.shape({
+  alleleBalance: PropTypes.shape({
+    alt: histogramPropType,
+  }).isRequired,
   genotypeDepth: PropTypes.shape({
     all: histogramPropType,
     alt: histogramPropType,

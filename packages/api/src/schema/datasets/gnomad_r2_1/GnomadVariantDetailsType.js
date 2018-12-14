@@ -47,6 +47,14 @@ const GnomadPopulationType = new GraphQLObjectType({
 const GnomadVariantQualityMetricsType = new GraphQLObjectType({
   name: 'GnomadVariantQualityMetrics',
   fields: {
+    alleleBalance: {
+      type: new GraphQLObjectType({
+        name: 'GnomadVariantAlleleBalance',
+        fields: {
+          alt: { type: HistogramType },
+        },
+      }),
+    },
     genotypeDepth: {
       type: new GraphQLObjectType({
         name: 'GnomadVariantGenotypeDepth',
