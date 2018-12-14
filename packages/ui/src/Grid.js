@@ -451,7 +451,11 @@ export class Grid extends Component {
                   })}
                 </HeaderRow>
                 <FixedSizeList
-                  height={numRowsRendered * rowHeight}
+                  // With height = numRowsRendered * rowHeight, when scrolled to an offset
+                  // which is an exact multiple of rowHeight, onItemsRendered's stopIndex
+                  // will be the index of the row after the last row visible. Subtracting
+                  // one pixel from the height prevents this.
+                  height={numRowsRendered * rowHeight - 1}
                   itemCount={data.length}
                   itemData={{
                     columns,
