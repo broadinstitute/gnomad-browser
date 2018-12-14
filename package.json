@@ -26,6 +26,8 @@
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-styled-components": "^1.8.0",
     "core-js": "^2.5.7",
+    "csvtojson": "^1.1.7",
+    "elasticsearch": "^13.3.1",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.1.0",
