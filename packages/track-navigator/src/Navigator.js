@@ -151,7 +151,7 @@ class Navigator extends Component {
     }
 
     const visibleVariants = variants
-      .slice(visibleVariantWindow[0], visibleVariantWindow[1])
+      .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
       .toJS()
 
     if (visibleVariants.length === 0) {

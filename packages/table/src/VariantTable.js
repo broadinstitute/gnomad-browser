@@ -63,11 +63,16 @@ const VariantTable = ({
         onRowClick={setFocusedVariant}
         onRowHover={setHoveredVariant}
         scrollToRow={tablePosition}
-        onScroll={({ scrollHeight, scrollTop }) => {
-          const startIndex = Math.floor((scrollTop / scrollHeight) * variants.size)
+        onScroll={({ scrollTop }) => {
+          // row height = 25px
+          const startIndex = Math.max(0, Math.min(variants.size - 1, Math.floor(scrollTop / 25)))
+          const offset = startIndex * 25
+          const stopIndex =
+            startIndex +
+            Math.max(0, Math.min(variants.size - 1, Math.floor((499 + scrollTop - offset) / 25)))
           setCurrentTableScrollWindow({
             startIndex,
-            stopIndex: startIndex + 20,
+            stopIndex,
           })
         }}
         searchText={searchQuery}
