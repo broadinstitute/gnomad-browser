@@ -27,23 +27,6 @@ const NavigatorOverlay = styled.svg`
   top: 0;
 `
 
-const getTableIndexByPosition = (position, variants) => {
-  if (variants.size) {
-    return variants.findIndex((variant, i) => {
-      if (variants.get(i + 1)) {
-        return position >= variant.pos && position <= variants.get(i + 1).pos
-      }
-      return variants.size - 1
-    })
-  }
-  return variants.findIndex((variant, i) => {
-    if (variants[i + 1]) {
-      return position >= variant.pos && position <= variants[i + 1].pos
-    }
-    return variants.length - 1
-  })
-}
-
 class Navigator extends Component {
   static propTypes = {
     height: PropTypes.number,
@@ -70,16 +53,9 @@ class Navigator extends Component {
   }
 
   onClick = () => {
-    const {
-      invertOffset,
-      onNavigatorClick,
-      position,
-      variants,
-    } = this.props
-
-    const genomePos = invertOffset(position.x)
-    const tableIndex = getTableIndexByPosition(genomePos, variants.toJS())
-    onNavigatorClick(tableIndex, genomePos)
+    const { invertOffset, onNavigatorClick, position } = this.props
+    const genomePosition = invertOffset(position.x)
+    onNavigatorClick(genomePosition)
   }
 
   renderCursor() {
