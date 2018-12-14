@@ -12,7 +12,7 @@ import glob from 'glob'
 import { v4 } from 'node-uuid'
 import moment from 'moment'
 
-import { loadJsonArrayToElastic } from '@broad/api/utilities/elasticsearch'
+import { loadJsonArrayToElastic } from './elasticsearch'
 
 // Max number of files open at once
 const fq = new FileQueue(100)

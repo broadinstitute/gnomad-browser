@@ -1,4 +1,4 @@
-import { loadCsvToElastic } from '@broad/api/utilities/elasticsearch'
+import { loadCsvToElastic } from './elasticsearch'
 
 const filePath = '../../../resources/fordist_constraint_official_fullgene_cleaned_missense_metrics_nosynoutliers.txt'
 

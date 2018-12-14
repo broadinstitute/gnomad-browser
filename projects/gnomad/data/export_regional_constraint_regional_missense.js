@@ -1,4 +1,4 @@
-import { loadCsvToElastic } from '@broad/api/utilities/elasticsearch'
+import { loadCsvToElastic } from './elasticsearch'
 import regionalMissenseMapping from './regional_missense_mapping.json'
 
 const filePath = '../../../resources/fordist_constraint_official_regional_missense_cleaned_metrics_nosynoutliers.txt'
