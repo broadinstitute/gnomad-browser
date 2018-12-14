@@ -52,10 +52,6 @@ const GeneInfo = ({ geneData, variantCount }) => {
         <GeneAttribute>
           <strong>Number of variants:</strong> {variantCount}
         </GeneAttribute>
-        <GeneAttribute>
-          <strong>p-meta:</strong>{' '}
-          {overallGeneResult.pval_meta ? overallGeneResult.pval_meta.toPrecision(3) : '—'}
-        </GeneAttribute>
       </GeneAttributes>
       <GeneResultsWrapper>
         <SectionHeading>

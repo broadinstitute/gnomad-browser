@@ -14,10 +14,10 @@ const GeneResultsTable = ({ geneResult }) => (
     <Table>
       <thead>
         <tr>
-          <th />
-          <th>Cases</th>
-          <th>Controls</th>
-          <th>P-Val</th>
+          <th scope="col">Category</th>
+          <th scope="col">Cases</th>
+          <th scope="col">Controls</th>
+          <th scope="col">P-Val</th>
         </tr>
       </thead>
       <tbody>
@@ -25,7 +25,7 @@ const GeneResultsTable = ({ geneResult }) => (
           const resultCategory = geneResult.categories.find(c => c.id === id)
           return (
             <tr key={id}>
-              <td>{label}</td>
+              <th scope="row">{label}</th>
               <td>{resultCategory.xcase === null ? '—' : resultCategory.xcase}</td>
               <td>{resultCategory.xctrl === null ? '—' : resultCategory.xctrl}</td>
               <td>{resultCategory.pval === null ? '—' : resultCategory.pval.toPrecision(3)}</td>
@@ -33,6 +33,14 @@ const GeneResultsTable = ({ geneResult }) => (
           )
         })}
       </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Overall</th>
+          <td />
+          <td />
+          <td>{geneResult.pval_meta.toPrecision(3)}</td>
+        </tr>
+      </tfoot>
     </Table>
   </div>
 )
@@ -47,6 +55,7 @@ GeneResultsTable.propTypes = {
         pval: PropTypes.number,
       })
     ),
+    pval_meta: PropTypes.number.isRequired,
   }).isRequired,
 }
 
