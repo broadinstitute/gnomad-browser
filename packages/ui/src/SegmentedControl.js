@@ -98,6 +98,7 @@ export class SegmentedControl extends Component {
 
     return (
       <SegmentedControlContainer
+        id={id}
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         isFocused={isFocused}
@@ -109,6 +110,7 @@ export class SegmentedControl extends Component {
             checked={opt.value === value}
             disabled={disabled || opt.disabled}
             id={`segmented-control-input-${id}-${opt.value}`}
+            name={id}
             type="radio"
             value={index}
             onBlur={this.onBlur}
