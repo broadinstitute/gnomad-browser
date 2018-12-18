@@ -1,7 +1,3 @@
-export {
-  default as TranscriptTrack
-} from './TranscriptTrack'
+export { TranscriptsTrack } from './TranscriptsTrack'
 
-export {
-  default as TranscriptTrackConnected
-} from './TranscriptConnected'
+export { ConnectedTranscriptsTrack } from './ConnectedTranscriptsTrack'

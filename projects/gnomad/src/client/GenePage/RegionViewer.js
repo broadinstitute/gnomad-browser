@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { NavigatorTrackConnected } from '@broad/track-navigator'
-import { TranscriptTrackConnected } from '@broad/track-transcript'
+import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
@@ -88,8 +88,7 @@ const GeneViewer = ({
       {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
 
       {hasCodingExons && (
-        <TranscriptTrackConnected
-          height={12}
+        <ConnectedTranscriptsTrack
           renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
             <TranscriptLink
               to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
@@ -99,7 +98,6 @@ const GeneViewer = ({
               {transcriptId}
             </TranscriptLink>
           )}
-          showRightPanel={!smallScreen}
         />
       )}
 

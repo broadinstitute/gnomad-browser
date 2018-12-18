@@ -13,8 +13,7 @@ import {
   actions as geneActions,
 } from '@broad/redux-genes'
 
-import TranscriptTrack from './TranscriptTrack'
-
+import { TranscriptsTrack } from './TranscriptsTrack'
 
 const mapStateToProps = state => ({
   currentGene: currentGene(state),
@@ -29,8 +28,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onTissueChange: bindActionCreators(geneActions.setCurrentTissue, dispatch),
-  setCurrentTranscript: bindActionCreators(geneActions.setCurrentTranscript, dispatch),
-  transcriptButtonOnClick: bindActionCreators(geneActions.toggleTranscriptFanOut, dispatch),
+  toggleTranscriptFanOut: bindActionCreators(geneActions.toggleTranscriptFanOut, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TranscriptTrack)
+export const ConnectedTranscriptsTrack = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TranscriptsTrack)
