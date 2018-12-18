@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { CoverageTrack } from '@broad/track-coverage'
-import { coverageConfigClassic, coverageConfigNew } from '@broad/region-viewer'
 
+import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 

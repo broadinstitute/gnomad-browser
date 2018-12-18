@@ -1,4 +1,4 @@
-export { attributeConfig, coverageConfigClassic, coverageConfigNew } from './regionViewerStyles'
+export { attributeConfig } from './regionViewerStyles'
 
 export { RegionViewer } from './RegionViewer'
 
