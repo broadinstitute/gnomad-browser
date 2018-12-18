@@ -6,7 +6,6 @@ export const ExonType = new GraphQLObjectType({
     feature_type: { type: GraphQLString },
     start: { type: GraphQLInt },
     stop: { type: GraphQLInt },
-    strand: { type: GraphQLString },
   },
 })
 
