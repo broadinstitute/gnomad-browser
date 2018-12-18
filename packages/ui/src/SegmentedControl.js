@@ -26,8 +26,6 @@ const SegmentedControlContainer = styled.span`
     padding: 0.375em 0.75em;
     border: 1px solid transparent;
     cursor: pointer;
-    margin: 0; /* override Bootstrap styles from gnomad_browser */
-    font-weight: normal; /* override Bootstrap styles from gnomad_browser */
 
     &:first-of-type {
       border-bottom-left-radius: 0.5em;
@@ -42,6 +40,11 @@ const SegmentedControlContainer = styled.span`
 
   input:checked + label {
     background-color: ${props => darken(0.15, props.backgroundColor)};
+  }
+
+  input:disabled + label {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `
 
@@ -79,9 +82,10 @@ export class SegmentedControl extends Component {
   }
 
   onChange = e => {
+    const { options, onChange } = this.props
     const selectedIndex = parseInt(e.target.value, 10)
-    const selectedOption = this.props.options[selectedIndex]
-    this.props.onChange(selectedOption.value)
+    const selectedOption = options[selectedIndex]
+    onChange(selectedOption.value)
   }
 
   onFocus = () => {
@@ -90,12 +94,13 @@ export class SegmentedControl extends Component {
 
   render() {
     const { backgroundColor, borderColor, disabled, id, options, textColor, value } = this.props
+    const { isFocused } = this.state
 
     return (
       <SegmentedControlContainer
         backgroundColor={backgroundColor}
         borderColor={borderColor}
-        isFocused={this.state.isFocused}
+        isFocused={isFocused}
         textColor={textColor}
       >
         {options.map((opt, index) => [
@@ -110,6 +115,7 @@ export class SegmentedControl extends Component {
             onChange={this.onChange}
             onFocus={this.onFocus}
           />,
+          // eslint-disable-next-line jsx-a11y/label-has-for
           <label key={`${opt.value}-label`} htmlFor={`segmented-control-input-${id}-${opt.value}`}>
             {opt.label || opt.value}
           </label>,
