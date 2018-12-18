@@ -9,7 +9,7 @@ import { createGeneReducer } from '@broad/redux-genes'
 import PositionTableTrack from '@broad/track-position-table'
 import { TranscriptTrackConnected } from '@broad/track-transcript'
 
-import { GeneViewer } from '..'
+import GeneViewer from './GeneViewer'
 
 const logger = createLogger()
 
