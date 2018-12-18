@@ -7,18 +7,10 @@ module.exports = {
   ],
   syntax: 'scss',
   rules: {
-    'color-hex-case': null,
-    'comment-empty-line-before': null,
-    'comment-whitespace-inside': null,
-    'number-leading-zero': null,
-    'unit-whitelist': [
-      ['em', 'rem', 's', 'px'],
-      {
-        ignoreProperties: {
-          '%': ['max-width', 'min-width', 'width'],
-        },
-      },
-    ],
+    // This rule sometimes conflicts with ESLint and Prettier in styled components
+    // that contain multi-line functions
+    'declaration-colon-newline-after': null,
+    'unit-whitelist': ['%', 'deg', 'em', 'rem', 's', 'px'],
   },
   ignoreFiles: './**/node_modules/**/*',
 }
