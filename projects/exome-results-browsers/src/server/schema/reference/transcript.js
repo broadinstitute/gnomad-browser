@@ -1,7 +1,6 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { ExonType, fetchExonsByTranscriptId } from './exon'
-import { GtexTissueExpressionType, fetchGtexTissueExpressionByTranscriptId } from './gtex'
 
 export const TranscriptType = new GraphQLObjectType({
   name: 'Transcript',
@@ -11,10 +10,6 @@ export const TranscriptType = new GraphQLObjectType({
     exons: {
       type: new GraphQLList(ExonType),
       resolve: (obj, args, ctx) => fetchExonsByTranscriptId(ctx, obj.transcript_id),
-    },
-    gtex_tissue_expression: {
-      type: GtexTissueExpressionType,
-      resolve: (obj, args, ctx) => fetchGtexTissueExpressionByTranscriptId(ctx, obj.transcript_id),
     },
   },
 })
