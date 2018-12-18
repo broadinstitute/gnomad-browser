@@ -89,6 +89,7 @@ const GeneViewer = ({
 
       {hasCodingExons && (
         <ConnectedTranscriptsTrack
+          filenameForExport={`${geneId}_transcripts`}
           renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
             <TranscriptLink
               to={`/gene/${gene.get('gene_name')}/transcript/${transcriptId}`}
