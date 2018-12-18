@@ -29,6 +29,13 @@ export const BaseButton = styled.button.attrs({
   &:focus {
     box-shadow: ${props => `0 0 0 0.2em ${transparentize(0.5, props.borderColor)}`};
   }
+
+  svg {
+    position: relative;
+    top: 0.11em;
+    width: 0.9em;
+    height: 0.9em;
+  }
 `
 
 /* stylelint-disable block-no-empty */
