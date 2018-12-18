@@ -4,7 +4,7 @@ import { SegmentedControl } from '..'
 
 export default class SegmentedControlExample extends Component {
   state = {
-    options: [{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }],
+    options: [{ value: 'foo' }, { value: 'bar' }, { value: 'baz', disabled: true }],
     value: 'foo',
   }
 
@@ -13,11 +13,12 @@ export default class SegmentedControlExample extends Component {
   }
 
   render() {
+    const { options, value } = this.state
     return (
       <SegmentedControl
         id="segmented-control-example"
-        options={this.state.options}
-        value={this.state.value}
+        options={options}
+        value={value}
         onChange={this.onChange}
       />
     )
