@@ -9,12 +9,7 @@ import { GenesTrack } from '@broad/track-genes'
 
 import { screenSize } from '@broad/ui'
 import { regionData } from '@broad/region'
-import {
-  RegionViewer,
-  attributeConfig,
-  coverageConfigClassic,
-  coverageConfigNew,
-} from '@broad/region-viewer'
+import { RegionViewer, attributeConfig } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
 
 import {
@@ -34,22 +29,9 @@ const RegionViewerConnected = ({
   screenSize,
   showVariants,
 }) => {
-  const {
-    chrom,
-    start,
-    stop,
-    exome_coverage,
-    genome_coverage,
-    exacv1_coverage,
-    genes,
-  } = regionData.toJS()
+  const { chrom, start, stop, genes } = regionData.toJS()
 
   const variantsReversed = allVariants.reverse()
-
-  const coverageConfig =
-    selectedVariantDataset === 'exac'
-      ? coverageConfigClassic(exacv1_coverage)
-      : coverageConfigNew(exome_coverage, genome_coverage)
 
   const featuresToDisplay = ['default']
 
@@ -62,8 +44,6 @@ const RegionViewerConnected = ({
       strand: '+',
     },
   ]
-
-  const totalBp = stop - start
 
   // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
@@ -78,13 +58,7 @@ const RegionViewerConnected = ({
       featuresToDisplay={featuresToDisplay}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
-      <CoverageTrack
-        datasetId={datasetId}
-        chrom={chrom}
-        start={start}
-        stop={stop}
-        totalBp={totalBp}
-      />
+      <CoverageTrack datasetId={datasetId} chrom={chrom} start={start} stop={stop} />
 
       <GenesTrack
         genes={genes}
@@ -110,10 +84,6 @@ RegionViewerConnected.propTypes = {
   screenSize: PropTypes.object.isRequired,
   showVariants: PropTypes.bool.isRequired,
 }
-RegionViewerConnected.defaultProps = {
-  coverageStyle: null,
-}
-
 
 export default compose(
   withRouter,

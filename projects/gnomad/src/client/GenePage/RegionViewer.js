@@ -76,12 +76,7 @@ const GeneViewer = ({
   const variantsReversed = allVariants.reverse()
 
   const { exons } = transcript
-  const padding = 75
-  const totalBasePairs = exons.filter(region => region.feature_type === 'CDS')
-    .reduce((acc, { start, stop }) => (acc + ((stop - start) + (padding * 2))), 0)
-
   const hasCodingExons = exons.some(exon => exon.feature_type === 'CDS')
-  console.warn(hasCodingExons)
 
   return (
     <RegionViewer
@@ -91,9 +86,7 @@ const GeneViewer = ({
       regionAttributes={attributeConfig}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
-      {hasCodingExons && (
-        <CoverageTrack datasetId={datasetId} geneId={geneId} totalBp={totalBasePairs} />
-      )}
+      {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
 
       {hasCodingExons && (
         <TranscriptTrackConnected
