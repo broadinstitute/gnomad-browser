@@ -6,9 +6,10 @@ import { geneData } from '@broad/redux-genes'
 import { finalFilteredVariants } from '@broad/redux-variants'
 import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
-import { TranscriptTrackConnected } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
+
+import TranscriptTrack from './TranscriptTrack'
 
 class GeneViewer extends PureComponent {
   render() {
@@ -37,7 +38,10 @@ class GeneViewer extends PureComponent {
         leftPanelWidth={100}
         rightPanelWidth={smallScreen ? 0 : 160}
       >
-        <TranscriptTrackConnected height={12} showRightPanel={!smallScreen} />
+        <TranscriptTrack
+          exons={geneJS.transcript.exons.filter(exon => exon.feature_type === 'CDS')}
+          strand={geneJS.transcript.strand}
+        />
         <VariantAlleleFrequencyTrack
           title={`Cases\n(${cases.size} variants)`}
           variants={cases.toJS()}
