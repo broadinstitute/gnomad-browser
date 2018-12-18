@@ -1,88 +1,40 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import { attributeConfig, RegionViewer } from '@broad/region-viewer'
+import { RegionViewer } from '@broad/region-viewer'
+
 import exampleData from '@resources/region-viewer-full-PCSK9-v1.json'
 
-import CoverageTrack from '../index'
-
+import { CoverageTrack } from '../CoverageTrack'
 
 const {
-  exacv1_coverage,
-  exome_coverage,
-  genome_coverage,
+  exacv1_coverage: exacCoverage,
+  exome_coverage: exomeCoverage,
+  genome_coverage: genomeCoverage,
   transcript: { exons },
 } = exampleData.gene
 
+const coverageDatasets = [
+  {
+    name: 'exacv1',
+    buckets: exacCoverage,
+    color: 'rgba(255, 0, 0, 0.5)',
+  },
+  {
+    name: 'exome',
+    buckets: exomeCoverage,
+    color: 'rgba(70, 130, 180, 0.5)',
+  },
+  {
+    name: 'genome',
+    buckets: genomeCoverage,
+    color: 'rgba(115, 171, 61, 0.5)',
+  },
+]
 
-export default class CoverageTrackExample extends Component {
-  state = {
-    padding: 100,
-  }
+const CoverageTrackExample = () => (
+  <RegionViewer padding={75} regions={exons} width={1000}>
+    <CoverageTrack datasets={coverageDatasets} height={200} />
+  </RegionViewer>
+)
 
-  onChangePadding = (e) => {
-    this.setState({ padding: parseInt(e.target.value, 10) })
-  }
-
-  render() {
-    const coverageConfig = {
-      datasets: [
-        {
-          name: 'exacv1',
-          data: exacv1_coverage,
-          type: 'area',
-          color: 'red',
-          strokeWidth: 2,
-          opacity: 0.5,
-        },
-        {
-          name: 'exome',
-          data: exome_coverage,
-          type: 'area',
-          color: 'rgba(70, 130, 180, 1)',
-          strokeWidth: 2,
-          opacity: 0.5,
-        },
-        {
-          name: 'genome',
-          data: genome_coverage,
-          type: 'area',
-          color: 'rgba(115, 171, 61,  1)',
-          strokeWidth: 2,
-          opacity: 0.5,
-        },
-      ],
-    }
-    return (
-      <div style={{ padding: '10px' }}>
-        <label htmlFor="padding">
-          Region padding: {this.state.padding}bp
-          <br />
-          <input
-            id="padding"
-            type="range"
-            min="0"
-            max="200"
-            value={this.state.padding}
-            step="1"
-            onChange={this.onChangePadding}
-          />
-        </label>
-
-        <RegionViewer
-          width={800}
-          regions={exons}
-          regionAttributes={attributeConfig}
-          padding={this.state.padding}
-        >
-          <CoverageTrack
-            title={'Coverage'}
-            height={120}
-            dataConfig={coverageConfig}
-            yTickNumber={11}
-            yMax={110}
-          />
-        </RegionViewer>
-      </div>
-    )
-  }
-}
+export default CoverageTrackExample

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import CoverageTrack from '@broad/track-coverage'
+import { CoverageTrack } from '@broad/track-coverage'
 import { coverageConfigClassic, coverageConfigNew } from '@broad/region-viewer'
 
 import { Query } from '../Query'
@@ -48,17 +48,15 @@ export default ({ datasetId, geneId, ...props }) => {
 
         const coverageConfig =
           datasetId === 'exac'
-            ? coverageConfigClassic(exomeCoverage)
+            ? coverageConfigClassic(exomeCoverage, genomeCoverage)
             : coverageConfigNew(exomeCoverage, genomeCoverage)
 
         return (
           <CoverageTrack
             {...props} // forward props from RegionViewer
-            title={'Coverage'}
-            height={200}
-            dataConfig={coverageConfig}
-            yTickNumber={11}
-            yMax={110}
+            datasets={coverageConfig}
+            filenameForExport={() => `${geneId}_coverage`}
+            height={190}
           />
         )
       }}

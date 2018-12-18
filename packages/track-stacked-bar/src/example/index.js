@@ -2,13 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { RegionViewer } from '@broad/region-viewer'
 
-import {
-  // coverageConfigClassic,
-  // coverageConfigNew,
-  attributeConfig,
-} from '@broad/gene-page/src/presentation/RegionViewerStyles'
-
-
 import TrackStackedBar from '../index'
 
 import regionData from '@resources/2-179390717-179695530.json'  // eslint-disable-line
