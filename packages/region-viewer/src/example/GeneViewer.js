@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { actions as geneActions, geneData } from '@broad/redux-genes'
 
-import { RegionViewer } from './RegionViewer'
+import { RegionViewer } from '..'
 
 const API_URL = 'http://gnomad-api.broadinstitute.org/'
 
