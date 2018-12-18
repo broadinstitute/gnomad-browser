@@ -1,1 +1,1 @@
-export { default } from './TranscriptTrackExample'
+export { default } from './TranscriptsTrackExample'

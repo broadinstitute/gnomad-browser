@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { RegionViewer } from '@broad/region-viewer'
 
 import { NavigatorTrackConnected } from '@broad/track-navigator'
-import { TranscriptTrackConnected } from '@broad/track-transcript'
+import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { VariantPositionTrack } from '@broad/track-variant'
 
 import { screenSize } from '@broad/ui'
@@ -62,11 +62,9 @@ const GeneRegion = ({
         padding={exonPadding}
         regions={canonicalExons}
         leftPanelWidth={100}
+        rightPanelWidth={smallScreen ? 0 : 160}
       >
-        <TranscriptTrackConnected
-          height={12}
-          showRightPanel={!smallScreen}
-        />
+        <ConnectedTranscriptsTrack />
         <VariantPositionTrack
           variantColor={'#757575'}
           variants={cases.toJS()}

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import { createGeneReducer } from '@broad/redux-genes'
 import GeneViewer from '@broad/region-viewer/src/example/GeneViewer'
 
-import { TranscriptTrackConnected } from '..'
+import { ConnectedTranscriptsTrack } from '..'
 
 const logger = createLogger()
 
@@ -20,12 +20,12 @@ const store = createStore(
   applyMiddleware(thunk, logger)
 )
 
-const TranscriptTrackExample = () => (
+const TranscriptsTrackExample = () => (
   <Provider store={store}>
     <GeneViewer geneName="DMD" width={800}>
-      <TranscriptTrackConnected height={10} />
+      <ConnectedTranscriptsTrack />
     </GeneViewer>
   </Provider>
 )
 
-export default TranscriptTrackExample
+export default TranscriptsTrackExample
