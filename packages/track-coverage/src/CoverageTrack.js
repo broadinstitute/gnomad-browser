@@ -34,6 +34,9 @@ export class CoverageTrack extends Component {
         ).isRequired,
         color: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        // Opacity must be separate from fill color for SVG epxort because
+        // some programs do not recognize RGBA fill colors.
+        opacity: PropTypes.number,
       })
     ).isRequired,
     filenameForExport: PropTypes.func,
@@ -107,6 +110,7 @@ export class CoverageTrack extends Component {
               )
             )}
             fill={dataset.color}
+            fillOpacity={dataset.opacity}
           />
         </g>
       ))
@@ -140,7 +144,11 @@ export class CoverageTrack extends Component {
 
       return (
         <g key={dataset.name}>
-          <path d={pathGenerator(finalData)} fill={dataset.color} />
+          <path
+            d={pathGenerator(finalData)}
+            fill={dataset.color}
+            fillOpacity={dataset.opacity}
+          />
         </g>
       )
     })
@@ -172,6 +180,7 @@ export class CoverageTrack extends Component {
                 width={barWidth}
                 height={barHeight}
                 fill={dataset.color}
+                fillOpacity={dataset.opacity}
                 stroke="none"
               />
             )

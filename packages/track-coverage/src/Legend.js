@@ -21,14 +21,22 @@ const LegendSwatch = styled.span`
   height: 1em;
   border: 1px solid black;
   margin-right: 0.5em;
-  background: ${props => props.color};
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: ${props => props.color};
+    opacity: ${props => props.opacity};
+  }
 `
 
 export const Legend = ({ datasets }) => (
   <LegendWrapper>
     {datasets.map(dataset => (
       <LegendItem key={dataset.name}>
-        <LegendSwatch color={dataset.color} />
+        <LegendSwatch color={dataset.color} opacity={dataset.opacity} />
         {dataset.name}
       </LegendItem>
     ))}
@@ -40,6 +48,7 @@ Legend.propTypes = {
     PropTypes.shape({
       color: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      opacity: PropTypes.number,
     })
   ).isRequired,
 }
