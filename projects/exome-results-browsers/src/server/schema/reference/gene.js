@@ -7,7 +7,7 @@ import {
   fetchGroupGeneResultsByGeneId,
 } from '../analysis/geneResult'
 import { VariantType, fetchVariantsByGeneId } from '../analysis/variant'
-import { TranscriptType, fetchTranscriptById, fetchTranscriptsByGeneId } from './transcript'
+import { TranscriptType, fetchTranscriptById } from './transcript'
 
 export const GeneType = new GraphQLObjectType({
   name: 'Gene',
@@ -22,10 +22,6 @@ export const GeneType = new GraphQLObjectType({
     transcript: {
       type: TranscriptType,
       resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),
-    },
-    transcripts: {
-      type: new GraphQLList(TranscriptType),
-      resolve: (obj, args, ctx) => fetchTranscriptsByGeneId(ctx, obj.gene_id),
     },
     overallGeneResult: {
       type: GeneResultType,

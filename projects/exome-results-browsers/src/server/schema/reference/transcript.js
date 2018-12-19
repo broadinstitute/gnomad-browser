@@ -16,9 +16,3 @@ export const TranscriptType = new GraphQLObjectType({
 
 export const fetchTranscriptById = (ctx, transcriptId) =>
   ctx.database.mongo.collection('transcripts').findOne({ transcript_id: transcriptId })
-
-export const fetchTranscriptsByGeneId = (ctx, geneId) =>
-  ctx.database.mongo
-    .collection('transcripts')
-    .find({ gene_id: geneId })
-    .toArray()
