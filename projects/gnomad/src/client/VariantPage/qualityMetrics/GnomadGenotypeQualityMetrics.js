@@ -45,7 +45,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
           barColor={graphColor}
           binEdges={histogramData.bin_edges}
           binValues={histogramData.bin_freq}
-          nLarger={histogramData.n_larger}
+          nLarger={selectedMetric === 'alleleBalance' ? undefined : histogramData.n_larger}
           xLabel={xLabel}
           yLabel={yLabel}
         />
