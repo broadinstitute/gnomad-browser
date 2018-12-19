@@ -12,7 +12,6 @@
     "@broad/region-viewer": "*",
     "@broad/track-regions": "*",
     "@broad/ui": "*",
-    "@broad/utilities": "*",
     "@fortawesome/fontawesome-free": "^5.3.1",
     "d3-scale": "^1.0.6",
     "prop-types": "^15.5.10",
