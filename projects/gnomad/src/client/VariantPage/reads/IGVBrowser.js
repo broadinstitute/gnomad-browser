@@ -20,6 +20,29 @@ const IGVWrapper = styled.div`
     border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
   }
+
+  @media (max-width: 600px) {
+    .igv-navbar {
+      flex-flow: column;
+      height: auto;
+      padding-bottom: 5px;
+    }
+
+    .igv-nav-bar-left-container,
+    .igv-nav-bar-right-container {
+      flex-wrap: wrap;
+      height: auto;
+    }
+
+    .igv-nav-bar-genomic-location {
+      flex-flow: column;
+      align-items: flex-start;
+    }
+
+    .igv-chromosome-select-widget-container {
+      margin-left: 8px;
+    }
+  }
 `
 
 /**
