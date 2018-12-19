@@ -7,20 +7,7 @@ export default geneName => {
       gene_name
       full_gene_name
       canonical_transcript
-      overallGeneResult {
-        gene_id
-        gene_name
-        gene_description
-        analysis_group
-        categories {
-          id
-          xcase
-          xctrl
-          pval
-        }
-        pval_meta
-      }
-      groupGeneResults {
+      results {
         gene_id
         gene_name
         gene_description
