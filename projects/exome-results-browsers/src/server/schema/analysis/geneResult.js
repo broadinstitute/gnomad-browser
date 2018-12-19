@@ -60,26 +60,7 @@ export const fetchAllGeneResultsForAnalysisGroup = async (ctx, analysisGroup) =>
   return hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
 }
 
-export const fetchOverallGeneResultByGeneId = async (ctx, geneId) => {
-  const response = await ctx.database.elastic.search({
-    index: browserConfig.elasticsearch.geneResults.index,
-    type: browserConfig.elasticsearch.geneResults.type,
-    size: 1,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { gene_id: geneId } },
-            { term: { analysis_group: browserConfig.analysisGroups.overallGroup } },
-          ],
-        },
-      },
-    },
-  })
-  return shapeGeneResult(response.hits.hits[0]._source) // eslint-disable-line no-underscore-dangle
-}
-
-export const fetchGroupGeneResultsByGeneId = async (ctx, geneId) => {
+export const fetchGeneResultsByGeneId = async (ctx, geneId) => {
   const response = await ctx.database.elastic.search({
     index: browserConfig.elasticsearch.geneResults.index,
     type: browserConfig.elasticsearch.geneResults.type,
@@ -87,9 +68,6 @@ export const fetchGroupGeneResultsByGeneId = async (ctx, geneId) => {
     body: {
       query: {
         bool: {
-          must_not: {
-            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
-          },
           filter: { term: { gene_id: geneId } },
         },
       },

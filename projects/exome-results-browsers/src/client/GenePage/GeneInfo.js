@@ -41,7 +41,7 @@ const GeneInfo = ({ geneData, variantCount }) => {
   if (!geneData) {
     return <div />
   }
-  const { gene_id: geneId, overallGeneResult, groupGeneResults } = geneData.toJS()
+  const { gene_id: geneId, results } = geneData.toJS()
 
   return (
     <GeneInfoWrapper>
@@ -57,23 +57,16 @@ const GeneInfo = ({ geneData, variantCount }) => {
         <SectionHeading>
           Gene Result <HelpPopup topic="geneResult" />
         </SectionHeading>
-        {groupGeneResults.length > 0 ? (
+        {results.length > 1 ? (
           <Tabs
-            tabs={[
-              {
-                id: overallGeneResult.analysis_group,
-                label: overallGeneResult.analysis_group,
-                render: () => <GeneResultsTable geneResult={overallGeneResult} />,
-              },
-              ...sortByGroup(groupGeneResults).map(result => ({
-                id: result.analysis_group,
-                label: result.analysis_group,
-                render: () => <GeneResultsTable geneResult={result} />,
-              })),
-            ]}
+            tabs={sortByGroup(results).map(result => ({
+              id: result.analysis_group,
+              label: result.analysis_group,
+              render: () => <GeneResultsTable geneResult={result} />,
+            }))}
           />
         ) : (
-          <GeneResultsTable geneResult={overallGeneResult} />
+          <GeneResultsTable geneResult={results[0]} />
         )}
       </GeneResultsWrapper>
     </GeneInfoWrapper>
