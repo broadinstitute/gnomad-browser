@@ -5,8 +5,8 @@ import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { withTooltip } from '@broad/ui'
-import { tissueLabels } from '@broad/utilities'
 
+import { tissueLabels } from './tissueLabels'
 
 const GtexTitleWrapper = styled.div`
   box-sizing: border-box;
