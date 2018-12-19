@@ -23,6 +23,26 @@ const ControlContainer = styled.div`
   button {
     margin-left: 2em;
   }
+
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 0;
+
+    strong {
+      width: auto;
+      margin-bottom: 0.5em;
+    }
+
+    button {
+      margin-left: 0 !important;
+
+      &:last-child {
+        margin-top: 1em;
+      }
+    }
+  }
 `
 
 const ReadDataPropType = PropTypes.shape({
