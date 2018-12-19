@@ -1,3 +1,6 @@
+const estimateAndPValTooltip =
+  'For variants with an overall AF > 0.001, an association odds ratio and p-value are estimated using Firth’s logistic regression correcting for sex and the top ten principal components.'
+
 export default {
   pageTitle: 'Epi25 WES browser',
   navBarTitle: 'Epi25 WES browser',
@@ -60,8 +63,8 @@ export default {
   ],
   variantTable: {
     tooltips: {
-      pval_meta:
-        'For variants with an overall AF > 0.001, an association odds ratio and p-value are estimated using Firth’s logistic regression correcting for sex and the top ten principal components.',
+      estimate: estimateAndPValTooltip,
+      pval_meta: estimateAndPValTooltip,
       in_analysis: 'Was this variant used in gene burden analysis',
     },
   },
