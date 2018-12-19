@@ -336,6 +336,9 @@ export default () => (
             <p>Kyong Soo Park</p>
           </li>
           <li>
+            <p>Laurent Beaugerie</p>
+          </li>
+          <li>
             <p>Leif Groop</p>
           </li>
           <li>
