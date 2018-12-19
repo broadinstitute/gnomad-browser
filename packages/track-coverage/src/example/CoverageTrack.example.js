@@ -17,17 +17,20 @@ const coverageDatasets = [
   {
     name: 'exacv1',
     buckets: exacCoverage,
-    color: 'rgba(255, 0, 0, 0.5)',
+    color: 'rgb(255, 0, 0)',
+    opacity: 0.5,
   },
   {
     name: 'exome',
     buckets: exomeCoverage,
-    color: 'rgba(70, 130, 180, 0.5)',
+    color: 'rgb(70, 130, 180)',
+    opacity: 0.5,
   },
   {
     name: 'genome',
     buckets: genomeCoverage,
-    color: 'rgba(115, 171, 61, 0.5)',
+    color: 'rgb(115, 171, 61)',
+    opacity: 0.5,
   },
 ]
 

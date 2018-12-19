@@ -13,13 +13,15 @@ export const coverageConfigClassic = (exomeCoverage, genomeCoverage) => [
 
 export const coverageConfigNew = (exomeCoverage, genomeCoverage) => [
   {
-    color: 'rgba(70, 130, 180, 0.7)',
+    color: 'rgb(70, 130, 180)',
     buckets: exomeCoverage,
     name: 'exome',
+    opacity: 0.7,
   },
   {
-    color: 'rgba(115, 171, 61, 0.5)',
+    color: 'rgb(115, 171, 61)',
     buckets: genomeCoverage,
     name: 'genome',
+    opacity: 0.5,
   },
 ]
