@@ -333,6 +333,9 @@ export default () => (
             <p>Juliana Chan</p>
           </li>
           <li>
+            <p>Kari Mattila</p>
+          </li>
+          <li>
             <p>Kyong Soo Park</p>
           </li>
           <li>
