@@ -721,10 +721,10 @@ export default () => (
             <p>Kristen Laricchia</p>
           </li>
           <li>
-            <p>Amanda Wang</p>
+            <p>Anne O&apos;Donnell-Luria</p>
           </li>
           <li>
-            <p>Anne O&apos;Donnell-Luria</p>
+            <p>Arcturus Wang</p>
           </li>
           <li>
             <p>Ben Neale</p>
