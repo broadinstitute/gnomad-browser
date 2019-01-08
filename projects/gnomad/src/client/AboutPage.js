@@ -554,7 +554,10 @@ export default () => (
             <p>Inflammatory Bowel Disease:</p>
             <ul>
               <li>
-                <p>Helsinki University Hospital Finland</p>
+              <p>1000IBD project</p>
+              </li>
+              <li>  
+              <p>Helsinki University Hospital Finland</p>
               </li>
               <li>
                 <p>NIDDK IBD Genetics Consortium</p>
@@ -664,6 +667,9 @@ export default () => (
             <p>Christopher Llanwarne</p>
           </li>
           <li>
+            <p>David Roazen</p>
+          </li>
+          <li>
             <p>Diane Kaplan</p>
           </li>
           <li>
@@ -683,6 +689,9 @@ export default () => (
           </li>
           <li>
             <p>Laura Gauthier</p>
+          </li>
+          <li>
+            <p>Louis Bergelson</p>
           </li>
           <li>
             <p>Miguel Covarrubias</p>
