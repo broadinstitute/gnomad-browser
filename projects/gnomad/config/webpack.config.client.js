@@ -1,5 +1,6 @@
 const path = require('path')
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 
@@ -51,6 +52,7 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin(definitions),
+    new CopyWebpackPlugin([path.resolve(__dirname, '../src/client/opensearch.xml')]),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/client/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,
