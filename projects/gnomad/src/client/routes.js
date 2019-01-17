@@ -12,6 +12,7 @@ import DownloadsPage from './DownloadsPage'
 import FAQPage from './FAQPage'
 import GenePage from './GenePage'
 import HomePage from './HomePage'
+import PageNotFoundPage from './PageNotFoundPage'
 import RegionPage from './RegionPage'
 import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
@@ -99,6 +100,7 @@ const App = () => (
             return <SearchRedirectPage query={params.query} />
           }}
         />
+        <Route component={PageNotFoundPage} />
       </Switch>
     </MainPanel>
     <Help index="gnomad_help" />
