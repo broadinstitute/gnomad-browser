@@ -13,6 +13,7 @@ import FAQPage from './FAQPage'
 import GenePage from './GenePage'
 import HomePage from './HomePage'
 import RegionPage from './RegionPage'
+import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
 import VariantPage from './VariantPage/VariantPage'
 
@@ -90,11 +91,17 @@ const App = () => (
         <Route exact path="/terms" component={TermsPage} />
         <Route exact path="/contact" component={ContactPage} />
         <Route exact path="/faq" component={FAQPage} />
+        <Route
+          exact
+          path="/awesome"
+          render={({ location }) => {
+            const params = queryString.parse(location.search)
+            return <SearchRedirectPage query={params.query} />
+          }}
+        />
       </Switch>
-      {/* <Route path="/variant/:variant" component={GenePage} /> */}
-      {/* <Route path="/rsid/:rsid" component={GenePage} /> */}
     </MainPanel>
-    <Help index={'gnomad_help'} />
+    <Help index="gnomad_help" />
     <HelpButton />
   </div>
 )
