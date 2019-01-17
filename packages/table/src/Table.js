@@ -69,50 +69,46 @@ const tableCellStyles = {
 }
 
 const datasetConfig = {
-  gnomadExomeVariants: { color: 'rgba(70, 130, 180, 0.8)', abbreviation: 'E', border: '1px solid #000' },
-  gnomadExomeVariantsFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E', border: '1px dashed #000' },
-  gnomadGenomeVariants: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G', border: '1px solid #000' },
-  gnomadGenomeVariantsFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G', border: '1px dashed #000' },
-  exacVariants: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'ExAC', border: '1px solid #000' },
-  exacVariantsFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'ExAC', border: '1px dashed #000' },
+  gnomadExomeVariants: { color: 'rgba(70, 130, 180, 0.8)', abbreviation: 'E' },
+  gnomadExomeVariantsFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E' },
+  gnomadGenomeVariants: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G' },
+  gnomadGenomeVariantsFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G' },
+  exacVariants: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'ExAC' },
+  exacVariantsFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'ExAC' },
 }
 
-const datasetTranslation = {
+const filterPrefixes = {
   gnomadExomeVariants: 'exomes_',
   gnomadGenomeVariants: 'genomes_',
+  exacVariants: '',
 }
 
-const formatDatasets = (dataRow, index) => dataRow.datasets.valueSeq().toJS().map((dataset) => {
-  const { filters } = dataRow
-  let border
-  let backgroundColor
-  if (
-    filters.includes(`${datasetTranslation[dataset]}RF`) ||
-    filters.includes(`${datasetTranslation[dataset]}AC0`) ||
-    (dataset === 'exacVariants' && filters.size > 0)
-  ) {
-    border = datasetConfig[`${dataset}Filtered`].border
-    backgroundColor = datasetConfig[`${dataset}Filtered`].color
-  } else {
-    border = datasetConfig[dataset].border
-    backgroundColor = datasetConfig[dataset].color
-  }
-  return (
-    <span
-      key={`${dataset}${index}`}
-      style={{
-        border,
-        borderRadius: 3,
-        color: 'white',
-        marginLeft: 10,
-        padding: '1px 4px 1px 4px',
-        backgroundColor,
-      }}
-    >
-      {datasetConfig[dataset].abbreviation}
-    </span>
-  )
-})
+const DatasetIcon = styled.span`
+  padding: 1px 4px;
+  border: 1px ${props => (props.isFiltered ? 'dashed' : 'solid')} #000;
+  border-radius: 3px;
+  margin-left: 10px;
+  background-color: ${props => props.color};
+  color: white;
+`
+
+const formatDatasets = dataRow => {
+  const datasets = dataRow.datasets.valueSeq().toJS()
+  return datasets.map(dataset => {
+    const datasetFilterPrefix = filterPrefixes[dataset]
+    const isFiltered = dataRow.filters.some(f => f.startsWith(datasetFilterPrefix))
+
+    const { abbreviation, color } = isFiltered
+      ? datasetConfig[`${dataset}Filtered`]
+      : datasetConfig[dataset]
+
+    return (
+      <DatasetIcon key={dataset} color={color} isFiltered={isFiltered}>
+        {abbreviation}
+      </DatasetIcon>
+    )
+  })
+}
 
 const flagProps = {
   lcr: {
