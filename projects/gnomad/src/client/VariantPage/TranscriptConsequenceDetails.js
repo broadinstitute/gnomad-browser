@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { getCategoryFromConsequence } from '@broad/utilities'
+
 const colors = {
   red: '#FF583F',
   yellow: '#F0C94D',
@@ -23,6 +25,22 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
         <br />
         Polyphen: <span style={{ color: polyphenColor }}>{consequence.polyphen_prediction}</span>;
         SIFT: <span style={{ color: siftColor }}>{consequence.sift_prediction}</span>
+      </span>
+    )
+  }
+
+  if (
+    // gnomAD 2.1's loading pipeline added NC annotations.
+    // See #364.
+    consequence.lof === 'NC' ||
+    (getCategoryFromConsequence(consequence.major_consequence) === 'lof' && !consequence.lof)
+  ) {
+    return (
+      <span>
+        {consequence.hgvs}
+        <br />
+        LoF:{' '}
+        <span style={{ color: colors.red }}>Low-confidence (Non-protein-coding transcript)</span>
       </span>
     )
   }
