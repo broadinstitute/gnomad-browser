@@ -16,7 +16,9 @@ export const types = keymirror({
   SET_VARIANT_FILTER: null,
   SET_VARIANT_SEARCH_QUERY: null,
   SET_VARIANT_SORT: null,
+  TOGGLE_VARIANT_INDEL_FILTER: null,
   TOGGLE_VARIANT_QC_FILTER: null,
+  TOGGLE_VARIANT_SNP_FILTER: null,
   ORDER_VARIANTS_BY_POSITION: null,
   TOGGLE_DENOVO_FILTER: null,
   TOGGLE_IN_ANALYSIS_FILTER: null,
@@ -48,9 +50,19 @@ export const actions = {
       key,
     }
   },
+  toggleVariantIndelFilter: () => {
+    return {
+      type: types.TOGGLE_VARIANT_INDEL_FILTER,
+    }
+  },
   toggleVariantQcFilter: () => {
     return {
       type: types.TOGGLE_VARIANT_QC_FILTER,
+    }
+  },
+  toggleVariantSnpFilter: () => {
+    return {
+      type: types.TOGGLE_VARIANT_SNP_FILTER,
     }
   },
   toggleVariantDeNovoFilter: () => {
@@ -94,7 +106,9 @@ export default function createVariantReducer({
   projectDefaults: {
     startingVariant,
     startingVariantDataset,
+    startingIndelFilter,
     startingQcFilter,
+    startingSnpFilter,
   }
 }) {
   const datasetKeys = Object.keys(variantDatasets)
@@ -121,7 +135,9 @@ export default function createVariantReducer({
     focusedVariant: startingVariant,
     isLoadingVariants: false,
     selectedVariantDataset: startingVariantDataset,
+    variantIndelFilter: startingIndelFilter,
     variantQcFilter: startingQcFilter,
+    variantSnpFilter: startingSnpFilter,
     variantDeNovoFilter: false,
     variantInAnalysisFilter: false,
     variantMatchesConsequenceCategoryFilter:
@@ -226,8 +242,14 @@ export default function createVariantReducer({
       }
       return state.set('variantSortKey', key).set('variantSortAscending', false)
     },
+    [types.TOGGLE_VARIANT_INDEL_FILTER] (state) {
+      return state.set('variantIndelFilter', !state.get('variantIndelFilter'))
+    },
     [types.TOGGLE_VARIANT_QC_FILTER] (state) {
       return state.set('variantQcFilter', !state.get('variantQcFilter'))
+    },
+    [types.TOGGLE_VARIANT_SNP_FILTER] (state) {
+      return state.set('variantSnpFilter', !state.get('variantSnpFilter'))
     },
     [types.TOGGLE_DENOVO_FILTER] (state) {
       return state.set('variantDeNovoFilter', !state.get('variantDeNovoFilter'))
@@ -328,7 +350,9 @@ export const singleVariantData = createSelector(
 export const variantSortKey = state => state.variants.variantSortKey
 export const variantSortAscending = state => state.variants.variantSortAscending
 export const variantFilter = state => state.variants.variantFilter
+export const variantIndelFilter = state => state.variants.variantIndelFilter
 export const variantQcFilter = state => state.variants.variantQcFilter
+export const variantSnpFilter = state => state.variants.variantSnpFilter
 export const variantDeNovoFilter = state => state.variants.variantDeNovoFilter
 export const variantInAnalysisFilter = state => state.variants.variantInAnalysisFilter
 const variantMatchesConsequenceCategoryFilter = state =>
@@ -340,7 +364,9 @@ const filteredVariantsById = createSelector(
   [
     allVariantsInCurrentDataset,
     variantFilter,
+    variantIndelFilter,
     variantQcFilter,
+    variantSnpFilter,
     variantDeNovoFilter,
     variantInAnalysisFilter,
     variantMatchesConsequenceCategoryFilter,
@@ -350,7 +376,9 @@ const filteredVariantsById = createSelector(
   (
     variants,
     variantFilter,
+    variantIndelFilter,
     variantQcFilter,
+    variantSnpFilter,
     variantDeNovoFilter,
     variantInAnalysisFilter,
     variantMatchesConsequenceCategoryFilter,
@@ -368,8 +396,16 @@ const filteredVariantsById = createSelector(
       )
     }
 
+    if (variantIndelFilter) {
+      // Sample condition. TODO: Actual condition.
+      filteredVariants = filteredVariants.filter(v => v.get('allele_num') > 32000)
+    }
     if (variantQcFilter) {
       filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
+    }
+    if (variantSnpFilter) {
+      // Sample condition. TODO: Actual condition.
+      filteredVariants = filteredVariants.filter(v => v.get('allele_num') > 31384)
     }
     if (variantDeNovoFilter) {
       filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
