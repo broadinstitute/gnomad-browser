@@ -126,6 +126,11 @@ const flagProps = {
     level: 'warning',
     tooltip: 'Flagged by LOFTEE\nVariant annotation or quality dubious',
   },
+  nc_transcript: {
+    children: 'NC Transcript',
+    level: 'error',
+    tooltip: 'Non-protein-coding transcript\nVariant annotation dubious',
+  },
   mnv: {
     children: 'MNV',
     level: 'error',

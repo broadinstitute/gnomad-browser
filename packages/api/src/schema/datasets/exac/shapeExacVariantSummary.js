@@ -24,6 +24,10 @@ const getFlags = (variantData, transcriptConsequence) => {
     flags.push('lc_lof')
   }
 
+  if (isLofOnNonCodingTranscript) {
+    flags.push('nc_transcript')
+  }
+
   return flags
 }
 
