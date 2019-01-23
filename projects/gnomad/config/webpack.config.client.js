@@ -18,6 +18,7 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
 const config = {
   devServer: {
     historyApiFallback: true,
+    host: '0.0.0.0',
     port: 8008,
     publicPath: '/',
     stats: 'errors-only',
