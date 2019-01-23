@@ -96,6 +96,7 @@ export const actions = {
 
 const defaultVariantMatchesConsequenceCategoryFilter = (variant, selectedConsequenceCategories) => {
   const category = getCategoryFromConsequence(variant.consequence) || 'other'
+  console.log(selectedConsequenceCategories)
   return selectedConsequenceCategories[category]
 }
 
@@ -396,16 +397,8 @@ const filteredVariantsById = createSelector(
       )
     }
 
-    if (variantIndelFilter) {
-      // Sample condition. TODO: Actual condition.
-      filteredVariants = filteredVariants.filter(v => v.get('allele_num') > 32000)
-    }
     if (variantQcFilter) {
       filteredVariants = filteredVariants.filter(v => v.get('filters').size === 0)
-    }
-    if (variantSnpFilter) {
-      // Sample condition. TODO: Actual condition.
-      filteredVariants = filteredVariants.filter(v => v.get('allele_num') > 31384)
     }
     if (variantDeNovoFilter) {
       filteredVariants = filteredVariants.filter(v => v.get('ac_denovo') > 0)
@@ -418,6 +411,24 @@ const filteredVariantsById = createSelector(
       const query = searchQuery.toLowerCase()
       filteredVariants = filteredVariants.filter(v => searchPredicate(v, query))
     }
+
+    // Indel and Snp filters.
+    filteredVariants = filteredVariants.filter(v => {
+      let splits = v.get('variant_id').split('-')
+      if (splits.length === 4) {
+        // ref and alt are extracted from variant id.
+        let refLength = splits[2].length
+        let altLength = splits[3].length
+
+        let isSnp = refLength === 1 && altLength === 1
+        let isIndel = refLength !== altLength
+
+        if ((variantSnpFilter && isSnp) || (variantIndelFilter && isIndel)) {
+          return true
+        }
+      }
+      return false
+    })
 
     return filteredVariants
   }

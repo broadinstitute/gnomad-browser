@@ -34,6 +34,15 @@ const SettingsWrapper = styled.div`
     }
   }
 `
+const CheckboxWrapper = styled.span`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  @media (max-width: 700px) {
+    margin: 0.5em;
+  }
+`
 
 const GeneSettings = ({
   searchVariants,
@@ -55,14 +64,16 @@ const GeneSettings = ({
       />
     </div>
 
-    <div>
-      <Checkbox
-        checked={!variantQcFilter}
-        id="qcFilter2"
-        label="Include filtered variants"
-        onChange={toggleVariantQcFilter}
-      />
-      <QuestionMark topic="include-filtered-variants" display="inline" />
+    <CheckboxWrapper>
+      <span>
+        <Checkbox
+          checked={!variantQcFilter}
+          id="qcFilter2"
+          label="Include filtered variants"
+          onChange={toggleVariantQcFilter}
+        />
+        <QuestionMark topic="include-filtered-variants" display="inline" />
+      </span>
       <Checkbox
         checked={variantSnpFilter}
         id="snpfilter"
@@ -75,7 +86,7 @@ const GeneSettings = ({
         label="Indels"
         onChange={toggleVariantIndelFilter}
       />
-    </div>
+    </CheckboxWrapper>
 
     <div>
       <SearchInput

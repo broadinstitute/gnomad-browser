@@ -48,9 +48,9 @@ const appSettings = {
     startingGene: null,
     startingVariant: null,
     startingVariantDataset: 'variants',
-    startingIndelFilter: false,
+    startingIndelFilter: true,
     startingQcFilter: false,
-    startingSnpFilter: false,
+    startingSnpFilter: true,
   },
   variantDatasets: {
     variants: {
