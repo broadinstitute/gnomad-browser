@@ -40,7 +40,9 @@ const appSettings = {
     startingRegion: '1-55530000-55540000',
     startingPadding: 75,
     startingVariantDataset: 'gnomadCombinedVariants',
+    startingIndelFilter: false,
     startingQcFilter: true,
+    startingSnpFilter: false,
   },
   variantDatasets: {
     gnomadExomeVariants: {
