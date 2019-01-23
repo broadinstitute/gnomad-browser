@@ -8,7 +8,7 @@
 # gcloud dataproc jobs submit pyspark \
 #   --cluster=$CLUSTER_NAME \
 #   --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
-#   ./shape_coverage_summary_for_browser.py -- --input-url=$INPUT_URL --output-url=$OUTPUT_URL
+#   ./prepare_coverage_summary_for_browser.py -- --input-url=$INPUT_URL --output-url=$OUTPUT_URL
 # cluster stop $CLUSTER_NAME
 #
 
