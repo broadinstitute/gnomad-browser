@@ -1,20 +1,3 @@
-# Usage:
-#
-# cd /path/to/hail-elasticsearch-pipelines
-# rm hail_scripts.zip
-# zip -r hail_scripts.zip hail_scripts
-# cd /path/to/gnomadjs/projects/gnomad/data
-# cluster start \
-#   --max-idle=30m \
-#   --packages=elasticsearch \
-#   $CLUSTER_NAME
-# gcloud dataproc jobs submit pyspark \
-#   --cluster=$CLUSTER_NAME \
-#   --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
-#   ./export_ht_to_es.py -- --ht-url=$HAIL_TABLE_URL --host=$ELASTICSEARCH_IP
-# cluster stop $CLUSTER_NAME
-#
-
 import argparse
 
 import hail as hl
