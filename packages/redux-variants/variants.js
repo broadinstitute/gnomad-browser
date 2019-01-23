@@ -96,7 +96,6 @@ export const actions = {
 
 const defaultVariantMatchesConsequenceCategoryFilter = (variant, selectedConsequenceCategories) => {
   const category = getCategoryFromConsequence(variant.consequence) || 'other'
-  console.log(selectedConsequenceCategories)
   return selectedConsequenceCategories[category]
 }
 
@@ -414,14 +413,14 @@ const filteredVariantsById = createSelector(
 
     // Indel and Snp filters.
     filteredVariants = filteredVariants.filter(v => {
-      let splits = v.get('variant_id').split('-')
+      const splits = v.get('variant_id').split('-')
       if (splits.length === 4) {
         // ref and alt are extracted from variant id.
-        let refLength = splits[2].length
-        let altLength = splits[3].length
+        const refLength = splits[2].length
+        const altLength = splits[3].length
 
-        let isSnp = refLength === 1 && altLength === 1
-        let isIndel = refLength !== altLength
+        const isSnp = refLength === 1 && altLength === 1
+        const isIndel = refLength !== altLength
 
         if ((variantSnpFilter && isSnp) || (variantIndelFilter && isIndel)) {
           return true
