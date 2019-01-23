@@ -1,17 +1,3 @@
-# Usage:
-#
-# cd /path/to/hail-elasticsearch-pipelines
-# rm hail_scripts.zip
-# zip -r hail_scripts.zip hail_scripts
-# cd /path/to/gnomadjs/projects/gnomad/data
-# cluster start $CLUSTER_NAME
-# gcloud dataproc jobs submit pyspark \
-#   --cluster=$CLUSTER_NAME \
-#   --py-files=/path/to/hail-elasticsearch-pipelines/hail_scripts.zip \
-#   ./prepare_mnvs.py -- --input-url=$INPUT_URL --output-url=$OUTPUT_URL
-# cluster stop $CLUSTER_NAME
-#
-
 import argparse
 
 import hail as hl
