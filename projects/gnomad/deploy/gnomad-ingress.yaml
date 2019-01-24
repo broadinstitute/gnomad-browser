@@ -6,8 +6,11 @@ metadata:
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
-    ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-kev-test
+    ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-cert
 spec:
+  backend:
+    serviceName: gnomad-p-serve-nodeport
+    servicePort: 80
   rules:
   - host: gnomad.broadinstitute.org
     http:
