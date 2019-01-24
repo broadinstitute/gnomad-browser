@@ -6,16 +6,28 @@ metadata:
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.global-static-ip-name: <IP NAME HERE>
+    ingress.gcp.kubernetes.io/pre-shared-cert: <CERT NAME HERE>
 spec:
-  tls:
-  - hosts: gnomad.broadinstitute.org
-    - gnomad
-    secretName: kev-cert-test
   rules:
   - host: gnomad.broadinstitute.org
     http:
       paths:
       - path: /
         backend:
-          serviceName: gnomad-p-serve
+          serviceName: gnomad-p-serve-nodeport
           servicePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-p-serve-nodeport
+  labels:
+    state: serving
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-p-serve
+  ports:
+  - port: 80
+    targetPort: 80
