@@ -1,0 +1,21 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gnomad-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+  - hosts: gnomad.broadinstitute.org
+    - gnomad
+    secretName: kev-cert-test
+  rules:
+  - host: gnomad.broadinstitute.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gnomad-p-serve
+          servicePort: 80
