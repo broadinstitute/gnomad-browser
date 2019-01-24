@@ -19,8 +19,9 @@ from hail_scripts.v02.utils.computed_fields import (
 
 p = argparse.ArgumentParser()
 p.add_argument(
-    "--output-url", help="URL to write Hail table to", default="gs://gnomad-browser/datasets/ExAC.r1.sites.vep.ht"
+    "--input-url", help="URL of ExAC sites VCF", default="gs://exac/170122_exacv1_bundle/ExAC.r1.sites.vep.vcf.gz"
 )
+p.add_argument("--output-url", help="URL to write Hail table to", required=True)
 p.add_argument("--subset", help="Filter variants to this chrom:start-end range")
 args = p.parse_args()
 
@@ -28,8 +29,7 @@ hl.init(log="/tmp/hail.log")
 
 print("\n=== Importing VCF ===")
 
-EXAC_VCF_URL = "gs://exac/170122_exacv1_bundle/ExAC.r1.sites.vep.vcf.gz"
-mt = hl.import_vcf(EXAC_VCF_URL, force_bgz=True, min_partitions=2000, skip_invalid_loci=True)
+mt = hl.import_vcf(args.input_url, force_bgz=True, min_partitions=2000, skip_invalid_loci=True)
 
 # Drop entry values
 mt = mt.drop("AD", "DP", "GQ", "GT", "MIN_DP", "PL", "SB")
