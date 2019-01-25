@@ -34,7 +34,7 @@ app.use(cors());
         ],
         name: 'mymaster',
       })
-    app.use(/\/$/, graphQLHTTP({
+    app.use([/^\/$/, /^\/api$/], graphQLHTTP({
       schema: gnomadSchema,
       graphiql: true,
       context: {
