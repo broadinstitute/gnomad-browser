@@ -33,6 +33,12 @@ spec:
           value: 'THIS_STRING_IS_REPLACED_DURING_BUILD'
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+              path: /health
+              port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 20
         imagePullPolicy: Always
       nodeSelector:
         cloud.google.com/gke-nodepool: "redis"
