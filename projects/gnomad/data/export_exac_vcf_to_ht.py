@@ -6,12 +6,16 @@ from hail_scripts.v02.utils.computed_fields import (
     CONSEQUENCE_TERM_RANK_LOOKUP,
     get_expr_for_alt_allele,
     get_expr_for_contig,
-    get_expr_for_lc_lof_flag,
-    get_expr_for_loftee_flag_flag,
-    get_expr_for_original_alt_alleles_set,
+    get_expr_for_consequence_lc_lof_flag,
+    get_expr_for_variant_lc_lof_flag,
+    get_expr_for_genes_with_lc_lof_flag,
+    get_expr_for_consequence_loftee_flag_flag,
+    get_expr_for_variant_loftee_flag_flag,
+    get_expr_for_genes_with_loftee_flag_flag,
     get_expr_for_ref_allele,
     get_expr_for_start_pos,
     get_expr_for_variant_id,
+    get_expr_for_variant_ids,
     get_expr_for_vep_sorted_transcript_consequences_array,
     get_expr_for_xpos,
 )
@@ -488,8 +492,8 @@ mt = mt.select_rows(
     AC_MALE=mt.info.AC_MALE,
     AN_MALE=mt.info.AN_MALE,
     flags=hl.struct(
-        lc_lof=get_expr_for_lc_lof_flag(mt.sortedTranscriptConsequences),
-        lof_flag=get_expr_for_loftee_flag_flag(mt.sortedTranscriptConsequences),
+        lc_lof=get_expr_for_variant_lc_lof_flag(mt.sortedTranscriptConsequences),
+        lof_flag=get_expr_for_variant_loftee_flag_flag(mt.sortedTranscriptConsequences),
     ),
     populations=hl.struct(
         **{
@@ -512,8 +516,22 @@ mt = mt.select_rows(
     chrom=get_expr_for_contig(mt),
     pos=get_expr_for_start_pos(mt),
     ref=get_expr_for_ref_allele(mt),
-    original_alt_alleles=get_expr_for_original_alt_alleles_set(mt),
-    sortedTranscriptConsequences=mt.sortedTranscriptConsequences,
+    original_alt_alleles=get_expr_for_variant_ids(mt.old_locus, mt.old_alleles),
+    sortedTranscriptConsequences=hl.bind(
+        lambda genes_with_lc_lof_flag, genes_with_loftee_flag_flag: mt.sortedTranscriptConsequences.map(
+            lambda csq: csq.annotate(
+                flags=hl.struct(
+                    lc_lof=get_expr_for_consequence_lc_lof_flag(csq),
+                    lc_lof_in_gene=genes_with_lc_lof_flag.contains(csq.gene_id),
+                    lof_flag=get_expr_for_consequence_loftee_flag_flag(csq),
+                    lof_flag_in_gene=genes_with_loftee_flag_flag.contains(csq.gene_id),
+                    nc_transcript=(csq.category == "lof") & (csq.lof == ""),
+                )
+            )
+        ),
+        get_expr_for_genes_with_lc_lof_flag(mt.sortedTranscriptConsequences),
+        get_expr_for_genes_with_loftee_flag_flag(mt.sortedTranscriptConsequences),
+    ),
     variant_id=get_expr_for_variant_id(mt),
     xpos=get_expr_for_xpos(mt),
 )
