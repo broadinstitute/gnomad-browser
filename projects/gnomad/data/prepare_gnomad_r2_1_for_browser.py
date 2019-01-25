@@ -6,8 +6,12 @@ import hail as hl
 from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_alt_allele,
     get_expr_for_contig,
-    get_expr_for_lc_lof_flag,
-    get_expr_for_loftee_flag_flag,
+    get_expr_for_consequence_lc_lof_flag,
+    get_expr_for_variant_lc_lof_flag,
+    get_expr_for_genes_with_lc_lof_flag,
+    get_expr_for_consequence_loftee_flag_flag,
+    get_expr_for_variant_loftee_flag_flag,
+    get_expr_for_genes_with_loftee_flag_flag,
     get_expr_for_ref_allele,
     get_expr_for_start_pos,
     get_expr_for_variant_id,
@@ -216,11 +220,26 @@ ds = ds.annotate(sortedTranscriptConsequences=get_expr_for_vep_sorted_transcript
 
 ds = ds.annotate(
     flags=hl.struct(
-        lc_lof=get_expr_for_lc_lof_flag(ds.sortedTranscriptConsequences),
-        lof_flag=get_expr_for_loftee_flag_flag(ds.sortedTranscriptConsequences),
+        lc_lof=get_expr_for_variant_lc_lof_flag(ds.sortedTranscriptConsequences),
+        lof_flag=get_expr_for_variant_loftee_flag_flag(ds.sortedTranscriptConsequences),
         lcr=ds.lcr,
         segdup=ds.segdup,
-    )
+    ),
+    sortedTranscriptConsequences=hl.bind(
+        lambda genes_with_lc_lof_flag, genes_with_loftee_flag_flag: ds.sortedTranscriptConsequences.map(
+            lambda csq: csq.annotate(
+                flags=hl.struct(
+                    lc_lof=get_expr_for_consequence_lc_lof_flag(csq),
+                    lc_lof_in_gene=genes_with_lc_lof_flag.contains(csq.gene_id),
+                    lof_flag=get_expr_for_consequence_loftee_flag_flag(csq),
+                    lof_flag_in_gene=genes_with_loftee_flag_flag.contains(csq.gene_id),
+                    nc_transcript=(csq.category == "lof") & (csq.lof == ""),
+                )
+            )
+        ),
+        get_expr_for_genes_with_lc_lof_flag(ds.sortedTranscriptConsequences),
+        get_expr_for_genes_with_loftee_flag_flag(ds.sortedTranscriptConsequences),
+    ),
 )
 
 # Drop keys for export to ES
