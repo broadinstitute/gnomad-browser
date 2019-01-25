@@ -47,7 +47,7 @@ app.use(cors());
     }))
 
     if (process.env.READS_DIR) {
-      app.use('/reads', serveStatic(process.env.READS_DIR, { acceptRanges: true }))
+      app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
     }
 
     app.listen(process.env.GRAPHQL_PORT, () =>
