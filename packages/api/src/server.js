@@ -50,6 +50,10 @@ app.use(cors());
       app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
     }
 
+    app.get('/health', (req, res) => {
+      res.json({})
+    })
+
     app.listen(process.env.GRAPHQL_PORT, () =>
       console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
   } catch (error) {
