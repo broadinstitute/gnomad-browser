@@ -1,0 +1,57 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gnomad-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
+    ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-cert
+spec:
+  backend:
+    serviceName: gnomad-p-serve-nodeport
+    servicePort: 80
+  rules:
+  - host: gnomad.broadinstitute.org
+    http:
+      paths:
+      - path: /api
+        backend:
+          serviceName: gnomad-api-nodeport
+          servicePort: 80
+      - path: /api/*
+        backend:
+          serviceName: gnomad-api-nodeport
+          servicePort: 80
+      - path:
+        backend:
+          serviceName: gnomad-p-serve-nodeport
+          servicePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-p-serve-nodeport
+  labels:
+    state: serving
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-p-serve
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-api-nodeport
+  labels:
+    state: serving
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-api
+  ports:
+  - port: 80
+    targetPort: 80
