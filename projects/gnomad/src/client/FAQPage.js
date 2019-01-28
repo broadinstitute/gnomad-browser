@@ -1,3 +1,5 @@
+import LinkIcon from '@fortawesome/fontawesome-free/svgs/solid/link.svg'
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -6,10 +8,49 @@ import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
 import InfoPage from './InfoPage'
 import SampleCountTable from './SampleCountTable'
 
-const Question = styled.dt`
-  margin-bottom: 0.5em;
-  font-weight: bold;
+const AnchorLink = styled.a.attrs({ 'aria-hidden': 'true' })`
+  display: inline-block;
+  width: 15px;
+  margin-left: -15px;
+  visibility: hidden;
 `
+
+const AnchorWrapper = styled.span`
+  :hover {
+    ${AnchorLink} {
+      visibility: visible;
+    }
+  }
+`
+
+const withAnchor = Component => {
+  const ComposedComponent = ({ children, id }) => (
+    <AnchorWrapper>
+      <Component>
+        <AnchorLink href={`#${id}`} id={id}>
+          <LinkIcon height={12} width={12} />
+        </AnchorLink>
+        {children}
+      </Component>
+    </AnchorWrapper>
+  )
+  const componentName = Component.displayName || Component.name || 'Component'
+  ComposedComponent.displayName = `withAnchor(${componentName})`
+  ComposedComponent.propTypes = {
+    children: PropTypes.node.isRequired,
+    id: PropTypes.string.isRequired,
+  }
+  return ComposedComponent
+}
+
+const FAQSectionHeading = withAnchor(SectionHeading)
+
+const Question = withAnchor(
+  styled.dt`
+    margin-bottom: 0.5em;
+    font-weight: bold;
+  `
+)
 
 const Answer = styled.dd`
   margin: 0 0 1em;
@@ -19,9 +60,11 @@ export default () => (
   <InfoPage>
     <PageHeading>Frequently Asked Questions</PageHeading>
 
-    <SectionHeading>General</SectionHeading>
+    <FAQSectionHeading id="general">General</FAQSectionHeading>
     <dl>
-      <Question>How should I cite discoveries made using gnomAD data?</Question>
+      <Question id="how-should-i-cite-discoveries-made-using-gnomad-data">
+        How should I cite discoveries made using gnomAD data?
+      </Question>
       <Answer>
         Please cite the ExAC flagship paper available{' '}
         <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
@@ -30,7 +73,7 @@ export default () => (
         .
       </Answer>
 
-      <Question>
+      <Question id="i-have-identified-a-rare-variant-what-phenotype-data-are-available">
         I have identified a rare variant in gnomAD that I believe is associated with a specific
         clinical phenotype. What phenotype data are available for these individuals?
       </Question>
@@ -44,7 +87,9 @@ export default () => (
         disease of interest.
       </Answer>
 
-      <Question>Can I get access to individual-level genotype data from gnomAD?</Question>
+      <Question id="can-i-get-access-to-individual-level-genotype-data-from-gnomad">
+        Can I get access to individual-level genotype data from gnomAD?
+      </Question>
       <Answer>
         Many of the samples in gnomAD have individual-level sequencing data deposited in{' '}
         <ExternalLink href="http://www.ncbi.nlm.nih.gov/gap">dbGaP</ExternalLink>, and these can be
@@ -59,7 +104,9 @@ export default () => (
         community to use.
       </Answer>
 
-      <Question>What are the restrictions on data usage?</Question>
+      <Question id="what-are-the-restrictions-on-data-usage">
+        What are the restrictions on data usage?
+      </Question>
       <Answer>
         There are no restrictions or embargoes on the publication of results derived from the gnomAD
         database. However, we encourage people to{' '}
@@ -82,9 +129,11 @@ export default () => (
       </Answer>
     </dl>
 
-    <SectionHeading>Constraint</SectionHeading>
+    <FAQSectionHeading id="constraint">Constraint</FAQSectionHeading>
     <dl>
-      <Question>How was the expected number of variants determined?</Question>
+      <Question id="how-was-the-expected-number-of-variants-determined">
+        How was the expected number of variants determined?
+      </Question>
       <Answer>
         We used a depth corrected probability of mutation for each gene to predict the expected
         variant counts. More details can be found in section 4.1 of the supplement in{' '}
@@ -95,7 +144,9 @@ export default () => (
         from the totals.
       </Answer>
 
-      <Question>Which variants are included in the observed counts?</Question>
+      <Question id="which-variants-are-included-in-the-observed-counts">
+        Which variants are included in the observed counts?
+      </Question>
       <Answer>
         We included single nucleotide changes that occurred in the canonical transcript that were
         found at a frequency of &lt;0.1%, passed all filters, and at sites with a median depth
@@ -103,7 +154,7 @@ export default () => (
         variants.
       </Answer>
 
-      <Question>
+      <Question id="why-are-there-fewer-variants-in-the-constraint-table-than-on-the-gene-page">
         Why are there fewer variants in the constraint table than depicted on the gene page?
       </Question>
       <Answer>
@@ -112,15 +163,17 @@ export default () => (
         expected variant counts were removed for sites with a median depth &lt;1.
       </Answer>
 
-      <Question>What is included in LoF?</Question>
+      <Question id="what-is-included-in-lof">What is included in LoF?</Question>
       <Answer>
         Nonsense, splice acceptor, and splice donor variants caused by single nucleotide changes.
       </Answer>
     </dl>
 
-    <SectionHeading>Technical details</SectionHeading>
+    <FAQSectionHeading id="technical-details">Technical details</FAQSectionHeading>
     <dl>
-      <Question>What genome build is the gnomAD data based on?</Question>
+      <Question id="what-genome-build-is-the-gnomad-data-based-on">
+        What genome build is the gnomAD data based on?
+      </Question>
       <Answer>
         All data are based on{' '}
         <ExternalLink href="ftp://ftp.broadinstitute.org/pub/seq/references/Homo_sapiens_assembly19.fasta">
@@ -129,10 +182,12 @@ export default () => (
         .
       </Answer>
 
-      <Question>What version of Gencode was used to annotate variants?</Question>
+      <Question id="what-version-of-gencode-was-used-to-annotate-variants">
+        What version of Gencode was used to annotate variants?
+      </Question>
       <Answer>Version 19 (annotated with VEP version 85).</Answer>
 
-      <Question>
+      <Question id="are-all-the-individuals-in-the-exome-variant-server-included">
         Are all the individuals in the{' '}
         <ExternalLink href="http://evs.gs.washington.edu/EVS/">Exome Variant Server</ExternalLink>{' '}
         included?
@@ -143,7 +198,7 @@ export default () => (
         variants that are present in the EVS may not be observed in gnomAD.
       </Answer>
 
-      <Question>
+      <Question id="do-the-cancer-samples-in-the-database-include-tumor-exomes">
         Do the cancer samples in the database include tumor exomes, or is this from germline samples
         only?
       </Question>
@@ -154,12 +209,16 @@ export default () => (
         that in some patients the blood samples are contaminated by circulating tumor cells.
       </Answer>
 
-      <Question>What populations are represented in the gnomAD data?</Question>
+      <Question id="what-populations-are-represented-in-the-gnomad-data">
+        What populations are represented in the gnomAD data?
+      </Question>
       <Answer>
         <SampleCountTable />
       </Answer>
 
-      <Question>What ethnicities are represented in the &quot;other&quot; population?</Question>
+      <Question id="what-ethnicities-are-represented-in-the-other-population">
+        What ethnicities are represented in the &quot;other&quot; population?
+      </Question>
       <Answer>
         Individuals were classified as &quot;other&quot; if they did not unambiguously cluster with
         the major populations (i.e. afr, asj, amr, eas, fin, nfe, sas) in a principal component
