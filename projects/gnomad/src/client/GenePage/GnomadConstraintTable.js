@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { BaseTable } from '@broad/ui'
+import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -98,7 +98,17 @@ Graph.propTypes = {
   upper: PropTypes.number.isRequired,
 }
 
-const renderNumber = (num, precision) => (num === null ? '—' : num.toFixed(precision))
+const renderRoundedNumber = (num, precision = 1, tooltipPrecision = 3) => {
+  if (num === null) {
+    return '—'
+  }
+
+  return (
+    <TooltipAnchor childRefPropName="innerRef" tooltip={num.toFixed(tooltipPrecision)}>
+      <TooltipHint>{Number(num.toFixed(precision)).toString()}</TooltipHint>
+    </TooltipAnchor>
+  )
+}
 
 const renderOECell = (constraintData, category, style) => {
   const value = constraintData[`oe_${category}`]
@@ -107,7 +117,7 @@ const renderOECell = (constraintData, category, style) => {
 
   return (
     <td>
-      <span style={style}>o/e = {value === null ? '—' : value.toFixed(2)}</span>
+      <span style={style}>o/e = {renderRoundedNumber(value, 2, 3)}</span>
       <br />
       {lower !== null && upper !== null && `(${lower.toFixed(2)} - ${upper.toFixed(2)})`}
     </td>
@@ -165,25 +175,25 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <tbody>
             <tr>
               <th scope="row">Synonymous</th>
-              <td>{renderNumber(constraintData.exp_syn, 1)}</td>
-              <td>{renderNumber(constraintData.obs_syn, 0)}</td>
-              <td>Z = {renderNumber(constraintData.syn_z, 2)}</td>
+              <td>{renderRoundedNumber(constraintData.exp_syn)}</td>
+              <td>{constraintData.obs_syn === null ? '—' : constraintData.obs_syn}</td>
+              <td>Z = {renderRoundedNumber(constraintData.syn_z, 2, 3)}</td>
               {renderOECell(constraintData, 'syn')}
               {renderOEGraphCell(constraintData, 'syn')}
             </tr>
             <tr>
               <th scope="row">Missense</th>
-              <td>{renderNumber(constraintData.exp_mis, 1)}</td>
-              <td>{renderNumber(constraintData.obs_mis, 0)}</td>
-              <td>Z = {renderNumber(constraintData.mis_z, 2)}</td>
+              <td>{renderRoundedNumber(constraintData.exp_mis)}</td>
+              <td>{constraintData.obs_mis === null ? '—' : constraintData.obs_mis}</td>
+              <td>Z = {renderRoundedNumber(constraintData.mis_z, 2, 3)}</td>
               {renderOECell(constraintData, 'mis')}
               {renderOEGraphCell(constraintData, 'mis')}
             </tr>
             <tr>
               <th scope="row">LoF</th>
-              <td>{renderNumber(constraintData.exp_lof, 1)}</td>
-              <td>{renderNumber(constraintData.obs_lof, 0)}</td>
-              <td>pLI = {renderNumber(constraintData.pLI, 2)}</td>
+              <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
+              <td>{constraintData.obs_lof === null ? '—' : constraintData.obs_lof}</td>
+              <td>pLI = {renderRoundedNumber(constraintData.pLI, 2, 3)}</td>
               {renderOECell(constraintData, 'lof', lofMetricStyle)}
               {renderOEGraphCell(constraintData, 'lof')}
             </tr>
