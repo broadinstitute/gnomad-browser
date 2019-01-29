@@ -100,7 +100,7 @@ const Variant = ({ variant }) => {
 
   return (
     <VariantContainer>
-      <ExternalLink href={`http://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>
+      <ExternalLink href={`https://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>
         View in gnomAD
       </ExternalLink>
       <Columns>
