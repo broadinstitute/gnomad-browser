@@ -1,6 +1,6 @@
 import R from 'ramda'
 
-import { addPadding, calculateOffset, filterRegions } from './coordinates'
+import { addPadding, calculateOffset } from './coordinates'
 
 const REGIONS = [
   {
@@ -95,21 +95,8 @@ const REGIONS = [
   },
 ]
 
-describe('filterRegions', () => {
-  it('returns only regions included in a list', () => {
-    expect(filterRegions(['CDS'], REGIONS).length).toBe(6)
-    expect(filterRegions(['CDS', 'UTR'], REGIONS).length).toBe(10)
-    expect(
-      R.pipe(
-        R.pluck('feature_type'),
-        R.all(feature => feature === 'CDS')
-      )(filterRegions(['CDS'], REGIONS))
-    ).toBe(true)
-  })
-})
-
 describe('calculateOffset', () => {
-  const filteredRegions = filterRegions(['CDS'], REGIONS)
+  const filteredRegions = REGIONS.filter(exon => exon.feature_type === 'CDS')
   const offsetRegions = calculateOffset(filteredRegions)
   it('adds 0 offset attribute to first region', () => {
     expect(offsetRegions[0].offset).toBe(0)
@@ -149,7 +136,7 @@ describe('calculateOffset', () => {
 })
 
 describe('addPadding', () => {
-  const filteredRegions = filterRegions(['CDS'], REGIONS)
+  const filteredRegions = REGIONS.filter(exon => exon.feature_type === 'CDS')
   const add50Bases = addPadding(50)
   it('adds padding regions', () => {
     expect(

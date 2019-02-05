@@ -20,7 +20,6 @@ const RegionViewerWrapper = styled.div`
 export class RegionViewer extends Component {
   static propTypes = {
     children: PropTypes.node,
-    featuresToDisplay: PropTypes.arrayOf(PropTypes.string),
     leftPanelWidth: PropTypes.number,
     padding: PropTypes.number.isRequired,
     regions: PropTypes.arrayOf(
@@ -36,7 +35,6 @@ export class RegionViewer extends Component {
 
   static defaultProps = {
     children: undefined,
-    featuresToDisplay: ['CDS'],
     leftPanelWidth: 100,
     rightPanelWidth: 160,
   }
@@ -50,16 +48,9 @@ export class RegionViewer extends Component {
   }
 
   render() {
-    const {
-      featuresToDisplay,
-      regions,
-      width,
-      padding,
-      leftPanelWidth,
-      rightPanelWidth,
-    } = this.props
+    const { regions, width, padding, leftPanelWidth, rightPanelWidth } = this.props
 
-    const offsetRegions = calculateOffsetRegions(featuresToDisplay, padding, regions)
+    const offsetRegions = calculateOffsetRegions(padding, regions)
 
     const positionOffset = calculatePositionOffset(offsetRegions)
     const xScale = calculateXScale(width, offsetRegions)

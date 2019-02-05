@@ -1,13 +1,6 @@
 import R from 'ramda'
 import { scaleLinear } from 'd3-scale'
 
-const FEATURES_TO_DISPLAY = ['CDS']
-
-export const filterRegions = R.curry((featureTypes, regions) => {
-  const filteredRegions = regions.filter(r => featureTypes.includes(r.feature_type))
-  return filteredRegions.length ? filteredRegions : regions
-})
-
 const sortRegions = regions => [...regions].sort((r1, r2) => r1.start - r2.start)
 
 export const calculateRegionDistances = regions =>
@@ -69,13 +62,8 @@ export const calculateOffset = R.curry(regions =>
   }, [])
 )
 
-export const calculateOffsetRegions = (
-  featuresToDisplay = FEATURES_TO_DISPLAY,
-  padding = 50,
-  regions
-) =>
+export const calculateOffsetRegions = (padding = 50, regions) =>
   R.pipe(
-    filterRegions(featuresToDisplay),
     sortRegions,
     calculateRegionDistances,
     addPadding(padding),

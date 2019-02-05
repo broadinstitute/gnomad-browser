@@ -1,23 +1,22 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import CaretDown from '@fortawesome/fontawesome-free/svgs/solid/caret-down.svg'
-import CaretRight from '@fortawesome/fontawesome-free/svgs/solid/caret-right.svg'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { trackPropTypes } from '@broad/region-viewer'
 import { RegionsPlot } from '@broad/track-regions'
-import { Button } from '@broad/ui'
+import { Button, Checkbox } from '@broad/ui'
 
 import { TissueIsoformExpressionPlot, TissueIsoformExpressionPlotHeader } from './GTEx'
+import { Legend, LegendItem } from './Legend'
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-const DomainRegionsWrapper = styled.div`
+const CompositeWrapper = styled.div`
   display: flex;
 `
 
@@ -31,21 +30,26 @@ const FanOutAndStrandPanel = styled(Panel)`
   justify-content: space-between;
   box-sizing: border-box;
   height: 50px;
-  padding: 0 10px;
-  font-size: 16px;
+  padding-right: 5px;
+
+  button {
+    width: 70px;
+    padding-right: 0.25em;
+    padding-left: 0.25em;
+  }
 
   svg {
     fill: #424242;
   }
 `
 
-const DomainRegionsCenterPanel = styled.div`
+const CompositeCenterPanel = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `
 
-const DomainRegionsPlotWrapper = styled.div`
+const CompositePlotWrapper = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
@@ -56,6 +60,20 @@ const ControlPanel = styled.div`
   justify-content: flex-end;
   align-items: center;
   width: ${props => props.width}px;
+
+  > * {
+    margin-left: 1em;
+  }
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-end;
+
+    > * {
+      margin-bottom: 0.5em;
+      margin-left: 0;
+    }
+  }
 `
 
 const TranscriptsWrapper = styled.div`
@@ -70,30 +88,59 @@ const TranscriptWrapper = styled.div`
   font-size: 11px;
 `
 
-const featureAttributes = {
+const transcriptFeatureAttributes = {
+  exon: {
+    fill: '#bdbdbd',
+    height: 4,
+  },
   CDS: {
     fill: '#424242',
+    height: 10,
+  },
+  UTR: {
+    fill: '#424242',
+    height: 4,
   },
   start_pad: {
     fill: '#5A5E5C',
-    height: 3,
+    height: 2,
   },
   end_pad: {
     fill: '#5A5E5C',
-    height: 3,
+    height: 2,
   },
   intron: {
     fill: '#5A5E5C',
-    height: 3,
+    height: 2,
   },
   default: {
     fill: 'grey',
-    height: 3,
+    height: 2,
   },
 }
 
-const regionAttributes = region =>
-  featureAttributes[region.feature_type] || featureAttributes.default
+const transcriptRegionAttributes = region =>
+  transcriptFeatureAttributes[region.feature_type] || transcriptFeatureAttributes.default
+
+const compositeTranscriptFeatureAttributes = {
+  ...transcriptFeatureAttributes,
+  exon: {
+    fill: '#bdbdbd',
+    height: 8,
+  },
+  CDS: {
+    fill: '#424242',
+    height: 20,
+  },
+  UTR: {
+    fill: '#424242',
+    height: 8,
+  },
+}
+
+const compositeTranscriptRegionAttributes = region =>
+  compositeTranscriptFeatureAttributes[region.feature_type] ||
+  compositeTranscriptFeatureAttributes.default
 
 export class TranscriptsTrack extends Component {
   static propTypes = {
@@ -118,6 +165,10 @@ export class TranscriptsTrack extends Component {
     currentTranscript: null,
     filenameForExport: 'transcripts',
     renderTranscriptId: transcript => <span>{transcript.transcript_id}</span>,
+  }
+
+  state = {
+    showNonCodingTranscripts: false,
   }
 
   transcriptsContainerRef = element => {
@@ -172,13 +223,13 @@ export class TranscriptsTrack extends Component {
     URL.revokeObjectURL(url)
   }
 
-  renderRegionViewerDomain() {
+  renderCompositeTranscript() {
     const {
+      compositeExons,
       currentGene,
       currentTissue,
       leftPanelWidth,
       maxTissueExpressions,
-      offsetRegions,
       onTissueChange,
       positionOffset,
       rightPanelWidth,
@@ -188,38 +239,62 @@ export class TranscriptsTrack extends Component {
       width,
       xScale,
     } = this.props
-
-    const FanOutIcon = transcriptFanOut ? CaretDown : CaretRight
-    const fanOutLabel = `${transcriptFanOut ? 'Hide' : 'Show'} all transcripts`
+    const { showNonCodingTranscripts } = this.state
 
     const StrandIcon = strand === '-' ? LeftArrow : RightArrow
 
     return (
-      <DomainRegionsWrapper>
+      <CompositeWrapper>
         <FanOutAndStrandPanel width={leftPanelWidth}>
-          <Button aria-label={fanOutLabel} title={fanOutLabel} onClick={toggleTranscriptFanOut}>
-            <FanOutIcon />
+          <Button onClick={toggleTranscriptFanOut}>
+            {transcriptFanOut ? 'Hide transcripts' : 'Show transcripts'}
           </Button>
           <StrandIcon height={20} width={20} />
         </FanOutAndStrandPanel>
 
-        <DomainRegionsCenterPanel>
-          <DomainRegionsPlotWrapper>
+        <CompositeCenterPanel>
+          <CompositePlotWrapper>
             <RegionsPlot
               height={20}
-              regions={offsetRegions}
-              regionAttributes={regionAttributes}
+              regions={compositeExons}
+              regionAttributes={compositeTranscriptRegionAttributes}
+              regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
               width={width}
               xScale={pos => xScale(positionOffset(pos).offsetPosition)}
             />
-          </DomainRegionsPlotWrapper>
+          </CompositePlotWrapper>
 
           {transcriptFanOut && (
             <ControlPanel marginLeft={leftPanelWidth} width={width}>
+              <Legend>
+                <LegendItem
+                  color="#424242"
+                  label="CDS"
+                  height={transcriptFeatureAttributes.CDS.height}
+                />
+                <LegendItem
+                  color="#424242"
+                  label="UTR"
+                  height={transcriptFeatureAttributes.UTR.height}
+                />
+                <LegendItem
+                  color="#bdbdbd"
+                  label="Non-coding exon"
+                  height={transcriptFeatureAttributes.exon.height}
+                />
+              </Legend>
+              <Checkbox
+                checked={showNonCodingTranscripts}
+                id="transcript-track-show-non-coding"
+                label="Show non-coding transcripts"
+                onChange={checked => {
+                  this.setState({ showNonCodingTranscripts: checked })
+                }}
+              />
               <Button onClick={() => this.exportPlot()}>Save plot</Button>
             </ControlPanel>
           )}
-        </DomainRegionsCenterPanel>
+        </CompositeCenterPanel>
 
         {!!rightPanelWidth &&
           transcriptFanOut && (
@@ -231,7 +306,7 @@ export class TranscriptsTrack extends Component {
               width={rightPanelWidth}
             />
           )}
-      </DomainRegionsWrapper>
+      </CompositeWrapper>
     )
   }
 
@@ -250,10 +325,11 @@ export class TranscriptsTrack extends Component {
       width,
       xScale,
     } = this.props
+    const { showNonCodingTranscripts } = this.state
 
-    const renderedTranscripts = transcripts.filter(transcript =>
-      transcript.exons.some(exon => exon.feature_type === 'CDS')
-    )
+    const renderedTranscripts = showNonCodingTranscripts
+      ? transcripts
+      : transcripts.filter(transcript => transcript.exons.some(exon => exon.feature_type === 'CDS'))
 
     // Sort transcripts by isCanonical, mean expression, transcript ID
     const sortedTranscripts = renderedTranscripts.sort((t1, t2) => {
@@ -293,8 +369,13 @@ export class TranscriptsTrack extends Component {
                 className="transcript-plot"
                 data-transcript-id={transcript.transcript_id}
                 height={10}
-                regions={transcript.exons.filter(exon => exon.feature_type === 'CDS')}
-                regionAttributes={regionAttributes}
+                regions={
+                  transcript.exons.some(exon => exon.feature_type !== 'exon')
+                    ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
+                    : transcript.exons
+                }
+                regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
+                regionAttributes={transcriptRegionAttributes}
                 width={width}
                 xScale={combinedXScale}
               />
@@ -323,7 +404,7 @@ export class TranscriptsTrack extends Component {
     const { transcriptFanOut } = this.props
     return (
       <Wrapper>
-        {this.renderRegionViewerDomain()}
+        {this.renderCompositeTranscript()}
         {transcriptFanOut && this.renderTranscripts()}
       </Wrapper>
     )
