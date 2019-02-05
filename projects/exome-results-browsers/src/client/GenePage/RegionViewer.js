@@ -19,7 +19,7 @@ class GeneViewer extends PureComponent {
     const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
     const geneJS = gene.toJS()
-    const canonicalExons = geneJS.transcript.exons
+    const canonicalCodingExons = geneJS.transcript.exons.filter(exon => exon.feature_type === 'CDS')
     const variantsReversed = visibleVariants.reverse()
 
     const cases = variantsReversed
@@ -34,7 +34,7 @@ class GeneViewer extends PureComponent {
       <RegionViewer
         width={regionViewerWidth}
         padding={75}
-        regions={canonicalExons}
+        regions={canonicalCodingExons}
         leftPanelWidth={100}
         rightPanelWidth={smallScreen ? 0 : 160}
       >

@@ -82,13 +82,14 @@ const GeneViewer = ({
     <RegionViewer
       width={regionViewerWidth}
       padding={exonPadding}
-      regions={canonicalExons}
+      regions={geneJS.composite_transcript.exons}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
       {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
 
       {hasCodingExons && (
         <ConnectedTranscriptsTrack
+          compositeExons={geneJS.composite_transcript.exons}
           filenameForExport={`${geneId}_transcripts`}
           renderTranscriptId={(transcriptId, { isCanonical, isSelected }) => (
             <TranscriptLink

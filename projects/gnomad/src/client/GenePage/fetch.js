@@ -23,6 +23,13 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
       xstop
       chrom
       strand
+      composite_transcript {
+        exons {
+          feature_type
+          start
+          stop
+        }
+      }
       canonical_transcript
       transcript {
         exons {

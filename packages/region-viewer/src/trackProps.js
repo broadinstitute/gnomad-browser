@@ -4,7 +4,7 @@ export const trackPropTypes = {
   // used only by navigator
   invertOffset: PropTypes.func,
   leftPanelWidth: PropTypes.number,
-  // used only by track-coverage, track-transcript, and track-position-table
+  // used only by track-coverage and track-position-table
   offsetRegions: PropTypes.arrayOf(
     PropTypes.shape({
       feature_type: PropTypes.string.isRequired,

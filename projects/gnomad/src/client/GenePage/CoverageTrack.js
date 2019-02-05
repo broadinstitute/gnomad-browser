@@ -9,12 +9,12 @@ import StatusMessage from '../StatusMessage'
 const coverageQuery = `
 query Coverage($geneId: String!, $datasetId: DatasetId!) {
   gene(gene_id: $geneId) {
-    transcript {
-      ex_coverage(dataset: $datasetId) {
+    composite_transcript {
+      exome_coverage(dataset: $datasetId) {
         pos
         mean
       }
-      ge_coverage(dataset: $datasetId) {
+      genome_coverage(dataset: $datasetId) {
         pos
         mean
       }
@@ -42,8 +42,8 @@ export default ({ datasetId, geneId, ...props }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = data.gene.transcript.ex_coverage
-        const genomeCoverage = data.gene.transcript.ge_coverage
+        const exomeCoverage = data.gene.composite_transcript.exome_coverage
+        const genomeCoverage = data.gene.composite_transcript.genome_coverage
 
         const coverageConfig =
           datasetId === 'exac'

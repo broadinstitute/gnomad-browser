@@ -11,7 +11,7 @@ export const RegionsPlot = ({
   ...rest
 }) => (
   <svg {...rest} width={width} height={height}>
-    <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="#bdbdbd" strokeWidth={2} />
+    <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="#bdbdbd" strokeWidth={1} />
     {regions.map(region => {
       const x1 = xScale(region.start)
       const x2 = xScale(region.stop)

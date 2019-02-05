@@ -9,12 +9,13 @@ import {
 } from 'graphql'
 
 import { withCache } from '../../utilities/redis'
+import { mergeOverlappingRegions } from '../../utilities/region'
 import { AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
 import coverageType, { fetchCoverageByTranscript } from './coverage'
-import exonType, { lookupExonsByTranscriptId } from './exon'
+import exonType, { lookupExonsByGeneId, lookupExonsByTranscriptId } from './exon'
 import * as fromGtex from './gtex'
 
 const transcriptType = new GraphQLObjectType({
@@ -102,3 +103,67 @@ export const lookupTranscriptsByTranscriptId = (db, transcript_id, gene_name) =>
 
 export const lookupAllTranscriptsByGeneId = (db, gene_id) =>
   db.collection('transcripts').find({ gene_id }).toArray()
+
+export const CompositeTranscriptType = new GraphQLObjectType({
+  name: 'CompositeTranscript',
+  fields: {
+    exons: { type: new GraphQLList(exonType) },
+    exome_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: AnyDatasetArgumentType },
+      },
+      resolve: (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: obj.exons,
+          })
+        )
+      },
+    },
+    genome_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: AnyDatasetArgumentType },
+      },
+      resolve: (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: obj.exons,
+          })
+        )
+      },
+    },
+  },
+})
+
+export const fetchCompositeTranscriptByGene = async (ctx, gene) => {
+  const allExons = await lookupExonsByGeneId(ctx.database.gnomad, gene.gene_id)
+  const sortedExons = allExons.sort((r1, r2) => r1.start - r2.start)
+
+  const cdsExons = mergeOverlappingRegions(sortedExons.filter(exon => exon.feature_type === 'CDS'))
+  const utrExons = mergeOverlappingRegions(sortedExons.filter(exon => exon.feature_type === 'UTR'))
+  const otherExons = mergeOverlappingRegions(
+    sortedExons.filter(exon => exon.feature_type === 'exon')
+  )
+
+  return {
+    gene_id: gene.gene_id,
+    chrom: gene.chrom,
+    exons: [...otherExons, ...cdsExons, ...utrExons],
+  }
+}

@@ -8,6 +8,7 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
+import { mergeOverlappingRegions } from '../../utilities/region'
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 
@@ -17,7 +18,12 @@ import {
   fetchClinvarVariantsInTranscript,
 } from '../datasets/clinvar'
 
-import transcriptType, { lookupTranscriptsByTranscriptId, lookupAllTranscriptsByGeneId } from './transcript'
+import transcriptType, {
+  CompositeTranscriptType,
+  fetchCompositeTranscriptByGene,
+  lookupTranscriptsByTranscriptId,
+  lookupAllTranscriptsByGeneId,
+} from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 
@@ -43,6 +49,10 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
+    composite_transcript: {
+      type: CompositeTranscriptType,
+      resolve: (obj, args, ctx) => fetchCompositeTranscriptByGene(ctx, obj),
+    },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantType),
       args: {

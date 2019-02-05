@@ -92,66 +92,24 @@ export class CoverageTrack extends Component {
     URL.revokeObjectURL(url)
   }
 
-  renderArea({ scaleCoverageMetric, scalePosition, totalBases }) {
-    const { datasets, height, width } = this.props
+  renderArea({ scaleCoverageMetric, scalePosition }) {
+    const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
-    if (totalBases < 2000) {
-      const pathGenerator = area()
-        .x(bucket => scalePosition(bucket.pos))
-        .y0(() => height)
-        .y1(bucket => scaleCoverageMetric(bucket[selectedMetric]))
-      return datasets.map(dataset => (
-        <g key={dataset.name}>
-          <path
-            d={pathGenerator(
-              dataset.buckets.filter(
-                bucket => bucket[selectedMetric] !== undefined && bucket[selectedMetric] !== null
-              )
-            )}
-            fill={dataset.color}
-            fillOpacity={dataset.opacity}
-          />
-        </g>
-      ))
-    }
-
     const pathGenerator = area()
-      .defined(bucket => bucket !== undefined)
-      .x((bucket, i) => i)
+      .x(bucket => scalePosition(bucket.pos))
       .y0(height)
       .y1(bucket => scaleCoverageMetric(bucket[selectedMetric]))
 
-    return datasets.map(dataset => {
-      const scaledData = dataset.buckets
-        .filter(bucket => bucket[selectedMetric] !== undefined && bucket[selectedMetric] !== null)
-        .map(bucket => ({
-          ...bucket,
-          x: Math.floor(scalePosition(bucket.pos)),
-        }))
-
-      const xBuckets = scaledData.reduce((acc, bucket) => {
-        if (acc[bucket.x] === undefined) {
-          return {
-            ...acc,
-            [bucket.x]: bucket,
-          }
-        }
-        return acc
-      }, {})
-
-      const finalData = [...Array(width)].map((_, i) => xBuckets[i])
-
-      return (
-        <g key={dataset.name}>
-          <path
-            d={pathGenerator(finalData)}
-            fill={dataset.color}
-            fillOpacity={dataset.opacity}
-          />
-        </g>
-      )
-    })
+    return datasets.map(dataset => (
+      <g key={dataset.name}>
+        <path
+          d={pathGenerator(dataset.buckets)}
+          fill={dataset.color}
+          fillOpacity={dataset.opacity}
+        />
+      </g>
+    ))
   }
 
   renderBars({ scaleCoverageMetric, scalePosition, totalBases }) {
@@ -194,7 +152,7 @@ export class CoverageTrack extends Component {
     const totalBases = offsetRegions.reduce((acc, region) => acc + region.stop - region.start, 0)
     return totalBases < 100
       ? this.renderBars({ scaleCoverageMetric, scalePosition, totalBases })
-      : this.renderArea({ scaleCoverageMetric, scalePosition, totalBases })
+      : this.renderArea({ scaleCoverageMetric, scalePosition })
   }
 
   render() {
