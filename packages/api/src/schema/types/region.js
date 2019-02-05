@@ -37,7 +37,7 @@ const regionType = new GraphQLObjectType({
         xstop: obj.xstop,
       })
     },
-    ex_coverage: {
+    exome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
         dataset: { type: AnyDatasetArgumentType },
@@ -54,7 +54,7 @@ const regionType = new GraphQLObjectType({
         })
       },
     },
-    ge_coverage: {
+    genome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
         dataset: { type: AnyDatasetArgumentType },

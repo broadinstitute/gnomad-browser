@@ -9,11 +9,11 @@ import StatusMessage from '../StatusMessage'
 const coverageQuery = `
 query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $datasetId: DatasetId!) {
   region(chrom: $chrom, start: $start, stop: $stop) {
-    ex_coverage(dataset: $datasetId) {
+    exome_coverage(dataset: $datasetId) {
       pos
       mean
     }
-    ge_coverage(dataset: $datasetId) {
+    genome_coverage(dataset: $datasetId) {
       pos
       mean
     }
@@ -42,8 +42,8 @@ export default ({ datasetId, chrom, start, stop, ...props }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = data.region.ex_coverage
-        const genomeCoverage = data.region.ge_coverage
+        const exomeCoverage = data.region.exome_coverage
+        const genomeCoverage = data.region.genome_coverage
 
         const coverageConfig =
           datasetId === 'exac'
