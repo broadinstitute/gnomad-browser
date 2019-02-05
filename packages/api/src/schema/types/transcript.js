@@ -36,7 +36,7 @@ const transcriptType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
-    ex_coverage: {
+    exome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
         dataset: { type: AnyDatasetArgumentType },
@@ -57,7 +57,7 @@ const transcriptType = new GraphQLObjectType({
         })
       },
     },
-    ge_coverage: {
+    genome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
         dataset: { type: AnyDatasetArgumentType },
