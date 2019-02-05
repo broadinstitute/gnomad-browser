@@ -46,7 +46,7 @@ const transcriptType = new GraphQLObjectType({
         if (!index) {
           return []
         }
-        return withCache(ctx, `${index}-coverage-${obj.gene_name}`, async () => {
+        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, async () => {
           const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
           return fetchCoverageByTranscript(ctx, {
             index,
@@ -67,7 +67,7 @@ const transcriptType = new GraphQLObjectType({
         if (!index) {
           return []
         }
-        return withCache(ctx, `${index}-coverage-${obj.gene_name}`, async () => {
+        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, async () => {
           const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
           return fetchCoverageByTranscript(ctx, {
             index,
