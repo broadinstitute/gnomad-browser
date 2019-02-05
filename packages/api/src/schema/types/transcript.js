@@ -52,7 +52,7 @@ const transcriptType = new GraphQLObjectType({
             index,
             type,
             chrom: obj.chrom,
-            exons: exons.filter(exon => exon.feature_type === 'CDS'),
+            exons,
           })
         })
       },
@@ -73,7 +73,7 @@ const transcriptType = new GraphQLObjectType({
             index,
             type,
             chrom: obj.chrom,
-            exons: exons.filter(exon => exon.feature_type === 'CDS'),
+            exons,
           })
         })
       },
