@@ -17,6 +17,31 @@ export const calculateRegionDistances = regions =>
     }
   })
 
+const mergeOverlappingRegions = sortedRegions => {
+  if (sortedRegions.length === 0) {
+    return []
+  }
+
+  const mergedRegions = [{ ...sortedRegions[0] }]
+
+  let previousRegion = mergedRegions[0]
+
+  for (let i = 1; i < sortedRegions.length; i += 1) {
+    const nextRegion = sortedRegions[i]
+
+    if (nextRegion.start <= previousRegion.stop + 1) {
+      if (nextRegion.stop > previousRegion.stop) {
+        previousRegion.stop = nextRegion.stop
+      }
+    } else {
+      previousRegion = { ...nextRegion }
+      mergedRegions.push(previousRegion)
+    }
+  }
+
+  return mergedRegions
+}
+
 export const addPadding = R.curry((padding, regions) => {
   if (padding === 0) return regions
   return regions.reduce((acc, region) => {
@@ -65,6 +90,7 @@ export const calculateOffset = R.curry(regions =>
 export const calculateOffsetRegions = (padding = 50, regions) =>
   R.pipe(
     sortRegions,
+    mergeOverlappingRegions,
     calculateRegionDistances,
     addPadding(padding),
     calculateOffset
