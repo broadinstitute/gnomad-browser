@@ -1,13 +1,11 @@
 import { GraphQLFloat, GraphQLObjectType } from 'graphql'
 
 import { extendRegions, mergeOverlappingRegions, totalRegionSize } from '../../utilities/region'
-import { getXpos } from '../../utilities/variant'
 
 const coverageType = new GraphQLObjectType({
   name: 'Coverage',
   fields: {
     pos: { type: GraphQLFloat },
-    xpos: { type: GraphQLFloat },
     mean: { type: GraphQLFloat },
   },
 })
@@ -52,7 +50,6 @@ const fetchCoverage = async (ctx, { index, type = 'position', chrom, regions, bu
   const { buckets } = response.aggregations.downsampled_coverage
   const downsampledCoverage = buckets.map(bucket => ({
     pos: bucket.key,
-    xpos: getXpos(chrom, bucket.key),
     mean: bucket.mean.value,
   }))
 
