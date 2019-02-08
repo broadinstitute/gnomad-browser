@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 
 import { geneData, regionalConstraint } from '@broad/redux-genes'
 import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
@@ -13,23 +12,10 @@ import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
 
 import datasetLabels from '../datasetLabels'
-import Link from '../Link'
 import StatusMessage from '../StatusMessage'
 import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
-
-const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
-  border-bottom: ${({ isSelected, isCanonical }) => {
-    if (isSelected) {
-      return '1px solid red'
-    }
-    if (isCanonical) {
-      return '1px solid black'
-    }
-    return 'none'
-  }};
-  background-color: ${({ isSelected }) => (isSelected ? 'rgba(10, 121, 191, 0.1)' : 'none')};
-`
+import TranscriptLink from './TranscriptLink'
 
 const GeneViewer = ({
   allVariants,
