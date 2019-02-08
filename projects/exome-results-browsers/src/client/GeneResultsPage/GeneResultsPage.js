@@ -38,76 +38,71 @@ class GeneResultsPage extends Component {
     selectedAnalysisGroup: browserConfig.analysisGroups.overallGroup,
   }
 
-  renderAnalysisGroupMenu() {
-    const numAvailableGroups = browserConfig.analysisGroups.selectableGroups.length
-
-    if (numAvailableGroups === 1) {
-      return <div />
-    }
-
-    const { selectedAnalysisGroup } = this.state
-
-    return (
-      <div>
-        {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
-        <label htmlFor="analysis-group-menu">Current analysis group </label>
-        <Combobox
-          id="analysis-group-menu"
-          options={browserConfig.analysisGroups.selectableGroups.map(analysisGroup => ({
-            analysisGroup,
-            label: analysisGroup,
-          }))}
-          value={selectedAnalysisGroup}
-          onSelect={({ analysisGroup }) => {
-            this.setState({ selectedAnalysisGroup: analysisGroup })
-          }}
-        />
-      </div>
-    )
-  }
-
   render() {
-    const { selectedAnalysisGroup } = this.state
+    const numAvailableGroups = browserConfig.analysisGroups.selectableGroups.length
+    const { selectedAnalysisGroup, searchText } = this.state
 
     return (
       <Page>
         <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
-        <ControlSection>
-          {this.renderAnalysisGroupMenu()}
-
-          <SearchInput
-            placeholder="Search results by gene"
-            onChange={value => {
-              this.setState({ searchText: value.toUpperCase() })
-            }}
-          />
-        </ControlSection>
         <Query query={geneResultsQuery} variables={{ analysisGroup: selectedAnalysisGroup }}>
           {({ data, error, loading }) => {
+            let resultsContent
             if (loading) {
-              return <StatusMessage>Loading gene results...</StatusMessage>
-            }
+              resultsContent = <StatusMessage>Loading gene results...</StatusMessage>
+            } else if (error) {
+              resultsContent = <StatusMessage>Unable to load gene results</StatusMessage>
+            } else {
+              const filteredResults = data.geneResults.filter(result =>
+                (result.gene_name || '').includes(searchText)
+              )
 
-            if (error) {
-              return <StatusMessage>Unable to load gene results</StatusMessage>
-            }
-
-            const { searchText } = this.state
-            const filteredResults = data.geneResults.filter(result =>
-              (result.gene_name || '').includes(searchText)
-            )
-
-            const shapedResults = filteredResults.map(result => {
-              const resultCopy = { ...result }
-              result.categories.forEach(c => {
-                resultCopy[`xcase_${c.id}`] = c.xcase
-                resultCopy[`xctrl_${c.id}`] = c.xctrl
-                resultCopy[`pval_${c.id}`] = c.pval
+              const shapedResults = filteredResults.map(result => {
+                const resultCopy = { ...result }
+                result.categories.forEach(c => {
+                  resultCopy[`xcase_${c.id}`] = c.xcase
+                  resultCopy[`xctrl_${c.id}`] = c.xctrl
+                  resultCopy[`pval_${c.id}`] = c.pval
+                })
+                return resultCopy
               })
-              return resultCopy
-            })
 
-            return <GeneResultsTable results={shapedResults} />
+              results = <GeneResultsTable results={shapedResults} />
+            }
+
+            return (
+              <div>
+                <ControlSection>
+                  {numAvailableGroups > 1 && (
+                    <div>
+                      {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
+                      <label htmlFor="analysis-group-menu">Current analysis group </label>
+                      <Combobox
+                        id="analysis-group-menu"
+                        options={browserConfig.analysisGroups.selectableGroups.map(
+                          analysisGroup => ({
+                            analysisGroup,
+                            label: analysisGroup,
+                          })
+                        )}
+                        value={selectedAnalysisGroup}
+                        onSelect={({ analysisGroup }) => {
+                          this.setState({ selectedAnalysisGroup: analysisGroup })
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <SearchInput
+                    placeholder="Search results by gene"
+                    onChange={value => {
+                      this.setState({ searchText: value.toUpperCase() })
+                    }}
+                  />
+                </ControlSection>
+                {resultsContent}
+              </div>
+            )
           }}
         </Query>
       </Page>
