@@ -18,6 +18,7 @@ IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-api"
 
 # Push to container registry
 gcloud docker -- push ${IMAGE_NAME}:${DEPLOY_TAG}
+gcloud docker -- push ${IMAGE_NAME}:latest
 
 # Update API deployment
 kubectl set image deployment/gnomad-api gnomad-api-pod=${IMAGE_NAME}:${DEPLOY_TAG}

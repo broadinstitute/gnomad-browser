@@ -24,6 +24,7 @@ IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser-beta"
 
 # Push to container registry
 gcloud docker -- push "${IMAGE_NAME}:${DEPLOY_TAG}"
+gcloud docker -- push "${IMAGE_NAME}:latest"
 
 DEPLOYMENT="gnomad-${ENVIRONMENT}-serve"
 CONTAINER="gnomad-${ENVIRONMENT}-serve"
