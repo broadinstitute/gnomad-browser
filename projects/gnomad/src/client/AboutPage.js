@@ -122,8 +122,8 @@ export default () => (
       The generation of this call set was funded primarily by the Broad Institute, and the data here
       are released publicly for the benefit of the wider biomedical community. There are no
       publication restrictions or embargoes on these data. Please cite the{' '}
-      <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
-        ExAC paper
+      <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
+        flagship gnomAD paper
       </ExternalLink>{' '}
       for any use of these data.
     </p>
