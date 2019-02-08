@@ -1,43 +1,22 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
+import { geneData, regionalConstraint } from '@broad/redux-genes'
+import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
+import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
-import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import RegionalConstraintTrack from '@broad/track-regional-constraint'
+import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
 
-import {
-  currentTranscript,
-  geneData,
-  regionalConstraint,
-  exonPadding,
-} from '@broad/redux-genes'
-
-import {
-  finalFilteredVariants,
-  isLoadingVariants,
-  selectedVariantDataset,
-} from '@broad/redux-variants'
-
-import { RegionViewer } from '@broad/region-viewer'
-
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
+import StatusMessage from '../StatusMessage'
 import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
-import StatusMessage from '../StatusMessage'
-
-const COVERAGE_TRACK_HEIGHT = 200
-const REGIONAL_CONSTRAINED_TRACK_HEIGHT = 17
-const VARIANT_TRACK_HEIGHT = 60
-
-export const TOTAL_REGION_VIEWER_HEIGHT =
-  COVERAGE_TRACK_HEIGHT +
-  REGIONAL_CONSTRAINED_TRACK_HEIGHT +
-  VARIANT_TRACK_HEIGHT
 
 const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {...rest} />)`
   border-bottom: ${({ isSelected, isCanonical }) => {
@@ -53,25 +32,19 @@ const TranscriptLink = styled(({ isCanonical, isSelected, ...rest }) => <Link {.
 `
 
 const GeneViewer = ({
-  currentTranscript,
-  gene,
   allVariants,
-  selectedVariantDataset,
-  exonPadding,
-  isLoadingVariants,
-  regionalConstraint,
-  screenSize,
   datasetId,
+  gene,
   geneId,
+  isLoadingVariants, // eslint-disable-line no-shadow
+  regionalConstraint, // eslint-disable-line no-shadow
+  screenSize, // eslint-disable-line no-shadow
 }) => {
   // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
   const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
   const geneJS = gene.toJS()
-  const currentTranscriptId = currentTranscript || gene.get('canonical_transcript')
-
-  const canonicalExons = geneJS.transcript.exons
   const { transcript, strand } = geneJS
   const variantsReversed = allVariants.reverse()
 
@@ -81,7 +54,7 @@ const GeneViewer = ({
   return (
     <RegionViewer
       width={regionViewerWidth}
-      padding={exonPadding}
+      padding={75}
       regions={geneJS.composite_transcript.exons}
       rightPanelWidth={smallScreen ? 0 : 160}
     >
@@ -113,7 +86,7 @@ const GeneViewer = ({
 
       {!isLoadingVariants &&
         regionalConstraint.length > 0 &&
-        selectedVariantDataset === 'exac' && (
+        datasetId === 'exac' && (
           <RegionalConstraintTrack
             height={15}
             regionalConstraintData={regionalConstraint}
@@ -123,38 +96,35 @@ const GeneViewer = ({
 
       {!isLoadingVariants && (
         <VariantAlleleFrequencyTrack
-          title={`${datasetLabels[selectedVariantDataset]}\n(${allVariants.size})`}
+          title={`${datasetLabels[datasetId]}\n(${allVariants.size})`}
           variants={variantsReversed.toJS()}
         />
       )}
-      {!isLoadingVariants && <NavigatorTrackConnected title={'Viewing in table'} />}
+      {!isLoadingVariants && <NavigatorTrackConnected title="Viewing in table" />}
     </RegionViewer>
   )
 }
 
 GeneViewer.propTypes = {
-  currentTranscript: PropTypes.string,
-  gene: PropTypes.object.isRequired,
-  allVariants: PropTypes.any.isRequired,
-  exonPadding: PropTypes.number.isRequired,
-  selectedVariantDataset: PropTypes.string.isRequired,
-  regionalConstraint: PropTypes.array.isRequired,
-  screenSize: PropTypes.object.isRequired,
+  allVariants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  datasetId: PropTypes.string.isRequired,
+  gene: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  geneId: PropTypes.string.isRequired,
+  isLoadingVariants: PropTypes.bool.isRequired,
+  regionalConstraint: PropTypes.arrayOf(
+    PropTypes.shape({
+      genomic_end: PropTypes.number.isRequired,
+      genomic_start: PropTypes.number.isRequired,
+      region_name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  screenSize: PropTypes.shape({ width: PropTypes.number.isRequired }).isRequired,
 }
 
-GeneViewer.defaultProps = {
-  currentTranscript: undefined,
-}
-
-export default connect(
-  state => ({
-    currentTranscript: currentTranscript(state),
-    gene: geneData(state),
-    exonPadding: exonPadding(state),
-    allVariants: finalFilteredVariants(state),
-    selectedVariantDataset: selectedVariantDataset(state),
-    isLoadingVariants: isLoadingVariants(state),
-    regionalConstraint: regionalConstraint(state),
-    screenSize: screenSize(state),
-  })
-)(GeneViewer)
+export default connect(state => ({
+  allVariants: finalFilteredVariants(state),
+  gene: geneData(state),
+  isLoadingVariants: isLoadingVariants(state),
+  regionalConstraint: regionalConstraint(state),
+  screenSize: screenSize(state),
+}))(GeneViewer)
