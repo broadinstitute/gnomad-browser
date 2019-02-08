@@ -1,6 +1,6 @@
 # API Deployment
 
-## Build image
+## Building a Docker image
 
 To build a Docker image containing the API server and its dependencies:
 
@@ -11,7 +11,7 @@ cd gnomadjs/packages/api
 
 This will create an image named "gnomad-api" tagged with the hash of the current git revision.
 
-## Deploy image to Kubernetes
+## Deploying an image to GKE
 
 After an image has been built, deploy it to Kubernetes with:
 
@@ -22,9 +22,12 @@ cd gnomadjs/packages/api
 
 where `tag` is the tag on the "gnomad-api" image to be deployed.
 
-## Run image locally
+This pushes the image with specified tag to GCR and updates the container image in the appropriate
+Kubernetes deployment.
 
-To run the API server in Docker on macOS (18.03 onwards) using a local instance of Mongo and Redis:
+## Running locally
+
+To run the API server using Docker with a local instance of Mongo and Redis:
 
 ```shell
 docker run --rm -ti --init \
@@ -36,3 +39,6 @@ docker run --rm -ti --init \
    -e "REDIS_HOST=host.docker.internal" \
    gcr.io/exac-gnomad/gnomad-api
 ```
+
+Note: `host.docker.internal` resolves to the host machine when running a container in Docker Desktop for Mac and Windows.
+Depending on your environment, you may need to change this address.
