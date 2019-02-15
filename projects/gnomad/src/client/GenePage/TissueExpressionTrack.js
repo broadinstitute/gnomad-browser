@@ -1,3 +1,4 @@
+import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -116,12 +117,10 @@ class TissueExpressionTrack extends Component {
       {}
     )
 
-    const heightScale = proportionExpressed => {
-      if (proportionExpressed === null) {
-        return 0
-      }
-      return 20 * Math.max(0, Math.min(1, proportionExpressed))
-    }
+    const heightScale = scaleLinear()
+      .domain([0, 1])
+      .range([0, 20])
+      .clamp(true)
 
     return (
       <Wrapper>
@@ -144,7 +143,7 @@ class TissueExpressionTrack extends Component {
                 axisColor="rgba(0,0,0,0)"
                 height={20}
                 regionAttributes={region => {
-                  const height = heightScale(region.tissues.mean)
+                  const height = heightScale(region.tissues.mean || 0)
                   return {
                     fill: '#428bca',
                     stroke: '#428bca',
@@ -180,7 +179,7 @@ class TissueExpressionTrack extends Component {
                       axisColor="rgba(0,0,0,0)"
                       height={20}
                       regionAttributes={region => {
-                        const height = heightScale(region.tissues[tissue])
+                        const height = heightScale(region.tissues[tissue] || 0)
                         return {
                           fill: GTEX_TISSUE_COLORS[tissue],
                           stroke: GTEX_TISSUE_COLORS[tissue],
@@ -203,7 +202,27 @@ class TissueExpressionTrack extends Component {
                 )
               })}
           </CenterPanel>
-          {rightPanelWidth && <SidePanel width={rightPanelWidth} />}
+          {rightPanelWidth && (
+            <SidePanel width={rightPanelWidth}>
+              {['mean'].concat(isExpanded ? GTEX_TISSUE_NAMES : []).map(tissue => (
+                <svg key={tissue} width={rightPanelWidth} height={31}>
+                  <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
+                  <g transform="translate(0, 6)">
+                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                    <text x={5} y={0} dy="0.3em" fill="#000" fontSize={10} textAnchor="start">
+                      1
+                    </text>
+                  </g>
+                  <g transform="translate(0, 24)">
+                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                    <text x={5} y={0} dy="0.2em" fill="#000" fontSize={10} textAnchor="start">
+                      0
+                    </text>
+                  </g>
+                </svg>
+              ))}
+            </SidePanel>
+          )}
         </InnerWrapper>
       </Wrapper>
     )
