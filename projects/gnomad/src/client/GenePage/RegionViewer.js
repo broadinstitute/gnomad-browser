@@ -16,6 +16,7 @@ import datasetLabels from '../datasetLabels'
 import StatusMessage from '../StatusMessage'
 import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
+import TissueExpressionTrack from './TissueExpressionTrack'
 import TranscriptLink from './TranscriptLink'
 
 const ControlPanel = styled.div`
@@ -139,6 +140,10 @@ class GeneViewer extends Component {
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
     )
 
+    const cdsCompositeExons = geneJS.composite_transcript.exons.filter(
+      exon => exon.feature_type === 'CDS'
+    )
+
     const regionViewerRegions = geneJS.composite_transcript.exons.filter(
       exon =>
         exon.feature_type === 'CDS' ||
@@ -236,6 +241,10 @@ class GeneViewer extends Component {
           <StatusMessage>
             Coverage &amp; transcripts not shown for genes with no coding exons
           </StatusMessage>
+        )}
+
+        {hasCodingExons && (
+          <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={geneJS.pext} />
         )}
 
         {!isLoadingVariants && <ClinVarTrack variants={gene.get('clinvar_variants').toJS()} />}
