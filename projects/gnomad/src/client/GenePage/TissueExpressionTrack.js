@@ -82,6 +82,7 @@ class TissueExpressionTrack extends Component {
       PropTypes.shape({
         start: PropTypes.number.isRequired,
         stop: PropTypes.number.isRequired,
+        mean: PropTypes.number,
         tissues: PropTypes.objectOf(PropTypes.number).isRequired,
       })
     ).isRequired,
@@ -109,10 +110,13 @@ class TissueExpressionTrack extends Component {
 
     const xScale = pos => regionViewerXScale(positionOffset(pos).offsetPosition)
 
-    const isExpressed = GTEX_TISSUE_NAMES.reduce(
+    const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
+      GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
+    )
+    const isExpressed = tissues.reduce(
       (acc, tissue) => ({
         ...acc,
-        [tissue]: expressionRegions.some(region => region.tissues[tissue] !== null),
+        [tissue]: expressionRegions.some(region => region.tissues[tissue] !== 0),
       }),
       {}
     )
@@ -131,10 +135,8 @@ class TissueExpressionTrack extends Component {
           <SidePanel width={leftPanelWidth}>
             <TissueName style={{ fontSize: '12px' }}>Average pext across GTEx</TissueName>
             {isExpanded &&
-              GTEX_TISSUE_NAMES.map(tissue => (
-                <TissueName key={tissue}>
-                  <span>{tissue}</span>
-                </TissueName>
+              tissues.map(tissue => (
+                <TissueName key={tissue}>{GTEX_TISSUE_NAMES[tissue]}</TissueName>
               ))}
           </SidePanel>
           <CenterPanel width={width}>
@@ -143,7 +145,7 @@ class TissueExpressionTrack extends Component {
                 axisColor="rgba(0,0,0,0)"
                 height={20}
                 regionAttributes={region => {
-                  const height = heightScale(region.tissues.mean || 0)
+                  const height = heightScale(region.mean)
                   return {
                     fill: '#428bca',
                     stroke: '#428bca',
@@ -164,7 +166,7 @@ class TissueExpressionTrack extends Component {
               />
             </PlotWrapper>
             {isExpanded &&
-              GTEX_TISSUE_NAMES.map(tissue => {
+              tissues.map(tissue => {
                 if (!isExpressed[tissue]) {
                   return (
                     <NotExpressedMessage key={tissue}>
@@ -179,7 +181,7 @@ class TissueExpressionTrack extends Component {
                       axisColor="rgba(0,0,0,0)"
                       height={20}
                       regionAttributes={region => {
-                        const height = heightScale(region.tissues[tissue] || 0)
+                        const height = heightScale(region.tissues[tissue])
                         return {
                           fill: GTEX_TISSUE_COLORS[tissue],
                           stroke: GTEX_TISSUE_COLORS[tissue],
@@ -204,7 +206,7 @@ class TissueExpressionTrack extends Component {
           </CenterPanel>
           {rightPanelWidth && (
             <SidePanel width={rightPanelWidth}>
-              {['mean'].concat(isExpanded ? GTEX_TISSUE_NAMES : []).map(tissue => (
+              {['mean'].concat(isExpanded ? tissues : []).map(tissue => (
                 <svg key={tissue} width={rightPanelWidth} height={31}>
                   <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
                   <g transform="translate(0, 6)">

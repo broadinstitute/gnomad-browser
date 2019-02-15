@@ -26,7 +26,7 @@ import transcriptType, {
 } from './transcript'
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
-
+import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import * as fromRegionalConstraint from './regionalConstraint'
 
 import { VariantSummaryType } from './variant'
@@ -63,6 +63,10 @@ const geneType = new GraphQLObjectType({
           ? fetchClinvarVariantsInTranscript(args.transcriptId, ctx)
           : fetchClinvarVariantsInGene(obj.gene_id, ctx)
       },
+    },
+    pext: {
+      type: new GraphQLList(PextRegionType),
+      resolve: (obj, args, ctx) => fetchPextRegionsByGene(ctx, obj.gene_id),
     },
     transcript: {
       type: transcriptType,
