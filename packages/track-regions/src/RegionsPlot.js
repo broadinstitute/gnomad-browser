@@ -26,9 +26,9 @@ export const RegionsPlot = ({
       return (
         <rect
           key={regionKey(region)}
+          y={(height - attributes.height) / 2}
           {...attributes}
           x={x1}
-          y={(height - attributes.height) / 2}
           width={x2 - x1}
         />
       )
