@@ -6,10 +6,9 @@ import styled from 'styled-components'
 
 import { trackPropTypes } from '@broad/region-viewer'
 import { RegionsPlot } from '@broad/track-regions'
-import { Button, Checkbox } from '@broad/ui'
+import { Button } from '@broad/ui'
 
 import { TissueIsoformExpressionPlot, TissueIsoformExpressionPlotHeader } from './GTEx'
-import { Legend, LegendItem } from './Legend'
 
 const Wrapper = styled.div`
   display: flex;
@@ -138,6 +137,14 @@ const compositeTranscriptFeatureAttributes = {
   },
 }
 
+const featureTypeOrder = {
+  exon: 0,
+  UTR: 1,
+  CDS: 2,
+}
+const featureTypeCompareFn = (r1, r2) =>
+  featureTypeOrder[r1.feature_type] - featureTypeOrder[r2.feature_type]
+
 const compositeTranscriptRegionAttributes = region =>
   compositeTranscriptFeatureAttributes[region.feature_type] ||
   compositeTranscriptFeatureAttributes.default
@@ -165,10 +172,6 @@ export class TranscriptsTrack extends Component {
     currentTranscript: null,
     filenameForExport: 'transcripts',
     renderTranscriptId: transcript => <span>{transcript.transcript_id}</span>,
-  }
-
-  state = {
-    showNonCodingTranscripts: false,
   }
 
   transcriptsContainerRef = element => {
@@ -239,7 +242,6 @@ export class TranscriptsTrack extends Component {
       width,
       xScale,
     } = this.props
-    const { showNonCodingTranscripts } = this.state
 
     const StrandIcon = strand === '-' ? LeftArrow : RightArrow
 
@@ -256,7 +258,9 @@ export class TranscriptsTrack extends Component {
           <CompositePlotWrapper>
             <RegionsPlot
               height={20}
-              regions={compositeExons}
+              // Sort by feature type to ensure that when regions overlap, the most important
+              // region is at the front.
+              regions={compositeExons.sort(featureTypeCompareFn)}
               regionAttributes={compositeTranscriptRegionAttributes}
               regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
               width={width}
@@ -266,31 +270,6 @@ export class TranscriptsTrack extends Component {
 
           {transcriptFanOut && (
             <ControlPanel marginLeft={leftPanelWidth} width={width}>
-              <Legend>
-                <LegendItem
-                  color="#424242"
-                  label="CDS"
-                  height={transcriptFeatureAttributes.CDS.height}
-                />
-                <LegendItem
-                  color="#424242"
-                  label="UTR"
-                  height={transcriptFeatureAttributes.UTR.height}
-                />
-                <LegendItem
-                  color="#bdbdbd"
-                  label="Non-coding exon"
-                  height={transcriptFeatureAttributes.exon.height}
-                />
-              </Legend>
-              <Checkbox
-                checked={showNonCodingTranscripts}
-                id="transcript-track-show-non-coding"
-                label="Show non-coding transcripts"
-                onChange={checked => {
-                  this.setState({ showNonCodingTranscripts: checked })
-                }}
-              />
               <Button onClick={() => this.exportPlot()}>Save plot</Button>
             </ControlPanel>
           )}
@@ -324,8 +303,9 @@ export class TranscriptsTrack extends Component {
       transcripts,
       width,
       xScale,
+      showUTRs,
+      showNonCodingTranscripts,
     } = this.props
-    const { showNonCodingTranscripts } = this.state
 
     const renderedTranscripts = showNonCodingTranscripts
       ? transcripts
@@ -370,9 +350,16 @@ export class TranscriptsTrack extends Component {
                 data-transcript-id={transcript.transcript_id}
                 height={10}
                 regions={
-                  transcript.exons.some(exon => exon.feature_type !== 'exon')
+                  // Do not show "exon" regions for coding transcripts
+                  (transcript.exons.some(exon => exon.feature_type !== 'exon')
                     ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
                     : transcript.exons
+                  ).filter(
+                    exon =>
+                      exon.feature_type === 'CDS' ||
+                      (exon.feature_type === 'UTR' && showUTRs) ||
+                      (exon.feature_type === 'exon' && showNonCodingTranscripts)
+                  )
                 }
                 regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
                 regionAttributes={transcriptRegionAttributes}
