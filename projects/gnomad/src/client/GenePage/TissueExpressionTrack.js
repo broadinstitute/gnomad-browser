@@ -113,7 +113,9 @@ class TissueExpressionTrack extends Component {
     const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
       GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
     )
-    const isExpressed = tissues.reduce(
+
+    const isExpressed = expressionRegions.some(region => region.mean !== 0)
+    const isExpressedInTissue = tissues.reduce(
       (acc, tissue) => ({
         ...acc,
         [tissue]: expressionRegions.some(region => region.tissues[tissue] !== 0),
@@ -129,7 +131,9 @@ class TissueExpressionTrack extends Component {
     return (
       <Wrapper>
         <TopPanel marginLeft={leftPanelWidth} width={width}>
-          <Button onClick={this.toggleExpanded}>{isExpanded ? 'Hide' : 'Show'} all tissues</Button>
+          <Button disabled={!isExpressed} onClick={this.toggleExpanded}>
+            {isExpanded ? 'Hide' : 'Show'} all tissues
+          </Button>
         </TopPanel>
         <InnerWrapper>
           <SidePanel width={leftPanelWidth}>
@@ -140,34 +144,38 @@ class TissueExpressionTrack extends Component {
               ))}
           </SidePanel>
           <CenterPanel width={width}>
-            <PlotWrapper>
-              <RegionsPlot
-                axisColor="rgba(0,0,0,0)"
-                height={20}
-                regionAttributes={region => {
-                  const height = heightScale(region.mean)
-                  return {
-                    fill: '#428bca',
-                    stroke: '#428bca',
-                    height,
-                    y: 20 - height,
-                  }
-                }}
-                regions={expressionRegions}
-                width={width}
-                xScale={xScale}
-              />
-              <RegionsPlot
-                axisColor="rgba(0,0,0,0)"
-                height={1}
-                regions={exons}
-                width={width}
-                xScale={xScale}
-              />
-            </PlotWrapper>
+            {isExpressed ? (
+              <PlotWrapper>
+                <RegionsPlot
+                  axisColor="rgba(0,0,0,0)"
+                  height={20}
+                  regionAttributes={region => {
+                    const height = heightScale(region.mean)
+                    return {
+                      fill: '#428bca',
+                      stroke: '#428bca',
+                      height,
+                      y: 20 - height,
+                    }
+                  }}
+                  regions={expressionRegions}
+                  width={width}
+                  xScale={xScale}
+                />
+                <RegionsPlot
+                  axisColor="rgba(0,0,0,0)"
+                  height={1}
+                  regions={exons}
+                  width={width}
+                  xScale={xScale}
+                />
+              </PlotWrapper>
+            ) : (
+              <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
+            )}
             {isExpanded &&
               tissues.map(tissue => {
-                if (!isExpressed[tissue]) {
+                if (!isExpressedInTissue[tissue]) {
                   return (
                     <NotExpressedMessage key={tissue}>
                       Gene is not expressed in this tissue
