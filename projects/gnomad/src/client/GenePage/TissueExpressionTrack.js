@@ -212,7 +212,7 @@ class TissueExpressionTrack extends Component {
                 )
               })}
           </CenterPanel>
-          {rightPanelWidth && (
+          {rightPanelWidth > 20 && (
             <SidePanel width={rightPanelWidth}>
               {['mean'].concat(isExpanded ? tissues : []).map(tissue => (
                 <svg key={tissue} width={rightPanelWidth} height={31}>
