@@ -24,6 +24,7 @@
           "relatedness-filtering",
           "vep",
           "gene-constraint",
+          "pext",
           "regional-constraint",
           "faf"
         ]

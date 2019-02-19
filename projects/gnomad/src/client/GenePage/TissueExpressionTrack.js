@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { trackPropTypes } from '@broad/region-viewer'
 import { RegionsPlot } from '@broad/track-regions'
 import { Button } from '@broad/ui'
@@ -131,6 +132,7 @@ class TissueExpressionTrack extends Component {
                 {isExpanded ? 'Hide' : 'Show'} tissues
               </Button>
               <span style={{ marginRight: '0.5em', textAlign: 'right' }}>Mean pext</span>
+              <QuestionMark display="inline" topic="pext" padding="0" />
             </TissueName>
           </SidePanel>
           <CenterPanel width={width}>
