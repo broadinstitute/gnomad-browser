@@ -6,15 +6,22 @@ The pext score, presented in the 2019 gnomAD companion preprint, summarizes isof
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript across GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![alt text](https://github.com/macarthur-lab/gnomad-docs/blob/master/docs/for_gnomad_browser.png)
 
-We do this for every GTEx tissue, and then normalize the expression values by the expression of the gene in the tissue. This is the baselevel pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the variant annotation in question.
+We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the baselevel pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. In other words, it can be thought of as an exon-usage type metric.
 
 ## Important difference between annotation-level and base-level pext 
 For the base-level pext value, we sum the expression of all transcripts that touch that base, whereas for an annotation-level we only sum the expression of transcripts on which a variant has a given annotation. For example imagine a case where
 
 ```
-chr1:32423  
+CHROM    POS   REF  ALT   CONSEQUENCES
+  X     34242   C    T    ENST1: missense,
+                          ENST2: missense,
+                          ENST3: stop_gained
+```
+- In this case, the baselevel expression value is the sum of the expression of ENST1, ENST2, and ENST3. 
+- However, if we wanted an annotation-level expression value, 
 
 
 ## Caveats
 
 ## More information 
+Check out our biorXiv pre-print for details on development, validation and utility of pext values for interpretation. We also have a detailed [github page](https://github.com/macarthur-lab/tx_annotation/) that outlines the commands to create these files, and includes steps to annotate your own variant file with pext values with any isoform expression matrix. 
