@@ -26,6 +26,7 @@ TODO
 * [gene constraint](./docs/gnomad_gene_constraint.md)
 * [aggregate quality metrics](./docs/gnomad_aggregate_quality_metrics.md)
 * [multi-nucleotide variants](./docs/gnomad_mnvs.md)
+* pext scores
 
 ## ExAC
 
