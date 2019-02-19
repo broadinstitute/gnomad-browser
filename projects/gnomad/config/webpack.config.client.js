@@ -52,7 +52,15 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin(definitions),
-    new CopyWebpackPlugin([path.resolve(__dirname, '../src/client/opensearch.xml')]),
+    new CopyWebpackPlugin(
+      [
+        path.resolve(__dirname, '../src/client/opensearch.xml'),
+        { from: path.resolve(__dirname, '../gnomad-docs/docs/pext.png'), to: 'assets/pext.png' },
+      ],
+      {
+        writeToDisk: true,
+      }
+    ),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/client/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,
