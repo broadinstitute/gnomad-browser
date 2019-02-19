@@ -125,7 +125,7 @@ const createRef = () => {
 
 const DataRow = ({
   index: dataRowIndex,
-  data: { columns, columnWidths, data, focusedCell, onMouseEnter },
+  data: { cellData, columns, columnWidths, data, focusedCell, onMouseEnter },
   style,
 }) => {
   const rowData = data[dataRowIndex]
@@ -151,7 +151,7 @@ const DataRow = ({
           }
           style={{ width: columnWidths[columnIndex] }}
         >
-          {column.render(rowData, column.key)}
+          {column.render(rowData, column.key, cellData)}
         </div>
       ))}
     </div>
@@ -185,6 +185,7 @@ export class Grid extends Component {
         tooltip: PropTypes.string,
       })
     ).isRequired,
+    cellData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     data: PropTypes.arrayOf(PropTypes.any).isRequired,
     numRowsRendered: PropTypes.number,
     onHoverRow: PropTypes.func,
@@ -197,6 +198,7 @@ export class Grid extends Component {
   }
 
   static defaultProps = {
+    cellData: {},
     numRowsRendered: 20,
     onHoverRow: () => {},
     onRequestSort: undefined,
@@ -339,6 +341,7 @@ export class Grid extends Component {
 
   render() {
     const {
+      cellData,
       columns: inputColumns,
       data,
       numRowsRendered,
@@ -458,6 +461,7 @@ export class Grid extends Component {
                   height={numRowsRendered * rowHeight - 1}
                   itemCount={data.length}
                   itemData={{
+                    cellData,
                     columns,
                     columnWidths,
                     data,
