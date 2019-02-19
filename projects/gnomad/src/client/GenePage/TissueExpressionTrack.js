@@ -19,15 +19,7 @@ const InnerWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
-`
-
-const TopPanel = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: ${props => props.width}px;
-  margin-bottom: 0.5em;
-  margin-left: ${props => props.marginLeft}px;
+  margin-top: 1em;
 `
 
 const SidePanel = styled.div`
@@ -45,12 +37,10 @@ const CenterPanel = styled.div`
 
 const TissueName = styled.div`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   height: 31px;
   margin-right: 5px;
   font-size: 10px;
-  text-align: right;
 `
 
 const PlotWrapper = styled.div`
@@ -130,18 +120,18 @@ class TissueExpressionTrack extends Component {
 
     return (
       <Wrapper>
-        <TopPanel marginLeft={leftPanelWidth} width={width}>
-          <Button disabled={!isExpressed} onClick={this.toggleExpanded}>
-            {isExpanded ? 'Hide' : 'Show'} all tissues
-          </Button>
-        </TopPanel>
         <InnerWrapper>
           <SidePanel width={leftPanelWidth}>
-            <TissueName style={{ fontSize: '12px' }}>Average pext across GTEx</TissueName>
-            {isExpanded &&
-              tissues.map(tissue => (
-                <TissueName key={tissue}>{GTEX_TISSUE_NAMES[tissue]}</TissueName>
-              ))}
+            <TissueName style={{ fontSize: '12px', justifyContent: 'space-between' }}>
+              <Button
+                disabled={!isExpressed}
+                style={{ width: '70px', paddingLeft: '0.25em', paddingRight: '0.25em' }}
+                onClick={this.toggleExpanded}
+              >
+                {isExpanded ? 'Hide' : 'Show'} tissues
+              </Button>
+              <span style={{ marginRight: '0.5em', textAlign: 'right' }}>Mean pext</span>
+            </TissueName>
           </SidePanel>
           <CenterPanel width={width}>
             {isExpressed ? (
@@ -173,8 +163,34 @@ class TissueExpressionTrack extends Component {
             ) : (
               <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
             )}
-            {isExpanded &&
-              tissues.map(tissue => {
+          </CenterPanel>
+          <SidePanel>
+            <svg width={rightPanelWidth} height={31}>
+              <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
+              <g transform="translate(0, 6)">
+                <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                <text x={5} y={0} dy="0.3em" fill="#000" fontSize={10} textAnchor="start">
+                  1
+                </text>
+              </g>
+              <g transform="translate(0, 24)">
+                <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                <text x={5} y={0} dy="0.2em" fill="#000" fontSize={10} textAnchor="start">
+                  0
+                </text>
+              </g>
+            </svg>
+          </SidePanel>
+        </InnerWrapper>
+        {isExpanded && (
+          <InnerWrapper>
+            <SidePanel width={leftPanelWidth}>
+              {tissues.map(tissue => (
+                <TissueName key={tissue}>{GTEX_TISSUE_NAMES[tissue]}</TissueName>
+              ))}
+            </SidePanel>
+            <CenterPanel>
+              {tissues.map(tissue => {
                 if (!isExpressedInTissue[tissue]) {
                   return (
                     <NotExpressedMessage key={tissue}>
@@ -211,29 +227,30 @@ class TissueExpressionTrack extends Component {
                   </PlotWrapper>
                 )
               })}
-          </CenterPanel>
-          {rightPanelWidth > 20 && (
-            <SidePanel width={rightPanelWidth}>
-              {['mean'].concat(isExpanded ? tissues : []).map(tissue => (
-                <svg key={tissue} width={rightPanelWidth} height={31}>
-                  <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
-                  <g transform="translate(0, 6)">
-                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-                    <text x={5} y={0} dy="0.3em" fill="#000" fontSize={10} textAnchor="start">
-                      1
-                    </text>
-                  </g>
-                  <g transform="translate(0, 24)">
-                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-                    <text x={5} y={0} dy="0.2em" fill="#000" fontSize={10} textAnchor="start">
-                      0
-                    </text>
-                  </g>
-                </svg>
-              ))}
-            </SidePanel>
-          )}
-        </InnerWrapper>
+            </CenterPanel>
+            {rightPanelWidth > 20 && (
+              <SidePanel width={rightPanelWidth}>
+                {tissues.map(tissue => (
+                  <svg key={tissue} width={rightPanelWidth} height={31}>
+                    <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
+                    <g transform="translate(0, 6)">
+                      <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                      <text x={5} y={0} dy="0.3em" fill="#000" fontSize={10} textAnchor="start">
+                        1
+                      </text>
+                    </g>
+                    <g transform="translate(0, 24)">
+                      <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                      <text x={5} y={0} dy="0.2em" fill="#000" fontSize={10} textAnchor="start">
+                        0
+                      </text>
+                    </g>
+                  </svg>
+                ))}
+              </SidePanel>
+            )}
+          </InnerWrapper>
+        )}
       </Wrapper>
     )
   }
