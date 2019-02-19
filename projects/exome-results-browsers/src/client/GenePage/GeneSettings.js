@@ -13,6 +13,8 @@ import { Checkbox, Combobox, ConsequenceCategoriesControl, SearchInput } from '@
 
 import browserConfig from '@browser/config'
 
+import ExportVariantsButton from './ExportVariantsButton'
+
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -41,7 +43,19 @@ const FiltersWrapper = styled.div`
 `
 
 const AnalysisGroupMenuWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 1em;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+
+  @media (min-width: 701px) {
+    label {
+      margin-right: 0.5em;
+    }
+  }
 `
 
 const FiltersFirstColumn = styled.div`
@@ -90,6 +104,7 @@ const SearchWrapper = styled.div`
 const GeneSettings = ({
   consequenceFilter,
   deNovoFilter,
+  geneId,
   inAnalysisFilter,
   onChangeAnalysisGroup,
   searchVariants,
@@ -120,6 +135,7 @@ const GeneSettings = ({
               onSelect={option => onChangeAnalysisGroup(option.id)}
               value={selectedAnalysisGroup}
             />
+            <ExportVariantsButton exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`} />
           </AnalysisGroupMenuWrapper>
         )}
       </FiltersFirstColumn>
@@ -158,6 +174,7 @@ GeneSettings.propTypes = {
     other: PropTypes.bool.isRequired,
   }).isRequired,
   deNovoFilter: PropTypes.bool.isRequired,
+  geneId: PropTypes.string.isRequired,
   inAnalysisFilter: PropTypes.bool.isRequired,
   onChangeAnalysisGroup: PropTypes.func.isRequired,
   searchVariants: PropTypes.func.isRequired,
