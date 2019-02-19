@@ -25,7 +25,7 @@ CHROM    POS   REF  ALT   CONSEQUENCES
 - The base-level pext value is the sum of the expression of ENST1, ENST2, and ENST3 divided by the gene expression value
 - The annotation-level pext value is the sum of expression of ENST1 and ENST2 for the missense annotation, and the expression value of ENST3 for the stop gained annotation, each divided by the gene expression value. 
 
-Therefore it's important to note that *the base-level pext value represents a maximum of the position, and will always be higher than the annotation-level pext value*. Therefore just because a position has a high base-level pext value doesn't mean a pLoF annotated at that position will have a high annotation-level pext value. 
+Therefore it's important to note that **the base-level pext value represents a maximum of the position, and will always be higher than the annotation-level pext value**. Therefore just because a position has a high base-level pext value doesn't mean a pLoF annotated at that position will have a high annotation-level pext value. 
 
 #### Caveats
 We note that the pext values are derived from isoform quantifications using the RSEM tool. Isoform quantification tools can be imprecise, especially for longer genes with many annotated isoforms. While we have manually curated a set of regions with low pext values, and find that they are enriched for annotation errors, domain knowledge of a gene will outperform this summary metric (ie. there may be edge cases for which an exon that is established to beritical for gene function may appear unexpressed in the browser). We also note that the GTEx v7 dataset is postmortem adult tissue, and thus we cannot dismiss the probability that an exon may be development-specific. 
