@@ -6,7 +6,7 @@ The pext score, presented in the 2019 gnomAD companion preprint, summarizes isof
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript across GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![alt text](https://github.com/macarthur-lab/gnomad-docs/blob/master/docs/for_gnomad_browser.png)
 
-We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the baselevel pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. In other words, it can be thought of as an exon-usage type metric.
+We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the baselevel pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. It can also be thought of as an exon-usage type metric.
 
 #### How is this useful? 
 This visualization will show you how much an exon is expressed accross tissues. 
