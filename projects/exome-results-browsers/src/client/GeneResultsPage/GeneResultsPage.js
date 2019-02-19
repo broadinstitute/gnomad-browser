@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Combobox, Page, PageHeading, SearchInput } from '@broad/ui'
+import { Button, Combobox, Page, PageHeading, SearchInput } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
+import downloadCSV from '../downloadCSV'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
+import columns from './geneResultColumns'
 import GeneResultsTable from './GeneResultsTable'
 
 const geneResultsQuery = `
@@ -29,6 +31,11 @@ const geneResultsQuery = `
 const ControlSection = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1em;
+`
+
+const AnalysisGroupMenuWrapper = styled.div`
   margin-bottom: 1em;
 `
 
@@ -47,6 +54,7 @@ class GeneResultsPage extends Component {
         <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
         <Query query={geneResultsQuery} variables={{ analysisGroup: selectedAnalysisGroup }}>
           {({ data, error, loading }) => {
+            let results = []
             let resultsContent
             if (loading) {
               resultsContent = <StatusMessage>Loading gene results...</StatusMessage>
@@ -57,7 +65,7 @@ class GeneResultsPage extends Component {
                 (result.gene_name || '').includes(searchText)
               )
 
-              const shapedResults = filteredResults.map(result => {
+              results = filteredResults.map(result => {
                 const resultCopy = { ...result }
                 result.categories.forEach(c => {
                   resultCopy[`xcase_${c.id}`] = c.xcase
@@ -67,33 +75,51 @@ class GeneResultsPage extends Component {
                 return resultCopy
               })
 
-              results = <GeneResultsTable results={shapedResults} />
+              resultsContent = <GeneResultsTable results={results} />
             }
 
             return (
               <div>
                 <ControlSection>
-                  {numAvailableGroups > 1 && (
-                    <div>
-                      {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
-                      <label htmlFor="analysis-group-menu">Current analysis group </label>
-                      <Combobox
-                        id="analysis-group-menu"
-                        options={browserConfig.analysisGroups.selectableGroups.map(
-                          analysisGroup => ({
-                            analysisGroup,
-                            label: analysisGroup,
-                          })
-                        )}
-                        value={selectedAnalysisGroup}
-                        onSelect={({ analysisGroup }) => {
-                          this.setState({ selectedAnalysisGroup: analysisGroup })
-                        }}
-                      />
-                    </div>
-                  )}
+                  <div>
+                    {numAvailableGroups > 1 && (
+                      <AnalysisGroupMenuWrapper>
+                        {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
+                        <label htmlFor="analysis-group-menu">Current analysis group </label>
+                        <Combobox
+                          disabled={error || loading}
+                          id="analysis-group-menu"
+                          options={browserConfig.analysisGroups.selectableGroups.map(
+                            analysisGroup => ({
+                              analysisGroup,
+                              label: analysisGroup,
+                            })
+                          )}
+                          value={selectedAnalysisGroup}
+                          onSelect={({ analysisGroup }) => {
+                            this.setState({ selectedAnalysisGroup: analysisGroup })
+                          }}
+                        />
+                      </AnalysisGroupMenuWrapper>
+                    )}
+
+                    <Button
+                      disabled={error || loading}
+                      onClick={() => {
+                        const headerRow = columns.map(col => col.heading)
+                        const dataRows = results.map(result => columns.map(col => result[col.key]))
+                        downloadCSV(
+                          [headerRow].concat(dataRows),
+                          `${selectedAnalysisGroup}_results`
+                        )
+                      }}
+                    >
+                      Export results to CSV
+                    </Button>
+                  </div>
 
                   <SearchInput
+                    disabled={error || loading}
                     placeholder="Search results by gene"
                     onChange={value => {
                       this.setState({ searchText: value.toUpperCase() })

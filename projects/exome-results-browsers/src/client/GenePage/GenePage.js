@@ -48,6 +48,7 @@ class GenePage extends Component {
               ) : (
                 <TrackPageSection>
                   <GeneSettings
+                    geneId={gene.gene_id}
                     selectedAnalysisGroup={selectedAnalysisGroup}
                     onChangeAnalysisGroup={analysisGroup => {
                       this.setState({ selectedAnalysisGroup: analysisGroup })

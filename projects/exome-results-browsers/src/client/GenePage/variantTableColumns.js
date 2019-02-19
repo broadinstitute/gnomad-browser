@@ -111,6 +111,7 @@ const columns = [
         <Highlighter searchWords={highlightWords} textToHighlight={getConsequenceName(row[key])} />
       </span>
     ),
+    renderForCSV: (row, key) => getConsequenceName(row[key]),
   },
   {
     key: 'ac_case',
@@ -178,7 +179,8 @@ const columns = [
     tooltip: browserConfig.variantTable.tooltips.in_analysis,
     isSortable: true,
     minWidth: 60,
-    render: (row, key) => row[key] && 'yes',
+    render: (row, key) => (row[key] ? 'yes' : ''),
+    renderForCSV: (row, key) => (row[key] ? 'yes' : ''),
   },
 ]
 
