@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-
-// TODO: After upgrading to React 16, use react-popper's Manager/Popper/Reference
-import { InnerPopper } from 'react-popper/lib/cjs/Popper'
+import { Manager, Popper, Reference } from 'react-popper'
 
 import { DefaultTooltip } from './DefaultTooltip'
 import { Arrow, Container } from './styles'
@@ -20,67 +18,69 @@ export class TooltipAnchor extends Component {
     tooltipComponent: DefaultTooltip,
   }
 
-  componentDidUpdate() {
-    if (this.containerElement) {
-      this.renderTooltipInPortal()
-    }
+  state = {
+    isVisible: false,
+  }
+
+  constructor(props) {
+    super(props)
+    this.containerElement = document.createElement('div')
+  }
+
+  componentDidMount() {
+    document.body.appendChild(this.containerElement)
   }
 
   componentWillUnmount() {
-    this.removeTooltip()
+    document.body.removeChild(this.containerElement)
   }
 
-  referenceElementRef = el => {
-    this.referenceElement = el
+  showTooltip = () => {
+    this.setState({ isVisible: true })
   }
 
-  removeTooltip = () => {
-    if (this.containerElement) {
-      ReactDOM.unmountComponentAtNode(this.containerElement)
-      document.body.removeChild(this.containerElement)
-      this.containerElement = null
-    }
+  hideTooltip = () => {
+    this.setState({ isVisible: false })
   }
 
-  renderTooltipContent = ({ ref, style, placement, arrowProps }) => {
+  render() {
     const {
       children,
+      childRefPropName,
       // https://reactjs.org/docs/jsx-in-depth.html#user-defined-components-must-be-capitalized
       tooltipComponent: TooltipComponent,
       ...otherProps
     } = this.props
+    const { isVisible } = this.state
 
     return (
-      <Container data-placement={placement} innerRef={ref} style={style}>
-        <TooltipComponent {...otherProps} />
-        <Arrow data-placement={placement} innerRef={arrowProps.ref} style={arrowProps.style} />
-      </Container>
+      <Manager>
+        <Reference>
+          {({ ref }) =>
+            React.cloneElement(React.Children.only(children), {
+              onMouseEnter: this.showTooltip,
+              onMouseLeave: this.hideTooltip,
+              [childRefPropName]: ref,
+            })
+          }
+        </Reference>
+        {isVisible &&
+          ReactDOM.createPortal(
+            <Popper placement="top">
+              {({ ref, style, placement, arrowProps }) => (
+                <Container data-placement={placement} innerRef={ref} style={style}>
+                  <TooltipComponent {...otherProps} />
+                  <Arrow
+                    data-placement={placement}
+                    innerRef={arrowProps.ref}
+                    style={arrowProps.style}
+                  />
+                </Container>
+              )}
+            </Popper>,
+            this.containerElement
+          )}
+      </Manager>
     )
-  }
-
-  renderTooltipInPortal = () => {
-    if (!this.containerElement) {
-      this.containerElement = document.createElement('div')
-      document.body.appendChild(this.containerElement)
-    }
-
-    // TODO: After upgrading to React 16, use ReactDOM.createPortal
-    ReactDOM.unstable_renderSubtreeIntoContainer(
-      this,
-      <InnerPopper placement="top" positionFixed referenceElement={this.referenceElement}>
-        {this.renderTooltipContent}
-      </InnerPopper>,
-      this.containerElement
-    )
-  }
-
-  render() {
-    const { children, childRefPropName } = this.props
-    const child = React.Children.only(children)
-    return React.cloneElement(child, {
-      onMouseEnter: this.renderTooltipInPortal,
-      onMouseLeave: this.removeTooltip,
-      [childRefPropName]: this.referenceElementRef,
-    })
   }
 }

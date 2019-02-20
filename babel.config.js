@@ -18,6 +18,7 @@ module.exports = {
     '@babel/plugin-proposal-object-rest-spread',
     '@babel/plugin-proposal-class-properties',
     'inline-react-svg',
+    'react-hot-loader/babel',
     'styled-components',
     [
       'module-resolver',

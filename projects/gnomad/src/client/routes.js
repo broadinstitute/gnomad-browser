@@ -1,5 +1,6 @@
 import React from 'react'
 import queryString from 'query-string'
+import { hot } from 'react-hot-loader/root'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -108,4 +109,4 @@ const App = () => (
   </div>
 )
 
-export default App
+export default hot(App)

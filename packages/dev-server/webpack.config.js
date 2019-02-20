@@ -10,7 +10,7 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: ['react-hot-loader/patch', './src/index.js'],
+    bundle: './src/index.js',
   },
   mode: 'development',
   module: {
@@ -31,5 +31,10 @@ module.exports = {
     path: path.resolve(__dirname, './public/static/js'),
     publicPath: '/static/js',
     filename: '[name].js',
+  },
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
 }

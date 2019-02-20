@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "react-hot-loader": "^3.0.0-beta.6",
+    "react-hot-loader": "^4.7.0",
     "webpack": "^4.25.1",
     "webpack-dev-server": "^3.1.10"
   }

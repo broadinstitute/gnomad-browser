@@ -12,10 +12,10 @@
     "d3-scale": "^1.0.6",
     "d3-shape": "^1.2.0",
     "polished": "^1.9.3",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": "^15.5.4",
+    "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }
 }

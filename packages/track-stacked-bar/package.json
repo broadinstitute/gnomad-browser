@@ -15,9 +15,9 @@
   },
   "peerDependencies": {
     "@broad/region": "*",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.7.2",
     "ramda": "^0.24.1",
-    "react": "^15.5.4",
+    "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }
 }

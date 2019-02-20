@@ -1,4 +1,5 @@
 import React from 'react'
+import { hot } from 'react-hot-loader/root'
 import styled from 'styled-components'
 
 import TestComponent from './current'
@@ -6,15 +7,12 @@ import TestComponent from './current'
 const DemoRoot = styled.div`
   color: black;
   font-size: 12px;
-}
 `
 
-const Demo = () => {
-  return (
-    <DemoRoot>
-      <TestComponent />
-    </DemoRoot>
-  )
-}
+const Demo = () => (
+  <DemoRoot>
+    <TestComponent />
+  </DemoRoot>
+)
 
-export default Demo
+export default hot(Demo)

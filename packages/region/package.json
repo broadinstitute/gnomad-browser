@@ -11,11 +11,11 @@
     "@broad/ui": "*",
     "immutable": "^4.0.0-rc.9",
     "keymirror": "^0.1.1",
-    "prop-types": "^15.5.10",
-    "react-redux": "^5.0.6",
+    "prop-types": "^15.7.2",
+    "react-redux": "^6.0.0",
     "reselect": "^3.0.1"
   },
   "peerDependencies": {
-    "react": "^15.5.4"
+    "react": "^16.8.2"
   }
 }

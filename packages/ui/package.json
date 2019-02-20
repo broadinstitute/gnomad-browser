@@ -10,7 +10,7 @@
     "@fortawesome/fontawesome-free": "^5.3.1",
     "mousetrap": "^1.6.1",
     "polished": "^1.9.3",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.7.2",
     "react-aria-modal": "^2.12.2",
     "react-aria-tabpanel": "^4.4.0",
     "react-autocomplete": "^1.8.1",
@@ -19,8 +19,8 @@
     "react-window": "^1.2.2"
   },
   "peerDependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
     "styled-components": "^2.1.2"
   }
 }
