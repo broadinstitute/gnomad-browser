@@ -11,11 +11,11 @@
     "@broad/table": "*",
     "@broad/track-variant": "*",
     "d3-scale": "^1.0.6",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.7.2",
     "react-cursor-position": "^2.1.0"
   },
   "peerDependencies": {
-    "react": "^15.5.4",
+    "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }
 }

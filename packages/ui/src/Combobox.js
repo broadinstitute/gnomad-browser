@@ -114,7 +114,9 @@ export class Combobox extends Component {
         menuStyle={menuStyle}
         renderInput={this.renderInput}
         renderItem={(item, isHighlighted) => (
-          <Item isHighlighted={isHighlighted}>{renderOption(item)}</Item>
+          <Item key={item.label} isHighlighted={isHighlighted}>
+            {renderOption(item)}
+          </Item>
         )}
         shouldItemRender={this.shouldItemRender}
         value={inputValue}

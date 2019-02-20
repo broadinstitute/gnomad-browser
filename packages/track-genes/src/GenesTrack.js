@@ -65,7 +65,7 @@ const GenesTrack = ({
               const geneStart = xScale(gene.start)
               const geneStop = xScale(gene.stop)
               return (
-                <GeneGroup>
+                <GeneGroup key={gene.gene_id}>
                   <text
                     x={(geneStop + geneStart) / 2}
                     y={textYPosition}

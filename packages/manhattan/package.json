@@ -12,6 +12,6 @@
     "d3-scale": "^1.0.6"
   },
   "peerDependencies": {
-    "react": "^15.5.4"
+    "react": "^16.8.2"
   }
 }

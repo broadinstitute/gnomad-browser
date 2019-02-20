@@ -1,4 +1,5 @@
 import React from 'react'
+import { hot } from 'react-hot-loader/root'
 import styled from 'styled-components'
 import { Route } from 'react-router-dom'
 import HomePage from './HomePage'
@@ -38,4 +39,4 @@ const App = () => (
   </Root>
 )
 
-export default App
+export default hot(App)

@@ -39,12 +39,12 @@ const GenePageContainer = ComposedComponent => class GenePage extends Component 
     fetchGeneDiseases()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { fetchGeneIfNeeded, currentDisease, currentGene, history } = this.props  // eslint-disable-line
-    if (currentGene !== nextProps.currentGene) {
+    if (currentGene !== prevProps.currentGene) {
       // if(this.props.route.path == nextProps.route.path) return false
-      history.push(`/gene/${nextProps.currentGene}`)
-      fetchGeneIfNeeded(nextProps.currentGene)
+      history.push(`/gene/${currentGene}`)
+      fetchGeneIfNeeded(currentGene)
       this.props.resetSearchVariants()
     }
   }

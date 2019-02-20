@@ -66,7 +66,7 @@ const config = {
 }
 
 if (isDev) {
-  config.entry.bundle = ['react-hot-loader/patch', config.entry.bundle]
+  config.resolve.alias['react-dom'] = '@hot-loader/react-dom'
 }
 
 module.exports = config

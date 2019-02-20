@@ -5,6 +5,7 @@ export {
 } from './GenesTrack'
 
 export const formatGenes = genes => genes.map(gene => ({
+  gene_id: gene.gene_id,
   name: gene.gene_name,
   start: gene.start,
   stop: gene.stop,

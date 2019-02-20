@@ -109,20 +109,6 @@ GridHeadingTooltip.propTypes = {
   tooltip: PropTypes.string.isRequired,
 }
 
-// TODO: Replace this with React.createRef
-const createRef = () => {
-  let currentValue = null
-  const callbackRef = value => {
-    currentValue = value
-  }
-  Object.defineProperty(callbackRef, 'current', {
-    get() {
-      return currentValue
-    },
-  })
-  return callbackRef
-}
-
 const DataRow = ({
   index: dataRowIndex,
   data: { cellData, columns, columnWidths, data, focusedCell, onMouseEnter },
@@ -213,9 +199,9 @@ export class Grid extends Component {
 
   focusedElement = null
 
-  gridElement = createRef()
+  gridElement = React.createRef()
 
-  list = createRef()
+  list = React.createRef()
 
   // https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
   onFocus = e => {

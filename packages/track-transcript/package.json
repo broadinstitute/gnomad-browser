@@ -14,12 +14,12 @@
     "@broad/ui": "*",
     "@fortawesome/fontawesome-free": "^5.3.1",
     "d3-scale": "^1.0.6",
-    "prop-types": "^15.5.10",
-    "react-redux": "^5.0.6",
+    "prop-types": "^15.7.2",
+    "react-redux": "^6.0.0",
     "redux": "^3.6.0"
   },
   "peerDependencies": {
-    "react": "^15.5.4",
+    "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }
 }

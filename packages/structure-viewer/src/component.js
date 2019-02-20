@@ -23,13 +23,15 @@ class VariantsStructure extends Component {
   componentDidMount() {
     this.props.searchPdb(this.props.currentGene)
   }
-  componentWillReceiveProps(nextProps) {
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.currentPdb !== nextProps.currentPdb) {
       const { currentGene } = this.props
       this.props.fetchPdbIfNeeded(currentGene, nextProps.currentPdb)
     }
   }
-  componentWillUpdate () {
+
+  UNSAFE_componentWillUpdate () {
     if (!this.destroyed) {
       this.destroyed = true
       if (this.viewer) {

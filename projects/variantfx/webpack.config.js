@@ -14,7 +14,7 @@ const webpackConfig = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: isDev ? ['react-hot-loader/patch', './src/index.js'] : ['./src/index.js'],
+    bundle: './src/index.js',
   },
   mode: isDev ? 'development' : 'production',
   module: {
@@ -46,6 +46,14 @@ const webpackConfig = {
       ),
     }),
   ],
+}
+
+if (isDev) {
+  webpackConfig.resolve = {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
+  }
 }
 
 module.exports = webpackConfig
