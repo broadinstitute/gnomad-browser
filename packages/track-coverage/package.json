@@ -7,6 +7,7 @@
     "lib"
   ],
   "dependencies": {
+    "@broad/region-viewer": "*",
     "@broad/ui": "*",
     "@vx/axis": "^0.0.142",
     "d3-scale": "^1.0.6",

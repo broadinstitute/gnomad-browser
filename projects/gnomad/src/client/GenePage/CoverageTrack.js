@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import { CoverageTrack } from '@broad/track-coverage'
@@ -23,7 +24,7 @@ query Coverage($geneId: String!, $datasetId: DatasetId!) {
 }
 `
 
-export default ({ datasetId, geneId, ...props }) => {
+const GeneCoverageTrack = ({ datasetId, geneId }) => {
   const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
 
   return (
@@ -52,7 +53,6 @@ export default ({ datasetId, geneId, ...props }) => {
 
         return (
           <CoverageTrack
-            {...props} // forward props from RegionViewer
             datasets={coverageConfig}
             filenameForExport={() => `${geneId}_coverage`}
             height={190}
@@ -62,3 +62,10 @@ export default ({ datasetId, geneId, ...props }) => {
     </Query>
   )
 }
+
+GeneCoverageTrack.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  geneId: PropTypes.string.isRequired,
+}
+
+export default GeneCoverageTrack

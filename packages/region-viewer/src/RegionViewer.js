@@ -9,6 +9,8 @@ import {
   calculateXScale,
 } from './coordinates'
 
+export const RegionViewerContext = React.createContext()
+
 const RegionViewerWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -68,7 +70,9 @@ export class RegionViewer extends Component {
 
     return (
       <RegionViewerWrapper width={width + leftPanelWidth + rightPanelWidth}>
-        {this.renderChildren(childProps)}
+        <RegionViewerContext.Provider value={childProps}>
+          {this.renderChildren(childProps)}
+        </RegionViewerContext.Provider>
       </RegionViewerWrapper>
     )
   }

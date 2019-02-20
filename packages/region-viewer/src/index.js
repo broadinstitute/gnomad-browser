@@ -1,3 +1,3 @@
-export { RegionViewer } from './RegionViewer'
+export { RegionViewer, RegionViewerContext } from './RegionViewer'
 
 export { trackPropTypes, getTrackProps } from './trackProps'
