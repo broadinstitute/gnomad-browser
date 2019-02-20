@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import { CoverageTrack } from '@broad/track-coverage'
@@ -21,7 +22,7 @@ query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $datasetId:
 }
 `
 
-export default ({ datasetId, chrom, start, stop, ...props }) => {
+const RegionCoverageTrack = ({ datasetId, chrom, start, stop }) => {
   const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
 
   return (
@@ -52,7 +53,6 @@ export default ({ datasetId, chrom, start, stop, ...props }) => {
 
         return (
           <CoverageTrack
-            {...props} // forward props from RegionViewer
             datasets={coverageConfig}
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
             height={200}
@@ -62,3 +62,12 @@ export default ({ datasetId, chrom, start, stop, ...props }) => {
     </Query>
   )
 }
+
+RegionCoverageTrack.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  chrom: PropTypes.string.isRequired,
+  start: PropTypes.number.isRequired,
+  stop: PropTypes.number.isRequired,
+}
+
+export default RegionCoverageTrack

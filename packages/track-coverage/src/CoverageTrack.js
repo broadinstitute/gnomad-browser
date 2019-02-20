@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { AxisLeft } from '@vx/axis'
 
+import { RegionViewerContext } from '@broad/region-viewer'
 import { Button } from '@broad/ui'
 
 import { Legend } from './Legend'
@@ -41,20 +42,6 @@ export class CoverageTrack extends Component {
     ).isRequired,
     filenameForExport: PropTypes.func,
     height: PropTypes.number,
-
-    // track props
-    /* eslint-disable react/require-default-props */
-    leftPanelWidth: PropTypes.number,
-    offsetRegions: PropTypes.arrayOf(
-      PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        stop: PropTypes.number.isRequired,
-      })
-    ),
-    positionOffset: PropTypes.func,
-    width: PropTypes.number,
-    xScale: PropTypes.func,
-    /* eslint-enable react/require-default-props */
   }
 
   static defaultProps = {
@@ -112,8 +99,8 @@ export class CoverageTrack extends Component {
     ))
   }
 
-  renderBars({ scaleCoverageMetric, scalePosition, totalBases }) {
-    const { datasets, height, offsetRegions, width } = this.props
+  renderBars({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width }) {
+    const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
     const barWidth = width / totalBases - 1
@@ -147,57 +134,61 @@ export class CoverageTrack extends Component {
     ))
   }
 
-  renderPlot({ scaleCoverageMetric, scalePosition }) {
-    const { offsetRegions } = this.props
+  renderPlot({ offsetRegions, scaleCoverageMetric, scalePosition, width }) {
     const totalBases = offsetRegions.reduce((acc, region) => acc + region.stop - region.start, 0)
     return totalBases < 100
-      ? this.renderBars({ scaleCoverageMetric, scalePosition, totalBases })
-      : this.renderArea({ scaleCoverageMetric, scalePosition })
+      ? this.renderBars({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width })
+      : this.renderArea({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width })
   }
 
   render() {
-    const { datasets, height, leftPanelWidth, positionOffset, width, xScale } = this.props
-
-    const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
-    const scaleCoverageMetric = scaleLinear()
-      .domain([0, 100])
-      .range([height, 7])
-
-    const axisWidth = 60
+    const { datasets, height } = this.props
 
     return (
-      <Wrapper>
-        <TopPanel marginLeft={leftPanelWidth} width={width}>
-          <Legend datasets={datasets} />
-          <Button onClick={() => this.exportPlot()}>Save plot</Button>
-        </TopPanel>
-        <div style={{ marginLeft: leftPanelWidth - axisWidth }}>
-          <svg ref={this.plotRef} height={height} width={axisWidth + width}>
-            <AxisLeft
-              hideZero
-              label="Coverage"
-              labelProps={{
-                fontSize: 14,
-                textAnchor: 'middle',
-              }}
-              left={axisWidth}
-              tickLabelProps={() => ({
-                dx: '-0.25em',
-                dy: '0.25em',
-                fill: '#000',
-                fontSize: 10,
-                textAnchor: 'end',
-              })}
-              scale={scaleCoverageMetric}
-              stroke="#333"
-            />
-            <g transform={`translate(${axisWidth},0)`}>
-              {this.renderPlot({ scalePosition, scaleCoverageMetric })}
-              <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
-            </g>
-          </svg>
-        </div>
-      </Wrapper>
+      <RegionViewerContext.Consumer>
+        {({ leftPanelWidth, offsetRegions, positionOffset, width, xScale }) => {
+          const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
+          const scaleCoverageMetric = scaleLinear()
+            .domain([0, 100])
+            .range([height, 7])
+
+          const axisWidth = 60
+          return (
+            <Wrapper>
+              <TopPanel marginLeft={leftPanelWidth} width={width}>
+                <Legend datasets={datasets} />
+                <Button onClick={() => this.exportPlot()}>Save plot</Button>
+              </TopPanel>
+              <div style={{ marginLeft: leftPanelWidth - axisWidth }}>
+                <svg ref={this.plotRef} height={height} width={axisWidth + width}>
+                  <AxisLeft
+                    hideZero
+                    label="Coverage"
+                    labelProps={{
+                      fontSize: 14,
+                      textAnchor: 'middle',
+                    }}
+                    left={axisWidth}
+                    tickLabelProps={() => ({
+                      dx: '-0.25em',
+                      dy: '0.25em',
+                      fill: '#000',
+                      fontSize: 10,
+                      textAnchor: 'end',
+                    })}
+                    scale={scaleCoverageMetric}
+                    stroke="#333"
+                  />
+                  <g transform={`translate(${axisWidth},0)`}>
+                    {this.renderPlot({ offsetRegions, scalePosition, scaleCoverageMetric, width })}
+                    <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
+                  </g>
+                </svg>
+              </div>
+            </Wrapper>
+          )
+        }}
+      </RegionViewerContext.Consumer>
     )
   }
 }
