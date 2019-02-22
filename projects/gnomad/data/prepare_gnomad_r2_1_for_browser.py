@@ -245,7 +245,7 @@ ds = ds.annotate(
 # Drop keys for export to ES
 # vep is replaced with sortedTranscriptConsequences
 # lcr and segdup are moved to the flags struct
-ds = ds.order_by("variant_id").drop("locus", "alleles", "vep", "lcr", "segdup")
+ds = ds.expand_types().drop("locus", "alleles", "vep", "lcr", "segdup")
 
 #########
 # Write #
