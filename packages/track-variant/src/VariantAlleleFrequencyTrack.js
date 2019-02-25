@@ -1,40 +1,25 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { BaseVariantTrack } from './BaseVariantTrack'
+import { Track } from '@broad/region-viewer'
+
 import { VariantAlleleFrequencyPlot } from './VariantAlleleFrequencyPlot'
 
-
-export const VariantAlleleFrequencyTrack = ({
-  leftPanelWidth,
-  positionOffset,
-  title,
-  variants,
-  width,
-  xScale,
-}) => {
-  const height = 60
-
-  return (
-    <BaseVariantTrack
-      leftPanelWidth={leftPanelWidth}
-      title={title}
-      width={width}
-    >
+export const VariantAlleleFrequencyTrack = ({ height, title, variants }) => (
+  <Track title={title}>
+    {({ scalePosition, width }) => (
       <VariantAlleleFrequencyPlot
         height={height}
-        positionOffset={positionOffset}
+        scalePosition={scalePosition}
         variants={variants}
         width={width}
-        xScale={xScale}
       />
-    </BaseVariantTrack>
-  )
-}
+    )}
+  </Track>
+)
 
 VariantAlleleFrequencyTrack.propTypes = {
-  leftPanelWidth: PropTypes.number,
-  positionOffset: PropTypes.func,
+  height: PropTypes.number,
   title: PropTypes.string,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
@@ -44,10 +29,9 @@ VariantAlleleFrequencyTrack.propTypes = {
       variant_id: PropTypes.string.isRequired,
     })
   ).isRequired,
-  width: PropTypes.number,
-  xScale: PropTypes.func,
 }
 
 VariantAlleleFrequencyTrack.defaultProps = {
+  height: 60,
   title: '',
 }

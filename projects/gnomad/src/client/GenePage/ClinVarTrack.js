@@ -4,7 +4,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { variantFilter } from '@broad/redux-variants'
+import { variantFilter as variantFilterConnection } from '@broad/redux-variants'
+import { Track } from '@broad/region-viewer'
 import { StackedVariantsPlot } from '@broad/track-variant'
 import { SegmentedControl } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
@@ -33,37 +34,31 @@ function variantColor(clinvarVariant) {
   return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  margin-top: 5px;
+const Wrapper = styled.div`
+  margin-bottom: 1em;
 `
 
 const TopPanel = styled.div`
   display: flex;
-  flex-shrink: 0;
   flex-direction: row;
   justify-content: flex-end;
-  width: ${props => props.width}px;
-  margin-right: ${props => props.rightMargin}px;
-  margin-left: ${props => props.leftMargin}px;
+  width: 100%;
 `
 
-const LeftPanel = styled.div`
+const PlotWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  box-sizing: border-box;
-  width: ${props => props.width}px;
-  padding-right: 20px;
-`
-
-const CenterPanel = styled.div`
-  display: flex;
-  align-items: center;
-  width: ${props => props.width}px;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
   padding-top: 10px;
+`
+
+const TitlePanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-right: 20px;
 `
 
 const ClinVarVariantAttributeList = styled.dl`
@@ -96,7 +91,7 @@ const ClinVarVariantAttribute = ({ label, value }) => (
 
 ClinVarVariantAttribute.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.any,
+  value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
 }
 
 ClinVarVariantAttribute.defaultProps = {
@@ -140,9 +135,8 @@ class ClinVarTrack extends Component {
     isExpanded: false,
   }
 
-  renderBinnedVariants(variants) {
-    const { positionOffset, xScale, width } = this.props
-
+  // eslint-disable-next-line class-methods-use-this
+  renderBinnedVariants({ scalePosition, variants, width }) {
     const height = 30
     const nBins = 100
     const binWidth = width / nBins
@@ -150,7 +144,7 @@ class ClinVarTrack extends Component {
     const bins = [...Array(nBins)].map(() => ({ lof: 0, missense: 0, synonymous: 0, other: 0 }))
 
     const variantBinIndex = variant => {
-      const variantPosition = xScale(positionOffset(variant.pos).offsetPosition)
+      const variantPosition = scalePosition(variant.pos)
       return Math.floor(variantPosition / binWidth)
     }
 
@@ -205,23 +199,22 @@ class ClinVarTrack extends Component {
           <text x={-7} y={0} dy="0.3em" textAnchor="end">
             {maxVariantsInBin}
           </text>
-          <line x1={-5} y1={0} x2={0} y2={0} stroke={'black'} strokeWidth={1} />
+          <line x1={-5} y1={0} x2={0} y2={0} stroke="black" strokeWidth={1} />
 
           <text x={-7} y={height} dy="0.3em" textAnchor="end">
             0
           </text>
 
-          <line x1={-5} y1={height} x2={0} y2={height} stroke={'black'} strokeWidth={1} />
+          <line x1={-5} y1={height} x2={0} y2={height} stroke="black" strokeWidth={1} />
         </g>
         <g>{bins.map(renderBin)}</g>
-        <line x1={0} y1={height} x2={width} y2={height} stroke={'#424242'} />
+        <line x1={0} y1={height} x2={width} y2={height} stroke="#424242" />
       </svg>
     )
   }
 
-  renderVariants(variants) {
-    const { positionOffset, xScale, width } = this.props
-
+  // eslint-disable-next-line class-methods-use-this
+  renderVariants({ scalePosition, variants, width }) {
     const variantsByConsequence = {
       lof: [],
       missense: [],
@@ -247,18 +240,18 @@ class ClinVarTrack extends Component {
     return (
       <StackedVariantsPlot
         onClickVariant={onClickVariant}
-        positionOffset={positionOffset}
+        scalePosition={scalePosition}
         symbolColor={variantColor}
         tooltipComponent={ClinVarTooltip}
         variantLayers={layers}
         width={width}
-        xScale={xScale}
       />
     )
   }
 
   render() {
-    const { leftPanelWidth, rightPanelWidth, variants, variantFilter, width } = this.props
+    const { variants, variantFilter } = this.props
+    const { isExpanded } = this.state
 
     const isCategoryIncluded = {
       lof: variantFilter.lof,
@@ -276,34 +269,40 @@ class ClinVarTrack extends Component {
       .filter(matchesConsequenceFilter)
 
     return (
-      <Container>
-        <TopPanel leftMargin={leftPanelWidth} rightMargin={rightPanelWidth} width={width}>
-          <SegmentedControl
-            id="clinvar-track-mode"
-            options={[{ label: 'Bins', value: false }, { label: 'All variants', value: true }]}
-            value={this.state.isExpanded}
-            onChange={isExpanded => {
-              this.setState({ isExpanded })
-            }}
-          />
-        </TopPanel>
-        <LeftPanel width={leftPanelWidth}>
-          ClinVar pathogenic and likely pathogenic variants ({filteredVariants.length})
-        </LeftPanel>
-        <CenterPanel width={width}>
-          {this.state.isExpanded
-            ? this.renderVariants(filteredVariants)
-            : this.renderBinnedVariants(filteredVariants)}
-        </CenterPanel>
-      </Container>
+      <Wrapper>
+        <Track
+          renderLeftPanel={() => (
+            <TitlePanel>
+              ClinVar pathogenic and likely pathogenic variants ({filteredVariants.length})
+            </TitlePanel>
+          )}
+          renderTopPanel={() => (
+            <TopPanel>
+              <SegmentedControl
+                id="clinvar-track-mode"
+                options={[{ label: 'Bins', value: false }, { label: 'All variants', value: true }]}
+                value={isExpanded}
+                onChange={value => {
+                  this.setState({ isExpanded: value })
+                }}
+              />
+            </TopPanel>
+          )}
+        >
+          {({ scalePosition, width }) => (
+            <PlotWrapper>
+              {isExpanded
+                ? this.renderVariants({ scalePosition, variants: filteredVariants, width })
+                : this.renderBinnedVariants({ scalePosition, variants: filteredVariants, width })}
+            </PlotWrapper>
+          )}
+        </Track>
+      </Wrapper>
     )
   }
 }
 
 ClinVarTrack.propTypes = {
-  leftPanelWidth: PropTypes.number,
-  rightPanelWidth: PropTypes.number,
-  positionOffset: PropTypes.func,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
       alleleId: PropTypes.number.isRequired,
@@ -314,21 +313,16 @@ ClinVarTrack.propTypes = {
       variantId: PropTypes.string.isRequired,
     })
   ).isRequired,
-  variantFilter: PropTypes.object.isRequired,
-  width: PropTypes.number,
-  xScale: PropTypes.func,
-}
-
-ClinVarTrack.defaultProps = {
-  leftPanelWidth: undefined,
-  positionOffset: undefined,
-  rightPanelWidth: undefined,
-  width: undefined,
-  xScale: undefined,
+  variantFilter: PropTypes.shape({
+    lof: PropTypes.bool.isRequired,
+    missense: PropTypes.bool.isRequired,
+    synonymous: PropTypes.bool.isRequired,
+    other: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 const ConnectedClinVarTrack = connect(state => ({
-  variantFilter: variantFilter(state),
+  variantFilter: variantFilterConnection(state),
 }))(ClinVarTrack)
 
 export default ConnectedClinVarTrack

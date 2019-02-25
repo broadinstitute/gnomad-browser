@@ -7,14 +7,12 @@ import { TooltipAnchor } from '@broad/ui'
 const layoutStackedPoints = (dataLayers, scale, spacing) => {
   const rows = []
 
-  dataLayers.forEach((layerPoints) => {
-    layerPoints.forEach((dataPoint) => {
+  dataLayers.forEach(layerPoints => {
+    layerPoints.forEach(dataPoint => {
       const pointPosition = scale(dataPoint)
 
-      let rowIndex = rows.findIndex(
-        rowPoints => rowPoints.every(
-          point => Math.abs(point.x - pointPosition) >= spacing
-        )
+      let rowIndex = rows.findIndex(rowPoints =>
+        rowPoints.every(point => Math.abs(point.x - pointPosition) >= spacing)
       )
 
       if (rowIndex === -1) {
@@ -36,24 +34,23 @@ const layoutStackedPoints = (dataLayers, scale, spacing) => {
   }
 }
 
-
 export const StackedVariantsPlot = ({
   onClickVariant,
-  positionOffset,
   symbolColor,
   symbolSize,
   symbolSpacing,
   symbolType,
+  scalePosition,
   tooltipComponent,
   variantLayers,
   width,
-  xScale,
 }) => {
-  const x = variant => xScale(positionOffset(variant.pos).offsetPosition)
-
+  const x = variant => scalePosition(variant.pos)
   const { points, height } = layoutStackedPoints(variantLayers, x, symbolSpacing)
 
-  const symbolPath = symbol().size(symbolSize).type(symbolType)()
+  const symbolPath = symbol()
+    .size(symbolSize)
+    .type(symbolType)()
 
   return (
     <svg height={height} width={width}>
@@ -68,30 +65,24 @@ export const StackedVariantsPlot = ({
               d={symbolPath}
               transform={`translate(${point.x},${height - point.y})`}
               fill={symbolColor(point.data)}
-              stroke={'none'}
+              stroke="none"
               onClick={() => onClickVariant(point.data)}
             />
           </TooltipAnchor>
         ))}
       </g>
-      <line
-        x1={0}
-        y1={height}
-        x2={width}
-        y2={height}
-        stroke={'#424242'}
-      />
+      <line x1={0} y1={height} x2={width} y2={height} stroke="#424242" />
     </svg>
   )
 }
 
 StackedVariantsPlot.propTypes = {
   onClickVariant: PropTypes.func,
-  positionOffset: PropTypes.func.isRequired,
+  scalePosition: PropTypes.func.isRequired,
   symbolColor: PropTypes.func,
   symbolSize: PropTypes.number,
   symbolSpacing: PropTypes.number,
-  symbolType: PropTypes.object,
+  symbolType: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   tooltipComponent: PropTypes.func.isRequired,
   variantLayers: PropTypes.arrayOf(
     PropTypes.arrayOf(
@@ -102,7 +93,6 @@ StackedVariantsPlot.propTypes = {
     )
   ).isRequired,
   width: PropTypes.number.isRequired,
-  xScale: PropTypes.func.isRequired,
 }
 
 StackedVariantsPlot.defaultProps = {

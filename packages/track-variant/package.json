@@ -7,6 +7,7 @@
     "lib"
   ],
   "dependencies": {
+    "@broad/region-viewer": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
     "d3-scale": "^1.0.6",
@@ -15,7 +16,6 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": "^16.8.2",
-    "styled-components": "^2.1.2"
+    "react": "^16.8.2"
   }
 }

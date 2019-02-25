@@ -1,48 +1,44 @@
 import { scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import ReactCursorPosition from 'react-cursor-position'
 import styled from 'styled-components'
 
 import { VariantAlleleFrequencyPlot } from '@broad/track-variant'
 
 import PositionAxis from './PositionAxis'
 
-
 const afScale = scaleLog()
-  .domain([0.000010, 0.001])
+  .domain([0.00001, 0.001])
   .range([4, 12])
 
-
 const NavigatorContainer = styled.div`
-  cursor: pointer;
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: ${props => props.width}px;
+  cursor: pointer;
 `
-
 
 const NavigatorOverlay = styled.svg`
-  left: 0;
   position: absolute;
   top: 0;
+  left: 0;
 `
 
-class Navigator extends Component {
+export class Navigator extends Component {
   static propTypes = {
     height: PropTypes.number,
     hoveredVariant: PropTypes.string,
-    invertOffset: PropTypes.func.isRequired,
     isPositionOutside: PropTypes.bool,
     onNavigatorClick: PropTypes.func.isRequired,
     position: PropTypes.shape({
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired,
     }),
-    positionOffset: PropTypes.func.isRequired,
-    variants: PropTypes.object.isRequired,
+    scalePosition: PropTypes.func.isRequired,
+    variants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
     width: PropTypes.number.isRequired,
-    xScale: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -53,17 +49,13 @@ class Navigator extends Component {
   }
 
   onClick = () => {
-    const { invertOffset, onNavigatorClick, position } = this.props
-    const genomePosition = invertOffset(position.x)
+    const { onNavigatorClick, position, scalePosition } = this.props
+    const genomePosition = scalePosition.invert(position.x)
     onNavigatorClick(genomePosition)
   }
 
   renderCursor() {
-    const {
-      height,
-      isPositionOutside,
-      position,
-    } = this.props
+    const { height, isPositionOutside, position } = this.props
 
     if (isPositionOutside) {
       return null
@@ -85,23 +77,16 @@ class Navigator extends Component {
   }
 
   renderHoveredVariant(visibleVariants) {
-    const {
-      height,
-      hoveredVariant,
-      positionOffset,
-      xScale,
-    } = this.props
+    const { height, hoveredVariant, scalePosition } = this.props
 
     const variant = visibleVariants.find(v => v.variant_id === hoveredVariant)
     if (!variant) {
       return null
     }
 
-    const ry = variant.allele_freq
-      ? afScale(variant.allele_freq) + 4
-      : 4
+    const ry = variant.allele_freq ? afScale(variant.allele_freq) + 4 : 4
 
-    const x = xScale(positionOffset(variant.pos).offsetPosition)
+    const x = scalePosition(variant.pos)
 
     return (
       <ellipse
@@ -118,20 +103,13 @@ class Navigator extends Component {
   }
 
   renderVisibleVariants(visibleVariants) {
-    const {
-      height,
-      positionOffset,
-      width,
-      xScale,
-    } = this.props
-
+    const { height, scalePosition, width } = this.props
     return (
       <VariantAlleleFrequencyPlot
         height={height}
-        positionOffset={positionOffset}
+        scalePosition={scalePosition}
         variants={visibleVariants}
         width={width}
-        xScale={xScale}
       />
     )
   }
@@ -140,7 +118,7 @@ class Navigator extends Component {
     const {
       height,
       hoveredVariant,
-      invertOffset,
+      scalePosition,
       variants,
       visibleVariantWindow,
       width,
@@ -151,78 +129,14 @@ class Navigator extends Component {
       .toJS()
 
     return (
-      <NavigatorContainer
-        onClick={this.onClick}
-        onTouchStart={this.onClick}
-        width={width}
-      >
+      <NavigatorContainer onClick={this.onClick} onTouchStart={this.onClick} width={width}>
         {this.renderVisibleVariants(visibleVariants)}
         <NavigatorOverlay height={height} width={width}>
           {hoveredVariant && this.renderHoveredVariant(visibleVariants)}
           {this.renderCursor()}
         </NavigatorOverlay>
-        <PositionAxis
-          invertOffset={invertOffset}
-          width={width}
-        />
+        <PositionAxis scalePosition={scalePosition} width={width} />
       </NavigatorContainer>
     )
   }
 }
-
-
-const NavigatorTrackContainer = styled.div`
-  display: flex;
-`
-
-
-const LeftPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 60px;
-  justify-content: center;
-  width: ${props => props.width}px;
-`
-
-
-const NavigatorTrack = (props) => {
-  return (
-    <NavigatorTrackContainer>
-      <LeftPanel width={props.leftPanelWidth}>
-        {props.title}
-      </LeftPanel>
-      <ReactCursorPosition className={'cursorPosition'}>
-        <Navigator
-          hoveredVariant={props.hoveredVariant}
-          invertOffset={props.invertOffset}
-          onNavigatorClick={props.onNavigatorClick}
-          positionOffset={props.positionOffset}
-          variants={props.variants}
-          visibleVariantWindow={props.visibleVariantWindow}
-          width={props.width}
-          xScale={props.xScale}
-        />
-      </ReactCursorPosition>
-    </NavigatorTrackContainer>
-  )
-}
-
-NavigatorTrack.propTypes = {
-  hoveredVariant: PropTypes.string,
-  invertOffset: PropTypes.func.isRequired,
-  leftPanelWidth: PropTypes.number.isRequired,
-  onNavigatorClick: PropTypes.func.isRequired,
-  positionOffset: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  variants: PropTypes.object.isRequired,
-  visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
-  width: PropTypes.number.isRequired,
-  xScale: PropTypes.func.isRequired,
-}
-
-NavigatorTrack.defaultProps = {
-  hoveredVariant: null,
-  title: '',
-}
-
-export default NavigatorTrack

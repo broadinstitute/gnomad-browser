@@ -1,42 +1,26 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { BaseVariantTrack } from './BaseVariantTrack'
+import { Track } from '@broad/region-viewer'
+
 import { VariantPositionPlot } from './VariantPositionPlot'
 
-
-export const VariantPositionTrack = ({
-  leftPanelWidth,
-  positionOffset,
-  title,
-  variantColor,
-  variants,
-  width,
-  xScale,
-}) => {
-  const height = 10
-
-  return (
-    <BaseVariantTrack
-      leftPanelWidth={leftPanelWidth}
-      title={title}
-      width={width}
-    >
+export const VariantPositionTrack = ({ height, title, variantColor, variants }) => (
+  <Track title={title}>
+    {({ scalePosition, width }) => (
       <VariantPositionPlot
         height={height}
-        positionOffset={positionOffset}
+        scalePosition={scalePosition}
         variantColor={variantColor}
         variants={variants}
         width={width}
-        xScale={xScale}
       />
-    </BaseVariantTrack>
-  )
-}
+    )}
+  </Track>
+)
 
 VariantPositionTrack.propTypes = {
-  leftPanelWidth: PropTypes.number,
-  positionOffset: PropTypes.func,
+  height: PropTypes.number,
   title: PropTypes.string,
   variantColor: PropTypes.string,
   variants: PropTypes.arrayOf(
@@ -45,11 +29,10 @@ VariantPositionTrack.propTypes = {
       variant_id: PropTypes.string.isRequired,
     })
   ).isRequired,
-  width: PropTypes.number,
-  xScale: PropTypes.func,
 }
 
 VariantPositionTrack.defaultProps = {
+  height: 10,
   variantColor: '#757575',
   title: '',
 }

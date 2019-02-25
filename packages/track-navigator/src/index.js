@@ -1,7 +1,4 @@
-export {
-  default as NavigatorTrack
-} from './Navigator'
+export { Navigator } from './Navigator'
+export { NavigatorTrack } from './NavigatorTrack'
 
-export {
-  default as NavigatorTrackConnected,
-} from './NavigatorConnected'
+export { default as NavigatorTrackConnected } from './NavigatorConnected'

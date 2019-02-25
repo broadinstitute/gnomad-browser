@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "@broad/redux-variants": "*",
+    "@broad/region-viewer": "*",
     "@broad/table": "*",
     "@broad/track-variant": "*",
     "d3-scale": "^1.0.6",

@@ -7,7 +7,7 @@ import {
 } from '@broad/redux-variants'
 import { actions as tableActions, currentTableScrollWindow } from '@broad/table'
 
-import NavigatorTrack from './Navigator'
+import { NavigatorTrack } from './NavigatorTrack'
 
 const getTableIndexByPosition = (position, variants) => {
   if (variants.size === 0 || position < variants.get(0).pos) {

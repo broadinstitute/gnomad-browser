@@ -1,39 +1,28 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-
-export const VariantPositionPlot = ({
-  height,
-  positionOffset,
-  variantColor,
-  variants,
-  width,
-  xScale,
-}) => {
+export const VariantPositionPlot = ({ height, scalePosition, variantColor, variants, width }) => {
   const markerY = height / 2
   return (
     <svg height={height} width={width}>
-      {variants.map((variant) => {
-        const markerX = xScale(positionOffset(variant.pos).offsetPosition)
-        return (
-          <circle
-            key={variant.variant_id}
-            cx={markerX}
-            cy={markerY}
-            r={3}
-            fill={variantColor}
-            stroke={'black'}
-            strokeWidth={1}
-          />
-        )
-      })}
+      {variants.map(variant => (
+        <circle
+          key={variant.variant_id}
+          cx={scalePosition(variant.pos)}
+          cy={markerY}
+          r={3}
+          fill={variantColor}
+          stroke="black"
+          strokeWidth={1}
+        />
+      ))}
     </svg>
   )
 }
 
 VariantPositionPlot.propTypes = {
   height: PropTypes.number.isRequired,
-  positionOffset: PropTypes.func.isRequired,
+  scalePosition: PropTypes.func.isRequired,
   variantColor: PropTypes.string.isRequired,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
@@ -42,5 +31,4 @@ VariantPositionPlot.propTypes = {
     })
   ).isRequired,
   width: PropTypes.number.isRequired,
-  xScale: PropTypes.func.isRequired,
 }
