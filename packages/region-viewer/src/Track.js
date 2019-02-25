@@ -52,48 +52,35 @@ const defaultRenderLeftPanel = ({ title = '' }) => (
 
 export const Track = ({ children, renderLeftPanel, renderRightPanel, renderTopPanel, ...rest }) => (
   <RegionViewerContext.Consumer>
-    {({
-      invertOffset,
-      leftPanelWidth,
-      offsetRegions,
-      positionOffset,
-      rightPanelWidth,
-      width,
-      xScale,
-    }) => {
-      const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
-      scalePosition.invert = invertOffset
-
-      return (
-        <OuterWrapper>
-          {renderTopPanel && (
-            <TopPanel marginLeft={leftPanelWidth} marginRight={rightPanelWidth} width={width}>
-              {renderTopPanel({ ...rest, width })}
-            </TopPanel>
-          )}
-          <InnerWrapper>
+    {({ leftPanelWidth, offsetRegions, rightPanelWidth, scalePosition, width }) => (
+      <OuterWrapper>
+        {renderTopPanel && (
+          <TopPanel marginLeft={leftPanelWidth} marginRight={rightPanelWidth} width={width}>
+            {renderTopPanel({ ...rest, width })}
+          </TopPanel>
+        )}
+        <InnerWrapper>
+          <SidePanel width={leftPanelWidth}>
+            {renderLeftPanel && renderLeftPanel({ ...rest, width: leftPanelWidth })}
+          </SidePanel>
+          <CenterPanel width={width}>
+            {children({
+              ...rest,
+              leftPanelWidth,
+              offsetRegions,
+              rightPanelWidth,
+              scalePosition,
+              width,
+            })}
+          </CenterPanel>
+          {renderRightPanel && (
             <SidePanel width={leftPanelWidth}>
-              {renderLeftPanel && renderLeftPanel({ ...rest, width: leftPanelWidth })}
+              {renderRightPanel({ ...rest, width: rightPanelWidth })}
             </SidePanel>
-            <CenterPanel width={width}>
-              {children({
-                ...rest,
-                leftPanelWidth,
-                offsetRegions,
-                rightPanelWidth,
-                scalePosition,
-                width,
-              })}
-            </CenterPanel>
-            {renderRightPanel && (
-              <SidePanel width={leftPanelWidth}>
-                {renderRightPanel({ ...rest, width: rightPanelWidth })}
-              </SidePanel>
-            )}
-          </InnerWrapper>
-        </OuterWrapper>
-      )
-    }}
+          )}
+        </InnerWrapper>
+      </OuterWrapper>
+    )}
   </RegionViewerContext.Consumer>
 )
 

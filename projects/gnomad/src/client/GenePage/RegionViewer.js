@@ -25,7 +25,7 @@ const ControlPanel = styled.div`
   justify-content: flex-end;
   align-items: center;
   width: ${props => props.width}px;
-  margin-left: ${props => props.leftPanelWidth}px;
+  margin-left: ${props => props.marginLeft}px;
 `
 
 const Legend = styled.ul`
@@ -153,6 +153,7 @@ class GeneViewer extends Component {
 
     return (
       <RegionViewer
+        leftPanelWidth={100}
         width={regionViewerWidth}
         padding={75}
         regions={regionViewerRegions}
@@ -160,7 +161,7 @@ class GeneViewer extends Component {
       >
         {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
 
-        <ControlPanel>
+        <ControlPanel marginLeft={100} width={regionViewerWidth}>
           Include:
           <Legend>
             <LegendItemWrapper>
