@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { trackPropTypes } from '@broad/region-viewer'
+import { Track } from '@broad/region-viewer'
 import { RegionsPlot } from '@broad/track-regions'
 import { Button } from '@broad/ui'
 
@@ -13,21 +13,19 @@ import { TissueIsoformExpressionPlot, TissueIsoformExpressionPlotHeader } from '
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 1em;
 `
 
 const CompositeWrapper = styled.div`
   display: flex;
 `
 
-const Panel = styled.div`
+const FanOutAndStrandPanel = styled.div`
   display: flex;
-  align-items: center;
-  width: ${props => props.width}px;
-`
-
-const FanOutAndStrandPanel = styled(Panel)`
   justify-content: space-between;
+  align-items: center;
   box-sizing: border-box;
+  width: 100%;
   height: 50px;
   padding-right: 5px;
 
@@ -151,17 +149,24 @@ const compositeTranscriptRegionAttributes = region =>
 
 export class TranscriptsTrack extends Component {
   static propTypes = {
-    ...trackPropTypes,
     canonicalTranscript: PropTypes.string.isRequired,
+    compositeExons: PropTypes.arrayOf(
+      PropTypes.shape({
+        start: PropTypes.number.isRequired,
+        stop: PropTypes.number.isRequired,
+      })
+    ).isRequired,
     currentGene: PropTypes.string,
     currentTissue: PropTypes.string,
     currentTranscript: PropTypes.string,
     filenameForExport: PropTypes.string,
     maxTissueExpressions: PropTypes.object.isRequired, // eslint-disable-line
     onTissueChange: PropTypes.func.isRequired,
-    positionOffset: PropTypes.func.isRequired,
     renderTranscriptId: PropTypes.func,
+    showNonCodingTranscripts: PropTypes.bool.isRequired,
+    showUTRs: PropTypes.bool.isRequired,
     strand: PropTypes.string.isRequired,
+    toggleTranscriptFanOut: PropTypes.func.isRequired,
     transcriptFanOut: PropTypes.bool.isRequired,
     transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
@@ -178,8 +183,8 @@ export class TranscriptsTrack extends Component {
     this.transcriptsContainerElement = element
   }
 
-  exportPlot() {
-    const { filenameForExport, leftPanelWidth, width } = this.props
+  exportPlot({ leftPanelWidth, width }) {
+    const { filenameForExport } = this.props
 
     const transcriptPlots = this.transcriptsContainerElement.querySelectorAll('.transcript-plot')
 
@@ -231,60 +236,66 @@ export class TranscriptsTrack extends Component {
       compositeExons,
       currentGene,
       currentTissue,
-      leftPanelWidth,
       maxTissueExpressions,
       onTissueChange,
-      positionOffset,
-      rightPanelWidth,
       strand,
       toggleTranscriptFanOut,
       transcriptFanOut,
-      width,
-      xScale,
     } = this.props
 
     const StrandIcon = strand === '-' ? LeftArrow : RightArrow
 
     return (
       <CompositeWrapper>
-        <FanOutAndStrandPanel width={leftPanelWidth}>
-          <Button onClick={toggleTranscriptFanOut}>
-            {transcriptFanOut ? 'Hide transcripts' : 'Show transcripts'}
-          </Button>
-          <StrandIcon height={20} width={20} />
-        </FanOutAndStrandPanel>
-
-        <CompositeCenterPanel>
-          <CompositePlotWrapper>
-            <RegionsPlot
-              height={20}
-              // Sort by feature type to ensure that when regions overlap, the most important
-              // region is at the front.
-              regions={compositeExons.sort(featureTypeCompareFn)}
-              regionAttributes={compositeTranscriptRegionAttributes}
-              regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
-              width={width}
-              xScale={pos => xScale(positionOffset(pos).offsetPosition)}
-            />
-          </CompositePlotWrapper>
-
-          {transcriptFanOut && (
-            <ControlPanel marginLeft={leftPanelWidth} width={width}>
-              <Button onClick={() => this.exportPlot()}>Save plot</Button>
-            </ControlPanel>
+        <Track
+          renderLeftPanel={({ width }) => (
+            <FanOutAndStrandPanel width={width}>
+              <Button onClick={toggleTranscriptFanOut}>
+                {transcriptFanOut ? 'Hide transcripts' : 'Show transcripts'}
+              </Button>
+              <StrandIcon height={20} width={20} />
+            </FanOutAndStrandPanel>
           )}
-        </CompositeCenterPanel>
+          renderRightPanel={
+            transcriptFanOut
+              ? ({ width }) =>
+                  width > 150 && (
+                    <TissueIsoformExpressionPlotHeader
+                      currentGene={currentGene}
+                      currentTissue={currentTissue}
+                      maxTissueExpressions={maxTissueExpressions}
+                      onTissueChange={onTissueChange}
+                      width={width}
+                    />
+                  )
+              : null
+          }
+        >
+          {({ leftPanelWidth, scalePosition, width }) => (
+            <CompositeCenterPanel>
+              <CompositePlotWrapper>
+                <RegionsPlot
+                  height={20}
+                  // Sort by feature type to ensure that when regions overlap, the most important
+                  // region is at the front.
+                  regions={compositeExons.sort(featureTypeCompareFn)}
+                  regionAttributes={compositeTranscriptRegionAttributes}
+                  regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
+                  scalePosition={scalePosition}
+                  width={width}
+                />
+              </CompositePlotWrapper>
 
-        {!!rightPanelWidth &&
-          transcriptFanOut && (
-            <TissueIsoformExpressionPlotHeader
-              currentGene={currentGene}
-              currentTissue={currentTissue}
-              maxTissueExpressions={maxTissueExpressions}
-              onTissueChange={onTissueChange}
-              width={rightPanelWidth}
-            />
+              {transcriptFanOut && (
+                <ControlPanel marginLeft={leftPanelWidth} width={width}>
+                  <Button onClick={() => this.exportPlot({ leftPanelWidth, width })}>
+                    Save plot
+                  </Button>
+                </ControlPanel>
+              )}
+            </CompositeCenterPanel>
           )}
+        </Track>
       </CompositeWrapper>
     )
   }
@@ -294,15 +305,10 @@ export class TranscriptsTrack extends Component {
       canonicalTranscript,
       currentTissue,
       currentTranscript,
-      leftPanelWidth,
       maxTissueExpressions,
-      positionOffset,
-      rightPanelWidth,
       transcriptFanOut,
       renderTranscriptId,
       transcripts,
-      width,
-      xScale,
       showUTRs,
       showNonCodingTranscripts,
     } = this.props
@@ -330,57 +336,58 @@ export class TranscriptsTrack extends Component {
       return t2Mean - t1Mean
     })
 
-    const combinedXScale = pos => xScale(positionOffset(pos).offsetPosition)
-
     return (
       <TranscriptsWrapper innerRef={this.transcriptsContainerRef}>
         {sortedTranscripts.map(transcript => (
           <TranscriptWrapper key={transcript.transcript_id}>
-            {leftPanelWidth && (
-              <Panel width={leftPanelWidth}>
-                {renderTranscriptId(transcript.transcript_id, {
-                  isCanonical: canonicalTranscript === transcript.transcript_id,
-                  isSelected: currentTranscript === transcript.transcript_id,
-                })}
-              </Panel>
-            )}
-            <Panel width={width}>
-              <RegionsPlot
-                className="transcript-plot"
-                data-transcript-id={transcript.transcript_id}
-                height={10}
-                regions={
-                  // Do not show "exon" regions for coding transcripts
-                  (transcript.exons.some(exon => exon.feature_type !== 'exon')
-                    ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
-                    : transcript.exons
-                  ).filter(
-                    exon =>
-                      exon.feature_type === 'CDS' ||
-                      (exon.feature_type === 'UTR' && showUTRs) ||
-                      (exon.feature_type === 'exon' && showNonCodingTranscripts)
-                  )
-                }
-                regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
-                regionAttributes={transcriptRegionAttributes}
-                width={width}
-                xScale={combinedXScale}
-              />
-            </Panel>
-            {!!rightPanelWidth &&
-              transcriptFanOut && (
-                <Panel width={rightPanelWidth}>
-                  {
-                    <TissueIsoformExpressionPlot
-                      currentTissue={currentTissue}
-                      height={10}
-                      maxTissueExpressions={maxTissueExpressions}
-                      transcript={transcript}
-                      width={rightPanelWidth}
-                    />
-                  }
-                </Panel>
+            <Track
+              renderLeftPanel={() => (
+                <span>
+                  {renderTranscriptId(transcript.transcript_id, {
+                    isCanonical: canonicalTranscript === transcript.transcript_id,
+                    isSelected: currentTranscript === transcript.transcript_id,
+                  })}
+                </span>
               )}
+              renderRightPanel={
+                transcriptFanOut
+                  ? ({ width }) =>
+                      width > 150 && (
+                        <TissueIsoformExpressionPlot
+                          currentTissue={currentTissue}
+                          height={10}
+                          maxTissueExpressions={maxTissueExpressions}
+                          transcript={transcript}
+                          width={width}
+                        />
+                      )
+                  : null
+              }
+            >
+              {({ scalePosition, width }) => (
+                <RegionsPlot
+                  className="transcript-plot"
+                  data-transcript-id={transcript.transcript_id}
+                  height={10}
+                  regions={
+                    // Do not show "exon" regions for coding transcripts
+                    (transcript.exons.some(exon => exon.feature_type !== 'exon')
+                      ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
+                      : transcript.exons
+                    ).filter(
+                      exon =>
+                        exon.feature_type === 'CDS' ||
+                        (exon.feature_type === 'UTR' && showUTRs) ||
+                        (exon.feature_type === 'exon' && showNonCodingTranscripts)
+                    )
+                  }
+                  regionKey={region => `${region.feature_type}-${region.start}-${region.stop}`}
+                  regionAttributes={transcriptRegionAttributes}
+                  scalePosition={scalePosition}
+                  width={width}
+                />
+              )}
+            </Track>
           </TranscriptWrapper>
         ))}
       </TranscriptsWrapper>
