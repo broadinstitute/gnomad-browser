@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import {
@@ -19,61 +19,56 @@ const RegionViewerWrapper = styled.div`
   font-size: 12px;
 `
 
-export class RegionViewer extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    leftPanelWidth: PropTypes.number,
-    padding: PropTypes.number.isRequired,
-    regions: PropTypes.arrayOf(
-      PropTypes.shape({
-        feature_type: PropTypes.string.isRequired,
-        start: PropTypes.number.isRequired,
-        stop: PropTypes.number.isRequired,
-      })
-    ).isRequired,
-    rightPanelWidth: PropTypes.number,
-    width: PropTypes.number.isRequired,
+export const RegionViewer = ({
+  children,
+  leftPanelWidth,
+  padding,
+  regions,
+  rightPanelWidth,
+  width,
+}) => {
+  const offsetRegions = calculateOffsetRegions(padding, regions)
+
+  const positionOffset = calculatePositionOffset(offsetRegions)
+  const xScale = calculateXScale(width, offsetRegions)
+  const invertOffset = invertPositionOffset(offsetRegions, xScale)
+
+  const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
+  scalePosition.invert = invertOffset
+
+  const childProps = {
+    leftPanelWidth,
+    offsetRegions, // used only by track-coverage and track-position-table
+    positionOffset,
+    rightPanelWidth,
+    scalePosition,
+    width,
   }
 
-  static defaultProps = {
-    children: undefined,
-    leftPanelWidth: 100,
-    rightPanelWidth: 160,
-  }
+  return (
+    <RegionViewerWrapper width={width + leftPanelWidth + rightPanelWidth}>
+      <RegionViewerContext.Provider value={childProps}>{children}</RegionViewerContext.Provider>
+    </RegionViewerWrapper>
+  )
+}
 
-  renderChildren(childProps) {
-    const { children } = this.props
-    return React.Children.map(
-      children,
-      child => (child ? React.cloneElement(child, childProps) : null)
-    )
-  }
+RegionViewer.propTypes = {
+  children: PropTypes.node,
+  leftPanelWidth: PropTypes.number,
+  padding: PropTypes.number.isRequired,
+  regions: PropTypes.arrayOf(
+    PropTypes.shape({
+      feature_type: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  rightPanelWidth: PropTypes.number,
+  width: PropTypes.number.isRequired,
+}
 
-  render() {
-    const { regions, width, padding, leftPanelWidth, rightPanelWidth } = this.props
-
-    const offsetRegions = calculateOffsetRegions(padding, regions)
-
-    const positionOffset = calculatePositionOffset(offsetRegions)
-    const xScale = calculateXScale(width, offsetRegions)
-    const invertOffset = invertPositionOffset(offsetRegions, xScale)
-
-    const childProps = {
-      leftPanelWidth,
-      positionOffset,
-      invertOffset, // used only by navigator
-      xScale,
-      width,
-      offsetRegions, // used only by track-coverage and track-position-table
-      rightPanelWidth,
-    }
-
-    return (
-      <RegionViewerWrapper width={width + leftPanelWidth + rightPanelWidth}>
-        <RegionViewerContext.Provider value={childProps}>
-          {this.renderChildren(childProps)}
-        </RegionViewerContext.Provider>
-      </RegionViewerWrapper>
-    )
-  }
+RegionViewer.defaultProps = {
+  children: undefined,
+  leftPanelWidth: 100,
+  rightPanelWidth: 160,
 }
