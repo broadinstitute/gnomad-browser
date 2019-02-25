@@ -13,12 +13,10 @@ const exacClassicColors = {
 }
 
 const alleleFrequencyScale = scaleLog()
-  .domain([0.000010, 0.001])
+  .domain([0.00001, 0.001])
   .range([4, 12])
 
-
 const CANVAS_SCALE = window.devicePixelRatio || 1
-
 
 const drawEllipse = (ctx, cx, cy, rx, ry) => {
   const K = 0.5522848
@@ -39,11 +37,10 @@ const drawEllipse = (ctx, cx, cy, rx, ry) => {
   ctx.bezierCurveTo(cx - xOffset, y2, x1, cy + yOffset, x1, cy)
 }
 
-
 export class VariantAlleleFrequencyPlot extends Component {
   static propTypes = {
     height: PropTypes.number.isRequired,
-    positionOffset: PropTypes.func.isRequired,
+    scalePosition: PropTypes.func.isRequired,
     variants: PropTypes.arrayOf(
       PropTypes.shape({
         allele_freq: PropTypes.number,
@@ -53,7 +50,6 @@ export class VariantAlleleFrequencyPlot extends Component {
       })
     ).isRequired,
     width: PropTypes.number.isRequired,
-    xScale: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
@@ -64,20 +60,12 @@ export class VariantAlleleFrequencyPlot extends Component {
     this.draw()
   }
 
-  canvasRef = (el) => {
-    this.ctx = el
-      ? el.getContext('2d')
-      : null
+  canvasRef = el => {
+    this.ctx = el ? el.getContext('2d') : null
   }
 
   draw() {
-    const {
-      height,
-      positionOffset,
-      variants,
-      width,
-      xScale,
-    } = this.props
+    const { height, scalePosition, variants, width } = this.props
 
     const markerY = height / 2
 
@@ -86,8 +74,8 @@ export class VariantAlleleFrequencyPlot extends Component {
     this.ctx.lineWidth = 0.5
     this.ctx.strokeStyle = '#000'
 
-    variants.forEach((variant) => {
-      const markerX = xScale(positionOffset(variant.pos).offsetPosition)
+    variants.forEach(variant => {
+      const markerX = scalePosition(variant.pos)
 
       let fill
       let rx
