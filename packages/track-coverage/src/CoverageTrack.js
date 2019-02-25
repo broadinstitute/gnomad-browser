@@ -5,22 +5,16 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { AxisLeft } from '@vx/axis'
 
-import { RegionViewerContext } from '@broad/region-viewer'
+import { Track } from '@broad/region-viewer'
 import { Button } from '@broad/ui'
 
 import { Legend } from './Legend'
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
 const TopPanel = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: ${props => props.width}px;
-  margin-left: ${props => props.marginLeft}px;
+  width: 100%;
 `
 
 export class CoverageTrack extends Component {
@@ -145,50 +139,51 @@ export class CoverageTrack extends Component {
     const { datasets, height } = this.props
 
     return (
-      <RegionViewerContext.Consumer>
-        {({ leftPanelWidth, offsetRegions, positionOffset, width, xScale }) => {
-          const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
+      <Track
+        renderLeftPanel={null}
+        renderTopPanel={() => (
+          <TopPanel>
+            <Legend datasets={datasets} />
+            <Button onClick={() => this.exportPlot()}>Save plot</Button>
+          </TopPanel>
+        )}
+      >
+        {({ offsetRegions, scalePosition, width }) => {
           const scaleCoverageMetric = scaleLinear()
             .domain([0, 100])
             .range([height, 7])
 
           const axisWidth = 60
           return (
-            <Wrapper>
-              <TopPanel marginLeft={leftPanelWidth} width={width}>
-                <Legend datasets={datasets} />
-                <Button onClick={() => this.exportPlot()}>Save plot</Button>
-              </TopPanel>
-              <div style={{ marginLeft: leftPanelWidth - axisWidth }}>
-                <svg ref={this.plotRef} height={height} width={axisWidth + width}>
-                  <AxisLeft
-                    hideZero
-                    label="Coverage"
-                    labelProps={{
-                      fontSize: 14,
-                      textAnchor: 'middle',
-                    }}
-                    left={axisWidth}
-                    tickLabelProps={() => ({
-                      dx: '-0.25em',
-                      dy: '0.25em',
-                      fill: '#000',
-                      fontSize: 10,
-                      textAnchor: 'end',
-                    })}
-                    scale={scaleCoverageMetric}
-                    stroke="#333"
-                  />
-                  <g transform={`translate(${axisWidth},0)`}>
-                    {this.renderPlot({ offsetRegions, scalePosition, scaleCoverageMetric, width })}
-                    <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
-                  </g>
-                </svg>
-              </div>
-            </Wrapper>
+            <div style={{ marginLeft: -axisWidth }}>
+              <svg ref={this.plotRef} height={height} width={axisWidth + width}>
+                <AxisLeft
+                  hideZero
+                  label="Coverage"
+                  labelProps={{
+                    fontSize: 14,
+                    textAnchor: 'middle',
+                  }}
+                  left={axisWidth}
+                  tickLabelProps={() => ({
+                    dx: '-0.25em',
+                    dy: '0.25em',
+                    fill: '#000',
+                    fontSize: 10,
+                    textAnchor: 'end',
+                  })}
+                  scale={scaleCoverageMetric}
+                  stroke="#333"
+                />
+                <g transform={`translate(${axisWidth},0)`}>
+                  {this.renderPlot({ offsetRegions, scalePosition, scaleCoverageMetric, width })}
+                  <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
+                </g>
+              </svg>
+            </div>
           )
         }}
-      </RegionViewerContext.Consumer>
+      </Track>
     )
   }
 }

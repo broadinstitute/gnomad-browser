@@ -73,7 +73,7 @@ export const Track = ({ children, renderLeftPanel, renderRightPanel, renderTopPa
           )}
           <InnerWrapper>
             <SidePanel width={leftPanelWidth}>
-              {renderLeftPanel({ ...rest, width: leftPanelWidth })}
+              {renderLeftPanel && renderLeftPanel({ ...rest, width: leftPanelWidth })}
             </SidePanel>
             <CenterPanel width={width}>
               {children({
