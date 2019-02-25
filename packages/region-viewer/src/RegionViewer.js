@@ -61,10 +61,10 @@ export class RegionViewer extends Component {
     const childProps = {
       leftPanelWidth,
       positionOffset,
-      invertOffset,
+      invertOffset, // used only by navigator
       xScale,
       width,
-      offsetRegions,
+      offsetRegions, // used only by track-coverage and track-position-table
       rightPanelWidth,
     }
 
