@@ -4,15 +4,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { trackPropTypes } from '@broad/region-viewer'
-
-import { RegionsPlot } from '@broad/track-regions'
+import { RegionsTrack } from '@broad/track-regions'
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: stretch;
-  margin-bottom: 5px;
+  margin-bottom: 1em;
 `
 
 const LeftPanel = styled.div`
@@ -21,7 +18,7 @@ const LeftPanel = styled.div`
   justify-content: flex-end;
   align-items: center;
   box-sizing: border-box;
-  width: ${props => props.width}px;
+  width: 100%;
   padding-right: 10px;
 
   svg {
@@ -29,33 +26,25 @@ const LeftPanel = styled.div`
   }
 `
 
-const CenterPanel = styled.div`
-  display: flex;
-  width: ${props => props.width}px;
-`
-
-const TranscriptTrack = ({ exons, leftPanelWidth, positionOffset, strand, width, xScale }) => {
+const TranscriptTrack = ({ exons, strand }) => {
   const StrandIcon = strand === '-' ? LeftArrow : RightArrow
   return (
     <Wrapper>
-      <LeftPanel width={leftPanelWidth}>
-        <StrandIcon height={20} width={20} />
-      </LeftPanel>
-      <CenterPanel width={width}>
-        <RegionsPlot
-          height={20}
-          regions={exons}
-          regionAttributes={() => ({ fill: '#424242' })}
-          width={width}
-          xScale={pos => xScale(positionOffset(pos).offsetPosition)}
-        />
-      </CenterPanel>
+      <RegionsTrack
+        height={20}
+        regions={exons}
+        regionAttributes={() => ({ fill: '#424242' })}
+        renderLeftPanel={() => (
+          <LeftPanel>
+            <StrandIcon height={20} width={20} />
+          </LeftPanel>
+        )}
+      />
     </Wrapper>
   )
 }
 
 TranscriptTrack.propTypes = {
-  ...trackPropTypes,
   exons: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,

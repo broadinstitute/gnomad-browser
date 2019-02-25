@@ -7,15 +7,15 @@ export const RegionsPlot = ({
   regions,
   regionAttributes,
   regionKey,
+  scalePosition,
   width,
-  xScale,
   ...rest
 }) => (
   <svg {...rest} width={width} height={height}>
     <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke={axisColor} strokeWidth={1} />
     {regions.map(region => {
-      const x1 = xScale(region.start)
-      const x2 = xScale(region.stop)
+      const x1 = scalePosition(region.start)
+      const x2 = scalePosition(region.stop)
       const attributes = {
         fill: '#000',
         height,
@@ -47,8 +47,8 @@ RegionsPlot.propTypes = {
   ).isRequired,
   regionAttributes: PropTypes.func,
   regionKey: PropTypes.func,
+  scalePosition: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
-  xScale: PropTypes.func.isRequired,
 }
 
 RegionsPlot.defaultProps = {
