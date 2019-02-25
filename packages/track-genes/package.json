@@ -6,10 +6,11 @@
   "files": [
     "lib"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@broad/region-viewer": "*",
+    "prop-types": "^15.7.2"
+  },
   "peerDependencies": {
-    "@broad/region": "*",
-    "prop-types": "^15.7.2",
     "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }

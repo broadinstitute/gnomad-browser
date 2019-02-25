@@ -59,10 +59,7 @@ const RegionViewerConnected = ({
     >
       <CoverageTrack datasetId={datasetId} chrom={chrom} start={start} stop={stop} />
 
-      <GenesTrack
-        genes={genes}
-        onGeneClick={geneName => history.push(`/gene/${geneName}`)}
-      />
+      <GenesTrack genes={genes} onGeneClick={gene => history.push(`/gene/${gene.gene_id}`)} />
 
       {showVariants && (
         <VariantAlleleFrequencyTrack

@@ -2,34 +2,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { formatGenes, createTracks } from './index'
+import { Track } from '@broad/region-viewer'
 
-
-const GeneTrackWrapper = styled.div`
+const TitlePanel = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-`
-
-
-const GeneTrackLeft = styled.div`
-  height: 100%;
-  width: ${props => props.width}px;
-`
-
-
-const GeneTrackData = styled.div`
-  height: 100%;
-`
-
-
-const GeneTrackTitle = styled.div``
-
-
-const GeneTrackTitleText = styled.div`
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
+  flex-direction: column;
+  justify-content: flex-start;
 `
 
 const GeneGroup = styled.g`
@@ -39,83 +17,99 @@ const GeneGroup = styled.g`
   }
 `
 
-const GenesTrack = ({
-  genes,
-  xScale,
-  leftPanelWidth,
-  width,
-  onGeneClick,
-}) => {
-  const GENE_TRACK_HEIGHT = 50
-  const tracksToMap = createTracks(formatGenes(genes), xScale).toJS()
+const layoutRows = (genes, scalePosition) => {
+  if (genes.length === 0) {
+    return []
+  }
 
-  return (
-    <GeneTrackWrapper>
-      <GeneTrackLeft width={leftPanelWidth}>
-        <GeneTrackTitle>
-          <GeneTrackTitleText>Genes</GeneTrackTitleText>
-        </GeneTrackTitle>
-      </GeneTrackLeft>
-      <GeneTrackData>
-        <svg height={GENE_TRACK_HEIGHT * tracksToMap.length} width={width}>
-          {tracksToMap.map((track, trackNumber) => {
-            return track.map((gene) => {
-              const textYPosition = (GENE_TRACK_HEIGHT * 0.66) + (GENE_TRACK_HEIGHT * trackNumber)
-              const exonsYPosition = (GENE_TRACK_HEIGHT * 0.16) + (GENE_TRACK_HEIGHT * trackNumber)
-              const geneStart = xScale(gene.start)
-              const geneStop = xScale(gene.stop)
+  const rows = [[genes[0]]]
+
+  for (let i = 1; i < genes.length; i += 1) {
+    const gene = genes[i]
+
+    let newRow = true
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
+      const lastGeneInRow = rows[rowIndex][rows[rowIndex].length - 1]
+      if (scalePosition(gene.start) - scalePosition(lastGeneInRow.stop) > 60) {
+        rows[rowIndex].push(gene)
+        newRow = false
+        break
+      }
+    }
+
+    if (newRow) {
+      rows.push([gene])
+    }
+  }
+
+  return rows
+}
+
+export const GenesTrack = ({ genes, onGeneClick, title }) => (
+  <Track renderLeftPanel={() => <TitlePanel>{title}</TitlePanel>}>
+    {({ scalePosition, width }) => {
+      const rows = layoutRows(
+        genes.filter(gene => gene.transcript.exons.some(exon => exon.feature_type === 'CDS')),
+        scalePosition
+      )
+      const rowHeight = 50
+      return (
+        <svg height={rowHeight * rows.length} width={width}>
+          {rows.map((track, trackNumber) =>
+            track.map(gene => {
+              const textYPosition = rowHeight * 0.66 + rowHeight * trackNumber
+              const exonsYPosition = rowHeight * 0.16 + rowHeight * trackNumber
+              const geneStart = scalePosition(gene.start)
+              const geneStop = scalePosition(gene.stop)
               return (
                 <GeneGroup key={gene.gene_id}>
                   <text
                     x={(geneStop + geneStart) / 2}
                     y={textYPosition}
-                    onClick={() => onGeneClick(gene.name)}
+                    onClick={() => onGeneClick(gene)}
                   >
-                    {gene.name}
+                    {gene.gene_name}
                   </text>
                   <line
                     x1={geneStart}
                     x2={geneStop}
                     y1={exonsYPosition}
                     y2={exonsYPosition}
-                    stroke={'black'}
+                    stroke="#424242"
                     strokeWidth={1}
                   />
-                  <rect
-                    x={geneStart}
-                    y={exonsYPosition - (GENE_TRACK_HEIGHT * 0.16)}
-                    width={geneStop - geneStart}
-                    height={GENE_TRACK_HEIGHT * 0.33}
-                    fill={'transparent'}
-                    // stroke={'black'}
-                  />
-                  {gene.exonIntervals.map((exon) => {
-                    const exonStart = xScale(exon.start)
-                    const exonStop = xScale(exon.stop)
+                  {gene.transcript.exons.filter(exon => exon.feature_type === 'CDS').map(exon => {
+                    const exonStart = scalePosition(exon.start)
+                    const exonStop = scalePosition(exon.stop)
                     return (
                       <rect
+                        key={`${gene.gene_id}-${exon.start}-${exon.stop}`}
                         x={exonStart}
-                        y={0 + (GENE_TRACK_HEIGHT * trackNumber)}
+                        y={rowHeight * trackNumber}
                         width={exonStop - exonStart}
-                        height={GENE_TRACK_HEIGHT * 0.33}
-                        fill={'black'}
-                        stroke={'black'}
-                        key={`${exon.start}-${gene.name}`}
+                        height={rowHeight * 0.33}
+                        fill="#424242"
+                        stroke="#424242"
                       />
                     )
                   })}
                 </GeneGroup>
               )
             })
-          })}
+          )}
         </svg>
-      </GeneTrackData>
-    </GeneTrackWrapper>
-  )
-}
+      )
+    }}
+  </Track>
+)
 
 GenesTrack.propTypes = {
-  genes: PropTypes.array.isRequired,
+  genes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onGeneClick: PropTypes.func,
+  title: PropTypes.string,
 }
 
-export default GenesTrack
+GenesTrack.defaultProps = {
+  onGeneClick: () => {},
+  title: 'Genes',
+}
