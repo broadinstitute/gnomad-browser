@@ -7,7 +7,6 @@ import { geneData, regionalConstraint } from '@broad/redux-genes'
 import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
 import { RegionViewer } from '@broad/region-viewer'
 import { NavigatorTrackConnected } from '@broad/track-navigator'
-import RegionalConstraintTrack from '@broad/track-regional-constraint'
 import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { screenSize } from '@broad/ui'
@@ -16,6 +15,7 @@ import datasetLabels from '../datasetLabels'
 import StatusMessage from '../StatusMessage'
 import CoverageTrack from './CoverageTrack'
 import ClinVarTrack from './ClinVarTrack'
+import RegionalConstraintTrack from './RegionalConstraintTrack'
 import TissueExpressionTrack from './TissueExpressionTrack'
 import TranscriptLink from './TranscriptLink'
 
@@ -130,7 +130,7 @@ class GeneViewer extends Component {
     const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
 
     const geneJS = gene.toJS()
-    const { transcript, strand } = geneJS
+    const { transcript } = geneJS
     const variantsReversed = allVariants.reverse()
 
     const { exons } = transcript
@@ -252,11 +252,7 @@ class GeneViewer extends Component {
         {!isLoadingVariants &&
           regionalConstraint.length > 0 &&
           datasetId === 'exac' && (
-            <RegionalConstraintTrack
-              height={15}
-              regionalConstraintData={regionalConstraint}
-              strand={strand}
-            />
+            <RegionalConstraintTrack height={15} regions={regionalConstraint} />
           )}
 
         {!isLoadingVariants && (
