@@ -52,7 +52,7 @@ NavigatorTrack.propTypes = {
   hoveredVariant: PropTypes.string,
   onNavigatorClick: PropTypes.func.isRequired,
   title: PropTypes.string,
-  variants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  variants: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
   visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
 }
 

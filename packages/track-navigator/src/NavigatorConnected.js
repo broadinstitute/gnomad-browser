@@ -24,7 +24,7 @@ const mapStateToProps = state => {
   const tableScrollWindow = currentTableScrollWindow(state)
   return {
     hoveredVariant: hoveredVariant(state),
-    variants: finalFilteredVariants(state),
+    variants: finalFilteredVariants(state).toJS(),
     visibleVariantWindow: [tableScrollWindow.startIndex, tableScrollWindow.stopIndex],
   }
 }
