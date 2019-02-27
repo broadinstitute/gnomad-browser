@@ -1,7 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
-import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
 import { Button } from '@broad/ui'
 
 const POPULATION_NAMES = {
@@ -190,12 +188,15 @@ const exportVariantsToCsv = (variants, baseFileName) => {
   link.click()
 }
 
-const ExportVariantsButton = connect((state, ownProps) => {
-  const variants = finalFilteredVariants(state)
-  return {
-    disabled: isLoadingVariants(state) || variants.size === 0,
-    onClick: () => exportVariantsToCsv(variants.toJS(), ownProps.exportFileName),
-  }
-})(({ exportFileName, ...buttonProps }) => <Button {...buttonProps}>Export variants to CSV</Button>)
+const ExportVariantsButton = ({ exportFileName, variants, ...rest }) => (
+  <Button
+    {...rest}
+    onClick={() => {
+      exportVariantsToCsv(variants, exportFileName)
+    }}
+  >
+    Export variants to CSV
+  </Button>
+)
 
 export default ExportVariantsButton

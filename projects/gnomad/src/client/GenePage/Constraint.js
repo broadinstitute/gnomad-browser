@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 
-import { currentTranscript, geneData } from '@broad/redux-genes'
-import { selectedVariantDataset } from '@broad/redux-variants'
 import { BaseTable } from '@broad/ui'
 
 import GnomadConstraintTable from './GnomadConstraintTable'
@@ -88,18 +85,22 @@ ConstraintTablePlaceholder.propTypes = {
   message: PropTypes.string.isRequired,
 }
 
-export const ConstraintTableOrPlaceholder = connect(state => ({
-  currentTranscript: currentTranscript(state),
-  geneData: geneData(state).toJS(),
-  selectedVariantDataset: selectedVariantDataset(state),
-}))(({ currentTranscript, geneData, selectedVariantDataset }) => {
-  if (selectedVariantDataset === 'exac') {
-    const exacConstraint = geneData.exacv1_constraint
+export const ConstraintTableOrPlaceholder = ({ datasetId, gene, selectedTranscriptId }) => {
+  if (datasetId === 'exac') {
+    const exacConstraint = gene.exacv1_constraint
     if (!exacConstraint) {
       return <ConstraintTablePlaceholder message="ExAC constraint not available for this gene" />
     }
     return <ConstraintTable constraintData={exacConstraint} />
   }
 
-  return <GnomadConstraintTable transcriptId={currentTranscript || geneData.canonical_transcript} />
-})
+  return <GnomadConstraintTable transcriptId={selectedTranscriptId} />
+}
+
+ConstraintTableOrPlaceholder.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  gene: PropTypes.shape({
+    exacv1_constraint: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  }).isRequired,
+  selectedTranscriptId: PropTypes.string.isRequired,
+}
