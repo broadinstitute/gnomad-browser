@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
 import { RegionViewer } from '@broad/region-viewer'
 import { GenesTrack } from '@broad/track-genes'
@@ -74,12 +73,11 @@ RegionPage.propTypes = {
 }
 
 const SizedRegionPage = connect(state => ({ screenSize: screenSize(state) }))(RegionPage)
-const RegionPageWithRouter = withRouter(SizedRegionPage)
 
-const ConnectedRegionPage = ({ datasetId, regionId }) => (
+const ConnectedRegionPage = ({ datasetId, regionId, ...otherProps }) => (
   <RegionDataContainer fetchRegion={fetchRegion} regionId={regionId}>
     {({ region }) => (
-      <RegionPageWithRouter datasetId={datasetId} region={region} regionId={regionId} />
+      <SizedRegionPage {...otherProps} datasetId={datasetId} region={region} regionId={regionId} />
     )}
   </RegionDataContainer>
 )

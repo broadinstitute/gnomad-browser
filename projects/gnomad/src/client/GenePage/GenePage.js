@@ -302,7 +302,7 @@ class GenePage extends Component {
 
 const SizedGenePage = connect(state => ({ screenSize: screenSize(state) }))(GenePage)
 
-const ConnectedGenePage = ({ datasetId, geneIdOrName, transcriptId }) => (
+const ConnectedGenePage = ({ datasetId, geneIdOrName, transcriptId, ...otherProps }) => (
   <GeneDataContainer
     fetchGene={fetchGnomadGenePage}
     geneIdOrName={geneIdOrName}
@@ -310,6 +310,7 @@ const ConnectedGenePage = ({ datasetId, geneIdOrName, transcriptId }) => (
   >
     {({ gene }) => (
       <SizedGenePage
+        {...otherProps}
         datasetId={datasetId}
         gene={gene}
         geneId={gene.gene_id}
