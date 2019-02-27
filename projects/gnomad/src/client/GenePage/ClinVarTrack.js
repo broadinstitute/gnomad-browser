@@ -1,10 +1,8 @@
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
-import { variantFilter as variantFilterConnection } from '@broad/redux-variants'
 import { Track } from '@broad/region-viewer'
 import { StackedVariantsPlot } from '@broad/track-variant'
 import { SegmentedControl } from '@broad/ui'
@@ -130,7 +128,7 @@ const onClickVariant = variant => {
   clinVarWindow.location = `http://www.ncbi.nlm.nih.gov/clinvar/?term=${variant.alleleId}[alleleid]`
 }
 
-class ClinVarTrack extends Component {
+class ClinVarTrack extends PureComponent {
   state = {
     isExpanded: false,
   }
@@ -321,8 +319,4 @@ ClinVarTrack.propTypes = {
   }).isRequired,
 }
 
-const ConnectedClinVarTrack = connect(state => ({
-  variantFilter: variantFilterConnection(state),
-}))(ClinVarTrack)
-
-export default ConnectedClinVarTrack
+export default ClinVarTrack

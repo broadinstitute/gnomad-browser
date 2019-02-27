@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { actions as variantActions } from '@broad/redux-variants'
 import { actions as regionActions } from '@broad/region'
 
 import StatusMessage from '../StatusMessage'
@@ -21,60 +20,30 @@ const RegionDataContainer = connect(
         })
       })
     },
-    loadVariants() {
-      return dispatch(thunkDispatch => {
-        thunkDispatch(variantActions.setSelectedVariantDataset(ownProps.datasetId))
-        thunkDispatch(variantActions.requestVariants())
-        return ownProps.fetchVariants(ownProps.regionId, ownProps.datasetId).then(response => {
-          const variantData = response.data.region
-          thunkDispatch(variantActions.receiveVariants(variantData))
-
-          // Reset variant filters when loading a new gene
-          thunkDispatch(variantActions.searchVariants(''))
-          thunkDispatch(
-            variantActions.setVariantFilter({
-              lof: true,
-              missense: true,
-              synonymous: true,
-              other: true,
-            })
-          )
-
-          return response
-        })
-      })
-    },
   })
 )(
   class RegionData extends Component {
     static propTypes = {
       children: PropTypes.func.isRequired,
-      datasetId: PropTypes.string.isRequired,
       loadRegion: PropTypes.func.isRequired,
-      loadVariants: PropTypes.func.isRequired,
       regionId: PropTypes.string.isRequired,
     }
 
     state = {
       isLoadingRegion: false,
-      isLoadingVariants: false,
       loadError: null,
       regionData: null,
-      variantErrors: null,
     }
 
     componentDidMount() {
       this.mounted = true
       this.loadRegion()
-      this.loadVariants()
     }
 
     componentDidUpdate(prevProps) {
-      if (this.props.regionId !== prevProps.regionId) {
+      const { regionId } = this.props
+      if (regionId !== prevProps.regionId) {
         this.loadRegion()
-        this.loadVariants()
-      } else if (this.props.datasetId !== prevProps.datasetId) {
-        this.loadVariants()
       }
     }
 
@@ -88,6 +57,7 @@ const RegionDataContainer = connect(
         loadError: null,
       })
 
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.loadRegion().then(
         response => {
           const regionData = response.data.region
@@ -111,46 +81,20 @@ const RegionDataContainer = connect(
       )
     }
 
-    loadVariants() {
-      this.setState({
-        isLoadingVariants: true,
-        variantErrors: null,
-      })
-
-      this.props
-        .loadVariants()
-        .then(response => {
-          if (!this.mounted) {
-            return
-          }
-          this.setState({
-            isLoadingVariants: false,
-            variantErrors: response.errors,
-          })
-        })
-        .catch(() => {
-          if (!this.mounted) {
-            return
-          }
-          this.setState({ isLoadingVariants: false })
-        })
-    }
-
     render() {
-      if (this.state.isLoadingRegion) {
+      const { children } = this.props
+      const { isLoadingRegion, loadError, regionData } = this.state
+
+      if (isLoadingRegion) {
         return <StatusMessage>Loading region...</StatusMessage>
       }
 
-      if (this.state.loadError) {
-        return <StatusMessage>{this.state.loadError}</StatusMessage>
+      if (loadError) {
+        return <StatusMessage>{loadError}</StatusMessage>
       }
 
-      if (this.state.regionData) {
-        return this.props.children({
-          variantErrors: this.state.variantErrors,
-          isLoadingVariants: this.state.isLoadingVariants,
-          region: this.state.regionData,
-        })
+      if (regionData) {
+        return children({ region: regionData })
       }
 
       return null
@@ -160,7 +104,6 @@ const RegionDataContainer = connect(
 
 RegionDataContainer.propTypes = {
   children: PropTypes.func.isRequired,
-  datasetId: PropTypes.string.isRequired,
   fetchRegion: PropTypes.func.isRequired,
   regionId: PropTypes.string.isRequired,
 }

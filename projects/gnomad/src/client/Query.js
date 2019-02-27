@@ -50,6 +50,7 @@ export class Query extends Component {
   state = {
     data: null,
     error: null,
+    graphQLErrors: null,
     loading: true,
   }
 
@@ -75,6 +76,7 @@ export class Query extends Component {
     this.setState({
       loading: true,
       error: null,
+      graphQLErrors: null,
     })
 
     if (this.currentRequest) {
@@ -92,6 +94,7 @@ export class Query extends Component {
         this.setState({
           data: response.data,
           error: null,
+          graphQLErrors: response.errors,
           loading: false,
         })
       },
@@ -102,6 +105,7 @@ export class Query extends Component {
         this.setState({
           data: null,
           error,
+          graphQLErrors: null,
           loading: false,
         })
       }

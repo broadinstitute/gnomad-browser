@@ -1,9 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-
-import { currentTranscript, geneData } from '@broad/redux-genes'
-import { isLoadingVariants, variantCount } from '@broad/redux-variants'
 
 import {
   ExternalLink,
@@ -14,7 +10,7 @@ import {
   GeneAttributeValue,
 } from '@broad/ui'
 
-const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) => {
+const GeneInfo = ({ currentTranscript, gene }) => {
   const {
     canonical_transcript: canonicalTranscript,
     chrom,
@@ -38,7 +34,6 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
       <GeneAttributeKeys>
         <GeneAttributeKey>Ensembl gene ID</GeneAttributeKey>
         <GeneAttributeKey>Ensembl transcript ID</GeneAttributeKey>
-        <GeneAttributeKey>Number of variants</GeneAttributeKey>
         <GeneAttributeKey>UCSC Browser</GeneAttributeKey>
         <GeneAttributeKey>GeneCards</GeneAttributeKey>
         <GeneAttributeKey>OMIM</GeneAttributeKey>
@@ -49,15 +44,9 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
         </GeneAttributeValue>
         <GeneAttributeValue>
           <ExternalLink href={ensemblTranscriptUrl}>
-            {currentTranscript || canonicalTranscript}
-            {(currentTranscript === null || currentTranscript === canonicalTranscript) &&
-              ' (canonical)'}
+            {currentTranscript}
+            {currentTranscript === canonicalTranscript && ' (canonical)'}
           </ExternalLink>
-        </GeneAttributeValue>
-        <GeneAttributeValue>
-          {isLoadingVariants
-            ? '—'
-            : `${variantCount.toLocaleString()} (including filtered variants)`}
         </GeneAttributeValue>
         <GeneAttributeValue>
           <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
@@ -74,7 +63,7 @@ const GeneInfo = ({ currentTranscript, gene, isLoadingVariants, variantCount }) 
 }
 
 GeneInfo.propTypes = {
-  currentTranscript: PropTypes.string,
+  currentTranscript: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     canonical_transcript: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
@@ -84,16 +73,6 @@ GeneInfo.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
-  variantCount: PropTypes.number.isRequired,
 }
 
-GeneInfo.defaultProps = {
-  currentTranscript: undefined,
-}
-
-export default connect(state => ({
-  currentTranscript: currentTranscript(state),
-  gene: geneData(state).toJS(),
-  isLoadingVariants: isLoadingVariants(state),
-  variantCount: variantCount(state),
-}))(GeneInfo)
+export default GeneInfo
