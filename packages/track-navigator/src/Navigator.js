@@ -36,7 +36,7 @@ export class Navigator extends Component {
       y: PropTypes.number.isRequired,
     }),
     scalePosition: PropTypes.func.isRequired,
-    variants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    variants: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
     visibleVariantWindow: PropTypes.arrayOf(PropTypes.number).isRequired,
     width: PropTypes.number.isRequired,
   }
@@ -124,9 +124,7 @@ export class Navigator extends Component {
       width,
     } = this.props
 
-    const visibleVariants = variants
-      .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-      .toJS()
+    const visibleVariants = variants.slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
 
     return (
       <NavigatorContainer onClick={this.onClick} onTouchStart={this.onClick} width={width}>
