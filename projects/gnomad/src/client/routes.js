@@ -47,13 +47,16 @@ const App = () => (
         <Route
           exact
           path="/gene/:gene/transcript/:transcriptId"
-          render={({ location, match }) => {
+          render={({ history, location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
             return (
               <GenePage
                 datasetId={datasetId}
                 geneIdOrName={match.params.gene}
+                history={history}
+                location={location}
+                match={match}
                 transcriptId={match.params.transcriptId}
               />
             )
@@ -62,30 +65,54 @@ const App = () => (
         <Route
           exact
           path="/gene/:gene"
-          render={({ location, match }) => {
+          render={({ history, location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
-            return <GenePage datasetId={datasetId} geneIdOrName={match.params.gene} />
+            return (
+              <GenePage
+                datasetId={datasetId}
+                geneIdOrName={match.params.gene}
+                history={history}
+                location={location}
+                match={match}
+              />
+            )
           }}
         />
         <Route
           exact
           path="/region/:regionId"
-          render={({ location, match }) => {
+          render={({ history, location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
             const regionId = normalizeRegionId(match.params.regionId)
-            return <RegionPage datasetId={datasetId} regionId={regionId} />
+            return (
+              <RegionPage
+                datasetId={datasetId}
+                regionId={regionId}
+                history={history}
+                location={location}
+                match={match}
+              />
+            )
           }}
         />
         <Route
           exact
           path="/variant/:variantId"
-          render={({ location, match }) => {
+          render={({ history, location, match }) => {
             const params = queryString.parse(location.search)
             const datasetId = params.dataset || defaultDataset
             const variantId = normalizeVariantId(match.params.variantId)
-            return <VariantPage datasetId={datasetId} variantId={variantId} />
+            return (
+              <VariantPage
+                datasetId={datasetId}
+                variantId={variantId}
+                history={history}
+                location={location}
+                match={match}
+              />
+            )
           }}
         />
         <Route exact path="/about" component={AboutPage} />
