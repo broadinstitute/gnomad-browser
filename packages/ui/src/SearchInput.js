@@ -49,11 +49,13 @@ export class SearchInput extends Component {
   static propTypes = {
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
     withKeyboardShortcuts: PropTypes.bool,
   }
 
   static defaultProps = {
     placeholder: 'Search',
+    value: undefined,
     withKeyboardShortcuts: false,
   }
 
@@ -103,8 +105,10 @@ export class SearchInput extends Component {
   }
 
   render() {
-    const { placeholder } = this.props
-    const { value } = this.state
+    const { placeholder, value: propsValue } = this.props
+    const { value: stateValue } = this.state
+
+    const value = propsValue === undefined ? stateValue : propsValue
 
     return (
       <Wrapper>
