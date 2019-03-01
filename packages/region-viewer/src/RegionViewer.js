@@ -36,7 +36,11 @@ export const RegionViewer = ({
   const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
   scalePosition.invert = invertOffset
 
+  const isPositionDefined = pos =>
+    offsetRegions.some(region => region.start <= pos && pos <= region.stop)
+
   const childProps = {
+    isPositionDefined,
     leftPanelWidth,
     offsetRegions, // used only by track-coverage and track-position-table
     positionOffset,
