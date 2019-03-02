@@ -5,7 +5,7 @@ title: 'Proportion expressed across transcripts (pext) score'
 
 # Proportion expressed across transcripts (pext) score
 
-The pext score, presented in the [2019 gnomAD companion preprint](broad.io/tx_annotation), summarizes isoform expression values accross tissues to allow for quick visualization of the expression status of exons across tissues. 
+The pext score, presented in the [2019 gnomAD companion preprint](https://www.biorxiv.org/content/10.1101/554444v1), summarizes isoform expression values accross tissues to allow for quick visualization of the expression status of exons across tissues. 
 
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript across GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![visualization of pext score computation](/assets/pext.png)
