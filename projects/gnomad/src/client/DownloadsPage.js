@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { PageHeading, ExternalLink } from '@broad/ui'
+import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 
 import InfoPage from './InfoPage'
 
@@ -37,226 +38,110 @@ const DownloadSection = styled.div`
   }
 `
 
-const exomesVcfs = [
-  [
-    '5.81 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr1.vcf.bgz',
-  ],
-  [
-    '4.23 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr2.vcf.bgz',
-  ],
-  [
-    '3.31 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr3.vcf.bgz',
-  ],
-  [
-    '2.19 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr4.vcf.bgz',
-  ],
-  [
-    '2.53 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr5.vcf.bgz',
-  ],
-  [
-    '2.85 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr6.vcf.bgz',
-  ],
-  [
-    '2.9 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr7.vcf.bgz',
-  ],
-  [
-    '2.14 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr8.vcf.bgz',
-  ],
-  [
-    '2.42 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr9.vcf.bgz',
-  ],
-  [
-    '2.25 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr10.vcf.bgz',
-  ],
-  [
-    '3.64 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr11.vcf.bgz',
-  ],
-  [
-    '3.09 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr12.vcf.bgz',
-  ],
-  [
-    '984.13 MiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr13.vcf.bgz',
-  ],
-  [
-    '2.03 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr14.vcf.bgz',
-  ],
-  [
-    '2.1 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr15.vcf.bgz',
-  ],
-  [
-    '3.06 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr16.vcf.bgz',
-  ],
-  [
-    '3.64 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr17.vcf.bgz',
-  ],
-  [
-    '888.66 MiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr18.vcf.bgz',
-  ],
-  [
-    '4.33 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr19.vcf.bgz',
-  ],
-  [
-    '1.46 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr20.vcf.bgz',
-  ],
-  [
-    '657.55 MiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr21.vcf.bgz',
-  ],
-  [
-    '1.44 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chr22.vcf.bgz',
-  ],
-  [
-    '1.33 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chrX.vcf.bgz',
-  ],
-  [
-    '15.79 MiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.chrY.vcf.bgz',
-  ],
+const RELEASE = '2.1.1'
+
+const EXOMES_VCF_SIZES = [
+  '5.77 GiB',
+  '4.2 GiB',
+  '3.29 GiB',
+  '2.17 GiB',
+  '2.51 GiB',
+  '2.83 GiB',
+  '2.88 GiB',
+  '2.13 GiB',
+  '2.4 GiB',
+  '2.23 GiB',
+  '3.61 GiB',
+  '3.07 GiB',
+  '976.73 MiB',
+  '2.02 GiB',
+  '2.08 GiB',
+  '3.04 GiB',
+  '3.62 GiB',
+  '882.14 MiB',
+  '4.3 GiB',
+  '1.44 GiB',
+  '652.73 MiB',
+  '1.43 GiB',
+  '1.33 GiB',
+  '15.66 MiB',
 ]
 
-const genomesVcfs = [
-  [
-    '36.09 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr1.vcf.bgz',
-  ],
-  [
-    '38.5 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr2.vcf.bgz',
-  ],
-  [
-    '31.58 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr3.vcf.bgz',
-  ],
-  [
-    '30.56 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr4.vcf.bgz',
-  ],
-  [
-    '28.49 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr5.vcf.bgz',
-  ],
-  [
-    '26.7 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr6.vcf.bgz',
-  ],
-  [
-    '26.24 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr7.vcf.bgz',
-  ],
-  [
-    '24.66 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr8.vcf.bgz',
-  ],
-  [
-    '20.18 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr9.vcf.bgz',
-  ],
-  [
-    '21.38 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr10.vcf.bgz',
-  ],
-  [
-    '21.99 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr11.vcf.bgz',
-  ],
-  [
-    '21.42 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr12.vcf.bgz',
-  ],
-  [
-    '15.04 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr13.vcf.bgz',
-  ],
-  [
-    '14.74 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr14.vcf.bgz',
-  ],
-  [
-    '13.87 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr15.vcf.bgz',
-  ],
-  [
-    '15.54 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr16.vcf.bgz',
-  ],
-  [
-    '13.62 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr17.vcf.bgz',
-  ],
-  [
-    '12.16 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr18.vcf.bgz',
-  ],
-  [
-    '11.3 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr19.vcf.bgz',
-  ],
-  [
-    '9.69 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr20.vcf.bgz',
-  ],
-  [
-    '6.17 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr21.vcf.bgz',
-  ],
-  [
-    '6.54 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chr22.vcf.bgz',
-  ],
-  [
-    '17.92 GiB',
-    'https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.chrX.vcf.bgz',
-  ],
+const GENOMES_VCF_SIZES = [
+  '35.83 GiB',
+  '38.21 GiB',
+  '31.35 GiB',
+  '30.33 GiB',
+  '28.27 GiB',
+  '26.5 GiB',
+  '26.05 GiB',
+  '24.47 GiB',
+  '20.03 GiB',
+  '21.22 GiB',
+  '21.83 GiB',
+  '21.26 GiB',
+  '14.92 GiB',
+  '14.63 GiB',
+  '13.77 GiB',
+  '15.43 GiB',
+  '13.52 GiB',
+  '12.07 GiB',
+  '11.22 GiB',
+  '9.62 GiB',
+  '6.12 GiB',
+  '6.49 GiB',
+  '17.8 GiB',
 ]
 
-const createVcfLink = file => {
-  const fileSize = file[0]
-  const url = file[1]
-  const chrom = /chr(\w+)/.exec(url)[0]
-  const dataset = /vcf\/(\w+)\/gnomad/.exec(url)[0]
-  const tabixUrl = `${url}.tbi`
+const exomeChroms = HUMAN_CHROMOSOMES
+const genomeChroms = HUMAN_CHROMOSOMES.slice(0, -1)
+
+const createVcfLink = (dataset, chrom, size) => {
+  const vcfUrl = `https://storage.googleapis.com/gnomad-public/release/${RELEASE}/vcf/${dataset}/gnomad.${dataset}.r${RELEASE}.sites.${chrom}.vcf.bgz`
+  const tabixUrl = `${vcfUrl}.tbi`
+
   return (
     <li key={`${dataset}-${chrom}`}>
-      <ExternalLink href={url}>{`${chrom} sites VCF (${fileSize}) `}</ExternalLink>
-      <ExternalLink href={tabixUrl}>{`(.tbi)`}</ExternalLink>
+      <ExternalLink href={vcfUrl}>{`chr${chrom} sites VCF (${size}) `}</ExternalLink>
+      <ExternalLink href={tabixUrl}>(.tbi)</ExternalLink>
     </li>
   )
 }
+
+const exomesVcfLinks = exomeChroms.map((chrom, i) =>
+  createVcfLink('exomes', chrom, EXOMES_VCF_SIZES[i])
+)
+const genomesVcfLinks = genomeChroms.map((chrom, i) =>
+  createVcfLink('genomes', chrom, GENOMES_VCF_SIZES[i])
+)
 
 export default () => (
   <InfoPage>
     <PageHeading>Downloads</PageHeading>
     <p>
-      The variant dataset files below contain all subsets and are large in size. We recommend using{' '}
-      <ExternalLink href={'https://Hail.is/'}>Hail 0.2</ExternalLink> to work with gnomAD data. It
-      is easiest to download these files in parallel on the commandline using{' '}
-      <ExternalLink href={'https://cloud.google.com/storage/docs/gsutil'}>gsutil</ExternalLink>.
-      After installing gsutil, start navigating with this command:
+      gnomAD is available for download in VCF and Hail Table (.ht) formats. The variant dataset
+      files below contain all subsets (non-neuro, non-cancer, controls-only, and non-TOPMed). The
+      files can be downloaded in parallel on the command line with{' '}
+      <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
     </p>
 
-    <code>gsutil ls gs://gnomad-public/release/2.1</code>
+    <p>
+      For example, after installing gsutil, start navigating with this command:{' '}
+      <code>gsutil ls gs://gnomad-public/release/2.1.1</code>
+    </p>
+
+    <p>
+      To work efficiently with gnomAD, we recommend using{' '}
+      <ExternalLink href="https://Hail.is/">Hail 0.2</ExternalLink> and our{' '}
+      <ExternalLink href="https://github.com/macarthur-lab/gnomad_hail">
+        Hail utilities for gnomAD
+      </ExternalLink>
+      .
+    </p>
+    <p>
+      <strong>Update (March 6, 2019): gnomAD 2.1.1 released.</strong> The links below have been
+      updated. Note that the coverage files have not changed for this release.{' '}
+    </p>
 
     <Downloads>
       <SequencingMethodSection>
@@ -265,12 +150,8 @@ export default () => (
           <h3>Sites Hail Table</h3>
           <ul>
             <li>
-              <ExternalLink
-                href={
-                  'https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/ht/exomes'
-                }
-              >
-                gs://gnomad-public/release/2.1/ht/exomes/gnomad.exomes.r2.1.sites.ht
+              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
+                gs://gnomad-public/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht
               </ExternalLink>
             </li>
           </ul>
@@ -279,11 +160,7 @@ export default () => (
           <h3>Coverage Hail Table</h3>
           <ul>
             <li>
-              <ExternalLink
-                href={
-                  'https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes'
-                }
-              >
+              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
                 gs://gnomad-public/release/2.1/coverage/exomes/gnomad.exomes.r2.1.coverage.ht
               </ExternalLink>
             </li>
@@ -293,14 +170,14 @@ export default () => (
           <h3>VCFs</h3>
           <ul>
             <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.vcf.bgz">
-                All chromosomes (59.23 GiB){' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
+                All chromosomes (58.81 GiB){' '}
               </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/exomes/gnomad.exomes.r2.1.sites.vcf.bgz.tbi">
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz.tbi">
                 (.tbi)
               </ExternalLink>
             </li>
-            {exomesVcfs.map(createVcfLink)}
+            {exomesVcfLinks}
           </ul>
         </DownloadSection>
       </SequencingMethodSection>
@@ -310,12 +187,8 @@ export default () => (
           <h3>Sites Hail Table</h3>
           <ul>
             <li>
-              <ExternalLink
-                href={
-                  'https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/ht/genomes'
-                }
-              >
-                gs://gnomad-public/release/2.1/ht/genomes/gnomad.genomes.r2.1.sites.ht
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
+                gs://gnomad-public/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht
               </ExternalLink>
             </li>
           </ul>
@@ -324,11 +197,7 @@ export default () => (
           <h3>Coverage Hail Table</h3>
           <ul>
             <li>
-              <ExternalLink
-                href={
-                  'https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage'
-                }
-              >
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
                 gs://gnomad-public/release/2.1/coverage/genomes/gnomad.genomes.r2.1.coverage.ht
               </ExternalLink>
             </li>
@@ -338,22 +207,22 @@ export default () => (
           <h3>VCFs</h3>
           <ul>
             <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.vcf.bgz">
-                All chromosomes (464.36 GiB){' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
+                All chromosomes (460.93 GiB){' '}
               </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.sites.vcf.bgz.tbi">
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz.tbi">
                 (.tbi)
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.exome_calling_intervals.sites.vcf.bgz">
-                Exome calling intervals (9.76 GiB){' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
+                Exome calling intervals (9.7 GiB){' '}
               </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/vcf/genomes/gnomad.genomes.r2.1.exome_calling_intervals.sites.vcf.bgz.tbi">
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz.tbi">
                 (.tbi)
               </ExternalLink>
             </li>
-            {genomesVcfs.map(createVcfLink)}
+            {genomesVcfLinks}
           </ul>
         </DownloadSection>
       </SequencingMethodSection>
@@ -365,13 +234,24 @@ export default () => (
         <h3>Gene constraint</h3>
         <ul>
           <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/ht/constraint">
-              Hail Table (gs://gnomad-public/release/2.1/ht/constraint/constraint.ht)
+            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
+              LoF Metrics by Transcript (Hail Table)
+              (gs://gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht)
             </ExternalLink>
           </li>
           <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/ht/constraint/constraint.txt.bgz">
-              TSV
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz">
+              LoF Metrics by Transcript (TSV)
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz">
+              LoF Metrics by Gene (TSV)
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
+              LoF Metrics Downsamplings (TSV)
             </ExternalLink>
           </li>
         </ul>
