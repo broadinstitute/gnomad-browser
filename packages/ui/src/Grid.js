@@ -182,6 +182,7 @@ export class Grid extends Component {
     numRowsRendered: PropTypes.number,
     onHoverRow: PropTypes.func,
     onRequestSort: PropTypes.func,
+    onScroll: PropTypes.func,
     onVisibleRowsChange: PropTypes.func,
     rowHeight: PropTypes.number,
     rowKey: PropTypes.func,
@@ -195,6 +196,7 @@ export class Grid extends Component {
     numRowsRendered: 20,
     onHoverRow: () => {},
     onRequestSort: undefined,
+    onScroll: () => {},
     onVisibleRowsChange: () => {},
     rowHeight: 25,
     rowKey: rowData => rowData.key,
@@ -328,6 +330,10 @@ export class Grid extends Component {
     }, 0)
   }
 
+  scrollTo(scrollOffset) {
+    this.list.current.scrollTo(scrollOffset)
+  }
+
   scrollToDataRow(dataRowIndex) {
     // Data row indices are off by one from grid row indices since grid row indices include header row
     this.list.current.scrollToItem(dataRowIndex)
@@ -340,6 +346,7 @@ export class Grid extends Component {
       data,
       numRowsRendered,
       onRequestSort,
+      onScroll,
       onVisibleRowsChange,
       rowHeight,
       rowKey,
@@ -470,6 +477,7 @@ export class Grid extends Component {
                   ref={this.list}
                   width={gridWidth}
                   onItemsRendered={this.onItemsRendered}
+                  onScroll={onScroll}
                 >
                   {DataRow}
                 </FixedSizeList>
