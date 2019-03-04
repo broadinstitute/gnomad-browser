@@ -41,6 +41,10 @@ const GridWrapper = styled.div`
     &.grid-row-stripe {
       background: #fff;
     }
+
+    &.grid-row-highlight {
+      box-shadow: inset 0 0 0 1px #000;
+    }
   }
 
   .grid-cell {
@@ -111,7 +115,7 @@ GridHeadingTooltip.propTypes = {
 
 const DataRow = ({
   index: dataRowIndex,
-  data: { cellData, columns, columnWidths, data, focusedCell, onMouseEnter },
+  data: { cellData, columns, columnWidths, data, focusedCell, onMouseEnter, shouldHighlightRow },
   style,
 }) => {
   const rowData = data[dataRowIndex]
@@ -120,7 +124,9 @@ const DataRow = ({
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
       aria-rowindex={rowIndex + 1}
-      className={`grid-row ${dataRowIndex % 2 === 0 ? ' grid-row-stripe' : ''}`}
+      className={`grid-row ${dataRowIndex % 2 === 0 ? 'grid-row-stripe' : ''} ${
+        shouldHighlightRow(rowData) ? 'grid-row-highlight' : ''
+      }`}
       onMouseEnter={onMouseEnter}
       role="row"
       style={style}
@@ -179,6 +185,7 @@ export class Grid extends Component {
     onVisibleRowsChange: PropTypes.func,
     rowHeight: PropTypes.number,
     rowKey: PropTypes.func,
+    shouldHighlightRow: PropTypes.func,
     sortKey: PropTypes.string,
     sortOrder: PropTypes.oneOf(['ascending', 'descending']),
   }
@@ -191,6 +198,7 @@ export class Grid extends Component {
     onVisibleRowsChange: () => {},
     rowHeight: 25,
     rowKey: rowData => rowData.key,
+    shouldHighlightRow: () => false,
     sortKey: undefined,
     sortOrder: 'ascending',
   }
@@ -335,6 +343,7 @@ export class Grid extends Component {
       onVisibleRowsChange,
       rowHeight,
       rowKey,
+      shouldHighlightRow,
       sortKey,
       sortOrder,
       ...rest
@@ -453,6 +462,7 @@ export class Grid extends Component {
                     data,
                     focusedCell: this.focusedCell,
                     onMouseEnter: this.onMouseEnterRow,
+                    shouldHighlightRow,
                   }}
                   itemKey={rowIndex => rowKey(data[rowIndex])}
                   itemSize={rowHeight}
