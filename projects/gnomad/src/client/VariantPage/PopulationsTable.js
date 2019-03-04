@@ -96,12 +96,16 @@ export class PopulationsTable extends Component {
     const rowSpan = isExpanded ? pop.subpopulations.length + 1 : 1
     return (
       <th colSpan={colSpan} rowSpan={rowSpan} scope="row">
-        <TogglePopulationButton
-          isExpanded={isExpanded}
-          onClick={() => this.togglePopulationExpanded(pop.name)}
-        >
-          {pop.name}
-        </TogglePopulationButton>
+        {pop.subpopulations.length > 0 ? (
+          <TogglePopulationButton
+            isExpanded={isExpanded}
+            onClick={() => this.togglePopulationExpanded(pop.name)}
+          >
+            {pop.name}
+          </TogglePopulationButton>
+        ) : (
+          pop.name
+        )}
       </th>
     )
   }
@@ -111,7 +115,7 @@ export class PopulationsTable extends Component {
       .map(pop => ({
         ...pop,
         af: pop.an !== 0 ? pop.ac / pop.an : 0,
-        subpopulations: pop.subpopulations
+        subpopulations: (pop.subpopulations || [])
           .map(subPop => ({
             ...subPop,
             af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
