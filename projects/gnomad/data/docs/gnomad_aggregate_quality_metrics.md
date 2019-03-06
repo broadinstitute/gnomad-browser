@@ -12,11 +12,11 @@
       --metrics-file gnomad.exomes.json \
       --host http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy \
       --index-name aggregate_quality_metrics \
-      --tag gnomad_r2_1_exomes
+      --tag gnomad_r2_1_1_exomes
 
    python3 ./projects/gnomad/data/export_aggregate_quality_metrics_to_es.py \
       --metrics-file gnomad.genomes.json \
       --host http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy \
       --index-name aggregate_quality_metrics \
-      --tag gnomad_r2_1_genomes
+      --tag gnomad_r2_1_1_genomes
    ```

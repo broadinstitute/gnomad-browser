@@ -28,7 +28,7 @@
       ./projects/gnomad/data/export_ht_to_es.py \
          --ht-url=$GNOMAD_GENE_CONSTRAINT_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_constraint_2_1 \
+         --index-name=gnomad_constraint_2_1_1 \
          --index-type=constraint \
          --num-shards=2
    ```
