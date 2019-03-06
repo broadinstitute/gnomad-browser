@@ -71,65 +71,11 @@ dev:
 
 TIME=$(shell date "+%Y%m%d-%H%M%S")
 LOGS_PATH=../../../logs
-RESOURCES_PATH=../../../resources
 BIN_DIR=../../../node_modules/.bin
-LOCAL_API=http://localhost:8007
-REMOTE_API=http://35.184.112.239
-CLIENT_LOG_FILE_PATH=$(LOGS_PATH)/client_log_$(TIME).csv
 DATABASE_LOG_FILE_PATH=$(LOGS_PATH)/database_log_$(TIME).csv
 
 get-database-logs:
 	kubectl logs -f $(API_POD) 2>&1 | tee $(DATABASE_LOG_FILE_PATH)
 
-list-gene-files:
-	ls $(RESOURCES_PATH) | grep -i genes
-	# cat $(RESOURCES_PATH)/genes.json
-
 list-log-files:
 	ls $(LOGS_PATH)
-
-genes-fetched:
-	cat $(LOGS_PATH)/client_log_20171112-092303.csv | wc -l
-
-precache-genes:
-	# sleep 10
-	GNOMAD_API_URL=$(API_URL) $(BIN_DIR)/babel-node --config-file=../../../babel.config.js precache_genes.js $(PRECACHE_GENES_ARGUMENTS) 2>&1 | tee $(CLIENT_LOG_FILE_PATH)
-
-precache-genes-local: redis-flush-local
-	@make \
-	API_URL=$(LOCAL_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes_subset.json \
-	precache-genes
-
-precache-genes-subset: update
-	sleep 10
-	@make \
-	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-163002.json \
-	precache-genes
-
-precache-genes-subset-no-flush: update-gnomad-api
-	sleep 10
-	kubectl get pods
-	@make \
-	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
-	precache-genes
-
-precache-genes-subset-no-update:
-	@make \
-	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/100_slow_genes_171111-140000.json \
-	precache-genes
-
-precache-genes-all:
-	@make \
-	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS=$(RESOURCES_PATH)/genes.json \
-	precache-genes
-
-chunks:
-	@make \
-	API_URL=$(REMOTE_API) \
-	PRECACHE_GENES_ARGUMENTS="$(RESOURCES_PATH)/clean_genes_list_171112.json 5" \
-	precache-genes
