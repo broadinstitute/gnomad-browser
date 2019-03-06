@@ -65,9 +65,9 @@ const formatFilteringAlleleFrequency = (variantData, fafField) => {
 
 const fetchGnomadVariantData = async (ctx, variantId, subset) => {
   const requests = [
-    { index: 'gnomad_exomes_2_1', subset },
+    { index: 'gnomad_exomes_2_1_1', subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
-    { index: 'gnomad_genomes_2_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
+    { index: 'gnomad_genomes_2_1_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
   ]
 
   const [exomeData, genomeData] = await Promise.all(
@@ -130,9 +130,9 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
   const pos = Number(parts[1])
 
   const requests = [
-    { index: 'gnomad_exomes_2_1', subset },
+    { index: 'gnomad_exomes_2_1_1', subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
-    { index: 'gnomad_genomes_2_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
+    { index: 'gnomad_genomes_2_1_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
   ]
 
   const [exomeResponse, genomeResponse] = await Promise.all(

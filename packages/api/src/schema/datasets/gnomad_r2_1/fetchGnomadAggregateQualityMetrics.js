@@ -2,7 +2,7 @@ import { formatAggregateQualityMetrics } from '../aggregateQualityMetrics'
 
 const fetchGnomadAggregateQualityMetrics = async ctx => {
   const [exomeResponse, genomeResponse] = await Promise.all(
-    ['gnomad_r2_1_exomes', 'gnomad_r2_1_genomes'].map(tag =>
+    ['gnomad_r2_1_1_exomes', 'gnomad_r2_1_1_genomes'].map(tag =>
       ctx.database.elastic.search({
         index: 'aggregate_quality_metrics',
         type: 'metric',
