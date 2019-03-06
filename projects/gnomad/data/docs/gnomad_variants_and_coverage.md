@@ -14,7 +14,7 @@
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
       ./projects/gnomad/data/prepare_gnomad_r2_1_for_browser.py \
-         --input-url=gs://gnomad/release/2.1/ht/gnomad.exomes.r2.1.flat.with_subsets.sites.ht \
+         --input-url=gs://gnomad/release/2.1.1/ht/gnomad.exomes.r2.1.1.flat.with_subsets.sites.ht \
          --output-url=$GNOMAD_EXOME_VARIANTS_BROWSER_HT_URL
    ```
  
@@ -24,7 +24,7 @@
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
       ./projects/gnomad/data/prepare_gnomad_r2_1_for_browser.py \
-         --input-url=gs://gnomad/release/2.1/ht/gnomad.genomes.r2.1.flat.with_subsets.sites.ht \
+         --input-url=gs://gnomad/release/2.1.1/ht/gnomad.genomes.r2.1.1.flat.with_subsets.sites.ht \
          --output-url=$GNOMAD_GENOME_VARIANTS_BROWSER_HT_URL
    ```
 
@@ -65,7 +65,7 @@
       ./projects/gnomad/data/export_ht_to_es.py \
          --ht-url=$GNOMAD_EXOME_VARIANTS_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_exomes_2_1 \
+         --index-name=gnomad_exomes_2_1_1 \
          --index-type=variant \
          --num-shards=12
    ```
@@ -79,7 +79,7 @@
       ./projects/gnomad/data/export_ht_to_es.py \
          --ht-url=$GNOMAD_GENOME_VARIANTS_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_genomes_2_1 \
+         --index-name=gnomad_genomes_2_1_1 \
          --index-type=variant \
          --num-shards=12
    ```
