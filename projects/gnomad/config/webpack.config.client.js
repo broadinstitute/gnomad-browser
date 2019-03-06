@@ -48,7 +48,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, '../dist/public'),
     publicPath: '/',
-    filename: '[name].js',
+    filename: '[name]-[contenthash].js',
   },
   plugins: [
     new webpack.DefinePlugin(definitions),
