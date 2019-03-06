@@ -4,7 +4,7 @@
 // https://www.elastic.co/guide/en/elasticsearch/guide/current/cardinality.html
 const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) => {
   const response = await ctx.database.elastic.search({
-    index: 'gnomad_exomes_2_1,gnomad_genomes_2_1',
+    index: 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1',
     type: 'variant',
     body: {
       query: {

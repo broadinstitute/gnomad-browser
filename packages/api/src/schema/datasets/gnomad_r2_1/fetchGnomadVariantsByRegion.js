@@ -9,9 +9,9 @@ import shapeGnomadVariantSummary from './shapeGnomadVariantSummary'
 
 const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) => {
   const requests = [
-    { index: 'gnomad_exomes_2_1', subset },
+    { index: 'gnomad_exomes_2_1_1', subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
-    { index: 'gnomad_genomes_2_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
+    { index: 'gnomad_genomes_2_1_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
   ]
 
   const [exomeVariants, genomeVariants] = await Promise.all(

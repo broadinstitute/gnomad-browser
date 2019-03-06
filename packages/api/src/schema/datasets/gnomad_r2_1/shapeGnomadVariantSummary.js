@@ -45,7 +45,7 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
     const variantData = esHit._source
 
     // eslint-disable-next-line no-underscore-dangle
-    const isExomeVariant = esHit._index === 'gnomad_exomes_2_1'
+    const isExomeVariant = esHit._index === 'gnomad_exomes_2_1_1'
     const filterPrefix = isExomeVariant ? 'exomes' : 'genomes'
     const dataset = isExomeVariant ? 'gnomadExomeVariants' : 'gnomadGenomeVariants'
 

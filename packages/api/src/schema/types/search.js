@@ -146,7 +146,7 @@ export const resolveSearchResults = async (ctx, query) => {
 
   if (geneResults.length < 5 && /^rs[0-9]/i.test(query)) {
     const response = await ctx.database.elastic.search({
-      index: 'gnomad_exomes_2_1,gnomad_genomes_2_1',
+      index: 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1',
       type: 'variant',
       _source: ['rsid', 'variant_id'],
       body: {
