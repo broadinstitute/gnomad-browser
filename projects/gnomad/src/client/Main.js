@@ -1,85 +1,45 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
+import thunk from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
-import { createGenePageStore } from '@broad/gene-page'
-import { actions as userInterfaceActions } from '@broad/ui'
-import { getLabelForConsequenceTerm } from '@broad/utilities'
+import { createHelpReducer } from '@broad/help'
+import { createGeneReducer } from '@broad/redux-genes'
+import { createRegionReducer } from '@broad/region'
+import { actions as userInterfaceActions, createUserInterfaceReducer } from '@broad/ui'
 
 import App from './routes'
 
 import toc from './toc.json'
 
 const appSettings = {
-  variantSearchPredicate(variant, query) {
-    return (
-      variant
-        .get('variant_id')
-        .toLowerCase()
-        .includes(query) ||
-      (variant.get('rsid') || '').toLowerCase().includes(query) ||
-      getLabelForConsequenceTerm(variant.get('consequence'))
-        .toLowerCase()
-        .includes(query) ||
-      (variant.get('hgvs') || '').toLowerCase().includes(query)
-    )
+  variantDatasets: {
+    exac: {},
+    gnomad_r2_1: {},
+    gnomad_r2_1_controls: {},
+    gnomad_r2_1_non_cancer: {},
+    gnomad_r2_1_non_neuro: {},
+    gnomad_r2_1_non_topmed: {},
   },
-  logger: true,
-  docs: {
-    toc: toc.toc,
-    index: 'gnomad_help',
-  },
-  projectDefaults: {
-    startingGene: '',
-    startingVariant: '13-32900634-AG-A',
-    startingRegion: '1-55530000-55540000',
-    startingPadding: 75,
-    startingIndelFilter: true,
-    startingQcFilter: true,
-    startingSnpFilter: true,
-  },
-  variantDatasets: {},
 }
 
-const variantDatasets = [
-  'exac',
-  'gnomad_r2_1',
-  'gnomad_r2_1_controls',
-  'gnomad_r2_1_non_cancer',
-  'gnomad_r2_1_non_neuro',
-  'gnomad_r2_1_non_topmed',
-]
-variantDatasets.forEach(datasetId => {
-  appSettings.variantDatasets[datasetId] = {
-    allele_count: null,
-    allele_freq: null,
-    allele_num: null,
-    consequence: null,
-    datasets: [],
-    filters: [],
-    flags: [],
-    hemi_count: null,
-    hgvs: null,
-    hgvsc: null,
-    hgvsp: null,
-    hom_count: null,
-    isCanon: null,
-    populations: [],
-    id: null,
-    variant_id: null,
-    rsid: null,
-    pos: null,
-    xpos: null,
-  }
+const rootReducer = combineReducers({
+  genes: createGeneReducer(appSettings),
+  regions: createRegionReducer(appSettings),
+  help: createHelpReducer({
+    toc: toc.toc,
+    index: 'gnomad_help',
+  }),
+  ui: createUserInterfaceReducer(),
 })
 
-const store = createGenePageStore(appSettings)
+const store = createStore(rootReducer, undefined, applyMiddleware(thunk, createLogger()))
 
-window.addEventListener('resize', () => store.dispatch(
-  userInterfaceActions.setScreenSize(
-    window.innerHeight,
-    window.innerWidth)
-))
+window.addEventListener('resize', () =>
+  store.dispatch(userInterfaceActions.setScreenSize(window.innerHeight, window.innerWidth))
+)
 
 const Main = () => (
   <Provider store={store}>

@@ -18,7 +18,8 @@
     "express": "^4.14.0"
   },
   "devDependencies": {
-    "@broad/gene-page": "*",
+    "@broad/help": "*",
+    "@broad/redux-genes": "*",
     "@broad/region": "*",
     "@broad/region-viewer": "*",
     "@broad/track-coverage": "*",
@@ -51,7 +52,6 @@
     "react-sizeme": "^2.5.2",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
-    "redux-throttle": "^0.1.1",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "styled-components": "^2.1.2",

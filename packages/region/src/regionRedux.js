@@ -23,26 +23,18 @@ export const actions = {
   }),
 }
 
-export default function createRegionReducer({
-  variantDatasets,
-  projectDefaults: { startingRegion },
-}) {
-  const variantDatasetKeys = Object.keys(variantDatasets)
+export default function createRegionReducer() {
   const State = Immutable.Record({
-    currentRegion: startingRegion,
+    currentRegion: null,
     byRegionName: Immutable.OrderedMap(),
   })
 
   const actionHandlers = {
-    [types.SET_CURRENT_REGION] (state, { regionId }) {
+    [types.SET_CURRENT_REGION](state, { regionId }) {
       return state.set('currentRegion', regionId)
     },
-    [types.RECEIVE_REGION_DATA] (state, { regionId, regionData }) {
-      const regionDataOnly = variantDatasetKeys.reduce((acc, variantDataKey) => {
-        return acc.delete(variantDataKey)
-      }, regionData)
-
-      return state.set('byRegionName', state.byRegionName.set(regionId, regionDataOnly))
+    [types.RECEIVE_REGION_DATA](state, { regionId, regionData }) {
+      return state.set('byRegionName', state.byRegionName.set(regionId, regionData))
     },
   }
 
