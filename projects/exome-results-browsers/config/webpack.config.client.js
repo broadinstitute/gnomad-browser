@@ -42,7 +42,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, '../dist/public'),
     publicPath: '/',
-    filename: '[name]-[contenthash].js',
+    filename: isDev ? '[name].js' : '[name]-[contenthash].js',,
   },
   plugins: [
     // Inject the JS bundle into the server's HTML template
