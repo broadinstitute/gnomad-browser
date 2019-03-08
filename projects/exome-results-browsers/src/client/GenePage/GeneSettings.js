@@ -107,6 +107,13 @@ const SearchWrapper = styled.div`
   }
 `
 
+const keyboardShortcuts = {
+  lof: 'l',
+  missense: 'm',
+  synonymous: 's',
+  other: 'o',
+}
+
 const GeneSettings = ({
   consequenceFilter,
   deNovoFilter,
@@ -130,6 +137,18 @@ const GeneSettings = ({
             id="variant-filter"
             onChange={setConsequenceFilter}
           />
+          {Object.keys(keyboardShortcuts).map(category => (
+            <KeyboardShortcut
+              key={category}
+              handler={() => {
+                setConsequenceFilter({
+                  ...consequenceFilter,
+                  [category]: !consequenceFilter[category],
+                })
+              }}
+              keys={keyboardShortcuts[category]}
+            />
+          ))}
 
           {browserConfig.analysisGroups.selectableGroups.length > 1 && (
             <AnalysisGroupMenuWrapper>

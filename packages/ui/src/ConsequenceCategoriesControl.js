@@ -1,7 +1,7 @@
 import Check from '@fortawesome/fontawesome-free/svgs/solid/check.svg'
 import { darken, hideVisually, transparentize } from 'polished'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const categories = ['lof', 'missense', 'synonymous', 'other']
@@ -107,18 +107,16 @@ const CategoryWrapper = styled.span`
   }
 `
 
+const labelBackground = ({ backgroundColor }) =>
+  `linear-gradient(to right, ${backgroundColor}, ${backgroundColor} 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`
+
 const Label = styled.label`
   display: inline-flex;
   flex-grow: 1;
   align-items: center;
-  margin: 0; /* Override Bootstrap in gnomad_browser */
-  background: ${props =>
-    `linear-gradient(to right, ${props.backgroundColor}, ${
-      props.backgroundColor
-    } 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0))`};
+  background: ${labelBackground};
   background-repeat: no-repeat;
   font-size: 14px;
-  font-weight: normal; /* Override Bootstrap in gnomad_browser */
   user-select: none;
 `
 
@@ -126,81 +124,40 @@ const LabelText = styled.span`
   padding: 0.375em 0.75em;
 `
 
-const KEYBOARD_SHORTCUTS = {
-  l: 'lof',
-  m: 'missense',
-  s: 'synonymous',
-  o: 'other',
-}
-
-export class ConsequenceCategoriesControl extends Component {
-  componentDidMount() {
-    document.addEventListener('keypress', this.onKeyPress)
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keypress', this.onKeyPress)
-  }
-
-  onKeyPress = e => {
-    // Ignore keypresses in input elements
-    if (
-      e.target.tagName === 'INPUT' ||
-      e.target.tagName === 'SELECT' ||
-      e.target.tagName === 'TEXTAREA' ||
-      e.target.isContentEditable
-    ) {
-      return
-    }
-
-    const key = e.key.toLowerCase()
-    if (key in KEYBOARD_SHORTCUTS) {
-      const toggledCategory = KEYBOARD_SHORTCUTS[key]
-      const { categorySelections, onChange } = this.props
-
-      onChange({ ...categorySelections, [toggledCategory]: !categorySelections[toggledCategory] })
-    }
-  }
-
-  render() {
-    const { categorySelections, id, onChange } = this.props
-
-    return (
-      <ConsequenceCategoriesControlWrapper>
-        {categories.map(category => (
-          <CategoryWrapper key={category} borderColor={categoryColors[category]}>
-            <Label
-              htmlFor={`${id}-${category}`}
-              backgroundColor={transparentize(0.5, categoryColors[category])}
-            >
-              <Checkbox
-                checked={categorySelections[category]}
-                id={`${id}-${category}`}
-                type="checkbox"
-                onChange={e => onChange({ ...categorySelections, [category]: e.target.checked })}
-              />
-              <CheckboxIcon aria-hidden>{categorySelections[category] && <Check />}</CheckboxIcon>
-              <LabelText>{categoryLabels[category]}</LabelText>
-            </Label>
-            <Button
-              onClick={() =>
-                onChange({
-                  lof: false,
-                  missense: false,
-                  synonymous: false,
-                  other: false,
-                  [category]: true,
-                })
-              }
-            >
-              only
-            </Button>
-          </CategoryWrapper>
-        ))}
-      </ConsequenceCategoriesControlWrapper>
-    )
-  }
-}
+export const ConsequenceCategoriesControl = ({ categorySelections, id, onChange }) => (
+  <ConsequenceCategoriesControlWrapper>
+    {categories.map(category => (
+      <CategoryWrapper key={category} borderColor={categoryColors[category]}>
+        <Label
+          htmlFor={`${id}-${category}`}
+          backgroundColor={transparentize(0.5, categoryColors[category])}
+        >
+          <Checkbox
+            checked={categorySelections[category]}
+            id={`${id}-${category}`}
+            type="checkbox"
+            onChange={e => onChange({ ...categorySelections, [category]: e.target.checked })}
+          />
+          <CheckboxIcon aria-hidden>{categorySelections[category] && <Check />}</CheckboxIcon>
+          <LabelText>{categoryLabels[category]}</LabelText>
+        </Label>
+        <Button
+          onClick={() =>
+            onChange({
+              lof: false,
+              missense: false,
+              synonymous: false,
+              other: false,
+              [category]: true,
+            })
+          }
+        >
+          only
+        </Button>
+      </CategoryWrapper>
+    ))}
+  </ConsequenceCategoriesControlWrapper>
+)
 
 ConsequenceCategoriesControl.propTypes = {
   categorySelections: PropTypes.shape({
