@@ -42,6 +42,13 @@ const CheckboxWrapper = styled.span`
   }
 `
 
+const keyboardShortcuts = {
+  lof: 'l',
+  missense: 'm',
+  synonymous: 's',
+  other: 'o',
+}
+
 const VariantFilterControls = ({ onChange, value }) => {
   const searchInput = useRef(null)
 
@@ -55,6 +62,21 @@ const VariantFilterControls = ({ onChange, value }) => {
             onChange({ ...value, includeCategories })
           }}
         />
+        {Object.keys(keyboardShortcuts).map(category => (
+          <KeyboardShortcut
+            key={category}
+            handler={() => {
+              onChange({
+                ...value,
+                includeCategories: {
+                  ...value.includeCategories,
+                  [category]: !value.includeCategories[category],
+                },
+              })
+            }}
+            keys={keyboardShortcuts[category]}
+          />
+        ))}
       </div>
 
       <CheckboxWrapper>
