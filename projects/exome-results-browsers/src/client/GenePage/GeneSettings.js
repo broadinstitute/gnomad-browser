@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useRef } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -9,7 +9,13 @@ import {
   variantInAnalysisFilter,
   variantFilter,
 } from '@broad/redux-variants'
-import { Checkbox, Combobox, ConsequenceCategoriesControl, SearchInput } from '@broad/ui'
+import {
+  Checkbox,
+  Combobox,
+  ConsequenceCategoriesControl,
+  KeyboardShortcut,
+  SearchInput,
+} from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
@@ -112,59 +118,75 @@ const GeneSettings = ({
   setConsequenceFilter,
   toggleDeNovoFilter,
   toggleInAnalysisFilter,
-}) => (
-  <SettingsWrapper>
-    <FiltersWrapper>
-      <FiltersFirstColumn>
-        <ConsequenceCategoriesControl
-          categorySelections={consequenceFilter}
-          id="variant-filter"
-          onChange={setConsequenceFilter}
-        />
+}) => {
+  const searchInput = useRef(null)
 
-        {browserConfig.analysisGroups.selectableGroups.length > 1 && (
-          <AnalysisGroupMenuWrapper>
-            {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
-            <label htmlFor="analysis-group">Current analysis group </label>
-            <Combobox
-              id="analysis-group"
-              options={browserConfig.analysisGroups.selectableGroups.map(group => ({
-                id: group,
-                label: group,
-              }))}
-              onSelect={option => onChangeAnalysisGroup(option.id)}
-              value={selectedAnalysisGroup}
-            />
-            <ExportVariantsButton exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`} />
-          </AnalysisGroupMenuWrapper>
-        )}
-      </FiltersFirstColumn>
+  return (
+    <SettingsWrapper>
+      <FiltersWrapper>
+        <FiltersFirstColumn>
+          <ConsequenceCategoriesControl
+            categorySelections={consequenceFilter}
+            id="variant-filter"
+            onChange={setConsequenceFilter}
+          />
 
-      <FiltersSecondColumn>
-        <Checkbox
-          checked={deNovoFilter}
-          id="denovo-filter"
-          label="Show only de novo variants"
-          onChange={toggleDeNovoFilter}
-        />
-        <Checkbox
-          checked={inAnalysisFilter}
-          id="in-analysis-filter"
-          label="Show only variants in analysis"
-          onChange={toggleInAnalysisFilter}
-        />
-      </FiltersSecondColumn>
-    </FiltersWrapper>
+          {browserConfig.analysisGroups.selectableGroups.length > 1 && (
+            <AnalysisGroupMenuWrapper>
+              {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
+              <label htmlFor="analysis-group">Current analysis group </label>
+              <Combobox
+                id="analysis-group"
+                options={browserConfig.analysisGroups.selectableGroups.map(group => ({
+                  id: group,
+                  label: group,
+                }))}
+                onSelect={option => onChangeAnalysisGroup(option.id)}
+                value={selectedAnalysisGroup}
+              />
+              <ExportVariantsButton
+                exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`}
+              />
+            </AnalysisGroupMenuWrapper>
+          )}
+        </FiltersFirstColumn>
 
-    <SearchWrapper>
-      <SearchInput
-        placeholder="Search variant table"
-        onChange={searchVariants}
-        withKeyboardShortcuts
-      />
-    </SearchWrapper>
-  </SettingsWrapper>
-)
+        <FiltersSecondColumn>
+          <Checkbox
+            checked={deNovoFilter}
+            id="denovo-filter"
+            label="Show only de novo variants"
+            onChange={toggleDeNovoFilter}
+          />
+          <Checkbox
+            checked={inAnalysisFilter}
+            id="in-analysis-filter"
+            label="Show only variants in analysis"
+            onChange={toggleInAnalysisFilter}
+          />
+        </FiltersSecondColumn>
+      </FiltersWrapper>
+
+      <SearchWrapper>
+        <SearchInput
+          ref={searchInput}
+          placeholder="Search variant table"
+          onChange={searchVariants}
+        />
+        <KeyboardShortcut
+          keys="/"
+          handler={e => {
+            // preventDefault to avoid typing a "/" in the search input
+            e.preventDefault()
+            if (searchInput.current) {
+              searchInput.current.focus()
+            }
+          }}
+        />
+      </SearchWrapper>
+    </SettingsWrapper>
+  )
+}
 
 GeneSettings.propTypes = {
   consequenceFilter: PropTypes.shape({

@@ -1,6 +1,5 @@
-import Mousetrap from 'mousetrap'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -45,88 +44,53 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
   }
 `
 
-export class SearchInput extends Component {
-  static propTypes = {
-    placeholder: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string,
-    withKeyboardShortcuts: PropTypes.bool,
-  }
+export const SearchInput = React.forwardRef(({ placeholder, onChange, value: propsValue }, ref) => {
+  const [stateValue, setValue] = useState('')
 
-  static defaultProps = {
-    placeholder: 'Search',
-    value: undefined,
-    withKeyboardShortcuts: false,
-  }
+  const value = propsValue === undefined ? stateValue : propsValue
 
-  state = {
-    value: '',
-  }
+  return (
+    <Wrapper>
+      <Input
+        autoComplete="off"
+        onChange={e => {
+          setValue(e.target.value)
+          onChange(e.target.value)
+        }}
+        onKeyDown={e => {
+          if (e.key === 'Escape') {
+            setValue('')
+            onChange('')
+          }
+        }}
+        placeholder={placeholder}
+        innerRef={ref}
+        type="text"
+        value={value}
+      />
+      {value && (
+        <ClearButton
+          aria-label="Clear"
+          tabIndex={-1}
+          onClick={() => {
+            setValue('')
+            onChange('')
+          }}
+        >
+          &times;
+        </ClearButton>
+      )}
+    </Wrapper>
+  )
+})
 
-  componentDidMount() {
-    const { withKeyboardShortcuts } = this.props
-    if (withKeyboardShortcuts) {
-      Mousetrap.bind('/', e => {
-        if (this.input) {
-          e.preventDefault()
-          this.input.focus()
-        }
-      })
-    }
-  }
+SearchInput.propTypes = {
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+}
 
-  componentWillUnmount() {
-    if (this.boundKeyboardShortcuts) {
-      Mousetrap.unbind('/')
-    }
-  }
-
-  onChange = e => {
-    const { onChange } = this.props
-    const { value } = e.target
-    this.setState({ value })
-    onChange(value)
-  }
-
-  onClear = () => {
-    const { onChange } = this.props
-    this.setState({ value: '' })
-    onChange('')
-  }
-
-  onKeyDown = e => {
-    if (e.key === 'Escape') {
-      this.onClear()
-    }
-  }
-
-  inputRef = el => {
-    this.input = el
-  }
-
-  render() {
-    const { placeholder, value: propsValue } = this.props
-    const { value: stateValue } = this.state
-
-    const value = propsValue === undefined ? stateValue : propsValue
-
-    return (
-      <Wrapper>
-        <Input
-          autoComplete="off"
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          placeholder={placeholder}
-          innerRef={this.inputRef}
-          type="text"
-          value={value}
-        />
-        {value && (
-          <ClearButton aria-label="Clear" tabIndex={-1} onClick={this.onClear}>
-            &times;
-          </ClearButton>
-        )}
-      </Wrapper>
-    )
-  }
+SearchInput.defaultProps = {
+  placeholder: 'Search',
+  value: undefined,
 }

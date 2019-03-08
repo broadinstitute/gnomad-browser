@@ -10,8 +10,6 @@ export { ClassicExacButton } from './classicExac/button'
 
 export { ConsequenceCategoriesControl } from './ConsequenceCategoriesControl'
 
-export { SearchInput } from './SearchInput'
-
 export {
   Table,
   VerticalTextLabels,
@@ -79,6 +77,8 @@ export {
 export { Page, PageHeading, SectionHeading, TrackPage, TrackPageSection } from './Page'
 
 export { Searchbox } from './Searchbox'
+
+export { SearchInput } from './SearchInput'
 
 export { SegmentedControl } from './SegmentedControl'
 

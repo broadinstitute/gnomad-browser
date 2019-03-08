@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { Checkbox, ConsequenceCategoriesControl, SearchInput } from '@broad/ui'
+import { Checkbox, ConsequenceCategoriesControl, KeyboardShortcut, SearchInput } from '@broad/ui'
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -42,60 +42,74 @@ const CheckboxWrapper = styled.span`
   }
 `
 
-const VariantFilterControls = ({ onChange, value }) => (
-  <SettingsWrapper>
-    <div>
-      <ConsequenceCategoriesControl
-        categorySelections={value.includeCategories}
-        id="variant-filter"
-        onChange={includeCategories => {
-          onChange({ ...value, includeCategories })
-        }}
-      />
-    </div>
+const VariantFilterControls = ({ onChange, value }) => {
+  const searchInput = useRef(null)
 
-    <CheckboxWrapper>
-      <span>
-        <Checkbox
-          checked={value.includeFilteredVariants}
-          id="qcFilter2"
-          label="Include filtered variants"
-          onChange={includeFilteredVariants => {
-            onChange({ ...value, includeFilteredVariants })
+  return (
+    <SettingsWrapper>
+      <div>
+        <ConsequenceCategoriesControl
+          categorySelections={value.includeCategories}
+          id="variant-filter"
+          onChange={includeCategories => {
+            onChange({ ...value, includeCategories })
           }}
         />
-        <QuestionMark topic="include-filtered-variants" display="inline" />
-      </span>
-      <Checkbox
-        checked={value.includeSNPs}
-        id="snpfilter"
-        label="SNPs"
-        onChange={includeSNPs => {
-          onChange({ ...value, includeSNPs })
-        }}
-      />
-      <Checkbox
-        checked={value.includeIndels}
-        id="indelfilter"
-        label="Indels"
-        onChange={includeIndels => {
-          onChange({ ...value, includeIndels })
-        }}
-      />
-    </CheckboxWrapper>
+      </div>
 
-    <div>
-      <SearchInput
-        placeholder="Search variant table"
-        onChange={searchText => {
-          onChange({ ...value, searchText })
-        }}
-        withKeyboardShortcuts
-        value={value.searchText}
-      />
-    </div>
-  </SettingsWrapper>
-)
+      <CheckboxWrapper>
+        <span>
+          <Checkbox
+            checked={value.includeFilteredVariants}
+            id="qcFilter2"
+            label="Include filtered variants"
+            onChange={includeFilteredVariants => {
+              onChange({ ...value, includeFilteredVariants })
+            }}
+          />
+          <QuestionMark topic="include-filtered-variants" display="inline" />
+        </span>
+        <Checkbox
+          checked={value.includeSNPs}
+          id="snpfilter"
+          label="SNPs"
+          onChange={includeSNPs => {
+            onChange({ ...value, includeSNPs })
+          }}
+        />
+        <Checkbox
+          checked={value.includeIndels}
+          id="indelfilter"
+          label="Indels"
+          onChange={includeIndels => {
+            onChange({ ...value, includeIndels })
+          }}
+        />
+      </CheckboxWrapper>
+
+      <div>
+        <SearchInput
+          ref={searchInput}
+          placeholder="Search variant table"
+          value={value.searchText}
+          onChange={searchText => {
+            onChange({ ...value, searchText })
+          }}
+        />
+        <KeyboardShortcut
+          keys="/"
+          handler={e => {
+            // preventDefault to avoid typing a "/" in the search input
+            e.preventDefault()
+            if (searchInput.current) {
+              searchInput.current.focus()
+            }
+          }}
+        />
+      </div>
+    </SettingsWrapper>
+  )
+}
 
 VariantFilterControls.propTypes = {
   onChange: PropTypes.func.isRequired,
