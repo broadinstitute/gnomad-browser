@@ -80,7 +80,7 @@ export default () => (
       Consortium (ExAC).
     </p>
     <p>
-      The data set provided on this website spans 125,748 exomes and 15,708 genomes from unrelated
+      The short variant data set provided on this website spans 125,748 exomes and 15,708 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies,
       totalling 141,456 individuals.{' '}
       <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
@@ -88,7 +88,7 @@ export default () => (
       </ExternalLink>{' '}
       describes the latest release. We have removed individuals known to be affected by severe
       pediatric disease, as well as their first-degree relatives, so this data set should serve as a
-      useful reference set of allele frequencies for severe disease studies - however, note that
+      useful reference set of allele frequencies for severe pediatric disease studies - however, note that
       some individuals with severe disease may still be included in the data set, albeit likely at a
       frequency equivalent to or lower than that seen in the general population.
     </p>
@@ -128,7 +128,20 @@ export default () => (
       for any use of these data.
     </p>
     <p>
-      The data are available under the{' '}
+     The gnomAD structural variant (SV) data set provided on this website spans 10,738 genomes from
+     unrelated individuals sequenced as part of various disease-specific and population genetic studies.
+     It mostly, but not entirely overlaps with the genome set used for the gnomAD short variant release.
+     This blog post describes the SV release. As with the gnomAD short variant data set, we have removed
+     individuals known to be affected by severe pediatric disease, as well as their first-degree relatives,
+      so this data set should serve as a useful reference set of allele frequencies for severe pediatric disease studies
+      - however, note that some individuals with severe disease may still be included in the data set, albeit likely
+      at a frequency equivalent to or lower than that seen in the general population.   
+    </p>
+    <p>
+        
+    </p>
+    <p>
+      All the above data are available under the{' '}
       <ExternalLink href="http://opendatacommons.org/licenses/odbl/1.0/">
         ODC Open Database License (ODbL)
       </ExternalLink>{' '}
