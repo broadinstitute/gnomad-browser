@@ -13,7 +13,7 @@ const ControlSection = styled.div`
   justify-content: space-between;
 `
 
-const availableMetrics = [
+const allMetrics = [
   'SiteQuality',
   'FS',
   'MQRankSum',
@@ -97,6 +97,10 @@ export class GnomadSiteQualityMetrics extends Component {
           }
 
           const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
+
+          const availableMetrics = allMetrics.filter(
+            metric => variantData.qualityMetrics.siteQualityMetrics[metric] !== null
+          )
 
           return (
             <div>
