@@ -75,6 +75,7 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
       key: 'hgvs',
       heading: 'Consequence',
       grow: 1,
+      isSortable: true,
       minWidth: 160,
       render: (row, key, { highlightWords }) => (
         <Highlighter
