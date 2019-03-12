@@ -36,10 +36,9 @@ class VariantTable extends PureComponent {
       variants,
       sortKey,
       sortOrder,
-      /* eslint-enable no-shadow */
     } = this.props
 
-    if (variants.size === 0) {
+    if (variants.length === 0) {
       return <NoVariants height={500}>No variants found</NoVariants>
     }
 
