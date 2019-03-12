@@ -15,7 +15,7 @@ For more details, please refer to [the gnomAD SV preprint](https://broad.io/gnom
 
 ### Disclaimer
 
-Given the context specificity of gene expression and cis-regulation, it is certain that not all CG SVs will result in increased expression of their duplicated genes. 
+Given the context specificity of gene expression and cis-regulation, it uncertain that all CG SVs will result in increased expression of their duplicated genes. 
 
 Just like for SNVs & indels, please [carefully inspect each CG SV before interpretation](https://broad.io/gnomad_drugs), particularly in the context of [which exons and transcripts the SV overlaps](https://broad.io/tx_annotation).
 
