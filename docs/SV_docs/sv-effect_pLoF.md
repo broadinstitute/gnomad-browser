@@ -13,7 +13,7 @@ On average, these variants can be expected to reduce gene function by 50% when i
 
 ### Disclaimer
 
-Given the relatively broad categorization of pLoF variants across SV classes, it is possible that not all pLoF SVs will result in true loss-of-function. 
+This is a relatively broad categorization of pLoF variants across SV classes. Not all pLoF SVs will result in true loss-of-function.  
 
 Just like for SNVs & indels, please [carefully inspect each pLoF SV before interpretation](https://broad.io/gnomad_drugs), particularly in the context of [its exonic overlap and affected transcripts](https://broad.io/tx_annotation).
 
