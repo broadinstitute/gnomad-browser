@@ -22,9 +22,9 @@ The "worst" consequence per SV was determined in the order below:
 ### Other consequences
 
   4. **MCNV overlap**: MCNV overlaps one or more protein-coding exons; exact consequence depends on the number of copies and their orientation.
-  5. **Inversion span**: gene is entirely spanned by an inversion SV without being directly disrupted.
-  6. **Partial duplication**: SV is predicted to partially duplicate the gene while leaving the original copy of the gene intact.
-  7. **UTR**: SV does not directly disrupt coding sequence, but overlaps one of the gene's untranslated regions (UTRs).
-  8. **Promoter**: SV does not directly disrupt coding sequence or promoter, but is within 2kb of the gene's transcription start site.
+  5. **Partial duplication**: SV is predicted to partially duplicate the gene while leaving the original copy of the gene intact.
+  6. **UTR**: SV does not directly disrupt coding sequence, but overlaps one of the gene's untranslated regions (UTRs).
+  7. **Promoter**: SV does not directly disrupt coding sequence or promoter, but is within 2kb of the gene's transcription start site.
+  8. **Inversion span**: gene is entirely spanned by an inversion SV without being directly disrupted.
   9. **Intronic**: SV does not directly disrupt coding sequence, but is wholly contained within an intron.
   10. **Intergenic**: SV does not meet any of the above categories.
