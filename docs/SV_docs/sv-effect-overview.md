@@ -9,9 +9,9 @@ We annotated each SV for multiple potential genic effects using an approach desc
 
 ### Representation in the gnomAD Browser
 
-For each SV, the "worst" consequence is annotated in the `consequence` field of the Browser table. When querying a gene, SV consequences will be restricted to that gene. Otherwise, any consequence across any gene is considered for each SV.  
+The predicted functional impact of each SV is annotated in the `consequence` field of the Browser table. When querying a gene, SV consequences will be restricted to that gene. Otherwise, any consequence across any gene is considered for each SV.  
 
-The "worst" consequence per SV was determined in the order below:
+The functional consequence per SV was determined in the order below:
 
 ### Main functional consequences
 

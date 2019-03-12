@@ -9,7 +9,7 @@ title: 'SV consequence: copy gain
 
 SV resulting in CG of a gene are predicted to entirely duplicate a gene's canonical transcript.  
 
-These variants can be expected to result in increased gene copy number. However, the transcriptional consequences of CG events require further study before concluding that most or all such events will result in increased gene expression.  
+These variants can be expected to result in increased gene copy number. However, further study is required before predicting the functional consequences of CG events, which are likely to be gene specific.  
 
 For more details, please refer to [the gnomAD SV preprint](https://broad.io/gnomad_sv).  
 
