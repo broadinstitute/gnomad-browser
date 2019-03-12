@@ -23,6 +23,7 @@ const comparators = {
   allele_count: makeNumericComparator('allele_count'),
   allele_num: makeNumericComparator('allele_num'),
   allele_freq: makeNumericComparator('allele_freq'),
+  hgvs: makeStringComparator('hgvs'),
   hom_count: makeNumericComparator('hom_count'),
   hemi_count: makeNumericComparator('hemi_count'),
 }
