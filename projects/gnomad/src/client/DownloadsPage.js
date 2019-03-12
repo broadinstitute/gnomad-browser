@@ -24,7 +24,6 @@ const DownloadSection = styled.div`
 
   h3 {
     margin-bottom: 5px;
-    font-size: 16px;
   }
 
   ul {
@@ -36,6 +35,11 @@ const DownloadSection = styled.div`
       margin-bottom: 5px;
     }
   }
+`
+
+const MNVList = styled.ul`
+  list-style: circle !important;
+  padding-left: 20px !important;
 `
 
 const RELEASE = '2.1.1'
@@ -253,6 +257,45 @@ export default () => (
             <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
               LoF Metrics Downsamplings (TSV)
             </ExternalLink>
+          </li>
+        </ul>
+      </DownloadSection>
+      <DownloadSection>
+        <h3>Multi-nucleotide variants (MNVs)</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv">
+              Coding MNVs (TSV)
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp.tsv">
+              Coding MNVs consisting of 3 SNVs (TSV)
+            </ExternalLink>
+          </li>
+          <li>
+            MNVs genome wide
+            <MNVList>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                <React.Fragment key={n}>
+                  <li>
+                    <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genomes">
+                      Distance = {n} Hail Table
+                      (gs://gnomad-public/release/2.1/mnv/genomes/gnomad_mnv_genome_d
+                      {n}
+                      .ht)
+                    </ExternalLink>
+                  </li>
+                  <li>
+                    <ExternalLink
+                      href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genomes/gnomad_mnv_genome_d${n}.tsv.bgz`}
+                    >
+                      Distance = {n} TSV
+                    </ExternalLink>
+                  </li>
+                </React.Fragment>
+              ))}
+            </MNVList>
           </li>
         </ul>
       </DownloadSection>
