@@ -10,6 +10,8 @@ import {
 import { getXpos } from '../utilities/variant'
 
 import { AggregateQualityMetricsType } from './datasets/aggregateQualityMetrics'
+import fetchGnomadStructuralVariantDetails from './datasets/gnomad_sv_r2/fetchGnomadStructuralVariantDetails'
+import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadStructuralVariantDetailsType'
 
 import geneType, {
   lookupGeneByGeneId,
@@ -97,6 +99,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         query: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => resolveSearchResults(ctx, args.query),
+    },
+    structural_variant: {
+      type: GnomadStructuralVariantDetailsType,
+      args: {
+        variantId: { type: GraphQLString },
+      },
+      resolve: (obj, args, ctx) => fetchGnomadStructuralVariantDetails(ctx, args.variantId),
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',

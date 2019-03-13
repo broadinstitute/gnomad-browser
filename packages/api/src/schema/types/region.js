@@ -11,9 +11,11 @@ import {
 
 import { datasetArgumentTypeForMethod, AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
+import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
 
 import coverageType, { fetchCoverageByRegion } from './coverage'
 import geneType, { lookupGenesByInterval } from './gene'
+import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
 
@@ -70,6 +72,10 @@ const regionType = new GraphQLObjectType({
           region: obj,
         })
       },
+    },
+    structural_variants: {
+      type: new GraphQLList(StructuralVariantSummaryType),
+      resolve: async (obj, args, ctx) => fetchGnomadStructuralVariantsByRegion(ctx, obj),
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
