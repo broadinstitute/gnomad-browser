@@ -141,31 +141,31 @@ export default () => (
     All of the raw data from these projects have been reprocessed through the same pipeline, and jointly variant-called to 
     increase consistency across projects.In brief, we aggregated Illumina short-read WGS from population genetic and complex
     disease-association studies. We discovered SVs by integrating four published SV algorithms ({' '}
-      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/26647377>
+      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/26647377">
         Manta
       </ExternalLink>{' '}, {' '}
-      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/22962449>
+      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/22962449">
         DELLY
       </ExternalLink>{' '}, {' '}
-      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/28855259>
+      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/28855259">
         MELT
       </ExternalLink>{' '}, and {' '}
-      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/22302147>
+      <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/22302147">
         cn.MOPS
       </ExternalLink>{' '})
     to identify SVs across seven mutational classes, and jointly filtered, genotyped, resolved, and annotated these SVs across
     all genomes. All SV discovery was performed in {' '}
-      <ExternalLink href="https://software.broadinstitute.org/firecloud/>
+      <ExternalLink href="https://software.broadinstitute.org/firecloud/">
         FireCloud
       </ExternalLink>{' '} using the {' '}
-      <ExternalLink href="https://software.broadinstitute.org/wdl/>
+      <ExternalLink href="https://software.broadinstitute.org/wdl/">
         Workflow Description Language (WDL)
       </ExternalLink>{' '} and the {' '}
-      <ExternalLink href="https://cromwell.readthedocs.io/en/stable/>
+      <ExternalLink href="https://cromwell.readthedocs.io/en/stable/">
         Cromwell Execution Engine
       </ExternalLink>{' '}, where the components of the gnomAD SV discovery pipeline are available as public methods with dedicated
     Docker images. Extensive technical details of this process are provided in the supplementary information of the {' '}
-      <ExternalLink href="https://broad.io/gnomad_sv>
+      <ExternalLink href="https://broad.io/gnomad_sv">
         gnomAD SV preprint
       </ExternalLink>{' '}; please cite this preprint for use of the SV data.    
     </p>
