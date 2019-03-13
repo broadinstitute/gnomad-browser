@@ -11,6 +11,7 @@ import {
 import { mergeOverlappingRegions } from '../../utilities/region'
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
+import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
 
 import {
   ClinvarVariantType,
@@ -28,6 +29,7 @@ import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import * as fromRegionalConstraint from './regionalConstraint'
+import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
 
@@ -102,6 +104,10 @@ const geneType = new GraphQLObjectType({
         elasticClient: ctx.database.elastic,
         geneName: obj.gene_name,
       }),
+    },
+    structural_variants: {
+      type: new GraphQLList(StructuralVariantSummaryType),
+      resolve: async (obj, args, ctx) => fetchGnomadStructuralVariantsByGene(ctx, obj),
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
