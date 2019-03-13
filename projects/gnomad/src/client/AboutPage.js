@@ -817,6 +817,60 @@ export default () => (
             <p>Tim Poterba</p>
           </li>
         </ul>
+<h4 id="sv-team">Structural Variation team</h4>
+        <ul>
+          <li>
+            <p>Ryan Collins</p>
+          </li>
+          <li>
+            <p>Harrison Brand</p>
+          </li>
+          <li>
+            <p>Konrad Karczewski</p>
+          </li>
+          <li>
+            <p>Laurent Francioli</p>
+          </li>
+          <li>
+            <p>Nick Watts</p>
+          </li>
+          <li>
+            <p>Matthew Solomonson</p>
+          </li>
+          <li>
+            <p>Xuefang Zhao</p>
+          </li>
+          <li>
+            <p>Laura Gauthier</p>
+          </li>
+          <li>
+            <p>Harold Wang</p>
+          </li>
+          <li>
+            <p>Chelsea Lowther</p>
+          </li>
+          <li>
+            <p>Mark Walker</p>
+          </li>
+          <li>
+            <p>Christopher Whelan</p>
+          </li>
+          <li>
+            <p>Ted Brookings</p>
+          </li>
+          <li>
+            <p>Ted Sharpe</p>
+          </li>
+          <li>
+            <p>Jack Fu</p>
+          </li>
+          <li>
+            <p>Eric Banks</p>
+          </li>
+          <li>
+            <p>Michael Talkowski</p>
+          </li>
+        </ul>
       </CreditsSection>
       <CreditsSection>
         <h4 id="website-team">Website team</h4>
@@ -871,9 +925,19 @@ export default () => (
         <p>NIDDK U54 DK105566</p>
         <p>(PIs: MacArthur and Neale)</p>
         <br />
+        <p>NHGRI U24 HG010262</p>
+        <p>(PI: Phillipakis)</p>
+        <br />
+        <p>NIMH R56 MH115957</p>
+        <p>(PI: Talkowski)</p>
+        <br />
         <p>
           The vast majority of the data storage, computing resources, and human effort used to
           generate this call set were donated by the Broad Institute
+        </p>
+        <p>
+          We thank Jerome Rotter, Steven Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
+          for the use of their structural variant data
         </p>
       </CreditsSection>
     </Credits>
