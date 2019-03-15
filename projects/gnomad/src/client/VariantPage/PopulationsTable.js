@@ -26,19 +26,24 @@ const TogglePopulationButton = TextButton.extend`
 
 export class PopulationsTable extends Component {
   static propTypes = {
+    columnLabels: PropTypes.shape({
+      ac: PropTypes.string,
+      an: PropTypes.string,
+      af: PropTypes.string,
+    }),
     populations: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
         ac: PropTypes.number.isRequired,
         an: PropTypes.number.isRequired,
-        ac_hemi: PropTypes.number.isRequired,
-        ac_hom: PropTypes.number.isRequired,
+        ac_hemi: PropTypes.number,
+        ac_hom: PropTypes.number,
         subpopulations: PropTypes.arrayOf(
           PropTypes.shape({
             name: PropTypes.string.isRequired,
             ac: PropTypes.number.isRequired,
             an: PropTypes.number.isRequired,
-            ac_hom: PropTypes.number.isRequired,
+            ac_hom: PropTypes.number,
           })
         ),
       })
@@ -48,6 +53,7 @@ export class PopulationsTable extends Component {
   }
 
   static defaultProps = {
+    columnLabels: {},
     showHemizygotes: true,
     showHomozygotes: true,
   }
@@ -111,6 +117,9 @@ export class PopulationsTable extends Component {
   }
 
   render() {
+    // Hack to support alternate column labels for MCNV structural variants
+    const { columnLabels } = this.props
+
     const populations = this.props.populations
       .map(pop => ({
         ...pop,
@@ -158,11 +167,11 @@ export class PopulationsTable extends Component {
         <thead>
           <tr>
             {this.renderColumnHeader('name', 'Population', 2)}
-            {this.renderColumnHeader('ac', 'Allele Count')}
-            {this.renderColumnHeader('an', 'Allele Number')}
+            {this.renderColumnHeader('ac', columnLabels.ac || 'Allele Count')}
+            {this.renderColumnHeader('an', columnLabels.an || 'Allele Number')}
             {showHomozygotes && this.renderColumnHeader('ac_hom', 'Number of Homozygotes')}
             {showHemizygotes && this.renderColumnHeader('ac_hemi', 'Number of Hemizygotes')}
-            {this.renderColumnHeader('af', 'Allele Frequency')}
+            {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency')}
           </tr>
         </thead>
         {populations.map(pop => (

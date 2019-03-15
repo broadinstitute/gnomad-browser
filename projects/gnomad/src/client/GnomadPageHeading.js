@@ -1,82 +1,70 @@
 import PropTypes from 'prop-types'
-import queryString from 'query-string'
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { Combobox, PageHeading } from '@broad/ui'
 
-import datasetLabels from './datasetLabels'
-import sampleCounts from './sampleCounts'
+import DatasetSelector from './DatasetSelector'
 
-const DatasetDetail = styled.div`
-  margin-top: 0.375em;
-  margin-left: 5px;
-  font-size: 0.8em;
-  opacity: 0.6;
+const PageHeadingWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 36px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 0.25em;
+  }
+
+  @media (max-width: 900px) {
+    align-items: center;
+  }
+`
+const PageHeadingText = styled.h1`
+  margin: 0;
+  font-size: 1em;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 0.25em;
+  }
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
 `
 
-/* eslint-disable-next-line react/prop-types */
-const renderDatasetOption = ({ datasetId, label }) => (
-  <div>
-    {label}
-    <DatasetDetail>{sampleCounts[datasetId].total.toLocaleString()} samples</DatasetDetail>
-  </div>
+const PageControlsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+`
+
+const Label = styled.span`
+  margin-right: 0.5em;
+`
+
+const GnomadPageHeading = ({ children, datasetOptions, selectedDataset }) => (
+  <PageHeadingWrapper>
+    <PageHeadingText>{children}</PageHeadingText>
+    <PageControlsWrapper>
+      <Label>Dataset</Label>
+      <DatasetSelector datasetOptions={datasetOptions} selectedDataset={selectedDataset} />
+      <QuestionMark topic="dataset-selection" display="inline" />
+    </PageControlsWrapper>
+  </PageHeadingWrapper>
 )
 
-const GnomadPageHeading = withRouter(({ children, datasetOptions, history, selectedDataset }) => (
-  <PageHeading
-    renderPageControls={() => (
-      <div>
-        {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
-        <label htmlFor="dataset-selector">Current Dataset </label>
-        <Combobox
-          id="dataset-selector"
-          // FIXME
-          // Using key forces a re-render when dataset changes
-          // Otherwise, the menu doesn't update when the dataset is changed with
-          // the browser's forward/back buttons.
-          // This is likely a bug in Combobox.
-          key={selectedDataset}
-          options={datasetOptions.map(datasetId => ({
-            datasetId,
-            label: datasetLabels[datasetId],
-          }))}
-          renderOption={renderDatasetOption}
-          value={datasetLabels[selectedDataset]}
-          width="220px"
-          onSelect={({ datasetId }) => {
-            const nextLocation = Object.assign(history.location, {
-              search: queryString.stringify({ dataset: datasetId }),
-            })
-            history.push(nextLocation)
-          }}
-        />
-
-        <QuestionMark topic="dataset-selection" display="inline" />
-      </div>
-    )}
-  >
-    {children}
-  </PageHeading>
-))
-
 GnomadPageHeading.propTypes = {
+  ...DatasetSelector.propTypes,
   children: PropTypes.node.isRequired,
-  datasetOptions: PropTypes.arrayOf(PropTypes.string),
-  selectedDataset: PropTypes.string.isRequired,
-}
-
-GnomadPageHeading.defaultProps = {
-  datasetOptions: [
-    'gnomad_r2_1',
-    'gnomad_r2_1_controls',
-    'gnomad_r2_1_non_cancer',
-    'gnomad_r2_1_non_neuro',
-    'gnomad_r2_1_non_topmed',
-    'exac',
-  ],
 }
 
 export default GnomadPageHeading

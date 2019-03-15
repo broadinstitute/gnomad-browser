@@ -38,14 +38,6 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
-const variantPageDatasets = [
-  'gnomad_r2_1',
-  'gnomad_r2_1_controls',
-  'gnomad_r2_1_non_cancer',
-  'gnomad_r2_1_non_neuro',
-  'gnomad_r2_1_non_topmed',
-]
-
 const reportURL = variantId => {
   const reportTemplate = `
 Name:
@@ -81,7 +73,10 @@ Additional information that may be helpful for our understanding of the request:
 
 const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
-    <GnomadPageHeading datasetOptions={variantPageDatasets} selectedDataset={datasetId}>
+    <GnomadPageHeading
+      datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
+      selectedDataset={datasetId}
+    >
       Variant: {variantId}
     </GnomadPageHeading>
     <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>

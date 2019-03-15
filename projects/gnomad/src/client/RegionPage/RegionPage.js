@@ -12,6 +12,7 @@ import { fetchRegion } from './fetch'
 import RegionDataContainer from './RegionDataContainer'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
+import StructuralVariantsInRegion from './StructuralVariantsInRegion'
 
 // eslint-disable-next-line no-shadow
 const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
@@ -43,7 +44,13 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
         rightPanelWidth={smallScreen ? 0 : 160}
         width={regionViewerWidth}
       >
-        <CoverageTrack datasetId={datasetId} chrom={chrom} start={start} stop={stop} />
+        <CoverageTrack
+          datasetId={datasetId}
+          chrom={chrom}
+          showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
+          start={start}
+          stop={stop}
+        />
 
         <GenesTrack
           genes={genes}
@@ -52,7 +59,11 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
           }}
         />
 
-        <VariantsInRegion datasetId={datasetId} region={region} width={regionViewerWidth} />
+        {datasetId === 'gnomad_sv_r2' ? (
+          <StructuralVariantsInRegion region={region} width={regionViewerWidth} />
+        ) : (
+          <VariantsInRegion datasetId={datasetId} region={region} width={regionViewerWidth} />
+        )}
       </RegionViewer>
     </TrackPage>
   )
