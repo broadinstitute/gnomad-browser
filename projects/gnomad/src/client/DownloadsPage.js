@@ -299,6 +299,27 @@ export default () => (
           </li>
         </ul>
       </DownloadSection>
+      <DownloadSection>
+        <h3>Structural variants</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
+              SV sites VCF
+            </ExternalLink>{' '}
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi">
+              (.tbi)
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz">
+              SV sites BED
+            </ExternalLink>{' '}
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz.tbi">
+              (.tbi)
+            </ExternalLink>
+          </li>
+        </ul>
+      </DownloadSection>
     </SequencingMethodSection>
   </InfoPage>
 )
