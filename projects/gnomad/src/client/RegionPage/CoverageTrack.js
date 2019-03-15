@@ -22,7 +22,7 @@ query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $datasetId:
 }
 `
 
-const RegionCoverageTrack = ({ datasetId, chrom, start, stop }) => {
+const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop }) => {
   const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
 
   return (
@@ -43,7 +43,7 @@ const RegionCoverageTrack = ({ datasetId, chrom, start, stop }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = data.region.exome_coverage
+        const exomeCoverage = showExomeCoverage ? data.region.exome_coverage : null
         const genomeCoverage = data.region.genome_coverage
 
         const coverageConfig =
@@ -66,8 +66,13 @@ const RegionCoverageTrack = ({ datasetId, chrom, start, stop }) => {
 RegionCoverageTrack.propTypes = {
   datasetId: PropTypes.string.isRequired,
   chrom: PropTypes.string.isRequired,
+  showExomeCoverage: PropTypes.bool,
   start: PropTypes.number.isRequired,
   stop: PropTypes.number.isRequired,
+}
+
+RegionCoverageTrack.defaultProps = {
+  showExomeCoverage: true,
 }
 
 export default RegionCoverageTrack

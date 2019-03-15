@@ -53,7 +53,7 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
       minWidth: 150,
       grow: 1,
       render: (row, key, { highlightWords }) => (
-        <Link className="grid-cell-content" to={`/variant/${row.variant_id}`}>
+        <Link className="grid-cell-content" target="_blank" to={`/variant/${row.variant_id}`}>
           <Highlighter searchWords={highlightWords} textToHighlight={row.variant_id} />
         </Link>
       ),

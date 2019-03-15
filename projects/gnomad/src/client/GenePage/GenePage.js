@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
@@ -9,13 +10,15 @@ import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { screenSize, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
 import GnomadPageHeading from '../GnomadPageHeading'
+import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
 import { ConstraintTableOrPlaceholder } from './Constraint'
-import CoverageTrack from './CoverageTrack'
+import GeneCoverageTrack from './CoverageTrack'
 import { fetchGnomadGenePage } from './fetch'
 import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'
 import RegionalConstraintTrack from './RegionalConstraintTrack'
+import StructuralVariantsInGene from './StructuralVariantsInGene'
 import TissueExpressionTrack from './TissueExpressionTrack'
 import TranscriptLink from './TranscriptLink'
 import VariantsInGene from './VariantsInGene'
@@ -23,10 +26,6 @@ import VariantsInGene from './VariantsInGene'
 const GeneFullName = styled.span`
   font-size: 22px;
   font-weight: 400;
-
-  @media (max-width: 900px) {
-    text-align: center;
-  }
 `
 
 const GeneInfoColumnWrapper = styled.div`
@@ -157,17 +156,36 @@ class GenePage extends Component {
     )
     const hasCodingExons = cdsCompositeExons.length > 0
 
-    const regionViewerRegions = gene.composite_transcript.exons.filter(
+    const compositeExons = gene.composite_transcript.exons.filter(
       exon =>
         exon.feature_type === 'CDS' ||
         (exon.feature_type === 'UTR' && includeUTRs) ||
         (exon.feature_type === 'exon' && includeNonCodingTranscripts)
     )
 
+    const regionViewerRegions =
+      datasetId === 'gnomad_sv_r2'
+        ? [
+            {
+              feature_type: 'region',
+              chrom: gene.chrom,
+              start: gene.start,
+              stop: gene.stop,
+            },
+          ]
+        : compositeExons
+
+    if (datasetId === 'gnomad_sv_r2' && transcriptId) {
+      return <Redirect to={`/gene/${geneId}?dataset=gnomad_sv_r2`} />
+    }
+
     return (
       <TrackPage>
         <TrackPageSection>
-          <GnomadPageHeading selectedDataset={datasetId}>
+          <GnomadPageHeading
+            datasetOptions={{ includeStructuralVariants: !transcriptId }}
+            selectedDataset={datasetId}
+          >
             {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
@@ -191,7 +209,23 @@ class GenePage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          {hasCodingExons && <CoverageTrack datasetId={datasetId} geneId={geneId} />}
+          {datasetId === 'gnomad_sv_r2' ? (
+            <RegionCoverageTrack
+              chrom={gene.chrom}
+              datasetId={datasetId}
+              showExomeCoverage={false}
+              start={gene.start}
+              stop={gene.stop}
+            />
+          ) : (
+            hasCodingExons && (
+              <GeneCoverageTrack
+                datasetId={datasetId}
+                geneId={geneId}
+                showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
+              />
+            )
+          )}
 
           <ControlPanel marginLeft={100} width={regionViewerWidth}>
             Include:
@@ -256,17 +290,21 @@ class GenePage extends Component {
             <ConnectedTranscriptsTrack
               showUTRs={includeUTRs}
               showNonCodingTranscripts={includeNonCodingTranscripts}
-              compositeExons={regionViewerRegions}
+              compositeExons={compositeExons}
               filenameForExport={`${geneId}_transcripts`}
-              renderTranscriptId={(txId, { isCanonical, isSelected }) => (
-                <TranscriptLink
-                  to={`/gene/${gene.gene_id}/transcript/${txId}`}
-                  isCanonical={isCanonical}
-                  isSelected={isSelected}
-                >
-                  {txId}
-                </TranscriptLink>
-              )}
+              renderTranscriptId={
+                datasetId === 'gnomad_sv_r2'
+                  ? txId => txId
+                  : (txId, { isCanonical, isSelected }) => (
+                      <TranscriptLink
+                        to={`/gene/${gene.gene_id}/transcript/${txId}`}
+                        isCanonical={isCanonical}
+                        isSelected={isSelected}
+                      >
+                        {txId}
+                      </TranscriptLink>
+                    )
+              }
             />
           )}
 
@@ -288,12 +326,16 @@ class GenePage extends Component {
               />
             )}
 
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            transcriptId={transcriptId}
-            width={regionViewerWidth}
-          />
+          {datasetId === 'gnomad_sv_r2' ? (
+            <StructuralVariantsInGene gene={gene} width={regionViewerWidth} />
+          ) : (
+            <VariantsInGene
+              datasetId={datasetId}
+              gene={gene}
+              transcriptId={transcriptId}
+              width={regionViewerWidth}
+            />
+          )}
         </RegionViewer>
       </TrackPage>
     )

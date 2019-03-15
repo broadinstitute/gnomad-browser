@@ -24,7 +24,7 @@ query Coverage($geneId: String!, $datasetId: DatasetId!) {
 }
 `
 
-const GeneCoverageTrack = ({ datasetId, geneId }) => {
+const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
   const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
 
   return (
@@ -43,7 +43,9 @@ const GeneCoverageTrack = ({ datasetId, geneId }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = data.gene.composite_transcript.exome_coverage
+        const exomeCoverage = showExomeCoverage
+          ? data.gene.composite_transcript.exome_coverage
+          : null
         const genomeCoverage = data.gene.composite_transcript.genome_coverage
 
         const coverageConfig =
@@ -66,6 +68,11 @@ const GeneCoverageTrack = ({ datasetId, geneId }) => {
 GeneCoverageTrack.propTypes = {
   datasetId: PropTypes.string.isRequired,
   geneId: PropTypes.string.isRequired,
+  showExomeCoverage: PropTypes.bool,
+}
+
+GeneCoverageTrack.defaultProps = {
+  showExomeCoverage: true,
 }
 
 export default GeneCoverageTrack
