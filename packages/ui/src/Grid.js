@@ -60,7 +60,6 @@ const GridWrapper = styled.div`
 
 const GridHorizontalViewport = styled.div`
   overflow-x: auto;
-  padding-bottom: 12px; /* Space for scrollbar */
 `
 
 const HeaderRow = styled.div`
@@ -475,6 +474,9 @@ export class Grid extends Component {
                   itemSize={rowHeight}
                   overscanCount={10}
                   ref={this.list}
+                  style={{
+                    overflowX: 'hidden',
+                  }}
                   width={gridWidth}
                   onItemsRendered={this.onItemsRendered}
                   onScroll={onScroll}
