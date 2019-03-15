@@ -60,7 +60,7 @@ const GridWrapper = styled.div`
 
 const GridHorizontalViewport = styled.div`
   overflow-x: auto;
-  width: ${props => props.width}px;
+  padding-bottom: 12px; /* Space for scrollbar */
 `
 
 const HeaderRow = styled.div`
