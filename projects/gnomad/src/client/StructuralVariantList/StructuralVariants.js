@@ -30,6 +30,10 @@ const ControlWrapper = styled(Wrapper)`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  @media (min-width: 900px) {
+    margin-right: 160px;
+  }
 `
 
 class StructuralVariants extends Component {
@@ -195,7 +199,7 @@ class StructuralVariants extends Component {
 
     return (
       <div>
-        <ControlWrapper style={{ marginRight: '160px' }}>
+        <ControlWrapper>
           <span style={{ marginRight: '0.5em' }}>Color variants by</span>
           <SegmentedControl
             id="sv-color-key"
