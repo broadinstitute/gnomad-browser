@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { Checkbox, CategoryFilterControl, SearchInput } from '@broad/ui'
 
 import {
@@ -10,7 +11,19 @@ import {
 } from './structuralVariantConsequences'
 import { svTypes, svTypeColors } from './structuralVariantTypes'
 
-const CategoryWrapper = styled.div`
+const CategoryFilterLabel = styled.span`
+  margin-bottom: 0.5em;
+  font-weight: bold;
+`
+
+const CategoryFiltersWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 700px) {
+    align-items: center;
+  }
+
   #sv-consequence-category-filter,
   #sv-type-category-filter {
     margin-bottom: 1em;
@@ -60,7 +73,11 @@ const SettingsWrapper = styled.div`
 
 const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
   <SettingsWrapper>
-    <CategoryWrapper>
+    <CategoryFiltersWrapper>
+      <CategoryFilterLabel>
+        Consequences
+        <QuestionMark display="inline" topic="SV_docs/sv-effect-overview" />
+      </CategoryFilterLabel>
       <CategoryFilterControl
         categories={['lof', 'dup_lof', 'copy_gain', 'other'].map(category => ({
           id: category,
@@ -74,6 +91,10 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
           onChange({ ...value, includeConsequenceCategories })
         }}
       />
+      <CategoryFilterLabel>
+        Types
+        <QuestionMark display="inline" topic="SV_docs/sv-class-overview" />
+      </CategoryFilterLabel>
       <CategoryFilterControl
         categories={svTypes.map(type => ({
           id: type,
@@ -87,7 +108,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
           onChange({ ...value, includeTypes })
         }}
       />
-    </CategoryWrapper>
+    </CategoryFiltersWrapper>
 
     <CheckboxWrapper>
       <span>
