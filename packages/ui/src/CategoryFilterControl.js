@@ -4,6 +4,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+const Wrapper = styled.div`
+  display: inline-block;
+`
+
 const Button = styled.button`
   box-sizing: border-box;
   width: 35px;
@@ -105,7 +109,7 @@ export const CategoryFilterControl = ({
   onChange,
   style,
 }) => (
-  <div className={className} id={id} style={style}>
+  <Wrapper className={className} id={id} style={style}>
     {categories.map(category => (
       <CategoryWrapper
         key={category.id}
@@ -142,7 +146,7 @@ export const CategoryFilterControl = ({
         </Button>
       </CategoryWrapper>
     ))}
-  </div>
+  </Wrapper>
 )
 
 CategoryFilterControl.propTypes = {
