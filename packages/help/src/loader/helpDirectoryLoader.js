@@ -21,7 +21,7 @@ module.exports = function helpDirectoryLoader(content) {
   const resourceDirectory = path.dirname(this.resource)
   const helpDirectory = path.resolve(resourceDirectory, config.directory)
 
-  glob(`${helpDirectory}/*.md`, (err, files) => {
+  glob(`${helpDirectory}/**/*.md`, (err, files) => {
     if (err) {
       callback(err)
     }

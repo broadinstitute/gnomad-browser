@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { Badge } from '@broad/ui'
 
 import Link from '../Link'
@@ -115,6 +117,43 @@ VariantPosition.propTypes = {
   variant: StructuralVariantDetailPropType.isRequired,
 }
 
+const ComplexTypeHelpButton = ({ complexType }) => {
+  if (!complexType) {
+    return null
+  }
+
+  const helpTopic = {
+    CCR: null,
+    dDUP: 'sv-class_CPX_dDUP_dDUP-iDEL',
+    dDUP_iDEL: 'sv-class_CPX_dDUP_dDUP-iDEL',
+    delINV: 'sv-class_CPX_delINV_INVdel',
+    delINVdel: 'sv-class_CPX_delINVdel',
+    delINVdup: 'sv-class_CPX_delINVdup_dupINVdel',
+    dupINV: 'sv-class_CPX_dupINV_INVdup',
+    dupINVdel: 'sv-class_CPX_delINVdup_dupINVdel',
+    dupINVdup: 'sv-class_CPX_dupINVdup',
+    INS_iDEL: 'sv-class_CPX_INS-iDEL',
+    INVdel: 'sv-class_CPX_delINV_INVdel',
+    INVdup: 'sv-class_CPX_dupINV_INVdup',
+    piDUP_FR: 'sv-class_CPX_piDUP-FR_piDUP-RF',
+    piDUP_RF: 'sv-class_CPX_piDUP-FR_piDUP-RF',
+  }[complexType]
+
+  if (!helpTopic) {
+    return null
+  }
+
+  return <QuestionMark display="inline" topic={`SV_docs/${helpTopic}`} />
+}
+
+ComplexTypeHelpButton.propTypes = {
+  complexType: PropTypes.string,
+}
+
+ComplexTypeHelpButton.defaultProps = {
+  complexType: null,
+}
+
 const StructuralVariantAttributeList = ({ variant }) => (
   <AttributeList labelWidth={variant.type === 'MCNV' ? 180 : 140}>
     <Attribute>
@@ -165,14 +204,18 @@ const StructuralVariantAttributeList = ({ variant }) => (
       )}
     <Attribute>
       <dt>Type</dt>
-      <dd>{svTypeLabels[variant.type]}</dd>
+      <dd>
+        {svTypeLabels[variant.type]}{' '}
+        <QuestionMark display="inline" topic={`SV_docs/sv-class_${variant.type}`} />
+      </dd>
     </Attribute>
     {variant.type === 'CPX' && (
       <React.Fragment>
         <Attribute>
           <dt>Complex SV Class</dt>
           <dd>
-            {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]})
+            {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]}){' '}
+            <ComplexTypeHelpButton complexType={variant.cpx_type} />
           </dd>
         </Attribute>
         <Attribute>

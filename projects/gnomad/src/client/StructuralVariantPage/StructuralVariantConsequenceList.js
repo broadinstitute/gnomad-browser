@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { InfoModal, ListItem, OrderedList, TextButton } from '@broad/ui'
 
 import Link from '../Link'
-import { svConsequenceLabels } from '../StructuralVariantList/structuralVariantConsequences'
+import {
+  svConsequenceCategories,
+  svConsequenceLabels,
+} from '../StructuralVariantList/structuralVariantConsequences'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 
 const Wrapper = styled.ol`
@@ -40,29 +44,42 @@ class StructuralVariantConsequenceList extends Component {
     return (
       <React.Fragment>
         <Wrapper>
-          {variant.consequences.map(({ consequence, genes }) => (
-            <ConsequenceListItem key={consequence}>
-              <h3>{svConsequenceLabels[consequence]}</h3>
-              <OrderedList>
-                {genes.slice(0, 3).map(gene => (
-                  <ListItem key={gene}>
-                    <Link to={`/gene/${gene}`}>{gene}</Link>
-                  </ListItem>
-                ))}
-                {genes.length > 3 && (
-                  <ListItem>
-                    <TextButton
-                      onClick={() => {
-                        this.setState({ expandedConsequence: consequence })
-                      }}
-                    >
-                      and {genes.length - 3} more
-                    </TextButton>
-                  </ListItem>
-                )}
-              </OrderedList>
-            </ConsequenceListItem>
-          ))}
+          {variant.consequences.map(({ consequence, genes }) => {
+            const category = svConsequenceCategories[consequence]
+
+            const helpTopic = {
+              lof: 'sv-effect_pLoF',
+              dup_lof: 'sv-effect_IED',
+              copy_gain: 'sv-effect_CG',
+            }[category]
+
+            return (
+              <ConsequenceListItem key={consequence}>
+                <h3>
+                  {svConsequenceLabels[consequence]}{' '}
+                  {!!helpTopic && <QuestionMark display="inline" topic={`SV_docs/${helpTopic}`} />}
+                </h3>
+                <OrderedList>
+                  {genes.slice(0, 3).map(gene => (
+                    <ListItem key={gene}>
+                      <Link to={`/gene/${gene}`}>{gene}</Link>
+                    </ListItem>
+                  ))}
+                  {genes.length > 3 && (
+                    <ListItem>
+                      <TextButton
+                        onClick={() => {
+                          this.setState({ expandedConsequence: consequence })
+                        }}
+                      >
+                        and {genes.length - 3} more
+                      </TextButton>
+                    </ListItem>
+                  )}
+                </OrderedList>
+              </ConsequenceListItem>
+            )
+          })}
         </Wrapper>
         {expandedConsequence && (
           <InfoModal

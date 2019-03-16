@@ -69,7 +69,7 @@ StructuralVariantPage.propTypes = {
   variant: StructuralVariantDetailPropType.isRequired,
 }
 
-const ConnectedStructruralVariantPage = ({ variantId, ...rest }) => {
+const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
   const query = `
     query StructuralVariant($variantId: String!) {
       structural_variant(variantId: $variantId) {
@@ -125,4 +125,4 @@ const ConnectedStructruralVariantPage = ({ variantId, ...rest }) => {
   )
 }
 
-export default ConnectedStructruralVariantPage
+export default ConnectedStructuralVariantPage
