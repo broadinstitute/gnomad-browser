@@ -25,6 +25,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.(gif|jpg|png)$/,
+        use: 'file-loader',
+      },
     ],
   },
   output: {

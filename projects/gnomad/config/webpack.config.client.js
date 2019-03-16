@@ -41,7 +41,12 @@ const config = {
       },
       {
         test: /\.(gif|jpg|png)$/,
-        use: 'file-loader',
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'assets/images',
+          },
+        },
       },
     ],
   },
@@ -52,15 +57,9 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin(definitions),
-    new CopyWebpackPlugin(
-      [
-        path.resolve(__dirname, '../src/client/opensearch.xml'),
-        { from: path.resolve(__dirname, '../gnomad-docs/docs/pext.png'), to: 'assets/pext.png' },
-      ],
-      {
-        writeToDisk: true,
-      }
-    ),
+    new CopyWebpackPlugin([path.resolve(__dirname, '../src/client/opensearch.xml')], {
+      writeToDisk: true,
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/client/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,

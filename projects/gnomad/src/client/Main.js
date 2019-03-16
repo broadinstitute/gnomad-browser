@@ -10,6 +10,9 @@ import { createGeneReducer } from '@broad/redux-genes'
 import { createRegionReducer } from '@broad/region'
 import { actions as userInterfaceActions, createUserInterfaceReducer } from '@broad/ui'
 
+// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
+import helpTopics from '@broad/help/src/loader!./helpConfig'
+
 import App from './routes'
 
 import toc from './toc.json'
@@ -29,8 +32,8 @@ const rootReducer = combineReducers({
   genes: createGeneReducer(appSettings),
   regions: createRegionReducer(appSettings),
   help: createHelpReducer({
+    topics: helpTopics,
     toc: toc.toc,
-    index: 'gnomad_help',
   }),
   ui: createUserInterfaceReducer(),
 })
