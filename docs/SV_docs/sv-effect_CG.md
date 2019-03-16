@@ -1,6 +1,6 @@
 ---
 index: gnomad_help  
-title: 'SV consequence: copy gain 
+title: 'SV consequence: copy gain'
 ---
 
 ## ![](https://placehold.it/15/2376B2/000000?text=+) Copy gain (CG)

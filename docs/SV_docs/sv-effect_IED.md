@@ -1,6 +1,6 @@
 ---
 index: gnomad_help  
-title: 'SV consequence: intragenic exonic duplication 
+title: 'SV consequence: intragenic exonic duplication'
 ---
 
 ## ![](https://placehold.it/15/7459B2/000000?text=+) Intragenic exonic duplication (IED)
