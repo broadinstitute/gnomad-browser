@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { actions as helpActions, helpWindowOpen } from './redux'
+import { actions as helpActions, isHelpWindowOpen } from './redux'
 
 export const HelpButtonFloatingContainer = styled.div`
   display: flex;
@@ -34,12 +34,12 @@ const HelpImage = styled.img`
   max-width: 20px;
 `
 
-const HelpButton = ({ toggleHelpWindow, helpWindowOpen }) => {
+const HelpButton = ({ toggleHelpWindow, isHelpWindowOpen }) => {
   return (
-    <HelpButtonFloatingContainer isActive={helpWindowOpen} onClick={toggleHelpWindow}>
+    <HelpButtonFloatingContainer isActive={isHelpWindowOpen} onClick={toggleHelpWindow}>
       <HelpButtonIcon>
         {/* <HelpImage  src="https://storage.googleapis.com/gnomad-browser/assets/gnome-helper.png" /> */}
-        {helpWindowOpen ?
+        {isHelpWindowOpen ?
           <i className="fa fa-times" aria-hidden="true" /> :
           <i className="fa fa-question" aria-hidden="true" /> }
       </HelpButtonIcon>
@@ -49,7 +49,7 @@ const HelpButton = ({ toggleHelpWindow, helpWindowOpen }) => {
 
 export default connect(
   state => ({
-    helpWindowOpen: helpWindowOpen(state),
+    isHelpWindowOpen: isHelpWindowOpen(state),
   }),
   helpActions
 )(HelpButton)

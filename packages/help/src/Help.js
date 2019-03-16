@@ -1,19 +1,16 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable template-curly-spacing */
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+import styled from 'styled-components'
 
 import {
   actions as helpActions,
-  topResultsList,
-  helpWindowOpen,
-  activeTopic,
-  activeTopicData,
-  helpQuery,
-  toc,
-  results,
+  activeHelpTopic,
+  allHelpTopics,
+  helpSearchResults,
+  helpSearchText,
+  helpTableOfContents,
+  isHelpWindowOpen,
 } from './redux'
 
 const HelpFloatingSection = styled.div`
@@ -173,128 +170,156 @@ const SectionTitle = styled.h1`
   font-size: 18px;
 `
 
-class Help extends Component {
-  static propTypes = {}
+const HelpTopicPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+})
 
-  state = { searchTerm: '' }
-
-  componentDidMount () {
-    this.props.fetchDefaultHelpTopics(this.props.index)
+const Help = ({
+  /* eslint-disable no-shadow */
+  activeHelpTopic,
+  allHelpTopics,
+  helpSearchResults,
+  helpSearchText,
+  helpTableOfContents,
+  isHelpWindowOpen,
+  /* eslint-enable no-shadow */
+  searchHelpTopics,
+  setActiveHelpTopic,
+  toggleHelpWindow,
+}) => {
+  if (!isHelpWindowOpen) {
+    return null
   }
 
-  doSearch = debounce(() => {
-    if (this.state.searchTerm === '') {
-      this.props.fetchDefaultHelpTopics(this.props.index)
-      this.props.setHelpQuery(this.state.searchTerm)
-    } else {
-      this.props.setActiveTopic(null)
-      this.props.setHelpQuery(this.state.searchTerm)
-      this.props.fetchHelpTopicsIfNeeded(this.state.searchTerm, 'gnomad_help')
-    }
-  }, 300)
+  let content
+  if (activeHelpTopic) {
+    content = <Content dangerouslySetInnerHTML={{ __html: activeHelpTopic.content }} />
+  } else if (helpSearchText) {
+    content = (
+      <TopicsWrapper>
+        {helpSearchResults.map((topic, i) => (
+          <HelpTopic key={topic.id}>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a
+              href=""
+              role="button"
+              onClick={e => {
+                e.preventDefault()
+                setActiveHelpTopic(topic.id)
+              }}
+            >
+              {`${i + 1}. ${topic.title}`}
+            </a>
+          </HelpTopic>
+        ))}
+      </TopicsWrapper>
+    )
+  } else {
+    content = (
+      <TopicsWrapper>
+        {helpTableOfContents.sections.map(section => (
+          <Section key={section.id}>
+            <SectionTitle>{section.title}</SectionTitle>
+            {section.children.map(id => {
+              const topic = allHelpTopics[id]
+              if (!topic) {
+                return null
+              }
 
-  handleSearch = (event) => { this.setState({ searchTerm: event.target.value }, () => {
-    this.doSearch()
-  })}
-
-  render() {
-    return (
-      this.props.helpWindowOpen ?
-        <HelpFloatingSection>
-          <HelpContainer>
-            {this.props.activeTopic ?  // eslint-disable-line
-              (<Content
-                dangerouslySetInnerHTML={{ __html: this.props.activeTopicData.htmlString }}
-              />) :
-              this.props.helpQuery === '' ?
-                (
-                  <TopicsWrapper>
-                    {this.props.toc.sections.map((section) => {
-                      return (
-                        <Section key={`${section.id}`}>
-                          <SectionTitle>{section.title}</SectionTitle>
-                          {section.children.map((id) => {  // eslint-disable-line
-                            const topic = this.props.results.get(id)
-                            if (!topic) return  // eslint-disable-line
-                            return (  // eslint-disable-line
-                              <HelpTopic key={topic.id}>
-                                <a
-                                  href=""
-                                  onClick={(event) => {
-                                    event.preventDefault()
-                                    this.props.setActiveTopic(topic.id)
-                                  }}
-                                >
-                                  {topic.title}
-                                </a>
-                              </HelpTopic>
-                            )
-                          })}
-                        </Section>
-                      )
-                    })}
-                  </TopicsWrapper>
-                ) :
-                (
-                  <TopicsWrapper>
-                    {this.props.topResultsList.map((topic, i) => (
-                      <HelpTopic key={topic.id}>
-                        <a
-                          href=""
-                          onClick={(event) => {
-                            event.preventDefault()
-                            this.props.setActiveTopic(topic.id)
-                          }}
-                        >
-                          {`${i + 1}. ${topic.title}`}
-                        </a>
-                      </HelpTopic>
-                    ))}
-                  </TopicsWrapper>
-                )}
-            <FooterContainer>
-              <InputContainer>
-                <Input
-                  type="search"
-                  placeholder="Search help topics"
-                  value={this.state.searchTerm}
-                  onChange={this.handleSearch}
-                />
-              </InputContainer>
-              {this.props.activeTopic &&
-                <BottomButton
-                  onClick={(event) => {
-                    event.preventDefault()
-                    this.props.setActiveTopic(null)
-                  }}
-                >
-                  Back
-                </BottomButton>}
-
-              <BottomButton
-                onClick={(event) => {
-                  event.preventDefault()
-                  this.props.toggleHelpWindow()
-                }}
-              >
-                Close
-              </BottomButton>
-            </FooterContainer>
-          </HelpContainer>
-        </HelpFloatingSection> : <div />
+              return (
+                <HelpTopic key={topic.id}>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <a
+                    href="#"
+                    role="button"
+                    onClick={e => {
+                      e.preventDefault()
+                      setActiveHelpTopic(topic.id)
+                    }}
+                  >
+                    {topic.title}
+                  </a>
+                </HelpTopic>
+              )
+            })}
+          </Section>
+        ))}
+      </TopicsWrapper>
     )
   }
+
+  return (
+    <HelpFloatingSection>
+      <HelpContainer>
+        {content}
+        <FooterContainer>
+          <InputContainer>
+            <Input
+              placeholder="Search help topics"
+              type="search"
+              value={helpSearchText}
+              onChange={e => {
+                setActiveHelpTopic(null)
+                searchHelpTopics(e.target.value)
+              }}
+            />
+          </InputContainer>
+          {activeHelpTopic && (
+            <BottomButton
+              onClick={() => {
+                setActiveHelpTopic(null)
+              }}
+            >
+              Back
+            </BottomButton>
+          )}
+          <BottomButton
+            onClick={() => {
+              toggleHelpWindow()
+            }}
+          >
+            Close
+          </BottomButton>
+        </FooterContainer>
+      </HelpContainer>
+    </HelpFloatingSection>
+  )
+}
+
+Help.propTypes = {
+  activeHelpTopic: HelpTopicPropType,
+  allHelpTopics: PropTypes.objectOf(HelpTopicPropType).isRequired,
+  helpSearchResults: PropTypes.arrayOf(HelpTopicPropType).isRequired,
+  helpSearchText: PropTypes.string.isRequired,
+  helpTableOfContents: PropTypes.shape({
+    sections: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        children: PropTypes.arrayOf(PropTypes.string).isRequired,
+      })
+    ),
+  }).isRequired,
+  isHelpWindowOpen: PropTypes.bool.isRequired,
+  searchHelpTopics: PropTypes.func.isRequired,
+  setActiveHelpTopic: PropTypes.func.isRequired,
+  toggleHelpWindow: PropTypes.func.isRequired,
+}
+
+Help.defaultProps = {
+  activeHelpTopic: null,
 }
 
 export default connect(
   state => ({
-    topResultsList: topResultsList(state),
-    results: results(state),
-    helpWindowOpen: helpWindowOpen(state),
-    activeTopic: activeTopic(state),
-    activeTopicData: activeTopicData(state),
-    helpQuery: helpQuery(state),
-    toc: toc(state),
+    activeHelpTopic: activeHelpTopic(state),
+    allHelpTopics: allHelpTopics(state),
+    helpSearchResults: helpSearchResults(state),
+    helpSearchText: helpSearchText(state),
+    helpTableOfContents: helpTableOfContents(state),
+    isHelpWindowOpen: isHelpWindowOpen(state),
   }),
   helpActions
 )(Help)

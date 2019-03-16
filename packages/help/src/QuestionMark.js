@@ -20,7 +20,7 @@ const QuestionMarkContainer = styled.span`
 
 const QuestionMark = ({
   topic,
-  setActiveTopic,
+  setActiveHelpTopic,
   toggleHelpWindow,
   display,
   size,
@@ -30,7 +30,7 @@ const QuestionMark = ({
     <QuestionMarkContainer
       onClick={(event) => {
         event.preventDefault()
-        setActiveTopic(topic)
+        setActiveHelpTopic(topic)
         toggleHelpWindow()
       }}
       display={display}
@@ -62,7 +62,7 @@ export default connect(null, helpActions)(QuestionMark)
 export const HelpLink = connect(null, helpActions)(({
   topic,
   children,
-  setActiveTopic,
+  setActiveHelpTopic,
   toggleHelpWindow,
 }) => {
   return (
@@ -70,7 +70,7 @@ export const HelpLink = connect(null, helpActions)(({
       href="#"
       onClick={(event) => {
         event.preventDefault()
-        setActiveTopic(topic)
+        setActiveHelpTopic(topic)
         toggleHelpWindow()
       }}
     >

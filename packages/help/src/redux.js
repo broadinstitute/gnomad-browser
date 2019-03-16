@@ -1,107 +1,87 @@
-import { Record, OrderedMap, fromJS } from 'immutable'
+import SearchApi, { INDEX_MODES } from 'js-worker-search'
 import keymirror from 'keymirror'
-import { createSelector } from 'reselect'
+import debounce from 'lodash.debounce'
 
-import { fetchHelpTopics } from './fetchHelpTopics'
-
-const HelpEntry = Record({
-  score: null,
-  title: null,
-  id: null,
-  htmlString: null,
-})
-
-export const types = keymirror({
-  REQUEST_HELP_DATA: null,
-  RECEIVE_HELP_DATA: null,
-  SET_HELP_QUERY: null,
-  SET_ACTIVE_TOPIC: null,
+const types = keymirror({
+  SET_ACTIVE_HELP_TOPIC: null,
+  SET_HELP_SEARCH_RESULTS: null,
+  SET_HELP_SEARCH_TEXT: null,
   TOGGLE_HELP_WINDOW: null,
 })
 
+const runSearch = debounce((dispatch, getState) => {
+  const { searchApi, searchText, topics } = getState().help
+
+  searchApi.search(searchText).then(topicIds => {
+    const searchResults = topicIds.map(id => topics[id])
+    dispatch({ type: types.SET_HELP_SEARCH_RESULTS, searchResults })
+  })
+}, 300)
+
 export const actions = {
-  setActiveTopic: topicId => ({ type: types.SET_ACTIVE_TOPIC, topicId }),
+  searchHelpTopics: searchText => (dispatch, getState) => {
+    dispatch({ type: types.SET_HELP_SEARCH_TEXT, searchText })
+    runSearch(dispatch, getState)
+  },
+  setActiveHelpTopic: topicId => ({ type: types.SET_ACTIVE_HELP_TOPIC, topicId }),
   toggleHelpWindow: () => ({ type: types.TOGGLE_HELP_WINDOW }),
-  setHelpQuery: helpQuery => ({ type: types.SET_HELP_QUERY, helpQuery }),
-  receiveHelpData: payload => ({ type: types.RECEIVE_HELP_DATA, payload }),
-  requestHelpData: () => ({ type: types.REQUEST_HELP_DATA }),
-
-  fetchDefaultHelpTopics (index) {
-    return (dispatch, getState) => {
-      dispatch(actions.requestHelpData())
-      return fetchHelpTopics(index, null, true).then((response) => {
-        if (response.errors) {
-          console.log(response.errors)
-        }
-        dispatch(actions.receiveHelpData(response))
-      }).catch(error => console.log(error))
-    }
-  },
-
-  fetchHelpTopicsIfNeeded (query, index) {
-    return (dispatch) => {
-      dispatch(actions.requestHelpData())
-      return fetchHelpTopics(index, query).then((response) => {
-        dispatch(actions.receiveHelpData(response))
-      })
-    }
-  },
 }
 
 const actionHandlers = {
-  [types.TOGGLE_HELP_WINDOW] (state) {
-    return state.set('helpWindowOpen', !state.get('helpWindowOpen'))
+  [types.SET_ACTIVE_HELP_TOPIC](state, { topicId }) {
+    return { ...state, activeTopicId: topicId }
   },
-  [types.SET_ACTIVE_TOPIC] (state, { topicId }) {
-    return state.set('activeTopic', topicId)
+  [types.SET_HELP_SEARCH_RESULTS](state, { searchResults }) {
+    return { ...state, searchResults }
   },
-  [types.SET_HELP_QUERY] (state, { helpQuery }) {
-    return state.set('helpQuery', helpQuery)
+  [types.SET_HELP_SEARCH_TEXT](state, { searchText }) {
+    return { ...state, searchText }
   },
-  [types.REQUEST_HELP_DATA] (state) {
-    return state.set('isFetching', true)
+  [types.TOGGLE_HELP_WINDOW](state) {
+    return { ...state, isHelpWindowOpen: !state.isHelpWindowOpen }
   },
-  [types.RECEIVE_HELP_DATA] (state, { payload }) {
-    const topics = payload.topics
-    const helpTopics = OrderedMap(topics.map(topic => ([
-      topic.id,
-      HelpEntry(topic)
-    ])))
-    return state.set('results', helpTopics)
-  }
 }
 
-export function createHelpReducer({ toc, index }) {
-  const State = Record({
-    helpQuery: '',
-    activeTopic: null,
-    helpWindowOpen: false,
-    results: OrderedMap(),
-    isFetching: false,
-    toc,
-    index,
+export function createHelpReducer({ topics, toc }) {
+  const topicsMap = topics.reduce(
+    (acc, topic) => ({ ...acc, [topic.id]: topic }),
+    Object.create(null)
+  )
+
+  const searchApi = new SearchApi({
+    indexMode: INDEX_MODES.PREFIXES,
   })
 
-  return function help (state = new State(), action: Object): State {
+  topics.forEach(topic => {
+    searchApi.indexDocument(topic.id, topic.title)
+    searchApi.indexDocument(topic.id, topic.content)
+  })
+
+  const initialState = {
+    activeTopicId: null,
+    isHelpWindowOpen: false,
+    searchApi,
+    searchResults: [],
+    searchText: '',
+    toc,
+    topics: topicsMap,
+  }
+
+  return function help(state = initialState, action) {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
     }
     return state
   }
-
 }
-export const helpWindowOpen = state => state.help.helpWindowOpen
-export const helpQuery = state => state.help.helpQuery
-export const results = state => state.help.results
-export const activeTopic = state => state.help.activeTopic
-export const toc = state => state.help.toc
 
-export const topResultsList = createSelector(
-  [results], results => results.toList()
-)
-
-export const activeTopicData = createSelector(
-  [activeTopic, results],
-  (activeTopic, results) => results.get(activeTopic)
-)
+export const activeHelpTopic = state => {
+  const { activeTopicId, topics } = state.help
+  return activeTopicId ? topics[activeTopicId] : null
+}
+export const allHelpTopics = state => state.help.topics
+export const helpSearchResults = state => state.help.searchResults
+export const helpSearchText = state => state.help.searchText
+export const helpTableOfContents = state => state.help.toc
+export const isHelpWindowOpen = state => state.help.isHelpWindowOpen
