@@ -39,7 +39,7 @@ module.exports = function helpFileLoader(content) {
         content: vfile.contents,
       })}`
 
-      output = output.replace(/___HELP_CONTENT_IMAGE_([0-9]+)___/, (match, p1) => {
+      output = output.replace(/___HELP_CONTENT_IMAGE_([0-9]+)___/g, (match, p1) => {
         const imageIndex = parseInt(p1, 10)
         const request = loaderUtils.stringifyRequest(
           this,
