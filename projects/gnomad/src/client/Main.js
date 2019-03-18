@@ -15,7 +15,7 @@ import helpTopics from '@broad/help/src/loader!./helpConfig'
 
 import App from './routes'
 
-import toc from './toc.json'
+import toc from '../../gnomad-docs/toc.json'
 
 const appSettings = {
   variantDatasets: {
