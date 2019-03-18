@@ -23,4 +23,4 @@ Just like for SNVs & indels, please [carefully inspect each IED SV before interp
 
 An SV was assigned an `intragenic exonic duplication` consequence if it met any of the following criteria:
 
-![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_IED.jpg)    
+![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_IED.png)    
