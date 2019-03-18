@@ -21,4 +21,4 @@ Just like for SNVs & indels, please [carefully inspect each pLoF SV before inter
 
 An SV was assigned a `loss of function` consequence if it met any of the following criteria:
 
-![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_pLoF.jpg)    
+![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_pLoF.png)    

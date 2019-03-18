@@ -7,7 +7,7 @@ title: 'SV class: duplication'
 
 Classification: _Unbalanced canonical SV_
 
-![Duplication (DUP)](gnomAD_browser.SV_schematics_DUP.jpg)  
+![Duplication (DUP)](gnomAD_browser.SV_schematics_DUP.png)  
 
 Duplications are SVs that involve the creation of an additional copy of at least 50bp of genomic DNA, relative to the reference genome assembly under the assumption that all loci in the reference are diploid (or haploid in the case of sex chromosomes in XY individuals).  
 

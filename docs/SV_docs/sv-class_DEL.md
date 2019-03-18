@@ -7,6 +7,6 @@ title: 'SV class: deletion'
 
 Classification: _Unbalanced canonical SV_
 
-![Deletion (DEL)](gnomAD_browser.SV_schematics_DEL.jpg)  
+![Deletion (DEL)](gnomAD_browser.SV_schematics_DEL.png)  
 
 Deletions are SVs that involve a loss of at least 50bp of genomic DNA.  

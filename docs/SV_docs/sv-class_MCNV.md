@@ -7,7 +7,7 @@ title: 'SV class: multiallelic CNV'
 
 Classification: _Unbalanced canonical<sup>*</sup> SV_
 
-![Multiallelic CNV (MCNV)](gnomAD_browser.SV_schematics_MCNV.jpg)  
+![Multiallelic CNV (MCNV)](gnomAD_browser.SV_schematics_MCNV.png)  
 
 Multiallelic CNVs are regions of the genome with common CNVs that exist at numerous distinct copy states. This includes sites with identical deletion and duplication alleles, or duplication alleles of multiple copies. For additional detail on MCNVs, see [Handsaker et al., 2015](https://www.ncbi.nlm.nih.gov/pubmed/25621458).  
 

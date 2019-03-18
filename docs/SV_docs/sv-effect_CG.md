@@ -23,4 +23,4 @@ Just like for SNVs & indels, please [carefully inspect each CG SV before interpr
 
 An SV was assigned a `copy gain` consequence if it met any of the following criteria:
 
-![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_CG.jpg)    
+![Predicted loss-of-function (pLoF)](gnomAD_browser.effect_schematics_CG.png)    

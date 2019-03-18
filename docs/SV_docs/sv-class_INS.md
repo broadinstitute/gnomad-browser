@@ -7,7 +7,7 @@ title: 'SV class: insertion'
 
 Classification: _Balanced<sup>*</sup> canonical SV_
 
-![Insertion (INS)](gnomAD_browser.SV_schematics_INS.jpg)  
+![Insertion (INS)](gnomAD_browser.SV_schematics_INS.png)  
 
 Insertions are SVs that involve at least 50bp of sequence being added to a specific genomic locus. This class includes multiple families of insertions, including mobile element insertions (e.g., see [Stewart et al., 2011](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1002236)) and indels at least 50bp in size.  
 
