@@ -92,7 +92,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
         }}
       />
       <CategoryFilterLabel>
-        Types
+        Classes
         <QuestionMark display="inline" topic="SV_docs/sv-class-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl

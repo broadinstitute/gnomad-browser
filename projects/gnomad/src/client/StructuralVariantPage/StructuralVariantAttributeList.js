@@ -203,7 +203,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
         </Attribute>
       )}
     <Attribute>
-      <dt>Type</dt>
+      <dt>Class</dt>
       <dd>
         {svTypeLabels[variant.type]}{' '}
         <QuestionMark display="inline" topic={`SV_docs/sv-class_${variant.type}`} />

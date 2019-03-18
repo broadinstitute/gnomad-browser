@@ -101,7 +101,7 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
     },
     {
       key: 'type',
-      heading: 'Type',
+      heading: 'Class',
       isSortable: true,
       minWidth: 130,
       render: renderType,
