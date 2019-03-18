@@ -205,7 +205,7 @@ class StructuralVariants extends Component {
             id="sv-color-key"
             options={[
               { label: 'Consequence', value: 'consequence' },
-              { label: 'Type', value: 'type' },
+              { label: 'Class', value: 'type' },
             ]}
             value={colorKey}
             onChange={value => {
