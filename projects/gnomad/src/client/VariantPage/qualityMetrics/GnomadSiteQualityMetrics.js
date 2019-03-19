@@ -75,7 +75,10 @@ export class GnomadSiteQualityMetrics extends Component {
             } else {
               const variantAlleleFreq = variantData.ac / variantData.an
               const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
-                bin => bin.min_af <= variantAlleleFreq && variantAlleleFreq < bin.max_af
+                bin =>
+                  bin.min_af <= variantAlleleFreq &&
+                  (variantAlleleFreq < bin.max_af ||
+                    (variantAlleleFreq === 1 && variantAlleleFreq <= bin.max_af))
               )
               selectedMetricBins = selectedAlleleFreqBin.histogram.bin_freq.map((n, i) => ({
                 x0: selectedAlleleFreqBin.histogram.bin_edges[i],
@@ -84,7 +87,9 @@ export class GnomadSiteQualityMetrics extends Component {
               }))
               selectedSiteQualityBinDescription = `variants with ${
                 selectedAlleleFreqBin.min_af
-              } < AF < ${selectedAlleleFreqBin.max_af}`
+              } <= AF ${selectedAlleleFreqBin.max_af === 1 ? '<=' : '<'} ${
+                selectedAlleleFreqBin.max_af
+              }`
             }
           } else {
             const { histogram } = metricData.otherMetrics.find(m => m.metric === selectedMetric)
