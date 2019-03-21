@@ -264,6 +264,11 @@ export default () => (
         <h3>Multi-nucleotide variants (MNVs)</h3>
         <ul>
           <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
+              README
+            </ExternalLink>
+          </li>
+          <li>
             <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv">
               Coding MNVs (TSV)
             </ExternalLink>
@@ -279,16 +284,16 @@ export default () => (
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                 <React.Fragment key={n}>
                   <li>
-                    <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genomes">
+                    <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
                       Distance = {n} Hail Table
-                      (gs://gnomad-public/release/2.1/mnv/genomes/gnomad_mnv_genome_d
+                      (gs://gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d
                       {n}
                       .ht)
                     </ExternalLink>
                   </li>
                   <li>
                     <ExternalLink
-                      href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genomes/gnomad_mnv_genome_d${n}.tsv.bgz`}
+                      href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d${n}.tsv.bgz`}
                     >
                       Distance = {n} TSV
                     </ExternalLink>
