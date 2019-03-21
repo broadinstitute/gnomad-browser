@@ -17,7 +17,7 @@ We request that any use of data obtained from the gnomAD browser cite the [ExAC 
 
 There's no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work. However, we ask that the Consortium be acknowledged in publications as follows:
 
-> The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups that provided exome and genome variant data to this resource. A full list of contributing groups can be found at <http://gnomad.broadinstitute.org/about>.
+> The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups that provided exome and genome variant data to this resource. A full list of contributing groups can be found at <https://gnomad.broadinstitute.org/about>.
 
 
 ## Data generation
