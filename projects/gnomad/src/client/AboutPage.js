@@ -131,7 +131,10 @@ export default () => (
      The gnomAD structural variant (SV) data set provided on this website spans 10,738 genomes from
      unrelated individuals sequenced as part of various disease-specific and population genetic studies.
      It mostly, but not entirely overlaps with the genome set used for the gnomAD short variant release.
-     This blog post describes the SV release. As with the gnomAD short variant data set, we have removed
+     This {' '}
+      <ExternalLink href="https://macarthurlab.org/2019/03/20/structural-variants-in-gnomad/">
+        blog post
+      </ExternalLink>{' '} describes the SV release. As with the gnomAD short variant data set, we have removed
      individuals known to be affected by severe pediatric disease, as well as their first-degree relatives,
       so this data set should serve as a useful reference set of allele frequencies for severe pediatric disease studies
       - however, note that some individuals with severe disease may still be included in the data set, albeit likely
@@ -931,14 +934,11 @@ export default () => (
         <p>NIMH R56 MH115957</p>
         <p>(PI: Talkowski)</p>
         <br />
-        <p>
-          The vast majority of the data storage, computing resources, and human effort used to
-          generate this call set were donated by the Broad Institute
-        </p>
-        <p>
-          We thank Jerome Rotter, Steven Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
-          for the use of their structural variant data
-        </p>
+        <p>The vast majority of the data storage, computing resources, and human effort used to
+          generate this call set were donated by the Broad Institute</p>
+        <br />
+        <p>We thank Jerome Rotter, Steven Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
+          for the use of their structural variant data</p>
       </CreditsSection>
     </Credits>
   </InfoPage>
