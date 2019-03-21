@@ -25,4 +25,4 @@ We catalogued SVs from Illumina short-read whole-genome sequencing (WGS) aggrega
 
 ### References
 
-For more information, please refer to the [gnomAD SV preprint](https://broad.io/gnomad_sv) or this [blog post](https://broad.io/gnomad_sv)
+For more information, please refer to the [gnomAD SV preprint](https://broad.io/gnomad_sv) or this [blog post](https://macarthurlab.org/2019/03/20/structural-variants-in-gnomad/).
