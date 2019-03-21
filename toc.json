@@ -26,7 +26,8 @@
           "gene-constraint",
           "pext",
           "regional-constraint",
-          "faf"
+          "faf",
+          "SV_docs/sv-overview"
         ]
       },
       {
