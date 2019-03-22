@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Link as StyledLink, List, ListItem, Page, SectionHeading } from '@broad/ui'
 
+import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import StatusMessage from '../StatusMessage'
@@ -73,6 +74,7 @@ Additional information that may be helpful for our understanding of the request:
 
 const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
+    <DocumentTitle title={variantId} />
     <GnomadPageHeading
       datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
       selectedDataset={datasetId}

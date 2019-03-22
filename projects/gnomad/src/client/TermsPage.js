@@ -2,11 +2,13 @@ import React from 'react'
 
 import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
 
+import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import Link from './Link'
 
 export default () => (
   <InfoPage>
+    <DocumentTitle title="Terms and Data Information" />
     <PageHeading>Terms and Data Information</PageHeading>
 
     <SectionHeading>Terms of use</SectionHeading>

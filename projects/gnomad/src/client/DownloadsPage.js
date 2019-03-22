@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { PageHeading, ExternalLink } from '@broad/ui'
 import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 
+import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
 const Downloads = styled.div`
@@ -121,6 +122,7 @@ const genomesVcfLinks = genomeChroms.map((chrom, i) =>
 
 export default () => (
   <InfoPage>
+    <DocumentTitle title="Downloads" />
     <PageHeading>Downloads</PageHeading>
     <p>
       gnomAD is available for download in VCF and Hail Table (.ht) formats. The variant dataset

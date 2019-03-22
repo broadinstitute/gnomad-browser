@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ExternalLink, PageHeading } from '@broad/ui'
 
+import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
 const Credits = styled.div`
@@ -71,6 +72,7 @@ const CreditsSection = styled.div`
 
 export default () => (
   <InfoPage>
+    <DocumentTitle title="About gnomAD" />
     <PageHeading id="about-gnomad">About gnomAD</PageHeading>
     <p>
       The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate
@@ -138,10 +140,10 @@ export default () => (
      individuals known to be affected by severe pediatric disease, as well as their first-degree relatives,
       so this data set should serve as a useful reference set of allele frequencies for severe pediatric disease studies
       - however, note that some individuals with severe disease may still be included in the data set, albeit likely
-      at a frequency equivalent to or lower than that seen in the general population.   
+      at a frequency equivalent to or lower than that seen in the general population.
     </p>
     <p>
-    All of the raw data from these projects have been reprocessed through the same pipeline, and jointly variant-called to 
+    All of the raw data from these projects have been reprocessed through the same pipeline, and jointly variant-called to
     increase consistency across projects.In brief, we aggregated Illumina short-read WGS from population genetic and complex
     disease-association studies. We discovered SVs by integrating four published SV algorithms ({' '}
       <ExternalLink href="https://www.ncbi.nlm.nih.gov/pubmed/26647377">
@@ -170,7 +172,7 @@ export default () => (
     Docker images. Extensive technical details of this process are provided in the supplementary information of the {' '}
       <ExternalLink href="https://broad.io/gnomad_sv">
         gnomAD SV preprint
-      </ExternalLink>{' '}; please cite this preprint for use of the SV data.    
+      </ExternalLink>{' '}; please cite this preprint for use of the SV data.
     </p>
     <p>
       All the above data are available under the{' '}
@@ -601,7 +603,7 @@ export default () => (
               <li>
               <p>1000IBD project</p>
               </li>
-              <li>  
+              <li>
               <p>Helsinki University Hospital Finland</p>
               </li>
               <li>

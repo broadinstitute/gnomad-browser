@@ -6,6 +6,7 @@ import { RegionViewer } from '@broad/region-viewer'
 import { GenesTrack } from '@broad/track-genes'
 import { screenSize, TrackPage, TrackPageSection } from '@broad/ui'
 
+import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import CoverageTrack from './CoverageTrack'
 import { fetchRegion } from './fetch'
@@ -33,6 +34,7 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
   return (
     <TrackPage>
       <TrackPageSection>
+        <DocumentTitle title={regionId} />
         <GnomadPageHeading selectedDataset={datasetId}>{regionId}</GnomadPageHeading>
         <div>
           <RegionInfo region={region} />

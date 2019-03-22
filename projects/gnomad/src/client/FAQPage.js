@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
 
+import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import SampleCountTable from './SampleCountTable'
 
@@ -58,6 +59,7 @@ const Answer = styled.dd`
 
 export default () => (
   <InfoPage>
+    <DocumentTitle title="FAQ" />
     <PageHeading>Frequently Asked Questions</PageHeading>
 
     <FAQSectionHeading id="general">General</FAQSectionHeading>

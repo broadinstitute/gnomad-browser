@@ -9,6 +9,7 @@ import { RegionViewer } from '@broad/region-viewer'
 import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { screenSize, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
 
+import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
@@ -182,6 +183,7 @@ class GenePage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
+          <DocumentTitle title={gene.gene_name} />
           <GnomadPageHeading
             datasetOptions={{ includeStructuralVariants: !transcriptId }}
             selectedDataset={datasetId}

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { ExternalLink } from '@broad/ui'
 
+import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import Link from './Link'
 import Searchbox from './Searchbox'
@@ -35,6 +36,7 @@ const SubHeading = styled.h2`
 
 export default () => (
   <HomePage>
+    <DocumentTitle />
     <HeadingContainer>
       <GnomadHeading width="60%" />
       <SubHeading>genome aggregation database</SubHeading>
