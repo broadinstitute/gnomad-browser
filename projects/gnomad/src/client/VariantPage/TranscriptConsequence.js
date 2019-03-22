@@ -45,7 +45,9 @@ const colors = {
 }
 
 const TranscriptConsequenceDetails = ({ consequence }) => {
-  if (consequence.major_consequence === 'missense_variant') {
+  const category = getCategoryFromConsequence(consequence.major_consequence)
+
+  if (category === 'missense') {
     const polyphenColor =
       {
         benign: colors.green,
@@ -75,7 +77,7 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
     // gnomAD 2.1's loading pipeline added NC annotations.
     // See #364.
     consequence.lof === 'NC' ||
-    (getCategoryFromConsequence(consequence.major_consequence) === 'lof' && !consequence.lof)
+    (category === 'lof' && !consequence.lof)
   ) {
     return (
       <AttributeList>
