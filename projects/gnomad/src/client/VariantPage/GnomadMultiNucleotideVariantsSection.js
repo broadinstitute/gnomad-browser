@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Badge, BaseTable, InfoModal, TextButton } from '@broad/ui'
+import { Badge, BaseTable, Modal, TextButton } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 import Link from '../Link'
@@ -72,7 +72,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
     } = selectedMNV
 
     return (
-      <InfoModal
+      <Modal
         onRequestClose={() => {
           this.setState({ selectedMNV: null })
         }}
@@ -127,7 +127,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
             </tr>
           </tbody>
         </BaseTable>
-      </InfoModal>
+      </Modal>
     )
   }
 

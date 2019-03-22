@@ -17,7 +17,7 @@ import CheckboxExample from './CheckboxExample'
 import ComboboxExample from './ComboboxExample'
 import ConsequenceCategoriesControlExample from './ConsequenceCategoriesControlExample'
 import GridExample from './GridExample'
-import InfoModalExample from './InfoModalExample'
+import ModalExample from './ModalExample'
 import SegmentedControlExample from './SegmentedControlExample'
 import TabsExample from './TabsExample'
 import TooltipExample from './TooltipExample'
@@ -86,7 +86,7 @@ const UiExample = () => (
 
     <Section>
       <SectionHeading>Modal</SectionHeading>
-      <InfoModalExample />
+      <ModalExample />
     </Section>
 
     <Section>

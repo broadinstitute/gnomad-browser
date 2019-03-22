@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { actions as variantActions, singleVariantData, focusedVariant } from '@broad/redux-variants'
-import { ExternalLink, InfoModal } from '@broad/ui'
+import { ExternalLink, Modal } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
@@ -195,8 +195,8 @@ export default connect(
 )(
   ({ clearFocusedVariant, variant, variantId }) =>
     variantId && (
-      <InfoModal onRequestClose={clearFocusedVariant} size="large" title={variantId}>
+      <Modal onRequestClose={clearFocusedVariant} size="large" title={variantId}>
         {variant && <Variant variant={variant} />}
-      </InfoModal>
+      </Modal>
     )
 )

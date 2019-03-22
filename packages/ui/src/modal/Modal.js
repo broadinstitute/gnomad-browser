@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalHeaderCloseButton,
   underlayStyle,
-} from './styles'
+} from './modalStyles'
 
 function getApplicationNode() {
   return document.getElementById('root')
@@ -24,7 +24,7 @@ function getId() {
   return id
 }
 
-export class InfoModal extends Component {
+export class Modal extends Component {
   static propTypes = {
     children: PropTypes.node,
     onRequestClose: PropTypes.func.isRequired,

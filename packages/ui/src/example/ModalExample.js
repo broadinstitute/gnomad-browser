@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 
-import { Button, InfoModal } from '..'
+import { Button, Modal } from '..'
 
-export default class InfoModalExample extends Component {
+export default class ModalExample extends Component {
   state = {
     isModalOpen: false,
   }
 
   render() {
+    const { isModalOpen } = this.state
+
     return (
       <div>
         <Button
-          disabled={this.state.isModalOpen}
+          disabled={isModalOpen}
           onClick={() => {
             this.setState({
               isModalOpen: true,
@@ -21,16 +23,15 @@ export default class InfoModalExample extends Component {
           Open modal
         </Button>
 
-        {this.state.isModalOpen && (
-          <InfoModal
+        {isModalOpen && (
+          <Modal
             onRequestClose={() => {
               this.setState({ isModalOpen: false })
             }}
             title="Example modal"
-            width="500px"
           >
             Modal content
-          </InfoModal>
+          </Modal>
         )}
       </div>
     )
