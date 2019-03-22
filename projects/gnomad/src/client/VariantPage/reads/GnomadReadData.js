@@ -77,14 +77,28 @@ export class GnomadReadData extends Component {
   }
 
   shouldShowHemiCategory() {
-    return ['X', 'Y'].includes(this.props.variant.chrom)
+    const { variant } = this.props
+    return ['X', 'Y'].includes(variant.chrom)
   }
 
   hasReadData(exomeOrGenome) {
-    return this.props.variant[exomeOrGenome] && this.props.variant[exomeOrGenome].reads
+    const { variant } = this.props
+    if (!variant[exomeOrGenome]) {
+      return false
+    }
+
+    const { reads } = variant[exomeOrGenome]
+    if (!reads) {
+      return false
+    }
+
+    return reads.het.available > 0 || reads.hom.available > 0
   }
 
   canLoadMoreTracks(exomeOrGenome, category) {
+    const { variant } = this.props
+    const { tracksLoaded } = this.state
+
     if (!this.hasReadData(exomeOrGenome)) {
       return false
     }
@@ -93,13 +107,14 @@ export class GnomadReadData extends Component {
       return false
     }
 
-    const tracksAvailable = this.props.variant[exomeOrGenome].reads[category].available
-    const tracksLoaded = this.state.tracksLoaded[exomeOrGenome][category]
-    return tracksLoaded < tracksAvailable
+    const tracksAvailableForCategory = variant[exomeOrGenome].reads[category].available
+    const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
+    return tracksLoadedForCategory < tracksAvailableForCategory
   }
 
   loadTrack(exomeOrGenome, category, index) {
-    const reads = this.props.variant[exomeOrGenome].reads
+    const { variant } = this.props
+    const { reads } = variant[exomeOrGenome]
 
     const trackConfig = {
       autoHeight: false,
@@ -141,12 +156,14 @@ export class GnomadReadData extends Component {
   }
 
   loadAllTracks() {
+    const { variant } = this.props
+    const { tracksLoaded } = this.state
     ;['exome', 'genome'].forEach(exomeOrGenome => {
       ;['het', 'hom', 'hemi'].forEach(category => {
-        const tracksAvailable = this.props.variant[exomeOrGenome].reads[category].available
-        const tracksLoaded = this.state.tracksLoaded[exomeOrGenome][category]
+        const tracksAvailableForCategory = variant[exomeOrGenome].reads[category].available
+        const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
-        for (let i = tracksLoaded; i < tracksAvailable; i += 1) {
+        for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
           this.loadTrack(exomeOrGenome, category, i)
         }
       })
@@ -154,12 +171,13 @@ export class GnomadReadData extends Component {
   }
 
   renderLoadMoreButton(exomeOrGenome, category) {
-    const tracksLoaded = this.state.tracksLoaded[exomeOrGenome][category]
+    const { tracksLoaded } = this.state
+    const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
     return (
       <Button
         disabled={!this.canLoadMoreTracks(exomeOrGenome, category)}
-        onClick={() => this.loadTrack(exomeOrGenome, category, tracksLoaded)}
+        onClick={() => this.loadTrack(exomeOrGenome, category, tracksLoadedForCategory)}
       >
         Load +1 {category}
       </Button>
@@ -167,7 +185,7 @@ export class GnomadReadData extends Component {
   }
 
   render() {
-    const variant = this.props.variant
+    const { variant } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
