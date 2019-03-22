@@ -71,6 +71,7 @@ const MoreIcon = styled.span`
 
 const SubNavigationMenu = styled.ul`
   position: absolute;
+  z-index: 1;
   right: 0;
   display: ${props => (props.isExpanded ? 'block' : 'none')};
   width: 220px;
@@ -79,6 +80,15 @@ const SubNavigationMenu = styled.ul`
   margin: 0;
   background: #f8f9fa;
   list-style-type: none;
+
+  @media (max-width: 1200px) {
+    right: auto;
+    left: -100px;
+  }
+
+  @media (max-width: 900px) {
+    left: -150px;
+  }
 `
 
 const SubNavigationLink = styled.a`
