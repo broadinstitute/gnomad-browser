@@ -1,46 +1,62 @@
 import styled from 'styled-components'
 
-
 export const ModalBody = styled.div`
   padding: 1rem;
 `
 
+const mediumScreenMaxWidth = {
+  small: 300,
+  medium: 500,
+  large: 500,
+}
+
+const largeScreenMaxWidth = {
+  small: 300,
+  medium: 500,
+  large: 800,
+}
 
 export const ModalContent = styled.div`
-  background: #fafafa;
+  width: calc(100vw - 2em);
   border: 1px solid #c8c8c8;
   border-radius: 5px;
+  background: #fafafa;
   font-family: Roboto, sans-serif;
   font-size: 16px;
+
+  @media (min-width: 576px) {
+    max-width: ${props => mediumScreenMaxWidth[props.size]}px;
+  }
+
+  @media (min-width: 992px) {
+    max-width: ${props => largeScreenMaxWidth[props.size]}px;
+  }
 `
 
-
 export const ModalFooter = styled.footer`
-  border-top: 1px solid #e9ecef;
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
+  border-top: 1px solid #e9ecef;
 `
 
-
 export const ModalHeader = styled.header`
-  border-bottom: 1px solid #e9ecef;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
 `
 
-
 export const ModalHeaderCloseButton = styled.button`
-  background: none;
+  padding: 1rem;
   border: none;
+  margin: -1rem -1rem -1rem auto;
+  appearance: none;
+  background: none;
   color: #0008;
   cursor: pointer;
   font-size: 16px;
-  margin: -1rem -1rem -1rem auto;
-  padding: 1rem;
-  -webkit-appearance: none;
 
   &:focus {
     color: #000;
@@ -50,7 +66,6 @@ export const ModalHeaderCloseButton = styled.button`
     color: #000;
   }
 `
-
 
 export const underlayStyle = {
   boxSizing: 'border-box',

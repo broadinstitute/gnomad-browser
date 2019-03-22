@@ -76,6 +76,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
         onRequestClose={() => {
           this.setState({ selectedMNV: null })
         }}
+        size="large"
         title="Multi-Nucleotide Variant"
       >
         <p style={{ marginTop: 0 }}>

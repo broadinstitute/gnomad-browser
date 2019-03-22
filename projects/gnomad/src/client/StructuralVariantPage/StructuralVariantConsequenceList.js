@@ -87,7 +87,6 @@ class StructuralVariantConsequenceList extends Component {
             onRequestClose={() => {
               this.setState({ expandedConsequence: null })
             }}
-            width="50%"
           >
             <OrderedList>
               {variant.consequences
