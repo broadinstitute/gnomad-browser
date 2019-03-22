@@ -49,8 +49,8 @@ export class Modal extends Component {
     return (
       <AriaModal
         dialogId={`${this.withIdPrefix('dialog')}`}
+        focusDialog
         getApplicationNode={getApplicationNode}
-        initialFocus={`#${this.withIdPrefix('close')}`}
         onExit={onRequestClose}
         titleId={this.withIdPrefix('title')}
         underlayStyle={underlayStyle}
@@ -64,9 +64,7 @@ export class Modal extends Component {
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <Button id={this.withIdPrefix('close')} onClick={onRequestClose}>
-              Ok
-            </Button>
+            <Button onClick={onRequestClose}>Ok</Button>
           </ModalFooter>
         </ModalContent>
       </AriaModal>
