@@ -195,7 +195,7 @@ export default connect(
 )(
   ({ clearFocusedVariant, variant, variantId }) =>
     variantId && (
-      <InfoModal onRequestClose={clearFocusedVariant} title={variantId}>
+      <InfoModal onRequestClose={clearFocusedVariant} size="large" title={variantId}>
         {variant && <Variant variant={variant} />}
       </InfoModal>
     )

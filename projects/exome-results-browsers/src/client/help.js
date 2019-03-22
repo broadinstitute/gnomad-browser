@@ -68,8 +68,8 @@ export class HelpPopup extends Component {
             onRequestClose={() => {
               this.setState({ isOpen: false })
             }}
+            size="large"
             title={helpConfig[topic].title || 'Help'}
-            width="50%"
           >
             <HelpModalContent>{helpConfig[topic].render()}</HelpModalContent>
           </InfoModal>

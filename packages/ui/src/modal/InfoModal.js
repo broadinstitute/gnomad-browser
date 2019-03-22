@@ -12,11 +12,9 @@ import {
   underlayStyle,
 } from './styles'
 
-
 function getApplicationNode() {
   return document.getElementById('root')
 }
-
 
 let nextId = 0
 
@@ -26,18 +24,17 @@ function getId() {
   return id
 }
 
-
 export class InfoModal extends Component {
   static propTypes = {
     children: PropTypes.node,
     onRequestClose: PropTypes.func.isRequired,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
     title: PropTypes.string.isRequired,
-    width: PropTypes.string,
   }
 
   static defaultProps = {
     children: undefined,
-    width: 'auto',
+    size: 'medium',
   }
 
   id = getId()
@@ -47,40 +44,27 @@ export class InfoModal extends Component {
   }
 
   render() {
-    const {
-      children,
-      onRequestClose,
-      title,
-    } = this.props
+    const { children, onRequestClose, size, title } = this.props
 
     return (
       <AriaModal
-        dialogStyle={{ width: this.props.width }}
+        dialogId={`${this.withIdPrefix('dialog')}`}
         getApplicationNode={getApplicationNode}
         initialFocus={`#${this.withIdPrefix('close')}`}
         onExit={onRequestClose}
         titleId={this.withIdPrefix('title')}
         underlayStyle={underlayStyle}
       >
-        <ModalContent>
+        <ModalContent size={size}>
           <ModalHeader>
             <h2 id={this.withIdPrefix('title')}>{title}</h2>
-            <ModalHeaderCloseButton
-              aria-label="Close"
-              onClick={onRequestClose}
-              type="button"
-            >
+            <ModalHeaderCloseButton aria-label="Close" onClick={onRequestClose} type="button">
               <span aria-hidden="true">&times;</span>
             </ModalHeaderCloseButton>
           </ModalHeader>
-          <ModalBody>
-            {children}
-          </ModalBody>
+          <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <Button
-              id={this.withIdPrefix('close')}
-              onClick={onRequestClose}
-            >
+            <Button id={this.withIdPrefix('close')} onClick={onRequestClose}>
               Ok
             </Button>
           </ModalFooter>
