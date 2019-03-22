@@ -41,16 +41,6 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
-        // const variants = data.variants.map(v => ({
-        //   ...v,
-        //   alts: v.alt,
-        //   ac: v.ac.total,
-        //   an: v.an.total,
-        //   af: v.af.total,
-        //   n_homalt: v.n_homalt.total,
-        //   consequence: v.worst_consequence,
-        // }))
-
         return (
           <StructuralVariants
             {...rest}
