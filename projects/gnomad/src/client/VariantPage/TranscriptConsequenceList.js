@@ -6,7 +6,8 @@ import { ListItem, Modal, OrderedList, TextButton } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import Link from '../Link'
-import TranscriptConsequenceDetails from './TranscriptConsequenceDetails'
+import TranscriptConsequence from './TranscriptConsequence'
+import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
@@ -32,22 +33,7 @@ const groupConsequences = (consequences, key) => {
 
 class ConsequencesInGene extends Component {
   static propTypes = {
-    transcriptConsequences: PropTypes.arrayOf(
-      PropTypes.shape({
-        biotype: PropTypes.string,
-        consequence_terms: PropTypes.arrayOf(PropTypes.string),
-        gene_id: PropTypes.string.isRequired,
-        gene_symbol: PropTypes.string.isRequired,
-        hgvs: PropTypes.string,
-        hgvsc: PropTypes.string,
-        hgvsp: PropTypes.string,
-        lof: PropTypes.string,
-        lof_flags: PropTypes.string,
-        lof_filter: PropTypes.string,
-        major_consequence: PropTypes.string,
-        transcript_id: PropTypes.string.isRequired,
-      })
-    ).isRequired,
+    transcriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
   }
 
   state = {
@@ -59,7 +45,6 @@ class ConsequencesInGene extends Component {
     const { isExpanded } = this.state
 
     const {
-      gene_id: geneId,
       gene_symbol: geneSymbol,
       major_consequence: consequenceTerm,
     } = transcriptConsequences[0]
@@ -68,12 +53,7 @@ class ConsequencesInGene extends Component {
       <OrderedList>
         {transcriptConsequences.slice(0, 3).map(csq => (
           <ListItem key={csq.transcript_id}>
-            <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
-              {csq.transcript_id}
-              {csq.canonical && ' *'}
-            </Link>
-            <br />
-            <TranscriptConsequenceDetails consequence={csq} />
+            <TranscriptConsequence consequence={csq} />
           </ListItem>
         ))}
         {transcriptConsequences.length > 3 && (
@@ -98,12 +78,7 @@ class ConsequencesInGene extends Component {
             <OrderedList>
               {transcriptConsequences.map(csq => (
                 <ListItem key={csq.transcript_id}>
-                  <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
-                    {csq.transcript_id}
-                    {csq.canonical && ' *'}
-                  </Link>
-                  <br />
-                  <TranscriptConsequenceDetails consequence={csq} />
+                  <TranscriptConsequence consequence={csq} />
                 </ListItem>
               ))}
             </OrderedList>
@@ -159,20 +134,5 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
 )
 
 TranscriptConsequenceList.propTypes = {
-  sortedTranscriptConsequences: PropTypes.arrayOf(
-    PropTypes.shape({
-      biotype: PropTypes.string,
-      consequence_terms: PropTypes.arrayOf(PropTypes.string),
-      gene_id: PropTypes.string.isRequired,
-      gene_symbol: PropTypes.string.isRequired,
-      hgvs: PropTypes.string,
-      hgvsc: PropTypes.string,
-      hgvsp: PropTypes.string,
-      lof: PropTypes.string,
-      lof_flags: PropTypes.string,
-      lof_filter: PropTypes.string,
-      major_consequence: PropTypes.string,
-      transcript_id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  sortedTranscriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
 }

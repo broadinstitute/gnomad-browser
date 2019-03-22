@@ -4,6 +4,9 @@ import styled from 'styled-components'
 
 import { getCategoryFromConsequence } from '@broad/utilities'
 
+import Link from '../Link'
+import TranscriptConsequencePropType from './TranscriptConsequencePropType'
+
 const AttributeName = styled.dt`
   display: inline;
 
@@ -108,22 +111,21 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
 }
 
 TranscriptConsequenceDetails.propTypes = {
-  consequence: PropTypes.shape({
-    biotype: PropTypes.string,
-    consequence_terms: PropTypes.arrayOf(PropTypes.string),
-    gene_id: PropTypes.string.isRequired,
-    gene_symbol: PropTypes.string.isRequired,
-    hgvs: PropTypes.string,
-    hgvsc: PropTypes.string,
-    hgvsp: PropTypes.string,
-    lof: PropTypes.string,
-    lof_flags: PropTypes.string,
-    lof_filter: PropTypes.string,
-    major_consequence: PropTypes.string,
-    polyphen_prediction: PropTypes.string,
-    sift_prediction: PropTypes.string,
-    transcript_id: PropTypes.string.isRequired,
-  }).isRequired,
+  consequence: TranscriptConsequencePropType.isRequired,
 }
 
-export default TranscriptConsequenceDetails
+const TranscriptConsequence = ({ consequence }) => (
+  <div>
+    <Link to={`/gene/${consequence.gene_id}/transcript/${consequence.transcript_id}`}>
+      {consequence.transcript_id}
+      {consequence.canonical && ' *'}
+    </Link>
+    <TranscriptConsequenceDetails consequence={consequence} />
+  </div>
+)
+
+TranscriptConsequence.propTypes = {
+  consequence: TranscriptConsequencePropType.isRequired,
+}
+
+export default TranscriptConsequence
