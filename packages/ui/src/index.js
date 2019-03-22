@@ -72,9 +72,7 @@ export { ExternalLink, Link } from './Link'
 
 export { List, ListItem, OrderedList } from './List'
 
-export {
-  InfoModal
-} from './modal/InfoModal'
+export { Modal } from './modal/Modal'
 
 export { Page, PageHeading, SectionHeading, TrackPage, TrackPageSection } from './Page'
 

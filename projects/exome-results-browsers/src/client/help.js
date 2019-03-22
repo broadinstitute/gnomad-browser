@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { InfoModal } from '@broad/ui'
+import { Modal } from '@broad/ui'
 
 import helpConfig from '@browser/help'
 
@@ -64,7 +64,7 @@ export class HelpPopup extends Component {
           <QuestionMark />
         </Button>
         {isOpen && (
-          <InfoModal
+          <Modal
             onRequestClose={() => {
               this.setState({ isOpen: false })
             }}
@@ -72,7 +72,7 @@ export class HelpPopup extends Component {
             title={helpConfig[topic].title || 'Help'}
           >
             <HelpModalContent>{helpConfig[topic].render()}</HelpModalContent>
-          </InfoModal>
+          </Modal>
         )}{' '}
       </span>
     )

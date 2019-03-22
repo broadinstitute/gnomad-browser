@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { InfoModal, ListItem, OrderedList, TextButton } from '@broad/ui'
+import { ListItem, Modal, OrderedList, TextButton } from '@broad/ui'
 
 import Link from '../Link'
 import {
@@ -82,7 +82,7 @@ class StructuralVariantConsequenceList extends Component {
           })}
         </Wrapper>
         {expandedConsequence && (
-          <InfoModal
+          <Modal
             title={`${svConsequenceLabels[expandedConsequence]}`}
             onRequestClose={() => {
               this.setState({ expandedConsequence: null })
@@ -97,7 +97,7 @@ class StructuralVariantConsequenceList extends Component {
                   </ListItem>
                 ))}
             </OrderedList>
-          </InfoModal>
+          </Modal>
         )}
       </React.Fragment>
     )
