@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { ListItem, OrderedList } from '@broad/ui'
+import { ListItem, Modal, OrderedList, TextButton } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import Link from '../Link'
@@ -30,7 +30,91 @@ const groupConsequences = (consequences, key) => {
   }))
 }
 
-const TranscriptConsequenceListContainer = styled.ol`
+class ConsequencesInGene extends Component {
+  static propTypes = {
+    transcriptConsequences: PropTypes.arrayOf(
+      PropTypes.shape({
+        biotype: PropTypes.string,
+        consequence_terms: PropTypes.arrayOf(PropTypes.string),
+        gene_id: PropTypes.string.isRequired,
+        gene_symbol: PropTypes.string.isRequired,
+        hgvs: PropTypes.string,
+        hgvsc: PropTypes.string,
+        hgvsp: PropTypes.string,
+        lof: PropTypes.string,
+        lof_flags: PropTypes.string,
+        lof_filter: PropTypes.string,
+        major_consequence: PropTypes.string,
+        transcript_id: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }
+
+  state = {
+    isExpanded: false,
+  }
+
+  render() {
+    const { transcriptConsequences } = this.props
+    const { isExpanded } = this.state
+
+    const {
+      gene_id: geneId,
+      gene_symbol: geneSymbol,
+      major_consequence: consequenceTerm,
+    } = transcriptConsequences[0]
+
+    return (
+      <OrderedList>
+        {transcriptConsequences.slice(0, 3).map(csq => (
+          <ListItem key={csq.transcript_id}>
+            <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
+              {csq.transcript_id}
+              {csq.canonical && ' *'}
+            </Link>
+            <br />
+            <TranscriptConsequenceDetails consequence={csq} />
+          </ListItem>
+        ))}
+        {transcriptConsequences.length > 3 && (
+          <ListItem>
+            <TextButton
+              onClick={() => {
+                this.setState({ isExpanded: true })
+              }}
+            >
+              and {transcriptConsequences.length - 3} more
+            </TextButton>
+          </ListItem>
+        )}
+        {isExpanded && (
+          <Modal
+            initialFocusOnButton={false}
+            onRequestClose={() => {
+              this.setState({ isExpanded: false })
+            }}
+            title={`${getLabelForConsequenceTerm(consequenceTerm)} consequences in ${geneSymbol}`}
+          >
+            <OrderedList>
+              {transcriptConsequences.map(csq => (
+                <ListItem key={csq.transcript_id}>
+                  <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
+                    {csq.transcript_id}
+                    {csq.canonical && ' *'}
+                  </Link>
+                  <br />
+                  <TranscriptConsequenceDetails consequence={csq} />
+                </ListItem>
+              ))}
+            </OrderedList>
+          </Modal>
+        )}
+      </OrderedList>
+    )
+  }
+}
+
+const ConsequenceListWrapper = styled.ol`
   display: flex;
   flex-flow: row wrap;
   padding: 0;
@@ -43,15 +127,15 @@ const TranscriptConsequenceListContainer = styled.ol`
   }
 `
 
-const TranscriptConsequenceListItem = styled.li`
+const ConsequenceListItem = styled.li`
   flex-basis: 250px;
 `
 
 export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
-  <TranscriptConsequenceListContainer>
+  <ConsequenceListWrapper>
     {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
-        <TranscriptConsequenceListItem key={consequenceTerm}>
+        <ConsequenceListItem key={consequenceTerm}>
           <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
           <OrderedList>
             {groupConsequences(consequences, 'gene_id').map(
@@ -62,27 +146,16 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>
                     </h4>
-                    <OrderedList>
-                      {consequencesInGene.map(csq => (
-                        <ListItem key={csq.transcript_id}>
-                          <Link to={`/gene/${geneId}/transcript/${csq.transcript_id}`}>
-                            {csq.transcript_id}
-                            {csq.canonical && ' *'}
-                          </Link>
-                          <br />
-                          <TranscriptConsequenceDetails consequence={csq} />
-                        </ListItem>
-                      ))}
-                    </OrderedList>
+                    <ConsequencesInGene transcriptConsequences={consequencesInGene} />
                   </ListItem>
                 )
               }
             )}
           </OrderedList>
-        </TranscriptConsequenceListItem>
+        </ConsequenceListItem>
       )
     )}
-  </TranscriptConsequenceListContainer>
+  </ConsequenceListWrapper>
 )
 
 TranscriptConsequenceList.propTypes = {
