@@ -17,13 +17,13 @@ const GraphWrapper = styled.div`
 
 const tickFormat = n => {
   if (n >= 1e9) {
-    return `${(n / 1e9).toFixed(0)}B`
+    return `${(n / 1e9).toPrecision(3)}B`
   }
   if (n >= 1e6) {
-    return `${(n / 1e6).toFixed(0)}M`
+    return `${(n / 1e6).toPrecision(3)}M`
   }
   if (n >= 1e3) {
-    return `${(n / 1e3).toFixed(0)}K`
+    return `${(n / 1e3).toPrecision(3)}K`
   }
   return `${n}`
 }
@@ -43,7 +43,7 @@ const labelProps = {
 export const BarGraph = withSize()(
   ({ barColor, bins, highlightValue, logScale, nLarger, nSmaller, size, xLabel, yLabel }) => {
     const height = 250
-    const width = size.width
+    const { width } = size
 
     const binsCopy = [...bins]
 
