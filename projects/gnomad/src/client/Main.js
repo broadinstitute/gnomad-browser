@@ -7,7 +7,6 @@ import { createLogger } from 'redux-logger'
 
 import { createHelpReducer } from '@broad/help'
 import { createGeneReducer } from '@broad/redux-genes'
-import { createRegionReducer } from '@broad/region'
 import { actions as userInterfaceActions, createUserInterfaceReducer } from '@broad/ui'
 
 // eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
@@ -30,7 +29,6 @@ const appSettings = {
 
 const rootReducer = combineReducers({
   genes: createGeneReducer(appSettings),
-  regions: createRegionReducer(appSettings),
   help: createHelpReducer({
     topics: helpTopics,
     toc: toc.toc,

@@ -9,7 +9,6 @@
   "dependencies": {
     "@broad/redux-genes": "*",
     "@broad/redux-variants": "*",
-    "@broad/region": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
     "immutable": "^3.8.1",

@@ -20,7 +20,6 @@
   "devDependencies": {
     "@broad/help": "*",
     "@broad/redux-genes": "*",
-    "@broad/region": "*",
     "@broad/region-viewer": "*",
     "@broad/track-coverage": "*",
     "@broad/track-genes": "*",

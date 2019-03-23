@@ -11,7 +11,6 @@ import createDebounce from 'redux-debounced'
 import { createLogger } from 'redux-logger'
 import { createVariantReducer } from '@broad/redux-variants'
 import { createGeneReducer } from '@broad/redux-genes'
-import { createRegionReducer } from '@broad/region'
 import { createHelpReducer } from '@broad/help'
 import { createUserInterfaceReducer } from '@broad/ui'
 import { createTableReducer } from '@broad/table'
@@ -35,7 +34,6 @@ export default function createGenePageStore(appSettings, appReducers) {
   const rootReducer = combineReducers({
     genes: createGeneReducer(appSettings),
     variants: createVariantReducer(appSettings),
-    regions: createRegionReducer(appSettings),
     help: createHelpReducer(appSettings.docs),
     ui: createUserInterfaceReducer(),
     table: createTableReducer(),
