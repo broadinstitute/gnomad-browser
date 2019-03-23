@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types'
-import React from 'react'
 import styled from 'styled-components'
 
 export const Link = styled.a`
@@ -20,15 +18,9 @@ export const Link = styled.a`
   }
 `
 
-export const ExternalLink = props => {
-  const { children, ...rest } = props
-  return (
-    <Link {...rest} rel="noopener" target="_blank">
-      {children}
-    </Link>
-  )
-}
-
-ExternalLink.propTypes = {
-  children: PropTypes.node.isRequired,
-}
+export const ExternalLink = styled(Link).attrs({
+  rel: 'noopener',
+  target: '_blank',
+})`
+  /* stylelint-ignore-line block-no-empty */
+`
