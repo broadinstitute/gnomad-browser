@@ -24,12 +24,14 @@ const TopPanel = styled.div`
 
 const SidePanel = styled.div`
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   width: ${props => props.width}px;
 `
 
 const CenterPanel = styled.div`
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   width: ${props => props.width}px;
 `
@@ -82,7 +84,7 @@ export const Track = ({ children, renderLeftPanel, renderRightPanel, renderTopPa
             })}
           </CenterPanel>
           {renderRightPanel && (
-            <SidePanel width={leftPanelWidth}>
+            <SidePanel width={rightPanelWidth}>
               {renderRightPanel({ ...rest, width: rightPanelWidth })}
             </SidePanel>
           )}
