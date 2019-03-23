@@ -1,25 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  GeneAttributes,
-  GeneAttributeKeys,
-  GeneAttributeKey,
-  GeneAttributeValues,
-  GeneAttributeValue,
-} from '@broad/ui'
+import AttributeList from '../AttributeList'
 
 const RegionInfo = ({ region }) => {
   const { start, stop } = region
   return (
-    <GeneAttributes>
-      <GeneAttributeKeys>
-        <GeneAttributeKey>Region size</GeneAttributeKey>
-      </GeneAttributeKeys>
-      <GeneAttributeValues>
-        <GeneAttributeValue>{(stop - start).toLocaleString()} BP</GeneAttributeValue>
-      </GeneAttributeValues>
-    </GeneAttributes>
+    <AttributeList labelWidth={120}>
+      <AttributeList.Item label="Region size">
+        {(stop - start).toLocaleString()} BP
+      </AttributeList.Item>
+    </AttributeList>
   )
 }
 
