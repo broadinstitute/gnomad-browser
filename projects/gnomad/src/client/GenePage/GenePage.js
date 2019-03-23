@@ -58,14 +58,13 @@ const Legend = styled.ul`
   display: flex;
   flex-direction: row;
   padding: 0;
-  margin: 0;
+  margin: 0.5em 0;
   list-style-type: none;
 `
 
 const LegendItemWrapper = styled.li`
   display: flex;
   align-items: stretch;
-  height: 20px;
   margin-left: 1em;
 `
 
