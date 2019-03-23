@@ -16,7 +16,9 @@ class GeneViewer extends PureComponent {
     const { gene, visibleVariants, screenSize } = this.props
 
     const smallScreen = screenSize.width < 900
-    const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
+
+    // Subtract 30px for padding on Page component.
+    const regionViewerWidth = screenSize.width - 30
 
     const geneJS = gene.toJS()
     const canonicalCodingExons = geneJS.transcript.exons.filter(exon => exon.feature_type === 'CDS')
@@ -36,7 +38,7 @@ class GeneViewer extends PureComponent {
         padding={75}
         regions={canonicalCodingExons}
         leftPanelWidth={100}
-        rightPanelWidth={smallScreen ? 0 : 160}
+        rightPanelWidth={smallScreen ? 0 : 100}
       >
         <TranscriptTrack
           exons={geneJS.transcript.exons.filter(exon => exon.feature_type === 'CDS')}

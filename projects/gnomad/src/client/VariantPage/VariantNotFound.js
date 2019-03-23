@@ -40,12 +40,7 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
         <br />
         <Link to={`/region/${redirectRegion}`}>View surrounding region</Link>
       </StatusMessage>
-      <RegionViewer
-        padding={0}
-        regions={regionViewerRegions}
-        rightPanelWidth={0}
-        width={width - 100}
-      >
+      <RegionViewer padding={0} regions={regionViewerRegions} rightPanelWidth={0} width={width}>
         <CoverageTrack
           datasetId={datasetId}
           chrom={chrom}

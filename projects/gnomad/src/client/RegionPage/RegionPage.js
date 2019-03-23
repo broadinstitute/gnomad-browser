@@ -3,10 +3,10 @@ import React from 'react'
 
 import { RegionViewer } from '@broad/region-viewer'
 import { GenesTrack } from '@broad/track-genes'
-import { TrackPage, TrackPageSection } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import { TrackPage, TrackPageSection } from '../TrackPage'
 import CoverageTrack from './CoverageTrack'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
@@ -25,9 +25,11 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
     },
   ]
 
-  // Margins have to be kept in sync with styles in ui/Page.js
   const smallScreen = screenSize.width < 900
-  const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
+
+  // Subtract 30px for padding on Page component
+  const regionViewerWidth = screenSize.width - 30
+
   return (
     <TrackPage>
       <TrackPageSection>

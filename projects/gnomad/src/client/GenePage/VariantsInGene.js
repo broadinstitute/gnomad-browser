@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { NavigatorTrack } from '@broad/track-navigator'
-import { TrackPageSection } from '@broad/ui'
 
 import datasetLabels from '../datasetLabels'
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
+import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
 import sortVariants from '../VariantList/sortVariants'

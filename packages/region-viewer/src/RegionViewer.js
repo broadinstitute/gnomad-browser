@@ -27,10 +27,11 @@ export const RegionViewer = ({
   rightPanelWidth,
   width,
 }) => {
+  const centerPanelWidth = width - (leftPanelWidth + rightPanelWidth)
   const offsetRegions = calculateOffsetRegions(padding, regions)
 
   const positionOffset = calculatePositionOffset(offsetRegions)
-  const xScale = calculateXScale(width, offsetRegions)
+  const xScale = calculateXScale(centerPanelWidth, offsetRegions)
   const invertOffset = invertPositionOffset(offsetRegions, xScale)
 
   const scalePosition = pos => xScale(positionOffset(pos).offsetPosition)
@@ -40,17 +41,17 @@ export const RegionViewer = ({
     offsetRegions.some(region => region.start <= pos && pos <= region.stop)
 
   const childProps = {
+    centerPanelWidth,
     isPositionDefined,
     leftPanelWidth,
     offsetRegions, // used only by track-coverage and track-position-table
     positionOffset,
     rightPanelWidth,
     scalePosition,
-    width,
   }
 
   return (
-    <RegionViewerWrapper width={width + leftPanelWidth + rightPanelWidth}>
+    <RegionViewerWrapper width={width}>
       <RegionViewerContext.Provider value={childProps}>{children}</RegionViewerContext.Provider>
     </RegionViewerWrapper>
   )

@@ -35,7 +35,11 @@ const coverageDatasets = [
 ]
 
 const CoverageTrackExample = () => (
-  <RegionViewer padding={75} regions={exons} width={1000}>
+  <RegionViewer
+    padding={75}
+    regions={exons.filter(exon => exon.feature_type === 'CDS')}
+    width={1000}
+  >
     <CoverageTrack datasets={coverageDatasets} height={200} />
   </RegionViewer>
 )

@@ -55,24 +55,28 @@ const defaultRenderLeftPanel = ({ title = '' }) => (
 export const Track = ({ children, renderLeftPanel, renderRightPanel, renderTopPanel, ...rest }) => (
   <RegionViewerContext.Consumer>
     {({
+      centerPanelWidth,
       isPositionDefined,
       leftPanelWidth,
       offsetRegions,
       rightPanelWidth,
       scalePosition,
-      width,
     }) => (
       <OuterWrapper>
         {renderTopPanel && (
-          <TopPanel marginLeft={leftPanelWidth} marginRight={rightPanelWidth} width={width}>
-            {renderTopPanel({ ...rest, width })}
+          <TopPanel
+            marginLeft={leftPanelWidth}
+            marginRight={rightPanelWidth}
+            width={centerPanelWidth}
+          >
+            {renderTopPanel({ ...rest, width: centerPanelWidth })}
           </TopPanel>
         )}
         <InnerWrapper>
           <SidePanel width={leftPanelWidth}>
             {renderLeftPanel && renderLeftPanel({ ...rest, width: leftPanelWidth })}
           </SidePanel>
-          <CenterPanel width={width}>
+          <CenterPanel width={centerPanelWidth}>
             {children({
               ...rest,
               isPositionDefined,
@@ -80,7 +84,7 @@ export const Track = ({ children, renderLeftPanel, renderRightPanel, renderTopPa
               offsetRegions,
               rightPanelWidth,
               scalePosition,
-              width,
+              width: centerPanelWidth,
             })}
           </CenterPanel>
           {renderRightPanel && (
