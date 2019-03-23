@@ -71,7 +71,7 @@ export default () => (
         Please cite the{' '}
         <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
           gnomAD flagship paper
-        </ExternalLink>
+        </ExternalLink>{' '}
         or the{' '}
         <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
           ExAC flagship paper
