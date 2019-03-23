@@ -14,7 +14,7 @@ import FAQPage from './FAQPage'
 import GenePage from './GenePage/GenePage'
 import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
-import RegionPage from './RegionPage/RegionPage'
+import RegionPageContainer from './RegionPage/RegionPageContainer'
 import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
 import VariantPage from './VariantPage/VariantPage'
@@ -87,7 +87,7 @@ const App = () => (
             const datasetId = params.dataset || defaultDataset
             const regionId = normalizeRegionId(match.params.regionId)
             return (
-              <RegionPage
+              <RegionPageContainer
                 datasetId={datasetId}
                 regionId={regionId}
                 history={history}

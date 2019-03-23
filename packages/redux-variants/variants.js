@@ -4,7 +4,6 @@ import { Record, Map, List, fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { types as geneTypes } from '@broad/redux-genes'
-import { types as regionTypes } from '@broad/region'
 import { getCategoryFromConsequence } from '@broad/utilities'
 
 export const types = keymirror({
@@ -168,24 +167,6 @@ export default function createVariantReducer({
         if (geneData.get(datasetKey)) {
           const variantMap = {}
           geneData.get(datasetKey).forEach(variant => {
-            variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
-              variant.set('id', variant.get('variant_id'))
-            )
-          })
-          return nextState.set(
-            'byVariantDataset',
-            nextState.byVariantDataset.set(datasetKey, Map(variantMap))
-          )
-        }
-        return nextState
-      }, state)
-    },
-
-    [regionTypes.RECEIVE_REGION_DATA](state, { regionData }) {
-      return datasetKeys.reduce((nextState, datasetKey) => {
-        if (regionData.get(datasetKey)) {
-          const variantMap = {}
-          regionData.get(datasetKey).forEach(variant => {
             variantMap[variant.get('variant_id')] = new variantRecords[datasetKey](
               variant.set('id', variant.get('variant_id'))
             )

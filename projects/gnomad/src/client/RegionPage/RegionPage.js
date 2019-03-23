@@ -1,16 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 
 import { RegionViewer } from '@broad/region-viewer'
 import { GenesTrack } from '@broad/track-genes'
-import { screenSize, TrackPage, TrackPageSection } from '@broad/ui'
+import { TrackPage, TrackPageSection } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import CoverageTrack from './CoverageTrack'
-import { fetchRegion } from './fetch'
-import RegionDataContainer from './RegionDataContainer'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
@@ -85,19 +82,4 @@ RegionPage.propTypes = {
   screenSize: PropTypes.shape({ width: PropTypes.number.isRequired }).isRequired,
 }
 
-const SizedRegionPage = connect(state => ({ screenSize: screenSize(state) }))(RegionPage)
-
-const ConnectedRegionPage = ({ datasetId, regionId, ...otherProps }) => (
-  <RegionDataContainer fetchRegion={fetchRegion} regionId={regionId}>
-    {({ region }) => (
-      <SizedRegionPage {...otherProps} datasetId={datasetId} region={region} regionId={regionId} />
-    )}
-  </RegionDataContainer>
-)
-
-ConnectedRegionPage.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  regionId: PropTypes.string.isRequired,
-}
-
-export default ConnectedRegionPage
+export default RegionPage

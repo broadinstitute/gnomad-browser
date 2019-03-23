@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@broad/redux-genes": "*",
-    "@broad/region": "*",
     "@broad/utilities": "*",
     "keymirror": "^0.1.1",
     "immutable": "^4.0.0-rc.9",

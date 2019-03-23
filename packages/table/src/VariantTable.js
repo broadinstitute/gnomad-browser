@@ -14,7 +14,6 @@ import {
   variantSearchQuery,
   finalFilteredVariants,
 } from '@broad/redux-variants'
-import { currentChromosome as regionChromosome } from '@broad/region'
 
 import Table from './Table'
 import { actions as tableActions, currentTableIndex } from './tableRedux'
@@ -104,7 +103,7 @@ const mapStateToProps = (state) => {
     variants: finalFilteredVariants(state),
     tablePosition: currentTableIndex(state),
     searchQuery: variantSearchQuery(state),
-    currentChromosome: geneChromosome(state) || regionChromosome(state),
+    currentChromosome: geneChromosome(state),
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
