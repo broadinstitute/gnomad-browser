@@ -1,14 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  ExternalLink,
-  GeneAttributes,
-  GeneAttributeKeys,
-  GeneAttributeKey,
-  GeneAttributeValues,
-  GeneAttributeValue,
-} from '@broad/ui'
+import { ExternalLink } from '@broad/ui'
+
+import AttributeList from '../AttributeList'
 
 const GeneInfo = ({ currentTranscript, gene }) => {
   const {
@@ -30,35 +25,26 @@ const GeneInfo = ({ currentTranscript, gene }) => {
   const omimUrl = `http://omim.org/entry/${omimAccession}`
 
   return (
-    <GeneAttributes>
-      <GeneAttributeKeys>
-        <GeneAttributeKey>Ensembl gene ID</GeneAttributeKey>
-        <GeneAttributeKey>Ensembl transcript ID</GeneAttributeKey>
-        <GeneAttributeKey>UCSC Browser</GeneAttributeKey>
-        <GeneAttributeKey>GeneCards</GeneAttributeKey>
-        <GeneAttributeKey>OMIM</GeneAttributeKey>
-      </GeneAttributeKeys>
-      <GeneAttributeValues>
-        <GeneAttributeValue>
-          <ExternalLink href={ensemblGeneUrl}>{geneId}</ExternalLink>
-        </GeneAttributeValue>
-        <GeneAttributeValue>
-          <ExternalLink href={ensemblTranscriptUrl}>
-            {currentTranscript}
-            {currentTranscript === canonicalTranscript && ' (canonical)'}
-          </ExternalLink>
-        </GeneAttributeValue>
-        <GeneAttributeValue>
-          <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
-        </GeneAttributeValue>
-        <GeneAttributeValue>
-          <ExternalLink href={geneCardsUrl}>{geneName}</ExternalLink>
-        </GeneAttributeValue>
-        <GeneAttributeValue>
-          {omimAccession ? <ExternalLink href={omimUrl}>{omimAccession}</ExternalLink> : '—'}
-        </GeneAttributeValue>
-      </GeneAttributeValues>
-    </GeneAttributes>
+    <AttributeList labelWidth={160}>
+      <AttributeList.Item label="Ensembl gene ID">
+        <ExternalLink href={ensemblGeneUrl}>{geneId}</ExternalLink>
+      </AttributeList.Item>
+      <AttributeList.Item label="Ensembl transcript ID">
+        <ExternalLink href={ensemblTranscriptUrl}>
+          {currentTranscript}
+          {currentTranscript === canonicalTranscript && ' (canonical)'}
+        </ExternalLink>
+      </AttributeList.Item>
+      <AttributeList.Item label="UCSC Browser">
+        <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
+      </AttributeList.Item>
+      <AttributeList.Item label="GeneCards">
+        <ExternalLink href={geneCardsUrl}>{geneName}</ExternalLink>
+      </AttributeList.Item>
+      <AttributeList.Item label="OMIM">
+        {omimAccession ? <ExternalLink href={omimUrl}>{omimAccession}</ExternalLink> : '—'}
+      </AttributeList.Item>
+    </AttributeList>
   )
 }
 

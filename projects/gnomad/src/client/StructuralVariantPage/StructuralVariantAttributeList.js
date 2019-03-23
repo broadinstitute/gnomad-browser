@@ -1,49 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { Badge } from '@broad/ui'
 
+import AttributeList from '../AttributeList'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
-
-const Attribute = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 3px;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
-`
-
-const AttributeList = styled.dl`
-  dt,
-  dd {
-    box-sizing: border-box;
-    line-height: 1.5;
-  }
-
-  dt {
-    flex-shrink: 0;
-    width: ${props => props.labelWidth}px;
-    font-weight: bold;
-    text-align: right;
-  }
-
-  dd {
-    margin-left: 1em;
-  }
-
-  @media (max-width: 600px) {
-    dt {
-      width: auto;
-      text-align: left;
-    }
-  }
-`
 
 const FILTER_DESCRIPTIONS = {
   PCRPLUS_ENRICHED: undefined,
@@ -156,82 +120,62 @@ ComplexTypeHelpButton.defaultProps = {
 
 const StructuralVariantAttributeList = ({ variant }) => (
   <AttributeList labelWidth={variant.type === 'MCNV' ? 180 : 140}>
-    <Attribute>
-      <dt>Filter</dt>
-      <dd>
-        {variant.filters.length > 0 ? (
-          variant.filters.map(filter => (
-            <Badge level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
-              {filter
-                .split('_')
-                .map(s => `${s.charAt(0)}${s.slice(1).toLowerCase()}`)
-                .join(' ')}
-            </Badge>
-          ))
-        ) : (
-          <Badge level="success">Pass</Badge>
-        )}
-      </dd>
-    </Attribute>
-    <Attribute>
-      <dt>{variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}</dt>
-      <dd>{variant.ac}</dd>
-    </Attribute>
-    <Attribute>
-      <dt>{variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}</dt>
-      <dd>{variant.an}</dd>
-    </Attribute>
-    <Attribute>
-      <dt>{variant.type === 'MCNV' ? 'Non-diploid CN Frequency' : 'Allele Frequency'}</dt>
-      <dd>{(variant.an === 0 ? 0 : variant.ac / variant.an).toPrecision(4)}</dd>
-    </Attribute>
-    <Attribute>
-      <dt>Quality score</dt>
-      <dd>{variant.qual}</dd>
-    </Attribute>
-    <Attribute>
-      <dt>Position</dt>
-      <dd>
-        <VariantPosition variant={variant} />
-      </dd>
-    </Attribute>
+    <AttributeList.Item label="Filter">
+      {variant.filters.length > 0 ? (
+        variant.filters.map(filter => (
+          <Badge level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
+            {filter
+              .split('_')
+              .map(s => `${s.charAt(0)}${s.slice(1).toLowerCase()}`)
+              .join(' ')}
+          </Badge>
+        ))
+      ) : (
+        <Badge level="success">Pass</Badge>
+      )}
+    </AttributeList.Item>
+    <AttributeList.Item label={variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}>
+      {variant.ac}
+    </AttributeList.Item>
+    <AttributeList.Item label={variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}>
+      {variant.an}
+    </AttributeList.Item>
+    <AttributeList.Item
+      label={variant.type === 'MCNV' ? 'Non-diploid CN Frequency' : 'Allele Frequency'}
+    >
+      {(variant.an === 0 ? 0 : variant.ac / variant.an).toPrecision(4)}
+    </AttributeList.Item>
+    <AttributeList.Item label="Quality score">{variant.qual}</AttributeList.Item>
+    <AttributeList.Item label="Position">
+      <VariantPosition variant={variant} />
+    </AttributeList.Item>
     {variant.type !== 'BND' &&
       variant.type !== 'CTX' && (
-        <Attribute>
-          <dt>Size</dt>
-          <dd>{variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}</dd>
-        </Attribute>
+        <AttributeList.Item label="Size">
+          {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
+        </AttributeList.Item>
       )}
-    <Attribute>
-      <dt>Class</dt>
-      <dd>
-        {svTypeLabels[variant.type]}{' '}
-        <QuestionMark display="inline" topic={`SV_docs/sv-class_${variant.type}`} />
-      </dd>
-    </Attribute>
+    <AttributeList.Item label="Class">
+      {svTypeLabels[variant.type]}{' '}
+      <QuestionMark display="inline" topic={`SV_docs/sv-class_${variant.type}`} />
+    </AttributeList.Item>
     {variant.type === 'CPX' && (
       <React.Fragment>
-        <Attribute>
-          <dt>Complex SV Class</dt>
-          <dd>
-            {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]}){' '}
-            <ComplexTypeHelpButton complexType={variant.cpx_type} />
-          </dd>
-        </Attribute>
-        <Attribute>
-          <dt>Rearranged Segments</dt>
-          <dd>{variant.cpx_intervals.join(', ')}</dd>
-        </Attribute>
+        <AttributeList.Item label="Complex SV Class">
+          {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]}){' '}
+          <ComplexTypeHelpButton complexType={variant.cpx_type} />
+        </AttributeList.Item>
+        <AttributeList.Item label="Rearranged Segments">
+          {variant.cpx_intervals.join(', ')}
+        </AttributeList.Item>
       </React.Fragment>
     )}
-    <Attribute>
-      <dt>Evidence</dt>
-      <dd>{variant.evidence.map(e => EVIDENCE_LABELS[e]).join(', ')}</dd>
-    </Attribute>
-    <Attribute>
-      <dt>Algorithms</dt>
-      <dd>{variant.algorithms.map(a => ALGORITHM_LABELS[a]).join(', ')}</dd>
-    </Attribute>
+    <AttributeList.Item label="Evidence">
+      {variant.evidence.map(e => EVIDENCE_LABELS[e]).join(', ')}
+    </AttributeList.Item>
+    <AttributeList.Item label="Algorithms">
+      {variant.algorithms.map(a => ALGORITHM_LABELS[a]).join(', ')}
+    </AttributeList.Item>
   </AttributeList>
 )
 

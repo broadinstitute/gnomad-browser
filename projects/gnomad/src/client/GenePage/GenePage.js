@@ -38,6 +38,11 @@ const GeneInfoColumnWrapper = styled.div`
     flex-direction: column;
     align-items: center;
   }
+
+  /* Matches responsive styles in AttributeList */
+  @media (max-width: 600px) {
+    align-items: stretch;
+  }
 `
 
 const ControlPanel = styled.div`
