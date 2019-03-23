@@ -7,40 +7,45 @@ import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
-const Downloads = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-`
-
-const SequencingMethodSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-right: 100px;
+  flex-flow: row wrap;
+  justify-content: space-between;
 `
 
 const DownloadSection = styled.div`
-  display: flex;
-  flex-direction: column;
+  flex-basis: calc(50% - 25px);
+
+  @media (max-width: 900px) {
+    flex-basis: 100%;
+  }
+
+  &:last-child {
+    flex-basis: 100%;
+  }
+
+  ${ExternalLink} {
+    word-break: break-word;
+  }
 
   h3 {
-    margin-bottom: 5px;
+    margin: 1.25em 0 0.5em;
   }
 
   ul {
     list-style: none;
-    margin-top: 5px;
     padding-left: 0;
 
     li {
       margin-bottom: 5px;
+
+      ul {
+        list-style: circle;
+        padding-left: 20px;
+        margin-top: 0.25em;
+      }
     }
   }
-`
-
-const MNVList = styled.ul`
-  list-style: circle !important;
-  padding-left: 20px !important;
 `
 
 const RELEASE = '2.1.1'
@@ -149,100 +154,95 @@ export default () => (
       updated. Note that the coverage files have not changed for this release.{' '}
     </p>
 
-    <Downloads>
-      <SequencingMethodSection>
-        <h2>Exomes</h2>
-        <DownloadSection>
-          <h3>Sites Hail Table</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
-                gs://gnomad-public/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht
-              </ExternalLink>
-            </li>
-          </ul>
-        </DownloadSection>
-        <DownloadSection>
-          <h3>Coverage Hail Table</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
-                gs://gnomad-public/release/2.1/coverage/exomes/gnomad.exomes.r2.1.coverage.ht
-              </ExternalLink>
-            </li>
-          </ul>
-        </DownloadSection>
-        <DownloadSection>
-          <h3>VCFs</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
-                All chromosomes (58.81 GiB){' '}
-              </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz.tbi">
-                (.tbi)
-              </ExternalLink>
-            </li>
-            {exomesVcfLinks}
-          </ul>
-        </DownloadSection>
-      </SequencingMethodSection>
-      <SequencingMethodSection>
-        <h2>Genomes</h2>
-        <DownloadSection>
-          <h3>Sites Hail Table</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
-                gs://gnomad-public/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht
-              </ExternalLink>
-            </li>
-          </ul>
-        </DownloadSection>
-        <DownloadSection>
-          <h3>Coverage Hail Table</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
-                gs://gnomad-public/release/2.1/coverage/genomes/gnomad.genomes.r2.1.coverage.ht
-              </ExternalLink>
-            </li>
-          </ul>
-        </DownloadSection>
-        <DownloadSection>
-          <h3>VCFs</h3>
-          <ul>
-            <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
-                All chromosomes (460.93 GiB){' '}
-              </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz.tbi">
-                (.tbi)
-              </ExternalLink>
-            </li>
-            <li>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
-                Exome calling intervals (9.7 GiB){' '}
-              </ExternalLink>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz.tbi">
-                (.tbi)
-              </ExternalLink>
-            </li>
-            {genomesVcfLinks}
-          </ul>
-        </DownloadSection>
-      </SequencingMethodSection>
-    </Downloads>
-
-    <SequencingMethodSection>
-      <h2>Other</h2>
+    <Wrapper>
       <DownloadSection>
+        <h2>Exomes</h2>
+        <h3>Sites Hail Table</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
+              gs://gnomad-public/release/2.1.1/ht/
+              <wbr />
+              exomes/gnomad.exomes.r2.1.1.sites.ht
+            </ExternalLink>
+          </li>
+        </ul>
+        <h3>Coverage Hail Table</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
+              gs://gnomad-public/release/2.1/coverage/
+              <wbr />
+              exomes/gnomad.exomes.r2.1.coverage.ht
+            </ExternalLink>
+          </li>
+        </ul>
+        <h3>VCFs</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
+              All chromosomes (58.81 GiB)
+            </ExternalLink>{' '}
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz.tbi">
+              (.tbi)
+            </ExternalLink>
+          </li>
+          {exomesVcfLinks}
+        </ul>
+      </DownloadSection>
+      <DownloadSection>
+        <h2>Genomes</h2>
+        <h3>Sites Hail Table</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
+              gs://gnomad-public/release/2.1.1/ht/
+              <wbr />
+              genomes/gnomad.genomes.r2.1.1.sites.ht
+            </ExternalLink>
+          </li>
+        </ul>
+        <h3>Coverage Hail Table</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
+              gs://gnomad-public/release/2.1/coverage/
+              <wbr />
+              genomes/gnomad.genomes.r2.1.coverage.ht
+            </ExternalLink>
+          </li>
+        </ul>
+        <h3>VCFs</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
+              All chromosomes (460.93 GiB)
+            </ExternalLink>{' '}
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz.tbi">
+              (.tbi)
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
+              Exome calling intervals (9.7 GiB)
+            </ExternalLink>{' '}
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz.tbi">
+              (.tbi)
+            </ExternalLink>
+          </li>
+          {genomesVcfLinks}
+        </ul>
+      </DownloadSection>
+
+      <DownloadSection>
+        <h2>Other</h2>
         <h3>Gene constraint</h3>
         <ul>
           <li>
             <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
-              LoF Metrics by Transcript (Hail Table)
-              (gs://gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht)
+              LoF Metrics by Transcript (Hail Table) (gs://gnomad-public/release/2.1.1/constraint/
+              <wbr />
+              gnomad.v2.1.1.lof_metrics.by_transcript.ht)
             </ExternalLink>
           </li>
           <li>
@@ -261,8 +261,6 @@ export default () => (
             </ExternalLink>
           </li>
         </ul>
-      </DownloadSection>
-      <DownloadSection>
         <h3>Multi-nucleotide variants (MNVs)</h3>
         <ul>
           <li>
@@ -282,13 +280,14 @@ export default () => (
           </li>
           <li>
             MNVs genome wide
-            <MNVList>
+            <ul>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                 <React.Fragment key={n}>
                   <li>
                     <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
-                      Distance = {n} Hail Table
-                      (gs://gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d
+                      Distance = {n} Hail Table (gs://gnomad-public/release/2.1/mnv/
+                      <wbr />
+                      genome/gnomad_mnv_genome_d
                       {n}
                       .ht)
                     </ExternalLink>
@@ -302,11 +301,9 @@ export default () => (
                   </li>
                 </React.Fragment>
               ))}
-            </MNVList>
+            </ul>
           </li>
         </ul>
-      </DownloadSection>
-      <DownloadSection>
         <h3>Structural variants</h3>
         <ul>
           <li>
@@ -327,6 +324,6 @@ export default () => (
           </li>
         </ul>
       </DownloadSection>
-    </SequencingMethodSection>
+    </Wrapper>
   </InfoPage>
 )
