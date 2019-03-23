@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Button, ExternalLink } from '@broad/ui'
+import { Button } from '@broad/ui'
 
 import Searchbox from './Searchbox'
 
@@ -14,11 +14,17 @@ const NavBarWrapper = styled.div`
   overflow: hidden;
   box-sizing: border-box;
   width: 100%;
-  padding: 0.5em 30px;
+  padding: 10px 30px;
   background-color: black;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
 
   @media (max-width: 900px) {
     flex-direction: column;
+    padding: 10px 30px;
   }
 `
 
@@ -29,6 +35,7 @@ const LogoWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 5px;
   }
 `
 
@@ -43,7 +50,7 @@ const ToggleMenuButton = Button.extend`
   background: black;
   color: white;
 
-  @media (min-width: 900px) {
+  @media (min-width: 901px) {
     display: none;
   }
 `
@@ -51,10 +58,13 @@ const ToggleMenuButton = Button.extend`
 const Menu = styled.ul`
   display: flex;
   flex-direction: row;
-  overflow: hidden;
   padding: 0;
   margin: 0;
   list-style-type: none;
+
+  a {
+    padding: 0.5em;
+  }
 
   @media (max-width: 900px) {
     flex-direction: column;
@@ -69,18 +79,6 @@ const Menu = styled.ul`
   }
 `
 
-const MenuLink = styled(Link)`
-  padding: 0.5em;
-  color: white;
-  text-decoration: none;
-`
-
-const MenuExternalLink = styled.a`
-  padding: 0.5em;
-  color: white;
-  text-decoration: none;
-`
-
 const OuterWrapper = styled.div`
   margin-bottom: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -93,56 +91,60 @@ const Notice = styled.div`
   text-align: center;
 
   a {
-    color: white !important;
+    color: white;
+    text-decoration: none;
   }
 `
 
 class NavBar extends Component {
   state = {
-    menuExpanded: false,
+    isExpanded: false,
   }
 
   toggleMenu = () => {
-    this.setState(state => ({ ...state, menuExpanded: !state.menuExpanded }))
+    this.setState(state => ({ ...state, isExpanded: !state.isExpanded }))
   }
 
   render() {
+    const { isExpanded } = this.state
     return (
       <OuterWrapper>
         <NavBarWrapper>
           <LogoWrapper>
-            <MenuLink to="/">
+            <Link to="/">
               <Logo>gnomAD browser</Logo>
-            </MenuLink>
+            </Link>
             <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
           </LogoWrapper>
           <Searchbox id="navbar-search" width="320px" />
-          <Menu isExpanded={this.state.menuExpanded}>
+          <Menu isExpanded={isExpanded}>
             <li>
-              <MenuLink to="/about">About</MenuLink>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <MenuLink to="/downloads">Downloads</MenuLink>
+              <Link to="/downloads">Downloads</Link>
             </li>
             <li>
-              <MenuLink to="/terms">Terms</MenuLink>
+              <Link to="/terms">Terms</Link>
             </li>
             <li>
-              <MenuLink to="/contact">Contact</MenuLink>
+              <Link to="/contact">Contact</Link>
             </li>
             <li>
-              <MenuExternalLink href="https://macarthurlab.org/jobs/">Jobs</MenuExternalLink>
+              <a href="https://macarthurlab.org/jobs/" rel="noopener noreferrer" target="_blank">
+                Jobs
+              </a>
             </li>
             <li>
-              <MenuLink to="/faq">FAQ</MenuLink>
+              <Link to="/faq">FAQ</Link>
             </li>
           </Menu>
         </NavBarWrapper>
         <Notice>
           This is a new version of the gnomAD browser. The old version is available at{' '}
-          <ExternalLink href="http://gnomad-old.broadinstitute.org">
+          <a href="http://gnomad-old.broadinstitute.org" rel="noopener noreferrer" target="_blank">
             http://gnomad-old.broadinstitute.org
-          </ExternalLink>
+          </a>
         </Notice>
       </OuterWrapper>
     )
