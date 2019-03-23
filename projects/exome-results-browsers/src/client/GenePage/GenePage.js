@@ -2,11 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { PageHeading, TrackPage, TrackPageSection } from '@broad/ui'
+import { PageHeading } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
 import StatusMessage from '../StatusMessage'
+import { TrackPage, TrackPageSection } from '../TrackPage'
 import VariantDetails from '../VariantDetails/VariantDetails'
 import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'

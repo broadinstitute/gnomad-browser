@@ -66,16 +66,3 @@ export const SectionHeading = styled.h2`
   margin: 0 0 0.5em;
   font-size: 18px;
 `
-
-export const TrackPage = Page.extend`
-  max-width: none;
-`
-
-// Margins have to be kept in sync with region viewer width, which is currently based on screen size
-export const TrackPageSection = styled.section`
-  margin: 0 160px 1em 100px;
-
-  @media (max-width: 900px) {
-    margin: 0 15px 1em;
-  }
-`

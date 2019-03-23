@@ -7,12 +7,13 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { RegionViewer } from '@broad/region-viewer'
 import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
-import { screenSize, SectionHeading, TrackPage, TrackPageSection } from '@broad/ui'
+import { screenSize, SectionHeading } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
+import { TrackPage, TrackPageSection } from '../TrackPage'
 import { ConstraintTableOrPlaceholder } from './Constraint'
 import GeneCoverageTrack from './CoverageTrack'
 import { fetchGnomadGenePage } from './fetch'
@@ -148,9 +149,10 @@ class GenePage extends Component {
     } = this.props
     const { includeUTRs, includeNonCodingTranscripts } = this.state
 
-    // Margins have to be kept in sync with styles in ui/Page.js
     const smallScreen = screenSize.width < 900
-    const regionViewerWidth = smallScreen ? screenSize.width - 130 : screenSize.width - 290
+
+    // Subtract 30px for padding on Page component
+    const regionViewerWidth = screenSize.width - 30
 
     const hasNonCodingTranscripts = gene.transcripts.some(
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
@@ -233,7 +235,7 @@ class GenePage extends Component {
             )
           )}
 
-          <ControlPanel marginLeft={100} width={regionViewerWidth}>
+          <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
             Include:
             <Legend>
               <LegendItemWrapper>

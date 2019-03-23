@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@broad/track-navigator'
-import { SegmentedControl, TrackPageSection } from '@broad/ui'
+import { SegmentedControl } from '@broad/ui'
 import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 
+import { TrackPageSection } from '../TrackPage'
 import filterVariants from './filterVariants'
 import sortVariants from './sortVariants'
 import {

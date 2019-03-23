@@ -74,7 +74,7 @@ export { List, ListItem, OrderedList } from './List'
 
 export { Modal } from './modal/Modal'
 
-export { Page, PageHeading, SectionHeading, TrackPage, TrackPageSection } from './Page'
+export { Page, PageHeading, SectionHeading } from './Page'
 
 export { Searchbox } from './Searchbox'
 
