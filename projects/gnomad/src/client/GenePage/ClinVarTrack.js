@@ -136,7 +136,7 @@ class ClinVarTrack extends PureComponent {
   // eslint-disable-next-line class-methods-use-this
   renderBinnedVariants({ scalePosition, variants, width }) {
     const height = 30
-    const nBins = 100
+    const nBins = Math.min(100, Math.floor(width / 8))
     const binWidth = width / nBins
     const binPadding = 1
     const bins = [...Array(nBins)].map(() => ({ lof: 0, missense: 0, synonymous: 0, other: 0 }))
