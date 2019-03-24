@@ -200,7 +200,7 @@ class GenePage extends Component {
             <GeneInfo currentTranscript={transcriptId || gene.canonical_transcript} gene={gene} />
             <div>
               <SectionHeading>
-                Gene Constraint <QuestionMark display="inline" topic="gene-constraint" />
+                Gene Constraint <QuestionMark topic="gene-constraint" />
               </SectionHeading>
               <ConstraintTableOrPlaceholder
                 datasetId={datasetId}

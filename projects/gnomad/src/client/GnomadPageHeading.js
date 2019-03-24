@@ -57,7 +57,9 @@ const GnomadPageHeading = ({ children, datasetOptions, selectedDataset }) => (
     <PageControlsWrapper>
       <Label>Dataset</Label>
       <DatasetSelector datasetOptions={datasetOptions} selectedDataset={selectedDataset} />
-      <QuestionMark topic="dataset-selection" display="inline" />
+      <span>
+        <QuestionMark topic="dataset-selection" />
+      </span>
     </PageControlsWrapper>
   </PageHeadingWrapper>
 )

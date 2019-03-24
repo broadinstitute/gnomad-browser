@@ -1,80 +1,48 @@
-import React from 'react'
+import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
+
 import { actions as helpActions } from './redux'
 
-const QuestionMarkContainer = styled.span`
-  display: ${props => props.display};
-  align-items: center;
-  font-size: ${props => props.size};
-  padding-left: ${props => props.padding};
-  padding-right: ${props => props.padding};
+const Button = styled.button.attrs({ type: 'button' })`
+  display: inline-flex;
+  align-self: center;
+  outline: none;
+  padding: 0 3px;
+  border: none;
+  background: none;
   cursor: pointer;
-  color: rgb(66, 66, 66);
 
-  @media print {
-    display: none;
+  svg {
+    position: relative;
+    top: 0.13em;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+  }
+
+  &:focus svg {
+    box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
   }
 `
 
-const QuestionMark = ({
-  topic,
-  setActiveHelpTopic,
-  toggleHelpWindow,
-  display,
-  size,
-  padding,
-}) => {
-  return (
-    <QuestionMarkContainer
-      onClick={(event) => {
-        event.preventDefault()
-        setActiveHelpTopic(topic)
-        toggleHelpWindow()
-      }}
-      display={display}
-      size={size}
-      padding={padding}
-    >
-      <i className="fa fa-question-circle" aria-hidden="true" />
-    </QuestionMarkContainer>
-  )
-}
-QuestionMark.propTypes = {
-  topic: PropTypes.string,
-  setActiveTopic: PropTypes.func,
-  toggleHelpWindow: PropTypes.func,
-  size: PropTypes.string,
-  padding: PropTypes.string,
-  display: PropTypes.string,
-}
-QuestionMark.defaultProps = {
-  topic: '',
-  setActiveTopic: () => {},
-  toggleHelpWindow: () => {},
-  display: 'flex',
-  size: '14px',
-  padding: '10px',
-}
-export default connect(null, helpActions)(QuestionMark)
+export const QuestionMark = connect(
+  null,
+  helpActions
+)(({ topic, setActiveHelpTopic, style, toggleHelpWindow }) => (
+  <Button
+    onClick={() => {
+      setActiveHelpTopic(topic)
+      toggleHelpWindow()
+    }}
+    style={style}
+  >
+    <QuestionMarkIcon />
+  </Button>
+))
 
-export const HelpLink = connect(null, helpActions)(({
-  topic,
-  children,
-  setActiveHelpTopic,
-  toggleHelpWindow,
-}) => {
-  return (
-    <a
-      href="#"
-      onClick={(event) => {
-        event.preventDefault()
-        setActiveHelpTopic(topic)
-        toggleHelpWindow()
-      }}
-    >
-      {children}
-    </a>
-  )
-})
+QuestionMark.propTypes = {
+  topic: PropTypes.string.isRequired,
+}

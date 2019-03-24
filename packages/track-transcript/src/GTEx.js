@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { withTooltip } from '@broad/ui'
+import { ExternalLink, withTooltip } from '@broad/ui'
 
 import { tissueLabels } from './tissueLabels'
 
@@ -18,7 +18,7 @@ const GtexTitleWrapper = styled.div`
 `
 
 
-const GtexTitleText = styled.a`
+const GtexTitleText = styled.span`
   color: #428bca;
   font-size: 13px;
   margin-bottom: 5px;
@@ -114,13 +114,11 @@ export function TissueIsoformExpressionPlotHeader({
   return (
     <Wrapper width={width}>
       <GtexTitleWrapper>
-        <GtexTitleText
-          href={`http://www.gtexportal.org/home/gene/${currentGene}`}
-          target="_blank"
-        >
-          {/* Tissue-specific isoform expression */}
-          Isoform expression
-          <QuestionMark topic={'gtex'} display={'inline'} />
+        <GtexTitleText>
+          <ExternalLink href={`http://www.gtexportal.org/home/gene/${currentGene}`}>
+            Isoform expression
+          </ExternalLink>
+          <QuestionMark topic="gtex" />
         </GtexTitleText>
 
         <GtexTissueSelect

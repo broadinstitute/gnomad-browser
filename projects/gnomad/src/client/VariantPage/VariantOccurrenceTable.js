@@ -159,7 +159,7 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
         <tr>
           <th scope="row">
             <NoWrap>
-              Popmax Filtering AF <QuestionMark display="inline" padding="0" topic="faf" />
+              Popmax Filtering AF <QuestionMark topic="faf" />
             </NoWrap>
             <br />
             (95% confidence)

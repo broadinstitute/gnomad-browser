@@ -89,7 +89,7 @@ const VariantFilterControls = ({ onChange, value }) => {
               onChange({ ...value, includeFilteredVariants })
             }}
           />
-          <QuestionMark topic="include-filtered-variants" display="inline" />
+          <QuestionMark topic="include-filtered-variants" />
         </span>
         <Checkbox
           checked={value.includeSNPs}
