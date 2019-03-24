@@ -82,14 +82,19 @@ RegionTooltip.propTypes = {
   }).isRequired,
 }
 
+const SidePanel = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const RegionalConstraintTrack = ({ height, regions }) => (
   <Wrapper>
     <Track
       renderLeftPanel={() => (
-        <span>
-          Regional missense constraint
-          <QuestionMark topic="regional-constraint" display="inline" />
-        </span>
+        <SidePanel>
+          <span>Regional missense constraint</span>
+          <QuestionMark topic="regional-constraint" />
+        </SidePanel>
       )}
     >
       {({ scalePosition, width }) => (

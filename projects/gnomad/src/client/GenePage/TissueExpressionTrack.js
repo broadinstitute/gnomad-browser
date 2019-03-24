@@ -174,7 +174,9 @@ class TissueExpressionTrack extends Component {
         <InnerWrapper>
           <Track
             renderLeftPanel={() => (
-              <TissueName style={{ fontSize: '12px', justifyContent: 'space-between' }}>
+              <TissueName
+                style={{ fontSize: '12px', justifyContent: 'space-between', marginRight: 0 }}
+              >
                 <Button
                   disabled={!isExpressed}
                   style={{ width: '70px', paddingLeft: '0.25em', paddingRight: '0.25em' }}
@@ -182,8 +184,8 @@ class TissueExpressionTrack extends Component {
                 >
                   {isExpanded ? 'Hide' : 'Show'} tissues
                 </Button>
-                <span style={{ marginRight: '0.5em', textAlign: 'right' }}>Mean pext</span>
-                <QuestionMark display="inline" topic="pext" padding="0" />
+                <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
+                <QuestionMark topic="pext" style={{ display: 'inline' }} />
               </TissueName>
             )}
             renderRightPanel={renderProportionAxis}

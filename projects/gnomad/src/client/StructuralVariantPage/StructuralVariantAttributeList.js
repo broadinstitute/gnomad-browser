@@ -107,7 +107,7 @@ const ComplexTypeHelpButton = ({ complexType }) => {
     return null
   }
 
-  return <QuestionMark display="inline" topic={`SV_docs/${helpTopic}`} />
+  return <QuestionMark topic={`SV_docs/${helpTopic}`} />
 }
 
 ComplexTypeHelpButton.propTypes = {
@@ -156,8 +156,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
         </AttributeList.Item>
       )}
     <AttributeList.Item label="Class">
-      {svTypeLabels[variant.type]}{' '}
-      <QuestionMark display="inline" topic={`SV_docs/sv-class_${variant.type}`} />
+      {svTypeLabels[variant.type]} <QuestionMark topic={`SV_docs/sv-class_${variant.type}`} />
     </AttributeList.Item>
     {variant.type === 'CPX' && (
       <React.Fragment>
