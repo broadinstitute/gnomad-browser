@@ -144,7 +144,9 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             <Section>
               <SectionHeading>Annotations</SectionHeading>
               <p>
-                This variant falls on {numTranscripts} transcript(s) in {numGenes} gene(s).
+                This variant falls on {numTranscripts} transcript
+                {numTranscripts !== 1 && 's'} in {numGenes} gene
+                {numGenes !== 1 && 's'}.
               </p>
               <TranscriptConsequenceList
                 sortedTranscriptConsequences={variant.sortedTranscriptConsequences}
