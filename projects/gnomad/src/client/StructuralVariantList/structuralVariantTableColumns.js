@@ -1,9 +1,9 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
-import styled from 'styled-components'
 
 import Link from '../Link'
 import DatasetIcon from '../VariantList/DatasetIcon'
+import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import {
   svConsequenceCategories,
   svConsequenceCategoryColors,
@@ -22,22 +22,6 @@ const renderExponentialNumber = number => {
   return truncated.toExponential()
 }
 
-const ColorKey = styled.span`
-  display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  margin-right: 0.5em;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 0.75em;
-    height: 0.75em;
-    border-radius: 0.375em;
-    background: ${props => props.color};
-  }
-`
-
 const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
   const { consequence } = variant
   let renderedConsequence = ''
@@ -50,7 +34,7 @@ const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
     <span className="grid-cell-content">
       {consequence &&
         colorKey === 'consequence' && (
-          <ColorKey
+          <VariantCategoryMarker
             color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
           />
         )}
@@ -61,7 +45,9 @@ const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
 
 const renderType = (variant, key, { colorKey, highlightWords }) => (
   <span className="grid-cell-content">
-    {colorKey === 'type' && <ColorKey color={svTypeColors[variant.type] || svTypeColors.OTH} />}
+    {colorKey === 'type' && (
+      <VariantCategoryMarker color={svTypeColors[variant.type] || svTypeColors.OTH} />
+    )}
     <Highlighter
       searchWords={highlightWords}
       textToHighlight={svTypeLabels[variant.type] || variant.type}
