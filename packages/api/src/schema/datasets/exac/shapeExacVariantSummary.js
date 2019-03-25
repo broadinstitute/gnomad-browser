@@ -36,6 +36,12 @@ const shapeExacVariantSummary = context => {
     // eslint-disable-next-line no-underscore-dangle
     const variantData = esHit._source
     const transcriptConsequence = esHit.fields.csq[0]
+
+    const { filters } = variantData
+    if (variantData.AC_Adj === 0 && !filters.includes('AC_Adj0_Filter')) {
+      filters.push('AC_Adj0_Filter')
+    }
+
     return {
       gqlType: 'VariantSummary',
       // variant interface fields
@@ -54,7 +60,7 @@ const shapeExacVariantSummary = context => {
       consequence: transcriptConsequence.major_consequence,
       consequence_in_canonical_transcript: !!transcriptConsequence.canonical,
       datasets: ['exacVariants'],
-      filters: variantData.filters,
+      filters,
       flags: getFlags(variantData, transcriptConsequence),
       hgvs: transcriptConsequence.hgvs,
       hgvsc: transcriptConsequence.hgvsc ? transcriptConsequence.hgvsc.split(':')[1] : null,
