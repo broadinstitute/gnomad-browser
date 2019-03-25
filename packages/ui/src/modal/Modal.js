@@ -27,6 +27,7 @@ function getId() {
 export class Modal extends Component {
   static propTypes = {
     children: PropTypes.node,
+    footer: PropTypes.node,
     onRequestClose: PropTypes.func.isRequired,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     title: PropTypes.string.isRequired,
@@ -34,6 +35,7 @@ export class Modal extends Component {
 
   static defaultProps = {
     children: undefined,
+    footer: undefined,
     size: 'medium',
   }
 
@@ -44,7 +46,7 @@ export class Modal extends Component {
   }
 
   render() {
-    const { children, onRequestClose, size, title } = this.props
+    const { children, footer, onRequestClose, size, title } = this.props
 
     return (
       <AriaModal
@@ -63,9 +65,7 @@ export class Modal extends Component {
             </ModalHeaderCloseButton>
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
-          <ModalFooter>
-            <Button onClick={onRequestClose}>Ok</Button>
-          </ModalFooter>
+          <ModalFooter>{footer || <Button onClick={onRequestClose}>Ok</Button>}</ModalFooter>
         </ModalContent>
       </AriaModal>
     )
