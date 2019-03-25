@@ -106,7 +106,12 @@ Graph.defaultProps = {
   color: undefined,
 }
 
-const renderRoundedNumber = (num, precision = 1, tooltipPrecision = 3, highlightColor = null) => {
+export const renderRoundedNumber = (
+  num,
+  precision = 1,
+  tooltipPrecision = 3,
+  highlightColor = null
+) => {
   if (num === null) {
     return '—'
   }
@@ -196,7 +201,15 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <th scope="row">Synonymous</th>
               <td>{renderRoundedNumber(constraintData.exp_syn)}</td>
               <td>{constraintData.obs_syn === null ? '—' : constraintData.obs_syn}</td>
-              <td>Z = {renderRoundedNumber(constraintData.syn_z, 2, 3)}</td>
+              <td>
+                Z ={' '}
+                {renderRoundedNumber(
+                  constraintData.syn_z,
+                  2,
+                  3,
+                  constraintData.syn_z > 3.71 && '#ff2600'
+                )}
+              </td>
               {renderOECell(constraintData, 'syn')}
               {renderOEGraphCell(constraintData, 'syn')}
             </tr>
@@ -204,7 +217,15 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <th scope="row">Missense</th>
               <td>{renderRoundedNumber(constraintData.exp_mis)}</td>
               <td>{constraintData.obs_mis === null ? '—' : constraintData.obs_mis}</td>
-              <td>Z = {renderRoundedNumber(constraintData.mis_z, 2, 3)}</td>
+              <td>
+                Z ={' '}
+                {renderRoundedNumber(
+                  constraintData.mis_z,
+                  2,
+                  3,
+                  constraintData.mis_z > 3.09 && '#ff9300'
+                )}
+              </td>
               {renderOECell(constraintData, 'mis')}
               {renderOEGraphCell(constraintData, 'mis')}
             </tr>

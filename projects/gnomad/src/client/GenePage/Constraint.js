@@ -3,7 +3,7 @@ import React from 'react'
 
 import { BaseTable } from '@broad/ui'
 
-import GnomadConstraintTable from './GnomadConstraintTable'
+import GnomadConstraintTable, { renderRoundedNumber } from './GnomadConstraintTable'
 
 const ConstraintTable = ({ constraintData }) => (
   <BaseTable>
@@ -18,21 +18,40 @@ const ConstraintTable = ({ constraintData }) => (
     <tbody>
       <tr>
         <th scope="row">Synonymous</th>
-        <td>{constraintData.exp_syn.toFixed(1)}</td>
+        <td>{renderRoundedNumber(constraintData.exp_syn)}</td>
         <td>{constraintData.n_syn}</td>
-        <td>Z = {constraintData.syn_z.toFixed(2)}</td>
+        <td>
+          Z ={' '}
+          {renderRoundedNumber(
+            constraintData.syn_z,
+            2,
+            3,
+            constraintData.syn_z > 3.71 && '#ff2600'
+          )}
+        </td>
       </tr>
       <tr>
         <th scope="row">Missense</th>
-        <td>{constraintData.exp_mis.toFixed(1)}</td>
+        <td>{renderRoundedNumber(constraintData.exp_mis)}</td>
         <td>{constraintData.n_mis}</td>
-        <td>Z = {constraintData.mis_z.toFixed(2)}</td>
+        <td>
+          Z ={' '}
+          {renderRoundedNumber(
+            constraintData.mis_z,
+            2,
+            3,
+            constraintData.mis_z > 3.09 && '#ff9300'
+          )}
+        </td>
       </tr>
       <tr>
         <th scope="row">LoF</th>
-        <td>{constraintData.exp_lof.toFixed(1)}</td>
+        <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
         <td>{constraintData.n_lof}</td>
-        <td>pLI = {constraintData.pLI.toFixed(2)}</td>
+        <td>
+          pLI ={' '}
+          {renderRoundedNumber(constraintData.pLI, 2, 3, constraintData.pLI > 0.9 && '#ff9300')}
+        </td>
       </tr>
     </tbody>
   </BaseTable>
