@@ -141,10 +141,8 @@ export const lookupGeneByName = async (db, geneName) => {
   return gene
 }
 
-export const lookupGenesByInterval = ({ mongoDatabase, xstart, xstop }) =>
-  mongoDatabase.collection('genes').find({
-    '$or': [
-      { 'xstart': { '$gte': xstart, '$lte': xstop } },
-      { 'xstop': { '$gte': xstart, '$lte': xstop } },
-    ]
-}).toArray()
+export const fetchGenesByInterval = (ctx, { xstart, xstop }) =>
+  ctx.database.gnomad
+    .collection('genes')
+    .find({ $and: [{ xstart: { $lte: xstop } }, { xstop: { $gte: xstart } }] })
+    .toArray()
