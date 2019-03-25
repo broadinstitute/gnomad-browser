@@ -138,7 +138,7 @@ export default function createGeneReducer(config) {
     },
   }
 
-  function genes (state = new State(), action: Object): State {
+  function genes (state = new State(), action) {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
