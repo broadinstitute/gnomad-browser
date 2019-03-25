@@ -10,8 +10,8 @@ const ConstraintTable = ({ constraintData }) => (
     <thead>
       <tr>
         <th scope="col">Category</th>
-        <th scope="col">Exp. no. variants</th>
-        <th scope="col">Obs. no. variants</th>
+        <th scope="col">Exp. no. SNVs</th>
+        <th scope="col">Obs. no. SNVs</th>
         <th scope="col">Constraint metric</th>
       </tr>
     </thead>
@@ -57,8 +57,8 @@ const ConstraintTablePlaceholder = ({ message }) => (
     <thead>
       <tr>
         <th scope="col">Category</th>
-        <th scope="col">Exp. no. variants</th>
-        <th scope="col">Obs. no. variants</th>
+        <th scope="col">Exp. no. SNVs</th>
+        <th scope="col">Obs. no. SNVs</th>
         <th scope="col">Constraint metric</th>
       </tr>
     </thead>
