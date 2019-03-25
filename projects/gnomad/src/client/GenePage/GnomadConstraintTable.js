@@ -164,8 +164,8 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <thead>
             <tr>
               <th scope="col">Category</th>
-              <th scope="col">Exp. no. variants</th>
-              <th scope="col">Obs. no. variants</th>
+              <th scope="col">Exp. no. SNVs</th>
+              <th scope="col">Obs. no. SNVs</th>
               <th colSpan={2} scope="col">
                 Constraint metrics
               </th>
