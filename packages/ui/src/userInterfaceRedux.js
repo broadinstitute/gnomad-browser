@@ -22,7 +22,7 @@ export default function createUserInterfaceReducer () {
       height: typeof window === 'object' ? window.innerHeight : null,
     }
   })
-  function reducer (state = new State(), action: Object): State {
+  function reducer (state = new State(), action) {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)

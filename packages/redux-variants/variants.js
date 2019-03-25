@@ -240,7 +240,7 @@ export default function createVariantReducer({
     },
   }
 
-  return function variants (state = new State(), action: Object): State {
+  return function variants (state = new State(), action) {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
