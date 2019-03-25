@@ -35,7 +35,6 @@ const SettingsWrapper = styled.div`
 const CheckboxWrapper = styled.span`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 
   @media (max-width: 700px) {
     margin: 0.5em;
@@ -92,11 +91,11 @@ const VariantFilterControls = ({ onChange, value }) => {
           <QuestionMark topic="include-filtered-variants" />
         </span>
         <Checkbox
-          checked={value.includeSNPs}
+          checked={value.includeSNVs}
           id="snpfilter"
-          label="SNPs"
-          onChange={includeSNPs => {
-            onChange({ ...value, includeSNPs })
+          label="SNVs"
+          onChange={includeSNVs => {
+            onChange({ ...value, includeSNVs })
           }}
         />
         <Checkbox
@@ -143,7 +142,7 @@ VariantFilterControls.propTypes = {
       other: PropTypes.bool.isRequired,
     }).isRequired,
     includeFilteredVariants: PropTypes.bool.isRequired,
-    includeSNPs: PropTypes.bool.isRequired,
+    includeSNVs: PropTypes.bool.isRequired,
     includeIndels: PropTypes.bool.isRequired,
     searchText: PropTypes.string.isRequired,
   }).isRequired,
