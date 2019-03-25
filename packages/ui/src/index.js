@@ -6,8 +6,6 @@ export {
 
 export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
 
-export { ClassicExacButton } from './classicExac/button'
-
 export { CategoryFilterControl } from './CategoryFilterControl'
 
 export { ConsequenceCategoriesControl } from './ConsequenceCategoriesControl'
