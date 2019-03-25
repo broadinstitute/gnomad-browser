@@ -5,6 +5,7 @@ import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/u
 
 import Link from '../Link'
 import DatasetIcon from './DatasetIcon'
+import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
 
 const categoryColors = {
@@ -90,9 +91,10 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
       heading: 'Annotation',
       grow: 0,
       isSortable: true,
-      minWidth: 130,
+      minWidth: 140,
       render: (row, key, { highlightWords }) => (
-        <span className="grid-cell-content" style={{ color: getConsequenceColor(row[key]) }}>
+        <span className="grid-cell-content">
+          <VariantCategoryMarker color={getConsequenceColor(row[key])} />
           <Highlighter
             searchWords={highlightWords}
             textToHighlight={getConsequenceName(row[key])}
