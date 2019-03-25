@@ -1,10 +1,20 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
+
+const ConstraintHighlight = styled.span`
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: ${props => props.highlightColor};
+  color: #000;
+`
 
 const Table = BaseTable.extend`
   @media (max-width: 600px) {
@@ -48,21 +58,7 @@ const constraintQuery = `
   }
 `
 
-const pointColor = obsExp => {
-  if (obsExp > 0.6) {
-    return '#e2e2e2'
-  }
-  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
-  if (obsExp > 0.4) {
-    return '#ffeda0'
-  }
-  if (obsExp > 0.2) {
-    return '#feb24c'
-  }
-  return '#f03b20'
-}
-
-const Graph = ({ value, lower, upper }) => {
+const Graph = ({ value, lower, upper, color }) => {
   const width = 60
   const xPadding = 13
 
@@ -82,7 +78,14 @@ const Graph = ({ value, lower, upper }) => {
       {value >= 1 ? (
         <path d="M 47,14 52,18 47,22 z" fill="#e2e2e2" strokeWidth={1} stroke="#000" />
       ) : (
-        <circle cx={x(value)} cy={y} r={3} strokeWidth={1} stroke="#000" fill={pointColor(value)} />
+        <circle
+          cx={x(value)}
+          cy={y}
+          r={3}
+          strokeWidth={1}
+          stroke="#000"
+          fill={color || '#e2e2e2'}
+        />
       )}
 
       <text x={width} y={26} fontSize="12px" textAnchor="end">
@@ -96,35 +99,45 @@ Graph.propTypes = {
   value: PropTypes.number.isRequired,
   lower: PropTypes.number.isRequired,
   upper: PropTypes.number.isRequired,
+  color: PropTypes.string,
 }
 
-const renderRoundedNumber = (num, precision = 1, tooltipPrecision = 3) => {
+Graph.defaultProps = {
+  color: undefined,
+}
+
+const renderRoundedNumber = (num, precision = 1, tooltipPrecision = 3, highlightColor = null) => {
   if (num === null) {
     return '—'
   }
 
+  const roundedNumber = Number(num.toFixed(precision)).toString()
   return (
     <TooltipAnchor childRefPropName="innerRef" tooltip={num.toFixed(tooltipPrecision)}>
-      <TooltipHint>{Number(num.toFixed(precision)).toString()}</TooltipHint>
+      {highlightColor ? (
+        <ConstraintHighlight highlightColor={highlightColor}>{roundedNumber}</ConstraintHighlight>
+      ) : (
+        <TooltipHint>{roundedNumber}</TooltipHint>
+      )}
     </TooltipAnchor>
   )
 }
 
-const renderOECell = (constraintData, category, style) => {
+const renderOECell = (constraintData, category, highlightColor) => {
   const value = constraintData[`oe_${category}`]
   const lower = constraintData[`oe_${category}_lower`]
   const upper = constraintData[`oe_${category}_upper`]
 
   return (
     <td>
-      <span style={style}>o/e = {renderRoundedNumber(value, 2, 3)}</span>
+      o/e = {renderRoundedNumber(value, 2, 3, highlightColor)}
       <br />
       {lower !== null && upper !== null && `(${lower.toFixed(2)} - ${upper.toFixed(2)})`}
     </td>
   )
 }
 
-const renderOEGraphCell = (constraintData, category) => {
+const renderOEGraphCell = (constraintData, category, color) => {
   const value = constraintData[`oe_${category}`]
   const lower = constraintData[`oe_${category}_lower`]
   const upper = constraintData[`oe_${category}_upper`]
@@ -133,7 +146,7 @@ const renderOEGraphCell = (constraintData, category) => {
     <td>
       {value !== null &&
         lower !== null &&
-        upper !== null && <Graph lower={lower} upper={upper} value={value} />}
+        upper !== null && <Graph lower={lower} upper={upper} value={value} color={color} />}
     </td>
   )
 }
@@ -154,10 +167,16 @@ const GnomadConstraintTable = ({ transcriptId }) => (
 
       const constraintData = data.transcript.gnomad_constraint
 
-      const lofMetricStyle =
-        constraintData.oe_lof_upper !== null && constraintData.oe_lof_upper < 0.35
-          ? { color: '#ff583f' }
-          : {}
+      let lofHighlightColor = null
+      if (constraintData.oe_lof_upper !== null) {
+        if (constraintData.oe_lof_upper < 0.33) {
+          lofHighlightColor = '#ff2600'
+        } else if (constraintData.oe_lof_upper < 0.66) {
+          lofHighlightColor = '#ff9300'
+        } else if (constraintData.oe_lof_upper < 1) {
+          lofHighlightColor = '#ffc000'
+        }
+      }
 
       return (
         <Table>
@@ -194,8 +213,8 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
               <td>{constraintData.obs_lof === null ? '—' : constraintData.obs_lof}</td>
               <td>pLI = {renderRoundedNumber(constraintData.pLI, 2, 3)}</td>
-              {renderOECell(constraintData, 'lof', lofMetricStyle)}
-              {renderOEGraphCell(constraintData, 'lof')}
+              {renderOECell(constraintData, 'lof', lofHighlightColor)}
+              {renderOEGraphCell(constraintData, 'lof', lofHighlightColor)}
             </tr>
           </tbody>
         </Table>
