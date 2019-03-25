@@ -20,7 +20,10 @@ const NavigationMenuWrapper = styled.ul`
 `
 
 const TopLevelNavigationLink = styled.a`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
   padding: 0.375em 0.25em;
   color: #000;
   outline: none;
@@ -364,6 +367,10 @@ class NavigationMenu extends Component {
                           data-item={childItem.id}
                           to={childItem.url}
                           onBlur={this.onBlur}
+                          onClick={() => {
+                            this.setState({ expandedItem: null })
+                            this.focusItem(item.id)
+                          }}
                           onKeyDown={this.onKeyDownSubMenuItem}
                         >
                           {childItem.label}
