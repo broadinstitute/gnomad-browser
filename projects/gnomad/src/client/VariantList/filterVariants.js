@@ -40,10 +40,10 @@ const filterVariants = (variants, filter) => {
     const refLength = splits[2].length
     const altLength = splits[3].length
 
-    const isSnp = refLength === 1 && altLength === 1
+    const isSNV = refLength === 1 && altLength === 1
     const isIndel = refLength !== altLength
 
-    return (filter.includeSNPs && isSnp) || (filter.includeIndels && isIndel)
+    return (filter.includeSNVs && isSNV) || (filter.includeIndels && isIndel)
   })
 
   return filteredVariants

@@ -40,7 +40,7 @@ class VariantsInRegion extends Component {
         other: true,
       },
       includeFilteredVariants: false,
-      includeSNPs: true,
+      includeSNVs: true,
       includeIndels: true,
       searchText: '',
     }
