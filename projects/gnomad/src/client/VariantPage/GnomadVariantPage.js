@@ -160,6 +160,11 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <ResponsiveSection>
               <SectionHeading>Age Distribution</SectionHeading>
+              {datasetId !== 'gnomad_r2_1' && (
+                <p>
+                  Age distribution is based on the full gnomAD dataset, not the selected subset.
+                </p>
+              )}
               <GnomadAgeDistribution variant={variant} />
             </ResponsiveSection>
             <ResponsiveSection>
