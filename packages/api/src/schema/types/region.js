@@ -14,7 +14,7 @@ import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
 
 import coverageType, { fetchCoverageByRegion } from './coverage'
-import geneType, { lookupGenesByInterval } from './gene'
+import geneType, { fetchGenesByInterval } from './gene'
 import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
@@ -33,11 +33,11 @@ const regionType = new GraphQLObjectType({
     regionSize: { type: GraphQLInt },
     genes: {
       type: new GraphQLList(geneType),
-      resolve: (obj, args, ctx) => lookupGenesByInterval({
-        mongoDatabase: ctx.database.gnomad,
-        xstart: obj.xstart,
-        xstop: obj.xstop,
-      })
+      resolve: (obj, args, ctx) =>
+        fetchGenesByInterval(ctx, {
+          xstart: obj.xstart,
+          xstop: obj.xstop,
+        }),
     },
     exome_coverage: {
       type: new GraphQLList(coverageType),
