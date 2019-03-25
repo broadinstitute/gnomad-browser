@@ -9,6 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalHeaderCloseButton,
+  ModalTitle,
   underlayStyle,
 } from './modalStyles'
 
@@ -59,7 +60,7 @@ export class Modal extends Component {
       >
         <ModalContent size={size}>
           <ModalHeader>
-            <h2 id={this.withIdPrefix('title')}>{title}</h2>
+            <ModalTitle id={this.withIdPrefix('title')}>{title}</ModalTitle>
             <ModalHeaderCloseButton aria-label="Close" onClick={onRequestClose} type="button">
               <span aria-hidden="true">&times;</span>
             </ModalHeaderCloseButton>

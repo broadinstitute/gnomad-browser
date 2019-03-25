@@ -48,6 +48,10 @@ export const ModalHeader = styled.header`
   border-bottom: 1px solid #e9ecef;
 `
 
+export const ModalTitle = styled.h2`
+  margin: 0;
+`
+
 export const ModalHeaderCloseButton = styled.button`
   padding: 1rem;
   border: none;
