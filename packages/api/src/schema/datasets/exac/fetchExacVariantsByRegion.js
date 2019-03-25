@@ -27,7 +27,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
         csq: {
           script: {
             lang: 'painless',
-            inline: 'params._source.sortedTranscriptConsequences?.get(0)',
+            inline: 'params._source.sortedTranscriptConsequences.stream().findFirst().orElse(null)',
           },
         },
       },
