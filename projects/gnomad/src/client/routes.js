@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader/root'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Help, HelpButton } from '@broad/help'
+import { HelpButton, HelpModal } from '@broad/help'
 import { normalizeRegionId, normalizeVariantId } from '@broad/utilities'
 
 import AboutPage from './AboutPage'
@@ -131,7 +131,7 @@ const App = () => (
         <Route component={PageNotFoundPage} />
       </Switch>
     </MainPanel>
-    <Help index="gnomad_help" />
+    <HelpModal />
     <HelpButton />
   </div>
 )
