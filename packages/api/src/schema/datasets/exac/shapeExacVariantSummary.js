@@ -35,7 +35,7 @@ const shapeExacVariantSummary = context => {
   return esHit => {
     // eslint-disable-next-line no-underscore-dangle
     const variantData = esHit._source
-    const transcriptConsequence = esHit.fields.csq[0]
+    const transcriptConsequence = esHit.fields.csq[0] || {}
 
     const { filters } = variantData
     if (variantData.AC_Adj === 0 && !filters.includes('AC_Adj0_Filter')) {

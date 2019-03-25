@@ -40,7 +40,8 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
             csq: {
               script: {
                 lang: 'painless',
-                inline: 'params._source.sortedTranscriptConsequences?.get(0)',
+                inline:
+                  'params._source.sortedTranscriptConsequences.stream().findFirst().orElse(null)',
               },
             },
           },
