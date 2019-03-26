@@ -46,8 +46,17 @@ export class IGVBrowser extends Component {
       this.browser = browser
 
       const resetButton = document.createElement('i')
-      resetButton.className = 'igv-app-icon fa fa-mail-reply'
-      resetButton.style.margin = '0 10px'
+      resetButton.className = 'igv-app-icon'
+      resetButton.innerText = '⟲'
+      resetButton.title = 'Reset'
+      resetButton.style.cssText = `
+        position: relative;
+        top: -1px;
+        font-style: normal;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0 10px;
+      `
       resetButton.addEventListener('click', () => {
         browser.search(config.locus)
       })
