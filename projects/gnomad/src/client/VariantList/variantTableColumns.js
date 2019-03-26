@@ -78,12 +78,11 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
       grow: 1,
       isSortable: true,
       minWidth: 160,
-      render: (row, key, { highlightWords }) => (
-        <Highlighter
-          className="grid-cell-content"
-          searchWords={highlightWords}
-          textToHighlight={row[key] || ''}
-        />
+      render: (variant, key, { highlightWords }) => (
+        <span className="grid-cell-content">
+          <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
+          {variant.isCanon === false && ' †'}
+        </span>
       ),
     },
     {
