@@ -105,13 +105,17 @@ class NavBar extends Component {
     this.setState(state => ({ ...state, isExpanded: !state.isExpanded }))
   }
 
+  closeMenu = () => {
+    this.setState({ isExpanded: false })
+  }
+
   render() {
     const { isExpanded } = this.state
     return (
       <OuterWrapper>
         <NavBarWrapper>
           <LogoWrapper>
-            <Link to="/">
+            <Link to="/" onClick={this.closeMenu}>
               <Logo>gnomAD browser</Logo>
             </Link>
             <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
@@ -119,16 +123,24 @@ class NavBar extends Component {
           <Searchbox id="navbar-search" width="320px" />
           <Menu isExpanded={isExpanded}>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/about" onClick={this.closeMenu}>
+                About
+              </Link>
             </li>
             <li>
-              <Link to="/downloads">Downloads</Link>
+              <Link to="/downloads" onClick={this.closeMenu}>
+                Downloads
+              </Link>
             </li>
             <li>
-              <Link to="/terms">Terms</Link>
+              <Link to="/terms" onClick={this.closeMenu}>
+                Terms
+              </Link>
             </li>
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link to="/contact" onClick={this.closeMenu}>
+                Contact
+              </Link>
             </li>
             <li>
               <a href="https://macarthurlab.org/jobs/" rel="noopener noreferrer" target="_blank">
@@ -136,7 +148,9 @@ class NavBar extends Component {
               </a>
             </li>
             <li>
-              <Link to="/faq">FAQ</Link>
+              <Link to="/faq" onClick={this.closeMenuIfOpen}>
+                FAQ
+              </Link>
             </li>
           </Menu>
         </NavBarWrapper>
