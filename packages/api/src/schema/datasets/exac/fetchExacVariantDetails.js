@@ -28,6 +28,11 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
   // eslint-disable-next-line no-underscore-dangle
   const variantData = response.hits.hits[0]._source
 
+  const { filters } = variantData
+  if (variantData.AC_Adj === 0 && !filters.includes('AC_Adj0_Filter')) {
+    filters.push('AC_Adj0_Filter')
+  }
+
   return {
     gqlType: 'ExacVariantDetails',
     // variant interface fields
@@ -48,7 +53,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
       raw: variantData.AN,
       adj: variantData.AN_Adj,
     },
-    filters: variantData.filters,
+    filters,
     flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
     populations: EXAC_POPULATION_IDS.map(popId => ({
       id: popId,
