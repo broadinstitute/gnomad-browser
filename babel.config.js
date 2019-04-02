@@ -10,6 +10,7 @@ module.exports = {
           browsers: ['last 2 versions', 'ie >= 10'],
         },
         useBuiltIns: 'entry',
+        corejs: 3,
       },
     ],
   ],
@@ -28,4 +29,9 @@ module.exports = {
       },
     ],
   ],
+  env: {
+    test: {
+      plugins: ['@babel/plugin-transform-runtime'],
+    },
+  },
 }
