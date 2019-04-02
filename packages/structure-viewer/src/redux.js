@@ -201,7 +201,7 @@ const actionHandlers = {
   }
 }
 
-export default function reducer (state = new State(), action: Object): State {
+export default function reducer (state = new State(), action) {
   const { type } = action
   if (type in actionHandlers) {
     return actionHandlers[type](state, action)

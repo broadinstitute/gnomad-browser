@@ -11,9 +11,9 @@
     "@broad/region-viewer": "*",
     "@broad/table": "*",
     "@broad/track-variant": "*",
-    "d3-scale": "^1.0.6",
+    "d3-scale": "^2.2.2",
     "prop-types": "^15.7.2",
-    "react-cursor-position": "^2.1.0"
+    "react-cursor-position": "^3.0.3"
   },
   "peerDependencies": {
     "react": "^16.8.2",

@@ -14,8 +14,8 @@
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
     "prop-types": "^15.7.2",
-    "react-highlight-words": "^0.8.0",
-    "react-redux": "^6.0.0",
+    "react-highlight-words": "^0.16.0",
+    "react-redux": "^6.0.1",
     "react-sizeme": "^2.5.2",
     "react-virtualized": "^9.8.0"
   },

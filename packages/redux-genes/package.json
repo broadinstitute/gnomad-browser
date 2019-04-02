@@ -12,12 +12,12 @@
     "styled-components": "^2.1.2"
   },
   "dependencies": {
-    "d3-array": "^1.2.0",
+    "d3-array": "^1.2.4",
     "immutable": "^4.0.0-rc.9",
     "keymirror": "^0.1.1",
-    "react-redux": "^6.0.0",
-    "redux": "3.6.0",
-    "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1"
+    "react-redux": "^6.0.1",
+    "redux": "4.0.1",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   }
 }

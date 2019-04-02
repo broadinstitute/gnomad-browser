@@ -7,15 +7,14 @@
     "lib"
   ],
   "dependencies": {
-    "@vx/axis": "^0.0.142",
-    "@vx/scale": "^0.0.140",
-    "@vx/shape": "^0.0.142",
-    "d3-array": "^1.2.0",
-    "d3-scale": "^1.0.6"
+    "@vx/axis": "^0.0.184",
+    "@vx/scale": "^0.0.182",
+    "@vx/shape": "^0.0.184",
+    "d3-array": "^1.2.4",
+    "d3-scale": "^2.2.2",
+    "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "ramda": "^0.24.1",
     "react": "^16.8.2",
     "styled-components": "^2.1.2"
   }

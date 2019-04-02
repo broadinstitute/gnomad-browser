@@ -6,23 +6,16 @@
   "files": [
     "lib"
   ],
-  "devDependencies": {
-    "ramda": "^0.24.1",
-    "dsv-loader": "^2.0.0",
-    "@broad/utilities": "0.0.1",
-    "@broad/track-transcript": "0.0.1",
-    "@broad/track-position-table": "0.0.1"
-  },
   "dependencies": {
-    "d3-array": "^1.2.0",
-    "d3-path": "^1.0.5",
-    "d3-scale": "^1.0.6",
-    "d3-shape": "^1.2.0"
+    "d3-array": "^1.2.4",
+    "d3-path": "^1.0.7",
+    "d3-scale": "^2.2.2",
+    "d3-shape": "^1.3.5",
+    "prop-types": "^15.7.2",
+    "ramda": "^0.24.1"
   },
   "peerDependencies": {
-    "prop-types": "^15.7.2",
     "react": "^16.8.2",
-    "ramda": "^0.24.1",
     "styled-components": "^2.1.2"
   }
 }

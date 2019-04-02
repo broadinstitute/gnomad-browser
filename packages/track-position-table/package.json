@@ -6,12 +6,11 @@
   "files": [
     "lib"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  },
   "peerDependencies": {
-    "@broad/track-region": "*",
-    "prop-types": "^15.7.2",
     "react": "^16.8.2",
-    "ramda": "^0.24.1",
     "styled-components": "^2.1.2"
   }
 }
