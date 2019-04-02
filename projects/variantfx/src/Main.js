@@ -1,11 +1,12 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import createGenePageStore from '@broad/gene-page/src/store/store'
 import { getCategoryFromConsequence } from '@broad/utilities'
 import { actions as userInterfaceActions } from '@broad/ui'
+
 import { variantfx } from './redux'
 import App from './routes'
+import { createVariantFXStore } from './store'
 
 const appSettings = {
   variantMatchesConsequenceCategoryFilter(variant, selectedCategories) {
@@ -23,7 +24,6 @@ const appSettings = {
       || (variant.get('Consequence') || '').toLowerCase().includes(query)
     )
   },
-  logger: true,
   docs: {
     toc: null,
     index: null,
@@ -172,7 +172,7 @@ const appSettings = {
   }
 }
 
-const store = createGenePageStore(appSettings, { variantfx })
+const store = createVariantFXStore(appSettings, { variantfx })
 
 window.addEventListener('resize', () => store.dispatch(userInterfaceActions.setScreenSize(
   window.innerHeight,

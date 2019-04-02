@@ -31,7 +31,7 @@ const State = Immutable.Record({
   uniqueGeneDiseaseDiseases: Immutable.Set(),
 })
 
-export function variantfx (state = new State(), action: Object): State {
+export function variantfx (state = new State(), action) {
   const { type } = action
   if (type in actionHandlers) {
     return actionHandlers[type](state, action)
