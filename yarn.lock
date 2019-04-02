@@ -9776,11 +9776,6 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-debounced@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/redux-debounced/-/redux-debounced-0.4.0.tgz#905557c5a4d75f259e1600a60ce934d890967f07"
-  integrity sha1-kFVXxaTXXyWeFgCmDOk02JCWfwc=
-
 redux-debounced@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/redux-debounced/-/redux-debounced-0.5.0.tgz#4dde27a3e66ea428afe78215f30a27f22714605b"
