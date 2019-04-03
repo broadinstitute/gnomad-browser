@@ -24,7 +24,10 @@ app.use(compression())
 // eslint-disable-line
 ;(async () => {
   const elastic = new elasticsearch.Client({ host: process.env.ELASTICSEARCH_URL })
-  const mongo = await MongoClient.connect(process.env.MONGO_URL)
+
+  const mongo = await MongoClient.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+  })
 
   const html = await renderTemplate({
     gaTrackingId: process.env.GA_TRACKING_ID,
@@ -40,7 +43,7 @@ app.use(compression())
         database: {
           gnomad: mongo,
           elastic,
-          mongo,
+          mongo: mongo.db(),
         },
       },
     })
