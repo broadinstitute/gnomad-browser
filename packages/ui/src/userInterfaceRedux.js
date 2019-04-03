@@ -1,28 +1,26 @@
-import Immutable from 'immutable'
-import keymirror from 'keymirror'
-
-export const types = keymirror({
-  SET_SCREEN_SIZE: null,
-})
+export const types = {
+  SET_SCREEN_SIZE: 'SET_SCREEN_SIZE',
+}
 
 export const actions = {
   setScreenSize: (height, width) => ({ type: types.SET_SCREEN_SIZE, height, width }),
 }
 
 const actionHandlers = {
-  [types.SET_SCREEN_SIZE] (state, { height, width }) {
-    return state.set('screenSize', { height, width })
+  [types.SET_SCREEN_SIZE](state, { height, width }) {
+    return { ...state, screenSize: { height, width } }
   },
 }
 
-export default function createUserInterfaceReducer () {
-  const State = Immutable.Record({
+export default function createUserInterfaceReducer() {
+  const initialState = {
     screenSize: {
-      width: typeof window === 'object' ? window.innerWidth : null,
-      height: typeof window === 'object' ? window.innerHeight : null,
-    }
-  })
-  function reducer (state = new State(), action) {
+      height: window.innerHeight,
+      width: window.innerWidth,
+    },
+  }
+
+  function reducer(state = initialState, action) {
     const { type } = action
     if (type in actionHandlers) {
       return actionHandlers[type](state, action)
