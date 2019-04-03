@@ -22,7 +22,7 @@
     "express-graphql": "^0.7.1",
     "graphql": "^14.2.1",
     "immutable": "^4.0.0-rc.9",
-    "ioredis": "^3.1.4",
+    "ioredis": "^4.9.0",
     "mongodb": "^3.2.2",
     "serve-static": "^1.13.2",
     "sqlite": "^3.0.0"

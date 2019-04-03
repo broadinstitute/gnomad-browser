@@ -28,16 +28,19 @@ app.use(cors())
       maxRetries: 1,
       requestTimeout: 45000,
     })
-    const isDev = process.env.NODE_ENV === 'development'
-    const redis = isDev ?
-      await new Redis({ host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }) :
-      await new Redis({
-        sentinels: [
-          { host: 'redis-sentinel', port: 26379 },
-          { host: 'redis-sentinel', port: 26379 },
-        ],
-        name: 'mymaster',
-      })
+
+    const redisConnectionConfig =
+      process.env.NODE_ENV === 'development'
+        ? { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }
+        : {
+            sentinels: [
+              { host: 'redis-sentinel', port: 26379 },
+              { host: 'redis-sentinel', port: 26379 },
+            ],
+            name: 'mymaster',
+          }
+
+    const redis = new Redis(redisConnectionConfig)
 
     app.use(
       [/^\/$/, /^\/api$/],
