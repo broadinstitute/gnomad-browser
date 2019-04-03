@@ -6,7 +6,7 @@
   "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8013 --hot --disable-host-check",
+    "start": "NODE_ENV=development ../../node_modules/.bin/webpack-dev-server --host 0.0.0.0 --port 8013 --hot --disable-host-check",
     "test": "babel-node --config-file=../../babel.config.js --inspect ./node_modules/.bin/tape './tests/groupings.test.js' | tspec",
     "test:data": "babel-node --config-file=../../babel.config.js tests/getTestData",
     "test:watch": "watch 'npm run test' tests -d"
@@ -24,7 +24,6 @@
     "@broad/track-variant": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
-    "babel-loader": "^8.0.4",
     "datalist-polyfill": "^1.23.3",
     "graphql-fetch": "^1.0.1",
     "immutable": "^3.8.2",
@@ -42,13 +41,8 @@
     "styled-components": "^2.1.2"
   },
   "devDependencies": {
-    "@hot-loader/react-dom": "^16.8.2",
-    "react-hot-loader": "^4.7.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.8.0",
-    "watch": "^1.0.2",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "watch": "^1.0.2"
   }
 }
