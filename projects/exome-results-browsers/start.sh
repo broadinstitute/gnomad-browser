@@ -18,7 +18,7 @@ if [[ ! -d ./browsers/${BROWSER} ]]; then
   exit 1
 fi
 
-export PATH=$PATH:$PROJECT_DIR/node_modules/.bin
+export PATH=$PATH:$PROJECT_DIR/../../node_modules/.bin
 
 export NODE_ENV="development"
 export BROWSER=$BROWSER
