@@ -21,12 +21,12 @@ app.use(cors())
       useNewUrlParser: true,
     })
 
-    const elastic = await new elasticsearch.Client({
+    const elastic = new elasticsearch.Client({
+      apiVersion: '5.5',
       host: process.env.ELASTICSEARCH_URL,
       keepAlive: false,
       maxRetries: 1,
       requestTimeout: 45000,
-      // log: 'trace',
     })
     const isDev = process.env.NODE_ENV === 'development'
     const redis = isDev ?
