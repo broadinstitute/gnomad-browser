@@ -14,8 +14,8 @@
     "dist"
   ],
   "dependencies": {
-    "compression": "^1.7.1",
-    "express": "^4.14.0"
+    "compression": "^1.7.4",
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "@broad/help": "*",
