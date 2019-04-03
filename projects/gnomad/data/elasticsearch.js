@@ -11,7 +11,11 @@ export function loadCsvToElastic({
   typeName,
   mapping,
 }) {
-  const client = new elasticsearch.Client({ host: address })
+  const client = new elasticsearch.Client({
+    apiVersion: '5.5',
+    host: address,
+  })
+
   if (dropPreviousIndex) {
     client.indices.delete({
       index: indexName,

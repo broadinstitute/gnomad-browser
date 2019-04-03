@@ -23,7 +23,10 @@ app.use(compression())
 
 // eslint-disable-line
 ;(async () => {
-  const elastic = new elasticsearch.Client({ host: process.env.ELASTICSEARCH_URL })
+  const elastic = new elasticsearch.Client({
+    apiVersion: '5.5',
+    host: process.env.ELASTICSEARCH_URL,
+  })
 
   const mongo = await MongoClient.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
