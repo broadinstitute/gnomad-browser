@@ -12,11 +12,15 @@ import gnomadSchema from './schema'
 
 const app = express()
 app.use(compression())
-app.use(cors());
+app.use(cors())
 
-(async () => {
+// eslint-disable-line prettier/prettier
+;(async () => {
   try {
-    const gnomad = await MongoClient.connect(process.env.GNOMAD_MONGO_URL)
+    const mongoClient = await MongoClient.connect(process.env.GNOMAD_MONGO_URL, {
+      useNewUrlParser: true,
+    })
+
     const elastic = await new elasticsearch.Client({
       host: process.env.ELASTICSEARCH_URL,
       keepAlive: false,
@@ -34,17 +38,21 @@ app.use(cors());
         ],
         name: 'mymaster',
       })
-    app.use([/^\/$/, /^\/api$/], graphQLHTTP({
-      schema: gnomadSchema,
-      graphiql: true,
-      context: {
-        database: {
-          gnomad,
-          elastic,
-          redis,
+
+    app.use(
+      [/^\/$/, /^\/api$/],
+      graphQLHTTP({
+        schema: gnomadSchema,
+        graphiql: true,
+        context: {
+          database: {
+            gnomad: mongoClient.db(),
+            elastic,
+            redis,
+          },
         },
-      },
-    }))
+      })
+    )
 
     if (process.env.READS_DIR) {
       app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))

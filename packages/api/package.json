@@ -24,7 +24,7 @@
     "graphql-type-json": "0.1.4",
     "immutable": "^4.0.0-rc.9",
     "ioredis": "^3.1.4",
-    "mongodb": "^2.2.11",
+    "mongodb": "^3.2.2",
     "serve-static": "^1.13.2",
     "sqlite": "^3.0.0"
   },
