@@ -1,5 +1,5 @@
 import {
-  GraphQLFloat,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -79,8 +79,8 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up data by start/stop. Example: (start: 55505222, stop: 55505300, chrom: 1).',
       type: regionType,
       args: {
-        start: { type: new GraphQLNonNull(GraphQLFloat) },
-        stop: { type: new GraphQLNonNull(GraphQLFloat) },
+        start: { type: new GraphQLNonNull(GraphQLInt) },
+        stop: { type: new GraphQLNonNull(GraphQLInt) },
         chrom: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args) => ({

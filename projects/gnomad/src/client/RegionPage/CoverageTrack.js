@@ -8,7 +8,7 @@ import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
-query RegionCoverage($chrom: String!, $start: Float!, $stop: Float!, $datasetId: DatasetId!) {
+query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!) {
   region(chrom: $chrom, start: $start, stop: $stop) {
     exome_coverage(dataset: $datasetId) {
       pos
