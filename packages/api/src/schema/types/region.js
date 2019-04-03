@@ -1,13 +1,4 @@
-/* eslint-disable camelcase */
-
-import {
-  GraphQLObjectType,
-  // GraphQLFloat,
-  GraphQLList,
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLString,
-} from 'graphql'
+import { GraphQLList, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { datasetArgumentTypeForMethod, AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
@@ -25,10 +16,10 @@ const FETCH_INDIVIDUAL_VARIANTS_LIMIT = 30000
 const regionType = new GraphQLObjectType({
   name: 'Region',
   fields: () => ({
-    start: { type: GraphQLFloat },
-    stop: { type: GraphQLFloat },
-    xstart: { type: GraphQLFloat },
-    xstop: { type: GraphQLFloat },
+    start: { type: GraphQLInt },
+    stop: { type: GraphQLInt },
+    xstart: { type: GraphQLInt },
+    xstop: { type: GraphQLInt },
     chrom: { type: GraphQLString },
     regionSize: { type: GraphQLInt },
     genes: {

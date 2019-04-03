@@ -6,7 +6,7 @@ import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
 const StructuralVariantsInRegion = ({ region, ...rest }) => {
   const query = `
-    query StructuralVariantsInRegion($chrom: String!, $start: Float!, $stop: Float!) {
+    query StructuralVariantsInRegion($chrom: String!, $start: Int!, $stop: Int!) {
       region(chrom: $chrom, start: $start, stop: $stop) {
         structural_variants {
           ac

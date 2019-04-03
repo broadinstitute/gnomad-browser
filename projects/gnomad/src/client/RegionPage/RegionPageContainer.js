@@ -11,10 +11,12 @@ import RegionPage from './RegionPage'
 const SizedRegionPage = connect(state => ({ screenSize: screenSize(state) }))(RegionPage)
 
 const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
-  const [chrom, start, stop] = regionId.split('-')
+  const [chrom, startStr, stopStr] = regionId.split('-')
+  const start = parseInt(startStr, 10)
+  const stop = parseInt(stopStr, 10)
 
   const query = `
-    query FetchRegion($chrom: String!, $start: Float!, $stop: Float!) {
+    query FetchRegion($chrom: String!, $start: Int!, $stop: Int!) {
       region(chrom: $chrom, start: $start, stop: $stop) {
         chrom
         start

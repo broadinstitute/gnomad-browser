@@ -1,4 +1,4 @@
-FROM node:7.5.0
+FROM node:10.11.0
 
 LABEL maintainer="MacArthur Lab"
 
