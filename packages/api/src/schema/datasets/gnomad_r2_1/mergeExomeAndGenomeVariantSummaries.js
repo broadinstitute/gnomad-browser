@@ -1,8 +1,3 @@
-import POPULATIONS from './populations'
-
-// safe math on possibly null values
-const add = (n1, n2) => (n1 || 0) + (n2 || 0)
-
 const mergeExomeAndGenomeVariantSummaries = (exomeVariants, genomeVariants) => {
   const mergedVariants = []
 
@@ -54,53 +49,10 @@ const mergeExomeAndGenomeVariantSummaries = (exomeVariants, genomeVariants) => {
         ) {
           mergedVariants.push(genomeVariantsAtThisPosition.shift())
         } else {
-          const combinedAC = add(
-            currentExomeVariantAtThisPosition.ac,
-            currentGenomeVariantAtThisPosition.ac
-          )
-          const combinedAN = add(
-            currentExomeVariantAtThisPosition.an,
-            currentGenomeVariantAtThisPosition.an
-          )
-
           mergedVariants.push({
-            ...currentExomeVariantAtThisPosition,
-            ac: combinedAC,
-            an: combinedAN,
-            af: combinedAN ? combinedAC / combinedAN : 0,
-            ac_hemi: add(
-              currentExomeVariantAtThisPosition.ac_hemi,
-              currentGenomeVariantAtThisPosition.ac_hemi
-            ),
-            ac_hom: add(
-              currentExomeVariantAtThisPosition.ac_hom,
-              currentGenomeVariantAtThisPosition.ac_hom
-            ),
-            filters: currentExomeVariantAtThisPosition.filters.concat(
-              currentGenomeVariantAtThisPosition.filters
-            ),
-            datasets: currentExomeVariantAtThisPosition.datasets.concat(
-              currentGenomeVariantAtThisPosition.datasets
-            ),
-            populations: POPULATIONS.map((popId, i) => ({
-              id: popId.toUpperCase(),
-              ac:
-                currentExomeVariantAtThisPosition.populations[i].ac +
-                currentGenomeVariantAtThisPosition.populations[i].ac,
-              an:
-                currentExomeVariantAtThisPosition.populations[i].an +
-                currentGenomeVariantAtThisPosition.populations[i].an,
-              ac_hemi:
-                currentExomeVariantAtThisPosition.populations[i].ac_hemi +
-                currentGenomeVariantAtThisPosition.populations[i].ac_hemi,
-              ac_hom:
-                currentExomeVariantAtThisPosition.populations[i].ac_hom +
-                currentGenomeVariantAtThisPosition.populations[i].ac_hom,
-            })),
+            ...exomeVariantsAtThisPosition.shift(),
+            genome: genomeVariantsAtThisPosition.shift().genome,
           })
-
-          exomeVariantsAtThisPosition.shift()
-          genomeVariantsAtThisPosition.shift()
         }
       }
     }

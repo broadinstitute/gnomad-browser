@@ -21,31 +21,15 @@ export const VariantInterface = new GraphQLInterfaceType({
   },
 })
 
-export const VariantSummaryType = new GraphQLObjectType({
-  name: 'VariantSummary',
-  interfaces: [VariantInterface],
+const VariantSequencingDataType = new GraphQLObjectType({
+  name: 'VariantSequencingData',
   fields: {
-    // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
-    chrom: { type: new GraphQLNonNull(GraphQLString) },
-    pos: { type: new GraphQLNonNull(GraphQLInt) },
-    ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
-    // other fields
     ac: { type: GraphQLInt },
     ac_hemi: { type: GraphQLInt },
     ac_hom: { type: GraphQLInt },
     an: { type: GraphQLInt },
     af: { type: GraphQLFloat },
-    consequence: { type: GraphQLString },
-    consequence_in_canonical_transcript: { type: GraphQLBoolean },
-    datasets: { type: new GraphQLList(GraphQLString) },
     filters: { type: new GraphQLList(GraphQLString) },
-    flags: { type: new GraphQLList(GraphQLString) },
-    hgvs: { type: GraphQLString },
-    hgvsc: { type: GraphQLString },
-    hgvsp: { type: GraphQLString },
     populations: {
       type: new GraphQLList(
         new GraphQLObjectType({
@@ -60,7 +44,28 @@ export const VariantSummaryType = new GraphQLObjectType({
         })
       ),
     },
-    rsid: { type: GraphQLString },
   },
-  isTypeOf: variantData => variantData.gqlType === 'VariantSummary',
+})
+
+export const VariantSummaryType = new GraphQLObjectType({
+  name: 'VariantSummary',
+  fields: {
+    // Variant ID fields
+    alt: { type: new GraphQLNonNull(GraphQLString) },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    pos: { type: new GraphQLNonNull(GraphQLInt) },
+    ref: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
+    // Other fields
+    consequence: { type: GraphQLString },
+    consequence_in_canonical_transcript: { type: GraphQLBoolean },
+    flags: { type: new GraphQLList(GraphQLString) },
+    hgvs: { type: GraphQLString },
+    hgvsc: { type: GraphQLString },
+    hgvsp: { type: GraphQLString },
+    rsid: { type: GraphQLString },
+    exome: { type: VariantSequencingDataType },
+    genome: { type: VariantSequencingDataType },
+  },
 })

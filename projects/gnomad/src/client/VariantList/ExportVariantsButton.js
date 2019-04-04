@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import { Button } from '@broad/ui'
@@ -13,108 +14,104 @@ const POPULATION_NAMES = {
   SAS: 'South Asian',
 }
 
-const SOURCE_LABELS = {
-  gnomadExomeVariants: 'gnomAD Exomes',
-  gnomadGenomeVariants: 'gnomAD Genomes',
-  exacVariants: 'ExAC',
-}
-
-const DEFAULT_COLUMNS = [
-  {
-    label: 'Chromosome',
-    getValue: variant => variant.variant_id.split('-')[0],
-  },
-  {
-    label: 'Position',
-    getValue: variant => JSON.stringify(variant.pos),
-  },
-  {
-    label: 'rsID',
-    getValue: variant => variant.rsid || '',
-  },
-  {
-    label: 'Reference',
-    getValue: variant => variant.variant_id.split('-')[2],
-  },
-  {
-    label: 'Alternate',
-    getValue: variant => variant.variant_id.split('-')[3],
-  },
-  {
-    label: 'Source',
-    getValue: variant => variant.datasets.map(d => SOURCE_LABELS[d]).join(','),
-  },
-  {
-    label: 'Filters - exomes',
-    getValue: variant => {
-      const inExome =
-        variant.datasets.includes('gnomadExomeVariants') ||
-        variant.datasets.includes('exacVariants')
-      if (!inExome) {
-        return 'NA'
-      }
-      const exomeFilters = variant.filters
-        .filter(f => !f.startsWith('genomes_')) // matches ExAC and gnomAD exomes
-        .map(f => f.slice(7))
-      return exomeFilters.length ? exomeFilters.join(',') : 'PASS'
+const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
+  const DEFAULT_COLUMNS = [
+    {
+      label: 'Chromosome',
+      getValue: variant => variant.variant_id.split('-')[0],
     },
-  },
-  {
-    label: 'Filters - genomes',
-    getValue: variant => {
-      const inGenome = variant.datasets.includes('gnomadGenomeVariants')
-      if (!inGenome) {
-        return 'NA'
-      }
-      const genomeFilters = variant.filters
-        .filter(f => f.startsWith('genomes_'))
-        .map(f => f.slice(8))
-      return genomeFilters.length ? genomeFilters.join(',') : 'PASS'
+    {
+      label: 'Position',
+      getValue: variant => JSON.stringify(variant.pos),
     },
-  },
-  {
-    label: 'Consequence',
-    getValue: variant => variant.hgvs || '',
-  },
-  {
-    label: 'Protein Consequence',
-    getValue: variant => variant.hgvsp || '',
-  },
-  {
-    label: 'Transcript Consequence',
-    getValue: variant => variant.hgvsc || '',
-  },
-  {
-    label: 'Annotation',
-    getValue: variant => variant.consequence || '',
-  },
-  {
-    label: 'Flags',
-    getValue: variant => variant.flags.join(','),
-  },
-  {
-    label: 'Allele Count',
-    getValue: variant => JSON.stringify(variant.allele_count),
-  },
-  {
-    label: 'Allele Number',
-    getValue: variant => JSON.stringify(variant.allele_num),
-  },
-  {
-    label: 'Allele Frequency',
-    getValue: variant => JSON.stringify(variant.allele_freq),
-  },
-  {
-    label: 'Homozygote Count',
-    getValue: variant => JSON.stringify(variant.hom_count),
-  },
-  {
-    label: 'Hemizygote Count',
-    getValue: variant => JSON.stringify(variant.hemi_count),
-  },
-]
+    {
+      label: 'rsID',
+      getValue: variant => variant.rsid || '',
+    },
+    {
+      label: 'Reference',
+      getValue: variant => variant.variant_id.split('-')[2],
+    },
+    {
+      label: 'Alternate',
+      getValue: variant => variant.variant_id.split('-')[3],
+    },
+    {
+      label: 'Source',
+      getValue:
+        datasetId === 'exac'
+          ? () => 'ExAC'
+          : variant => {
+              const sources = []
+              if (variant.exome) {
+                sources.push('gnomAD Exomes')
+              }
+              if (variant.genome) {
+                sources.push('gnomAD Genomes')
+              }
+              return sources.join(',')
+            },
+    },
+    {
+      label: 'Filters - exomes',
+      getValue: variant => {
+        if (!variant.exome) {
+          return 'NA'
+        }
+        return variant.exome.filters.length === 0 ? 'PASS' : variant.exome.filters.join(',')
+      },
+    },
+    {
+      label: 'Filters - genomes',
+      getValue: variant => {
+        if (!variant.genome) {
+          return 'NA'
+        }
+        return variant.genome.filters.length === 0 ? 'PASS' : variant.genome.filters.join(',')
+      },
+    },
+    {
+      label: 'Consequence',
+      getValue: variant => variant.hgvs || '',
+    },
+    {
+      label: 'Protein Consequence',
+      getValue: variant => variant.hgvsp || '',
+    },
+    {
+      label: 'Transcript Consequence',
+      getValue: variant => variant.hgvsc || '',
+    },
+    {
+      label: 'Annotation',
+      getValue: variant => variant.consequence || '',
+    },
+    {
+      label: 'Flags',
+      getValue: variant => variant.flags.join(','),
+    },
+    {
+      label: 'Allele Count',
+      getValue: variant => JSON.stringify(variant.ac),
+    },
+    {
+      label: 'Allele Number',
+      getValue: variant => JSON.stringify(variant.an),
+    },
+    {
+      label: 'Allele Frequency',
+      getValue: variant => JSON.stringify(variant.af),
+    },
+    {
+      label: 'Homozygote Count',
+      getValue: variant => JSON.stringify(variant.ac_hom),
+    },
+    {
+      label: 'Hemizygote Count',
+      getValue: variant => JSON.stringify(variant.ac_hemi),
+    },
+  ]
 
-const exportVariantsToCsv = (variants, baseFileName) => {
   const datasetPopulations = variants[0].populations.map(pop => pop.id)
   let populationColumns = []
   datasetPopulations.forEach((popId, popIndex) => {
@@ -147,11 +144,10 @@ const exportVariantsToCsv = (variants, baseFileName) => {
     .map(variant =>
       columns
         .map(c => c.getValue(variant))
-        .map(
-          val =>
-            val.includes(',') || val.includes('"') || val.includes("'")
-              ? `"${val.replace('"', '""')}"`
-              : val
+        .map(val =>
+          val.includes(',') || val.includes('"') || val.includes("'")
+            ? `"${val.replace('"', '""')}"`
+            : val
         )
         .join(',')
     )
@@ -188,15 +184,53 @@ const exportVariantsToCsv = (variants, baseFileName) => {
   link.click()
 }
 
-const ExportVariantsButton = ({ exportFileName, variants, ...rest }) => (
+const ExportVariantsButton = ({ datasetId, exportFileName, variants, ...rest }) => (
   <Button
     {...rest}
     onClick={() => {
-      exportVariantsToCsv(variants, exportFileName)
+      exportVariantsToCsv(variants, datasetId, exportFileName)
     }}
   >
     Export variants to CSV
   </Button>
 )
+
+ExportVariantsButton.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  exportFileName: PropTypes.string.isRequired,
+  variants: PropTypes.arrayOf(
+    PropTypes.shape({
+      ac: PropTypes.number.isRequired,
+      ac_hemi: PropTypes.number.isRequired,
+      ac_hom: PropTypes.number.isRequired,
+      an: PropTypes.number.isRequired,
+      af: PropTypes.number.isRequired,
+      consequence: PropTypes.string.isRequired,
+      flags: PropTypes.arrayOf(PropTypes.string).isRequired,
+      hgvs: PropTypes.string,
+      hgvsc: PropTypes.string,
+      hgvsp: PropTypes.string,
+      populations: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          ac: PropTypes.number.isRequired,
+          an: PropTypes.number.isRequired,
+          ac_hemi: PropTypes.number.isRequired,
+          ac_hom: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+      pos: PropTypes.number.isRequired,
+      rsid: PropTypes.string,
+      variant_id: PropTypes.string.isRequired,
+      xpos: PropTypes.number.isRequired,
+      exome: PropTypes.shape({
+        filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+      }),
+      genome: PropTypes.shape({
+        filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+      }),
+    })
+  ).isRequired,
+}
 
 export default ExportVariantsButton

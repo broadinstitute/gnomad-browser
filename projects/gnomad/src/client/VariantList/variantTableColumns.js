@@ -38,13 +38,7 @@ const renderExponentialNumberCell = (row, key) => {
   return truncated.toExponential()
 }
 
-const datasetFilterPrefixes = {
-  gnomadExomeVariants: 'exomes_',
-  gnomadGenomeVariants: 'genomes_',
-  exacVariants: '',
-}
-
-export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) => {
+export const getColumns = ({ datasetId, width, includeHomozygoteAC, includeHemizygoteAC }) => {
   const columns = [
     {
       key: 'variant_id',
@@ -64,13 +58,25 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
       heading: 'Source',
       grow: 0,
       minWidth: 100,
-      render: (row, key) =>
-        row[key].map(dataset => {
-          const filterPrefix = datasetFilterPrefixes[dataset]
-          const isFiltered = row.filters.some(f => f.startsWith(filterPrefix))
-
-          return <DatasetIcon key={dataset} dataset={dataset} isFiltered={isFiltered} />
-        }),
+      render:
+        datasetId === 'exac'
+          ? variant => <DatasetIcon dataset="exac" isFiltered={variant.exome.filters.length > 0} />
+          : variant => (
+              <React.Fragment>
+                {variant.exome && (
+                  <DatasetIcon
+                    dataset="gnomadExome"
+                    isFiltered={variant.exome.filters.length > 0}
+                  />
+                )}
+                {variant.genome && (
+                  <DatasetIcon
+                    dataset="gnomadGenome"
+                    isFiltered={variant.genome.filters.length > 0}
+                  />
+                )}
+              </React.Fragment>
+            ),
     },
     {
       key: 'hgvs',
@@ -113,21 +119,21 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
           .map(flag => <VariantFlag key={flag} type={flag} />),
     },
     {
-      key: 'allele_count',
+      key: 'ac',
       heading: width < 600 ? 'AC' : 'Allele Count',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
     },
     {
-      key: 'allele_num',
+      key: 'an',
       heading: width < 600 ? 'AN' : 'Allele Number',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
     },
     {
-      key: 'allele_freq',
+      key: 'af',
       heading: width < 600 ? 'AF' : 'Allele Frequency',
       grow: 0,
       isSortable: true,
@@ -138,7 +144,7 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
 
   if (includeHomozygoteAC) {
     columns.push({
-      key: 'hom_count',
+      key: 'ac_hom',
       heading: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
       grow: 0,
       isSortable: true,
@@ -148,7 +154,7 @@ export const getColumns = ({ width, includeHomozygoteAC, includeHemizygoteAC }) 
 
   if (includeHemizygoteAC) {
     columns.push({
-      key: 'hemi_count',
+      key: 'ac_hemi',
       heading: width < 600 ? 'No. Hem' : 'Number of Hemizygotes',
       grow: 0,
       isSortable: true,

@@ -20,12 +20,12 @@ const comparators = {
   variant_id: makeNumericComparator('pos'),
   consequence: makeStringComparator('consequence'),
   flags: (v1, v2) => v1.flags.length - v2.flags.length,
-  allele_count: makeNumericComparator('allele_count'),
-  allele_num: makeNumericComparator('allele_num'),
-  allele_freq: makeNumericComparator('allele_freq'),
+  ac: makeNumericComparator('ac'),
+  an: makeNumericComparator('an'),
+  af: makeNumericComparator('af'),
   hgvs: makeStringComparator('hgvs'),
-  hom_count: makeNumericComparator('hom_count'),
-  hemi_count: makeNumericComparator('hemi_count'),
+  ac_hom: makeNumericComparator('ac_hom'),
+  ac_hemi: makeNumericComparator('ac_hemi'),
 }
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {

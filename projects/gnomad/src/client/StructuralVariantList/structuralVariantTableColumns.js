@@ -75,7 +75,7 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       grow: 0,
       minWidth: 70,
       render: variant => (
-        <DatasetIcon dataset="gnomadGenomeVariants" isFiltered={variant.filters.length > 0} />
+        <DatasetIcon dataset="gnomadGenome" isFiltered={variant.filters.length > 0} />
       ),
     },
     {
