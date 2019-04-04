@@ -91,6 +91,7 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
             'gq_hist_all',
             'gq_hist_alt',
             'nonpar',
+            'pab_max',
             'pos',
             'qual',
             'ref',
@@ -233,6 +234,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
             },
             siteQualityMetrics: {
               ...exomeData.allele_info,
+              pab_max: exomeData.pab_max,
               RF: exomeData.rf_tp_probability,
               SiteQuality: exomeData.qual,
             },
@@ -266,6 +268,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
             },
             siteQualityMetrics: {
               ...genomeData.allele_info,
+              pab_max: genomeData.pab_max,
               RF: genomeData.rf_tp_probability,
               SiteQuality: genomeData.qual,
             },

@@ -84,6 +84,7 @@ const GnomadVariantQualityMetricsType = new GraphQLObjectType({
           InbreedingCoeff: { type: GraphQLFloat },
           MQ: { type: GraphQLFloat },
           MQRankSum: { type: GraphQLFloat },
+          pab_max: { type: GraphQLFloat },
           QD: { type: GraphQLFloat },
           ReadPosRankSum: { type: GraphQLFloat },
           RF: { type: GraphQLFloat },
