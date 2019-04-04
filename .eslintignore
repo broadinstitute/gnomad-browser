@@ -1,6 +1,5 @@
 node_modules
 
 packages/**/lib
+packages/**/dist
 projects/**/dist
-
-packages/api/build
