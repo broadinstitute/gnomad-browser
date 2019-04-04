@@ -162,7 +162,7 @@ class ClinVarTrack extends PureComponent {
     const maxVariantsInBin = bins.reduce((max, bin) => {
       const binTotal = bin.lof + bin.missense + bin.synonymous + bin.other
       return Math.max(max, binTotal)
-    }, -Infinity)
+    }, 1)
 
     const y = scaleLinear()
       .domain([0, maxVariantsInBin])
