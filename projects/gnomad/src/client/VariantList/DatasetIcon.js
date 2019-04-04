@@ -3,12 +3,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 const datasetConfig = {
-  gnomadExomeVariants: { color: 'rgba(70, 130, 180, 0.8)', abbreviation: 'E' },
-  gnomadExomeVariantsFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E' },
-  gnomadGenomeVariants: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G' },
-  gnomadGenomeVariantsFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G' },
-  exacVariants: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'ExAC' },
-  exacVariantsFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'ExAC' },
+  gnomadExome: { color: 'rgba(70, 130, 180, 0.8)', abbreviation: 'E' },
+  gnomadExomeFiltered: { color: 'rgba(70, 130, 180, 0.4)', abbreviation: 'E' },
+  gnomadGenome: { color: 'rgba(115, 171, 61, 1)', abbreviation: 'G' },
+  gnomadGenomeFiltered: { color: 'rgba(115, 171, 61, 0.4)', abbreviation: 'G' },
+  exac: { color: 'rgba(70, 130, 180, 1)', abbreviation: 'ExAC' },
+  exacFiltered: { color: 'rgba(70, 130, 180, 0.6)', abbreviation: 'ExAC' },
 }
 
 const Icon = styled.span`

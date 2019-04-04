@@ -11,6 +11,7 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
+import mergeExomeAndGenomeData from '../VariantList/mergeExomeAndGenomeData'
 import sortVariants from '../VariantList/sortVariants'
 import VariantFilterControls from '../VariantList/VariantFilterControls'
 import VariantTable from '../VariantList/VariantTable'
@@ -54,10 +55,13 @@ class VariantsInGene extends Component {
     const defaultSortKey = 'variant_id'
     const defaultSortOrder = 'ascending'
 
-    const renderedVariants = sortVariants(filterVariants(props.variants, defaultFilter), {
-      sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder,
-    })
+    const renderedVariants = sortVariants(
+      mergeExomeAndGenomeData(filterVariants(props.variants, defaultFilter)),
+      {
+        sortKey: defaultSortKey,
+        sortOrder: defaultSortOrder,
+      }
+    )
 
     this.state = {
       filter: defaultFilter,
@@ -70,8 +74,9 @@ class VariantsInGene extends Component {
     }
   }
 
-  getColumns = memoizeOne((width, chrom) =>
+  getColumns = memoizeOne((width, chrom, datasetId) =>
     getColumns({
+      datasetId,
       width,
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
@@ -82,10 +87,13 @@ class VariantsInGene extends Component {
     this.setState(state => {
       const { variants } = this.props
       const { sortKey, sortOrder } = state
-      const renderedVariants = sortVariants(filterVariants(variants, newFilter), {
-        sortKey,
-        sortOrder,
-      })
+      const renderedVariants = sortVariants(
+        mergeExomeAndGenomeData(filterVariants(variants, newFilter)),
+        {
+          sortKey,
+          sortOrder,
+        }
+      )
       return {
         filter: newFilter,
         renderedVariants,
@@ -187,6 +195,7 @@ class VariantsInGene extends Component {
           <VariantFilterControls onChange={this.onFilter} value={filter} />
           <div>
             <ExportVariantsButton
+              datasetId={datasetId}
               exportFileName={`${datasetLabel}_${gene.gene_id}`}
               variants={renderedVariants}
             />
@@ -197,7 +206,7 @@ class VariantsInGene extends Component {
             </p>
           )}
           <VariantTable
-            columns={this.getColumns(width, gene.chrom)}
+            columns={this.getColumns(width, gene.chrom, datasetId)}
             highlightText={filter.searchText}
             onHoverVariant={this.onHoverVariant}
             onRequestSort={this.onSort}
@@ -228,30 +237,46 @@ const ConnectedVariantsInGene = ({ datasetId, gene, transcriptId, width }) => {
         variantId
       }
       variants(dataset: ${datasetId}${transcriptArg}) {
-        allele_count: ac
-        hemi_count: ac_hemi
-        hom_count: ac_hom
-        allele_num: an
-        allele_freq: af
         consequence
         ${transcriptId ? '' : 'isCanon: consequence_in_canonical_transcript'}
-        datasets
-        filters
         flags
         hgvs
         hgvsc
         hgvsp
-        populations {
-          id
-          ac
-          an
-          ac_hemi
-          ac_hom
-        }
         pos
         rsid
         variant_id: variantId
         xpos
+        exome {
+          ac
+          ac_hemi
+          ac_hom
+          an
+          af
+          filters
+          populations {
+            id
+            ac
+            an
+            ac_hemi
+            ac_hom
+          }
+        }
+        genome {
+          ac
+          ac_hemi
+          ac_hom
+          an
+          af
+          filters
+          populations {
+            id
+            ac
+            an
+            ac_hemi
+            ac_hom
+          }
+        }
       }
     }
   }`

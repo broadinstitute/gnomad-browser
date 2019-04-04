@@ -17,7 +17,13 @@ const filterVariants = (variants, filter) => {
   }
 
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.filter(v => v.filters.length === 0)
+    filteredVariants = filteredVariants
+      .map(v => ({
+        ...v,
+        exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
+        genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
+      }))
+      .filter(v => v.exome || v.genome)
   }
 
   if (filter.searchText) {
