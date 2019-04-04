@@ -10,7 +10,7 @@ source "../../cluster/config.sh"
 IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-api"
 
 # Compile JS
-yarn run build
+./build.sh
 
 # Tag image with git revision
 COMMIT_HASH=$(git rev-parse --short HEAD)

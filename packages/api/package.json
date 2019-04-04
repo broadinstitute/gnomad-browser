@@ -2,18 +2,10 @@
   "name": "@broad/api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "clean": "rm -rf build && mkdir build",
-    "build-server": "babel --root-mode=upward -d ./build ./src -s --copy-files",
-    "build": "npm run clean && npm run build-server",
-    "dev": "nodemon --exec NODE_ENV=development ELASTICSEARCH_URL=http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy GRAPHQL_PORT=8007 GNOMAD_MONGO_URL=mongodb://localhost:27017/exac REDIS_HOST=localhost babel-node --config-file=../../babel.config.js src/server.js"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "^7.4.3",
     "compression": "^1.7.4",
     "core-js": "^3.0.0",
     "cors": "^2.8.5",
