@@ -105,6 +105,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             InbreedingCoeff
             MQ
             MQRankSum
+            pab_max
             QD
             ReadPosRankSum
             RF
@@ -201,6 +202,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
             InbreedingCoeff
             MQ
             MQRankSum
+            pab_max
             QD
             ReadPosRankSum
             RF

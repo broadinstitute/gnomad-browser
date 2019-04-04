@@ -26,6 +26,7 @@ const allMetrics = [
   'MQ',
   'ClippingRankSum',
   'RF',
+  'pab_max',
 ]
 
 export class GnomadSiteQualityMetrics extends Component {
