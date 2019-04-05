@@ -5,7 +5,7 @@ import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 export const GnomadMultiNucleotideVariantType = new GraphQLObjectType({
   name: 'GnomadMultiNucleotideVariant',
   fields: {
-    ac: { type: GraphQLInt },
+    nIndividuals: { type: GraphQLInt },
     category: { type: GraphQLString },
     mnvAminoAcidChange: { type: GraphQLString },
     mnvCodonChange: { type: GraphQLString },
@@ -33,10 +33,10 @@ export const fetchGnomadMNVsByIntervals = async (ctx, intervals) => {
   }))
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'gnomad_exome_mnvs_2_1',
+    index: 'gnomad_mnv_coding_2_1',
     type: 'mnv',
     size: 10000,
-    _source: ['pos', 'snp1_variant_id', 'snp2_variant_id'],
+    _source: ['pos', 'snp1', 'snp2'],
     body: {
       query: {
         bool: {
@@ -59,8 +59,8 @@ export const fetchGnomadMNVsByIntervals = async (ctx, intervals) => {
 export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
   const mnvVariantIds = new Set()
   mnvs.forEach(mnv => {
-    mnvVariantIds.add(mnv.snp1_variant_id)
-    mnvVariantIds.add(mnv.snp2_variant_id)
+    mnvVariantIds.add(mnv.snp1)
+    mnvVariantIds.add(mnv.snp2)
   })
 
   variants.forEach(variant => {
@@ -74,32 +74,15 @@ export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
 
 export const fetchGnomadMNVsByVariantId = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: 'gnomad_exome_mnvs_2_1',
+    index: 'gnomad_mnv_coding_2_1',
     type: 'mnv',
-    _source: [
-      'AC_mnv',
-      'category',
-      'mnv_amino_acids',
-      'mnv_codons',
-      'mnv_consequence',
-      'snp1_amino_acids',
-      'snp1_codons',
-      'snp1_consequence',
-      'snp1_variant_id',
-      'snp2_amino_acids',
-      'snp2_codons',
-      'snp2_consequence',
-      'snp2_variant_id',
-    ],
+    _source: ['snp1', 'snp2', 'n_indv', 'consequences'],
     body: {
       query: {
         bool: {
           filter: {
             bool: {
-              should: [
-                { term: { snp1_variant_id: variantId } },
-                { term: { snp2_variant_id: variantId } },
-              ],
+              should: [{ term: { snp1: variantId } }, { term: { snp2: variantId } }],
             },
           },
         },
@@ -108,11 +91,11 @@ export const fetchGnomadMNVsByVariantId = async (ctx, variantId) => {
   })
 
   return response.hits.hits.map(hit => {
-    const mnv = hit._source // eslint-disable-line no-underscore-dangle
+    const doc = hit._source // eslint-disable-line no-underscore-dangle
 
     let thisVariant
     let otherVariant
-    if (variantId === mnv.snp1_variant_id) {
+    if (variantId === doc.snp1) {
       thisVariant = 'snp1'
       otherVariant = 'snp2'
     } else {
@@ -120,19 +103,21 @@ export const fetchGnomadMNVsByVariantId = async (ctx, variantId) => {
       otherVariant = 'snp1'
     }
 
+    const consequence = doc.consequences[0]
+
     return {
-      ac: mnv.AC_mnv,
-      category: mnv.category,
-      mnvAminoAcidChange: mnv.mnv_amino_acids.replace('/', ' → '),
-      mnvCodonChange: mnv.mnv_codons.toUpperCase().replace('/', ' → '),
-      mnvConsequence: mnv.mnv_consequence,
-      otherVariantId: mnv[`${otherVariant}_variant_id`],
-      otherAminoAcidChange: mnv[`${otherVariant}_amino_acids`].replace('/', ' → '),
-      otherCodonChange: mnv[`${otherVariant}_codons`].toUpperCase().replace('/', ' → '),
-      otherConsequence: mnv[`${otherVariant}_consequence`],
-      snvAminoAcidChange: mnv[`${thisVariant}_amino_acids`].replace('/', ' → '),
-      snvCodonChange: mnv[`${thisVariant}_codons`].toUpperCase().replace('/', ' → '),
-      snvConsequence: mnv[`${thisVariant}_consequence`],
+      nIndividuals: doc.n_indv.total,
+      category: consequence.category,
+      mnvAminoAcidChange: consequence.mnv.amino_acids.replace('/', ' → '),
+      mnvCodonChange: consequence.mnv.codons.toUpperCase().replace('/', ' → '),
+      mnvConsequence: consequence.mnv.consequence,
+      otherVariantId: doc[otherVariant],
+      otherAminoAcidChange: consequence[otherVariant].amino_acids.replace('/', ' → '),
+      otherCodonChange: consequence[otherVariant].codons.toUpperCase().replace('/', ' → '),
+      otherConsequence: consequence[otherVariant].consequence,
+      snvAminoAcidChange: consequence[thisVariant].amino_acids.replace('/', ' → '),
+      snvCodonChange: consequence[thisVariant].codons.toUpperCase().replace('/', ' → '),
+      snvConsequence: consequence[thisVariant].consequence,
     }
   })
 }
