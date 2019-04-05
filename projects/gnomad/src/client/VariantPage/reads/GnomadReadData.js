@@ -205,6 +205,7 @@ export class GnomadReadData extends Component {
       tracks: [
         {
           displayMode: 'SQUISHED',
+          indexURL: `${API_URL}/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
           name: 'gencode v19',
           removable: false,
           url: `${API_URL}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
