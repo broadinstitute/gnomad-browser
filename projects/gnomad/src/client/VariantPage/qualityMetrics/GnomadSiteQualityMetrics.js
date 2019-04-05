@@ -74,7 +74,7 @@ export class GnomadSiteQualityMetrics extends Component {
               }))
               selectedSiteQualityBinDescription = 'doubleton variants'
             } else {
-              const variantAlleleFreq = variantData.ac / variantData.an
+              const variantAlleleFreq = variantData.an === 0 ? 0 : variantData.ac / variantData.an
               const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
                 bin =>
                   bin.min_af <= variantAlleleFreq &&

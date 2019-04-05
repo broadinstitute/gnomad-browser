@@ -116,12 +116,13 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
   const genomeAlleleCount = isPresentInGenome ? variant.genome.ac : 0
   const genomeAlleleNumber = isPresentInGenome ? variant.genome.an : 0
 
-  const exomeAlleleFrequency = exomeAlleleCount / exomeAlleleNumber
-  const genomeAlleleFrequency = genomeAlleleCount / genomeAlleleNumber
+  const exomeAlleleFrequency = exomeAlleleNumber === 0 ? 0 : exomeAlleleCount / exomeAlleleNumber
+  const genomeAlleleFrequency =
+    genomeAlleleNumber === 0 ? 0 : genomeAlleleCount / genomeAlleleNumber
 
   const totalAlleleCount = exomeAlleleCount + genomeAlleleCount
   const totalAlleleNumber = exomeAlleleNumber + genomeAlleleNumber
-  const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
+  const totalAlleleFrequency = totalAlleleNumber === 0 ? 0 : totalAlleleCount / totalAlleleNumber
 
   return (
     <Table>
