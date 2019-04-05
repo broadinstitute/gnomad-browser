@@ -146,7 +146,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
         </p>
         <MNVList>
           {multiNucleotideVariants.map(mnv => {
-            const { ac, category, otherVariantId } = mnv
+            const { category, nIndividuals, otherVariantId } = mnv
             return (
               <li key={otherVariantId}>
                 {category === 'Unchanged' ? (
@@ -155,7 +155,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
                   <Badge level="warning">Warning</Badge>
                 )}{' '}
                 This variant is found in phase with{' '}
-                <Link to={`/variant/${otherVariantId}`}>{otherVariantId}</Link> in {ac}{' '}
+                <Link to={`/variant/${otherVariantId}`}>{otherVariantId}</Link> in {nIndividuals}{' '}
                 individual(s)
                 {category !== 'Unchanged' && ', altering its functional interpretation'}.{' '}
                 <TextButton
