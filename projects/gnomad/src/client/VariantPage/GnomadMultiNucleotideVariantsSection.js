@@ -32,7 +32,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
   static propTypes = {
     multiNucleotideVariants: PropTypes.arrayOf(
       PropTypes.shape({
-        ac: PropTypes.number.isRequired,
+        nIndividuals: PropTypes.number.isRequired,
         category: PropTypes.string.isRequired,
         mnvAminoAcidChange: PropTypes.string.isRequired,
         mnvCodonChange: PropTypes.string.isRequired,
@@ -57,7 +57,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
     const { thisVariantId } = this.props
     const { selectedMNV } = this.state
     const {
-      ac,
+      nIndividuals,
       category,
       mnvAminoAcidChange,
       mnvCodonChange,
@@ -80,7 +80,7 @@ class GnomadMultiNucleotideVariantsSection extends Component {
         title="Multi-Nucleotide Variant"
       >
         <p style={{ marginTop: 0 }}>
-          {thisVariantId} is found in phase with {otherVariantId} in {ac} individuals.
+          {thisVariantId} is found in phase with {otherVariantId} in {nIndividuals} individuals.
         </p>
         <p>
           <strong>Category:</strong> {category}
