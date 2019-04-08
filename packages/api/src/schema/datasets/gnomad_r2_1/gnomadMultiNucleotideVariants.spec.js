@@ -16,9 +16,9 @@ describe('annotateVariantsWithMNVFlag', () => {
     ]
 
     const mnvs = [
-      { snp1_variant_id: '1-2-G-T', snp2_variant_id: '1-3-A-C' },
-      { snp1_variant_id: '1-17-G-T', snp2_variant_id: '1-19-A-C' },
-      { snp1_variant_id: '1-18-G-A', snp2_variant_id: '1-20-A-C' },
+      { snp1: '1-2-G-T', snp2: '1-3-A-C' },
+      { snp1: '1-17-G-T', snp2: '1-19-A-C' },
+      { snp1: '1-18-G-A', snp2: '1-20-A-C' },
     ]
 
     annotateVariantsWithMNVFlag(variants, mnvs)
