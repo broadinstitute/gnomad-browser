@@ -121,10 +121,11 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                 </div>
               )}
 
-              <GnomadMultiNucleotideVariantsSection
-                multiNucleotideVariants={variant.multiNucleotideVariants}
-                thisVariantId={variantId}
-              />
+              {variant.multiNucleotideVariants.length > 0 && (
+                <GnomadMultiNucleotideVariantsSection
+                  multiNucleotideVariants={variant.multiNucleotideVariants}
+                />
+              )}
             </ResponsiveSection>
             <ResponsiveSection>
               <SectionHeading>References</SectionHeading>
