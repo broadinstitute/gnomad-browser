@@ -8,7 +8,7 @@ import {
 } from 'graphql'
 
 import { VariantInterface } from '../../types/variant'
-import { resolveReads, ReadsType } from '../shared/reads'
+import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { GnomadMultiNucleotideVariantType } from './gnomadMultiNucleotideVariants'
 
@@ -142,7 +142,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
           reads: {
-            type: ReadsType,
+            type: new GraphQLList(ReadDataType),
             resolve: async obj => {
               if (!process.env.READS_DIR) {
                 return null
@@ -176,7 +176,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
           reads: {
-            type: ReadsType,
+            type: new GraphQLList(ReadDataType),
             resolve: async obj => {
               if (!process.env.READS_DIR) {
                 return null

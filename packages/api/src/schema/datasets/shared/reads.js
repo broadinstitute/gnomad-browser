@@ -1,25 +1,15 @@
 import path from 'path'
 
-import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
-import sqlite from 'sqlite' // eslint-disable-line import/extensions
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import sqlite from 'sqlite'
 
-const ReadsCategoryType = new GraphQLObjectType({
-  name: 'ReadsCategory',
+export const ReadDataType = new GraphQLObjectType({
+  name: 'ReadData',
   fields: {
-    available: { type: GraphQLInt },
-    expected: { type: GraphQLInt },
-    readGroups: { type: new GraphQLList(GraphQLString) },
-  },
-})
-
-export const ReadsType = new GraphQLObjectType({
-  name: 'Reads',
-  fields: {
-    het: { type: ReadsCategoryType },
-    hom: { type: ReadsCategoryType },
-    hemi: { type: ReadsCategoryType },
-    bamPath: { type: GraphQLString },
-    indexPath: { type: GraphQLString },
+    bamPath: { type: new GraphQLNonNull(GraphQLString) },
+    category: { type: new GraphQLNonNull(GraphQLString) },
+    indexPath: { type: new GraphQLNonNull(GraphQLString) },
+    readGroup: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
 
@@ -52,28 +42,22 @@ export const resolveReads = async (readsRootDir, subDir, { alt, chrom, pos, ref 
 
   const indexPath = `${bamPath}.bai`
 
-  const reads = {
-    bamPath,
-    indexPath,
-  }
-  ;['het', 'hom', 'hemi'].forEach(category => {
+  const reads = []
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const category of ['het', 'hom', 'hemi']) {
     const row = rows.find(r => r.het_or_hom_or_hemi === category)
-    if (!row) {
-      reads[category] = {
-        available: 0,
-        expected: 0,
-        readGroups: [],
-      }
-    } else {
-      reads[category] = {
-        available: row.n_available_samples,
-        expected: row.n_expected_samples,
-        readGroups: [...Array(row.n_available_samples)].map(
-          (_, i) => `${chrom}-${pos}-${ref}-${alt}_${category}${i}`
-        ),
+    if (row) {
+      for (let i = 0; i < row.n_available_samples; i += 1) {
+        reads.push({
+          bamPath,
+          category,
+          indexPath,
+          readGroup: `${chrom}-${pos}-${ref}-${alt}_${category}${i}`,
+        })
       }
     }
-  })
+  }
 
   return reads
 }

@@ -25,38 +25,68 @@ const ControlContainer = styled.div`
   }
 `
 
-const readsPropType = PropTypes.shape({
-  het: PropTypes.shape({
-    available: PropTypes.number.isRequired,
-    readGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-  hom: PropTypes.shape({
-    available: PropTypes.number.isRequired,
-    readGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-  hemi: PropTypes.shape({
-    available: PropTypes.number.isRequired,
-    readGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
+const ReadDataPropType = PropTypes.shape({
   bamPath: PropTypes.string.isRequired,
+  category: PropTypes.oneOf(['het', 'hom', 'hemi']).isRequired,
   indexPath: PropTypes.string.isRequired,
+  readGroup: PropTypes.string.isRequired,
 })
 
 export class GnomadReadData extends Component {
   static propTypes = {
+    showHemizygotes: PropTypes.bool,
     variant: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
       exome: PropTypes.shape({
-        reads: readsPropType,
+        reads: PropTypes.arrayOf(ReadDataPropType),
       }),
       genome: PropTypes.shape({
-        reads: readsPropType,
+        reads: PropTypes.arrayOf(ReadDataPropType),
       }),
     }).isRequired,
   }
 
-  state = {
-    tracksLoaded: {
+  static defaultProps = {
+    showHemizygotes: false,
+  }
+
+  constructor(props) {
+    super(props)
+
+    const { variant } = this.props
+
+    this.state = {
+      tracksAvailable: {
+        exome: (variant.exome && variant.exome.reads ? variant.exome.reads : []).reduce(
+          (acc, read) => ({
+            ...acc,
+            [read.category]: acc[read.category] + 1,
+          }),
+          { het: 0, hom: 0, hemi: 0 }
+        ),
+        genome: (variant.genome && variant.genome.reads ? variant.genome.reads : []).reduce(
+          (acc, read) => ({
+            ...acc,
+            [read.category]: acc[read.category] + 1,
+          }),
+          { het: 0, hom: 0, hemi: 0 }
+        ),
+      },
+      tracksLoaded: {
+        exome: {
+          het: 0,
+          hom: 0,
+          hemi: 0,
+        },
+        genome: {
+          het: 0,
+          hom: 0,
+          hemi: 0,
+        },
+      },
+    }
+
+    this.tracksLoaded = {
       exome: {
         het: 0,
         hom: 0,
@@ -67,18 +97,13 @@ export class GnomadReadData extends Component {
         hom: 0,
         hemi: 0,
       },
-    },
+    }
   }
 
   onCreateBrowser = igvBrowser => {
     this.igvBrowser = igvBrowser
 
     this.loadInitialTracks()
-  }
-
-  shouldShowHemiCategory() {
-    const { variant } = this.props
-    return ['X', 'Y'].includes(variant.chrom)
   }
 
   hasReadData(exomeOrGenome) {
@@ -88,47 +113,50 @@ export class GnomadReadData extends Component {
     }
 
     const { reads } = variant[exomeOrGenome]
-    if (!reads) {
-      return false
-    }
-
-    return reads.het.available > 0 || reads.hom.available > 0
+    return reads && reads.length > 0
   }
 
   canLoadMoreTracks(exomeOrGenome, category) {
-    const { variant } = this.props
-    const { tracksLoaded } = this.state
+    const { showHemizygotes } = this.props
+    const { tracksAvailable, tracksLoaded } = this.state
 
     if (!this.hasReadData(exomeOrGenome)) {
       return false
     }
 
-    if (category === 'hemi' && !this.shouldShowHemiCategory()) {
+    if (category === 'hemi' && !showHemizygotes) {
       return false
     }
 
-    const tracksAvailableForCategory = variant[exomeOrGenome].reads[category].available
+    const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
     const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
+
     return tracksLoadedForCategory < tracksAvailableForCategory
   }
 
-  loadTrack(exomeOrGenome, category, index) {
+  loadNextTrack(exomeOrGenome, category) {
     const { variant } = this.props
     const { reads } = variant[exomeOrGenome]
+
+    const tracksLoadedForCategory = this.tracksLoaded[exomeOrGenome][category]
+
+    const readsInCategory = reads.filter(r => r.category === category)
+
+    const nextRead = readsInCategory[tracksLoadedForCategory]
 
     const trackConfig = {
       autoHeight: false,
       colorBy: 'strand',
       format: 'bam',
       height: 300,
-      indexURL: `${API_URL}/${reads.indexPath}`,
-      name: `${category} [${exomeOrGenome}] #${index + 1}`,
+      indexURL: `${API_URL}/${nextRead.indexPath}`,
+      name: `${category} [${exomeOrGenome}] #${tracksLoadedForCategory + 1}`,
       pairsSupported: false,
-      readgroup: reads[category].readGroups[index],
+      readgroup: nextRead.readGroup,
       removable: false,
       samplingDepth: 1000,
       type: 'alignment',
-      url: `${API_URL}/${reads.bamPath}`,
+      url: `${API_URL}/${nextRead.bamPath}`,
     }
 
     this.setState(state => ({
@@ -142,6 +170,14 @@ export class GnomadReadData extends Component {
       },
     }))
 
+    this.tracksLoaded = {
+      ...this.tracksLoaded,
+      [exomeOrGenome]: {
+        ...this.tracksLoaded[exomeOrGenome],
+        [category]: this.tracksLoaded[exomeOrGenome][category] + 1,
+      },
+    }
+
     this.igvBrowser.loadTrack(trackConfig)
   }
 
@@ -149,35 +185,32 @@ export class GnomadReadData extends Component {
     ;['exome', 'genome'].forEach(exomeOrGenome => {
       ;['het', 'hom', 'hemi'].forEach(category => {
         if (this.canLoadMoreTracks(exomeOrGenome, category)) {
-          this.loadTrack(exomeOrGenome, category, 0)
+          this.loadNextTrack(exomeOrGenome, category)
         }
       })
     })
   }
 
   loadAllTracks() {
-    const { variant } = this.props
-    const { tracksLoaded } = this.state
+    const { tracksAvailable, tracksLoaded } = this.state
+
     ;['exome', 'genome'].forEach(exomeOrGenome => {
       ;['het', 'hom', 'hemi'].forEach(category => {
-        const tracksAvailableForCategory = variant[exomeOrGenome].reads[category].available
+        const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
         const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
         for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
-          this.loadTrack(exomeOrGenome, category, i)
+          this.loadNextTrack(exomeOrGenome, category)
         }
       })
     })
   }
 
   renderLoadMoreButton(exomeOrGenome, category) {
-    const { tracksLoaded } = this.state
-    const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
-
     return (
       <Button
         disabled={!this.canLoadMoreTracks(exomeOrGenome, category)}
-        onClick={() => this.loadTrack(exomeOrGenome, category, tracksLoadedForCategory)}
+        onClick={() => this.loadNextTrack(exomeOrGenome, category)}
       >
         Load +1 {category}
       </Button>
@@ -185,7 +218,7 @@ export class GnomadReadData extends Component {
   }
 
   render() {
-    const { variant } = this.props
+    const { showHemizygotes, variant } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -198,17 +231,17 @@ export class GnomadReadData extends Component {
     const browserConfig = {
       locus: `${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`,
       reference: {
-        fastaURL: `${API_URL}/reads/gnomad_r2_1/hg19.fa`,
+        fastaURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa`,
         id: 'hg19',
-        indexURL: `${API_URL}/reads/gnomad_r2_1/hg19.fa.fai`,
+        indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa.fai`,
       },
       tracks: [
         {
           displayMode: 'SQUISHED',
-          indexURL: `${API_URL}/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
+          indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
           name: 'gencode v19',
           removable: false,
-          url: `${API_URL}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
+          url: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
         },
       ],
     }
@@ -236,7 +269,7 @@ export class GnomadReadData extends Component {
             <strong>Exomes:</strong>
             {this.renderLoadMoreButton('exome', 'het')}
             {this.renderLoadMoreButton('exome', 'hom')}
-            {this.shouldShowHemiCategory() && this.renderLoadMoreButton('exome', 'hemi')}
+            {showHemizygotes && this.renderLoadMoreButton('exome', 'hemi')}
           </ControlContainer>
         )}
 
@@ -245,7 +278,7 @@ export class GnomadReadData extends Component {
             <strong>Genomes:</strong>
             {this.renderLoadMoreButton('genome', 'het')}
             {this.renderLoadMoreButton('genome', 'hom')}
-            {this.shouldShowHemiCategory() && this.renderLoadMoreButton('genome', 'hemi')}
+            {showHemizygotes && this.renderLoadMoreButton('genome', 'hemi')}
           </ControlContainer>
         )}
 
