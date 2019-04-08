@@ -115,23 +115,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           }
         }
         reads {
-          het {
-            available
-            expected
-            readGroups
-          }
-          hom {
-            available
-            expected
-            readGroups
-          }
-          hemi {
-            available
-            expected
-            readGroups
-          }
           bamPath
+          category
           indexPath
+          readGroup
         }
       }
       genome {
@@ -212,23 +199,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           }
         }
         reads {
-          het {
-            available
-            expected
-            readGroups
-          }
-          hom {
-            available
-            expected
-            readGroups
-          }
-          hemi {
-            available
-            expected
-            readGroups
-          }
           bamPath
+          category
           indexPath
+          readGroup
         }
       }
       flags

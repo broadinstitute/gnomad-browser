@@ -179,7 +179,10 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <Section>
               <SectionHeading>Read Data</SectionHeading>
-              <GnomadReadData variant={variant} />
+              <GnomadReadData
+                showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                variant={variant}
+              />
             </Section>
           </VariantDetailsContainer>
         )
