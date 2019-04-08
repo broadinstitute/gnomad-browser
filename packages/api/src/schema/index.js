@@ -10,6 +10,10 @@ import {
 import { getXpos } from '../utilities/variant'
 
 import { AggregateQualityMetricsType } from './datasets/aggregateQualityMetrics'
+import {
+  MultiNucleotideVariantDetailsType,
+  fetchGnomadMNVDetails,
+} from './datasets/gnomad_r2_1/gnomadMultiNucleotideVariants'
 import fetchGnomadStructuralVariantDetails from './datasets/gnomad_sv_r2/fetchGnomadStructuralVariantDetails'
 import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadStructuralVariantDetailsType'
 
@@ -74,6 +78,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       resolve: (obj, args, ctx) => {
         return lookupTranscriptsByTranscriptId(ctx.database.gnomad, args.transcript_id)
       },
+    },
+    multiNucleotideVariant: {
+      type: MultiNucleotideVariantDetailsType,
+      args: {
+        variantId: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (obj, args, ctx) => fetchGnomadMNVDetails(ctx, args.variantId),
     },
     region: {
       description: 'Look up data by start/stop. Example: (start: 55505222, stop: 55505300, chrom: 1).',

@@ -1,52 +1,23 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
-import { Badge, BaseTable, Modal, TextButton } from '@broad/ui'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+import { Badge, List, ListItem, Modal, TextButton } from '@broad/ui'
 
 import Link from '../Link'
-
-const MNVList = styled.ul`
-  li {
-    margin-bottom: 0.5em;
-  }
-`
-
-const categoryColors = {
-  lof: '#DD2C00',
-  missense: 'orange',
-  synonymous: '#2E7D32',
-  other: '#424242',
-}
-
-const getConsequenceColor = consequenceTerm => {
-  if (!consequenceTerm) {
-    return 'gray'
-  }
-  const category = getCategoryFromConsequence(consequenceTerm) || 'other'
-  return categoryColors[category]
-}
+import StatusMessage from '../StatusMessage'
+import MNVConsequence from './MultiNucleotideVariant/MNVConsequence'
+import MNVDetailsQuery from './MultiNucleotideVariant/MNVDetailsQuery'
 
 class GnomadMultiNucleotideVariantsSection extends Component {
   static propTypes = {
     multiNucleotideVariants: PropTypes.arrayOf(
       PropTypes.shape({
-        nIndividuals: PropTypes.number.isRequired,
         category: PropTypes.string.isRequired,
-        mnvAminoAcidChange: PropTypes.string.isRequired,
-        mnvCodonChange: PropTypes.string.isRequired,
-        mnvConsequence: PropTypes.string.isRequired,
+        combinedVariantId: PropTypes.string.isRequired,
+        nIndividuals: PropTypes.number.isRequired,
         otherVariantId: PropTypes.string.isRequired,
-        otherAminoAcidChange: PropTypes.string.isRequired,
-        otherCodonChange: PropTypes.string.isRequired,
-        otherConsequence: PropTypes.string.isRequired,
-        snvAminoAcidChange: PropTypes.string.isRequired,
-        snvCodonChange: PropTypes.string.isRequired,
-        snvConsequence: PropTypes.string.isRequired,
       })
     ).isRequired,
-    thisVariantId: PropTypes.string.isRequired,
   }
 
   state = {
@@ -54,22 +25,8 @@ class GnomadMultiNucleotideVariantsSection extends Component {
   }
 
   renderModal() {
-    const { thisVariantId } = this.props
     const { selectedMNV } = this.state
-    const {
-      nIndividuals,
-      category,
-      mnvAminoAcidChange,
-      mnvCodonChange,
-      mnvConsequence,
-      otherVariantId,
-      otherAminoAcidChange,
-      otherCodonChange,
-      otherConsequence,
-      snvAminoAcidChange,
-      snvCodonChange,
-      snvConsequence,
-    } = selectedMNV
+    const { combinedVariantId } = selectedMNV
 
     return (
       <Modal
@@ -79,54 +36,41 @@ class GnomadMultiNucleotideVariantsSection extends Component {
         size="large"
         title="Multi-Nucleotide Variant"
       >
-        <p style={{ marginTop: 0 }}>
-          {thisVariantId} is found in phase with {otherVariantId} in {nIndividuals} individuals.
-        </p>
-        <p>
-          <strong>Category:</strong> {category}
-        </p>
-        <BaseTable>
-          <thead>
-            <tr>
-              <th>Variant</th>
-              <th>Consequence</th>
-              <th>Codon Change</th>
-              <th>Amino Acid Change</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{thisVariantId}</td>
-              <td>
-                <span style={{ color: getConsequenceColor(snvConsequence) }}>
-                  {getLabelForConsequenceTerm(snvConsequence)}
-                </span>
-              </td>
-              <td>{snvCodonChange}</td>
-              <td>{snvAminoAcidChange}</td>
-            </tr>
-            <tr>
-              <td>{otherVariantId}</td>
-              <td>
-                <span style={{ color: getConsequenceColor(otherConsequence) }}>
-                  {getLabelForConsequenceTerm(otherConsequence)}
-                </span>
-              </td>
-              <td>{otherCodonChange}</td>
-              <td>{otherAminoAcidChange}</td>
-            </tr>
-            <tr>
-              <td>Combined</td>
-              <td>
-                <span style={{ color: getConsequenceColor(mnvConsequence) }}>
-                  {getLabelForConsequenceTerm(mnvConsequence)}
-                </span>
-              </td>
-              <td>{mnvCodonChange}</td>
-              <td>{mnvAminoAcidChange}</td>
-            </tr>
-          </tbody>
-        </BaseTable>
+        <MNVDetailsQuery variantId={combinedVariantId}>
+          {({ data, error, loading }) => {
+            if (loading) {
+              return <StatusMessage>Loading variant...</StatusMessage>
+            }
+
+            if (error || !data.multiNucleotideVariant) {
+              return <StatusMessage>Unable to load variant</StatusMessage>
+            }
+
+            const variant = data.multiNucleotideVariant
+
+            const thisVariant =
+              selectedMNV.otherVariantId === variant.snv1.variantId ? 'snv2' : 'snv1'
+            const otherVariant = thisVariant === 'snv1' ? 'snv2' : 'snv1'
+
+            const nIndividualsInExome = variant.exome ? variant.exome.nIndividuals : 0
+            const nIndividualsInGenome = variant.genome ? variant.genome.nIndividuals : 0
+            const totalIndividuals = nIndividualsInExome + nIndividualsInGenome
+
+            return (
+              <div>
+                <p style={{ marginTop: 0 }}>
+                  {variant[thisVariant].variantId} is found in phase with{' '}
+                  {variant[otherVariant].variantId} in {totalIndividuals} individuals.
+                </p>
+                <MNVConsequence
+                  consequence={variant.consequences[0]}
+                  snv1={variant.snv1.variantId}
+                  snv2={variant.snv2.variantId}
+                />
+              </div>
+            )
+          }}
+        </MNVDetailsQuery>
       </Modal>
     )
   }
@@ -135,20 +79,16 @@ class GnomadMultiNucleotideVariantsSection extends Component {
     const { multiNucleotideVariants } = this.props
     const { selectedMNV } = this.state
 
-    if (multiNucleotideVariants.length === 0) {
-      return null
-    }
-
     return (
       <div>
         <p>
           <strong>This variant&apos;s consequence may be affected by other variants:</strong>
         </p>
-        <MNVList>
+        <List>
           {multiNucleotideVariants.map(mnv => {
             const { category, nIndividuals, otherVariantId } = mnv
             return (
-              <li key={otherVariantId}>
+              <ListItem key={otherVariantId}>
                 {category === 'Unchanged' ? (
                   <Badge level="info">Note</Badge>
                 ) : (
@@ -164,10 +104,10 @@ class GnomadMultiNucleotideVariantsSection extends Component {
                 >
                   More info
                 </TextButton>
-              </li>
+              </ListItem>
             )
           })}
-        </MNVList>
+        </List>
 
         {selectedMNV && this.renderModal()}
       </div>

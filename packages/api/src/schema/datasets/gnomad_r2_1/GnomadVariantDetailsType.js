@@ -10,7 +10,7 @@ import {
 import { VariantInterface } from '../../types/variant'
 import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
-import { GnomadMultiNucleotideVariantType } from './gnomadMultiNucleotideVariants'
+import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
 
 const HistogramType = new GraphQLObjectType({
   name: 'Histogram',
@@ -127,7 +127,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
       }),
     },
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
-    multiNucleotideVariants: { type: new GraphQLList(GnomadMultiNucleotideVariantType) },
+    multiNucleotideVariants: { type: new GraphQLList(MultiNucleotideVariantSummaryType) },
     exome: {
       type: new GraphQLObjectType({
         name: 'GnomadVariantDetailsExomeData',

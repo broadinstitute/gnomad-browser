@@ -24,18 +24,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
       }
       colocatedVariants
       multiNucleotideVariants {
-        nIndividuals
+        combinedVariantId
         category
-        mnvAminoAcidChange
-        mnvCodonChange
-        mnvConsequence
+        nIndividuals
         otherVariantId
-        otherAminoAcidChange
-        otherCodonChange
-        otherConsequence
-        snvAminoAcidChange
-        snvCodonChange
-        snvConsequence
       }
       exome {
         ac

@@ -1,4 +1,4 @@
-import { fetchGnomadMNVsByVariantId } from './gnomadMultiNucleotideVariants'
+import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
 
 const formatHistogram = histogramData => ({
   bin_edges: histogramData.bin_edges.split('|').map(s => Number(s)),
@@ -178,7 +178,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     [
       fetchGnomadVariantData(ctx, variantId, subset),
       fetchColocatedVariants(ctx, variantId, subset),
-      fetchGnomadMNVsByVariantId(ctx, variantId),
+      fetchGnomadMNVSummariesByVariantId(ctx, variantId),
     ]
   )
 
