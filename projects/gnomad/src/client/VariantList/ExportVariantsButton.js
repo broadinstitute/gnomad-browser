@@ -205,7 +205,7 @@ ExportVariantsButton.propTypes = {
       ac_hom: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
       af: PropTypes.number.isRequired,
-      consequence: PropTypes.string.isRequired,
+      consequence: PropTypes.string,
       flags: PropTypes.arrayOf(PropTypes.string).isRequired,
       hgvs: PropTypes.string,
       hgvsc: PropTypes.string,
