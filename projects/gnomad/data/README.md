@@ -27,6 +27,7 @@ TODO
 * [aggregate quality metrics](./docs/gnomad_aggregate_quality_metrics.md)
 * [multi-nucleotide variants](./docs/gnomad_mnvs.md)
 * pext scores
+* [structural variants](./docs/gnomad_svs.md)
 
 ## ExAC
 
