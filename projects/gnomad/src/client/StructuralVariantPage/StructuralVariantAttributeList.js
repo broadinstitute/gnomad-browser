@@ -123,7 +123,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
     <AttributeList.Item label="Filter">
       {variant.filters.length > 0 ? (
         variant.filters.map(filter => (
-          <Badge level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
+          <Badge key={filter} level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
             {filter
               .split('_')
               .map(s => `${s.charAt(0)}${s.slice(1).toLowerCase()}`)
@@ -149,12 +149,11 @@ const StructuralVariantAttributeList = ({ variant }) => (
     <AttributeList.Item label="Position">
       <VariantPosition variant={variant} />
     </AttributeList.Item>
-    {variant.type !== 'BND' &&
-      variant.type !== 'CTX' && (
-        <AttributeList.Item label="Size">
-          {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
-        </AttributeList.Item>
-      )}
+    {variant.type !== 'BND' && variant.type !== 'CTX' && (
+      <AttributeList.Item label="Size">
+        {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
+      </AttributeList.Item>
+    )}
     <AttributeList.Item label="Class">
       {svTypeLabels[variant.type]} <QuestionMark topic={`SV_docs/sv-class_${variant.type}`} />
     </AttributeList.Item>
