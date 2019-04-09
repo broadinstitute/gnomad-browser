@@ -32,23 +32,12 @@ const fetchExacVariantsByTranscript = async (ctx, transcriptId) => {
       'pos',
       'ref',
       'rsid',
+      'sortedTranscriptConsequences',
       'variant_id',
       'xpos',
     ],
 
     body: {
-      script_fields: {
-        csq: {
-          script: {
-            lang: 'painless',
-            inline:
-              'params._source.sortedTranscriptConsequences.find(c -> c.transcript_id == params.transcriptId)',
-            params: {
-              transcriptId,
-            },
-          },
-        },
-      },
       query: {
         bool: {
           filter: [
@@ -68,7 +57,7 @@ const fetchExacVariantsByTranscript = async (ctx, transcriptId) => {
     },
   })
 
-  return hits.map(shapeExacVariantSummary('transcript'))
+  return hits.map(shapeExacVariantSummary({ type: 'transcript', transcriptId }))
 }
 
 export default fetchExacVariantsByTranscript

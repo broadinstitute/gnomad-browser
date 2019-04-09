@@ -44,23 +44,12 @@ const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
       'pos',
       'ref',
       'rsid',
+      'sortedTranscriptConsequences',
       'variant_id',
       'xpos',
     ],
 
     body: {
-      script_fields: {
-        csq: {
-          script: {
-            lang: 'painless',
-            inline:
-              'params._source.sortedTranscriptConsequences.find(c -> c.gene_id == params.geneId)',
-            params: {
-              geneId,
-            },
-          },
-        },
-      },
       query: {
         bool: {
           filter: [
@@ -80,7 +69,7 @@ const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
     },
   })
 
-  return hits.map(shapeExacVariantSummary('gene'))
+  return hits.map(shapeExacVariantSummary({ type: 'gene', geneId }))
 }
 
 export default fetchExacVariantsByGene
