@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Link as StyledLink, List, ListItem, Page, SectionHeading } from '@broad/ui'
+import { Page, SectionHeading } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -17,6 +17,7 @@ import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetr
 import { GnomadReadData } from './reads/GnomadReadData'
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import { VariantDetailsQuery } from './VariantDetailsQuery'
+import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 
@@ -39,38 +40,6 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
-const reportURL = variantId => {
-  const reportTemplate = `
-Name:
-Institution:
-
-Variant ID: ${variantId}
-
-Variant issue: (clinically implausible, read support poor, other artifact, etc.)
-Please explain your concern about this variant
-`
-
-  return `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
-    'Variant report'
-  )}&body=${encodeURIComponent(reportTemplate)}`
-}
-
-const requestURL = variantId => {
-  const requestTemplate = `
-Name:
-Institution:
-
-Variant ID: ${variantId}
-
-Expected phenotype:
-
-Additional information that may be helpful for our understanding of the request:
-`
-
-  return `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
-    'Request for variant information'
-  )}&body=${encodeURIComponent(requestTemplate)}`
-}
 
 const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
@@ -131,16 +100,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               <SectionHeading>References</SectionHeading>
               <ReferenceList variant={variant} />
               <SectionHeading>Report</SectionHeading>
-              <List>
-                <ListItem>
-                  <StyledLink href={reportURL(variantId)}>Report this variant</StyledLink>
-                </ListItem>
-                <ListItem>
-                  <StyledLink href={requestURL(variantId)}>
-                    Request additional information
-                  </StyledLink>
-                </ListItem>
-              </List>
+              <VariantFeedback datasetId={datasetId} variantId={variantId} />
             </ResponsiveSection>
             <Section>
               <SectionHeading>Annotations</SectionHeading>

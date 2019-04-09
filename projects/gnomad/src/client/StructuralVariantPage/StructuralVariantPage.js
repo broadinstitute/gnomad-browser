@@ -8,11 +8,13 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
+import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
 import StructuralVariantConsequenceList from './StructuralVariantConsequenceList'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
+import SVReferenceList from './SVReferenceList'
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,19 +38,24 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
       {variant.variant_id}
     </GnomadPageHeading>
     <Wrapper>
-      {variant.type === 'MCNV' ? (
-        <React.Fragment>
-          <ResponsiveSection>
-            <StructuralVariantAttributeList variant={variant} />
-          </ResponsiveSection>
-          <ResponsiveSection>
-            <MultiallelicCopyNumberVariantPlot variant={variant} />
-          </ResponsiveSection>
-        </React.Fragment>
-      ) : (
+      <ResponsiveSection>
         <StructuralVariantAttributeList variant={variant} />
-      )}
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <SectionHeading>References</SectionHeading>
+        <SVReferenceList variant={variant} />
+        <SectionHeading>Report</SectionHeading>
+        <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
+      </ResponsiveSection>
     </Wrapper>
+    {variant.type === 'MCNV' && (
+      <Wrapper>
+        <ResponsiveSection>
+          <SectionHeading>Copy Number Distribution</SectionHeading>
+          <MultiallelicCopyNumberVariantPlot variant={variant} />
+        </ResponsiveSection>
+      </Wrapper>
+    )}
     <Wrapper>
       <ResponsiveSection>
         <SectionHeading>Consequences</SectionHeading>
@@ -125,6 +132,10 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
       }}
     </Query>
   )
+}
+
+ConnectedStructuralVariantPage.propTypes = {
+  variantId: PropTypes.string.isRequired,
 }
 
 export default ConnectedStructuralVariantPage
