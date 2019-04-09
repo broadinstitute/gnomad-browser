@@ -12,8 +12,8 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-mnvs \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_gnomad_mnvs.py \
-         --input-url=gs://gnomad-qingbowang/MNV/to_public/mnv_exome_beta.tsv \
+      ./projects/gnomad/data/prepare_gnomad_mnvs_for_browser.py \
+         --input-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv \
          --output-url=$GNOMAD_MNV_BROWSER_HT_URL
    ```
 
@@ -26,7 +26,7 @@
       ./projects/gnomad/data/export_ht_to_es.py \
          --ht-url=$GNOMAD_MNV_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_exome_mnvs_2_1 \
+         --index-name=gnomad_2_1_mnv_coding \
          --index-type=mnv
    ```
 
