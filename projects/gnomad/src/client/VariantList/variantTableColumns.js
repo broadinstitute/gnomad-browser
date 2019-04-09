@@ -60,7 +60,10 @@ export const getColumns = ({ datasetId, width, includeHomozygoteAC, includeHemiz
       minWidth: 100,
       render:
         datasetId === 'exac'
-          ? variant => <DatasetIcon dataset="exac" isFiltered={variant.exome.filters.length > 0} />
+          ? variant =>
+              variant.exome && (
+                <DatasetIcon dataset="exac" isFiltered={variant.exome.filters.length > 0} />
+              )
           : variant => (
               <React.Fragment>
                 {variant.exome && (
