@@ -32,10 +32,29 @@ const getFlags = (variantData, transcriptConsequence) => {
 }
 
 const shapeExacVariantSummary = context => {
+  let getConsequence
+  switch (context.type) {
+    case 'gene':
+      getConsequence = variant =>
+        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
+      break
+    case 'region':
+      getConsequence = variant => (variant.sortedTranscriptConsequences || [])[0]
+      break
+    case 'transcript':
+      getConsequence = variant =>
+        (variant.sortedTranscriptConsequences || []).find(
+          csq => csq.transcript_id === context.transcriptId
+        )
+      break
+    default:
+      throw Error(`Invalid context for shapeExacVariantSummary: ${context.type}`)
+  }
+
   return esHit => {
     // eslint-disable-next-line no-underscore-dangle
     const variantData = esHit._source
-    const transcriptConsequence = esHit.fields.csq[0] || {}
+    const transcriptConsequence = getConsequence(variantData) || {}
 
     const { filters } = variantData
     if (variantData.AC_Adj === 0 && !filters.includes('AC_Adj0_Filter')) {

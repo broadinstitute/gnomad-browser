@@ -40,6 +40,25 @@ const getFlags = (variantData, transcriptConsequence) => {
 }
 
 const shapeGnomadVariantSummary = (subsetKey, context) => {
+  let getConsequence
+  switch (context.type) {
+    case 'gene':
+      getConsequence = variant =>
+        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
+      break
+    case 'region':
+      getConsequence = variant => (variant.sortedTranscriptConsequences || [])[0]
+      break
+    case 'transcript':
+      getConsequence = variant =>
+        (variant.sortedTranscriptConsequences || []).find(
+          csq => csq.transcript_id === context.transcriptId
+        )
+      break
+    default:
+      throw Error(`Invalid context for shapeGnomadVariantSummary: ${context.type}`)
+  }
+
   return esHit => {
     // eslint-disable-next-line no-underscore-dangle
     const variantData = esHit._source
@@ -50,7 +69,7 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
     const ac = variantData[subsetKey].AC_adj.total
     const an = variantData[subsetKey].AN_adj.total
 
-    const transcriptConsequence = esHit.fields.csq[0] || {}
+    const transcriptConsequence = getConsequence(variantData) || {}
 
     return {
       // Variant ID fields

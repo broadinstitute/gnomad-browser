@@ -32,19 +32,11 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
           'pos',
           'ref',
           'rsid',
+          'sortedTranscriptConsequences',
           'variant_id',
           'xpos',
         ],
         body: {
-          script_fields: {
-            csq: {
-              script: {
-                lang: 'painless',
-                inline:
-                  'params._source.sortedTranscriptConsequences.stream().findFirst().orElse(null)',
-              },
-            },
-          },
           query: {
             bool: {
               filter: [
@@ -65,7 +57,7 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
         },
       })
 
-      return hits.map(shapeGnomadVariantSummary(subset, 'region'))
+      return hits.map(shapeGnomadVariantSummary(subset, { type: 'region' }))
     })
   )
 

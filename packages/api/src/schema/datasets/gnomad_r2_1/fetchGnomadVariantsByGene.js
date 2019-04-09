@@ -56,22 +56,11 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
           'pos',
           'ref',
           'rsid',
+          'sortedTranscriptConsequences',
           'variant_id',
           'xpos',
         ],
         body: {
-          script_fields: {
-            csq: {
-              script: {
-                lang: 'painless',
-                inline:
-                  'params._source.sortedTranscriptConsequences.find(c -> c.gene_id == params.geneId)',
-                params: {
-                  geneId,
-                },
-              },
-            },
-          },
           query: {
             bool: {
               filter: [
@@ -92,7 +81,7 @@ const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, sub
         },
       })
 
-      return hits.map(shapeGnomadVariantSummary(subset, 'gene'))
+      return hits.map(shapeGnomadVariantSummary(subset, { type: 'gene', geneId }))
     })
   )
 

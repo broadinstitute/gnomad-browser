@@ -19,18 +19,11 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       'pos',
       'ref',
       'rsid',
+      'sortedTranscriptConsequences',
       'variant_id',
       'xpos',
     ],
     body: {
-      script_fields: {
-        csq: {
-          script: {
-            lang: 'painless',
-            inline: 'params._source.sortedTranscriptConsequences.stream().findFirst().orElse(null)',
-          },
-        },
-      },
       query: {
         bool: {
           filter: [
@@ -50,7 +43,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
     },
   })
 
-  return hits.map(shapeExacVariantSummary('region'))
+  return hits.map(shapeExacVariantSummary({ type: 'region' }))
 }
 
 export default fetchExacVariantsByRegion
