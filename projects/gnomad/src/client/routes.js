@@ -10,6 +10,7 @@ import { normalizeRegionId, normalizeVariantId } from '@broad/utilities'
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'
 import DownloadsPage from './DownloadsPage'
+import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
 import GenePage from './GenePage/GenePage'
 import HomePage from './HomePage'
@@ -42,94 +43,96 @@ const App = () => (
     />
     <MainPanel>
       <NavBar />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route
-          exact
-          path="/gene/:gene/transcript/:transcriptId"
-          render={({ history, location, match }) => {
-            const params = queryString.parse(location.search)
-            const datasetId = params.dataset || defaultDataset
-            return (
-              <GenePage
-                datasetId={datasetId}
-                geneIdOrName={match.params.gene}
-                history={history}
-                location={location}
-                match={match}
-                transcriptId={match.params.transcriptId}
-              />
-            )
-          }}
-        />
-        <Route
-          exact
-          path="/gene/:gene"
-          render={({ history, location, match }) => {
-            const params = queryString.parse(location.search)
-            const datasetId = params.dataset || defaultDataset
-            return (
-              <GenePage
-                datasetId={datasetId}
-                geneIdOrName={match.params.gene}
-                history={history}
-                location={location}
-                match={match}
-              />
-            )
-          }}
-        />
-        <Route
-          exact
-          path="/region/:regionId"
-          render={({ history, location, match }) => {
-            const params = queryString.parse(location.search)
-            const datasetId = params.dataset || defaultDataset
-            const regionId = normalizeRegionId(match.params.regionId)
-            return (
-              <RegionPageContainer
-                datasetId={datasetId}
-                regionId={regionId}
-                history={history}
-                location={location}
-                match={match}
-              />
-            )
-          }}
-        />
-        <Route
-          exact
-          path="/variant/:variantId"
-          render={({ history, location, match }) => {
-            const params = queryString.parse(location.search)
-            const datasetId = params.dataset || defaultDataset
-            const variantId = normalizeVariantId(match.params.variantId)
-            return (
-              <VariantPage
-                datasetId={datasetId}
-                variantId={variantId}
-                history={history}
-                location={location}
-                match={match}
-              />
-            )
-          }}
-        />
-        <Route exact path="/about" component={AboutPage} />
-        <Route exact path="/downloads" component={DownloadsPage} />
-        <Route exact path="/terms" component={TermsPage} />
-        <Route exact path="/contact" component={ContactPage} />
-        <Route exact path="/faq" component={FAQPage} />
-        <Route
-          exact
-          path="/awesome"
-          render={({ location }) => {
-            const params = queryString.parse(location.search)
-            return <SearchRedirectPage query={params.query} />
-          }}
-        />
-        <Route component={PageNotFoundPage} />
-      </Switch>
+      <ErrorBoundary>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route
+            exact
+            path="/gene/:gene/transcript/:transcriptId"
+            render={({ history, location, match }) => {
+              const params = queryString.parse(location.search)
+              const datasetId = params.dataset || defaultDataset
+              return (
+                <GenePage
+                  datasetId={datasetId}
+                  geneIdOrName={match.params.gene}
+                  history={history}
+                  location={location}
+                  match={match}
+                  transcriptId={match.params.transcriptId}
+                />
+              )
+            }}
+          />
+          <Route
+            exact
+            path="/gene/:gene"
+            render={({ history, location, match }) => {
+              const params = queryString.parse(location.search)
+              const datasetId = params.dataset || defaultDataset
+              return (
+                <GenePage
+                  datasetId={datasetId}
+                  geneIdOrName={match.params.gene}
+                  history={history}
+                  location={location}
+                  match={match}
+                />
+              )
+            }}
+          />
+          <Route
+            exact
+            path="/region/:regionId"
+            render={({ history, location, match }) => {
+              const params = queryString.parse(location.search)
+              const datasetId = params.dataset || defaultDataset
+              const regionId = normalizeRegionId(match.params.regionId)
+              return (
+                <RegionPageContainer
+                  datasetId={datasetId}
+                  regionId={regionId}
+                  history={history}
+                  location={location}
+                  match={match}
+                />
+              )
+            }}
+          />
+          <Route
+            exact
+            path="/variant/:variantId"
+            render={({ history, location, match }) => {
+              const params = queryString.parse(location.search)
+              const datasetId = params.dataset || defaultDataset
+              const variantId = normalizeVariantId(match.params.variantId)
+              return (
+                <VariantPage
+                  datasetId={datasetId}
+                  variantId={variantId}
+                  history={history}
+                  location={location}
+                  match={match}
+                />
+              )
+            }}
+          />
+          <Route exact path="/about" component={AboutPage} />
+          <Route exact path="/downloads" component={DownloadsPage} />
+          <Route exact path="/terms" component={TermsPage} />
+          <Route exact path="/contact" component={ContactPage} />
+          <Route exact path="/faq" component={FAQPage} />
+          <Route
+            exact
+            path="/awesome"
+            render={({ location }) => {
+              const params = queryString.parse(location.search)
+              return <SearchRedirectPage query={params.query} />
+            }}
+          />
+          <Route component={PageNotFoundPage} />
+        </Switch>
+      </ErrorBoundary>
     </MainPanel>
     <HelpModal />
     <HelpButton />
