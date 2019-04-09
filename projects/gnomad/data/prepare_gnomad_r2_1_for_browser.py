@@ -13,7 +13,6 @@ from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_variant_loftee_flag_flag,
     get_expr_for_genes_with_loftee_flag_flag,
     get_expr_for_ref_allele,
-    get_expr_for_start_pos,
     get_expr_for_variant_id,
     get_expr_for_vep_sorted_transcript_consequences_array,
     get_expr_for_xpos,
@@ -105,11 +104,11 @@ ds = ds.transmute(
 # Derived top level fields
 ds = ds.annotate(
     alt=get_expr_for_alt_allele(ds),
-    chrom=get_expr_for_contig(ds),
-    pos=get_expr_for_start_pos(ds),
+    chrom=get_expr_for_contig(ds.locus),
+    pos=ds.locus.position,
     ref=get_expr_for_ref_allele(ds),
     variant_id=get_expr_for_variant_id(ds),
-    xpos=get_expr_for_xpos(ds),
+    xpos=get_expr_for_xpos(ds.locus),
 )
 
 ###########
