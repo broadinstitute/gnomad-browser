@@ -2,7 +2,10 @@ import argparse
 
 import hail as hl
 
-from hail_scripts.v02.utils.computed_fields import get_expr_for_xpos
+from hail_scripts.v02.utils.computed_fields import (
+    get_expr_for_contig,
+    get_expr_for_xpos,
+)
 
 p = argparse.ArgumentParser()
 p.add_argument("--input-url", help="URL of MNV TSV file", required=True)
@@ -29,7 +32,7 @@ ds = hl.import_table(
 # Prepare #
 ###########
 
-ds = ds.annotate(chrom=ds.locus.contig, pos=ds.locus.position, xpos=get_expr_for_xpos(ds))
+ds = ds.annotate(chrom=get_expr_for_contig(ds.locus), pos=ds.locus.position, xpos=get_expr_for_xpos(ds.locus))
 
 ds = ds.transmute(category=ds.categ, snp1_variant_id=ds.snp1, snp2_variant_id=ds.snp2, mnv_variant_id=ds.mnv)
 

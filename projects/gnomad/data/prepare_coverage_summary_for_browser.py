@@ -4,7 +4,6 @@ import hail as hl
 
 from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_contig,
-    get_expr_for_start_pos,
     get_expr_for_xpos,
 )
 
@@ -23,9 +22,9 @@ if args.subset:
     ds = ds.filter(subset_interval.contains(ds.locus))
 
 ds = ds.select(
-    chrom=get_expr_for_contig(ds),
-    pos=get_expr_for_start_pos(ds),
-    xpos=get_expr_for_xpos(ds),
+    chrom=get_expr_for_contig(ds.locus),
+    pos=ds.locus.position,
+    xpos=get_expr_for_xpos(ds.locus),
     mean=ds.mean,
     median=ds.median,
     over1=ds.over_1,

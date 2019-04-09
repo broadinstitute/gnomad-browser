@@ -13,7 +13,6 @@ from hail_scripts.v02.utils.computed_fields import (
     get_expr_for_variant_loftee_flag_flag,
     get_expr_for_genes_with_loftee_flag_flag,
     get_expr_for_ref_allele,
-    get_expr_for_start_pos,
     get_expr_for_variant_id,
     get_expr_for_variant_ids,
     get_expr_for_vep_sorted_transcript_consequences_array,
@@ -513,8 +512,8 @@ mt = mt.select_rows(
         pathogenic=mt.info.clinvar_pathogenic,
     ),
     alt=get_expr_for_alt_allele(mt),
-    chrom=get_expr_for_contig(mt),
-    pos=get_expr_for_start_pos(mt),
+    chrom=get_expr_for_contig(mt.locus),
+    pos=mt.locus.position,
     ref=get_expr_for_ref_allele(mt),
     original_alt_alleles=get_expr_for_variant_ids(mt.old_locus, mt.old_alleles),
     sortedTranscriptConsequences=hl.bind(
@@ -533,7 +532,7 @@ mt = mt.select_rows(
         get_expr_for_genes_with_loftee_flag_flag(mt.sortedTranscriptConsequences),
     ),
     variant_id=get_expr_for_variant_id(mt),
-    xpos=get_expr_for_xpos(mt),
+    xpos=get_expr_for_xpos(mt.locus),
 )
 
 # Drop key columns for export
