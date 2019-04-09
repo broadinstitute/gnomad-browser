@@ -3,49 +3,47 @@ import React from 'react'
 
 import { Link as StyledLink, List, ListItem } from '@broad/ui'
 
-const reportURL = variantId => {
-  const reportTemplate = `
+const VariantFeedback = ({ datasetId, variantId }) => {
+  const reportEmailBody = `
 Name:
 Institution:
 
-Variant ID: ${variantId}
+Variant ID: ${variantId} (https://gnomad.broadinstitute.org/variant/${variantId}?dataset=${datasetId})
 
 Variant issue: (clinically implausible, read support poor, other artifact, etc.)
 Please explain your concern about this variant
 `
 
-  return `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+  const reportURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
     'Variant report'
-  )}&body=${encodeURIComponent(reportTemplate)}`
-}
+  )}&body=${encodeURIComponent(reportEmailBody)}`
 
-const requestURL = variantId => {
-  const requestTemplate = `
+  const requestEmailBody = `
 Name:
 Institution:
 
-Variant ID: ${variantId}
+Variant ID: ${variantId} (https://gnomad.broadinstitute.org/variant/${variantId}?dataset=${datasetId})
 
 Expected phenotype:
 
 Additional information that may be helpful for our understanding of the request:
 `
 
-  return `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+  const requestURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
     'Request for variant information'
-  )}&body=${encodeURIComponent(requestTemplate)}`
-}
+  )}&body=${encodeURIComponent(requestEmailBody)}`
 
-const VariantFeedback = ({ datasetId, variantId }) => (
-  <List>
-    <ListItem>
-      <StyledLink href={reportURL(variantId)}>Report this variant</StyledLink>
-    </ListItem>
-    <ListItem>
-      <StyledLink href={requestURL(variantId)}>Request additional information</StyledLink>
-    </ListItem>
-  </List>
-)
+  return (
+    <List>
+      <ListItem>
+        <StyledLink href={reportURL}>Report this variant</StyledLink>
+      </ListItem>
+      <ListItem>
+        <StyledLink href={requestURL}>Request additional information</StyledLink>
+      </ListItem>
+    </List>
+  )
+}
 
 VariantFeedback.propTypes = {
   datasetId: PropTypes.string.isRequired,
