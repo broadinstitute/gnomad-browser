@@ -12,6 +12,3 @@ coverage-exacv1:
 	--block-size 20000 \
 	--num-shards 6 \
 	--index exacv1_coverage
-
-regional-constraint-gene-stats:
-	../../../node_modules/.bin/babel-node --config-file=../../../babel.config.js export_regional_constraint_gene_stats.js
