@@ -5,10 +5,10 @@ import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 export const MultiNucleotideVariantSummaryType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantSummary',
   fields: {
-    combinedVariantId: { type: new GraphQLNonNull(GraphQLString) },
-    category: { type: new GraphQLNonNull(GraphQLString) },
-    nIndividuals: { type: new GraphQLNonNull(GraphQLInt) },
-    otherVariantId: { type: new GraphQLNonNull(GraphQLString) },
+    combined_variant_id: { type: new GraphQLNonNull(GraphQLString) },
+    category: { type: GraphQLString },
+    n_individuals: { type: new GraphQLNonNull(GraphQLInt) },
+    other_constituent_snvs: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
   },
 })
 
@@ -16,8 +16,8 @@ const MultiNucleotideVariantDetailsSequencingDataType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantDetailsSequencingData',
   fields: {
     ac: { type: GraphQLInt },
-    acHom: { type: GraphQLInt },
-    nIndividuals: { type: GraphQLInt },
+    ac_hom: { type: GraphQLInt },
+    n_individuals: { type: GraphQLInt },
   },
 })
 
@@ -33,17 +33,18 @@ const MultiNucleotideVariantConstituentSNVSequencingDataType = new GraphQLObject
 const MultiNucleotideVariantConstituentSNVType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantSNVData',
   fields: {
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    variant_id: { type: new GraphQLNonNull(GraphQLString) },
     exome: { type: MultiNucleotideVariantConstituentSNVSequencingDataType },
     genome: { type: MultiNucleotideVariantConstituentSNVSequencingDataType },
   },
 })
 
-const MultiNucleotideVariantConsequenceVariantDataType = new GraphQLObjectType({
-  name: 'MultiNucleotideVariantConsequenceVariantData',
+const MultiNucleotideVariantConstituentSNVConsequenceType = new GraphQLObjectType({
+  name: 'MultiNucleotideVariantConstituentSNVConsequence',
   fields: {
-    aminoAcidChange: { type: new GraphQLNonNull(GraphQLString) },
-    codonChange: { type: new GraphQLNonNull(GraphQLString) },
+    variant_id: { type: new GraphQLNonNull(GraphQLString) },
+    amino_acids: { type: new GraphQLNonNull(GraphQLString) },
+    codons: { type: new GraphQLNonNull(GraphQLString) },
     consequence: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
@@ -51,24 +52,32 @@ const MultiNucleotideVariantConsequenceVariantDataType = new GraphQLObjectType({
 const MultiNucleotideVariantConsequenceType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantConsequence',
   fields: {
-    geneId: { type: new GraphQLNonNull(GraphQLString) },
-    geneSymbol: { type: new GraphQLNonNull(GraphQLString) },
-    transcriptId: { type: new GraphQLNonNull(GraphQLString) },
-    snv1: { type: MultiNucleotideVariantConsequenceVariantDataType },
-    snv2: { type: MultiNucleotideVariantConsequenceVariantDataType },
-    mnv: { type: MultiNucleotideVariantConsequenceVariantDataType },
-    category: { type: new GraphQLNonNull(GraphQLString) },
+    gene_id: { type: new GraphQLNonNull(GraphQLString) },
+    gene_name: { type: new GraphQLNonNull(GraphQLString) },
+    transcript_id: { type: new GraphQLNonNull(GraphQLString) },
+    category: { type: GraphQLString },
+    amino_acids: { type: new GraphQLNonNull(GraphQLString) },
+    codons: { type: new GraphQLNonNull(GraphQLString) },
+    consequence: { type: new GraphQLNonNull(GraphQLString) },
+    snv_consequences: {
+      type: new GraphQLNonNull(
+        new GraphQLList(MultiNucleotideVariantConstituentSNVConsequenceType)
+      ),
+    },
   },
 })
 
 export const MultiNucleotideVariantDetailsType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantDetails',
   fields: {
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    variant_id: { type: new GraphQLNonNull(GraphQLString) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
-    snv1: { type: MultiNucleotideVariantConstituentSNVType },
-    snv2: { type: MultiNucleotideVariantConstituentSNVType },
+    ref: { type: new GraphQLNonNull(GraphQLString) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
+    constituent_snvs: {
+      type: new GraphQLNonNull(new GraphQLList(MultiNucleotideVariantConstituentSNVType)),
+    },
     exome: { type: MultiNucleotideVariantDetailsSequencingDataType },
     genome: { type: MultiNucleotideVariantDetailsSequencingDataType },
     consequences: { type: new GraphQLList(MultiNucleotideVariantConsequenceType) },
@@ -88,10 +97,10 @@ export const fetchGnomadMNVsByIntervals = async (ctx, intervals) => {
   }))
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'gnomad_2_1_mnv_coding',
+    index: 'gnomad_2_1_coding_mnvs',
     type: 'mnv',
     size: 10000,
-    _source: ['pos', 'snp1', 'snp2'],
+    _source: ['constituent_snv_ids'],
     body: {
       query: {
         bool: {
@@ -112,11 +121,7 @@ export const fetchGnomadMNVsByIntervals = async (ctx, intervals) => {
 // Add an 'mnv' flag to variants that are part of a MNV.
 // Requires the variants list to be sorted by position.
 export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
-  const mnvVariantIds = new Set()
-  mnvs.forEach(mnv => {
-    mnvVariantIds.add(mnv.snp1)
-    mnvVariantIds.add(mnv.snp2)
-  })
+  const mnvVariantIds = new Set(mnvs.reduce((acc, mnv) => acc.concat(mnv.constituent_snv_ids), []))
 
   variants.forEach(variant => {
     if (mnvVariantIds.has(variant.variantId)) {
@@ -129,16 +134,14 @@ export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
 
 export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: 'gnomad_2_1_mnv_coding',
+    index: 'gnomad_2_1_coding_mnvs',
     type: 'mnv',
-    _source: ['mnv', 'snp1', 'snp2', 'n_indv', 'consequences'],
+    _source: ['variant_id', 'constituent_snv_ids', 'n_individuals', 'consequences'],
     body: {
       query: {
         bool: {
           filter: {
-            bool: {
-              should: [{ term: { snp1: variantId } }, { term: { snp2: variantId } }],
-            },
+            term: { constituent_snv_ids: variantId },
           },
         },
       },
@@ -147,26 +150,24 @@ export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
 
   return response.hits.hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
-
-    const otherVariant = variantId === doc.snp1 ? 'snp2' : 'snp1'
     return {
-      combinedVariantId: doc.mnv,
+      combined_variant_id: doc.variant_id,
       category: doc.consequences[0].category,
-      nIndividuals: doc.n_indv.total,
-      otherVariantId: doc[otherVariant],
+      n_individuals: doc.n_individuals,
+      other_constituent_snvs: doc.constituent_snv_ids.filter(snvId => snvId !== variantId),
     }
   })
 }
 
 export const fetchGnomadMNVDetails = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: 'gnomad_2_1_mnv_coding',
+    index: 'gnomad_2_1_coding_mnvs',
     type: 'mnv',
     body: {
       query: {
         bool: {
           filter: {
-            term: { mnv: variantId },
+            term: { variant_id: variantId },
           },
         },
       },
@@ -180,87 +181,19 @@ export const fetchGnomadMNVDetails = async (ctx, variantId) => {
 
   const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
 
-  const isSnv1PresentInExome = doc.an.snp1.exome !== undefined
-  const isSnv1PresentInGenome = doc.an.snp1.genome !== undefined
-
-  const isSnv2PresentInExome = doc.an.snp2.exome !== undefined
-  const isSnv2PresentInGenome = doc.an.snp2.genome !== undefined
-
-  const isMnvPresentInExome = isSnv1PresentInExome && isSnv2PresentInExome
-  const isMnvPresentInGenome = isSnv1PresentInGenome && isSnv2PresentInGenome
-
   return {
-    variantId: doc.mnv,
+    variant_id: doc.variant_id,
     chrom: doc.contig,
     pos: doc.pos,
-    snv1: {
-      variantId: doc.snp1,
-      exome: isSnv1PresentInExome
-        ? {
-            ac: doc.ac.snp1.exome,
-            an: doc.an.snp1.exome,
-            filters: doc.filters.snp1.exome,
-          }
-        : null,
-      genome: isSnv1PresentInGenome
-        ? {
-            ac: doc.ac.snp1.genome,
-            an: doc.an.snp1.genome,
-            filters: doc.filters.snp1.genome,
-          }
-        : null,
-    },
-    snv2: {
-      variantId: doc.snp2,
-      exome: isSnv2PresentInExome
-        ? {
-            ac: doc.ac.snp2.exome,
-            an: doc.an.snp2.exome,
-            filters: doc.filters.snp2.exome,
-          }
-        : null,
-      genome: isSnv2PresentInGenome
-        ? {
-            ac: doc.ac.snp2.genome,
-            an: doc.an.snp2.genome,
-            filters: doc.filters.snp2.genome,
-          }
-        : null,
-    },
-    exome: isMnvPresentInExome
-      ? {
-          ac: doc.ac.mnv.exome,
-          acHom: doc.n_homhom.exome,
-          nIndividuals: doc.n_indv.exome,
-        }
-      : null,
-    genome: isMnvPresentInGenome
-      ? {
-          ac: doc.ac.mnv.genome,
-          acHom: doc.n_homhom.genome,
-          nIndividuals: doc.n_indv.genome,
-        }
-      : null,
-    consequences: doc.consequences.map(csq => ({
-      geneId: csq.gene_id,
-      geneSymbol: csq.gene_name,
-      transcriptId: csq.transcript_id,
-      snv1: {
-        aminoAcidChange: csq.snp1.amino_acids,
-        codonChange: csq.snp1.codons,
-        consequence: csq.snp1.consequence,
-      },
-      snv2: {
-        aminoAcidChange: csq.snp2.amino_acids,
-        codonChange: csq.snp2.codons,
-        consequence: csq.snp2.consequence,
-      },
-      mnv: {
-        aminoAcidChange: csq.mnv.amino_acids,
-        codonChange: csq.mnv.codons,
-        consequence: csq.mnv.consequence,
-      },
-      category: csq.category,
+    ref: doc.ref,
+    alt: doc.alt,
+    constituent_snvs: doc.constituent_snvs.map(snv => ({
+      variant_id: snv.variant_id,
+      exome: snv.exome.ac === undefined ? null : snv.exome,
+      genome: snv.genome.ac === undefined ? null : snv.genome,
     })),
+    exome: doc.exome.ac === undefined ? null : doc.exome,
+    genome: doc.genome.ac === undefined ? null : doc.genome,
+    consequences: doc.consequences,
   }
 }

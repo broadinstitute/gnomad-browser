@@ -6,65 +6,48 @@ import { Query } from '../../Query'
 const query = `
 query MultiNucleotideVariant($variantId: String!) {
   multiNucleotideVariant(variantId: $variantId) {
-    variantId
+    variant_id
     chrom
     pos
-    snv1 {
-      variantId
-      exome {
-        ac
-        an
-        filters
-      }
-      genome {
-        ac
-        an
-        filters
-      }
-    }
-    snv2 {
-      variantId
-      exome {
-        ac
-        an
-        filters
-      }
-      genome {
-        ac
-        an
-        filters
-      }
-    }
+    ref
+    alt
     exome {
       ac
-      acHom
-      nIndividuals
+      ac_hom
+      n_individuals
     }
     genome {
       ac
-      acHom
-      nIndividuals
+      ac_hom
+      n_individuals
+    }
+    constituent_snvs {
+      variant_id
+      exome {
+        ac
+        an
+        filters
+      }
+      genome {
+        ac
+        an
+        filters
+      }
     }
     consequences {
-      geneId
-      geneSymbol
-      transcriptId
-      snv1 {
-        aminoAcidChange
-        codonChange
-        consequence
-      }
-      snv2 {
-        aminoAcidChange
-        codonChange
-        consequence
-      }
-      mnv {
-        aminoAcidChange
-        codonChange
-        consequence
-      }
+      gene_id
+      gene_name
+      transcript_id
       category
+      consequence
+      codons
+      amino_acids
+      snv_consequences {
+        variant_id
+        consequence
+        codons
+        amino_acids
+      }
     }
   }
 }
