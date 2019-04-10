@@ -323,6 +323,14 @@ export default () => (
             </ExternalLink>
           </li>
         </ul>
+        <h3>Resources</h3>
+        <ul>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
+              Exome calling regions
+            </ExternalLink>
+          </li>
+        </ul>
       </DownloadSection>
     </Wrapper>
   </InfoPage>
