@@ -31,8 +31,6 @@ import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import {
   RegionalMissenseConstraintRegionType,
   fetchExacRegionalMissenseConstraintRegions,
-  regionalConstraintGeneStatsType,
-  lookUpRegionalConstraintGeneStats,
 } from './regionalConstraint'
 import { StructuralVariantSummaryType } from './structuralVariant'
 
@@ -97,14 +95,6 @@ const geneType = new GraphQLObjectType({
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(RegionalMissenseConstraintRegionType),
       resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.gene_name),
-    },
-    exacv1_regional_gene_stats: {
-      type: regionalConstraintGeneStatsType,
-      resolve: (obj, args, ctx) =>
-        lookUpRegionalConstraintGeneStats({
-          elasticClient: ctx.database.elastic,
-          geneName: obj.gene_name,
-        }),
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
