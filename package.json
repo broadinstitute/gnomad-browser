@@ -27,8 +27,6 @@
     "babel-plugin-styled-components": "^1.8.0",
     "copy-webpack-plugin": "^5.0.2",
     "core-js": "^3.0.0",
-    "csvtojson": "^1.1.7",
-    "elasticsearch": "15.4.0",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
