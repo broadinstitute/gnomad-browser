@@ -1,50 +1,34 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
+import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import {
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLString,
-} from 'graphql'
-
-export const regionalConstraintRegion = new GraphQLObjectType({
-  name: 'RegionalConstraintMissense',
-  fields: () => ({
-    transcript: { type: GraphQLString },
-    gene: { type: GraphQLString },
-    chr: { type: GraphQLString },
-    amino_acids: { type: GraphQLString },
-    genomic_start: { type: GraphQLInt },
-    genomic_end: { type: GraphQLInt },
-    obs_mis: { type: GraphQLInt },
+export const RegionalMissenseConstraintRegionType = new GraphQLObjectType({
+  name: 'RegionalMissenseConstraintRegion',
+  fields: {
+    start: { type: new GraphQLNonNull(GraphQLInt) },
+    stop: { type: new GraphQLNonNull(GraphQLInt) },
+    obs_mis: { type: GraphQLFloat },
     exp_mis: { type: GraphQLFloat },
     obs_exp: { type: GraphQLFloat },
     chisq_diff_null: { type: GraphQLFloat },
-    region_name: { type: GraphQLString },
-  }),
+  },
 })
 
-export const lookUpRegionalConstraintRegions = ({ elasticClient, geneName }) => {
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index: 'regional_missense',
-      type: 'region',
-      size: 100,
-      body: {
-        query: {
-          match: {
-            gene: geneName,
+export const fetchExacRegionalMissenseConstraintRegions = async (ctx, geneName) => {
+  const response = await ctx.database.elastic.search({
+    index: 'exac_regional_missense_constraint_regions',
+    type: 'region',
+    size: 100,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            term: { gene_name: geneName },
           },
         },
-      }
-    }).then((response) => {
-      resolve(response.hits.hits.map((v) => {
-        const ConstraintRegions = v._source
-        return ConstraintRegions
-      }))
-    })
+      },
+    },
   })
+
+  return response.hits.hits.map(hit => hit._source) // eslint-disable-line no-underscore-dangle
 }
 
 export const regionalConstraintGeneStatsType = new GraphQLObjectType({

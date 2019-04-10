@@ -217,8 +217,3 @@ export const maxTissueExpressions = createSelector(
     }
   }
 )
-
-export const regionalConstraint = createSelector(
-  [geneData],
-  geneData => geneData.get('exacv1_regional_constraint_regions').toJS()
-)

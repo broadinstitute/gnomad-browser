@@ -70,18 +70,13 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
         bp
         exp_mis
       }
-      exacv1_regional_constraint_regions {
-        transcript
-        gene
-        chr
-        amino_acids
-        genomic_start
-        genomic_end
+      exac_regional_missense_constraint_regions {
+        start
+        stop
         obs_mis
         exp_mis
         obs_exp
         chisq_diff_null
-        region_name
       }
       pext {
         start

@@ -101,16 +101,13 @@ const RegionalConstraintTrack = ({ height, regions }) => (
         <PlotWrapper>
           <svg height={height} width={width}>
             {regions.map(region => {
-              const start = Math.min(region.genomic_start, region.genomic_end)
-              const stop = Math.max(region.genomic_start, region.genomic_end)
-
-              const startX = scalePosition(start)
-              const stopX = scalePosition(stop)
+              const startX = scalePosition(region.start)
+              const stopX = scalePosition(region.stop)
               const regionWidth = stopX - startX
 
               return (
                 <TooltipAnchor
-                  key={region.region_name}
+                  key={`${region.start}-${region.stop}`}
                   region={region}
                   tooltipComponent={RegionTooltip}
                 >
@@ -143,9 +140,10 @@ RegionalConstraintTrack.propTypes = {
   height: PropTypes.number,
   regions: PropTypes.arrayOf(
     PropTypes.shape({
-      genomic_end: PropTypes.number.isRequired,
-      genomic_start: PropTypes.number.isRequired,
-      region_name: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      obs_exp: PropTypes.number.isRequired,
+      chisq_diff_null: PropTypes.number.isRequired,
     })
   ).isRequired,
 }

@@ -326,13 +326,12 @@ class GenePage extends Component {
             <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
           )}
 
-          {gene.exacv1_regional_constraint_regions.length > 0 &&
-            datasetId === 'exac' && (
-              <RegionalConstraintTrack
-                height={15}
-                regions={gene.exacv1_regional_constraint_regions}
-              />
-            )}
+          {gene.exac_regional_missense_constraint_regions.length > 0 && datasetId === 'exac' && (
+            <RegionalConstraintTrack
+              height={15}
+              regions={gene.exac_regional_missense_constraint_regions}
+            />
+          )}
 
           {datasetId === 'gnomad_sv_r2' ? (
             <StructuralVariantsInGene gene={gene} width={regionViewerWidth} />
