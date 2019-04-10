@@ -32,3 +32,4 @@ TODO
 ## ExAC
 
 * [variants and coverage](./docs/exac_variants_and_coverage.md)
+* [regional missense constraint](./docs/exac_regional_missense_constraint_regions.md)
