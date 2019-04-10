@@ -28,7 +28,12 @@ import transcriptType, {
 import exonType, { lookupExonsByGeneId } from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
-import * as fromRegionalConstraint from './regionalConstraint'
+import {
+  RegionalMissenseConstraintRegionType,
+  fetchExacRegionalMissenseConstraintRegions,
+  regionalConstraintGeneStatsType,
+  lookUpRegionalConstraintGeneStats,
+} from './regionalConstraint'
 import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
@@ -89,21 +94,17 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) =>
         lookUpConstraintByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
     },
-    exacv1_regional_constraint_regions: {
-      type: new GraphQLList(fromRegionalConstraint.regionalConstraintRegion),
+    exac_regional_missense_constraint_regions: {
+      type: new GraphQLList(RegionalMissenseConstraintRegionType),
+      resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.gene_name),
+    },
+    exacv1_regional_gene_stats: {
+      type: regionalConstraintGeneStatsType,
       resolve: (obj, args, ctx) =>
-        fromRegionalConstraint.lookUpRegionalConstraintRegions({
+        lookUpRegionalConstraintGeneStats({
           elasticClient: ctx.database.elastic,
           geneName: obj.gene_name,
         }),
-    },
-    exacv1_regional_gene_stats: {
-      type: fromRegionalConstraint.regionalConstraintGeneStatsType,
-      resolve: (obj, args, ctx) =>
-      fromRegionalConstraint.lookUpRegionalConstraintGeneStats({
-        elasticClient: ctx.database.elastic,
-        geneName: obj.gene_name,
-      }),
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
