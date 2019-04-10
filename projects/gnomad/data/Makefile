@@ -15,6 +15,3 @@ coverage-exacv1:
 
 regional-constraint-gene-stats:
 	../../../node_modules/.bin/babel-node --config-file=../../../babel.config.js export_regional_constraint_gene_stats.js
-
-regional-constraint-regional-missense:
-	../../../node_modules/.bin/babel-node --config-file=../../../babel.config.js export_regional_constraint_regional_missense.js
