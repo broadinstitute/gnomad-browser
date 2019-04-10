@@ -13,7 +13,8 @@
       --cluster=gnomad-mnvs \
       --hail-version=0.2 \
       ./projects/gnomad/data/prepare_gnomad_mnvs_for_browser.py \
-         --input-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv \
+         --mnv-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv \
+         --three-bp-mnv-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp_fullannotation.tsv \
          --output-url=$GNOMAD_MNV_BROWSER_HT_URL
    ```
 
@@ -26,7 +27,7 @@
       ./projects/gnomad/data/export_ht_to_es.py \
          --ht-url=$GNOMAD_MNV_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_2_1_mnv_coding \
+         --index-name=gnomad_2_1_coding_mnvs \
          --index-type=mnv
    ```
 
