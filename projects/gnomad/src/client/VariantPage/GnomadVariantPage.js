@@ -165,8 +165,10 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             <Section>
               <h2>Read Data</h2>
               <GnomadReadData
+                exomeReads={(variant.exome || {}).reads || []}
+                genomeReads={(variant.genome || {}).reads || []}
+                igvLocus={`${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`}
                 showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-                variant={variant}
               />
             </Section>
           </VariantDetailsContainer>
