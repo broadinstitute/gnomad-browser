@@ -27,11 +27,23 @@ query MultiNucleotideVariant($variantId: String!) {
         ac
         an
         filters
+        reads {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
       }
       genome {
         ac
         an
         filters
+        reads {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
       }
     }
     consequences {
