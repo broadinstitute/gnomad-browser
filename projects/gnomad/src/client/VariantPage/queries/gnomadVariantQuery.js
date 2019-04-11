@@ -25,7 +25,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
       colocatedVariants
       multiNucleotideVariants {
         combined_variant_id
-        category
+        changes_amino_acids
         n_individuals
         other_constituent_snvs
       }

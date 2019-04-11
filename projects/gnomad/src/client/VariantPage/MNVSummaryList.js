@@ -9,10 +9,10 @@ const MNVSummaryList = ({ multiNucleotideVariants }) => (
   <List>
     {multiNucleotideVariants.map(mnv => (
       <ListItem key={mnv.combined_variant_id}>
-        {mnv.category === null || mnv.category === 'Unchanged' ? (
-          <Badge level="info">Note</Badge>
-        ) : (
+        {mnv.changes_amino_acids ? (
           <Badge level="warning">Warning</Badge>
+        ) : (
+          <Badge level="info">Note</Badge>
         )}{' '}
         This variant is found in phase with{' '}
         {mnv.other_constituent_snvs
@@ -23,10 +23,8 @@ const MNVSummaryList = ({ multiNucleotideVariants }) => (
           ))
           .reduce((acc, el) => (acc ? [...acc, ' and ', el] : [el]), null)}{' '}
         in {mnv.n_individuals} individual{mnv.individuals !== 1 && 's'}
-        {mnv.category !== null &&
-          mnv.category !== 'Unchanged' &&
-          ', altering its functional interpretation'}
-        . <Link to={`/variant/${mnv.combined_variant_id}`}>More info</Link>
+        {mnv.changes_amino_acids && ', altering the amino acid sequence'}.{' '}
+        <Link to={`/variant/${mnv.combined_variant_id}`}>More info</Link>
       </ListItem>
     ))}
   </List>
@@ -35,7 +33,7 @@ const MNVSummaryList = ({ multiNucleotideVariants }) => (
 MNVSummaryList.propTypes = {
   multiNucleotideVariants: PropTypes.arrayOf(
     PropTypes.shape({
-      category: PropTypes.string,
+      changes_amino_acids: PropTypes.bool.isRequired,
       combined_variant_id: PropTypes.string.isRequired,
       n_individuals: PropTypes.number.isRequired,
       other_constituent_snvs: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -1,4 +1,11 @@
-import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import {
+  GraphQLBoolean,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 
@@ -6,7 +13,7 @@ export const MultiNucleotideVariantSummaryType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantSummary',
   fields: {
     combined_variant_id: { type: new GraphQLNonNull(GraphQLString) },
-    category: { type: GraphQLString },
+    changes_amino_acids: { type: new GraphQLNonNull(GraphQLBoolean) },
     n_individuals: { type: new GraphQLNonNull(GraphQLInt) },
     other_constituent_snvs: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
   },
@@ -150,9 +157,15 @@ export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
 
   return response.hits.hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
+
+    const changesAminoAcids = doc.consequences.some(consequence => {
+      const snvConsequence = consequence.snv_consequences.find(s => s.variant_id === variantId)
+      return snvConsequence.amino_acids.toLowerCase() !== consequence.amino_acids.toLowerCase()
+    })
+
     return {
       combined_variant_id: doc.variant_id,
-      category: doc.consequences[0].category,
+      changes_amino_acids: changesAminoAcids,
       n_individuals: doc.n_individuals,
       other_constituent_snvs: doc.constituent_snv_ids.filter(snvId => snvId !== variantId),
     }
