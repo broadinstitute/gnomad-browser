@@ -85,24 +85,31 @@ def import_mnv_file(path, **kwargs):
     ds = ds.annotate(snp1_copy=ds.snp1, snp2_copy=ds.snp2)
     ds = ds.transmute(
         constituent_snvs=[
-            hl.struct(
-                variant_id=ds[f"{snp}_copy"],
-                exome=hl.or_missing(
-                    hl.is_defined(ds[f"AN_{snp}_ex"]),
-                    hl.struct(
-                        filters=ds[f"filter_{snp}_ex"],
-                        ac=ds[f"AC_{snp}_ex"],
-                        an=hl.int(ds[f"AN_{snp}_ex"]),
+            hl.bind(
+                lambda variant_id_parts: hl.struct(
+                    variant_id=ds[f"{snp}_copy"],
+                    chrom=variant_id_parts[0],
+                    pos=hl.int(variant_id_parts[1]),
+                    ref=variant_id_parts[2],
+                    alt=variant_id_parts[3],
+                    exome=hl.or_missing(
+                        hl.is_defined(ds[f"AN_{snp}_ex"]),
+                        hl.struct(
+                            filters=ds[f"filter_{snp}_ex"],
+                            ac=ds[f"AC_{snp}_ex"],
+                            an=hl.int(ds[f"AN_{snp}_ex"]),
+                        ),
+                    ),
+                    genome=hl.or_missing(
+                        hl.is_defined(ds[f"AN_{snp}_gen"]),
+                        hl.struct(
+                            filters=ds[f"filter_{snp}_gen"],
+                            ac=ds[f"AC_{snp}_gen"],
+                            an=hl.int(ds[f"AN_{snp}_gen"]),
+                        ),
                     ),
                 ),
-                genome=hl.or_missing(
-                    hl.is_defined(ds[f"AN_{snp}_gen"]),
-                    hl.struct(
-                        filters=ds[f"filter_{snp}_gen"],
-                        ac=ds[f"AC_{snp}_gen"],
-                        an=hl.int(ds[f"AN_{snp}_gen"]),
-                    ),
-                ),
+                ds[f"{snp}_copy"].split("-"),
             )
             for snp in ["snp1", "snp2"]
         ]
@@ -282,24 +289,31 @@ def import_three_bp_mnv_file(path, **kwargs):
     ds = ds.annotate(snp1_copy=ds.snp1, snp2_copy=ds.snp2, snp3_copy=ds.snp3)
     ds = ds.transmute(
         constituent_snvs=[
-            hl.struct(
-                variant_id=ds[f"{snp}_copy"],
-                exome=hl.or_missing(
-                    hl.is_defined(ds[f"AN_{snp}_ex"]),
-                    hl.struct(
-                        filters=ds[f"filter_{snp}_ex"],
-                        ac=hl.int(ds[f"AC_{snp}_ex"]),
-                        an=hl.int(ds[f"AN_{snp}_ex"]),
+            hl.bind(
+                lambda variant_id_parts: hl.struct(
+                    variant_id=ds[f"{snp}_copy"],
+                    chrom=variant_id_parts[0],
+                    pos=hl.int(variant_id_parts[1]),
+                    ref=variant_id_parts[2],
+                    alt=variant_id_parts[3],
+                    exome=hl.or_missing(
+                        hl.is_defined(ds[f"AN_{snp}_ex"]),
+                        hl.struct(
+                            filters=ds[f"filter_{snp}_ex"],
+                            ac=hl.int(ds[f"AC_{snp}_ex"]),
+                            an=hl.int(ds[f"AN_{snp}_ex"]),
+                        ),
+                    ),
+                    genome=hl.or_missing(
+                        hl.is_defined(ds[f"AN_{snp}_gen"]),
+                        hl.struct(
+                            filters=ds[f"filter_{snp}_gen"],
+                            ac=hl.int(ds[f"AC_{snp}_gen"]),
+                            an=hl.int(ds[f"AN_{snp}_gen"]),
+                        ),
                     ),
                 ),
-                genome=hl.or_missing(
-                    hl.is_defined(ds[f"AN_{snp}_gen"]),
-                    hl.struct(
-                        filters=ds[f"filter_{snp}_gen"],
-                        ac=hl.int(ds[f"AC_{snp}_gen"]),
-                        an=hl.int(ds[f"AN_{snp}_gen"]),
-                    ),
-                ),
+                ds[f"{snp}_copy"].split("-"),
             )
             for snp in ["snp1", "snp2", "snp3"]
         ]
