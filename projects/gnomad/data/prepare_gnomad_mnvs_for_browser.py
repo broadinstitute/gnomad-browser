@@ -174,6 +174,17 @@ def import_mnv_file(path, **kwargs):
         )
     )
 
+    ds = ds.annotate(
+        changes_amino_acids_for_snvs=hl.literal([0, 1])
+        .filter(
+            lambda idx: ds.consequences.any(
+                lambda csq: csq.snv_consequences[idx].amino_acids.lower()
+                != csq.amino_acids.lower()
+            )
+        )
+        .map(lambda idx: ds.constituent_snv_ids[idx])
+    )
+
     return ds
 
 
@@ -380,6 +391,17 @@ def import_three_bp_mnv_file(path, **kwargs):
         )
     )
 
+    ds = ds.annotate(
+        changes_amino_acids_for_snvs=hl.literal([0, 1, 2])
+        .filter(
+            lambda idx: ds.consequences.any(
+                lambda csq: csq.snv_consequences[idx].amino_acids.lower()
+                != csq.amino_acids.lower()
+            )
+        )
+        .map(lambda idx: ds.constituent_snv_ids[idx])
+    )
+
     return ds
 
 
@@ -424,6 +446,7 @@ if args.three_bp_mnv_url:
             combined_variant_id=mnvs_3bp.variant_id,
             n_individuals=mnvs_3bp.n_individuals,
             other_constituent_snvs=[mnvs_3bp.constituent_snvs[2].variant_id],
+            consequences=mnvs_3bp.consequences,
         ),
     )
     snp23_components = mnvs_3bp.select(
@@ -444,6 +467,7 @@ if args.three_bp_mnv_url:
             combined_variant_id=mnvs_3bp.variant_id,
             n_individuals=mnvs_3bp.n_individuals,
             other_constituent_snvs=[mnvs_3bp.constituent_snvs[0].variant_id],
+            consequences=mnvs_3bp.consequences,
         ),
     )
     snp13_components = mnvs_3bp.select(
@@ -465,6 +489,7 @@ if args.three_bp_mnv_url:
             combined_variant_id=mnvs_3bp.variant_id,
             n_individuals=mnvs_3bp.n_individuals,
             other_constituent_snvs=[mnvs_3bp.constituent_snvs[1].variant_id],
+            consequences=mnvs_3bp.consequences,
         ),
     )
     component_2bp_mnvs = snp12_components.union(snp13_components).union(
@@ -475,6 +500,33 @@ if args.three_bp_mnv_url:
     ).aggregate(related_mnvs=hl.agg.collect(component_2bp_mnvs.related_mnv))
 
     mnvs = mnvs.annotate(related_mnvs=component_2bp_mnvs[mnvs.variant_id].related_mnvs)
+    mnvs = mnvs.annotate(
+        related_mnvs=mnvs.related_mnvs.map(
+            lambda related_mnv: related_mnv.select(
+                "combined_variant_id",
+                "n_individuals",
+                "other_constituent_snvs",
+                changes_amino_acids=hl.bind(
+                    lambda mnv_consequences, related_mnv_consequences: mnv_consequences.key_set()
+                    .union(related_mnv_consequences.key_set())
+                    .any(
+                        lambda gene_id: mnv_consequences.get(gene_id)
+                        != related_mnv_consequences.get(gene_id)
+                    ),
+                    hl.dict(
+                        mnvs.consequences.map(
+                            lambda c: (c.gene_id, c.amino_acids.lower())
+                        )
+                    ),
+                    hl.dict(
+                        related_mnv.consequences.map(
+                            lambda c: (c.gene_id, c.amino_acids.lower())
+                        )
+                    ),
+                ),
+            )
+        )
+    )
 
     mnvs_3bp = mnvs_3bp.annotate(
         related_mnvs=hl.empty_array(mnvs.related_mnvs.dtype.element_type)
