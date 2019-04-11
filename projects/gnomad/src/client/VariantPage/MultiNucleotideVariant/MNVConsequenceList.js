@@ -1,53 +1,28 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
-import { ListItem, OrderedList } from '@broad/ui'
+import styled from 'styled-components'
 
 import Link from '../../Link'
 import MNVConsequence, { MNVConsequencePropType } from './MNVConsequence'
 
-/**
- * Group a list of consequences by a field's value. Maintains sort order of list.
- */
-const groupValues = (values, key) => {
-  const uniqueValues = values
-    .map(csq => csq[key])
-    .filter((value, index, allValues) => index === allValues.indexOf(value))
+const List = styled.ul`
+  padding-left: 0;
+  list-style-type: none;
 
-  const groupedValues = values.reduce((acc, csq) => {
-    if (!acc[csq[key]]) {
-      acc[csq[key]] = []
-    }
-    acc[csq[key]].push(csq)
-    return acc
-  }, {})
-
-  return uniqueValues.map(value => ({
-    key: value,
-    group: groupedValues[value],
-  }))
-}
+  li {
+    margin-bottom: 2em;
+  }
+`
 
 const MNVConsequenceList = ({ variant }) => (
-  <OrderedList>
-    {groupValues(variant.consequences, 'gene_id').map(({ key: geneId, group }) => (
-      <ListItem key={geneId}>
-        <h4>
-          <Link to={`/gene/${geneId}`}>{group[0].gene_name}</Link>
-        </h4>
-        <OrderedList>
-          {group.map(consequence => (
-            <ListItem key={consequence.transcript_id}>
-              <Link to={`/gene/${geneId}/transcript/${consequence.transcript_id}`}>
-                {consequence.transcript_id}
-              </Link>
-              <MNVConsequence consequence={consequence} />
-            </ListItem>
-          ))}
-        </OrderedList>
-      </ListItem>
+  <List>
+    {variant.consequences.map(consequence => (
+      <li key={consequence.gene_id}>
+        <Link to={`/gene/${consequence.gene_id}`}>{consequence.gene_name}</Link>
+        <MNVConsequence consequence={consequence} />
+      </li>
     ))}
-  </OrderedList>
+  </List>
 )
 
 MNVConsequenceList.propTypes = {

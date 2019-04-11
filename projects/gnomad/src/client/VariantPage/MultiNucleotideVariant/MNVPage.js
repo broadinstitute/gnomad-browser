@@ -59,9 +59,7 @@ const MNVPage = ({ datasetId, variantId }) => (
 
         const variant = data.multiNucleotideVariant
 
-        const numTranscripts = variant.consequences.length
-        const geneIds = variant.consequences.map(csq => csq.gene_id)
-        const numGenes = new Set(geneIds).size
+        const numGenes = new Set(variant.consequences.map(csq => csq.gene_id)).size
 
         return (
           <div>
@@ -90,8 +88,7 @@ const MNVPage = ({ datasetId, variantId }) => (
             <Section>
               <h2>Annotations</h2>
               <p>
-                This variant falls on {numTranscripts} transcript
-                {numTranscripts !== 1 && 's'} in {numGenes} gene
+                This variant falls in {numGenes} gene
                 {numGenes !== 1 && 's'}.
               </p>
               <MNVConsequenceList variant={variant} />
