@@ -88,6 +88,7 @@ export const MultiNucleotideVariantDetailsType = new GraphQLObjectType({
     exome: { type: MultiNucleotideVariantDetailsSequencingDataType },
     genome: { type: MultiNucleotideVariantDetailsSequencingDataType },
     consequences: { type: new GraphQLList(MultiNucleotideVariantConsequenceType) },
+    related_mnvs: { type: new GraphQLNonNull(new GraphQLList(MultiNucleotideVariantSummaryType)) },
   },
 })
 
@@ -208,5 +209,6 @@ export const fetchGnomadMNVDetails = async (ctx, variantId) => {
     exome: doc.exome.ac === undefined ? null : doc.exome,
     genome: doc.genome.ac === undefined ? null : doc.genome,
     consequences: doc.consequences,
+    related_mnvs: doc.related_mnvs || [],
   }
 }

@@ -49,6 +49,12 @@ query MultiNucleotideVariant($variantId: String!) {
         amino_acids
       }
     }
+    related_mnvs {
+      combined_variant_id
+      changes_amino_acids
+      n_individuals
+      other_constituent_snvs
+    }
   }
 }
 `
