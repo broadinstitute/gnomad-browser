@@ -405,6 +405,81 @@ if args.three_bp_mnv_url:
     mnvs_3bp = import_three_bp_mnv_file(
         replace_quote_char(args.three_bp_mnv_url), quote="'"
     )
+
+    snp12_components = mnvs_3bp.select(
+        component_mnv=hl.bind(
+            lambda snv1, snv2: hl.delimit(
+                [
+                    snv1.chrom,
+                    hl.str(snv1.pos),
+                    snv1.ref + snv2.ref,
+                    snv1.alt + snv2.alt,
+                ],
+                "-",
+            ),
+            mnvs_3bp.constituent_snvs[0],
+            mnvs_3bp.constituent_snvs[1],
+        ),
+        related_mnv=hl.struct(
+            combined_variant_id=mnvs_3bp.variant_id,
+            n_individuals=mnvs_3bp.n_individuals,
+            other_constituent_snvs=[mnvs_3bp.constituent_snvs[2].variant_id],
+        ),
+    )
+    snp23_components = mnvs_3bp.select(
+        component_mnv=hl.bind(
+            lambda snv2, snv3: hl.delimit(
+                [
+                    snv2.chrom,
+                    hl.str(snv2.pos),
+                    snv2.ref + snv3.ref,
+                    snv2.alt + snv3.alt,
+                ],
+                "-",
+            ),
+            mnvs_3bp.constituent_snvs[1],
+            mnvs_3bp.constituent_snvs[2],
+        ),
+        related_mnv=hl.struct(
+            combined_variant_id=mnvs_3bp.variant_id,
+            n_individuals=mnvs_3bp.n_individuals,
+            other_constituent_snvs=[mnvs_3bp.constituent_snvs[0].variant_id],
+        ),
+    )
+    snp13_components = mnvs_3bp.select(
+        component_mnv=hl.bind(
+            lambda snv1, snv2, snv3: hl.delimit(
+                [
+                    snv1.chrom,
+                    hl.str(snv1.pos),
+                    snv1.ref + snv2.ref + snv3.ref,
+                    snv1.alt + snv2.ref + snv3.alt,
+                ],
+                "-",
+            ),
+            mnvs_3bp.constituent_snvs[0],
+            mnvs_3bp.constituent_snvs[1],
+            mnvs_3bp.constituent_snvs[2],
+        ),
+        related_mnv=hl.struct(
+            combined_variant_id=mnvs_3bp.variant_id,
+            n_individuals=mnvs_3bp.n_individuals,
+            other_constituent_snvs=[mnvs_3bp.constituent_snvs[1].variant_id],
+        ),
+    )
+    component_2bp_mnvs = snp12_components.union(snp13_components).union(
+        snp23_components
+    )
+    component_2bp_mnvs = component_2bp_mnvs.group_by(
+        component_2bp_mnvs.component_mnv
+    ).aggregate(related_mnvs=hl.agg.collect(component_2bp_mnvs.related_mnv))
+
+    mnvs = mnvs.annotate(related_mnvs=component_2bp_mnvs[mnvs.variant_id].related_mnvs)
+
+    mnvs_3bp = mnvs_3bp.annotate(
+        related_mnvs=hl.empty_array(mnvs.related_mnvs.dtype.element_type)
+    )
+
     mnvs = mnvs.union(mnvs_3bp)
 
 mnvs = mnvs.repartition(8, shuffle=True)
