@@ -13,6 +13,7 @@ import MNVConsequenceList from './MNVConsequenceList'
 import MNVConstituentSNVFrequencyTable from './MNVConstituentSNVFrequencyTable'
 import MNVDetailsQuery from './MNVDetailsQuery'
 import MNVFrequencyTable from './MNVFrequencyTable'
+import MNVSummaryList from './MNVSummaryList'
 
 const Section = styled.section`
   width: 100%;
@@ -67,6 +68,16 @@ const MNVPage = ({ datasetId, variantId }) => (
               <ColumnWrapper>
                 <Column>
                   <MNVFrequencyTable variant={variant} />
+                  {variant.related_mnvs.length > 0 && (
+                    <div>
+                      <p>
+                        <strong>
+                          This variant&apos;s consequence may be affected by other variants:
+                        </strong>
+                      </p>
+                      <MNVSummaryList multiNucleotideVariants={variant.related_mnvs} />
+                    </div>
+                  )}
                 </Column>
                 <Column>
                   <h2>References</h2>
@@ -74,7 +85,11 @@ const MNVPage = ({ datasetId, variantId }) => (
                     <ListItem>
                       <ExternalLink
                         // eslint-disable-next-line prettier/prettier
-                        href={`http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${variant.chrom}%3A${variant.pos}-${variant.pos}&position=chr${variant.chrom}%3A${variant.pos - 25}-${variant.pos + 25}`}
+                        href={`http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${
+                          variant.chrom
+                        }%3A${variant.pos}-${variant.pos}&position=chr${
+                          variant.chrom
+                        }%3A${variant.pos - 25}-${variant.pos + 25}`}
                       >
                         UCSC
                       </ExternalLink>
