@@ -34,16 +34,10 @@ const ReadDataPropType = PropTypes.shape({
 
 export class GnomadReadData extends Component {
   static propTypes = {
+    exomeReads: PropTypes.arrayOf(ReadDataPropType).isRequired,
+    genomeReads: PropTypes.arrayOf(ReadDataPropType).isRequired,
+    igvLocus: PropTypes.string.isRequired,
     showHemizygotes: PropTypes.bool,
-    variant: PropTypes.shape({
-      chrom: PropTypes.string.isRequired,
-      exome: PropTypes.shape({
-        reads: PropTypes.arrayOf(ReadDataPropType),
-      }),
-      genome: PropTypes.shape({
-        reads: PropTypes.arrayOf(ReadDataPropType),
-      }),
-    }).isRequired,
   }
 
   static defaultProps = {
@@ -53,18 +47,18 @@ export class GnomadReadData extends Component {
   constructor(props) {
     super(props)
 
-    const { variant } = this.props
+    const { exomeReads, genomeReads } = this.props
 
     this.state = {
       tracksAvailable: {
-        exome: (variant.exome && variant.exome.reads ? variant.exome.reads : []).reduce(
+        exome: exomeReads.reduce(
           (acc, read) => ({
             ...acc,
             [read.category]: acc[read.category] + 1,
           }),
           { het: 0, hom: 0, hemi: 0 }
         ),
-        genome: (variant.genome && variant.genome.reads ? variant.genome.reads : []).reduce(
+        genome: genomeReads.reduce(
           (acc, read) => ({
             ...acc,
             [read.category]: acc[read.category] + 1,
@@ -107,13 +101,15 @@ export class GnomadReadData extends Component {
   }
 
   hasReadData(exomeOrGenome) {
-    const { variant } = this.props
-    if (!variant[exomeOrGenome]) {
-      return false
-    }
+    const { exomeReads, genomeReads } = this.props
 
-    const { reads } = variant[exomeOrGenome]
-    return reads && reads.length > 0
+    if (exomeOrGenome === 'exome') {
+      return exomeReads && exomeReads.length > 0
+    }
+    if (exomeOrGenome === 'genome') {
+      return genomeReads && genomeReads.length > 0
+    }
+    return false
   }
 
   canLoadMoreTracks(exomeOrGenome, category) {
@@ -135,8 +131,11 @@ export class GnomadReadData extends Component {
   }
 
   loadNextTrack(exomeOrGenome, category) {
-    const { variant } = this.props
-    const { reads } = variant[exomeOrGenome]
+    const { exomeReads, genomeReads } = this.props
+    const reads = {
+      exome: exomeReads,
+      genome: genomeReads,
+    }[exomeOrGenome]
 
     const tracksLoadedForCategory = this.tracksLoaded[exomeOrGenome][category]
 
@@ -218,7 +217,7 @@ export class GnomadReadData extends Component {
   }
 
   render() {
-    const { showHemizygotes, variant } = this.props
+    const { igvLocus, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -229,7 +228,7 @@ export class GnomadReadData extends Component {
     }
 
     const browserConfig = {
-      locus: `${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`,
+      locus: igvLocus,
       reference: {
         fastaURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa`,
         id: 'hg19',
