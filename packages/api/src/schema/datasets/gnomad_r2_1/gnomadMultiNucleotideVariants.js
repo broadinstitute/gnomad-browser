@@ -143,7 +143,13 @@ export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
     index: 'gnomad_2_1_coding_mnvs',
     type: 'mnv',
-    _source: ['variant_id', 'constituent_snv_ids', 'n_individuals', 'consequences'],
+    _source: [
+      'variant_id',
+      'changes_amino_acids_for_snvs',
+      'constituent_snv_ids',
+      'n_individuals',
+      'consequences',
+    ],
     body: {
       query: {
         bool: {
@@ -157,15 +163,9 @@ export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
 
   return response.hits.hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
-
-    const changesAminoAcids = doc.consequences.some(consequence => {
-      const snvConsequence = consequence.snv_consequences.find(s => s.variant_id === variantId)
-      return snvConsequence.amino_acids.toLowerCase() !== consequence.amino_acids.toLowerCase()
-    })
-
     return {
       combined_variant_id: doc.variant_id,
-      changes_amino_acids: changesAminoAcids,
+      changes_amino_acids: doc.changes_amino_acids_for_snvs.includes(variantId),
       n_individuals: doc.n_individuals,
       other_constituent_snvs: doc.constituent_snv_ids.filter(snvId => snvId !== variantId),
     }
