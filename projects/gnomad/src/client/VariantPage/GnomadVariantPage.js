@@ -10,8 +10,8 @@ import Link from '../Link'
 import StatusMessage from '../StatusMessage'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
-import GnomadMultiNucleotideVariantsSection from './GnomadMultiNucleotideVariantsSection'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
+import MNVSummaryList from './MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
 import { GnomadReadData } from './reads/GnomadReadData'
@@ -110,9 +110,14 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               )}
 
               {variant.multiNucleotideVariants.length > 0 && (
-                <GnomadMultiNucleotideVariantsSection
-                  multiNucleotideVariants={variant.multiNucleotideVariants}
-                />
+                <div>
+                  <p>
+                    <strong>
+                      This variant&apos;s consequence may be affected by other variants:
+                    </strong>
+                  </p>
+                  <MNVSummaryList multiNucleotideVariants={variant.multiNucleotideVariants} />
+                </div>
               )}
             </ResponsiveSection>
             <ResponsiveSection>
