@@ -29,6 +29,7 @@ const ReadDataPropType = PropTypes.shape({
   bamPath: PropTypes.string.isRequired,
   category: PropTypes.oneOf(['het', 'hom', 'hemi']).isRequired,
   indexPath: PropTypes.string.isRequired,
+  label: PropTypes.string,
   readGroup: PropTypes.string.isRequired,
 })
 
@@ -149,7 +150,7 @@ export class GnomadReadData extends Component {
       format: 'bam',
       height: 300,
       indexURL: `${API_URL}/${nextRead.indexPath}`,
-      name: `${category} [${exomeOrGenome}] #${tracksLoadedForCategory + 1}`,
+      name: nextRead.label || `${category} [${exomeOrGenome}] #${tracksLoadedForCategory + 1}`,
       pairsSupported: false,
       readgroup: nextRead.readGroup,
       removable: false,

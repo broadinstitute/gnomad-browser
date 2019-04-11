@@ -13,6 +13,7 @@ import MNVConsequenceList from './MNVConsequenceList'
 import MNVConstituentSNVFrequencyTable from './MNVConstituentSNVFrequencyTable'
 import MNVDetailsQuery from './MNVDetailsQuery'
 import MNVFrequencyTable from './MNVFrequencyTable'
+import MNVReadData from './MNVReadData'
 import MNVSummaryList from './MNVSummaryList'
 
 const Section = styled.section`
@@ -113,6 +114,17 @@ const MNVPage = ({ datasetId, variantId }) => (
               <div style={{ width: '100%', overflowX: 'auto' }}>
                 <MNVConstituentSNVFrequencyTable snvs={variant.constituent_snvs} />
               </div>
+            </Section>
+            <Section>
+              <h2>Read Data</h2>
+              <p>These reads were generated based on the constituent SNVs, therefore:</p>
+              <List>
+                <ListItem>A read may not be from an individual carrying the MNV.</ListItem>
+                <ListItem>
+                  Reads from individuals carrying the MNV may be shown more than once.
+                </ListItem>
+              </List>
+              <MNVReadData variant={variant} />
             </Section>
           </div>
         )
