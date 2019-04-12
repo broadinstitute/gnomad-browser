@@ -37,8 +37,8 @@ rebuilt/reloaded on changes to source files.
 ./build.sh $BROWSER
 ```
 
-Bundles the server and client into the `dist` folder. The resulting bundle can be
-run with `node dist/server.js`.
+Bundles the server and client into the `dist/${BROWSER}` folder. The resulting bundle can be
+run with `node dist/${BROWSER}/server.js`.
 
 ```
 ./build-docker-image.sh $BROWSER

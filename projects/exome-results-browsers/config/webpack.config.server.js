@@ -7,9 +7,13 @@ if (process.env.BROWSER === undefined) {
   process.exit(1)
 }
 
+const currentBrowser = process.env.BROWSER
+
 const projectDirectory = path.resolve(__dirname, '..')
 
 const isDev = process.env.NODE_ENV === 'development'
+
+const outputRoot = path.resolve(__dirname, '../dist', currentBrowser)
 
 const config = {
   devtool: 'source-map',
@@ -25,13 +29,13 @@ const config = {
   mode: isDev ? 'development' : 'production',
   node: false, // Do not replace Node builtins
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: outputRoot,
     publicPath: '/',
     filename: '[name].js',
   },
   resolve: {
     alias: {
-      '@browser': path.resolve(__dirname, '../browsers', process.env.BROWSER, 'src'),
+      '@browser': path.resolve(__dirname, '../browsers', currentBrowser, 'src'),
     },
   },
   target: 'node',
