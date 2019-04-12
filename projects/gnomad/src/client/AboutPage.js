@@ -878,6 +878,13 @@ export default () => (
         </ul>
       </CreditsSection>
       <CreditsSection>
+        <h4 id="coordination">Coordination</h4>
+        <ul>
+          <li>
+            <p>Jessica Alföldi</p>
+          </li>
+          <li>
+        </ul>
         <h4 id="website-team">Website team</h4>
         <ul>
           <li>
@@ -895,9 +902,6 @@ export default () => (
         </ul>
         <h4 id="ethics-team">Ethics team</h4>
         <ul>
-          <li>
-            <p>Jessica Alföldi</p>
-          </li>
           <li>
             <p>Andrea Saltzman</p>
           </li>
