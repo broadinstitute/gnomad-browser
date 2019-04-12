@@ -39,6 +39,27 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
+const VariantType = ({ variantId }) => {
+  const [chrom, pos, ref, alt] = variantId.split('-') // eslint-disable-line no-unused-vars
+  if (!ref || !alt) {
+    return 'Variant'
+  }
+  if (ref.length === 1 && alt.length === 1) {
+    return 'Single nucleotide variant'
+  }
+  if (ref.length < alt.length) {
+    return 'Insertion'
+  }
+  if (ref.length > alt.length) {
+    return 'Deletion'
+  }
+  return 'Variant'
+}
+
+const VariantId = styled.span`
+  white-space: nowrap;
+`
+
 const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
     <DocumentTitle title={variantId} />
@@ -46,7 +67,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
       datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
       selectedDataset={datasetId}
     >
-      Variant: {variantId}
+      <VariantType variantId={variantId} />: <VariantId>{variantId}</VariantId>
     </GnomadPageHeading>
     <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
@@ -62,7 +83,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
-        const variant = data.variant
+        const { variant } = data
 
         const numTranscripts = variant.sortedTranscriptConsequences.length
         const geneIds = variant.sortedTranscriptConsequences.map(csq => csq.gene_id)

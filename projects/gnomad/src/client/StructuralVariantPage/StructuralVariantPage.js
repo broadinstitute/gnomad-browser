@@ -34,7 +34,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
   <Page>
     <DocumentTitle title={variant.variant_id} />
     <GnomadPageHeading datasetOptions={{ includeShortVariants: false }} selectedDataset={datasetId}>
-      {variant.variant_id}
+      Structural variant: {variant.variant_id}
     </GnomadPageHeading>
     <Wrapper>
       <ResponsiveSection>
