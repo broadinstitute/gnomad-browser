@@ -42,7 +42,7 @@ const MNVPage = ({ datasetId, variantId }) => (
       datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
       selectedDataset={datasetId}
     >
-      Variant: {variantId}
+      Multi-nucleotide variant: {variantId}
     </GnomadPageHeading>
     <MNVDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
