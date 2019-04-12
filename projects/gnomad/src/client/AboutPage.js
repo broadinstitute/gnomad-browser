@@ -883,7 +883,6 @@ export default () => (
           <li>
             <p>Jessica Alföldi</p>
           </li>
-          <li>
         </ul>
         <h4 id="website-team">Website team</h4>
         <ul>
