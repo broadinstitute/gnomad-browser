@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { geneData } from '@broad/redux-genes'
 import { variantCount } from '@broad/redux-variants'
-import { SectionHeading, Tabs } from '@broad/ui'
+import { Tabs } from '@broad/ui'
 
 import { HelpPopup } from '../help'
 import sortByGroup from '../sortByGroup'
@@ -25,8 +25,8 @@ const GeneAttributes = styled.div`
   display: flex;
   flex-direction: column;
   align-items: space-between;
+  margin-top: 1.25em;
   margin-bottom: 1em;
-  font-size: 14px;
 `
 
 const GeneAttribute = styled.div`
@@ -54,9 +54,9 @@ const GeneInfo = ({ geneData, variantCount }) => {
         </GeneAttribute>
       </GeneAttributes>
       <GeneResultsWrapper>
-        <SectionHeading>
+        <h2>
           Gene Result <HelpPopup topic="geneResult" />
-        </SectionHeading>
+        </h2>
         {results.length > 1 ? (
           <Tabs
             tabs={sortByGroup(results).map(result => ({

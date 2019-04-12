@@ -16,6 +16,7 @@ const TopBarWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
+  margin-bottom: 20px;
   background-color: ${browserConfig.navBarColor || '#000'};
 
   @media (max-width: 900px) {

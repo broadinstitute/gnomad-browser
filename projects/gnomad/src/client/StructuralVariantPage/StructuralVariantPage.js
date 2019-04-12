@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Page, SectionHeading } from '@broad/ui'
+import { Page } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -20,7 +20,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  margin-bottom: 2em;
 `
 
 const ResponsiveSection = styled.section`
@@ -42,23 +41,23 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantAttributeList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <SectionHeading>References</SectionHeading>
+        <h2>References</h2>
         <SVReferenceList variant={variant} />
-        <SectionHeading>Report</SectionHeading>
+        <h2>Report</h2>
         <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
       </ResponsiveSection>
     </Wrapper>
     {variant.type === 'MCNV' && (
       <Wrapper>
         <ResponsiveSection>
-          <SectionHeading>Copy Number Distribution</SectionHeading>
+          <h2>Copy Number Distribution</h2>
           <MultiallelicCopyNumberVariantPlot variant={variant} />
         </ResponsiveSection>
       </Wrapper>
     )}
     <Wrapper>
       <ResponsiveSection>
-        <SectionHeading>Consequences</SectionHeading>
+        <h2>Consequences</h2>
         <p>
           This variant has consequences in {variant.genes.length} gene
           {variant.genes.length !== 1 && 's'}.
@@ -66,7 +65,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantConsequenceList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <SectionHeading>Population Frequencies</SectionHeading>
+        <h2>Population Frequencies</h2>
         <StructuralVariantPopulationsTable variant={variant} />
       </ResponsiveSection>
     </Wrapper>

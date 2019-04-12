@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { PageHeading, SectionHeading } from '@broad/ui'
+import { PageHeading } from '@broad/ui'
 
 const HomePageContentWrapper = styled.div`
   font-size: 16px;
@@ -75,7 +75,7 @@ export default () => (
       effort.
     </Paragraph>
 
-    <SectionHeading>Announcements</SectionHeading>
+    <h2>Announcements</h2>
     <AnnouncementList>
       <Announcement date="March, 2018">
         The near-final release (v2) of the SCHEMA call set and analysis will be presented at a

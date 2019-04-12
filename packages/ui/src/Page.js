@@ -18,7 +18,7 @@ const PageHeadingWrapper = styled.div`
   padding-bottom: 0.5em;
   border-bottom: 1px solid #ccc;
   margin: 0.67em 0;
-  font-size: 36px;
+  font-size: 14px;
 
   @media (max-width: 900px) {
     flex-direction: column;
@@ -28,7 +28,6 @@ const PageHeadingWrapper = styled.div`
 `
 const PageHeadingText = styled.h1`
   margin: 0;
-  font-size: 1em;
 
   @media (max-width: 900px) {
     display: flex;
@@ -43,7 +42,6 @@ const PageHeadingText = styled.h1`
 const PageControlsWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: 14px;
 `
 
 export const PageHeading = ({ children, renderPageControls }) => (
@@ -61,8 +59,3 @@ PageHeading.propTypes = {
 PageHeading.defaultProps = {
   renderPageControls: undefined,
 }
-
-export const SectionHeading = styled.h2`
-  margin: 0 0 0.5em;
-  font-size: 18px;
-`
