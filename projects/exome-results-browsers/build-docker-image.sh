@@ -40,6 +40,6 @@ if [[ -n $GIT_STATUS ]]; then
   IMAGE_TAG="${IMAGE_TAG}-modified"
 fi
 
-docker build --tag ${IMAGE_NAME}:${IMAGE_TAG} --tag ${IMAGE_NAME}:latest .
+docker build --build-arg BROWSER=${BROWSER} --tag ${IMAGE_NAME}:${IMAGE_TAG} --tag ${IMAGE_NAME}:latest .
 
 echo ${IMAGE_NAME}:${IMAGE_TAG}

@@ -8,14 +8,18 @@ if (process.env.BROWSER === undefined) {
   process.exit(1)
 }
 
+const currentBrowser = process.env.BROWSER
+
 const isDev = process.env.NODE_ENV === 'development'
+
+const outputRoot = path.resolve(__dirname, '../dist', currentBrowser)
 
 const config = {
   devServer: {
     historyApiFallback: true,
-    port: 8012,
+    port: 8000,
     proxy: {
-      '/': 'http://localhost:8007',
+      '/': `http://localhost:${process.env.PORT}`,
     },
     publicPath: '/',
     stats: 'errors-only',
@@ -40,14 +44,14 @@ const config = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, '../dist/public'),
+    path: path.join(outputRoot, 'public'),
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name]-[contenthash].js',
   },
   plugins: [
     // Inject the JS bundle into the server's HTML template
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, '../dist/index.ejs'),
+      filename: path.join(outputRoot, 'index.ejs'),
       // If no loader is specified, HtmlWebpackPlugin will render the template using Lodash.
       // Using raw-loader here skips the compile time render so that we can render the
       // template at run time.
@@ -60,7 +64,7 @@ const config = {
   ],
   resolve: {
     alias: {
-      '@browser': path.resolve(__dirname, '../browsers', process.env.BROWSER, 'src'),
+      '@browser': path.resolve(__dirname, '../browsers', currentBrowser, 'src'),
     },
   },
 }
