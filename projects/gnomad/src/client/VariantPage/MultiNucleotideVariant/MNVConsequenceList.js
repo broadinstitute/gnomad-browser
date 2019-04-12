@@ -18,7 +18,10 @@ const MNVConsequenceList = ({ variant }) => (
   <List>
     {variant.consequences.map(consequence => (
       <li key={consequence.gene_id}>
-        <Link to={`/gene/${consequence.gene_id}`}>{consequence.gene_name}</Link>
+        <Link to={`/gene/${consequence.gene_id}`}>{consequence.gene_name}</Link> -{' '}
+        <Link to={`/gene/${consequence.gene_id}/transcript/${consequence.transcript_id}`}>
+          {consequence.transcript_id}
+        </Link>
         <MNVConsequence consequence={consequence} />
       </li>
     ))}

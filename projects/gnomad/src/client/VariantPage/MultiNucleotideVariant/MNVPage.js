@@ -103,7 +103,7 @@ const MNVPage = ({ datasetId, variantId }) => (
             <Section>
               <h2>Annotations</h2>
               <p>
-                This variant falls in {numGenes} gene
+                This variant falls in the canonical transcript of {numGenes} gene
                 {numGenes !== 1 && 's'}.
               </p>
               <MNVConsequenceList variant={variant} />
