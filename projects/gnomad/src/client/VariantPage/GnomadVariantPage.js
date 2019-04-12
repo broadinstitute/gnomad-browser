@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Page, SectionHeading } from '@broad/ui'
+import { Page } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -23,10 +23,9 @@ import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 
 const Section = styled.section`
   width: 100%;
-  margin-bottom: 2em;
 `
 
-const ResponsiveSection = Section.extend`
+const ResponsiveSection = styled(Section)`
   width: calc(50% - 15px);
 
   @media (max-width: 992px) {
@@ -39,7 +38,6 @@ const VariantDetailsContainer = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
 `
-
 
 const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
@@ -97,13 +95,13 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               )}
             </ResponsiveSection>
             <ResponsiveSection>
-              <SectionHeading>References</SectionHeading>
+              <h2>References</h2>
               <ReferenceList variant={variant} />
-              <SectionHeading>Report</SectionHeading>
+              <h2>Report</h2>
               <VariantFeedback datasetId={datasetId} variantId={variantId} />
             </ResponsiveSection>
             <Section>
-              <SectionHeading>Annotations</SectionHeading>
+              <h2>Annotations</h2>
               <p>
                 This variant falls on {numTranscripts} transcript
                 {numTranscripts !== 1 && 's'} in {numGenes} gene
@@ -114,7 +112,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               />
             </Section>
             <ResponsiveSection>
-              <SectionHeading>Population Frequencies</SectionHeading>
+              <h2>Population Frequencies</h2>
               <GnomadPopulationsTable
                 exomePopulations={variant.exome ? variant.exome.populations : []}
                 genomePopulations={variant.genome ? variant.genome.populations : []}
@@ -122,7 +120,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               />
             </ResponsiveSection>
             <ResponsiveSection>
-              <SectionHeading>Age Distribution</SectionHeading>
+              <h2>Age Distribution</h2>
               {datasetId !== 'gnomad_r2_1' && (
                 <p>
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
@@ -131,15 +129,15 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               <GnomadAgeDistribution variant={variant} />
             </ResponsiveSection>
             <ResponsiveSection>
-              <SectionHeading>Genotype Quality Metrics</SectionHeading>
+              <h2>Genotype Quality Metrics</h2>
               <GnomadGenotypeQualityMetrics variant={variant} />
             </ResponsiveSection>
             <ResponsiveSection>
-              <SectionHeading>Site Quality Metrics</SectionHeading>
+              <h2>Site Quality Metrics</h2>
               <GnomadSiteQualityMetrics datasetId={datasetId} variant={variant} />
             </ResponsiveSection>
             <Section>
-              <SectionHeading>Read Data</SectionHeading>
+              <h2>Read Data</h2>
               <GnomadReadData
                 showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                 variant={variant}

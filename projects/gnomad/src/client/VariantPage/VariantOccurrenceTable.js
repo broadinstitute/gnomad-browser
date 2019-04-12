@@ -8,6 +8,9 @@ import { Badge, TooltipAnchor } from '@broad/ui'
 import QCFilter from '../QCFilter'
 
 const Table = styled.table`
+  /* To vertically align with the right column's heading */
+  margin-top: 1.25em;
+
   th {
     font-weight: bold;
   }

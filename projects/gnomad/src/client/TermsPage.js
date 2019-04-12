@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, PageHeading, SectionHeading } from '@broad/ui'
+import { ExternalLink, PageHeading } from '@broad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
@@ -11,7 +11,7 @@ export default () => (
     <DocumentTitle title="Terms and Data Information" />
     <PageHeading>Terms and Data Information</PageHeading>
 
-    <SectionHeading>Terms of use</SectionHeading>
+    <h2>Terms of use</h2>
     <p>
       All data here are released openly and publicly for the benefit of the wider biomedical
       community. You can freely download and search the data, and we encourage the use and
@@ -48,7 +48,7 @@ export default () => (
       your shared or adapted version of the dataset under the same ODbL license.
     </p>
 
-    <SectionHeading>Citation in publications</SectionHeading>
+    <h2>Citation in publications</h2>
     <p>
       We request that any use of data obtained from the gnomAD browser cite{' '}
       <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
@@ -71,7 +71,7 @@ export default () => (
       .
     </blockquote>
 
-    <SectionHeading>Data Generation</SectionHeading>
+    <h2>Data Generation</h2>
     <p>
       A full description of the methods used to aggregate and call variants across the exomes and
       genomes in this project will be provided shortly. In brief: we pulled raw data together from

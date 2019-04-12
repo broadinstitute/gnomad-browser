@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { RegionViewer } from '@broad/region-viewer'
 import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
-import { screenSize, SectionHeading } from '@broad/ui'
+import { screenSize } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -26,7 +26,7 @@ import TranscriptLink from './TranscriptLink'
 import VariantsInGene from './VariantsInGene'
 
 const GeneFullName = styled.span`
-  font-size: 22px;
+  font-size: 0.75em;
   font-weight: 400;
 `
 
@@ -199,9 +199,9 @@ class GenePage extends Component {
           <GeneInfoColumnWrapper>
             <GeneInfo currentTranscript={transcriptId || gene.canonical_transcript} gene={gene} />
             <div>
-              <SectionHeading>
+              <h2>
                 Gene Constraint <QuestionMark topic="gene-constraint" />
-              </SectionHeading>
+              </h2>
               <ConstraintTableOrPlaceholder
                 datasetId={datasetId}
                 gene={gene}

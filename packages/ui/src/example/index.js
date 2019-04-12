@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import {
   Badge,
@@ -10,7 +9,6 @@ import {
   Page,
   PageHeading,
   PrimaryButton,
-  SectionHeading,
   TextButton,
 } from '..'
 import CheckboxExample from './CheckboxExample'
@@ -22,16 +20,12 @@ import SegmentedControlExample from './SegmentedControlExample'
 import TabsExample from './TabsExample'
 import TooltipExample from './TooltipExample'
 
-const Section = styled.section`
-  margin-bottom: 2em;
-`
-
 const UiExample = () => (
   <Page>
     <PageHeading>UI Components</PageHeading>
 
-    <Section>
-      <SectionHeading>Badges</SectionHeading>
+    <section>
+      <h2>Badges</h2>
       {['error', 'info', 'success', 'warning'].map(level => (
         <Badge
           key={level}
@@ -41,68 +35,68 @@ const UiExample = () => (
           {level.charAt(0).toUpperCase() + level.slice(1)}
         </Badge>
       ))}
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Buttons</SectionHeading>
+    <section>
+      <h2>Buttons</h2>
       <Button>Button</Button>
       <PrimaryButton>Primary Button</PrimaryButton>
       <TextButton>Text Button</TextButton>
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Checkbox</SectionHeading>
+    <section>
+      <h2>Checkbox</h2>
       <CheckboxExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Combobox</SectionHeading>
+    <section>
+      <h2>Combobox</h2>
       <ComboboxExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Consequence Category Filter</SectionHeading>
+    <section>
+      <h2>Consequence Category Filter</h2>
       <ConsequenceCategoriesControlExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Grid</SectionHeading>
+    <section>
+      <h2>Grid</h2>
       <GridExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Link</SectionHeading>
-      <Link href={location.href}>UI Examples</Link>
-    </Section>
+    <section>
+      <h2>Link</h2>
+      <Link href={window.location.href}>UI Examples</Link>
+    </section>
 
-    <Section>
-      <SectionHeading>List</SectionHeading>
+    <section>
+      <h2>List</h2>
       <List>
         <ListItem>Foo</ListItem>
         <ListItem>Bar</ListItem>
         <ListItem>Baz</ListItem>
       </List>
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Modal</SectionHeading>
+    <section>
+      <h2>Modal</h2>
       <ModalExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Segmented Control</SectionHeading>
+    <section>
+      <h2>Segmented Control</h2>
       <SegmentedControlExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Tabs</SectionHeading>
+    <section>
+      <h2>Tabs</h2>
       <TabsExample />
-    </Section>
+    </section>
 
-    <Section>
-      <SectionHeading>Tooltip</SectionHeading>
+    <section>
+      <h2>Tooltip</h2>
       <TooltipExample />
-    </Section>
+    </section>
   </Page>
 )
 

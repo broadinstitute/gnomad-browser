@@ -16,7 +16,7 @@ import RegionViewer from './RegionViewer'
 import VariantTable from './VariantTable'
 
 const GeneFullName = styled.span`
-  font-size: 22px;
+  font-size: 0.75em;
   font-weight: 400;
 `
 
