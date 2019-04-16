@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { actions as variantActions, singleVariantData, focusedVariant } from '@broad/redux-variants'
 import { ExternalLink, Modal } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
@@ -184,19 +182,15 @@ Variant.propTypes = {
   variant: PropTypes.object.isRequired,
 }
 
-export default connect(
-  state => ({
-    variantId: focusedVariant(state),
-    variant: singleVariantData(state),
-  }),
-  dispatch => ({
-    clearFocusedVariant: () => dispatch(variantActions.setFocusedVariant(null)),
-  })
-)(
-  ({ clearFocusedVariant, variant, variantId }) =>
-    variantId && (
-      <Modal onRequestClose={clearFocusedVariant} size="large" title={variantId}>
-        {variant && <Variant variant={variant} />}
-      </Modal>
-    )
+const VariantDetailsModal = ({ onRequestClose, variant }) => (
+  <Modal onRequestClose={onRequestClose} size="large" title={variant.variant_id}>
+    <Variant variant={variant} />
+  </Modal>
 )
+
+VariantDetailsModal.propTypes = {
+  onRequestClose: PropTypes.func.isRequired,
+  variant: PropTypes.object.isRequired,
+}
+
+export default VariantDetailsModal

@@ -65,8 +65,8 @@ const columns = [
     isSortable: true,
     minWidth: 130,
     grow: 2,
-    render: (row, key, { highlightWords, setFocusedVariant }) => (
-      <VariantIdButton onClick={() => setFocusedVariant(row[key])} tabIndex={-1}>
+    render: (row, key, { highlightWords, onClickVariant }) => (
+      <VariantIdButton onClick={() => onClickVariant(row)} tabIndex={-1}>
         <Highlighter searchWords={highlightWords} textToHighlight={row[key]} />
       </VariantIdButton>
     ),

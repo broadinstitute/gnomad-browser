@@ -1,16 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import {
-  actions as variantActions,
-  finalFilteredVariants,
-  variantSearchQuery,
-  variantSortKey,
-  variantSortAscending,
-} from '@broad/redux-variants'
-import { actions as tableActions, currentTableIndex } from '@broad/table'
 import { Grid } from '@broad/ui'
 
 import columns from './variantTableColumns'
@@ -27,93 +18,68 @@ const NoVariants = styled.div`
 `
 
 class VariantTable extends Component {
-  grid = null
+  static propTypes = {
+    highlightText: PropTypes.string,
+    onClickVariant: PropTypes.func.isRequired,
+    onHoverVariant: PropTypes.func.isRequired,
+    onRequestSort: PropTypes.func.isRequired,
+    onVisibleRowsChange: PropTypes.func.isRequired,
+    rowIndexLastClickedInNavigator: PropTypes.number,
+    sortKey: PropTypes.string.isRequired,
+    sortOrder: PropTypes.oneOf(['ascending', 'descending']).isRequired,
+    variants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }
+
+  static defaultProps = {
+    highlightText: '',
+    rowIndexLastClickedInNavigator: null,
+  }
+
+  grid = React.createRef()
 
   componentDidUpdate(prevProps) {
     const { rowIndexLastClickedInNavigator } = this.props
     if (rowIndexLastClickedInNavigator !== prevProps.rowIndexLastClickedInNavigator) {
-      if (this.grid) {
-        this.grid.scrollToDataRow(rowIndexLastClickedInNavigator)
+      if (this.grid.current) {
+        this.grid.current.scrollToDataRow(rowIndexLastClickedInNavigator)
       }
     }
   }
 
-  gridRef = el => {
-    this.grid = el
-  }
-
   render() {
     const {
-      /* eslint-disable no-shadow */
       highlightText,
-      setCurrentTableScrollWindow,
-      setFocusedVariant,
-      setHoveredVariant,
-      setVariantSortKey,
+      onClickVariant,
+      onHoverVariant,
+      onRequestSort,
+      onVisibleRowsChange,
+      sortKey,
+      sortOrder,
       variants,
-      variantSortKey,
-      variantSortOrder,
-      /* eslint-enable no-shadow */
     } = this.props
 
-    if (variants.size === 0) {
+    if (variants.length === 0) {
       return <NoVariants height={500}>No variants found</NoVariants>
     }
 
     return (
       <Grid
-        cellData={{ highlightWords: highlightText.split(/\s+/), setFocusedVariant }}
+        cellData={{ highlightWords: highlightText.split(/\s+/), onClickVariant }}
         columns={columns}
-        data={variants.toJS()}
+        data={variants}
         numRowsRendered={20}
         onHoverRow={rowIndex => {
-          setHoveredVariant(rowIndex === null ? null : variants.get(rowIndex).get('variant_id'))
+          onHoverVariant(rowIndex === null ? null : variants[rowIndex].variant_id)
         }}
-        onRequestSort={setVariantSortKey}
-        onVisibleRowsChange={setCurrentTableScrollWindow}
-        ref={this.gridRef}
+        onRequestSort={onRequestSort}
+        onVisibleRowsChange={onVisibleRowsChange}
+        ref={this.grid}
         rowKey={variant => variant.variant_id}
-        sortKey={variantSortKey}
-        sortOrder={variantSortOrder}
+        sortKey={sortKey}
+        sortOrder={sortOrder}
       />
     )
   }
 }
 
-VariantTable.propTypes = {
-  highlightText: PropTypes.string,
-  rowIndexLastClickedInNavigator: PropTypes.number,
-  setCurrentTableScrollWindow: PropTypes.func.isRequired,
-  setFocusedVariant: PropTypes.func.isRequired,
-  setHoveredVariant: PropTypes.func.isRequired,
-  setVariantSortKey: PropTypes.func.isRequired,
-  variants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  variantSortKey: PropTypes.string.isRequired,
-  variantSortOrder: PropTypes.oneOf(['ascending', 'descending']).isRequired,
-}
-
-VariantTable.defaultProps = {
-  highlightText: '',
-  rowIndexLastClickedInNavigator: null,
-}
-
-const mapStateToProps = state => ({
-  highlightText: variantSearchQuery(state),
-  rowIndexLastClickedInNavigator: currentTableIndex(state),
-  variantSortKey: variantSortKey(state),
-  variantSortOrder: variantSortAscending(state) ? 'ascending' : 'descending',
-  variants: finalFilteredVariants(state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentTableScrollWindow: scrollWindow =>
-    dispatch(tableActions.setCurrentTableScrollWindow(scrollWindow)),
-  setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
-  setHoveredVariant: variantId => dispatch(variantActions.setHoveredVariant(variantId)),
-  setVariantSortKey: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VariantTable)
+export default VariantTable
