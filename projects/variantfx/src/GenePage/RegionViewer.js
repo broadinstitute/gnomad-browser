@@ -13,7 +13,6 @@ import { connect } from 'react-redux'
 
 import { RegionViewer } from '@broad/region-viewer'
 
-import { NavigatorTrackConnected } from '@broad/track-navigator'
 import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
 import { VariantPositionTrack } from '@broad/track-variant'
 
@@ -31,6 +30,7 @@ import {
 import {
   currentGeneDiseaseData,
 } from '../redux'
+import NavigatorTrackConnected from './NavigatorTrack'
 
 const GeneRegion = ({
   gene,
