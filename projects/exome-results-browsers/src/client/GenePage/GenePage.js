@@ -27,9 +27,6 @@ query Gene($geneName: String!) {
     full_gene_name
     canonical_transcript
     results {
-      gene_id
-      gene_name
-      gene_description
       analysis_group
       categories {
         id
