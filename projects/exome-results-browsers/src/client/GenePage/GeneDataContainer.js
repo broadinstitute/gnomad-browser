@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { actions as geneActions } from '@broad/redux-genes'
 import { actions as variantActions } from '@broad/redux-variants'
 
 import StatusMessage from '../StatusMessage'
@@ -13,17 +12,6 @@ import fetchVariants from './fetchVariants'
 const GeneDataContainer = connect(
   null,
   (dispatch, ownProps) => ({
-    loadGene() {
-      return dispatch(thunkDispatch => {
-        thunkDispatch(geneActions.setCurrentGene(ownProps.geneName))
-        thunkDispatch(geneActions.requestGeneData(ownProps.geneName))
-        return fetchGeneData(ownProps.geneName).then(response => {
-          const geneData = response.data.gene
-          thunkDispatch(geneActions.receiveGeneData(ownProps.geneName, geneData))
-          return response
-        })
-      })
-    },
     loadVariants() {
       return dispatch(thunkDispatch => {
         thunkDispatch(variantActions.setSelectedVariantDataset(ownProps.datasetId))
@@ -54,7 +42,6 @@ const GeneDataContainer = connect(
       children: PropTypes.func.isRequired,
       analysisGroup: PropTypes.string.isRequired,
       geneName: PropTypes.string.isRequired,
-      loadGene: PropTypes.func.isRequired,
       loadVariants: PropTypes.func.isRequired,
     }
 
@@ -86,14 +73,14 @@ const GeneDataContainer = connect(
     }
 
     loadGene() {
+      const { geneName } = this.props
+
       this.setState({
         isLoadingGene: true,
         loadError: null,
       })
 
-      // eslint-disable-next-line react/destructuring-assignment
-      this.props
-        .loadGene()
+      fetchGeneData(geneName)
         .then(response => {
           const geneData = response.data.gene
           let loadError = null

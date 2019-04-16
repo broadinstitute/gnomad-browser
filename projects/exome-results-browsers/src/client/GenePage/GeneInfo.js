@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { geneData } from '@broad/redux-genes'
-import { variantCount } from '@broad/redux-variants'
 import { Tabs } from '@broad/ui'
 
 import { HelpPopup } from '../help'
@@ -37,48 +34,37 @@ const GeneResultsWrapper = styled.div`
   min-width: 325px;
 `
 
-const GeneInfo = ({ geneData, variantCount }) => {
-  if (!geneData) {
-    return <div />
-  }
-  const { gene_id: geneId, results } = geneData.toJS()
-
-  return (
-    <GeneInfoWrapper>
-      <GeneAttributes>
-        <GeneAttribute>
-          <strong>Ensembl gene ID:</strong> {geneId}
-        </GeneAttribute>
-        <GeneAttribute>
-          <strong>Number of variants:</strong> {variantCount}
-        </GeneAttribute>
-      </GeneAttributes>
-      <GeneResultsWrapper>
-        <h2>
-          Gene Result <HelpPopup topic="geneResult" />
-        </h2>
-        {results.length > 1 ? (
-          <Tabs
-            tabs={sortByGroup(results).map(result => ({
-              id: result.analysis_group,
-              label: result.analysis_group,
-              render: () => <GeneResultsTable geneResult={result} />,
-            }))}
-          />
-        ) : (
-          <GeneResultsTable geneResult={results[0]} />
-        )}
-      </GeneResultsWrapper>
-    </GeneInfoWrapper>
-  )
-}
+const GeneInfo = ({ gene }) => (
+  <GeneInfoWrapper>
+    <GeneAttributes>
+      <GeneAttribute>
+        <strong>Ensembl gene ID:</strong> {gene.gene_id}
+      </GeneAttribute>
+    </GeneAttributes>
+    <GeneResultsWrapper>
+      <h2>
+        Gene Result <HelpPopup topic="geneResult" />
+      </h2>
+      {gene.results.length > 1 ? (
+        <Tabs
+          tabs={sortByGroup(gene.results).map(result => ({
+            id: result.analysis_group,
+            label: result.analysis_group,
+            render: () => <GeneResultsTable geneResult={result} />,
+          }))}
+        />
+      ) : (
+        <GeneResultsTable geneResult={gene.results[0]} />
+      )}
+    </GeneResultsWrapper>
+  </GeneInfoWrapper>
+)
 
 GeneInfo.propTypes = {
-  geneData: PropTypes.object.isRequired,
-  variantCount: PropTypes.number.isRequired,
+  gene: PropTypes.shape({
+    gene_id: PropTypes.string.isRequired,
+    results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
 }
 
-export default connect(state => ({
-  geneData: geneData(state),
-  variantCount: variantCount(state),
-}))(GeneInfo)
+export default GeneInfo

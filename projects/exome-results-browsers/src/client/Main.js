@@ -7,7 +7,6 @@ import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createGlobalStyle } from 'styled-components'
 
-import { createGeneReducer } from '@broad/redux-genes'
 import { createVariantReducer } from '@broad/redux-variants'
 import { actions as userInterfaceActions, createUserInterfaceReducer } from '@broad/ui'
 import { getLabelForConsequenceTerm, registerConsequences } from '@broad/utilities'
@@ -76,7 +75,6 @@ const variantDatasets = {
 registerConsequences(browserConfig.consequences)
 
 const rootReducer = combineReducers({
-  genes: createGeneReducer({ variantDatasets }),
   ui: createUserInterfaceReducer(),
   variants: createVariantReducer({
     projectDefaults: {

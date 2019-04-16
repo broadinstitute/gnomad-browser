@@ -47,7 +47,7 @@ class GenePage extends Component {
                 <PageHeading>
                   {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
                 </PageHeading>
-                <GeneInfo />
+                <GeneInfo gene={gene} />
               </TrackPageSection>
               <RegionViewer
                 width={regionViewerWidth}
