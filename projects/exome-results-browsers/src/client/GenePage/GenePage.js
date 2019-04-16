@@ -53,7 +53,7 @@ query Gene($geneName: String!) {
 
 class GenePage extends Component {
   state = {
-    selectedAnalysisGroup: browserConfig.analysisGroups.overallGroup,
+    selectedAnalysisGroup: browserConfig.analysisGroups.defaultGroup,
   }
 
   render() {

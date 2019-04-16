@@ -28,7 +28,7 @@ export const fetchSearchResults = async (ctx, query) => {
             },
           },
           filter: {
-            term: { analysis_group: browserConfig.analysisGroups.overallGroup },
+            term: { analysis_group: browserConfig.analysisGroups.defaultGroup },
           },
         },
       },

@@ -42,7 +42,7 @@ const AnalysisGroupMenuWrapper = styled.div`
 class GeneResultsPage extends Component {
   state = {
     searchText: '',
-    selectedAnalysisGroup: browserConfig.analysisGroups.overallGroup,
+    selectedAnalysisGroup: browserConfig.analysisGroups.defaultGroup,
   }
 
   render() {

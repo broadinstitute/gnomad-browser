@@ -21,7 +21,7 @@ export default {
     categories: [{ id: 'lof', label: 'LoF' }, { id: 'mpc', label: 'MPC' }],
   },
   analysisGroups: {
-    overallGroup: 'all',
+    defaultGroup: 'all',
     selectableGroups: ['all'],
   },
   consequences: [
