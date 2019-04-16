@@ -1,22 +1,17 @@
 import throttle from 'lodash.throttle'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
-import {
-  actions as variantActions,
-  types as variantActionTypes,
-  finalFilteredVariants,
-  variantSearchQuery,
-  variantSortKey,
-  variantSortAscending,
-} from '@broad/redux-variants'
 import { NavigatorTrack } from '@broad/track-navigator'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 
+import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import VariantDetails from '../VariantDetails/VariantDetails'
-import GeneSettings from './GeneSettings'
+import filterVariants from './filterVariants'
+import sortVariants from './sortVariants'
+import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 
 class VariantsInGene extends Component {
@@ -24,25 +19,60 @@ class VariantsInGene extends Component {
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
     }).isRequired,
-    highlightText: PropTypes.string.isRequired,
     onChangeAnalysisGroup: PropTypes.func.isRequired,
     selectedAnalysisGroup: PropTypes.string.isRequired,
-    setVariantSortKey: PropTypes.func.isRequired,
-    sortKey: PropTypes.string.isRequired,
-    sortOrder: PropTypes.oneOf(['ascending', 'descending']).isRequired,
-    sortVariantsByPosition: PropTypes.func.isRequired,
-    variants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    variants: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   constructor(props) {
     super(props)
 
+    const defaultFilter = {
+      includeCategories: {
+        lof: true,
+        missense: true,
+        synonymous: true,
+        other: true,
+      },
+      onlyDeNovo: false,
+      onlyInAnalysis: false,
+      searchText: '',
+    }
+
+    const defaultSortKey = 'variant_id'
+    const defaultSortOrder = 'ascending'
+
+    const renderedVariants = sortVariants(filterVariants(props.variants, defaultFilter), {
+      sortKey: defaultSortKey,
+      sortOrder: defaultSortOrder,
+    })
+
     this.state = {
+      filter: defaultFilter,
       hoveredVariant: null,
       rowIndexLastClickedInNavigator: 0,
+      renderedVariants,
       selectedVariant: null,
+      sortKey: defaultSortKey,
+      sortOrder: defaultSortOrder,
       visibleVariantWindow: [0, 19],
     }
+  }
+
+  onChangeFilter = newFilter => {
+    this.setState(state => {
+      const { variants } = this.props
+      const { sortKey, sortOrder } = state
+      const renderedVariants = sortVariants(filterVariants(variants, newFilter), {
+        sortKey,
+        sortOrder,
+      })
+
+      return {
+        filter: newFilter,
+        renderedVariants,
+      }
+    })
   }
 
   onClickVariant = variant => {
@@ -53,56 +83,80 @@ class VariantsInGene extends Component {
     this.setState({ hoveredVariant: variantId })
   }
 
+  onSort = newSortKey => {
+    this.setState(state => {
+      const { renderedVariants, sortKey } = state
+
+      let newSortOrder = 'descending'
+      if (newSortKey === sortKey) {
+        newSortOrder = state.sortOrder === 'ascending' ? 'descending' : 'ascending'
+      }
+
+      // Since the filter hasn't changed, sort the currently rendered variants instead
+      // of filtering the input variants.
+      const sortedVariants = sortVariants(renderedVariants, {
+        sortKey: newSortKey,
+        sortOrder: newSortOrder,
+      })
+
+      return {
+        renderedVariants: sortedVariants,
+        sortKey: newSortKey,
+        sortOrder: newSortOrder,
+      }
+    })
+  }
+
   onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
     this.setState({ visibleVariantWindow: [startIndex, stopIndex] })
   }, 100)
 
   onNavigatorClick = position => {
-    const { sortVariantsByPosition } = this.props
-    sortVariantsByPosition().then(sortedVariants => {
-      let index
-      if (sortedVariants.length === 0 || position < sortedVariants[0].pos) {
-        index = 0
-      } else {
-        index = sortedVariants.findIndex(
-          (variant, i) =>
-            sortedVariants[i + 1] &&
-            position >= variant.pos &&
-            position <= sortedVariants[i + 1].pos
-        )
-        if (index === -1) {
-          index = sortedVariants.length - 1
-        }
-      }
+    const { renderedVariants } = this.state
+    const sortedVariants = sortVariants(renderedVariants, {
+      sortKey: 'variant_id',
+      sortOrder: 'ascending',
+    })
 
-      this.setState({
-        rowIndexLastClickedInNavigator: index,
-      })
+    let index
+    if (sortedVariants.length === 0 || position < sortedVariants[0].pos) {
+      index = 0
+    } else {
+      index = sortedVariants.findIndex(
+        (variant, i) =>
+          sortedVariants[i + 1] && position >= variant.pos && position <= sortedVariants[i + 1].pos
+      )
+
+      if (index === -1) {
+        index = sortedVariants.length - 1
+      }
+    }
+
+    this.setState({
+      renderedVariants: sortedVariants,
+      rowIndexLastClickedInNavigator: index,
+      sortKey: 'variant_id',
+      sortOrder: 'ascending',
     })
   }
 
   render() {
+    const { gene, onChangeAnalysisGroup, selectedAnalysisGroup } = this.props
     const {
-      gene,
-      highlightText,
-      onChangeAnalysisGroup,
-      selectedAnalysisGroup,
-      setVariantSortKey,
-      sortKey,
-      sortOrder,
-      variants: reduxVariants,
-    } = this.props
-    const {
+      filter,
       hoveredVariant,
+      renderedVariants,
       rowIndexLastClickedInNavigator,
       selectedVariant,
+      sortKey,
+      sortOrder,
       visibleVariantWindow,
     } = this.state
 
-    const variants = reduxVariants.toJS()
-
-    const cases = variants.filter(v => v.ac_case > 0).map(v => ({ ...v, allele_freq: v.af_case }))
-    const controls = variants
+    const cases = renderedVariants
+      .filter(v => v.ac_case > 0)
+      .map(v => ({ ...v, allele_freq: v.af_case }))
+    const controls = renderedVariants
       .filter(v => v.ac_ctrl > 0)
       .map(v => ({ ...v, allele_freq: v.af_ctrl }))
 
@@ -117,25 +171,28 @@ class VariantsInGene extends Component {
           hoveredVariant={hoveredVariant}
           onNavigatorClick={this.onNavigatorClick}
           title="Viewing in table"
-          variants={variants}
+          variants={renderedVariants.map(v => ({ ...v, allele_freq: v.af }))}
           visibleVariantWindow={visibleVariantWindow}
         />
         <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
-          <GeneSettings
+          <VariantFilterControls
+            filter={filter}
+            onChangeFilter={this.onChangeFilter}
             geneId={gene.gene_id}
+            renderedVariants={renderedVariants}
             selectedAnalysisGroup={selectedAnalysisGroup}
             onChangeAnalysisGroup={onChangeAnalysisGroup}
           />
           <VariantTable
-            highlightText={highlightText}
+            highlightText={filter.searchText}
             onClickVariant={this.onClickVariant}
             onHoverVariant={this.onHoverVariant}
-            onRequestSort={setVariantSortKey}
+            onRequestSort={this.onSort}
             onVisibleRowsChange={this.onVisibleRowsChange}
             rowIndexLastClickedInNavigator={rowIndexLastClickedInNavigator}
             sortKey={sortKey}
             sortOrder={sortOrder}
-            variants={variants}
+            variants={renderedVariants}
           />
         </TrackPageSection>
         {selectedVariant && (
@@ -151,30 +208,84 @@ class VariantsInGene extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  highlightText: variantSearchQuery(state),
-  sortKey: variantSortKey(state),
-  sortOrder: variantSortAscending(state) ? 'ascending' : 'descending',
-  variants: finalFilteredVariants(state),
-})
+const variantsQuery = `
+query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
+  gene(gene_name: $geneName) {
+    variants(analysis_group: $analysisGroup) {
+      ac
+      ac_case
+      ac_ctrl
+      ac_denovo
+      af
+      af_case
+      af_ctrl
+      an
+      an_case
+      an_ctrl
+      cadd
+      canonical_transcript_id
+      chrom
+      comment
+      consequence
+      csq_analysis
+      csq_canonical
+      csq_worst
+      estimate
+      flags
+      gene_id
+      gene_name
+      hgvsc
+      hgvsc_canonical
+      hgvsp
+      hgvsp_canonical
+      i2
+      in_analysis
+      mpc
+      polyphen
+      pos
+      pval_meta
+      qp
+      se
+      source
+      transcript_id
+      variant_id
+      xpos
+    }
+  }
+}
+`
 
-const mapDispatchToProps = dispatch => ({
-  sortVariantsByPosition: () => {
-    return new Promise(resolve => {
-      dispatch({ type: variantActionTypes.ORDER_VARIANTS_BY_POSITION })
-      dispatch((_, getState) => {
-        const variants = finalFilteredVariants(getState())
-        resolve(variants.toJS())
-      })
-    })
-  },
-  setFocusedVariant: variantId => dispatch(variantActions.setFocusedVariant(variantId)),
-  setVariantSortKey: sortKey => dispatch(variantActions.setVariantSort(sortKey)),
-})
+const ConnectedVariantsInGene = ({ gene, selectedAnalysisGroup, ...rest }) => (
+  <Query
+    query={variantsQuery}
+    variables={{ geneName: gene.gene_name, analysisGroup: selectedAnalysisGroup }}
+  >
+    {({ data, error, loading }) => {
+      if (loading) {
+        return <StatusMessage>Loading variants...</StatusMessage>
+      }
 
-const ConnectedVariantsInGene = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VariantsInGene)
+      if (error) {
+        return <StatusMessage>Failed to load variants</StatusMessage>
+      }
+
+      return (
+        <VariantsInGene
+          {...rest}
+          gene={gene}
+          selectedAnalysisGroup={selectedAnalysisGroup}
+          variants={data.gene.variants}
+        />
+      )
+    }}
+  </Query>
+)
+
+ConnectedVariantsInGene.propTypes = {
+  gene: PropTypes.shape({
+    gene_name: PropTypes.string.isRequired,
+  }).isRequired,
+  selectedAnalysisGroup: PropTypes.string.isRequired,
+}
 
 export default ConnectedVariantsInGene

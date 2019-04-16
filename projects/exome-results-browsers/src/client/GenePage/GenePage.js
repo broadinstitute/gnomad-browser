@@ -8,9 +8,9 @@ import { PageHeading, screenSize } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInGene from './VariantsInGene'
@@ -18,6 +18,38 @@ import VariantsInGene from './VariantsInGene'
 const GeneFullName = styled.span`
   font-size: 0.75em;
   font-weight: 400;
+`
+
+const geneQuery = `
+query Gene($geneName: String!) {
+  gene(gene_name: $geneName) {
+    gene_id
+    gene_name
+    full_gene_name
+    canonical_transcript
+    results {
+      gene_id
+      gene_name
+      gene_description
+      analysis_group
+      categories {
+        id
+        xcase
+        xctrl
+        pval
+      }
+      pval_meta
+    }
+    transcript {
+      strand
+      exons {
+        feature_type
+        start
+        stop
+      }
+    }
+  }
+}
 `
 
 class GenePage extends Component {
@@ -35,8 +67,17 @@ class GenePage extends Component {
     const regionViewerWidth = screenSize.width - 30
 
     return (
-      <GeneDataContainer analysisGroup={selectedAnalysisGroup} geneName={geneName}>
-        {({ gene, isLoadingVariants }) => {
+      <Query query={geneQuery} variables={{ geneName }}>
+        {({ data, error, loading }) => {
+          if (loading) {
+            return <StatusMessage>Loading gene...</StatusMessage>
+          }
+
+          if (error || !data.gene) {
+            return <StatusMessage>Unable to load gene</StatusMessage>
+          }
+
+          const { gene } = data
           const canonicalCodingExons = gene.transcript.exons.filter(
             exon => exon.feature_type === 'CDS'
           )
@@ -57,24 +98,18 @@ class GenePage extends Component {
                 rightPanelWidth={isSmallWindow ? 0 : 100}
               >
                 <TranscriptTrack exons={canonicalCodingExons} strand={gene.transcript.strand} />
-                {isLoadingVariants ? (
-                  <TrackPageSection>
-                    <StatusMessage>Loading variants...</StatusMessage>
-                  </TrackPageSection>
-                ) : (
-                  <VariantsInGene
-                    gene={gene}
-                    selectedAnalysisGroup={selectedAnalysisGroup}
-                    onChangeAnalysisGroup={analysisGroup => {
-                      this.setState({ selectedAnalysisGroup: analysisGroup })
-                    }}
-                  />
-                )}
+                <VariantsInGene
+                  gene={gene}
+                  selectedAnalysisGroup={selectedAnalysisGroup}
+                  onChangeAnalysisGroup={analysisGroup => {
+                    this.setState({ selectedAnalysisGroup: analysisGroup })
+                  }}
+                />
               </RegionViewer>
             </TrackPage>
           )
         }}
-      </GeneDataContainer>
+      </Query>
     )
   }
 }

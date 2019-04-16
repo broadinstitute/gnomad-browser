@@ -1,14 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import {
-  actions as variantActions,
-  variantDeNovoFilter,
-  variantInAnalysisFilter,
-  variantFilter,
-} from '@broad/redux-variants'
 import {
   Checkbox,
   Combobox,
@@ -114,17 +107,13 @@ const keyboardShortcuts = {
   other: 'o',
 }
 
-const GeneSettings = ({
-  consequenceFilter,
-  deNovoFilter,
+const VariantFilterControls = ({
+  filter,
   geneId,
-  inAnalysisFilter,
   onChangeAnalysisGroup,
-  searchVariants,
+  onChangeFilter,
+  renderedVariants,
   selectedAnalysisGroup,
-  setConsequenceFilter,
-  toggleDeNovoFilter,
-  toggleInAnalysisFilter,
 }) => {
   const searchInput = useRef(null)
 
@@ -133,17 +122,22 @@ const GeneSettings = ({
       <FiltersWrapper>
         <FiltersFirstColumn>
           <ConsequenceCategoriesControl
-            categorySelections={consequenceFilter}
+            categorySelections={filter.includeCategories}
             id="variant-filter"
-            onChange={setConsequenceFilter}
+            onChange={includeCategories => {
+              onChangeFilter({ ...filter, includeCategories })
+            }}
           />
           {Object.keys(keyboardShortcuts).map(category => (
             <KeyboardShortcut
               key={category}
               handler={() => {
-                setConsequenceFilter({
-                  ...consequenceFilter,
-                  [category]: !consequenceFilter[category],
+                onChangeFilter({
+                  ...filter.includeCategories,
+                  includeCategories: {
+                    ...filter.includeCategories,
+                    [category]: !filter.includeCategories[category],
+                  },
                 })
               }}
               keys={keyboardShortcuts[category]}
@@ -165,6 +159,7 @@ const GeneSettings = ({
               />
               <ExportVariantsButton
                 exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`}
+                variants={renderedVariants}
               />
             </AnalysisGroupMenuWrapper>
           )}
@@ -172,16 +167,20 @@ const GeneSettings = ({
 
         <FiltersSecondColumn>
           <Checkbox
-            checked={deNovoFilter}
+            checked={filter.onlyDeNovo}
             id="denovo-filter"
             label="Show only de novo variants"
-            onChange={toggleDeNovoFilter}
+            onChange={onlyDeNovo => {
+              onChangeFilter({ ...filter, onlyDeNovo })
+            }}
           />
           <Checkbox
-            checked={inAnalysisFilter}
+            checked={filter.onlyInAnalysis}
             id="in-analysis-filter"
             label="Show only variants in analysis"
-            onChange={toggleInAnalysisFilter}
+            onChange={onlyInAnalysis => {
+              onChangeFilter({ ...filter, onlyInAnalysis })
+            }}
           />
         </FiltersSecondColumn>
       </FiltersWrapper>
@@ -190,7 +189,10 @@ const GeneSettings = ({
         <SearchInput
           ref={searchInput}
           placeholder="Search variant table"
-          onChange={searchVariants}
+          value={filter.searchText}
+          onChange={searchText => {
+            onChangeFilter({ ...filter, searchText })
+          }}
         />
         <KeyboardShortcut
           keys="/"
@@ -207,40 +209,23 @@ const GeneSettings = ({
   )
 }
 
-GeneSettings.propTypes = {
-  consequenceFilter: PropTypes.shape({
-    lof: PropTypes.bool.isRequired,
-    missense: PropTypes.bool.isRequired,
-    synonymous: PropTypes.bool.isRequired,
-    other: PropTypes.bool.isRequired,
+VariantFilterControls.propTypes = {
+  filter: PropTypes.shape({
+    includeCategories: PropTypes.shape({
+      lof: PropTypes.bool.isRequired,
+      missense: PropTypes.bool.isRequired,
+      synonymous: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
+    onlyDeNovo: PropTypes.bool.isRequired,
+    onlyInAnalysis: PropTypes.bool.isRequired,
+    searchText: PropTypes.string.isRequired,
   }).isRequired,
-  deNovoFilter: PropTypes.bool.isRequired,
   geneId: PropTypes.string.isRequired,
-  inAnalysisFilter: PropTypes.bool.isRequired,
   onChangeAnalysisGroup: PropTypes.func.isRequired,
-  searchVariants: PropTypes.func.isRequired,
+  onChangeFilter: PropTypes.func.isRequired,
+  renderedVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedAnalysisGroup: PropTypes.string.isRequired,
-  setConsequenceFilter: PropTypes.func.isRequired,
-  toggleDeNovoFilter: PropTypes.func.isRequired,
-  toggleInAnalysisFilter: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
-  consequenceFilter: variantFilter(state),
-  deNovoFilter: variantDeNovoFilter(state),
-  inAnalysisFilter: variantInAnalysisFilter(state),
-  variantDeNovoFilter: variantDeNovoFilter(state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  searchVariants: searchText => dispatch(variantActions.searchVariants(searchText)),
-  setConsequenceFilter: filter => dispatch(variantActions.setVariantFilter(filter)),
-  toggleDeNovoFilter: () => dispatch(variantActions.toggleVariantDeNovoFilter()),
-  toggleInAnalysisFilter: () => dispatch(variantActions.toggleVariantInAnalysisFilter()),
-  toggleVariantDeNovoFilter: () => dispatch(variantActions.toggleVariantDeNovoFilter()),
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GeneSettings)
+export default VariantFilterControls

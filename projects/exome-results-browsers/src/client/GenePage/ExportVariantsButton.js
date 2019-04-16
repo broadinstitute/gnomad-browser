@@ -1,14 +1,13 @@
+import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
-import { Button } from '@broad/ui'
+import { Button as BaseButton } from '@broad/ui'
 
 import downloadCSV from '../downloadCSV'
 import columns from './variantTableColumns'
 
-const ExportVariantsButton = styled(Button)`
+const Button = styled(BaseButton)`
   margin-left: 0.5em;
 
   @media (max-width: 700px) {
@@ -25,12 +24,21 @@ const exportVariantsToCSV = (variants, baseFileName) => {
   downloadCSV([headerRow].concat(dataRows), baseFileName)
 }
 
-export default connect((state, ownProps) => {
-  const variants = finalFilteredVariants(state)
-  return {
-    disabled: isLoadingVariants(state) || variants.size === 0,
-    onClick: () => exportVariantsToCSV(variants.toJS(), ownProps.exportFileName),
-  }
-})(({ exportFileName, ...buttonProps }) => (
-  <ExportVariantsButton {...buttonProps}>Export variants to CSV</ExportVariantsButton>
-))
+const ExportVariantsButton = ({ exportFileName, variants, ...rest }) => (
+  <Button
+    {...rest}
+    disabled={variants.length === 0}
+    onClick={() => {
+      exportVariantsToCSV(variants, exportFileName)
+    }}
+  >
+    Export variants to CSV
+  </Button>
+)
+
+ExportVariantsButton.propTypes = {
+  exportFileName: PropTypes.string.isRequired,
+  variants: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
+
+export default ExportVariantsButton
