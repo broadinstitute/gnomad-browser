@@ -1,16 +1,15 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@broad/region-viewer'
-import { PageHeading, screenSize } from '@broad/ui'
+import { PageHeading } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import RegionViewer from './AutosizedRegionViewer'
 import GeneInfo from './GeneInfo'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInGene from './VariantsInGene'
@@ -58,13 +57,8 @@ class GenePage extends Component {
   }
 
   render() {
-    const { geneName, screenSize } = this.props
+    const { geneName } = this.props
     const { selectedAnalysisGroup } = this.state
-
-    const isSmallWindow = screenSize.width < 900
-
-    // Subtract 30px for padding on Page component.
-    const regionViewerWidth = screenSize.width - 30
 
     return (
       <Query query={geneQuery} variables={{ geneName }}>
@@ -90,13 +84,7 @@ class GenePage extends Component {
                 </PageHeading>
                 <GeneInfo gene={gene} />
               </TrackPageSection>
-              <RegionViewer
-                width={regionViewerWidth}
-                padding={75}
-                regions={canonicalCodingExons}
-                leftPanelWidth={100}
-                rightPanelWidth={isSmallWindow ? 0 : 100}
-              >
+              <RegionViewer padding={75} regions={canonicalCodingExons}>
                 <TranscriptTrack exons={canonicalCodingExons} strand={gene.transcript.strand} />
                 <VariantsInGene
                   gene={gene}
@@ -118,8 +106,4 @@ GenePage.propTypes = {
   geneName: PropTypes.string.isRequired,
 }
 
-const ConnectedGenePage = connect(state => ({
-  screenSize: screenSize(state),
-}))(GenePage)
-
-export default ConnectedGenePage
+export default GenePage
