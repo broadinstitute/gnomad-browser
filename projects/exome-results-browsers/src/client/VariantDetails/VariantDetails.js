@@ -83,16 +83,16 @@ const Variant = ({ variant }) => {
   const transcriptHGVSc = {}
   if (variant.hgvsc) {
     variant.hgvsc.split(',').forEach(s => {
-      const [tID, hgvsc] = s.split(':')
-      transcriptHGVSc[tID] = hgvsc
+      const [tId, hgvsc] = s.split(':')
+      transcriptHGVSc[tId.replace(/\.\d+$/, '')] = hgvsc
     })
   }
 
   const transcriptHGVSp = {}
   if (variant.hgvsp) {
     variant.hgvsp.split(',').forEach(s => {
-      const [tID, hgvsp] = s.split(':')
-      transcriptHGVSp[tID] = hgvsp
+      const [tId, hgvsp] = s.split(':')
+      transcriptHGVSp[tId.replace(/\.\d+$/, '')] = hgvsp
     })
   }
 
@@ -158,11 +158,11 @@ const Variant = ({ variant }) => {
                   <TranscriptAttributes>
                     <div>
                       <dt>HGVSc:</dt>
-                      <dd>{transcriptHGVSc[tID]}</dd>
+                      <dd>{transcriptHGVSc[tID] || '—'}</dd>
                     </div>
                     <div>
                       <dt>HGVSp:</dt>
-                      <dd>{transcriptHGVSp[tID]}</dd>
+                      <dd>{transcriptHGVSp[tID] || '—'}</dd>
                     </div>
                   </TranscriptAttributes>
                 </VariantAttribute>
