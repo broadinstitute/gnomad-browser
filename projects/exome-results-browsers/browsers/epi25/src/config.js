@@ -24,7 +24,7 @@ export default {
     ],
   },
   analysisGroups: {
-    overallGroup: 'EPI',
+    defaultGroup: 'EPI',
     selectableGroups: ['EPI', 'DEE', 'GGE', 'NAFE'],
   },
   consequences: [
