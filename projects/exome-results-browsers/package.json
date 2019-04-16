@@ -17,7 +17,6 @@
     "mongodb": "^3.2.2"
   },
   "devDependencies": {
-    "@broad/redux-variants": "*",
     "@broad/region-viewer": "*",
     "@broad/track-navigator": "*",
     "@broad/track-regions": "*",
