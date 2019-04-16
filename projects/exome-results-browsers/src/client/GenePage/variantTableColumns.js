@@ -21,6 +21,24 @@ const categoryColors = {
   other: '#424242',
 }
 
+const VariantCategoryMarker = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.5em;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background: ${props => props.color};
+  }
+`
+
 const getConsequenceColor = consequenceTerm => {
   if (!consequenceTerm) {
     return 'gray'
@@ -108,7 +126,8 @@ const columns = [
     isSortable: true,
     minWidth: 110,
     render: (row, key, { highlightWords }) => (
-      <span className="grid-cell-content" style={{ color: getConsequenceColor(row[key]) }}>
+      <span className="grid-cell-content">
+        <VariantCategoryMarker color={getConsequenceColor(row[key])} />
         <Highlighter searchWords={highlightWords} textToHighlight={getConsequenceName(row[key])} />
       </span>
     ),
