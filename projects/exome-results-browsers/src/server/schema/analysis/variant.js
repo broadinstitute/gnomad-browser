@@ -44,10 +44,10 @@ export const VariantType = new GraphQLObjectType({
     an_case: { type: GraphQLInt },
     an_ctrl: { type: GraphQLInt },
     estimate: { type: GraphQLFloat },
-    i2: { type: GraphQLInt },
+    i2: { type: GraphQLFloat },
     pval_meta: { type: GraphQLFloat },
-    qp: { type: GraphQLInt },
-    se: { type: GraphQLInt },
+    qp: { type: GraphQLFloat },
+    se: { type: GraphQLFloat },
   },
 })
 
