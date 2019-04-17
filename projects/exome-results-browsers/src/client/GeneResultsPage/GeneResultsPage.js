@@ -6,6 +6,7 @@ import { Button, Combobox, Page, PageHeading, SearchInput } from '@broad/ui'
 import browserConfig from '@browser/config'
 
 import downloadCSV from '../downloadCSV'
+import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import columns from './geneResultColumns'
@@ -51,6 +52,7 @@ class GeneResultsPage extends Component {
 
     return (
       <Page>
+        <DocumentTitle title="Results" />
         <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
         <Query query={geneResultsQuery} variables={{ analysisGroup: selectedAnalysisGroup }}>
           {({ data, error, loading }) => {

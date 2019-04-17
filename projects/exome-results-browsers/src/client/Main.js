@@ -17,8 +17,6 @@ const GlobalStyles = createGlobalStyle`
   }
 `
 
-document.title = browserConfig.pageTitle
-
 registerConsequences(browserConfig.consequences)
 
 const Main = () => (

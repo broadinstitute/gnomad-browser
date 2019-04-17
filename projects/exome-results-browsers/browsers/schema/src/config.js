@@ -1,5 +1,5 @@
 export default {
-  pageTitle: 'schema',
+  browserTitle: 'SCHEMA browser',
   navBarTitle: 'Schizophrenia exome meta-analysis',
   navBarColor: '#0a79bf',
   elasticsearch: {
