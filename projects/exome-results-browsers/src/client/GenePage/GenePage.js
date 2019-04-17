@@ -6,6 +6,7 @@ import { PageHeading } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
+import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -76,6 +77,7 @@ class GenePage extends Component {
           return (
             <TrackPage>
               <TrackPageSection>
+                <DocumentTitle title={gene.gene_name} />
                 <PageHeading>
                   {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
                 </PageHeading>

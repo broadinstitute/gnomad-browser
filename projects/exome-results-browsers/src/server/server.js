@@ -34,7 +34,7 @@ app.use(compression())
 
   const html = await renderTemplate({
     gaTrackingId: process.env.GA_TRACKING_ID,
-    title: browserConfig.pageTitle,
+    title: browserConfig.browserTitle,
   })
 
   app.use(
