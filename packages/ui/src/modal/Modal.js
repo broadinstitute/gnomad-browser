@@ -29,6 +29,7 @@ export class Modal extends Component {
   static propTypes = {
     children: PropTypes.node,
     footer: PropTypes.node,
+    id: PropTypes.string,
     onRequestClose: PropTypes.func.isRequired,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     title: PropTypes.string.isRequired,
@@ -37,13 +38,15 @@ export class Modal extends Component {
   static defaultProps = {
     children: undefined,
     footer: undefined,
+    id: undefined,
     size: 'medium',
   }
 
-  id = getId()
+  fallbackId = `modal-${getId()}`
 
-  withIdPrefix(str) {
-    return `modal-${this.id}-${str}`
+  getId() {
+    const { id } = this.props
+    return id || this.fallbackId
   }
 
   render() {
@@ -51,16 +54,16 @@ export class Modal extends Component {
 
     return (
       <AriaModal
-        dialogId={`${this.withIdPrefix('dialog')}`}
+        dialogId={this.getId()}
         focusDialog
         getApplicationNode={getApplicationNode}
         onExit={onRequestClose}
-        titleId={this.withIdPrefix('title')}
+        titleId={`${this.getId()}-title`}
         underlayStyle={underlayStyle}
       >
-        <ModalContent size={size}>
+        <ModalContent className="modal-content" size={size}>
           <ModalHeader>
-            <ModalTitle id={this.withIdPrefix('title')}>{title}</ModalTitle>
+            <ModalTitle id={`${this.getId()}-title`}>{title}</ModalTitle>
             <ModalHeaderCloseButton aria-label="Close" onClick={onRequestClose} type="button">
               <span aria-hidden="true">&times;</span>
             </ModalHeaderCloseButton>
