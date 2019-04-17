@@ -51,7 +51,7 @@ const AnalysisGroupMenuWrapper = styled.div`
   }
 
   @media (min-width: 701px) {
-    label {
+    > * {
       margin-right: 0.5em;
     }
   }
@@ -144,28 +144,30 @@ const VariantFilterControls = ({
             />
           ))}
 
-          {browserConfig.analysisGroups.selectableGroups.length > 1 && (
-            <AnalysisGroupMenuWrapper>
-              {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
-              <label htmlFor="analysis-group">Current analysis group </label>
-              <Combobox
-                id="analysis-group"
-                options={browserConfig.analysisGroups.selectableGroups.map(group => ({
-                  id: group,
-                  label: browserConfig.analysisGroups.labels[group] || group,
-                }))}
-                onSelect={option => onChangeAnalysisGroup(option.id)}
-                value={
-                  browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
-                  selectedAnalysisGroup
-                }
-              />
-              <ExportVariantsButton
-                exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`}
-                variants={renderedVariants}
-              />
-            </AnalysisGroupMenuWrapper>
-          )}
+          <AnalysisGroupMenuWrapper>
+            {browserConfig.analysisGroups.selectableGroups.length > 1 && (
+              <React.Fragment>
+                {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
+                <label htmlFor="analysis-group">Current analysis group</label>
+                <Combobox
+                  id="analysis-group"
+                  options={browserConfig.analysisGroups.selectableGroups.map(group => ({
+                    id: group,
+                    label: browserConfig.analysisGroups.labels[group] || group,
+                  }))}
+                  onSelect={option => onChangeAnalysisGroup(option.id)}
+                  value={
+                    browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
+                    selectedAnalysisGroup
+                  }
+                />
+              </React.Fragment>
+            )}
+            <ExportVariantsButton
+              exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`}
+              variants={renderedVariants}
+            />
+          </AnalysisGroupMenuWrapper>
         </FiltersFirstColumn>
 
         <FiltersSecondColumn>

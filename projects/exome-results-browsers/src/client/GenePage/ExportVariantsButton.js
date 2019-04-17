@@ -8,11 +8,8 @@ import downloadCSV from '../downloadCSV'
 import columns from './variantTableColumns'
 
 const Button = styled(BaseButton)`
-  margin-left: 0.5em;
-
   @media (max-width: 700px) {
     margin-top: 0.5em;
-    margin-left: 0;
   }
 `
 
