@@ -1,9 +1,11 @@
 import throttle from 'lodash.throttle'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { createGlobalStyle } from 'styled-components'
 
 import { NavigatorTrack } from '@broad/track-navigator'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
+import { Modal } from '@broad/ui'
 
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -13,6 +15,12 @@ import filterVariants from './filterVariants'
 import sortVariants from './sortVariants'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
+
+const ModalStyles = createGlobalStyle`
+  #variant-details-modal .modal-content {
+    max-width: none !important;
+  }
+`
 
 class VariantsInGene extends Component {
   static propTypes = {
@@ -195,13 +203,18 @@ class VariantsInGene extends Component {
             variants={renderedVariants}
           />
         </TrackPageSection>
+        <ModalStyles />
         {selectedVariant && (
-          <VariantDetails
-            variant={selectedVariant}
+          <Modal
+            id="variant-details-modal"
+            size="large"
+            title={selectedVariant.variant_id}
             onRequestClose={() => {
               this.setState({ selectedVariant: null })
             }}
-          />
+          >
+            <VariantDetails variant={selectedVariant} />
+          </Modal>
         )}
       </React.Fragment>
     )

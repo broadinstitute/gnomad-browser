@@ -36,8 +36,8 @@ export function BaseAnalysisGroupsTable({ groups }) {
             <td>{group.an_ctrl}</td>
             <td>{group.an_case === 0 ? 0 : formatExponential(group.ac_case / group.an_case)}</td>
             <td>{group.an_ctrl === 0 ? 0 : formatExponential(group.ac_ctrl / group.an_ctrl)}</td>
-            <td>{group.p}</td>
-            <td>{group.se}</td>
+            <td>{group.p ? group.p.toPrecision(4) : ''}</td>
+            <td>{group.se ? group.se.toPrecision(4) : ''}</td>
           </tr>
         ))}
       </tbody>
