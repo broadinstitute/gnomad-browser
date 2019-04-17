@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 import { Tabs } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import { HelpPopup } from '../help'
 import sortByGroup from '../sortByGroup'
 import GeneResultsTable from './GeneResultsTable'
@@ -49,7 +51,8 @@ const GeneInfo = ({ gene }) => (
         <Tabs
           tabs={sortByGroup(gene.results).map(result => ({
             id: result.analysis_group,
-            label: result.analysis_group,
+            label:
+              browserConfig.analysisGroups.labels[result.analysis_group] || result.analysis_group,
             render: () => <GeneResultsTable geneResult={result} />,
           }))}
         />

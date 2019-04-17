@@ -3,6 +3,8 @@ import React from 'react'
 
 import { BaseTable } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import sortByGroup from '../sortByGroup'
 import Query from '../Query'
 
@@ -29,7 +31,9 @@ export function BaseAnalysisGroupsTable({ groups }) {
       <tbody>
         {sortByGroup([...groups]).map(group => (
           <tr key={group.analysis_group}>
-            <th scope="row">{group.analysis_group}</th>
+            <th scope="row">
+              {browserConfig.analysisGroups.labels[group.analysis_group] || group.analysis_group}
+            </th>
             <td>{group.ac_case}</td>
             <td>{group.an_case}</td>
             <td>{group.ac_ctrl}</td>

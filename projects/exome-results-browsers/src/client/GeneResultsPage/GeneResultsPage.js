@@ -92,10 +92,14 @@ class GeneResultsPage extends Component {
                           options={browserConfig.analysisGroups.selectableGroups.map(
                             analysisGroup => ({
                               analysisGroup,
-                              label: analysisGroup,
+                              label:
+                                browserConfig.analysisGroups.labels[analysisGroup] || analysisGroup,
                             })
                           )}
-                          value={selectedAnalysisGroup}
+                          value={
+                            browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
+                            selectedAnalysisGroup
+                          }
                           onSelect={({ analysisGroup }) => {
                             this.setState({ selectedAnalysisGroup: analysisGroup })
                           }}
