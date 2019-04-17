@@ -110,9 +110,6 @@ const VariantDetails = ({ variant }) => {
             <VariantAttribute label="Controls">
               {variant.ac_ctrl} / {variant.an_ctrl} ({formatAlleleFrequency(variant.af_ctrl)})
             </VariantAttribute>
-            <VariantAttribute label="N analysis groups">
-              {variant.n_analysis_groups}
-            </VariantAttribute>
             <VariantAttribute label="N denovos">{variant.ac_denovo}</VariantAttribute>
           </VariantAttributeList>
 
