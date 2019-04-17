@@ -3,26 +3,22 @@ export default {
   navBarTitle: 'Schizophrenia exome meta-analysis',
   navBarColor: '#0a79bf',
   elasticsearch: {
-    analysisGroups: {
-      index: 'schizophrenia_exome_variants_groups',
-      type: 'schizophrenia_exome_group',
-    },
     geneResults: {
-      index: 'schizophrenia_gene_results_171213',
+      index: 'schema_gene_results_2019_04_15',
       type: 'result',
     },
     variants: {
-      index: 'schizophrenia_exome_variants_results',
-      type: 'schizophrenia_exome_variant',
+      index: 'schema_variant_results_2019_04_15',
+      type: 'variant',
     },
   },
   geneResults: {
     resultsPageHeading: 'Exome meta-analysis results',
-    categories: [{ id: 'lof', label: 'LoF' }, { id: 'mpc', label: 'MPC' }],
+    categories: [{ id: 'lof', label: 'LoF' }, { id: 'mis', label: 'Missense' }],
   },
   analysisGroups: {
-    defaultGroup: 'all',
-    selectableGroups: ['all'],
+    defaultGroup: 'meta',
+    selectableGroups: ['meta'],
   },
   consequences: [
     {
