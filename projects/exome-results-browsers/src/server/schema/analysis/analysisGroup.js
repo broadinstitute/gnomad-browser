@@ -55,8 +55,10 @@ export const fetchAnalysisGroupsForVariant = async (ctx, variantId) => {
 
   const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
 
-  return Object.keys(doc.groups).map(group => ({
-    analysis_group: group,
-    ...doc.groups[group],
-  }))
+  return Object.entries(doc.groups)
+    .filter(entry => entry[1] && Object.entries(entry[1]).length !== 0)
+    .map(([groupName, groupData]) => ({
+      analysis_group: groupName,
+      ...groupData,
+    }))
 }
