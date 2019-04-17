@@ -152,10 +152,13 @@ const VariantFilterControls = ({
                 id="analysis-group"
                 options={browserConfig.analysisGroups.selectableGroups.map(group => ({
                   id: group,
-                  label: group,
+                  label: browserConfig.analysisGroups.labels[group] || group,
                 }))}
                 onSelect={option => onChangeAnalysisGroup(option.id)}
-                value={selectedAnalysisGroup}
+                value={
+                  browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
+                  selectedAnalysisGroup
+                }
               />
               <ExportVariantsButton
                 exportFileName={`${selectedAnalysisGroup}_${geneId}_variants`}
