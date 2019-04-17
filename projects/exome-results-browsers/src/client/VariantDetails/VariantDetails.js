@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, Modal } from '@broad/ui'
+import { ExternalLink } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
 import AnalysisGroupsTable from './AnalysisGroupsTable'
@@ -79,7 +79,7 @@ const formatInAnalysisFlag = inAnalysis => {
   return inAnalysis ? 'Yes' : 'No'
 }
 
-const Variant = ({ variant }) => {
+const VariantDetails = ({ variant }) => {
   const transcriptHGVSc = {}
   if (variant.hgvsc) {
     variant.hgvsc.split(',').forEach(s => {
@@ -178,19 +178,8 @@ const Variant = ({ variant }) => {
   )
 }
 
-Variant.propTypes = {
+VariantDetails.propTypes = {
   variant: PropTypes.object.isRequired,
 }
 
-const VariantDetailsModal = ({ onRequestClose, variant }) => (
-  <Modal onRequestClose={onRequestClose} size="large" title={variant.variant_id}>
-    <Variant variant={variant} />
-  </Modal>
-)
-
-VariantDetailsModal.propTypes = {
-  onRequestClose: PropTypes.func.isRequired,
-  variant: PropTypes.object.isRequired,
-}
-
-export default VariantDetailsModal
+export default VariantDetails
