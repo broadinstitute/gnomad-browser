@@ -150,8 +150,10 @@ export default () => (
       .
     </p>
     <p>
-      <strong>Update (March 6, 2019): gnomAD 2.1.1 released.</strong> The links below have been
-      updated. Note that the coverage files have not changed for this release.{' '}
+      <strong>Update, March 6, 2019: gnomAD 2.1.1 released</strong>{' '}
+      <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/README.txt">
+        (README.txt)
+      </ExternalLink>
     </p>
 
     <Wrapper>
