@@ -124,7 +124,7 @@ const columns = [
     heading: 'Consequence',
     tooltip: 'Predicted functional consequence',
     isSortable: true,
-    minWidth: 110,
+    minWidth: 140,
     render: (row, key, { highlightWords }) => (
       <span className="grid-cell-content">
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
@@ -138,35 +138,35 @@ const columns = [
     heading: 'AC Case',
     tooltip: 'Allele count in cases',
     isSortable: true,
-    minWidth: 60,
+    minWidth: 75,
   },
   {
     key: 'an_case',
     heading: 'AN Case',
     tooltip: 'Allele number in cases',
     isSortable: true,
-    minWidth: 60,
+    minWidth: 75,
   },
   {
     key: 'ac_ctrl',
     heading: 'AC Control',
     tooltip: 'Allele count in controls',
     isSortable: true,
-    minWidth: 60,
+    minWidth: 75,
   },
   {
     key: 'an_ctrl',
     heading: 'AN Control',
     tooltip: 'Allele number in controls',
     isSortable: true,
-    minWidth: 60,
+    minWidth: 75,
   },
   {
     key: 'af_case',
     heading: 'AF Case',
     tooltip: 'Allele frequency in cases',
     isSortable: true,
-    minWidth: 70,
+    minWidth: 80,
     render: renderExponentialNumberCell,
   },
   {
@@ -174,7 +174,7 @@ const columns = [
     heading: 'AF Control',
     tooltip: 'Allele frequency in controls',
     isSortable: true,
-    minWidth: 70,
+    minWidth: 80,
     render: renderExponentialNumberCell,
   },
   {
@@ -182,7 +182,7 @@ const columns = [
     heading: 'Estimate',
     tooltip: browserConfig.variantTable.tooltips.estimate,
     isSortable: true,
-    minWidth: 60,
+    minWidth: 80,
     render: renderNumberCell,
   },
   {
@@ -198,7 +198,7 @@ const columns = [
     heading: 'In Analysis',
     tooltip: browserConfig.variantTable.tooltips.in_analysis,
     isSortable: true,
-    minWidth: 60,
+    minWidth: 85,
     render: (row, key) => (row[key] ? 'yes' : ''),
     renderForCSV: (row, key) => (row[key] ? 'yes' : ''),
   },
