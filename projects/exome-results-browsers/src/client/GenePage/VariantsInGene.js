@@ -227,9 +227,6 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       chrom
       comment
       consequence
-      csq_analysis
-      csq_canonical
-      csq_worst
       estimate
       flags
       gene_id
