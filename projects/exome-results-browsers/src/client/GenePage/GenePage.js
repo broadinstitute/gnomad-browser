@@ -60,13 +60,17 @@ class GenePage extends Component {
 
     return (
       <Query query={geneQuery} variables={{ geneName }}>
-        {({ data, error, loading }) => {
+        {({ data, error, graphQLErrors, loading }) => {
           if (loading) {
             return <StatusMessage>Loading gene...</StatusMessage>
           }
 
-          if (error || !data.gene) {
+          if (error) {
             return <StatusMessage>Unable to load gene</StatusMessage>
+          }
+
+          if (graphQLErrors && !data.gene) {
+            return <StatusMessage>{graphQLErrors.map(err => err.message).join(', ')}</StatusMessage>
           }
 
           const { gene } = data
