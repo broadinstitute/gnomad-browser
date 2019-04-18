@@ -49,6 +49,14 @@ app.use(compression())
           mongo: mongo.db(),
         },
       },
+      customFormatErrorFn: error => {
+        console.log(error)
+        const message =
+          error.extensions && error.extensions.isUserVisible
+            ? error.message
+            : 'An unknown error occurred'
+        return { message }
+      },
     })
   )
 
