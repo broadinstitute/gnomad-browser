@@ -36,14 +36,32 @@ const cancelable = promise => {
   }
 }
 
+const cache = new Map()
+
+const fetchQueryResults = (query, variables, cacheKey) => {
+  if (cacheKey && cache.has(cacheKey)) {
+    return cache.get(cacheKey)
+  }
+
+  const request = gqlFetch('/api')(query, variables)
+
+  if (cacheKey) {
+    cache.set(cacheKey, request)
+  }
+
+  return request
+}
+
 class Query extends Component {
   static propTypes = {
+    cacheKey: PropTypes.string,
     children: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired,
     variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
+    cacheKey: undefined,
     variables: {},
   }
 
@@ -54,7 +72,6 @@ class Query extends Component {
   }
 
   componentDidMount() {
-    this.mounted = true
     this.loadData()
   }
 
@@ -66,11 +83,13 @@ class Query extends Component {
   }
 
   componentWillUnmount() {
-    this.mounted = false
+    if (this.currentRequest) {
+      this.currentRequest.cancel()
+    }
   }
 
   loadData() {
-    const { query, variables } = this.props
+    const { cacheKey, query, variables } = this.props
 
     this.setState({
       loading: true,
@@ -81,12 +100,9 @@ class Query extends Component {
       this.currentRequest.cancel()
     }
 
-    this.currentRequest = cancelable(gqlFetch('/api')(query, variables))
+    this.currentRequest = cancelable(fetchQueryResults(query, variables, cacheKey))
     this.currentRequest.promise.then(
       response => {
-        if (!this.mounted) {
-          return
-        }
         this.setState({
           data: response.data,
           error: null,
@@ -94,9 +110,6 @@ class Query extends Component {
         })
       },
       error => {
-        if (!this.mounted) {
-          return
-        }
         this.setState({
           data: null,
           error,
