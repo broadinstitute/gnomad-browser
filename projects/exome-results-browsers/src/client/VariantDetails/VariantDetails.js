@@ -139,7 +139,9 @@ const VariantDetails = ({ variant }) => {
             <VariantAttribute label="CADD">{variant.cadd}</VariantAttribute>
             <VariantAttribute label="PolyPhen">{formatPolyPhen(variant.polyphen)}</VariantAttribute>
             <VariantAttribute label="Flags">{variant.flags}</VariantAttribute>
-            <VariantAttribute label="Source">{variant.source}</VariantAttribute>
+            <VariantAttribute label="Source">
+              {variant.source ? variant.source.join(', ') : '—'}
+            </VariantAttribute>
             <VariantAttribute label="In analysis">
               {formatInAnalysisFlag(variant.in_analysis)}
             </VariantAttribute>

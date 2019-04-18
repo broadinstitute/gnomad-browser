@@ -1,4 +1,11 @@
-import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
+import {
+  GraphQLBoolean,
+  GraphQLFloat,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 
 import browserConfig from '@browser/config'
 
@@ -24,7 +31,7 @@ export const VariantType = new GraphQLObjectType({
     mpc: { type: GraphQLFloat },
     polyphen: { type: GraphQLString },
     pos: { type: GraphQLInt },
-    source: { type: GraphQLString },
+    source: { type: new GraphQLList(GraphQLString) },
     transcript_id: { type: GraphQLString },
     variant_id: { type: GraphQLString },
     xpos: { type: GraphQLFloat },
@@ -98,7 +105,7 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
       mpc: doc.mpc,
       polyphen: doc.polyphen,
       pos: doc.pos,
-      source: doc.source,
+      source: typeof doc.source === 'string' ? [doc.source] : doc.source,
       transcript_id: doc.transcript_id,
       variant_id: doc.variant_id,
       xpos: doc.xpos,
