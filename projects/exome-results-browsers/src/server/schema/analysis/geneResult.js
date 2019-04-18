@@ -40,8 +40,14 @@ const shapeGeneResult = doc => ({
   })),
 })
 
-export const fetchAllGeneResultsForAnalysisGroup = async (ctx, analysisGroup) => {
-  const hits = await fetchAllSearchResults(ctx.database.elastic, {
+const geneResultsCache = new Map()
+
+export const fetchAllGeneResultsForAnalysisGroup = (ctx, analysisGroup) => {
+  if (geneResultsCache.has(analysisGroup)) {
+    return geneResultsCache.get(analysisGroup)
+  }
+
+  const request = fetchAllSearchResults(ctx.database.elastic, {
     index: browserConfig.elasticsearch.geneResults.index,
     type: browserConfig.elasticsearch.geneResults.type,
     size: 10000,
@@ -55,9 +61,11 @@ export const fetchAllGeneResultsForAnalysisGroup = async (ctx, analysisGroup) =>
       },
       sort: [{ pval_meta: { order: 'asc' } }],
     },
-  })
+  }).then(hits => hits.map(hit => shapeGeneResult(hit._source))) // eslint-disable-line no-underscore-dangle
 
-  return hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
+  geneResultsCache.set(analysisGroup, request)
+
+  return request
 }
 
 export const fetchGeneResultsByGeneId = async (ctx, geneId) => {
