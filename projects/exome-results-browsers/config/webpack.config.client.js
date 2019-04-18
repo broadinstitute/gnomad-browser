@@ -41,6 +41,15 @@ const config = {
           },
         },
       },
+      {
+        test: /\.(gif|jpg|png)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'assets/images',
+          },
+        },
+      },
     ],
   },
   output: {

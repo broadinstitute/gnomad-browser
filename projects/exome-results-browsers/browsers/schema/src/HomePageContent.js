@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 import { PageHeading } from '@broad/ui'
 
+import stanleyCenterLogo from './stanley-center-logo.png'
+
 const HomePageContentWrapper = styled.div`
   font-size: 16px;
 `
@@ -95,9 +97,6 @@ export default () => (
         schizophrenia sequencing data, and plans for analysis.
       </Announcement>
     </AnnouncementList>
-    <Logo
-      alt="Stanley Center logo"
-      src="https://storage.googleapis.com/gnomad-browser/assets/stanley.png"
-    />
+    <Logo alt="Stanley Center logo" src={stanleyCenterLogo} />
   </HomePageContentWrapper>
 )
