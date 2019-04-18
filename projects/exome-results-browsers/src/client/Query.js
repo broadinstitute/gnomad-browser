@@ -68,6 +68,7 @@ class Query extends Component {
   state = {
     data: null,
     error: null,
+    graphQLErrors: null,
     loading: true,
   }
 
@@ -94,6 +95,7 @@ class Query extends Component {
     this.setState({
       loading: true,
       error: null,
+      graphQLErrors: null,
     })
 
     if (this.currentRequest) {
@@ -106,6 +108,7 @@ class Query extends Component {
         this.setState({
           data: response.data,
           error: null,
+          graphQLErrors: response.errors,
           loading: false,
         })
       },
@@ -113,6 +116,7 @@ class Query extends Component {
         this.setState({
           data: null,
           error,
+          graphQLErrors: null,
           loading: false,
         })
       }

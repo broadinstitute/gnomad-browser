@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { UserVisibleError } from '../../utilities/errors'
 import { AnalysisGroupArgumentType } from '../analysis/analysisGroup'
 import { GeneResultType, fetchGeneResultsByGeneId } from '../analysis/geneResult'
 import { VariantType, fetchVariantsByGeneId } from '../analysis/variant'
@@ -33,8 +34,14 @@ export const GeneType = new GraphQLObjectType({
   },
 })
 
-export const fetchGeneById = (ctx, geneId) =>
-  ctx.database.mongo.collection('genes').findOne({ gene_id: geneId })
+const fetchGene = async (ctx, query) => {
+  const gene = await ctx.database.mongo.collection('genes').findOne(query)
+  if (!gene) {
+    throw new UserVisibleError('Gene not found')
+  }
+  return gene
+}
 
-export const fetchGeneByName = (ctx, geneName) =>
-  ctx.database.mongo.collection('genes').findOne({ gene_name: geneName })
+export const fetchGeneById = (ctx, geneId) => fetchGene(ctx, { gene_id: geneId })
+
+export const fetchGeneByName = (ctx, geneName) => fetchGene(ctx, { gene_name: geneName })
