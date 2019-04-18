@@ -54,7 +54,11 @@ class GeneResultsPage extends Component {
       <Page>
         <DocumentTitle title="Results" />
         <PageHeading>{browserConfig.geneResults.resultsPageHeading}</PageHeading>
-        <Query query={geneResultsQuery} variables={{ analysisGroup: selectedAnalysisGroup }}>
+        <Query
+          cacheKey={`gene-results:${selectedAnalysisGroup}`}
+          query={geneResultsQuery}
+          variables={{ analysisGroup: selectedAnalysisGroup }}
+        >
           {({ data, error, loading }) => {
             let results = []
             let resultsContent
