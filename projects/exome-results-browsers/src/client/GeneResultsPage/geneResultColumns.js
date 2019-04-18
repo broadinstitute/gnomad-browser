@@ -24,7 +24,7 @@ const columns = [
     minWidth: 100,
     searchable: true,
     render: row => (
-      <Link className="grid-cell-content" to={`/gene/${row.gene_name}`}>
+      <Link className="grid-cell-content" target="_blank" to={`/gene/${row.gene_name}`}>
         {row.gene_name}
       </Link>
     ),
