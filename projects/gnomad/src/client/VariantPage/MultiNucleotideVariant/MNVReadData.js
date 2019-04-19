@@ -3,29 +3,37 @@ import React from 'react'
 
 import { GnomadReadData } from '../reads/GnomadReadData'
 
+const getReads = (snv, exomeOrGenome) => {
+  const categoryCount = { het: 0, hom: 0, hemi: 0 }
+  return ((snv[exomeOrGenome] || {}).reads || []).map(read => {
+    const { category } = read
+    categoryCount[category] += 1
+    return {
+      ...read,
+      label: `${snv.variant_id} ${category} [${exomeOrGenome}] #${categoryCount[category]}`,
+    }
+  })
+}
+
+const interleaveReads = allReads => {
+  let reads = []
+  ;['het', 'hom', 'hemi'].forEach(category => {
+    const allReadsInCategory = allReads.map(snvReads =>
+      snvReads.filter(read => read.category === category)
+    )
+    while (allReadsInCategory.some(snvReads => snvReads.length)) {
+      reads = reads.concat(
+        allReadsInCategory.map(snvReads => snvReads.shift()).filter(read => read !== undefined)
+      )
+    }
+  })
+  return reads
+}
+
 const MNVReadData = ({ variant }) => {
   // Concatenate reads from all constituent SNVs
-  const exomeReads = variant.constituent_snvs.reduce((reads, snv) => {
-    const categoryCount = { het: 0, hom: 0, hemi: 0 }
-    const snvReads = (snv.exome || {}).reads || []
-    return reads.concat(
-      snvReads.map(read => ({
-        ...read,
-        label: `${snv.variant_id} ${read.category} [exome] #${++categoryCount[read.category]}`, // eslint-disable-line no-plusplus
-      }))
-    )
-  }, [])
-
-  const genomeReads = variant.constituent_snvs.reduce((reads, snv) => {
-    const categoryCount = { het: 0, hom: 0, hemi: 0 }
-    const snvReads = (snv.genome || {}).reads || []
-    return reads.concat(
-      snvReads.map(read => ({
-        ...read,
-        label: `${snv.variant_id} ${read.category} [genome] #${++categoryCount[read.category]}`, // eslint-disable-line no-plusplus
-      }))
-    )
-  }, [])
+  const exomeReads = interleaveReads(variant.constituent_snvs.map(snv => getReads(snv, 'exome')))
+  const genomeReads = interleaveReads(variant.constituent_snvs.map(snv => getReads(snv, 'genome')))
 
   return (
     <GnomadReadData
