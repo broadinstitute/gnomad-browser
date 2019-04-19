@@ -6,24 +6,27 @@ import Link from '../../Link'
 import MNVConsequence, { MNVConsequencePropType } from './MNVConsequence'
 
 const List = styled.ul`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
   padding-left: 0;
   list-style-type: none;
+`
 
-  li {
-    margin-bottom: 2em;
-  }
+const ListItem = styled.li`
+  margin-bottom: 2em;
 `
 
 const MNVConsequenceList = ({ variant }) => (
   <List>
     {variant.consequences.map(consequence => (
-      <li key={consequence.gene_id}>
+      <ListItem key={consequence.gene_id}>
         <Link to={`/gene/${consequence.gene_id}`}>{consequence.gene_name}</Link> -{' '}
         <Link to={`/gene/${consequence.gene_id}/transcript/${consequence.transcript_id}`}>
           {consequence.transcript_id}
         </Link>
         <MNVConsequence consequence={consequence} />
-      </li>
+      </ListItem>
     ))}
   </List>
 )
