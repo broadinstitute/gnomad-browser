@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
 import { SegmentedControl } from '@broad/ui'
 
+import ControlSection from '../ControlSection'
 import Histogram from '../Histogram'
-
-const ControlSection = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 export class GnomadGenotypeQualityMetrics extends Component {
   constructor(props) {
