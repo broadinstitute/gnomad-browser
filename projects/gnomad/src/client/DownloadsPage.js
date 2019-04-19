@@ -332,6 +332,11 @@ export default () => (
               Exome calling regions
             </ExternalLink>
           </li>
+          <li>
+            <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list">
+              Genome calling regions
+            </ExternalLink>
+          </li>
         </ul>
       </DownloadSection>
     </Wrapper>
