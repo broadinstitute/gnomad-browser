@@ -58,7 +58,7 @@ class CancelablePromise {
 const renderInput = props => {
   // eslint-disable-next-line react/prop-types
   const { id, ref, ...rest } = props
-  return <SearchboxInput {...rest} id={id} innerRef={ref} />
+  return <SearchboxInput {...rest} id={id} ref={ref} />
 }
 
 const renderItem = (item, isHighlighted) => (

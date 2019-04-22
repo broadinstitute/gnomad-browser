@@ -329,7 +329,7 @@ class NavigationMenu extends Component {
     const { items } = this.props
     const { expandedItem } = this.state
     return (
-      <NavigationMenuWrapper innerRef={this.container}>
+      <NavigationMenuWrapper ref={this.container}>
         {items.map(item => {
           const isExpanded = expandedItem === item.id
           return (

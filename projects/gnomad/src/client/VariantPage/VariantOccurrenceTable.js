@@ -86,11 +86,7 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
 
   return (
     <span>
-      <TooltipAnchor
-        childRefPropName="innerRef"
-        tooltip={POPULATION_NAMES[popmaxPopulation]}
-        tooltipComponent={TextTooltip}
-      >
+      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation]} tooltipComponent={TextTooltip}>
         <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>

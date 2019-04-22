@@ -21,6 +21,6 @@
     "superagent": "^3.5.2"
   },
   "peerDependencies": {
-    "styled-components": "^2.1.2"
+    "styled-components": "^4.2.0"
   }
 }

@@ -8,13 +8,11 @@ import { Arrow, Container } from './styles'
 
 export class TooltipAnchor extends Component {
   static propTypes = {
-    childRefPropName: PropTypes.string,
     children: PropTypes.node.isRequired,
     tooltipComponent: PropTypes.func,
   }
 
   static defaultProps = {
-    childRefPropName: 'ref',
     tooltipComponent: DefaultTooltip,
   }
 
@@ -46,7 +44,6 @@ export class TooltipAnchor extends Component {
   render() {
     const {
       children,
-      childRefPropName,
       // https://reactjs.org/docs/jsx-in-depth.html#user-defined-components-must-be-capitalized
       tooltipComponent: TooltipComponent,
       ...otherProps
@@ -60,7 +57,7 @@ export class TooltipAnchor extends Component {
             React.cloneElement(React.Children.only(children), {
               onMouseEnter: this.showTooltip,
               onMouseLeave: this.hideTooltip,
-              [childRefPropName]: ref,
+              ref,
             })
           }
         </Reference>
@@ -68,13 +65,9 @@ export class TooltipAnchor extends Component {
           ReactDOM.createPortal(
             <Popper placement="top">
               {({ ref, style, placement, arrowProps }) => (
-                <Container data-placement={placement} innerRef={ref} style={style}>
+                <Container data-placement={placement} ref={ref} style={style}>
                   <TooltipComponent {...otherProps} />
-                  <Arrow
-                    data-placement={placement}
-                    innerRef={arrowProps.ref}
-                    style={arrowProps.style}
-                  />
+                  <Arrow data-placement={placement} ref={arrowProps.ref} style={arrowProps.style} />
                 </Container>
               )}
             </Popper>,

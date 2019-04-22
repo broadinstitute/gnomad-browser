@@ -344,6 +344,7 @@ export class Grid extends Component {
       columns: inputColumns,
       data,
       numRowsRendered,
+      onHoverRow,
       onRequestSort,
       onScroll,
       onVisibleRowsChange,
@@ -384,13 +385,12 @@ export class Grid extends Component {
         {...rest}
         aria-colcount={columns.length}
         aria-rowcount={data.length + 1}
-        innerRef={this.gridElement}
+        ref={this.gridElement}
         role="grid"
         tabIndex={0}
         onFocus={this.onFocus}
         onKeyDown={this.onKeyDown}
         onMouseLeave={() => {
-          const { onHoverRow } = this.props
           onHoverRow(null)
         }}
       >
