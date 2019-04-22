@@ -118,7 +118,7 @@ export const renderRoundedNumber = (
 
   const roundedNumber = Number(num.toFixed(precision)).toString()
   return (
-    <TooltipAnchor childRefPropName="innerRef" tooltip={num.toFixed(tooltipPrecision)}>
+    <TooltipAnchor tooltip={num.toFixed(tooltipPrecision)}>
       {highlightColor ? (
         <ConstraintHighlight highlightColor={highlightColor}>{roundedNumber}</ConstraintHighlight>
       ) : (

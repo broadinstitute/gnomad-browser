@@ -38,7 +38,7 @@
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "styled-components": "^2.1.2"
+    "styled-components": "^4.2.0"
   },
   "devDependencies": {
     "tap-spec": "^5.0.0",

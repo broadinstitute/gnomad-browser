@@ -13,6 +13,6 @@
   },
   "peerDependencies": {
     "react": "^16.8.2",
-    "styled-components": "^2.1.2"
+    "styled-components": "^4.2.0"
   }
 }

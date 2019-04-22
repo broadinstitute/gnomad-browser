@@ -102,12 +102,7 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
                 fill={copyNumber === 2 ? '#bdbdbd' : '#73ab3d'}
                 stroke="#333"
               />
-              <TooltipAnchor
-                childRefPropName="innerRef"
-                tooltipComponent={HistogramTooltip}
-                ac={ac}
-                copyNumber={copyNumber}
-              >
+              <TooltipAnchor tooltipComponent={HistogramTooltip} ac={ac} copyNumber={copyNumber}>
                 <TooltipTrigger
                   x={xScale(copyNumber)}
                   y={yScale.range()[1]}

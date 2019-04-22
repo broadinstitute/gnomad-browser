@@ -5,7 +5,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createDebounce from 'redux-debounced'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
-import { injectGlobal } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
 import { createGeneReducer } from '@broad/redux-genes'
 import { createVariantReducer } from '@broad/redux-variants'
@@ -17,8 +17,7 @@ import browserConfig from '@browser/config'
 
 import App from './routes'
 
-// eslint-disable-next-line no-unused-expressions
-injectGlobal`
+const GlobalStyles = createGlobalStyle`
   html,
   body {
     background-color: #fafafa;
@@ -117,11 +116,14 @@ window.addEventListener('resize', () =>
 )
 
 const Main = () => (
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>
+  <React.Fragment>
+    <GlobalStyles />
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </React.Fragment>
 )
 
 export default Main

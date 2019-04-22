@@ -7,9 +7,7 @@
     "lib"
   ],
   "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.8.2",
-    "styled-components": "^2.1.2"
+    "react": "^16.8.2"
   },
   "dependencies": {
     "@broad/redux-genes": "*",

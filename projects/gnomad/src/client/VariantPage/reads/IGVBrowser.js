@@ -102,7 +102,7 @@ export class IGVBrowser extends Component {
   }
 
   render() {
-    return <IGVWrapper innerRef={this.elementRef} />
+    return <IGVWrapper ref={this.elementRef} />
   }
 }
 

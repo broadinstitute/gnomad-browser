@@ -337,7 +337,7 @@ export class TranscriptsTrack extends Component {
     })
 
     return (
-      <TranscriptsWrapper innerRef={this.transcriptsContainerRef}>
+      <TranscriptsWrapper ref={this.transcriptsContainerRef}>
         {sortedTranscripts.map(transcript => (
           <TranscriptWrapper key={transcript.transcript_id}>
             <Track

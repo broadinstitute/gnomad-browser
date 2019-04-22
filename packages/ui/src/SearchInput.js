@@ -64,7 +64,7 @@ export const SearchInput = React.forwardRef(({ placeholder, onChange, value: pro
           }
         }}
         placeholder={placeholder}
-        innerRef={ref}
+        ref={ref}
         type="text"
         value={value}
       />

@@ -36,7 +36,7 @@ const BadgeWrapper = styled.span`
 
 export const Badge = ({ children, level, tooltip }) =>
   tooltip ? (
-    <TooltipAnchor childRefPropName="innerRef" text={tooltip} tooltipComponent={TextTooltip}>
+    <TooltipAnchor text={tooltip} tooltipComponent={TextTooltip}>
       <BadgeWrapper level={level}>{children}</BadgeWrapper>
     </TooltipAnchor>
   ) : (

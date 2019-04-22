@@ -91,7 +91,7 @@ export class Combobox extends Component {
     const { id } = this.props
     // eslint-disable-next-line react/prop-types
     const { ref, ...rest } = props
-    return <Input {...rest} id={id} innerRef={ref} />
+    return <Input {...rest} id={id} ref={ref} />
   }
 
   render() {
