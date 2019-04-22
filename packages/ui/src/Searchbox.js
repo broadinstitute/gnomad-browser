@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import Autocomplete from 'react-autocomplete'
 
 import { Input as ComboboxInput, Item, menuStyle } from './Combobox'
 
-const SearchboxInput = ComboboxInput.extend`
+const SearchboxInput = styled(ComboboxInput)`
   ${props => (props.hasResults ? '' : 'background-image: none')};
 `
 
-const PlaceholderItem = Item.extend`
+const PlaceholderItem = styled(Item)`
   color: rgba(0, 0, 0, 0.5);
 `
 

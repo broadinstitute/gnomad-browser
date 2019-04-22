@@ -1,12 +1,13 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
+import styled from 'styled-components'
 
 import { TextButton } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 import browserConfig from '@browser/config'
 
-const VariantIdButton = TextButton.extend`
+const VariantIdButton = styled(TextButton)`
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;

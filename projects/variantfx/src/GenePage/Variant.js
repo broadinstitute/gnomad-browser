@@ -60,15 +60,15 @@ const VariantAttribute = styled.div`
   margin-bottom: 2px;
 `
 
-const TableRowTotal = TableRow.extend`
+const TableRowTotal = styled(TableRow)`
   border-top: 1px solid #000;
 `
 
-const VariantTableTitleColumn = TableTitleColumn.extend`
+const VariantTableTitleColumn = styled(TableTitleColumn)`
   width: 120px;
 `
 
-const VariantTableCell = TableCell.extend`
+const VariantTableCell = styled(TableCell)`
   width: 60px;
 `
 

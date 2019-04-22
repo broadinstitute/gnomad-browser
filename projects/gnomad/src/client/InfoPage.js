@@ -1,6 +1,8 @@
+import styled from 'styled-components'
+
 import { Page } from '@broad/ui'
 
-export default Page.extend`
+export default styled(Page)`
   font-size: 16px;
 
   p {

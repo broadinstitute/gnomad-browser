@@ -52,17 +52,17 @@ const SubHeader = styled.h2`
   margin-bottom: 20px;
  `
 
-const DiseaseBurdenTable = Table.extend`
+const DiseaseBurdenTable = styled(Table)`
   margin-bottom: 20px;
   margin-top: 0;
 `
 
 
-const GeneAttributeKeysCustom = GeneAttributeKeys.extend`
+const GeneAttributeKeysCustom = styled(GeneAttributeKeys)`
   width: 40%;
 `
 
-const TableRowTotal = TableRow.extend`
+const TableRowTotal = styled(TableRow)`
   font-weight: bold;
   border-bottom: 1px solid #000;
   ${''}
