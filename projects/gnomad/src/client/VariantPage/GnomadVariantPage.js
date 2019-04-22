@@ -39,6 +39,10 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
+const ScrollWrapper = styled.div`
+  overflow-x: auto;
+`
+
 const VariantType = ({ variantId }) => {
   const [chrom, pos, ref, alt] = variantId.split('-') // eslint-disable-line no-unused-vars
   if (!ref || !alt) {
@@ -92,7 +96,9 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
         return (
           <VariantDetailsContainer>
             <ResponsiveSection>
-              <GnomadVariantOccurrenceTable variant={variant} />
+              <ScrollWrapper>
+                <GnomadVariantOccurrenceTable variant={variant} />
+              </ScrollWrapper>
 
               {variant.colocatedVariants.length > 0 && (
                 <div>
@@ -139,11 +145,13 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </Section>
             <ResponsiveSection>
               <h2>Population Frequencies</h2>
-              <GnomadPopulationsTable
-                exomePopulations={variant.exome ? variant.exome.populations : []}
-                genomePopulations={variant.genome ? variant.genome.populations : []}
-                showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-              />
+              <ScrollWrapper>
+                <GnomadPopulationsTable
+                  exomePopulations={variant.exome ? variant.exome.populations : []}
+                  genomePopulations={variant.genome ? variant.genome.populations : []}
+                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                />
+              </ScrollWrapper>
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>Age Distribution</h2>
