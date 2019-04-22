@@ -80,6 +80,8 @@ export { SearchInput } from './SearchInput'
 
 export { SegmentedControl } from './SegmentedControl'
 
+export { Select } from './Select'
+
 export { BaseTable } from './Table'
 
 export { Tabs } from './Tabs'
