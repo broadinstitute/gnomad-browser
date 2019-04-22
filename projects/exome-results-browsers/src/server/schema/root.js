@@ -4,10 +4,10 @@ import {
   AnalysisGroupArgumentType,
   AnalysisGroupType,
   fetchAnalysisGroupsForVariant,
-} from './analysis/analysisGroup'
-import { GeneResultType, fetchAllGeneResultsForAnalysisGroup } from './analysis/geneResult'
-import { SearchResultType, fetchSearchResults } from './analysis/search'
-import { GeneType, fetchGeneById, fetchGeneByName } from './reference/gene'
+} from './analysisGroup'
+import { GeneResultType, fetchAllGeneResultsForAnalysisGroup } from './geneResult'
+import { SearchResultType, fetchSearchResults } from './search'
+import { GeneType, fetchGeneById, fetchGeneByName } from './gene'
 
 export const RootType = new GraphQLObjectType({
   name: 'Root',

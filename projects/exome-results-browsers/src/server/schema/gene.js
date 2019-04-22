@@ -1,9 +1,9 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import { UserVisibleError } from '../../utilities/errors'
-import { AnalysisGroupArgumentType } from '../analysis/analysisGroup'
-import { GeneResultType, fetchGeneResultsByGeneId } from '../analysis/geneResult'
-import { VariantType, fetchVariantsByGeneId } from '../analysis/variant'
+import { UserVisibleError } from '../utilities/errors'
+import { AnalysisGroupArgumentType } from './analysisGroup'
+import { GeneResultType, fetchGeneResultsByGeneId } from './geneResult'
+import { VariantType, fetchVariantsByGeneId } from './variant'
 import { TranscriptType, fetchTranscriptById } from './transcript'
 
 export const GeneType = new GraphQLObjectType({

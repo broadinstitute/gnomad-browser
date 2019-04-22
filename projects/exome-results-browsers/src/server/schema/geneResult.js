@@ -2,7 +2,7 @@ import { GraphQLInt, GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString
 
 import browserConfig from '@browser/config'
 
-import { fetchAllSearchResults } from '../../utilities/elasticsearch'
+import { fetchAllSearchResults } from '../utilities/elasticsearch'
 
 const GeneResultCategoryType = new GraphQLObjectType({
   name: 'GeneResultCategory',

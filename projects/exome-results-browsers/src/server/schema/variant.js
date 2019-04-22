@@ -9,7 +9,7 @@ import {
 
 import browserConfig from '@browser/config'
 
-import { fetchAllSearchResults } from '../../utilities/elasticsearch'
+import { fetchAllSearchResults } from '../utilities/elasticsearch'
 
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
