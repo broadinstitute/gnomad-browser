@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl } from '@broad/ui'
+import { SegmentedControl, Select } from '@broad/ui'
 
 import ControlSection from '../ControlSection'
 import Histogram from '../Histogram'
@@ -52,31 +52,28 @@ export class GnomadGenotypeQualityMetrics extends Component {
             }}
             options={[
               { label: 'All', value: 'all', disabled: selectedMetric === 'alleleBalance' },
-              { label: 'Variant Carriers', value: 'alt' }
+              { label: 'Variant Carriers', value: 'alt' },
             ]}
             value={selectedSamples}
           />
 
-          <select
+          <Select
             id="genotype-quality-metrics-metric"
             onChange={e => {
               const metric = e.target.value
-              this.setState(state => {
-                const update = { selectedMetric: metric }
-                // "All" data is not available for allele balance
-                if (metric === 'alleleBalance') {
-                  update.selectedSamples = 'alt'
-                }
-                return update
-              })
+              const update = { selectedMetric: metric }
+              // "All" data is not available for allele balance
+              if (metric === 'alleleBalance') {
+                update.selectedSamples = 'alt'
+              }
+              this.setState(update)
             }}
             value={selectedMetric}
           >
-
             <option value="genotypeQuality">Genotype Quality</option>
             <option value="genotypeDepth">Depth</option>
             <option value="alleleBalance">Allele Balance</option>
-          </select>
+          </Select>
 
           <SegmentedControl
             id="genotype-quality-metrics-dataset"
