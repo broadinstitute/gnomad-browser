@@ -24,7 +24,6 @@ const SegmentedControlContainer = styled.span`
 
   label {
     padding: 0.375em 0.75em;
-    border: 1px solid transparent;
     cursor: pointer;
 
     &:first-of-type {
