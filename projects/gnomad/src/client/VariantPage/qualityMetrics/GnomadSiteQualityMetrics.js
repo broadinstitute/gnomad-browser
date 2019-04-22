@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl } from '@broad/ui'
+import { SegmentedControl, Select } from '@broad/ui'
 
 import ControlSection from '../ControlSection'
 import { AggregateQualityMetricsQuery } from './AggregateQualityMetricsQuery'
@@ -114,7 +114,7 @@ export class GnomadSiteQualityMetrics extends Component {
               />
 
               <ControlSection>
-                <select
+                <Select
                   onChange={e => {
                     this.setState({ selectedMetric: e.target.value })
                   }}
@@ -128,7 +128,7 @@ export class GnomadSiteQualityMetrics extends Component {
                       </option>
                     )
                   })}
-                </select>
+                </Select>
 
                 <SegmentedControl
                   id="site-quality-metrics-dataset"
