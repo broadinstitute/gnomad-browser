@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { finalFilteredVariants, isLoadingVariants } from '@broad/redux-variants'
 import { Button } from '@broad/ui'
@@ -7,7 +8,7 @@ import { Button } from '@broad/ui'
 import downloadCSV from '../downloadCSV'
 import columns from './variantTableColumns'
 
-const ExportVariantsButton = Button.extend`
+const ExportVariantsButton = styled(Button)`
   margin-left: 0.5em;
 
   @media (max-width: 700px) {

@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
 
 import { BaseTable } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
-const Table = BaseTable.extend`
+const Table = styled(BaseTable)`
   min-width: 325px;
 `
 

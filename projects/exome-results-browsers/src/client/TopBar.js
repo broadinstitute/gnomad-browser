@@ -46,7 +46,7 @@ const Title = styled.span`
   font-size: 1.5em;
 `
 
-const ToggleMenuButton = Button.extend`
+const ToggleMenuButton = styled(Button)`
   border: 1px solid #fafafa;
   background: transparent;
   color: inherit;

@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import { BaseTable, TextButton } from '@broad/ui'
 
-const Table = BaseTable.extend`
+const Table = styled(BaseTable)`
   tr.border td {
     border-bottom: 2px solid #aaa;
   }
 `
 
-const TogglePopulationButton = TextButton.extend`
+const TogglePopulationButton = styled(TextButton)`
   display: inline-flex;
   flex-direction: row;
   align-items: center;

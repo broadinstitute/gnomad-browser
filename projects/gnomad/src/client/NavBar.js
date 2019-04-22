@@ -45,7 +45,7 @@ const Logo = styled.div`
   font-weight: bold;
 `
 
-const ToggleMenuButton = Button.extend`
+const ToggleMenuButton = styled(Button)`
   border: 1px solid #fafafa;
   background: black;
   color: white;

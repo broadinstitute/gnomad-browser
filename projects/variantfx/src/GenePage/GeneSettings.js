@@ -29,7 +29,7 @@ const GeneSettings = ({
     flex-direction: row;
   `
 
-  const VariantCategoryButton = MaterialButtonRaised.extend`
+  const VariantCategoryButton = styled(MaterialButtonRaised)`
     background-color: rgba(10, 121, 191, 0.1);
     margin-right: 10px;
     &:hover {

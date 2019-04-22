@@ -42,7 +42,7 @@ export const TableRow = styled.div`
   border-bottom: 1px solid lightgrey;
 `
 
-export const TableHeader = TableRow.extend`
+export const TableHeader = styled(TableRow)`
   font-weight: bold;
   border-bottom: 1px solid black;
   padding-bottom: 5px;
@@ -55,6 +55,6 @@ export const TableCell = styled.div`
   ${'' /* width: 100px; */}
 `
 
-export const TableTitleColumn = TableCell.extend`
+export const TableTitleColumn = styled(TableCell)`
   width: 10px;
 `

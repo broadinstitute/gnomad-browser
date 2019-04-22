@@ -38,7 +38,7 @@ font-size: 20px;
 font-family: Helvetica Neue;
 `
 
-const JustifyParagraphText = ParagraphText.extend`
+const JustifyParagraphText = styeld(ParagraphText)`
 line-height: 125%;
 `
 

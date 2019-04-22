@@ -9,6 +9,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route } from 'react-router-dom'
+import styled from 'styled-components'
 
 import FetchHoc from './FetchHoc'
 import { VariantTable } from '@broad/table'
@@ -32,7 +33,7 @@ import fetchFunction from './fetch'
 
 const VariantTableWithRouter = withRouter(VariantTable)
 
-const SectionTitleIndent = SectionTitle.extend`
+const SectionTitleIndent = styled(SectionTitle)`
   margin-left: 70px;
   margin-right: 70px;
 `

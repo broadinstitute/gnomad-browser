@@ -16,7 +16,7 @@ const ConstraintHighlight = styled.span`
   color: #000;
 `
 
-const Table = BaseTable.extend`
+const Table = styled(BaseTable)`
   @media (max-width: 600px) {
     td,
     th {
