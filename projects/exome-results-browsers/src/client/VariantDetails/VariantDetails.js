@@ -9,6 +9,7 @@ import browserConfig from '@browser/config'
 
 import Query from '../Query'
 import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
+import variantResultColumns from './variantResultColumns'
 import VariantResultsTable from './VariantResultsTable'
 
 const VariantContainer = styled.div`
@@ -55,13 +56,6 @@ const TranscriptAttributes = styled.dl`
   }
 `
 
-const formatInAnalysisFlag = inAnalysis => {
-  if (inAnalysis === null) {
-    return null
-  }
-  return inAnalysis ? 'Yes' : 'No'
-}
-
 const renderNumber = (num, precision = 3) =>
   num === null ? null : Number(num.toPrecision(precision)).toString()
 
@@ -85,9 +79,8 @@ const VariantDetails = ({ variant }) => {
     })
   }
 
-  const defaultGroupResult = variant.results.find(
-    result => result.analysis_group === browserConfig.analysisGroups.defaultGroup
-  )
+  const { defaultGroup } = browserConfig.analysisGroups
+  const defaultGroupResult = variant.results.find(result => result.analysis_group === defaultGroup)
 
   return (
     <VariantContainer>
@@ -97,7 +90,7 @@ const VariantDetails = ({ variant }) => {
       <Columns>
         {defaultGroupResult && (
           <Column>
-            <VariantAttributeList label="Statistics">
+            <VariantAttributeList label={`Analysis (${defaultGroup})`}>
               <VariantAttribute label="Cases">
                 {defaultGroupResult.ac_case} / {defaultGroupResult.an_case} (
                 {renderExponential(defaultGroupResult.af_case, 4)})
@@ -106,26 +99,13 @@ const VariantDetails = ({ variant }) => {
                 {defaultGroupResult.ac_ctrl} / {defaultGroupResult.an_ctrl} (
                 {renderExponential(defaultGroupResult.af_ctrl, 4)})
               </VariantAttribute>
-            </VariantAttributeList>
-
-            <VariantAttributeList label="Analysis">
-              <VariantAttribute label="In analysis">
-                {formatInAnalysisFlag(defaultGroupResult.in_analysis)}
-              </VariantAttribute>
-              <VariantAttribute label="P-Value">
-                {renderNumber(defaultGroupResult.p)}
-              </VariantAttribute>
-              <VariantAttribute label="Estimate">
-                {renderNumber(defaultGroupResult.est)}
-              </VariantAttribute>
-              <VariantAttribute label="SE">{renderNumber(defaultGroupResult.se)}</VariantAttribute>
-              <VariantAttribute label="Qp">{renderNumber(defaultGroupResult.qp)}</VariantAttribute>
-              <VariantAttribute label="I2">{renderNumber(defaultGroupResult.i2)}</VariantAttribute>
-              <VariantAttribute label="N denovos">{defaultGroupResult.n_denovos}</VariantAttribute>
-              <VariantAttribute label="Comment">{defaultGroupResult.comment}</VariantAttribute>
-              <VariantAttribute label="Source">
-                {defaultGroupResult.source ? defaultGroupResult.source.join(', ') : null}
-              </VariantAttribute>
+              {variantResultColumns.map(c => (
+                <VariantAttribute key={c.key} label={c.heading}>
+                  {defaultGroupResult[c.key] === null
+                    ? null
+                    : (c.render || renderNumber)(defaultGroupResult[c.key])}
+                </VariantAttribute>
+              ))}
             </VariantAttributeList>
           </Column>
         )}
@@ -233,15 +213,7 @@ const variantDetailsQuery = `
         an_ctrl
         af_ctrl
 
-        comment
-        est
-        i2
-        in_analysis
-        n_denovos
-        p
-        qp
-        se
-        source
+        ${variantResultColumns.map(c => c.key).join('\n')}
       }
     }
   }

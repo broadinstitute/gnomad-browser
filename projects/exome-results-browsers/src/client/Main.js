@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `
 
-registerConsequences(browserConfig.consequences)
+registerConsequences(browserConfig.variants.consequences)
 
 const Main = () => (
   <React.Fragment>

@@ -13,6 +13,20 @@ import browserConfig from '@browser/config'
 import { fetchAllSearchResults } from '../utilities/elasticsearch'
 import { UserVisibleError } from '../utilities/errors'
 
+const types = {
+  boolean: GraphQLBoolean,
+  float: GraphQLFloat,
+  int: GraphQLInt,
+  string: GraphQLString,
+}
+
+const getType = typeStr => {
+  if (typeStr.endsWith('[]')) {
+    return new GraphQLList(getType(typeStr.slice(0, -2)))
+  }
+  return types[typeStr]
+}
+
 const resultFields = {
   analysis_group: { type: new GraphQLNonNull(GraphQLString) },
   // Case/Control numbers
@@ -23,15 +37,13 @@ const resultFields = {
   an_case: { type: new GraphQLNonNull(GraphQLInt) },
   an_ctrl: { type: new GraphQLNonNull(GraphQLInt) },
   // Analysis results
-  comment: { type: GraphQLString },
-  est: { type: GraphQLFloat },
-  i2: { type: GraphQLFloat },
-  in_analysis: { type: GraphQLBoolean },
-  n_denovos: { type: GraphQLInt },
-  p: { type: GraphQLFloat },
-  qp: { type: GraphQLFloat },
-  se: { type: GraphQLFloat },
-  source: { type: new GraphQLList(GraphQLString) },
+  ...browserConfig.variants.columns.reduce(
+    (acc, c) => ({
+      ...acc,
+      [c.key]: { type: getType(c.type || 'float') },
+    }),
+    {}
+  ),
 }
 
 const getResultData = (doc, analysisGroup) => {
