@@ -52,32 +52,18 @@ const TranscriptAttributes = styled.dl`
   }
 `
 
-function formatPolyPhen(abbreviation) {
-  if (!abbreviation) {
-    return ''
-  }
-  switch (abbreviation) {
-    case 'D':
-      return 'Damaging'
-    case 'P':
-      return 'Possibly damaging'
-    case 'B':
-      return 'Benign'
-    default:
-      return abbreviation
-  }
-}
-
-function formatAlleleFrequency(frequency) {
-  return Number(frequency.toPrecision(4)).toExponential()
-}
-
 const formatInAnalysisFlag = inAnalysis => {
   if (inAnalysis === null) {
-    return '—'
+    return null
   }
   return inAnalysis ? 'Yes' : 'No'
 }
+
+const renderNumber = (num, precision = 3) =>
+  num === null ? null : Number(num.toPrecision(precision)).toString()
+
+const renderExponential = (num, precision = 3) =>
+  num === null ? null : Number(num.toPrecision(precision)).toExponential()
 
 const VariantDetails = ({ variant }) => {
   const transcriptHGVSc = {}
@@ -105,27 +91,28 @@ const VariantDetails = ({ variant }) => {
         <Column>
           <VariantAttributeList label="Statistics">
             <VariantAttribute label="Cases">
-              {variant.ac_case} / {variant.an_case} ({formatAlleleFrequency(variant.af_case)})
+              {variant.ac_case} / {variant.an_case} ({renderExponential(variant.af_case, 4)})
             </VariantAttribute>
             <VariantAttribute label="Controls">
-              {variant.ac_ctrl} / {variant.an_ctrl} ({formatAlleleFrequency(variant.af_ctrl)})
+              {variant.ac_ctrl} / {variant.an_ctrl} ({renderExponential(variant.af_ctrl, 4)})
             </VariantAttribute>
-            <VariantAttribute label="N denovos">{variant.n_denovos}</VariantAttribute>
           </VariantAttributeList>
 
-          {variant.p !== null && (
-            <VariantAttributeList label="Analysis">
-              <VariantAttribute label="P-Value">
-                {Number(variant.p.toPrecision(3)).toExponential()}
-              </VariantAttribute>
-              <VariantAttribute label="Estimate">
-                {Number(variant.est.toPrecision(3)).toExponential()}
-              </VariantAttribute>
-              <VariantAttribute label="SE">{variant.se}</VariantAttribute>
-              <VariantAttribute label="Qp">{variant.qp}</VariantAttribute>
-              <VariantAttribute label="I2">{variant.i2}</VariantAttribute>
-            </VariantAttributeList>
-          )}
+          <VariantAttributeList label="Analysis">
+            <VariantAttribute label="In analysis">
+              {formatInAnalysisFlag(variant.in_analysis)}
+            </VariantAttribute>
+            <VariantAttribute label="P-Value">{renderNumber(variant.p)}</VariantAttribute>
+            <VariantAttribute label="Estimate">{renderNumber(variant.est)}</VariantAttribute>
+            <VariantAttribute label="SE">{renderNumber(variant.se)}</VariantAttribute>
+            <VariantAttribute label="Qp">{renderNumber(variant.qp)}</VariantAttribute>
+            <VariantAttribute label="I2">{renderNumber(variant.i2)}</VariantAttribute>
+            <VariantAttribute label="N denovos">{variant.n_denovos}</VariantAttribute>
+            <VariantAttribute label="Comment">{variant.comment}</VariantAttribute>
+            <VariantAttribute label="Source">
+              {variant.source ? variant.source.join(', ') : null}
+            </VariantAttribute>
+          </VariantAttributeList>
         </Column>
 
         <Column>
@@ -135,17 +122,9 @@ const VariantDetails = ({ variant }) => {
             <VariantAttribute label="Consequence">
               {getLabelForConsequenceTerm(variant.consequence)}
             </VariantAttribute>
+            <VariantAttribute label="PolyPhen">{variant.polyphen}</VariantAttribute>
             <VariantAttribute label="MPC">{variant.mpc}</VariantAttribute>
             <VariantAttribute label="CADD">{variant.cadd}</VariantAttribute>
-            <VariantAttribute label="PolyPhen">{formatPolyPhen(variant.polyphen)}</VariantAttribute>
-            <VariantAttribute label="Flags">{variant.flags}</VariantAttribute>
-            <VariantAttribute label="Source">
-              {variant.source ? variant.source.join(', ') : '—'}
-            </VariantAttribute>
-            <VariantAttribute label="In analysis">
-              {formatInAnalysisFlag(variant.in_analysis)}
-            </VariantAttribute>
-            <VariantAttribute label="Comment">{variant.comment}</VariantAttribute>
           </VariantAttributeList>
         </Column>
 

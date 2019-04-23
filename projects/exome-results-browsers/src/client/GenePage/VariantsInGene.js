@@ -225,39 +225,38 @@ const variantsQuery = `
 query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
   gene(gene_name: $geneName) {
     variants(analysis_group: $analysisGroup) {
-      ac
-      ac_case
-      ac_ctrl
-      af
-      af_case
-      af_ctrl
-      an
-      an_case
-      an_ctrl
+      variant_id
+      chrom
+      pos
+
       cadd
       canonical_transcript_id
-      chrom
-      comment
       consequence
-      est
       gene_id
       gene_name
       hgvsc
       hgvsc_canonical
       hgvsp
       hgvsp_canonical
+      mpc
+      polyphen
+      transcript_id
+
+      ac_case
+      ac_ctrl
+      af_case
+      af_ctrl
+      an_case
+      an_ctrl
+      comment
+      est
       i2
       in_analysis
-      mpc
       n_denovos
-      polyphen
-      pos
       p
       qp
       se
       source
-      transcript_id
-      variant_id
     }
   }
 }
@@ -277,12 +276,25 @@ const ConnectedVariantsInGene = ({ gene, selectedAnalysisGroup, ...rest }) => (
         return <StatusMessage>Failed to load variants</StatusMessage>
       }
 
+      const variants = data.gene.variants.map(v => {
+        const ac = v.ac_case + v.ac_ctrl
+        const an = v.an_case + v.an_ctrl
+        const af = an === 0 ? 0 : ac / an
+
+        return {
+          ...v,
+          ac,
+          an,
+          af,
+        }
+      })
+
       return (
         <VariantsInGene
           {...rest}
           gene={gene}
           selectedAnalysisGroup={selectedAnalysisGroup}
-          variants={data.gene.variants}
+          variants={variants}
         />
       )
     }}
