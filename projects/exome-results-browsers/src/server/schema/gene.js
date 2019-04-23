@@ -12,10 +12,7 @@ export const GeneType = new GraphQLObjectType({
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
     full_gene_name: { type: GraphQLString },
-    other_names: { type: new GraphQLList(GraphQLString) },
     chrom: { type: GraphQLString },
-    canonical_transcript: { type: GraphQLString },
-    strand: { type: GraphQLString },
     transcript: {
       type: TranscriptType,
       resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),

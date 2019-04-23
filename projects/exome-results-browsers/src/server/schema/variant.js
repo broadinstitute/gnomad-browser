@@ -21,7 +21,6 @@ export const VariantType = new GraphQLObjectType({
     chrom: { type: GraphQLString },
     comment: { type: GraphQLString },
     consequence: { type: GraphQLString },
-    flags: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
@@ -35,7 +34,6 @@ export const VariantType = new GraphQLObjectType({
     source: { type: new GraphQLList(GraphQLString) },
     transcript_id: { type: GraphQLString },
     variant_id: { type: GraphQLString },
-    xpos: { type: GraphQLFloat },
     // group level fields
     analysis_group: { type: GraphQLString },
     ac: { type: GraphQLInt },
@@ -95,7 +93,6 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
       chrom: doc.chrom,
       comment: doc.comment,
       consequence: doc.csq_analysis || doc.csq_canonical,
-      flags: doc.flags,
       gene_id: doc.gene_id,
       gene_name: doc.gene_name,
       hgvsc: doc.hgvsc,
@@ -109,7 +106,6 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
       source: typeof doc.source === 'string' ? [doc.source] : doc.source,
       transcript_id: doc.transcript_id,
       variant_id: doc.variant_id,
-      xpos: doc.xpos,
       // group level fields
       ac: totalAC,
       ac_case: doc.groups[analysisGroup].ac_case,

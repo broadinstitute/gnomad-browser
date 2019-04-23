@@ -241,7 +241,6 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       comment
       consequence
       estimate
-      flags
       gene_id
       gene_name
       hgvsc
@@ -259,7 +258,6 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       source
       transcript_id
       variant_id
-      xpos
     }
   }
 }
