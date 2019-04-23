@@ -40,15 +40,9 @@ const VariantCategoryMarker = styled.span`
 `
 
 const getConsequenceColor = consequenceTerm => {
-  if (!consequenceTerm) {
-    return 'gray'
-  }
   const category = getCategoryFromConsequence(consequenceTerm) || 'other'
   return categoryColors[category]
 }
-
-const getConsequenceName = consequenceTerm =>
-  consequenceTerm ? getLabelForConsequenceTerm(consequenceTerm) : 'N/A'
 
 const renderNumberCell = (row, key) => {
   const number = row[key]
@@ -125,13 +119,17 @@ const columns = [
     tooltip: 'Predicted functional consequence',
     isSortable: true,
     minWidth: 140,
-    render: (row, key, { highlightWords }) => (
-      <span className="grid-cell-content">
-        <VariantCategoryMarker color={getConsequenceColor(row[key])} />
-        <Highlighter searchWords={highlightWords} textToHighlight={getConsequenceName(row[key])} />
-      </span>
-    ),
-    renderForCSV: (row, key) => getConsequenceName(row[key]),
+    render: (row, key, { highlightWords }) =>
+      row[key] === null ? null : (
+        <span className="grid-cell-content">
+          <VariantCategoryMarker color={getConsequenceColor(row[key])} />
+          <Highlighter
+            searchWords={highlightWords}
+            textToHighlight={getLabelForConsequenceTerm(row[key])}
+          />
+        </span>
+      ),
+    renderForCSV: (row, key) => getLabelForConsequenceTerm(row[key]),
   },
   {
     key: 'ac_case',
