@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { TextButton } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
-import browserConfig from '@browser/config'
+import variantResultColumns from './variantResultColumns'
 
 const VariantIdButton = styled(TextButton)`
   overflow: hidden;
@@ -68,7 +68,7 @@ const renderExponentialNumberCell = (row, key) => {
   return truncated.toExponential()
 }
 
-const columns = [
+const baseColumns = [
   {
     key: 'variant_id',
     heading: 'Variant ID',
@@ -175,31 +175,27 @@ const columns = [
     minWidth: 80,
     render: renderExponentialNumberCell,
   },
-  {
-    key: 'est',
-    heading: 'Estimate',
-    tooltip: browserConfig.variantTable.tooltips.est,
-    isSortable: true,
-    minWidth: 80,
-    render: renderNumberCell,
-  },
-  {
-    key: 'p',
-    heading: 'P-Val',
-    tooltip: browserConfig.variantTable.tooltips.p,
+]
+
+const resultColumns = variantResultColumns.map(inputColumn => {
+  const outputColumn = {
     isSortable: true,
     minWidth: 65,
     render: renderNumberCell,
-  },
-  {
-    key: 'in_analysis',
-    heading: 'In Analysis',
-    tooltip: browserConfig.variantTable.tooltips.in_analysis,
-    isSortable: true,
-    minWidth: 85,
-    render: (row, key) => (row[key] ? 'yes' : ''),
-    renderForCSV: (row, key) => (row[key] ? 'yes' : ''),
-  },
-]
+    ...inputColumn,
+  }
+
+  if (inputColumn.render) {
+    outputColumn.render = (row, key) => inputColumn.render(row[key])
+  }
+
+  if (inputColumn.renderForCSV) {
+    outputColumn.renderForCSV = (row, key) => inputColumn.renderForCSV(row[key])
+  }
+
+  return outputColumn
+})
+
+const columns = [...baseColumns, ...resultColumns]
 
 export default columns

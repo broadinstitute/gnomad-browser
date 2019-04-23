@@ -6,9 +6,13 @@ import { BaseTable } from '@broad/ui'
 import browserConfig from '@browser/config'
 
 import sortByGroup from '../sortByGroup'
+import variantResultColumns from './variantResultColumns'
 
 const formatExponential = number =>
   number === null ? null : Number(number.toPrecision(4)).toExponential()
+
+const renderNumber = (num, precision = 3) =>
+  num === null ? null : Number(num.toPrecision(precision)).toString()
 
 const VariantResultsTable = ({ results }) => (
   <BaseTable>
@@ -21,8 +25,11 @@ const VariantResultsTable = ({ results }) => (
         <th scope="col">AN Ctrl</th>
         <th scope="col">AF Case</th>
         <th scope="col">AF Ctrl</th>
-        <th scope="col">P-value</th>
-        <th scope="col">Beta</th>
+        {variantResultColumns.map(c => (
+          <th key={c.key} scope="col">
+            {c.heading}
+          </th>
+        ))}
       </tr>
     </thead>
     <tbody>
@@ -37,8 +44,11 @@ const VariantResultsTable = ({ results }) => (
           <td>{result.an_ctrl}</td>
           <td>{formatExponential(result.af_case)}</td>
           <td>{formatExponential(result.af_ctrl)}</td>
-          <td>{result.p ? result.p.toPrecision(4) : ''}</td>
-          <td>{result.se ? result.se.toPrecision(4) : ''}</td>
+          {variantResultColumns.map(c => (
+            <td key={c.key}>
+              {result[c.key] === null ? '' : (c.render || renderNumber)(result[c.key])}
+            </td>
+          ))}
         </tr>
       ))}
     </tbody>

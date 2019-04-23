@@ -1,3 +1,5 @@
+import variantResultColumns from './variantResultColumns'
+
 function isEmpty(val) {
   return val === undefined || val === null || val === ''
 }
@@ -23,9 +25,10 @@ const comparators = {
   an_ctrl: makeNumericComparator('an_ctrl'),
   af_case: makeNumericComparator('af_case'),
   af_ctrl: makeNumericComparator('af_ctrl'),
-  est: makeNumericComparator('est'),
-  p: makeNumericComparator('p'),
-  in_analysis: makeNumericComparator('in_analysis'),
+  ...variantResultColumns.reduce(
+    (acc, c) => ({ ...acc, [c.key]: makeNumericComparator(c.key) }),
+    {}
+  ),
 }
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {

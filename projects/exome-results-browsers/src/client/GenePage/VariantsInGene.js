@@ -14,6 +14,7 @@ import VariantDetails from '../VariantDetails/VariantDetails'
 import filterVariants from './filterVariants'
 import sortVariants from './sortVariants'
 import VariantFilterControls from './VariantFilterControls'
+import variantResultColumns from './variantResultColumns'
 import VariantTable from './VariantTable'
 
 const ModalStyles = createGlobalStyle`
@@ -239,9 +240,7 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       an_case
       an_ctrl
 
-      est
-      n_denovos
-      p
+      ${variantResultColumns.map(c => c.key).join('\n')}
     }
   }
 }
