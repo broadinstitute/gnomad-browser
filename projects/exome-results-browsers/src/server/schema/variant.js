@@ -33,6 +33,18 @@ const resultFields = {
   source: { type: new GraphQLList(GraphQLString) },
 }
 
+const getResultData = (doc, analysisGroup) => {
+  const result = doc.groups[analysisGroup]
+  return {
+    // Epi25 has these two fields stored at the variant-level
+    comment: doc.comment,
+    in_analysis: doc.in_analysis,
+    ...result,
+    af_case: result.an_case === 0 ? 0 : result.af_case,
+    af_ctrl: result.an_ctrl === 0 ? 0 : result.af_ctrl,
+  }
+}
+
 const VariantResultType = new GraphQLObjectType({
   name: 'VariantResult',
   fields: resultFields,
@@ -45,18 +57,9 @@ export const VariantType = new GraphQLObjectType({
     chrom: { type: GraphQLString },
     pos: { type: GraphQLInt },
     // Annotation fields
-    cadd: { type: GraphQLFloat },
-    canonical_transcript_id: { type: GraphQLString },
     consequence: { type: GraphQLString },
-    gene_id: { type: GraphQLString },
-    gene_name: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
-    hgvsc_canonical: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
-    hgvsp_canonical: { type: GraphQLString },
-    mpc: { type: GraphQLFloat },
-    polyphen: { type: GraphQLString },
-    transcript_id: { type: GraphQLString },
     // Result fields
     ...resultFields,
   },
@@ -89,31 +92,17 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
   return hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
 
-    const groupResult = doc.groups[analysisGroup]
-
     return {
       variant_id: doc.variant_id,
       chrom: doc.chrom,
       pos: doc.pos,
       // Annotation fields
-      cadd: doc.cadd,
-      canonical_transcript_id: doc.canonical_transcript_id,
       consequence: doc.csq_analysis || doc.csq_canonical,
-      gene_id: doc.gene_id,
-      gene_name: doc.gene_name,
-      hgvsc: doc.hgvsc,
-      hgvsc_canonical: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
-      hgvsp: doc.hgvsp,
-      hgvsp_canonical: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
-      mpc: doc.mpc,
-      polyphen: doc.polyphen,
-      transcript_id: doc.transcript_id,
+      hgvsc: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
+      hgvsp: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
       // Result fields
       analysis_group: analysisGroup,
-      // Epi25 has these two fields stored at the variant-level
-      comment: doc.comment,
-      in_analysis: doc.in_analysis,
-      ...groupResult,
+      ...getResultData(doc, analysisGroup),
     }
   })
 }
@@ -121,6 +110,23 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
 export const VariantDetailsType = new GraphQLObjectType({
   name: 'VariantDetail',
   fields: {
+    variant_id: { type: GraphQLString },
+    chrom: { type: GraphQLString },
+    pos: { type: GraphQLInt },
+    // Annotation fields
+    cadd: { type: GraphQLFloat },
+    canonical_transcript_id: { type: GraphQLString },
+    consequence: { type: GraphQLString },
+    gene_id: { type: GraphQLString },
+    gene_name: { type: GraphQLString },
+    hgvsc: { type: GraphQLString },
+    hgvsc_canonical: { type: GraphQLString },
+    hgvsp: { type: GraphQLString },
+    hgvsp_canonical: { type: GraphQLString },
+    mpc: { type: GraphQLFloat },
+    polyphen: { type: GraphQLString },
+    transcript_id: { type: GraphQLString },
+    // Results
     results: { type: new GraphQLList(VariantResultType) },
   },
 })
@@ -147,13 +153,29 @@ export const fetchVariantDetails = async (ctx, variantId) => {
 
   const results = Object.entries(doc.groups)
     .filter(entry => entry[1] && Object.entries(entry[1]).length !== 0)
-    .map(([groupName, groupData]) => ({
-      analysis_group: groupName,
-      // Epi25 has these two fields stored at the variant-level
-      comment: doc.comment,
-      in_analysis: doc.in_analysis,
-      ...groupData,
+    .map(entry => ({
+      analysis_group: entry[0],
+      ...getResultData(doc, entry[0]),
     }))
 
-  return { results }
+  return {
+    variant_id: doc.variant_id,
+    chrom: doc.chrom,
+    pos: doc.pos,
+    // Annotation fields
+    cadd: doc.cadd,
+    canonical_transcript_id: doc.canonical_transcript_id,
+    consequence: doc.csq_analysis || doc.csq_canonical,
+    gene_id: doc.gene_id,
+    gene_name: doc.gene_name,
+    hgvsc: doc.hgvsc,
+    hgvsc_canonical: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
+    hgvsp: doc.hgvsp,
+    hgvsp_canonical: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
+    mpc: doc.mpc,
+    polyphen: doc.polyphen,
+    transcript_id: doc.transcript_id,
+    // Results
+    results,
+  }
 }

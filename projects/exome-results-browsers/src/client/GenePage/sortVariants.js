@@ -14,8 +14,8 @@ const makeNumericComparator = key => makeComparator(key, (v1, v2) => v1 - v2)
 
 const comparators = {
   variant_id: makeNumericComparator('pos'),
-  hgvsc_canonical: makeStringComparator('hgvsc_canonical'),
-  hgvsp_canonical: makeStringComparator('hgvsp_canonical'),
+  hgvsc: makeStringComparator('hgvsc'),
+  hgvsp: makeStringComparator('hgvsp'),
   consequence: makeStringComparator('consequence'),
   ac_case: makeNumericComparator('ac_case'),
   an_case: makeNumericComparator('an_case'),
