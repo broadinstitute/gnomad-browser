@@ -6,7 +6,7 @@ export const BaseTable = styled.table`
 
   td,
   th {
-    padding: 0.5em 20px 0.5em 0;
+    padding: 0.5em 10px 0.5em 0;
     text-align: left;
   }
 
