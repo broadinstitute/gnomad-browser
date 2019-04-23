@@ -110,16 +110,16 @@ const VariantDetails = ({ variant }) => {
             <VariantAttribute label="Controls">
               {variant.ac_ctrl} / {variant.an_ctrl} ({formatAlleleFrequency(variant.af_ctrl)})
             </VariantAttribute>
-            <VariantAttribute label="N denovos">{variant.ac_denovo}</VariantAttribute>
+            <VariantAttribute label="N denovos">{variant.n_denovos}</VariantAttribute>
           </VariantAttributeList>
 
-          {variant.pval_meta !== null && (
+          {variant.p !== null && (
             <VariantAttributeList label="Analysis">
-              <VariantAttribute label="Meta P-Value">
-                {Number(variant.pval_meta.toPrecision(3)).toExponential()}
+              <VariantAttribute label="P-Value">
+                {Number(variant.p.toPrecision(3)).toExponential()}
               </VariantAttribute>
               <VariantAttribute label="Estimate">
-                {Number(variant.estimate.toPrecision(3)).toExponential()}
+                {Number(variant.est.toPrecision(3)).toExponential()}
               </VariantAttribute>
               <VariantAttribute label="SE">{variant.se}</VariantAttribute>
               <VariantAttribute label="Qp">{variant.qp}</VariantAttribute>

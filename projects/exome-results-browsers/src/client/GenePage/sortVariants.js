@@ -23,8 +23,8 @@ const comparators = {
   an_ctrl: makeNumericComparator('an_ctrl'),
   af_case: makeNumericComparator('af_case'),
   af_ctrl: makeNumericComparator('af_ctrl'),
-  estimate: makeNumericComparator('estimate'),
-  pval_meta: makeNumericComparator('pval_meta'),
+  est: makeNumericComparator('est'),
+  p: makeNumericComparator('p'),
   in_analysis: makeNumericComparator('in_analysis'),
 }
 
