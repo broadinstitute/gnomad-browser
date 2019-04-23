@@ -8,65 +8,74 @@ import browserConfig from '@browser/config'
 
 import { HelpPopup } from '../help'
 import sortByGroup from '../sortByGroup'
+import { ExacConstraintTable, GnomadConstraintTable } from './Constraint'
 import GeneResultsTable from './GeneResultsTable'
 
-const GeneInfoWrapper = styled.div`
+const TablesWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: space-between;
-
-  @media (max-width: 767px) {
-    flex-direction: column;
-  }
+  margin-bottom: 3em;
 `
 
 const GeneAttributes = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: space-between;
-  margin-top: 1.25em;
   margin-bottom: 1em;
 `
 
-const GeneAttribute = styled.div`
-  margin-bottom: 2px;
-`
-
-const GeneResultsWrapper = styled.div`
-  min-width: 325px;
-`
-
 const GeneInfo = ({ gene }) => (
-  <GeneInfoWrapper>
+  <div>
     <GeneAttributes>
-      <GeneAttribute>
-        <strong>Ensembl gene ID:</strong> {gene.gene_id}
-      </GeneAttribute>
+      <strong>Ensembl gene ID:</strong> {gene.gene_id}
     </GeneAttributes>
-    <GeneResultsWrapper>
-      <h2>
-        Gene Result <HelpPopup topic="geneResult" />
-      </h2>
-      {gene.results.length > 1 ? (
+    <TablesWrapper>
+      <div>
+        <h2>
+          Gene Result <HelpPopup topic="geneResult" />
+        </h2>
+        {gene.results.length > 1 ? (
+          <Tabs
+            tabs={sortByGroup(gene.results).map(result => ({
+              id: result.analysis_group,
+              label:
+                browserConfig.analysisGroups.labels[result.analysis_group] || result.analysis_group,
+              render: () => <GeneResultsTable geneResult={result} />,
+            }))}
+          />
+        ) : (
+          <GeneResultsTable geneResult={gene.results[0]} />
+        )}
+      </div>
+      <div style={{ minWidth: '415px' }}>
+        <h2>Gene Constraint</h2>
         <Tabs
-          tabs={sortByGroup(gene.results).map(result => ({
-            id: result.analysis_group,
-            label:
-              browserConfig.analysisGroups.labels[result.analysis_group] || result.analysis_group,
-            render: () => <GeneResultsTable geneResult={result} />,
-          }))}
+          tabs={[
+            {
+              id: 'gnomad',
+              label: 'gnomAD',
+              render: () => (
+                <GnomadConstraintTable constraint={gene.transcript.gnomad_constraint} />
+              ),
+            },
+            {
+              id: 'exac',
+              label: 'ExAC',
+              render: () => <ExacConstraintTable constraint={gene.transcript.exac_constraint} />,
+            },
+          ]}
         />
-      ) : (
-        <GeneResultsTable geneResult={gene.results[0]} />
-      )}
-    </GeneResultsWrapper>
-  </GeneInfoWrapper>
+      </div>
+    </TablesWrapper>
+  </div>
 )
 
 GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
+    transcript: PropTypes.shape({
+      exac_constraint: PropTypes.objectOf(PropTypes.number),
+      gnomad_constraint: PropTypes.objectOf(PropTypes.number),
+    }),
   }).isRequired,
 }
 
