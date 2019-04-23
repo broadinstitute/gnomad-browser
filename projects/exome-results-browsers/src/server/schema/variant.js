@@ -12,14 +12,41 @@ import browserConfig from '@browser/config'
 import { fetchAllSearchResults } from '../utilities/elasticsearch'
 import { UserVisibleError } from '../utilities/errors'
 
+const resultFields = {
+  analysis_group: { type: GraphQLString },
+  // Case/Control numbers
+  ac_case: { type: GraphQLInt },
+  ac_ctrl: { type: GraphQLInt },
+  af_case: { type: GraphQLFloat },
+  af_ctrl: { type: GraphQLFloat },
+  an_case: { type: GraphQLInt },
+  an_ctrl: { type: GraphQLInt },
+  // Analysis results
+  comment: { type: GraphQLString },
+  est: { type: GraphQLFloat },
+  i2: { type: GraphQLFloat },
+  in_analysis: { type: GraphQLBoolean },
+  n_denovos: { type: GraphQLInt },
+  p: { type: GraphQLFloat },
+  qp: { type: GraphQLFloat },
+  se: { type: GraphQLFloat },
+  source: { type: new GraphQLList(GraphQLString) },
+}
+
+const VariantResultType = new GraphQLObjectType({
+  name: 'VariantResult',
+  fields: resultFields,
+})
+
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: {
-    // variant level fields
+    variant_id: { type: GraphQLString },
+    chrom: { type: GraphQLString },
+    pos: { type: GraphQLInt },
+    // Annotation fields
     cadd: { type: GraphQLFloat },
     canonical_transcript_id: { type: GraphQLString },
-    chrom: { type: GraphQLString },
-    comment: { type: GraphQLString },
     consequence: { type: GraphQLString },
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
@@ -27,30 +54,11 @@ export const VariantType = new GraphQLObjectType({
     hgvsc_canonical: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
     hgvsp_canonical: { type: GraphQLString },
-    in_analysis: { type: GraphQLBoolean },
     mpc: { type: GraphQLFloat },
     polyphen: { type: GraphQLString },
-    pos: { type: GraphQLInt },
-    source: { type: new GraphQLList(GraphQLString) },
     transcript_id: { type: GraphQLString },
-    variant_id: { type: GraphQLString },
-    // group level fields
-    analysis_group: { type: GraphQLString },
-    ac: { type: GraphQLInt },
-    ac_case: { type: GraphQLInt },
-    ac_ctrl: { type: GraphQLInt },
-    af: { type: GraphQLFloat },
-    af_case: { type: GraphQLFloat },
-    af_ctrl: { type: GraphQLFloat },
-    an: { type: GraphQLInt },
-    an_case: { type: GraphQLInt },
-    an_ctrl: { type: GraphQLInt },
-    est: { type: GraphQLFloat },
-    i2: { type: GraphQLFloat },
-    n_denovos: { type: GraphQLInt },
-    p: { type: GraphQLFloat },
-    qp: { type: GraphQLFloat },
-    se: { type: GraphQLFloat },
+    // Result fields
+    ...resultFields,
   },
 })
 
@@ -81,16 +89,15 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
   return hits.map(hit => {
     const doc = hit._source // eslint-disable-line no-underscore-dangle
 
-    const totalAC = doc.groups[analysisGroup].ac_case + doc.groups[analysisGroup].ac_ctrl
-    const totalAN = doc.groups[analysisGroup].an_case + doc.groups[analysisGroup].an_ctrl
-    const totalAF = totalAN === 0 ? 0 : totalAC / totalAN
+    const groupResult = doc.groups[analysisGroup]
 
     return {
-      // variant level fields
+      variant_id: doc.variant_id,
+      chrom: doc.chrom,
+      pos: doc.pos,
+      // Annotation fields
       cadd: doc.cadd,
       canonical_transcript_id: doc.canonical_transcript_id,
-      chrom: doc.chrom,
-      comment: doc.comment,
       consequence: doc.csq_analysis || doc.csq_canonical,
       gene_id: doc.gene_id,
       gene_name: doc.gene_name,
@@ -98,52 +105,18 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
       hgvsc_canonical: doc.hgvsc_canonical ? doc.hgvsc_canonical.split(':')[1] : null,
       hgvsp: doc.hgvsp,
       hgvsp_canonical: doc.hgvsp_canonical ? doc.hgvsp_canonical.split(':')[1] : null,
-      in_analysis: doc.in_analysis,
       mpc: doc.mpc,
       polyphen: doc.polyphen,
-      pos: doc.pos,
-      source: typeof doc.source === 'string' ? [doc.source] : doc.source,
       transcript_id: doc.transcript_id,
-      variant_id: doc.variant_id,
-      // group level fields
-      ac: totalAC,
-      ac_case: doc.groups[analysisGroup].ac_case,
-      ac_ctrl: doc.groups[analysisGroup].ac_ctrl,
-      af: totalAF,
-      af_case: doc.groups[analysisGroup].af_case,
-      af_ctrl: doc.groups[analysisGroup].af_ctrl,
-      an: totalAN,
-      an_case: doc.groups[analysisGroup].an_case,
-      an_ctrl: doc.groups[analysisGroup].an_ctrl,
-      analysis_group: doc.analysis_group,
-      est: doc.groups[analysisGroup].est,
-      i2: doc.groups[analysisGroup].i2,
-      n_denovos: doc.groups[analysisGroup].n_denovos,
-      p: doc.groups[analysisGroup].p,
-      qp: doc.groups[analysisGroup].qp,
-      se: doc.groups[analysisGroup].se,
+      // Result fields
+      analysis_group: analysisGroup,
+      // Epi25 has these two fields stored at the variant-level
+      comment: doc.comment,
+      in_analysis: doc.in_analysis,
+      ...groupResult,
     }
   })
 }
-
-const VariantResultType = new GraphQLObjectType({
-  name: 'VariantResult',
-  fields: {
-    ac: { type: GraphQLInt },
-    ac_case: { type: GraphQLInt },
-    ac_ctrl: { type: GraphQLInt },
-    af: { type: GraphQLFloat },
-    af_case: { type: GraphQLFloat },
-    af_ctrl: { type: GraphQLFloat },
-    an: { type: GraphQLInt },
-    an_case: { type: GraphQLInt },
-    an_ctrl: { type: GraphQLInt },
-    analysis_group: { type: GraphQLString },
-    est: { type: GraphQLFloat },
-    p: { type: GraphQLFloat },
-    se: { type: GraphQLFloat },
-  },
-})
 
 export const VariantDetailsType = new GraphQLObjectType({
   name: 'VariantDetail',
@@ -176,6 +149,9 @@ export const fetchVariantDetails = async (ctx, variantId) => {
     .filter(entry => entry[1] && Object.entries(entry[1]).length !== 0)
     .map(([groupName, groupData]) => ({
       analysis_group: groupName,
+      // Epi25 has these two fields stored at the variant-level
+      comment: doc.comment,
+      in_analysis: doc.in_analysis,
       ...groupData,
     }))
 
