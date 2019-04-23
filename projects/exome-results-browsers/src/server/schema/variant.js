@@ -3,6 +3,7 @@ import {
   GraphQLFloat,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
@@ -13,14 +14,14 @@ import { fetchAllSearchResults } from '../utilities/elasticsearch'
 import { UserVisibleError } from '../utilities/errors'
 
 const resultFields = {
-  analysis_group: { type: GraphQLString },
+  analysis_group: { type: new GraphQLNonNull(GraphQLString) },
   // Case/Control numbers
-  ac_case: { type: GraphQLInt },
-  ac_ctrl: { type: GraphQLInt },
-  af_case: { type: GraphQLFloat },
-  af_ctrl: { type: GraphQLFloat },
-  an_case: { type: GraphQLInt },
-  an_ctrl: { type: GraphQLInt },
+  ac_case: { type: new GraphQLNonNull(GraphQLInt) },
+  ac_ctrl: { type: new GraphQLNonNull(GraphQLInt) },
+  af_case: { type: new GraphQLNonNull(GraphQLFloat) },
+  af_ctrl: { type: new GraphQLNonNull(GraphQLFloat) },
+  an_case: { type: new GraphQLNonNull(GraphQLInt) },
+  an_ctrl: { type: new GraphQLNonNull(GraphQLInt) },
   // Analysis results
   comment: { type: GraphQLString },
   est: { type: GraphQLFloat },
@@ -53,9 +54,9 @@ const VariantResultType = new GraphQLObjectType({
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: {
-    variant_id: { type: GraphQLString },
-    chrom: { type: GraphQLString },
-    pos: { type: GraphQLInt },
+    variant_id: { type: new GraphQLNonNull(GraphQLString) },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    pos: { type: new GraphQLNonNull(GraphQLInt) },
     // Annotation fields
     consequence: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
@@ -110,9 +111,9 @@ export const fetchVariantsByGeneId = async (ctx, geneId, analysisGroup) => {
 export const VariantDetailsType = new GraphQLObjectType({
   name: 'VariantDetail',
   fields: {
-    variant_id: { type: GraphQLString },
-    chrom: { type: GraphQLString },
-    pos: { type: GraphQLInt },
+    variant_id: { type: new GraphQLNonNull(GraphQLString) },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    pos: { type: new GraphQLNonNull(GraphQLInt) },
     // Annotation fields
     cadd: { type: GraphQLFloat },
     canonical_transcript_id: { type: GraphQLString },
@@ -127,7 +128,7 @@ export const VariantDetailsType = new GraphQLObjectType({
     polyphen: { type: GraphQLString },
     transcript_id: { type: GraphQLString },
     // Results
-    results: { type: new GraphQLList(VariantResultType) },
+    results: { type: new GraphQLNonNull(new GraphQLList(VariantResultType)) },
   },
 })
 
