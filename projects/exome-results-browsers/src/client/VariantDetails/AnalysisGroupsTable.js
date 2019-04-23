@@ -64,15 +64,17 @@ BaseAnalysisGroupsTable.propTypes = {
 }
 
 const analysisGroupsQuery = `
-  query AnalysisGroups($variantId: String) {
-    groups: analysisGroups(variant_id: $variantId) {
-      analysis_group
-      ac_case
-      an_case
-      ac_ctrl
-      an_ctrl
-      p
-      se
+  query VariantDetails($variantId: String!) {
+    variant(variant_id: $variantId) {
+      results {
+        analysis_group
+        ac_case
+        an_case
+        ac_ctrl
+        an_ctrl
+        p
+        se
+      }
     }
   }
 `
@@ -81,14 +83,14 @@ const ConnectedAnalysisGroupsTable = ({ variantId }) => (
   <Query query={analysisGroupsQuery} variables={{ variantId }}>
     {({ data, error, loading }) => {
       if (loading) {
-        return <span>Loading groups...</span>
+        return <span>Loading results...</span>
       }
 
       if (error) {
-        return <span>Unable to load groups</span>
+        return <span>Unable to load results</span>
       }
 
-      return <BaseAnalysisGroupsTable groups={data.groups} />
+      return <BaseAnalysisGroupsTable groups={data.variant.results} />
     }}
   </Query>
 )

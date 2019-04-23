@@ -1,13 +1,10 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import {
-  AnalysisGroupArgumentType,
-  AnalysisGroupType,
-  fetchAnalysisGroupsForVariant,
-} from './analysisGroup'
+import { AnalysisGroupArgumentType } from './analysisGroup'
+import { GeneType, fetchGeneById, fetchGeneByName } from './gene'
 import { GeneResultType, fetchAllGeneResultsForAnalysisGroup } from './geneResult'
 import { SearchResultType, fetchSearchResults } from './search'
-import { GeneType, fetchGeneById, fetchGeneByName } from './gene'
+import { VariantDetailsType, fetchVariantDetails } from './variant'
 
 export const RootType = new GraphQLObjectType({
   name: 'Root',
@@ -36,19 +33,19 @@ export const RootType = new GraphQLObjectType({
       },
       resolve: (obj, args, ctx) => fetchAllGeneResultsForAnalysisGroup(ctx, args.analysis_group),
     },
-    analysisGroups: {
-      type: new GraphQLList(AnalysisGroupType),
-      args: {
-        variant_id: { type: GraphQLString },
-      },
-      resolve: (obj, args, ctx) => fetchAnalysisGroupsForVariant(ctx, args.variant_id),
-    },
     search: {
       type: new GraphQLList(SearchResultType),
       args: {
         query: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => fetchSearchResults(ctx, args.query),
+    },
+    variant: {
+      type: VariantDetailsType,
+      args: {
+        variant_id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (obj, args, ctx) => fetchVariantDetails(ctx, args.variant_id),
     },
   },
 })
