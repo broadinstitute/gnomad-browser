@@ -44,6 +44,33 @@ query Gene($geneName: String!) {
         start
         stop
       }
+      exac_constraint {
+        exp_lof
+        exp_mis
+        exp_syn
+        n_lof
+        n_mis
+        n_syn
+        lof_z
+        mis_z
+        syn_z
+        pLI
+      }
+      gnomad_constraint {
+        exp_lof
+        exp_mis
+        exp_syn
+        obs_lof
+        obs_mis
+        obs_syn
+        oe_lof
+        oe_mis
+        oe_syn
+        lof_z
+        mis_z
+        syn_z
+        pLI
+      }
     }
   }
 }
