@@ -90,7 +90,7 @@ const columns = [
     ),
   },
   {
-    key: 'hgvsc_canonical',
+    key: 'hgvsc',
     heading: 'HGVSc',
     tooltip: 'HGVS coding sequence',
     minWidth: 140,
@@ -105,7 +105,7 @@ const columns = [
     ),
   },
   {
-    key: 'hgvsp_canonical',
+    key: 'hgvsp',
     heading: 'HGVSp',
     tooltip: 'HGVS protein sequence',
     isSortable: true,

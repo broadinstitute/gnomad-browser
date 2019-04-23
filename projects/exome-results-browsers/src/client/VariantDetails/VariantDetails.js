@@ -5,8 +5,11 @@ import styled from 'styled-components'
 import { ExternalLink } from '@broad/ui'
 import { getLabelForConsequenceTerm } from '@broad/utilities'
 
-import AnalysisGroupsTable from './AnalysisGroupsTable'
+import browserConfig from '@browser/config'
+
+import Query from '../Query'
 import { VariantAttribute, VariantAttributeList } from './VariantAttributes'
+import VariantResultsTable from './VariantResultsTable'
 
 const VariantContainer = styled.div`
   display: flex;
@@ -82,38 +85,50 @@ const VariantDetails = ({ variant }) => {
     })
   }
 
+  const defaultGroupResult = variant.results.find(
+    result => result.analysis_group === browserConfig.analysisGroups.defaultGroup
+  )
+
   return (
     <VariantContainer>
       <ExternalLink href={`https://gnomad.broadinstitute.org/variant/${variant.variant_id}`}>
         View in gnomAD
       </ExternalLink>
       <Columns>
-        <Column>
-          <VariantAttributeList label="Statistics">
-            <VariantAttribute label="Cases">
-              {variant.ac_case} / {variant.an_case} ({renderExponential(variant.af_case, 4)})
-            </VariantAttribute>
-            <VariantAttribute label="Controls">
-              {variant.ac_ctrl} / {variant.an_ctrl} ({renderExponential(variant.af_ctrl, 4)})
-            </VariantAttribute>
-          </VariantAttributeList>
+        {defaultGroupResult && (
+          <Column>
+            <VariantAttributeList label="Statistics">
+              <VariantAttribute label="Cases">
+                {defaultGroupResult.ac_case} / {defaultGroupResult.an_case} (
+                {renderExponential(defaultGroupResult.af_case, 4)})
+              </VariantAttribute>
+              <VariantAttribute label="Controls">
+                {defaultGroupResult.ac_ctrl} / {defaultGroupResult.an_ctrl} (
+                {renderExponential(defaultGroupResult.af_ctrl, 4)})
+              </VariantAttribute>
+            </VariantAttributeList>
 
-          <VariantAttributeList label="Analysis">
-            <VariantAttribute label="In analysis">
-              {formatInAnalysisFlag(variant.in_analysis)}
-            </VariantAttribute>
-            <VariantAttribute label="P-Value">{renderNumber(variant.p)}</VariantAttribute>
-            <VariantAttribute label="Estimate">{renderNumber(variant.est)}</VariantAttribute>
-            <VariantAttribute label="SE">{renderNumber(variant.se)}</VariantAttribute>
-            <VariantAttribute label="Qp">{renderNumber(variant.qp)}</VariantAttribute>
-            <VariantAttribute label="I2">{renderNumber(variant.i2)}</VariantAttribute>
-            <VariantAttribute label="N denovos">{variant.n_denovos}</VariantAttribute>
-            <VariantAttribute label="Comment">{variant.comment}</VariantAttribute>
-            <VariantAttribute label="Source">
-              {variant.source ? variant.source.join(', ') : null}
-            </VariantAttribute>
-          </VariantAttributeList>
-        </Column>
+            <VariantAttributeList label="Analysis">
+              <VariantAttribute label="In analysis">
+                {formatInAnalysisFlag(defaultGroupResult.in_analysis)}
+              </VariantAttribute>
+              <VariantAttribute label="P-Value">
+                {renderNumber(defaultGroupResult.p)}
+              </VariantAttribute>
+              <VariantAttribute label="Estimate">
+                {renderNumber(defaultGroupResult.est)}
+              </VariantAttribute>
+              <VariantAttribute label="SE">{renderNumber(defaultGroupResult.se)}</VariantAttribute>
+              <VariantAttribute label="Qp">{renderNumber(defaultGroupResult.qp)}</VariantAttribute>
+              <VariantAttribute label="I2">{renderNumber(defaultGroupResult.i2)}</VariantAttribute>
+              <VariantAttribute label="N denovos">{defaultGroupResult.n_denovos}</VariantAttribute>
+              <VariantAttribute label="Comment">{defaultGroupResult.comment}</VariantAttribute>
+              <VariantAttribute label="Source">
+                {defaultGroupResult.source ? defaultGroupResult.source.join(', ') : null}
+              </VariantAttribute>
+            </VariantAttributeList>
+          </Column>
+        )}
 
         <Column>
           <VariantAttributeList label="Annotations">
@@ -151,13 +166,105 @@ const VariantDetails = ({ variant }) => {
       </Columns>
 
       <h2>Analysis Groups</h2>
-      <AnalysisGroupsTable variantId={variant.variant_id} />
+      <VariantResultsTable results={variant.results} />
     </VariantContainer>
   )
 }
 
 VariantDetails.propTypes = {
-  variant: PropTypes.object.isRequired,
+  variant: PropTypes.shape({
+    variant_id: PropTypes.string.isRequired,
+    chrom: PropTypes.string.isRequired,
+    pos: PropTypes.number.isRequired,
+
+    cadd: PropTypes.number,
+    canonical_transcript_id: PropTypes.string,
+    consequence: PropTypes.string,
+    gene_id: PropTypes.string,
+    gene_name: PropTypes.string,
+    hgvsc: PropTypes.string,
+    hgvsc_canonical: PropTypes.string,
+    hgvsp: PropTypes.string,
+    hgvsp_canonical: PropTypes.string,
+    mpc: PropTypes.number,
+    polyphen: PropTypes.string,
+    transcript_id: PropTypes.string,
+
+    results: PropTypes.arrayOf(
+      PropTypes.shape({
+        analysis_group: PropTypes.string.isRequired,
+        ac_case: PropTypes.number.isRequired,
+        an_case: PropTypes.number.isRequired,
+        af_case: PropTypes.number.isRequired,
+        ac_ctrl: PropTypes.number.isRequired,
+        an_ctrl: PropTypes.number.isRequired,
+        af_ctrl: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 }
 
-export default VariantDetails
+const variantDetailsQuery = `
+  query VariantDetails($variantId: String!) {
+    variant(variant_id: $variantId) {
+      variant_id
+      chrom
+      pos
+
+      cadd
+      canonical_transcript_id
+      consequence
+      gene_id
+      gene_name
+      hgvsc
+      hgvsc_canonical
+      hgvsp
+      hgvsp_canonical
+      mpc
+      polyphen
+      transcript_id
+
+      results {
+        analysis_group
+        ac_case
+        an_case
+        af_case
+        ac_ctrl
+        an_ctrl
+        af_ctrl
+
+        comment
+        est
+        i2
+        in_analysis
+        n_denovos
+        p
+        qp
+        se
+        source
+      }
+    }
+  }
+`
+
+const ConnectedVariantDetails = ({ variantId }) => (
+  <Query query={variantDetailsQuery} variables={{ variantId }}>
+    {({ data, error, loading }) => {
+      if (loading) {
+        return <span>Loading variant...</span>
+      }
+
+      if (error) {
+        return <span>Unable to load variant</span>
+      }
+
+      return <VariantDetails variant={data.variant} />
+    }}
+  </Query>
+)
+
+ConnectedVariantDetails.propTypes = {
+  variantId: PropTypes.string.isRequired,
+}
+
+export default ConnectedVariantDetails

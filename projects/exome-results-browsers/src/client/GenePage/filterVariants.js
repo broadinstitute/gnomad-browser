@@ -30,8 +30,8 @@ const filterVariants = (variants, filter) => {
       v =>
         v.variant_id.toLowerCase().includes(query) ||
         (getLabelForConsequenceTerm(v.consequence) || '').toLowerCase().includes(query) ||
-        (v.hgvsc_canonical || '').toLowerCase().includes(query) ||
-        (v.hgvsp_canonical || '').toLowerCase().includes(query)
+        (v.hgvsc || '').toLowerCase().includes(query) ||
+        (v.hgvsp || '').toLowerCase().includes(query)
     )
   }
 

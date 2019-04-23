@@ -213,7 +213,7 @@ class VariantsInGene extends Component {
               this.setState({ selectedVariant: null })
             }}
           >
-            <VariantDetails variant={selectedVariant} />
+            <VariantDetails variantId={selectedVariant.variant_id} />
           </Modal>
         )}
       </React.Fragment>
@@ -226,21 +226,11 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
   gene(gene_name: $geneName) {
     variants(analysis_group: $analysisGroup) {
       variant_id
-      chrom
       pos
 
-      cadd
-      canonical_transcript_id
       consequence
-      gene_id
-      gene_name
       hgvsc
-      hgvsc_canonical
       hgvsp
-      hgvsp_canonical
-      mpc
-      polyphen
-      transcript_id
 
       ac_case
       ac_ctrl
@@ -248,15 +238,10 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       af_ctrl
       an_case
       an_ctrl
-      comment
+
       est
-      i2
-      in_analysis
       n_denovos
       p
-      qp
-      se
-      source
     }
   }
 }
