@@ -69,8 +69,8 @@ export default {
   ],
   variantTable: {
     tooltips: {
-      estimate: estimateAndPValTooltip,
-      pval_meta: estimateAndPValTooltip,
+      est: estimateAndPValTooltip,
+      p: estimateAndPValTooltip,
       in_analysis: 'Was this variant used in gene burden analysis',
     },
   },

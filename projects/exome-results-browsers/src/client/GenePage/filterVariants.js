@@ -17,7 +17,7 @@ const filterVariants = (variants, filter) => {
   }
 
   if (filter.onlyDeNovo) {
-    filteredVariants = filteredVariants.filter(v => v.ac_denovo > 0)
+    filteredVariants = filteredVariants.filter(v => v.n_denovos > 0)
   }
 
   if (filter.onlyInAnalysis) {

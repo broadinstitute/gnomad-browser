@@ -228,7 +228,6 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       ac
       ac_case
       ac_ctrl
-      ac_denovo
       af
       af_case
       af_ctrl
@@ -240,7 +239,7 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       chrom
       comment
       consequence
-      estimate
+      est
       gene_id
       gene_name
       hgvsc
@@ -250,9 +249,10 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
       i2
       in_analysis
       mpc
+      n_denovos
       polyphen
       pos
-      pval_meta
+      p
       qp
       se
       source
