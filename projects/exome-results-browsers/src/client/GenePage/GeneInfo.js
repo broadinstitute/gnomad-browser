@@ -5,11 +5,11 @@ import styled from 'styled-components'
 import { Tabs } from '@broad/ui'
 
 import browserConfig from '@browser/config'
+import GeneResult from '@browser/GeneResult'
 
 import { HelpPopup } from '../help'
 import sortByGroup from '../sortByGroup'
 import { ExacConstraintTable, GnomadConstraintTable } from './Constraint'
-import GeneResultsTable from './GeneResultsTable'
 
 const TablesWrapper = styled.div`
   display: flex;
@@ -38,11 +38,11 @@ const GeneInfo = ({ gene }) => (
               id: result.analysis_group,
               label:
                 browserConfig.analysisGroups.labels[result.analysis_group] || result.analysis_group,
-              render: () => <GeneResultsTable geneResult={result} />,
+              render: () => <GeneResult geneResult={result} />,
             }))}
           />
         ) : (
-          <GeneResultsTable geneResult={gene.results[0]} />
+          <GeneResult geneResult={gene.results[0]} />
         )}
       </div>
       <div style={{ minWidth: '415px' }}>

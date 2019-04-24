@@ -3,6 +3,8 @@ import React, { PureComponent } from 'react'
 
 import { Grid } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import columns from './geneResultColumns'
 
 class GeneResultsTable extends PureComponent {
@@ -11,7 +13,7 @@ class GeneResultsTable extends PureComponent {
   }
 
   state = {
-    sortKey: 'pval_meta',
+    sortKey: browserConfig.geneResults.defaultSortColumn,
     sortAscending: true,
   }
 

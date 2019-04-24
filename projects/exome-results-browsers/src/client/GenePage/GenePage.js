@@ -28,13 +28,7 @@ query Gene($geneName: String!) {
     full_gene_name
     results {
       analysis_group
-      categories {
-        id
-        xcase
-        xctrl
-        pval
-      }
-      pval_meta
+      ${browserConfig.geneResults.columns.map(c => c.key).join('\n')}
     }
     transcript {
       strand

@@ -1,3 +1,14 @@
+const renderPVal = value => {
+  if (value === null) {
+    return ''
+  }
+  const truncated = Number(value.toPrecision(3))
+  if (truncated === 0) {
+    return '0'
+  }
+  return truncated.toExponential()
+}
+
 export default {
   browserTitle: 'Epi25 WES browser',
   navBarTitle: 'Epi25 WES browser',
@@ -14,10 +25,68 @@ export default {
   },
   geneResults: {
     resultsPageHeading: 'Epi25 WES: gene burden results',
-    categories: [
-      { id: 'lof', label: 'LoF' },
-      { id: 'mpc', label: 'MPC' },
-      { id: 'infrIndel', label: 'Inframe Indel' },
+    defaultSortColumn: 'pval_meta',
+    columns: [
+      {
+        key: 'xcase_lof',
+        heading: 'Case LoF',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'xctrl_lof',
+        heading: 'Control LoF',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'pval_lof',
+        heading: 'P-Val LoF',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'xcase_mpc',
+        heading: 'Case MPC',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'xctrl_mpc',
+        heading: 'Control MPC',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'pval_mpc',
+        heading: 'P-Val MPC',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'xcase_infrIndel',
+        heading: 'Case Inframe Indel',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'xctrl_infrIndel',
+        heading: 'Control Inframe Indel',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'pval_infrIndel',
+        heading: 'P-Val Inframe Indel',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'pval_meta',
+        heading: 'P-Val',
+        minWidth: 80,
+        render: renderPVal,
+      },
     ],
   },
   analysisGroups: {

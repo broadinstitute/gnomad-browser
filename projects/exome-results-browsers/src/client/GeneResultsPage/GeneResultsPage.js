@@ -12,19 +12,15 @@ import StatusMessage from '../StatusMessage'
 import columns from './geneResultColumns'
 import GeneResultsTable from './GeneResultsTable'
 
+const geneResultColumns = browserConfig.geneResults.columns
+
 const geneResultsQuery = `
   query geneResultsForGroup($analysisGroup: AnalysisGroupId!) {
     geneResults(analysis_group: $analysisGroup) {
       gene_id
       gene_name
       gene_description
-      categories {
-        id
-        xcase
-        xctrl
-        pval
-      }
-      pval_meta
+      ${geneResultColumns.map(c => c.key).join('\n')}
     }
   }
 `
@@ -67,19 +63,9 @@ class GeneResultsPage extends Component {
             } else if (error) {
               resultsContent = <StatusMessage>Unable to load gene results</StatusMessage>
             } else {
-              const filteredResults = data.geneResults.filter(result =>
+              results = data.geneResults.filter(result =>
                 (result.gene_name || '').includes(searchText)
               )
-
-              results = filteredResults.map(result => {
-                const resultCopy = { ...result }
-                result.categories.forEach(c => {
-                  resultCopy[`xcase_${c.id}`] = c.xcase
-                  resultCopy[`xctrl_${c.id}`] = c.xctrl
-                  resultCopy[`pval_${c.id}`] = c.pval
-                })
-                return resultCopy
-              })
 
               resultsContent = <GeneResultsTable results={results} />
             }
