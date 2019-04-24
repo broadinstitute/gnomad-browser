@@ -7,6 +7,7 @@ import { registerConsequences } from '@broad/utilities'
 
 import browserConfig from '@browser/config'
 
+import ErrorBoundary from './ErrorBoundary'
 import GenePage from './GenePage/GenePage'
 import GeneResultsPage from './GeneResultsPage/GeneResultsPage'
 import HomePage from './HomePage'
@@ -41,15 +42,17 @@ const App = () => (
           }}
         />
       )}
-      <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/results" component={GeneResultsPage} />
-        <Route
-          path="/gene/:gene"
-          render={({ match }) => <GenePage geneName={match.params.gene} />}
-        />
-        <Route component={PageNotFoundPage} />
-      </Switch>
+      <ErrorBoundary>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/results" component={GeneResultsPage} />
+          <Route
+            path="/gene/:gene"
+            render={({ match }) => <GenePage geneName={match.params.gene} />}
+          />
+          <Route component={PageNotFoundPage} />
+        </Switch>
+      </ErrorBoundary>
     </Router>
   </React.Fragment>
 )
