@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom'
 import GenePage from './GenePage/GenePage'
 import GeneResultsPage from './GeneResultsPage/GeneResultsPage'
 import HomePage from './HomePage'
+import PageNotFoundPage from './PageNotFoundPage'
 import TopBar from './TopBar'
 
 const App = () => (
@@ -26,6 +27,7 @@ const App = () => (
       <Route path="/" exact component={HomePage} />
       <Route path="/results" component={GeneResultsPage} />
       <Route path="/gene/:gene" render={({ match }) => <GenePage geneName={match.params.gene} />} />
+      <Route component={PageNotFoundPage} />
     </Switch>
   </div>
 )

@@ -63,8 +63,12 @@ app.use(compression())
   const publicDir = path.resolve(__dirname, 'public')
   app.use(express.static(publicDir))
 
-  app.get('*', (request, response) => {
+  app.get(['/', '/gene/:gene', '/results'], (request, response) => {
     response.send(html)
+  })
+
+  app.use((request, response) => {
+    response.status(404).send(html)
   })
 
   app.listen(process.env.PORT, () => {
