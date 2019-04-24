@@ -1,3 +1,14 @@
+const renderPVal = value => {
+  if (value === null) {
+    return ''
+  }
+  const truncated = Number(value.toPrecision(3))
+  if (truncated === 0) {
+    return '0'
+  }
+  return truncated.toExponential()
+}
+
 export default {
   browserTitle: 'SCHEMA browser',
   navBarTitle: 'Schizophrenia exome meta-analysis',
@@ -14,7 +25,57 @@ export default {
   },
   geneResults: {
     resultsPageHeading: 'Exome meta-analysis results',
-    categories: [{ id: 'lof', label: 'LoF' }, { id: 'mis', label: 'Missense' }],
+    defaultSortColumn: 'pval_meta',
+    columns: [
+      {
+        key: 'xcase_lof',
+        heading: 'Case LoF',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'xctrl_lof',
+        heading: 'Control LoF',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'pval_lof',
+        heading: 'P-Val LoF',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'xcase_mis',
+        heading: 'Case Missense',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'xctrl_mis',
+        heading: 'Control Missense',
+        minWidth: 60,
+        type: 'int',
+      },
+      {
+        key: 'pval_mis',
+        heading: 'P-Val Missense',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'pval',
+        heading: 'P-Val',
+        minWidth: 80,
+        render: renderPVal,
+      },
+      {
+        key: 'pval_meta',
+        heading: 'Meta P-Val',
+        minWidth: 80,
+        render: renderPVal,
+      },
+    ],
   },
   analysisGroups: {
     defaultGroup: 'meta',

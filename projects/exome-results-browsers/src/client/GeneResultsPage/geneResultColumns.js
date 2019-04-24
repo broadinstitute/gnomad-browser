@@ -4,19 +4,7 @@ import browserConfig from '@browser/config'
 
 import Link from '../Link'
 
-const renderExponentialNumberCell = (row, key) => {
-  const number = row[key]
-  if (number === null || number === undefined) {
-    return ''
-  }
-  const truncated = Number(number.toPrecision(3))
-  if (truncated === 0) {
-    return '0'
-  }
-  return truncated.toExponential()
-}
-
-const columns = [
+const baseColumns = [
   {
     key: 'gene_name',
     heading: 'Gene Name',
@@ -41,36 +29,26 @@ const columns = [
     isSortable: true,
     minWidth: 140,
   },
-  ...browserConfig.geneResults.categories
-    .map(({ id, label }) => [
-      {
-        key: `xcase_${id}`,
-        heading: `Case ${label}`,
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: `xctrl_${id}`,
-        heading: `Ctrl ${label}`,
-        isSortable: true,
-        minWidth: 60,
-      },
-      {
-        key: `pval_${id}`,
-        heading: `P-Val ${label}`,
-        isSortable: true,
-        minWidth: 80,
-        render: renderExponentialNumberCell,
-      },
-    ])
-    .reduce((acc, cols) => acc.concat(cols), []),
-  {
-    key: 'pval_meta',
-    heading: 'P-Val Meta',
-    isSortable: true,
-    minWidth: 80,
-    render: renderExponentialNumberCell,
-  },
 ]
+
+const resultColumns = browserConfig.geneResults.columns.map(inputColumn => {
+  const outputColumn = {
+    isSortable: true,
+    minWidth: 65,
+    ...inputColumn,
+  }
+
+  if (inputColumn.render) {
+    outputColumn.render = (row, key) => inputColumn.render(row[key])
+  }
+
+  if (inputColumn.renderForCSV) {
+    outputColumn.renderForCSV = (row, key) => inputColumn.renderForCSV(row[key])
+  }
+
+  return outputColumn
+})
+
+const columns = [...baseColumns, ...resultColumns]
 
 export default columns

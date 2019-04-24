@@ -1,18 +1,17 @@
-import { GraphQLInt, GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLBoolean, GraphQLInt, GraphQLFloat, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import browserConfig from '@browser/config'
 
 import { fetchAllSearchResults } from '../utilities/elasticsearch'
 
-const GeneResultCategoryType = new GraphQLObjectType({
-  name: 'GeneResultCategory',
-  fields: {
-    id: { type: GraphQLString },
-    xcase: { type: GraphQLInt },
-    xctrl: { type: GraphQLInt },
-    pval: { type: GraphQLFloat },
-  },
-})
+const geneResultColumns = browserConfig.geneResults.columns
+
+const types = {
+  boolean: GraphQLBoolean,
+  float: GraphQLFloat,
+  int: GraphQLInt,
+  string: GraphQLString,
+}
 
 export const GeneResultType = new GraphQLObjectType({
   name: 'GeneResult',
@@ -21,8 +20,13 @@ export const GeneResultType = new GraphQLObjectType({
     gene_name: { type: GraphQLString },
     gene_description: { type: GraphQLString },
     analysis_group: { type: GraphQLString },
-    categories: { type: new GraphQLList(GeneResultCategoryType) },
-    pval_meta: { type: GraphQLFloat },
+    ...geneResultColumns.reduce(
+      (acc, col) => ({
+        ...acc,
+        [col.key]: { type: types[col.type || 'float'] },
+      }),
+      {}
+    ),
   },
 })
 
@@ -31,13 +35,13 @@ const shapeGeneResult = doc => ({
   gene_name: doc.gene_name,
   gene_description: doc.description,
   analysis_group: doc.analysis_group,
-  pval_meta: doc.pval_meta,
-  categories: browserConfig.geneResults.categories.map(category => ({
-    id: category.id,
-    xcase: doc[`xcase_${category.id}`],
-    xctrl: doc[`xctrl_${category.id}`],
-    pval: doc[`pval_${category.id}`],
-  })),
+  ...geneResultColumns.reduce(
+    (acc, col) => ({
+      ...acc,
+      [col.key]: doc[col.key],
+    }),
+    {}
+  ),
 })
 
 const geneResultsCache = new Map()
@@ -59,7 +63,6 @@ export const fetchAllGeneResultsForAnalysisGroup = (ctx, analysisGroup) => {
           },
         },
       },
-      sort: [{ pval_meta: { order: 'asc' } }],
     },
   }).then(hits => hits.map(hit => shapeGeneResult(hit._source))) // eslint-disable-line no-underscore-dangle
 
