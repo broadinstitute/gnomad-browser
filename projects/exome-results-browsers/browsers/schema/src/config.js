@@ -118,8 +118,8 @@ export default {
       swedish_fin: 'Swedish FIN',
       taiwanese_eas: 'Taiwanese EAS',
       uk_ireland_eur: 'UK Ireland EUR',
-      uk_k_interval_eur: 'UK10K INTERVAL EUR',
-      uk_k_nfbc_finrisk_fin: 'UK10K NFBC FINRISK FIN',
+      uk10k_interval_eur: 'UK10K INTERVAL EUR',
+      uk10k_nfbc_finrisk_fin: 'UK10K NFBC FINRISK FIN',
     },
   },
   variants: {
