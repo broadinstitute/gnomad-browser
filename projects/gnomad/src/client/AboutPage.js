@@ -369,6 +369,7 @@ export default () => (
           <li>Diane Kaplan</li>
           <li>Gordon Wade</li>
           <li>Jeff Gentry</li>
+          <li>Jonn Smith</li>
           <li>Jose Soto</li>
           <li>Kathleen Tibbetts</li>
           <li>Kristian Cibulskis</li>
