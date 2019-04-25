@@ -12,7 +12,7 @@ build: clean lib
 
 serve:
 	cd ../dev-server ; \
-	NODE_ENV=development webpack-dev-server --hot --port 8000
+	NODE_ENV=development ../../node_modules/.bin/webpack-dev-server --hot --port 8000
 
 COMPONENT_NAME=$(shell basename `pwd`)
 
