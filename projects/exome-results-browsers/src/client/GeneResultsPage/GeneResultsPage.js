@@ -63,8 +63,10 @@ class GeneResultsPage extends Component {
             } else if (error) {
               resultsContent = <StatusMessage>Unable to load gene results</StatusMessage>
             } else {
-              results = data.geneResults.filter(result =>
-                (result.gene_name || '').includes(searchText)
+              results = data.geneResults.filter(
+                result =>
+                  (result.gene_name || '').includes(searchText) ||
+                  (result.gene_description || '').toUpperCase().includes(searchText)
               )
 
               resultsContent = <GeneResultsTable results={results} />
