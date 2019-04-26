@@ -1,3 +1,4 @@
+import { UserVisibleError } from '../../errors'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
 
 const formatHistogram = histogramData => ({
@@ -183,7 +184,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
   )
 
   if (!exomeData && !genomeData) {
-    throw Error('Variant not found')
+    throw new UserVisibleError('Variant not found')
   }
 
   const sharedData = exomeData || genomeData

@@ -1,6 +1,4 @@
-import { getXpos } from '../../../utilities/variant'
-
-import { extractPopulationData } from '../shared/population'
+import { UserVisibleError } from '../../errors'
 import { parseHistogram } from '../shared/qualityMetrics'
 
 const EXAC_POPULATION_IDS = ['AFR', 'AMR', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
@@ -22,7 +20,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
   })
 
   if (response.hits.hits.length === 0) {
-    throw Error('Variant not found')
+    throw new UserVisibleError('Variant not found')
   }
 
   // eslint-disable-next-line no-underscore-dangle
