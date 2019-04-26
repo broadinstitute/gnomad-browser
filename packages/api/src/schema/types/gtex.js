@@ -1,17 +1,8 @@
-/* eslint-disable camelcase */
-/* eslint-disable quote-props */
+import { GraphQLFloat, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import {
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLString,
-} from 'graphql'
-
-export const tissuesByTranscript = new GraphQLObjectType({
-  name: 'TissuesByTranscript',
-  description: 'reheadered.031216.GTEx_Analysis_2016-09-07_RSEMv1.2.22_transcript_tpm.txt.gz',
-  fields: () => ({
+export const GtexTissueExpressionsType = new GraphQLObjectType({
+  name: 'GtexTissueExpressions',
+  fields: {
     adiposeSubcutaneous: { type: GraphQLFloat },
     adiposeVisceralOmentum: { type: GraphQLFloat },
     adrenalGland: { type: GraphQLFloat },
@@ -67,25 +58,25 @@ export const tissuesByTranscript = new GraphQLObjectType({
     wholeBlood: { type: GraphQLFloat },
     transcriptId: { type: GraphQLString },
     geneId: { type: GraphQLString },
-  }),
+  },
 })
 
-export const lookUpTranscriptTissueExpression = ({ elasticClient, transcriptId }) => {
-  return new Promise((resolve, _) => {
-    elasticClient.search({
-      index: 'gtex_tissue_tpms_by_transcript',
-      type: 'tissue_tpms',
-      size: 100,
-      body: {
-        query: {
-          match: {
-            transcriptId
+export const fetchGtexTissueExpressionsByTranscript = async (ctx, transcriptId) => {
+  const response = await ctx.database.elastic.search({
+    index: 'gtex_tissue_tpms_by_transcript',
+    type: 'tissue_tpms',
+    size: 1,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            term: { transcriptId },
           },
         },
-      }
-    }).then((response) => {
-      resolve(response.hits.hits[0]._source)
-    })
+      },
+    },
   })
-}
 
+  const doc = response.hits.hits[0]
+  return doc ? doc._source : null // eslint-disable-line no-underscore-dangle
+}
