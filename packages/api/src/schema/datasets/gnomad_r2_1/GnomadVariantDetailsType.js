@@ -7,6 +7,7 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { UserVisibleError } from '../../errors'
 import { VariantInterface } from '../../types/variant'
 import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
@@ -154,7 +155,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
                   obj
                 )
               } catch (err) {
-                throw Error('Unable to load reads data')
+                throw new UserVisibleError('Unable to load reads data')
               }
             },
           },
@@ -188,7 +189,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
                   obj
                 )
               } catch (err) {
-                throw Error('Unable to load reads data')
+                throw new UserVisibleError('Unable to load reads data')
               }
             },
           },

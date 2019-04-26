@@ -3,7 +3,7 @@ import { GraphQLList, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graph
 import { datasetArgumentTypeForMethod, AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
-
+import { UserVisibleError } from '../errors'
 import coverageType, { fetchCoverageByRegion } from './coverage'
 import geneType, { fetchGenesByInterval } from './gene'
 import { StructuralVariantSummaryType } from './structuralVariant'
@@ -79,7 +79,7 @@ const regionType = new GraphQLObjectType({
 
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
-          throw Error(
+          throw UserVisibleError(
             `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
           )
         }

@@ -53,6 +53,14 @@ app.use(cors())
             redis,
           },
         },
+        customFormatErrorFn: error => {
+          console.log(error)
+          const message =
+            error.extensions && error.extensions.isUserVisible
+              ? error.message
+              : 'An unknown error occurred'
+          return { message }
+        },
       })
     )
 
@@ -64,8 +72,9 @@ app.use(cors())
       res.json({})
     })
 
-    app.listen(process.env.GRAPHQL_PORT, () =>
-      console.log(`Listening on ${process.env.GRAPHQL_PORT}`))
+    app.listen(process.env.GRAPHQL_PORT, () => {
+      console.log(`Listening on ${process.env.GRAPHQL_PORT}`)
+    })
   } catch (error) {
     console.log(error)
   }

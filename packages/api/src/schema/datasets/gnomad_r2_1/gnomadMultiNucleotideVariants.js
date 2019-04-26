@@ -7,6 +7,7 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { UserVisibleError } from '../../errors'
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { resolveReads, ReadDataType } from '../shared/reads'
 
@@ -53,7 +54,7 @@ const MultiNucleotideVariantConstituentSNVType = new GraphQLObjectType({
                   obj
                 )
               } catch (err) {
-                throw Error('Unable to load reads data')
+                throw new UserVisibleError('Unable to load reads data')
               }
             },
           },
@@ -80,7 +81,7 @@ const MultiNucleotideVariantConstituentSNVType = new GraphQLObjectType({
                   obj
                 )
               } catch (err) {
-                throw Error('Unable to load reads data')
+                throw new UserVisibleError('Unable to load reads data')
               }
             },
           },
@@ -234,7 +235,7 @@ export const fetchGnomadMNVDetails = async (ctx, variantId) => {
   })
 
   if (response.hits.hits.length === 0) {
-    throw Error('Variant not found')
+    throw new UserVisibleError('Variant not found')
   }
 
   const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle

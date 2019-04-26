@@ -8,7 +8,6 @@ import {
   GraphQLFloat,
 } from 'graphql'
 
-import { mergeOverlappingRegions } from '../../utilities/region'
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
@@ -18,6 +17,7 @@ import {
   fetchClinvarVariantsInGene,
   fetchClinvarVariantsInTranscript,
 } from '../datasets/clinvar'
+import { UserVisibleError } from '../errors'
 
 import transcriptType, {
   CompositeTranscriptType,
@@ -127,7 +127,7 @@ export const lookupGeneByGeneId = (db, gene_id) =>
 export const lookupGeneByName = async (db, geneName) => {
   const gene = await db.collection('genes').findOne({ gene_name_upper: geneName.toUpperCase() })
   if (!gene) {
-    throw Error('Gene not found')
+    throw new UserVisibleError('Gene not found')
   }
   return gene
 }

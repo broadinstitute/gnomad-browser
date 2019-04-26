@@ -1,3 +1,5 @@
+import { UserVisibleError } from '../../errors'
+
 const fetchGnomadStructuralVariantDetails = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
     index: 'gnomad_structural_variants_2019_03_13',
@@ -14,7 +16,7 @@ const fetchGnomadStructuralVariantDetails = async (ctx, variantId) => {
   })
 
   if (response.hits.hits.length === 0) {
-    throw Error('Variant not found')
+    throw new UserVisibleError('Variant not found')
   }
 
   const variant = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
