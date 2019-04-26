@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { HelpButton, HelpModal } from '@broad/help'
-import { normalizeRegionId, normalizeVariantId } from '@broad/utilities'
+import { normalizeRegionId } from '@broad/utilities'
 
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'
@@ -103,13 +103,11 @@ const App = () => (
             exact
             path="/variant/:variantId"
             render={({ history, location, match }) => {
-              const params = queryString.parse(location.search)
-              const datasetId = params.dataset || defaultDataset
-              const variantId = normalizeVariantId(match.params.variantId)
+              const queryParams = queryString.parse(location.search)
               return (
                 <VariantPage
-                  datasetId={datasetId}
-                  variantId={variantId}
+                  datasetId={queryParams.dataset || defaultDataset}
+                  variantId={match.params.variantId}
                   history={history}
                   location={location}
                   match={match}
