@@ -9,6 +9,7 @@ module.exports = {
         useBuiltIns: 'entry',
         corejs: 3,
         exclude: ['transform-typeof-symbol'],
+        modules: false,
       },
     ],
     [
