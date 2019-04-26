@@ -21,8 +21,8 @@ const GeneFullName = styled.span`
 `
 
 const geneQuery = `
-query Gene($geneName: String!) {
-  gene(gene_name: $geneName) {
+query Gene($geneId: String, $geneName: String) {
+  gene(gene_id: $geneId, gene_name: $geneName) {
     gene_id
     gene_name
     full_gene_name
@@ -75,11 +75,15 @@ class GenePage extends Component {
   }
 
   render() {
-    const { geneName } = this.props
+    const { geneIdOrName } = this.props
     const { selectedAnalysisGroup } = this.state
 
+    const variables = geneIdOrName.toUpperCase().startsWith('ENSG')
+      ? { geneId: geneIdOrName }
+      : { geneName: geneIdOrName }
+
     return (
-      <Query query={geneQuery} variables={{ geneName }}>
+      <Query query={geneQuery} variables={variables}>
         {({ data, error, graphQLErrors, loading }) => {
           if (loading) {
             return <StatusMessage>Loading gene...</StatusMessage>
@@ -126,7 +130,7 @@ class GenePage extends Component {
 }
 
 GenePage.propTypes = {
-  geneName: PropTypes.string.isRequired,
+  geneIdOrName: PropTypes.string.isRequired,
 }
 
 export default GenePage

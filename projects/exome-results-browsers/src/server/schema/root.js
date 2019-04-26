@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { UserVisibleError } from '../utilities/errors'
 import { AnalysisGroupArgumentType } from './analysisGroup'
 import { GeneType, fetchGeneById, fetchGeneByName } from './gene'
 import { GeneResultType, fetchAllGeneResultsForAnalysisGroup } from './geneResult'
@@ -14,7 +15,6 @@ export const RootType = new GraphQLObjectType({
       args: {
         gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
-        filter: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_id) {
@@ -23,7 +23,7 @@ export const RootType = new GraphQLObjectType({
         if (args.gene_name) {
           return fetchGeneByName(ctx, args.gene_name)
         }
-        throw Error('One of "gene_id" or "gene_name" required')
+        throw new UserVisibleError('One of "gene_id" or "gene_name" is required')
       },
     },
     geneResults: {

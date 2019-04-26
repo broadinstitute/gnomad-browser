@@ -48,7 +48,7 @@ const App = () => (
           <Route path="/results" component={GeneResultsPage} />
           <Route
             path="/gene/:gene"
-            render={({ match }) => <GenePage geneName={match.params.gene} />}
+            render={({ match }) => <GenePage geneIdOrName={match.params.gene} />}
           />
           <Route component={PageNotFoundPage} />
         </Switch>

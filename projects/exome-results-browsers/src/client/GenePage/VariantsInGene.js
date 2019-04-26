@@ -223,8 +223,8 @@ class VariantsInGene extends Component {
 }
 
 const variantsQuery = `
-query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
-  gene(gene_name: $geneName) {
+query VariantsInGene($geneId: String!, $analysisGroup: AnalysisGroupId!) {
+  gene(gene_id: $geneId) {
     variants(analysis_group: $analysisGroup) {
       variant_id
       pos
@@ -249,7 +249,7 @@ query VariantsInGene($geneName: String!, $analysisGroup: AnalysisGroupId!) {
 const ConnectedVariantsInGene = ({ gene, selectedAnalysisGroup, ...rest }) => (
   <Query
     query={variantsQuery}
-    variables={{ geneName: gene.gene_name, analysisGroup: selectedAnalysisGroup }}
+    variables={{ geneId: gene.gene_id, analysisGroup: selectedAnalysisGroup }}
   >
     {({ data, error, loading }) => {
       if (loading) {
@@ -287,7 +287,7 @@ const ConnectedVariantsInGene = ({ gene, selectedAnalysisGroup, ...rest }) => (
 
 ConnectedVariantsInGene.propTypes = {
   gene: PropTypes.shape({
-    gene_name: PropTypes.string.isRequired,
+    gene_id: PropTypes.string.isRequired,
   }).isRequired,
   selectedAnalysisGroup: PropTypes.string.isRequired,
 }
