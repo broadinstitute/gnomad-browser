@@ -19,7 +19,3 @@ export {
   transcripts,
   strand,
 } from './genes'
-
-export {
-  default as GenePageHoc
-} from './GenePageHoc'
