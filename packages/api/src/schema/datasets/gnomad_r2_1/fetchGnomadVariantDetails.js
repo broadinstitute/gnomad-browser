@@ -175,13 +175,7 @@ const fetchColocatedVariants = async (ctx, variantId, subset) => {
 }
 
 const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
-  const [{ exomeData, genomeData }, colocatedVariants, multiNucleotideVariants] = await Promise.all(
-    [
-      fetchGnomadVariantData(ctx, variantId, subset),
-      fetchColocatedVariants(ctx, variantId, subset),
-      fetchGnomadMNVSummariesByVariantId(ctx, variantId),
-    ]
-  )
+  const { exomeData, genomeData } = await fetchGnomadVariantData(ctx, variantId, subset)
 
   if (!exomeData && !genomeData) {
     throw new UserVisibleError('Variant not found')
@@ -197,6 +191,11 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     variantId: sharedData.variant_id,
     xpos: sharedData.xpos,
   }
+
+  const [colocatedVariants, multiNucleotideVariants] = await Promise.all([
+    fetchColocatedVariants(ctx, variantId, subset),
+    fetchGnomadMNVSummariesByVariantId(ctx, variantId),
+  ])
 
   return {
     gqlType: 'GnomadVariantDetails',
