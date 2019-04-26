@@ -288,7 +288,7 @@ const ConnectedVariantsInGene = ({ datasetId, gene, transcriptId, width }) => {
           return <StatusMessage>Loading variants...</StatusMessage>
         }
 
-        if (error) {
+        if (error || !((data || {}).gene || {}).variants) {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 

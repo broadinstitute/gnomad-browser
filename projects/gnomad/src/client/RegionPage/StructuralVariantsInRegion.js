@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import { Query } from '../Query'
@@ -37,7 +38,7 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
           return <StatusMessage>Loading variants...</StatusMessage>
         }
 
-        if (error || !data || !data.region || !data.region.structural_variants) {
+        if (error || !((data || {}).region || {}).structural_variants) {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
@@ -51,6 +52,14 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
       }}
     </Query>
   )
+}
+
+StructuralVariantsInRegion.propTypes = {
+  region: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default StructuralVariantsInRegion
