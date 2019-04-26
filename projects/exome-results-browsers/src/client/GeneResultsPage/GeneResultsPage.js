@@ -99,19 +99,23 @@ class GeneResultsPage extends Component {
                       </AnalysisGroupMenuWrapper>
                     )}
 
-                    <Button
-                      disabled={error || loading}
-                      onClick={() => {
-                        const headerRow = columns.map(col => col.heading)
-                        const dataRows = results.map(result => columns.map(col => result[col.key]))
-                        downloadCSV(
-                          [headerRow].concat(dataRows),
-                          `${selectedAnalysisGroup}_results`
-                        )
-                      }}
-                    >
-                      Export results to CSV
-                    </Button>
+                    {!browserConfig.geneResults.hideExport && (
+                      <Button
+                        disabled={error || loading}
+                        onClick={() => {
+                          const headerRow = columns.map(col => col.heading)
+                          const dataRows = results.map(result =>
+                            columns.map(col => result[col.key])
+                          )
+                          downloadCSV(
+                            [headerRow].concat(dataRows),
+                            `${selectedAnalysisGroup}_results`
+                          )
+                        }}
+                      >
+                        Export results to CSV
+                      </Button>
+                    )}
                   </div>
 
                   <SearchInput

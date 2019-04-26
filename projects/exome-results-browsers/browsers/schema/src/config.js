@@ -26,6 +26,7 @@ export default {
   geneResults: {
     resultsPageHeading: 'Exome meta-analysis results',
     defaultSortColumn: 'pval_meta',
+    hideExport: true,
     columns: [
       {
         key: 'xcase_lof',
@@ -123,6 +124,7 @@ export default {
     },
   },
   variants: {
+    hideExport: true,
     consequences: [
       {
         term: 'lof',
