@@ -14,7 +14,7 @@ const GeneDataContainer = connect(
         thunkDispatch(geneActions.setCurrentGene(ownProps.geneIdOrName))
         thunkDispatch(geneActions.setCurrentTranscript(ownProps.transcriptId))
         thunkDispatch(geneActions.requestGeneData(ownProps.geneIdOrName))
-        return ownProps.fetchGene(ownProps.geneIdOrName, ownProps.transcriptId).then(response => {
+        return ownProps.fetchGene(ownProps.geneIdOrName).then(response => {
           const geneData = response.data.gene
           thunkDispatch(geneActions.receiveGeneData(ownProps.geneIdOrName, geneData))
           return response
@@ -47,8 +47,8 @@ const GeneDataContainer = connect(
     }
 
     componentDidUpdate(prevProps) {
-      const { geneIdOrName, transcriptId } = this.props
-      if (geneIdOrName !== prevProps.geneIdOrName || transcriptId !== prevProps.transcriptId) {
+      const { geneIdOrName } = this.props
+      if (geneIdOrName !== prevProps.geneIdOrName) {
         this.loadGene()
       }
     }
