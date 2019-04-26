@@ -23,9 +23,6 @@ app.use(cors())
     const elastic = new elasticsearch.Client({
       apiVersion: '5.5',
       host: process.env.ELASTICSEARCH_URL,
-      keepAlive: false,
-      maxRetries: 1,
-      requestTimeout: 45000,
     })
 
     const redisConnectionConfig =
