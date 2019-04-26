@@ -9,7 +9,7 @@ const baseColumns = [
     key: 'gene_name',
     heading: 'Gene Name',
     isSortable: true,
-    minWidth: 100,
+    minWidth: 90,
     searchable: true,
     render: row => (
       <Link className="grid-cell-content" target="_blank" to={`/gene/${row.gene_id}`}>
@@ -21,13 +21,7 @@ const baseColumns = [
     key: 'gene_description',
     heading: 'Description',
     isSortable: true,
-    minWidth: 140,
-  },
-  {
-    key: 'gene_id',
-    heading: 'Gene ID',
-    isSortable: true,
-    minWidth: 140,
+    minWidth: 200,
   },
 ]
 
