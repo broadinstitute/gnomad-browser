@@ -24,6 +24,7 @@
     "@broad/track-variant": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
+    "core-js": "^3.0.1",
     "datalist-polyfill": "^1.23.3",
     "graphql-fetch": "^1.0.1",
     "immutable": "^3.8.2",
