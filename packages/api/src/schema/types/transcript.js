@@ -16,7 +16,7 @@ import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnom
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
 import coverageType, { fetchCoverageByTranscript } from './coverage'
 import exonType, { lookupExonsByGeneId, lookupExonsByTranscriptId } from './exon'
-import * as fromGtex from './gtex'
+import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
 
 const transcriptType = new GraphQLObjectType({
   name: 'Transcript',
@@ -83,12 +83,8 @@ const transcriptType = new GraphQLObjectType({
       resolve: (obj, args, ctx) => fetchGnomadConstraintByTranscript(ctx, obj.transcript_id),
     },
     gtex_tissue_tpms_by_transcript: {
-      type: fromGtex.tissuesByTranscript,
-      resolve: (obj, args, ctx) =>
-      fromGtex.lookUpTranscriptTissueExpression({
-        elasticClient: ctx.database.elastic,
-        transcriptId: obj.transcript_id,
-      }),
+      type: GtexTissueExpressionsType,
+      resolve: (obj, args, ctx) => fetchGtexTissueExpressionsByTranscript(ctx, obj.transcript_id),
     },
   }),
 })
