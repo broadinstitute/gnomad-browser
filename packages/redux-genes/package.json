@@ -6,15 +6,10 @@
   "files": [
     "lib"
   ],
-  "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.8.2"
-  },
   "dependencies": {
     "d3-array": "^1.2.4",
     "immutable": "^4.0.0-rc.9",
     "keymirror": "^0.1.1",
-    "react-redux": "^6.0.1",
     "redux": "4.0.1",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0"

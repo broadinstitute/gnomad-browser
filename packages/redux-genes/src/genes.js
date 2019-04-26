@@ -3,8 +3,6 @@ import Immutable from 'immutable'
 import keymirror from 'keymirror'
 import { createSelector } from 'reselect'
 
-import { createRecords } from './records'
-
 export const types = keymirror({
   REQUEST_GENE_DATA: null,
   RECEIVE_GENE_DATA: null,
