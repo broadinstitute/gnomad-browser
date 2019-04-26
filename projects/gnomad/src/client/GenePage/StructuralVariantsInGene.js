@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import { Query } from '../Query'
@@ -34,7 +35,7 @@ const StructuralVariantsInGene = ({ gene, ...rest }) => {
           return <StatusMessage>Loading variants...</StatusMessage>
         }
 
-        if (error || !data.gene || !data.gene.structural_variants) {
+        if (error || !((data || {}).gene || {}).structural_variants) {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
@@ -48,6 +49,13 @@ const StructuralVariantsInGene = ({ gene, ...rest }) => {
       }}
     </Query>
   )
+}
+
+StructuralVariantsInGene.propTypes = {
+  gene: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
+    gene_id: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default StructuralVariantsInGene
