@@ -1,15 +1,9 @@
 import fetch from 'graphql-fetch'
 
-const PUBLIC_API = 'http://gnomad-api.broadinstitute.org'
-// const API_URL = 'http://localhost:8007'
-// const API_URL = 'http://35.184.79.173'
-const API_URL = process.env.GNOMAD_API_URL
-
-export const fetchGnomadGenePage = (geneName, transcriptId) => {
-  const argument = geneName.startsWith('ENSG') ? `gene_id: "${geneName}"` :
-    `gene_name: "${geneName}"`
-
-  const transcriptQuery = transcriptId ? `(transcriptId: "${transcriptId}")` : ''
+export const fetchGnomadGenePage = geneName => {
+  const argument = geneName.startsWith('ENSG')
+    ? `gene_id: "${geneName}"`
+    : `gene_name: "${geneName}"`
 
   const query = `{
     gene(${argument}) {
@@ -38,14 +32,6 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
           stop
           strand
         }
-      }
-      clinvar_variants${transcriptQuery} {
-        alleleId
-        clinicalSignificance
-        goldStars
-        majorConsequence
-        pos
-        variantId
       }
       exacv1_constraint {
         mu_syn
@@ -223,5 +209,5 @@ export const fetchGnomadGenePage = (geneName, transcriptId) => {
     }
 }
 `
-  return fetch(API_URL)(query)
+  return fetch(process.env.GNOMAD_API_URL)(query)
 }
