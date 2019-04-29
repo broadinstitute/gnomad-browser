@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { UserVisibleError } from '../utilities/errors'
 import { AnalysisGroupArgumentType } from './analysisGroup'
@@ -9,13 +9,18 @@ import { TranscriptType, fetchTranscriptById } from './transcript'
 export const GeneType = new GraphQLObjectType({
   name: 'Gene',
   fields: {
-    gene_id: { type: GraphQLString },
-    gene_name: { type: GraphQLString },
+    gene_id: { type: new GraphQLNonNull(GraphQLString) },
+    gene_name: { type: new GraphQLNonNull(GraphQLString) },
     full_gene_name: { type: GraphQLString },
-    chrom: { type: GraphQLString },
+    canonical_transcript: { type: GraphQLString },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    start: { type: new GraphQLNonNull(GraphQLInt) },
+    stop: { type: new GraphQLNonNull(GraphQLInt) },
+    omim_accession: { type: GraphQLString },
     transcript: {
       type: TranscriptType,
-      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),
+      resolve: (obj, args, ctx) =>
+        obj.canonical_transcript ? fetchTranscriptById(ctx, obj.canonical_transcript) : null,
     },
     results: {
       type: new GraphQLList(GeneResultType),
