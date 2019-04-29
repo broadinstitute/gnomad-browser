@@ -46,7 +46,7 @@ const GeneResultsTable = ({ geneResult }) => (
           <th scope="row">Overall</th>
           <td />
           <td />
-          <td>{geneResult.pval_meta.toPrecision(3)}</td>
+          <td>{geneResult.pval.toPrecision(3)}</td>
         </tr>
       </tfoot>
     </Table>
@@ -64,7 +64,7 @@ GeneResultsTable.propTypes = {
     xcase_infrIndel: PropTypes.number,
     xctrl_infrIndel: PropTypes.number,
     pval_infrIndel: PropTypes.number,
-    pval_meta: PropTypes.number.isRequired,
+    pval: PropTypes.number.isRequired,
   }).isRequired,
 }
 
