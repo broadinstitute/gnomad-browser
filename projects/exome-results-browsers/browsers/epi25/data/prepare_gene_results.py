@@ -41,6 +41,6 @@ ds = ds.annotate(
 )
 
 # "Meta" p-val was carried over from SCHEMA's data format but isn't descriptive of Epi25
-ds = ds.rename({"pval_meta": "pval"})
+ds = ds.rename({"pval_meta": "pval", "description": "gene_description"})
 
 ds.write(args.output_url)
