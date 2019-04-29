@@ -2,22 +2,42 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { PageHeading } from '@broad/ui'
+import { PageHeading, Tabs } from '@broad/ui'
 
 import browserConfig from '@browser/config'
+import GeneResult from '@browser/GeneResult'
 
 import DocumentTitle from '../DocumentTitle'
+import { HelpPopup } from '../help'
 import Query from '../Query'
+import sortByGroup from '../sortByGroup'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import RegionViewer from './AutosizedRegionViewer'
-import GeneInfo from './GeneInfo'
+import { ExacConstraintTable, GnomadConstraintTable } from './Constraint'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInGene from './VariantsInGene'
 
 const GeneFullName = styled.span`
   font-size: 0.75em;
   font-weight: 400;
+`
+
+const TablesWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-bottom: 3em;
+`
+
+const GeneAttributes = styled.div`
+  margin-bottom: 1em;
+`
+
+const ConstraintWrapper = styled.div`
+  @media (min-width: 700px) {
+    min-width: 415px;
+  }
 `
 
 const geneQuery = `
@@ -109,7 +129,51 @@ class GenePage extends Component {
                 <PageHeading>
                   {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
                 </PageHeading>
-                <GeneInfo gene={gene} />
+
+                <GeneAttributes>
+                  <strong>Ensembl gene ID:</strong> {gene.gene_id}
+                </GeneAttributes>
+                <TablesWrapper>
+                  <div>
+                    <h2>
+                      Gene Result <HelpPopup topic="geneResult" />
+                    </h2>
+                    {gene.results.length > 1 ? (
+                      <Tabs
+                        tabs={sortByGroup(gene.results).map(result => ({
+                          id: result.analysis_group,
+                          label:
+                            browserConfig.analysisGroups.labels[result.analysis_group] ||
+                            result.analysis_group,
+                          render: () => <GeneResult geneResult={result} />,
+                        }))}
+                      />
+                    ) : (
+                      <GeneResult geneResult={gene.results[0]} />
+                    )}
+                  </div>
+                  <ConstraintWrapper>
+                    <h2>Gene Constraint</h2>
+                    <Tabs
+                      tabs={[
+                        {
+                          id: 'gnomad',
+                          label: 'gnomAD',
+                          render: () => (
+                            <GnomadConstraintTable constraint={gene.transcript.gnomad_constraint} />
+                          ),
+                        },
+                        {
+                          id: 'exac',
+                          label: 'ExAC',
+                          render: () => (
+                            <ExacConstraintTable constraint={gene.transcript.exac_constraint} />
+                          ),
+                        },
+                      ]}
+                    />
+                  </ConstraintWrapper>
+                </TablesWrapper>
               </TrackPageSection>
               <RegionViewer padding={75} regions={canonicalCodingExons}>
                 <TranscriptTrack exons={canonicalCodingExons} strand={gene.transcript.strand} />
