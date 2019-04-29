@@ -15,7 +15,7 @@ export default {
   navBarColor: '#4e3c81',
   elasticsearch: {
     geneResults: {
-      index: 'epi25_gene_results_181107',
+      index: 'epi25_gene_results_2018_11_27',
       type: 'result',
     },
     variants: {
@@ -25,7 +25,7 @@ export default {
   },
   geneResults: {
     resultsPageHeading: 'Epi25 WES: gene burden results',
-    defaultSortColumn: 'pval_meta',
+    defaultSortColumn: 'pval',
     columns: [
       {
         key: 'xcase_lof',
@@ -82,7 +82,7 @@ export default {
         render: renderPVal,
       },
       {
-        key: 'pval_meta',
+        key: 'pval',
         heading: 'P-Val',
         minWidth: 80,
         render: renderPVal,
