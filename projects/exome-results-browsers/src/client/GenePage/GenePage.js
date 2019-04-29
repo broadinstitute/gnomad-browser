@@ -15,6 +15,7 @@ import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import RegionViewer from './AutosizedRegionViewer'
 import { ExacConstraintTable, GnomadConstraintTable } from './Constraint'
+import GeneAttributes from './GeneAttributes'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInGene from './VariantsInGene'
 
@@ -30,10 +31,6 @@ const TablesWrapper = styled.div`
   margin-bottom: 3em;
 `
 
-const GeneAttributes = styled.div`
-  margin-bottom: 1em;
-`
-
 const ConstraintWrapper = styled.div`
   @media (min-width: 700px) {
     min-width: 415px;
@@ -46,6 +43,11 @@ query Gene($geneId: String, $geneName: String) {
     gene_id
     gene_name
     full_gene_name
+    canonical_transcript
+    chrom
+    start
+    stop
+    omim_accession
     results {
       analysis_group
       ${browserConfig.geneResults.columns.map(c => c.key).join('\n')}
@@ -130,9 +132,7 @@ class GenePage extends Component {
                   {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
                 </PageHeading>
 
-                <GeneAttributes>
-                  <strong>Ensembl gene ID:</strong> {gene.gene_id}
-                </GeneAttributes>
+                <GeneAttributes gene={gene} />
                 <TablesWrapper>
                   <div>
                     <h2>
