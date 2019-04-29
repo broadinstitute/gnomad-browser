@@ -33,7 +33,7 @@ export const GeneResultType = new GraphQLObjectType({
 const shapeGeneResult = doc => ({
   gene_id: doc.gene_id,
   gene_name: doc.gene_name,
-  gene_description: doc.description,
+  gene_description: doc.gene_description,
   analysis_group: doc.analysis_group,
   ...geneResultColumns.reduce(
     (acc, col) => ({

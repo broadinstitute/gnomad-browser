@@ -11,7 +11,6 @@ hl.init(log="/tmp/hail.log")
 
 ds = hl.read_table(args.input_url)
 
-ds = ds.transmute(description=ds.gene_description)
 ds = ds.annotate(analysis_group="meta")
 
 ds.write(args.output_url)
