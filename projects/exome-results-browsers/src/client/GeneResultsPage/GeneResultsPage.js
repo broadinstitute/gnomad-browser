@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Button, Combobox, Page, PageHeading, SearchInput } from '@broad/ui'
+import { Button, Combobox, Page, PageHeading, SearchInput, Tabs } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
@@ -10,6 +11,8 @@ import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import columns from './geneResultColumns'
+import GeneResultsManhattanPlot from './GeneResultsManhattanPlot'
+import GeneResultsQQPlot from './GeneResultsQQPlot'
 import GeneResultsTable from './GeneResultsTable'
 
 const geneResultColumns = browserConfig.geneResults.columns
@@ -20,6 +23,8 @@ const geneResultsQuery = `
       gene_id
       gene_name
       gene_description
+      chrom
+      pos
       ${geneResultColumns.map(c => c.key).join('\n')}
     }
   }
@@ -37,12 +42,20 @@ const AnalysisGroupMenuWrapper = styled.div`
 `
 
 class GeneResultsPage extends Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+  }
+
   state = {
     searchText: '',
     selectedAnalysisGroup: browserConfig.analysisGroups.defaultGroup,
   }
 
   render() {
+    const { history } = this.props
+
     const numAvailableGroups = browserConfig.analysisGroups.selectableGroups.length
     const { selectedAnalysisGroup, searchText } = this.state
 
@@ -69,7 +82,41 @@ class GeneResultsPage extends Component {
                   (result.gene_description || '').toUpperCase().includes(searchText)
               )
 
-              resultsContent = <GeneResultsTable results={results} />
+              resultsContent = (
+                <Tabs
+                  tabs={[
+                    {
+                      id: 'table',
+                      label: 'Table',
+                      render: () => <GeneResultsTable results={results} />,
+                    },
+                    {
+                      id: 'manhattan-plot',
+                      label: 'Manhattan Plot',
+                      render: () => (
+                        <GeneResultsManhattanPlot
+                          results={results}
+                          onClickPoint={d => {
+                            history.push(`/gene/${d.gene_id || d.gene_name}`)
+                          }}
+                        />
+                      ),
+                    },
+                    {
+                      id: 'qq-plot',
+                      label: 'QQ Plot',
+                      render: () => (
+                        <GeneResultsQQPlot
+                          results={results}
+                          onClickPoint={d => {
+                            history.push(`/gene/${d.gene_id || d.gene_name}`)
+                          }}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              )
             }
 
             return (

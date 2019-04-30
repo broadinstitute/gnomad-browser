@@ -17,6 +17,8 @@
     "mongodb": "^3.2.2"
   },
   "devDependencies": {
+    "@broad/manhattan": "*",
+    "@broad/qq-plot": "*",
     "@broad/region-viewer": "*",
     "@broad/track-navigator": "*",
     "@broad/track-regions": "*",

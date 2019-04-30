@@ -20,6 +20,8 @@ export const GeneResultType = new GraphQLObjectType({
     gene_name: { type: GraphQLString },
     gene_description: { type: GraphQLString },
     analysis_group: { type: GraphQLString },
+    chrom: { type: GraphQLString },
+    pos: { type: GraphQLInt },
     ...geneResultColumns.reduce(
       (acc, col) => ({
         ...acc,
@@ -34,6 +36,8 @@ const shapeGeneResult = doc => ({
   gene_id: doc.gene_id,
   gene_name: doc.gene_name,
   gene_description: doc.gene_description,
+  chrom: doc.chrom,
+  pos: doc.pos,
   analysis_group: doc.analysis_group,
   ...geneResultColumns.reduce(
     (acc, col) => ({
