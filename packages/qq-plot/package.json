@@ -1,0 +1,17 @@
+{
+  "name": "@broad/qq-plot",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.js",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "d3-array": "^1.2.4",
+    "d3-scale": "^2.2.2",
+    "lodash.throttle": "^4.1.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.2"
+  }
+}
