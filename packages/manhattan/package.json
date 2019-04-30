@@ -7,9 +7,9 @@
     "lib"
   ],
   "dependencies": {
-    "@broad/utilities": "*",
     "d3-array": "^1.2.4",
-    "d3-scale": "^2.2.2"
+    "d3-scale": "^2.2.2",
+    "lodash.throttle": "^4.1.1"
   },
   "peerDependencies": {
     "react": "^16.8.2"
