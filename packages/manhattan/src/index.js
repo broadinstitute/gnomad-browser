@@ -1,2 +1,2 @@
-export { colorByChromosome } from './colorScales'
-export { ManhattanPlot as default } from './ManhattanPlot'
+export { rotateColorByChromosome } from './colorScales'
+export { ManhattanPlot } from './ManhattanPlot'

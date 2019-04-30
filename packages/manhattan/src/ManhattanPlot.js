@@ -1,177 +1,305 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { scaleLinear } from 'd3-scale'
 import { extent } from 'd3-array'
+import { scaleLinear } from 'd3-scale'
+import throttle from 'lodash.throttle'
+import PropTypes from 'prop-types'
+import React, { useEffect, useMemo, useRef } from 'react'
 
-import { HUMAN_AUTOSOMES, HUMAN_CHROMOSOMES } from '@broad/utilities'
-
-import { colorByChromosome } from './colorScales'
+import { rotateColorByChromosome } from './colorScales'
 
 export const ManhattanPlot = ({
-  data,
+  chromosomes,
+  dataPoints,
   height,
-  includeSexChromosomes,
   onClickPoint,
   pointColor,
-  title,
+  pointLabel,
   width,
+  xLabel,
+  yLabel,
 }) => {
-  const padding = 60
-
-  const plotChromosomes = includeSexChromosomes ? HUMAN_CHROMOSOMES : HUMAN_AUTOSOMES
-
-  const chromPositionExtent = plotChromosomes.reduce(
+  const positionExtents = chromosomes.reduce(
     (acc, chr) => ({ ...acc, [chr]: { min: Infinity, max: -Infinity } }),
-    {}
+    Object.create(null)
   )
 
-  data.forEach((d) => {
-    chromPositionExtent[d.chromosome].min = Math.min(chromPositionExtent[d.chromosome].min, d.pos)
-    chromPositionExtent[d.chromosome].max = Math.max(chromPositionExtent[d.chromosome].max, d.pos)
-  })
+  for (let i = 0; i < dataPoints.length; i += 1) {
+    const d = dataPoints[i]
+    positionExtents[d.chrom].min = Math.min(positionExtents[d.chrom].min, d.pos)
+    positionExtents[d.chrom].max = Math.max(positionExtents[d.chrom].max, d.pos)
+  }
 
   const chromOffset = {}
   let cumulativePosition = 0
-  plotChromosomes.forEach((chr) => {
+  for (let i = 0; i < chromosomes.length; i += 1) {
+    const chr = chromosomes[i]
     chromOffset[chr] = cumulativePosition
-    cumulativePosition += chromPositionExtent[chr].max - chromPositionExtent[chr].min
-  })
+    cumulativePosition += Math.max(0, positionExtents[chr].max - positionExtents[chr].min)
+  }
+
+  const margin = {
+    bottom: 55,
+    left: 60,
+    right: 10,
+    top: 10,
+  }
 
   const xScale = scaleLinear()
     .domain([0, cumulativePosition])
-    .range([0 + padding, width])
+    .range([0, width - margin.left - margin.right])
 
-  const yExtent = extent(data, d => d['-log10p'])
+  const yExtent = extent(dataPoints, d => d.pval)
+    .map(p => -Math.log10(p))
+    .reverse()
+
   const yScale = scaleLinear()
     .domain(yExtent)
-    .range([height - padding, 10])
+    .range([height - margin.top - margin.bottom, 0])
     .nice()
 
-  const titleText = (
-    <text
-      className={'title'}
-      x={width / 2}
-      y={padding / 2}
-    >
-      {title}
-    </text>
-  )
+  const points = dataPoints.map(d => ({
+    data: d,
+    x: xScale(chromOffset[d.chrom] + d.pos - positionExtents[d.chrom].min),
+    y: yScale(-Math.log10(d.pval)),
+  }))
 
-  const yAxisLabel = (
-    <text
-      x={5}
-      y={height / 2}
-      transform={`rotate(270 ${padding / 3} ${height / 2})`}
-    >
-      {'-log10(P)'}
-    </text>
-  )
+  const scale = window.devicePixelRatio || 1
 
-  const yAxisTicks = (
-    <g>
-      {yScale.ticks().map((t) => {
-        return (
-          <g key={t}>
-            <line
-              x1={padding}
-              x2={width}
-              y1={yScale(t)}
-              y2={yScale(t)}
-              stroke={'#BDBDBD'}
-            />
-            <text
-              className={'yTickText'}
-              textAnchor={'middle'}
-              x={padding - 15}
-              y={yScale(t) + 5}
-            >
-              {t}
-            </text>
-          </g>
-        )
-      })}
-    </g>
-  )
+  const plotCanvas = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.height = height * scale
+    canvas.width = width * scale
 
-  const xAxisLabel = (
-    <text
-      className={'xLabel'}
-      textAnchor={'middle'}
-      x={width / 2}
-      y={height - (padding / 4)}
-    >
-      Chromosome
-    </text>
-  )
+    const ctx = canvas.getContext('2d')
 
-  const xAxisTicks = (
-    <g>
-      {plotChromosomes.map(chr => (
-        <text
-          key={chr}
-          className={'chromosomeLabel'}
-          textAnchor={'middle'}
-          x={xScale(
-            chromOffset[chr] + ((chromPositionExtent[chr].max - chromPositionExtent[chr].min) / 2)
-          )}
-          y={(height - padding) + 20}
-        >
-          {chr}
-        </text>
-      ))}
-    </g>
-  )
+    ctx.setTransform(scale, 0, 0, scale, 0, 0)
 
-  const clickHandler = e => onClickPoint(e.target.getAttribute('data-id'))
+    ctx.lineWidth = 1
 
-  const renderedPoints = data.map((dataPoint) => {
-    return (
-      <circle
-        key={dataPoint.id}
-        data-id={dataPoint.id}
-        cx={xScale(chromOffset[dataPoint.chromosome] + dataPoint.pos)}
-        cy={yScale(dataPoint['-log10p'])}
-        r={2}
-        fill={pointColor(dataPoint)}
-        onClick={clickHandler}
-      />
-    )
-  })
+    const w = width - margin.left - margin.right
+    const h = height - margin.top - margin.bottom
+
+    // Y Axis
+    // ====================================================
+
+    ctx.save()
+
+    ctx.transform(1, 0, 0, 1, margin.left, margin.top)
+
+    const ticks = yScale.ticks()
+    for (let i = 0; i < ticks.length; i += 1) {
+      const t = ticks[i]
+      const y = yScale(t)
+
+      ctx.beginPath()
+      ctx.moveTo(-5, y)
+      ctx.lineTo(0, y)
+      ctx.strokeStyle = '#333'
+      ctx.stroke()
+
+      ctx.font = '10px sans-serif'
+      ctx.fillStyle = '#000'
+      const { width: tickLabelWidth } = ctx.measureText(`${t}`)
+      ctx.fillText(`${t}`, -(9 + tickLabelWidth), y + 3)
+
+      ctx.beginPath()
+      ctx.moveTo(0, y)
+      ctx.lineTo(w, y)
+      ctx.strokeStyle = '#bdbdbd'
+      ctx.stroke()
+    }
+
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, h)
+    ctx.strokeStyle = '#333'
+    ctx.stroke()
+
+    ctx.font = '14px sans-serif'
+    const { width: yLabelWidth } = ctx.measureText(yLabel)
+    ctx.rotate(-Math.PI / 2)
+    ctx.fillText(yLabel, -(h + yLabelWidth) / 2, -40)
+
+    ctx.restore()
+
+    // X Axis
+    // ====================================================
+
+    ctx.save()
+
+    ctx.transform(1, 0, 0, 1, margin.left, height - margin.bottom)
+
+    for (let i = 0; i < chromosomes.length; i += 1) {
+      const chr = chromosomes[i]
+
+      const x = xScale(chromOffset[chr] + (positionExtents[chr].max - positionExtents[chr].min) / 2)
+
+      ctx.beginPath()
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, 3)
+      ctx.strokeStyle = '#333'
+      ctx.stroke()
+
+      ctx.font = '10px sans-serif'
+      ctx.fillStyle = '#000'
+      const { width: tickLabelWidth } = ctx.measureText(chr)
+      ctx.fillText(chr, x - tickLabelWidth / 2, 13)
+    }
+
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(w, 0)
+    ctx.strokeStyle = '#333'
+    ctx.stroke()
+
+    ctx.font = '14px sans-serif'
+    const { width: xLabelWidth } = ctx.measureText(xLabel)
+    ctx.fillText(xLabel, (w - xLabelWidth) / 2, 50)
+
+    ctx.restore()
+
+    // Points
+    // ====================================================
+
+    ctx.save()
+
+    ctx.transform(1, 0, 0, 1, margin.left, margin.top)
+
+    if (ctx.clip) {
+      ctx.beginPath()
+      ctx.rect(1, 1, w - 2, h - 2)
+      ctx.clip()
+    }
+
+    for (let i = 0; i < points.length; i += 1) {
+      const point = points[i]
+
+      ctx.beginPath()
+      ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI, false)
+      ctx.fillStyle = pointColor(point.data)
+      ctx.fill()
+    }
+
+    ctx.restore()
+
+    return canvas
+  }, [chromosomes, dataPoints, height, pointColor, width, xLabel, yLabel])
+
+  const mainCanvas = useRef()
+
+  const drawPlot = () => {
+    const ctx = mainCanvas.current.getContext('2d')
+    ctx.setTransform(scale, 0, 0, scale, 0, 0)
+    ctx.clearRect(0, 0, width, height)
+    ctx.drawImage(plotCanvas, 0, 0, width, height)
+  }
+
+  useEffect(drawPlot)
+
+  const findNearestPoint = (x, y, distanceThreshold = 5) => {
+    let nearestPoint
+    let minDistance = Infinity
+
+    for (let i = 0; i < points.length; i += 1) {
+      const p = points[i]
+      const d = Math.sqrt((p.x - x) ** 2 + (p.y - y) ** 2)
+      if (d < minDistance) {
+        nearestPoint = p
+        minDistance = d
+      }
+    }
+
+    return minDistance <= distanceThreshold ? nearestPoint : undefined
+  }
+
+  const updateHoveredPoint = throttle((x, y) => {
+    const nearestPoint = findNearestPoint(x, y)
+
+    drawPlot()
+
+    if (nearestPoint) {
+      const ctx = mainCanvas.current.getContext('2d')
+      ctx.save()
+
+      ctx.transform(1, 0, 0, 1, margin.left, margin.top)
+
+      ctx.font = '14px sans-serif'
+      const label = pointLabel(nearestPoint.data)
+      const { width: textWidth } = ctx.measureText(label)
+
+      const labelX = x < width / 2 ? nearestPoint.x : nearestPoint.x - textWidth - 10
+      const labelY = y < 30 ? nearestPoint.y : nearestPoint.y - 24
+
+      ctx.beginPath()
+      ctx.rect(labelX, labelY, textWidth + 12, 24)
+      ctx.fillStyle = '#000'
+      ctx.fill()
+
+      ctx.fillStyle = '#fff'
+      ctx.fillText(label, labelX + 6, labelY + 16)
+
+      ctx.restore()
+    }
+  }, 100)
+
+  const onMouseMove = e => {
+    const bounds = e.target.getBoundingClientRect()
+    const mouseX = e.clientX - bounds.left - margin.left
+    const mouseY = e.clientY - bounds.top - margin.top
+    updateHoveredPoint(mouseX, mouseY)
+  }
+
+  const onClick = e => {
+    const bounds = e.target.getBoundingClientRect()
+    const clickX = e.clientX - bounds.left - margin.left
+    const clickY = e.clientY - bounds.top - margin.top
+
+    const point = findNearestPoint(clickX, clickY)
+    if (point) {
+      onClickPoint(point.data)
+    }
+  }
 
   return (
-    <div>
-      <svg width={width} height={height}>
-        {titleText}
-        {yAxisLabel}
-        {yAxisTicks}
-        {xAxisLabel}
-        {xAxisTicks}
-        {renderedPoints}
-      </svg>
-    </div>
+    <canvas
+      ref={mainCanvas}
+      height={height * scale}
+      width={width * scale}
+      style={{
+        height: `${height}px`,
+        width: `${width}px`,
+      }}
+      onClick={onClick}
+      onMouseLeave={drawPlot}
+      onMouseMove={onMouseMove}
+    />
   )
 }
 
 ManhattanPlot.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    chromosome: PropTypes.oneOf(HUMAN_CHROMOSOMES).isRequired,
-    pos: PropTypes.number.isRequired,
-    '-log10p': PropTypes.number.isRequired,
-  })).isRequired,
-  height: PropTypes.number,
-  includeSexChromosomes: PropTypes.bool,
+  chromosomes: PropTypes.arrayOf(PropTypes.string),
+  dataPoints: PropTypes.arrayOf(
+    PropTypes.shape({
+      chrom: PropTypes.string.isRequired,
+      pos: PropTypes.number.isRequired,
+      pval: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  height: PropTypes.number.isRequired,
   onClickPoint: PropTypes.func,
   pointColor: PropTypes.func,
-  title: PropTypes.string,
-  width: PropTypes.number,
+  pointLabel: PropTypes.func,
+  width: PropTypes.number.isRequired,
+  xLabel: PropTypes.string,
+  yLabel: PropTypes.string,
 }
 
+const CHROMOSOMES = Array.from(new Array(22), (_, i) => `${i + 1}`).concat(['X', 'Y'])
+
 ManhattanPlot.defaultProps = {
-  height: 500,
-  includeSexChromosomes: false,
+  chromosomes: CHROMOSOMES,
   onClickPoint: () => {},
-  pointColor: colorByChromosome(['rgb(139,53,40)', 'rgb(60,100,166)']),
-  title: '',
-  width: 900,
+  pointColor: rotateColorByChromosome(['rgb(139,53,40)', 'rgb(60,100,166)'], CHROMOSOMES),
+  pointLabel: d => d.label,
+  xLabel: 'Chromosome',
+  yLabel: '-log10(p)',
 }

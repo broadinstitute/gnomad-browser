@@ -1,9 +1,11 @@
-import { HUMAN_CHROMOSOMES } from '@broad/utilities'
+export const rotateColorByChromosome = (colors, chromosomes) => {
+  const chromosomeColors = chromosomes.reduce(
+    (acc, chr, i) => ({
+      ...acc,
+      [chr]: colors[i % colors.length],
+    }),
+    {}
+  )
 
-export function colorByChromosome(colors) {
-  const CHROMOSOME_COLORS = HUMAN_CHROMOSOMES.reduce((acc, chr, i) => ({
-    ...acc,
-    [chr]: colors[i % colors.length],
-  }), {})
-  return dataPoint => CHROMOSOME_COLORS[dataPoint.chromosome]
+  return dataPoint => chromosomeColors[dataPoint.chrom]
 }
