@@ -60,45 +60,48 @@ const GeneDataContainer = connect(
     loadGene() {
       const { transcriptId } = this.props
 
-      this.setState({
-        isLoadingGene: true,
-        loadError: null,
-      })
-
-      // eslint-disable-next-line react/destructuring-assignment
-      this.props
-        .loadGene()
-        .then(response => {
-          const geneData = response.data.gene
-          let loadError = null
-          if (!geneData) {
-            loadError = 'Gene not found'
-          }
-          if (
-            transcriptId &&
-            !geneData.transcripts.map(t => t.transcript_id).includes(transcriptId)
-          ) {
-            loadError = 'Transcript not found'
-          }
-          if (!this.mounted) {
-            return
-          }
-          this.setState({
-            geneData,
-            isLoadingGene: false,
-            loadError,
-          })
-        })
-        .catch(() => {
-          if (!this.mounted) {
-            return
-          }
-          this.setState({
-            geneData: null,
-            isLoadingGene: false,
-            loadError: 'Unable to load gene',
-          })
-        })
+      this.setState(
+        {
+          isLoadingGene: true,
+          loadError: null,
+        },
+        () => {
+          // eslint-disable-next-line react/destructuring-assignment
+          this.props
+            .loadGene()
+            .then(response => {
+              const geneData = response.data.gene
+              let loadError = null
+              if (!geneData) {
+                loadError = 'Gene not found'
+              }
+              if (
+                transcriptId &&
+                !geneData.transcripts.map(t => t.transcript_id).includes(transcriptId)
+              ) {
+                loadError = 'Transcript not found'
+              }
+              if (!this.mounted) {
+                return
+              }
+              this.setState({
+                geneData,
+                isLoadingGene: false,
+                loadError,
+              })
+            })
+            .catch(() => {
+              if (!this.mounted) {
+                return
+              }
+              this.setState({
+                geneData: null,
+                isLoadingGene: false,
+                loadError: 'Unable to load gene',
+              })
+            })
+        }
+      )
     }
 
     render() {
