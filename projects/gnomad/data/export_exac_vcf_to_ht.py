@@ -80,8 +80,6 @@ PER_ALLELE_FIELDS = [
     "Hom_CONSANGUINEOUS",
     "MLEAC",
     "MLEAF",
-    "DP_HIST",
-    "GQ_HIST",
     "DOUBLETON_DIST",
     "AGE_HISTOGRAM_HET",
     "AGE_HISTOGRAM_HOM",
