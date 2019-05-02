@@ -38,13 +38,13 @@ const GeneResultsTable = ({ geneResult }) => (
           <th colSpan={3} scope="row">
             Overall
           </th>
-          <td>{geneResult.pval.toPrecision(3)}</td>
+          <td>{geneResult.pval === null ? '—' : geneResult.pval.toPrecision(3)}</td>
         </tr>
         <tr>
           <th colSpan={3} scope="row">
             Meta
           </th>
-          <td>{geneResult.pval_meta.toPrecision(3)}</td>
+          <td>{geneResult.pval_meta === null ? '—' : geneResult.pval_meta.toPrecision(3)}</td>
         </tr>
       </tfoot>
     </Table>
@@ -59,8 +59,8 @@ GeneResultsTable.propTypes = {
     xcase_mis: PropTypes.number,
     xctrl_mis: PropTypes.number,
     pval_mis: PropTypes.number,
-    pval: PropTypes.number.isRequired,
-    pval_meta: PropTypes.number.isRequired,
+    pval: PropTypes.number,
+    pval_meta: PropTypes.number,
   }).isRequired,
 }
 
