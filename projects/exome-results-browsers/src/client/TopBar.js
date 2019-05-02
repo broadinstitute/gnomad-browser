@@ -92,12 +92,16 @@ class TopBar extends Component {
     this.setState(state => ({ ...state, isMenuExpanded: !state.isMenuExpanded }))
   }
 
+  closeMenu = () => {
+    this.setState({ isMenuExpanded: false })
+  }
+
   render() {
     const { isMenuExpanded } = this.state
     return (
       <TopBarWrapper>
         <TitleWrapper>
-          <Link to="/">
+          <Link to="/" onClick={this.closeMenu}>
             <Title>{browserConfig.navBarTitle}</Title>
           </Link>
           <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
@@ -107,7 +111,9 @@ class TopBar extends Component {
 
         <Menu isExpanded={isMenuExpanded}>
           <li>
-            <Link to="/results">Results</Link>
+            <Link to="/results" onClick={this.closeMenu}>
+              Results
+            </Link>
           </li>
         </Menu>
       </TopBarWrapper>
