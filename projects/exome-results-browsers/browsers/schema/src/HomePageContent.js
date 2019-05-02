@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -14,27 +13,6 @@ const Paragraph = styled.p`
   margin: 0 0 1em;
   line-height: 1.5;
 `
-
-const AnnouncementList = styled.ol`
-  padding: 0;
-  margin: 0 0 2em;
-
-  li {
-    list-style-type: none;
-  }
-`
-
-const Announcement = ({ children, date }) => (
-  <li>
-    <strong>{date}</strong>
-    <Paragraph>{children}</Paragraph>
-  </li>
-)
-
-Announcement.propTypes = {
-  children: PropTypes.node.isRequired,
-  date: PropTypes.string.isRequired,
-}
 
 const Logo = styled.img`
   display: block;
@@ -77,26 +55,8 @@ export default () => (
       effort.
     </Paragraph>
 
-    <h2>Announcements</h2>
-    <AnnouncementList>
-      <Announcement date="March, 2018">
-        The near-final release (v2) of the SCHEMA call set and analysis will be presented at a
-        teleconference call in Spring 2018.
-      </Announcement>
-      <Announcement date="December 20, 2017">
-        An alpha version of the exome sequencing results browser was launched at the final meeting
-        of the year.
-      </Announcement>
-      <Announcement date="October 15, 2017">
-        The first release (v1) of SCHEMA analysis with 25,000 cases and 50,000 controls was
-        completed and shared internally. A presentation of these data and results was given at the
-        World Congress of Psychiatric Genetics.
-      </Announcement>
-      <Announcement date="July 20, 2017">
-        The inaugural SCHEMA consortium teleconference was held to discuss the first data freeze of
-        schizophrenia sequencing data, and plans for analysis.
-      </Announcement>
-    </AnnouncementList>
+    <Paragraph>Analysis data last updated April 15th, 2019.</Paragraph>
+
     <Logo alt="Stanley Center logo" src={stanleyCenterLogo} />
   </HomePageContentWrapper>
 )
