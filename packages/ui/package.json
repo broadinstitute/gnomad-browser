@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
+    "lodash.debounce": "^4.0.8",
     "mousetrap": "^1.6.3",
     "polished": "^3.2.0",
     "prop-types": "^15.7.2",
