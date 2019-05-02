@@ -99,7 +99,7 @@ export class Searchbox extends Component {
 
     this.searchRequest.then(results => {
       this.setState({ isFetching: false, options: results })
-      if (this.selectOnSearchResponse) {
+      if (this.selectOnSearchResponse && results.length > 0) {
         onSelect(results[0].value, results[0])
       }
       this.selectOnSearchResponse = false
