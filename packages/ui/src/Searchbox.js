@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -13,17 +14,6 @@ const SearchboxInput = styled(ComboboxInput)`
 const PlaceholderItem = styled(Item)`
   color: rgba(0, 0, 0, 0.5);
 `
-
-const debounce = (fn, ms) => {
-  let timeout
-
-  return function(...args) {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
-    timeout = setTimeout(() => fn(...args), ms)
-  }
-}
 
 class CancelablePromise {
   isCanceled = false
@@ -115,6 +105,13 @@ export class Searchbox extends Component {
       this.selectOnSearchResponse = false
     })
   }, 400)
+
+  componentWillUnmount() {
+    if (this.searchRequest) {
+      this.searchRequest.cancel()
+    }
+    this.fetchSearchResults.cancel()
+  }
 
   onChange = (e, inputValue) => {
     this.setState({ inputValue })
