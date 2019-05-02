@@ -55,6 +55,6 @@ export default () => (
       <ExternalLink href="mailto:yfeng@broadinstitute.org">email</ExternalLink> if you have any
       questions or suggestions.
     </p>
-    <p>Last Update: 11/10/2018</p>
+    <p>Last updated November 10th 2018.</p>
   </HomePageContentWrapper>
 )
