@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   position: relative;
-  width: 210px;
+  display: inline-block;
   border-bottom: 1px solid #000;
   font-size: 14px;
 `
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
-  padding: 0.375em 0.75em;
+  padding: 0.375em 1.75em 0.375em 0.75em;
   border: 1px solid transparent;
   border-radius: 0.25em;
   appearance: none;
@@ -22,7 +22,6 @@ const Input = styled.input`
     outline: none;
     border-color: rgb(70, 130, 180);
     box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
-    padding-right: 1.75em;
   }
 `
 
