@@ -49,6 +49,8 @@ class VariantsInGene extends Component {
       includeFilteredVariants: false,
       includeSNVs: true,
       includeIndels: true,
+      includeExomes: true,
+      includeGenomes: true,
       searchText: '',
     }
 
