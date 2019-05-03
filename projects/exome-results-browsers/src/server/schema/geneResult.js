@@ -75,19 +75,34 @@ export const fetchAllGeneResultsForAnalysisGroup = (ctx, analysisGroup) => {
   return request
 }
 
-export const fetchGeneResultsByGeneId = async (ctx, geneId) => {
-  const response = await ctx.database.elastic.search({
+export const fetchGeneResultsForGene = async (ctx, gene) => {
+  let response = await ctx.database.elastic.search({
     index: browserConfig.elasticsearch.geneResults.index,
     type: browserConfig.elasticsearch.geneResults.type,
     size: 100,
     body: {
       query: {
         bool: {
-          filter: { term: { gene_id: geneId } },
+          filter: { term: { gene_id: gene.gene_id } },
         },
       },
     },
   })
+
+  if (response.hits.hits.length === 0) {
+    response = await ctx.database.elastic.search({
+      index: browserConfig.elasticsearch.geneResults.index,
+      type: browserConfig.elasticsearch.geneResults.type,
+      size: 100,
+      body: {
+        query: {
+          bool: {
+            filter: { term: { gene_name: gene.gene_name } },
+          },
+        },
+      },
+    })
+  }
 
   return response.hits.hits.map(hit => shapeGeneResult(hit._source)) // eslint-disable-line no-underscore-dangle
 }
