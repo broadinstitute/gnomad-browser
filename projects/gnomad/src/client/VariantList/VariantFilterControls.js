@@ -11,34 +11,43 @@ const SettingsWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1em;
-
-  @media (max-width: 1300px) and (min-width: 1101px) {
-    > div {
-      &:nth-child(2) {
-        order: 3;
-        width: 50%;
-        margin-top: 1em;
-      }
-    }
-  }
-
-  @media (max-width: 1100px) {
-    flex-direction: column;
-    align-items: center;
-
-    > div {
-      margin-bottom: 1.5em;
-    }
-  }
-`
-const CheckboxWrapper = styled.span`
-  display: flex;
-  flex-direction: column;
 
   @media (max-width: 700px) {
-    margin: 0.5em;
+    flex-direction: column;
+    align-items: center;
   }
+`
+
+const ConsequenceFiltersWrapper = styled.div`
+  margin-bottom: 1em;
+`
+
+const CheckboxFiltersWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1em;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
+const CheckboxSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 2em;
+
+  @media (max-width: 700px) {
+    margin-right: 0;
+  }
+`
+
+const SearchWrapper = styled.div`
+  width: 210px;
+  margin-bottom: 1em;
 `
 
 const keyboardShortcuts = {
@@ -53,7 +62,7 @@ const VariantFilterControls = ({ onChange, value }) => {
 
   return (
     <SettingsWrapper>
-      <div>
+      <ConsequenceFiltersWrapper>
         <ConsequenceCategoriesControl
           categorySelections={value.includeCategories}
           id="variant-filter"
@@ -76,42 +85,65 @@ const VariantFilterControls = ({ onChange, value }) => {
             keys={keyboardShortcuts[category]}
           />
         ))}
-      </div>
+      </ConsequenceFiltersWrapper>
 
-      <CheckboxWrapper>
-        <span>
+      <CheckboxFiltersWrapper>
+        <CheckboxSection>
           <Checkbox
-            checked={value.includeFilteredVariants}
-            id="qcFilter2"
-            label="Include filtered variants"
-            onChange={includeFilteredVariants => {
-              onChange({ ...value, includeFilteredVariants })
+            checked={value.includeExomes}
+            id="exome-variant-filter"
+            label="Exomes"
+            onChange={includeExomes => {
+              onChange({ ...value, includeExomes })
             }}
           />
-          <QuestionMark topic="include-filtered-variants" />
-        </span>
-        <Checkbox
-          checked={value.includeSNVs}
-          id="snpfilter"
-          label="SNVs"
-          onChange={includeSNVs => {
-            onChange({ ...value, includeSNVs })
-          }}
-        />
-        <Checkbox
-          checked={value.includeIndels}
-          id="indelfilter"
-          label="Indels"
-          onChange={includeIndels => {
-            onChange({ ...value, includeIndels })
-          }}
-        />
-      </CheckboxWrapper>
+          <Checkbox
+            checked={value.includeGenomes}
+            id="genome-variant-filter"
+            label="Genomes"
+            onChange={includeGenomes => {
+              onChange({ ...value, includeGenomes })
+            }}
+          />
+        </CheckboxSection>
+        <CheckboxSection>
+          <Checkbox
+            checked={value.includeSNVs}
+            id="snv-variant-filter"
+            label="SNVs"
+            onChange={includeSNVs => {
+              onChange({ ...value, includeSNVs })
+            }}
+          />
+          <Checkbox
+            checked={value.includeIndels}
+            id="indel-variant-filter"
+            label="Indels"
+            onChange={includeIndels => {
+              onChange({ ...value, includeIndels })
+            }}
+          />
+        </CheckboxSection>
+        <CheckboxSection>
+          <span>
+            <Checkbox
+              checked={value.includeFilteredVariants}
+              id="qc-variant-fil;ter"
+              label="Filtered variants"
+              onChange={includeFilteredVariants => {
+                onChange({ ...value, includeFilteredVariants })
+              }}
+            />
+            <QuestionMark topic="include-filtered-variants" />
+          </span>
+        </CheckboxSection>
+      </CheckboxFiltersWrapper>
 
-      <div>
+      <SearchWrapper>
         <SearchInput
           ref={searchInput}
           placeholder="Search variant table"
+          style={{ marginBottom: '1em', width: '210px' }}
           value={value.searchText}
           onChange={searchText => {
             onChange({ ...value, searchText })
@@ -127,7 +159,7 @@ const VariantFilterControls = ({ onChange, value }) => {
             }
           }}
         />
-      </div>
+      </SearchWrapper>
     </SettingsWrapper>
   )
 }

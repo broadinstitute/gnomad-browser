@@ -17,14 +17,22 @@ const filterVariants = (variants, filter) => {
   }
 
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants
-      .map(v => ({
-        ...v,
-        exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
-        genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
-      }))
-      .filter(v => v.exome || v.genome)
+    filteredVariants = filteredVariants.map(v => ({
+      ...v,
+      exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
+      genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
+    }))
   }
+
+  if (!filter.includeExomes) {
+    filteredVariants = filteredVariants.map(v => ({ ...v, exome: null }))
+  }
+
+  if (!filter.includeGenomes) {
+    filteredVariants = filteredVariants.map(v => ({ ...v, genome: null }))
+  }
+
+  filteredVariants = filteredVariants.filter(v => v.exome || v.genome)
 
   if (filter.searchText) {
     const query = filter.searchText.toLowerCase()
