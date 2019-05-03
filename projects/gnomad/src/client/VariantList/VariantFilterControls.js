@@ -91,6 +91,7 @@ const VariantFilterControls = ({ onChange, value }) => {
         <CheckboxSection>
           <Checkbox
             checked={value.includeExomes}
+            disabled={!value.includeGenomes}
             id="exome-variant-filter"
             label="Exomes"
             onChange={includeExomes => {
@@ -99,6 +100,7 @@ const VariantFilterControls = ({ onChange, value }) => {
           />
           <Checkbox
             checked={value.includeGenomes}
+            disabled={!value.includeExomes}
             id="genome-variant-filter"
             label="Genomes"
             onChange={includeGenomes => {
@@ -109,6 +111,7 @@ const VariantFilterControls = ({ onChange, value }) => {
         <CheckboxSection>
           <Checkbox
             checked={value.includeSNVs}
+            disabled={!value.includeIndels}
             id="snv-variant-filter"
             label="SNVs"
             onChange={includeSNVs => {
@@ -117,6 +120,7 @@ const VariantFilterControls = ({ onChange, value }) => {
           />
           <Checkbox
             checked={value.includeIndels}
+            disabled={!value.includeSNVs}
             id="indel-variant-filter"
             label="Indels"
             onChange={includeIndels => {
