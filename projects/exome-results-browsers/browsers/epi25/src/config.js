@@ -1,14 +1,3 @@
-const renderPVal = value => {
-  if (value === null) {
-    return ''
-  }
-  const truncated = Number(value.toPrecision(3))
-  if (truncated === 0) {
-    return '0'
-  }
-  return truncated.toExponential()
-}
-
 export default {
   browserTitle: 'Epi25 WES browser',
   navBarTitle: 'Epi25 WES browser',
@@ -31,62 +20,58 @@ export default {
       {
         key: 'xcase_lof',
         heading: 'Case LoF',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'xctrl_lof',
         heading: 'Control LoF',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'pval_lof',
-        heading: 'P-Val LoF',
+        heading: 'P\u2011Val LoF',
         minWidth: 80,
-        render: renderPVal,
       },
       {
         key: 'xcase_mpc',
         heading: 'Case MPC',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'xctrl_mpc',
         heading: 'Control MPC',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'pval_mpc',
-        heading: 'P-Val MPC',
+        heading: 'P\u2011Val MPC',
         minWidth: 80,
-        render: renderPVal,
       },
       {
         key: 'xcase_infrIndel',
         heading: 'Case Inframe Indel',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'xctrl_infrIndel',
         heading: 'Control Inframe Indel',
-        minWidth: 60,
+        minWidth: 70,
         type: 'int',
       },
       {
         key: 'pval_infrIndel',
-        heading: 'P-Val Inframe Indel',
+        heading: 'P\u2011Val Inframe Indel',
         minWidth: 80,
-        render: renderPVal,
       },
       {
         key: 'pval',
-        heading: 'P-Val',
+        heading: 'P\u2011Val',
         minWidth: 80,
-        render: renderPVal,
       },
     ],
   },

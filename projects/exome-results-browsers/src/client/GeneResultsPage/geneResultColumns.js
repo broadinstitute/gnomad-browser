@@ -1,15 +1,48 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import browserConfig from '@browser/config'
 
 import Link from '../Link'
+
+const CountCell = styled.span`
+  overflow: hidden;
+  width: 100%;
+  padding-right: 25px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+
+const renderCount = (row, key) => <CountCell>{row[key]}</CountCell>
+
+const NumberCell = styled.span`
+  overflow: hidden;
+  width: 100%;
+  padding-right: 15px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+
+const renderFloat = (row, key) => {
+  const value = row[key]
+  if (value === null) {
+    return ''
+  }
+  const truncated = Number(value.toPrecision(3))
+  if (truncated === 0) {
+    return <NumberCell>0</NumberCell>
+  }
+  return <NumberCell>{truncated.toExponential()}</NumberCell>
+}
 
 const baseColumns = [
   {
     key: 'gene_name',
     heading: 'Gene Name',
     isSortable: true,
-    minWidth: 90,
+    minWidth: 100,
     searchable: true,
     render: row => (
       <Link className="grid-cell-content" target="_blank" to={`/gene/${row.gene_id}`}>
@@ -22,6 +55,7 @@ const baseColumns = [
     heading: 'Description',
     isSortable: true,
     minWidth: 200,
+    grow: 4,
   },
 ]
 
@@ -34,6 +68,8 @@ const resultColumns = browserConfig.geneResults.columns.map(inputColumn => {
 
   if (inputColumn.render) {
     outputColumn.render = (row, key) => inputColumn.render(row[key])
+  } else {
+    outputColumn.render = inputColumn.type === 'int' ? renderCount : renderFloat
   }
 
   if (inputColumn.renderForCSV) {
