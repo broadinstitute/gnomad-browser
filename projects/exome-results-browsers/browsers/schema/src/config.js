@@ -1,14 +1,3 @@
-const renderPVal = value => {
-  if (value === null) {
-    return ''
-  }
-  const truncated = Number(value.toPrecision(3))
-  if (truncated === 0) {
-    return '0'
-  }
-  return truncated.toExponential()
-}
-
 export default {
   browserTitle: 'SCHEMA browser',
   navBarTitle: 'Schizophrenia exome meta-analysis',
@@ -31,50 +20,54 @@ export default {
       {
         key: 'xcase_lof',
         heading: 'Case LoF',
-        minWidth: 60,
+        minWidth: 70,
+        grow: 0,
         type: 'int',
       },
       {
         key: 'xctrl_lof',
         heading: 'Control LoF',
-        minWidth: 60,
+        minWidth: 70,
+        grow: 0,
         type: 'int',
       },
       {
         key: 'pval_lof',
-        heading: 'P-Val LoF',
+        heading: 'P\u2011Val LoF',
         minWidth: 80,
-        render: renderPVal,
+        grow: 0,
       },
       {
         key: 'xcase_mis',
         heading: 'Case Missense',
-        minWidth: 60,
+        minWidth: 80,
+        grow: 0,
         type: 'int',
       },
       {
         key: 'xctrl_mis',
         heading: 'Control Missense',
-        minWidth: 60,
+        minWidth: 80,
+        grow: 0,
         type: 'int',
       },
       {
         key: 'pval_mis',
-        heading: 'P-Val Missense',
+        heading: 'P\u2011Val Missense',
         minWidth: 80,
-        render: renderPVal,
+        grow: 0,
       },
       {
         key: 'pval',
-        heading: 'P-Val',
+        heading: 'P\u2011Val',
         minWidth: 80,
-        render: renderPVal,
+        grow: 0,
       },
       {
         key: 'pval_meta',
-        heading: 'Meta P-Val',
+        heading: 'Meta P\u2011Val',
         minWidth: 80,
-        render: renderPVal,
+        grow: 0,
       },
     ],
   },
