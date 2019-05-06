@@ -93,12 +93,12 @@ query Gene($geneId: String, $geneName: String) {
 
 class GenePage extends Component {
   state = {
-    selectedAnalysisGroup: browserConfig.analysisGroups.defaultGroup,
+    selectedVariantResultsGroup: browserConfig.variants.groups.options[0],
   }
 
   render() {
     const { geneIdOrName } = this.props
-    const { selectedAnalysisGroup } = this.state
+    const { selectedVariantResultsGroup } = this.state
 
     const variables = geneIdOrName.toUpperCase().startsWith('ENSG')
       ? { geneId: geneIdOrName }
@@ -140,13 +140,15 @@ class GenePage extends Component {
                     </h2>
                     {gene.results.length > 1 ? (
                       <Tabs
-                        tabs={sortByGroup(gene.results).map(result => ({
-                          id: result.analysis_group,
-                          label:
-                            browserConfig.analysisGroups.labels[result.analysis_group] ||
-                            result.analysis_group,
-                          render: () => <GeneResult geneResult={result} />,
-                        }))}
+                        tabs={sortByGroup(gene.results, browserConfig.geneResults.groups).map(
+                          result => ({
+                            id: result.analysis_group,
+                            label:
+                              browserConfig.geneResults.groups.labels[result.analysis_group] ||
+                              result.analysis_group,
+                            render: () => <GeneResult geneResult={result} />,
+                          })
+                        )}
                       />
                     ) : (
                       <GeneResult geneResult={gene.results[0]} />
@@ -179,9 +181,9 @@ class GenePage extends Component {
                 <TranscriptTrack exons={canonicalCodingExons} strand={gene.transcript.strand} />
                 <VariantsInGene
                   gene={gene}
-                  selectedAnalysisGroup={selectedAnalysisGroup}
-                  onChangeAnalysisGroup={analysisGroup => {
-                    this.setState({ selectedAnalysisGroup: analysisGroup })
+                  selectedAnalysisGroup={selectedVariantResultsGroup}
+                  onChangeAnalysisGroup={group => {
+                    this.setState({ selectedVariantResultsGroup: group })
                   }}
                 />
               </RegionViewer>

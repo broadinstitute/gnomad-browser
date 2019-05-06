@@ -1,9 +1,8 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { UserVisibleError } from '../utilities/errors'
-import { AnalysisGroupArgumentType } from './analysisGroup'
 import { GeneResultType, fetchGeneResultsForGene } from './geneResult'
-import { VariantType, fetchVariantsByGeneId } from './variant'
+import { VariantType, VariantResultGroupIdType, fetchVariantsByGeneId } from './variant'
 import { TranscriptType, fetchTranscriptById } from './transcript'
 
 export const GeneType = new GraphQLObjectType({
@@ -29,7 +28,7 @@ export const GeneType = new GraphQLObjectType({
     variants: {
       type: new GraphQLList(VariantType),
       args: {
-        analysis_group: { type: new GraphQLNonNull(AnalysisGroupArgumentType) },
+        analysis_group: { type: new GraphQLNonNull(VariantResultGroupIdType) },
       },
       resolve: (obj, args, ctx) => fetchVariantsByGeneId(ctx, obj.gene_id, args.analysis_group),
     },

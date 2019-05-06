@@ -79,7 +79,7 @@ const VariantDetails = ({ variant }) => {
     })
   }
 
-  const { defaultGroup } = browserConfig.analysisGroups
+  const defaultGroup = browserConfig.variants.groups.options[0]
   const defaultGroupResult = variant.results.find(result => result.analysis_group === defaultGroup)
 
   return (

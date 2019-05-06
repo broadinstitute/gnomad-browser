@@ -1,5 +1,6 @@
 import {
   GraphQLBoolean,
+  GraphQLEnumType,
   GraphQLFloat,
   GraphQLInt,
   GraphQLList,
@@ -12,6 +13,14 @@ import browserConfig from '@browser/config'
 
 import { fetchAllSearchResults } from '../utilities/elasticsearch'
 import { UserVisibleError } from '../utilities/errors'
+
+export const VariantResultGroupIdType = new GraphQLEnumType({
+  name: 'VariantResultGroupId',
+  values: browserConfig.variants.groups.options.reduce(
+    (values, analysisGroup) => ({ ...values, [analysisGroup]: {} }),
+    {}
+  ),
+})
 
 const types = {
   boolean: GraphQLBoolean,

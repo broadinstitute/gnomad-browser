@@ -223,7 +223,7 @@ class VariantsInGene extends Component {
 }
 
 const variantsQuery = `
-query VariantsInGene($geneId: String!, $analysisGroup: AnalysisGroupId!) {
+query VariantsInGene($geneId: String!, $analysisGroup: VariantResultGroupId!) {
   gene(gene_id: $geneId) {
     variants(analysis_group: $analysisGroup) {
       variant_id

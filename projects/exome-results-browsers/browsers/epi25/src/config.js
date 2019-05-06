@@ -18,6 +18,15 @@ export default {
       manhattan: true,
       qq: false,
     },
+    groups: {
+      options: ['EPI', 'DEE', 'GGE', 'NAFE'],
+      labels: {
+        EPI: 'EPI',
+        DEE: 'DEE',
+        GGE: 'GGE',
+        NAFE: 'NAFE',
+      },
+    },
     defaultSortColumn: 'pval',
     columns: [
       {
@@ -78,17 +87,16 @@ export default {
       },
     ],
   },
-  analysisGroups: {
-    defaultGroup: 'EPI',
-    selectableGroups: ['EPI', 'DEE', 'GGE', 'NAFE'],
-    labels: {
-      EPI: 'EPI',
-      DEE: 'DEE',
-      GGE: 'GGE',
-      NAFE: 'NAFE',
-    },
-  },
   variants: {
+    groups: {
+      options: ['EPI', 'DEE', 'GGE', 'NAFE'],
+      labels: {
+        EPI: 'EPI',
+        DEE: 'DEE',
+        GGE: 'GGE',
+        NAFE: 'NAFE',
+      },
+    },
     consequences: [
       {
         term: 'loss of function',

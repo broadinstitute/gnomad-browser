@@ -18,7 +18,7 @@ import GeneResultsTable from './GeneResultsTable'
 const geneResultColumns = browserConfig.geneResults.columns
 
 const geneResultsQuery = `
-  query geneResultsForGroup($analysisGroup: AnalysisGroupId!) {
+  query geneResultsForGroup($analysisGroup: GeneResultGroupId!) {
     geneResults(analysis_group: $analysisGroup) {
       gene_id
       gene_name
@@ -50,13 +50,13 @@ class GeneResultsPage extends Component {
 
   state = {
     searchText: '',
-    selectedAnalysisGroup: browserConfig.analysisGroups.defaultGroup,
+    selectedAnalysisGroup: browserConfig.geneResults.groups.options[0],
   }
 
   render() {
     const { history } = this.props
 
-    const numAvailableGroups = browserConfig.analysisGroups.selectableGroups.length
+    const numAvailableGroups = browserConfig.geneResults.groups.options.length
     const { selectedAnalysisGroup, searchText } = this.state
 
     return (
@@ -138,19 +138,16 @@ class GeneResultsPage extends Component {
                         <Combobox
                           disabled={error || loading}
                           id="analysis-group-menu"
-                          options={browserConfig.analysisGroups.selectableGroups.map(
-                            analysisGroup => ({
-                              analysisGroup,
-                              label:
-                                browserConfig.analysisGroups.labels[analysisGroup] || analysisGroup,
-                            })
-                          )}
+                          options={browserConfig.geneResults.groups.options.map(groupId => ({
+                            groupId,
+                            label: browserConfig.geneResults.groups.labels[groupId] || groupId,
+                          }))}
                           value={
-                            browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
+                            browserConfig.geneResults.groups.labels[selectedAnalysisGroup] ||
                             selectedAnalysisGroup
                           }
-                          onSelect={({ analysisGroup }) => {
-                            this.setState({ selectedAnalysisGroup: analysisGroup })
+                          onSelect={({ groupId }) => {
+                            this.setState({ selectedAnalysisGroup: groupId })
                           }}
                         />
                       </AnalysisGroupMenuWrapper>

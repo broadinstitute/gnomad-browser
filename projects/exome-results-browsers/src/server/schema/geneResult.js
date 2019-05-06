@@ -1,8 +1,23 @@
-import { GraphQLBoolean, GraphQLInt, GraphQLFloat, GraphQLObjectType, GraphQLString } from 'graphql'
+import {
+  GraphQLBoolean,
+  GraphQLEnumType,
+  GraphQLFloat,
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 
 import browserConfig from '@browser/config'
 
 import { fetchAllSearchResults } from '../utilities/elasticsearch'
+
+export const GeneResultGroupIdType = new GraphQLEnumType({
+  name: 'GeneResultGroupId',
+  values: browserConfig.geneResults.groups.options.reduce(
+    (values, analysisGroup) => ({ ...values, [analysisGroup]: {} }),
+    {}
+  ),
+})
 
 const geneResultColumns = browserConfig.geneResults.columns
 
