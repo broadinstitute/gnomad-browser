@@ -33,10 +33,10 @@ const VariantResultsTable = ({ results }) => (
       </tr>
     </thead>
     <tbody>
-      {sortByGroup([...results]).map(result => (
+      {sortByGroup(results, browserConfig.variants.groups).map(result => (
         <tr key={result.analysis_group}>
           <th scope="row">
-            {browserConfig.analysisGroups.labels[result.analysis_group] || result.analysis_group}
+            {browserConfig.variants.groups.labels[result.analysis_group] || result.analysis_group}
           </th>
           <td>{result.ac_case}</td>
           <td>{result.an_case}</td>

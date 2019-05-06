@@ -145,19 +145,19 @@ const VariantFilterControls = ({
           ))}
 
           <AnalysisGroupMenuWrapper>
-            {browserConfig.analysisGroups.selectableGroups.length > 1 && (
+            {browserConfig.variants.groups.options.length > 1 && (
               <React.Fragment>
                 {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
                 <label htmlFor="analysis-group">Current analysis group</label>
                 <Combobox
                   id="analysis-group"
-                  options={browserConfig.analysisGroups.selectableGroups.map(group => ({
+                  options={browserConfig.variants.groups.options.map(group => ({
                     id: group,
-                    label: browserConfig.analysisGroups.labels[group] || group,
+                    label: browserConfig.variants.groups.labels[group] || group,
                   }))}
                   onSelect={option => onChangeAnalysisGroup(option.id)}
                   value={
-                    browserConfig.analysisGroups.labels[selectedAnalysisGroup] ||
+                    browserConfig.variants.groups.labels[selectedAnalysisGroup] ||
                     selectedAnalysisGroup
                   }
                 />
