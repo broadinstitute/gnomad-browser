@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Button, Combobox, Page, PageHeading, SearchInput, Tabs } from '@broad/ui'
+import { Button, Combobox, Page as BasePage, PageHeading, SearchInput, Tabs } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
@@ -14,6 +14,10 @@ import columns from './geneResultColumns'
 import GeneResultsManhattanPlot from './GeneResultsManhattanPlot'
 import GeneResultsQQPlot from './GeneResultsQQPlot'
 import GeneResultsTable from './GeneResultsTable'
+
+const Page = styled(BasePage)`
+  max-width: 1600px;
+`
 
 const geneResultColumns = browserConfig.geneResults.columns
 
