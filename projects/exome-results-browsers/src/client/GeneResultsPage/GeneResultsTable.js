@@ -29,9 +29,10 @@ class GeneResultsTable extends PureComponent {
     const { results } = this.props
     const { sortKey, sortAscending } = this.state
 
-    const comparator = ['gene_name', 'description', 'gene_id'].includes(sortKey)
-      ? (a, b) => a.localeCompare(b)
-      : (a, b) => a - b
+    const comparator =
+      sortKey === 'gene_name' || sortKey === 'gene_description'
+        ? (a, b) => a.localeCompare(b)
+        : (a, b) => a - b
 
     const orderedComparator = sortAscending ? comparator : (a, b) => comparator(b, a)
 

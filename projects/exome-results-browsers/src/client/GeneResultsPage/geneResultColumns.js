@@ -43,7 +43,6 @@ const baseColumns = [
     heading: 'Gene Name',
     isSortable: true,
     minWidth: 100,
-    searchable: true,
     render: row => (
       <Link
         className="grid-cell-content"
