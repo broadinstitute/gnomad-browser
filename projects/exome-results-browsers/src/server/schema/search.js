@@ -39,7 +39,7 @@ export const fetchSearchResults = async (ctx, query) => {
     const result = hit._source // eslint-disable-line no-underscore-dangle
     return {
       label: result.gene_name,
-      url: `/gene/${result.gene_name}`,
+      url: `/gene/${result.gene_id || result.gene_name}`,
     }
   })
 }
