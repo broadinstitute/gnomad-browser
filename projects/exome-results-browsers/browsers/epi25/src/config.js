@@ -14,8 +14,11 @@ export default {
   },
   geneResults: {
     resultsPageHeading: 'Epi25 WES: gene burden results',
+    views: {
+      manhattan: true,
+      qq: false,
+    },
     defaultSortColumn: 'pval',
-    hideQQPlot: true,
     columns: [
       {
         key: 'xcase_lof',

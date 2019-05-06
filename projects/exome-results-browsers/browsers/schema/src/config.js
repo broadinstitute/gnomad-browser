@@ -14,6 +14,10 @@ export default {
   },
   geneResults: {
     resultsPageHeading: 'Exome meta-analysis results',
+    views: {
+      manhattan: true,
+      qq: true,
+    },
     defaultSortColumn: 'pval_meta',
     hideExport: true,
     columns: [

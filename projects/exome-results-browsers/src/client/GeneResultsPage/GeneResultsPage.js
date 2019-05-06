@@ -82,42 +82,49 @@ class GeneResultsPage extends Component {
                   (result.gene_description || '').toUpperCase().includes(searchText)
               )
 
-              const tabs = [
-                {
-                  id: 'table',
-                  label: 'Table',
-                  render: () => <GeneResultsTable results={results} />,
-                },
-                {
-                  id: 'manhattan-plot',
-                  label: 'Manhattan Plot',
-                  render: () => (
-                    <GeneResultsManhattanPlot
-                      results={results}
-                      onClickPoint={d => {
-                        history.push(`/gene/${d.gene_id || d.gene_name}`)
-                      }}
-                    />
-                  ),
-                },
-              ]
+              if (browserConfig.geneResults.views.manhattan || browserConfig.geneResults.views.qq) {
+                const tabs = [
+                  {
+                    id: 'table',
+                    label: 'Table',
+                    render: () => <GeneResultsTable results={results} />,
+                  },
+                ]
 
-              if (!browserConfig.geneResults.hideQQPlot) {
-                tabs.push({
-                  id: 'qq-plot',
-                  label: 'QQ Plot',
-                  render: () => (
-                    <GeneResultsQQPlot
-                      results={results}
-                      onClickPoint={d => {
-                        history.push(`/gene/${d.gene_id || d.gene_name}`)
-                      }}
-                    />
-                  ),
-                })
+                if (browserConfig.geneResults.views.manhattan) {
+                  tabs.push({
+                    id: 'manhattan-plot',
+                    label: 'Manhattan Plot',
+                    render: () => (
+                      <GeneResultsManhattanPlot
+                        results={results}
+                        onClickPoint={d => {
+                          history.push(`/gene/${d.gene_id || d.gene_name}`)
+                        }}
+                      />
+                    ),
+                  })
+                }
+
+                if (browserConfig.geneResults.views.qq) {
+                  tabs.push({
+                    id: 'qq-plot',
+                    label: 'QQ Plot',
+                    render: () => (
+                      <GeneResultsQQPlot
+                        results={results}
+                        onClickPoint={d => {
+                          history.push(`/gene/${d.gene_id || d.gene_name}`)
+                        }}
+                      />
+                    ),
+                  })
+                }
+
+                resultsContent = <Tabs tabs={tabs} />
+              } else {
+                resultsContent = <GeneResultsTable results={results} />
               }
-
-              resultsContent = <Tabs tabs={tabs} />
             }
 
             return (
