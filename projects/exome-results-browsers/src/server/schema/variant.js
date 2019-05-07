@@ -39,12 +39,12 @@ const getType = typeStr => {
 const resultFields = {
   analysis_group: { type: new GraphQLNonNull(GraphQLString) },
   // Case/Control numbers
-  ac_case: { type: new GraphQLNonNull(GraphQLInt) },
-  ac_ctrl: { type: new GraphQLNonNull(GraphQLInt) },
-  af_case: { type: new GraphQLNonNull(GraphQLFloat) },
-  af_ctrl: { type: new GraphQLNonNull(GraphQLFloat) },
-  an_case: { type: new GraphQLNonNull(GraphQLInt) },
-  an_ctrl: { type: new GraphQLNonNull(GraphQLInt) },
+  ac_case: { type: GraphQLInt },
+  ac_ctrl: { type: GraphQLInt },
+  af_case: { type: GraphQLFloat },
+  af_ctrl: { type: GraphQLFloat },
+  an_case: { type: GraphQLInt },
+  an_ctrl: { type: GraphQLInt },
   // Analysis results
   ...browserConfig.variants.columns.reduce(
     (acc, c) => ({
