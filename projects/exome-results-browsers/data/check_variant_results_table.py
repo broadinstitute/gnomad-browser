@@ -54,16 +54,6 @@ for group in analysis_groups:
         c.isascii() and (c.isalnum() or c == "_") for c in group
     ), f"{group} is not alphanumeric"
 
-    group_results = ds.filter(hl.is_defined(ds.groups[group]))
-    for field in ["ac_case", "an_case", "af_case", "ac_ctrl", "an_ctrl", "af_ctrl"]:
-        assert (
-            field in ds.groups[group].dtype.fields
-        ), f"missing required field {field} for {group} group"
-        n_missing = group_results.filter(
-            hl.is_missing(group_results.groups[group][field])
-        ).count()
-        assert n_missing == 0, f"{n_missing} {group} results missing values for {field}"
-
 for group in analysis_groups[1:]:
     assert (
         ds.groups[group].dtype == ds.groups[analysis_groups[0]].dtype
