@@ -1,4 +1,5 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { escapeRegExp } from 'lodash'
 
 export const SearchResultType = new GraphQLObjectType({
   name: 'SearchResult',
@@ -92,7 +93,7 @@ export const resolveSearchResults = async (ctx, query) => {
     ]
   }
 
-  const startsWithQuery = { $regex: `^${query.toUpperCase()}` }
+  const startsWithQuery = { $regex: `^${escapeRegExp(query).toUpperCase()}` }
 
   if (/^ensg[0-9]/i.test(query)) {
     const matchingGenes = await ctx.database.gnomad
