@@ -39,7 +39,7 @@ app.use(cors())
     const redis = new Redis(redisConnectionConfig)
 
     app.use(
-      [/^\/$/, /^\/api$/],
+      [/^\/$/, /^\/api\/?$/],
       graphQLHTTP({
         schema: gnomadSchema,
         graphiql: true,
