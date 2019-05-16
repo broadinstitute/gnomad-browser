@@ -4,9 +4,7 @@ include ../../../cluster/config.sh
 POOL_NAME=redis
 PROJECT_NAME=gnomad-api
 
-SERVICE_FORWARDING_RULE_ID=$(shell gcloud compute forwarding-rules list --format='value[terminator=" "](name)' --filter=35.184.79.173)
-
-start-api: mongo-legacy gnomad-api gnomad-api-service
+start-api: mongo-legacy gnomad-api
 
 local-redis:
 	redis-server /usr/local/etc/redis.conf
@@ -17,15 +15,6 @@ mongo-legacy:
 
 gnomad-api:
 	@-kubectl create -f gnomad-api-controller.yaml
-
-# gnomad-api-service-delete-previous:
-# 	@-gcloud -q compute forwarding-rules delete $(SERVICE_FORWARDING_RULE_ID) --region $(GCLOUD_REGION)
-# 	kubectl create -f gnomad-api-svc.yaml
-
-gnomad-api-service:
-	kubectl expose deployment $(PROJECT_NAME) \
-	--type="LoadBalancer" \
-	--load-balancer-ip="35.185.72.124"
 
 set-max-result:
 	curl -XPUT "http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy/*/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
