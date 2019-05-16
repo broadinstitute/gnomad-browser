@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asc-browser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: asc-browser
+  template:
+    metadata:
+      labels:
+        name: asc-browser
+    spec:
+      containers:
+      - name: asc-browser
+        image: gcr.io/exac-gnomad/asc-browser
+        env:
+        - name: MONGO_URL
+          value: mongodb://gnomad-mongo:27017/exac
+        - name: ELASTICSEARCH_URL
+          value: elasticsearch:9200
+        - name: PORT
+          value: "80"
+        ports:
+        - containerPort: 80
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
