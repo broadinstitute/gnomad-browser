@@ -23,11 +23,17 @@ const Table = styled(BaseTable)`
       padding-right: 10px;
 
       /* Drop sparkline column */
-      &:nth-child(6) {
+      &:nth-child(5) {
         display: none;
       }
     }
   }
+`
+
+const OEMetrics = styled.span`
+  display: inline-block;
+  margin-top: 0.5em;
+  white-space: nowrap;
 `
 
 const constraintQuery = `
@@ -128,31 +134,33 @@ export const renderRoundedNumber = (
   )
 }
 
-const renderOECell = (constraintData, category, highlightColor) => {
+const renderOEMetrics = (constraintData, category, highlightColor) => {
   const value = constraintData[`oe_${category}`]
   const lower = constraintData[`oe_${category}_lower`]
   const upper = constraintData[`oe_${category}_upper`]
 
   return (
-    <td>
-      o/e = {renderRoundedNumber(value, 2, 3, highlightColor)}
-      <br />
-      {lower !== null && upper !== null && `(${lower.toFixed(2)} - ${upper.toFixed(2)})`}
-    </td>
+    <OEMetrics>
+      o/e = {renderRoundedNumber(value, 2, 3)}
+      {lower !== null && upper !== null && (
+        <React.Fragment>
+          {' '}
+          ({renderRoundedNumber(lower, 2, 3)} - {renderRoundedNumber(upper, 2, 3, highlightColor)})
+        </React.Fragment>
+      )}
+    </OEMetrics>
   )
 }
 
-const renderOEGraphCell = (constraintData, category, color) => {
+const renderOEGraph = (constraintData, category, color) => {
   const value = constraintData[`oe_${category}`]
   const lower = constraintData[`oe_${category}_lower`]
   const upper = constraintData[`oe_${category}_upper`]
 
   return (
-    <td>
-      {value !== null &&
-        lower !== null &&
-        upper !== null && <Graph lower={lower} upper={upper} value={value} color={color} />}
-    </td>
+    value !== null &&
+    lower !== null &&
+    upper !== null && <Graph lower={lower} upper={upper} value={value} color={color} />
   )
 }
 
@@ -188,11 +196,9 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <thead>
             <tr>
               <th scope="col">Category</th>
-              <th scope="col">Exp. no. SNVs</th>
-              <th scope="col">Obs. no. SNVs</th>
-              <th colSpan={2} scope="col">
-                Constraint metrics
-              </th>
+              <th scope="col">Exp. SNVs</th>
+              <th scope="col">Obs. SNVs</th>
+              <th scope="col">Constraint metrics</th>
               <th />
             </tr>
           </thead>
@@ -209,9 +215,10 @@ const GnomadConstraintTable = ({ transcriptId }) => (
                   3,
                   constraintData.syn_z > 3.71 && '#ff2600'
                 )}
+                <br />
+                {renderOEMetrics(constraintData, 'syn')}
               </td>
-              {renderOECell(constraintData, 'syn')}
-              {renderOEGraphCell(constraintData, 'syn')}
+              <td>{renderOEGraph(constraintData, 'syn')}</td>
             </tr>
             <tr>
               <th scope="row">Missense</th>
@@ -225,17 +232,21 @@ const GnomadConstraintTable = ({ transcriptId }) => (
                   3,
                   constraintData.mis_z > 3.09 && '#ff9300'
                 )}
+                <br />
+                {renderOEMetrics(constraintData, 'mis')}
               </td>
-              {renderOECell(constraintData, 'mis')}
-              {renderOEGraphCell(constraintData, 'mis')}
+              <td>{renderOEGraph(constraintData, 'mis')}</td>
             </tr>
             <tr>
               <th scope="row">LoF</th>
               <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
               <td>{constraintData.obs_lof === null ? '—' : constraintData.obs_lof}</td>
-              <td>pLI = {renderRoundedNumber(constraintData.pLI, 2, 3)}</td>
-              {renderOECell(constraintData, 'lof', lofHighlightColor)}
-              {renderOEGraphCell(constraintData, 'lof', lofHighlightColor)}
+              <td>
+                pLI = {renderRoundedNumber(constraintData.pLI, 2, 3)}
+                <br />
+                {renderOEMetrics(constraintData, 'lof', lofHighlightColor)}
+              </td>
+              <td>{renderOEGraph(constraintData, 'lof', lofHighlightColor)}</td>
             </tr>
           </tbody>
         </Table>
