@@ -1,5 +1,7 @@
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
+import browserConfig from '@browser/config'
+
 const filterVariants = (variants, filter) => {
   let filteredVariants = variants
 
@@ -16,13 +18,15 @@ const filterVariants = (variants, filter) => {
     })
   }
 
-  if (filter.onlyDeNovo) {
-    filteredVariants = filteredVariants.filter(v => v.n_denovos > 0)
-  }
-
   if (filter.onlyInAnalysis) {
     filteredVariants = filteredVariants.filter(v => v.in_analysis)
   }
+
+  ;(browserConfig.variants.filters || [])
+    .filter(f => filter.browserFilters[f.id])
+    .forEach(f => {
+      filteredVariants = filteredVariants.filter(f.filter)
+    })
 
   if (filter.searchText) {
     const query = filter.searchText.toLowerCase()

@@ -81,6 +81,14 @@ export default {
   },
   variants: {
     hideExport: true,
+    filters: [
+      {
+        id: 'onlyDeNovo',
+        default: false,
+        label: 'Show only de novo variants',
+        filter: variant => variant.n_denovos > 0,
+      },
+    ],
     groups: {
       options: ['meta'],
       labels: {
