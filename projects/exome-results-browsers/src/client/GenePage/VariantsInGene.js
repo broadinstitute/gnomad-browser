@@ -7,6 +7,8 @@ import { NavigatorTrack } from '@broad/track-navigator'
 import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
 import { Modal } from '@broad/ui'
 
+import browserConfig from '@browser/config'
+
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import VariantDetails from '../VariantDetails/VariantDetails'
@@ -37,13 +39,19 @@ class VariantsInGene extends Component {
     super(props)
 
     const defaultFilter = {
+      browserFilters: (browserConfig.variants.filters || []).reduce(
+        (acc, f) => ({
+          ...acc,
+          [f.id]: f.default,
+        }),
+        {}
+      ),
       includeCategories: {
         lof: true,
         missense: true,
         synonymous: true,
         other: true,
       },
-      onlyDeNovo: false,
       onlyInAnalysis: false,
       searchText: '',
     }

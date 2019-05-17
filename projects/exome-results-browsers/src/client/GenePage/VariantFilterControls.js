@@ -174,14 +174,6 @@ const VariantFilterControls = ({
 
         <FiltersSecondColumn>
           <Checkbox
-            checked={filter.onlyDeNovo}
-            id="denovo-filter"
-            label="Show only de novo variants"
-            onChange={onlyDeNovo => {
-              onChangeFilter({ ...filter, onlyDeNovo })
-            }}
-          />
-          <Checkbox
             checked={filter.onlyInAnalysis}
             id="in-analysis-filter"
             label="Show only variants in analysis"
@@ -189,6 +181,19 @@ const VariantFilterControls = ({
               onChangeFilter({ ...filter, onlyInAnalysis })
             }}
           />
+          {(browserConfig.variants.filters || []).map(f => (
+            <Checkbox
+              checked={filter.browserFilters[f.id]}
+              id={`browser-filter-${f.id}`}
+              label={f.label}
+              onChange={value => {
+                onChangeFilter({
+                  ...filter,
+                  browserFilters: { ...filter.browserFilters, [f.id]: value },
+                })
+              }}
+            />
+          ))}
         </FiltersSecondColumn>
       </FiltersWrapper>
 
@@ -218,13 +223,13 @@ const VariantFilterControls = ({
 
 VariantFilterControls.propTypes = {
   filter: PropTypes.shape({
+    browserFilters: PropTypes.objectOf(PropTypes.bool).isRequired,
     includeCategories: PropTypes.shape({
       lof: PropTypes.bool.isRequired,
       missense: PropTypes.bool.isRequired,
       synonymous: PropTypes.bool.isRequired,
       other: PropTypes.bool.isRequired,
     }).isRequired,
-    onlyDeNovo: PropTypes.bool.isRequired,
     onlyInAnalysis: PropTypes.bool.isRequired,
     searchText: PropTypes.string.isRequired,
   }).isRequired,
