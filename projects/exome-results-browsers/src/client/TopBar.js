@@ -15,7 +15,7 @@ const TopBarWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
+  padding: 10px 30px;
   margin-bottom: 20px;
   background-color: ${browserConfig.navBarColor || '#000'};
 
@@ -24,8 +24,7 @@ const TopBarWrapper = styled.div`
   }
 
   ${Link} {
-    padding: 0.5em;
-    color: white;
+    color: #fff;
     text-decoration: none;
   }
 `
@@ -39,6 +38,7 @@ const TitleWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 0.5em;
   }
 `
 
@@ -59,10 +59,14 @@ const ToggleMenuButton = styled(Button)`
 const Menu = styled.ul`
   display: flex;
   flex-direction: row;
-  overflow: hidden;
   padding: 0;
   margin: 0;
   list-style-type: none;
+
+  ${Link} {
+    padding: 0.5em;
+    font-size: 16px;
+  }
 
   @media (max-width: 900px) {
     flex-direction: column;
