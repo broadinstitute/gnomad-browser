@@ -23,7 +23,7 @@ export default () => (
       However, we encourage you to{' '}
       <ExternalLink href="mailto:exomeconsortium@gmail.com">contact the consortium</ExternalLink>{' '}
       before embarking on large-scale analyses to check if your proposed analysis overlaps with work
-      currently underway by the gnomAD consortium.
+      currently underway by the gnomAD consortium. All users of gnomAD data agree to not attempt to reidentify participants.
     </p>
     <p>
       This data set has been subjected to extensive quality control, but variant calling and
