@@ -20,7 +20,7 @@ const GeneResultsManhattanPlot = withSize()(({ results, size: { width }, ...othe
           height={500}
           width={width}
           dataPoints={dataPoints}
-          pointLabel={d => d.gene_name || d.gene_id}
+          pointLabel={d => `${d.gene_name || d.gene_id} (p = ${d.pval.toExponential(3)})`}
         />
       )}
     </Wrapper>
