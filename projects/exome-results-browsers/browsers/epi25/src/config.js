@@ -18,6 +18,8 @@ export default {
       manhattan: true,
       qq: false,
     },
+    significanceThresholdLabel: 'Exome-wide significance',
+    significanceThresholdValue: 6.8e-7,
     groups: {
       options: ['EPI', 'DEE', 'GGE', 'NAFE'],
       labels: {
