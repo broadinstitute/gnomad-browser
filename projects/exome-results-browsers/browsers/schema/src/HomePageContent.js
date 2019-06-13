@@ -35,7 +35,7 @@ export default () => (
     </Paragraph>
 
     <Paragraph>
-      To date, the SCHEMA consortium have have sequenced and processed the whole exomes of over
+      To date, the SCHEMA consortium members have sequenced and processed the whole exomes of over
       25,000 schizophrenia cases and 50,000 matched controls using a standardized protocol, yielding
       one of the largest sequencing data sets of a complex trait to date. Our study has actively
       recruited from diverse global populations, and includes individuals of European, Latin
