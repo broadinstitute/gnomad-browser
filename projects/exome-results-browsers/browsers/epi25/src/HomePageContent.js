@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ExternalLink, PageHeading } from '@broad/ui'
+import { ExternalLink } from '@broad/ui'
 
 export default () => (
   <React.Fragment>
-    <PageHeading>Epi25: a whole-exome sequencing case-control study of epilepsy</PageHeading>
     <p>
       The <ExternalLink href="http://epi-25.org">Epi25 collaborative</ExternalLink> is a global
       collaboration committed to aggregating, sequencing, and deep-phenotyping up to 25,000 epilepsy

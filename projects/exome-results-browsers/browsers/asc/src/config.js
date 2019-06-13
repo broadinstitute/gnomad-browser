@@ -2,6 +2,7 @@ export default {
   browserTitle: 'ASC browser',
   navBarTitle: 'Autism Sequencing Consortium exome analysis',
   navBarColor: '#23509c',
+  homePageHeading: 'Autism Sequencing Consortium exome analysis',
   elasticsearch: {
     geneResults: {
       index: 'asc_gene_results_2019_04_14',

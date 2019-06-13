@@ -1,6 +1,7 @@
 export default {
   browserTitle: 'Epi25 WES browser',
   navBarTitle: 'Epi25 WES browser',
+  homePageHeading: 'Epi25: a whole-exome sequencing case-control study of epilepsy',
   navBarColor: '#4e3c81',
   elasticsearch: {
     geneResults: {

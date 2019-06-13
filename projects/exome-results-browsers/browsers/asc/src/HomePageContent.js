@@ -1,11 +1,9 @@
 import React from 'react'
 
-import { ExternalLink, PageHeading } from '@broad/ui'
+import { ExternalLink } from '@broad/ui'
 
 export default () => (
   <React.Fragment>
-    <PageHeading>Autism Sequencing Consortium exome analysis</PageHeading>
-
     <p>
       Founded in 2010, the{' '}
       <ExternalLink href="https://genome.emory.edu/ASC/">
