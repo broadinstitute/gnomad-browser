@@ -31,6 +31,7 @@ const TopBarWrapper = styled.div`
 
 const TitleWrapper = styled.div`
   color: #fff;
+  font-size: 1.5em;
 
   @media (max-width: 900px) {
     display: flex;
@@ -42,14 +43,11 @@ const TitleWrapper = styled.div`
   }
 `
 
-const Title = styled.span`
-  font-size: 1.5em;
-`
-
 const ToggleMenuButton = styled(Button)`
   border: 1px solid #fafafa;
   background: transparent;
   color: inherit;
+  font-size: 1rem;
 
   @media (min-width: 900px) {
     display: none;
@@ -106,7 +104,7 @@ class TopBar extends Component {
       <TopBarWrapper>
         <TitleWrapper>
           <Link to="/" onClick={this.closeMenu}>
-            <Title>{browserConfig.navBarTitle}</Title>
+            {browserConfig.navBarTitle}
           </Link>
           <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
         </TitleWrapper>
