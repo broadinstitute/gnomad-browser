@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { PageHeading } from '@broad/ui'
-
 import stanleyCenterLogo from './stanley-center-logo.png'
 
 const Logo = styled.img`
@@ -13,7 +11,6 @@ const Logo = styled.img`
 
 export default () => (
   <React.Fragment>
-    <PageHeading>SCHEMA: Schizophrenia exome meta-analysis consortium</PageHeading>
     <p>
       The Schizophrenia Exome Sequencing Meta-analysis (SCHEMA) consortium is a large multi-site
       collaboration dedicated to aggregating, generating, and analyzing high-throughput sequencing
