@@ -1,19 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import { ExternalLink, PageHeading } from '@broad/ui'
 
-const HomePageContentWrapper = styled.div`
-  font-size: 16px;
-
-  p {
-    margin: 0 0 1em;
-    line-height: 1.5;
-  }
-`
-
 export default () => (
-  <HomePageContentWrapper>
+  <React.Fragment>
     <PageHeading>Epi25: a whole-exome sequencing case-control study of epilepsy</PageHeading>
     <p>
       The <ExternalLink href="http://epi-25.org">Epi25 collaborative</ExternalLink> is a global
@@ -21,6 +11,7 @@ export default () => (
       patients to advance epilepsy genetics research. Partnering with the Broad Institute, Epi25 has
       sequenced more than 14,000 patients as of 2018 from 40 research cohorts across the world.
     </p>
+
     <p>
       The Epi25 whole-exome sequencing (WES) case-control study is one of the collaborative&apos;s
       ongoing endeavors that aims to characterize the contribution of rare genetic variation to a
@@ -29,6 +20,7 @@ export default () => (
       resource sharing—with the hope of engaging the scientific community to generate hypotheses and
       facilitate discoveries.
     </p>
+
     <p>
       In the current release, we report gene burden results of ultra-rare deleterious variants
       (PTVs, missense variants with MPC&ge;2, and inframe indels not present in the DiscovEHR
@@ -46,6 +38,7 @@ export default () => (
       effort to recruit samples, many from non-European populations, we anticipate a boost in the
       detection power to identify risk-conferring genes in the coming years.
     </p>
+
     <p>
       This work is supported and maintained by a tremendous effort worldwide, including the Epi25
       principal investigators, NHGRI (CCDG), and the Stanley Center at the Broad Institute. We are
@@ -57,5 +50,5 @@ export default () => (
       questions or suggestions.
     </p>
     <p>Last updated November 10th 2018.</p>
-  </HomePageContentWrapper>
+  </React.Fragment>
 )

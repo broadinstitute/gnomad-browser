@@ -1,19 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import { ExternalLink, PageHeading } from '@broad/ui'
 
-const Wrapper = styled.div`
-  font-size: 16px;
-
-  p {
-    margin: 0 0 1em;
-    line-height: 1.5;
-  }
-`
-
 export default () => (
-  <Wrapper>
+  <React.Fragment>
     <PageHeading>Autism Sequencing Consortium exome analysis</PageHeading>
 
     <p>
@@ -44,5 +34,5 @@ export default () => (
       Foundation, the Stanley Foundation, the Seaver Foundation, the Autism Science Foundation, and
       the Lundbeck Foundation, in addition to other organizations.
     </p>
-  </Wrapper>
+  </React.Fragment>
 )
