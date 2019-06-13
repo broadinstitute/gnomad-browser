@@ -44,8 +44,8 @@ const PageControlsWrapper = styled.div`
   align-items: center;
 `
 
-export const PageHeading = ({ children, renderPageControls }) => (
-  <PageHeadingWrapper>
+export const PageHeading = ({ children, className, renderPageControls }) => (
+  <PageHeadingWrapper className={className}>
     <PageHeadingText>{children}</PageHeadingText>
     {renderPageControls && <PageControlsWrapper>{renderPageControls()}</PageControlsWrapper>}
   </PageHeadingWrapper>
@@ -53,9 +53,11 @@ export const PageHeading = ({ children, renderPageControls }) => (
 
 PageHeading.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
   renderPageControls: PropTypes.func,
 }
 
 PageHeading.defaultProps = {
+  className: undefined,
   renderPageControls: undefined,
 }
