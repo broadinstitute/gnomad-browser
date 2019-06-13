@@ -18,6 +18,8 @@ export default {
       manhattan: true,
       qq: true,
     },
+    significanceThresholdLabel: 'Genome-wide significance',
+    significanceThresholdValue: 2.2e-6,
     groups: {
       options: ['meta'],
       labels: {},
