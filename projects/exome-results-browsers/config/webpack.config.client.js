@@ -1,7 +1,6 @@
 const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 
 if (process.env.BROWSER === undefined) {
   console.error('BROWSER environment variable must be set')
@@ -23,6 +22,9 @@ const config = {
     },
     publicPath: '/',
     stats: 'errors-only',
+    // Since the server reads the index.ejs template file, it needs to be written to disk when
+    // using webpack-dev-server.
+    writeToDisk: true,
   },
   devtool: 'source-map',
   entry: {
@@ -65,11 +67,7 @@ const config = {
       // Using raw-loader here skips the compile time render so that we can render the
       // template at run time.
       template: 'raw-loader!./src/server/index.ejs',
-      // Since the server reads the template file, it needs to be written to disk when
-      // using webpack-dev-server.
-      alwaysWriteToDisk: true,
     }),
-    new HtmlWebpackHarddiskPlugin(),
   ],
   resolve: {
     alias: {
