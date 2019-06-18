@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink } from '@broad/ui'
+import { ExternalLink, Link } from '@broad/ui'
 
 export default () => (
   <React.Fragment>
@@ -47,6 +47,24 @@ export default () => (
       feedback! You can contact us by{' '}
       <ExternalLink href="mailto:yfeng@broadinstitute.org">email</ExternalLink> if you have any
       questions or suggestions.
+    </p>
+
+    <p>
+      All{' '}
+      <Link
+        download
+        href="https://storage.googleapis.com/epi-browser/downloads/Epi25_all_gene_results_2018_11_07.tsv.gz"
+      >
+        gene-level
+      </Link>{' '}
+      and{' '}
+      <Link
+        download
+        href="https://storage.googleapis.com/epi-browser/downloads/Epi25_all_variant_results_2018_11_27.tsv.gz"
+      >
+        variant-level
+      </Link>{' '}
+      results are available for download.
     </p>
 
     <p>Analysis data last updated November 27th, 2018.</p>
