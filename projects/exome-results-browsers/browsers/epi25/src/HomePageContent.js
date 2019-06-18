@@ -48,6 +48,7 @@ export default () => (
       <ExternalLink href="mailto:yfeng@broadinstitute.org">email</ExternalLink> if you have any
       questions or suggestions.
     </p>
-    <p>Last updated November 10th 2018.</p>
+
+    <p>Analysis data last updated November 27th, 2018.</p>
   </React.Fragment>
 )
