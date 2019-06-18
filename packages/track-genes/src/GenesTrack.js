@@ -10,9 +10,11 @@ const TitlePanel = styled.div`
   justify-content: flex-start;
 `
 
-const GeneGroup = styled.g`
+const GeneName = styled.text`
+  fill: #428bca;
+
   &:hover {
-    fill: red;
+    fill: #be4248;
     cursor: pointer;
   }
 `
@@ -62,14 +64,14 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
               const geneStart = scalePosition(gene.start)
               const geneStop = scalePosition(gene.stop)
               return (
-                <GeneGroup key={gene.gene_id}>
-                  <text
+                <g key={gene.gene_id}>
+                  <GeneName
                     x={(geneStop + geneStart) / 2}
                     y={textYPosition}
                     onClick={() => onGeneClick(gene)}
                   >
                     {gene.gene_name}
-                  </text>
+                  </GeneName>
                   <line
                     x1={geneStart}
                     x2={geneStop}
@@ -78,22 +80,24 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
                     stroke="#424242"
                     strokeWidth={1}
                   />
-                  {gene.transcript.exons.filter(exon => exon.feature_type === 'CDS').map(exon => {
-                    const exonStart = scalePosition(exon.start)
-                    const exonStop = scalePosition(exon.stop)
-                    return (
-                      <rect
-                        key={`${gene.gene_id}-${exon.start}-${exon.stop}`}
-                        x={exonStart}
-                        y={rowHeight * trackNumber}
-                        width={exonStop - exonStart}
-                        height={rowHeight * 0.33}
-                        fill="#424242"
-                        stroke="#424242"
-                      />
-                    )
-                  })}
-                </GeneGroup>
+                  {gene.transcript.exons
+                    .filter(exon => exon.feature_type === 'CDS')
+                    .map(exon => {
+                      const exonStart = scalePosition(exon.start)
+                      const exonStop = scalePosition(exon.stop)
+                      return (
+                        <rect
+                          key={`${gene.gene_id}-${exon.start}-${exon.stop}`}
+                          x={exonStart}
+                          y={rowHeight * trackNumber}
+                          width={exonStop - exonStart}
+                          height={rowHeight * 0.33}
+                          fill="#424242"
+                          stroke="#424242"
+                        />
+                      )
+                    })}
+                </g>
               )
             })
           )}
