@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { PageHeading, ExternalLink } from '@broad/ui'
+import { PageHeading, ExternalLink, Link } from '@broad/ui'
 
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
@@ -203,6 +203,33 @@ export default () => (
       </ExternalLink>
     </p>
 
+    <section>
+      <h2>Summary</h2>
+      <List>
+        <ListItem>
+          <Link href="#variants">Variants</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#variants-grch38-liftover">Variants (GRCh38 liftover)</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#coverage">Coverage</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#gene-constraint">Gene constraint</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#structural-variants">Structural variants</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#resources">Resources</Link>
+        </ListItem>
+      </List>
+    </section>
+
     <DownloadSection>
       <SectionTitle id="variants">Variants</SectionTitle>
       <ColumnsWrapper>
@@ -290,7 +317,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <SectionTitle id="variants-grch38-liftover">Variants (GRCh38 Liftover)</SectionTitle>
+      <SectionTitle id="variants-grch38-liftover">Variants (GRCh38 liftover)</SectionTitle>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
