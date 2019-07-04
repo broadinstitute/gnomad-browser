@@ -4,18 +4,13 @@ import styled from 'styled-components'
 
 import { PageHeading, ExternalLink } from '@broad/ui'
 
+import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
 const DownloadSection = styled.section`
-  line-height: 1.5;
-
   ${ExternalLink} {
     word-break: break-word;
-  }
-
-  h3 {
-    margin: 1.25em 0 0.5em;
   }
 
   ul {
@@ -23,9 +18,12 @@ const DownloadSection = styled.section`
 
     li {
       margin-bottom: 0.25em;
+      line-height: 1.5;
     }
   }
 `
+
+const SectionTitle = withAnchor(styled.h2``)
 
 const ColumnsWrapper = styled.div`
   display: flex;
@@ -206,7 +204,7 @@ export default () => (
     </p>
 
     <DownloadSection>
-      <h2>Sites</h2>
+      <SectionTitle id="variants">Variants</SectionTitle>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
@@ -292,7 +290,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>GRCh38 Liftover</h2>
+      <SectionTitle id="variants-grch38-liftover">Variants (GRCh38 Liftover)</SectionTitle>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
@@ -372,7 +370,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>Coverage</h2>
+      <SectionTitle id="coverage">Coverage</SectionTitle>
       <ul>
         <li>
           <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
@@ -396,7 +394,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>Gene constraint</h2>
+      <SectionTitle id="gene-constraint">Gene constraint</SectionTitle>
       <ul>
         <li>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
@@ -426,7 +424,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>Multi-nucleotide variants (MNVs)</h2>
+      <SectionTitle id="multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</SectionTitle>
       <ul>
         <li>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
@@ -474,7 +472,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>Structural variants</h2>
+      <SectionTitle id="structural-variants">Structural variants</SectionTitle>
       <ul>
         <li>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
@@ -496,7 +494,7 @@ export default () => (
     </DownloadSection>
 
     <DownloadSection>
-      <h2>Resources</h2>
+      <SectionTitle id="resources">Resources</SectionTitle>
       <ul>
         <li>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
