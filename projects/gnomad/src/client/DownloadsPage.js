@@ -7,23 +7,8 @@ import { PageHeading, ExternalLink } from '@broad/ui'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-`
-
-const DownloadSection = styled.div`
-  flex-basis: calc(50% - 25px);
+const DownloadSection = styled.section`
   line-height: 1.5;
-
-  @media (max-width: 900px) {
-    flex-basis: 100%;
-  }
-
-  &:last-child {
-    flex-basis: 100%;
-  }
 
   ${ExternalLink} {
     word-break: break-word;
@@ -34,18 +19,29 @@ const DownloadSection = styled.div`
   }
 
   ul {
-    list-style: none;
-    padding-left: 0;
+    padding-left: 18px;
 
     li {
-      margin-bottom: 0.5em;
-
-      ul {
-        list-style: circle;
-        padding-left: 20px;
-        margin-top: 0.25em;
-      }
+      margin-bottom: 0.25em;
     }
+  }
+`
+
+const ColumnsWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+`
+
+const Column = styled.div`
+  flex-basis: calc(50% - 25px);
+
+  @media (max-width: 900px) {
+    flex-basis: 100%;
+  }
+
+  > h3 {
+    margin-top: 0;
   }
 `
 
@@ -102,10 +98,8 @@ const genomeChromosomeVcfs = [
   { chrom: 'X', size: '17.8 GiB', md5: '77d25e87e94d360eb2acedaaedaf3df1' },
 ]
 
-const RELEASE = '2.1.1'
-
-const ChromosomeVcfLinks = ({ chrom, exomesOrGenomes, md5, size }) => {
-  const vcfUrl = `https://storage.googleapis.com/gnomad-public/release/${RELEASE}/vcf/${exomesOrGenomes}/gnomad.${exomesOrGenomes}.r${RELEASE}.sites.${chrom}.vcf.bgz`
+const ChromosomeVcfLinks = ({ chrom, md5, size, url }) => {
+  const vcfUrl = url(chrom)
   const tabixUrl = `${vcfUrl}.tbi`
 
   return (
@@ -114,7 +108,7 @@ const ChromosomeVcfLinks = ({ chrom, exomesOrGenomes, md5, size }) => {
       <ExternalLink href={tabixUrl}>(.tbi)</ExternalLink>
       <br />
       <span>
-        {size}, MD5 = {md5}
+        {size}, MD5:&nbsp;{md5}
       </span>
     </React.Fragment>
   )
@@ -122,9 +116,9 @@ const ChromosomeVcfLinks = ({ chrom, exomesOrGenomes, md5, size }) => {
 
 ChromosomeVcfLinks.propTypes = {
   chrom: PropTypes.string.isRequired,
-  exomesOrGenomes: PropTypes.oneOf(['exomes', 'genomes']).isRequired,
   md5: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
+  url: PropTypes.func.isRequired,
 }
 
 export default () => (
@@ -158,203 +152,230 @@ export default () => (
       </ExternalLink>
     </p>
 
-    <Wrapper>
-      <DownloadSection>
-        <h2>Exomes</h2>
-        <h3>Sites Hail Table</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
+    <DownloadSection>
+      <h2>Sites</h2>
+      <ColumnsWrapper>
+        <Column>
+          <h3>Exomes</h3>
+          <ul>
+            <li>
+              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
+                Sites Hail Table
+              </ExternalLink>
+              <br />
               gs://gnomad-public/release/2.1.1/ht/
               <wbr />
               exomes/gnomad.exomes.r2.1.1.sites.ht
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>Coverage Hail Table</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
-              gs://gnomad-public/release/2.1/coverage/
-              <wbr />
-              exomes/gnomad.exomes.r2.1.coverage.ht
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>VCFs</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
-              All chromosomes
-            </ExternalLink>{' '}
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz.tbi">
-              (.tbi)
-            </ExternalLink>
-            <br />
-            <span>58.81 GiB, MD5 = f034173bf6e57fbb5e8ce680e95134f2</span>
-          </li>
-          {exomeChromosomeVcfs.map(vcf => (
-            <li key={vcf.chrom}>
-              <ChromosomeVcfLinks exomesOrGenomes="exomes" {...vcf} />
             </li>
-          ))}
-        </ul>
-      </DownloadSection>
-      <DownloadSection>
-        <h2>Genomes</h2>
-        <h3>Sites Hail Table</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
+
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
+                All chromosomes VCF
+              </ExternalLink>{' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+              <br />
+              <span>58.81 GiB, MD5 = f034173bf6e57fbb5e8ce680e95134f2</span>
+            </li>
+            {exomeChromosomeVcfs.map(vcf => (
+              <li key={vcf.chrom}>
+                <ChromosomeVcfLinks
+                  {...vcf}
+                  url={chrom =>
+                    `https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.vcf.bgz`
+                  }
+                />
+              </li>
+            ))}
+          </ul>
+        </Column>
+
+        <Column>
+          <h3>Genomes</h3>
+          <ul>
+            <li>
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
+                Sites Hail Table
+              </ExternalLink>
+              <br />
               gs://gnomad-public/release/2.1.1/ht/
               <wbr />
               genomes/gnomad.genomes.r2.1.1.sites.ht
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>Coverage Hail Table</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
-              gs://gnomad-public/release/2.1/coverage/
-              <wbr />
-              genomes/gnomad.genomes.r2.1.coverage.ht
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>VCFs</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
-              All chromosomes
-            </ExternalLink>{' '}
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz.tbi">
-              (.tbi)
-            </ExternalLink>
-            <br />
-            <span>460.93 GiB, MD5 = e6eadf5ac7b2821b40f350da6e1279a2</span>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
-              Exome calling intervals
-            </ExternalLink>{' '}
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz.tbi">
-              (.tbi)
-            </ExternalLink>
-            <br />
-            <span>9.7 GiB, MD5 = e5bd69a0f89468149bc3afca78cd5acc</span>
-          </li>
-          {genomeChromosomeVcfs.map(vcf => (
-            <li key={vcf.chrom}>
-              <ChromosomeVcfLinks exomesOrGenomes="genomes" {...vcf} />
             </li>
-          ))}
-        </ul>
-      </DownloadSection>
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
+                All chromosomes VCF
+              </ExternalLink>{' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+              <br />
+              <span>460.93 GiB, MD5 = e6eadf5ac7b2821b40f350da6e1279a2</span>
+            </li>
+            <li>
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
+                Exome calling intervals VCF
+              </ExternalLink>{' '}
+              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz.tbi">
+                (.tbi)
+              </ExternalLink>
+              <br />
+              <span>9.7 GiB, MD5 = e5bd69a0f89468149bc3afca78cd5acc</span>
+            </li>
+            {genomeChromosomeVcfs.map(vcf => (
+              <li key={vcf.chrom}>
+                <ChromosomeVcfLinks
+                  {...vcf}
+                  url={chrom =>
+                    `https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.vcf.bgz`
+                  }
+                />
+              </li>
+            ))}
+          </ul>
+        </Column>
+      </ColumnsWrapper>
+    </DownloadSection>
 
-      <DownloadSection>
-        <h2>Other</h2>
-        <h3>Gene constraint</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
-              LoF Metrics by Transcript (Hail Table) (gs://gnomad-public/release/2.1.1/constraint/
-              <wbr />
-              gnomad.v2.1.1.lof_metrics.by_transcript.ht)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz">
-              LoF Metrics by Transcript (TSV)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz">
-              LoF Metrics by Gene (TSV)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
-              LoF Metrics Downsamplings (TSV)
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>Multi-nucleotide variants (MNVs)</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
-              README
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv">
-              Coding MNVs (TSV)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp.tsv">
-              Coding MNVs consisting of 3 SNVs (TSV)
-            </ExternalLink>
-          </li>
-          <li>
-            MNVs genome wide
-            <ul>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
-                <React.Fragment key={n}>
-                  <li>
-                    <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
-                      Distance = {n} Hail Table (gs://gnomad-public/release/2.1/mnv/
-                      <wbr />
-                      genome/gnomad_mnv_genome_d
-                      {n}
-                      .ht)
-                    </ExternalLink>
-                  </li>
-                  <li>
-                    <ExternalLink
-                      href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d${n}.tsv.bgz`}
-                    >
-                      Distance = {n} TSV
-                    </ExternalLink>
-                  </li>
-                </React.Fragment>
-              ))}
-            </ul>
-          </li>
-        </ul>
-        <h3>Structural variants</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
-              SV sites VCF
-            </ExternalLink>{' '}
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi">
-              (.tbi)
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz">
-              SV sites BED
-            </ExternalLink>{' '}
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz.tbi">
-              (.tbi)
-            </ExternalLink>
-          </li>
-        </ul>
-        <h3>Resources</h3>
-        <ul>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
-              Exome calling regions
-            </ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list">
-              Genome calling regions
-            </ExternalLink>
-          </li>
-        </ul>
-      </DownloadSection>
-    </Wrapper>
+    <DownloadSection>
+      <h2>Coverage</h2>
+      <ul>
+        <li>
+          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
+            Exome coverage Hail Table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/release/2.1/coverage/
+          <wbr />
+          exomes/gnomad.exomes.r2.1.coverage.ht
+        </li>
+        <li>
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
+            Genome coverage Hail Table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/release/2.1/coverage/
+          <wbr />
+          genomes/gnomad.genomes.r2.1.coverage.ht
+        </li>
+      </ul>
+    </DownloadSection>
+
+    <DownloadSection>
+      <h2>Gene constraint</h2>
+      <ul>
+        <li>
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
+            LoF Metrics by Transcript Hail Table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/release/2.1.1/constraint/
+          <wbr />
+          gnomad.v2.1.1.lof_metrics.by_transcript.ht
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz">
+            LoF Metrics by Transcript TSV
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz">
+            LoF Metrics by Gene TSV
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
+            LoF Metrics Downsamplings TSV
+          </ExternalLink>
+        </li>
+      </ul>
+    </DownloadSection>
+
+    <DownloadSection>
+      <h2>Multi-nucleotide variants (MNVs)</h2>
+      <ul>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
+            README
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv">
+            Coding MNVs TSV
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp.tsv">
+            Coding MNVs consisting of 3 SNVs TSV
+          </ExternalLink>
+        </li>
+        <li>
+          MNVs genome wide
+          <ul>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+              <React.Fragment key={n}>
+                <li>
+                  <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
+                    Distance = {n} Hail Table
+                  </ExternalLink>
+                  <br />
+                  gs://gnomad-public/release/2.1/mnv/
+                  <wbr />
+                  genome/gnomad_mnv_genome_d
+                  {n}
+                  .ht
+                </li>
+                <li>
+                  <ExternalLink
+                    href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d${n}.tsv.bgz`}
+                  >
+                    Distance = {n} TSV
+                  </ExternalLink>
+                </li>
+              </React.Fragment>
+            ))}
+          </ul>
+        </li>
+      </ul>
+    </DownloadSection>
+
+    <DownloadSection>
+      <h2>Structural variants</h2>
+      <ul>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
+            SV sites VCF
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz">
+            SV sites BED
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </li>
+      </ul>
+    </DownloadSection>
+
+    <DownloadSection>
+      <h2>Resources</h2>
+      <ul>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
+            Exome calling regions
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list">
+            Genome calling regions
+          </ExternalLink>
+        </li>
+      </ul>
+    </DownloadSection>
   </InfoPage>
 )
