@@ -2,24 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { PageHeading, ExternalLink, Link } from '@broad/ui'
+import { PageHeading, ExternalLink, Link, List, ListItem } from '@broad/ui'
 
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
-const DownloadSection = styled.section`
-  ${ExternalLink} {
-    word-break: break-word;
-  }
-
-  ul {
-    padding-left: 18px;
-
-    li {
-      margin-bottom: 0.25em;
-      line-height: 1.5;
-    }
+const FileList = styled(List)`
+  li {
+    line-height: 1.25;
   }
 `
 
@@ -230,13 +221,13 @@ export default () => (
       </List>
     </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="variants">Variants</SectionTitle>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
-          <ul>
-            <li>
+          <FileList>
+            <ListItem>
               <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
                 Sites Hail Table
               </ExternalLink>
@@ -244,9 +235,9 @@ export default () => (
               gs://gnomad-public/release/2.1.1/ht/
               <wbr />
               exomes/gnomad.exomes.r2.1.1.sites.ht
-            </li>
+            </ListItem>
 
-            <li>
+            <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz">
                 All chromosomes VCF
               </ExternalLink>{' '}
@@ -255,24 +246,24 @@ export default () => (
               </ExternalLink>
               <br />
               <span>58.81 GiB, MD5 = f034173bf6e57fbb5e8ce680e95134f2</span>
-            </li>
+            </ListItem>
             {exomeChromosomeVcfs.map(vcf => (
-              <li key={vcf.chrom}>
+              <ListItem key={vcf.chrom}>
                 <ChromosomeVcfLinks
                   {...vcf}
                   url={chrom =>
                     `https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.vcf.bgz`
                   }
                 />
-              </li>
+              </ListItem>
             ))}
-          </ul>
+          </FileList>
         </Column>
 
         <Column>
           <h3>Genomes</h3>
-          <ul>
-            <li>
+          <FileList>
+            <ListItem>
               <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
                 Sites Hail Table
               </ExternalLink>
@@ -280,8 +271,8 @@ export default () => (
               gs://gnomad-public/release/2.1.1/ht/
               <wbr />
               genomes/gnomad.genomes.r2.1.1.sites.ht
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz">
                 All chromosomes VCF
               </ExternalLink>{' '}
@@ -290,8 +281,8 @@ export default () => (
               </ExternalLink>
               <br />
               <span>460.93 GiB, MD5 = e6eadf5ac7b2821b40f350da6e1279a2</span>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
                 Exome calling intervals VCF
               </ExternalLink>{' '}
@@ -300,29 +291,29 @@ export default () => (
               </ExternalLink>
               <br />
               <span>9.7 GiB, MD5 = e5bd69a0f89468149bc3afca78cd5acc</span>
-            </li>
+            </ListItem>
             {genomeChromosomeVcfs.map(vcf => (
-              <li key={vcf.chrom}>
+              <ListItem key={vcf.chrom}>
                 <ChromosomeVcfLinks
                   {...vcf}
                   url={chrom =>
                     `https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.vcf.bgz`
                   }
                 />
-              </li>
+              </ListItem>
             ))}
-          </ul>
+          </FileList>
         </Column>
       </ColumnsWrapper>
-    </DownloadSection>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="variants-grch38-liftover">Variants (GRCh38 liftover)</SectionTitle>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
-          <ul>
-            <li>
+          <FileList>
+            <ListItem>
               <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/liftover_grch38/ht/exomes">
                 Sites Hail Table
               </ExternalLink>
@@ -332,9 +323,9 @@ export default () => (
               liftover_grch38/ht/exomes/
               <wbr />
               gnomad.exomes.r2.1.1.sites.liftover_grch38.ht
-            </li>
+            </ListItem>
 
-            <li>
+            <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz">
                 All chromosomes VCF
               </ExternalLink>{' '}
@@ -343,24 +334,24 @@ export default () => (
               </ExternalLink>
               <br />
               <span>85.31 GiB, MD5 = cff8d0cfed50adc9211d1feaed2d4ca7</span>
-            </li>
+            </ListItem>
             {liftoverExomeChromosomeVcfs.map(vcf => (
-              <li key={vcf.chrom}>
+              <ListItem key={vcf.chrom}>
                 <ChromosomeVcfLinks
                   {...vcf}
                   url={chrom =>
                     `https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`
                   }
                 />
-              </li>
+              </ListItem>
             ))}
-          </ul>
+          </FileList>
         </Column>
 
         <Column>
           <h3>Genomes</h3>
-          <ul>
-            <li>
+          <FileList>
+            <ListItem>
               <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/liftover_grch38/ht/genomes">
                 Sites Hail Table
               </ExternalLink>
@@ -370,8 +361,8 @@ export default () => (
               liftover_grch38/ht/genomes/
               <wbr />
               gnomad.genomes.r2.1.1.sites.liftover_grch38.ht
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz">
                 All chromosomes VCF
               </ExternalLink>{' '}
@@ -380,26 +371,26 @@ export default () => (
               </ExternalLink>
               <br />
               <span>743.06 GiB, MD5 = 83de3d5b52669f714e810d4fcf047c18</span>
-            </li>
+            </ListItem>
             {liftoverGenomeChromosomeVcfs.map(vcf => (
-              <li key={vcf.chrom}>
+              <ListItem key={vcf.chrom}>
                 <ChromosomeVcfLinks
                   {...vcf}
                   url={chrom =>
                     `https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`
                   }
                 />
-              </li>
+              </ListItem>
             ))}
-          </ul>
+          </FileList>
         </Column>
       </ColumnsWrapper>
-    </DownloadSection>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="coverage">Coverage</SectionTitle>
-      <ul>
-        <li>
+      <FileList>
+        <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
             Exome coverage Hail Table
           </ExternalLink>
@@ -407,8 +398,8 @@ export default () => (
           gs://gnomad-public/release/2.1/coverage/
           <wbr />
           exomes/gnomad.exomes.r2.1.coverage.ht
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
             Genome coverage Hail Table
           </ExternalLink>
@@ -416,14 +407,14 @@ export default () => (
           gs://gnomad-public/release/2.1/coverage/
           <wbr />
           genomes/gnomad.genomes.r2.1.coverage.ht
-        </li>
-      </ul>
-    </DownloadSection>
+        </ListItem>
+      </FileList>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="gene-constraint">Gene constraint</SectionTitle>
-      <ul>
-        <li>
+      <FileList>
+        <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
             LoF Metrics by Transcript Hail Table
           </ExternalLink>
@@ -431,109 +422,107 @@ export default () => (
           gs://gnomad-public/release/2.1.1/constraint/
           <wbr />
           gnomad.v2.1.1.lof_metrics.by_transcript.ht
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz">
             LoF Metrics by Transcript TSV
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz">
             LoF Metrics by Gene TSV
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
             LoF Metrics Downsamplings TSV
           </ExternalLink>
-        </li>
-      </ul>
-    </DownloadSection>
+        </ListItem>
+      </FileList>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</SectionTitle>
-      <ul>
-        <li>
+      <FileList>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
             README
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv">
             Coding MNVs TSV
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp.tsv">
             Coding MNVs consisting of 3 SNVs TSV
           </ExternalLink>
-        </li>
-        <li>
-          MNVs genome wide
-          <ul>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
-              <React.Fragment key={n}>
-                <li>
-                  <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
-                    Distance = {n} Hail Table
-                  </ExternalLink>
-                  <br />
-                  gs://gnomad-public/release/2.1/mnv/
-                  <wbr />
-                  genome/gnomad_mnv_genome_d
-                  {n}
-                  .ht
-                </li>
-                <li>
-                  <ExternalLink
-                    href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d${n}.tsv.bgz`}
-                  >
-                    Distance = {n} TSV
-                  </ExternalLink>
-                </li>
-              </React.Fragment>
-            ))}
-          </ul>
-        </li>
-      </ul>
-    </DownloadSection>
+        </ListItem>
+      </FileList>
+      <h3>MNVs genome wide</h3>
+      <FileList>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+          <React.Fragment key={n}>
+            <ListItem>
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/mnv/genome">
+                Distance = {n} Hail Table
+              </ExternalLink>
+              <br />
+              gs://gnomad-public/release/2.1/mnv/
+              <wbr />
+              genome/gnomad_mnv_genome_d
+              {n}
+              .ht
+            </ListItem>
+            <ListItem>
+              <ExternalLink
+                href={`https://storage.googleapis.com/gnomad-public/release/2.1/mnv/genome/gnomad_mnv_genome_d${n}.tsv.bgz`}
+              >
+                Distance = {n} TSV
+              </ExternalLink>
+            </ListItem>
+          </React.Fragment>
+        ))}
+      </FileList>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="structural-variants">Structural variants</SectionTitle>
-      <ul>
-        <li>
+      <FileList>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
             SV sites VCF
           </ExternalLink>{' '}
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi">
             (.tbi)
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz">
             SV sites BED
           </ExternalLink>{' '}
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz.tbi">
             (.tbi)
           </ExternalLink>
-        </li>
-      </ul>
-    </DownloadSection>
+        </ListItem>
+      </FileList>
+    </section>
 
-    <DownloadSection>
+    <section>
       <SectionTitle id="resources">Resources</SectionTitle>
-      <ul>
-        <li>
+      <FileList>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
             Exome calling regions
           </ExternalLink>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list">
             Genome calling regions
           </ExternalLink>
-        </li>
-      </ul>
-    </DownloadSection>
+        </ListItem>
+      </FileList>
+    </section>
   </InfoPage>
 )
