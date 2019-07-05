@@ -4,7 +4,17 @@ import throttle from 'lodash.throttle'
 import PropTypes from 'prop-types'
 import React, { useEffect, useMemo, useRef } from 'react'
 
-export const QQPlot = ({ dataPoints, height, onClickPoint, pointLabel, width, xLabel, yLabel }) => {
+export const QQPlot = ({
+  dataPoints,
+  height,
+  onClickPoint,
+  pointLabel,
+  width,
+  xDomain,
+  xLabel,
+  yDomain,
+  yLabel,
+}) => {
   const minPval = min(dataPoints, d => d.pval)
 
   const margin = {
@@ -14,15 +24,21 @@ export const QQPlot = ({ dataPoints, height, onClickPoint, pointLabel, width, xL
     top: 10,
   }
 
-  const xScale = scaleLinear()
-    .domain([0, -Math.log10(1 / dataPoints.length)])
-    .range([0, width - margin.left - margin.right])
-    .nice()
+  const xScale = scaleLinear().range([0, width - margin.left - margin.right])
 
-  const yScale = scaleLinear()
-    .domain([0, -Math.log10(minPval)])
-    .range([height - margin.top - margin.bottom, 0])
-    .nice()
+  if (xDomain === undefined) {
+    xScale.domain([0, -Math.log10(1 / dataPoints.length)]).nice()
+  } else {
+    xScale.domain(xDomain)
+  }
+
+  const yScale = scaleLinear().range([height - margin.top - margin.bottom, 0])
+
+  if (yDomain === undefined) {
+    yScale.domain([0, -Math.log10(minPval)]).nice()
+  } else {
+    yScale.domain(yDomain)
+  }
 
   const sortedPoints = [...dataPoints].sort((d1, d2) => d1.pval - d2.pval)
   const points = sortedPoints.map((d, i, arr) => ({
@@ -134,9 +150,10 @@ export const QQPlot = ({ dataPoints, height, onClickPoint, pointLabel, width, xL
     ctx.transform(1, 0, 0, 1, margin.left, margin.top)
 
     ctx.beginPath()
-    ctx.moveTo(xScale(0), yScale(0))
-    const m = Math.min(xScale.domain()[1], yScale.domain()[1])
-    ctx.lineTo(xScale(m), yScale(m))
+    const p1 = Math.max(xScale.domain()[0], yScale.domain()[0])
+    ctx.moveTo(xScale(p1), yScale(p1))
+    const p2 = Math.min(xScale.domain()[1], yScale.domain()[1])
+    ctx.lineTo(xScale(p2), yScale(p2))
     ctx.strokeStyle = 'red'
     ctx.lineWidth = 2
     ctx.stroke()
@@ -278,13 +295,17 @@ QQPlot.propTypes = {
   onClickPoint: PropTypes.func,
   pointLabel: PropTypes.func,
   width: PropTypes.number.isRequired,
+  xDomain: PropTypes.arrayOf(PropTypes.number),
   xLabel: PropTypes.string,
+  yDomain: PropTypes.arrayOf(PropTypes.number),
   yLabel: PropTypes.string,
 }
 
 QQPlot.defaultProps = {
   onClickPoint: () => {},
   pointLabel: d => d.label,
+  yDomain: undefined,
   xLabel: 'Expected -log10(p)',
+  xDomain: undefined,
   yLabel: 'Actual -log10(p)',
 }
