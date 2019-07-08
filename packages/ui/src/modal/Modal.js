@@ -51,6 +51,10 @@ export class Modal extends Component {
 
   render() {
     const { children, footer, onRequestClose, size, title } = this.props
+    let renderedFooter = footer
+    if (footer === undefined) {
+      renderedFooter = <Button onClick={onRequestClose}>Ok</Button>
+    }
 
     return (
       <AriaModal
@@ -69,7 +73,7 @@ export class Modal extends Component {
             </ModalHeaderCloseButton>
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
-          <ModalFooter>{footer || <Button onClick={onRequestClose}>Ok</Button>}</ModalFooter>
+          {renderedFooter && <ModalFooter>{renderedFooter}</ModalFooter>}
         </ModalContent>
       </AriaModal>
     )
