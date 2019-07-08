@@ -64,6 +64,8 @@ export { Combobox } from './Combobox'
 
 export { Grid } from './Grid'
 
+export { Input } from './Input'
+
 export { KeyboardShortcut } from './KeyboardShortcut'
 
 export { ExternalLink, Link } from './Link'
