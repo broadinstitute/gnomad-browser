@@ -144,6 +144,7 @@ export class GnomadPopulationsTable extends Component {
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
+        {showHemizygotes && <p>Hemizygote counts are not available for subpopulations.</p>}
         <ControlSection>
           Include:
           <Checkbox
