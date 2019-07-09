@@ -14,4 +14,12 @@ export const Input = styled.input`
     border-color: rgb(70, 130, 180);
     box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
   }
+
+  &[aria-invalid='true'] {
+    border-color: rgb(221, 44, 0);
+
+    &:focus {
+      box-shadow: 0 0 0 0.2em rgba(221, 44, 0, 0.5);
+    }
+  }
 `
