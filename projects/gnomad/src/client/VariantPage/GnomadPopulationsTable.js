@@ -124,12 +124,15 @@ export class GnomadPopulationsTable extends Component {
   }
 
   render() {
+    const { exomePopulations, genomePopulations, showHemizygotes, showHomozygotes } = this.props
+    const { includeExomes, includeGenomes } = this.state
+
     let includedPopulations = []
-    if (this.state.includeExomes) {
-      includedPopulations = includedPopulations.concat(this.props.exomePopulations)
+    if (includeExomes) {
+      includedPopulations = includedPopulations.concat(exomePopulations)
     }
-    if (this.state.includeGenomes) {
-      includedPopulations = includedPopulations.concat(this.props.genomePopulations)
+    if (includeGenomes) {
+      includedPopulations = includedPopulations.concat(genomePopulations)
     }
 
     const combinedPopulations = combinePopulations(includedPopulations)
@@ -138,33 +141,27 @@ export class GnomadPopulationsTable extends Component {
       <div>
         <PopulationsTable
           populations={combinedPopulations}
-          showHemizygotes={this.props.showHemizygotes}
-          showHomozygotes={this.props.showHomozygotes}
+          showHemizygotes={showHemizygotes}
+          showHomozygotes={showHomozygotes}
         />
         <ControlSection>
           Include:
           <Checkbox
-            checked={this.state.includeExomes}
-            disabled={
-              this.props.exomePopulations.length === 0 ||
-              (this.state.includeExomes && !this.state.includeGenomes)
-            }
+            checked={includeExomes}
+            disabled={exomePopulations.length === 0 || (includeExomes && !includeGenomes)}
             id="includeExomePopulations"
             label="Exomes"
-            onChange={includeExomes => {
-              this.setState({ includeExomes })
+            onChange={value => {
+              this.setState({ includeExomes: value })
             }}
           />
           <Checkbox
-            checked={this.state.includeGenomes}
-            disabled={
-              this.props.genomePopulations.length === 0 ||
-              (!this.state.includeExomes && this.state.includeGenomes)
-            }
+            checked={includeGenomes}
+            disabled={genomePopulations.length === 0 || (!includeExomes && includeGenomes)}
             id="includeGenomePopulations"
             label="Genomes"
-            onChange={includeGenomes => {
-              this.setState({ includeGenomes })
+            onChange={value => {
+              this.setState({ includeGenomes: value })
             }}
           />
         </ControlSection>
