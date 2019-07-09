@@ -83,9 +83,10 @@ export class PopulationsTable extends Component {
   }
 
   renderColumnHeader(key, label, colSpan = undefined) {
+    const { sortAscending, sortBy } = this.state
     let ariaSortAttr = 'none'
-    if (this.state.sortBy === key) {
-      ariaSortAttr = this.state.sortAscending ? 'ascending' : 'descending'
+    if (sortBy === key) {
+      ariaSortAttr = sortAscending ? 'ascending' : 'descending'
     }
 
     return (
@@ -98,7 +99,8 @@ export class PopulationsTable extends Component {
   }
 
   renderPopulationRowHeader(pop) {
-    const isExpanded = this.state.expandedPopulations[pop.name]
+    const { expandedPopulations } = this.state
+    const isExpanded = expandedPopulations[pop.name]
     const colSpan = isExpanded ? 1 : 2
     const rowSpan = isExpanded ? pop.subpopulations.length + 1 : 1
     return (
@@ -119,9 +121,10 @@ export class PopulationsTable extends Component {
 
   render() {
     // Hack to support alternate column labels for MCNV structural variants
-    const { columnLabels } = this.props
+    const { columnLabels, populations } = this.props
+    const { expandedPopulations, sortAscending, sortBy } = this.state
 
-    const populations = this.props.populations
+    const renderedPopulations = populations
       .map(pop => ({
         ...pop,
         af: pop.an !== 0 ? pop.ac / pop.an : 0,
@@ -139,27 +142,25 @@ export class PopulationsTable extends Component {
               return -1
             }
 
-            const [subPop1, subPop2] = this.state.sortAscending ? [a, b] : [b, a]
+            const [subPop1, subPop2] = sortAscending ? [a, b] : [b, a]
 
-            return this.state.sortBy === 'name'
+            return sortBy === 'name'
               ? subPop1.name.localeCompare(subPop2.name)
-              : subPop1[this.state.sortBy] - subPop2[this.state.sortBy]
+              : subPop1[sortBy] - subPop2[sortBy]
           }),
       }))
       .sort((a, b) => {
-        const [pop1, pop2] = this.state.sortAscending ? [a, b] : [b, a]
+        const [pop1, pop2] = sortAscending ? [a, b] : [b, a]
 
-        return this.state.sortBy === 'name'
-          ? pop1.name.localeCompare(pop2.name)
-          : pop1[this.state.sortBy] - pop2[this.state.sortBy]
+        return sortBy === 'name' ? pop1.name.localeCompare(pop2.name) : pop1[sortBy] - pop2[sortBy]
       })
 
-    const totalAlleleCount = populations.map(pop => pop.ac).reduce((acc, n) => acc + n)
-    const totalAlleleNumber = populations.map(pop => pop.an).reduce((acc, n) => acc + n)
+    const totalAlleleCount = renderedPopulations.map(pop => pop.ac).reduce((acc, n) => acc + n)
+    const totalAlleleNumber = renderedPopulations.map(pop => pop.an).reduce((acc, n) => acc + n)
     const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
 
-    const totalHemizygotes = populations.map(pop => pop.ac_hemi).reduce((acc, n) => acc + n)
-    const totalHomozygotes = populations.map(pop => pop.ac_hom).reduce((acc, n) => acc + n)
+    const totalHemizygotes = renderedPopulations.map(pop => pop.ac_hemi).reduce((acc, n) => acc + n)
+    const totalHomozygotes = renderedPopulations.map(pop => pop.ac_hom).reduce((acc, n) => acc + n)
 
     const { showHemizygotes, showHomozygotes } = this.props
 
@@ -175,14 +176,11 @@ export class PopulationsTable extends Component {
             {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency')}
           </tr>
         </thead>
-        {populations.map(pop => (
+        {renderedPopulations.map(pop => (
           <tbody key={pop.name}>
-            <tr
-              key={pop.name}
-              className={this.state.expandedPopulations[pop.name] ? 'border' : undefined}
-            >
+            <tr key={pop.name} className={expandedPopulations[pop.name] ? 'border' : undefined}>
               {this.renderPopulationRowHeader(pop)}
-              {this.state.expandedPopulations[pop.name] && <td>Overall</td>}
+              {expandedPopulations[pop.name] && <td>Overall</td>}
               <td>{pop.ac}</td>
               <td>{pop.an}</td>
               {showHomozygotes && <td>{pop.ac_hom}</td>}
@@ -190,7 +188,7 @@ export class PopulationsTable extends Component {
               <td>{pop.af.toPrecision(4)}</td>
             </tr>
             {pop.subpopulations &&
-              this.state.expandedPopulations[pop.name] &&
+              expandedPopulations[pop.name] &&
               pop.subpopulations.map((subPop, i) => (
                 <tr
                   key={`${pop.name}-${subPop.name}`}
