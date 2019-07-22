@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@broad/ui'
 
+import Histogram from '../../Histogram'
 import ControlSection from '../ControlSection'
-import Histogram from '../Histogram'
 
 export class GnomadGenotypeQualityMetrics extends Component {
   constructor(props) {
