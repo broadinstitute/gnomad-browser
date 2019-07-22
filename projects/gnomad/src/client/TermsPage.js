@@ -52,10 +52,10 @@ export default () => (
     <h2>Citation in publications</h2>
     <p>
       We request that any use of data obtained from the gnomAD browser cite{' '}
-      <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
-        the ExAC paper
+      <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
+        the gnomAD flagship paper
       </ExternalLink>
-      . This will be updated when we get around to writing a gnomAD paper.
+      .
     </p>
     <p>
       There&apos;s no need to include us as authors on your manuscript, unless we contributed
