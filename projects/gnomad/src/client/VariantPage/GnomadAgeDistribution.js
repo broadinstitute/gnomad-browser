@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 
 import { SegmentedControl } from '@broad/ui'
 
+import Histogram from '../Histogram'
 import ControlSection from './ControlSection'
-import Histogram from './Histogram'
 
 export default class GnomadAgeDistribution extends Component {
   static propTypes = {
