@@ -16,14 +16,15 @@ export default () => (
       All data here are released openly and publicly for the benefit of the wider biomedical
       community. You can freely download and search the data, and we encourage the use and
       publication of results generated from these data.{' '}
-      <b>
+      <strong>
         There are absolutely no restrictions or embargoes on the publication of results derived from
         gnomAD data.
-      </b>{' '}
+      </strong>{' '}
       However, we encourage you to{' '}
       <ExternalLink href="mailto:exomeconsortium@gmail.com">contact the consortium</ExternalLink>{' '}
       before embarking on large-scale analyses to check if your proposed analysis overlaps with work
-      currently underway by the gnomAD consortium. All users of gnomAD data agree to not attempt to reidentify participants.
+      currently underway by the gnomAD consortium. All users of gnomAD data agree to not attempt to
+      reidentify participants.
     </p>
     <p>
       This data set has been subjected to extensive quality control, but variant calling and
@@ -62,13 +63,15 @@ export default () => (
       in publications as follows:
     </p>
     <blockquote>
-      The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups that
-      provided exome and genome variant data to this resource. A full list of contributing groups
-      can be found at{' '}
-      <Link preserveSelectedDataset={false} to="/about">
-        https://gnomad.broadinstitute.org/about
-      </Link>
-      .
+      <p>
+        The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups that
+        provided exome and genome variant data to this resource. A full list of contributing groups
+        can be found at{' '}
+        <Link preserveSelectedDataset={false} to="/about">
+          https://gnomad.broadinstitute.org/about
+        </Link>
+        .
+      </p>
     </blockquote>
 
     <h2>Data Generation</h2>
@@ -80,7 +83,7 @@ export default () => (
       with the GATK HaplotypeCaller following GATK best practices. Processing and variant calling at
       this enormous scale was only possible thanks to the hard work of the Broad Institute&apos;s
       Data Sciences Platform, and the Intel GenomicsDB team. Downstream analysis relied heavily on
-      the <ExternalLink href="https://github.com/hail-is/hail">Hail</ExternalLink> toolkit.
+      the <ExternalLink href="https://hail.is/">Hail</ExternalLink> toolkit.
     </p>
   </InfoPage>
 )
