@@ -19,6 +19,7 @@ const populationNames = {
 const TableViewport = styled.div`
   overflow-x: auto;
   width: 100%;
+  margin-top: 1em;
 
   tbody tr:last-child {
     th,
