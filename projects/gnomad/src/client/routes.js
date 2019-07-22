@@ -41,6 +41,23 @@ const App = () => (
         return null
       }}
     />
+    <Route
+      path="/"
+      render={({ location }) => {
+        if (location.hash) {
+          setTimeout(() => {
+            const anchor = document.querySelector(`a${location.hash}`)
+            if (anchor) {
+              anchor.scrollIntoView()
+            } else {
+              document.body.scrollTo(0, 0)
+            }
+          }, 0)
+        } else {
+          document.body.scrollTo(0, 0)
+        }
+      }}
+    />
     <MainPanel>
       <NavBar />
       <ErrorBoundary>
