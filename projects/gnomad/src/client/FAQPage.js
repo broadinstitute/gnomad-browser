@@ -6,6 +6,7 @@ import { ExternalLink, PageHeading } from '@broad/ui'
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
+import Link from './Link'
 import SampleCountTable from './SampleCountTable'
 
 const FAQSectionHeading = withAnchor(styled.h2``)
@@ -35,13 +36,26 @@ export default () => (
           Please cite the{' '}
           <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
             gnomAD flagship paper
-          </ExternalLink>{' '}
-          or the{' '}
-          <ExternalLink href="http://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
-            ExAC flagship paper
           </ExternalLink>
           .
         </p>
+
+        <p>
+          There&apos;s no need to include us as authors on your manuscript, unless we contributed
+          specific advice or analysis for your work. However, we ask that the Consortium be
+          acknowledged in publications as follows:
+        </p>
+        <blockquote>
+          <p>
+            The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups
+            that provided exome and genome variant data to this resource. A full list of
+            contributing groups can be found at{' '}
+            <Link preserveSelectedDataset={false} to="/about">
+              https://gnomad.broadinstitute.org/about
+            </Link>
+            .
+          </p>
+        </blockquote>
       </Answer>
 
       <Question id="i-have-identified-a-rare-variant-what-phenotype-data-are-available">
