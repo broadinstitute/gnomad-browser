@@ -400,6 +400,13 @@ export default () => (
           exomes/gnomad.exomes.r2.1.coverage.ht
         </ListItem>
         <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/coverage/exomes/gnomad.exomes.coverage.summary.tsv.bgz">
+            Exome coverage summary TSV
+          </ExternalLink>
+          <br />
+          <span>1.57 GiB, MD5: 73cddb8cac2c2db4f82662584ede6d20</span>
+        </ListItem>
+        <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
             Genome coverage Hail Table
           </ExternalLink>
@@ -407,6 +414,13 @@ export default () => (
           gs://gnomad-public/release/2.1/coverage/
           <wbr />
           genomes/gnomad.genomes.r2.1.coverage.ht
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/coverage/genomes/gnomad.genomes.coverage.summary.tsv.bgz">
+            Genome coverage summary TSV
+          </ExternalLink>
+          <br />
+          <span>50.74 GiB, MD5: bd68fd9241e14eb4debcee63a1c35064</span>
         </ListItem>
       </FileList>
     </section>
