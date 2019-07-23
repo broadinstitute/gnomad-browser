@@ -245,7 +245,7 @@ export default () => (
                 (.tbi)
               </ExternalLink>
               <br />
-              <span>58.81 GiB, MD5 = f034173bf6e57fbb5e8ce680e95134f2</span>
+              <span>58.81 GiB, MD5: f034173bf6e57fbb5e8ce680e95134f2</span>
             </ListItem>
             {exomeChromosomeVcfs.map(vcf => (
               <ListItem key={vcf.chrom}>
@@ -280,7 +280,7 @@ export default () => (
                 (.tbi)
               </ExternalLink>
               <br />
-              <span>460.93 GiB, MD5 = e6eadf5ac7b2821b40f350da6e1279a2</span>
+              <span>460.93 GiB, MD5: e6eadf5ac7b2821b40f350da6e1279a2</span>
             </ListItem>
             <ListItem>
               <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz">
@@ -290,7 +290,7 @@ export default () => (
                 (.tbi)
               </ExternalLink>
               <br />
-              <span>9.7 GiB, MD5 = e5bd69a0f89468149bc3afca78cd5acc</span>
+              <span>9.7 GiB, MD5: e5bd69a0f89468149bc3afca78cd5acc</span>
             </ListItem>
             {genomeChromosomeVcfs.map(vcf => (
               <ListItem key={vcf.chrom}>
@@ -333,7 +333,7 @@ export default () => (
                 (.tbi)
               </ExternalLink>
               <br />
-              <span>85.31 GiB, MD5 = cff8d0cfed50adc9211d1feaed2d4ca7</span>
+              <span>85.31 GiB, MD5: cff8d0cfed50adc9211d1feaed2d4ca7</span>
             </ListItem>
             {liftoverExomeChromosomeVcfs.map(vcf => (
               <ListItem key={vcf.chrom}>
@@ -370,7 +370,7 @@ export default () => (
                 (.tbi)
               </ExternalLink>
               <br />
-              <span>743.06 GiB, MD5 = 83de3d5b52669f714e810d4fcf047c18</span>
+              <span>743.06 GiB, MD5: 83de3d5b52669f714e810d4fcf047c18</span>
             </ListItem>
             {liftoverGenomeChromosomeVcfs.map(vcf => (
               <ListItem key={vcf.chrom}>
