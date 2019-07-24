@@ -30,7 +30,11 @@ export default () => (
       exome capture technologies across cohorts, we implemented stringent QC procedures to minimize
       confounding between cases and controls to arrive at the current dataset of 17,606 unrelated
       individuals of European descent. Details of variant-calling, QC, and analysis pipelines can be
-      found on 
+      found in{' '}
+      <ExternalLink href="https://www.cell.com/ajhg/fulltext/S0002-9297(19)30207-1">
+        AJHG
+      </ExternalLink>{' '}
+      or on{' '}
       <ExternalLink href="https://www.biorxiv.org/content/10.1101/525683v1">bioRxiv</ExternalLink>.
       The current findings recapitulate candidate genes for screened DEE patients and highlight a
       growing evidence of cation channel genes in the etiology of GGE and NAFE. With the continuing
