@@ -1,3 +1,3 @@
 module.exports = {
-  directory: '../../../../projects/gnomad/gnomad-docs/docs',
+  directory: '../../../../projects/gnomad/src/client/help',
 }

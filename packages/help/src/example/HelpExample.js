@@ -9,7 +9,7 @@ import { createHelpReducer } from '../redux'
 // eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
 import helpTopics from '../loader!./helpConfig'
 
-import toc from '../../../../projects/gnomad/gnomad-docs/toc.json'
+import toc from '../../../../projects/gnomad/src/client/help/toc.json'
 
 const help = createHelpReducer({
   topics: helpTopics,
