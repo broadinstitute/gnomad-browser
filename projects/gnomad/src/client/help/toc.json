@@ -1,0 +1,63 @@
+{
+  "toc": {
+    "sections": [
+      {
+        "id": "general",
+        "title": "General information",
+        "children": [
+          "about-gnomad",
+          "terms",
+          "contributors",
+          "citing-gnomad",
+          "careers",
+          "contact"
+        ]
+      },
+      {
+        "id": "concepts",
+        "title": "Concepts",
+        "children": [
+          "datasets",
+          "variant-qc",
+          "coverage",
+          "ancestry",
+          "relatedness-filtering",
+          "vep",
+          "gene-constraint",
+          "pext",
+          "regional-constraint",
+          "faf",
+          "SV_docs/sv-overview"
+        ]
+      },
+      {
+        "id": "ui",
+        "title": "gnomAD browser",
+        "children": [
+          "gene-model",
+          "positional-distribution",
+          "variant-table",
+          "dataset-selection",
+          "include-filtered-variants",
+          "gtex",
+          "issues"
+        ]
+      },
+      {
+        "id": "faq",
+        "title": "Frequently asked questions",
+        "children": [
+          "data-usage",
+          "phenotypes",
+          "genome-build",
+          "my-variant-went-missing",
+          "variant-annotation",
+          "evs",
+          "cancer-samples",
+          "how-do-you-pronounce-gnomad",
+          "how-do-you-capitalize-gnomad"
+        ]
+      }
+    ]
+  }
+}
