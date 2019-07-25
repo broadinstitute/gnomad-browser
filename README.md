@@ -1,1 +1,0 @@
-# gnomAD documentation
