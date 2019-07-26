@@ -1,5 +1,4 @@
 ---
-index: gnomad_help
 title: 'Coverage'
 ---
 

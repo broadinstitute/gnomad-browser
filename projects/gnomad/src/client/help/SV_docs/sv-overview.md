@@ -1,5 +1,4 @@
 ---
-index: gnomad_help  
 title: 'Overview of structural variants in gnomAD'  
 ---
 

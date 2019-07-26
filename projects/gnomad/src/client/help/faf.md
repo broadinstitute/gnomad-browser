@@ -1,5 +1,4 @@
 ---
-index: gnomad_help
 title: 'Filtering allele frequency'
 ---
 
