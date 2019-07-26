@@ -302,6 +302,17 @@ export default () => (
         <p>Version 19 (annotated with VEP version 85).</p>
       </Answer>
 
+      <Question id="are-all-the-individuals-in-1000-genomes-included">
+        Are all the individuals in 1000 Genomes included?
+      </Question>
+      <Answer>
+        <p>
+          The majority of samples from the 1000 Genomes Project for which <em>exome sequencing</em>{' '}
+          is available were included (the only currently available whole genome data is low-coverage
+          sequencing, and as such, not included).
+        </p>
+      </Answer>
+
       <Question id="are-all-the-individuals-in-the-exome-variant-server-included">
         Are all the individuals in the{' '}
         <ExternalLink href="https://evs.gs.washington.edu/EVS/">Exome Variant Server</ExternalLink>{' '}
