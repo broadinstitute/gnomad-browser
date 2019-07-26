@@ -1,5 +1,4 @@
 ---
-index: gnomad_help
 title: 'Proportion expressed across transcripts (pext) score'
 ---
 

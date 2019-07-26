@@ -1,5 +1,4 @@
 ---
-index: gnomad_help
 title: 'Ancestry'
 ---
 # Ancestry in gnomAD

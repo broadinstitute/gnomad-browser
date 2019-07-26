@@ -1,5 +1,4 @@
 ---
-index: gnomad_help  
 title: 'Complex SV subclass: insertions with insertion-site deletions'  
 ---
 

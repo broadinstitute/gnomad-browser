@@ -1,5 +1,4 @@
 ---
-index: gnomad_help  
 title: 'Complex SV subclass: duplication-flanked inversions'  
 ---
 
