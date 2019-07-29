@@ -1,27 +1,35 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl } from '@broad/ui'
+import { SegmentedControl, Select } from '@broad/ui'
 
+import ageDistribution from '../ageDistribution'
 import Histogram from '../Histogram'
 import ControlSection from './ControlSection'
+
+const AgeDistributionPropType = PropTypes.shape({
+  het: PropTypes.shape({
+    bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+    bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+    n_smaller: PropTypes.number,
+    n_larger: PropTypes.number,
+  }).isRequired,
+  hom: PropTypes.shape({
+    bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+    bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+    n_smaller: PropTypes.number,
+    n_larger: PropTypes.number,
+  }).isRequired,
+})
 
 export default class GnomadAgeDistribution extends Component {
   static propTypes = {
     variant: PropTypes.shape({
-      age_distribution: PropTypes.shape({
-        het: PropTypes.shape({
-          bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
-          bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
-          n_smaller: PropTypes.number,
-          n_larger: PropTypes.number,
-        }).isRequired,
-        hom: PropTypes.shape({
-          bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
-          bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
-          n_smaller: PropTypes.number,
-          n_larger: PropTypes.number,
-        }).isRequired,
+      exome: PropTypes.shape({
+        age_distribution: AgeDistributionPropType.isRequired,
+      }),
+      genome: PropTypes.shape({
+        age_distribution: AgeDistributionPropType.isRequired,
       }),
     }).isRequired,
   }
@@ -30,20 +38,26 @@ export default class GnomadAgeDistribution extends Component {
     super(props)
 
     this.state = {
-      selectedType: 'het',
+      selectedDataset: props.variant.exome ? 'exome' : 'genome',
+      selectedSamples: 'het', // "all", "het", or "hom"
     }
   }
 
   render() {
     const { variant } = this.props
-    const { selectedType } = this.state
+    const { selectedDataset, selectedSamples } = this.state
 
     const selectedAgeDistribution =
-      selectedType === 'het' ? variant.age_distribution.het : variant.age_distribution.hom
+      selectedSamples === 'all'
+        ? ageDistribution[selectedDataset]
+        : variant[selectedDataset].age_distribution[selectedSamples]
+
+    const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
     return (
       <div>
         <Histogram
+          barColor={graphColor}
           binEdges={selectedAgeDistribution.bin_edges}
           binValues={selectedAgeDistribution.bin_freq}
           nSmaller={selectedAgeDistribution.n_smaller}
@@ -53,16 +67,32 @@ export default class GnomadAgeDistribution extends Component {
         />
 
         <ControlSection>
+          <Select
+            id="age-distribution-sample"
+            onChange={e => {
+              this.setState({ selectedSamples: e.target.value })
+            }}
+            value={selectedSamples}
+          >
+            <option value="het">Heterozygous Variant Carriers</option>
+            <option value="hom">Homozygous Variant Carriers</option>
+            <option value="all">All Individuals</option>
+          </Select>
+
           <SegmentedControl
-            id="age-distribution-type"
-            onChange={type => {
-              this.setState({ selectedType: type })
+            id="age-distribution-dataset"
+            onChange={dataset => {
+              this.setState({ selectedDataset: dataset })
             }}
             options={[
-              { label: 'Heterozygotes', value: 'het' },
-              { label: 'Homozygotes', value: 'hom' },
+              { disabled: !variant.exome, label: 'Exomes', value: 'exome' },
+              {
+                disabled: !variant.genome,
+                label: 'Genomes',
+                value: 'genome',
+              },
             ]}
-            value={selectedType}
+            value={selectedDataset}
           />
         </ControlSection>
       </div>

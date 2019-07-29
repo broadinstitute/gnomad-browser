@@ -366,7 +366,10 @@ export default () => (
           <Column>
             <p>Exomes</p>
             <Histogram
-              {...ageDistribution.exome}
+              binEdges={ageDistribution.exome.bin_edges}
+              binValues={ageDistribution.exome.bin_freq}
+              nSmaller={ageDistribution.exome.n_smaller}
+              nLarger={ageDistribution.exome.n_larger}
               barColor="#428bca"
               xLabel="Age"
               yLabel="Individuals"
@@ -375,7 +378,10 @@ export default () => (
           <Column>
             <p>Genomes</p>
             <Histogram
-              {...ageDistribution.genome}
+              binEdges={ageDistribution.genome.bin_edges}
+              binValues={ageDistribution.genome.bin_freq}
+              nSmaller={ageDistribution.genome.n_smaller}
+              nLarger={ageDistribution.genome.n_larger}
               barColor="#73ab3d"
               xLabel="Age"
               yLabel="Individuals"

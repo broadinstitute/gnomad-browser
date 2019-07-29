@@ -202,10 +202,6 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     // variant interface fields
     ...sharedVariantFields,
     // gnomAD specific fields
-    age_distribution: {
-      het: formatHistogram(sharedData.gnomad_age_hist_het),
-      hom: formatHistogram(sharedData.gnomad_age_hist_hom),
-    },
     colocatedVariants,
     multiNucleotideVariants,
     exome: exomeData
@@ -220,6 +216,10 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           faf99: formatFilteringAlleleFrequency(exomeData, 'faf99_adj'),
           filters: exomeData.filters,
           populations: formatPopulations(exomeData),
+          age_distribution: {
+            het: formatHistogram(exomeData.gnomad_age_hist_het),
+            hom: formatHistogram(exomeData.gnomad_age_hist_hom),
+          },
           qualityMetrics: {
             alleleBalance: {
               alt: formatHistogram(exomeData.ab_hist_alt),
@@ -254,6 +254,10 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           faf99: formatFilteringAlleleFrequency(genomeData, 'faf99_adj'),
           filters: genomeData.filters,
           populations: formatPopulations(genomeData),
+          age_distribution: {
+            het: formatHistogram(genomeData.gnomad_age_hist_het),
+            hom: formatHistogram(genomeData.gnomad_age_hist_hom),
+          },
           qualityMetrics: {
             alleleBalance: {
               alt: formatHistogram(genomeData.ab_hist_alt),
