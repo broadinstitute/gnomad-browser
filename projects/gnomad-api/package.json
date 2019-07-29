@@ -1,7 +1,8 @@
 {
-  "name": "@broad/api",
+  "name": "gnomad-api",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "keywords": [],
   "author": "",
   "license": "ISC",

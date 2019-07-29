@@ -29,7 +29,7 @@ module.exports = {
     },
     {
       // Set environment for server-side code
-      files: ['packages/api/**/*.js', 'projects/*/src/server/**/*.js'],
+      files: ['projects/gnomad-api/**/*.js', 'projects/*/src/server/**/*.js'],
       env: {
         browser: false,
         node: true,
