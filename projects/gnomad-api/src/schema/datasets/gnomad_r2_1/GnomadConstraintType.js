@@ -26,10 +26,10 @@ const GnomadConstraintType = new GraphQLObjectType({
     mis_z: { type: GraphQLFloat },
     syn_z: { type: GraphQLFloat },
     // Other
-    gene_issues: { type: new GraphQLList(GraphQLString) },
     pLI: { type: GraphQLFloat },
     pNull: { type: GraphQLFloat },
     pRec: { type: GraphQLFloat },
+    constraint_flag: { type: new GraphQLList(GraphQLString) },
   },
 })
 
