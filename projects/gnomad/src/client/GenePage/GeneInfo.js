@@ -19,8 +19,7 @@ const GeneInfo = ({ currentTranscript, gene }) => {
   const ensemblGeneUrl = `http://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
   const ensemblTranscriptUrl = `http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript ||
     canonicalTranscript}`
-  const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start -
-    1}-${stop}`
+  const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
   const geneCardsUrl = `http://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneName}`
   const omimUrl = `http://omim.org/entry/${omimAccession}`
 
