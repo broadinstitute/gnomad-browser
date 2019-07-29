@@ -29,14 +29,14 @@ takedown-loading-nodes:
 # 	# make -C projects/gnomad/data variants-new-load-only-exomes
 # 	make -C cluster/elasticsearch reallocate-shards
 # 	make takedown-loading-nodes
-# 	make -C packages/api/deploy chunks
+# 	make -C projects/gnomad-api/deploy chunks
 
 gnomad:
 	make -C cluster cluster
 	make -C cluster context
 	make -C cluster/elasticsearch persistent
 	make -C cluster/redis start-redis
-	make -C packages/api/deploy start-api
+	make -C projects/gnomad-api/deploy start-api
 	make -C projects/gnomad/deploy start-gnomad
 
 
@@ -51,4 +51,4 @@ delete-data-cluster:
 
 legacy:
 	make -C projects/gnomad/deploy update & \
-	make -C packages/api/deploy update
+	make -C projects/gnomad-api/deploy update

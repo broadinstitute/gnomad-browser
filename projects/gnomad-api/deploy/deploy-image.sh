@@ -9,7 +9,7 @@ fi
 
 DEPLOY_TAG=$1
 
-# cd to packages/api directory
+# cd to projects/gnomad-api directory
 DEPLOY_DIR=$(dirname "${BASH_SOURCE}")
 cd "${DEPLOY_DIR}/.."
 
