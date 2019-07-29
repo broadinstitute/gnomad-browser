@@ -8,7 +8,7 @@ const RegionInfo = ({ region }) => {
   return (
     <AttributeList labelWidth={120}>
       <AttributeList.Item label="Region size">
-        {(stop - start).toLocaleString()} BP
+        {(stop - start + 1).toLocaleString()} BP
       </AttributeList.Item>
     </AttributeList>
   )
