@@ -106,6 +106,14 @@ const GnomadVariantFilteringAlleleFrequencyType = new GraphQLObjectType({
   },
 })
 
+const GnomadVariantAgeDistribution = new GraphQLObjectType({
+  name: 'GnomadVariantDetailsAgeDistribution',
+  fields: {
+    het: { type: HistogramType },
+    hom: { type: HistogramType },
+  },
+})
+
 const GnomadVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadVariantDetails',
   interfaces: [VariantInterface],
@@ -118,15 +126,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
     variantId: { type: new GraphQLNonNull(GraphQLString) },
     xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // gnomAD specific fields
-    age_distribution: {
-      type: new GraphQLObjectType({
-        name: 'GnomadVariantDetailsAgeDistribution',
-        fields: {
-          het: { type: HistogramType },
-          hom: { type: HistogramType },
-        },
-      }),
-    },
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
     multiNucleotideVariants: { type: new GraphQLList(MultiNucleotideVariantSummaryType) },
     exome: {
@@ -141,6 +140,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           faf99: { type: GnomadVariantFilteringAlleleFrequencyType },
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(GnomadPopulationType) },
+          age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
           reads: {
             type: new GraphQLList(ReadDataType),
@@ -175,6 +175,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           faf99: { type: GnomadVariantFilteringAlleleFrequencyType },
           filters: { type: new GraphQLList(GraphQLString) },
           populations: { type: new GraphQLList(GnomadPopulationType) },
+          age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
           reads: {
             type: new GraphQLList(ReadDataType),
