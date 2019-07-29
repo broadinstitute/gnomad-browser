@@ -100,7 +100,6 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         chrom: args.chrom,
         xstart: getXpos(args.chrom, args.start),
         xstop: getXpos(args.chrom, args.stop),
-        regionSize: args.stop - args.start,
       }),
     },
     searchResults: {

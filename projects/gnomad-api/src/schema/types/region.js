@@ -21,7 +21,6 @@ const regionType = new GraphQLObjectType({
     xstart: { type: GraphQLInt },
     xstop: { type: GraphQLInt },
     chrom: { type: GraphQLString },
-    regionSize: { type: GraphQLInt },
     genes: {
       type: new GraphQLList(geneType),
       resolve: (obj, args, ctx) =>
