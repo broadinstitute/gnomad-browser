@@ -9,7 +9,7 @@ module.exports = {
         useBuiltIns: 'entry',
         corejs: 3,
         exclude: ['transform-typeof-symbol'],
-        modules: false,
+        modules: process.env.NODE_ENV === 'test' ? 'auto' : false,
       },
     ],
     [
