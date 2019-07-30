@@ -1,3 +1,5 @@
+import { flatMap } from 'lodash'
+
 import { UserVisibleError } from '../../errors'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
 
@@ -11,30 +13,56 @@ const formatHistogram = histogramData => ({
 const POPULATIONS = ['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'oth', 'sas']
 
 const SUBPOPULATIONS = {
-  afr: ['female', 'male'],
-  amr: ['female', 'male'],
-  asj: ['female', 'male'],
-  eas: ['female', 'male', 'jpn', 'kor', 'oea'],
-  fin: ['female', 'male'],
-  nfe: ['female', 'male', 'bgr', 'est', 'nwe', 'onf', 'seu', 'swe'],
-  oth: ['female', 'male'],
-  sas: ['female', 'male'],
+  eas: ['jpn', 'kor', 'oea'],
+  nfe: ['bgr', 'est', 'nwe', 'onf', 'seu', 'swe'],
 }
 
-const formatPopulations = variantData =>
-  POPULATIONS.map(popId => ({
-    id: popId.toUpperCase(),
-    ac: (variantData.AC_adj[popId] || {}).total || 0,
-    an: (variantData.AN_adj[popId] || {}).total || 0,
-    ac_hemi: variantData.nonpar ? (variantData.AC_adj[popId] || {}).male || 0 : 0,
-    ac_hom: (variantData.nhomalt_adj[popId] || {}).total || 0,
-    subpopulations: SUBPOPULATIONS[popId].map(subPopId => ({
-      id: subPopId.toUpperCase(),
+const formatPopulations = variantData => [
+  ...flatMap(POPULATIONS, popId => [
+    {
+      id: popId.toUpperCase(),
+      ac: (variantData.AC_adj[popId] || {}).total || 0,
+      an: (variantData.AN_adj[popId] || {}).total || 0,
+      ac_hemi: variantData.nonpar ? (variantData.AC_adj[popId] || {}).male || 0 : 0,
+      ac_hom: (variantData.nhomalt_adj[popId] || {}).total || 0,
+    },
+    ...(SUBPOPULATIONS[popId] || []).map(subPopId => ({
+      id: `${popId.toUpperCase()}_${subPopId.toUpperCase()}`,
       ac: (variantData.AC_adj[popId] || {})[subPopId] || 0,
       an: (variantData.AN_adj[popId] || {})[subPopId] || 0,
+      ac_hemi: null,
       ac_hom: (variantData.nhomalt_adj[popId] || {})[subPopId] || 0,
     })),
-  }))
+    {
+      id: `${popId.toUpperCase()}_FEMALE`,
+      ac: (variantData.AC_adj[popId] || {}).female || 0,
+      an: (variantData.AN_adj[popId] || {}).female || 0,
+      ac_hemi: 0,
+      ac_hom: (variantData.nhomalt_adj[popId] || {}).female || 0,
+    },
+    {
+      id: `${popId.toUpperCase()}_MALE`,
+      ac: (variantData.AC_adj[popId] || {}).male || 0,
+      an: (variantData.AN_adj[popId] || {}).male || 0,
+      ac_hemi: variantData.nonpar ? (variantData.AC_adj[popId] || {}).male || 0 : 0,
+      ac_hom: (variantData.nhomalt_adj[popId] || {}).male || 0,
+    },
+  ]),
+  {
+    id: 'FEMALE',
+    ac: variantData.AC_adj.female || 0,
+    an: variantData.AN_adj.female || 0,
+    ac_hemi: 0,
+    ac_hom: variantData.nhomalt_adj.female || 0,
+  },
+  {
+    id: 'MALE',
+    ac: variantData.AC_adj.male || 0,
+    an: variantData.AN_adj.male || 0,
+    ac_hemi: variantData.nonpar ? variantData.AC_adj.male || 0 : 0,
+    ac_hom: variantData.nhomalt_adj.male || 0,
+  },
+]
 
 const formatFilteringAlleleFrequency = (variantData, fafField) => {
   const fafData = variantData[fafField]

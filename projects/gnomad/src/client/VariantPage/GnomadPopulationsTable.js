@@ -33,6 +33,13 @@ const POPULATION_NAMES = {
   SWE: 'Swedish',
 }
 
+const POPULATIONS = ['AFR', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
+
+const SUBPOPULATIONS = {
+  EAS: ['JPN', 'KOR', 'OEA'],
+  NFE: ['BGR', 'EST', 'NWE', 'ONF', 'SEU', 'SWE'],
+}
+
 const ControlSection = styled.div`
   margin-top: 1em;
 
@@ -41,23 +48,45 @@ const ControlSection = styled.div`
   }
 `
 
+const nestPopulations = populations => {
+  const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
+  return [
+    ...POPULATIONS.map(popId => ({
+      ...populations[indices[popId]],
+      subpopulations: [
+        ...(SUBPOPULATIONS[popId] || []).map(
+          subPopId => populations[indices[`${popId}_${subPopId}`]]
+        ),
+        populations[indices[`${popId}_FEMALE`]],
+        populations[indices[`${popId}_MALE`]],
+      ],
+    })),
+    populations[indices.FEMALE],
+    populations[indices.MALE],
+  ]
+}
+
 const combinePopulations = populations => {
   const combined = Object.values(
     populations.reduce((acc, pop) => {
       if (!acc[pop.id]) {
         acc[pop.id] = {
           id: pop.id,
-          name: POPULATION_NAMES[pop.id],
+          name: pop.id.includes('_')
+            ? POPULATION_NAMES[pop.id.split('_')[1]]
+            : POPULATION_NAMES[pop.id],
           ac: 0,
           an: 0,
-          ac_hemi: 0,
+          ac_hemi: null,
           ac_hom: 0,
           subpopulations: [],
         }
       }
       acc[pop.id].ac += pop.ac
       acc[pop.id].an += pop.an
-      acc[pop.id].ac_hemi += pop.ac_hemi
+      if (pop.ac_hemi !== null) {
+        acc[pop.id].ac_hemi += pop.ac_hemi
+      }
       acc[pop.id].ac_hom += pop.ac_hom
 
       if (pop.subpopulations) {
@@ -78,15 +107,8 @@ export class GnomadPopulationsTable extends Component {
         id: PropTypes.string.isRequired,
         ac: PropTypes.number.isRequired,
         an: PropTypes.number.isRequired,
-        ac_hemi: PropTypes.number.isRequired,
+        ac_hemi: PropTypes.number,
         ac_hom: PropTypes.number.isRequired,
-        subpopulations: PropTypes.arrayOf(
-          PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            ac: PropTypes.number.isRequired,
-            an: PropTypes.number.isRequired,
-          })
-        ),
       })
     ).isRequired,
     genomePopulations: PropTypes.arrayOf(
@@ -94,15 +116,8 @@ export class GnomadPopulationsTable extends Component {
         id: PropTypes.string.isRequired,
         ac: PropTypes.number.isRequired,
         an: PropTypes.number.isRequired,
-        ac_hemi: PropTypes.number.isRequired,
+        ac_hemi: PropTypes.number,
         ac_hom: PropTypes.number.isRequired,
-        subpopulations: PropTypes.arrayOf(
-          PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            ac: PropTypes.number.isRequired,
-            an: PropTypes.number.isRequired,
-          })
-        ),
       })
     ).isRequired,
     showHemizygotes: PropTypes.bool,
@@ -129,10 +144,10 @@ export class GnomadPopulationsTable extends Component {
 
     let includedPopulations = []
     if (includeExomes) {
-      includedPopulations = includedPopulations.concat(exomePopulations)
+      includedPopulations = includedPopulations.concat(nestPopulations(exomePopulations))
     }
     if (includeGenomes) {
-      includedPopulations = includedPopulations.concat(genomePopulations)
+      includedPopulations = includedPopulations.concat(nestPopulations(genomePopulations))
     }
 
     const combinedPopulations = combinePopulations(includedPopulations)

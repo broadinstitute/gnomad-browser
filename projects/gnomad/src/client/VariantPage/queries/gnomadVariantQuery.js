@@ -31,12 +31,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           an
           ac_hemi
           ac_hom
-          subpopulations {
-            id
-            ac
-            an
-            ac_hom
-          }
         }
         age_distribution {
           het {
@@ -129,12 +123,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
           an
           ac_hemi
           ac_hom
-          subpopulations {
-            id
-            ac
-            an
-            ac_hom
-          }
         }
         age_distribution {
           het {
