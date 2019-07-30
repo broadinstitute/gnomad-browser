@@ -113,7 +113,14 @@ export const ConstraintTableOrPlaceholder = ({ datasetId, gene, selectedTranscri
     return <ConstraintTable constraintData={exacConstraint} />
   }
 
-  return <GnomadConstraintTable transcriptId={selectedTranscriptId} />
+  return (
+    <React.Fragment>
+      {['controls', 'non_neuro', 'non_cancer', 'non_topmed'].some(subset =>
+        datasetId.includes(subset)
+      ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
+      <GnomadConstraintTable transcriptId={selectedTranscriptId} />
+    </React.Fragment>
+  )
 }
 
 ConstraintTableOrPlaceholder.propTypes = {
