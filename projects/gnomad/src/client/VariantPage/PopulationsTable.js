@@ -5,8 +5,11 @@ import styled from 'styled-components'
 import { BaseTable, TextButton } from '@broad/ui'
 
 const Table = styled(BaseTable)`
-  tr.border td {
-    border-bottom: 2px solid #aaa;
+  tr.border {
+    td,
+    th {
+      border-top: 2px solid #aaa;
+    }
   }
 `
 
@@ -135,10 +138,16 @@ export class PopulationsTable extends Component {
           }))
           .sort((a, b) => {
             // Sort male/female subpopulations to bottom of list
-            if ((a.id === 'MALE' || a.id === 'FEMALE') && (b.id !== 'MALE' && b.id !== 'FEMALE')) {
+            if (
+              (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
+              (!b.id.includes('MALE') && !b.id.includes('FEMALE'))
+            ) {
               return 1
             }
-            if ((b.id === 'MALE' || b.id === 'FEMALE') && (a.id !== 'MALE' && a.id !== 'FEMALE')) {
+            if (
+              (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
+              (!a.id.includes('MALE') && !a.id.includes('FEMALE'))
+            ) {
               return -1
             }
 
@@ -150,17 +159,44 @@ export class PopulationsTable extends Component {
           }),
       }))
       .sort((a, b) => {
+        // Sort male/female populations to bottom of list
+        if (
+          (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
+          (!b.id.includes('MALE') && !b.id.includes('FEMALE'))
+        ) {
+          return 1
+        }
+        if (
+          (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
+          (!a.id.includes('MALE') && !a.id.includes('FEMALE'))
+        ) {
+          return -1
+        }
+
         const [pop1, pop2] = sortAscending ? [a, b] : [b, a]
 
         return sortBy === 'name' ? pop1.name.localeCompare(pop2.name) : pop1[sortBy] - pop2[sortBy]
       })
 
-    const totalAlleleCount = renderedPopulations.map(pop => pop.ac).reduce((acc, n) => acc + n)
-    const totalAlleleNumber = renderedPopulations.map(pop => pop.an).reduce((acc, n) => acc + n)
+    // Male/female numbers are included in the ancestry populations.
+    const totalAlleleCount = renderedPopulations
+      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .map(pop => pop.ac)
+      .reduce((acc, n) => acc + n)
+    const totalAlleleNumber = renderedPopulations
+      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .map(pop => pop.an)
+      .reduce((acc, n) => acc + n)
     const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
 
-    const totalHemizygotes = renderedPopulations.map(pop => pop.ac_hemi).reduce((acc, n) => acc + n)
-    const totalHomozygotes = renderedPopulations.map(pop => pop.ac_hom).reduce((acc, n) => acc + n)
+    const totalHemizygotes = renderedPopulations
+      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .map(pop => pop.ac_hemi)
+      .reduce((acc, n) => acc + n)
+    const totalHomozygotes = renderedPopulations
+      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .map(pop => pop.ac_hom)
+      .reduce((acc, n) => acc + n)
 
     const { showHemizygotes, showHomozygotes } = this.props
 
@@ -176,9 +212,21 @@ export class PopulationsTable extends Component {
             {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency')}
           </tr>
         </thead>
-        {renderedPopulations.map(pop => (
+        {renderedPopulations.map((pop, i) => (
           <tbody key={pop.name}>
-            <tr key={pop.name} className={expandedPopulations[pop.name] ? 'border' : undefined}>
+            <tr
+              key={pop.name}
+              className={
+                i > 0 &&
+                ((pop.id.includes('MALE') || pop.id.includes('FEMALE')) &&
+                  !(
+                    renderedPopulations[i - 1].id.includes('MALE') ||
+                    renderedPopulations[i - 1].id.includes('MALE')
+                  ))
+                  ? 'border'
+                  : undefined
+              }
+            >
               {this.renderPopulationRowHeader(pop)}
               {expandedPopulations[pop.name] && <td>Overall</td>}
               <td>{pop.ac}</td>
@@ -189,23 +237,32 @@ export class PopulationsTable extends Component {
             </tr>
             {pop.subpopulations &&
               expandedPopulations[pop.name] &&
-              pop.subpopulations.map((subPop, i) => (
+              pop.subpopulations.map((subPop, j) => (
                 <tr
                   key={`${pop.name}-${subPop.name}`}
-                  className={i === pop.subpopulations.length - 3 ? 'border' : undefined}
+                  className={
+                    j === 0 ||
+                    ((subPop.id.includes('MALE') || subPop.id.includes('FEMALE')) &&
+                      !(
+                        pop.subpopulations[j - 1].id.includes('MALE') ||
+                        pop.subpopulations[j - 1].id.includes('MALE')
+                      ))
+                      ? 'border'
+                      : undefined
+                  }
                 >
                   <td>{subPop.name}</td>
                   <td>{subPop.ac}</td>
                   <td>{subPop.an}</td>
                   {showHomozygotes && <td>{subPop.ac_hom}</td>}
-                  {showHemizygotes && <td>&mdash;</td>}
+                  {showHemizygotes && <td>{subPop.ac_hemi !== null ? subPop.ac_hemi : '—'}</td>}
                   <td>{subPop.af.toPrecision(4)}</td>
                 </tr>
               ))}
           </tbody>
         ))}
         <tfoot>
-          <tr>
+          <tr className="border">
             <th colSpan={2} scope="row">
               Total
             </th>

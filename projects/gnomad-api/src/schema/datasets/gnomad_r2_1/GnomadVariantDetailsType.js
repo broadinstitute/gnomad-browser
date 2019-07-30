@@ -23,25 +23,14 @@ const HistogramType = new GraphQLObjectType({
   },
 })
 
-const GnomadSubpopulationType = new GraphQLObjectType({
-  name: 'GnomadVariantSubpopulation',
-  fields: {
-    id: { type: new GraphQLNonNull(GraphQLString) },
-    ac: { type: new GraphQLNonNull(GraphQLInt) },
-    an: { type: new GraphQLNonNull(GraphQLInt) },
-    ac_hom: { type: new GraphQLNonNull(GraphQLInt) },
-  },
-})
-
 const GnomadPopulationType = new GraphQLObjectType({
   name: 'GnomadVariantPopulation',
   fields: {
     id: { type: new GraphQLNonNull(GraphQLString) },
     ac: { type: new GraphQLNonNull(GraphQLInt) },
     an: { type: new GraphQLNonNull(GraphQLInt) },
-    ac_hemi: { type: new GraphQLNonNull(GraphQLInt) },
+    ac_hemi: { type: GraphQLInt },
     ac_hom: { type: new GraphQLNonNull(GraphQLInt) },
-    subpopulations: { type: new GraphQLList(GnomadSubpopulationType) },
   },
 })
 
