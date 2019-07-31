@@ -25,12 +25,28 @@ const PageHeadingWrapper = styled.div`
     align-items: center;
   }
 `
-const PageHeadingText = styled.h1`
-  margin: 0;
 
-  @media (max-width: 1200px) {
+const PageHeadingInnerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+const CenterPanel = styled.div`
+  flex-grow: 1;
+
+  @media (max-width: 900px) {
     margin-bottom: 0.25em;
   }
+`
+
+const PageHeadingText = styled.h1`
+  margin: 0;
 
   @media (max-width: 900px) {
     display: flex;
@@ -48,9 +64,12 @@ const Label = styled.span`
   margin-right: 0.5em;
 `
 
-const GnomadPageHeading = ({ children, datasetOptions, selectedDataset }) => (
+const GnomadPageHeading = ({ children, extra, datasetOptions, selectedDataset }) => (
   <PageHeadingWrapper>
-    <PageHeadingText>{children}</PageHeadingText>
+    <PageHeadingInnerWrapper>
+      <PageHeadingText>{children}</PageHeadingText>
+      {extra && <CenterPanel>{extra}</CenterPanel>}
+    </PageHeadingInnerWrapper>
     <PageControlsWrapper>
       <Label>Dataset</Label>
       <DatasetSelector datasetOptions={datasetOptions} selectedDataset={selectedDataset} />
@@ -64,6 +83,11 @@ const GnomadPageHeading = ({ children, datasetOptions, selectedDataset }) => (
 GnomadPageHeading.propTypes = {
   ...DatasetSelector.propTypes,
   children: PropTypes.node.isRequired,
+  extra: PropTypes.node,
+}
+
+GnomadPageHeading.defaultProps = {
+  extra: undefined,
 }
 
 export default GnomadPageHeading
