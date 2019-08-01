@@ -219,5 +219,10 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVari
       }
     }
   }
+  clinvarVariant: variant(variantId: $variantId, dataset: clinvar) {
+    ... on ClinvarVariantDetails {
+      allele_id
+    }
+  }
 }
 `

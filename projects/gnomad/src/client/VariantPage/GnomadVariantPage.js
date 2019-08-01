@@ -87,7 +87,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
-        const { variant } = data
+        const { variant, clinvarVariant } = data
 
         const numTranscripts = variant.sortedTranscriptConsequences.length
         const geneIds = variant.sortedTranscriptConsequences.map(csq => csq.gene_id)
@@ -128,7 +128,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>References</h2>
-              <ReferenceList variant={variant} />
+              <ReferenceList variant={variant} clinvarVariant={clinvarVariant} />
               <h2>Report</h2>
               <VariantFeedback datasetId={datasetId} variantId={variantId} />
             </ResponsiveSection>
