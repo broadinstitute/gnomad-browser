@@ -10,9 +10,9 @@ import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/u
 
 function isPathogenicOrLikelyPathogenic(clinvarVariant) {
   return (
-    clinvarVariant.clinicalSignificance &&
-    (clinvarVariant.clinicalSignificance.includes('Pathogenic') ||
-      clinvarVariant.clinicalSignificance.includes('Likely_pathogenic'))
+    clinvarVariant.clinical_significance &&
+    (clinvarVariant.clinical_significance.includes('Pathogenic') ||
+      clinvarVariant.clinical_significance.includes('Likely_pathogenic'))
   )
 }
 
@@ -25,10 +25,10 @@ const CONSEQUENCE_COLORS = {
 const DEFAULT_COLOR = '#424242'
 
 function variantColor(clinvarVariant) {
-  if (!clinvarVariant.majorConsequence) {
+  if (!clinvarVariant.consequence) {
     return DEFAULT_COLOR
   }
-  const category = getCategoryFromConsequence(clinvarVariant.majorConsequence)
+  const category = getCategoryFromConsequence(clinvarVariant.consequence)
   return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
 }
 
@@ -100,12 +100,12 @@ const ClinVarTooltip = ({ variant }) => (
   <div>
     <strong>{variant.variantId}</strong>
     <ClinVarVariantAttributeList>
-      <ClinVarVariantAttribute label="Clinical Signficance" value={variant.clinicalSignificance} />
+      <ClinVarVariantAttribute label="Clinical Signficance" value={variant.clinical_significance} />
       <ClinVarVariantAttribute
         label="Consequence"
-        value={getLabelForConsequenceTerm(variant.majorConsequence)}
+        value={getLabelForConsequenceTerm(variant.consequence)}
       />
-      <ClinVarVariantAttribute label="Gold stars" value={variant.goldStars} />
+      <ClinVarVariantAttribute label="Gold stars" value={variant.gold_stars} />
     </ClinVarVariantAttributeList>
     Click to view in ClinVar
   </div>
@@ -113,10 +113,10 @@ const ClinVarTooltip = ({ variant }) => (
 
 ClinVarTooltip.propTypes = {
   variant: PropTypes.shape({
-    alleleId: PropTypes.number.isRequired,
-    clinicalSignificance: PropTypes.string,
+    allele_id: PropTypes.number.isRequired,
+    clinical_significance: PropTypes.string,
     consequence: PropTypes.string,
-    goldStars: PropTypes.number,
+    gold_stars: PropTypes.number,
     variantId: PropTypes.string.isRequired,
   }).isRequired,
 }
@@ -125,7 +125,8 @@ const onClickVariant = variant => {
   const clinVarWindow = window.open()
   // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
   clinVarWindow.opener = null
-  clinVarWindow.location = `http://www.ncbi.nlm.nih.gov/clinvar/?term=${variant.alleleId}[alleleid]`
+  const { allele_id: alleleId } = variant
+  clinVarWindow.location = `http://www.ncbi.nlm.nih.gov/clinvar/?term=${alleleId}[alleleid]`
 }
 
 class ClinVarTrack extends PureComponent {
@@ -147,8 +148,8 @@ class ClinVarTrack extends PureComponent {
     }
 
     variants.forEach(variant => {
-      const category = variant.majorConsequence
-        ? getCategoryFromConsequence(variant.majorConsequence)
+      const category = variant.consequence
+        ? getCategoryFromConsequence(variant.consequence)
         : 'other'
 
       const binIndex = variantBinIndex(variant)
@@ -221,8 +222,8 @@ class ClinVarTrack extends PureComponent {
     }
 
     variants.forEach(variant => {
-      const category = variant.majorConsequence
-        ? getCategoryFromConsequence(variant.majorConsequence)
+      const category = variant.consequence
+        ? getCategoryFromConsequence(variant.consequence)
         : 'other'
 
       variantsByConsequence[category].push(variant)
@@ -258,7 +259,7 @@ class ClinVarTrack extends PureComponent {
       other: variantFilter.other,
     }
     const matchesConsequenceFilter = variant => {
-      const category = getCategoryFromConsequence(variant.majorConsequence) || 'other'
+      const category = getCategoryFromConsequence(variant.consequence) || 'other'
       return isCategoryIncluded[category]
     }
 
@@ -303,10 +304,10 @@ class ClinVarTrack extends PureComponent {
 ClinVarTrack.propTypes = {
   variants: PropTypes.arrayOf(
     PropTypes.shape({
-      alleleId: PropTypes.number.isRequired,
-      clinicalSignificance: PropTypes.string,
+      allele_id: PropTypes.number.isRequired,
+      clinical_significance: PropTypes.string,
       consequence: PropTypes.string,
-      goldStars: PropTypes.number,
+      gold_stars: PropTypes.number,
       pos: PropTypes.number.isRequired,
       variantId: PropTypes.string.isRequired,
     })
