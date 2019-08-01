@@ -231,10 +231,10 @@ const ConnectedVariantsInGene = ({ datasetId, gene, transcriptId, width }) => {
   const query = `{
     gene(gene_id: "${gene.gene_id}") {
       clinvar_variants${clinvarTranscriptArg} {
-        alleleId
-        clinicalSignificance
-        goldStars
-        majorConsequence
+        allele_id
+        clinical_significance
+        consequence
+        gold_stars
         pos
         variantId
       }

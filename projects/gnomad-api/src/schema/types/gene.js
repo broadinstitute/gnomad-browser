@@ -10,13 +10,13 @@ import {
 
 import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
 import datasetsConfig from '../datasets/datasetsConfig'
+
+import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
+import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
+import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
+
 import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
 
-import {
-  ClinvarVariantType,
-  fetchClinvarVariantsInGene,
-  fetchClinvarVariantsInTranscript,
-} from '../datasets/clinvar'
 import { UserVisibleError } from '../errors'
 
 import transcriptType, {
@@ -59,14 +59,15 @@ const geneType = new GraphQLObjectType({
       resolve: (obj, args, ctx) => fetchCompositeTranscriptByGene(ctx, obj),
     },
     clinvar_variants: {
-      type: new GraphQLList(ClinvarVariantType),
+      type: new GraphQLList(ClinvarVariantSummaryType),
       args: {
         transcriptId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
-        return args.transcriptId
-          ? fetchClinvarVariantsInTranscript(args.transcriptId, ctx)
-          : fetchClinvarVariantsInGene(obj.gene_id, ctx)
+        if (args.transcriptId) {
+          return fetchClinvarVariantsByTranscript(ctx, args.transcriptId)
+        }
+        return fetchClinvarVariantsByGene(ctx, obj.gene_id)
       },
     },
     pext: {
