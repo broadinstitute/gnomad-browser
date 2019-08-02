@@ -34,7 +34,7 @@ const layoutStackedPoints = (dataLayers, scale, spacing) => {
   }
 }
 
-export const StackedVariantsPlot = ({
+const StackedVariantsPlot = ({
   onClickVariant,
   symbolColor,
   symbolSize,
@@ -102,3 +102,5 @@ StackedVariantsPlot.defaultProps = {
   symbolSpacing: 6,
   symbolType: symbolStar,
 }
+
+export default StackedVariantsPlot

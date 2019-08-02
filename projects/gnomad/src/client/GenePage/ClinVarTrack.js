@@ -4,9 +4,10 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@broad/region-viewer'
-import { StackedVariantsPlot } from '@broad/track-variant'
 import { SegmentedControl } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+
+import StackedVariantsPlot from './StackedVariantsPlot'
 
 function isPathogenicOrLikelyPathogenic(clinvarVariant) {
   return (
