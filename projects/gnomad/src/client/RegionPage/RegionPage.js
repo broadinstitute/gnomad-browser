@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
 
 import { RegionViewer } from '@broad/region-viewer'
 import { GenesTrack } from '@broad/track-genes'
@@ -8,9 +9,33 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import CoverageTrack from './CoverageTrack'
+import RegionControls from './RegionControls'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
+
+const RegionInfoColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Matches responsive styles in AttributeList */
+  @media (max-width: 600px) {
+    align-items: stretch;
+  }
+`
+
+const RegionControlsWrapper = styled.div`
+  @media (min-width: 1201px) {
+    margin-top: 1em;
+  }
+`
 
 // eslint-disable-next-line no-shadow
 const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
@@ -35,9 +60,12 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
       <TrackPageSection>
         <DocumentTitle title={regionId} />
         <GnomadPageHeading selectedDataset={datasetId}>{regionId}</GnomadPageHeading>
-        <div>
+        <RegionInfoColumnWrapper>
           <RegionInfo region={region} />
-        </div>
+          <RegionControlsWrapper>
+            <RegionControls region={region} />
+          </RegionControlsWrapper>
+        </RegionInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
         padding={0}
