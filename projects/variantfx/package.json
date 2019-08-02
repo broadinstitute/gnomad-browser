@@ -21,7 +21,6 @@
     "@broad/table": "*",
     "@broad/track-navigator": "*",
     "@broad/track-transcript": "*",
-    "@broad/track-variant": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
     "core-js": "^3.0.1",
