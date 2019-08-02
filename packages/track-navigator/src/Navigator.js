@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { VariantAlleleFrequencyPlot } from '@broad/track-variant'
+import { VariantPlot } from '@broad/track-variant'
 
 import PositionAxis from './PositionAxis'
 
@@ -105,7 +105,7 @@ export class Navigator extends Component {
   renderVisibleVariants(visibleVariants) {
     const { height, scalePosition, width } = this.props
     return (
-      <VariantAlleleFrequencyPlot
+      <VariantPlot
         height={height}
         scalePosition={scalePosition}
         variants={visibleVariants}

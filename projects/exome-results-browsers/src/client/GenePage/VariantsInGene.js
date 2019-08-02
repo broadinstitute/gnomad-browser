@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { createGlobalStyle } from 'styled-components'
 
 import { NavigatorTrack } from '@broad/track-navigator'
-import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
+import VariantTrack from '@broad/track-variant'
 import { Modal } from '@broad/ui'
 
 import browserConfig from '@browser/config'
@@ -179,11 +179,8 @@ class VariantsInGene extends Component {
 
     return (
       <React.Fragment>
-        <VariantAlleleFrequencyTrack title={`Cases\n(${cases.length} variants)`} variants={cases} />
-        <VariantAlleleFrequencyTrack
-          title={`Controls\n(${controls.length} variants)`}
-          variants={controls}
-        />
+        <VariantTrack title={`Cases\n(${cases.length} variants)`} variants={cases} />
+        <VariantTrack title={`Controls\n(${controls.length} variants)`} variants={controls} />
         <NavigatorTrack
           hoveredVariant={hoveredVariant}
           onNavigatorClick={this.onNavigatorClick}

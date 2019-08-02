@@ -3,12 +3,12 @@ import React from 'react'
 
 import { Track } from '@broad/region-viewer'
 
-import { VariantAlleleFrequencyPlot } from './VariantAlleleFrequencyPlot'
+import { VariantPlot } from './VariantPlot'
 
-export const VariantAlleleFrequencyTrack = ({ height, title, variants }) => (
+export const VariantTrack = ({ height, title, variants }) => (
   <Track title={title}>
     {({ scalePosition, width }) => (
-      <VariantAlleleFrequencyPlot
+      <VariantPlot
         height={height}
         scalePosition={scalePosition}
         variants={variants}
@@ -18,7 +18,7 @@ export const VariantAlleleFrequencyTrack = ({ height, title, variants }) => (
   </Track>
 )
 
-VariantAlleleFrequencyTrack.propTypes = {
+VariantTrack.propTypes = {
   height: PropTypes.number,
   title: PropTypes.string,
   variants: PropTypes.arrayOf(
@@ -31,7 +31,7 @@ VariantAlleleFrequencyTrack.propTypes = {
   ).isRequired,
 }
 
-VariantAlleleFrequencyTrack.defaultProps = {
+VariantTrack.defaultProps = {
   height: 60,
   title: '',
 }
