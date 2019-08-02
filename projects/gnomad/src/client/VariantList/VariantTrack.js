@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 
-import { VariantAlleleFrequencyTrack } from '@broad/track-variant'
+import BaseVariantTrack from '@broad/track-variant'
 
 class VariantTrack extends PureComponent {
   render() {
-    return <VariantAlleleFrequencyTrack {...this.props} />
+    return <BaseVariantTrack {...this.props} />
   }
 }
 

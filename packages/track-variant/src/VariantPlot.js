@@ -37,7 +37,7 @@ const drawEllipse = (ctx, cx, cy, rx, ry) => {
   ctx.bezierCurveTo(cx - xOffset, y2, x1, cy + yOffset, x1, cy)
 }
 
-export class VariantAlleleFrequencyPlot extends Component {
+export class VariantPlot extends Component {
   static propTypes = {
     height: PropTypes.number.isRequired,
     scalePosition: PropTypes.func.isRequired,

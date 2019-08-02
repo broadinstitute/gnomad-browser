@@ -1,2 +1,2 @@
-export { VariantAlleleFrequencyPlot } from './VariantAlleleFrequencyPlot'
-export { VariantAlleleFrequencyTrack } from './VariantAlleleFrequencyTrack'
+export { VariantPlot } from './VariantPlot'
+export { VariantTrack as default } from './VariantTrack'
