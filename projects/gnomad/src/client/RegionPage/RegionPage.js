@@ -9,6 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import CoverageTrack from './CoverageTrack'
+import EditRegion from './EditRegion'
 import RegionControls from './RegionControls'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
@@ -59,7 +60,12 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
     <TrackPage>
       <TrackPageSection>
         <DocumentTitle title={regionId} />
-        <GnomadPageHeading selectedDataset={datasetId}>{regionId}</GnomadPageHeading>
+        <GnomadPageHeading
+          extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
+          selectedDataset={datasetId}
+        >
+          {regionId}
+        </GnomadPageHeading>
         <RegionInfoColumnWrapper>
           <RegionInfo region={region} />
           <RegionControlsWrapper>
