@@ -106,9 +106,9 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                     <strong>This variant is multiallelic. Other alt alleles are:</strong>
                   </p>
                   <ul>
-                    {variant.colocatedVariants.map(variantId => (
-                      <li key={variantId}>
-                        <Link to={`/variant/${variantId}`}>{variantId}</Link>
+                    {variant.colocatedVariants.map(colocatedVariantId => (
+                      <li key={colocatedVariantId}>
+                        <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
                       </li>
                     ))}
                   </ul>
