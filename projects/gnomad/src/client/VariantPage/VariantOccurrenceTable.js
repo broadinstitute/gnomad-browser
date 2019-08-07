@@ -56,8 +56,6 @@ const POPULATION_NAMES = {
   SAS: 'South Asian',
 }
 
-const TextTooltip = ({ tooltip }) => <span>{tooltip}</span>
-
 const FilteringAlleleFrequencyValue = styled.span`
   border-bottom: 1px dashed #000;
 
@@ -86,7 +84,7 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
 
   return (
     <span>
-      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation]} tooltipComponent={TextTooltip}>
+      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation]}>
         <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>
