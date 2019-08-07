@@ -5,7 +5,7 @@ import { ExternalLink, Link } from '@broad/ui'
 export default () => (
   <React.Fragment>
     <p>
-      The <ExternalLink href="http://epi-25.org">Epi25 collaborative</ExternalLink> is a global
+      The <ExternalLink href="https://epi-25.org">Epi25 collaborative</ExternalLink> is a global
       collaboration committed to aggregating, sequencing, and deep-phenotyping up to 25,000 epilepsy
       patients to advance epilepsy genetics research. Partnering with the Broad Institute, Epi25 has
       sequenced more than 14,000 patients as of 2018 from 40 research cohorts across the world.
@@ -46,7 +46,7 @@ export default () => (
       This work is supported and maintained by a tremendous effort worldwide, including the Epi25
       principal investigators, NHGRI (CCDG), and the Stanley Center at the Broad Institute. We are
       especially grateful to all the{' '}
-      <ExternalLink href="http://epi-25.org/epi25-members/">consortium members</ExternalLink> and
+      <ExternalLink href="https://epi-25.org/epi25-members/">consortium members</ExternalLink> and
       patients for their gracious contribution to make this collaboration possible. We welcome any
       feedback! You can contact us by{' '}
       <ExternalLink href="mailto:yfeng@broadinstitute.org">email</ExternalLink> if you have any

@@ -181,5 +181,12 @@ export default {
       },
     ],
   },
-  pages: [],
+  pages: [
+    {
+      path: '/terms',
+      link: 'Terms',
+      heading: 'Terms of Use',
+      component: 'TermsPage',
+    },
+  ],
 }
