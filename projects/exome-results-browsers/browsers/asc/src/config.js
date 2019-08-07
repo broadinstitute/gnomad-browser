@@ -153,4 +153,5 @@ export default {
       },
     ],
   },
+  pages: [],
 }

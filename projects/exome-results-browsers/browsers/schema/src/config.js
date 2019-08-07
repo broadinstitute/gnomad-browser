@@ -228,4 +228,5 @@ export default {
       },
     ],
   },
+  pages: [],
 }

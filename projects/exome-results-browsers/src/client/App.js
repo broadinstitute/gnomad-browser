@@ -11,6 +11,7 @@ import ErrorBoundary from './ErrorBoundary'
 import GenePage from './GenePage/GenePage'
 import GeneResultsPage from './GeneResultsPage/GeneResultsPage'
 import HomePage from './HomePage'
+import { makePage } from './InfoPage'
 import PageNotFoundPage from './PageNotFoundPage'
 import TopBar from './TopBar'
 
@@ -24,6 +25,11 @@ const GlobalStyles = createGlobalStyle`
 `
 
 registerConsequences(browserConfig.variants.consequences)
+
+const renderedPages = browserConfig.pages.map(page => ({
+  ...page,
+  component: makePage(page),
+}))
 
 const App = () => (
   <React.Fragment>
@@ -50,6 +56,9 @@ const App = () => (
             path="/gene/:gene"
             render={({ match }) => <GenePage geneIdOrName={match.params.gene} />}
           />
+          {renderedPages.map(({ path, component }) => (
+            <Route key={path} path={path} component={component} />
+          ))}
           <Route component={PageNotFoundPage} />
         </Switch>
       </ErrorBoundary>

@@ -117,6 +117,13 @@ class TopBar extends Component {
               Results
             </Link>
           </li>
+          {browserConfig.pages.map(({ path, link }) => (
+            <li key={path}>
+              <Link to={path} onClick={this.closeMenu}>
+                {link}
+              </Link>
+            </li>
+          ))}
         </Menu>
       </TopBarWrapper>
     )

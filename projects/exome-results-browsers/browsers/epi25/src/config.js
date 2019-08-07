@@ -181,4 +181,5 @@ export default {
       },
     ],
   },
+  pages: [],
 }
