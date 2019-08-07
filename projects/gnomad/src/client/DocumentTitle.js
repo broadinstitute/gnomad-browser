@@ -2,13 +2,10 @@ import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 
 const DocumentTitle = ({ title }) => {
-  useEffect(
-    () => {
-      const fullTitle = title ? `${title} | gnomAD` : 'gnomAD'
-      document.title = fullTitle
-    },
-    [title]
-  )
+  useEffect(() => {
+    const fullTitle = title ? `${title} | gnomAD` : 'gnomAD'
+    document.title = fullTitle
+  }, [title])
   return null
 }
 

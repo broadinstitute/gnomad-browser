@@ -40,7 +40,7 @@ export class Query extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired,
-    variables: PropTypes.object,
+    variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
@@ -60,10 +60,8 @@ export class Query extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.query !== prevProps.query ||
-      !areVariablesEqual(this.props.variables, prevProps.variables)
-    ) {
+    const { query, variables } = this.props
+    if (query !== prevProps.query || !areVariablesEqual(variables, prevProps.variables)) {
       this.loadData()
     }
   }
@@ -73,6 +71,8 @@ export class Query extends Component {
   }
 
   loadData() {
+    const { query, variables } = this.props
+
     this.setState({
       loading: true,
       error: null,
@@ -83,9 +83,7 @@ export class Query extends Component {
       this.currentRequest.cancel()
     }
 
-    this.currentRequest = cancelable(
-      gqlFetch(process.env.GNOMAD_API_URL)(this.props.query, this.props.variables)
-    )
+    this.currentRequest = cancelable(gqlFetch(process.env.GNOMAD_API_URL)(query, variables))
     this.currentRequest.promise.then(
       response => {
         if (!this.mounted) {
@@ -113,6 +111,7 @@ export class Query extends Component {
   }
 
   render() {
-    return this.props.children(this.state)
+    const { children } = this.props
+    return children(this.state)
   }
 }

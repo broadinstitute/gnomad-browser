@@ -38,7 +38,7 @@ const renderGnomadVariantFlag = (variant, exomeOrGenome) => {
   if (!variant[exomeOrGenome]) {
     return <Badge level="error">No variant</Badge>
   }
-  const filters = variant[exomeOrGenome].filters
+  const { filters } = variant[exomeOrGenome]
   if (filters.length === 0) {
     return <Badge level="success">Pass</Badge>
   }
