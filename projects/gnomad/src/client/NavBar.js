@@ -84,18 +84,6 @@ const OuterWrapper = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
 `
 
-const Notice = styled.div`
-  padding: 0.5em;
-  background: #428bca;
-  color: white;
-  text-align: center;
-
-  a {
-    color: white;
-    text-decoration: none;
-  }
-`
-
 class NavBar extends Component {
   state = {
     isExpanded: false,
@@ -154,12 +142,6 @@ class NavBar extends Component {
             </li>
           </Menu>
         </NavBarWrapper>
-        <Notice>
-          This is a new version of the gnomAD browser. The old version is available at{' '}
-          <a href="http://gnomad-old.broadinstitute.org" rel="noopener noreferrer" target="_blank">
-            http://gnomad-old.broadinstitute.org
-          </a>
-        </Notice>
       </OuterWrapper>
     )
   }
