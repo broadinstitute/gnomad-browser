@@ -1,0 +1,19 @@
+{
+  "name": "@broad/track-transcripts",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.js",
+  "dependencies": {
+    "@broad/region-viewer": "*",
+    "@broad/track-regions": "*",
+    "@broad/ui": "*",
+    "@fortawesome/fontawesome-free": "^5.8.1",
+    "d3-array": "^1.2.4",
+    "d3-scale": "^2.2.2",
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react": "^16.8.2",
+    "styled-components": "^4.2.0"
+  }
+}
