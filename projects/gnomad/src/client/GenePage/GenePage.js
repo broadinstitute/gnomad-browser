@@ -1,13 +1,13 @@
+import { mean } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { RegionViewer } from '@broad/region-viewer'
-import { ConnectedTranscriptsTrack } from '@broad/track-transcript'
-import { screenSize } from '@broad/ui'
+import { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
+import { ExternalLink } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -16,8 +16,6 @@ import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { ConstraintTableOrPlaceholder } from './Constraint'
 import GeneCoverageTrack from './CoverageTrack'
-import { fetchGnomadGenePage } from './fetch'
-import GeneDataContainer from './GeneDataContainer'
 import GeneInfo from './GeneInfo'
 import RegionalConstraintTrack from './RegionalConstraintTrack'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
@@ -110,6 +108,26 @@ const transcriptFeatureAttributes = {
   },
 }
 
+const sortTranscripts = (transcripts, canonicalTranscriptId) =>
+  transcripts.sort((t1, t2) => {
+    // Sort transcripts by isCanonical, mean expression, transcript ID
+    if (t1.transcript_id === canonicalTranscriptId) {
+      return -1
+    }
+    if (t2.transcript_id === canonicalTranscriptId) {
+      return 1
+    }
+
+    const t1Mean = mean(Object.values(t1.gtex_tissue_expression))
+    const t2Mean = mean(Object.values(t2.gtex_tissue_expression))
+
+    if (t1Mean === t2Mean) {
+      return t1.transcript_id.localeCompare(t2.transcript_id)
+    }
+
+    return t2Mean - t1Mean
+  })
+
 class GenePage extends Component {
   static propTypes = {
     datasetId: PropTypes.string.isRequired,
@@ -163,13 +181,6 @@ class GenePage extends Component {
     )
     const hasCodingExons = cdsCompositeExons.length > 0
 
-    const compositeExons = gene.composite_transcript.exons.filter(
-      exon =>
-        exon.feature_type === 'CDS' ||
-        (exon.feature_type === 'UTR' && includeUTRs) ||
-        (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-    )
-
     const regionViewerRegions =
       datasetId === 'gnomad_sv_r2'
         ? [
@@ -180,7 +191,12 @@ class GenePage extends Component {
               stop: gene.stop,
             },
           ]
-        : compositeExons
+        : gene.composite_transcript.exons.filter(
+            exon =>
+              exon.feature_type === 'CDS' ||
+              (exon.feature_type === 'UTR' && includeUTRs) ||
+              (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+          )
 
     if (datasetId === 'gnomad_sv_r2' && transcriptId) {
       return <Redirect to={`/gene/${geneId}?dataset=gnomad_sv_r2`} />
@@ -295,24 +311,43 @@ class GenePage extends Component {
           </ControlPanel>
 
           {hasCodingExons && (
-            <ConnectedTranscriptsTrack
-              showUTRs={includeUTRs}
-              showNonCodingTranscripts={includeNonCodingTranscripts}
-              compositeExons={compositeExons}
-              filenameForExport={`${geneId}_transcripts`}
-              renderTranscriptId={
+            <TranscriptsTrackWithTissueExpression
+              activeTranscript={{
+                exons: gene.composite_transcript.exons,
+                strand: gene.strand,
+              }}
+              exportFilename={`${gene.gene_id}_transcripts`}
+              expressionLabel={
+                <span>
+                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.gene_name}`}>
+                    Isoform expression
+                  </ExternalLink>
+                  <QuestionMark topic="gtex" />
+                </span>
+              }
+              renderTranscriptLeftPanel={
                 datasetId === 'gnomad_sv_r2'
-                  ? txId => txId
-                  : (txId, { isCanonical, isSelected }) => (
+                  ? ({ transcript }) => <span>{transcript.transcript_id}</span>
+                  : ({ transcript }) => (
                       <TranscriptLink
-                        to={`/gene/${gene.gene_id}/transcript/${txId}`}
-                        isCanonical={isCanonical}
-                        isSelected={isSelected}
+                        to={`/gene/${gene.gene_id}/transcript/${transcript.transcript_id}`}
+                        isCanonical={transcript.transcript_id === gene.canonical_transcript}
+                        isSelected={transcript.transcript_id === transcriptId}
                       >
-                        {txId}
+                        {transcript.transcript_id}
                       </TranscriptLink>
                     )
               }
+              showNonCodingTranscripts={includeNonCodingTranscripts}
+              showUTRs={includeUTRs}
+              transcripts={sortTranscripts(
+                gene.transcripts.map(transcript => ({
+                  ...transcript,
+                  exons: transcript.exons.some(exon => exon.feature_type !== 'exon')
+                    ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
+                    : transcript.exons,
+                }))
+              )}
             />
           )}
 
@@ -349,34 +384,4 @@ class GenePage extends Component {
   }
 }
 
-const SizedGenePage = connect(state => ({ screenSize: screenSize(state) }))(GenePage)
-
-const ConnectedGenePage = ({ datasetId, geneIdOrName, transcriptId, ...otherProps }) => (
-  <GeneDataContainer
-    fetchGene={fetchGnomadGenePage}
-    geneIdOrName={geneIdOrName}
-    transcriptId={transcriptId}
-  >
-    {({ gene }) => (
-      <SizedGenePage
-        {...otherProps}
-        datasetId={datasetId}
-        gene={gene}
-        geneId={gene.gene_id}
-        transcriptId={transcriptId}
-      />
-    )}
-  </GeneDataContainer>
-)
-
-ConnectedGenePage.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  geneIdOrName: PropTypes.string.isRequired,
-  transcriptId: PropTypes.string,
-}
-
-ConnectedGenePage.defaultProps = {
-  transcriptId: undefined,
-}
-
-export default ConnectedGenePage
+export default GenePage
