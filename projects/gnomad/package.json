@@ -19,12 +19,11 @@
   },
   "devDependencies": {
     "@broad/help": "*",
-    "@broad/redux-genes": "*",
     "@broad/region-viewer": "*",
     "@broad/track-coverage": "*",
     "@broad/track-genes": "*",
     "@broad/track-navigator": "*",
-    "@broad/track-transcript": "*",
+    "@broad/track-transcripts": "*",
     "@broad/track-variant": "*",
     "@broad/ui": "*",
     "@broad/utilities": "*",
