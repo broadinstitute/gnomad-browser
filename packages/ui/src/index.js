@@ -8,8 +8,6 @@ export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
 
 export { CategoryFilterControl } from './CategoryFilterControl'
 
-export { ConsequenceCategoriesControl } from './ConsequenceCategoriesControl'
-
 export {
   Table,
   VerticalTextLabels,
