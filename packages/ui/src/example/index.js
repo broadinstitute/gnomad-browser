@@ -11,6 +11,7 @@ import {
   PrimaryButton,
   TextButton,
 } from '..'
+import CategoryFilterControlExample from './CategoryFilterControlExample'
 import CheckboxExample from './CheckboxExample'
 import ComboboxExample from './ComboboxExample'
 import ConsequenceCategoriesControlExample from './ConsequenceCategoriesControlExample'
@@ -52,6 +53,11 @@ const UiExample = () => (
     <section>
       <h2>Combobox</h2>
       <ComboboxExample />
+    </section>
+
+    <section>
+      <h2>Category Filter</h2>
+      <CategoryFilterControlExample />
     </section>
 
     <section>
