@@ -37,6 +37,7 @@ const Button = styled.button`
 `
 
 const CheckboxIcon = styled.span`
+  position: relative;
   display: inline-block;
   box-sizing: border-box;
   width: 14px;
@@ -48,6 +49,14 @@ const CheckboxIcon = styled.span`
   border-radius: 3px;
   border-style: solid;
   font-size: 10px;
+
+  > svg {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 10px;
+    height: 10px;
+  }
 `
 
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
