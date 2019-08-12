@@ -2,17 +2,25 @@ import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import {
-  Checkbox,
-  Combobox,
-  ConsequenceCategoriesControl,
-  KeyboardShortcut,
-  SearchInput,
-} from '@broad/ui'
+import { CategoryFilterControl, Checkbox, Combobox, KeyboardShortcut, SearchInput } from '@broad/ui'
 
 import browserConfig from '@browser/config'
 
 import ExportVariantsButton from './ExportVariantsButton'
+
+const consequenceCategoryColors = {
+  lof: '#FF583F',
+  missense: '#F0C94D',
+  synonymous: 'green',
+  other: '#757575',
+}
+
+const consequenceCategoryLabels = {
+  lof: 'LoF',
+  missense: 'Missense',
+  synonymous: 'Synonymous',
+  other: 'Other',
+}
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -121,9 +129,15 @@ const VariantFilterControls = ({
     <SettingsWrapper>
       <FiltersWrapper>
         <FiltersFirstColumn>
-          <ConsequenceCategoriesControl
+          <CategoryFilterControl
+            categories={['lof', 'missense', 'synonymous', 'other'].map(category => ({
+              id: category,
+              label: consequenceCategoryLabels[category],
+              className: 'category',
+              color: consequenceCategoryColors[category],
+            }))}
             categorySelections={filter.includeCategories}
-            id="variant-filter"
+            id="variant-consequence-category-filter"
             onChange={includeCategories => {
               onChangeFilter({ ...filter, includeCategories })
             }}
