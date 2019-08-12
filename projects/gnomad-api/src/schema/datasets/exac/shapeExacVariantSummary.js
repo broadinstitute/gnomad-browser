@@ -73,6 +73,8 @@ const shapeExacVariantSummary = context => {
       consequence: transcriptConsequence.major_consequence,
       consequence_in_canonical_transcript: !!transcriptConsequence.canonical,
       flags: getFlags(variantData, transcriptConsequence),
+      gene_id: transcriptConsequence.gene_id,
+      gene_symbol: transcriptConsequence.gene_symbol,
       hgvs: transcriptConsequence.hgvs,
       hgvsc: transcriptConsequence.hgvsc ? transcriptConsequence.hgvsc.split(':')[1] : null,
       hgvsp: transcriptConsequence.hgvsp ? transcriptConsequence.hgvsp.split(':')[1] : null,
