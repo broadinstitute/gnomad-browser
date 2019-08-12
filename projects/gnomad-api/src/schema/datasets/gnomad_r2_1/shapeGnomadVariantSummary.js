@@ -88,6 +88,9 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
       hgvs: transcriptConsequence.hgvs,
       hgvsc: transcriptConsequence.hgvsc ? transcriptConsequence.hgvsc.split(':')[1] : null,
       hgvsp: transcriptConsequence.hgvsp ? transcriptConsequence.hgvsp.split(':')[1] : null,
+      lof: transcriptConsequence.lof,
+      lof_filter: transcriptConsequence.lof_filter,
+      lof_flags: transcriptConsequence.lof_flags,
       rsid: variantData.rsid,
       [isExomeVariant ? 'genome' : 'exome']: null,
       [isExomeVariant ? 'exome' : 'genome']: {
