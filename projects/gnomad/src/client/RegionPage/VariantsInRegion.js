@@ -74,6 +74,7 @@ class VariantsInRegion extends Component {
     getColumns({
       datasetId,
       width,
+      includeGene: true,
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
     })
@@ -219,6 +220,8 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
       variants(dataset: ${datasetId}) {
         consequence
         flags
+        gene_id
+        gene_symbol
         hgvs
         hgvsc
         hgvsp
