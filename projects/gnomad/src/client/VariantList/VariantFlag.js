@@ -10,13 +10,13 @@ const flagProps = {
     formatTooltip: () => 'Found in a low complexity region\nVariant annotation or quality dubious',
   },
   lc_lof: {
-    children: 'LC LoF',
+    children: 'LC pLoF',
     level: 'error',
     formatTooltip: variant =>
-      `Low-confidence LoF: ${variant.lof_filter}\nVariant annotation or quality dubious`,
+      `Low-confidence pLoF: ${variant.lof_filter}\nVariant annotation or quality dubious`,
   },
   lof_flag: {
-    children: 'LoF flag',
+    children: 'pLoF flag',
     level: 'warning',
     formatTooltip: variant =>
       `Flagged by LOFTEE: ${variant.lof_flags}\nVariant annotation or quality dubious`,

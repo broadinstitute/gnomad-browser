@@ -13,7 +13,7 @@ const consequenceCategoryColors = {
 }
 
 const consequenceCategoryLabels = {
-  lof: 'LoF',
+  lof: 'pLoF',
   missense: 'Missense',
   synonymous: 'Synonymous',
   other: 'Other',

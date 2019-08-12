@@ -238,7 +238,7 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <td>{renderOEGraph(constraintData, 'mis')}</td>
             </tr>
             <tr>
-              <th scope="row">LoF</th>
+              <th scope="row">pLoF</th>
               <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
               <td>{constraintData.obs_lof === null ? '—' : constraintData.obs_lof}</td>
               <td>

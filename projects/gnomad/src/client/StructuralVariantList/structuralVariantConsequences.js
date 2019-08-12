@@ -70,7 +70,7 @@ export const svConsequenceLabels = rankedConsequences.reduce(
 )
 
 export const svConsequenceCategoryLabels = {
-  lof: 'LoF',
+  lof: 'pLoF',
   dup_lof: 'Int. exon duplication',
   copy_gain: 'Copy gain',
   other: 'Other',
