@@ -248,6 +248,9 @@ const ConnectedVariantsInGene = ({ datasetId, gene, transcriptId, width }) => {
         hgvs
         hgvsc
         hgvsp
+        lof
+        lof_filter
+        lof_flags
         pos
         rsid
         variant_id: variantId
