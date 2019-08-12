@@ -82,7 +82,7 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
     return (
       <AttributeList>
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
-        <Attribute name="LoF">
+        <Attribute name="pLoF">
           <span style={{ color: colors.red }}>Low-confidence (Non-protein-coding transcript)</span>
         </Attribute>
       </AttributeList>
@@ -93,7 +93,7 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
     return (
       <AttributeList>
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
-        <Attribute name="LoF">
+        <Attribute name="pLoF">
           <span style={{ color: consequence.lof === 'HC' ? colors.green : colors.red }}>
             {consequence.lof === 'HC'
               ? 'High-confidence'

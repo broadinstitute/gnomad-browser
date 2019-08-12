@@ -430,7 +430,7 @@ export default () => (
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
-            LoF Metrics by Transcript Hail Table
+            pLoF Metrics by Transcript Hail Table
           </ExternalLink>
           <br />
           gs://gnomad-public/release/2.1.1/constraint/
@@ -439,17 +439,17 @@ export default () => (
         </ListItem>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz">
-            LoF Metrics by Transcript TSV
+            pLoF Metrics by Transcript TSV
           </ExternalLink>
         </ListItem>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz">
-            LoF Metrics by Gene TSV
+            pLoF Metrics by Gene TSV
           </ExternalLink>
         </ListItem>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz">
-            LoF Metrics Downsamplings TSV
+            pLoF Metrics Downsamplings TSV
           </ExternalLink>
         </ListItem>
       </FileList>

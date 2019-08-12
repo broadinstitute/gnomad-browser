@@ -259,7 +259,7 @@ export default () => (
         </p>
       </Answer>
 
-      <Question id="what-is-included-in-lof">What is included in LoF?</Question>
+      <Question id="what-is-included-in-lof">What is included in pLoF?</Question>
       <Answer>
         <p>
           Nonsense, splice acceptor, and splice donor variants caused by single nucleotide changes.
@@ -551,16 +551,16 @@ export default () => (
             at a score threshold of 30 and provided by Heng Li
           </ListItem>
           <ListItem>
-            LC LoF: Low-confidence LoF (filtered by{' '}
+            LC pLoF: Low-confidence pLoF (filtered by{' '}
             <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink>)
           </ListItem>
 
           <ListItem>
-            LoF Flag: Flagged by{' '}
+            pLoF Flag: Flagged by{' '}
             <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink>
           </ListItem>
           <ListItem>
-            NC Transcript: Marked as LoF by VEP, but appears on a non-protein-coding transcript
+            NC Transcript: Marked as pLoF by VEP, but appears on a non-protein-coding transcript
           </ListItem>
         </List>
       </Answer>

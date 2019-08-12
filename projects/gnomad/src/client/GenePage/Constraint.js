@@ -45,7 +45,7 @@ const ConstraintTable = ({ constraintData }) => (
         </td>
       </tr>
       <tr>
-        <th scope="row">LoF</th>
+        <th scope="row">pLoF</th>
         <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
         <td>{constraintData.n_lof}</td>
         <td>
@@ -93,7 +93,7 @@ const ConstraintTablePlaceholder = ({ message }) => (
         </td>
       </tr>
       <tr>
-        <th scope="row">LoF</th>
+        <th scope="row">pLoF</th>
         <td colSpan={3} />
       </tr>
     </tbody>
