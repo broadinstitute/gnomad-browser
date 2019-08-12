@@ -125,7 +125,7 @@ export const getColumns = ({
       render: (row, key) =>
         row[key]
           .filter(flag => flag !== 'segdup')
-          .map(flag => <VariantFlag key={flag} type={flag} />),
+          .map(flag => <VariantFlag key={flag} type={flag} variant={row} />),
     },
     {
       key: 'ac',

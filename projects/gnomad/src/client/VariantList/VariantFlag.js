@@ -7,34 +7,44 @@ const flagProps = {
   lcr: {
     children: 'LCR',
     level: 'info',
-    tooltip: 'Found in a low complexity region\nVariant annotation or quality dubious',
+    formatTooltip: () => 'Found in a low complexity region\nVariant annotation or quality dubious',
   },
   lc_lof: {
     children: 'LC LoF',
     level: 'error',
-    tooltip: 'Low-confidence LoF\nVariant annotation or quality dubious',
+    formatTooltip: variant =>
+      `Low-confidence LoF: ${variant.lof_filter}\nVariant annotation or quality dubious`,
   },
   lof_flag: {
     children: 'LoF flag',
     level: 'warning',
-    tooltip: 'Flagged by LOFTEE\nVariant annotation or quality dubious',
+    formatTooltip: variant =>
+      `Flagged by LOFTEE: ${variant.lof_flags}\nVariant annotation or quality dubious`,
   },
   nc_transcript: {
     children: 'NC Transcript',
     level: 'error',
-    tooltip: 'Non-protein-coding transcript\nVariant annotation dubious',
+    formatTooltip: () => 'Non-protein-coding transcript\nVariant annotation dubious',
   },
   mnv: {
     children: 'MNV',
     level: 'error',
-    tooltip: 'Multi-nucleotide variant\nVariant annotation dubious',
+    formatTooltip: () => 'Multi-nucleotide variant\nVariant annotation dubious',
   },
 }
 
-const VariantFlag = ({ type }) => <Badge {...flagProps[type]} />
+const VariantFlag = ({ type, variant }) => {
+  const { children, level, formatTooltip } = flagProps[type]
+  return (
+    <Badge level={level} tooltip={formatTooltip(variant)}>
+      {children}
+    </Badge>
+  )
+}
 
 VariantFlag.propTypes = {
   type: PropTypes.oneOf(Object.keys(flagProps)).isRequired,
+  variant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 }
 
 export default VariantFlag
