@@ -38,7 +38,13 @@ const renderExponentialNumberCell = (row, key) => {
   return truncated.toExponential()
 }
 
-export const getColumns = ({ datasetId, width, includeHomozygoteAC, includeHemizygoteAC }) => {
+export const getColumns = ({
+  datasetId,
+  width,
+  includeGene = false,
+  includeHomozygoteAC = false,
+  includeHemizygoteAC = false,
+}) => {
   const columns = [
     {
       key: 'variant_id',
@@ -144,6 +150,20 @@ export const getColumns = ({ datasetId, width, includeHomozygoteAC, includeHemiz
       render: renderExponentialNumberCell,
     },
   ]
+
+  if (includeGene) {
+    columns.splice(2, 0, {
+      key: 'gene',
+      heading: 'Gene',
+      isSortable: false,
+      minWidth: 100,
+      render: row => (
+        <span className="grid-cell-content">
+          <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
+        </span>
+      ),
+    })
+  }
 
   if (includeHomozygoteAC) {
     columns.push({

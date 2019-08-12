@@ -80,6 +80,7 @@ class VariantsInGene extends Component {
     getColumns({
       datasetId,
       width,
+      includeGene: false,
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
     })
