@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import { NavigatorTrack } from '@broad/track-navigator'
 
 import datasetLabels from '../datasetLabels'
+import Link from '../Link'
 import { Query } from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -203,11 +204,12 @@ class VariantsInGene extends Component {
               variants={renderedVariants}
             />
           </div>
-          {!transcriptId && (
-            <p style={{ marginBottom: 0 }}>
-              † denotes a consequence that is for a non-canonical transcript
-            </p>
-          )}
+          <p>
+            Only variants located in or within 75 base pairs of a coding exon are shown here. To see
+            intronic variants, use the{' '}
+            <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
+          </p>
+          {!transcriptId && <p>† denotes a consequence that is for a non-canonical transcript</p>}
           <VariantTable
             columns={this.getColumns(width, gene.chrom, datasetId)}
             highlightText={filter.searchText}
