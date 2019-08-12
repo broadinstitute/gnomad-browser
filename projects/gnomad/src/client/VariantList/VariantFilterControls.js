@@ -3,7 +3,21 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
-import { Checkbox, ConsequenceCategoriesControl, KeyboardShortcut, SearchInput } from '@broad/ui'
+import { CategoryFilterControl, Checkbox, KeyboardShortcut, SearchInput } from '@broad/ui'
+
+const consequenceCategoryColors = {
+  lof: '#FF583F',
+  missense: '#F0C94D',
+  synonymous: 'green',
+  other: '#757575',
+}
+
+const consequenceCategoryLabels = {
+  lof: 'LoF',
+  missense: 'Missense',
+  synonymous: 'Synonymous',
+  other: 'Other',
+}
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -63,9 +77,15 @@ const VariantFilterControls = ({ onChange, value }) => {
   return (
     <SettingsWrapper>
       <ConsequenceFiltersWrapper>
-        <ConsequenceCategoriesControl
+        <CategoryFilterControl
+          categories={['lof', 'missense', 'synonymous', 'other'].map(category => ({
+            id: category,
+            label: consequenceCategoryLabels[category],
+            className: 'category',
+            color: consequenceCategoryColors[category],
+          }))}
           categorySelections={value.includeCategories}
-          id="variant-filter"
+          id="variant-consequence-category-filter"
           onChange={includeCategories => {
             onChange({ ...value, includeCategories })
           }}
