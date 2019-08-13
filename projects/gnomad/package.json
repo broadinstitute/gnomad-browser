@@ -22,7 +22,6 @@
     "@broad/region-viewer": "*",
     "@broad/track-coverage": "*",
     "@broad/track-genes": "*",
-    "@broad/track-navigator": "*",
     "@broad/track-transcripts": "*",
     "@broad/track-variant": "*",
     "@broad/ui": "*",

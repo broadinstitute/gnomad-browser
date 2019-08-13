@@ -3,7 +3,7 @@ import memoizeOne from 'memoize-one'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { NavigatorTrack } from '@broad/track-navigator'
+import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
 import { Query } from '../Query'
@@ -179,13 +179,21 @@ class VariantsInRegion extends Component {
           title={`${datasetLabel}\n(${renderedVariants.length})`}
           variants={renderedVariants}
         />
-        <NavigatorTrack
-          hoveredVariant={hoveredVariant}
-          onNavigatorClick={this.onNavigatorClick}
-          title="Viewing in table"
-          variants={renderedVariants}
-          visibleVariantWindow={visibleVariantWindow}
-        />
+
+        <Cursor onClick={this.onNavigatorClick}>
+          <VariantTrack
+            title="Viewing in table"
+            variants={renderedVariants
+              .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+              .map(variant => ({
+                ...variant,
+                isHighlighted: variant.variant_id === hoveredVariant,
+              }))}
+          />
+        </Cursor>
+
+        <PositionAxisTrack />
+
         <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
           <VariantFilterControls onChange={this.onFilter} value={filter} />
           <div>
