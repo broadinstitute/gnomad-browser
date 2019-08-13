@@ -50,11 +50,11 @@ const App = () => (
             if (anchor) {
               anchor.scrollIntoView()
             } else {
-              document.body.scrollTo(0, 0)
+              document.body.scrollTop = 0
             }
           }, 0)
         } else {
-          document.body.scrollTo(0, 0)
+          document.body.scrollTop = 0
         }
       }}
     />
