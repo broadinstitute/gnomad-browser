@@ -3,8 +3,7 @@ import React from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@broad/region-viewer'
-import { PositionAxisTrack } from '@broad/track-navigator'
+import { RegionViewer, PositionAxisTrack } from '@broad/region-viewer'
 
 import CoverageTrack from '../RegionPage/CoverageTrack'
 import Link from '../Link'
