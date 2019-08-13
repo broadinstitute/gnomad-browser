@@ -45,6 +45,7 @@ export class VariantPlot extends Component {
       PropTypes.shape({
         allele_freq: PropTypes.number,
         consequence: PropTypes.string,
+        isHighlighted: PropTypes.bool,
         pos: PropTypes.number.isRequired,
         variant_id: PropTypes.string.isRequired,
       })
@@ -97,7 +98,18 @@ export class VariantPlot extends Component {
       this.ctx.closePath()
       this.ctx.fillStyle = fill
       this.ctx.fill()
+      this.ctx.lineWidth = 0.5
+      this.ctx.setLineDash([])
       this.ctx.stroke()
+
+      if (variant.isHighlighted) {
+        this.ctx.beginPath()
+        drawEllipse(this.ctx, markerX, markerY, rx + 5, ry + 5)
+        this.ctx.closePath()
+        this.ctx.lineWidth = 1
+        this.ctx.setLineDash([3, 3])
+        this.ctx.stroke()
+      }
     })
   }
 
