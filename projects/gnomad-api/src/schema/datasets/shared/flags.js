@@ -44,6 +44,9 @@ const getFlagsForGeneContext = (variantData, geneId) => {
     if (isLofOnNonCodingTranscript(mostSevereConsequenceInGene)) {
       flags.push('nc_transcript')
     }
+    if (mostSevereConsequenceInGene.lof === 'OS') {
+      flags.push('os_lof')
+    }
   }
 
   return flags
@@ -74,6 +77,9 @@ const getFlagsForRegionContext = variantData => {
     if (isLofOnNonCodingTranscript(mostSevereConsequence)) {
       flags.push('nc_transcript')
     }
+    if (mostSevereConsequence.lof === 'OS') {
+      flags.push('os_lof')
+    }
   }
 
   return flags
@@ -88,6 +94,10 @@ const getFlagsForTranscriptContext = (variantData, transcriptId) => {
   if (consequenceInTranscript) {
     if (consequenceInTranscript.lof === 'LC') {
       flags.push('lc_lof')
+    }
+
+    if (consequenceInTranscript.lof === 'OS') {
+      flags.push('os_lof')
     }
 
     if (consequenceInTranscript.lof && consequenceInTranscript.lof_flags) {

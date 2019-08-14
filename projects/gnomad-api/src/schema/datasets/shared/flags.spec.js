@@ -353,4 +353,99 @@ describe('LOFTEE', () => {
       })
     })
   })
+
+  describe('os_lof', () => {
+    describe('gene context', () => {
+      const variant = {
+        sortedTranscriptConsequences: [
+          { gene_id: 'G1', lof: 'OS' },
+          { gene_id: 'G1', lof: 'LC' },
+          { gene_id: 'G2', lof: 'LC' },
+          { gene_id: 'G2', lof: 'OS' },
+          { gene_id: 'G3', lof: '' },
+          { gene_id: 'G3', lof: 'OS' },
+          { gene_id: 'G4', lof: 'HC' },
+          { gene_id: 'G5', lof: '' },
+        ],
+      }
+
+      it.each([
+        ['G1', true],
+        ['G2', false],
+        ['G3', false],
+        ['G4', false],
+        ['G5', false],
+        ['G6', false],
+      ])(
+        'it should be included only if the most severe consequence in the specified gene is LOFTEE annotated OS',
+        (geneId, expected) => {
+          expect(getFlagsForContext({ type: 'gene', geneId })(variant).includes('os_lof')).toBe(
+            expected
+          )
+        }
+      )
+
+      it('should not be included for variants without consequences', () => {
+        expect(getFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('os_lof')).toBe(
+          false
+        )
+      })
+    })
+
+    describe('region context', () => {
+      it.each([
+        [
+          {
+            sortedTranscriptConsequences: [{ lof: 'OS' }, { lof: 'HC' }],
+          },
+          true,
+        ],
+        [
+          {
+            sortedTranscriptConsequences: [{ lof: 'HC' }, { lof: 'OS' }],
+          },
+          false,
+        ],
+        [
+          {
+            sortedTranscriptConsequences: [{ lof: '' }],
+          },
+          false,
+        ],
+        [{ sortedTranscriptConsequences: [] }, false],
+        [{}, false],
+      ])(
+        'it should be included only if the most severe consequence is LOFTEE annotated OS',
+        (variant, expected) => {
+          expect(getFlagsForContext({ type: 'region' })(variant).includes('os_lof')).toBe(expected)
+        }
+      )
+    })
+
+    describe('transcript context', () => {
+      const variant = {
+        sortedTranscriptConsequences: [
+          { transcript_id: 'T1', lof: 'OS' },
+          { transcript_id: 'T2', lof: 'HC' },
+          { transcript_id: 'T3', lof: 'LC' },
+          { transcript_id: 'T4', lof: '' },
+        ],
+      }
+
+      it.each([['T1', true], ['T2', false], ['T3', false], ['T4', false], ['T5', false]])(
+        'it should be included only if the consequence in the specified transcript is LOFTEE annotated OS',
+        (transcriptId, expected) => {
+          expect(
+            getFlagsForContext({ type: 'transcript', transcriptId })(variant).includes('os_lof')
+          ).toBe(expected)
+        }
+      )
+
+      it('should not be included for variants without consequences', () => {
+        expect(
+          getFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes('os_lof')
+        ).toBe(false)
+      })
+    })
+  })
 })

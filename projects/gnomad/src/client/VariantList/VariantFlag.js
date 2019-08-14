@@ -26,6 +26,12 @@ const flagProps = {
     level: 'error',
     formatTooltip: () => 'Non-protein-coding transcript\nVariant annotation dubious',
   },
+  os_lof: {
+    children: 'OS pLoF',
+    level: 'info',
+    formatTooltip: () =>
+      'Variant predicted to create or disrupt a splice site outside the canonical splice site (beta)',
+  },
   mnv: {
     children: 'MNV',
     level: 'error',
