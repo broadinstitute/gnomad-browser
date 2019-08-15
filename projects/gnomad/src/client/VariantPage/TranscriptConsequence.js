@@ -44,6 +44,31 @@ const colors = {
   green: 'green',
 }
 
+const lofteeAnnotationStyle = consequence => {
+  switch (consequence.lof) {
+    case 'HC':
+      return { color: colors.green }
+    case 'OS':
+      return {}
+    case 'LC':
+    default:
+      return { color: colors.red }
+  }
+}
+
+const lofteeAnnotationDescription = consequence => {
+  switch (consequence.lof) {
+    case 'HC':
+      return 'High-confidence'
+    case 'OS':
+      return 'Other splice (beta)'
+    case 'LC':
+      return `Low-confidence (${consequence.lof_filter})`
+    default:
+      return consequence.lof
+  }
+}
+
 const TranscriptConsequenceDetails = ({ consequence }) => {
   const category = getCategoryFromConsequence(consequence.major_consequence)
 
@@ -74,10 +99,10 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
   }
 
   if (
-    // gnomAD 2.1's loading pipeline added NC annotations.
-    // See #364.
+    // "NC" annotations were removed from the data pipeline some time ago.
+    // Some ExAC variants still have them.
     consequence.lof === 'NC' ||
-    (category === 'lof' && !consequence.lof)
+    (category === 'lof' && !consequence.lof) // See gnomadjs#364.
   ) {
     return (
       <AttributeList>
@@ -94,10 +119,8 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
       <AttributeList>
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
         <Attribute name="pLoF">
-          <span style={{ color: consequence.lof === 'HC' ? colors.green : colors.red }}>
-            {consequence.lof === 'HC'
-              ? 'High-confidence'
-              : `Low-confidence (${consequence.lof_filter})`}
+          <span style={lofteeAnnotationStyle(consequence)}>
+            {lofteeAnnotationDescription(consequence)}
           </span>
         </Attribute>
         {consequence.lof_flags && (
