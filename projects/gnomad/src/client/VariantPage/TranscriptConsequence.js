@@ -27,7 +27,7 @@ const AttributeList = styled.dl`
 `
 
 const Attribute = ({ children, name }) => (
-  <div>
+  <div style={{ marginTop: '0.25em' }}>
     <AttributeName>{name}</AttributeName>
     <AttributeValue>{children}</AttributeValue>
   </div>
@@ -38,21 +38,38 @@ Attribute.propTypes = {
   name: PropTypes.string.isRequired,
 }
 
+const Marker = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background: ${props => props.color};
+  }
+`
+
 const colors = {
   red: '#FF583F',
   yellow: '#F0C94D',
   green: 'green',
 }
 
-const lofteeAnnotationStyle = consequence => {
+const lofteeAnnotationMarker = consequence => {
   switch (consequence.lof) {
     case 'HC':
-      return { color: colors.green }
+      return <Marker color={colors.green} />
     case 'OS':
-      return {}
+      return null
     case 'LC':
     default:
-      return { color: colors.red }
+      return <Marker color={colors.red} />
   }
 }
 
@@ -86,12 +103,12 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
         {consequence.polyphen_prediction && (
           <Attribute name="Polyphen">
-            <span style={{ color: polyphenColor }}>{consequence.polyphen_prediction}</span>
+            <Marker color={polyphenColor} /> {consequence.polyphen_prediction}
           </Attribute>
         )}
         {consequence.sift_prediction && (
           <Attribute name="SIFT">
-            <span style={{ color: siftColor }}>{consequence.sift_prediction}</span>
+            <Marker color={siftColor} /> {consequence.sift_prediction}
           </Attribute>
         )}
       </AttributeList>
@@ -108,7 +125,7 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
       <AttributeList>
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
         <Attribute name="pLoF">
-          <span style={{ color: colors.red }}>Low-confidence (Non-protein-coding transcript)</span>
+          <Marker color={colors.red} /> Low-confidence (Non-protein-coding transcript)
         </Attribute>
       </AttributeList>
     )
@@ -119,13 +136,11 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
       <AttributeList>
         <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
         <Attribute name="pLoF">
-          <span style={lofteeAnnotationStyle(consequence)}>
-            {lofteeAnnotationDescription(consequence)}
-          </span>
+          {lofteeAnnotationMarker(consequence)} {lofteeAnnotationDescription(consequence)}
         </Attribute>
         {consequence.lof_flags && (
           <Attribute name="Flag">
-            <span style={{ color: colors.yellow }}>{consequence.lof_flags}</span>
+            <Marker color={colors.yellow} /> {consequence.lof_flags}
           </Attribute>
         )}
       </AttributeList>
