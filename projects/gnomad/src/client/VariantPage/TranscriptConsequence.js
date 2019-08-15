@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { getCategoryFromConsequence } from '@broad/utilities'
 
 import Link from '../Link'
+import { LofteeFilter, LofteeFlag } from './Loftee'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 
 const AttributeName = styled.dt`
@@ -80,7 +81,16 @@ const lofteeAnnotationDescription = consequence => {
     case 'OS':
       return 'Other splice (beta)'
     case 'LC':
-      return `Low-confidence (${consequence.lof_filter})`
+      return (
+        <span>
+          Low-confidence (
+          {consequence.lof_filter
+            .split(',')
+            .map(filter => <LofteeFilter key={filter} filter={filter} />)
+            .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ' ', el]), [])}
+          )
+        </span>
+      )
     default:
       return consequence.lof
   }
@@ -140,7 +150,11 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
         </Attribute>
         {consequence.lof_flags && (
           <Attribute name="Flag">
-            <Marker color={colors.yellow} /> {consequence.lof_flags}
+            <Marker color={colors.yellow} />{' '}
+            {consequence.lof_flags
+              .split(',')
+              .map(flag => <LofteeFlag key={flag} flag={flag} />)
+              .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ' ', el]), [])}
           </Attribute>
         )}
       </AttributeList>
