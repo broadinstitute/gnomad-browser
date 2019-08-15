@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import Autocomplete from 'react-autocomplete'
 import styled from 'styled-components'
 
+import zIndices from './zIndices'
+
 export const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
@@ -34,7 +36,7 @@ export const Item = styled.div`
 
 export const menuStyle = {
   position: 'fixed',
-  zIndex: 1,
+  zIndex: zIndices.popover,
   overflow: 'auto',
   maxHeight: '50%',
   padding: '2px 0',

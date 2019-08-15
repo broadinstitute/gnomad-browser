@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import zIndices from '../zIndices'
+
 const BACKGROUND_COLOR = '#474747'
 
 const ARROW_HEIGHT = 4
@@ -7,7 +9,7 @@ const ARROW_WIDTH = 8
 
 export const Container = styled.div`
   position: relative;
-  z-index: 2;
+  z-index: ${zIndices.tooltip};
   display: flex;
   flex-direction: column;
   justify-content: center;
