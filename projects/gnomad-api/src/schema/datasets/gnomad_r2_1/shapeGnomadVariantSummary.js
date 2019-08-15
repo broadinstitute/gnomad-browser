@@ -1,43 +1,5 @@
+import { getFlagsForContext } from '../shared/flags'
 import POPULATIONS from './populations'
-
-const getFlags = (variantData, transcriptConsequence) => {
-  const flags = []
-
-  if (variantData.flags.lcr) {
-    flags.push('lcr')
-  }
-
-  if (variantData.flags.segdup) {
-    flags.push('segdup')
-  }
-
-  if (variantData.flags.lof_flag) {
-    flags.push('lof_flag')
-  }
-
-  // gnomAD 2.1 variants may have an LC LoF flag if they have some LoF category VEP anotations
-  // on non-protein-coding transcripts. However, other transcript consequences will be sorted
-  // above the non-coding consequences. Checking the displayed consequence's category here
-  // prevents the case where an LC LoF flag will be shown next to a missense/synonymous/other
-  // VEP annotation on the gene page.
-  // See #364.
-  const isLofOnNonCodingTranscript =
-    transcriptConsequence.lof === 'NC' ||
-    (transcriptConsequence.category === 'lof' && !transcriptConsequence.lof)
-  if (
-    variantData.flags.lc_lof &&
-    transcriptConsequence.category === 'lof' &&
-    !isLofOnNonCodingTranscript
-  ) {
-    flags.push('lc_lof')
-  }
-
-  if (isLofOnNonCodingTranscript) {
-    flags.push('nc_transcript')
-  }
-
-  return flags
-}
 
 const shapeGnomadVariantSummary = (subsetKey, context) => {
   let getConsequence
@@ -58,6 +20,8 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
     default:
       throw Error(`Invalid context for shapeGnomadVariantSummary: ${context.type}`)
   }
+
+  const getFlags = getFlagsForContext(context)
 
   return esHit => {
     // eslint-disable-next-line no-underscore-dangle
