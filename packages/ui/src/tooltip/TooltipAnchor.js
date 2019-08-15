@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import { Manager, Popper, Reference } from 'react-popper'
 
 import { DefaultTooltip } from './DefaultTooltip'
-import { Arrow, Container } from './styles'
+import { Arrow, Container } from './tooltipStyles'
 
 export class TooltipAnchor extends Component {
   static propTypes = {
