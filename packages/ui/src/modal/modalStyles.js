@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import zIndices from '../zIndices'
+
 export const ModalBody = styled.div`
   padding: 1rem;
 `
@@ -74,4 +76,5 @@ export const ModalHeaderCloseButton = styled.button`
 export const underlayStyle = {
   boxSizing: 'border-box',
   padding: '2em 0',
+  zIndex: zIndices.modal,
 }
