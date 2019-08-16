@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
-
-import { screenSize } from '@broad/ui'
 
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
+import { withWindowSize } from '../windowSize'
 import GenePage from './GenePage'
 
-const SizedGenePage = connect(state => ({ width: screenSize(state).width }))(GenePage)
+const AutosizedGenePage = withWindowSize(GenePage)
 
 const query = `
 query Gene($geneId: String, $geneName: String) {
@@ -194,7 +192,7 @@ const GenePageContainer = ({ datasetId, geneIdOrName, ...otherProps }) => {
         }
 
         return (
-          <SizedGenePage
+          <AutosizedGenePage
             {...otherProps}
             datasetId={datasetId}
             gene={data.gene}

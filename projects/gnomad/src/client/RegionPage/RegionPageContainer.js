@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
-
-import { screenSize } from '@broad/ui'
 
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
+import { withWindowSize } from '../windowSize'
 import RegionPage from './RegionPage'
 
-const SizedRegionPage = connect(state => ({ width: screenSize(state).width }))(RegionPage)
+const AutosizedRegionPage = withWindowSize(RegionPage)
 
 const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   const [chrom, startStr, stopStr] = regionId.split('-')
@@ -50,7 +48,7 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
         }
 
         return (
-          <SizedRegionPage
+          <AutosizedRegionPage
             {...otherProps}
             datasetId={datasetId}
             region={data.region}
