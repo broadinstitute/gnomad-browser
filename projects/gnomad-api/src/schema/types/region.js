@@ -78,7 +78,7 @@ const regionType = new GraphQLObjectType({
 
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
-          throw UserVisibleError(
+          throw new UserVisibleError(
             `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
           )
         }
