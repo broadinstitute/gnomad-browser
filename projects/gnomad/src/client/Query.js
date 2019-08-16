@@ -36,7 +36,7 @@ const cancelable = promise => {
   }
 }
 
-export class Query extends Component {
+class Query extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired,
@@ -115,3 +115,5 @@ export class Query extends Component {
     return children(this.state)
   }
 }
+
+export default Query

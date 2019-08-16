@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 

@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
