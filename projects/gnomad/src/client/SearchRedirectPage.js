@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { PageHeading } from '@broad/ui'
 
 import InfoPage from './InfoPage'
-import { Query } from './Query'
+import Query from './Query'
 import StatusMessage from './StatusMessage'
 
 const searchQuery = `

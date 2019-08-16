@@ -7,7 +7,7 @@ import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'

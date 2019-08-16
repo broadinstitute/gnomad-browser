@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Query } from '../../Query'
+import Query from '../../Query'
 
 const query = `
 query MultiNucleotideVariant($variantId: String!) {

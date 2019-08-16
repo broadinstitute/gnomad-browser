@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const ConstraintHighlight = styled.span`

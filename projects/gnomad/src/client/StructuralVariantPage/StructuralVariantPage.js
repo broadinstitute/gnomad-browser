@@ -6,7 +6,7 @@ import { Page } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'

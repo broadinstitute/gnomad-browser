@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { screenSize } from '@broad/ui'
 
-import { Query } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import GenePage from './GenePage'
 
