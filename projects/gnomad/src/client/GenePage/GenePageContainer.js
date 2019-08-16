@@ -8,7 +8,7 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import GenePage from './GenePage'
 
-const SizedGenePage = connect(state => ({ screenSize: screenSize(state) }))(GenePage)
+const SizedGenePage = connect(state => ({ width: screenSize(state).width }))(GenePage)
 
 const query = `
 query Gene($geneId: String, $geneName: String) {

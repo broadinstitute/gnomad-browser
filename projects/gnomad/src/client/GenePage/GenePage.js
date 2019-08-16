@@ -137,8 +137,8 @@ class GenePage extends Component {
       gene_name: PropTypes.string.isRequired,
     }).isRequired,
     geneId: PropTypes.string.isRequired,
-    screenSize: PropTypes.shape({ width: PropTypes.number.isRequired }).isRequired,
     transcriptId: PropTypes.string,
+    width: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
@@ -158,19 +158,13 @@ class GenePage extends Component {
   }
 
   render() {
-    const {
-      datasetId,
-      gene,
-      geneId,
-      screenSize, // eslint-disable-line no-shadow
-      transcriptId,
-    } = this.props
+    const { datasetId, gene, geneId, transcriptId, width } = this.props
     const { includeUTRs, includeNonCodingTranscripts } = this.state
 
-    const smallScreen = screenSize.width < 900
+    const smallScreen = width < 900
 
     // Subtract 30px for padding on Page component
-    const regionViewerWidth = screenSize.width - 30
+    const regionViewerWidth = width - 30
 
     const hasNonCodingTranscripts = gene.transcripts.some(
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')

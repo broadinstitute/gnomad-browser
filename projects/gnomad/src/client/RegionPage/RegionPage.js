@@ -39,7 +39,7 @@ const RegionControlsWrapper = styled.div`
 `
 
 // eslint-disable-next-line no-shadow
-const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
+const RegionPage = ({ datasetId, history, region, regionId, width }) => {
   const { chrom, start, stop, genes } = region
 
   const regionViewerRegions = [
@@ -51,10 +51,10 @@ const RegionPage = ({ datasetId, history, region, regionId, screenSize }) => {
     },
   ]
 
-  const smallScreen = screenSize.width < 900
+  const smallScreen = width < 900
 
   // Subtract 30px for padding on Page component
-  const regionViewerWidth = screenSize.width - 30
+  const regionViewerWidth = width - 30
 
   return (
     <TrackPage>
@@ -115,7 +115,7 @@ RegionPage.propTypes = {
     stop: PropTypes.number.isRequired,
   }).isRequired,
   regionId: PropTypes.string.isRequired,
-  screenSize: PropTypes.shape({ width: PropTypes.number.isRequired }).isRequired,
+  width: PropTypes.number.isRequired,
 }
 
 export default RegionPage
