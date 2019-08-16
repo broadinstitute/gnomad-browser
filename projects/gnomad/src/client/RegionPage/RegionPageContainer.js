@@ -8,7 +8,7 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import RegionPage from './RegionPage'
 
-const SizedRegionPage = connect(state => ({ screenSize: screenSize(state) }))(RegionPage)
+const SizedRegionPage = connect(state => ({ width: screenSize(state).width }))(RegionPage)
 
 const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   const [chrom, startStr, stopStr] = regionId.split('-')
