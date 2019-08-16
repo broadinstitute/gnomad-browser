@@ -2,7 +2,7 @@ import React from 'react'
 import Highlighter from 'react-highlight-words'
 
 import Link from '../Link'
-import DatasetIcon from '../VariantList/DatasetIcon'
+import SampleSourceIcon from '../VariantList/SampleSourceIcon'
 import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import {
   svConsequenceCategories,
@@ -70,13 +70,11 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       ),
     },
     {
-      key: 'datasets',
+      key: 'source',
       heading: 'Source',
       grow: 0,
       minWidth: 70,
-      render: variant => (
-        <DatasetIcon dataset="gnomadGenome" isFiltered={variant.filters.length > 0} />
-      ),
+      render: variant => <SampleSourceIcon source="genome" filters={variant.filters} />,
     },
     {
       key: 'consequence',

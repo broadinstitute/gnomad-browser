@@ -70,9 +70,8 @@ class VariantsInRegion extends Component {
     }
   }
 
-  getColumns = memoizeOne((width, chrom, datasetId) =>
+  getColumns = memoizeOne((width, chrom) =>
     getColumns({
-      datasetId,
       width,
       includeGene: true,
       includeHomozygoteAC: chrom !== 'Y',
@@ -204,7 +203,7 @@ class VariantsInRegion extends Component {
             />
           </div>
           <VariantTable
-            columns={this.getColumns(width, region.chrom, datasetId)}
+            columns={this.getColumns(width, region.chrom)}
             highlightText={filter.searchText}
             onHoverVariant={this.onHoverVariant}
             onRequestSort={this.onSort}

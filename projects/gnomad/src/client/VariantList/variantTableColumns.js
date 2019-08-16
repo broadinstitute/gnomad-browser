@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 import Link from '../Link'
-import DatasetIcon from './DatasetIcon'
+import SampleSourceIcon from './SampleSourceIcon'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
 
@@ -39,7 +39,6 @@ const renderExponentialNumberCell = (row, key) => {
 }
 
 export const getColumns = ({
-  datasetId,
   width,
   includeGene = false,
   includeHomozygoteAC = false,
@@ -60,32 +59,16 @@ export const getColumns = ({
       ),
     },
     {
-      key: 'datasets',
+      key: 'source',
       heading: 'Source',
       grow: 0,
       minWidth: 100,
-      render:
-        datasetId === 'exac'
-          ? variant =>
-              variant.exome && (
-                <DatasetIcon dataset="exac" isFiltered={variant.exome.filters.length > 0} />
-              )
-          : variant => (
-              <React.Fragment>
-                {variant.exome && (
-                  <DatasetIcon
-                    dataset="gnomadExome"
-                    isFiltered={variant.exome.filters.length > 0}
-                  />
-                )}
-                {variant.genome && (
-                  <DatasetIcon
-                    dataset="gnomadGenome"
-                    isFiltered={variant.genome.filters.length > 0}
-                  />
-                )}
-              </React.Fragment>
-            ),
+      render: variant => (
+        <React.Fragment>
+          {variant.exome && <SampleSourceIcon source="exome" filters={variant.exome.filters} />}
+          {variant.genome && <SampleSourceIcon source="genome" filters={variant.genome.filters} />}
+        </React.Fragment>
+      ),
     },
     {
       key: 'hgvs',
