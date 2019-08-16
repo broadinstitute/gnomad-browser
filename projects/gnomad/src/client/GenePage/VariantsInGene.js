@@ -77,9 +77,8 @@ class VariantsInGene extends Component {
     }
   }
 
-  getColumns = memoizeOne((width, chrom, datasetId) =>
+  getColumns = memoizeOne((width, chrom) =>
     getColumns({
-      datasetId,
       width,
       includeGene: false,
       includeHomozygoteAC: chrom !== 'Y',
@@ -219,7 +218,7 @@ class VariantsInGene extends Component {
           </p>
           {!transcriptId && <p>† denotes a consequence that is for a non-canonical transcript</p>}
           <VariantTable
-            columns={this.getColumns(width, gene.chrom, datasetId)}
+            columns={this.getColumns(width, gene.chrom)}
             highlightText={filter.searchText}
             onHoverVariant={this.onHoverVariant}
             onRequestSort={this.onSort}
