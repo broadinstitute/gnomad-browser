@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { QuestionMark } from '@broad/help'
 import { Page } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
@@ -144,7 +145,9 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               />
             </Section>
             <ResponsiveSection>
-              <h2>Population Frequencies</h2>
+              <h2>
+                Population Frequencies <QuestionMark topic="ancestry" />
+              </h2>
               <ScrollWrapper>
                 <GnomadPopulationsTable
                   exomePopulations={variant.exome ? variant.exome.populations : []}
