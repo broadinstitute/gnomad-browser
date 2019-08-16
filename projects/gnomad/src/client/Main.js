@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
 import { createHelpReducer } from '@broad/help'
-import { actions as userInterfaceActions, createUserInterfaceReducer } from '@broad/ui'
 
 // eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
 import helpTopics from '@broad/help/src/loader!./helpConfig'
@@ -20,14 +19,9 @@ const rootReducer = combineReducers({
     topics: helpTopics,
     toc: toc.toc,
   }),
-  ui: createUserInterfaceReducer(),
 })
 
 const store = createStore(rootReducer, undefined, applyMiddleware(thunk, createLogger()))
-
-window.addEventListener('resize', () =>
-  store.dispatch(userInterfaceActions.setScreenSize(window.innerHeight, window.innerWidth))
-)
 
 const Main = () => (
   <Provider store={store}>
