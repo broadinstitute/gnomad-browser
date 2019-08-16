@@ -23,8 +23,8 @@ export const isRegionId = str => {
     return false
   }
 
-  const start = match[3]
-  const end = match[5]
+  const start = Number(match[3])
+  const end = Number(match[5])
 
   if (end && end < start) {
     return false
