@@ -281,7 +281,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
           return <StatusMessage>Loading variants...</StatusMessage>
         }
 
-        if (error || !((data || {}).region || {}).variants) {
+        if (error || !(data || {}).region) {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
@@ -299,6 +299,10 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
               </StatusMessage>
             </TrackPageSection>
           )
+        }
+
+        if (!data.region.variants) {
+          return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
         return (
