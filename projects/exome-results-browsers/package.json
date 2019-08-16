@@ -20,7 +20,6 @@
     "@broad/manhattan": "*",
     "@broad/qq-plot": "*",
     "@broad/region-viewer": "*",
-    "@broad/track-navigator": "*",
     "@broad/track-regions": "*",
     "@broad/track-variant": "*",
     "@broad/ui": "*",

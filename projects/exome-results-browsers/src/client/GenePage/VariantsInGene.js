@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { createGlobalStyle } from 'styled-components'
 
-import { NavigatorTrack } from '@broad/track-navigator'
+import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 import VariantTrack from '@broad/track-variant'
 import { Modal } from '@broad/ui'
 
@@ -128,7 +128,7 @@ class VariantsInGene extends Component {
     this.setState({ visibleVariantWindow: [startIndex, stopIndex] })
   }, 100)
 
-  onNavigatorClick = position => {
+  onClickPosition = position => {
     const { renderedVariants } = this.state
     const sortedVariants = sortVariants(renderedVariants, {
       sortKey: 'variant_id',
@@ -181,13 +181,19 @@ class VariantsInGene extends Component {
       <React.Fragment>
         <VariantTrack title={`Cases\n(${cases.length} variants)`} variants={cases} />
         <VariantTrack title={`Controls\n(${controls.length} variants)`} variants={controls} />
-        <NavigatorTrack
-          hoveredVariant={hoveredVariant}
-          onNavigatorClick={this.onNavigatorClick}
-          title="Viewing in table"
-          variants={renderedVariants.map(v => ({ ...v, allele_freq: v.af }))}
-          visibleVariantWindow={visibleVariantWindow}
-        />
+        <Cursor onClick={this.onClickPosition}>
+          <VariantTrack
+            title="Viewing in table"
+            variants={renderedVariants
+              .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+              .map(v => ({
+                ...v,
+                allele_freq: v.af,
+                isHighlighted: v.variant_id === hoveredVariant,
+              }))}
+          />
+        </Cursor>
+        <PositionAxisTrack />
         <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
           <VariantFilterControls
             filter={filter}
