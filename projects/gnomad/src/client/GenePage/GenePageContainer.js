@@ -182,13 +182,21 @@ const GenePageContainer = ({ datasetId, geneIdOrName, ...otherProps }) => {
 
   return (
     <Query query={query} variables={variables}>
-      {({ data, error, loading }) => {
+      {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading gene...</StatusMessage>
         }
 
-        if (error || !data || !data.gene) {
+        if (error || !data) {
           return <StatusMessage>Unable to load gene</StatusMessage>
+        }
+
+        if (!data.gene) {
+          return (
+            <StatusMessage>
+              {graphQLErrors ? graphQLErrors.map(e => e.message).join(', ') : 'Unable to load gene'}
+            </StatusMessage>
+          )
         }
 
         return (
