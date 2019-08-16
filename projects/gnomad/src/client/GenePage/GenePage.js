@@ -346,7 +346,8 @@ class GenePage extends Component {
                   exons: transcript.exons.some(exon => exon.feature_type !== 'exon')
                     ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
                     : transcript.exons,
-                }))
+                })),
+                gene.canonical_transcript
               )}
             />
           )}
