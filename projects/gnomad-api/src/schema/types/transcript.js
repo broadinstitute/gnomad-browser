@@ -39,7 +39,7 @@ const transcriptType = new GraphQLObjectType({
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
-      resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj.transcript_id),
+      resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj),
     },
     exome_coverage: {
       type: new GraphQLList(coverageType),
@@ -103,7 +103,7 @@ const transcriptType = new GraphQLObjectType({
             `Querying variants by transcript is not supported for dataset "${args.dataset}"`
           )
         }
-        return fetchVariantsByTranscript(ctx, obj.transcript_id)
+        return fetchVariantsByTranscript(ctx, obj)
       },
     },
   }),

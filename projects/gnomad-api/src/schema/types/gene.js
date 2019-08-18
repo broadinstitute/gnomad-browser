@@ -51,7 +51,7 @@ const geneType = new GraphQLObjectType({
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
-      resolve: (obj, args, ctx) => fetchClinvarVariantsByGene(ctx, obj.gene_id),
+      resolve: (obj, args, ctx) => fetchClinvarVariantsByGene(ctx, obj),
     },
     pext: {
       type: new GraphQLList(PextRegionType),
@@ -96,7 +96,7 @@ const geneType = new GraphQLObjectType({
             `Querying variants by gene is not supported for dataset "${args.dataset}"`
           )
         }
-        return fetchVariantsByGene(ctx, obj.gene_id)
+        return fetchVariantsByGene(ctx, obj)
       },
     },
   }),

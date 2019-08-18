@@ -2,7 +2,8 @@ import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
 import { lookupExonsByGeneId } from '../../types/exon'
 
-const fetchClinvarVariantsByGene = async (ctx, geneId) => {
+const fetchClinvarVariantsByGene = async (ctx, gene) => {
+  const geneId = gene.gene_id
   const geneExons = await lookupExonsByGeneId(ctx.database.gnomad, geneId)
   const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
