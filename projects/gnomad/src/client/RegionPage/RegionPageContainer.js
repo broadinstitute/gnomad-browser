@@ -24,12 +24,10 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
           gene_name
           start
           stop
-          transcript {
-            exons {
-              feature_type
-              start
-              stop
-            }
+          exons {
+            feature_type
+            start
+            stop
           }
         }
       }

@@ -51,7 +51,7 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
   <Track renderLeftPanel={() => <TitlePanel>{title}</TitlePanel>}>
     {({ scalePosition, width }) => {
       const rows = layoutRows(
-        genes.filter(gene => gene.transcript.exons.some(exon => exon.feature_type === 'CDS')),
+        genes.filter(gene => gene.exons.some(exon => exon.feature_type === 'CDS')),
         scalePosition
       )
       const rowHeight = 50
@@ -80,7 +80,7 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
                     stroke="#424242"
                     strokeWidth={1}
                   />
-                  {gene.transcript.exons
+                  {gene.exons
                     .filter(exon => exon.feature_type === 'CDS')
                     .map(exon => {
                       const exonStart = scalePosition(exon.start)
@@ -108,7 +108,21 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
 )
 
 GenesTrack.propTypes = {
-  genes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  genes: PropTypes.arrayOf(
+    PropTypes.shape({
+      gene_id: PropTypes.string.isRequired,
+      gene_name: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
   onGeneClick: PropTypes.func,
   title: PropTypes.string,
 }
