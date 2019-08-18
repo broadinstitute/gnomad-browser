@@ -2,13 +2,22 @@ import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString
 
 import { withCache } from '../../utilities/redis'
 import { mergeOverlappingRegions } from '../../utilities/region'
+
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
+
+import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
+import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
+
+import { UserVisibleError } from '../errors'
+
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
+
 import coverageType, { fetchCoverageByTranscript } from './coverage'
 import exonType, { lookupExonsByGeneId, lookupExonsByTranscriptId } from './exon'
 import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
+import { VariantSummaryType } from './variant'
 
 const transcriptType = new GraphQLObjectType({
   name: 'Transcript',
@@ -27,6 +36,10 @@ const transcriptType = new GraphQLObjectType({
       type: new GraphQLList(exonType),
       resolve: (obj, args, ctx) =>
         lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
+    },
+    clinvar_variants: {
+      type: new GraphQLList(ClinvarVariantSummaryType),
+      resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj.transcript_id),
     },
     exome_coverage: {
       type: new GraphQLList(coverageType),
@@ -77,6 +90,21 @@ const transcriptType = new GraphQLObjectType({
     gtex_tissue_tpms_by_transcript: {
       type: GtexTissueExpressionsType,
       resolve: (obj, args, ctx) => fetchGtexTissueExpressionsByTranscript(ctx, obj.transcript_id),
+    },
+    variants: {
+      type: new GraphQLList(VariantSummaryType),
+      args: {
+        dataset: { type: DatasetArgumentType },
+      },
+      resolve: (obj, args, ctx) => {
+        const { fetchVariantsByTranscript } = datasetsConfig[args.dataset]
+        if (!fetchClinvarVariantsByTranscript) {
+          throw new UserVisibleError(
+            `Querying variants by transcript is not supported for dataset "${args.dataset}"`
+          )
+        }
+        return fetchVariantsByTranscript(ctx, obj.transcript_id, null)
+      },
     },
   }),
 })
