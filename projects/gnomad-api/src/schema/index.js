@@ -22,14 +22,12 @@ import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadSt
 
 import { UserVisibleError } from './errors'
 
-import geneType, {
-  lookupGeneByGeneId,
-  lookupGeneByName,
-} from './types/gene'
+import { fetchGeneById, fetchGeneByName } from './gene-models/gene'
+import { fetchTranscriptById } from './gene-models/transcript'
 
-import transcriptType, {
-  lookupTranscriptsByTranscriptId,
-} from './types/transcript'
+import geneType from './types/gene'
+
+import transcriptType from './types/transcript'
 
 import regionType from './types/region'
 
@@ -63,16 +61,15 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
-        filter: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
-        if (args.gene_name) {
-          return lookupGeneByName(ctx.database.gnomad, args.gene_name)
-        }
         if (args.gene_id) {
-          return lookupGeneByGeneId(ctx.database.gnomad, args.gene_id)
+          return fetchGeneById(ctx, args.gene_id)
         }
-        return 'No lookup found'
+        if (args.gene_name) {
+          return fetchGeneByName(ctx, args.gene_name)
+        }
+        throw new UserVisibleError('One of "gene_id" or "gene_name" is required')
       },
     },
     transcript: {
@@ -81,9 +78,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         transcript_id: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => {
-        return lookupTranscriptsByTranscriptId(ctx.database.gnomad, args.transcript_id)
-      },
+      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, args.transcript_id),
     },
     multiNucleotideVariant: {
       type: MultiNucleotideVariantDetailsType,

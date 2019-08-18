@@ -10,13 +10,10 @@ import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchG
 
 import { UserVisibleError } from '../errors'
 
-import transcriptType, {
-  CompositeTranscriptType,
-  fetchCompositeTranscriptByGene,
-  lookupTranscriptsByTranscriptId,
-  lookupAllTranscriptsByGeneId,
-} from './transcript'
-import exonType, { lookupExonsByGeneId } from './exon'
+import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
+
+import transcriptType, { CompositeTranscriptType } from './transcript'
+import exonType from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import {
@@ -45,9 +42,14 @@ const geneType = new GraphQLObjectType({
     xstop: { type: GraphQLFloat },
     xstart: { type: GraphQLFloat },
     gene_name: { type: GraphQLString },
+    exons: { type: new GraphQLList(exonType) },
     composite_transcript: {
       type: CompositeTranscriptType,
-      resolve: (obj, args, ctx) => fetchCompositeTranscriptByGene(ctx, obj),
+      resolve: obj => ({
+        gene_id: obj.gene_id,
+        chrom: obj.chrom,
+        exons: obj.exons,
+      }),
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
@@ -59,17 +61,11 @@ const geneType = new GraphQLObjectType({
     },
     transcript: {
       type: transcriptType,
-      resolve: (obj, args, ctx) =>
-        lookupTranscriptsByTranscriptId(ctx.database.gnomad, obj.canonical_transcript, obj.gene_name),
+      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),
     },
     transcripts: {
       type: new GraphQLList(transcriptType),
-      resolve: (obj, args, ctx) =>
-        lookupAllTranscriptsByGeneId(ctx.database.gnomad, obj.gene_id),
-    },
-    exons: {
-      type: new GraphQLList(exonType),
-      resolve: (obj, args, ctx) => lookupExonsByGeneId(ctx.database.gnomad, obj.gene_id),
+      resolve: (obj, args, ctx) => fetchTranscriptsByGene(ctx, obj),
     },
     exacv1_constraint: {
       type: constraintType,
@@ -103,20 +99,3 @@ const geneType = new GraphQLObjectType({
 })
 
 export default geneType
-
-export const lookupGeneByGeneId = (db, gene_id) =>
-  db.collection('genes').findOne({ gene_id })
-
-export const lookupGeneByName = async (db, geneName) => {
-  const gene = await db.collection('genes').findOne({ gene_name_upper: geneName.toUpperCase() })
-  if (!gene) {
-    throw new UserVisibleError('Gene not found')
-  }
-  return gene
-}
-
-export const fetchGenesByInterval = (ctx, { xstart, xstop }) =>
-  ctx.database.gnomad
-    .collection('genes')
-    .find({ $and: [{ xstart: { $lte: xstop } }, { xstop: { $gte: xstart } }] })
-    .toArray()
