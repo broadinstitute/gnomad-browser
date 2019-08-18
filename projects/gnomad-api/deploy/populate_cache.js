@@ -32,15 +32,13 @@ const fetchGene = async geneIdOrName => {
 
   const gnomadCoverageQuery = `{
     gene(${argument}) {
-      composite_transcript {
-        exome_coverage(dataset: gnomad_r2_1) {
-          pos
-          mean
-        }
-        genome_coverage(dataset: gnomad_r2_1) {
-          pos
-          mean
-        }
+      exome_coverage(dataset: gnomad_r2_1) {
+        pos
+        mean
+      }
+      genome_coverage(dataset: gnomad_r2_1) {
+        pos
+        mean
       }
     }
   }
@@ -48,15 +46,9 @@ const fetchGene = async geneIdOrName => {
 
   const exacCoverageQuery = `{
     gene(${argument}) {
-      composite_transcript {
-        exome_coverage(dataset: exac) {
-          pos
-          mean
-        }
-        genome_coverage(dataset: exac) {
-          pos
-          mean
-        }
+      exome_coverage(dataset: exac) {
+        pos
+        mean
       }
     }
   }

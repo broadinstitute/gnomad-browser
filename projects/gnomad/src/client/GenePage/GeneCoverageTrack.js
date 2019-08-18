@@ -10,15 +10,13 @@ import StatusMessage from '../StatusMessage'
 const coverageQuery = `
 query Coverage($geneId: String!, $datasetId: DatasetId!) {
   gene(gene_id: $geneId) {
-    composite_transcript {
-      exome_coverage(dataset: $datasetId) {
-        pos
-        mean
-      }
-      genome_coverage(dataset: $datasetId) {
-        pos
-        mean
-      }
+    exome_coverage(dataset: $datasetId) {
+      pos
+      mean
+    }
+    genome_coverage(dataset: $datasetId) {
+      pos
+      mean
     }
   }
 }
@@ -43,10 +41,8 @@ const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = showExomeCoverage
-          ? data.gene.composite_transcript.exome_coverage
-          : null
-        const genomeCoverage = data.gene.composite_transcript.genome_coverage
+        const exomeCoverage = showExomeCoverage ? data.gene.exome_coverage : null
+        const genomeCoverage = data.gene.genome_coverage
 
         const coverageConfig =
           datasetId === 'exac'

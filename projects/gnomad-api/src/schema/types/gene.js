@@ -1,5 +1,7 @@
 import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { withCache } from '../../utilities/redis'
+
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 
@@ -12,9 +14,10 @@ import { UserVisibleError } from '../errors'
 
 import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
-import transcriptType, { CompositeTranscriptType } from './transcript'
+import transcriptType from './transcript'
 import exonType from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
+import coverageType, { fetchCoverageByTranscript } from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import {
   RegionalMissenseConstraintRegionType,
@@ -44,12 +47,53 @@ const geneType = new GraphQLObjectType({
     gene_name: { type: GraphQLString },
     exons: { type: new GraphQLList(exonType) },
     composite_transcript: {
-      type: CompositeTranscriptType,
-      resolve: obj => ({
-        gene_id: obj.gene_id,
-        chrom: obj.chrom,
-        exons: obj.exons,
+      type: new GraphQLObjectType({
+        name: 'CompositeTranscript',
+        fields: {
+          exons: { type: new GraphQLList(exonType) },
+        },
       }),
+      resolve: obj => ({ exons: obj.exons }),
+    },
+    exome_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: DatasetArgumentType },
+      },
+      resolve: (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: obj.exons,
+          })
+        )
+      },
+    },
+    genome_coverage: {
+      type: new GraphQLList(coverageType),
+      args: {
+        dataset: { type: DatasetArgumentType },
+      },
+      resolve: (obj, args, ctx) => {
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        if (!index) {
+          return []
+        }
+        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
+            index,
+            type,
+            chrom: obj.chrom,
+            exons: obj.exons,
+          })
+        )
+      },
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
