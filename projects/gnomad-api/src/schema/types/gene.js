@@ -116,7 +116,7 @@ const geneType = new GraphQLObjectType({
             `Querying variants by gene is not supported for dataset "${args.dataset}"`
           )
         }
-        return fetchVariantsByGene(ctx, obj.gene_id, obj.canonical_transcript)
+        return fetchVariantsByGene(ctx, obj.gene_id)
       },
     },
   }),

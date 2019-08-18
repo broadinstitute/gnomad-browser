@@ -8,7 +8,7 @@ import {
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import shapeGnomadVariantSummary from './shapeGnomadVariantSummary'
 
-const fetchGnomadVariantsByGene = async (ctx, geneId, canonicalTranscriptId, subset) => {
+const fetchGnomadVariantsByGene = async (ctx, geneId, subset) => {
   const geneExons = await lookupExonsByGeneId(ctx.database.gnomad, geneId)
   const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)

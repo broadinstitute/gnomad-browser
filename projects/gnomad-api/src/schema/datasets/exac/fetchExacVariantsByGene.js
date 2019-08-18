@@ -3,7 +3,7 @@ import { mergeOverlappingRegions } from '../../../utilities/region'
 import { lookupExonsByGeneId } from '../../types/exon'
 import shapeExacVariantSummary from './shapeExacVariantSummary'
 
-const fetchExacVariantsByGene = async (ctx, geneId, canonicalTranscriptId) => {
+const fetchExacVariantsByGene = async (ctx, geneId) => {
   const geneExons = await lookupExonsByGeneId(ctx.database.gnomad, geneId)
   const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
