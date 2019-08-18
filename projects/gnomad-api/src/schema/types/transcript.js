@@ -103,7 +103,7 @@ const transcriptType = new GraphQLObjectType({
             `Querying variants by transcript is not supported for dataset "${args.dataset}"`
           )
         }
-        return fetchVariantsByTranscript(ctx, obj.transcript_id, null)
+        return fetchVariantsByTranscript(ctx, obj.transcript_id)
       },
     },
   }),

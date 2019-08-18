@@ -5,7 +5,6 @@ import datasetsConfig from '../datasets/datasetsConfig'
 
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
-import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
 
 import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
 
@@ -52,15 +51,7 @@ const geneType = new GraphQLObjectType({
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
-      args: {
-        transcriptId: { type: GraphQLString },
-      },
-      resolve: (obj, args, ctx) => {
-        if (args.transcriptId) {
-          return fetchClinvarVariantsByTranscript(ctx, args.transcriptId)
-        }
-        return fetchClinvarVariantsByGene(ctx, obj.gene_id)
-      },
+      resolve: (obj, args, ctx) => fetchClinvarVariantsByGene(ctx, obj.gene_id),
     },
     pext: {
       type: new GraphQLList(PextRegionType),
@@ -97,19 +88,8 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(VariantSummaryType),
       args: {
         dataset: { type: DatasetArgumentType },
-        transcriptId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
-        if (args.transcriptId) {
-          const { fetchVariantsByTranscript } = datasetsConfig[args.dataset]
-          if (!fetchClinvarVariantsByTranscript) {
-            throw new UserVisibleError(
-              `Querying variants by transcript is not supported for dataset "${args.dataset}"`
-            )
-          }
-          return fetchVariantsByTranscript(ctx, args.transcriptId, obj)
-        }
-
         const { fetchVariantsByGene } = datasetsConfig[args.dataset]
         if (!fetchVariantsByGene) {
           throw new UserVisibleError(
