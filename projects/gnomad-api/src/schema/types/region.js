@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import { datasetArgumentTypeForMethod, AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
+import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
 import { UserVisibleError } from '../errors'
@@ -32,7 +32,7 @@ const regionType = new GraphQLObjectType({
     exome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -49,7 +49,7 @@ const regionType = new GraphQLObjectType({
     genome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -70,11 +70,15 @@ const regionType = new GraphQLObjectType({
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchVariantsByRegion') },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: async (obj, args, ctx) => {
-        const countVariantsInRegion = datasetsConfig[args.dataset].countVariantsInRegion
-        const fetchVariantsByRegion = datasetsConfig[args.dataset].fetchVariantsByRegion
+        const { countVariantsInRegion, fetchVariantsByRegion } = datasetsConfig[args.dataset]
+        if (!countVariantsInRegion || !fetchVariantsByRegion) {
+          throw new UserVisibleError(
+            `Querying variants by region is not supported for dataset "${args.dataset}"`
+          )
+        }
 
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {

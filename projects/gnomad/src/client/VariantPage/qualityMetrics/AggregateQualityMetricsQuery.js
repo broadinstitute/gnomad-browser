@@ -4,7 +4,7 @@ import React from 'react'
 import Query from '../../Query'
 
 const query = `
-query AggregateQualityMetrics ($datasetId: DatasetsSupportingFetchAggregateQualityMetrics!) {
+query AggregateQualityMetrics ($datasetId: DatasetId!) {
   aggregateQualityMetrics(dataset: $datasetId) {
     exome {
       siteQuality {

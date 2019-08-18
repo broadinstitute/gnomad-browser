@@ -9,6 +9,9 @@ import {
 
 import { getXpos } from '../utilities/variant'
 
+import DatasetArgumentType from './datasets/DatasetArgumentType'
+import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
+
 import { AggregateQualityMetricsType } from './datasets/aggregateQualityMetrics'
 import {
   MultiNucleotideVariantDetailsType,
@@ -16,6 +19,8 @@ import {
 } from './datasets/gnomad_r2_1/gnomadMultiNucleotideVariants'
 import fetchGnomadStructuralVariantDetails from './datasets/gnomad_sv_r2/fetchGnomadStructuralVariantDetails'
 import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadStructuralVariantDetailsType'
+
+import { UserVisibleError } from './errors'
 
 import geneType, {
   lookupGeneByGeneId,
@@ -31,9 +36,6 @@ import regionType from './types/region'
 import { SearchResultType, resolveSearchResults } from './types/search'
 import { VariantInterface } from './types/variant'
 
-import { datasetArgumentTypeForMethod } from './datasets/datasetArgumentTypes'
-import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
-
 const rootType = new GraphQLObjectType({
   name: 'Root',
   description: `
@@ -43,11 +45,15 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     aggregateQualityMetrics: {
       type: AggregateQualityMetricsType,
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchAggregateQualityMetrics') },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
-        const fetchAggregateQualityMetrics =
-          datasetsConfig[args.dataset].fetchAggregateQualityMetrics
+        const { fetchAggregateQualityMetrics } = datasetsConfig[args.dataset]
+        if (!fetchAggregateQualityMetrics) {
+          throw new UserVisibleError(
+            `Querying aggregate quality metrics is not supported for dataset "${args.dataset}"`
+          )
+        }
         return fetchAggregateQualityMetrics(ctx)
       },
     },
@@ -120,12 +126,15 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
       type: VariantInterface,
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchVariantDetails') },
+        dataset: { type: DatasetArgumentType },
         variantId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
         const { dataset, variantId } = args
-        const fetchVariantDetails = datasetsConfig[dataset].fetchVariantDetails
+        const { fetchVariantDetails } = datasetsConfig[dataset]
+        if (!fetchVariantDetails) {
+          throw new UserVisibleError(`Querying variants is not supported for dataset "${dataset}"`)
+        }
         return fetchVariantDetails(ctx, variantId)
       },
     },

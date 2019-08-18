@@ -1,14 +1,6 @@
-/* eslint-disable camelcase */
+import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import {
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLString,
-  GraphQLList,
-  GraphQLFloat,
-} from 'graphql'
-
-import { datasetArgumentTypeForMethod } from '../datasets/datasetArgumentTypes'
+import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
@@ -104,16 +96,26 @@ const geneType = new GraphQLObjectType({
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: datasetArgumentTypeForMethod('fetchVariantsByGene') },
+        dataset: { type: DatasetArgumentType },
         transcriptId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
         if (args.transcriptId) {
-          const fetchVariantsByTranscript = datasetsConfig[args.dataset].fetchVariantsByTranscript
+          const { fetchVariantsByTranscript } = datasetsConfig[args.dataset]
+          if (!fetchClinvarVariantsByTranscript) {
+            throw new UserVisibleError(
+              `Querying variants by transcript is not supported for dataset "${args.dataset}"`
+            )
+          }
           return fetchVariantsByTranscript(ctx, args.transcriptId, obj)
         }
 
-        const fetchVariantsByGene = datasetsConfig[args.dataset].fetchVariantsByGene
+        const { fetchVariantsByGene } = datasetsConfig[args.dataset]
+        if (!fetchVariantsByGene) {
+          throw new UserVisibleError(
+            `Querying variants by gene is not supported for dataset "${args.dataset}"`
+          )
+        }
         return fetchVariantsByGene(ctx, obj.gene_id, obj.canonical_transcript)
       },
     },
