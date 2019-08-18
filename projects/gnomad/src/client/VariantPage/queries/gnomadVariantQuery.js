@@ -1,5 +1,5 @@
 export default `
-query GnomadVariant($variantId: String!, $datasetId: DatasetsSupportingFetchVariantDetails!) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     alt
     chrom

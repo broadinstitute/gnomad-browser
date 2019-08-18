@@ -1,16 +1,8 @@
-/* eslint-disable camelcase */
-
-import {
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLString,
-  GraphQLList,
-  GraphQLFloat,
-} from 'graphql'
+import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { withCache } from '../../utilities/redis'
 import { mergeOverlappingRegions } from '../../utilities/region'
-import { AnyDatasetArgumentType } from '../datasets/datasetArgumentTypes'
+import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
@@ -34,12 +26,12 @@ const transcriptType = new GraphQLObjectType({
     exons: {
       type: new GraphQLList(exonType),
       resolve: (obj, args, ctx) =>
-       lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
+        lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id),
     },
     exome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -60,7 +52,7 @@ const transcriptType = new GraphQLObjectType({
     genome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -107,7 +99,7 @@ export const CompositeTranscriptType = new GraphQLObjectType({
     exome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -127,7 +119,7 @@ export const CompositeTranscriptType = new GraphQLObjectType({
     genome_coverage: {
       type: new GraphQLList(coverageType),
       args: {
-        dataset: { type: AnyDatasetArgumentType },
+        dataset: { type: DatasetArgumentType },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
