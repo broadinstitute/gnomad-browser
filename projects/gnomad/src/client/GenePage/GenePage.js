@@ -14,6 +14,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import VariantsInTranscript from '../TranscriptPage/VariantsInTranscript'
 import GeneCoverageTrack from './CoverageTrack'
 import GeneConstraint from './gene-constraint/GeneConstraint'
 import GeneInfo from './GeneInfo'
@@ -363,15 +364,18 @@ class GenePage extends Component {
             />
           )}
 
+          {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId === 'gnomad_sv_r2' ? (
             <StructuralVariantsInGene gene={gene} width={regionViewerWidth} />
-          ) : (
-            <VariantsInGene
+          ) : transcriptId ? (
+            <VariantsInTranscript
               datasetId={datasetId}
               gene={gene}
               transcriptId={transcriptId}
               width={regionViewerWidth}
             />
+          ) : (
+            <VariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
           )}
         </RegionViewer>
       </TrackPage>

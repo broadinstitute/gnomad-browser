@@ -10,6 +10,7 @@ import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import ClinVarTrack from '../GenePage/ClinVarTrack'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
 import mergeExomeAndGenomeData from '../VariantList/mergeExomeAndGenomeData'
@@ -18,9 +19,8 @@ import VariantFilterControls from '../VariantList/VariantFilterControls'
 import VariantTable from '../VariantList/VariantTable'
 import { getColumns } from '../VariantList/variantTableColumns'
 import VariantTrack from '../VariantList/VariantTrack'
-import ClinVarTrack from './ClinVarTrack'
 
-class VariantsInGene extends Component {
+class VariantsInTranscript extends Component {
   static propTypes = {
     clinVarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
     datasetId: PropTypes.string.isRequired,
@@ -211,7 +211,6 @@ class VariantsInGene extends Component {
             intronic variants, use the{' '}
             <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
           </p>
-          <p>† denotes a consequence that is for a non-canonical transcript</p>
           <VariantTable
             columns={this.getColumns(width, gene.chrom)}
             highlightText={filter.searchText}
@@ -230,8 +229,8 @@ class VariantsInGene extends Component {
 }
 
 const query = `
-query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
-  gene(gene_id: $geneId) {
+query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!) {
+  transcript(transcript_id: $transcriptId) {
     clinvar_variants {
       allele_id
       clinical_significance
@@ -242,7 +241,6 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
     }
     variants(dataset: $datasetId) {
       consequence
-      isCanon: consequence_in_canonical_transcript
       flags
       hgvs
       hgvsc
@@ -288,23 +286,23 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
   }
 }`
 
-const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
-  <Query query={query} variables={{ datasetId, geneId: gene.gene_id }}>
+const ConnectedVariantsInTranscript = ({ datasetId, gene, transcriptId, width }) => (
+  <Query query={query} variables={{ datasetId, transcriptId }}>
     {({ data, error, loading }) => {
       if (loading) {
         return <StatusMessage>Loading variants...</StatusMessage>
       }
 
-      if (error || !((data || {}).gene || {}).variants) {
+      if (error || !((data || {}).transcript || {}).variants) {
         return <StatusMessage>Failed to load variants</StatusMessage>
       }
 
       return (
-        <VariantsInGene
-          clinVarVariants={data.gene.clinvar_variants}
+        <VariantsInTranscript
+          clinVarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
-          variants={data.gene.variants}
+          variants={data.transcript.variants}
           width={width}
         />
       )
@@ -312,12 +310,13 @@ const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
   </Query>
 )
 
-ConnectedVariantsInGene.propTypes = {
+ConnectedVariantsInTranscript.propTypes = {
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
   }).isRequired,
+  transcriptId: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
 }
 
-export default ConnectedVariantsInGene
+export default ConnectedVariantsInTranscript
