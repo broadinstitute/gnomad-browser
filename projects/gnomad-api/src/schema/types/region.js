@@ -3,9 +3,13 @@ import { GraphQLList, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graph
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
+
 import { UserVisibleError } from '../errors'
+
+import { fetchGenesByRegion } from '../gene-models/gene'
+
 import coverageType, { fetchCoverageByRegion } from './coverage'
-import geneType, { fetchGenesByInterval } from './gene'
+import geneType from './gene'
 import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
@@ -23,11 +27,7 @@ const regionType = new GraphQLObjectType({
     chrom: { type: GraphQLString },
     genes: {
       type: new GraphQLList(geneType),
-      resolve: (obj, args, ctx) =>
-        fetchGenesByInterval(ctx, {
-          xstart: obj.xstart,
-          xstop: obj.xstop,
-        }),
+      resolve: (obj, args, ctx) => fetchGenesByRegion(ctx, obj),
     },
     exome_coverage: {
       type: new GraphQLList(coverageType),
