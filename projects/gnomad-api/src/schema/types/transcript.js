@@ -14,7 +14,7 @@ import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnom
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
 
 import coverageType, { fetchCoverageByTranscript } from './coverage'
-import exonType, { lookupExonsByTranscriptId } from './exon'
+import exonType from './exon'
 import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
 import { VariantSummaryType } from './variant'
 
@@ -46,15 +46,14 @@ const transcriptType = new GraphQLObjectType({
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, async () => {
-          const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
-          return fetchCoverageByTranscript(ctx, {
+        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
             index,
             type,
             chrom: obj.chrom,
-            exons,
+            exons: obj.exons,
           })
-        })
+        )
       },
     },
     genome_coverage: {
@@ -67,15 +66,14 @@ const transcriptType = new GraphQLObjectType({
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, async () => {
-          const exons = await lookupExonsByTranscriptId(ctx.database.gnomad, obj.transcript_id)
-          return fetchCoverageByTranscript(ctx, {
+        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, () =>
+          fetchCoverageByTranscript(ctx, {
             index,
             type,
             chrom: obj.chrom,
-            exons,
+            exons: obj.exons,
           })
-        })
+        )
       },
     },
     gnomad_constraint: {

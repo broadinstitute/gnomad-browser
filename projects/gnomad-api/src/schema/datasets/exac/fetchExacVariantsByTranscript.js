@@ -1,11 +1,10 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
-import { lookupExonsByTranscriptId } from '../../types/exon'
+
 import shapeExacVariantSummary from './shapeExacVariantSummary'
 
 const fetchExacVariantsByTranscript = async (ctx, transcript) => {
   const transcriptId = transcript.transcript_id
-  const geneExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
-  const filteredRegions = geneExons.filter(exon => exon.feature_type === 'CDS')
+  const filteredRegions = transcript.exons.filter(exon => exon.feature_type === 'CDS')
   const padding = 75
   const rangeQueries = filteredRegions.map(region => ({
     range: {

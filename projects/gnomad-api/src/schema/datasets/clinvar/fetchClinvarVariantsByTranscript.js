@@ -1,10 +1,8 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
-import { lookupExonsByTranscriptId } from '../../types/exon'
 
 const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
   const transcriptId = transcript.transcript_id
-  const transcriptExons = await lookupExonsByTranscriptId(ctx.database.gnomad, transcriptId)
-  const filteredRegions = transcriptExons.filter(exon => exon.feature_type === 'CDS')
+  const filteredRegions = transcript.exons.filter(exon => exon.feature_type === 'CDS')
   const padding = 75
   const paddedRegions = filteredRegions.map(r => ({
     ...r,
