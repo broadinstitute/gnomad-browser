@@ -1,5 +1,5 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
-import { getXpos } from '../../../utilities/variant'
+
 import {
   annotateVariantsWithMNVFlag,
   fetchGnomadMNVsByIntervals,
@@ -7,7 +7,8 @@ import {
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import shapeGnomadVariantSummary from './shapeGnomadVariantSummary'
 
-const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) => {
+const fetchGnomadVariantsByRegion = async (ctx, region, subset) => {
+  const { chrom, start, stop } = region
   const requests = [
     { index: 'gnomad_exomes_2_1_1', subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
@@ -64,9 +65,7 @@ const fetchGnomadVariantsByRegion = async (ctx, { chrom, start, stop }, subset) 
   const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
 
   // TODO: This can be fetched in parallel with exome/genome data
-  const mnvs = await fetchGnomadMNVsByIntervals(ctx, [
-    { xstart: getXpos(chrom, start), xstop: getXpos(chrom, stop) },
-  ])
+  const mnvs = await fetchGnomadMNVsByIntervals(ctx, [region])
   annotateVariantsWithMNVFlag(combinedVariants, mnvs)
 
   return combinedVariants
