@@ -14,9 +14,7 @@ const ConstraintHighlight = styled.span`
 
 export const renderRoundedNumber = (
   num,
-  precision = 1,
-  tooltipPrecision = 3,
-  highlightColor = null
+  { precision = 1, tooltipPrecision = 3, highlightColor = null } = {}
 ) => {
   if (num === null) {
     return '—'

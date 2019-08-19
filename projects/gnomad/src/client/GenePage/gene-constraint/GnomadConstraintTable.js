@@ -111,11 +111,12 @@ const renderOEMetrics = (constraint, category, highlightColor) => {
 
   return (
     <OEMetrics>
-      o/e = {renderRoundedNumber(value, 2, 3)}
+      o/e = {renderRoundedNumber(value, { precision: 2, tooltipPrecision: 3 })}
       {lower !== null && upper !== null && (
         <React.Fragment>
           {' '}
-          ({renderRoundedNumber(lower, 2, 3)} - {renderRoundedNumber(upper, 2, 3, highlightColor)})
+          ({renderRoundedNumber(lower, { precision: 2, tooltipPrecision: 3 })} -{' '}
+          {renderRoundedNumber(upper, { precision: 2, tooltipPrecision: 3, highlightColor })})
         </React.Fragment>
       )}
     </OEMetrics>
@@ -179,7 +180,11 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <td>{constraint.obs_syn === null ? '—' : constraint.obs_syn}</td>
               <td>
                 Z ={' '}
-                {renderRoundedNumber(constraint.syn_z, 2, 3, constraint.syn_z > 3.71 && '#ff2600')}
+                {renderRoundedNumber(constraint.syn_z, {
+                  precision: 2,
+                  tooltipPrecision: 3,
+                  highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
+                })}
                 <br />
                 {renderOEMetrics(constraint, 'syn')}
               </td>
@@ -191,7 +196,11 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <td>{constraint.obs_mis === null ? '—' : constraint.obs_mis}</td>
               <td>
                 Z ={' '}
-                {renderRoundedNumber(constraint.mis_z, 2, 3, constraint.mis_z > 3.09 && '#ff9300')}
+                {renderRoundedNumber(constraint.mis_z, {
+                  precision: 2,
+                  tooltipPrecision: 3,
+                  highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
+                })}
                 <br />
                 {renderOEMetrics(constraint, 'mis')}
               </td>
@@ -202,7 +211,7 @@ const GnomadConstraintTable = ({ transcriptId }) => (
               <td>{renderRoundedNumber(constraint.exp_lof)}</td>
               <td>{constraint.obs_lof === null ? '—' : constraint.obs_lof}</td>
               <td>
-                pLI = {renderRoundedNumber(constraint.pLI, 2, 3)}
+                pLI = {renderRoundedNumber(constraint.pLI, { precision: 2, tooltipPrecision: 3 })}
                 <br />
                 {renderOEMetrics(constraint, 'lof', lofHighlightColor)}
               </td>
