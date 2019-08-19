@@ -1,6 +1,6 @@
 import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
-export const RegionalMissenseConstraintRegionType = new GraphQLObjectType({
+export const ExacRegionalMissenseConstraintRegionType = new GraphQLObjectType({
   name: 'RegionalMissenseConstraintRegion',
   fields: {
     start: { type: new GraphQLNonNull(GraphQLInt) },

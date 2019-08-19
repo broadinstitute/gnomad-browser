@@ -25,7 +25,7 @@ query Gene($geneId: String, $geneName: String) {
       start
       stop
     }
-    exacv1_constraint {
+    exac_constraint {
       exp_syn
       n_syn
       syn_z

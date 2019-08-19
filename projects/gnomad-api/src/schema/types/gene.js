@@ -9,6 +9,15 @@ import datasetsConfig from '../datasets/datasetsConfig'
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
 
+import {
+  ExacGeneConstraintType,
+  fetchExacGeneConstraintByTranscriptId,
+} from '../datasets/exac/exacGeneConstraint'
+import {
+  ExacRegionalMissenseConstraintRegionType,
+  fetchExacRegionalMissenseConstraintRegions,
+} from '../datasets/exac/exacRegionalMissenseConstraint'
+
 import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
 
 import { UserVisibleError } from '../errors'
@@ -17,16 +26,10 @@ import { ExonType } from '../gene-models/exon'
 import { GeneType as BaseGeneType } from '../gene-models/gene'
 import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
-import transcriptType from './transcript'
-import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import coverageType, { fetchCoverageByTranscript } from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
-import {
-  RegionalMissenseConstraintRegionType,
-  fetchExacRegionalMissenseConstraintRegions,
-} from './regionalConstraint'
 import { StructuralVariantSummaryType } from './structuralVariant'
-
+import transcriptType from './transcript'
 import { VariantSummaryType } from './variant'
 
 const GeneType = extendObjectType(BaseGeneType, {
@@ -96,13 +99,13 @@ const GeneType = extendObjectType(BaseGeneType, {
       type: new GraphQLList(transcriptType),
       resolve: (obj, args, ctx) => fetchTranscriptsByGene(ctx, obj),
     },
-    exacv1_constraint: {
-      type: constraintType,
+    exac_constraint: {
+      type: ExacGeneConstraintType,
       resolve: (obj, args, ctx) =>
-        lookUpConstraintByTranscriptId(ctx.database.gnomad, obj.canonical_transcript),
+        fetchExacGeneConstraintByTranscriptId(ctx, obj.canonical_transcript),
     },
     exac_regional_missense_constraint_regions: {
-      type: new GraphQLList(RegionalMissenseConstraintRegionType),
+      type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
       resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.gene_name),
     },
     structural_variants: {
