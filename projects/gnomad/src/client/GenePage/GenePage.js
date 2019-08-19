@@ -14,8 +14,8 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import { ConstraintTableOrPlaceholder } from './Constraint'
 import GeneCoverageTrack from './CoverageTrack'
+import GeneConstraint from './gene-constraint/GeneConstraint'
 import GeneInfo from './GeneInfo'
 import RegionalConstraintTrack from './RegionalConstraintTrack'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
@@ -212,7 +212,7 @@ class GenePage extends Component {
               <h2>
                 Gene Constraint <QuestionMark topic="gene-constraint" />
               </h2>
-              <ConstraintTableOrPlaceholder
+              <GeneConstraint
                 datasetId={datasetId}
                 gene={gene}
                 selectedTranscriptId={transcriptId || gene.canonical_transcript}
