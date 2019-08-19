@@ -1,5 +1,6 @@
-import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList } from 'graphql'
 
+import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
@@ -8,30 +9,19 @@ import datasetsConfig from '../datasets/datasetsConfig'
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
 
-import { UserVisibleError } from '../errors'
-
 import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
 import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
 
+import { UserVisibleError } from '../errors'
+
+import { TranscriptType as BaseTranscriptType } from '../gene-models/transcript'
+
 import coverageType, { fetchCoverageByTranscript } from './coverage'
-import exonType from './exon'
 import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
 import { VariantSummaryType } from './variant'
 
-const transcriptType = new GraphQLObjectType({
-  name: 'Transcript',
-  fields: () => ({
-    _id: { type: GraphQLString },
-    start: { type: GraphQLInt },
-    transcript_id: { type: GraphQLString },
-    strand: { type: GraphQLString },
-    stop: { type: GraphQLInt },
-    xstart: { type: GraphQLFloat },
-    chrom: { type: GraphQLString },
-    gene_id: { type: GraphQLString },
-    gene_name: { type: GraphQLString },
-    xstop: { type: GraphQLFloat },
-    exons: { type: new GraphQLList(exonType) },
+const TranscriptType = extendObjectType(BaseTranscriptType, {
+  fields: {
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
       resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj),
@@ -99,7 +89,7 @@ const transcriptType = new GraphQLObjectType({
         return fetchVariantsByTranscript(ctx, obj)
       },
     },
-  }),
+  },
 })
 
-export default transcriptType
+export default TranscriptType

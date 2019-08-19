@@ -1,4 +1,21 @@
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+
 import { UserVisibleError } from '../errors'
+
+import { ExonType } from './exon'
+
+export const TranscriptType = new GraphQLObjectType({
+  name: 'Transcript',
+  fields: {
+    transcript_id: { type: new GraphQLNonNull(GraphQLString) },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    start: { type: new GraphQLNonNull(GraphQLInt) },
+    stop: { type: new GraphQLNonNull(GraphQLInt) },
+    exons: { type: new GraphQLNonNull(new GraphQLList(ExonType)) },
+    strand: { type: new GraphQLNonNull(GraphQLString) },
+    gene_id: { type: new GraphQLNonNull(GraphQLString) },
+  },
+})
 
 const fetchExonsByTranscriptId = (ctx, transcriptId) =>
   ctx.database.gnomad

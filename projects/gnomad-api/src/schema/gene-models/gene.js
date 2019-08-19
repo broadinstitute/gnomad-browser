@@ -1,5 +1,27 @@
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+
 import { mergeOverlappingRegions } from '../../utilities/region'
 import { UserVisibleError } from '../errors'
+
+import { ExonType } from './exon'
+
+export const GeneType = new GraphQLObjectType({
+  name: 'Gene',
+  fields: {
+    gene_id: { type: new GraphQLNonNull(GraphQLString) },
+    gene_name: { type: new GraphQLNonNull(GraphQLString) },
+    full_gene_name: { type: GraphQLString },
+    chrom: { type: new GraphQLNonNull(GraphQLString) },
+    start: { type: new GraphQLNonNull(GraphQLInt) },
+    stop: { type: new GraphQLNonNull(GraphQLInt) },
+    exons: { type: new GraphQLNonNull(new GraphQLList(ExonType)) },
+    strand: { type: new GraphQLNonNull(GraphQLString) },
+    canonical_transcript: { type: GraphQLString },
+    other_names: { type: new GraphQLList(GraphQLString) },
+    omim_accession: { type: GraphQLString },
+    omim_description: { type: GraphQLString },
+  },
+})
 
 export const fetchExonsByGeneId = async (ctx, geneId) => {
   const allExons = await ctx.database.gnomad
