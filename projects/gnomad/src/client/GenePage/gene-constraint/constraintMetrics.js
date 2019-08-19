@@ -14,7 +14,7 @@ const ConstraintHighlight = styled.span`
 
 export const renderRoundedNumber = (
   num,
-  { precision = 1, tooltipPrecision = 3, highlightColor = null } = {}
+  { precision = 1, tooltipPrecision = 3, highlightColor = null, formatTooltip = n => n } = {}
 ) => {
   if (num === null) {
     return '—'
@@ -22,7 +22,7 @@ export const renderRoundedNumber = (
 
   const roundedNumber = Number(num.toFixed(precision)).toString()
   return (
-    <TooltipAnchor tooltip={num.toFixed(tooltipPrecision)}>
+    <TooltipAnchor tooltip={formatTooltip(num.toFixed(tooltipPrecision))}>
       {highlightColor ? (
         <ConstraintHighlight highlightColor={highlightColor}>{roundedNumber}</ConstraintHighlight>
       ) : (

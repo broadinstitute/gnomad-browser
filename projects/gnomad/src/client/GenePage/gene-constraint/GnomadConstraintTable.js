@@ -116,7 +116,13 @@ const renderOEMetrics = (constraint, category, highlightColor) => {
         <React.Fragment>
           {' '}
           ({renderRoundedNumber(lower, { precision: 2, tooltipPrecision: 3 })} -{' '}
-          {renderRoundedNumber(upper, { precision: 2, tooltipPrecision: 3, highlightColor })})
+          {renderRoundedNumber(upper, {
+            precision: 2,
+            tooltipPrecision: 3,
+            highlightColor,
+            formatTooltip: category === 'lof' ? n => `LOEUF = ${n}` : n => n,
+          })}
+          )
         </React.Fragment>
       )}
     </OEMetrics>
