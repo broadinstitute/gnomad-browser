@@ -1,5 +1,6 @@
-import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList, GraphQLObjectType } from 'graphql'
 
+import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
@@ -12,10 +13,11 @@ import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchG
 
 import { UserVisibleError } from '../errors'
 
+import { ExonType } from '../gene-models/exon'
+import { GeneType as BaseGeneType } from '../gene-models/gene'
 import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
 import transcriptType from './transcript'
-import exonType from './exon'
 import constraintType, { lookUpConstraintByTranscriptId } from './constraint'
 import coverageType, { fetchCoverageByTranscript } from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
@@ -27,30 +29,13 @@ import { StructuralVariantSummaryType } from './structuralVariant'
 
 import { VariantSummaryType } from './variant'
 
-const geneType = new GraphQLObjectType({
-  name: 'Gene',
-  fields: () => ({
-    _id: { type: GraphQLString },
-    omim_description: { type: GraphQLString },
-    gene_id: { type: GraphQLString },
-    omim_accession: { type: GraphQLString },
-    chrom: { type: GraphQLString },
-    strand: { type: GraphQLString },
-    full_gene_name: { type: GraphQLString },
-    gene_name_upper: { type: GraphQLString },
-    other_names: { type: new GraphQLList(GraphQLString) },
-    canonical_transcript: { type: GraphQLString },
-    start: { type: GraphQLInt },
-    stop: { type: GraphQLInt },
-    xstop: { type: GraphQLFloat },
-    xstart: { type: GraphQLFloat },
-    gene_name: { type: GraphQLString },
-    exons: { type: new GraphQLList(exonType) },
+const GeneType = extendObjectType(BaseGeneType, {
+  fields: {
     composite_transcript: {
       type: new GraphQLObjectType({
         name: 'CompositeTranscript',
         fields: {
-          exons: { type: new GraphQLList(exonType) },
+          exons: { type: new GraphQLList(ExonType) },
         },
       }),
       resolve: obj => ({ exons: obj.exons }),
@@ -139,7 +124,7 @@ const geneType = new GraphQLObjectType({
         return fetchVariantsByGene(ctx, obj)
       },
     },
-  }),
+  },
 })
 
-export default geneType
+export default GeneType
