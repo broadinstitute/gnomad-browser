@@ -2,19 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
+import { BaseTable } from '@broad/ui'
 
-import Query from '../Query'
-import StatusMessage from '../StatusMessage'
-
-const ConstraintHighlight = styled.span`
-  display: inline-block;
-  padding: 0.25em 0.4em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: ${props => props.highlightColor};
-  color: #000;
-`
+import Query from '../../Query'
+import StatusMessage from '../../StatusMessage'
+import { renderRoundedNumber } from './constraintMetrics'
 
 const Table = styled(BaseTable)`
   @media (max-width: 600px) {
@@ -112,32 +104,10 @@ Graph.defaultProps = {
   color: undefined,
 }
 
-export const renderRoundedNumber = (
-  num,
-  precision = 1,
-  tooltipPrecision = 3,
-  highlightColor = null
-) => {
-  if (num === null) {
-    return '—'
-  }
-
-  const roundedNumber = Number(num.toFixed(precision)).toString()
-  return (
-    <TooltipAnchor tooltip={num.toFixed(tooltipPrecision)}>
-      {highlightColor ? (
-        <ConstraintHighlight highlightColor={highlightColor}>{roundedNumber}</ConstraintHighlight>
-      ) : (
-        <TooltipHint>{roundedNumber}</TooltipHint>
-      )}
-    </TooltipAnchor>
-  )
-}
-
-const renderOEMetrics = (constraintData, category, highlightColor) => {
-  const value = constraintData[`oe_${category}`]
-  const lower = constraintData[`oe_${category}_lower`]
-  const upper = constraintData[`oe_${category}_upper`]
+const renderOEMetrics = (constraint, category, highlightColor) => {
+  const value = constraint[`oe_${category}`]
+  const lower = constraint[`oe_${category}_lower`]
+  const upper = constraint[`oe_${category}_upper`]
 
   return (
     <OEMetrics>
@@ -152,10 +122,10 @@ const renderOEMetrics = (constraintData, category, highlightColor) => {
   )
 }
 
-const renderOEGraph = (constraintData, category, color) => {
-  const value = constraintData[`oe_${category}`]
-  const lower = constraintData[`oe_${category}_lower`]
-  const upper = constraintData[`oe_${category}_upper`]
+const renderOEGraph = (constraint, category, color) => {
+  const value = constraint[`oe_${category}`]
+  const lower = constraint[`oe_${category}_lower`]
+  const upper = constraint[`oe_${category}_upper`]
 
   return (
     value !== null &&
@@ -178,15 +148,15 @@ const GnomadConstraintTable = ({ transcriptId }) => (
         return <StatusMessage>No constraint data for this gene</StatusMessage>
       }
 
-      const constraintData = data.transcript.gnomad_constraint
+      const constraint = data.transcript.gnomad_constraint
 
       let lofHighlightColor = null
-      if (constraintData.oe_lof_upper !== null) {
-        if (constraintData.oe_lof_upper < 0.33) {
+      if (constraint.oe_lof_upper !== null) {
+        if (constraint.oe_lof_upper < 0.33) {
           lofHighlightColor = '#ff2600'
-        } else if (constraintData.oe_lof_upper < 0.66) {
+        } else if (constraint.oe_lof_upper < 0.66) {
           lofHighlightColor = '#ff9300'
-        } else if (constraintData.oe_lof_upper < 1) {
+        } else if (constraint.oe_lof_upper < 1) {
           lofHighlightColor = '#ffc000'
         }
       }
@@ -205,48 +175,38 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <tbody>
             <tr>
               <th scope="row">Synonymous</th>
-              <td>{renderRoundedNumber(constraintData.exp_syn)}</td>
-              <td>{constraintData.obs_syn === null ? '—' : constraintData.obs_syn}</td>
+              <td>{renderRoundedNumber(constraint.exp_syn)}</td>
+              <td>{constraint.obs_syn === null ? '—' : constraint.obs_syn}</td>
               <td>
                 Z ={' '}
-                {renderRoundedNumber(
-                  constraintData.syn_z,
-                  2,
-                  3,
-                  constraintData.syn_z > 3.71 && '#ff2600'
-                )}
+                {renderRoundedNumber(constraint.syn_z, 2, 3, constraint.syn_z > 3.71 && '#ff2600')}
                 <br />
-                {renderOEMetrics(constraintData, 'syn')}
+                {renderOEMetrics(constraint, 'syn')}
               </td>
-              <td>{renderOEGraph(constraintData, 'syn')}</td>
+              <td>{renderOEGraph(constraint, 'syn')}</td>
             </tr>
             <tr>
               <th scope="row">Missense</th>
-              <td>{renderRoundedNumber(constraintData.exp_mis)}</td>
-              <td>{constraintData.obs_mis === null ? '—' : constraintData.obs_mis}</td>
+              <td>{renderRoundedNumber(constraint.exp_mis)}</td>
+              <td>{constraint.obs_mis === null ? '—' : constraint.obs_mis}</td>
               <td>
                 Z ={' '}
-                {renderRoundedNumber(
-                  constraintData.mis_z,
-                  2,
-                  3,
-                  constraintData.mis_z > 3.09 && '#ff9300'
-                )}
+                {renderRoundedNumber(constraint.mis_z, 2, 3, constraint.mis_z > 3.09 && '#ff9300')}
                 <br />
-                {renderOEMetrics(constraintData, 'mis')}
+                {renderOEMetrics(constraint, 'mis')}
               </td>
-              <td>{renderOEGraph(constraintData, 'mis')}</td>
+              <td>{renderOEGraph(constraint, 'mis')}</td>
             </tr>
             <tr>
               <th scope="row">pLoF</th>
-              <td>{renderRoundedNumber(constraintData.exp_lof)}</td>
-              <td>{constraintData.obs_lof === null ? '—' : constraintData.obs_lof}</td>
+              <td>{renderRoundedNumber(constraint.exp_lof)}</td>
+              <td>{constraint.obs_lof === null ? '—' : constraint.obs_lof}</td>
               <td>
-                pLI = {renderRoundedNumber(constraintData.pLI, 2, 3)}
+                pLI = {renderRoundedNumber(constraint.pLI, 2, 3)}
                 <br />
-                {renderOEMetrics(constraintData, 'lof', lofHighlightColor)}
+                {renderOEMetrics(constraint, 'lof', lofHighlightColor)}
               </td>
-              <td>{renderOEGraph(constraintData, 'lof', lofHighlightColor)}</td>
+              <td>{renderOEGraph(constraint, 'lof', lofHighlightColor)}</td>
             </tr>
           </tbody>
         </Table>
