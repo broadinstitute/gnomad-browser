@@ -7,7 +7,7 @@ import GnomadConstraintTable from './GnomadConstraintTable'
 
 const GeneConstraint = ({ datasetId, gene, selectedTranscriptId }) => {
   if (datasetId === 'exac') {
-    const exacConstraint = gene.exacv1_constraint
+    const exacConstraint = gene.exac_constraint
     if (!exacConstraint) {
       return <StatusMessage>Constraint not available for this gene</StatusMessage>
     }
@@ -27,7 +27,7 @@ const GeneConstraint = ({ datasetId, gene, selectedTranscriptId }) => {
 GeneConstraint.propTypes = {
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
-    exacv1_constraint: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    exac_constraint: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }).isRequired,
   selectedTranscriptId: PropTypes.string.isRequired,
 }
