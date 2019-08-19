@@ -20,6 +20,11 @@ query Gene($geneId: String, $geneName: String) {
     start
     stop
     strand
+    exons {
+      feature_type
+      start
+      stop
+    }
     exacv1_constraint {
       exp_syn
       n_syn
@@ -31,13 +36,6 @@ query Gene($geneId: String, $geneName: String) {
       n_lof
       lof_z
       pLI
-    }
-    composite_transcript {
-      exons {
-        feature_type
-        start
-        stop
-      }
     }
     transcripts {
       transcript_id

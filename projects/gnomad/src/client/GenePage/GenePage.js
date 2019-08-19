@@ -136,6 +136,13 @@ class GenePage extends Component {
       full_gene_name: PropTypes.string.isRequired,
       gene_id: PropTypes.string.isRequired,
       gene_name: PropTypes.string.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
     }).isRequired,
     geneId: PropTypes.string.isRequired,
     transcriptId: PropTypes.string,
@@ -150,7 +157,7 @@ class GenePage extends Component {
     super(props)
 
     const { gene } = props
-    const hasCDS = gene.composite_transcript.exons.some(exon => exon.feature_type === 'CDS')
+    const hasCDS = gene.exons.some(exon => exon.feature_type === 'CDS')
 
     this.state = {
       includeNonCodingTranscripts: !hasCDS,
@@ -171,9 +178,7 @@ class GenePage extends Component {
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
     )
 
-    const cdsCompositeExons = gene.composite_transcript.exons.filter(
-      exon => exon.feature_type === 'CDS'
-    )
+    const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
     const hasCodingExons = cdsCompositeExons.length > 0
 
     const regionViewerRegions =
@@ -186,7 +191,7 @@ class GenePage extends Component {
               stop: gene.stop,
             },
           ]
-        : gene.composite_transcript.exons.filter(
+        : gene.exons.filter(
             exon =>
               exon.feature_type === 'CDS' ||
               (exon.feature_type === 'UTR' && includeUTRs) ||
@@ -269,9 +274,7 @@ class GenePage extends Component {
                 <Label htmlFor="include-utr-regions">
                   <CheckboxInput
                     checked={includeUTRs}
-                    disabled={
-                      !gene.composite_transcript.exons.some(exon => exon.feature_type === 'UTR')
-                    }
+                    disabled={!gene.exons.some(exon => exon.feature_type === 'UTR')}
                     id="include-utr-regions"
                     onChange={e => {
                       this.setState({ includeUTRs: e.target.checked })
@@ -308,7 +311,7 @@ class GenePage extends Component {
           {hasCodingExons && (
             <TranscriptsTrackWithTissueExpression
               activeTranscript={{
-                exons: gene.composite_transcript.exons,
+                exons: gene.exons,
                 strand: gene.strand,
               }}
               exportFilename={`${gene.gene_id}_transcripts`}
