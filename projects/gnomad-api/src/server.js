@@ -51,11 +51,15 @@ app.use(cors())
           },
         },
         customFormatErrorFn: error => {
-          console.log(error)
-          const message =
-            error.extensions && error.extensions.isUserVisible
-              ? error.message
-              : 'An unknown error occurred'
+          const isUserVisible = error.extensions && error.extensions.isUserVisible
+
+          // User visible errors (such as variant not found) are expected to occur during
+          // normal use of the browser and don't need to be logged.
+          if (!isUserVisible) {
+            console.log(error)
+          }
+
+          const message = isUserVisible ? error.message : 'An unknown error occurred'
           return { message }
         },
       })
