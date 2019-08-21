@@ -12,7 +12,6 @@ import { getXpos } from '../utilities/variant'
 import DatasetArgumentType from './datasets/DatasetArgumentType'
 import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
 
-import { AggregateQualityMetricsType } from './datasets/aggregateQualityMetrics'
 import {
   MultiNucleotideVariantDetailsType,
   fetchGnomadMNVDetails,
@@ -40,21 +39,6 @@ const rootType = new GraphQLObjectType({
 The fields below allow for different ways to look up gnomAD data. Click on the the Gene, Variant, or Region types to see more information.
   `,
   fields: () => ({
-    aggregateQualityMetrics: {
-      type: AggregateQualityMetricsType,
-      args: {
-        dataset: { type: DatasetArgumentType },
-      },
-      resolve: (obj, args, ctx) => {
-        const { fetchAggregateQualityMetrics } = datasetsConfig[args.dataset]
-        if (!fetchAggregateQualityMetrics) {
-          throw new UserVisibleError(
-            `Querying aggregate quality metrics is not supported for dataset "${args.dataset}"`
-          )
-        }
-        return fetchAggregateQualityMetrics(ctx)
-      },
-    },
     gene: {
       description: 'Look up variant data by gene name. Example: PCSK9.',
       type: geneType,
