@@ -8,45 +8,73 @@ query ExacVariant ($variantId: String!) {
     variantId
     xpos
     ...on ExacVariantDetails {
-      ac {
-        raw
-        adj
-      }
-      an {
-        raw
-        adj
-      }
+      ac
+      ac_hemi
+      ac_hom
+      an
       filters
+      other_alt_alleles
       populations {
         id
         ac
         an
-        hemi
-        hom
+        ac_hemi
+        ac_hom
+      }
+      age_distribution {
+        het {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+        hom {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
       }
       qualityMetrics {
         genotypeDepth {
-          all
-          alt
+          all {
+            bin_edges
+            bin_freq
+          }
+          alt {
+            bin_edges
+            bin_freq
+          }
         }
         genotypeQuality {
-          all
-          alt
+          all {
+            bin_edges
+            bin_freq
+          }
+          alt {
+            bin_edges
+            bin_freq
+          }
+        }
+        siteQualityMetrics {
+          BaseQRankSum
+          ClippingRankSum
+          DP
+          FS
+          InbreedingCoeff
+          MQ
+          MQRankSum
+          QD
+          ReadPosRankSum
+          SiteQuality
+          VQSLOD
         }
       }
       rsid
       sortedTranscriptConsequences {
-        amino_acids
-        biotype
-        category
-        cdna_start
-        cdna_end
-        codons
-        consequence_terms
-        domains
+        canonical
         gene_id
         gene_symbol
-        gene_symbol_source
         hgvs
         hgvsc
         hgvsp
@@ -55,8 +83,8 @@ query ExacVariant ($variantId: String!) {
         lof_filter
         lof_info
         major_consequence
-        major_consequence_rank
-        protein_id
+        polyphen_prediction
+        sift_prediction
         transcript_id
       }
     }

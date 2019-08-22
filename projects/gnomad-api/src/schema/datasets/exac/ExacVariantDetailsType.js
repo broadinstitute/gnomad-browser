@@ -8,9 +8,36 @@ import {
 } from 'graphql'
 
 import { VariantInterface } from '../../types/variant'
-import { PopulationType } from '../shared/population'
-import { VariantQualityMetricsType } from '../shared/qualityMetrics'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
+
+const ExacVariantPopulationDataType = new GraphQLObjectType({
+  name: 'ExacVariantPopulationData',
+  fields: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    ac: { type: new GraphQLNonNull(GraphQLInt) },
+    an: { type: new GraphQLNonNull(GraphQLInt) },
+    ac_hemi: { type: new GraphQLNonNull(GraphQLInt) },
+    ac_hom: { type: new GraphQLNonNull(GraphQLInt) },
+  },
+})
+
+const ExacQualityMetricHistogramType = new GraphQLObjectType({
+  name: 'ExacQualityMetricHistogram',
+  fields: {
+    bin_edges: { type: new GraphQLList(GraphQLInt) },
+    bin_freq: { type: new GraphQLList(GraphQLInt) },
+  },
+})
+
+const ExacAgeHistogramType = new GraphQLObjectType({
+  name: 'ExacAgeHistogram',
+  fields: {
+    bin_edges: { type: new GraphQLList(GraphQLInt) },
+    bin_freq: { type: new GraphQLList(GraphQLInt) },
+    n_larger: { type: GraphQLInt },
+    n_smaller: { type: GraphQLInt },
+  },
+})
 
 const ExacVariantDetailsType = new GraphQLObjectType({
   name: 'ExacVariantDetails',
@@ -24,30 +51,66 @@ const ExacVariantDetailsType = new GraphQLObjectType({
     variantId: { type: new GraphQLNonNull(GraphQLString) },
     xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // ExAC specific fields
-    ac: {
-      type: new GraphQLObjectType({
-        name: 'ExacVariantAlleleCount',
-        fields: {
-          raw: { type: GraphQLInt },
-          adj: { type: GraphQLInt },
-          hemi: { type: GraphQLInt },
-          hom: { type: GraphQLInt },
-        },
-      }),
-    },
-    an: {
-      type: new GraphQLObjectType({
-        name: 'ExacVariantAlleleNumber',
-        fields: {
-          raw: { type: GraphQLInt },
-          adj: { type: GraphQLInt },
-        },
-      }),
-    },
+    ac: { type: GraphQLInt },
+    ac_hemi: { type: GraphQLInt },
+    ac_hom: { type: GraphQLInt },
+    an: { type: GraphQLInt },
     filters: { type: new GraphQLList(GraphQLString) },
     flags: { type: new GraphQLList(GraphQLString) },
-    populations: { type: new GraphQLList(PopulationType) },
-    qualityMetrics: { type: VariantQualityMetricsType },
+    other_alt_alleles: { type: new GraphQLList(GraphQLString) },
+    populations: { type: new GraphQLList(ExacVariantPopulationDataType) },
+    age_distribution: {
+      type: new GraphQLObjectType({
+        name: 'ExacVariantDetailsAgeDistribution',
+        fields: {
+          het: { type: ExacAgeHistogramType },
+          hom: { type: ExacAgeHistogramType },
+        },
+      }),
+    },
+    qualityMetrics: {
+      type: new GraphQLObjectType({
+        name: 'ExacVariantQualityMetrics',
+        fields: {
+          genotypeDepth: {
+            type: new GraphQLObjectType({
+              name: 'ExacVariantGenotypeDepth',
+              fields: {
+                all: { type: ExacQualityMetricHistogramType },
+                alt: { type: ExacQualityMetricHistogramType },
+              },
+            }),
+          },
+          genotypeQuality: {
+            type: new GraphQLObjectType({
+              name: 'ExacVariantGenotypeQuality',
+              fields: {
+                all: { type: ExacQualityMetricHistogramType },
+                alt: { type: ExacQualityMetricHistogramType },
+              },
+            }),
+          },
+          siteQualityMetrics: {
+            type: new GraphQLObjectType({
+              name: 'ExacVariantSiteQualityMetrics',
+              fields: {
+                BaseQRankSum: { type: GraphQLFloat },
+                ClippingRankSum: { type: GraphQLFloat },
+                DP: { type: GraphQLFloat },
+                FS: { type: GraphQLFloat },
+                InbreedingCoeff: { type: GraphQLFloat },
+                MQ: { type: GraphQLFloat },
+                MQRankSum: { type: GraphQLFloat },
+                QD: { type: GraphQLFloat },
+                ReadPosRankSum: { type: GraphQLFloat },
+                SiteQuality: { type: GraphQLFloat },
+                VQSLOD: { type: GraphQLFloat },
+              },
+            }),
+          },
+        },
+      }),
+    },
     rsid: { type: GraphQLString },
     sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },

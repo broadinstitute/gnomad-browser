@@ -1,7 +1,11 @@
 import { UserVisibleError } from '../../errors'
-import { parseHistogram } from '../shared/qualityMetrics'
+import POPULATIONS from './populations'
 
-const EXAC_POPULATION_IDS = ['AFR', 'AMR', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
+const parseHistogram = histogramStr => histogramStr.split('|').map(s => Number(s))
+
+const ageDistributionBinEdges = [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
+
+const qualityMetricHistogramBinEdges = Array.from(new Array(21), (_, i) => i * 5)
 
 const fetchExacVariantDetails = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
@@ -31,6 +35,9 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     filters.push('AC_Adj0_Filter')
   }
 
+  const hetAgeBins = parseHistogram(variantData.AGE_HISTOGRAM_HET)
+  const homAgeBins = parseHistogram(variantData.AGE_HISTOGRAM_HOM)
+
   return {
     gqlType: 'ExacVariantDetails',
     // variant interface fields
@@ -41,44 +48,64 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     variantId: variantData.variant_id,
     xpos: variantData.xpos,
     // ExAC specific fields
-    ac: {
-      raw: variantData.AC,
-      adj: variantData.AC_Adj,
-      hemi: variantData.AC_Hemi,
-      hom: variantData.AC_Hom,
-    },
-    an: {
-      raw: variantData.AN,
-      adj: variantData.AN_Adj,
-    },
+    ac: variantData.AC_Adj,
+    ac_hemi: variantData.AC_Hemi,
+    ac_hom: variantData.AC_Hom,
+    an: variantData.AN_Adj,
     filters,
     flags: ['lc_lof', 'lof_flag'].filter(flag => variantData.flags[flag]),
-    populations: EXAC_POPULATION_IDS.map(popId => ({
+    other_alt_alleles: variantData.original_alt_alleles.filter(
+      otherVariantId => otherVariantId !== variantData.variant_id
+    ),
+    populations: POPULATIONS.map(popId => ({
       id: popId,
       ac: (variantData.populations[popId] || {}).AC || 0,
       an: (variantData.populations[popId] || {}).AN || 0,
-      hemi: (variantData.populations[popId] || {}).hemi || 0,
-      hom: (variantData.populations[popId] || {}).hom || 0,
+      ac_hemi: (variantData.populations[popId] || {}).hemi || 0,
+      ac_hom: (variantData.populations[popId] || {}).hom || 0,
     })),
+    age_distribution: {
+      het: {
+        bin_edges: ageDistributionBinEdges,
+        bin_freq: hetAgeBins.slice(1, 11),
+        n_smaller: hetAgeBins[0],
+        n_larger: hetAgeBins[11],
+      },
+      hom: {
+        bin_edges: ageDistributionBinEdges,
+        bin_freq: homAgeBins.slice(1, 11),
+        n_smaller: homAgeBins[0],
+        n_larger: homAgeBins[11],
+      },
+    },
+    // FIXME: For both genotype depth and quality, all and alt return the same histogram.
+    // See #448
     qualityMetrics: {
       genotypeDepth: {
-        all: parseHistogram(variantData.DP_HIST[0]),
-        alt: parseHistogram(variantData.DP_HIST[1]),
+        all: {
+          bin_edges: qualityMetricHistogramBinEdges,
+          bin_freq: parseHistogram(variantData.DP_HIST),
+        },
+        alt: {
+          bin_edges: qualityMetricHistogramBinEdges,
+          bin_freq: parseHistogram(variantData.DP_HIST),
+        },
       },
       genotypeQuality: {
-        all: parseHistogram(variantData.GQ_HIST[0]),
-        alt: parseHistogram(variantData.GQ_HIST[1]),
+        all: {
+          bin_edges: qualityMetricHistogramBinEdges,
+          bin_freq: parseHistogram(variantData.GQ_HIST),
+        },
+        alt: {
+          bin_edges: qualityMetricHistogramBinEdges,
+          bin_freq: parseHistogram(variantData.GQ_HIST),
+        },
       },
       siteQualityMetrics: {
-        AB_MEDIAN: null,
-        AS_RF: null,
         BaseQRankSum: variantData.BaseQRankSum,
         ClippingRankSum: variantData.ClippingRankSum,
         DP: variantData.DP,
-        DP_MEDIAN: null,
-        DREF_MEDIAN: null,
         FS: variantData.FS,
-        GQ_MEDIAN: null,
         InbreedingCoeff: variantData.InbreedingCoeff,
         MQ: variantData.MQ,
         MQRankSum: variantData.MQRankSum,
