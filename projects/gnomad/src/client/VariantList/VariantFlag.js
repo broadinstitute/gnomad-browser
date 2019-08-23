@@ -35,7 +35,8 @@ const flagProps = {
   mnv: {
     children: 'MNV',
     level: 'error',
-    formatTooltip: () => 'Multi-nucleotide variant\nVariant annotation dubious',
+    formatTooltip: () =>
+      'Multi-nucleotide variant: this variant is found in phase with another variant in some individuals, altering the amino acid sequence\nVariant annotation dubious',
   },
 }
 
