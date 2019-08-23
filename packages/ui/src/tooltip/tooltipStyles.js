@@ -14,6 +14,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 400px;
   padding: 0.5em;
   margin: ${ARROW_HEIGHT}px;
   background-color: ${BACKGROUND_COLOR};
@@ -21,6 +22,10 @@ export const Container = styled.div`
   color: #fff;
   font-family: Roboto, sans-serif;
   font-size: 13px;
+
+  @media (max-width: 500px) {
+    max-width: 300px;
+  }
 `
 
 export const Arrow = styled.div`
