@@ -17,9 +17,9 @@ def get_expr_for_xpos(contig, position):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--gencode-file", required=True)
-parser.add_argument("--canonical-transcript-file", required=True)
-parser.add_argument("--omim-annotations-file", required=True)
-parser.add_argument("--dbnsfp-file", required=True)
+parser.add_argument("--canonical-transcript-file")
+parser.add_argument("--omim-annotations-file")
+parser.add_argument("--dbnsfp-file")
 parser.add_argument("--output-directory", required=True)
 args = parser.parse_args()
 
@@ -48,38 +48,41 @@ genes = genes.select(
 genes = genes.key_by("gene_id").drop("interval")
 
 # Canonical transcripts
-canonical_transcripts = hl.import_table(args.canonical_transcript_file, no_header=True)
-canonical_transcripts = canonical_transcripts.select(
-    gene_id=canonical_transcripts.f0, canonical_transcript=canonical_transcripts.f1
-)
-canonical_transcripts = canonical_transcripts.key_by("gene_id")
-genes = genes.annotate(**canonical_transcripts[genes.gene_id])
+if args.canonical_transcript_file:
+    canonical_transcripts = hl.import_table(args.canonical_transcript_file, no_header=True)
+    canonical_transcripts = canonical_transcripts.select(
+        gene_id=canonical_transcripts.f0, canonical_transcript=canonical_transcripts.f1
+    )
+    canonical_transcripts = canonical_transcripts.key_by("gene_id")
+    genes = genes.annotate(**canonical_transcripts[genes.gene_id])
 
 # OMIM
-omim = hl.import_table(args.omim_annotations_file)
-omim = omim.select(
-    gene_id=omim["Ensembl Gene ID"],
-    omim_accession=omim["MIM Gene Accession"],
-    omim_description=omim["MIM Gene Description"],
-)
-omim = omim.key_by("gene_id")
-genes = genes.annotate(**omim[genes.gene_id])
+if args.omim_annotations_file:
+    omim = hl.import_table(args.omim_annotations_file)
+    omim = omim.select(
+        gene_id=omim["Ensembl Gene ID"],
+        omim_accession=omim["MIM Gene Accession"],
+        omim_description=omim["MIM Gene Description"],
+    )
+    omim = omim.key_by("gene_id")
+    genes = genes.annotate(**omim[genes.gene_id])
 
 # Full names
-dbnsfp = hl.import_table(args.dbnsfp_file, missing=".")
-dbnsfp = dbnsfp.select(
-    gene_id=dbnsfp["Ensembl_gene"],
-    full_gene_name=dbnsfp["Gene_full_name"],
-    other_names=hl.or_else(
-        dbnsfp["Gene_old_names"].upper().split(";"), hl.empty_array(hl.tstr)
-    ).extend(
-        hl.or_else(
-            dbnsfp["Gene_other_names"].upper().split(";"), hl.empty_array(hl.tstr)
-        )
-    ),
-)
-dbnsfp = dbnsfp.key_by("gene_id")
-genes = genes.annotate(**dbnsfp[genes.gene_id])
+if args.dbnsfp_file:
+    dbnsfp = hl.import_table(args.dbnsfp_file, missing=".")
+    dbnsfp = dbnsfp.select(
+        gene_id=dbnsfp["Ensembl_gene"],
+        full_gene_name=dbnsfp["Gene_full_name"],
+        other_names=hl.or_else(
+            dbnsfp["Gene_old_names"].upper().split(";"), hl.empty_array(hl.tstr)
+        ).extend(
+            hl.or_else(
+                dbnsfp["Gene_other_names"].upper().split(";"), hl.empty_array(hl.tstr)
+            )
+        ),
+    )
+    dbnsfp = dbnsfp.key_by("gene_id")
+    genes = genes.annotate(**dbnsfp[genes.gene_id])
 
 genes.key_by().write(os.path.join(args.output_directory, "genes.ht"))
 
