@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { ExternalLink } from '@broad/ui'
+import { ExternalLink, List, ListItem, Modal, TextButton } from '@broad/ui'
 
 import AttributeList from '../AttributeList'
+import Link from '../Link'
 
-const GeneInfo = ({ currentTranscript, gene }) => {
+const GeneReferences = ({ gene }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+
   const {
-    canonical_transcript: canonicalTranscript,
     chrom,
     gene_name: geneName,
     gene_id: geneId,
@@ -16,47 +18,98 @@ const GeneInfo = ({ currentTranscript, gene }) => {
     stop,
   } = gene
 
-  const ensemblGeneUrl = `http://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
-  const ensemblTranscriptUrl = `http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${currentTranscript ||
-    canonicalTranscript}`
-  const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
-  const geneCardsUrl = `http://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneName}`
-  const omimUrl = `http://omim.org/entry/${omimAccession}`
+  const ensemblGeneUrl = `https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
+
+  const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
+
+  return (
+    <React.Fragment>
+      <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>,{' '}
+      <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>,{' '}
+      <TextButton
+        onClick={() => {
+          setIsExpanded(true)
+        }}
+      >
+        and {omimAccession ? '3' : '2'} more
+      </TextButton>
+      {isExpanded && (
+        <Modal
+          initialFocusOnButton={false}
+          onRequestClose={() => {
+            setIsExpanded(false)
+          }}
+          title={`References for ${geneName}`}
+        >
+          <List>
+            <ListItem>
+              <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>
+            </ListItem>
+            <ListItem>
+              <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
+            </ListItem>
+            <ListItem>
+              <ExternalLink href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneName}`}>
+                GeneCards
+              </ExternalLink>
+            </ListItem>
+            {omimAccession && (
+              <ListItem>
+                <ExternalLink href={`https://omim.org/entry/${omimAccession}`}>OMIM</ExternalLink>
+              </ListItem>
+            )}
+            <ListItem>
+              <ExternalLink href={`https://decipher.sanger.ac.uk/gene/${geneId}`}>
+                DECIPHER
+              </ExternalLink>
+            </ListItem>
+          </List>
+        </Modal>
+      )}
+    </React.Fragment>
+  )
+}
+
+GeneReferences.propTypes = {
+  gene: PropTypes.shape({
+    gene_id: PropTypes.string.isRequired,
+    gene_name: PropTypes.string.isRequired,
+    chrom: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+    omim_accession: PropTypes.string,
+  }).isRequired,
+}
+
+const GeneInfo = ({ gene }) => {
+  const { gene_id: geneId, chrom, start, stop, canonical_transcript: canonicalTranscript } = gene
 
   return (
     <AttributeList labelWidth={160}>
-      <AttributeList.Item label="Ensembl gene ID">
-        <ExternalLink href={ensemblGeneUrl}>{geneId}</ExternalLink>
+      <AttributeList.Item label="Genome build">GRCh37 / hg19</AttributeList.Item>
+      <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
+      <AttributeList.Item label="Canonical transcript ID">{canonicalTranscript}</AttributeList.Item>
+      <AttributeList.Item label="Region">
+        <Link to={`/region/${chrom}-${start}-${stop}`}>
+          {chrom}:{start}-{stop}
+        </Link>
       </AttributeList.Item>
-      <AttributeList.Item label="Ensembl transcript ID">
-        <ExternalLink href={ensemblTranscriptUrl}>
-          {currentTranscript}
-          {currentTranscript === canonicalTranscript && ' (canonical)'}
-        </ExternalLink>
-      </AttributeList.Item>
-      <AttributeList.Item label="UCSC Browser">
-        <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
-      </AttributeList.Item>
-      <AttributeList.Item label="GeneCards">
-        <ExternalLink href={geneCardsUrl}>{geneName}</ExternalLink>
-      </AttributeList.Item>
-      <AttributeList.Item label="OMIM">
-        {omimAccession ? <ExternalLink href={omimUrl}>{omimAccession}</ExternalLink> : '—'}
+      <AttributeList.Item label="References">
+        <GeneReferences gene={gene} />
       </AttributeList.Item>
     </AttributeList>
   )
 }
 
 GeneInfo.propTypes = {
-  currentTranscript: PropTypes.string.isRequired,
   gene: PropTypes.shape({
-    canonical_transcript: PropTypes.string.isRequired,
-    chrom: PropTypes.string.isRequired,
-    gene_name: PropTypes.string.isRequired,
     gene_id: PropTypes.string.isRequired,
-    omim_accession: PropTypes.string,
+    gene_name: PropTypes.string.isRequired,
+    chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    canonical_transcript: PropTypes.string.isRequired,
+    omim_accession: PropTypes.string,
   }).isRequired,
 }
 
