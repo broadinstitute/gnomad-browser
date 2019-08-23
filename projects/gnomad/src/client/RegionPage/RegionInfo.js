@@ -7,15 +7,16 @@ import AttributeList from '../AttributeList'
 
 const RegionInfo = ({ region }) => {
   const { chrom, start, stop } = region
-  const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
+  const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
 
   return (
     <AttributeList labelWidth={120}>
+      <AttributeList.Item label="Genome build">GRCh37 / hg19</AttributeList.Item>
       <AttributeList.Item label="Region size">
         {(stop - start + 1).toLocaleString()} BP
       </AttributeList.Item>
-      <AttributeList.Item label="UCSC Browser">
-        <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
+      <AttributeList.Item label="References">
+        <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
       </AttributeList.Item>
     </AttributeList>
   )
