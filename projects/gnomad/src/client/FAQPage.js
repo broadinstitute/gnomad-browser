@@ -243,8 +243,8 @@ export default () => (
         <p>
           We included single nucleotide changes that occurred in the canonical transcript that were
           found at a frequency of &lt;0.1%, passed all filters, and at sites with a median depth
-          &ge;1. The counts represent the number of unique variants and not the allele count of said
-          variants.
+          &ge;1. The counts represent the number of unique variants and not the allele count of
+          these variants.
         </p>
       </Answer>
 
