@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable } from '@broad/ui'
+import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
 import Query from '../../Query'
 import StatusMessage from '../../StatusMessage'
@@ -173,8 +173,16 @@ const GnomadConstraintTable = ({ transcriptId }) => (
           <thead>
             <tr>
               <th scope="col">Category</th>
-              <th scope="col">Exp. SNVs</th>
-              <th scope="col">Obs. SNVs</th>
+              <th scope="col">
+                <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in section 4.1 of the supplement in Lek et al. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
+                  <TooltipHint>Exp. SNVs</TooltipHint>
+                </TooltipAnchor>
+              </th>
+              <th scope="col">
+                <TooltipAnchor tooltip="Includes single nucleotide changes that occurred in the canonical transcript that were found at a frequency of <0.1%, passed all filters, and at sites with a median depth ≥1. The counts represent the number of unique variants and not the allele count of these variants.">
+                  <TooltipHint>Obs. SNVs</TooltipHint>
+                </TooltipAnchor>
+              </th>
               <th scope="col">Constraint metrics</th>
               <th />
             </tr>
