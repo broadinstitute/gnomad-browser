@@ -7,6 +7,7 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { extendObjectType } from '../utilities/graphql'
 import { getXpos } from '../utilities/variant'
 
 import DatasetArgumentType from './datasets/DatasetArgumentType'
@@ -24,13 +25,10 @@ import { UserVisibleError } from './errors'
 import { fetchGeneById, fetchGeneByName } from './gene-models/gene'
 import { fetchTranscriptById } from './gene-models/transcript'
 
-import geneType from './types/gene'
-
-import transcriptType from './types/transcript'
-
+import GeneType from './types/gene'
 import regionType from './types/region'
-
 import { SearchResultType, resolveSearchResults } from './types/search'
+import TranscriptType from './types/transcript'
 import { VariantInterface } from './types/variant'
 
 const rootType = new GraphQLObjectType({
@@ -41,7 +39,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
   fields: () => ({
     gene: {
       description: 'Look up variant data by gene name. Example: PCSK9.',
-      type: geneType,
+      type: GeneType,
       args: {
         gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
@@ -58,7 +56,14 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     },
     transcript: {
       description: 'Look up variant data by transcript ID. Example: ENST00000407236.',
-      type: transcriptType,
+      type: extendObjectType(TranscriptType, {
+        fields: {
+          gene: {
+            type: GeneType,
+            resolve: (obj, args, ctx) => fetchGeneById(ctx, obj.gene_id),
+          },
+        },
+      }),
       args: {
         transcript_id: { type: new GraphQLNonNull(GraphQLString) },
       },
