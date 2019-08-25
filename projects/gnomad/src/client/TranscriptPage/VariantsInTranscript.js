@@ -28,6 +28,7 @@ class VariantsInTranscript extends Component {
       chrom: PropTypes.string.isRequired,
       gene_id: PropTypes.string.isRequired,
     }).isRequired,
+    transcriptId: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
   }
@@ -161,7 +162,7 @@ class VariantsInTranscript extends Component {
   }
 
   render() {
-    const { clinVarVariants, datasetId, gene, width } = this.props
+    const { clinVarVariants, datasetId, gene, transcriptId, width } = this.props
     const {
       filter,
       hoveredVariant,
@@ -202,7 +203,7 @@ class VariantsInTranscript extends Component {
           <div>
             <ExportVariantsButton
               datasetId={datasetId}
-              exportFileName={`${datasetLabel}_${gene.gene_id}`}
+              exportFileName={`${datasetLabel}_${transcriptId}`}
               variants={renderedVariants}
             />
           </div>
@@ -302,6 +303,7 @@ const ConnectedVariantsInTranscript = ({ datasetId, gene, transcriptId, width })
           clinVarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
+          transcriptId={transcriptId}
           variants={data.transcript.variants}
           width={width}
         />
