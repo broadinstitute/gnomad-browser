@@ -5,6 +5,7 @@ export const extendObjectType = (type, config) => {
 
   return new GraphQLObjectType({
     ...typeConfig,
+    ...config,
     fields: {
       ...typeConfig.fields,
       ...config.fields,

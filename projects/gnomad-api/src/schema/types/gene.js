@@ -29,8 +29,12 @@ import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/tran
 import coverageType, { fetchCoverageByTranscript } from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import { StructuralVariantSummaryType } from './structuralVariant'
-import transcriptType from './transcript'
+import TranscriptType from './transcript'
 import { VariantSummaryType } from './variant'
+
+const GeneTranscriptType = extendObjectType(TranscriptType, {
+  name: 'GeneTranscript',
+})
 
 const GeneType = extendObjectType(BaseGeneType, {
   fields: {
@@ -92,11 +96,11 @@ const GeneType = extendObjectType(BaseGeneType, {
       resolve: (obj, args, ctx) => fetchPextRegionsByGene(ctx, obj.gene_id),
     },
     transcript: {
-      type: transcriptType,
+      type: GeneTranscriptType,
       resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),
     },
     transcripts: {
-      type: new GraphQLList(transcriptType),
+      type: new GraphQLList(GeneTranscriptType),
       resolve: (obj, args, ctx) => fetchTranscriptsByGene(ctx, obj),
     },
     exac_constraint: {
