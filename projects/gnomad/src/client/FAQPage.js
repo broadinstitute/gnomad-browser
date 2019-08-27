@@ -275,7 +275,21 @@ export default () => (
           note that these assessments were applied to the canonical transcripts of the genes. If a
           gene was not annotated as a protein-coding gene in Gencode v19, we did not calculate
           constraint. In addition, if a canonical transcript was missing a &quot;Met&quot; at the
-          start, it was considered malformed and not evaluated for constraint metrics.
+          start, it was considered malformed and not evaluated for constraint metrics. The following
+          list describes the reason names given in the constraint_flag column of the{' '}
+          <Link to={{ pathname: '/downloads', hash: '#gene-constraint' }}>constraint files</Link>:
+          <List>
+            <ListItem>no_variants: Zero observed synonymous, missense, pLoF variants</ListItem>
+            <ListItem>no_exp_lof: Zero expected pLoF variants</ListItem>
+            <ListItem>lof_too_many: Too many pLoF variants; pLoF z score &lt; -5</ListItem>
+            <ListItem>no_exp_mis: Zero expected missense variants</ListItem>
+            <ListItem>mis_too_many: Too many missense variants; missense z score &lt; -5</ListItem>
+            <ListItem>no_exp_syn: Zero expected synonymous variants</ListItem>
+            <ListItem>
+              syn_outlier: Too many or too few synonymous variants; synonymous z score &lt; -5 or
+              synonymous z score &gt; 5
+            </ListItem>
+          </List>
         </p>
       </Answer>
     </dl>
