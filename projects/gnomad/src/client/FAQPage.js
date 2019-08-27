@@ -551,16 +551,19 @@ export default () => (
             at a score threshold of 30 and provided by Heng Li
           </ListItem>
           <ListItem>
-            LC pLoF: Low-confidence pLoF (filtered by{' '}
-            <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink>)
+            LC pLoF: Low-confidence pLoF, variant determined by{' '}
+            <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink> to be
+            likely not LoF for the transcript
           </ListItem>
 
           <ListItem>
             pLoF Flag: Flagged by{' '}
-            <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink>
+            <ExternalLink href="https://github.com/konradjk/loftee">LOFTEE</ExternalLink>, a warning
+            provided by LOFTEE to use caution when interpreting the transcript or variant
           </ListItem>
           <ListItem>
-            NC Transcript: Marked as pLoF by VEP, but appears on a non-protein-coding transcript
+            NC Transcript: Marked in a putative LoF category by VEP (essential splice, stop-gained,
+            or frameshift) but appears on a non-protein-coding transcript
           </ListItem>
         </List>
       </Answer>
