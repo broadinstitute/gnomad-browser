@@ -24,11 +24,12 @@ class VariantsInTranscript extends Component {
   static propTypes = {
     clinVarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
     datasetId: PropTypes.string.isRequired,
-    gene: PropTypes.shape({
+    transcript: PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
       chrom: PropTypes.string.isRequired,
-      gene_id: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
     }).isRequired,
-    transcriptId: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
   }
@@ -162,7 +163,7 @@ class VariantsInTranscript extends Component {
   }
 
   render() {
-    const { clinVarVariants, datasetId, gene, transcriptId, width } = this.props
+    const { clinVarVariants, datasetId, transcript, width } = this.props
     const {
       filter,
       hoveredVariant,
@@ -203,17 +204,20 @@ class VariantsInTranscript extends Component {
           <div>
             <ExportVariantsButton
               datasetId={datasetId}
-              exportFileName={`${datasetLabel}_${transcriptId}`}
+              exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
               variants={renderedVariants}
             />
           </div>
           <p>
             Only variants located in or within 75 base pairs of a coding exon are shown here. To see
             intronic variants, use the{' '}
-            <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
+            <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
+              region view
+            </Link>
+            .
           </p>
           <VariantTable
-            columns={this.getColumns(width, gene.chrom)}
+            columns={this.getColumns(width, transcript.chrom)}
             highlightText={filter.searchText}
             onHoverVariant={this.onHoverVariant}
             onRequestSort={this.onSort}
@@ -287,8 +291,8 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!) {
   }
 }`
 
-const ConnectedVariantsInTranscript = ({ datasetId, gene, transcriptId, width }) => (
-  <Query query={query} variables={{ datasetId, transcriptId }}>
+const ConnectedVariantsInTranscript = ({ datasetId, transcript, width }) => (
+  <Query query={query} variables={{ datasetId, transcriptId: transcript.transcript_id }}>
     {({ data, error, loading }) => {
       if (loading) {
         return <StatusMessage>Loading variants...</StatusMessage>
@@ -302,8 +306,7 @@ const ConnectedVariantsInTranscript = ({ datasetId, gene, transcriptId, width })
         <VariantsInTranscript
           clinVarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
-          gene={gene}
-          transcriptId={transcriptId}
+          transcript={transcript}
           variants={data.transcript.variants}
           width={width}
         />
@@ -314,10 +317,9 @@ const ConnectedVariantsInTranscript = ({ datasetId, gene, transcriptId, width })
 
 ConnectedVariantsInTranscript.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  gene: PropTypes.shape({
-    gene_id: PropTypes.string.isRequired,
+  transcript: PropTypes.shape({
+    transcript_id: PropTypes.string.isRequired,
   }).isRequired,
-  transcriptId: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
 }
 
