@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
+import ClinVarTrack from '../clinvar/ClinVarTrack'
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
 import Query from '../Query'
@@ -18,7 +19,6 @@ import VariantFilterControls from '../VariantList/VariantFilterControls'
 import VariantTable from '../VariantList/VariantTable'
 import { getColumns } from '../VariantList/variantTableColumns'
 import VariantTrack from '../VariantList/VariantTrack'
-import ClinVarTrack from './ClinVarTrack'
 
 class VariantsInGene extends Component {
   static propTypes = {

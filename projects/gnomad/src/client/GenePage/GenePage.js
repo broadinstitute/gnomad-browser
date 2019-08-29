@@ -10,17 +10,17 @@ import { ExternalLink } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
+import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import TranscriptLink from '../TranscriptLink'
 
 import GeneConstraint from './gene-constraint/GeneConstraint'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
-import RegionalConstraintTrack from './RegionalConstraintTrack'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
-import TissueExpressionTrack from './TissueExpressionTrack'
-import TranscriptLink from './TranscriptLink'
 import VariantsInGene from './VariantsInGene'
 
 const GeneFullName = styled.span`
