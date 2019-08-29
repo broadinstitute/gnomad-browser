@@ -1,7 +1,6 @@
 import { mean } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
@@ -14,7 +13,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import RegionCoverageTrack from '../RegionPage/CoverageTrack'
 import StatusMessage from '../StatusMessage'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import VariantsInTranscript from '../TranscriptPage/VariantsInTranscript'
+
 import GeneConstraint from './gene-constraint/GeneConstraint'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
@@ -145,12 +144,7 @@ class GenePage extends Component {
       ).isRequired,
     }).isRequired,
     geneId: PropTypes.string.isRequired,
-    transcriptId: PropTypes.string,
     width: PropTypes.number.isRequired,
-  }
-
-  static defaultProps = {
-    transcriptId: undefined,
   }
 
   constructor(props) {
@@ -166,7 +160,7 @@ class GenePage extends Component {
   }
 
   render() {
-    const { datasetId, gene, geneId, transcriptId, width } = this.props
+    const { datasetId, gene, geneId, width } = this.props
     const { includeUTRs, includeNonCodingTranscripts } = this.state
 
     const smallScreen = width < 900
@@ -198,22 +192,15 @@ class GenePage extends Component {
               (exon.feature_type === 'exon' && includeNonCodingTranscripts)
           )
 
-    if (datasetId === 'gnomad_sv_r2' && transcriptId) {
-      return <Redirect to={`/gene/${geneId}?dataset=gnomad_sv_r2`} />
-    }
-
     return (
       <TrackPage>
         <TrackPageSection>
           <DocumentTitle title={gene.gene_name} />
-          <GnomadPageHeading
-            datasetOptions={{ includeStructuralVariants: !transcriptId }}
-            selectedDataset={datasetId}
-          >
+          <GnomadPageHeading selectedDataset={datasetId}>
             {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
-            <GeneInfo currentTranscript={transcriptId || gene.canonical_transcript} gene={gene} />
+            <GeneInfo gene={gene} />
             <div>
               <h2>
                 Gene Constraint <QuestionMark topic="gene-constraint" />
@@ -221,7 +208,7 @@ class GenePage extends Component {
               <GeneConstraint
                 datasetId={datasetId}
                 gene={gene}
-                selectedTranscriptId={transcriptId || gene.canonical_transcript}
+                selectedTranscriptId={gene.canonical_transcript}
               />
             </div>
           </GeneInfoColumnWrapper>
@@ -330,7 +317,6 @@ class GenePage extends Component {
                       <TranscriptLink
                         to={`/transcript/${transcript.transcript_id}`}
                         isCanonical={transcript.transcript_id === gene.canonical_transcript}
-                        isSelected={transcript.transcript_id === transcriptId}
                       >
                         {transcript.transcript_id}
                       </TranscriptLink>
@@ -367,16 +353,8 @@ class GenePage extends Component {
             />
           )}
 
-          {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId === 'gnomad_sv_r2' ? (
             <StructuralVariantsInGene gene={gene} width={regionViewerWidth} />
-          ) : transcriptId ? (
-            <VariantsInTranscript
-              datasetId={datasetId}
-              gene={gene}
-              transcriptId={transcriptId}
-              width={regionViewerWidth}
-            />
           ) : (
             <VariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
           )}
