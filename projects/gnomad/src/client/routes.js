@@ -12,12 +12,13 @@ import ContactPage from './ContactPage'
 import DownloadsPage from './DownloadsPage'
 import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
-import GenePage from './GenePage/GenePageContainer'
 import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
-import RegionPageContainer from './RegionPage/RegionPageContainer'
 import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
+import GenePage from './GenePage/GenePageContainer'
+import RegionPageContainer from './RegionPage/RegionPageContainer'
+import TranscriptPageContainer from './TranscriptPage/TranscriptPageContainer'
 import VariantPage from './VariantPage/VariantPage'
 
 import NavBar from './NavBar'
@@ -109,6 +110,23 @@ const App = () => (
                 <RegionPageContainer
                   datasetId={datasetId}
                   regionId={regionId}
+                  history={history}
+                  location={location}
+                  match={match}
+                />
+              )
+            }}
+          />
+          <Route
+            exact
+            path="/transcript/:transcriptId"
+            render={({ history, location, match }) => {
+              const params = queryString.parse(location.search)
+              const datasetId = params.dataset || defaultDataset
+              return (
+                <TranscriptPageContainer
+                  datasetId={datasetId}
+                  transcriptId={match.params.transcriptId}
                   history={history}
                   location={location}
                   match={match}
