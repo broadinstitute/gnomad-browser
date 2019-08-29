@@ -352,8 +352,7 @@ class TranscriptPage extends Component {
 
           <VariantsInTranscript
             datasetId={datasetId}
-            gene={gene}
-            transcriptId={transcript.transcript_id}
+            transcript={transcript}
             width={regionViewerWidth}
           />
         </RegionViewer>
