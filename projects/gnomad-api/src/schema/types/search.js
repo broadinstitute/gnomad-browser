@@ -117,7 +117,7 @@ export const resolveSearchResults = async (ctx, query) => {
 
     return matchingTranscripts.map(transcript => ({
       label: `${transcript.transcript_id}`,
-      url: `/gene/${transcript.gene_id}/transcript/${transcript.transcript_id}`,
+      url: `/transcript/${transcript.transcript_id}`,
     }))
   }
 

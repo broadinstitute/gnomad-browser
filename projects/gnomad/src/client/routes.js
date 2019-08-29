@@ -1,7 +1,7 @@
 import React from 'react'
 import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { HelpButton, HelpModal } from '@broad/help'
@@ -67,20 +67,11 @@ const App = () => (
           <Route
             exact
             path="/gene/:gene/transcript/:transcriptId"
-            render={({ history, location, match }) => {
-              const params = queryString.parse(location.search)
-              const datasetId = params.dataset || defaultDataset
-              return (
-                <GenePage
-                  datasetId={datasetId}
-                  geneIdOrName={match.params.gene}
-                  history={history}
-                  location={location}
-                  match={match}
-                  transcriptId={match.params.transcriptId}
-                />
-              )
-            }}
+            render={({ location, match }) => (
+              <Redirect
+                to={{ ...location, pathname: `/transcript/${match.params.transcriptId}` }}
+              />
+            )}
           />
           <Route
             exact

@@ -328,7 +328,7 @@ class GenePage extends Component {
                   ? ({ transcript }) => <span>{transcript.transcript_id}</span>
                   : ({ transcript }) => (
                       <TranscriptLink
-                        to={`/gene/${gene.gene_id}/transcript/${transcript.transcript_id}`}
+                        to={`/transcript/${transcript.transcript_id}`}
                         isCanonical={transcript.transcript_id === gene.canonical_transcript}
                         isSelected={transcript.transcript_id === transcriptId}
                       >
