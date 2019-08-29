@@ -5,12 +5,12 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
+import ClinVarTrack from '../clinvar/ClinVarTrack'
 import datasetLabels from '../datasetLabels'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
-import ClinVarTrack from '../GenePage/ClinVarTrack'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
 import mergeExomeAndGenomeData from '../VariantList/mergeExomeAndGenomeData'
