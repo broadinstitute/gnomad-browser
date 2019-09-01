@@ -7,6 +7,16 @@ export const CoverageBinType = new GraphQLObjectType({
   fields: {
     pos: { type: new GraphQLNonNull(GraphQLFloat) },
     mean: { type: GraphQLFloat },
+    median: { type: GraphQLFloat },
+    over_1: { type: GraphQLFloat },
+    over_5: { type: GraphQLFloat },
+    over_10: { type: GraphQLFloat },
+    over_15: { type: GraphQLFloat },
+    over_20: { type: GraphQLFloat },
+    over_25: { type: GraphQLFloat },
+    over_30: { type: GraphQLFloat },
+    over_50: { type: GraphQLFloat },
+    over_100: { type: GraphQLFloat },
   },
 })
 
@@ -39,6 +49,16 @@ const fetchCoverage = async (ctx, { index, type = 'position', chrom, regions, bu
           },
           aggregations: {
             mean: { avg: { field: 'mean' } },
+            median: { avg: { field: 'median' } },
+            over_1: { avg: { field: 'over1' } },
+            over_5: { avg: { field: 'over5' } },
+            over_10: { avg: { field: 'over10' } },
+            over_15: { avg: { field: 'over15' } },
+            over_20: { avg: { field: 'over20' } },
+            over_25: { avg: { field: 'over25' } },
+            over_30: { avg: { field: 'over30' } },
+            over_50: { avg: { field: 'over50' } },
+            over_100: { avg: { field: 'over100' } },
           },
         },
       },
@@ -49,6 +69,16 @@ const fetchCoverage = async (ctx, { index, type = 'position', chrom, regions, bu
   const downsampledCoverage = buckets.map(bucket => ({
     pos: bucket.key,
     mean: bucket.mean.value,
+    median: bucket.median.value,
+    over_1: bucket.over_1.value,
+    over_5: bucket.over_5.value,
+    over_10: bucket.over_10.value,
+    over_15: bucket.over_15.value,
+    over_20: bucket.over_20.value,
+    over_25: bucket.over_25.value,
+    over_30: bucket.over_30.value,
+    over_50: bucket.over_50.value,
+    over_100: bucket.over_100.value,
   }))
 
   return downsampledCoverage
