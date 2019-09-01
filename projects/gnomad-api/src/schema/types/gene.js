@@ -26,7 +26,12 @@ import { ExonType } from '../gene-models/exon'
 import { GeneType as BaseGeneType } from '../gene-models/gene'
 import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
-import { CoverageBinType, fetchCoverageByTranscript } from './coverage'
+import {
+  CoverageBinType,
+  fetchCoverageByTranscript,
+  formatCoverageForCache,
+  formatCachedCoverage,
+} from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import { StructuralVariantSummaryType } from './structuralVariant'
 import TranscriptType from './transcript'
@@ -52,19 +57,28 @@ const GeneType = extendObjectType(BaseGeneType, {
       args: {
         dataset: { type: DatasetArgumentType },
       },
-      resolve: (obj, args, ctx) => {
+      resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
-          fetchCoverageByTranscript(ctx, {
-            index,
-            type,
-            chrom: obj.chrom,
-            exons: obj.exons,
-          })
+
+        const cachedCoverage = await withCache(
+          ctx,
+          `coverage:gene:${index}:${obj.gene_id}`,
+          async () => {
+            const coverage = await fetchCoverageByTranscript(ctx, {
+              index,
+              type,
+              chrom: obj.chrom,
+              exons: obj.exons,
+            })
+
+            return formatCoverageForCache(coverage)
+          }
         )
+
+        return formatCachedCoverage(cachedCoverage)
       },
     },
     genome_coverage: {
@@ -72,19 +86,28 @@ const GeneType = extendObjectType(BaseGeneType, {
       args: {
         dataset: { type: DatasetArgumentType },
       },
-      resolve: (obj, args, ctx) => {
+      resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:gene:${index}:${obj.gene_id}`, () =>
-          fetchCoverageByTranscript(ctx, {
-            index,
-            type,
-            chrom: obj.chrom,
-            exons: obj.exons,
-          })
+
+        const cachedCoverage = await withCache(
+          ctx,
+          `coverage:gene:${index}:${obj.gene_id}`,
+          async () => {
+            const coverage = await fetchCoverageByTranscript(ctx, {
+              index,
+              type,
+              chrom: obj.chrom,
+              exons: obj.exons,
+            })
+
+            return formatCoverageForCache(coverage)
+          }
         )
+
+        return formatCachedCoverage(cachedCoverage)
       },
     },
     clinvar_variants: {

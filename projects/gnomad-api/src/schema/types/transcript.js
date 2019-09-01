@@ -16,7 +16,12 @@ import { UserVisibleError } from '../errors'
 
 import { TranscriptType as BaseTranscriptType } from '../gene-models/transcript'
 
-import { CoverageBinType, fetchCoverageByTranscript } from './coverage'
+import {
+  CoverageBinType,
+  fetchCoverageByTranscript,
+  formatCoverageForCache,
+  formatCachedCoverage,
+} from './coverage'
 import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
 import { VariantSummaryType } from './variant'
 
@@ -36,14 +41,23 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, () =>
-          fetchCoverageByTranscript(ctx, {
-            index,
-            type,
-            chrom: obj.chrom,
-            exons: obj.exons,
-          })
+
+        const cachedCoverage = await withCache(
+          ctx,
+          `coverage:transcript:${index}:${obj.transcript_id}`,
+          async () => {
+            const coverage = await fetchCoverageByTranscript(ctx, {
+              index,
+              type,
+              chrom: obj.chrom,
+              exons: obj.exons,
+            })
+
+            return formatCoverageForCache(coverage)
+          }
         )
+
+        return formatCachedCoverage(cachedCoverage)
       },
     },
     genome_coverage: {
@@ -56,14 +70,23 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
         if (!index) {
           return []
         }
-        return withCache(ctx, `coverage:transcript:${index}:${obj.transcript_id}`, () =>
-          fetchCoverageByTranscript(ctx, {
-            index,
-            type,
-            chrom: obj.chrom,
-            exons: obj.exons,
-          })
+
+        const cachedCoverage = await withCache(
+          ctx,
+          `coverage:transcript:${index}:${obj.transcript_id}`,
+          async () => {
+            const coverage = await fetchCoverageByTranscript(ctx, {
+              index,
+              type,
+              chrom: obj.chrom,
+              exons: obj.exons,
+            })
+
+            return formatCoverageForCache(coverage)
+          }
         )
+
+        return formatCachedCoverage(cachedCoverage)
       },
     },
     gnomad_constraint: {
