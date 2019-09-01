@@ -110,3 +110,42 @@ export const fetchCoverageByRegion = (ctx, { index, type, region }) => {
     bucketSize,
   })
 }
+
+export const formatCoverageForCache = coverage =>
+  coverage
+    .map(bin =>
+      [
+        bin.pos.toString(),
+        Math.ceil(bin.mean || 0).toString(),
+        Math.ceil(bin.median || 0).toString(),
+        (Math.ceil((bin.over_1 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_5 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_10 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_15 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_20 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_25 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_30 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_50 || 0) * 1000) / 1000).toString(),
+        (Math.ceil((bin.over_100 || 0) * 1000) / 1000).toString(),
+      ].join(',')
+    )
+    .join('/')
+
+export const formatCachedCoverage = cachedCoverage =>
+  cachedCoverage.split('/').map(bin => {
+    const values = bin.split(',').map(Number)
+    return {
+      pos: values[0],
+      mean: values[1],
+      median: values[2],
+      over_1: values[3],
+      over_5: values[4],
+      over_10: values[5],
+      over_15: values[6],
+      over_20: values[7],
+      over_25: values[8],
+      over_30: values[9],
+      over_50: values[10],
+      over_100: values[11],
+    }
+  })
