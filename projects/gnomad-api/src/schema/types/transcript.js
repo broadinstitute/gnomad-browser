@@ -16,7 +16,7 @@ import { UserVisibleError } from '../errors'
 
 import { TranscriptType as BaseTranscriptType } from '../gene-models/transcript'
 
-import coverageType, { fetchCoverageByTranscript } from './coverage'
+import { CoverageBinType, fetchCoverageByTranscript } from './coverage'
 import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
 import { VariantSummaryType } from './variant'
 
@@ -27,7 +27,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
       resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj),
     },
     exome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },
@@ -47,7 +47,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
       },
     },
     genome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },

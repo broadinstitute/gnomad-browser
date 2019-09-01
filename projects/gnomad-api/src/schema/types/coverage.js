@@ -1,16 +1,14 @@
-import { GraphQLFloat, GraphQLObjectType } from 'graphql'
+import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
 import { extendRegions, mergeOverlappingRegions, totalRegionSize } from '../../utilities/region'
 
-const coverageType = new GraphQLObjectType({
-  name: 'Coverage',
+export const CoverageBinType = new GraphQLObjectType({
+  name: 'CoverageBin',
   fields: {
-    pos: { type: GraphQLFloat },
+    pos: { type: new GraphQLNonNull(GraphQLFloat) },
     mean: { type: GraphQLFloat },
   },
 })
-
-export default coverageType
 
 const fetchCoverage = async (ctx, { index, type = 'position', chrom, regions, bucketSize }) => {
   const response = await ctx.database.elastic.search({
