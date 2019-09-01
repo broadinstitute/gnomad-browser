@@ -26,7 +26,7 @@ import { ExonType } from '../gene-models/exon'
 import { GeneType as BaseGeneType } from '../gene-models/gene'
 import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
-import coverageType, { fetchCoverageByTranscript } from './coverage'
+import { CoverageBinType, fetchCoverageByTranscript } from './coverage'
 import { PextRegionType, fetchPextRegionsByGene } from './pext'
 import { StructuralVariantSummaryType } from './structuralVariant'
 import TranscriptType from './transcript'
@@ -48,7 +48,7 @@ const GeneType = extendObjectType(BaseGeneType, {
       resolve: obj => ({ exons: obj.exons }),
     },
     exome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },
@@ -68,7 +68,7 @@ const GeneType = extendObjectType(BaseGeneType, {
       },
     },
     genome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },

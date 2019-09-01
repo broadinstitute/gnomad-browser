@@ -8,7 +8,7 @@ import { UserVisibleError } from '../errors'
 
 import { fetchGenesByRegion } from '../gene-models/gene'
 
-import coverageType, { fetchCoverageByRegion } from './coverage'
+import { CoverageBinType, fetchCoverageByRegion } from './coverage'
 import geneType from './gene'
 import { StructuralVariantSummaryType } from './structuralVariant'
 
@@ -30,7 +30,7 @@ const regionType = new GraphQLObjectType({
       resolve: (obj, args, ctx) => fetchGenesByRegion(ctx, obj),
     },
     exome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },
@@ -47,7 +47,7 @@ const regionType = new GraphQLObjectType({
       },
     },
     genome_coverage: {
-      type: new GraphQLList(coverageType),
+      type: new GraphQLList(CoverageBinType),
       args: {
         dataset: { type: DatasetArgumentType },
       },
