@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { AxisLeft } from '@vx/axis'
 
 import { Track } from '@broad/region-viewer'
-import { Button } from '@broad/ui'
+import { Button, Select } from '@broad/ui'
 
 import { Legend } from './Legend'
 
@@ -25,6 +25,16 @@ export class CoverageTrack extends Component {
           PropTypes.shape({
             pos: PropTypes.number.isRequired,
             mean: PropTypes.number,
+            median: PropTypes.number,
+            over_1: PropTypes.number,
+            over_5: PropTypes.number,
+            over_10: PropTypes.number,
+            over_15: PropTypes.number,
+            over_20: PropTypes.number,
+            over_25: PropTypes.number,
+            over_30: PropTypes.number,
+            over_50: PropTypes.number,
+            over_100: PropTypes.number,
           })
         ).isRequired,
         color: PropTypes.string.isRequired,
@@ -137,6 +147,7 @@ export class CoverageTrack extends Component {
 
   render() {
     const { datasets, height } = this.props
+    const { selectedMetric } = this.state
 
     return (
       <Track
@@ -144,13 +155,42 @@ export class CoverageTrack extends Component {
         renderTopPanel={() => (
           <TopPanel>
             <Legend datasets={datasets} />
-            <Button onClick={() => this.exportPlot()}>Save plot</Button>
+            {/* eslint-disable-next-line jsx-a11y/label-has-for */}
+            <label htmlFor="coverage-metric">
+              Metric:{' '}
+              <Select
+                id="coverage-metric"
+                value={selectedMetric}
+                onChange={e => {
+                  this.setState({ selectedMetric: e.target.value })
+                }}
+              >
+                <optgroup label="Per-base depth of coverage">
+                  <option value="mean">Mean</option>
+                  <option value="median">Median</option>
+                </optgroup>
+                <optgroup label="Fraction of individuals with coverage over X">
+                  <option value="over_1">Over 1</option>
+                  <option value="over_5">Over 5</option>
+                  <option value="over_10">Over 10</option>
+                  <option value="over_15">Over 15</option>
+                  <option value="over_20">Over 20</option>
+                  <option value="over_25">Over 25</option>
+                  <option value="over_30">Over 30</option>
+                  <option value="over_50">Over 50</option>
+                  <option value="over_100">Over 100</option>
+                </optgroup>
+              </Select>
+            </label>
+            <Button style={{ marginLeft: '1em' }} onClick={() => this.exportPlot()}>
+              Save plot
+            </Button>
           </TopPanel>
         )}
       >
         {({ offsetRegions, scalePosition, width }) => {
           const scaleCoverageMetric = scaleLinear()
-            .domain([0, 100])
+            .domain(selectedMetric === 'mean' || selectedMetric === 'median' ? [0, 100] : [0, 1])
             .range([height, 7])
 
           const axisWidth = 60
