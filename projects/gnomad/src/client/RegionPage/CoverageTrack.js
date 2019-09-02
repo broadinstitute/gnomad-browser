@@ -13,10 +13,30 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
     exome_coverage(dataset: $datasetId) {
       pos
       mean
+      median
+      over_1
+      over_5
+      over_10
+      over_15
+      over_20
+      over_25
+      over_30
+      over_50
+      over_100
     }
     genome_coverage(dataset: $datasetId) {
       pos
       mean
+      median
+      over_1
+      over_5
+      over_10
+      over_15
+      over_20
+      over_25
+      over_30
+      over_50
+      over_100
     }
   }
 }
