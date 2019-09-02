@@ -11,13 +11,14 @@
 */
 
 const fs = require('fs')
+const process = require('process')
 
 const gqlFetch = require('graphql-fetch')
 
 const apiUrl = process.env.GNOMAD_API_URL || 'https://gnomad.broadinstitute.org/api'
 
 const genes = fs
-  .readFileSync(0, 'utf8')
+  .readFileSync(process.argv[2], 'utf8')
   .split(/\r?\n/)
   .filter(Boolean)
 
