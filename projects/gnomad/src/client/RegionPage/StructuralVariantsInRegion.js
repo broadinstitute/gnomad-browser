@@ -42,10 +42,13 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
           return <StatusMessage>Failed to load variants</StatusMessage>
         }
 
+        const regionId = `${region.chrom}-${region.start}-${region.stop}`
+
         return (
           <StructuralVariants
             {...rest}
             chrom={region.chrom}
+            exportFileName={`gnomad_structural_variants_${regionId}`}
             variants={data.region.structural_variants}
           />
         )

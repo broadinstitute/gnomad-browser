@@ -7,6 +7,8 @@ import { SegmentedControl } from '@broad/ui'
 import { HUMAN_CHROMOSOMES } from '@broad/utilities'
 
 import { TrackPageSection } from '../TrackPage'
+
+import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
 import filterVariants from './filterVariants'
 import sortVariants from './sortVariants'
 import {
@@ -40,6 +42,7 @@ const ControlWrapper = styled(Wrapper)`
 class StructuralVariants extends Component {
   static propTypes = {
     chrom: PropTypes.string.isRequired,
+    exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
     width: PropTypes.number.isRequired,
   }
@@ -165,7 +168,7 @@ class StructuralVariants extends Component {
   }
 
   render() {
-    const { chrom, width } = this.props
+    const { chrom, exportFileName, width } = this.props
     const {
       filter,
       highlightedVariantTrack,
@@ -236,6 +239,12 @@ class StructuralVariants extends Component {
               value={filter}
               onChange={this.onFilter}
             />
+            <div>
+              <ExportStructuralVariantsButton
+                exportFileName={exportFileName}
+                variants={renderedVariants}
+              />
+            </div>
           </Wrapper>
           <Wrapper>
             <StructuralVariantsTable
