@@ -6,6 +6,7 @@ import { SegmentedControl, Select } from '@broad/ui'
 import gnomadSiteQualityMetricDistributions from '../../dataset-constants/gnomadSiteQualityMetricDistributions.json'
 import ControlSection from '../ControlSection'
 import { BarGraph } from './BarGraph'
+import qualityMetricDescriptions from './qualityMetricDescriptions'
 
 const allMetrics = [
   'SiteQuality',
@@ -90,6 +91,8 @@ export class GnomadSiteQualityMetrics extends Component {
       metric => variantData.qualityMetrics.siteQualityMetrics[metric] !== null
     )
 
+    const metricDescription = qualityMetricDescriptions[selectedMetric]
+
     return (
       <div>
         <BarGraph
@@ -135,6 +138,7 @@ export class GnomadSiteQualityMetrics extends Component {
           />
         </ControlSection>
 
+        {metricDescription && <p>{metricDescription}</p>}
         <p>
           Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
           sites.
