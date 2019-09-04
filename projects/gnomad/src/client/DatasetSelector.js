@@ -396,6 +396,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeShortVariants = true,
     includeStructuralVariants = true,
     includeExac = true,
+    includeGnomadSubsets = true,
   } = datasetOptions
 
   const datasetLink = datasetId =>
@@ -417,9 +418,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         url: datasetLink(topLevelShortVariantDataset),
       },
       {
-        id: 'gnomad_subsets',
+        id: 'other_short_variant',
         isActive: selectedDataset !== 'gnomad_sv_r2',
-        label: 'gnomAD subsets',
+        label: 'More datasets',
         children: [
           {
             id: 'gnomad_r2_1',
@@ -427,33 +428,38 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             url: datasetLink('gnomad_r2_1'),
             description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
           },
-          {
-            id: 'gnomad_r2_1_controls',
-            label: datasetLabels.gnomad_r2_1_controls,
-            url: datasetLink('gnomad_r2_1_controls'),
-            description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
-          },
-          {
-            id: 'gnomad_r2_1_non_cancer',
-            label: datasetLabels.gnomad_r2_1_non_cancer,
-            url: datasetLink('gnomad_r2_1_non_cancer'),
-            description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
-          },
-          {
-            id: 'gnomad_r2_1_non_neuro',
-            label: datasetLabels.gnomad_r2_1_non_neuro,
-            url: datasetLink('gnomad_r2_1_non_neuro'),
-            description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
-          },
-          {
-            id: 'gnomad_r2_1_non_topmed',
-            label: datasetLabels.gnomad_r2_1_non_topmed,
-            url: datasetLink('gnomad_r2_1_non_topmed'),
-            description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
-          },
         ],
       },
     ]
+
+    if (includeGnomadSubsets) {
+      shortVariantDatasets[1].children.push(
+        {
+          id: 'gnomad_r2_1_controls',
+          label: datasetLabels.gnomad_r2_1_controls,
+          url: datasetLink('gnomad_r2_1_controls'),
+          description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r2_1_non_cancer',
+          label: datasetLabels.gnomad_r2_1_non_cancer,
+          url: datasetLink('gnomad_r2_1_non_cancer'),
+          description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r2_1_non_neuro',
+          label: datasetLabels.gnomad_r2_1_non_neuro,
+          url: datasetLink('gnomad_r2_1_non_neuro'),
+          description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r2_1_non_topmed',
+          label: datasetLabels.gnomad_r2_1_non_topmed,
+          url: datasetLink('gnomad_r2_1_non_topmed'),
+          description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
+        }
+      )
+    }
 
     if (includeExac) {
       shortVariantDatasets[1].children.push({
