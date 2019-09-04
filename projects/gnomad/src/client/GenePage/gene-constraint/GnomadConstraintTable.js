@@ -131,7 +131,7 @@ const GnomadConstraintTable = ({ constraint }) => {
         <tr>
           <th scope="col">Category</th>
           <th scope="col">
-            <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in section 4.1 of the supplement in Lek et al. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
+            <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in the gnomAD flagship paper. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
               <TooltipHint>Exp. SNVs</TooltipHint>
             </TooltipAnchor>
           </th>

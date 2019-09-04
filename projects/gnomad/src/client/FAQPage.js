@@ -227,9 +227,9 @@ export default () => (
       <Answer>
         <p>
           We used a depth corrected probability of mutation for each gene to predict the expected
-          variant counts. More details can be found in section 4.1 of the supplement in{' '}
-          <ExternalLink href="https://www.nature.com/nature/journal/v536/n7616/full/nature19057.html">
-            Lek et al
+          variant counts. More details can be found in the{' '}
+          <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
+            gnomAD flagship paper
           </ExternalLink>
           . Note that the expected variant counts for bases with a median depth &lt;1 were removed
           from the totals.
