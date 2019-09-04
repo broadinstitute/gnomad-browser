@@ -155,7 +155,18 @@ const StructuralVariantAttributeList = ({ variant }) => (
       </AttributeList.Item>
     )}
     <AttributeList.Item label="Class">
-      {svTypeLabels[variant.type]} <QuestionMark topic={`SV_docs/sv-class_${variant.type}`} />
+      {svTypeLabels[variant.type]}{' '}
+      {variant.type === 'INS' &&
+        variant.alts &&
+        `(${variant.alts
+          .map(alt =>
+            alt
+              .replace(/^</, '')
+              .replace(/>$/, '')
+              .replace(/^INS:/, '')
+          )
+          .join(', ')})`}
+      <QuestionMark topic={`SV_docs/sv-class_${variant.type}`} />
     </AttributeList.Item>
     {variant.type === 'CPX' && (
       <React.Fragment>
