@@ -121,6 +121,14 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
   const totalAlleleNumber = exomeAlleleNumber + genomeAlleleNumber
   const totalAlleleFrequency = totalAlleleNumber === 0 ? 0 : totalAlleleCount / totalAlleleNumber
 
+  const exomeHomozygoteCount = isPresentInExome ? variant.exome.ac_hom : 0
+  const genomeHomozygoteCount = isPresentInGenome ? variant.genome.ac_hom : 0
+  const totalHomozygoteCount = exomeHomozygoteCount + genomeHomozygoteCount
+
+  const exomeHemizygoteCount = isPresentInExome ? variant.exome.ac_hemi : 0
+  const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
+  const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
+
   return (
     <Table>
       <tbody>
@@ -166,6 +174,22 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
           <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
           <td />
         </tr>
+        {variant.chrom !== 'Y' && (
+          <tr>
+            <th scope="row">Number of homozygotes</th>
+            <td>{isPresentInExome && exomeHomozygoteCount}</td>
+            <td>{isPresentInGenome && genomeHomozygoteCount}</td>
+            <td>{totalHomozygoteCount}</td>
+          </tr>
+        )}
+        {(variant.chrom === 'X' || variant.chrom === 'Y') && (
+          <tr>
+            <th scope="row">Number of hemizygotes</th>
+            <td>{isPresentInExome && exomeHemizygoteCount}</td>
+            <td>{isPresentInGenome && genomeHemizygoteCount}</td>
+            <td>{totalHemizygoteCount}</td>
+          </tr>
+        )}
       </tbody>
     </Table>
   )
@@ -173,9 +197,12 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
 
 GnomadVariantOccurrenceTable.propTypes = {
   variant: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
     exome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
+      ac_hom: PropTypes.number.isRequired,
+      ac_hemi: PropTypes.number,
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
@@ -184,6 +211,8 @@ GnomadVariantOccurrenceTable.propTypes = {
     genome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
+      ac_hom: PropTypes.number.isRequired,
+      ac_hemi: PropTypes.number,
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
