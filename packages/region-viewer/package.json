@@ -9,8 +9,7 @@
   "dependencies": {
     "d3-scale": "^2.2.2",
     "prop-types": "^15.7.2",
-    "ramda": "^0.24.1",
-    "react-cursor-position": "^3.0.3"
+    "ramda": "^0.24.1"
   },
   "peerDependencies": {
     "react": "^16.8.2",
