@@ -1,7 +1,7 @@
 import { scaleLog } from 'd3-scale'
 import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { getCategoryFromConsequence } from '@broad/utilities'
 
@@ -15,8 +15,6 @@ const exacClassicColors = {
 const alleleFrequencyScale = scaleLog()
   .domain([0.00001, 0.001])
   .range([4, 12])
-
-const CANVAS_SCALE = window.devicePixelRatio || 1
 
 const drawEllipse = (ctx, cx, cy, rx, ry) => {
   const K = 0.5522848
@@ -37,95 +35,103 @@ const drawEllipse = (ctx, cx, cy, rx, ry) => {
   ctx.bezierCurveTo(cx - xOffset, y2, x1, cy + yOffset, x1, cy)
 }
 
-export class VariantPlot extends Component {
-  static propTypes = {
-    height: PropTypes.number.isRequired,
-    scalePosition: PropTypes.func.isRequired,
-    variants: PropTypes.arrayOf(
-      PropTypes.shape({
-        allele_freq: PropTypes.number,
-        consequence: PropTypes.string,
-        isHighlighted: PropTypes.bool,
-        pos: PropTypes.number.isRequired,
-        variant_id: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    width: PropTypes.number.isRequired,
-  }
+const Canvas = ({ children, height, width, ...otherProps }) => {
+  const element = useRef(null)
 
-  componentDidMount() {
-    this.draw()
-  }
+  const scale = window.devicePixelRatio || 1
 
-  componentDidUpdate() {
-    this.draw()
-  }
+  useEffect(() => {
+    if (!element.current) {
+      return
+    }
 
-  canvasRef = el => {
-    this.ctx = el ? el.getContext('2d') : null
-  }
+    const context = element.current.getContext('2d')
+    context.setTransform(scale, 0, 0, scale, 0, 0)
+    children(context)
+  })
 
-  draw() {
-    const { height, scalePosition, variants, width } = this.props
+  return (
+    <canvas
+      {...otherProps}
+      ref={element}
+      height={height * scale}
+      width={width * scale}
+      style={{
+        height: `${height}px`,
+        width: `${width}px`,
+      }}
+    />
+  )
+}
 
-    const markerY = height / 2
+Canvas.propTypes = {
+  children: PropTypes.func.isRequired,
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+}
 
-    this.ctx.setTransform(CANVAS_SCALE, 0, 0, CANVAS_SCALE, 0, 0)
-    this.ctx.clearRect(0, 0, width, height)
-    this.ctx.lineWidth = 0.5
-    this.ctx.strokeStyle = '#000'
+export const VariantPlot = ({ height, scalePosition, variants, width }) => {
+  return (
+    <Canvas height={height} width={width}>
+      {ctx => {
+        const markerY = height / 2
 
-    variants.forEach(variant => {
-      const markerX = scalePosition(variant.pos)
+        ctx.clearRect(0, 0, width, height)
+        ctx.lineWidth = 0.5
+        ctx.strokeStyle = '#000'
 
-      let fill
-      let rx
-      let ry
+        variants.forEach(variant => {
+          const markerX = scalePosition(variant.pos)
 
-      if (!variant.allele_freq) {
-        fill = 'white'
-        rx = 1
-        ry = 1
-      } else {
-        const category = getCategoryFromConsequence(variant.consequence) || 'other'
-        fill = exacClassicColors[category]
-        rx = 3
-        ry = alleleFrequencyScale(variant.allele_freq)
-      }
+          let fill
+          let rx
+          let ry
 
-      this.ctx.beginPath()
-      drawEllipse(this.ctx, markerX, markerY, rx, ry)
-      this.ctx.closePath()
-      this.ctx.fillStyle = fill
-      this.ctx.fill()
-      this.ctx.lineWidth = 0.5
-      this.ctx.setLineDash([])
-      this.ctx.stroke()
+          if (!variant.allele_freq) {
+            fill = 'white'
+            rx = 1
+            ry = 1
+          } else {
+            const category = getCategoryFromConsequence(variant.consequence) || 'other'
+            fill = exacClassicColors[category]
+            rx = 3
+            ry = alleleFrequencyScale(variant.allele_freq)
+          }
 
-      if (variant.isHighlighted) {
-        this.ctx.beginPath()
-        drawEllipse(this.ctx, markerX, markerY, rx + 5, ry + 5)
-        this.ctx.closePath()
-        this.ctx.lineWidth = 1
-        this.ctx.setLineDash([3, 3])
-        this.ctx.stroke()
-      }
+          ctx.beginPath()
+          drawEllipse(ctx, markerX, markerY, rx, ry)
+          ctx.closePath()
+          ctx.fillStyle = fill
+          ctx.fill()
+          ctx.lineWidth = 0.5
+          ctx.setLineDash([])
+          ctx.stroke()
+
+          if (variant.isHighlighted) {
+            ctx.beginPath()
+            drawEllipse(ctx, markerX, markerY, rx + 5, ry + 5)
+            ctx.closePath()
+            ctx.lineWidth = 1
+            ctx.setLineDash([3, 3])
+            ctx.stroke()
+          }
+        })
+      }}
+    </Canvas>
+  )
+}
+
+VariantPlot.propTypes = {
+  height: PropTypes.number.isRequired,
+  scalePosition: PropTypes.func.isRequired,
+  variants: PropTypes.arrayOf(
+    PropTypes.shape({
+      allele_freq: PropTypes.number,
+      consequence: PropTypes.string,
+      isHighlighted: PropTypes.bool,
+      pos: PropTypes.number.isRequired,
+      variant_id: PropTypes.string.isRequired,
     })
-  }
-
-  render() {
-    const { height, width } = this.props
-
-    return (
-      <canvas
-        ref={this.canvasRef}
-        height={height * CANVAS_SCALE}
-        width={width * CANVAS_SCALE}
-        style={{
-          height: `${height}px`,
-          width: `${width}px`,
-        }}
-      />
-    )
-  }
+  ).isRequired,
+  width: PropTypes.number.isRequired,
 }
