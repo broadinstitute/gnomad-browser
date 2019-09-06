@@ -86,9 +86,44 @@ Canvas.propTypes = {
   width: PropTypes.number.isRequired,
 }
 
-export const VariantPlot = ({ height, scalePosition, variants, width }) => {
+export const VariantPlot = ({ height, scalePosition, variants, width, onHoverVariants }) => {
+  const canvas = useRef(null)
+
+  const variantsWithX = variants.map(variant => ({ variant, x: scalePosition(variant.pos) }))
+
+  const findNearbyVariants = (x, threshold = 3) => {
+    console.log(x)
+    console.log(variantsWithX)
+    // TODO: optimize this using binary search in a copy of variants sorted by x
+    return variantsWithX
+      .map(({ variant, x: variantX }) => ({ variant, distance: Math.abs(x - variantX) }))
+      .filter(({ distance }) => distance <= threshold)
+      .sort(({ distance: d1 }, { distance: d2 }) => d1 - d2)
+      .map(({ variant }) => variant)
+  }
+
+  let onMouseLeave
+  let onMouseMove
+
+  if (onHoverVariants) {
+    onMouseMove = e => {
+      const x = e.clientX - canvas.current.getBoundingClientRect().left
+      onHoverVariants(findNearbyVariants(x))
+    }
+
+    onMouseLeave = () => {
+      onHoverVariants([])
+    }
+  }
+
   return (
-    <Canvas height={height} width={width}>
+    <Canvas
+      ref={canvas}
+      height={height}
+      width={width}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+    >
       {ctx => {
         const markerY = height / 2
 
@@ -96,9 +131,7 @@ export const VariantPlot = ({ height, scalePosition, variants, width }) => {
         ctx.lineWidth = 0.5
         ctx.strokeStyle = '#000'
 
-        variants.forEach(variant => {
-          const markerX = scalePosition(variant.pos)
-
+        variantsWithX.forEach(({ variant, x }) => {
           let fill
           let rx
           let ry
@@ -115,7 +148,7 @@ export const VariantPlot = ({ height, scalePosition, variants, width }) => {
           }
 
           ctx.beginPath()
-          drawEllipse(ctx, markerX, markerY, rx, ry)
+          drawEllipse(ctx, x, markerY, rx, ry)
           ctx.closePath()
           ctx.fillStyle = fill
           ctx.fill()
@@ -125,7 +158,7 @@ export const VariantPlot = ({ height, scalePosition, variants, width }) => {
 
           if (variant.isHighlighted) {
             ctx.beginPath()
-            drawEllipse(ctx, markerX, markerY, rx + 5, ry + 5)
+            drawEllipse(ctx, x, markerY, rx + 5, ry + 5)
             ctx.closePath()
             ctx.lineWidth = 1
             ctx.setLineDash([3, 3])
@@ -150,4 +183,9 @@ VariantPlot.propTypes = {
     })
   ).isRequired,
   width: PropTypes.number.isRequired,
+  onHoverVariants: PropTypes.func,
+}
+
+VariantPlot.defaultProps = {
+  onHoverVariants: undefined,
 }
