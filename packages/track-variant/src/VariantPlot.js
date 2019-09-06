@@ -1,7 +1,7 @@
 import { scaleLog } from 'd3-scale'
 import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
-import React, { useEffect, useRef } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef } from 'react'
 
 import { getCategoryFromConsequence } from '@broad/utilities'
 
@@ -35,8 +35,24 @@ const drawEllipse = (ctx, cx, cy, rx, ry) => {
   ctx.bezierCurveTo(cx - xOffset, y2, x1, cy + yOffset, x1, cy)
 }
 
-const Canvas = ({ children, height, width, ...otherProps }) => {
+const useCombinedRefs = refs =>
+  useCallback(element => {
+    refs.forEach(ref => {
+      if (!ref) {
+        return
+      }
+
+      if (typeof ref === 'function') {
+        ref(element)
+      } else {
+        ref.current = element // eslint-disable-line no-param-reassign
+      }
+    })
+  }, refs)
+
+const Canvas = forwardRef(({ children, height, width, ...otherProps }, ref) => {
   const element = useRef(null)
+  const refs = useCombinedRefs([element, ref])
 
   const scale = window.devicePixelRatio || 1
 
@@ -53,7 +69,7 @@ const Canvas = ({ children, height, width, ...otherProps }) => {
   return (
     <canvas
       {...otherProps}
-      ref={element}
+      ref={refs}
       height={height * scale}
       width={width * scale}
       style={{
@@ -62,7 +78,7 @@ const Canvas = ({ children, height, width, ...otherProps }) => {
       }}
     />
   )
-}
+})
 
 Canvas.propTypes = {
   children: PropTypes.func.isRequired,
