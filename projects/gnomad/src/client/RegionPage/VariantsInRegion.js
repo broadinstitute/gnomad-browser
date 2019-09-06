@@ -66,6 +66,7 @@ class VariantsInRegion extends Component {
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       variantHoveredInTable: null,
+      variantHoveredInTrack: null,
       visibleVariantWindow: [0, 19],
     }
   }
@@ -125,6 +126,12 @@ class VariantsInRegion extends Component {
     this.setState({ variantHoveredInTable: variantId })
   }
 
+  onHoverVariantsInTrack = throttle(variants => {
+    this.setState({
+      variantHoveredInTrack: variants.length > 0 ? variants[0].variant_id : null,
+    })
+  }, 100)
+
   onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
     this.setState({ visibleVariantWindow: [startIndex, stopIndex] })
   }, 100)
@@ -167,6 +174,7 @@ class VariantsInRegion extends Component {
       sortKey,
       sortOrder,
       variantHoveredInTable,
+      variantHoveredInTrack,
       visibleVariantWindow,
     } = this.state
 
@@ -188,6 +196,7 @@ class VariantsInRegion extends Component {
                 ...variant,
                 isHighlighted: variant.variant_id === variantHoveredInTable,
               }))}
+            onHoverVariants={this.onHoverVariantsInTrack}
           />
         </Cursor>
 
@@ -205,6 +214,7 @@ class VariantsInRegion extends Component {
           <VariantTable
             columns={this.getColumns(width, region.chrom)}
             highlightText={filter.searchText}
+            highlightedVariantId={variantHoveredInTrack}
             onHoverVariant={this.onHoverVariantInTable}
             onRequestSort={this.onSort}
             onVisibleRowsChange={this.onVisibleRowsChange}
