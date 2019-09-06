@@ -171,7 +171,7 @@ export const VariantPlot = ({ height, scalePosition, variants, width, onHoverVar
 }
 
 VariantPlot.propTypes = {
-  height: PropTypes.number.isRequired,
+  height: PropTypes.number,
   scalePosition: PropTypes.func.isRequired,
   variants: PropTypes.arrayOf(
     PropTypes.shape({
@@ -187,5 +187,6 @@ VariantPlot.propTypes = {
 }
 
 VariantPlot.defaultProps = {
+  height: 60,
   onHoverVariants: undefined,
 }
