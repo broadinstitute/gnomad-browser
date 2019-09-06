@@ -63,11 +63,11 @@ class VariantsInGene extends Component {
 
     this.state = {
       filter: defaultFilter,
-      hoveredVariant: null,
       rowIndexLastClickedInNavigator: 0,
       renderedVariants,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
+      variantHoveredInTable: null,
       visibleVariantWindow: [0, 19],
     }
   }
@@ -123,8 +123,8 @@ class VariantsInGene extends Component {
     })
   }
 
-  onHoverVariant = variantId => {
-    this.setState({ hoveredVariant: variantId })
+  onHoverVariantInTable = variantId => {
+    this.setState({ variantHoveredInTable: variantId })
   }
 
   onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
@@ -164,11 +164,11 @@ class VariantsInGene extends Component {
     const { clinVarVariants, datasetId, gene, width } = this.props
     const {
       filter,
-      hoveredVariant,
       renderedVariants,
       rowIndexLastClickedInNavigator,
       sortKey,
       sortOrder,
+      variantHoveredInTable,
       visibleVariantWindow,
     } = this.state
 
@@ -190,7 +190,7 @@ class VariantsInGene extends Component {
               .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
               .map(variant => ({
                 ...variant,
-                isHighlighted: variant.variant_id === hoveredVariant,
+                isHighlighted: variant.variant_id === variantHoveredInTable,
               }))}
           />
         </Cursor>
@@ -215,7 +215,7 @@ class VariantsInGene extends Component {
           <VariantTable
             columns={this.getColumns(width, gene.chrom)}
             highlightText={filter.searchText}
-            onHoverVariant={this.onHoverVariant}
+            onHoverVariant={this.onHoverVariantInTable}
             onRequestSort={this.onSort}
             onVisibleRowsChange={this.onVisibleRowsChange}
             rowIndexLastClickedInNavigator={rowIndexLastClickedInNavigator}
