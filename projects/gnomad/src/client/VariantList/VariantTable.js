@@ -30,6 +30,7 @@ class VariantTable extends PureComponent {
     const {
       columns,
       highlightText,
+      highlightedVariantId,
       onVisibleRowsChange,
       onHoverVariant,
       onRequestSort,
@@ -55,6 +56,11 @@ class VariantTable extends PureComponent {
         onVisibleRowsChange={onVisibleRowsChange}
         ref={this.grid}
         rowKey={variant => variant.variant_id}
+        shouldHighlightRow={
+          highlightedVariantId
+            ? variant => variant.variant_id === highlightedVariantId
+            : () => false
+        }
         sortKey={sortKey}
         sortOrder={sortOrder}
       />
@@ -65,6 +71,7 @@ class VariantTable extends PureComponent {
 VariantTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
   highlightText: PropTypes.string,
+  highlightedVariantId: PropTypes.string,
   onVisibleRowsChange: PropTypes.func,
   onHoverVariant: PropTypes.func,
   onRequestSort: PropTypes.func,
@@ -76,6 +83,7 @@ VariantTable.propTypes = {
 
 VariantTable.defaultProps = {
   highlightText: '',
+  highlightedVariantId: null,
   onVisibleRowsChange: () => {},
   onHoverVariant: () => {},
   onRequestSort: () => {},
