@@ -34,7 +34,7 @@
 
 6. Load tables into Elasticsearch. Replace `$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
    ```
-   cluster submit schema-data-load ./projects/gnomad/data/export_ht_to_es.py \
+   cluster submit schema-data-load ./data/export_ht_to_es.py \
       --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
       --args "--ht-url=gs://schizophrenia-browser/190415/gene_results.ht \
          --host=$ELASTICSEARCH_IP \
@@ -42,7 +42,7 @@
          --index-type=result \
          --num-shards=2"
 
-   cluster submit schema-data-load ./projects/gnomad/data/export_ht_to_es.py \
+   cluster submit schema-data-load ./data/export_ht_to_es.py \
       --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
       --args "--ht-url=gs://schizophrenia-browser/190415/variant_results.ht \
          --host=$ELASTICSEARCH_IP \

@@ -12,7 +12,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-svs \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_gnomad_svs_for_browser.py \
+      ./data/prepare_gnomad_svs_for_browser.py \
          --input-url=gs://gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz \
          --output-url=$GNOMAD_SV_BROWSER_HT_URL
    ```
@@ -23,7 +23,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-svs \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$GNOMAD_SV_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=gnomad_structural_variants \
