@@ -14,7 +14,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-gene-constraint \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_gnomad_r2_1_constraint_for_browser.py \
+      ./data/prepare_gnomad_r2_1_constraint_for_browser.py \
          --output-url=$GNOMAD_GENE_CONSTRAINT_BROWSER_HT_URL
    ```
 
@@ -25,7 +25,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-gene-constraint \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$GNOMAD_GENE_CONSTRAINT_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=gnomad_constraint_2_1_1 \

@@ -13,7 +13,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_gnomad_r2_1_for_browser.py \
+      ./data/prepare_gnomad_r2_1_for_browser.py \
          --input-url=gs://gnomad/release/2.1.1/ht/gnomad.exomes.r2.1.1.flat.with_subsets.sites.ht \
          --output-url=$GNOMAD_EXOME_VARIANTS_BROWSER_HT_URL
    ```
@@ -23,7 +23,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_gnomad_r2_1_for_browser.py \
+      ./data/prepare_gnomad_r2_1_for_browser.py \
          --input-url=gs://gnomad/release/2.1.1/ht/gnomad.genomes.r2.1.1.flat.with_subsets.sites.ht \
          --output-url=$GNOMAD_GENOME_VARIANTS_BROWSER_HT_URL
    ```
@@ -33,7 +33,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_coverage_summary_for_browser.py \
+      ./data/prepare_coverage_summary_for_browser.py \
          --input-url=gs://gnomad/coverage/hail-0.2/coverage/exomes/ht/gnomad.exomes.coverage.summary.ht \
          --output-url=$GNOMAD_EXOME_COVERAGE_BROWSER_HT_URL
    ```
@@ -43,7 +43,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_coverage_summary_for_browser.py \
+      ./data/prepare_coverage_summary_for_browser.py \
          --input-url=gs://gnomad/coverage/hail-0.2/coverage/genomes/ht/gnomad.genomes.coverage.summary.ht \
          --output-url=$GNOMAD_GENOME_COVERAGE_BROWSER_HT_URL
    ```
@@ -62,7 +62,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-load \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$GNOMAD_EXOME_VARIANTS_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=gnomad_exomes_2_1_1 \
@@ -76,7 +76,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-load \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$GNOMAD_GENOME_VARIANTS_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=gnomad_genomes_2_1_1 \
@@ -90,7 +90,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=gnomad-data-load \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$GNOMAD_EXOME_COVERAGE_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=gnomad_exome_coverage_2_1 \
@@ -104,7 +104,7 @@
     ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
        --cluster=gnomad-data-load \
        --hail-version=0.2 \
-       ./projects/gnomad/data/export_ht_to_es.py \
+       ./data/export_ht_to_es.py \
           --ht-url=$GNOMAD_GENOME_COVERAGE_BROWSER_HT_URL \
           --host=$ELASTICSEARCH_IP \
           --index-name=gnomad_genome_coverage_2_1 \

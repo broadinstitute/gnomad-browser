@@ -17,7 +17,7 @@
 
 3. Load table into Elasticsearch. Replace `$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
    ```shell
-   cluster submit epi25-data ./projects/gnomad/data/export_ht_to_es.py \
+   cluster submit epi25-data ./data/export_ht_to_es.py \
       --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
       --args "--ht-url=gs://epi-browser/2018-11-07_gene_results.ht \
          --host=$ELASTICSEARCH_IP \

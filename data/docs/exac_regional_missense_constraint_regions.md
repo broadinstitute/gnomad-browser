@@ -12,7 +12,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/prepare_exac_regional_missense_constraint_regions_for_browser.py \
+      ./data/prepare_exac_regional_missense_constraint_regions_for_browser.py \
          --input-url=fordist_constraint_official_regional_missense_cleaned_metrics_nosynoutliers.txt \
          --output-url=$EXAC_REGIONAL_MISSENSE_BROWSER_HT_URL
    ```
@@ -23,7 +23,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=data-prep \
       --hail-version=0.2 \
-      ./projects/gnomad/data/export_ht_to_es.py \
+      ./data/export_ht_to_es.py \
          --ht-url=$EXAC_REGIONAL_MISSENSE_BROWSER_HT_URL \
          --host=$ELASTICSEARCH_IP \
          --index-name=exac_regional_missense_constraint_regions \
