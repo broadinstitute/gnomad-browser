@@ -22,7 +22,8 @@ TODO
 
 ## gnomAD
 
-* [variants and coverage](./docs/gnomad_variants_and_coverage.md)
+* [variants](./docs/gnomad_variants.md)
+* [coverage](./docs/gnomad_coverage.md)
 * [site quality metric distributions](./docs/gnomad_site_quality_metric_distributions.md)
 * [gene constraint](./docs/gnomad_gene_constraint.md)
 * [multi-nucleotide variants](./docs/gnomad_mnvs.md)
@@ -31,5 +32,5 @@ TODO
 
 ## ExAC
 
-* [variants and coverage](./docs/exac_variants_and_coverage.md)
+* [variants](./docs/exac_variants.md)
 * [regional missense constraint](./docs/exac_regional_missense_constraint_regions.md)
