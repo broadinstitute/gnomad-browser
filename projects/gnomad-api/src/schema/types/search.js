@@ -179,11 +179,10 @@ export const resolveSearchResults = async (ctx, query) => {
     size: 5,
   })
 
-  if (geneNameSearchResponse.hits.total === 0) {
-    return []
-  }
-
-  const matchingGenes = geneNameSearchResponse.hits.hits.map(hit => hit._source)
+  const matchingGenes =
+    geneNameSearchResponse.hits.total > 0
+      ? geneNameSearchResponse.hits.hits.map(hit => hit._source)
+      : []
 
   const geneNameCounts = {}
   matchingGenes.forEach(gene => {
