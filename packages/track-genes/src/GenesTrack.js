@@ -24,10 +24,12 @@ const layoutRows = (genes, scalePosition) => {
     return []
   }
 
-  const rows = [[genes[0]]]
+  const sortedGenes = [...genes].sort((gene1, gene2) => gene1.start - gene2.start)
 
-  for (let i = 1; i < genes.length; i += 1) {
-    const gene = genes[i]
+  const rows = [[sortedGenes[0]]]
+
+  for (let i = 1; i < sortedGenes.length; i += 1) {
+    const gene = sortedGenes[i]
 
     let newRow = true
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
