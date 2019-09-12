@@ -58,10 +58,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up variant data by transcript ID. Example: ENST00000407236.',
       type: extendObjectType(TranscriptType, {
         fields: {
-          gene: {
-            type: GeneType,
-            resolve: (obj, args, ctx) => fetchGeneById(ctx, obj.gene_id),
-          },
+          gene: { type: new GraphQLNonNull(GeneType) },
         },
       }),
       args: {

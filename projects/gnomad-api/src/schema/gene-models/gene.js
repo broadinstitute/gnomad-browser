@@ -1,6 +1,6 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import { mergeOverlappingRegions } from '../../utilities/region'
+import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import { UserVisibleError } from '../errors'
 
 import { ExonType } from './exon'
@@ -16,87 +16,81 @@ export const GeneType = new GraphQLObjectType({
     stop: { type: new GraphQLNonNull(GraphQLInt) },
     exons: { type: new GraphQLNonNull(new GraphQLList(ExonType)) },
     strand: { type: new GraphQLNonNull(GraphQLString) },
-    canonical_transcript: { type: GraphQLString },
+    canonical_transcript_id: { type: GraphQLString },
+    // TODO Remove this field
+    canonical_transcript: {
+      type: GraphQLString,
+      resolve: obj => obj.canonical_transcript_id,
+    },
     other_names: { type: new GraphQLList(GraphQLString) },
     omim_accession: { type: GraphQLString },
     omim_description: { type: GraphQLString },
   },
 })
 
-export const fetchExonsByGeneId = async (ctx, geneId) => {
-  const allExons = await ctx.database.gnomad
-    .collection('exons')
-    .find({ gene_id: geneId })
-    .toArray()
-  const sortedExons = allExons.sort((r1, r2) => r1.start - r2.start)
-
-  const cdsExons = allExons.filter(exon => exon.feature_type === 'CDS')
-  const utrExons = allExons.filter(exon => exon.feature_type === 'UTR')
-
-  const cdsCompositeExons = mergeOverlappingRegions(cdsExons)
-  const utrCompositeExons = mergeOverlappingRegions(utrExons)
-
-  /**
-   * There are 3 feature types in the exons collection: "CDS", "UTR", and "exon".
-   * There are "exon" regions that cover the "CDS" and "UTR" regions and also
-   * some (non-coding) transcripts that contain only "exon" regions.
-   * This filters the "exon" regions to only those that are in non-coding transcripts.
-   *
-   * This makes the UI for selecting visible regions easier, since it can filter
-   * on "CDS" or "UTR" feature type without having to also filter out the "exon" regions
-   * that duplicate the "CDS" and "UTR" regions.
-   */
-  const codingTranscripts = new Set(
-    allExons
-      .filter(exon => exon.feature_type === 'CDS' || exon.feature_type === 'UTR')
-      .map(exon => exon.transcript_id)
-  )
-
-  const nonCodingTranscriptExons = sortedExons.filter(
-    exon => !codingTranscripts.has(exon.transcript_id)
-  )
-
-  const nonCodingTranscriptCompositeExons = mergeOverlappingRegions(nonCodingTranscriptExons)
-
-  return [...cdsCompositeExons, ...utrCompositeExons, ...nonCodingTranscriptCompositeExons]
-}
-
 export const fetchGeneById = async (ctx, geneId) => {
-  const [gene, exons] = await Promise.all([
-    ctx.database.gnomad.collection('genes').findOne({ gene_id: geneId }),
-    fetchExonsByGeneId(ctx, geneId),
-  ])
+  const response = await ctx.database.elastic.get({
+    index: 'genes_grch37',
+    type: 'documents',
+    id: geneId,
+  })
 
-  if (!gene) {
+  if (!response.found) {
     throw new UserVisibleError('Gene not found')
   }
 
-  return { ...gene, exons }
+  return response._source
 }
 
 export const fetchGeneByName = async (ctx, geneName) => {
-  const gene = await ctx.database.gnomad
-    .collection('genes')
-    .findOne({ gene_name_upper: geneName.toUpperCase() })
+  const response = await ctx.database.elastic.search({
+    index: 'genes_grch37',
+    type: 'documents',
+    body: {
+      query: {
+        bool: {
+          filter: { term: { gene_name_upper: geneName.toUpperCase() } },
+        },
+      },
+    },
+    size: 1,
+  })
 
-  if (!gene) {
+  if (response.hits.total === 0) {
     throw new UserVisibleError('Gene not found')
   }
 
-  const exons = await fetchExonsByGeneId(ctx, gene.gene_id)
-  return { ...gene, exons }
+  return response.hits.hits[0]._source
 }
 
 export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
-  const genes = await ctx.database.gnomad
-    .collection('genes')
-    .find({ $and: [{ xstart: { $lte: xstop } }, { xstop: { $gte: xstart } }] })
-    .toArray()
+  const hits = await fetchAllSearchResults(ctx.database.elastic, {
+    index: 'genes_grch37',
+    type: 'documents',
+    size: 200,
+    body: {
+      query: {
+        bool: {
+          filter: [
+            {
+              range: {
+                xstart: {
+                  lte: xstop,
+                },
+              },
+            },
+            {
+              range: {
+                xstop: {
+                  gte: xstart,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  })
 
-  return Promise.all(
-    genes.map(async gene => {
-      const exons = await fetchExonsByGeneId(ctx, gene.gene_id)
-      return { ...gene, exons }
-    })
-  )
+  return hits.map(hit => hit._source)
 }

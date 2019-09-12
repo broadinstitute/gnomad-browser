@@ -1,4 +1,5 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { cloneDeep } from 'lodash'
 
 import { UserVisibleError } from '../errors'
 
@@ -17,35 +18,36 @@ export const TranscriptType = new GraphQLObjectType({
   },
 })
 
-const fetchExonsByTranscriptId = (ctx, transcriptId) =>
-  ctx.database.gnomad
-    .collection('exons')
-    .find({ transcript_id: transcriptId })
-    .toArray()
-
 export const fetchTranscriptById = async (ctx, transcriptId) => {
-  const [transcript, exons] = await Promise.all([
-    ctx.database.gnomad.collection('transcripts').findOne({ transcript_id: transcriptId }),
-    fetchExonsByTranscriptId(ctx, transcriptId),
-  ])
+  const response = await ctx.database.elastic.search({
+    index: 'genes_grch37',
+    type: 'documents',
+    body: {
+      query: {
+        bool: {
+          filter: [
+            {
+              nested: {
+                path: 'transcripts',
+                query: {
+                  term: { 'transcripts.transcript_id': transcriptId },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    size: 1,
+  })
 
-  if (!transcript) {
+  if (response.hits.total === 0) {
     throw new UserVisibleError('Transcript not found')
   }
 
-  return { ...transcript, exons }
-}
+  const gene = response.hits.hits[0]._source
+  const transcript = cloneDeep(gene.transcripts.find(tx => tx.transcript_id === transcriptId))
+  transcript.gene = gene
 
-export const fetchTranscriptsByGene = async (ctx, gene) => {
-  const transcripts = await ctx.database.gnomad
-    .collection('transcripts')
-    .find({ gene_id: gene.gene_id })
-    .toArray()
-
-  return Promise.all(
-    transcripts.map(async transcript => {
-      const exons = await fetchExonsByTranscriptId(ctx, transcript.transcript_id)
-      return { ...transcript, exons }
-    })
-  )
+  return transcript
 }
