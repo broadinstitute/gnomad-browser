@@ -24,7 +24,6 @@ import { UserVisibleError } from '../errors'
 
 import { ExonType } from '../gene-models/exon'
 import { GeneType as BaseGeneType } from '../gene-models/gene'
-import { fetchTranscriptById, fetchTranscriptsByGene } from '../gene-models/transcript'
 
 import {
   CoverageBinType,
@@ -120,12 +119,12 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     transcript: {
       type: GeneTranscriptType,
-      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, obj.canonical_transcript),
+      resolve: obj =>
+        (obj.transcripts || []).find(
+          transcript => transcript.transcript_id === obj.canonical_transcript_id
+        ),
     },
-    transcripts: {
-      type: new GraphQLList(GeneTranscriptType),
-      resolve: (obj, args, ctx) => fetchTranscriptsByGene(ctx, obj),
-    },
+    transcripts: { type: new GraphQLList(GeneTranscriptType) },
     exac_constraint: {
       type: ExacGeneConstraintType,
       resolve: (obj, args, ctx) =>

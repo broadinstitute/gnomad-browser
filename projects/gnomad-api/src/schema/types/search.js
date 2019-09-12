@@ -1,5 +1,5 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
-import { escapeRegExp } from 'lodash'
+import { flatMap } from 'lodash'
 
 export const SearchResultType = new GraphQLObjectType({
   name: 'SearchResult',
@@ -93,41 +93,97 @@ export const resolveSearchResults = async (ctx, query) => {
     ]
   }
 
-  const startsWithQuery = { $regex: `^${escapeRegExp(query).toUpperCase()}` }
+  const upperCaseQuery = query.toUpperCase()
 
-  if (/^ensg[0-9]/i.test(query)) {
-    const matchingGenes = await ctx.database.gnomad
-      .collection('genes')
-      .find({ gene_id: startsWithQuery })
-      .limit(5)
-      .toArray()
+  if (/^ENSG[0-9]/.test(upperCaseQuery)) {
+    const geneIdSearchResponse = await ctx.database.elastic.search({
+      index: 'genes_grch37',
+      type: 'documents',
+      body: {
+        query: {
+          prefix: {
+            gene_id: upperCaseQuery,
+          },
+        },
+      },
+      size: 5,
+    })
 
-    return matchingGenes.map(gene => ({
-      label: `${gene.gene_id} (${gene.gene_name_upper})`,
-      url: `/gene/${gene.gene_id}`,
-    }))
+    if (geneIdSearchResponse.hits.total === 0) {
+      return []
+    }
+
+    return geneIdSearchResponse.hits.hits.map(hit => {
+      const gene = hit._source
+      return {
+        label: `${gene.gene_id} (${gene.gene_name})`,
+        url: `/gene/${gene.gene_id}`,
+      }
+    })
   }
 
-  if (/^enst[0-9]/i.test(query)) {
-    const matchingTranscripts = await ctx.database.gnomad
-      .collection('transcripts')
-      .find({ transcript_id: startsWithQuery })
-      .limit(5)
-      .toArray()
+  if (/^ENST[0-9]/.test(upperCaseQuery)) {
+    const transcriptIdSearchResponse = await ctx.database.elastic.search({
+      index: 'genes_grch37',
+      type: 'documents',
+      body: {
+        query: {
+          nested: {
+            path: 'transcripts',
+            query: {
+              prefix: { 'transcripts.transcript_id': upperCaseQuery },
+            },
+          },
+        },
+      },
+      size: 5,
+    })
 
-    return matchingTranscripts.map(transcript => ({
+    if (transcriptIdSearchResponse.hits.total === 0) {
+      return []
+    }
+
+    // Change this to use nested_hits?
+    const genes = transcriptIdSearchResponse.hits.hits.map(hit => hit._source)
+    const transcripts = flatMap(genes, gene =>
+      gene.transcripts.filter(transcript => transcript.transcript_id.startsWith(upperCaseQuery))
+    )
+
+    return transcripts.map(transcript => ({
       label: `${transcript.transcript_id}`,
       url: `/transcript/${transcript.transcript_id}`,
     }))
   }
 
-  const matchingGenes = await ctx.database.gnomad
-    .collection('genes')
-    .find({
-      $or: [{ gene_name_upper: startsWithQuery }, { other_names: startsWithQuery }],
-    })
-    .limit(5)
-    .toArray()
+  const geneNameSearchResponse = await ctx.database.elastic.search({
+    index: 'genes_grch37',
+    type: 'documents',
+    body: {
+      query: {
+        bool: {
+          should: [
+            {
+              prefix: {
+                gene_name_upper: upperCaseQuery,
+              },
+            },
+            {
+              prefix: {
+                other_names: upperCaseQuery,
+              },
+            },
+          ],
+        },
+      },
+    },
+    size: 5,
+  })
+
+  if (geneNameSearchResponse.hits.total === 0) {
+    return []
+  }
+
+  const matchingGenes = geneNameSearchResponse.hits.hits.map(hit => hit._source)
 
   const geneNameCounts = {}
   matchingGenes.forEach(gene => {
@@ -159,8 +215,8 @@ export const resolveSearchResults = async (ctx, query) => {
     })
 
     const variantResults = response.hits.hits.map(doc => ({
-      label: `${doc._source.variant_id} (${doc._source.rsid})`, // eslint-disable-line no-underscore-dangle
-      url: `/variant/${doc._source.variant_id}`, // eslint-disable-line no-underscore-dangle
+      label: `${doc._source.variant_id} (${doc._source.rsid})`,
+      url: `/variant/${doc._source.variant_id}`,
     }))
 
     return geneResults.concat(variantResults)
