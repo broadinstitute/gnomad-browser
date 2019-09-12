@@ -49,6 +49,14 @@ module.exports = {
         'import/no-unresolved': ['error', { ignore: ['^@browser\/'] }],
       },
     },
+    {
+      files: ['projects/gnomad-api/**/*.js'],
+      rules: {
+        'no-underscore-dangle': ['error', {
+          allow: ['_source'], // allow _source for getting Elasticsearch source
+        }],
+      }
+    }
   ],
   parserOptions: {
     ecmaVersion: '2018',
