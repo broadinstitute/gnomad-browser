@@ -49,7 +49,7 @@ def elasticsearch_mapping_for_table(table, disable_fields=None, override_types=N
 
     https://www.elastic.co/guide/en/elasticsearch/guide/current/root-object.html
     """
-    mapping = _elasticsearch_mapping_for_hail_type(table.row_value.dtype)
+    mapping = _elasticsearch_mapping_for_hail_type(table.key_by().row_value.dtype)
 
     if disable_fields:
         for field in disable_fields:
