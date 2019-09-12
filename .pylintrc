@@ -1,0 +1,6 @@
+[MESSAGES_CONTROL]
+# bad-continuation,line-too-long: conflicts with Black's formatting
+disable=bad-continuation,line-too-long,missing-docstring
+
+[MISCELLANEOUS]
+notes=FIXME,TODO
