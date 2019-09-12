@@ -18,7 +18,9 @@ a worker is interrupted during a bulk request.
 
 ## Reference data
 
-TODO
+* [gene models](./docs/gene_models.md)
+* GTEx tissue expression
+* ClinVar variants
 
 ## gnomAD
 
