@@ -163,6 +163,11 @@ export const resolveSearchResults = async (ctx, query) => {
         bool: {
           should: [
             {
+              term: {
+                gene_name_upper: upperCaseQuery,
+              },
+            },
+            {
               prefix: {
                 gene_name_upper: upperCaseQuery,
               },
