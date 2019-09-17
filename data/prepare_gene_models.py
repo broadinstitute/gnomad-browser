@@ -2,6 +2,8 @@ import argparse
 
 import hail as hl
 
+from data_utils.regions import merge_overlapping_regions
+
 
 def xpos(contig_str, position):
     contig_number = (
@@ -13,24 +15,6 @@ def xpos(contig_str, position):
     )
 
     return hl.int64(contig_number) * 1_000_000_000 + position
-
-
-def merge_overlapping_regions(regions):
-    return hl.cond(
-        hl.len(regions) > 1,
-        hl.rbind(
-            hl.sorted(regions, lambda region: region.start),
-            lambda sorted_regions: sorted_regions[1:].fold(
-                lambda acc, region: hl.cond(
-                    region.start <= acc[-1].stop,
-                    acc[:-1].append(acc[-1].annotate(stop=region.stop)),
-                    acc.append(region),
-                ),
-                [sorted_regions[0]],
-            ),
-        ),
-        regions,
-    )
 
 
 ###############################################

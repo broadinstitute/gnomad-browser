@@ -14,14 +14,14 @@
 2. Create a Hail table from the Gencode and other files. Replace `$GENES_HT_URL` with the location
    to store the Hail table.
 
-   Note: gs://gnomad-browser/gene_models/gencode.gtf is a decompressed copy of
-   gs://exac/170122_exacv1_bundle/gencode.gtf.gz
+   Note: gs://gnomad-browser/gene_models/gencode.gtf.bgz is a copy of
+   gs://exac/170122_exacv1_bundle/gencode.gtf.gz recompressed with bgzip
 
    ```shell
    hailctl dataproc submit data-load \
       --pyfiles ./data/data_utils \
       ./data/prepare_gene_models.py \
-         gs://gnomad-browser/gene_models/gencode.gtf \
+         gs://gnomad-browser/gene_models/gencode.gtf.bgz \
          $GENES_HT_URL \
          --canonical-transcripts gs://exac/170122_exacv1_bundle/canonical_transcripts.txt.gz \
          --omim-annotations gs://exac/170122_exacv1_bundle/omim_info.txt.gz \
