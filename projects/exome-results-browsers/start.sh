@@ -25,9 +25,7 @@ export BROWSER=$BROWSER
 
 # Connect to local databases
 DEFAULT_ELASTICSEARCH_URL="http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy"
-DEFAULT_MONGO_URL="mongodb://localhost:27017/exac"
 export ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-$DEFAULT_ELASTICSEARCH_URL}
-export MONGO_URL=${MONGO_URL:-$DEFAULT_MONGO_URL}
 
 DEFAULT_PORT=8000
 WEBPACK_DEV_SERVER_PORT=${2:-$DEFAULT_PORT}

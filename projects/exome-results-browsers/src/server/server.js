@@ -5,14 +5,13 @@ import elasticsearch from 'elasticsearch'
 import express from 'express'
 import graphQLHTTP from 'express-graphql'
 import { GraphQLSchema } from 'graphql'
-import { MongoClient } from 'mongodb'
 
 import browserConfig from '@browser/config'
 
 import { RootType } from './schema/root'
 import renderTemplate from './template'
 
-const requiredSettings = ['ELASTICSEARCH_URL', 'MONGO_URL', 'PORT']
+const requiredSettings = ['ELASTICSEARCH_URL', 'PORT']
 const missingSettings = requiredSettings.filter(setting => !process.env[setting])
 if (missingSettings.length) {
   throw Error(`Missing required environment variables: ${missingSettings.join(', ')}`)
@@ -28,10 +27,6 @@ app.use(compression())
     host: process.env.ELASTICSEARCH_URL,
   })
 
-  const mongo = await MongoClient.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-  })
-
   const html = await renderTemplate({
     gaTrackingId: process.env.GA_TRACKING_ID,
     title: browserConfig.browserTitle,
@@ -44,9 +39,7 @@ app.use(compression())
       graphiql: true,
       context: {
         database: {
-          gnomad: mongo,
           elastic,
-          mongo: mongo.db(),
         },
       },
       customFormatErrorFn: error => {

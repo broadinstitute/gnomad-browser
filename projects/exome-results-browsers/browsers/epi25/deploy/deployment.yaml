@@ -17,8 +17,6 @@ spec:
       - name: epi25-browser
         image: gcr.io/exac-gnomad/epi25-browser
         env:
-        - name: MONGO_URL
-          value: mongodb://gnomad-mongo:27017/exac
         - name: ELASTICSEARCH_URL
           value: elasticsearch:9200
         - name: PORT
