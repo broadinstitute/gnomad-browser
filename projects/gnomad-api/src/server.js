@@ -1,6 +1,5 @@
 import express from 'express'
 import compression from 'compression'
-import { MongoClient } from 'mongodb'
 import elasticsearch from 'elasticsearch'
 import graphQLHTTP from 'express-graphql'
 import cors from 'cors'
@@ -16,10 +15,6 @@ app.use(cors())
 // eslint-disable-line prettier/prettier
 ;(async () => {
   try {
-    const mongoClient = await MongoClient.connect(process.env.GNOMAD_MONGO_URL, {
-      useNewUrlParser: true,
-    })
-
     const elastic = new elasticsearch.Client({
       apiVersion: '5.5',
       host: process.env.ELASTICSEARCH_URL,
@@ -45,7 +40,6 @@ app.use(cors())
         graphiql: true,
         context: {
           database: {
-            gnomad: mongoClient.db(),
             elastic,
             redis,
           },
