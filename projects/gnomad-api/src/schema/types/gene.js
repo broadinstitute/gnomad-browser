@@ -10,9 +10,9 @@ import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummary
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
 
 import {
-  ExacGeneConstraintType,
-  fetchExacGeneConstraintByTranscriptId,
-} from '../datasets/exac/exacGeneConstraint'
+  ExacConstraintType,
+  fetchExacConstraintByTranscriptId,
+} from '../datasets/exac/exacConstraint'
 import {
   ExacRegionalMissenseConstraintRegionType,
   fetchExacRegionalMissenseConstraintRegions,
@@ -126,9 +126,9 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     transcripts: { type: new GraphQLList(GeneTranscriptType) },
     exac_constraint: {
-      type: ExacGeneConstraintType,
+      type: ExacConstraintType,
       resolve: (obj, args, ctx) =>
-        fetchExacGeneConstraintByTranscriptId(ctx, obj.canonical_transcript_id),
+        fetchExacConstraintByTranscriptId(ctx, obj.canonical_transcript_id),
     },
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
