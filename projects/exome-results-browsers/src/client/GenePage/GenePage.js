@@ -19,7 +19,7 @@ import { TrackPage, TrackPageSection } from './TrackPage'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInGene from './VariantsInGene'
 
-const GeneFullName = styled.span`
+const GeneName = styled.span`
   font-size: 0.75em;
   font-weight: 400;
 `
@@ -38,21 +38,21 @@ const ConstraintWrapper = styled.div`
 `
 
 const geneQuery = `
-query Gene($geneId: String, $geneName: String) {
-  gene(gene_id: $geneId, gene_name: $geneName) {
+query Gene($geneId: String, $geneSymbol: String) {
+  gene(gene_id: $geneId, gene_symbol: $geneSymbol) {
     gene_id
-    gene_name
-    full_gene_name
-    canonical_transcript
+    symbol
+    name
     chrom
     start
     stop
-    omim_accession
+    omim_id
     results {
       analysis_group
       ${browserConfig.geneResults.columns.map(c => c.key).join('\n')}
     }
-    transcript {
+    canonical_transcript {
+      transcript_id
       strand
       exons {
         feature_type
@@ -97,12 +97,12 @@ class GenePage extends Component {
   }
 
   render() {
-    const { geneIdOrName } = this.props
+    const { geneIdOrSymbol } = this.props
     const { selectedVariantResultsGroup } = this.state
 
-    const variables = geneIdOrName.toUpperCase().startsWith('ENSG')
-      ? { geneId: geneIdOrName }
-      : { geneName: geneIdOrName }
+    const variables = geneIdOrSymbol.toUpperCase().startsWith('ENSG')
+      ? { geneId: geneIdOrSymbol }
+      : { geneSymbol: geneIdOrSymbol }
 
     return (
       <Query query={geneQuery} variables={variables}>
@@ -120,16 +120,16 @@ class GenePage extends Component {
           }
 
           const { gene } = data
-          const canonicalCodingExons = gene.transcript.exons.filter(
+          const canonicalCodingExons = gene.canonical_transcript.exons.filter(
             exon => exon.feature_type === 'CDS'
           )
 
           return (
             <TrackPage>
               <TrackPageSection>
-                <DocumentTitle title={gene.gene_name} />
+                <DocumentTitle title={gene.symbol} />
                 <PageHeading>
-                  {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
+                  {gene.symbol} <GeneName>{gene.name}</GeneName>
                 </PageHeading>
 
                 <GeneAttributes gene={gene} />
@@ -162,14 +162,18 @@ class GenePage extends Component {
                           id: 'gnomad',
                           label: 'gnomAD',
                           render: () => (
-                            <GnomadConstraintTable constraint={gene.transcript.gnomad_constraint} />
+                            <GnomadConstraintTable
+                              constraint={gene.canonical_transcript.gnomad_constraint}
+                            />
                           ),
                         },
                         {
                           id: 'exac',
                           label: 'ExAC',
                           render: () => (
-                            <ExacConstraintTable constraint={gene.transcript.exac_constraint} />
+                            <ExacConstraintTable
+                              constraint={gene.canonical_transcript.exac_constraint}
+                            />
                           ),
                         },
                       ]}
@@ -178,7 +182,10 @@ class GenePage extends Component {
                 </TablesWrapper>
               </TrackPageSection>
               <RegionViewer padding={75} regions={canonicalCodingExons}>
-                <TranscriptTrack exons={canonicalCodingExons} strand={gene.transcript.strand} />
+                <TranscriptTrack
+                  exons={canonicalCodingExons}
+                  strand={gene.canonical_transcript.strand}
+                />
                 <VariantsInGene
                   gene={gene}
                   selectedAnalysisGroup={selectedVariantResultsGroup}
@@ -196,7 +203,7 @@ class GenePage extends Component {
 }
 
 GenePage.propTypes = {
-  geneIdOrName: PropTypes.string.isRequired,
+  geneIdOrSymbol: PropTypes.string.isRequired,
 }
 
 export default GenePage
