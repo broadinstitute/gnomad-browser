@@ -56,17 +56,20 @@ export const shapeGene = gene => {
 }
 
 export const fetchGeneById = async (ctx, geneId) => {
-  const response = await ctx.database.elastic.get({
-    index: 'genes',
-    type: 'documents',
-    id: geneId,
-  })
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'genes',
+      type: 'documents',
+      id: geneId,
+    })
 
-  if (!response.found) {
-    throw new UserVisibleError('Gene not found')
+    return shapeGene(response._source)
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError('Gene not found')
+    }
+    throw err
   }
-
-  return shapeGene(response._source)
 }
 
 export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
