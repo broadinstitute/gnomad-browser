@@ -3,24 +3,19 @@ import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLStri
 import { UserVisibleError } from '../utilities/errors'
 import { GeneResultType, fetchGeneResultsForGene } from './geneResult'
 import { VariantType, VariantResultGroupIdType, fetchVariantsByGeneId } from './variant'
-import { TranscriptType, fetchTranscriptById } from './transcript'
+import { TranscriptType } from './transcript'
 
 export const GeneType = new GraphQLObjectType({
   name: 'Gene',
   fields: {
     gene_id: { type: new GraphQLNonNull(GraphQLString) },
-    gene_name: { type: new GraphQLNonNull(GraphQLString) },
-    full_gene_name: { type: GraphQLString },
-    canonical_transcript: { type: GraphQLString },
+    symbol: { type: new GraphQLNonNull(GraphQLString) },
+    name: { type: GraphQLString },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     start: { type: new GraphQLNonNull(GraphQLInt) },
     stop: { type: new GraphQLNonNull(GraphQLInt) },
-    omim_accession: { type: GraphQLString },
-    transcript: {
-      type: TranscriptType,
-      resolve: (obj, args, ctx) =>
-        obj.canonical_transcript ? fetchTranscriptById(ctx, obj.canonical_transcript) : null,
-    },
+    omim_id: { type: GraphQLString },
+    canonical_transcript: { type: TranscriptType },
     results: {
       type: new GraphQLList(GeneResultType),
       resolve: (obj, args, ctx) => fetchGeneResultsForGene(ctx, obj),
@@ -35,14 +30,40 @@ export const GeneType = new GraphQLObjectType({
   },
 })
 
-const fetchGene = async (ctx, query) => {
-  const gene = await ctx.database.mongo.collection('genes').findOne(query)
-  if (!gene) {
-    throw new UserVisibleError('Gene not found')
+export const fetchGeneById = async (ctx, geneId) => {
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'exome_results_genes',
+      type: 'documents',
+      id: geneId,
+    })
+
+    return response._source // eslint-disable-line no-underscore-dangle
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError('Gene not found')
+    }
+    throw err
   }
-  return gene
 }
 
-export const fetchGeneById = (ctx, geneId) => fetchGene(ctx, { gene_id: geneId })
+export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
+  const response = await ctx.database.elastic.search({
+    index: 'exome_results_genes',
+    type: 'documents',
+    body: {
+      query: {
+        bool: {
+          filter: { term: { symbol_upper_case: geneSymbol.toUpperCase() } },
+        },
+      },
+    },
+    size: 1,
+  })
 
-export const fetchGeneByName = (ctx, geneName) => fetchGene(ctx, { gene_name: geneName })
+  if (response.hits.total === 0) {
+    throw new UserVisibleError('Gene not found')
+  }
+
+  return response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
+}

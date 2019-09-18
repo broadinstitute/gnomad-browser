@@ -54,7 +54,7 @@ const App = () => (
           <Route path="/results" component={GeneResultsPage} />
           <Route
             path="/gene/:gene"
-            render={({ match }) => <GenePage geneIdOrName={match.params.gene} />}
+            render={({ match }) => <GenePage geneIdOrSymbol={match.params.gene} />}
           />
           {renderedPages.map(({ path, component }) => (
             <Route key={path} path={path} component={component} />
