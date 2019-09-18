@@ -63,9 +63,9 @@ query Gene($geneId: String, $geneSymbol: String) {
         exp_lof
         exp_mis
         exp_syn
-        n_lof
-        n_mis
-        n_syn
+        obs_lof
+        obs_mis
+        obs_syn
         lof_z
         mis_z
         syn_z
