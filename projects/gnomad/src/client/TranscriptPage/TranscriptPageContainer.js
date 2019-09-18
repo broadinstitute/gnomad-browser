@@ -26,6 +26,7 @@ query Transcript($transcriptId: String!) {
       symbol
       name
       canonical_transcript_id
+      hgnc_id
       omim_id
       chrom
       start
