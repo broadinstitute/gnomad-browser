@@ -9,7 +9,15 @@ import Link from '../Link'
 const GeneReferences = ({ gene }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const { gene_id: geneId, symbol: geneSymbol, chrom, start, stop, omim_id: omimId } = gene
+  const {
+    gene_id: geneId,
+    symbol: geneSymbol,
+    chrom,
+    start,
+    stop,
+    hgnc_id: hgncId,
+    omim_id: omimId,
+  } = gene
 
   const ensemblGeneUrl = `https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
 
@@ -24,7 +32,7 @@ const GeneReferences = ({ gene }) => {
           setIsExpanded(true)
         }}
       >
-        and {omimId ? '3' : '2'} more
+        and more
       </TextButton>
       {isExpanded && (
         <Modal
@@ -60,6 +68,13 @@ const GeneReferences = ({ gene }) => {
                 DECIPHER
               </ExternalLink>
             </ListItem>
+            {hgncId && (
+              <ListItem>
+                <ExternalLink href={`https://search.clinicalgenome.org/kb/genes/${hgncId}`}>
+                  ClinGen
+                </ExternalLink>
+              </ListItem>
+            )}
           </List>
         </Modal>
       )}
@@ -74,6 +89,7 @@ GeneReferences.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    hgnc_id: PropTypes.string,
     omim_id: PropTypes.string,
   }).isRequired,
 }
@@ -109,12 +125,10 @@ const GeneInfo = ({ gene }) => {
 GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
-    symbol: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
     canonical_transcript_id: PropTypes.string.isRequired,
-    omim_id: PropTypes.string,
   }).isRequired,
 }
 

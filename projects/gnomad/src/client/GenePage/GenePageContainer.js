@@ -15,6 +15,7 @@ query Gene($geneId: String, $geneSymbol: String) {
     symbol
     name
     canonical_transcript_id
+    hgnc_id
     omim_id
     chrom
     start
