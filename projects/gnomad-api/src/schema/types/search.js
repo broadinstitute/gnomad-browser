@@ -1,5 +1,5 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
-import { flatMap } from 'lodash'
+import { flatMap, uniqBy } from 'lodash'
 
 export const SearchResultType = new GraphQLObjectType({
   name: 'SearchResult',
@@ -202,7 +202,7 @@ export const resolveSearchResults = async (ctx, query) => {
   }))
 
   if (geneResults.length < 5 && /^rs[0-9]/i.test(query)) {
-    const response = await ctx.database.elastic.search({
+    const variantSearchResponse = await ctx.database.elastic.search({
       index: 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1',
       type: 'variant',
       _source: ['rsid', 'variant_id'],
@@ -211,12 +211,17 @@ export const resolveSearchResults = async (ctx, query) => {
           term: { rsid: query.toLowerCase() },
         },
       },
-      size: 5 - geneResults.length,
+      size: 10,
     })
 
-    const variantResults = response.hits.hits.map(doc => ({
-      label: `${doc._source.variant_id} (${doc._source.rsid})`,
-      url: `/variant/${doc._source.variant_id}`,
+    // Since variant search queries two indices, the same variant may be returned twice.
+    // De-duplicate based on variant ID.
+    const variantResults = uniqBy(
+      variantSearchResponse.hits.hits.map(doc => doc._source),
+      variant => variant.variant_id
+    ).map(variant => ({
+      label: `${variant.variant_id} (${variant.rsid})`,
+      url: `/variant/${variant.variant_id}`,
     }))
 
     return geneResults.concat(variantResults)
