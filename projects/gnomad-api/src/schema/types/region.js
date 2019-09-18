@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
@@ -32,7 +32,7 @@ const regionType = new GraphQLObjectType({
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -49,7 +49,7 @@ const regionType = new GraphQLObjectType({
     genome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -70,7 +70,7 @@ const regionType = new GraphQLObjectType({
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { countVariantsInRegion, fetchVariantsByRegion } = datasetsConfig[args.dataset]

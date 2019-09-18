@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLObjectType } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
@@ -54,7 +54,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -83,7 +83,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     genome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -141,7 +141,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
         const { fetchVariantsByGene } = datasetsConfig[args.dataset]
