@@ -52,8 +52,7 @@ def get_genes(gencode):
     genes = gencode.filter(gencode.feature == "gene")
     genes = genes.select(
         gene_id=genes.gene_id.split("\\.")[0],
-        gene_name=genes.gene_name,
-        gene_name_upper=genes.gene_name.upper(),
+        gene_symbol=genes.gene_name,
         chrom=genes.interval.start.seqname[3:],
         strand=genes.strand,
         start=genes.interval.start.position + 1,
@@ -153,21 +152,12 @@ def collect_transcript_exons(transcript_exons):
 
 
 ###############################################
-# CLI                                         #
+# Main                                        #
 ###############################################
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("gencode")
-    parser.add_argument("--canonical-transcripts")
-    parser.add_argument("--omim-annotations")
-    parser.add_argument("--dbnsfp-gene")
-    parser.add_argument("--min-partitions", type=int, default=32)
-    parser.add_argument("output")
-    args = parser.parse_args()
-
-    gencode = hl.experimental.import_gtf(args.gencode, min_partitions=args.min_partitions)
+def load_gencode_gene_models(gtf_path, min_partitions=32):
+    gencode = hl.experimental.import_gtf(gtf_path, min_partitions=min_partitions)
 
     # Extract genes and transcripts
     genes = get_genes(gencode)
@@ -192,44 +182,93 @@ def main():
         transcripts=hl.agg.collect(gene_transcripts.row_value)
     )
     genes = genes.annotate(**gene_transcripts[genes.gene_id])
+    genes = genes.cache()
 
-    # Annotate genes with information from supplementary files
+    return genes
 
-    # Add canonical transcript IDs
-    if args.canonical_transcripts:
-        canonical_transcripts = (
-            hl.import_table(args.canonical_transcripts, force=True, no_header=True, min_partitions=args.min_partitions)
-            .rename({"f0": "gene_id", "f1": "canonical_transcript_id"})
-            .key_by("gene_id")
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--gencode",
+        action="append",
+        default=[],
+        metavar=("version", "gtf_path", "canonical_transcripts_path"),
+        nargs=3,
+        required=True,
+    )
+    parser.add_argument("--hgnc")
+    parser.add_argument("--min-partitions", type=int, default=32)
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+
+    genes = None
+
+    all_gencode_versions = [gencode_version for gencode_version, _, _ in args.gencode]
+
+    for gencode_version, gtf_path, canonical_transcripts_path in args.gencode:
+        gencode_genes = load_gencode_gene_models(gtf_path, min_partitions=args.min_partitions)
+
+        # Canonical transcripts file is a TSV with two columns: gene ID and transcript ID and no header row
+        canonical_transcripts = hl.import_table(
+            canonical_transcripts_path, key="gene_id", min_partitions=args.min_partitions
         )
-        genes = genes.annotate(**canonical_transcripts[genes.gene_id])
-
-    # Add OMIM ID
-    if args.omim_annotations:
-        omim = (
-            hl.import_table(args.omim_annotations, force=True, min_partitions=args.min_partitions)
-            .rename({"Ensembl Gene ID": "gene_id", "MIM Gene Accession": "omim_accession"})
-            .select("gene_id", "omim_accession")
-            .key_by("gene_id")
+        gencode_genes = gencode_genes.annotate(
+            canonical_transcript_id=canonical_transcripts[gencode_genes.gene_id].transcript_id
         )
-        genes = genes.annotate(**omim[genes.gene_id])
 
-    # Add gene names from dbNSFP
-    if args.dbnsfp_gene:
-        dbnsfp_gene = hl.import_table(args.dbnsfp_gene, force=True, missing=".", min_partitions=args.min_partitions)
-        dbnsfp_gene = dbnsfp_gene.select(
-            gene_id=dbnsfp_gene["Ensembl_gene"],
-            full_gene_name=dbnsfp_gene["Gene_full_name"],
-            other_names=hl.or_else(dbnsfp_gene["Gene_old_names"].upper().split(";"), hl.empty_array(hl.tstr)).extend(
-                hl.or_else(dbnsfp_gene["Gene_other_names"].upper().split(";"), hl.empty_array(hl.tstr))
+        gencode_genes = gencode_genes.select(**{f"v{gencode_version}": gencode_genes.row_value})
+
+        if not genes:
+            genes = gencode_genes
+        else:
+            genes = genes.join(gencode_genes, "outer")
+
+    genes = genes.select(gencode=genes.row_value)
+
+    hgnc = hl.import_table(args.hgnc)
+    hgnc = hgnc.select(
+        hgnc_id=hgnc["HGNC ID"],
+        symbol=hgnc["Approved symbol"],
+        name=hgnc["Approved name"],
+        previous_symbols=hgnc["Previous symbols"],
+        synonyms=hgnc["Synonyms"],
+        omim_id=hgnc["OMIM ID(supplied by OMIM)"],
+        gene_id=hgnc["Ensembl ID(supplied by Ensembl)"],
+    )
+    hgnc = hgnc.key_by("gene_id")
+    hgnc = hgnc.annotate(
+        previous_symbols=hgnc.previous_symbols.split(",").map(lambda s: s.strip()),
+        synonyms=hgnc.synonyms.split(",").map(lambda s: s.strip()),
+    )
+
+    genes = genes.annotate(**hgnc[genes.gene_id])
+    genes = genes.annotate(symbol_source=hl.cond(hl.is_defined(genes.symbol), "hgnc", hl.null(hl.tstr)))
+
+    # If an HGNC gene symbol was not present, use the symbol from Gencode
+    for gencode_version in all_gencode_versions:
+        genes = genes.annotate(
+            symbol=hl.or_else(genes.symbol, genes.gencode[f"v{gencode_version}"].gene_symbol),
+            symbol_source=hl.cond(
+                hl.is_missing(genes.symbol) & hl.is_defined(genes.gencode[f"v{gencode_version}"].gene_symbol),
+                f"gencode (v{gencode_version})",
+                genes.symbol_source,
             ),
         )
-        dbnsfp_gene = dbnsfp_gene.key_by("gene_id")
-        genes = genes.annotate(**dbnsfp_gene[genes.gene_id])
+
+    # Collect all fields that can be used to search by gene name
+    genes = genes.annotate(
+        symbol_upper_case=genes.symbol.upper(),
+        search_terms=hl.empty_array(hl.tstr).append(genes.symbol).extend(genes.synonyms).extend(genes.previous_symbols),
+    )
+    for gencode_version in all_gencode_versions:
+        genes = genes.annotate(search_terms=genes.search_terms.append(genes.gencode[f"v{gencode_version}"].gene_symbol))
+
+    genes = genes.annotate(search_terms=hl.set(genes.search_terms.map(lambda s: s.upper())))
 
     genes.describe()
 
-    genes.write(args.output)
+    genes.write(args.output, overwrite=True)
 
 
 if __name__ == "__main__":
