@@ -108,7 +108,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
       type: VariantInterface,
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
         variantId: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
