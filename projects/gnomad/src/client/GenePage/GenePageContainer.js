@@ -28,13 +28,13 @@ query Gene($geneId: String, $geneSymbol: String) {
     }
     exac_constraint {
       exp_syn
-      n_syn
+      obs_syn
       syn_z
       exp_mis
-      n_mis
+      obs_mis
       mis_z
       exp_lof
-      n_lof
+      obs_lof
       lof_z
       pLI
     }
