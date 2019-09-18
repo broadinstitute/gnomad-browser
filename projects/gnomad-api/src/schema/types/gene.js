@@ -128,11 +128,11 @@ const GeneType = extendObjectType(BaseGeneType, {
     exac_constraint: {
       type: ExacGeneConstraintType,
       resolve: (obj, args, ctx) =>
-        fetchExacGeneConstraintByTranscriptId(ctx, obj.canonical_transcript),
+        fetchExacGeneConstraintByTranscriptId(ctx, obj.canonical_transcript_id),
     },
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
-      resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.gene_name),
+      resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.symbol),
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),

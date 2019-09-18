@@ -23,7 +23,7 @@ import GeneInfo from './GeneInfo'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import VariantsInGene from './VariantsInGene'
 
-const GeneFullName = styled.span`
+const GeneName = styled.span`
   font-size: 0.75em;
   font-weight: 400;
 `
@@ -132,9 +132,9 @@ class GenePage extends Component {
   static propTypes = {
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
-      full_gene_name: PropTypes.string.isRequired,
       gene_id: PropTypes.string.isRequired,
-      gene_name: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       exons: PropTypes.arrayOf(
         PropTypes.shape({
           feature_type: PropTypes.string.isRequired,
@@ -195,9 +195,9 @@ class GenePage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <DocumentTitle title={gene.gene_name} />
+          <DocumentTitle title={gene.symbol} />
           <GnomadPageHeading selectedDataset={datasetId}>
-            {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
+            {gene.symbol} <GeneName>{gene.name}</GeneName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
@@ -208,7 +208,7 @@ class GenePage extends Component {
               <GeneConstraint
                 datasetId={datasetId}
                 gene={gene}
-                selectedTranscriptId={gene.canonical_transcript}
+                selectedTranscriptId={gene.canonical_transcript_id}
               />
             </div>
           </GeneInfoColumnWrapper>
@@ -304,7 +304,7 @@ class GenePage extends Component {
               exportFilename={`${gene.gene_id}_transcripts`}
               expressionLabel={
                 <span>
-                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.gene_name}`}>
+                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.symbol}`}>
                     Isoform expression
                   </ExternalLink>
                   <QuestionMark topic="gtex" />
@@ -316,7 +316,7 @@ class GenePage extends Component {
                   : ({ transcript }) => (
                       <TranscriptLink
                         to={`/transcript/${transcript.transcript_id}`}
-                        isCanonical={transcript.transcript_id === gene.canonical_transcript}
+                        isCanonical={transcript.transcript_id === gene.canonical_transcript_id}
                       >
                         {transcript.transcript_id}
                       </TranscriptLink>
@@ -331,7 +331,7 @@ class GenePage extends Component {
                     ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
                     : transcript.exons,
                 })),
-                gene.canonical_transcript
+                gene.canonical_transcript_id
               )}
             />
           )}

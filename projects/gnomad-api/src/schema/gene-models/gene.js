@@ -4,33 +4,60 @@ import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import { UserVisibleError } from '../errors'
 
 import { ExonType } from './exon'
+import { ReferenceGenomeType } from './referenceGenome'
 
 export const GeneType = new GraphQLObjectType({
   name: 'Gene',
   fields: {
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     gene_id: { type: new GraphQLNonNull(GraphQLString) },
-    gene_name: { type: new GraphQLNonNull(GraphQLString) },
-    full_gene_name: { type: GraphQLString },
+    symbol: { type: new GraphQLNonNull(GraphQLString) },
+    hgnc_id: { type: GraphQLString },
+    name: { type: GraphQLString },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     start: { type: new GraphQLNonNull(GraphQLInt) },
     stop: { type: new GraphQLNonNull(GraphQLInt) },
     exons: { type: new GraphQLNonNull(new GraphQLList(ExonType)) },
     strand: { type: new GraphQLNonNull(GraphQLString) },
     canonical_transcript_id: { type: GraphQLString },
-    // TODO Remove this field
-    canonical_transcript: {
-      type: GraphQLString,
-      resolve: obj => obj.canonical_transcript_id,
+    omim_id: { type: GraphQLString },
+
+    // Deprecated fields
+    // TODO: Remove these fields
+    gene_name: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: obj => obj.symbol,
     },
-    other_names: { type: new GraphQLList(GraphQLString) },
-    omim_accession: { type: GraphQLString },
-    omim_description: { type: GraphQLString },
+    full_gene_name: {
+      type: GraphQLString,
+      resolve: obj => obj.name,
+    },
   },
 })
 
+export const shapeGene = gene => {
+  const gencodeData = gene.gencode.v19
+
+  return {
+    reference_genome: 'GRCh37',
+    gene_id: gene.gene_id,
+    symbol: gene.symbol,
+    hgnc_id: gene.hgnc_id,
+    name: gene.name,
+    chrom: gencodeData.chrom,
+    start: gencodeData.start,
+    stop: gencodeData.stop,
+    exons: gencodeData.exons,
+    strand: gencodeData.strand,
+    transcripts: gencodeData.transcripts,
+    canonical_transcript_id: gencodeData.canonical_transcript_id,
+    omim_id: gene.omim_id,
+  }
+}
+
 export const fetchGeneById = async (ctx, geneId) => {
   const response = await ctx.database.elastic.get({
-    index: 'genes_grch37',
+    index: 'genes',
     type: 'documents',
     id: geneId,
   })
@@ -39,17 +66,17 @@ export const fetchGeneById = async (ctx, geneId) => {
     throw new UserVisibleError('Gene not found')
   }
 
-  return response._source
+  return shapeGene(response._source)
 }
 
-export const fetchGeneByName = async (ctx, geneName) => {
+export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
   const response = await ctx.database.elastic.search({
-    index: 'genes_grch37',
+    index: 'genes',
     type: 'documents',
     body: {
       query: {
         bool: {
-          filter: { term: { gene_name_upper: geneName.toUpperCase() } },
+          filter: { term: { symbol_upper_case: geneSymbol.toUpperCase() } },
         },
       },
     },
@@ -60,12 +87,12 @@ export const fetchGeneByName = async (ctx, geneName) => {
     throw new UserVisibleError('Gene not found')
   }
 
-  return response.hits.hits[0]._source
+  return shapeGene(response.hits.hits[0]._source)
 }
 
 export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'genes_grch37',
+    index: 'genes',
     type: 'documents',
     size: 200,
     body: {
@@ -74,14 +101,14 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
           filter: [
             {
               range: {
-                xstart: {
+                'gencode.v19.xstart': {
                   lte: xstop,
                 },
               },
             },
             {
               range: {
-                xstop: {
+                'gencode.v19.xstop': {
                   gte: xstart,
                 },
               },
@@ -92,5 +119,5 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
     },
   })
 
-  return hits.map(hit => hit._source)
+  return hits.map(hit => shapeGene(hit._source))
 }

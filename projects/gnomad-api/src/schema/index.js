@@ -22,7 +22,7 @@ import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadSt
 
 import { UserVisibleError } from './errors'
 
-import { fetchGeneById, fetchGeneByName } from './gene-models/gene'
+import { fetchGeneById, fetchGeneBySymbol } from './gene-models/gene'
 import { fetchTranscriptById } from './gene-models/transcript'
 
 import GeneType from './types/gene'
@@ -41,17 +41,18 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       description: 'Look up variant data by gene name. Example: PCSK9.',
       type: GeneType,
       args: {
-        gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
+        gene_symbol: { type: GraphQLString },
+        gene_name: { type: GraphQLString }, // Deprecated. TODO: Remove this
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_id) {
           return fetchGeneById(ctx, args.gene_id)
         }
-        if (args.gene_name) {
-          return fetchGeneByName(ctx, args.gene_name)
+        if (args.gene_symbol || args.gene_name) {
+          return fetchGeneBySymbol(ctx, args.gene_symbol || args.gene_name)
         }
-        throw new UserVisibleError('One of "gene_id" or "gene_name" is required')
+        throw new UserVisibleError('One of "gene_id" or "gene_symbol" is required')
       },
     },
     transcript: {

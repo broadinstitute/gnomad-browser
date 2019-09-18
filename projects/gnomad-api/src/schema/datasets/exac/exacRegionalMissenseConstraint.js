@@ -12,7 +12,7 @@ export const ExacRegionalMissenseConstraintRegionType = new GraphQLObjectType({
   },
 })
 
-export const fetchExacRegionalMissenseConstraintRegions = async (ctx, geneName) => {
+export const fetchExacRegionalMissenseConstraintRegions = async (ctx, geneSymbol) => {
   const response = await ctx.database.elastic.search({
     index: 'exac_regional_missense_constraint_regions',
     type: 'region',
@@ -21,7 +21,7 @@ export const fetchExacRegionalMissenseConstraintRegions = async (ctx, geneName) 
       query: {
         bool: {
           filter: {
-            term: { gene_name: geneName },
+            term: { gene_name: geneSymbol },
           },
         },
       },

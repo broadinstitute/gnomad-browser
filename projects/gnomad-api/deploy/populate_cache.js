@@ -24,12 +24,12 @@ const genes = fs
 
 console.log(`Loading ${genes.length} genes`)
 
-const fetchGene = async geneIdOrName => {
-  console.log(`Fetching ${geneIdOrName}`)
+const fetchGene = async geneIdOrSymbol => {
+  console.log(`Fetching ${geneIdOrSymbol}`)
 
-  const argument = geneIdOrName.startsWith('ENSG')
-    ? `gene_id: "${geneIdOrName}"`
-    : `gene_name: "${geneIdOrName}"`
+  const argument = geneIdOrSymbol.startsWith('ENSG')
+    ? `gene_id: "${geneIdOrSymbol}"`
+    : `gene_symbol "${geneIdOrSymbol}"`
 
   const gnomadCoverageQuery = `{
     gene(${argument}) {
@@ -60,22 +60,22 @@ const fetchGene = async geneIdOrName => {
   try {
     const response = await gqlFetch(apiUrl)(gnomadCoverageQuery)
     if (response.errors) {
-      console.error(`Error fetching gnomAD coverage for ${geneIdOrName}`)
+      console.error(`Error fetching gnomAD coverage for ${geneIdOrSymbol}`)
       console.error(response.errors)
     }
   } catch (error) {
-    console.error(`Failed to fetch gnomAD coverage for ${geneIdOrName}`)
+    console.error(`Failed to fetch gnomAD coverage for ${geneIdOrSymbol}`)
     console.error(error)
   }
 
   try {
     const response = await gqlFetch(apiUrl)(exacCoverageQuery)
     if (response.errors) {
-      console.error(`Error fetching ExAC coverage for ${geneIdOrName}`)
+      console.error(`Error fetching ExAC coverage for ${geneIdOrSymbol}`)
       console.error(response.errors)
     }
   } catch (error) {
-    console.error(`Failed to fetch ExAC coverage for ${geneIdOrName}`)
+    console.error(`Failed to fetch ExAC coverage for ${geneIdOrSymbol}`)
     console.error(error)
   }
 
