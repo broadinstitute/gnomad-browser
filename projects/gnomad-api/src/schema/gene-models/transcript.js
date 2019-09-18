@@ -4,10 +4,13 @@ import { cloneDeep } from 'lodash'
 import { UserVisibleError } from '../errors'
 
 import { ExonType } from './exon'
+import { shapeGene } from './gene'
+import { ReferenceGenomeType } from './referenceGenome'
 
 export const TranscriptType = new GraphQLObjectType({
   name: 'Transcript',
   fields: {
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     transcript_id: { type: new GraphQLNonNull(GraphQLString) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     start: { type: new GraphQLNonNull(GraphQLInt) },
@@ -18,9 +21,19 @@ export const TranscriptType = new GraphQLObjectType({
   },
 })
 
+const shapeTranscript = (gene, transcriptId) => {
+  const transcript = cloneDeep(
+    gene.gencode.v19.transcripts.find(tx => tx.transcript_id === transcriptId)
+  )
+  transcript.reference_genome = 'GRCh37'
+  transcript.gene = shapeGene(gene)
+
+  return transcript
+}
+
 export const fetchTranscriptById = async (ctx, transcriptId) => {
   const response = await ctx.database.elastic.search({
-    index: 'genes_grch37',
+    index: 'genes',
     type: 'documents',
     body: {
       query: {
@@ -28,9 +41,9 @@ export const fetchTranscriptById = async (ctx, transcriptId) => {
           filter: [
             {
               nested: {
-                path: 'transcripts',
+                path: 'gencode.v19.transcripts',
                 query: {
-                  term: { 'transcripts.transcript_id': transcriptId },
+                  term: { 'gencode.v19.transcripts.transcript_id': transcriptId },
                 },
               },
             },
@@ -45,9 +58,5 @@ export const fetchTranscriptById = async (ctx, transcriptId) => {
     throw new UserVisibleError('Transcript not found')
   }
 
-  const gene = response.hits.hits[0]._source
-  const transcript = cloneDeep(gene.transcripts.find(tx => tx.transcript_id === transcriptId))
-  transcript.gene = gene
-
-  return transcript
+  return shapeTranscript(response.hits.hits[0]._source, transcriptId)
 }

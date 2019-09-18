@@ -9,13 +9,13 @@ import GenePage from './GenePage'
 const AutosizedGenePage = withWindowSize(GenePage)
 
 const query = `
-query Gene($geneId: String, $geneName: String) {
-  gene(gene_id: $geneId, gene_name: $geneName) {
+query Gene($geneId: String, $geneSymbol: String) {
+  gene(gene_id: $geneId, gene_symbol: $geneSymbol) {
     gene_id
-    gene_name
-    full_gene_name
-    canonical_transcript
-    omim_accession
+    symbol
+    name
+    canonical_transcript_id
+    omim_id
     chrom
     start
     stop
@@ -173,10 +173,10 @@ query Gene($geneId: String, $geneName: String) {
 }
 `
 
-const GenePageContainer = ({ datasetId, geneIdOrName, ...otherProps }) => {
-  const variables = geneIdOrName.startsWith('ENSG')
-    ? { geneId: geneIdOrName }
-    : { geneName: geneIdOrName }
+const GenePageContainer = ({ datasetId, geneIdOrSymbol, ...otherProps }) => {
+  const variables = geneIdOrSymbol.startsWith('ENSG')
+    ? { geneId: geneIdOrSymbol }
+    : { geneSymbol: geneIdOrSymbol }
 
   return (
     <Query query={query} variables={variables}>
@@ -212,7 +212,7 @@ const GenePageContainer = ({ datasetId, geneIdOrName, ...otherProps }) => {
 
 GenePageContainer.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  geneIdOrName: PropTypes.string.isRequired,
+  geneIdOrSymbol: PropTypes.string.isRequired,
 }
 
 export default GenePageContainer

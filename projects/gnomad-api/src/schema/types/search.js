@@ -97,8 +97,9 @@ export const resolveSearchResults = async (ctx, query) => {
 
   if (/^ENSG[0-9]/.test(upperCaseQuery)) {
     const geneIdSearchResponse = await ctx.database.elastic.search({
-      index: 'genes_grch37',
+      index: 'genes',
       type: 'documents',
+      _source: ['gene_id', 'symbol'],
       body: {
         query: {
           prefix: {
@@ -116,7 +117,7 @@ export const resolveSearchResults = async (ctx, query) => {
     return geneIdSearchResponse.hits.hits.map(hit => {
       const gene = hit._source
       return {
-        label: `${gene.gene_id} (${gene.gene_name})`,
+        label: `${gene.gene_id} (${gene.symbol})`,
         url: `/gene/${gene.gene_id}`,
       }
     })
@@ -124,14 +125,14 @@ export const resolveSearchResults = async (ctx, query) => {
 
   if (/^ENST[0-9]/.test(upperCaseQuery)) {
     const transcriptIdSearchResponse = await ctx.database.elastic.search({
-      index: 'genes_grch37',
+      index: 'genes',
       type: 'documents',
       body: {
         query: {
           nested: {
-            path: 'transcripts',
+            path: 'gencode.v19.transcripts',
             query: {
-              prefix: { 'transcripts.transcript_id': upperCaseQuery },
+              prefix: { 'gencode.v19.transcripts.transcript_id': upperCaseQuery },
             },
           },
         },
@@ -146,7 +147,9 @@ export const resolveSearchResults = async (ctx, query) => {
     // Change this to use nested_hits?
     const genes = transcriptIdSearchResponse.hits.hits.map(hit => hit._source)
     const transcripts = flatMap(genes, gene =>
-      gene.transcripts.filter(transcript => transcript.transcript_id.startsWith(upperCaseQuery))
+      gene.gencode.v19.transcripts.filter(transcript =>
+        transcript.transcript_id.startsWith(upperCaseQuery)
+      )
     )
 
     return transcripts.map(transcript => ({
@@ -155,26 +158,22 @@ export const resolveSearchResults = async (ctx, query) => {
     }))
   }
 
-  const geneNameSearchResponse = await ctx.database.elastic.search({
-    index: 'genes_grch37',
+  const geneSymbolSearchResponse = await ctx.database.elastic.search({
+    index: 'genes',
     type: 'documents',
+    _source: ['gene_id', 'symbol'],
     body: {
       query: {
         bool: {
           should: [
             {
               term: {
-                gene_name_upper: upperCaseQuery,
+                symbol_upper_case: upperCaseQuery,
               },
             },
             {
               prefix: {
-                gene_name_upper: upperCaseQuery,
-              },
-            },
-            {
-              prefix: {
-                other_names: upperCaseQuery,
+                search_terms: upperCaseQuery,
               },
             },
           ],
@@ -185,23 +184,20 @@ export const resolveSearchResults = async (ctx, query) => {
   })
 
   const matchingGenes =
-    geneNameSearchResponse.hits.total > 0
-      ? geneNameSearchResponse.hits.hits.map(hit => hit._source)
+    geneSymbolSearchResponse.hits.total > 0
+      ? geneSymbolSearchResponse.hits.hits.map(hit => hit._source)
       : []
 
   const geneNameCounts = {}
   matchingGenes.forEach(gene => {
-    if (geneNameCounts[gene.gene_name_upper] === undefined) {
-      geneNameCounts[gene.gene_name_upper] = 0
+    if (geneNameCounts[gene.symbol] === undefined) {
+      geneNameCounts[gene.symbol] = 0
     }
-    geneNameCounts[gene.gene_name_upper] += 1
+    geneNameCounts[gene.symbol] += 1
   })
 
   const geneResults = matchingGenes.map(gene => ({
-    label:
-      geneNameCounts[gene.gene_name_upper] > 1
-        ? `${gene.gene_name_upper} (${gene.gene_id})`
-        : gene.gene_name_upper,
+    label: geneNameCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.gene_id})` : gene.symbol,
     url: `/gene/${gene.gene_id}`,
   }))
 

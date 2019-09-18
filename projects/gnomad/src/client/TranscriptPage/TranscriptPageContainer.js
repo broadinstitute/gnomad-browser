@@ -23,10 +23,10 @@ query Transcript($transcriptId: String!) {
     }
     gene {
       gene_id
-      gene_name
-      full_gene_name
-      canonical_transcript
-      omim_accession
+      symbol
+      name
+      canonical_transcript_id
+      omim_id
       chrom
       start
       stop

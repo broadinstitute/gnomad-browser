@@ -22,7 +22,7 @@ import TranscriptLink from '../TranscriptLink'
 
 import VariantsInTranscript from './VariantsInTranscript'
 
-const GeneFullName = styled.span`
+const GeneName = styled.span`
   font-size: 0.75em;
   font-weight: 400;
 `
@@ -144,9 +144,9 @@ class TranscriptPage extends Component {
         })
       ).isRequired,
       gene: PropTypes.shape({
-        full_gene_name: PropTypes.string.isRequired,
         gene_id: PropTypes.string.isRequired,
-        gene_name: PropTypes.string.isRequired,
+        symbol: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
         exons: PropTypes.arrayOf(
           PropTypes.shape({
             feature_type: PropTypes.string.isRequired,
@@ -202,12 +202,12 @@ class TranscriptPage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <DocumentTitle title={gene.gene_name} />
+          <DocumentTitle title={gene.symbol} />
           <GnomadPageHeading
             datasetOptions={{ includeStructuralVariants: false }}
             selectedDataset={datasetId}
           >
-            {gene.gene_name} <GeneFullName>{gene.full_gene_name}</GeneFullName>
+            {gene.symbol} <GeneName>{gene.name}</GeneName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
@@ -304,7 +304,7 @@ class TranscriptPage extends Component {
               exportFilename={`${gene.gene_id}_transcripts`}
               expressionLabel={
                 <span>
-                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.gene_name}`}>
+                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.symbol}`}>
                     Isoform expression
                   </ExternalLink>
                   <QuestionMark topic="gtex" />
@@ -313,7 +313,7 @@ class TranscriptPage extends Component {
               renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
                 <TranscriptLink
                   to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
-                  isCanonical={trackTranscript.transcript_id === gene.canonical_transcript}
+                  isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
                   isSelected={trackTranscript.transcript_id === transcript.transcript_id}
                 >
                   {trackTranscript.transcript_id}
@@ -328,7 +328,7 @@ class TranscriptPage extends Component {
                     ? otherTranscript.exons.filter(exon => exon.feature_type !== 'exon')
                     : otherTranscript.exons,
                 })),
-                gene.canonical_transcript
+                gene.canonical_transcript_id
               )}
             />
           )}

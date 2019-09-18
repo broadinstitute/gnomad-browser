@@ -82,7 +82,7 @@ const App = () => (
               return (
                 <GenePage
                   datasetId={datasetId}
-                  geneIdOrName={match.params.gene}
+                  geneIdOrSymbol={match.params.gene}
                   history={history}
                   location={location}
                   match={match}

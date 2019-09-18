@@ -9,14 +9,7 @@ import Link from '../Link'
 const GeneReferences = ({ gene }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const {
-    chrom,
-    gene_name: geneName,
-    gene_id: geneId,
-    omim_accession: omimAccession,
-    start,
-    stop,
-  } = gene
+  const { gene_id: geneId, symbol: geneSymbol, chrom, start, stop, omim_id: omimId } = gene
 
   const ensemblGeneUrl = `https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
 
@@ -31,7 +24,7 @@ const GeneReferences = ({ gene }) => {
           setIsExpanded(true)
         }}
       >
-        and {omimAccession ? '3' : '2'} more
+        and {omimId ? '3' : '2'} more
       </TextButton>
       {isExpanded && (
         <Modal
@@ -39,7 +32,7 @@ const GeneReferences = ({ gene }) => {
           onRequestClose={() => {
             setIsExpanded(false)
           }}
-          title={`References for ${geneName}`}
+          title={`References for ${geneSymbol}`}
         >
           <List>
             <ListItem>
@@ -49,13 +42,15 @@ const GeneReferences = ({ gene }) => {
               <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
             </ListItem>
             <ListItem>
-              <ExternalLink href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneName}`}>
+              <ExternalLink
+                href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneSymbol}`}
+              >
                 GeneCards
               </ExternalLink>
             </ListItem>
-            {omimAccession && (
+            {omimId && (
               <ListItem>
-                <ExternalLink href={`https://omim.org/entry/${omimAccession}`}>OMIM</ExternalLink>
+                <ExternalLink href={`https://omim.org/entry/${omimId}`}>OMIM</ExternalLink>
               </ListItem>
             )}
             <ListItem>
@@ -75,22 +70,30 @@ const GeneReferences = ({ gene }) => {
 GeneReferences.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
-    gene_name: PropTypes.string.isRequired,
+    symbol: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-    omim_accession: PropTypes.string,
+    omim_id: PropTypes.string,
   }).isRequired,
 }
 
 const GeneInfo = ({ gene }) => {
-  const { gene_id: geneId, chrom, start, stop, canonical_transcript: canonicalTranscript } = gene
+  const {
+    gene_id: geneId,
+    chrom,
+    start,
+    stop,
+    canonical_transcript_id: canonicalTranscriptId,
+  } = gene
 
   return (
     <AttributeList labelWidth={160}>
       <AttributeList.Item label="Genome build">GRCh37 / hg19</AttributeList.Item>
       <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
-      <AttributeList.Item label="Canonical transcript ID">{canonicalTranscript}</AttributeList.Item>
+      <AttributeList.Item label="Canonical transcript ID">
+        {canonicalTranscriptId}
+      </AttributeList.Item>
       <AttributeList.Item label="Region">
         <Link to={`/region/${chrom}-${start}-${stop}`}>
           {chrom}:{start}-{stop}
@@ -106,12 +109,12 @@ const GeneInfo = ({ gene }) => {
 GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
-    gene_name: PropTypes.string.isRequired,
+    symbol: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-    canonical_transcript: PropTypes.string.isRequired,
-    omim_accession: PropTypes.string,
+    canonical_transcript_id: PropTypes.string.isRequired,
+    omim_id: PropTypes.string,
   }).isRequired,
 }
 
