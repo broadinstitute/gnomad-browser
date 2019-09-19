@@ -8,7 +8,6 @@ import {
 } from 'graphql'
 
 import { extendObjectType } from '../utilities/graphql'
-import { getXpos } from '../utilities/variant'
 
 import DatasetArgumentType from './datasets/DatasetArgumentType'
 import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
@@ -23,6 +22,7 @@ import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadSt
 import { UserVisibleError } from './errors'
 
 import { fetchGeneById, fetchGeneBySymbol } from './gene-models/gene'
+import { resolveRegion } from './gene-models/region'
 import { fetchTranscriptById } from './gene-models/transcript'
 
 import GeneType from './types/gene'
@@ -82,13 +82,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         stop: { type: new GraphQLNonNull(GraphQLInt) },
         chrom: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args) => ({
-        start: args.start,
-        stop: args.stop,
-        chrom: args.chrom,
-        xstart: getXpos(args.chrom, args.start),
-        xstop: getXpos(args.chrom, args.stop),
-      }),
+      resolve: (obj, args, ctx) => resolveRegion(ctx, args),
     },
     searchResults: {
       type: new GraphQLList(SearchResultType),
