@@ -2,9 +2,12 @@ import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'gr
 
 import { UserVisibleError } from '../errors'
 
+import { ReferenceGenomeType } from './referenceGenome'
+
 export const RegionType = new GraphQLObjectType({
   name: 'Region',
   fields: {
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     start: { type: new GraphQLNonNull(GraphQLInt) },
     stop: { type: new GraphQLNonNull(GraphQLInt) },
@@ -37,6 +40,7 @@ export const resolveRegion = (ctx, { chrom, start, stop }) => {
   }
 
   return {
+    reference_genome: 'GRCh37',
     start,
     stop,
     chrom,
