@@ -1,4 +1,6 @@
-import { GraphQLList, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLList, GraphQLNonNull } from 'graphql'
+
+import { extendObjectType } from '../../utilities/graphql'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
@@ -7,6 +9,7 @@ import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetc
 import { UserVisibleError } from '../errors'
 
 import { fetchGenesByRegion } from '../gene-models/gene'
+import { RegionType as BaseRegionType } from '../gene-models/region'
 
 import { CoverageBinType, fetchCoverageByRegion } from './coverage'
 import geneType from './gene'
@@ -17,14 +20,8 @@ import { VariantSummaryType } from './variant'
 // Individual variants will only be returned if a region has fewer than this many variants
 const FETCH_INDIVIDUAL_VARIANTS_LIMIT = 30000
 
-const regionType = new GraphQLObjectType({
-  name: 'Region',
-  fields: () => ({
-    start: { type: GraphQLInt },
-    stop: { type: GraphQLInt },
-    xstart: { type: GraphQLInt },
-    xstop: { type: GraphQLInt },
-    chrom: { type: GraphQLString },
+const regionType = extendObjectType(BaseRegionType, {
+  fields: {
     genes: {
       type: new GraphQLList(geneType),
       resolve: (obj, args, ctx) => fetchGenesByRegion(ctx, obj),
@@ -89,7 +86,7 @@ const regionType = new GraphQLObjectType({
         return fetchVariantsByRegion(ctx, obj)
       },
     },
-  }),
+  },
 })
 
 export default regionType
