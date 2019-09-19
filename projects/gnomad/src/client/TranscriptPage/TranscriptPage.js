@@ -10,7 +10,7 @@ import { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
 import { ExternalLink } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
-import GeneConstraint from '../GenePage/gene-constraint/GeneConstraint'
+import Constraint from '../GenePage/constraint/Constraint'
 import GeneCoverageTrack from '../GenePage/GeneCoverageTrack'
 import GeneInfo from '../GenePage/GeneInfo'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -213,9 +213,9 @@ class TranscriptPage extends Component {
             <GeneInfo gene={gene} />
             <div>
               <h2>
-                Gene Constraint <QuestionMark topic="gene-constraint" />
+                Constraint <QuestionMark topic="constraint" />
               </h2>
-              <GeneConstraint
+              <Constraint
                 datasetId={datasetId}
                 gene={gene}
                 selectedTranscriptId={transcript.transcript_id}
