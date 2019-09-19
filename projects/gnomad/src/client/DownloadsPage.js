@@ -207,7 +207,7 @@ export default () => (
           <Link href="#coverage">Coverage</Link>
         </ListItem>
         <ListItem>
-          <Link href="#gene-constraint">Gene constraint</Link>
+          <Link href="#constraint">Constraint</Link>
         </ListItem>
         <ListItem>
           <Link href="#multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</Link>
@@ -426,7 +426,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="gene-constraint">Gene constraint</SectionTitle>
+      <SectionTitle id="constraint">Constraint</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">

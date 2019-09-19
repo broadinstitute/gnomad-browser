@@ -17,7 +17,7 @@ import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
 
-import GeneConstraint from './gene-constraint/GeneConstraint'
+import Constraint from './constraint/Constraint'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
@@ -203,9 +203,9 @@ class GenePage extends Component {
             <GeneInfo gene={gene} />
             <div>
               <h2>
-                Gene Constraint <QuestionMark topic="gene-constraint" />
+                Constraint <QuestionMark topic="constraint" />
               </h2>
-              <GeneConstraint
+              <Constraint
                 datasetId={datasetId}
                 gene={gene}
                 selectedTranscriptId={gene.canonical_transcript_id}
