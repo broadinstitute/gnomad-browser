@@ -4,14 +4,10 @@ include ../../../cluster/config.sh
 POOL_NAME=redis
 PROJECT_NAME=gnomad-api
 
-start-api: mongo-legacy gnomad-api
+start-api: gnomad-api
 
 local-redis:
 	redis-server /usr/local/etc/redis.conf
-
-mongo-legacy:
-	@-kubectl create -f gnomad-mongo-controller.yaml
-	@-kubectl create -f gnomad-mongo-service.yaml
 
 gnomad-api:
 	@-kubectl create -f gnomad-api-controller.yaml
