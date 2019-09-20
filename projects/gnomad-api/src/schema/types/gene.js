@@ -127,13 +127,27 @@ const GeneType = extendObjectType(BaseGeneType, {
     transcripts: { type: new GraphQLList(GeneTranscriptType) },
     exac_constraint: {
       type: ExacConstraintType,
-      resolve: (obj, args, ctx) =>
-        fetchExacConstraintByTranscriptId(ctx, obj.canonical_transcript_id),
+      resolve: (obj, args, ctx) => {
+        if (!obj.canonical_transcript_id) {
+          throw new UserVisibleError(
+            `Unable to query ExAC constraint for gene "${obj.gene_id}", no canonical transcript`
+          )
+        }
+        return fetchExacConstraintByTranscriptId(ctx, obj.canonical_transcript_id)
+      },
     },
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
-      resolve: (obj, args, ctx) =>
-        fetchExacRegionalMissenseConstraintRegions(ctx, obj.canonical_transcript_id),
+      resolve: (obj, args, ctx) => {
+        if (!obj.canonical_transcript_id) {
+          throw new UserVisibleError(
+            `Unable to query ExAC regional missense constraint for gene "${
+              obj.gene_id
+            }", no canonical transcript`
+          )
+        }
+        return fetchExacRegionalMissenseConstraintRegions(ctx, obj.canonical_transcript_id)
+      },
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
