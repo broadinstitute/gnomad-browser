@@ -132,7 +132,8 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
-      resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.symbol),
+      resolve: (obj, args, ctx) =>
+        fetchExacRegionalMissenseConstraintRegions(ctx, obj.canonical_transcript_id),
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
