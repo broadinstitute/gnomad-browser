@@ -1,36 +1,38 @@
 # gnomAD structural variants
 
-1. Create a Dataproc cluster with no preemptible workers.
+1. Create a Dataproc cluster.
+
    ```shell
-   ./hail-elasticsearch-pipelines/gcloud_dataproc/v02/create_cluster_without_VEP.py \
-      gnomad-svs 2
+   hailctl dataproc start data-load \
+      --max-idle 30m \
+      --packages "elasticsearch~=5.5"
    ```
 
 2. Prepare the SV data for the browser. Replace `$GNOMAD_SV_BROWSER_HT_URL` with the
    location to store the Hail table.
+
    ```shell
-   ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
-      --cluster=gnomad-svs \
-      --hail-version=0.2 \
-      ./data/prepare_gnomad_svs_for_browser.py \
-         --input-url=gs://gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz \
-         --output-url=$GNOMAD_SV_BROWSER_HT_URL
+   hailctl dataproc submit data-load \
+      ./data/prepare_gnomad_svs.py \
+         --output $GNOMAD_SV_BROWSER_HT_URL
    ```
 
 3. Load the Hail table into Elasticsearch. Use the `$GNOMAD_SV_BROWSER_HT_URL` from step 2
    and replace `$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
+
    ```shell
-   ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
-      --cluster=gnomad-svs \
-      --hail-version=0.2 \
-      ./data/export_ht_to_es.py \
-         --ht-url=$GNOMAD_SV_BROWSER_HT_URL \
-         --host=$ELASTICSEARCH_IP \
-         --index-name=gnomad_structural_variants \
-         --index-type=variant
+   hailctl dataproc submit data-load \
+      --pyfiles ./data/data_utils \
+      ./data/export_hail_table_to_elasticsearch.py \
+         $GNOMAD_SV_BROWSER_HT_URL \
+         $ELASTICSEARCH_IP \
+         gnomad_structural_variants \
+         --id-field variant_id \
+         --num-shards 4
    ```
 
-4. Delete the Dataproc cluster
+4. Delete the Dataproc cluster.
+
    ```shell
-   ./hail-elasticsearch-pipelines/gcloud_dataproc/delete_cluster.py gnomad-svs
+   hailctl dataproc stop data-load
    ```
