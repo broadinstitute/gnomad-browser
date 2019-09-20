@@ -3,8 +3,8 @@ import rankedSVGeneConsequences from './rankedSVGeneConsequences'
 
 const fetchGnomadStructuralVariantsByGene = async (ctx, { symbol: geneSymbol }) => {
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'gnomad_structural_variants_2019_03_13',
-    type: 'variant',
+    index: 'gnomad_structural_variants',
+    type: 'documents',
     size: 10000,
     _source: [
       'ac.total',
