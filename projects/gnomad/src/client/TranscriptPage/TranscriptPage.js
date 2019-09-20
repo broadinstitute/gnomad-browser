@@ -343,7 +343,7 @@ class TranscriptPage extends Component {
             <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
           )}
 
-          {gene.exac_regional_missense_constraint_regions.length > 0 && datasetId === 'exac' && (
+          {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
             <RegionalConstraintTrack
               height={15}
               regions={gene.exac_regional_missense_constraint_regions}
