@@ -1,7 +1,6 @@
 # gnomadjs
 
 JavaScript tools for exploring genomic data
-Local hack of https://github.com/macarthur-lab/gnomadjs
 
 ## Requirements
 
