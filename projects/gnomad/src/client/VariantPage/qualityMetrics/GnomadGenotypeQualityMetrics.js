@@ -29,7 +29,14 @@ export class GnomadGenotypeQualityMetrics extends Component {
       alleleBalance: 'Allele Balance',
     }[selectedMetric]
 
-    const yLabel = selectedSamples === 'all' ? 'All Individuals' : 'Variant carriers'
+    let yLabel
+    if (selectedSamples === 'all') {
+      yLabel = 'All individuals'
+    } else if (selectedMetric === 'alleleBalance') {
+      yLabel = 'Heterozygous variant carriers'
+    } else {
+      yLabel = 'Variant carriers'
+    }
 
     const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
@@ -45,18 +52,6 @@ export class GnomadGenotypeQualityMetrics extends Component {
         />
 
         <ControlSection>
-          <SegmentedControl
-            id="genotype-quality-metrics-sample"
-            onChange={samples => {
-              this.setState({ selectedSamples: samples })
-            }}
-            options={[
-              { label: 'All', value: 'all', disabled: selectedMetric === 'alleleBalance' },
-              { label: 'Variant Carriers', value: 'alt' },
-            ]}
-            value={selectedSamples}
-          />
-
           <Select
             id="genotype-quality-metrics-metric"
             onChange={e => {
@@ -69,11 +64,28 @@ export class GnomadGenotypeQualityMetrics extends Component {
               this.setState(update)
             }}
             value={selectedMetric}
+            style={{
+              width: selectedMetric === 'alleleBalance' ? 'auto' : '150px',
+            }}
           >
-            <option value="genotypeQuality">Genotype Quality</option>
+            <option value="genotypeQuality">Genotype quality</option>
             <option value="genotypeDepth">Depth</option>
-            <option value="alleleBalance">Allele Balance</option>
+            <option value="alleleBalance">Allele balance for heterozygotes</option>
           </Select>
+
+          {selectedMetric !== 'alleleBalance' && (
+            <SegmentedControl
+              id="genotype-quality-metrics-sample"
+              onChange={samples => {
+                this.setState({ selectedSamples: samples })
+              }}
+              options={[
+                { label: 'All', value: 'all', disabled: selectedMetric === 'alleleBalance' },
+                { label: 'Variant Carriers', value: 'alt' },
+              ]}
+              value={selectedSamples}
+            />
+          )}
 
           <SegmentedControl
             id="genotype-quality-metrics-dataset"
