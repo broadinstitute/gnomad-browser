@@ -129,71 +129,115 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
   const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
   const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
 
+  const exomeHighAlleleBalanceSamples = isPresentInExome
+    ? variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[18] +
+      variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[19]
+    : 0
+  const genomeHighAlleleBalanceSamples = isPresentInGenome
+    ? variant.genome.qualityMetrics.alleleBalance.alt.bin_freq[18] +
+      variant.genome.qualityMetrics.alleleBalance.alt.bin_freq[19]
+    : 0
+  const totalHighAlleleBalanceSamples =
+    exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
+
+  const showExomeHighAlleleBalanceWarning =
+    exomeHighAlleleBalanceSamples > 0 &&
+    (exomeHomozygoteCount === 0 || exomeHighAlleleBalanceSamples / exomeHomozygoteCount >= 0.02)
+  const showGenomeHighAlleleBalanceWarning =
+    genomeHighAlleleBalanceSamples > 0 &&
+    (genomeHomozygoteCount === 0 || genomeHighAlleleBalanceSamples / genomeHomozygoteCount >= 0.02)
+  const showHighAlleleBalanceWarning =
+    showExomeHighAlleleBalanceWarning || showGenomeHighAlleleBalanceWarning
+
+  const highAlleleBalanceWarningMessage =
+    exomeHighAlleleBalanceSamples > 0 && genomeHighAlleleBalanceSamples > 0
+      ? `* Up to ${totalHighAlleleBalanceSamples} individuals (${exomeHighAlleleBalanceSamples} in exomes and ${genomeHighAlleleBalanceSamples} in genomes) called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+      : `* Up to ${totalHighAlleleBalanceSamples} individuals called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+
   return (
-    <Table>
-      <tbody>
-        <tr>
-          <td />
-          <th scope="col">Exomes</th>
-          <th scope="col">Genomes</th>
-          <th scope="col">Total</th>
-        </tr>
-        <tr>
-          <th scope="row">Filter</th>
-          <td>{renderGnomadVariantFlag(variant, 'exome')}</td>
-          <td>{renderGnomadVariantFlag(variant, 'genome')}</td>
-          <td />
-        </tr>
-        <tr>
-          <th scope="row">Allele Count</th>
-          <td>{isPresentInExome && exomeAlleleCount}</td>
-          <td>{isPresentInGenome && genomeAlleleCount}</td>
-          <td>{totalAlleleCount}</td>
-        </tr>
-        <tr>
-          <th scope="row">Allele Number</th>
-          <td>{isPresentInExome && exomeAlleleNumber}</td>
-          <td>{isPresentInGenome && genomeAlleleNumber}</td>
-          <td>{totalAlleleNumber}</td>
-        </tr>
-        <tr>
-          <th scope="row">Allele Frequency</th>
-          <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>
-          <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>
-          <td>{totalAlleleFrequency.toPrecision(4)}</td>
-        </tr>
-        <tr>
-          <th scope="row">
-            <NoWrap>
-              Popmax Filtering AF <QuestionMark topic="faf" />
-            </NoWrap>
-            <br />
-            (95% confidence)
-          </th>
-          <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
-          <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
-          <td />
-        </tr>
-        {variant.chrom !== 'Y' && (
+    <div>
+      <Table>
+        <tbody>
           <tr>
-            <th scope="row">Number of homozygotes</th>
-            <td>{isPresentInExome && exomeHomozygoteCount}</td>
-            <td>{isPresentInGenome && genomeHomozygoteCount}</td>
-            <td>{totalHomozygoteCount}</td>
+            <td />
+            <th scope="col">Exomes</th>
+            <th scope="col">Genomes</th>
+            <th scope="col">Total</th>
           </tr>
-        )}
-        {(variant.chrom === 'X' || variant.chrom === 'Y') && (
           <tr>
-            <th scope="row">Number of hemizygotes</th>
-            <td>{isPresentInExome && exomeHemizygoteCount}</td>
-            <td>{isPresentInGenome && genomeHemizygoteCount}</td>
-            <td>{totalHemizygoteCount}</td>
+            <th scope="row">Filter</th>
+            <td>{renderGnomadVariantFlag(variant, 'exome')}</td>
+            <td>{renderGnomadVariantFlag(variant, 'genome')}</td>
+            <td />
           </tr>
-        )}
-      </tbody>
-    </Table>
+          <tr>
+            <th scope="row">Allele Count</th>
+            <td>{isPresentInExome && exomeAlleleCount}</td>
+            <td>{isPresentInGenome && genomeAlleleCount}</td>
+            <td>{totalAlleleCount}</td>
+          </tr>
+          <tr>
+            <th scope="row">Allele Number</th>
+            <td>{isPresentInExome && exomeAlleleNumber}</td>
+            <td>{isPresentInGenome && genomeAlleleNumber}</td>
+            <td>{totalAlleleNumber}</td>
+          </tr>
+          <tr>
+            <th scope="row">Allele Frequency</th>
+            <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>
+            <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>
+            <td>{totalAlleleFrequency.toPrecision(4)}</td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <NoWrap>
+                Popmax Filtering AF <QuestionMark topic="faf" />
+              </NoWrap>
+              <br />
+              (95% confidence)
+            </th>
+            <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
+            <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
+            <td />
+          </tr>
+          {variant.chrom !== 'Y' && (
+            <tr>
+              <th scope="row">Number of homozygotes</th>
+              <td>
+                {isPresentInExome && exomeHomozygoteCount}
+                {showExomeHighAlleleBalanceWarning && ' *'}
+              </td>
+              <td>
+                {isPresentInGenome && genomeHomozygoteCount}
+                {showGenomeHighAlleleBalanceWarning && ' *'}
+              </td>
+              <td>
+                {totalHomozygoteCount}
+                {showHighAlleleBalanceWarning && ' *'}
+              </td>
+            </tr>
+          )}
+          {(variant.chrom === 'X' || variant.chrom === 'Y') && (
+            <tr>
+              <th scope="row">Number of hemizygotes</th>
+              <td>{isPresentInExome && exomeHemizygoteCount}</td>
+              <td>{isPresentInGenome && genomeHemizygoteCount}</td>
+              <td>{totalHemizygoteCount}</td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+      {showHighAlleleBalanceWarning && <p>{highAlleleBalanceWarningMessage}</p>}
+    </div>
   )
 }
+
+const histogramPropType = PropTypes.shape({
+  bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+  bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+  n_smaller: PropTypes.number.isRequired,
+  n_larger: PropTypes.number.isRequired,
+})
 
 GnomadVariantOccurrenceTable.propTypes = {
   variant: PropTypes.shape({
@@ -207,6 +251,11 @@ GnomadVariantOccurrenceTable.propTypes = {
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
       }).isRequired,
+      qualityMetrics: PropTypes.shape({
+        alleleBalance: PropTypes.shape({
+          alt: histogramPropType,
+        }).isRequired,
+      }).isRequired,
     }),
     genome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
@@ -216,6 +265,11 @@ GnomadVariantOccurrenceTable.propTypes = {
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
+      }).isRequired,
+      qualityMetrics: PropTypes.shape({
+        alleleBalance: PropTypes.shape({
+          alt: histogramPropType,
+        }).isRequired,
       }).isRequired,
     }),
   }).isRequired,
