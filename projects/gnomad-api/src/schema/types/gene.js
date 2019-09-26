@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLObjectType } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
@@ -10,9 +10,9 @@ import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummary
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
 
 import {
-  ExacGeneConstraintType,
-  fetchExacGeneConstraintByTranscriptId,
-} from '../datasets/exac/exacGeneConstraint'
+  ExacConstraintType,
+  fetchExacConstraintByTranscriptId,
+} from '../datasets/exac/exacConstraint'
 import {
   ExacRegionalMissenseConstraintRegionType,
   fetchExacRegionalMissenseConstraintRegions,
@@ -54,7 +54,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -83,7 +83,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     genome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -126,13 +126,28 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     transcripts: { type: new GraphQLList(GeneTranscriptType) },
     exac_constraint: {
-      type: ExacGeneConstraintType,
-      resolve: (obj, args, ctx) =>
-        fetchExacGeneConstraintByTranscriptId(ctx, obj.canonical_transcript),
+      type: ExacConstraintType,
+      resolve: (obj, args, ctx) => {
+        if (!obj.canonical_transcript_id) {
+          throw new UserVisibleError(
+            `Unable to query ExAC constraint for gene "${obj.gene_id}", no canonical transcript`
+          )
+        }
+        return fetchExacConstraintByTranscriptId(ctx, obj.canonical_transcript_id)
+      },
     },
     exac_regional_missense_constraint_regions: {
       type: new GraphQLList(ExacRegionalMissenseConstraintRegionType),
-      resolve: (obj, args, ctx) => fetchExacRegionalMissenseConstraintRegions(ctx, obj.gene_name),
+      resolve: (obj, args, ctx) => {
+        if (!obj.canonical_transcript_id) {
+          throw new UserVisibleError(
+            `Unable to query ExAC regional missense constraint for gene "${
+              obj.gene_id
+            }", no canonical transcript`
+          )
+        }
+        return fetchExacRegionalMissenseConstraintRegions(ctx, obj.canonical_transcript_id)
+      },
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
@@ -141,7 +156,7 @@ const GeneType = extendObjectType(BaseGeneType, {
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
         const { fetchVariantsByGene } = datasetsConfig[args.dataset]

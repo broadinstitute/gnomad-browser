@@ -1,7 +1,7 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { UserVisibleError } from '../utilities/errors'
-import { GeneType, fetchGeneById, fetchGeneByName } from './gene'
+import { GeneType, fetchGeneById, fetchGeneBySymbol } from './gene'
 import {
   GeneResultType,
   GeneResultGroupIdType,
@@ -16,17 +16,17 @@ export const RootType = new GraphQLObjectType({
     gene: {
       type: GeneType,
       args: {
-        gene_name: { type: GraphQLString },
         gene_id: { type: GraphQLString },
+        gene_symbol: { type: GraphQLString },
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_id) {
           return fetchGeneById(ctx, args.gene_id)
         }
-        if (args.gene_name) {
-          return fetchGeneByName(ctx, args.gene_name)
+        if (args.gene_symbol) {
+          return fetchGeneBySymbol(ctx, args.gene_symbol)
         }
-        throw new UserVisibleError('One of "gene_id" or "gene_name" is required')
+        throw new UserVisibleError('One of "gene_id" or "gene_symbol" is required')
       },
     },
     geneResults: {

@@ -39,10 +39,10 @@ const GeneAttributes = ({ gene }) => (
         <dd>
           <ExternalLink
             href={`https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${
-              gene.canonical_transcript
+              gene.canonical_transcript.transcript_id
             }`}
           >
-            {gene.canonical_transcript}
+            {gene.canonical_transcript.transcript_id}
           </ExternalLink>
         </dd>
       </ListItem>
@@ -60,17 +60,17 @@ const GeneAttributes = ({ gene }) => (
     <ListItem>
       <dt>GeneCards</dt>
       <dd>
-        <ExternalLink href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene.gene_name}`}>
-          {gene.gene_name}
+        <ExternalLink href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene.symbol}`}>
+          {gene.symbol}
         </ExternalLink>
       </dd>
     </ListItem>
     <ListItem>
       <dt>OMIM</dt>
       <dd>
-        {gene.omim_accession ? (
-          <ExternalLink href={`https://omim.org/entry/${gene.omim_accession}`}>
-            {gene.omim_accession}
+        {gene.omim_id ? (
+          <ExternalLink href={`https://omim.org/entry/${gene.omim_id}`}>
+            {gene.omim_id}
           </ExternalLink>
         ) : (
           '—'
@@ -83,8 +83,10 @@ const GeneAttributes = ({ gene }) => (
 GeneAttributes.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
-    gene_name: PropTypes.string.isRequired,
-    canonical_transcript: PropTypes.string,
+    symbol: PropTypes.string.isRequired,
+    canonical_transcript: PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+    }),
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,

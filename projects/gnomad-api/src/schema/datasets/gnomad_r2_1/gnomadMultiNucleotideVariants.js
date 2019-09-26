@@ -150,8 +150,8 @@ export const fetchGnomadMNVsByIntervals = async (ctx, intervals) => {
   }))
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'gnomad_2_1_coding_mnvs',
-    type: 'mnv',
+    index: 'gnomad_2_1_mnvs',
+    type: 'documents',
     size: 10000,
     _source: ['constituent_snv_ids'],
     body: {
@@ -187,8 +187,8 @@ export const annotateVariantsWithMNVFlag = (variants, mnvs) => {
 
 export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
   const response = await ctx.database.elastic.search({
-    index: 'gnomad_2_1_coding_mnvs',
-    type: 'mnv',
+    index: 'gnomad_2_1_mnvs',
+    type: 'documents',
     _source: [
       'variant_id',
       'changes_amino_acids_for_snvs',
@@ -219,61 +219,55 @@ export const fetchGnomadMNVSummariesByVariantId = async (ctx, variantId) => {
 }
 
 export const fetchGnomadMNVDetails = async (ctx, variantId) => {
-  const response = await ctx.database.elastic.search({
-    index: 'gnomad_2_1_coding_mnvs',
-    type: 'mnv',
-    body: {
-      query: {
-        bool: {
-          filter: {
-            term: { variant_id: variantId },
-          },
-        },
-      },
-    },
-    size: 1,
-  })
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'gnomad_2_1_mnvs',
+      type: 'documents',
+      id: variantId,
+    })
 
-  if (response.hits.hits.length === 0) {
-    throw new UserVisibleError('Variant not found')
-  }
+    const doc = response._source
 
-  const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
-
-  return {
-    variant_id: doc.variant_id,
-    chrom: doc.contig,
-    pos: doc.pos,
-    ref: doc.ref,
-    alt: doc.alt,
-    constituent_snvs: doc.constituent_snvs.map(snv => ({
-      variant_id: snv.variant_id,
-      exome:
-        snv.exome.ac === undefined
-          ? null
-          : {
-              // Forward chrom/pos/ref/alt for reads resolver
-              chrom: snv.chrom,
-              pos: snv.pos,
-              ref: snv.ref,
-              alt: snv.alt,
-              ...snv.exome,
-            },
-      genome:
-        snv.genome.ac === undefined
-          ? null
-          : {
-              // Forward chrom/pos/ref/alt for reads resolver
-              chrom: snv.chrom,
-              pos: snv.pos,
-              ref: snv.ref,
-              alt: snv.alt,
-              ...snv.genome,
-            },
-    })),
-    exome: doc.exome.ac === undefined ? null : doc.exome,
-    genome: doc.genome.ac === undefined ? null : doc.genome,
-    consequences: doc.consequences,
-    related_mnvs: doc.related_mnvs || [],
+    return {
+      variant_id: doc.variant_id,
+      chrom: doc.contig,
+      pos: doc.pos,
+      ref: doc.ref,
+      alt: doc.alt,
+      constituent_snvs: doc.constituent_snvs.map(snv => ({
+        variant_id: snv.variant_id,
+        exome:
+          snv.exome.ac === undefined
+            ? null
+            : {
+                // Forward chrom/pos/ref/alt for reads resolver
+                chrom: snv.chrom,
+                pos: snv.pos,
+                ref: snv.ref,
+                alt: snv.alt,
+                ...snv.exome,
+              },
+        genome:
+          snv.genome.ac === undefined
+            ? null
+            : {
+                // Forward chrom/pos/ref/alt for reads resolver
+                chrom: snv.chrom,
+                pos: snv.pos,
+                ref: snv.ref,
+                alt: snv.alt,
+                ...snv.genome,
+              },
+      })),
+      exome: doc.exome.ac === undefined ? null : doc.exome,
+      genome: doc.genome.ac === undefined ? null : doc.genome,
+      consequences: doc.consequences,
+      related_mnvs: doc.related_mnvs || [],
+    }
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError('Variant not found')
+    }
+    throw err
   }
 }

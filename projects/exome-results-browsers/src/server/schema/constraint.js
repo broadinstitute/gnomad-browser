@@ -1,5 +1,7 @@
 import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql'
 
+import { UserVisibleError } from '../utilities/errors'
+
 export const ExacConstraintType = new GraphQLObjectType({
   name: 'ExacConstraint',
   fields: {
@@ -8,9 +10,9 @@ export const ExacConstraintType = new GraphQLObjectType({
     exp_mis: { type: GraphQLFloat },
     exp_syn: { type: GraphQLFloat },
     // Observed
-    n_lof: { type: GraphQLInt },
-    n_mis: { type: GraphQLInt },
-    n_syn: { type: GraphQLInt },
+    obs_lof: { type: GraphQLInt },
+    obs_mis: { type: GraphQLInt },
+    obs_syn: { type: GraphQLInt },
     // Z
     lof_z: { type: GraphQLFloat },
     mis_z: { type: GraphQLFloat },
@@ -20,8 +22,22 @@ export const ExacConstraintType = new GraphQLObjectType({
   },
 })
 
-export const fetchExacConstraintByTranscript = (ctx, transcriptId) =>
-  ctx.database.mongo.collection('constraint').findOne({ transcript: transcriptId })
+export const fetchExacConstraintByTranscript = async (ctx, transcriptId) => {
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'exac_constraint',
+      type: 'documents',
+      id: transcriptId,
+    })
+
+    return response._source // eslint-disable-line no-underscore-dangle
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError('ExAC constraint not found')
+    }
+    throw err
+  }
+}
 
 export const GnomadConstraintType = new GraphQLObjectType({
   name: 'GnomadConstraint',

@@ -27,7 +27,7 @@ a worker is interrupted during a bulk request.
 * [variants](./docs/gnomad_variants.md)
 * [coverage](./docs/gnomad_coverage.md)
 * [site quality metric distributions](./docs/gnomad_site_quality_metric_distributions.md)
-* [gene constraint](./docs/gnomad_gene_constraint.md)
+* [constraint](./docs/gnomad_constraint.md)
 * [multi-nucleotide variants](./docs/gnomad_mnvs.md)
 * pext scores
 * [structural variants](./docs/gnomad_svs.md)
@@ -35,4 +35,5 @@ a worker is interrupted during a bulk request.
 ## ExAC
 
 * [variants](./docs/exac_variants.md)
-* [regional missense constraint](./docs/exac_regional_missense_constraint_regions.md)
+* [constraint](./docs/exac_constraint.md)
+* [regional missense constraint](./docs/exac_regional_missense_constraint.md)

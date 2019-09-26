@@ -23,10 +23,11 @@ query Transcript($transcriptId: String!) {
     }
     gene {
       gene_id
-      gene_name
-      full_gene_name
-      canonical_transcript
-      omim_accession
+      symbol
+      name
+      canonical_transcript_id
+      hgnc_id
+      omim_id
       chrom
       start
       stop
@@ -38,13 +39,13 @@ query Transcript($transcriptId: String!) {
       }
       exac_constraint {
         exp_syn
-        n_syn
+        obs_syn
         syn_z
         exp_mis
-        n_mis
+        obs_mis
         mis_z
         exp_lof
-        n_lof
+        obs_lof
         lof_z
         pLI
       }

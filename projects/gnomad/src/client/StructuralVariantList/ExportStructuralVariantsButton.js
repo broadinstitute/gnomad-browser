@@ -110,7 +110,6 @@ const exportVariantsToCsv = (variants, baseFileName) => {
   link.setAttribute('href', url)
   link.setAttribute('download', `${baseFileName.replace(/\s+/g, '_')}_${timestamp}.csv`)
   link.onClick = () => {
-    console.log('revoke')
     URL.revokeObjectURL(url)
     link.remove()
   }

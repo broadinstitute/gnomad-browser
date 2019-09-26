@@ -277,7 +277,7 @@ export default () => (
           constraint. In addition, if a canonical transcript was missing a &quot;Met&quot; at the
           start, it was considered malformed and not evaluated for constraint metrics. The following
           list describes the reason names given in the constraint_flag column of the{' '}
-          <Link to={{ pathname: '/downloads', hash: '#gene-constraint' }}>constraint files</Link>:
+          <Link to={{ pathname: '/downloads', hash: '#constraint' }}>constraint files</Link>:
           <List>
             <ListItem>no_variants: Zero observed synonymous, missense, pLoF variants</ListItem>
             <ListItem>no_exp_lof: Zero expected pLoF variants</ListItem>

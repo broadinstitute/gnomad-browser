@@ -1,7 +1,7 @@
 import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
 const GnomadConstraintType = new GraphQLObjectType({
-  name: 'GnomADConstraint',
+  name: 'GnomadConstraint',
   fields: {
     // Expected
     exp_lof: { type: GraphQLFloat },
@@ -27,9 +27,7 @@ const GnomadConstraintType = new GraphQLObjectType({
     syn_z: { type: GraphQLFloat },
     // Other
     pLI: { type: GraphQLFloat },
-    pNull: { type: GraphQLFloat },
-    pRec: { type: GraphQLFloat },
-    constraint_flag: { type: new GraphQLList(GraphQLString) },
+    flags: { type: new GraphQLList(GraphQLString) },
   },
 })
 
