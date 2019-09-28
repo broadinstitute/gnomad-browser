@@ -12,6 +12,9 @@ import { extendObjectType } from '../utilities/graphql'
 import DatasetArgumentType from './datasets/DatasetArgumentType'
 import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
 
+import ClinvarVariantDetailsType from './datasets/clinvar/ClinvarVariantDetailsType'
+import fetchClinvarVariantDetails from './datasets/clinvar/fetchClinvarVariantDetails'
+
 import {
   MultiNucleotideVariantDetailsType,
   fetchGnomadMNVDetails,
@@ -90,6 +93,13 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         query: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => resolveSearchResults(ctx, args.query),
+    },
+    clinvar_variant: {
+      type: ClinvarVariantDetailsType,
+      args: {
+        variant_id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (obj, args, ctx) => fetchClinvarVariantDetails(ctx, args.variant_id),
     },
     structural_variant: {
       type: GnomadStructuralVariantDetailsType,

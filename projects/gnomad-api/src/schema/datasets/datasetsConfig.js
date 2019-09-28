@@ -1,6 +1,3 @@
-import ClinvarVariantDetailsType from './clinvar/ClinvarVariantDetailsType'
-import fetchClinvarVariantDetails from './clinvar/fetchClinvarVariantDetails'
-
 // import ExacVariantDetailsType from './exac/ExacVariantDetailsType'
 import countExacVariantsInRegion from './exac/countExacVariantsInRegion'
 // import fetchExacVariantDetails from './exac/fetchExacVariantDetails'
@@ -16,10 +13,6 @@ import fetchGnomad21VariantsByRegion from './gnomad_r2_1/fetchGnomadVariantsByRe
 import fetchGnomad21VariantsByTranscript from './gnomad_r2_1/fetchGnomadVariantsByTranscript'
 
 const datasetsConfig = {
-  clinvar: {
-    fetchVariantDetails: (...args) => fetchClinvarVariantDetails(...args),
-    variantDetailsType: ClinvarVariantDetailsType,
-  },
   exac: {
     countVariantsInRegion: countExacVariantsInRegion,
     // fetchVariantDetails: fetchExacVariantDetails,
@@ -57,7 +50,6 @@ gnomadSubsets.forEach(subset => {
 export default datasetsConfig
 
 export const datasetSpecificTypes = [
-  ClinvarVariantDetailsType,
   // ExacVariantDetailsType,
   Gnomad21VariantDetailsType,
 ]

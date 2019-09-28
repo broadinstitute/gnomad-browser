@@ -88,7 +88,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
-        const { variant, clinvarVariant } = data
+        const { variant, clinvar_variant: clinvarVariant } = data
 
         const numTranscripts = variant.sortedTranscriptConsequences.length
         const geneIds = variant.sortedTranscriptConsequences.map(csq => csq.gene_id)
