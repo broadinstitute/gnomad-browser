@@ -5,6 +5,7 @@ import { extendObjectType } from '../../utilities/graphql'
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
+import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import { UserVisibleError } from '../errors'
 
@@ -36,6 +37,9 @@ const regionType = extendObjectType(BaseRegionType, {
         if (!index) {
           return []
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchCoverageByRegion(ctx, {
           index,
           type,
@@ -53,6 +57,9 @@ const regionType = extendObjectType(BaseRegionType, {
         if (!index) {
           return []
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchCoverageByRegion(ctx, {
           index,
           type,
@@ -77,12 +84,15 @@ const regionType = extendObjectType(BaseRegionType, {
           )
         }
 
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
           throw new UserVisibleError(
             `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
           )
         }
+
         return fetchVariantsByRegion(ctx, obj)
       },
     },

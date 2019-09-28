@@ -5,6 +5,7 @@ import { withCache } from '../../utilities/redis'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
+import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
@@ -62,6 +63,8 @@ const GeneType = extendObjectType(BaseGeneType, {
           return []
         }
 
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         const cachedCoverage = await withCache(
           ctx,
           `coverage:gene:${index}:${obj.gene_id}`,
@@ -90,6 +93,8 @@ const GeneType = extendObjectType(BaseGeneType, {
         if (!index) {
           return []
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
 
         const cachedCoverage = await withCache(
           ctx,
@@ -165,6 +170,9 @@ const GeneType = extendObjectType(BaseGeneType, {
             `Querying variants by gene is not supported for dataset "${args.dataset}"`
           )
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchVariantsByGene(ctx, obj)
       },
     },

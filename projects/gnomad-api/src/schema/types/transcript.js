@@ -5,6 +5,7 @@ import { withCache } from '../../utilities/redis'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
+import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
@@ -42,6 +43,8 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
           return []
         }
 
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         const cachedCoverage = await withCache(
           ctx,
           `coverage:transcript:${index}:${obj.transcript_id}`,
@@ -70,6 +73,8 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
         if (!index) {
           return []
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
 
         const cachedCoverage = await withCache(
           ctx,
@@ -109,6 +114,9 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
             `Querying variants by transcript is not supported for dataset "${args.dataset}"`
           )
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchVariantsByTranscript(ctx, obj)
       },
     },
