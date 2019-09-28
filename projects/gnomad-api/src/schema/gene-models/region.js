@@ -34,16 +34,16 @@ const xPosition = (chrom, pos) => {
   return xpos
 }
 
-export const resolveRegion = (ctx, { chrom, start, stop }) => {
+export const resolveRegion = (ctx, { chrom, start, stop }, referenceGenome) => {
   if (chromosomeNumbers[chrom] === undefined) {
     throw new UserVisibleError(`Invalid chromosome: "${chrom}"`)
   }
 
   return {
-    reference_genome: 'GRCh37',
+    reference_genome: referenceGenome,
+    chrom,
     start,
     stop,
-    chrom,
     // xstart/xstop are not queryable, but may be used by other resolvers
     xstart: xPosition(chrom, start),
     xstop: xPosition(chrom, stop),

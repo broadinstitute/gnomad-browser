@@ -35,9 +35,8 @@ export const GeneType = new GraphQLObjectType({
   },
 })
 
-export const shapeGene = gene => {
-  const referenceGenome = 'GRCh37'
-  const gencodeData = gene.gencode.v19
+export const shapeGene = (gene, referenceGenome) => {
+  const gencodeData = referenceGenome === 'GRCh37' ? gene.gencode.v19 : gene.gencode.v29
 
   return {
     reference_genome: referenceGenome,
@@ -59,7 +58,7 @@ export const shapeGene = gene => {
   }
 }
 
-export const fetchGeneById = async (ctx, geneId) => {
+export const fetchGeneById = async (ctx, geneId, referenceGenome) => {
   try {
     const response = await ctx.database.elastic.get({
       index: 'genes',
@@ -67,7 +66,7 @@ export const fetchGeneById = async (ctx, geneId) => {
       id: geneId,
     })
 
-    return shapeGene(response._source)
+    return shapeGene(response._source, referenceGenome)
   } catch (err) {
     if (err.message === 'Not Found') {
       throw new UserVisibleError('Gene not found')
@@ -76,7 +75,7 @@ export const fetchGeneById = async (ctx, geneId) => {
   }
 }
 
-export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
+export const fetchGeneBySymbol = async (ctx, geneSymbol, referenceGenome) => {
   const response = await ctx.database.elastic.search({
     index: 'genes',
     type: 'documents',
@@ -94,10 +93,13 @@ export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
     throw new UserVisibleError('Gene not found')
   }
 
-  return shapeGene(response.hits.hits[0]._source)
+  return shapeGene(response.hits.hits[0]._source, referenceGenome)
 }
 
-export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
+export const fetchGenesByRegion = async (ctx, region) => {
+  const { reference_genome: referenceGenome, xstart, xstop } = region
+  const gencodeVersion = referenceGenome === 'GRCh37' ? 'v19' : 'v29'
+
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: 'genes',
     type: 'documents',
@@ -108,14 +110,14 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
           filter: [
             {
               range: {
-                'gencode.v19.xstart': {
+                [`gencode.${gencodeVersion}.xstart`]: {
                   lte: xstop,
                 },
               },
             },
             {
               range: {
-                'gencode.v19.xstop': {
+                [`gencode.${gencodeVersion}.xstop`]: {
                   gte: xstart,
                 },
               },
@@ -126,5 +128,5 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
     },
   })
 
-  return hits.map(hit => shapeGene(hit._source))
+  return hits.map(hit => shapeGene(hit._source, referenceGenome))
 }
