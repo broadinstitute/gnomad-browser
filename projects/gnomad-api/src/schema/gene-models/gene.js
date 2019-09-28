@@ -36,10 +36,11 @@ export const GeneType = new GraphQLObjectType({
 })
 
 export const shapeGene = gene => {
+  const referenceGenome = 'GRCh37'
   const gencodeData = gene.gencode.v19
 
   return {
-    reference_genome: 'GRCh37',
+    reference_genome: referenceGenome,
     gene_id: gene.gene_id,
     symbol: gene.symbol,
     hgnc_id: gene.hgnc_id,
@@ -49,7 +50,10 @@ export const shapeGene = gene => {
     stop: gencodeData.stop,
     exons: gencodeData.exons,
     strand: gencodeData.strand,
-    transcripts: gencodeData.transcripts,
+    transcripts: gencodeData.transcripts.map(transcript => ({
+      ...transcript,
+      reference_genome: referenceGenome,
+    })),
     canonical_transcript_id: gencodeData.canonical_transcript_id,
     omim_id: gene.omim_id,
   }
