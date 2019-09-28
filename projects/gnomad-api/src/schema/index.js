@@ -47,10 +47,10 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_id) {
-          return fetchGeneById(ctx, args.gene_id)
+          return fetchGeneById(ctx, args.gene_id, 'GRCh37')
         }
         if (args.gene_symbol || args.gene_name) {
-          return fetchGeneBySymbol(ctx, args.gene_symbol || args.gene_name)
+          return fetchGeneBySymbol(ctx, args.gene_symbol || args.gene_name, 'GRCh37')
         }
         throw new UserVisibleError('One of "gene_id" or "gene_symbol" is required')
       },
@@ -65,7 +65,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         transcript_id: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, args.transcript_id),
+      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, args.transcript_id, 'GRCh37'),
     },
     multiNucleotideVariant: {
       type: MultiNucleotideVariantDetailsType,
@@ -82,7 +82,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         stop: { type: new GraphQLNonNull(GraphQLInt) },
         chrom: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => resolveRegion(ctx, args),
+      resolve: (obj, args, ctx) => resolveRegion(ctx, args, 'GRCh37'),
     },
     searchResults: {
       type: new GraphQLList(SearchResultType),
