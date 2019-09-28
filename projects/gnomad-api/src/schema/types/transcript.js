@@ -96,7 +96,10 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
     },
     gnomad_constraint: {
       type: GnomadConstraintType,
-      resolve: (obj, args, ctx) => fetchGnomadConstraintByTranscript(ctx, obj.transcript_id),
+      resolve: (obj, args, ctx) => {
+        assertDatasetAndReferenceGenomeMatch('gnomad_r2_1', obj.reference_genome)
+        return fetchGnomadConstraintByTranscript(ctx, obj.transcript_id)
+      },
     },
     gtex_tissue_tpms_by_transcript: {
       type: GtexTissueExpressionsType,

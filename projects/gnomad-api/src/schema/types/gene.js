@@ -138,6 +138,7 @@ const GeneType = extendObjectType(BaseGeneType, {
             `Unable to query ExAC constraint for gene "${obj.gene_id}", no canonical transcript`
           )
         }
+        assertDatasetAndReferenceGenomeMatch('exac', obj.reference_genome)
         return fetchExacConstraintByTranscriptId(ctx, obj.canonical_transcript_id)
       },
     },
@@ -151,6 +152,7 @@ const GeneType = extendObjectType(BaseGeneType, {
             }", no canonical transcript`
           )
         }
+        assertDatasetAndReferenceGenomeMatch('exac', obj.reference_genome)
         return fetchExacRegionalMissenseConstraintRegions(ctx, obj.canonical_transcript_id)
       },
     },
