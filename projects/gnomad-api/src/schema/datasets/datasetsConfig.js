@@ -14,6 +14,8 @@ import fetchGnomad21VariantsByTranscript from './gnomad_r2_1/fetchGnomadVariants
 
 const datasetsConfig = {
   exac: {
+    label: 'ExAC',
+    referenceGenome: 'GRCh37',
     countVariantsInRegion: countExacVariantsInRegion,
     // fetchVariantDetails: fetchExacVariantDetails,
     fetchVariantsByGene: fetchExacVariantsByGene,
@@ -24,6 +26,8 @@ const datasetsConfig = {
     genomeCoverageIndex: {},
   },
   gnomad_r2_1: {
+    label: 'gnomAD v2.1.1',
+    referenceGenome: 'GRCh37',
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, 'gnomad'),
     fetchVariantDetails: (...args) => fetchGnomad21VariantDetails(...args, 'gnomad'),
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, 'gnomad'),
@@ -39,6 +43,7 @@ const gnomadSubsets = ['controls', 'non_neuro', 'non_cancer', 'non_topmed']
 
 gnomadSubsets.forEach(subset => {
   datasetsConfig[`gnomad_r2_1_${subset}`] = {
+    referenceGenome: 'GRCh37',
     countVariantsInRegion: (...args) => countGnomad21VariantsInRegion(...args, subset),
     fetchVariantDetails: (...args) => fetchGnomad21VariantDetails(...args, subset),
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, subset),
@@ -46,6 +51,11 @@ gnomadSubsets.forEach(subset => {
     fetchVariantsByTranscript: (...args) => fetchGnomad21VariantsByTranscript(...args, subset),
   }
 })
+
+datasetsConfig.gnomad_r2_1_controls.label = 'gnomAD v2.1.1 (controls)'
+datasetsConfig.gnomad_r2_1_non_neuro.label = 'gnomAD v2.1.1 (non-neuro)'
+datasetsConfig.gnomad_r2_1_non_cancer.label = 'gnomAD v2.1.1 (non-cancer)'
+datasetsConfig.gnomad_r2_1_non_topmed.label = 'gnomAD v2.1.1 (non-TOPMed)'
 
 export default datasetsConfig
 
