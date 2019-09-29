@@ -342,7 +342,7 @@ class GenePage extends Component {
             </StatusMessage>
           )}
 
-          {hasCodingExons && (
+          {hasCodingExons && gene.pext && (
             <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
           )}
 
