@@ -120,7 +120,14 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     pext: {
       type: new GraphQLList(PextRegionType),
-      resolve: (obj, args, ctx) => fetchPextRegionsByGene(ctx, obj.gene_id),
+      resolve: (obj, args, ctx) => {
+        if (obj.reference_genome !== 'GRCh37') {
+          throw new UserVisibleError(
+            `pext scores are not available on reference genome ${obj.reference_genome}`
+          )
+        }
+        return fetchPextRegionsByGene(ctx, obj.gene_id)
+      },
     },
     transcript: {
       type: GeneTranscriptType,
