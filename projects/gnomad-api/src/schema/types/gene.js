@@ -165,7 +165,14 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
-      resolve: async (obj, args, ctx) => fetchGnomadStructuralVariantsByGene(ctx, obj),
+      resolve: (obj, args, ctx) => {
+        if (obj.reference_genome !== 'GRCh37') {
+          throw new UserVisibleError(
+            `gnomAD SV data is not available on reference genome ${obj.reference_genome}`
+          )
+        }
+        return fetchGnomadStructuralVariantsByGene(ctx, obj)
+      },
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
