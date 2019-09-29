@@ -11,6 +11,7 @@ const AutosizedTranscriptPage = withWindowSize(TranscriptPage)
 const query = `
 query Transcript($transcriptId: String!) {
   transcript(transcript_id: $transcriptId) {
+    reference_genome
     transcript_id
     chrom
     strand
@@ -23,6 +24,7 @@ query Transcript($transcriptId: String!) {
     }
     gene {
       gene_id
+      reference_genome
       symbol
       name
       canonical_transcript_id

@@ -11,6 +11,7 @@ const AutosizedGenePage = withWindowSize(GenePage)
 const query = `
 query Gene($geneId: String, $geneSymbol: String) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol) {
+    reference_genome
     gene_id
     symbol
     name
