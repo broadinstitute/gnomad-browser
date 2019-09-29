@@ -103,7 +103,14 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
     },
     gtex_tissue_tpms_by_transcript: {
       type: GtexTissueExpressionsType,
-      resolve: (obj, args, ctx) => fetchGtexTissueExpressionsByTranscript(ctx, obj.transcript_id),
+      resolve: (obj, args, ctx) => {
+        if (obj.reference_genome !== 'GRCh37') {
+          throw new UserVisibleError(
+            `Tissue expression is not available on reference genome ${obj.reference_genome}`
+          )
+        }
+        return fetchGtexTissueExpressionsByTranscript(ctx, obj.transcript_id)
+      },
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
