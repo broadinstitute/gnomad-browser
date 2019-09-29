@@ -73,9 +73,17 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     multiNucleotideVariant: {
       type: MultiNucleotideVariantDetailsType,
       args: {
-        variantId: { type: new GraphQLNonNull(GraphQLString) },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
+        variant_id: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => fetchGnomadMNVDetails(ctx, args.variantId),
+      resolve: (obj, args, ctx) => {
+        if (args.dataset !== 'gnomad_r2_1') {
+          throw new UserVisibleError(
+            `Multi-nucleotide variants are not available for ${datasetsConfig[args.dataset].label}`
+          )
+        }
+        return fetchGnomadMNVDetails(ctx, args.variant_id)
+      },
     },
     region: {
       description: 'Look up data by start/stop. Example: (start: 55505222, stop: 55505300, chrom: 1).',

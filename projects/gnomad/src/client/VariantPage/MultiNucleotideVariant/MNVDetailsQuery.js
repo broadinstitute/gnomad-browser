@@ -4,8 +4,8 @@ import React from 'react'
 import Query from '../../Query'
 
 const query = `
-query MultiNucleotideVariant($variantId: String!) {
-  multiNucleotideVariant(variantId: $variantId) {
+query MultiNucleotideVariant($variantId: String!, $datasetId: DatasetId!) {
+  multiNucleotideVariant(variant_id: $variantId, dataset: $datasetId) {
     variant_id
     chrom
     pos
@@ -71,14 +71,15 @@ query MultiNucleotideVariant($variantId: String!) {
 }
 `
 
-const MNVDetailsQuery = ({ children, variantId }) => (
-  <Query query={query} variables={{ variantId }}>
+const MNVDetailsQuery = ({ children, datasetId, variantId }) => (
+  <Query query={query} variables={{ datasetId, variantId }}>
     {children}
   </Query>
 )
 
 MNVDetailsQuery.propTypes = {
   children: PropTypes.func.isRequired,
+  datasetId: PropTypes.string.isRequired,
   variantId: PropTypes.string.isRequired,
 }
 
