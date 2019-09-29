@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { RegionViewer } from '@broad/region-viewer'
-import { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
+import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
 import { ExternalLink } from '@broad/ui'
 
 import DocumentTitle from '../DocumentTitle'
@@ -118,8 +118,8 @@ const sortTranscripts = (transcripts, canonicalTranscriptId) =>
       return 1
     }
 
-    const t1Mean = mean(Object.values(t1.gtex_tissue_expression))
-    const t2Mean = mean(Object.values(t2.gtex_tissue_expression))
+    const t1Mean = mean(Object.values(t1.gtex_tissue_expression || {}))
+    const t2Mean = mean(Object.values(t2.gtex_tissue_expression || {}))
 
     if (t1Mean === t2Mean) {
       return t1.transcript_id.localeCompare(t2.transcript_id)
@@ -133,6 +133,7 @@ class GenePage extends Component {
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
+      reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       symbol: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       exons: PropTypes.arrayOf(
@@ -167,6 +168,9 @@ class GenePage extends Component {
 
     // Subtract 30px for padding on Page component
     const regionViewerWidth = width - 30
+
+    const TranscriptsTrackComponent =
+      gene.reference_genome === 'GRCh37' ? TranscriptsTrackWithTissueExpression : TranscriptsTrack
 
     const hasNonCodingTranscripts = gene.transcripts.some(
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
@@ -296,7 +300,7 @@ class GenePage extends Component {
           </ControlPanel>
 
           {hasCodingExons && (
-            <TranscriptsTrackWithTissueExpression
+            <TranscriptsTrackComponent
               activeTranscript={{
                 exons: gene.exons,
                 strand: gene.strand,
