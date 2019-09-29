@@ -208,7 +208,7 @@ class GenePage extends Component {
               <Constraint
                 datasetId={datasetId}
                 gene={gene}
-                selectedTranscriptId={gene.canonical_transcript_id}
+                transcriptId={gene.canonical_transcript_id}
               />
             </div>
           </GeneInfoColumnWrapper>

@@ -116,9 +116,11 @@ const GeneInfo = ({ gene }) => {
     <AttributeList labelWidth={160}>
       <AttributeList.Item label="Genome build">GRCh37 / hg19</AttributeList.Item>
       <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
-      <AttributeList.Item label="Canonical transcript ID">
-        {canonicalTranscriptId}
-      </AttributeList.Item>
+      {canonicalTranscriptId && (
+        <AttributeList.Item label="Canonical transcript ID">
+          {canonicalTranscriptId}
+        </AttributeList.Item>
+      )}
       <AttributeList.Item label="Region">
         <Link to={`/region/${chrom}-${start}-${stop}`}>
           {chrom}:{start}-{stop}
@@ -137,7 +139,7 @@ GeneInfo.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-    canonical_transcript_id: PropTypes.string.isRequired,
+    canonical_transcript_id: PropTypes.string,
   }).isRequired,
 }
 
