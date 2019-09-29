@@ -16,6 +16,7 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   const query = `
     query FetchRegion($chrom: String!, $start: Int!, $stop: Int!) {
       region(chrom: $chrom, start: $start, stop: $stop) {
+        reference_genome
         chrom
         start
         stop
