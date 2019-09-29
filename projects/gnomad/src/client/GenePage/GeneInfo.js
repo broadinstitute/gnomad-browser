@@ -106,6 +106,7 @@ GeneReferences.propTypes = {
 const GeneInfo = ({ gene }) => {
   const {
     gene_id: geneId,
+    reference_genome: referenceGenome,
     chrom,
     start,
     stop,
@@ -114,7 +115,9 @@ const GeneInfo = ({ gene }) => {
 
   return (
     <AttributeList labelWidth={160}>
-      <AttributeList.Item label="Genome build">GRCh37 / hg19</AttributeList.Item>
+      <AttributeList.Item label="Genome build">
+        {referenceGenome} / {referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'}
+      </AttributeList.Item>
       <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
       {canonicalTranscriptId && (
         <AttributeList.Item label="Canonical transcript ID">
@@ -136,6 +139,7 @@ const GeneInfo = ({ gene }) => {
 GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
+    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
