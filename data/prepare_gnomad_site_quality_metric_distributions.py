@@ -3,7 +3,6 @@
 import argparse
 import dataclasses
 import json
-import sys
 import typing
 
 
