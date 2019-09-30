@@ -25,6 +25,7 @@ import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadSt
 import { UserVisibleError } from './errors'
 
 import { fetchGeneById, fetchGeneBySymbol } from './gene-models/gene'
+import { ReferenceGenomeType } from './gene-models/referenceGenome'
 import { resolveRegion } from './gene-models/region'
 import { fetchTranscriptById } from './gene-models/transcript'
 
@@ -47,13 +48,18 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         gene_id: { type: GraphQLString },
         gene_symbol: { type: GraphQLString },
         gene_name: { type: GraphQLString }, // Deprecated. TODO: Remove this
+        reference_genome: { type: ReferenceGenomeType },
       },
       resolve: (obj, args, ctx) => {
         if (args.gene_id) {
-          return fetchGeneById(ctx, args.gene_id, 'GRCh37')
+          return fetchGeneById(ctx, args.gene_id, args.reference_genome || 'GRCh37')
         }
         if (args.gene_symbol || args.gene_name) {
-          return fetchGeneBySymbol(ctx, args.gene_symbol || args.gene_name, 'GRCh37')
+          return fetchGeneBySymbol(
+            ctx,
+            args.gene_symbol || args.gene_name,
+            args.reference_genome || 'GRCh37'
+          )
         }
         throw new UserVisibleError('One of "gene_id" or "gene_symbol" is required')
       },
@@ -67,8 +73,10 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       }),
       args: {
         transcript_id: { type: new GraphQLNonNull(GraphQLString) },
+        reference_genome: { type: ReferenceGenomeType },
       },
-      resolve: (obj, args, ctx) => fetchTranscriptById(ctx, args.transcript_id, 'GRCh37'),
+      resolve: (obj, args, ctx) =>
+        fetchTranscriptById(ctx, args.transcript_id, args.reference_genome || 'GRCh37'),
     },
     multiNucleotideVariant: {
       type: MultiNucleotideVariantDetailsType,
@@ -92,8 +100,9 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         start: { type: new GraphQLNonNull(GraphQLInt) },
         stop: { type: new GraphQLNonNull(GraphQLInt) },
         chrom: { type: new GraphQLNonNull(GraphQLString) },
+        reference_genome: { type: ReferenceGenomeType },
       },
-      resolve: (obj, args, ctx) => resolveRegion(ctx, args, 'GRCh37'),
+      resolve: (obj, args, ctx) => resolveRegion(ctx, args, args.reference_genome || 'GRCh37'),
     },
     searchResults: {
       type: new GraphQLList(SearchResultType),
@@ -106,8 +115,10 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       type: ClinvarVariantDetailsType,
       args: {
         variant_id: { type: new GraphQLNonNull(GraphQLString) },
+        reference_genome: { type: ReferenceGenomeType },
       },
-      resolve: (obj, args, ctx) => fetchClinvarVariantDetails(ctx, args.variant_id, 'GRCh37'),
+      resolve: (obj, args, ctx) =>
+        fetchClinvarVariantDetails(ctx, args.variant_id, args.reference_genome || 'GRCh37'),
     },
     structural_variant: {
       type: GnomadStructuralVariantDetailsType,
