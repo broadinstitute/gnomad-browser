@@ -621,6 +621,21 @@ export default () => (
         </p>
       </Answer>
 
+      <Question id="why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium">
+        Why are some variants depleted for homozygotes/out of Hardy-Weinberg Equilibrium (HWE)?
+      </Question>
+      <Answer>
+        <p>
+          It has recently come to our attention that a number of genotypes with a high proportion of
+          alternate allele reads (Allele Balance; AB &ge; 90%) are being called as heterozygous when
+          they may be homozygous. This deflates the number of reported homozygotes, and is
+          especially apparent at common variants and more so for long insertions and deletions. This
+          will affect frequency estimates and especially the calculation of Hardy-Weinberg
+          Equilibrium. Use caution when interpreting the frequencies of these variants. We are
+          currently flagging these variants in the gnomAD browser, and working on a longer-term fix.
+        </p>
+      </Answer>
+
       <Question id="can-i-filter-out-a-particular-cohort-for-my-analysis">
         Can I filter out a particular cohort for my analysis?
       </Question>

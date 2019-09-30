@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { Badge, TooltipAnchor } from '@broad/ui'
 
+import Link from '../Link'
 import QCFilter from '../QCFilter'
 
 const Table = styled.table`
@@ -227,7 +228,20 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
           )}
         </tbody>
       </Table>
-      {showHighAlleleBalanceWarning && <p>{highAlleleBalanceWarningMessage}</p>}
+      {showHighAlleleBalanceWarning && (
+        <p>
+          {highAlleleBalanceWarningMessage}{' '}
+          <Link
+            to={{
+              pathname: '/faq',
+              hash:
+                '#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium',
+            }}
+          >
+            More details.
+          </Link>
+        </p>
+      )}
     </div>
   )
 }
