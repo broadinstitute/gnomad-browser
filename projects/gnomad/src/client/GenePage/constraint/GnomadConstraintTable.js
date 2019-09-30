@@ -255,7 +255,7 @@ const ConnectedGnomadConstraintTable = ({ transcriptId }) => (
         return <StatusMessage>Unable to load constraint</StatusMessage>
       }
 
-      if (!data.transcript.gnomad_constraint) {
+      if (!(data.transcript || {}).gnomad_constraint) {
         return <StatusMessage>No constraint data for this gene</StatusMessage>
       }
 
