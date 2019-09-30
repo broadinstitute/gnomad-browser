@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { Page, PageHeading } from '@broad/ui'
+import { isRegionId, normalizeRegionId } from '@broad/utilities'
+
 import { referenceGenomeForDataset } from '../datasets'
+import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
@@ -10,7 +14,17 @@ import RegionPage from './RegionPage'
 const AutosizedRegionPage = withWindowSize(RegionPage)
 
 const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
-  const [chrom, startStr, stopStr] = regionId.split('-')
+  if (!isRegionId(regionId)) {
+    return (
+      <Page>
+        <DocumentTitle title="Invalid region ID" />
+        <PageHeading>Invalid region ID</PageHeading>
+        <p>Regions IDs must be formatted chrom-start-stop.</p>
+      </Page>
+    )
+  }
+
+  const [chrom, startStr, stopStr] = normalizeRegionId(regionId).split('-')
   const start = parseInt(startStr, 10)
   const stop = parseInt(stopStr, 10)
 
