@@ -152,8 +152,8 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
 
   const highAlleleBalanceWarningMessage =
     exomeHighAlleleBalanceSamples > 0 && genomeHighAlleleBalanceSamples > 0
-      ? `* Up to ${totalHighAlleleBalanceSamples} individuals (${exomeHighAlleleBalanceSamples} in exomes and ${genomeHighAlleleBalanceSamples} in genomes) called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
-      : `* Up to ${totalHighAlleleBalanceSamples} individuals called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+      ? `Up to ${totalHighAlleleBalanceSamples} individuals (${exomeHighAlleleBalanceSamples} in exomes and ${genomeHighAlleleBalanceSamples} in genomes) called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+      : `Up to ${totalHighAlleleBalanceSamples} individuals called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
 
   return (
     <div>
@@ -230,7 +230,7 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
       </Table>
       {showHighAlleleBalanceWarning && (
         <p>
-          {highAlleleBalanceWarningMessage}{' '}
+          <Badge level="warning">Warning</Badge> {highAlleleBalanceWarningMessage}{' '}
           <Link
             to={{
               pathname: '/faq',
