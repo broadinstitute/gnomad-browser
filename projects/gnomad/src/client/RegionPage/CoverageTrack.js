@@ -3,6 +3,7 @@ import React from 'react'
 
 import { CoverageTrack } from '@broad/track-coverage'
 
+import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -43,8 +44,6 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
 `
 
 const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop }) => {
-  const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
-
   return (
     <Query
       query={coverageQuery}
@@ -52,7 +51,7 @@ const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop 
         chrom,
         start,
         stop,
-        datasetId: coverageDatasetId,
+        datasetId: coverageDataset(datasetId),
       }}
     >
       {({ data, error, loading }) => {
