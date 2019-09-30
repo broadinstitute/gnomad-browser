@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import ClinVarTrack from '../clinvar/ClinVarTrack'
-import datasetLabels from '../datasetLabels'
+import { labelForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -180,7 +180,7 @@ class VariantsInGene extends Component {
       visibleVariantWindow,
     } = this.state
 
-    const datasetLabel = datasetLabels[datasetId]
+    const datasetLabel = labelForDataset(datasetId)
 
     return (
       <div>

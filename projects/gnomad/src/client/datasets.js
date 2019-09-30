@@ -8,4 +8,4 @@ const datasetLabels = {
   gnomad_sv_r2: 'gnomAD SVs',
 }
 
-export default datasetLabels
+export const labelForDataset = datasetId => datasetLabels[datasetId] || 'Unknown'
