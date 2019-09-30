@@ -12,6 +12,12 @@ import fetchGnomad21VariantsByGene from './gnomad_r2_1/fetchGnomadVariantsByGene
 import fetchGnomad21VariantsByRegion from './gnomad_r2_1/fetchGnomadVariantsByRegion'
 import fetchGnomad21VariantsByTranscript from './gnomad_r2_1/fetchGnomadVariantsByTranscript'
 
+import countGnomadV3VariantsInRegion from './gnomad_r3/countGnomadV3VariantsInRegion'
+import fetchGnomadV3VariantDetails from './gnomad_r3/fetchGnomadV3VariantDetails'
+import fetchGnomadV3VariantsByGene from './gnomad_r3/fetchGnomadV3VariantsByGene'
+import fetchGnomadV3VariantsByRegion from './gnomad_r3/fetchGnomadV3VariantsByRegion'
+import fetchGnomadV3VariantsByTranscript from './gnomad_r3/fetchGnomadV3VariantsByTranscript'
+
 const datasetsConfig = {
   exac: {
     label: 'ExAC',
@@ -36,6 +42,17 @@ const datasetsConfig = {
     variantDetailsType: Gnomad21VariantDetailsType,
     exomeCoverageIndex: { index: 'gnomad_exome_coverage_2_1', type: 'variant' },
     genomeCoverageIndex: { index: 'gnomad_genome_coverage_2_1', type: 'variant' },
+  },
+  gnomad_r3: {
+    label: 'gnomAD v3',
+    referenceGenome: 'GRCh38',
+    countVariantsInRegion: countGnomadV3VariantsInRegion,
+    fetchVariantDetails: fetchGnomadV3VariantDetails,
+    fetchVariantsByGene: fetchGnomadV3VariantsByGene,
+    fetchVariantsByRegion: fetchGnomadV3VariantsByRegion,
+    fetchVariantsByTranscript: fetchGnomadV3VariantsByTranscript,
+    exomeCoverageIndex: undefined,
+    genomeCoverageIndex: undefined,
   },
 }
 

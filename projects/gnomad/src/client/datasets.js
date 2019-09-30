@@ -1,5 +1,8 @@
-// eslint-disable-next-line no-unused-vars
 export const referenceGenomeForDataset = datasetId => {
+  if (datasetId === 'gnomad_r3') {
+    return 'GRCh38'
+  }
+
   return 'GRCh37'
 }
 
@@ -10,6 +13,7 @@ const datasetLabels = {
   gnomad_r2_1_non_cancer: 'gnomAD v2.1.1 (non-cancer)',
   gnomad_r2_1_non_neuro: 'gnomAD v2.1.1 (non-neuro)',
   gnomad_r2_1_non_topmed: 'gnomAD v2.1.1 (non-TOPMed)',
+  gnomad_r3: 'gnomAD v3',
   gnomad_sv_r2: 'gnomAD SVs',
 }
 
