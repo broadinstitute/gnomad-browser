@@ -1,11 +1,4 @@
-import {
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql'
-
+import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
 export const TranscriptConsequenceType = new GraphQLObjectType({
   name: 'TranscriptConsequence',
@@ -37,3 +30,20 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
     transcript_id: { type: GraphQLString },
   },
 })
+
+export const getConsequenceForContext = context => {
+  switch (context.type) {
+    case 'gene':
+      return variant =>
+        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
+    case 'region':
+      return variant => (variant.sortedTranscriptConsequences || [])[0]
+    case 'transcript':
+      return variant =>
+        (variant.sortedTranscriptConsequences || []).find(
+          csq => csq.transcript_id === context.transcriptId
+        )
+    default:
+      throw Error(`Invalid context for getConsequenceForContext: ${context.type}`)
+  }
+}
