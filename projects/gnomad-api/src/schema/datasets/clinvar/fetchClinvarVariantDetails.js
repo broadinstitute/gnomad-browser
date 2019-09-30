@@ -1,4 +1,12 @@
-const fetchClinvarVariantDetails = async (ctx, variantId) => {
+import { UserVisibleError } from '../../errors'
+
+const fetchClinvarVariantDetails = async (ctx, variantId, referenceGenome) => {
+  if (referenceGenome !== 'GRCh37') {
+    throw new UserVisibleError(
+      `ClinVar variants not available on reference genome ${referenceGenome}`
+    )
+  }
+
   const response = await ctx.database.elastic.search({
     index: 'clinvar_grch37',
     type: 'variant',
