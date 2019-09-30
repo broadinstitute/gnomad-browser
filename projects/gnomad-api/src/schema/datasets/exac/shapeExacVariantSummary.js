@@ -1,26 +1,9 @@
 import { getFlagsForContext } from '../shared/flags'
+import { getConsequenceForContext } from '../shared/transcriptConsequence'
 import POPULATIONS from './populations'
 
 const shapeExacVariantSummary = context => {
-  let getConsequence
-  switch (context.type) {
-    case 'gene':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
-      break
-    case 'region':
-      getConsequence = variant => (variant.sortedTranscriptConsequences || [])[0]
-      break
-    case 'transcript':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(
-          csq => csq.transcript_id === context.transcriptId
-        )
-      break
-    default:
-      throw Error(`Invalid context for shapeExacVariantSummary: ${context.type}`)
-  }
-
+  const getConsequence = getConsequenceForContext(context)
   const getFlags = getFlagsForContext(context)
 
   return esHit => {
