@@ -479,7 +479,7 @@ export default () => (
           generate this call set were donated by the Broad Institute
         </p>
         <p>
-          We thank Jerome Rotter, Steven Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
+          We thank Jerome Rotter, Stephen Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
           for the use of their structural variant data
         </p>
       </CreditsSection>
