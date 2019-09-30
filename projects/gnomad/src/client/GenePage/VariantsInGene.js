@@ -22,7 +22,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInGene extends Component {
   static propTypes = {
-    clinVarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
+    clinVarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
@@ -30,6 +30,10 @@ class VariantsInGene extends Component {
     }).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
+  }
+
+  static defaultProps = {
+    clinVarVariants: null,
   }
 
   constructor(props) {
@@ -184,7 +188,9 @@ class VariantsInGene extends Component {
 
     return (
       <div>
-        <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        {clinVarVariants && (
+          <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        )}
 
         <VariantTrack
           title={`${datasetLabel}\n(${renderedVariants.length})`}
