@@ -46,7 +46,6 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     pos: variantData.pos,
     ref: variantData.ref,
     variantId: variantData.variant_id,
-    xpos: variantData.xpos,
     // ExAC specific fields
     ac: variantData.AC_Adj,
     ac_hemi: variantData.AC_Hemi,

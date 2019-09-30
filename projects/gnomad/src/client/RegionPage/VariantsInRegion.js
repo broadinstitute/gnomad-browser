@@ -248,7 +248,6 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
         pos
         rsid
         variant_id: variantId
-        xpos
         exome {
           ac
           ac_hemi

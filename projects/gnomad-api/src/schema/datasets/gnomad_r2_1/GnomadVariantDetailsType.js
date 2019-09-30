@@ -113,7 +113,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
     variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // gnomAD specific fields
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
     multiNucleotideVariants: { type: new GraphQLList(MultiNucleotideVariantSummaryType) },

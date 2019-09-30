@@ -128,7 +128,6 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
             'rsid',
             'sortedTranscriptConsequences',
             'variant_id',
-            'xpos',
           ],
           body: {
             query: {
@@ -217,7 +216,6 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     pos: sharedData.pos,
     ref: sharedData.ref,
     variantId: sharedData.variant_id,
-    xpos: sharedData.xpos,
   }
 
   const [colocatedVariants, multiNucleotideVariants] = await Promise.all([

@@ -34,7 +34,6 @@ const fetchExacVariantsByTranscript = async (ctx, transcript) => {
       'rsid',
       'sortedTranscriptConsequences',
       'variant_id',
-      'xpos',
     ],
 
     body: {

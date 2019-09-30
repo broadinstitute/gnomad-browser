@@ -46,7 +46,6 @@ const fetchExacVariantsByGene = async (ctx, gene) => {
       'rsid',
       'sortedTranscriptConsequences',
       'variant_id',
-      'xpos',
     ],
 
     body: {

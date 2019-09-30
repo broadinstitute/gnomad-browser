@@ -6,7 +6,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
     pos
     ref
     variantId
-    xpos
     ... on GnomadVariantDetails {
       colocatedVariants
       multiNucleotideVariants {

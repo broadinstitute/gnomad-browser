@@ -221,7 +221,6 @@ ExportVariantsButton.propTypes = {
       pos: PropTypes.number.isRequired,
       rsid: PropTypes.string,
       variant_id: PropTypes.string.isRequired,
-      xpos: PropTypes.number.isRequired,
       exome: PropTypes.shape({
         filters: PropTypes.arrayOf(PropTypes.string).isRequired,
       }),
