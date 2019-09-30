@@ -33,7 +33,7 @@ const regionType = extendObjectType(BaseRegionType, {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex || {}
         if (!index) {
           throw new UserVisibleError(
             `Coverage is not available for ${datasetsConfig[args.dataset].label}`
@@ -55,7 +55,7 @@ const regionType = extendObjectType(BaseRegionType, {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex || {}
         if (!index) {
           if (args.dataset === 'exac') {
             return []
