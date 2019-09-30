@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
-import datasetLabels from '../datasetLabels'
+import { labelForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -178,7 +178,7 @@ class VariantsInRegion extends Component {
       visibleVariantWindow,
     } = this.state
 
-    const datasetLabel = datasetLabels[datasetId]
+    const datasetLabel = labelForDataset(datasetId)
 
     return (
       <div>

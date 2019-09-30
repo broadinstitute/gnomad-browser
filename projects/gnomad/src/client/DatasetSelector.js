@@ -7,7 +7,7 @@ import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import sampleCounts from './dataset-constants/sampleCounts'
-import datasetLabels from './datasetLabels'
+import { labelForDataset } from './datasets'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -414,7 +414,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       {
         id: 'current_short_variant',
         isActive: selectedDataset !== 'gnomad_sv_r2',
-        label: datasetLabels[topLevelShortVariantDataset],
+        label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
       },
       {
@@ -424,7 +424,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         children: [
           {
             id: 'gnomad_r2_1',
-            label: datasetLabels.gnomad_r2_1,
+            label: labelForDataset('gnomad_r2_1'),
             url: datasetLink('gnomad_r2_1'),
             description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
           },
@@ -436,25 +436,25 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r2_1_controls',
-          label: datasetLabels.gnomad_r2_1_controls,
+          label: labelForDataset('gnomad_r2_1_controls'),
           url: datasetLink('gnomad_r2_1_controls'),
           description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
         },
         {
           id: 'gnomad_r2_1_non_cancer',
-          label: datasetLabels.gnomad_r2_1_non_cancer,
+          label: labelForDataset('gnomad_r2_1_non_cancer'),
           url: datasetLink('gnomad_r2_1_non_cancer'),
           description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
         },
         {
           id: 'gnomad_r2_1_non_neuro',
-          label: datasetLabels.gnomad_r2_1_non_neuro,
+          label: labelForDataset('gnomad_r2_1_non_neuro'),
           url: datasetLink('gnomad_r2_1_non_neuro'),
           description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
         },
         {
           id: 'gnomad_r2_1_non_topmed',
-          label: datasetLabels.gnomad_r2_1_non_topmed,
+          label: labelForDataset('gnomad_r2_1_non_topmed'),
           url: datasetLink('gnomad_r2_1_non_topmed'),
           description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
         }
@@ -464,7 +464,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     if (includeExac) {
       shortVariantDatasets[1].children.push({
         id: 'exac',
-        label: datasetLabels.exac,
+        label: labelForDataset('exac'),
         url: datasetLink('exac'),
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
       })
@@ -477,7 +477,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     datasets.push({
       id: 'gnomad_sv_r2',
       isActive: selectedDataset === 'gnomad_sv_r2',
-      label: datasetLabels.gnomad_sv_r2,
+      label: labelForDataset('gnomad_sv_r2'),
       url: datasetLink('gnomad_sv_r2'),
     })
   }
