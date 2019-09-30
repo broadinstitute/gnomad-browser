@@ -132,6 +132,7 @@ const GeneInfo = ({ gene }) => {
       )}
       <AttributeList.Item label="Region">
         <Link to={`/region/${chrom}-${start}-${stop}`}>
+          {referenceGenome === 'GRCh37' ? '' : 'chr'}
           {chrom}:{start}-{stop}
         </Link>
       </AttributeList.Item>
