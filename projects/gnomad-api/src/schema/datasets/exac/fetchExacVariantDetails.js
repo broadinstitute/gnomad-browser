@@ -41,11 +41,12 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
   return {
     gqlType: 'ExacVariantDetails',
     // variant interface fields
-    alt: variantData.alt,
+    variantId: variantData.variant_id,
+    reference_genome: 'GRCh37',
     chrom: variantData.chrom,
     pos: variantData.pos,
     ref: variantData.ref,
-    variantId: variantData.variant_id,
+    alt: variantData.alt,
     // ExAC specific fields
     ac: variantData.AC_Adj,
     ac_hemi: variantData.AC_Hemi,

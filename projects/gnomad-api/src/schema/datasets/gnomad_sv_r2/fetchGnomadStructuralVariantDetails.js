@@ -43,6 +43,7 @@ const fetchGnomadStructuralVariantDetails = async (ctx, variantId) => {
         ac_hom: variant.type === 'MCNV' ? null : variant.n_homalt[popId],
       })),
       pos: variant.pos,
+      reference_genome: 'GRCh37',
       qual: variant.qual,
       type: variant.type,
       variant_id: variant.variant_id,

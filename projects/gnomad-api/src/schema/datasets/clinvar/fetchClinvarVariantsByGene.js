@@ -64,6 +64,7 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
     return {
       // Variant ID fields
       variantId: doc.variant_id,
+      reference_genome: gene.reference_genome,
       chrom: doc.chrom,
       pos: doc.pos,
       ref: doc.ref,

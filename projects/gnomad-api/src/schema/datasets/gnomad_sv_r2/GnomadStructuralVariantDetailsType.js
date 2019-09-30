@@ -7,6 +7,8 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
+
 const GnomadStructuralVariantPopulationDataType = new GraphQLObjectType({
   name: 'GnomadStructuralVariantPopulationData',
   fields: {
@@ -55,6 +57,7 @@ const GnomadStructuralVariantDetailsType = new GraphQLObjectType({
     populations: { type: new GraphQLList(GnomadStructuralVariantPopulationDataType) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     qual: { type: GraphQLFloat },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     type: { type: GraphQLString },
     variant_id: { type: GraphQLString },
   },

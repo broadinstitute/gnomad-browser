@@ -31,6 +31,7 @@ const fetchClinvarVariantDetails = async (ctx, variantId, referenceGenome) => {
     gqlType: 'ClinvarVariantDetails',
     // Variant interface fields
     variantId: doc.variant_id,
+    reference_genome: referenceGenome,
     chrom: doc.chrom,
     pos: doc.pos,
     ref: doc.ref,

@@ -7,6 +7,7 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { VariantInterface } from '../../types/variant'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 
@@ -44,11 +45,12 @@ const ExacVariantDetailsType = new GraphQLObjectType({
   interfaces: [VariantInterface],
   fields: {
     // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
     // ExAC specific fields
     ac: { type: GraphQLInt },
     ac_hemi: { type: GraphQLInt },

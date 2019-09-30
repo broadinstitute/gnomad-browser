@@ -1,5 +1,6 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { VariantInterface } from '../../types/variant'
 
 const ClinvarVariantDetailsType = new GraphQLObjectType({
@@ -9,6 +10,7 @@ const ClinvarVariantDetailsType = new GraphQLObjectType({
   fields: {
     // Variant ID fields
     variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
