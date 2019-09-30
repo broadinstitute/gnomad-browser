@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@broad/ui'
 
-import sampleCounts from './sampleCounts'
+import sampleCounts from './dataset-constants/sampleCounts'
 
 const populationNames = {
   afr: 'African/African American',

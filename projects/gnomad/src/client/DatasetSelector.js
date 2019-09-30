@@ -6,8 +6,8 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
+import sampleCounts from './dataset-constants/sampleCounts'
 import datasetLabels from './datasetLabels'
-import sampleCounts from './sampleCounts'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;

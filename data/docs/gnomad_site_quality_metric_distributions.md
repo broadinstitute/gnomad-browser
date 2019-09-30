@@ -11,5 +11,5 @@
    python3 ./data/prepare_gnomad_site_quality_metric_distributions.py \
       --exome-file ./gnomad.exomes.json \
       --genome-file ./gnomad.genomes.json \
-      > projects/gnomad/src/client/dataset-constants/gnomadSiteQualityMetricDistributions.json
+      > projects/gnomad/src/client/dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json
    ```

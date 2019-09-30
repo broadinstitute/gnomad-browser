@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@broad/ui'
 
-import gnomadSiteQualityMetricDistributions from '../../dataset-constants/gnomadSiteQualityMetricDistributions.json'
+import gnomadSiteQualityMetricDistributions from '../../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'
 import ControlSection from '../ControlSection'
 import { BarGraph } from './BarGraph'
 import qualityMetricDescriptions from './qualityMetricDescriptions'

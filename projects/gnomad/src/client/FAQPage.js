@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ExternalLink, List, ListItem, PageHeading } from '@broad/ui'
 
-import ageDistribution from './ageDistribution'
+import ageDistribution from './dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import Histogram from './Histogram'
