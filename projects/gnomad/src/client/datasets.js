@@ -1,3 +1,8 @@
+// eslint-disable-next-line no-unused-vars
+export const referenceGenomeForDataset = datasetId => {
+  return 'GRCh37'
+}
+
 const datasetLabels = {
   exac: 'ExAC v1.0',
   gnomad_r2_1: 'gnomAD v2.1.1',

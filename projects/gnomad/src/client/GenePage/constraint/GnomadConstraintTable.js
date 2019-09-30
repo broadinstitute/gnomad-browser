@@ -219,7 +219,7 @@ GnomadConstraintTable.propTypes = {
 
 const constraintQuery = `
   query GnomadConstraint($transcriptId: String!) {
-    transcript(transcript_id: $transcriptId) {
+    transcript(transcript_id: $transcriptId, reference_genome: GRCh37) {
       gnomad_constraint {
         exp_lof
         exp_mis

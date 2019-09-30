@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
 const StructuralVariantsInGene = ({ gene, ...rest }) => {
   const query = `
-    query StructuralVariantsInGene($geneId: String!) {
-      gene(gene_id: $geneId) {
+    query StructuralVariantsInGene($geneId: String!, $referenceGenome: ReferenceGenomeId!) {
+      gene(gene_id: $geneId, reference_genome: $referenceGenome) {
         structural_variants {
           ac
           ac_hom
@@ -29,7 +30,13 @@ const StructuralVariantsInGene = ({ gene, ...rest }) => {
   `
 
   return (
-    <Query query={query} variables={{ geneId: gene.gene_id }}>
+    <Query
+      query={query}
+      variables={{
+        geneId: gene.gene_id,
+        referenceGenome: referenceGenomeForDataset('gnomad_sv_r2'),
+      }}
+    >
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variants...</StatusMessage>

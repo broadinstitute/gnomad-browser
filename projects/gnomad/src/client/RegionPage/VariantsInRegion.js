@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
-import { labelForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -233,7 +233,9 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
   const { chrom, start, stop } = region
 
   const query = `{
-    region(start: ${start}, stop: ${stop}, chrom: "${chrom}") {
+    region(start: ${start}, stop: ${stop}, chrom: "${chrom}", reference_genome: ${referenceGenomeForDataset(
+    datasetId
+  )}) {
       variants(dataset: ${datasetId}) {
         consequence
         flags

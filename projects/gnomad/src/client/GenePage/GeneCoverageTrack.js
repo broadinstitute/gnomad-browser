@@ -4,13 +4,14 @@ import React from 'react'
 import { CoverageTrack } from '@broad/track-coverage'
 
 import { coverageDataset } from '../coverage'
+import { referenceGenomeForDataset } from '../datasets'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
-query Coverage($geneId: String!, $datasetId: DatasetId!) {
-  gene(gene_id: $geneId) {
+query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     exome_coverage(dataset: $datasetId) {
       pos
       mean
@@ -50,6 +51,7 @@ const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
       variables={{
         geneId,
         datasetId: coverageDataset(datasetId),
+        referenceGenome: referenceGenomeForDataset(coverageDataset(datasetId)),
       }}
     >
       {({ data, error, loading }) => {

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
@@ -9,8 +10,8 @@ import TranscriptPage from './TranscriptPage'
 const AutosizedTranscriptPage = withWindowSize(TranscriptPage)
 
 const query = `
-query Transcript($transcriptId: String!) {
-  transcript(transcript_id: $transcriptId) {
+query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
+  transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     reference_genome
     transcript_id
     chrom
@@ -189,7 +190,10 @@ query Transcript($transcriptId: String!) {
 `
 
 const TranscriptPageContainer = ({ datasetId, transcriptId, ...otherProps }) => (
-  <Query query={query} variables={{ transcriptId }}>
+  <Query
+    query={query}
+    variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
+  >
     {({ data, error, graphQLErrors, loading }) => {
       if (loading) {
         return <StatusMessage>Loading transcript...</StatusMessage>

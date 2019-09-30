@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
@@ -9,8 +10,8 @@ import GenePage from './GenePage'
 const AutosizedGenePage = withWindowSize(GenePage)
 
 const query = `
-query Gene($geneId: String, $geneSymbol: String) {
-  gene(gene_id: $geneId, gene_symbol: $geneSymbol) {
+query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!) {
+  gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
     symbol
@@ -179,6 +180,8 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol, ...otherProps }) => {
   const variables = geneIdOrSymbol.startsWith('ENSG')
     ? { geneId: geneIdOrSymbol }
     : { geneSymbol: geneIdOrSymbol }
+
+  variables.referenceGenome = referenceGenomeForDataset(datasetId)
 
   return (
     <Query query={query} variables={variables}>

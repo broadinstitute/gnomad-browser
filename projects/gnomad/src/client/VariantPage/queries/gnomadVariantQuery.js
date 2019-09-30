@@ -1,5 +1,5 @@
 export default `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     alt
     chrom
@@ -218,7 +218,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
       }
     }
   }
-  clinvar_variant(variant_id: $variantId) {
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
     allele_id
   }
 }
