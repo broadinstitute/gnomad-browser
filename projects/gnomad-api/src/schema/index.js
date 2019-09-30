@@ -112,7 +112,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     structural_variant: {
       type: GnomadStructuralVariantDetailsType,
       args: {
-        variantId: { type: GraphQLString },
+        variantId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => fetchGnomadStructuralVariantDetails(ctx, args.variantId),
     },
@@ -121,7 +121,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       type: VariantInterface,
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
-        variantId: { type: GraphQLString },
+        variantId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (obj, args, ctx) => {
         const { dataset, variantId } = args
