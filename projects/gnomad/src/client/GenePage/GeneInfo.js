@@ -12,6 +12,7 @@ const GeneReferences = ({ gene }) => {
   const {
     gene_id: geneId,
     symbol: geneSymbol,
+    reference_genome: referenceGenome,
     chrom,
     start,
     stop,
@@ -19,9 +20,12 @@ const GeneReferences = ({ gene }) => {
     omim_id: omimId,
   } = gene
 
-  const ensemblGeneUrl = `https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
+  const ensemblGeneUrl = `https://${
+    referenceGenome === 'GRCh37' ? 'grch37.' : ''
+  }ensembl.org/Homo_sapiens/Gene/Summary?g=${geneId}`
 
-  const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${start}-${stop}`
+  const ucscReferenceGenomeId = referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'
+  const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&position=chr${chrom}%3A${start}-${stop}`
 
   return (
     <React.Fragment>
@@ -113,10 +117,12 @@ const GeneInfo = ({ gene }) => {
     canonical_transcript_id: canonicalTranscriptId,
   } = gene
 
+  const ucscReferenceGenomeId = referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'
+
   return (
     <AttributeList labelWidth={160}>
       <AttributeList.Item label="Genome build">
-        {referenceGenome} / {referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'}
+        {referenceGenome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
       <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
       {canonicalTranscriptId && (
