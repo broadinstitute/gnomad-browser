@@ -8,9 +8,9 @@ import { GenesTrack } from '@broad/track-genes'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import CoverageTrack from './CoverageTrack'
 import EditRegion from './EditRegion'
 import RegionControls from './RegionControls'
+import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
@@ -80,7 +80,7 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
         rightPanelWidth={smallScreen ? 0 : 160}
         width={regionViewerWidth}
       >
-        <CoverageTrack
+        <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
           showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
