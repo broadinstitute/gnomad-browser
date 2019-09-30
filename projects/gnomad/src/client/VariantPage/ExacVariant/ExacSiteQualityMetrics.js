@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { Select } from '@broad/ui'
 
-import exacSiteQualityMetricDistributions from '../../dataset-constants/exac/exacSiteQualityMetricDistributions.json'
+import exacSiteQualityMetricDistributions from '../../dataset-constants/exac/siteQualityMetricDistributions.json'
 import ControlSection from '../ControlSection'
 import { BarGraph } from '../qualityMetrics/BarGraph'
 
