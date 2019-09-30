@@ -9,14 +9,17 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { ReferenceGenomeType } from '../gene-models/referenceGenome'
+
 export const VariantInterface = new GraphQLInterfaceType({
   name: 'Variant',
   fields: {
-    alt: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
 
@@ -50,11 +53,12 @@ export const VariantSummaryType = new GraphQLObjectType({
   name: 'VariantSummary',
   fields: {
     // Variant ID fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
     // Other fields
     consequence: { type: GraphQLString },
     consequence_in_canonical_transcript: { type: GraphQLBoolean },

@@ -56,6 +56,7 @@ const fetchGnomadStructuralVariantsByGene = async (ctx, { symbol: geneSymbol }) 
       filters: variant.filters,
       length: variant.length,
       pos: variant.pos,
+      reference_genome: 'GRCh37',
       type: variant.type,
       variant_id: variant.variant_id,
     }

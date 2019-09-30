@@ -211,11 +211,12 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
   const sharedData = exomeData || genomeData
 
   const sharedVariantFields = {
-    alt: sharedData.alt,
+    variantId: sharedData.variant_id,
+    reference_genome: 'GRCh37',
     chrom: sharedData.chrom,
     pos: sharedData.pos,
     ref: sharedData.ref,
-    variantId: sharedData.variant_id,
+    alt: sharedData.alt,
   }
 
   const [colocatedVariants, multiNucleotideVariants] = await Promise.all([

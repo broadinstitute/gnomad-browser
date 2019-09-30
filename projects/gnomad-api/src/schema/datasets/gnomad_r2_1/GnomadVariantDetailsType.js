@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 
 import { UserVisibleError } from '../../errors'
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { VariantInterface } from '../../types/variant'
 import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
@@ -108,11 +109,12 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
   interfaces: [VariantInterface],
   fields: {
     // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
     // gnomAD specific fields
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
     multiNucleotideVariants: { type: new GraphQLList(MultiNucleotideVariantSummaryType) },

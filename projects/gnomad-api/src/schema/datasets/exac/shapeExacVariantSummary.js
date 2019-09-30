@@ -18,11 +18,12 @@ const shapeExacVariantSummary = context => {
 
     return {
       // Variant ID fields
-      alt: variantData.alt,
+      variantId: variantData.variant_id,
+      reference_genome: 'GRCh37',
       chrom: variantData.chrom,
       pos: variantData.pos,
       ref: variantData.ref,
-      variantId: variantData.variant_id,
+      alt: variantData.alt,
       // Other fields
       consequence: transcriptConsequence.major_consequence,
       consequence_in_canonical_transcript: !!transcriptConsequence.canonical,

@@ -69,6 +69,7 @@ const fetchGnomadStructuralVariantsByRegion = async (
       consequence: majorConsequence,
       filters: variant.filters,
       length: variant.length,
+      reference_genome: 'GRCh37',
       pos: variant.pos,
       type: variant.type,
       variant_id: variant.variant_id,

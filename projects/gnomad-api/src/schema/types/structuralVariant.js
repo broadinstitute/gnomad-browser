@@ -7,6 +7,8 @@ import {
   GraphQLString,
 } from 'graphql'
 
+import { ReferenceGenomeType } from '../gene-models/referenceGenome'
+
 export const StructuralVariantSummaryType = new GraphQLObjectType({
   name: 'StructuralVariantSummary',
   fields: {
@@ -14,6 +16,7 @@ export const StructuralVariantSummaryType = new GraphQLObjectType({
     ac_hom: { type: GraphQLInt },
     an: { type: GraphQLInt },
     af: { type: GraphQLFloat },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     end_chrom: { type: new GraphQLNonNull(GraphQLString) },
     end_pos: { type: new GraphQLNonNull(GraphQLInt) },

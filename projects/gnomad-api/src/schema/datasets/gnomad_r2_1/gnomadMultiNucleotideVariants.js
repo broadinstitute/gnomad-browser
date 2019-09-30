@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 
 import { UserVisibleError } from '../../errors'
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { resolveReads, ReadDataType } from '../shared/reads'
 
@@ -123,6 +124,7 @@ export const MultiNucleotideVariantDetailsType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantDetails',
   fields: {
     variant_id: { type: new GraphQLNonNull(GraphQLString) },
+    referenceGenome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
@@ -230,6 +232,7 @@ export const fetchGnomadMNVDetails = async (ctx, variantId) => {
 
     return {
       variant_id: doc.variant_id,
+      reference_genome: 'GRCh37',
       chrom: doc.contig,
       pos: doc.pos,
       ref: doc.ref,
