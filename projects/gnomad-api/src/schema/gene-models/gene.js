@@ -1,4 +1,5 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { isEmpty } from 'lodash'
 
 import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import { UserVisibleError } from '../errors'
@@ -37,6 +38,10 @@ export const GeneType = new GraphQLObjectType({
 
 export const shapeGene = (gene, referenceGenome) => {
   const gencodeData = referenceGenome === 'GRCh37' ? gene.gencode.v19 : gene.gencode.v29
+
+  if (isEmpty(gencodeData)) {
+    throw new UserVisibleError('Gene not found')
+  }
 
   return {
     reference_genome: referenceGenome,
