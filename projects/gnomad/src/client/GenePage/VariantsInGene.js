@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import ClinVarTrack from '../clinvar/ClinVarTrack'
-import { labelForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -240,8 +240,8 @@ class VariantsInGene extends Component {
 }
 
 const query = `
-query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
-  gene(gene_id: $geneId) {
+query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     clinvar_variants {
       allele_id
       clinical_significance
@@ -298,7 +298,14 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
 }`
 
 const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
-  <Query query={query} variables={{ datasetId, geneId: gene.gene_id }}>
+  <Query
+    query={query}
+    variables={{
+      datasetId,
+      geneId: gene.gene_id,
+      referenceGenome: referenceGenomeForDataset(datasetId),
+    }}
+  >
     {({ data, error, loading }) => {
       if (loading) {
         return <StatusMessage>Loading variants...</StatusMessage>

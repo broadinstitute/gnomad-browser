@@ -5,12 +5,13 @@ import { CoverageTrack } from '@broad/track-coverage'
 
 import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
-query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!) {
-  region(chrom: $chrom, start: $start, stop: $stop) {
+query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
     exome_coverage(dataset: $datasetId) {
       pos
       mean
@@ -52,6 +53,7 @@ const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop 
         start,
         stop,
         datasetId: coverageDataset(datasetId),
+        referenceGenome: referenceGenomeForDataset(coverageDataset(datasetId)),
       }}
     >
       {({ data, error, loading }) => {

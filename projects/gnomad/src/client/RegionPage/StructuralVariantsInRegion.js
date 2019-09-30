@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
 const StructuralVariantsInRegion = ({ region, ...rest }) => {
   const query = `
-    query StructuralVariantsInRegion($chrom: String!, $start: Int!, $stop: Int!) {
-      region(chrom: $chrom, start: $start, stop: $stop) {
+    query StructuralVariantsInRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+      region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
         structural_variants {
           ac
           ac_hom
@@ -31,7 +32,12 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
   return (
     <Query
       query={query}
-      variables={{ chrom: region.chrom, start: region.start, stop: region.stop }}
+      variables={{
+        chrom: region.chrom,
+        start: region.start,
+        stop: region.stop,
+        referenceGenome: referenceGenomeForDataset('gnomad_sv_r2'),
+      }}
     >
       {({ data, error, loading }) => {
         if (loading) {

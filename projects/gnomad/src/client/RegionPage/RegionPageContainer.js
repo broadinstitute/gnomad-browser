@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
@@ -14,8 +15,8 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   const stop = parseInt(stopStr, 10)
 
   const query = `
-    query FetchRegion($chrom: String!, $start: Int!, $stop: Int!) {
-      region(chrom: $chrom, start: $start, stop: $stop) {
+    query FetchRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+      region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
         reference_genome
         chrom
         start
@@ -36,7 +37,10 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   `
 
   return (
-    <Query query={query} variables={{ chrom, start, stop }}>
+    <Query
+      query={query}
+      variables={{ chrom, start, stop, referenceGenome: referenceGenomeForDataset(datasetId) }}
+    >
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading region...</StatusMessage>
