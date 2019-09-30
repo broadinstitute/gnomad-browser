@@ -60,7 +60,9 @@ const GeneType = extendObjectType(BaseGeneType, {
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
         if (!index) {
-          return []
+          throw new UserVisibleError(
+            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
+          )
         }
 
         assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
@@ -91,7 +93,12 @@ const GeneType = extendObjectType(BaseGeneType, {
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
         if (!index) {
-          return []
+          if (args.dataset === 'exac') {
+            return []
+          }
+          throw new UserVisibleError(
+            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
+          )
         }
 
         assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
