@@ -107,7 +107,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       args: {
         variant_id: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => fetchClinvarVariantDetails(ctx, args.variant_id),
+      resolve: (obj, args, ctx) => fetchClinvarVariantDetails(ctx, args.variant_id, 'GRCh37'),
     },
     structural_variant: {
       type: GnomadStructuralVariantDetailsType,

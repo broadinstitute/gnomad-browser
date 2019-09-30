@@ -1,7 +1,14 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
+import { UserVisibleError } from '../../errors'
 
 const fetchClinvarVariantsByGene = async (ctx, gene) => {
+  if (gene.reference_genome !== 'GRCh37') {
+    throw new UserVisibleError(
+      `ClinVar variants not available on reference genome ${gene.reference_genome}`
+    )
+  }
+
   const geneId = gene.gene_id
   const filteredRegions = gene.exons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
