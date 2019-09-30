@@ -35,7 +35,6 @@ const fetchGnomadVariantsByRegion = async (ctx, region, subset) => {
           'rsid',
           'sortedTranscriptConsequences',
           'variant_id',
-          'xpos',
         ],
         body: {
           query: {

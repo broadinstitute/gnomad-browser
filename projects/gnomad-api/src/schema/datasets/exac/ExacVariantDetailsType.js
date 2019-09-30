@@ -49,7 +49,6 @@ const ExacVariantDetailsType = new GraphQLObjectType({
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
     variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // ExAC specific fields
     ac: { type: GraphQLInt },
     ac_hemi: { type: GraphQLInt },

@@ -25,7 +25,6 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
       pos: variantData.pos,
       ref: variantData.ref,
       variantId: variantData.variant_id,
-      xpos: variantData.xpos,
       // Other fields
       consequence: transcriptConsequence.major_consequence,
       consequence_in_canonical_transcript: !!transcriptConsequence.canonical,

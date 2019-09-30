@@ -17,7 +17,6 @@ export const VariantInterface = new GraphQLInterfaceType({
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
     variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
   },
 })
 
@@ -56,7 +55,6 @@ export const VariantSummaryType = new GraphQLObjectType({
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
     variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
     // Other fields
     consequence: { type: GraphQLString },
     consequence_in_canonical_transcript: { type: GraphQLBoolean },

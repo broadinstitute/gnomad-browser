@@ -6,7 +6,6 @@ query ExacVariant ($variantId: String!) {
     pos
     ref
     variantId
-    xpos
     ...on ExacVariantDetails {
       ac
       ac_hemi

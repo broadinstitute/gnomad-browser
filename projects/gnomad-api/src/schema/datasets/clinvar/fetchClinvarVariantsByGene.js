@@ -45,7 +45,6 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
       'pos',
       'ref',
       'variant_id',
-      'xpos',
     ],
     size: 10000,
     body: {
@@ -67,7 +66,6 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
       variantId: doc.variant_id,
       chrom: doc.chrom,
       pos: doc.pos,
-      xpos: doc.xpos,
       ref: doc.ref,
       alt: doc.alt,
       // ClinVar specific fields

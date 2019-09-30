@@ -263,7 +263,6 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
       pos
       rsid
       variant_id: variantId
-      xpos
       exome {
         ac
         ac_hemi

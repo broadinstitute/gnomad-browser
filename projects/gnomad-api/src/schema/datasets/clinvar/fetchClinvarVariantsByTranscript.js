@@ -41,7 +41,6 @@ const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
       'ref',
       'transcript_id_to_consequence_json',
       'variant_id',
-      'xpos',
     ],
     size: 10000,
     body: {
@@ -63,7 +62,6 @@ const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
       variantId: doc.variant_id,
       chrom: doc.chrom,
       pos: doc.pos,
-      xpos: doc.xpos,
       ref: doc.ref,
       alt: doc.alt,
       // ClinVar specific fields

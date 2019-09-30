@@ -21,7 +21,6 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
       'rsid',
       'sortedTranscriptConsequences',
       'variant_id',
-      'xpos',
     ],
     body: {
       query: {
