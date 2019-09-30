@@ -64,6 +64,10 @@ const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
         const exomeCoverage = showExomeCoverage ? data.gene.exome_coverage : null
         const genomeCoverage = data.gene.genome_coverage
 
+        if (!exomeCoverage && !genomeCoverage) {
+          return <StatusMessage>Unable to load coverage</StatusMessage>
+        }
+
         const coverageConfig =
           datasetId === 'exac'
             ? coverageConfigClassic(exomeCoverage, genomeCoverage)

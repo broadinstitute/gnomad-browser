@@ -66,6 +66,10 @@ const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop 
         const exomeCoverage = showExomeCoverage ? data.region.exome_coverage : null
         const genomeCoverage = data.region.genome_coverage
 
+        if (!exomeCoverage && !genomeCoverage) {
+          return <StatusMessage>Unable to load coverage</StatusMessage>
+        }
+
         const coverageConfig =
           datasetId === 'exac'
             ? coverageConfigClassic(exomeCoverage, genomeCoverage)
