@@ -3,6 +3,7 @@ import React from 'react'
 
 import { CoverageTrack } from '@broad/track-coverage'
 
+import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -43,14 +44,12 @@ query Coverage($geneId: String!, $datasetId: DatasetId!) {
 `
 
 const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
-  const coverageDatasetId = datasetId === 'exac' ? 'exac' : 'gnomad_r2_1'
-
   return (
     <Query
       query={coverageQuery}
       variables={{
         geneId,
-        datasetId: coverageDatasetId,
+        datasetId: coverageDataset(datasetId),
       }}
     >
       {({ data, error, loading }) => {
