@@ -21,7 +21,7 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
         stop
         genes {
           gene_id
-          gene_name
+          symbol
           start
           stop
           exons {

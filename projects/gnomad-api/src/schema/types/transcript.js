@@ -1,4 +1,4 @@
-import { GraphQLList } from 'graphql'
+import { GraphQLList, GraphQLNonNull } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
@@ -34,7 +34,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
@@ -63,7 +63,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
     genome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: async (obj, args, ctx) => {
         const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
@@ -100,7 +100,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
     variants: {
       type: new GraphQLList(VariantSummaryType),
       args: {
-        dataset: { type: DatasetArgumentType },
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
         const { fetchVariantsByTranscript } = datasetsConfig[args.dataset]

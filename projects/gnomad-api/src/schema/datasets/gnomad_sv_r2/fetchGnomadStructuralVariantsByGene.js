@@ -1,10 +1,10 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import rankedSVGeneConsequences from './rankedSVGeneConsequences'
 
-const fetchGnomadStructuralVariantsByGene = async (ctx, { gene_name: geneName }) => {
+const fetchGnomadStructuralVariantsByGene = async (ctx, { symbol: geneSymbol }) => {
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'gnomad_structural_variants_2019_03_13',
-    type: 'variant',
+    index: 'gnomad_structural_variants',
+    type: 'documents',
     size: 10000,
     _source: [
       'ac.total',
@@ -26,7 +26,7 @@ const fetchGnomadStructuralVariantsByGene = async (ctx, { gene_name: geneName })
       query: {
         bool: {
           filter: {
-            term: { genes: geneName },
+            term: { genes: geneSymbol },
           },
         },
       },
@@ -38,7 +38,7 @@ const fetchGnomadStructuralVariantsByGene = async (ctx, { gene_name: geneName })
     const variant = hit._source // eslint-disable-line no-underscore-dangle
 
     let majorConsequence = rankedSVGeneConsequences.find(
-      csq => variant.consequences[csq] && variant.consequences[csq].includes(geneName)
+      csq => variant.consequences[csq] && variant.consequences[csq].includes(geneSymbol)
     )
     if (!majorConsequence && variant.intergenic) {
       majorConsequence = 'intergenic'

@@ -72,7 +72,7 @@ export const GenesTrack = ({ genes, onGeneClick, title }) => (
                     y={textYPosition}
                     onClick={() => onGeneClick(gene)}
                   >
-                    {gene.gene_name}
+                    {gene.symbol}
                   </GeneName>
                   <line
                     x1={geneStart}
@@ -113,7 +113,7 @@ GenesTrack.propTypes = {
   genes: PropTypes.arrayOf(
     PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
-      gene_name: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
       exons: PropTypes.arrayOf(

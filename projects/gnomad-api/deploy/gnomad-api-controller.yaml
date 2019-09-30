@@ -23,8 +23,6 @@ spec:
           value: production
         - name: GRAPHQL_PORT
           value: '80'
-        - name: GNOMAD_MONGO_URL
-          value: mongodb://gnomad-mongo:27017/exac
         - name: ELASTICSEARCH_URL
           value: elasticsearch:9200
         - name: NODE_ENV

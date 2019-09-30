@@ -11,10 +11,8 @@ export NODE_ENV="development"
 
 # Connect to local databases
 DEFAULT_ELASTICSEARCH_URL="http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy"
-DEFAULT_MONGO_URL="mongodb://localhost:27017/exac"
 DEFAULT_REDIS_HOST="localhost"
 export ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-$DEFAULT_ELASTICSEARCH_URL}
-export GNOMAD_MONGO_URL=${MONGO_URL:-$DEFAULT_MONGO_URL}
 export REDIS_HOST=${REDIS_HOST:-$DEFAULT_REDIS_HOST}
 
 # Server port

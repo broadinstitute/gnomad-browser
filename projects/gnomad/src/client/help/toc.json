@@ -9,7 +9,7 @@
           "ancestry",
           "relatedness-filtering",
           "vep",
-          "gene-constraint",
+          "constraint",
           "pext",
           "regional-constraint",
           "faf",
