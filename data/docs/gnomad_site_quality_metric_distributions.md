@@ -2,8 +2,8 @@
 
 1. Download quality metric histogram files.
    ```shell
-   gsutil cp gs://gnomad/release/2.1/json/gnomad.exomes.json ./gnomad.exomes.json
-   gsutil cp gs://gnomad/release/2.1/json/gnomad.genomes.json ./gnomad.genomes.json
+   gsutil cp gs://gnomad/release/2.1.1/json/gnomad.exomes.json ./gnomad.exomes.json
+   gsutil cp gs://gnomad/release/2.1.1/json/gnomad.genomes.json ./gnomad.genomes.json
    ```
 
 2. Shape the data into the format expected by the browser.
