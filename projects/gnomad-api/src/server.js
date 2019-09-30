@@ -3,7 +3,7 @@ import compression from 'compression'
 import elasticsearch from 'elasticsearch'
 import graphQLHTTP from 'express-graphql'
 import cors from 'cors'
-import Redis from 'ioredis'
+// import Redis from 'ioredis'
 import serveStatic from 'serve-static'
 
 import gnomadSchema from './schema'
@@ -20,18 +20,18 @@ app.use(cors())
       host: process.env.ELASTICSEARCH_URL,
     })
 
-    const redisConnectionConfig =
-      process.env.NODE_ENV === 'development'
-        ? { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }
-        : {
-            sentinels: [
-              { host: 'redis-sentinel', port: 26379 },
-              { host: 'redis-sentinel', port: 26379 },
-            ],
-            name: 'mymaster',
-          }
+    // const redisConnectionConfig =
+    //   process.env.NODE_ENV === 'development'
+    //     ? { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }
+    //     : {
+    //         sentinels: [
+    //           { host: 'redis-sentinel', port: 26379 },
+    //           { host: 'redis-sentinel', port: 26379 },
+    //         ],
+    //         name: 'mymaster',
+    //       }
 
-    const redis = new Redis(redisConnectionConfig)
+    // const redis = new Redis(redisConnectionConfig)
 
     app.use(
       [/^\/$/, /^\/api\/?$/],
@@ -41,7 +41,7 @@ app.use(cors())
         context: {
           database: {
             elastic,
-            redis,
+            // redis,
           },
         },
         customFormatErrorFn: error => {
@@ -73,9 +73,9 @@ app.use(cors())
       })
     )
 
-    if (process.env.READS_DIR) {
-      app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
-    }
+    // if (process.env.READS_DIR) {
+    //   app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
+    // }
 
     app.get('/health', (req, res) => {
       res.json({})
