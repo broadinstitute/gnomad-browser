@@ -9,10 +9,13 @@ import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const coverageQuery = `
+const getCoverageQuery = ({ includeExomeCoverage = true, includeGenomeCoverage = true } = {}) => {
+  return `
 query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    exome_coverage(dataset: $datasetId) {
+    ${
+      includeExomeCoverage
+        ? `exome_coverage(dataset: $datasetId) {
       pos
       mean
       median
@@ -25,8 +28,12 @@ query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: R
       over_30
       over_50
       over_100
+    }`
+        : ''
     }
-    genome_coverage(dataset: $datasetId) {
+    ${
+      includeGenomeCoverage
+        ? `genome_coverage(dataset: $datasetId) {
       pos
       mean
       median
@@ -39,15 +46,18 @@ query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: R
       over_30
       over_50
       over_100
+    }`
+        : ''
     }
   }
 }
 `
+}
 
-const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
+const GeneCoverageTrack = ({ datasetId, geneId, includeExomeCoverage, includeGenomeCoverage }) => {
   return (
     <Query
-      query={coverageQuery}
+      query={getCoverageQuery({ includeExomeCoverage, includeGenomeCoverage })}
       variables={{
         geneId,
         datasetId: coverageDataset(datasetId),
@@ -62,8 +72,8 @@ const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = showExomeCoverage ? data.gene.exome_coverage : null
-        const genomeCoverage = data.gene.genome_coverage
+        const exomeCoverage = includeExomeCoverage ? data.gene.exome_coverage : null
+        const genomeCoverage = includeGenomeCoverage ? data.gene.genome_coverage : null
 
         if (!exomeCoverage && !genomeCoverage) {
           return <StatusMessage>Unable to load coverage</StatusMessage>
@@ -89,11 +99,13 @@ const GeneCoverageTrack = ({ datasetId, geneId, showExomeCoverage }) => {
 GeneCoverageTrack.propTypes = {
   datasetId: PropTypes.string.isRequired,
   geneId: PropTypes.string.isRequired,
-  showExomeCoverage: PropTypes.bool,
+  includeExomeCoverage: PropTypes.bool,
+  includeGenomeCoverage: PropTypes.bool,
 }
 
 GeneCoverageTrack.defaultProps = {
-  showExomeCoverage: true,
+  includeExomeCoverage: true,
+  includeGenomeCoverage: true,
 }
 
 export default GeneCoverageTrack
