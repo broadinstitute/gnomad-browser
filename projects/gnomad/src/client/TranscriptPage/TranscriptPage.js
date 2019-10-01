@@ -234,13 +234,7 @@ class TranscriptPage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          {hasCodingExons && (
-            <GeneCoverageTrack
-              datasetId={datasetId}
-              geneId={gene.gene_id}
-              showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
-            />
-          )}
+          {hasCodingExons && <GeneCoverageTrack datasetId={datasetId} geneId={gene.gene_id} />}
 
           <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
             Include:

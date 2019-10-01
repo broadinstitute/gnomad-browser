@@ -43,7 +43,6 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
         <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
-          showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
           start={regionViewerRegions[0].start}
           stop={regionViewerRegions[0].stop}
         />
