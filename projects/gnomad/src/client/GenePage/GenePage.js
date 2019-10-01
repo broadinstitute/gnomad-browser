@@ -228,7 +228,7 @@ class GenePage extends Component {
             <RegionCoverageTrack
               chrom={gene.chrom}
               datasetId={datasetId}
-              showExomeCoverage={false}
+              includeExomeCoverage={false}
               start={gene.start}
               stop={gene.stop}
             />

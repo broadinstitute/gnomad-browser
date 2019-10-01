@@ -9,10 +9,13 @@ import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const coverageQuery = `
+const getCoverageQuery = ({ includeExomeCoverage = true, includeGenomeCoverage = true } = {}) => {
+  return `
 query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-    exome_coverage(dataset: $datasetId) {
+    ${
+      includeExomeCoverage
+        ? `exome_coverage(dataset: $datasetId) {
       pos
       mean
       median
@@ -25,8 +28,12 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
       over_30
       over_50
       over_100
+    }`
+        : ''
     }
-    genome_coverage(dataset: $datasetId) {
+    ${
+      includeGenomeCoverage
+        ? `genome_coverage(dataset: $datasetId) {
       pos
       mean
       median
@@ -39,15 +46,25 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
       over_30
       over_50
       over_100
+    }`
+        : ''
     }
   }
 }
 `
+}
 
-const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop }) => {
+const RegionCoverageTrack = ({
+  datasetId,
+  chrom,
+  start,
+  stop,
+  includeExomeCoverage,
+  includeGenomeCoverage,
+}) => {
   return (
     <Query
-      query={coverageQuery}
+      query={getCoverageQuery({ includeExomeCoverage, includeGenomeCoverage })}
       variables={{
         chrom,
         start,
@@ -64,8 +81,8 @@ const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop 
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = showExomeCoverage ? data.region.exome_coverage : null
-        const genomeCoverage = data.region.genome_coverage
+        const exomeCoverage = includeExomeCoverage ? data.region.exome_coverage : null
+        const genomeCoverage = includeGenomeCoverage ? data.region.genome_coverage : null
 
         if (!exomeCoverage && !genomeCoverage) {
           return <StatusMessage>Unable to load coverage</StatusMessage>
@@ -91,13 +108,15 @@ const RegionCoverageTrack = ({ datasetId, chrom, showExomeCoverage, start, stop 
 RegionCoverageTrack.propTypes = {
   datasetId: PropTypes.string.isRequired,
   chrom: PropTypes.string.isRequired,
-  showExomeCoverage: PropTypes.bool,
   start: PropTypes.number.isRequired,
   stop: PropTypes.number.isRequired,
+  includeExomeCoverage: PropTypes.bool,
+  includeGenomeCoverage: PropTypes.bool,
 }
 
 RegionCoverageTrack.defaultProps = {
-  showExomeCoverage: true,
+  includeExomeCoverage: true,
+  includeGenomeCoverage: true,
 }
 
 export default RegionCoverageTrack
