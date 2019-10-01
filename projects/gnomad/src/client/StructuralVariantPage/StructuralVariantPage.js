@@ -118,13 +118,23 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
 
   return (
     <Query query={query} variables={{ variantId }}>
-      {({ data, error, loading }) => {
+      {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
         }
 
-        if (error || !data.structural_variant) {
-          return <StatusMessage>Failed to load variant</StatusMessage>
+        if (error || !data) {
+          return <StatusMessage>Unable to load variant</StatusMessage>
+        }
+
+        if (!data.structural_variant) {
+          return (
+            <StatusMessage>
+              {graphQLErrors
+                ? graphQLErrors.map(e => e.message).join(', ')
+                : 'Unable to load variant'}
+            </StatusMessage>
+          )
         }
 
         return <StructuralVariantPage {...rest} variant={data.structural_variant} />
