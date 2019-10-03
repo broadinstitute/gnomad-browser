@@ -17,7 +17,7 @@
    ```shell
    hailctl dataproc submit data-load \
       --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
-      ./data/prepare_gnomad_mnvs_for_browser.py \
+      ./data/gnomad_r2_1/prepare_gnomad_mnvs_for_browser.py \
          --mnv-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding.tsv \
          --three-bp-mnv-url=gs://gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp_fullannotation.tsv \
          --output-url=$GNOMAD_MNV_BROWSER_HT_URL

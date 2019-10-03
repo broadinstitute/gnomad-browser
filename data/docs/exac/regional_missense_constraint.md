@@ -13,7 +13,7 @@
 
    ```shell
    hailctl dataproc submit data-load \
-      ./data/prepare_exac_regional_missense_constraint.py \
+      ./data/exac/prepare_exac_regional_missense_constraint.py \
          --regional-missense-constraint fordist_constraint_official_regional_missense_cleaned_metrics_nosynoutliers.txt \
          --output $EXAC_REGIONAL_MISSENSE_CONSTRAINT_BROWSER_HT_URL
    ```

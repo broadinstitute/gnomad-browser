@@ -13,7 +13,7 @@
 
    ```shell
    hailctl dataproc submit data-load \
-      ./data/prepare_gnomad_svs.py \
+      ./data/gnomad_sv/prepare_gnomad_svs.py \
          --output $GNOMAD_SV_BROWSER_HT_URL
    ```
 

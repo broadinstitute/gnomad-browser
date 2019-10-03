@@ -13,7 +13,7 @@
    ```shell
    hailctl dataproc submit data-prep \
       --pyfiles ./data/data_utils \
-      ./data/prepare_gnomad_r2_1_variants.py \
+      ./data/gnomad_r2_1/prepare_gnomad_r2_1_variants.py \
          gs://gnomad-public/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht \
          $GNOMAD_EXOME_VARIANTS_BROWSER_HT_URL
    ```
@@ -22,7 +22,7 @@
    ```shell
    hailctl dataproc submit data-prep \
       --pyfiles ./data/data_utils \
-      ./data/prepare_gnomad_r2_1_variants.py \
+      ./data/gnomad_r2_1/prepare_gnomad_r2_1_variants.py \
          gs://gnomad-public/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht \
          $GNOMAD_GENOME_VARIANTS_BROWSER_HT_URL
    ```
