@@ -1,3 +1,3 @@
 from .hgvs import hgvsp_from_consequence_amino_acids
-from .sorted_transcript_consequences import sorted_transcript_consequences
+from .sorted_transcript_consequences_v2 import sorted_transcript_consequences_v2
 from .variant_id import *

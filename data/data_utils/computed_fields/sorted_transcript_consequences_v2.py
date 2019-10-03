@@ -5,7 +5,7 @@ from .vep import consequence_term_rank
 
 OMIT_CONSEQUENCE_TERMS = hl.set(["upstream_gene_variant", "downstream_gene_variant"])
 
-def sorted_transcript_consequences(vep_root):
+def sorted_transcript_consequences_v2(vep_root):
     """Sort transcripts by 3 properties:
 
         1. coding > non-coding
