@@ -3,7 +3,7 @@ import collections
 
 import hail as hl
 
-from data_utils.computed_fields import normalized_contig, variant_id, x_position, sorted_transcript_consequences
+from data_utils.computed_fields import normalized_contig, variant_id, x_position, sorted_transcript_consequences_v2
 
 from data_utils.computed_fields.flags import (
     get_expr_for_consequence_lc_lof_flag,
@@ -233,7 +233,7 @@ def format_variants_table(ds):
     # VEP annotations #
     ###################
 
-    ds = ds.annotate(sortedTranscriptConsequences=sorted_transcript_consequences(ds.vep))
+    ds = ds.annotate(sortedTranscriptConsequences=sorted_transcript_consequences_v2(ds.vep))
 
     ds = ds.drop("vep")
 
