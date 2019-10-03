@@ -4,6 +4,8 @@ from .hgvs import hgvsp_from_consequence_amino_acids
 from .vep import consequence_term_rank
 
 OMIT_CONSEQUENCE_TERMS = hl.set(["upstream_gene_variant", "downstream_gene_variant"])
+SPLICE_CONSEQUENCES = hl.set(["splice_donor_variant", "splice_acceptor_variant", "splice_region_variant"])
+
 
 def sorted_transcript_consequences_v2(vep_root):
     """Sort transcripts by 3 properties:
@@ -54,7 +56,11 @@ def sorted_transcript_consequences_v2(vep_root):
                     .default("other")
                 ),
                 domains=c.domains.map(lambda domain: domain.db + ":" + domain.name),
-                hgvs=hl.or_else(hgvsp_from_consequence_amino_acids(c), c.hgvsc.split(":")[-1]),
+                hgvs=hl.cond(
+                    hl.is_missing(c.hgvsp) | SPLICE_CONSEQUENCES.contains(c.major_consequence),
+                    c.hgvsc.split(":")[-1],
+                    hgvsp_from_consequence_amino_acids(c),
+                ),
                 major_consequence_rank=consequence_term_rank(c.major_consequence),
             )
         )
