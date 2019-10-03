@@ -22,18 +22,21 @@ a worker is interrupted during a bulk request.
 * GTEx tissue expression
 * ClinVar variants
 
-## gnomAD
+## gnomAD 2.1.1
 
-* [variants](./docs/gnomad_variants.md)
-* [coverage](./docs/gnomad_coverage.md)
-* [site quality metric distributions](./docs/gnomad_site_quality_metric_distributions.md)
-* [constraint](./docs/gnomad_constraint.md)
-* [multi-nucleotide variants](./docs/gnomad_mnvs.md)
+* [variants](./docs/gnomad_r2_1/variants.md)
+* [coverage](./docs/gnomad_r2_1/coverage.md)
+* [site quality metric distributions](./docs/gnomad_r2_1/site_quality_metric_distributions.md)
+* [constraint](./docs/gnomad_r2_1/constraint.md)
+* [multi-nucleotide variants](./docs/gnomad_r2_1/mnvs.md)
 * pext scores
-* [structural variants](./docs/gnomad_svs.md)
+
+## gnomAD SVs
+
+* [structural variants](./docs/gnomad_sv/sv.md)
 
 ## ExAC
 
-* [variants](./docs/exac_variants.md)
-* [constraint](./docs/exac_constraint.md)
-* [regional missense constraint](./docs/exac_regional_missense_constraint.md)
+* [variants](./docs/exac/variants.md)
+* [constraint](./docs/exac/constraint.md)
+* [regional missense constraint](./docs/exac/regional_missense_constraint.md)

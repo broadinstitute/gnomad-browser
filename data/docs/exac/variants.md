@@ -14,7 +14,7 @@
    ./hail-elasticsearch-pipelines/gcloud_dataproc/submit.py \
       --cluster=exac-data-prep \
       --hail-version=0.2 \
-      ./data/export_exac_vcf_to_ht.py \
+      ./data/exac/export_exac_vcf_to_ht.py \
          --output-url=$EXAC_VARIANTS_BROWSER_HT_URL
    ```
 
