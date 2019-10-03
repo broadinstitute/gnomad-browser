@@ -29,21 +29,14 @@ PROTEIN_LETTERS_1TO3 = hl.dict(
 )
 
 
-SPLICE_CONSEQUENCES = hl.set(["splice_donor_variant", "splice_acceptor_variant", "splice_region_variant"])
-
-
 def hgvsp_from_consequence_amino_acids(csq):
     return hl.cond(
-        hl.is_missing(csq.hgvsp) | SPLICE_CONSEQUENCES.contains(csq.major_consequence),
-        hl.null(hl.tstr),
-        hl.cond(
-            csq.hgvsp.contains("=") | csq.hgvsp.contains("%3D"),
-            hl.bind(
-                lambda protein_letters: "p." + protein_letters + hl.str(csq.protein_start) + protein_letters,
-                hl.delimit(
-                    csq.amino_acids.split("").filter(lambda l: l != "").map(lambda l: PROTEIN_LETTERS_1TO3.get(l)), ""
-                ),
+        csq.hgvsp.contains("=") | csq.hgvsp.contains("%3D"),
+        hl.bind(
+            lambda protein_letters: "p." + protein_letters + hl.str(csq.protein_start) + protein_letters,
+            hl.delimit(
+                csq.amino_acids.split("").filter(lambda l: l != "").map(lambda l: PROTEIN_LETTERS_1TO3.get(l)), ""
             ),
-            csq.hgvsp.split(":")[-1],
         ),
+        csq.hgvsp.split(":")[-1],
     )
