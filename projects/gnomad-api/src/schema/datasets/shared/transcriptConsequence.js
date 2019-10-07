@@ -26,12 +26,15 @@ export const getConsequenceForContext = context => {
   switch (context.type) {
     case 'gene':
       return variant =>
-        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
+        (variant.sorted_transcript_consequences || variant.sortedTranscriptConsequences || []).find(
+          csq => csq.gene_id === context.geneId
+        )
     case 'region':
-      return variant => (variant.sortedTranscriptConsequences || [])[0]
+      return variant =>
+        (variant.sorted_transcript_consequences || variant.sortedTranscriptConsequences || [])[0]
     case 'transcript':
       return variant =>
-        (variant.sortedTranscriptConsequences || []).find(
+        (variant.sorted_transcript_consequences || variant.sortedTranscriptConsequences || []).find(
           csq => csq.transcript_id === context.transcriptId
         )
     default:
