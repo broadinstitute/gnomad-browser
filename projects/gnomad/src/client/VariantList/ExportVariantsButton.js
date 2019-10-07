@@ -5,6 +5,7 @@ import { Button } from '@broad/ui'
 
 const POPULATION_NAMES = {
   AFR: 'African',
+  AMI: 'Amish',
   AMR: 'Latino',
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
