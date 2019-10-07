@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 
 const TranscriptConsequencePropType = PropTypes.shape({
-  biotype: PropTypes.string,
   consequence_terms: PropTypes.arrayOf(PropTypes.string),
   gene_id: PropTypes.string.isRequired,
   gene_symbol: PropTypes.string.isRequired,
