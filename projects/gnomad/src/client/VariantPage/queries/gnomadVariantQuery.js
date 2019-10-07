@@ -210,7 +210,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
         lof
         lof_flags
         lof_filter
-        lof_info
         major_consequence
         polyphen_prediction
         sift_prediction
