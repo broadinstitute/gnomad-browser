@@ -176,7 +176,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>Site Quality Metrics</h2>
-              <GnomadSiteQualityMetrics variant={variant} />
+              <GnomadSiteQualityMetrics datasetId={datasetId} variant={variant} />
             </ResponsiveSection>
             <Section>
               <h2>Read Data</h2>
