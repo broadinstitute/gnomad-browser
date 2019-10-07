@@ -302,7 +302,7 @@ class TranscriptPage extends Component {
               exportFilename={`${gene.gene_id}_transcripts`}
               expressionLabel={
                 <span>
-                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.symbol}`}>
+                  <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
                     Isoform expression
                   </ExternalLink>
                   <QuestionMark topic="gtex" />
