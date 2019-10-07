@@ -22,6 +22,10 @@ a worker is interrupted during a bulk request.
 * GTEx tissue expression
 * ClinVar variants
 
+## gnomAD 3.0
+
+* [variants](./docs/gnomad_r3/variants.md)
+
 ## gnomAD 2.1.1
 
 * [variants](./docs/gnomad_r2_1/variants.md)
