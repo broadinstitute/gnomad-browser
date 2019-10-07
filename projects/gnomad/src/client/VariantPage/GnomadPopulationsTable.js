@@ -8,6 +8,7 @@ import { PopulationsTable } from './PopulationsTable'
 
 const POPULATION_NAMES = {
   AFR: 'African',
+  AMI: 'Amish',
   AMR: 'Latino',
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
@@ -33,7 +34,7 @@ const POPULATION_NAMES = {
   SWE: 'Swedish',
 }
 
-const POPULATIONS = ['AFR', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
+const POPULATIONS = ['AFR', 'AMI', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
 
 const SUBPOPULATIONS = {
   EAS: ['JPN', 'KOR', 'OEA'],
@@ -51,12 +52,12 @@ const ControlSection = styled.div`
 const nestPopulations = populations => {
   const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
   return [
-    ...POPULATIONS.map(popId => ({
+    ...POPULATIONS.filter(popId => indices[popId] !== undefined).map(popId => ({
       ...populations[indices[popId]],
       subpopulations: [
-        ...(SUBPOPULATIONS[popId] || []).map(
-          subPopId => populations[indices[`${popId}_${subPopId}`]]
-        ),
+        ...(SUBPOPULATIONS[popId] || [])
+          .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
+          .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
         populations[indices[`${popId}_FEMALE`]],
         populations[indices[`${popId}_MALE`]],
       ],
