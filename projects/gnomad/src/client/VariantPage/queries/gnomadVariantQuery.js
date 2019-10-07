@@ -1,11 +1,12 @@
 export default `
 query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   variant(variantId: $variantId, dataset: $datasetId) {
-    alt
+    variantId
+    reference_genome
     chrom
     pos
     ref
-    variantId
+    alt
     ... on GnomadVariantDetails {
       colocatedVariants
       multiNucleotideVariants {
