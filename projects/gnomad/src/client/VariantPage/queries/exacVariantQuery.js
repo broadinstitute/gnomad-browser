@@ -1,10 +1,12 @@
 export default `
 query ExacVariant ($variantId: String!) {
   variant(dataset: exac, variantId: $variantId) {
-    alt
+    variantId
+    reference_genome
     chrom
     pos
     ref
+    alt
     variantId
     ...on ExacVariantDetails {
       ac
