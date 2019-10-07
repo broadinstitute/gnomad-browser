@@ -109,7 +109,7 @@ TissueIsoformExpressionPlotHeader.propTypes = {
 }
 
 TissueIsoformExpressionPlotHeader.defaultProps = {
-  children: <ExternalLink href="http://www.gtexportal.org/">Isoform expression</ExternalLink>,
+  children: <ExternalLink href="https://www.gtexportal.org/">Isoform expression</ExternalLink>,
 }
 
 const ExpressionTooltip = ({ expression, transcriptId }) => (
