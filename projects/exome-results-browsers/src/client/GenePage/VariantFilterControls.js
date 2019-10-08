@@ -197,6 +197,7 @@ const VariantFilterControls = ({
           />
           {(browserConfig.variants.filters || []).map(f => (
             <Checkbox
+              key={f.id}
               checked={filter.browserFilters[f.id]}
               id={`browser-filter-${f.id}`}
               label={f.label}
