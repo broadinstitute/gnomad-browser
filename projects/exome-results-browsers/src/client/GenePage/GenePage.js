@@ -161,20 +161,26 @@ class GenePage extends Component {
                         {
                           id: 'gnomad',
                           label: 'gnomAD',
-                          render: () => (
-                            <GnomadConstraintTable
-                              constraint={gene.canonical_transcript.gnomad_constraint}
-                            />
-                          ),
+                          render: () =>
+                            gene.canonical_transcript.gnomad_constraint ? (
+                              <GnomadConstraintTable
+                                constraint={gene.canonical_transcript.gnomad_constraint}
+                              />
+                            ) : (
+                              <p>gnomAD constraint is not available for this gene.</p>
+                            ),
                         },
                         {
                           id: 'exac',
                           label: 'ExAC',
-                          render: () => (
-                            <ExacConstraintTable
-                              constraint={gene.canonical_transcript.exac_constraint}
-                            />
-                          ),
+                          render: () =>
+                            gene.canonical_transcript.exac_constraint ? (
+                              <ExacConstraintTable
+                                constraint={gene.canonical_transcript.exac_constraint}
+                              />
+                            ) : (
+                              <p>ExAC constraint is not available for this gene.</p>
+                            ),
                         },
                       ]}
                     />
