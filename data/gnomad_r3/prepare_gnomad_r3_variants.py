@@ -46,6 +46,10 @@ def array_to_tree(array, index_tree, f=lambda s: s):
     )
 
 
+def nullify_nan(value):
+    return hl.cond(hl.is_nan(value), hl.null(value.dtype), value)
+
+
 def format_variants_table(ds):
 
     g = hl.eval(ds.globals)
@@ -111,6 +115,13 @@ def format_variants_table(ds):
     # SB
     # SOR
     # VarDP
+
+    # Remove NaN values
+    ds = ds.annotate(
+        info=ds.info.annotate(
+            FS=nullify_nan(ds.info.FS), InbreedingCoeff=nullify_nan(ds.info.InbreedingCoeff), MQ=nullify_nan(ds.info.MQ)
+        )
+    )
 
     ###################
     # VEP annotations #
