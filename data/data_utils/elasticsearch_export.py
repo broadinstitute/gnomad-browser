@@ -65,6 +65,10 @@ def elasticsearch_mapping_for_table(table, disable_fields=None, override_types=N
     return mapping
 
 
+def struct_to_dict(struct):
+    return {k: dict(struct_to_dict(v)) if isinstance(v, hl.utils.Struct) else v for k, v in struct.items()}
+
+
 def export_table_to_elasticsearch(
     table, host, index_name, block_size=5000, id_field=None, mapping=None, num_shards=10, port=9200, verbose=True
 ):
@@ -84,7 +88,7 @@ def export_table_to_elasticsearch(
 
     # TODO This is disabled by default in ES 6+
     mapping["_all"] = {"enabled": "false"}
-    mapping["_meta"] = dict(hl.eval(table.globals))
+    mapping["_meta"] = struct_to_dict(hl.eval(table.globals))
 
     # Hard code type name for all indices
     # Mapping types are removed in ES 7
