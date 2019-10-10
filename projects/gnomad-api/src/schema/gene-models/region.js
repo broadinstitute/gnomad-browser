@@ -1,5 +1,6 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { xPosition } from '../../utilities/position'
 import { UserVisibleError } from '../errors'
 
 import { ReferenceGenomeType } from './referenceGenome'
@@ -22,17 +23,6 @@ const chromosomeNumbers = allChromosomes.reduce(
   }),
   {}
 )
-
-const xPosition = (chrom, pos) => {
-  const chromStart = chromosomeNumbers[chrom] * 1e9
-  const xpos = chromStart + pos
-
-  if (Number.isNaN(xpos)) {
-    throw new Error(`Unable to calculate xpos for ${chrom}:${pos}`)
-  }
-
-  return xpos
-}
 
 export const resolveRegion = (ctx, { chrom, start, stop }, referenceGenome) => {
   if (chromosomeNumbers[chrom] === undefined) {
