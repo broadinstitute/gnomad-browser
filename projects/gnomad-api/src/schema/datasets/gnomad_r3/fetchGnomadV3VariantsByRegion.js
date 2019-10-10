@@ -1,9 +1,12 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
+import { xPosition } from '../../../utilities/position'
 
 import shapeGnomadV3VariantSummary from './shapeGnomadV3VariantSummary'
 
 const fetchGnomadV3VariantsByRegion = async (ctx, region) => {
   const { chrom, start, stop } = region
+  const xStart = xPosition(chrom, start)
+  const xStop = xPosition(chrom, stop)
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: 'gnomad_r3_variants',
@@ -23,17 +26,14 @@ const fetchGnomadV3VariantsByRegion = async (ctx, region) => {
     body: {
       query: {
         bool: {
-          filter: [
-            { term: { 'locus.contig': `chr${chrom}` } },
-            {
-              range: {
-                'locus.position': {
-                  gte: start,
-                  lte: stop,
-                },
+          filter: {
+            range: {
+              xpos: {
+                gte: xStart,
+                lte: xStop,
               },
             },
-          ],
+          },
         },
       },
       sort: [{ 'locus.position': { order: 'asc' } }],
