@@ -40,7 +40,7 @@ const RegionControlsWrapper = styled.div`
 
 // eslint-disable-next-line no-shadow
 const RegionPage = ({ datasetId, history, region, regionId, width }) => {
-  const { reference_genome: referenceGenome, chrom, start, stop, genes } = region
+  const { chrom, start, stop, genes } = region
 
   const regionViewerRegions = [
     {
@@ -64,7 +64,6 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
           extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
           selectedDataset={datasetId}
         >
-          {referenceGenome === 'GRCh37' ? '' : 'chr'}
           {regionId}
         </GnomadPageHeading>
         <RegionInfoColumnWrapper>
