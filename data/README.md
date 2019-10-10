@@ -26,6 +26,7 @@ a worker is interrupted during a bulk request.
 
 * [variants](./docs/gnomad_r3/variants.md)
 * [coverage](./docs/gnomad_r3/coverage.md)
+* [site quality metric distributions](./docs/gnomad_r3/site_quality_metric_distributions.md)
 
 ## gnomAD 2.1.1
 
