@@ -28,7 +28,7 @@ def _elasticsearch_mapping_for_hail_type(dtype):
         return element_mapping
 
     if isinstance(dtype, hl.tlocus):
-        return {"type": "object", "properties": {"locus": {"type": "keyword"}, "position": {"type": "integer"}}}
+        return {"type": "object", "properties": {"contig": {"type": "keyword"}, "position": {"type": "integer"}}}
 
     if dtype in HAIL_TYPE_TO_ES_TYPE_MAPPING:
         return {"type": HAIL_TYPE_TO_ES_TYPE_MAPPING[dtype]}
