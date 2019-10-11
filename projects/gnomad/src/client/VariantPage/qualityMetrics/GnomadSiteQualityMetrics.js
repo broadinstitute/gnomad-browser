@@ -151,10 +151,12 @@ export class GnomadSiteQualityMetrics extends Component {
         </ControlSection>
 
         {metricDescription && <p>{metricDescription}</p>}
-        <p>
-          Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
-          sites.
-        </p>
+        {!datasetId.startsWith('gnomad_r3') && (
+          <p>
+            Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
+            sites.
+          </p>
+        )}
         {selectedMetric === 'SiteQuality' && (
           <p>This is the site quality distribution for all {selectedSiteQualityBinDescription}.</p>
         )}
