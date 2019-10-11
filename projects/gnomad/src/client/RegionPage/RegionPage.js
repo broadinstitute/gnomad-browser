@@ -82,7 +82,7 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
         <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
-          includeExomeCoverage={datasetId !== 'gnomad_sv_r2'}
+          includeExomeCoverage={datasetId !== 'gnomad_sv_r2' && !datasetId.startsWith('gnomad_r3')}
           start={start}
           stop={stop}
         />
