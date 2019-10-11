@@ -205,16 +205,18 @@ class GenePage extends Component {
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
-            <div>
-              <h2>
-                Constraint <QuestionMark topic="constraint" />
-              </h2>
-              <Constraint
-                datasetId={datasetId}
-                gene={gene}
-                transcriptId={gene.canonical_transcript_id}
-              />
-            </div>
+            {!datasetId.startsWith('gnomad_r3') && (
+              <div>
+                <h2>
+                  Constraint <QuestionMark topic="constraint" />
+                </h2>
+                <Constraint
+                  datasetId={datasetId}
+                  gene={gene}
+                  transcriptId={gene.canonical_transcript_id}
+                />
+              </div>
+            )}
           </GeneInfoColumnWrapper>
         </TrackPageSection>
         <RegionViewer
