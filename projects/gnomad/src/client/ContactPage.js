@@ -12,7 +12,7 @@ export default () => (
     <p>
       Errors in the website can be{' '}
       <ExternalLink href="https://github.com/macarthur-lab/gnomadjs/issues">
-        reported via Github
+        reported via GitHub
       </ExternalLink>
       .
     </p>
