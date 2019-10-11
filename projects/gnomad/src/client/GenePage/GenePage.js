@@ -235,7 +235,13 @@ class GenePage extends Component {
               stop={gene.stop}
             />
           ) : (
-            hasCodingExons && <GeneCoverageTrack datasetId={datasetId} geneId={geneId} />
+            hasCodingExons && (
+              <GeneCoverageTrack
+                datasetId={datasetId}
+                geneId={geneId}
+                includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+              />
+            )
           )}
 
           <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
