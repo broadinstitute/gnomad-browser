@@ -396,7 +396,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeShortVariants = true,
     includeStructuralVariants = true,
     includeExac = true,
-    includeGnomadSubsets = true,
+    includeGnomad2 = true,
+    includeGnomad2Subsets = true,
+    includeGnomad3 = true,
   } = datasetOptions
 
   const datasetLink = datasetId =>
@@ -404,8 +406,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       search: queryString.stringify({ dataset: datasetId }),
     })
 
+  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
   const topLevelShortVariantDataset =
-    selectedDataset !== 'gnomad_sv_r2' ? selectedDataset : 'gnomad_r2_1'
+    selectedDataset !== 'gnomad_sv_r2' ? selectedDataset : defaultTopLevelShortVariantDataset
 
   let datasets = []
 
@@ -421,18 +424,29 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         id: 'other_short_variant',
         isActive: selectedDataset !== 'gnomad_sv_r2',
         label: 'More datasets',
-        children: [
-          {
-            id: 'gnomad_r2_1',
-            label: labelForDataset('gnomad_r2_1'),
-            url: datasetLink('gnomad_r2_1'),
-            description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
-          },
-        ],
+        children: [],
       },
     ]
 
-    if (includeGnomadSubsets) {
+    if (includeGnomad3) {
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r3',
+        label: labelForDataset('gnomad_r3'),
+        url: datasetLink('gnomad_r3'),
+        description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+      })
+    }
+
+    if (includeGnomad2) {
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r2_1',
+        label: labelForDataset('gnomad_r2_1'),
+        url: datasetLink('gnomad_r2_1'),
+        description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
+      })
+    }
+
+    if (includeGnomad2 && includeGnomad2Subsets) {
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r2_1_controls',
@@ -490,6 +504,7 @@ DatasetSelector.propTypes = {
     includeShortVariants: PropTypes.bool,
     includeStructuralVariants: PropTypes.bool,
     includeExac: PropTypes.bool,
+    includeGnomad2Subsets: PropTypes.bool,
   }),
   selectedDataset: PropTypes.string.isRequired,
 }
@@ -499,6 +514,9 @@ DatasetSelector.defaultProps = {
     includeShortVariants: true,
     includeStructuralVariants: true,
     includeExac: true,
+    includeGnomad2: true,
+    includeGnomad2Subsets: true,
+    includeGnomad3: true,
   },
 }
 

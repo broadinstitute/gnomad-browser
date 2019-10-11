@@ -6,6 +6,7 @@ title: 'Dataset selection'
 
 The data selection drop-down specifies which dataset is displayed on the page. Currently these are:
 
++ gnomAD v3.0
 + gnomAD v2.1
 + gnomAD v2.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease
 + gnomAD v2.1 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study

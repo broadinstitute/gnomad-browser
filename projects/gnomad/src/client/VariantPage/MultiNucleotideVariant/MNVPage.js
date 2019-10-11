@@ -42,7 +42,8 @@ const MNVPage = ({ datasetId, variantId }) => (
     <GnomadPageHeading
       datasetOptions={{
         includeExac: false,
-        includeGnomadSubsets: false,
+        includeGnomad3: false,
+        includeGnomad2Subsets: false,
         includeStructuralVariants: false,
       }}
       selectedDataset={datasetId}
