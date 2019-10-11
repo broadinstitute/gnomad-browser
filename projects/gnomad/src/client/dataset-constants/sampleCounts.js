@@ -1,4 +1,21 @@
 const sampleCounts = {
+  gnomad_r3: {
+    genomes: {
+      afr: 21042,
+      ami: 450,
+      amr: 6835,
+      asj: 1662,
+      eas: 1567,
+      fin: 5244,
+      nfe: 32399,
+      sas: 1526,
+      oth: 1077,
+      female: 36950,
+      male: 34752,
+    },
+    genomesTotal: 71702,
+    total: 71702,
+  },
   gnomad_r2_1: {
     exomes: {
       afr: 8128,
