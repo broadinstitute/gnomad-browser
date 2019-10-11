@@ -52,7 +52,7 @@ const datasetsConfig = {
     fetchVariantsByRegion: fetchGnomadV3VariantsByRegion,
     fetchVariantsByTranscript: fetchGnomadV3VariantsByTranscript,
     exomeCoverageIndex: undefined,
-    genomeCoverageIndex: undefined,
+    genomeCoverageIndex: { index: 'gnomad_r3_coverage', type: 'documents' },
   },
 }
 
