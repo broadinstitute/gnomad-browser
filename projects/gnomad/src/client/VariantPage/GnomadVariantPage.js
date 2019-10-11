@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { Page } from '@broad/ui'
 
+import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -72,7 +73,10 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
       datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
       selectedDataset={datasetId}
     >
-      <VariantType variantId={variantId} />: <VariantId>{variantId}</VariantId>
+      <VariantType variantId={variantId} />:{' '}
+      <VariantId>
+        {variantId} ({referenceGenomeForDataset(datasetId)})
+      </VariantId>
     </GnomadPageHeading>
     <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
