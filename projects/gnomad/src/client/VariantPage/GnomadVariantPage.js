@@ -98,7 +98,10 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           <VariantDetailsContainer>
             <ResponsiveSection>
               <ScrollWrapper>
-                <GnomadVariantOccurrenceTable variant={variant} />
+                <GnomadVariantOccurrenceTable
+                  variant={variant}
+                  showExomes={!datasetId.startsWith('gnomad_r3')}
+                />
               </ScrollWrapper>
 
               {variant.colocatedVariants.length > 0 && (
