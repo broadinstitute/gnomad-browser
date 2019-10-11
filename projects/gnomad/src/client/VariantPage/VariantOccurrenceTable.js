@@ -106,7 +106,9 @@ FilteringAlleleFrequency.defaultProps = {
   popmax_population: null,
 }
 
-export const GnomadVariantOccurrenceTable = ({ variant }) => {
+export const GnomadVariantOccurrenceTable = ({ showExomes, showGenomes, variant }) => {
+  const showTotal = showExomes && showGenomes
+
   const isPresentInExome = Boolean(variant.exome)
   const isPresentInGenome = Boolean(variant.genome)
 
@@ -162,33 +164,33 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
         <tbody>
           <tr>
             <td />
-            <th scope="col">Exomes</th>
-            <th scope="col">Genomes</th>
-            <th scope="col">Total</th>
+            {showExomes && <th scope="col">Exomes</th>}
+            {showGenomes && <th scope="col">Genomes</th>}
+            {showTotal && <th scope="col">Total</th>}
           </tr>
           <tr>
             <th scope="row">Filter</th>
-            <td>{renderGnomadVariantFlag(variant, 'exome')}</td>
-            <td>{renderGnomadVariantFlag(variant, 'genome')}</td>
-            <td />
+            {showExomes && <td>{renderGnomadVariantFlag(variant, 'exome')}</td>}
+            {showGenomes && <td>{renderGnomadVariantFlag(variant, 'genome')}</td>}
+            {showTotal && <td />}
           </tr>
           <tr>
             <th scope="row">Allele Count</th>
-            <td>{isPresentInExome && exomeAlleleCount}</td>
-            <td>{isPresentInGenome && genomeAlleleCount}</td>
-            <td>{totalAlleleCount}</td>
+            {showExomes && <td>{isPresentInExome && exomeAlleleCount}</td>}
+            {showGenomes && <td>{isPresentInGenome && genomeAlleleCount}</td>}
+            {showTotal && <td>{totalAlleleCount}</td>}
           </tr>
           <tr>
             <th scope="row">Allele Number</th>
-            <td>{isPresentInExome && exomeAlleleNumber}</td>
-            <td>{isPresentInGenome && genomeAlleleNumber}</td>
-            <td>{totalAlleleNumber}</td>
+            {showExomes && <td>{isPresentInExome && exomeAlleleNumber}</td>}
+            {showGenomes && <td>{isPresentInGenome && genomeAlleleNumber}</td>}
+            {showTotal && <td>{totalAlleleNumber}</td>}
           </tr>
           <tr>
             <th scope="row">Allele Frequency</th>
-            <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>
-            <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>
-            <td>{totalAlleleFrequency.toPrecision(4)}</td>
+            {showExomes && <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>}
+            {showGenomes && <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>}
+            {showTotal && <td>{totalAlleleFrequency.toPrecision(4)}</td>}
           </tr>
           <tr>
             <th scope="row">
@@ -198,33 +200,43 @@ export const GnomadVariantOccurrenceTable = ({ variant }) => {
               <br />
               (95% confidence)
             </th>
-            <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
-            <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
-            <td />
+            {showExomes && (
+              <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
+            )}
+            {showGenomes && (
+              <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
+            )}
+            {showTotal && <td />}
           </tr>
           {variant.chrom !== 'Y' && (
             <tr>
               <th scope="row">Number of homozygotes</th>
-              <td>
-                {isPresentInExome && exomeHomozygoteCount}
-                {showExomeHighAlleleBalanceWarning && ' *'}
-              </td>
-              <td>
-                {isPresentInGenome && genomeHomozygoteCount}
-                {showGenomeHighAlleleBalanceWarning && ' *'}
-              </td>
-              <td>
-                {totalHomozygoteCount}
-                {showHighAlleleBalanceWarning && ' *'}
-              </td>
+              {showExomes && (
+                <td>
+                  {isPresentInExome && exomeHomozygoteCount}
+                  {showExomeHighAlleleBalanceWarning && ' *'}
+                </td>
+              )}
+              {showGenomes && (
+                <td>
+                  {isPresentInGenome && genomeHomozygoteCount}
+                  {showGenomeHighAlleleBalanceWarning && ' *'}
+                </td>
+              )}
+              {showTotal && (
+                <td>
+                  {totalHomozygoteCount}
+                  {showHighAlleleBalanceWarning && ' *'}
+                </td>
+              )}
             </tr>
           )}
           {(variant.chrom === 'X' || variant.chrom === 'Y') && (
             <tr>
               <th scope="row">Number of hemizygotes</th>
-              <td>{isPresentInExome && exomeHemizygoteCount}</td>
-              <td>{isPresentInGenome && genomeHemizygoteCount}</td>
-              <td>{totalHemizygoteCount}</td>
+              {showExomes && <td>{isPresentInExome && exomeHemizygoteCount}</td>}
+              {showGenomes && <td>{isPresentInGenome && genomeHemizygoteCount}</td>}
+              {showTotal && <td>{totalHemizygoteCount}</td>}
             </tr>
           )}
         </tbody>
@@ -255,6 +267,8 @@ const histogramPropType = PropTypes.shape({
 })
 
 GnomadVariantOccurrenceTable.propTypes = {
+  showExomes: PropTypes.bool,
+  showGenomes: PropTypes.bool,
   variant: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     exome: PropTypes.shape({
@@ -288,4 +302,9 @@ GnomadVariantOccurrenceTable.propTypes = {
       }).isRequired,
     }),
   }).isRequired,
+}
+
+GnomadVariantOccurrenceTable.defaultProps = {
+  showExomes: true,
+  showGenomes: true,
 }
