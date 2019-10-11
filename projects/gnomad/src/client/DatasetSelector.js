@@ -159,7 +159,10 @@ class NavigationMenu extends Component {
 
   onBlur = () => {
     setTimeout(() => {
-      if (!document.activeElement || !this.container.current.contains(document.activeElement)) {
+      if (
+        this.container.current &&
+        (!document.activeElement || !this.container.current.contains(document.activeElement))
+      ) {
         this.setState({ expandedItem: null })
       }
     }, 0)
