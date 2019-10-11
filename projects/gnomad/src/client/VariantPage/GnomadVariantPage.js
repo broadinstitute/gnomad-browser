@@ -187,12 +187,16 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <Section>
               <h2>Read Data</h2>
-              <GnomadReadData
-                exomeReads={(variant.exome || {}).reads || []}
-                genomeReads={(variant.genome || {}).reads || []}
-                igvLocus={`${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`}
-                showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-              />
+              {datasetId.startsWith('gnomad_r3') ? (
+                <p>Read data is not yet available for gnomAD v3.</p>
+              ) : (
+                <GnomadReadData
+                  exomeReads={(variant.exome || {}).reads || []}
+                  genomeReads={(variant.genome || {}).reads || []}
+                  igvLocus={`${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`}
+                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                />
+              )}
             </Section>
           </VariantDetailsContainer>
         )
