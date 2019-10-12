@@ -23,6 +23,14 @@
          --output $CANONICAL_TRANSCRIPTS_GRCH37_PATH
    ```
 
+   ```shell
+   hailctl dataproc submit data-prep \
+      --pyfiles ./data/data_utils \
+      ./data/get_canonical_transcripts_from_vep.py \
+         gs://gnomad-public/release/3.0/ht/genomes/gnomad.genomes.r3.0.sites.ht \
+         --output $CANONICAL_TRANSCRIPTS_GRCH38_PATH
+   ```
+
    TODO: Get canonical transcripts for gnomAD v3 / GRCh38
 
 3. Delete the Dataproc cluster
@@ -75,10 +83,10 @@
       ./data/prepare_gene_models.py \
          --gencode 29 \
             /path/to/gencode.v29.gtf.bgz \
-            /path/to/gnomad_vep95_canonical_transcripts.tsv.bgz \
+            $CANONICAL_TRANSCRIPTS_GRCH38_PATH \
          --gencode 19 \
             /path/to/gencode.v19.gtf.bgz \
-            /path/to/gnomad_vep85_canonical_transcripts.tsv.bgz \
+            $CANONICAL_TRANSCRIPTS_GRCH37_PATH \
          --hgnc /path/to/hgnc.tsv \
          --output /path/to/genes.ht
    ```
