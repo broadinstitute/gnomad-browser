@@ -238,8 +238,14 @@ def main():
     )
     hgnc = hgnc.key_by("gene_id")
     hgnc = hgnc.annotate(
-        previous_symbols=hgnc.previous_symbols.split(",").map(lambda s: s.strip()),
-        synonyms=hgnc.synonyms.split(",").map(lambda s: s.strip()),
+        previous_symbols=hl.cond(
+            hgnc.previous_symbols == "",
+            hl.empty_array(hl.tstr),
+            hgnc.previous_symbols.split(",").map(lambda s: s.strip()),
+        ),
+        synonyms=hl.cond(
+            hgnc.synonyms == "", hl.empty_array(hl.tstr), hgnc.synonyms.split(",").map(lambda s: s.strip())
+        ),
     )
 
     genes = genes.annotate(**hgnc[genes.gene_id])
@@ -262,7 +268,14 @@ def main():
         search_terms=hl.empty_array(hl.tstr).append(genes.symbol).extend(genes.synonyms).extend(genes.previous_symbols),
     )
     for gencode_version in all_gencode_versions:
-        genes = genes.annotate(search_terms=genes.search_terms.append(genes.gencode[f"v{gencode_version}"].gene_symbol))
+        genes = genes.annotate(
+            search_terms=hl.rbind(
+                genes.gencode[f"v{gencode_version}"].gene_symbol,
+                lambda symbol_in_gencode: hl.cond(
+                    hl.is_defined(symbol_in_gencode), genes.search_terms.append(symbol_in_gencode), genes.search_terms
+                ),
+            )
+        )
 
     genes = genes.annotate(search_terms=hl.set(genes.search_terms.map(lambda s: s.upper())))
 
