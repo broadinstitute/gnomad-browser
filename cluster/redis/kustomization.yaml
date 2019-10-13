@@ -1,0 +1,9 @@
+configMapGenerator:
+- name: redis-config
+  files:
+  - redis.conf
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+- redis.deployment.yaml
+- redis.service.yaml
