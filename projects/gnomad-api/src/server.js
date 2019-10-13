@@ -20,18 +20,10 @@ app.use(cors())
       host: process.env.ELASTICSEARCH_URL,
     })
 
-    const redisConnectionConfig =
-      process.env.NODE_ENV === 'development'
-        ? { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }
-        : {
-            sentinels: [
-              { host: 'redis-sentinel', port: 26379 },
-              { host: 'redis-sentinel', port: 26379 },
-            ],
-            name: 'mymaster',
-          }
-
-    const redis = new Redis(redisConnectionConfig)
+    const redis = new Redis({
+      host: process.env.REDIS_HOST,
+      port: 6379,
+    })
 
     app.use(
       [/^\/$/, /^\/api\/?$/],
