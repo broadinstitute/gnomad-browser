@@ -39,8 +39,12 @@ if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
       port: 6379,
     })
 
+    app.get('/', (request, response) => {
+      response.send('ok')
+    })
+
     app.use(
-      [/^\/$/, /^\/api\/?$/],
+      [/^\/api\/?$/],
       graphQLHTTP({
         schema: gnomadSchema,
         graphiql: true,
@@ -82,10 +86,6 @@ if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
     if (process.env.READS_DIR) {
       app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
     }
-
-    app.get('/health', (req, res) => {
-      res.json({})
-    })
 
     app.listen(process.env.GRAPHQL_PORT, () => {
       logger.info(`Listening on ${process.env.GRAPHQL_PORT}`)
