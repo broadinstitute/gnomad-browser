@@ -34,6 +34,10 @@ spec:
           value: "2"
         - name: ENABLE_SSL_REDIRECT
           value: "true"
+        - name: MAX_CONCURRENT_ES_REQUESTS
+          value: "250"
+        - name: MAX_QUEUED_ES_REQUESTS
+          value: "2500"
         ports:
         - name: http
           containerPort: 80
