@@ -30,6 +30,8 @@ spec:
           value: redis
         - name: NODE_ENV
           value: production
+        - name: TRUST_PROXY
+          value: "2"
         ports:
         - name: http
           containerPort: 80
