@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: gcr.io/exac-gnomad/gnomad-browser-beta
+        image: gcr.io/exac-gnomad/gnomad-browser
         env:
         - name: TRUST_PROXY
           value: "2"
