@@ -7,7 +7,7 @@ import * as pages from '@browser/pages'
 
 import DocumentTitle from './DocumentTitle'
 
-const Wrapper = styled(Page)`
+const InfoPage = styled(Page)`
   font-size: 16px;
 
   p {
@@ -16,14 +16,16 @@ const Wrapper = styled(Page)`
   }
 `
 
+export default InfoPage
+
 export const makePage = ({ heading, component }) => {
   const Component = pages[component]
   const PageComponent = () => (
-    <Wrapper>
+    <InfoPage>
       <DocumentTitle />
       <PageHeading>{heading}</PageHeading>
       <Component />
-    </Wrapper>
+    </InfoPage>
   )
 
   return PageComponent
