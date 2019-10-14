@@ -1,57 +1,63 @@
 # SCHEMA
 
 1. Start a cluster.
+
    ```
-   cluster start --max-idle=30m --num-preemptible-workers=24 schema-data-prep
+   hailctl dataproc start schema \
+      --max-idle 30m \
+      --num-preemptible-workers 24 \
+      --packages "elasticsearch~=5.5"
    ```
 
 2. Prepare gene results.
+
    ```
-   cluster submit schema-data-prep ./projects/exome-results-browsers/browsers/schema/data/prepare_gene_results.py \
-      --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
-      --args "--input-url=gs://schizophrenia-browser/190415/2019-04-11_schema-browser-gene-results-table.ht \
-         --output-url=gs://schizophrenia-browser/190415/gene_results.ht"
+   hailctl dataproc submit schema \
+      ./projects/exome-results-browsers/browsers/schema/data/prepare_gene_results.py \
+         gs://schizophrenia-browser/191010/2019-10-10_schema-browser-gene-results-table.ht \
+         gs://schizophrenia-browser/191010/gene_results.ht
    ```
 
 3. Prepare variant results.
+
    ```
-   cluster submit schema-data-prep ./projects/exome-results-browsers/browsers/schema/data/prepare_variant_results.py \
+   hailctl dataproc submit schema \
       --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
-      --args "--variant-annotations-url=gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-annotation-table.ht \
+      ./projects/exome-results-browsers/browsers/schema/data/prepare_variant_results.py \
+         --variant-annotations-url=gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-annotation-table.ht \
          --variant-results-url=gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-results-table-meta-rare-denovos-common-merged.ht \
-         --output-url=gs://schizophrenia-browser/190415/variant_results.ht"
+         --output-url=gs://schizophrenia-browser/190415/variant_results.ht
    ```
 
-4. Stop cluster.
+4. Modify the cluster to remove preemptible workers.
+
    ```
-   cluster stop schema-data-prep
+   hailctl dataproc modify schema \
+      --num-preemptible-workers 0
    ```
 
-5. Start another cluster with no preemptible workers.
+5. Load tables into Elasticsearch. Replace `$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
+
    ```
-   cluster start --max-idle=30m --packages=elasticsearch schema-data-load
+   hailctl dataproc submit schema \
+      --pyfiles ./data/data_utils \
+      ./data/export_hail_table_to_elasticsearch.py \
+         gs://schizophrenia-browser/191010/gene_results.ht \
+         $ELASTICSEARCH_IP \
+         schema_gene_results_2019_10_10 \
+         --num-shards 2
+
+   hailctl dataproc submit schema \
+      --pyfiles ./data/data_utils \
+      ./data/export_hail_table_to_elasticsearch.py \
+         gs://schizophrenia-browser/190415/variant_results.ht \
+         $ELASTICSEARCH_IP \
+         schema_variant_results_2019_04_15 \
+         --num-shards 2
    ```
 
-6. Load tables into Elasticsearch. Replace `$ELASTICSEARCH_IP` with the IP address of your Elasticsearch server.
-   ```
-   cluster submit schema-data-load ./data/export_ht_to_es.py \
-      --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
-      --args "--ht-url=gs://schizophrenia-browser/190415/gene_results.ht \
-         --host=$ELASTICSEARCH_IP \
-         --index-name=schema_gene_results_2019_04_15 \
-         --index-type=result \
-         --num-shards=2"
+6. Stop cluster.
 
-   cluster submit schema-data-load ./data/export_ht_to_es.py \
-      --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
-      --args "--ht-url=gs://schizophrenia-browser/190415/variant_results.ht \
-         --host=$ELASTICSEARCH_IP \
-         --index-name=schema_variant_results_2019_04_15 \
-         --index-type=variant \
-         --num-shards=2"
    ```
-
-7. Stop cluster.
-   ```
-   cluster stop schema-data-load
+   hailctl dataproc stop schema
    ```
