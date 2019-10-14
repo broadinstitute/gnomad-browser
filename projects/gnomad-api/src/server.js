@@ -74,7 +74,7 @@ if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
           // User visible errors (such as variant not found) are expected to occur during
           // normal use of the browser and don't need to be logged.
           if (!isUserVisible) {
-            logger.error(error)
+            logger.warn(error)
           }
 
           const message = isUserVisible ? error.message : 'An unknown error occurred'
