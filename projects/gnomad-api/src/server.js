@@ -13,6 +13,8 @@ const app = express()
 app.use(compression())
 app.use(cors())
 
+app.set('trust proxy', JSON.parse(process.env.TRUST_PROXY || 'false'))
+
 // eslint-disable-line prettier/prettier
 ;(async () => {
   try {

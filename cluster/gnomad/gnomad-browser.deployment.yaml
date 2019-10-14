@@ -20,6 +20,8 @@ spec:
       - name: app
         image: gcr.io/exac-gnomad/gnomad-browser-beta
         env:
+        - name: TRUST_PROXY
+          value: "2"
         - name: ENABLE_SSL_REDIRECT
           value: "true"
         ports:
