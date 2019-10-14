@@ -9,7 +9,7 @@ cd gnomadjs/projects/gnomad
 ./deploy/build-image.sh
 ```
 
-This will create an image named "gnomad-browser-beta" tagged with the hash of the current git revision.
+This will create an image named "gnomad-browser" tagged with the hash of the current git revision.
 
 ## Deploying an image to GKE
 
@@ -20,7 +20,7 @@ cd gnomadjs/projects/gnomad
 ./deploy/deploy-image.sh tag environment
 ```
 
-where `tag` is the tag on the "gnomad-browser-beta" image to be deployed and `environment` is the
+where `tag` is the tag on the "gnomad-browser" image to be deployed and `environment` is the
 environment to deploy to ("p" for production or "d" for development).
 
 This pushes the image with specified tag to GCR and updates the container image in the appropriate
@@ -41,5 +41,5 @@ For other changes to the Kubernetes deployment, such as modifying environment va
 To run the browser using Docker:
 
 ```shell
-docker run --rm -ti --init -p 8000:80 gcr.io/exac-gnomad/gnomad-browser-beta
+docker run --rm -ti --init -p 8000:80 gcr.io/exac-gnomad/gnomad-browser
 ```
