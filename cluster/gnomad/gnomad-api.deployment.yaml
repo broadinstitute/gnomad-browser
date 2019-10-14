@@ -32,6 +32,8 @@ spec:
           value: production
         - name: TRUST_PROXY
           value: "2"
+        - name: ENABLE_SSL_REDIRECT
+          value: "true"
         ports:
         - name: http
           containerPort: 80
