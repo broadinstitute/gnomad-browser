@@ -8,6 +8,7 @@
     "build": "./build.sh"
   },
   "dependencies": {
+    "bottleneck": "^2.19.5",
     "compression": "^1.7.4",
     "ejs": "^2.6.1",
     "elasticsearch": "15.4.0",

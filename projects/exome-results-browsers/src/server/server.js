@@ -1,5 +1,6 @@
 import path from 'path'
 
+import Bottleneck from 'bottleneck'
 import compression from 'compression'
 import elasticsearch from 'elasticsearch'
 import express from 'express'
@@ -10,6 +11,7 @@ import browserConfig from '@browser/config'
 
 import { RootType } from './schema/root'
 import renderTemplate from './template'
+import { UserVisibleError } from './utilities/errors'
 
 const requiredSettings = ['ELASTICSEARCH_URL', 'PORT']
 const missingSettings = requiredSettings.filter(setting => !process.env[setting])
@@ -27,6 +29,64 @@ app.use(compression())
     host: process.env.ELASTICSEARCH_URL,
   })
 
+  const esLimiter = new Bottleneck({
+    maxConcurrent: JSON.parse(process.env.MAX_CONCURRENT_ES_REQUESTS || '100'),
+    highWater: JSON.parse(process.env.MAX_QUEUED_ES_REQUESTS || '1000'),
+    strategy: Bottleneck.strategy.OVERFLOW,
+  })
+
+  esLimiter.on('error', error => {
+    console.error(error)
+  })
+
+  const scheduleElasticsearchRequest = fn => {
+    return new Promise((resolve, reject) => {
+      let canceled = false
+
+      // If task sits in the queue for more than 30s, cancel it and notify the user.
+      const timeout = setTimeout(() => {
+        canceled = true
+        reject(new UserVisibleError('Request timed out'))
+      }, 30000)
+
+      esLimiter
+        .schedule(() => {
+          // When the request is taken out of the queue...
+
+          // Cancel timeout timer.
+          clearTimeout(timeout)
+
+          // If the timeout has expired since the request was queued, do nothing.
+          if (canceled) {
+            return Promise.resolve(undefined)
+          }
+
+          // Otherwise, make the request.
+          return fn()
+        })
+        .then(resolve, err => {
+          // If Bottleneck refuses to schedule the request because the queue is full,
+          // notify the user and cancel the timeout timer.
+          if (err.message === 'This job has been dropped by Bottleneck') {
+            clearTimeout(timeout)
+            reject(new UserVisibleError('Service overloaded'))
+          }
+
+          // Otherwise, forward the error.
+          reject(err)
+        })
+    })
+  }
+
+  // This wraps the ES methods used by the API and sends them through the rate limiter
+  const limitedElastic = {
+    clearScroll: elastic.clearScroll.bind(elastic),
+    search: (...args) => scheduleElasticsearchRequest(() => elastic.search(...args)),
+    scroll: (...args) => scheduleElasticsearchRequest(() => elastic.scroll(...args)),
+    count: (...args) => scheduleElasticsearchRequest(() => elastic.count(...args)),
+    get: (...args) => scheduleElasticsearchRequest(() => elastic.get(...args)),
+  }
+
   const html = await renderTemplate({
     gaTrackingId: process.env.GA_TRACKING_ID,
     title: browserConfig.browserTitle,
@@ -39,7 +99,7 @@ app.use(compression())
       graphiql: true,
       context: {
         database: {
-          elastic,
+          elastic: limitedElastic,
         },
       },
       customFormatErrorFn: error => {
