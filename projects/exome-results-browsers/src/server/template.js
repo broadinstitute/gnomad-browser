@@ -3,6 +3,8 @@ import path from 'path'
 
 import ejs from 'ejs'
 
+import logger from './utilities/logging'
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const renderTemplate = async data => {
@@ -18,7 +20,7 @@ const renderTemplate = async data => {
         fs.accessSync(templatePath)
         templateExists = true
       } catch (err) {
-        console.log('waiting for template')
+        logger.info('waiting for template')
         // eslint-disable-next-line no-await-in-loop
         await sleep(2000)
       }

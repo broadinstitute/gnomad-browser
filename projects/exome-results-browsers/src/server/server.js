@@ -12,6 +12,7 @@ import browserConfig from '@browser/config'
 import { RootType } from './schema/root'
 import renderTemplate from './template'
 import { UserVisibleError } from './utilities/errors'
+import logger from './utilities/logging'
 
 const requiredSettings = ['ELASTICSEARCH_URL', 'PORT']
 const missingSettings = requiredSettings.filter(setting => !process.env[setting])
@@ -36,7 +37,7 @@ app.use(compression())
   })
 
   esLimiter.on('error', error => {
-    console.error(error)
+    logger.error(error)
   })
 
   const scheduleElasticsearchRequest = fn => {
@@ -122,7 +123,7 @@ app.use(compression())
         // User visible errors (such as variant not found) are expected to occur during
         // normal use of the browser and don't need to be logged.
         if (!isUserVisible) {
-          console.log(error)
+          logger.warn(error)
         }
 
         const message = isUserVisible ? error.message : 'An unknown error occurred'
@@ -144,6 +145,6 @@ app.use(compression())
   })
 
   app.listen(process.env.PORT, () => {
-    console.log(`Listening on ${process.env.PORT}`)
+    logger.info(`Listening on ${process.env.PORT}`)
   })
 })()
