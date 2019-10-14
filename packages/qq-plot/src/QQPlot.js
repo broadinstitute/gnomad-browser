@@ -177,7 +177,7 @@ export const QQPlot = ({
       const point = points[i]
 
       ctx.beginPath()
-      ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI, false)
+      ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI, false)
       ctx.fillStyle = '#000'
       ctx.fill()
     }
