@@ -89,7 +89,7 @@ export const QQPlot = ({
       ctx.beginPath()
       ctx.moveTo(0, y)
       ctx.lineTo(w, y)
-      ctx.strokeStyle = '#bdbdbd'
+      ctx.strokeStyle = '#e4e4e4'
       ctx.stroke()
     }
 
