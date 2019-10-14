@@ -11,7 +11,7 @@ app.use(compression())
 app.set('trust proxy', JSON.parse(process.env.TRUST_PROXY || 'false'))
 
 // Redirect HTTP requests to HTTPS
-if (process.env.ENABLE_SSL_REDIRECT) {
+if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
   app.use((request, response, next) => {
     if (request.protocol === 'http') {
       response.redirect(`https://${request.get('host')}${request.url}`)
