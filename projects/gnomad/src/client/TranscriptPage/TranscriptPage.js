@@ -215,18 +215,20 @@ class TranscriptPage extends Component {
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
-            {!datasetId.startsWith('gnomad_r3') && (
-              <div>
-                <h2>
-                  Constraint <QuestionMark topic="constraint" />
-                </h2>
+            <div>
+              <h2>
+                Constraint <QuestionMark topic="constraint" />
+              </h2>
+              {datasetId.startsWith('gnomad_r3') ? (
+                <p>Constraint not yet available for gnomAD v3.</p>
+              ) : (
                 <Constraint
                   datasetId={datasetId}
                   gene={gene}
                   transcriptId={transcript.transcript_id}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </GeneInfoColumnWrapper>
         </TrackPageSection>
         <RegionViewer
