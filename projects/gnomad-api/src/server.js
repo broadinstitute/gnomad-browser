@@ -7,6 +7,7 @@ import Redis from 'ioredis'
 import serveStatic from 'serve-static'
 
 import gnomadSchema from './schema'
+import logger from './utilities/logging'
 
 const app = express()
 app.use(compression())
@@ -56,7 +57,7 @@ app.use(cors())
           // User visible errors (such as variant not found) are expected to occur during
           // normal use of the browser and don't need to be logged.
           if (!isUserVisible) {
-            console.log(error)
+            logger.error(error)
           }
 
           const message = isUserVisible ? error.message : 'An unknown error occurred'
@@ -74,9 +75,9 @@ app.use(cors())
     })
 
     app.listen(process.env.GRAPHQL_PORT, () => {
-      console.log(`Listening on ${process.env.GRAPHQL_PORT}`)
+      logger.info(`Listening on ${process.env.GRAPHQL_PORT}`)
     })
   } catch (error) {
-    console.log(error)
+    logger.error(error)
   }
 })()
