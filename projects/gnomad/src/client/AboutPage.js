@@ -155,17 +155,15 @@ export default () => (
       this preprint for use of the SV data.
     </p>
     <p>
-      All the above data are available under the{' '}
-      <ExternalLink href="http://opendatacommons.org/licenses/odbl/1.0/">
-        ODC Open Database License (ODbL)
-      </ExternalLink>{' '}
-      (summary available{' '}
-      <ExternalLink href="http://www.opendatacommons.org/licenses/odbl/1-0/summary/">
-        here
+      The data released by gnomAD are available free of restrictions under the{' '}
+      <ExternalLink href="https://creativecommons.org/publicdomain/zero/1.0/">
+        Creative Commons Zero Public Domain Dedication
       </ExternalLink>
-      ): you are free to share and modify the gnomAD data so long as you attribute any public use of
-      the database, or works produced from the database; keep the resulting data-sets open; and
-      offer your shared or adapted version of the dataset under the same ODbL license.
+      . This means that you can use it for any purpose without legally having to give attribution.
+      However, we request that you actively acknowledge and give attribution to the gnomAD project,
+      and link back to the relevant page, wherever possible. Attribution supports future efforts to
+      release other data. It also reduces the amount of &quot;orphaned data&quot;, helping retain
+      links to authoritative sources.
     </p>
     <p>
       The aggregation and release of summary data from the exomes and genomes collected by the
