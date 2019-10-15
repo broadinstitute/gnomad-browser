@@ -40,7 +40,7 @@ def main():
     results = results.drop("v")
 
     # Add n_denovos to AC_case
-    results = results.annotate(ac_case=results.ac_case + results.n_denovos)
+    results = results.annotate(ac_case=hl.or_else(results.ac_case, 0) + hl.or_else(results.n_denovos, 0))
     results = results.annotate(af_case=hl.cond(results.an_case == 0, 0, results.ac_case / results.an_case))
 
     variants = variants.filter(hl.is_defined(results[variants.key]))

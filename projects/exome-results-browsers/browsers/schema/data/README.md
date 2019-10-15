@@ -52,7 +52,7 @@
       ./data/export_hail_table_to_elasticsearch.py \
          gs://schizophrenia-browser/191010/variant_results.ht \
          $ELASTICSEARCH_IP \
-         schema_variant_results_2019_10_10 \
+         schema_variant_results_2019_10_15 \
          --num-shards 2
    ```
 
