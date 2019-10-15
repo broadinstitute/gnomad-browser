@@ -47,6 +47,48 @@ export default () => (
 
     <FAQSectionHeading id="general">General</FAQSectionHeading>
     <dl>
+      <Question id="whats-the-difference-between-gnomad-v2-and-v3">
+        What&apos;s the difference between gnomAD v2 and v3?
+      </Question>
+      <Answer>
+        <p>
+          The gnomAD v2 data set contains data from 125,748 exomes and 15,708 whole genomes, all
+          mapped to the GRCh37/hg19 reference sequence. The gnomAD v3 data set contains 71,702 whole
+          genomes (and no exomes), all mapped to the GRCh38 reference sequence. Most of the genomes
+          from v2 are included in v3.
+        </p>
+      </Answer>
+
+      <Question id="what-are-the-restrictions-on-data-usage">
+        What are the restrictions on data usage?
+      </Question>
+      <Answer>
+        <p>
+          These usage guidelines are based on goodwill. They are not a legal contract, but we
+          request that you follow these guidelines if you use our data.
+        </p>
+        <p>
+          There are no restrictions or embargoes on the publication of results derived from the
+          gnomAD database. However, we encourage people to{' '}
+          <ExternalLink href="mailto:exomeconsortium@gmail.com">
+            check with the consortium
+          </ExternalLink>{' '}
+          before embarking on large-scale analyses, to see if we already have something currently
+          underway that overlaps with your plans.
+        </p>
+        <p>
+          The data released by gnomAD are available free of restrictions under the{' '}
+          <ExternalLink href="https://creativecommons.org/publicdomain/zero/1.0/">
+            Creative Commons Zero Public Domain Dedication
+          </ExternalLink>
+          . This means that you can use it for any purpose without legally having to give
+          attribution. However, we request that you actively acknowledge and give attribution to the
+          gnomAD project, and link back to the relevant page, wherever possible. Attribution
+          supports future efforts to release other data. It also reduces the amount of
+          &quot;orphaned data&quot;, helping retain links to authoritative sources.
+        </p>
+      </Answer>
+
       <Question id="how-should-i-cite-discoveries-made-using-gnomad-data">
         How should I cite discoveries made using gnomAD data?
       </Question>
@@ -55,8 +97,9 @@ export default () => (
           Please cite the{' '}
           <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
             gnomAD flagship paper
-          </ExternalLink>
-          .
+          </ExternalLink>{' '}
+          in papers that make use of gnomAD data, and provide a link to the browser if you build
+          online resources that include the data set.
         </p>
 
         <p>
@@ -94,61 +137,35 @@ export default () => (
           </ExternalLink>
           . However, many other samples come from unpublished cohorts or from samples not in dbGaP.
           There is not currently any mechanism to systematically obtain individual-level genotype
-          data from the database as a whole. Making this possible would require a truly staggering
-          amount of paperwork, and we&apos;d rather spend that time generating larger data sets for
-          the community to use.
+          data from the database as a whole.
         </p>
       </Answer>
 
-      <Question id="what-are-the-restrictions-on-data-usage">
-        What are the restrictions on data usage?
+      <Question id="why-is-a-particular-variant-found-in-some-versions-of-exac-gnomad-but-not-others">
+        Why is a particular variant found in some versions of ExAC/gnomAD but not others?
       </Question>
       <Answer>
         <p>
-          These usage guidelines are based on goodwill. They are not a legal contract, but we
-          request that you follow these guidelines if you use our data.
-        </p>
-        <p>
-          There are no restrictions or embargoes on the publication of results derived from the
-          gnomAD database. However, we encourage people to{' '}
-          <ExternalLink href="mailto:exomeconsortium@gmail.com">
-            check with the consortium
-          </ExternalLink>{' '}
-          before embarking on large-scale analyses, to see if we already have something currently
-          underway that overlaps with your plans.
-        </p>
-        <p>
-          The data released by gnomAD are available free of restrictions under the{' '}
-          <ExternalLink href="https://creativecommons.org/publicdomain/zero/1.0/">
-            Creative Commons Zero Public Domain Dedication
-          </ExternalLink>
-          . This means that you can use it for any purpose without legally having to give
-          attribution. However, we request that you actively acknowledge and give attribution to the
-          gnomAD project, and link back to the relevant page, wherever possible. Attribution
-          supports future efforts to release other data. It also reduces the amount of
-          &quot;orphaned data&quot;, helping retain links to authoritative sources.
-        </p>
-      </Answer>
-
-      <Question id="why-is-a-particular-variant-found-in-exac-but-not-in-gnomad">
-        Why is a particular variant found in ExAC but not in gnomAD?
-      </Question>
-      <Answer>
-        <p>Likely because of differences between the two projects in sample and variant QC.</p>
-
-        <p>
-          Sample QC: Not all ExAC data is included in gnomAD. Most of the samples in ExAC were
-          included during the initial joint calling. However, we made changes in our sample QC
-          process and added more recently-sequenced/high-quality samples, which has resulted in the
-          removal of some samples that were present in ExAC. Approximately 10% of the samples in
-          ExAC are missing from gnomAD, so we expect some variants in ExAC, particularly those that
-          were found at low frequencies, to be absent in gnomAD.
+          Likely because of differences between the projects in sample inclusion and variant quality
+          control.
         </p>
 
         <p>
-          Variant QC: Some variants present in ExAC may now be filtered in gnomAD because we used a
-          combination of a random forest classifier and hard filters for gnomAD rather than the
-          standard GATK Variant Quality Score Recalibration (VQSR), which we used for ExAC.
+          Sample QC: Not all data from previous call sets is included in each gnomAD release. Most
+          of the samples from prior releases are included during the initial joint calling; however,
+          we make changes to our sample QC process in each release, which always results in the
+          removal of some samples that previously passed. For instance, approximately 10% of the
+          samples in ExAC are missing from gnomAD, so we expect some variants in ExAC, particularly
+          those that were found at low frequencies, to be absent in gnomAD.
+        </p>
+
+        <p>
+          Variant QC: Some variants present in previous releases may now be filtered because we used
+          new filtering strategies. In particular, starting with gnomAD, we filter each allele
+          separately whereas variant QC was done at the site-level (chromosome, position) in ExAC.
+          We also continuously work on improving our filtering strategy: for instance, we used a
+          combination of a random forest classifier and hard filters for gnomAD v2 rather than the
+          standard GATK site-level Variant Quality Score Recalibration (VQSR) used for ExAC.
         </p>
       </Answer>
 
@@ -169,19 +186,32 @@ export default () => (
         </p>
       </Answer>
 
-      <Question id="should-i-switch-from-using-exac-to-using-gnomad">
-        Should I switch from using ExAC to using gnomAD?
+      <Question id="should-i-switch-to-the-latest-version-of-gnomad">
+        Should I switch to the latest version of gnomAD?
       </Question>
       <Answer>
         <p>
-          We use gnomAD in our own rare disease work and believe that we have made considerable
-          improvements to our sample and variant QC process. We have also greatly increased our
-          number of samples (gnomAD consists of 125,748 exomes and 15,708 genomes, whereas ExAC has
-          60,706 exomes). However, no variant QC pipeline is perfect, and it is possible that real
-          variants in ExAC have now been filtered plus there are some samples in ExAC that are not
-          included in gnomAD. If a variant is not in gnomAD, then it is often still worthwhile to
-          check if it is present in ExAC (or if it has been filtered in gnomAD - with the
-          understanding that most filtered variants have questionable reliability).
+          The gnomAD v2 call set contains fewer whole genomes than v3, but also contains a very
+          large number of exomes that substantially increase its power as a reference in coding
+          regions. Therefore gnomAD v2 is still our recommended dataset for most coding regions
+          analyses. However, gnomAD v3 represents a very large increase in the number of genomes,
+          and will therefore be a much better resource if your primary interest is in non-coding
+          regions or if your coding region of interest is poorly captured in the gnomAD exomes (this
+          can be assessed from the coverage plots in the browser).
+        </p>
+
+        <p>
+          Another consideration when choosing which dataset to use is the ancestry of the samples
+          you are interested in. gnomAD v3 contains a substantially larger number of African
+          American samples than v2 (exomes and genomes combined) and provides allele frequencies in
+          the Amish population for the first time.
+        </p>
+
+        <p>
+          Finally, gnomAD v3 was mapped to GRCh38, so if your data is also on this build it then it
+          probably makes sense to switch to v3. There is also a{' '}
+          <Link to="/downloads">liftover version of gnomAD v2</Link> onto GRCh38 available. We plan
+          to produce a larger GRCh38 aligned exome callset in 2020.
         </p>
       </Answer>
 
@@ -241,13 +271,13 @@ export default () => (
       </Answer>
 
       <Question id="why-are-there-fewer-variants-in-the-constraint-table-than-on-the-gene-page">
-        Why are there fewer variants in the constraint table than depicted on the gene page?
+        Why are there fewer variants in the constraint table than displayed on the gene page?
       </Question>
       <Answer>
         <p>
           We only included variants that were found in the canonical transcript of the gene. On the
-          gene page, variants found in all transcripts are depicted. Additionally, both observed and
-          expected variant counts were removed for sites with a median depth &lt;1.
+          gene page, variants found in all transcripts are displayed. Additionally, both observed
+          and expected variant counts were removed for sites with a median depth &lt;1.
         </p>
       </Answer>
 
@@ -293,11 +323,11 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          All data are based on{' '}
+          gnomAD v2 is based on{' '}
           <ExternalLink href="ftp://ftp.broadinstitute.org/pub/seq/references/Homo_sapiens_assembly19.fasta">
             GRCh37/hg19
           </ExternalLink>
-          .
+          . gnomAD v3 is based on GRCh38.
         </p>
       </Answer>
 
@@ -305,7 +335,10 @@ export default () => (
         What version of Gencode was used to annotate variants?
       </Question>
       <Answer>
-        <p>Version 19 (annotated with VEP version 85).</p>
+        <p>
+          For gnomAD v3, version 29 (annotated with VEP version 95). For v2, version 19 (annotated
+          with VEP version 85).
+        </p>
       </Answer>
 
       <Question id="are-all-the-individuals-in-1000-genomes-included">
@@ -314,8 +347,8 @@ export default () => (
       <Answer>
         <p>
           The majority of samples from the 1000 Genomes Project for which <em>exome sequencing</em>{' '}
-          is available were included (the only currently available whole genome data is low-coverage
-          sequencing, and as such, not included).
+          is available were included (until recently, the only available whole genome data was
+          low-coverage sequencing, and as such, was not included).
         </p>
       </Answer>
 
@@ -326,7 +359,7 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          No. We were not given permission from dbGaP to include individuals from several of the
+          No. We were not given permission from NHLBI to include individuals from several of the
           cohorts included in the NHLBI&apos;s Exome Sequencing Project. As a result, genuine rare
           variants that are present in the EVS may not be observed in gnomAD.
         </p>
@@ -359,7 +392,7 @@ export default () => (
       <Answer>
         <p>
           Individuals were classified as &quot;other&quot; if they did not unambiguously cluster
-          with the major populations (i.e. afr, asj, amr, eas, fin, nfe, sas) in a principal
+          with the major populations (i.e. afr, ami, amr, asj, eas, fin, nfe, sas) in a principal
           component analysis (PCA).
         </p>
       </Answer>
@@ -368,6 +401,10 @@ export default () => (
         What is the age distribution in gnomAD?
       </Question>
       <Answer>
+        <p>Age data is not available for gnomAD v3.</p>
+
+        <p>For gnomAD v2, the age distribution is:</p>
+
         <ColumnsWrapper>
           <Column>
             <p>Exomes</p>
@@ -394,6 +431,7 @@ export default () => (
             />
           </Column>
         </ColumnsWrapper>
+
         <p>
           Please note that cohorts vary in how they report age (some report the age at diagnosis,
           others report the age of last visit, etc), so the ages associated with the gnomAD data can
@@ -408,36 +446,52 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          We used X-chromosome homozygosity (F-stat,{' '}
+          We used a combination of X-chromosome homozygosity (F-stat,{' '}
           <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html?highlight=impute_sex#hail.methods.impute_sex">
             impute_sex function in Hail
           </ExternalLink>
-          ) and normalized Y-chromosome coverage (exomes only) to assign sex for each gnomAD sample.
-          The F-stat was computed for each sample using high-confidence QC SNVs (bi-allelic SNVs,
-          LD-pruned to r<sup>2</sup> &lt; 0.1, with allele frequency &gt; 0.1% and call rate &gt;
-          99%) on non-pseudoautosomal regions (non-PAR) of the X chromosome. The normalized coverage
-          was only computed in exomes and was computed as the mean coverage on chromosome Y / mean
-          coverage on chromosome 20. The threshold used for sex assignment were as follows:
+          ) and X and Y chromosomes normalized coverage to assign sex for each gnomAD sample. Note
+          that we used different combination of metrics (mostly due to their availability) for the
+          different gnomAD datasets (see below for details). The F-stat was computed for each sample
+          using high-confidence QC SNVs (bi-allelic SNVs, LD-pruned to r<sup>2</sup> &lt; 0.1, with
+          allele frequency &gt; 0.1% and call rate &gt; 99%) on non-pseudoautosomal regions
+          (non-PAR) of the X chromosome. The normalized coverage was computed as the mean coverage
+          on sex chromosomes / mean coverage on chromosome 20. The exact metrics and threshold used
+          for sex assignment were as follows:
         </p>
+
         <List>
           <ListItem>
-            Exomes:
+            Genomes (gnomAD v3):
             <List style={{ marginTop: '0.5em' }}>
               <ListItem>
-                Males: chromosome X (non-PAR) F-stat &gt; 0.6 & normalized Y chromosome coverage
-                &ge; 0.1
+                Males: chromosome X (non-PAR) F-stat &gt; 0.2 &amp; 0.5 &lt; normalized X coverage
+                &gt; 1.4 &amp; 1.2 &lt; normalized Y coverage &gt; 0.15
               </ListItem>
               <ListItem>
-                Females: chromosome X (non-PAR) F-stat &lt; 0.5 & normalized Y chromosome coverage
-                &lt; 0.1
+                Females: chromosome X (non-PAR) F-stat &lt; -0.2 &amp; 1.4 &lt; normalized X
+                coverage &gt; 2.25 &amp; normalized X coverage &lt; 0.1
               </ListItem>
             </List>
           </ListItem>
           <ListItem>
-            Genomes:
+            Exomes (gnomAD v2):
             <List style={{ marginTop: '0.5em' }}>
-              <ListItem>Male: chromosome X (non-PAR) F-stat &gt; 0.8</ListItem>
-              <ListItem>Female: chromosome X (non-PAR) F-stat &lt; 0.5</ListItem>
+              <ListItem>
+                Males: chromosome X (non-PAR) F-stat &gt; 0.6 &amp; normalized Y chromosome coverage
+                &ge; 0.1
+              </ListItem>
+              <ListItem>
+                Females: chromosome X (non-PAR) F-stat &lt; 0.5 &amp; normalized Y chromosome
+                coverage &lt; 0.1
+              </ListItem>
+            </List>
+          </ListItem>
+          <ListItem>
+            Genomes (gnomAD v2):
+            <List style={{ marginTop: '0.5em' }}>
+              <ListItem>Males: chromosome X (non-PAR) F-stat &gt; 0.8</ListItem>
+              <ListItem>Females: chromosome X (non-PAR) F-stat &lt; 0.5</ListItem>
             </List>
           </ListItem>
         </List>
@@ -447,6 +501,60 @@ export default () => (
         How is ancestry determined for gnomAD samples?
       </Question>
       <Answer>
+        <p>
+          We use principal components analysis (PCA,{' '}
+          <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca">
+            hwe_normalized_pca function in Hail
+          </ExternalLink>
+          ) on a set of high quality variants (LD-pruned (r2 &lt; 0.1), autosomal, bi-allelic SNVs
+          with allele frequency &gt; 0.1% and call rate &gt; 99%) to determine the ancestry of the
+          samples. For each release, PCA is run on the entire dataset (combining exomes and genomes
+          for gnomAD v2) at once, excluding first and second degree relatives. We then train a
+          random forest classifier on samples with previously known population labels using the PCs
+          as features. We assign ancestry to all samples for which the probability of that ancestry
+          is &gt; 90% according to the random forest model. All other samples are assigned the other
+          ancestry (oth). Detailed numbers for gnomAD v2 and v3 are given below.
+        </p>
+
+        <h4>gnomAD v2</h4>
+
+        <p>
+          For gnomAD v2, we used 94,176 training sites that were shared by exomes and genomes and
+          passed our high quality thresholds for PCA.
+        </p>
+
+        <p>
+          The random forest model was trained using a set of 52,768 samples for which we knew the
+          ancestry. Because there were only 31 South Asian (sas) samples among the genomes, we
+          manually assigned these to other (oth) ancestry as well due to their low number.
+        </p>
+
+        <p>
+          Sub-continental ancestry was computed for European and East Asian samples using the same
+          strategy. The reason for computing sub-continental labels for these two global ancestry
+          groups only was (1) the presence of reliable labels of known sub-population for large
+          enough samples of the data, and (2) the resulting PCA was convincingly splitting the data
+          into separate clusters that matched our known labels.
+        </p>
+
+        <h4>gnomAD v3</h4>
+
+        <p>
+          To select the variants for PCA, we lifted-over the high-quality variants used for gnomAD
+          v2, as well as a set of 5k variants widely used for quality control of GWAS data defined
+          by Shaun Purcell. We then took these variants and applied our quality threshold, leading
+          to 94,148 high quality variants for PCA.
+        </p>
+
+        <p>
+          The random forest model was trained based on 17,906 samples with known ancestry and 14,949
+          samples for which we had a population label from gnomAD v2.
+        </p>
+
+        <p>
+          Sub-continental population assignment has not been performed for gnomAD v3 at this time.
+        </p>
+
         <p>
           We used principal components analysis (PCA,{' '}
           <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca">
@@ -494,9 +602,9 @@ export default () => (
             Hail&apos;s pc_relate
           </ExternalLink>
           . We removed duplicate samples, first degree relatives, and second degree relatives to
-          minimize inflation of rare variant frequencies. This was done on exomes and genomes
-          combined. We prioritized genomes over exomes and then sample quality when selecting which
-          individuals to include.
+          minimize inflation of rare variant frequencies. We always prioritize samples with higher
+          quality metrics. In gnomAD v2, this was done on exomes and genomes combined, prioritizing
+          genomes over exomes when selecting which individuals to include.
         </p>
       </Answer>
 
@@ -510,7 +618,7 @@ export default () => (
           regardless of the transcript. A &quot;†&quot; denotes a consequence that is for a
           non-canonical transcript. On the gene page you can select which transcript you would like
           to view (the canonical one is marked by *). Please also note that our transcripts are
-          annotated using Gencode v19.
+          annotated using Gencode v29 for gnomAD v3 and Gencode v19 for v2.
         </p>
       </Answer>
 
@@ -520,10 +628,9 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          Our transcript annotations are based on Gencode v19. Annotations may have changed
-          depending on the version of Gencode used (such as changing from a non-coding to a
-          protein-coding gene, or having a different transcript length). We will be updating to a
-          more recent Gencode version in a future release.
+          Our transcript annotations are based on Gencode v29 for gnomAD v3 and Gencode v19 for v2.
+          Annotations may have changed depending on the version of Gencode used (such as changing
+          from a non-coding to a protein-coding gene, or having a different transcript length).
         </p>
       </Answer>
 
@@ -532,18 +639,25 @@ export default () => (
       </Question>
       <Answer>
         <p>Flags that will appear on variant pages:</p>
+
         <List>
           <ListItem>
             AC0: The allele count is zero after filtering out low-confidence genotypes (GQ &lt; 20;
             DP &lt; 10; and AB &lt; 0.2 for het calls)
           </ListItem>
-          <ListItem>InbreedingCoeff: The InbreedingCoeff is &lt; -0.3</ListItem>
           <ListItem>
-            RF: Failed random forest filtering thresholds of 0.055 for exome SNVs, 0.206 for exome
-            indels, 0.263 for genome SNVs, and 0.222 for genome indels
+            AS-VQSR (gnomAD v3 only): Failed GATK Allele-Specific Variant Quality Recalibration
+            (AS-VQSR)
+          </ListItem>
+          <ListItem>InbreedingCoeff: The Inbreeding Coefficient is &lt; -0.3</ListItem>
+          <ListItem>
+            RF (gnomAD v2 only): Failed random forest filtering thresholds of 0.055 for exome SNVs,
+            0.206 for exome indels, 0.263 for genome SNVs, and 0.222 for genome indels
           </ListItem>
         </List>
+
         <p>Flags that will appear in the variant table on gene/region pages:</p>
+
         <List>
           <ListItem>
             MNV: Multinucleotide variant: the variant is found in phase with another variant,
@@ -579,11 +693,16 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          The ExAC browser supports rsIDs up to dbSNP version 141 and gnomAD supports version 147,
-          so there will be some differences between the databases and dbSNP depending on the
-          versions being used. We will be updating to a more recent version of dbSNP in a future
-          release.
+          First, we do not continuously update the dbSNP rsIDs displayed in the browser, so there
+          will be some differences the databases and dbSNP depending on versions been used. The
+          dbSNP version used are:
         </p>
+
+        <List>
+          <ListItem>ExAC: dbSNP version 141</ListItem>
+          <ListItem>gnomAD v2: dbSNP version 147</ListItem>
+          <ListItem>gnomAD v3: dbSNP version 151</ListItem>
+        </List>
 
         <p>
           Several other classes of problem relates to fundamental issues with dbSNP. dbSNP rsIDs do
@@ -635,7 +754,8 @@ export default () => (
         <p>
           Unfortunately, for many reasons (including consent and data usage restrictions) we cannot
           provide the information required for such filtering. The only subsets we provide are
-          controls, non-cancer, non-neuro, and non-TOPMed.
+          controls, non-cancer, non-neuro, and non-TOPMed. At this time, subsets are only available
+          in gnomAD v2.
         </p>
       </Answer>
 
@@ -653,18 +773,14 @@ export default () => (
         </p>
       </Answer>
 
-      <Question id="when-are-you-going-to-switch-over-to-grch38">
-        When are you going to switch over to GRCh38?
+      <Question id="when-are-exomes-going-to-be-available-on-grch38">
+        When are exomes going to be available on GRCh38?
       </Question>
       <Answer>
         <p>
-          We are still working on reprocessing our data on GRCh38. Our first native release of
-          GRCh38 data is scheduled to be released in the fall. We have lifted-over GRCh38 versions
-          of our current datasets available on our{' '}
-          <Link to={{ pathname: '/downloads', hash: '#variants-grch38-liftover' }}>
-            downloads page
-          </Link>
-          , but note that these are imperfect and contain a number of known issues.
+          This is to come in 2020 with gnomAD v4! At this time, we have lifted-over GRCh38 versions
+          of our current datasets available on our downloads page, but note that these are imperfect
+          and contain a number of known issues.
         </p>
       </Answer>
 
@@ -685,6 +801,32 @@ export default () => (
     <dl>
       <Question id="how-was-coverage-calculated">How was coverage calculated?</Question>
       <Answer>
+        <h4>gnomAD v3</h4>
+
+        <p>
+          Coverage was computed using all 71,702 gnomAD v3 samples from their GVCFs . The gVCFs were
+          produced using a 3-bin blocking scheme:
+        </p>
+
+        <List>
+          <ListItem>No coverage</ListItem>
+          <ListItem>Reference genotype quality &lt; Q20</ListItem>
+          <ListItem>Reference genotype quality &ge; Q20</ListItem>
+        </List>
+
+        <p>
+          The coverage was binned by quality using the thresholds above and the median coverage
+          value for each of the resulting coverage blocks was used to compute the coverage metrics
+          presented in the browser.
+        </p>
+
+        <p>
+          Coverage was computed for all callable bases in the genome (all non-N bases, minus
+          telomeres and centromeres).
+        </p>
+
+        <h4>gnomAD v2</h4>
+
         <p>
           Coverage was calculated separately for exomes and genomes on a ~10% subset of the samples
           using the <ExternalLink href="https://www.htslib.org/">samtools</ExternalLink> depth tool.
@@ -713,8 +855,8 @@ export default () => (
         </p>
       </Answer>
 
-      <Question id="why-does-a-variant-show-a-large-drop-in-AN-compared-to-surrounding-variants">
-        Why does a variant show a large drop in AN compared to surrounding variants?
+      <Question id="why-does-a-variant-show-a-large-drop-in-an-compared-to-surrounding-variants-in-gnomad-v2">
+        Why does a variant show a large drop in AN compared to surrounding variants in gnomAD v2?
       </Question>
       <Answer>
         <p>
@@ -733,8 +875,10 @@ export default () => (
       <Answer>
         <p>
           The calling intervals for our exomes include the bait-covered regions &plusmn;50 bp. The
-          exome calling intervals were used to generate the genome coding-only files.
+          following exome calling intervals were used to generate the genome coding-only files in
+          gnomAD v2.
         </p>
+
         <List>
           <ListItem>
             <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
