@@ -9,7 +9,7 @@ import serveStatic from 'serve-static'
 
 import gnomadSchema from './schema'
 import { UserVisibleError } from './schema/errors'
-import logger from './utilities/logging'
+import logger, { throttledWarning } from './utilities/logging'
 
 const app = express()
 app.use(compression())
@@ -43,6 +43,9 @@ esLimiter.on('error', error => {
   logger.error(error)
 })
 
+const warnRequestTimedOut = throttledWarning(n => `${n} ES requests timed out`, 60000)
+const warnRequestDropped = throttledWarning(n => `${n} ES requests dropped`, 60000)
+
 const scheduleElasticsearchRequest = fn => {
   return new Promise((resolve, reject) => {
     let canceled = false
@@ -50,6 +53,7 @@ const scheduleElasticsearchRequest = fn => {
     // If task sits in the queue for more than 30s, cancel it and notify the user.
     const timeout = setTimeout(() => {
       canceled = true
+      warnRequestTimedOut()
       reject(new UserVisibleError('Request timed out'))
     }, 30000)
 
@@ -73,6 +77,7 @@ const scheduleElasticsearchRequest = fn => {
         // notify the user and cancel the timeout timer.
         if (err.message === 'This job has been dropped by Bottleneck') {
           clearTimeout(timeout)
+          warnRequestDropped()
           reject(new UserVisibleError('Service overloaded'))
         }
 
