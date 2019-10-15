@@ -64,9 +64,10 @@ export default () => (
       community.
     </p>
     <p>
-      The data set provided on this website spans 125,748 exome sequences and 15,708 whole-genome
-      sequences from unrelated individuals sequenced as part of various disease-specific and
-      population genetic studies. The gnomAD Principal Investigators and groups that have
+      The v2 data set (GRCh37/h19) provided on this website spans 125,748 exome sequences and 15,708
+      whole-genome sequences from unrelated individuals sequenced as part of various
+      disease-specific and population genetic studies. The v3 data set (GRCh38) spans 71,702
+      genomes, selected as in v2. The gnomAD Principal Investigators and groups that have
       contributed data to the current release are listed{' '}
       <Link preserveSelectedDataset={false} to="/about">
         here
