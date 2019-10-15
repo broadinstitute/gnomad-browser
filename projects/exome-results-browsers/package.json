@@ -27,6 +27,7 @@
     "@fortawesome/fontawesome-free": "^5.8.1",
     "core-js": "^3.0.1",
     "graphql-fetch": "^1.0.1",
+    "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
