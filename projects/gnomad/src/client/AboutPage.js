@@ -180,118 +180,147 @@ export default () => (
       <CreditsSection width="34%">
         <h3 id="principal-investigators">Principal Investigators</h3>
         <PrincipalInvestigatorList aria-labelledby="principal-investigators">
-          <li>Daniel MacArthur</li>
-          <li>Aarno Palotie</li>
-          <li>Andres Metspalu</li>
-          <li>Anne Remes</li>
-          <li>Adolfo Correa</li>
-          <li>Andre Franke</li>
-          <li>Ann Pulver</li>
-          <li>Ben Glaser</li>
-          <li>Ben Neale</li>
-          <li>Bong-Jo Kim</li>
-          <li>Bruce Cohen</li>
-          <li>Carlos Pato</li>
+          <li>Maria Abreu</li>
           <li>Carlos A Aguilar Salinas</li>
-          <li>Christina Hultman</li>
-          <li>Christine M. Albert</li>
-          <li>Christopher Haiman</li>
-          <li>Clicerio Gonzalez</li>
-          <li>Colin Palmer</li>
-          <li>Craig Hanis</li>
-          <li>Dan Roden</li>
-          <li>Dan Turner</li>
-          <li>Dana Dabelea</li>
-          <li>Daniel Chasman</li>
-          <li>Danish Saleheen</li>
-          <li>David Altshuler</li>
-          <li>David Goldstein</li>
-          <li>Dawood Darbar</li>
-          <li>Dermot McGovern</li>
-          <li>Diego Ardissino</li>
-          <li>Donald Bowden</li>
-          <li>Dost Ongur</li>
-          <li>Emelia J. Benjamin</li>
-          <li>Erkki Vartiainen</li>
-          <li>Erwin Bottinger</li>
-          <li>Gad Getz</li>
-          <li>George Kirov</li>
-          <li>Gil Atzmon</li>
-          <li>Harlan M. Krumholz</li>
-          <li>Harry Sokol</li>
-          <li>Heribert Schunkert</li>
-          <li>Hilkka Soininen</li>
-          <li>Hugh Watkins</li>
-          <li>Jaakko Kaprio</li>
-          <li>Jaana Suvisaari</li>
-          <li>James Meigs</li>
-          <li>James Ware</li>
-          <li>James Wilson</li>
-          <li>Jaspal Kooner</li>
-          <li>Jaume Marrugat</li>
-          <li>Jeanette Erdmann</li>
-          <li>Jeremiah Scharf</li>
-          <li>John Barnard</li>
-          <li>John Chambers</li>
-          <li>John D. Rioux</li>
-          <li>Jose Florez</li>
-          <li>Josée Dupuis</li>
-          <li>Judy Cho</li>
-          <li>Juliana Chan</li>
-          <li>Kari Mattila</li>
-          <li>Kyong Soo Park</li>
-          <li>Laurent Beaugerie</li>
-          <li>Leif Groop</li>
-          <li>Lorena Orozco</li>
-          <li>Lori Bonnycastle</li>
-          <li>Maija Wessman</li>
-          <li>Mark Daly</li>
-          <li>Mark McCarthy</li>
-          <li>Markku Laakso</li>
-          <li>Martti Färkkilä</li>
-          <li>Matthew Bown</li>
-          <li>Matthew Harms</li>
-          <li>Matti Holi</li>
-          <li>Michael Boehnke</li>
-          <li>Michael O&apos;Donovan</li>
-          <li>Michael Owen</li>
-          <li>Mikko Hiltunen</li>
-          <li>Mikko Kallela</li>
-          <li>Mina Chung</li>
-          <li>Ming Tsuang</li>
-          <li>Moore Shoemaker</li>
-          <li>Nazneen Rahman</li>
-          <li>Nilesh Samani</li>
-          <li>Olle Melander</li>
-          <li>Pamela Sklar</li>
-          <li>Patrick T. Ellinor</li>
-          <li>Patrick Sullivan</li>
-          <li>Peter Nilsson</li>
-          <li>Ramnik Xavier</li>
-          <li>Ravindranath Duggirala</li>
-          <li>Rinse Weersma</li>
-          <li>Roberto Elosua</li>
-          <li>Ronald Ma</li>
-          <li>Ruth Loos</li>
-          <li>Ruth McPherson</li>
-          <li>Samuli Ripatti</li>
-          <li>Sekar Kathiresan</li>
-          <li>Seppo Koskinen</li>
-          <li>Soo Heon Kwak</li>
-          <li>Stephen Glatt</li>
-          <li>Steve McCarroll</li>
-          <li>Steven A. Lubitz</li>
-          <li>Subra Kugathasan</li>
-          <li>Tai Shyong</li>
           <li>Tariq Ahmad</li>
-          <li>Teresa Tusie Luna</li>
-          <li>Terho Lehtimäki</li>
-          <li>Tim Spector</li>
+          <li>Christine M. Albert</li>
+          <li>Nicholette Allred</li>
+          <li>David Altshuler</li>
+          <li>Diego Ardissino</li>
+          <li>Gil Atzmon</li>
+          <li>John Barnard</li>
+          <li>Laurent Beaugerie</li>
+          <li>Gary Beecham</li>
+          <li>Emelia J. Benjamin</li>
+          <li>Michael Boehnke</li>
+          <li>Lori Bonnycastle</li>
+          <li>Erwin Bottinger</li>
+          <li>Donald Bowden</li>
+          <li>Matthew Bown</li>
+          <li>Steven Brant</li>
+          <li>Hannia Campos</li>
+          <li>John Chambers</li>
+          <li>Juliana Chan</li>
+          <li>Daniel Chasman</li>
+          <li>Rex Chisholm</li>
+          <li>Judy Cho</li>
+          <li>Rajiv Chowdhury</li>
+          <li>Mina Chung</li>
+          <li>Wendy Chung</li>
+          <li>Bruce Cohen</li>
+          <li>Adolfo Correa</li>
+          <li>Dana Dabelea</li>
+          <li>Mark Daly</li>
+          <li>John Danesh</li>
+          <li>Dawood Darbar</li>
+          <li>Joshua Denny</li>
+          <li>Ravindranath Duggirala</li>
+          <li>Josée Dupuis</li>
+          <li>Patrick T. Ellinor</li>
+          <li>Roberto Elosua</li>
+          <li>Jeanette Erdmann</li>
           <li>Tõnu Esko</li>
-          <li>Tuomi Tiinamaija</li>
-          <li>Veikko Salomaa</li>
-          <li>Yik Ying Teo</li>
+          <li>Martt Färkkilä</li>
+          <li>Diane Fatkin</li>
+          <li>Jose Florez</li>
+          <li>Andre Franke</li>
+          <li>Gad Getz</li>
+          <li>David Glahn</li>
+          <li>Ben Glaser</li>
+          <li>Stephen Glatt</li>
+          <li>David Goldstein</li>
+          <li>Clicerio Gonzalez</li>
+          <li>Leif Groop</li>
+          <li>Christopher Haiman</li>
+          <li>Ira Hall</li>
+          <li>Craig Hanis</li>
+          <li>Matthew Harms</li>
+          <li>Mikko Hiltunen</li>
+          <li>Matti Holi</li>
+          <li>Christina Hultman</li>
+          <li>Chaim Jalas</li>
+          <li>Mikko Kallela</li>
+          <li>Jaakko Kaprio</li>
+          <li>Sekar Kathiresan</li>
+          <li>Eimear Kenny</li>
+          <li>Bong-Jo Kim</li>
           <li>Young Jin Kim</li>
+          <li>George Kirov</li>
+          <li>Jaspal Kooner</li>
+          <li>Seppo Koskinen</li>
+          <li>Harlan M. Krumholz</li>
+          <li>Subra Kugathasan</li>
+          <li>Soo Heon Kwak</li>
+          <li>Markku Laakso</li>
+          <li>Terho Lehtimäki</li>
+          <li>Ruth Loos</li>
+          <li>Steven A. Lubitz</li>
+          <li>Ronald Ma</li>
+          <li>Daniel MacArthur</li>
+          <li>Gregory M. Marcus</li>
+          <li>Jaume Marrugat</li>
+          <li>Kari Mattila</li>
+          <li>Steve McCarroll</li>
+          <li>Mark McCarthy</li>
+          <li>Jacob McCauley</li>
+          <li>Dermot McGovern</li>
+          <li>Ruth McPherson</li>
+          <li>James Meigs</li>
+          <li>Olle Melander</li>
+          <li>Deborah Meyers</li>
+          <li>Lili Milani</li>
+          <li>Braxton Mitchell</li>
+          <li>Saman Nazarian</li>
+          <li>Ben Neale</li>
+          <li>Peter Nilsson</li>
+          <li>Michael O&apos;Donovan</li>
+          <li>Dost Ongur</li>
+          <li>Lorena Orozco</li>
+          <li>Michael Owen</li>
+          <li>Colin Palmer</li>
+          <li>Aarno Palotie</li>
+          <li>Kyong Soo Park</li>
+          <li>Carlos Pato</li>
+          <li>Ann Pulver</li>
+          <li>Dan Rader</li>
+          <li>Nazneen Rahman</li>
+          <li>Alex Reiner</li>
+          <li>Anne Remes</li>
+          <li>Stephen Rich</li>
+          <li>John D. Rioux</li>
+          <li>Samuli Ripatti</li>
+          <li>Dan Roden</li>
+          <li>Jerome I. Rotter</li>
+          <li>Danish Saleheen</li>
+          <li>Veikko Salomaa</li>
+          <li>Nilesh Samani</li>
+          <li>Jeremiah Scharf</li>
+          <li>Heribert Schunkert</li>
+          <li>Svati Shah</li>
+          <li>Moore Shoemaker</li>
+          <li>Tai Shyong</li>
+          <li>Edwin K. Silverman</li>
+          <li>Pamela Sklar</li>
+          <li>Gustav Smith</li>
+          <li>Hilkka Soininen</li>
+          <li>Harry Sokol</li>
+          <li>Tim Spector</li>
+          <li>Nathan Stitziel</li>
+          <li>Patrick Sullivan</li>
+          <li>Jaana Suvisaari</li>
+          <li>Kent Taylor</li>
+          <li>Yik Ying Teo</li>
+          <li>Tuomi Tiinamaija</li>
+          <li>Ming Tsuang</li>
+          <li>Dan Turner</li>
+          <li>Teresa Tusie Luna</li>
+          <li>Erkki Vartiainen</li>
+          <li>James Ware</li>
+          <li>Hugh Watkins</li>
+          <li>Rinse Weersma</li>
+          <li>Maija Wessman</li>
+          <li>James Wilson</li>
+          <li>Ramnik Xavier</li>
         </PrincipalInvestigatorList>
       </CreditsSection>
       <CreditsSection width="30%">
@@ -299,16 +328,27 @@ export default () => (
         <ContributorList aria-labelledby="contributing-projects">
           <li>1000 Genomes</li>
           <li>1958 Birth Cohort</li>
+          <li>African American Coronary Artery Calcification project (AACAC)</li>
           <li>ALSGEN</li>
           <li>Alzheimer&apos;s Disease Sequencing Project (ADSP)</li>
-          <li>Atrial Fibrillation Genetics Consortium (AFGen)</li>
-          <li>Estonian Genome Center, University of Tartu (EGCUT)</li>
+          <li>
+            Atrial Fibrillation Genetics Consortium (AFGen)
+            <ul>
+              <li>Duke Catheterization Genetics (CATHGEN)</li>
+            </ul>
+          </li>
+          <li>Bangladesh Risk of Acute Vascular Events (BRAVE) Study</li>
+          <li>BioMe Biobank</li>
           <li>Bulgarian Trios</li>
+          <li>COPD-Gene</li>
+          <li>Estonian Genome Center, University of Tartu (EGCUT)</li>
           <li>Finland-United States Investigation of NIDDM Genetics (FUSION)</li>
+          <li>Finnish Migraine Study</li>
           <li>Finnish Twin Cohort Study</li>
           <li>FINN-ADGEN</li>
           <li>FINRISK</li>
           <li>Framingham Heart Study</li>
+          <li>Genetics of Cardiometabolic Health in the Amish</li>
           <li>Génome Québec - Genizon Biobank</li>
           <li>Genomic Psychiatry Cohort</li>
           <li>GoT2D</li>
@@ -324,11 +364,14 @@ export default () => (
             </ul>
           </li>
           <li>Jackson Heart Study</li>
+          <li>Jewish Genome Project - funded by Bonei Olam</li>
           <li>Kuopio Alzheimer Study</li>
           <li>LifeLines Cohort</li>
+          <li>Lung Tissue Research Consortium (LTRC)</li>
+          <li>McLean Program for Neuropsychiatric Research, Psychotic Disorders Division</li>
           <li>MESTA</li>
           <li>METabolic Syndrome In Men (METSIM)</li>
-          <li>Finnish Migraine Study</li>
+          <li>Multi-Ethnic Study of Atherosclerosis (MESA)</li>
           <li>
             Myocardial Infarction Genetics Consortium (MIGen):
             <ul>
@@ -345,13 +388,15 @@ export default () => (
             </ul>
           </li>
           <li>National Institute of Mental Health (NIMH) Controls</li>
+          <li>NHGRI CCDG</li>
           <li>NHLBI-GO Exome Sequencing Project (ESP)</li>
           <li>NHLBI TOPMed</li>
-          <li>Program for Neuropsychiatric Research, McLean Psychotic Disorders Division</li>
+          <li>Population Architecture Using Genomics and Epidemiology (PAGE) Consortium</li>
           <li>Schizophrenia Trios from Taiwan</li>
           <li>Sequencing Initiative Suomi (SiSu)</li>
           <li>SIGMA-T2D</li>
-          <li>Swedish Schizophrenia &#x26; Bipolar Studies</li>
+          <li>SubPopulations and InteRmediate Outcome Measures In COPD Study (SPIROMICS)</li>
+          <li>Swedish Schizophrenia & Bipolar Studies</li>
           <li>
             T2D-GENES
             <ul>
@@ -360,73 +405,93 @@ export default () => (
           </li>
           <li>T2D-SEARCH</li>
           <li>The Cancer Genome Atlas (TCGA)</li>
+          <li>Whole Genome Sequencing in Psychiatric Disorders (WGSPD)</li>
+          <li>Women&apos;s Health Initiative (WHI)</li>
         </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
         <h3 id="production-team">Production team</h3>
         <ContributorList aria-labelledby="production-team">
-          <li>Eric Banks</li>
-          <li>Charlotte Tolonen</li>
+          <li>
+            <strong>Eric Banks</strong>
+          </li>
+          <li>Louis Bergelson</li>
+          <li>Kristian Cibulskis</li>
+          <li>Yossi Farjoun</li>
+          <li>Laura Gauthier</li>
           <li>Christopher Llanwarne</li>
+          <li>Ruchi Munshi</li>
+          <li>Sam Novod</li>
+          <li>Nikelle Petrillo</li>
           <li>David Roazen</li>
-          <li>Diane Kaplan</li>
-          <li>Gordon Wade</li>
-          <li>Jeff Gentry</li>
+          <li>Valentin Ruano-Rubio</li>
+          <li>Megan Shand</li>
           <li>Jonn Smith</li>
           <li>Jose Soto</li>
           <li>Kathleen Tibbetts</li>
-          <li>Kristian Cibulskis</li>
-          <li>Laura Gauthier</li>
-          <li>Louis Bergelson</li>
-          <li>Miguel Covarrubias</li>
-          <li>Nikelle Petrillo</li>
-          <li>Ruchi Munshi</li>
-          <li>Sam Novod</li>
-          <li>Thibault Jeandet</li>
-          <li>Valentin Ruano-Rubio</li>
-          <li>Yossi Farjoun</li>
+          <li>Charlotte Tolonen</li>
+          <li>Gordon Wade</li>
         </ContributorList>
         <h3 id="analysis-team">Analysis team</h3>
         <ContributorList aria-labelledby="analysis-team">
-          <li>Konrad Karczewski</li>
-          <li>Laurent Francioli</li>
-          <li>Grace Tiao</li>
-          <li>Kristen Laricchia</li>
-          <li>Anne O&apos;Donnell-Luria</li>
-          <li>Arcturus Wang</li>
-          <li>Ben Neale</li>
-          <li>Beryl Cummings</li>
-          <li>Chris Vittal</li>
-          <li>Cotton Seed</li>
-          <li>Eric Minikel</li>
+          <li>
+            <strong>Laurent Francioli</strong>
+          </li>
+          <li>
+            <strong>Konrad Karczewski</strong>
+          </li>
+          <li>
+            <strong>Grace Tiao</strong>
+          </li>
+          <li>
+            <strong>Kristen Laricchia</strong>
+          </li>
           <li>Irina Armean</li>
-          <li>James Ware</li>
-          <li>Kaitlin Samocha</li>
-          <li>Mark Daly</li>
-          <li>Nicola Whiffin</li>
-          <li>Qingbo Wang</li>
           <li>Ryan Collins</li>
+          <li>Beryl Cummings</li>
+          <li>Mark Daly</li>
+          <li>Laura Gauthier</li>
+          <li>Eric Minikel</li>
+          <li>Ben Neale</li>
+          <li>Anne O&apos;Donnell-Luria</li>
           <li>Tim Poterba</li>
+          <li>Kaitlin Samocha</li>
+          <li>Cotton Seed</li>
+          <li>Chris Vittal</li>
+          <li>Arcturus Wang</li>
+          <li>Qingbo Wang</li>
+          <li>James Ware</li>
+          <li>Nicola Whiffin</li>
+          <li>Mike Wilson</li>
         </ContributorList>
         <h3 id="sv-team">Structural Variation team</h3>
         <ContributorList aria-labelledby="sv-team">
-          <li>Ryan Collins</li>
-          <li>Harrison Brand</li>
-          <li>Konrad Karczewski</li>
-          <li>Laurent Francioli</li>
-          <li>Nick Watts</li>
-          <li>Matthew Solomonson</li>
-          <li>Xuefang Zhao</li>
-          <li>Laura Gauthier</li>
-          <li>Harold Wang</li>
-          <li>Chelsea Lowther</li>
-          <li>Mark Walker</li>
-          <li>Christopher Whelan</li>
-          <li>Ted Brookings</li>
-          <li>Ted Sharpe</li>
-          <li>Jack Fu</li>
+          <li>
+            <strong>Ryan Collins</strong>
+          </li>
+          <li>
+            <strong>Harrison Brand</strong>
+          </li>
+          <li>
+            <strong>Michael Talkowski</strong>
+          </li>
           <li>Eric Banks</li>
-          <li>Michael Talkowski</li>
+          <li>Ted Brookings</li>
+          <li>Laurent Francioli</li>
+          <li>Jack Fu</li>
+          <li>Laura Gauthier</li>
+          <li>Konrad Karczewski</li>
+          <li>Chelsea Lowther</li>
+          <li>Tom Lyons</li>
+          <li>Sam Novod</li>
+          <li>Ted Sharpe</li>
+          <li>Matthew Solomonson</li>
+          <li>Gordon Wade</li>
+          <li>Mark Walker</li>
+          <li>Harold Wang</li>
+          <li>Nick Watts</li>
+          <li>Christopher Whelan</li>
+          <li>Xuefang Zhao</li>
         </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
@@ -436,23 +501,44 @@ export default () => (
         </ContributorList>
         <h3 id="website-team">Website team</h3>
         <ContributorList aria-labelledby="website-team">
-          <li>Matthew Solomonson</li>
-          <li>Nick Watts</li>
-          <li>Ben Weisburd</li>
+          <li>
+            <strong>Matthew Solomonson</strong>
+          </li>
+          <li>
+            <strong>Nick Watts</strong>
+          </li>
           <li>Konrad Karczewski</li>
+          <li>Ben Weisburd</li>
         </ContributorList>
         <h3 id="ethics-team">Ethics team</h3>
         <ContributorList aria-labelledby="ethics-team">
+          <li>Stacey Donnelly</li>
+          <li>Namrata Gupta</li>
+          <li>Emily Lipscomb</li>
           <li>Andrea Saltzman</li>
           <li>Molly Schleicher</li>
-          <li>Namrata Gupta</li>
-          <li>Stacey Donnelly</li>
         </ContributorList>
         <h3 id="broad-genomics-platform">Broad Genomics Platform</h3>
         <ContributorList aria-labelledby="broad-genomics-platform">
-          <li>Stacey Gabriel</li>
           <li>Kristen Connolly</li>
           <li>Steven Ferriera</li>
+          <li>Stacey Gabriel</li>
+        </ContributorList>
+        <h3 id="gnomad-council">gnomAD Council</h3>
+        <ContributorList aria-labelledby="gnomad-council">
+          <li>
+            <strong>Mark Daly</strong>
+          </li>
+          <li>
+            <strong>Heidi Rehm</strong>
+          </li>
+          <li>Jessica Alföldi</li>
+          <li>Daniel MacArthur</li>
+          <li>Ben Neale</li>
+          <li>Anne O&apos;Donnell-Luria</li>
+          <li>Matthew Solomonson</li>
+          <li>Mike Talkowski</li>
+          <li>Grace Tiao</li>
         </ContributorList>
         <h3 id="funding">Funding</h3>
         <FundingSourceList aria-labelledby="funding">
@@ -469,21 +555,29 @@ export default () => (
           <li>
             NHGRI U24 HG010262
             <br />
-            (PI: Phillipakis)
+            (PI: Philippakis)
           </li>
           <li>
             NIMH R56 MH115957
             <br />
             (PI: Talkowski)
           </li>
+          <li>
+            NHLBI R01 HL143295
+            <br />
+            (PI: Green)
+          </li>
+          <li>
+            Wellcome Trust WT200990/Z/16/Z
+            <br />
+            (PI: Birney)
+          </li>
+          <li>BioMarin</li>
+          <li>Sanofi-Genzyme</li>
         </FundingSourceList>
         <p>
           The vast majority of the data storage, computing resources, and human effort used to
           generate this call set were donated by the Broad Institute
-        </p>
-        <p>
-          We thank Jerome Rotter, Stephen Rich, and the Multi-Ethnic Study of Atherosclerosis (MESA)
-          for the use of their structural variant data
         </p>
       </CreditsSection>
     </Credits>
