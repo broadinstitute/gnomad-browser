@@ -12,7 +12,7 @@ import browserConfig from '@browser/config'
 import { RootType } from './schema/root'
 import renderTemplate from './template'
 import { UserVisibleError } from './utilities/errors'
-import logger from './utilities/logging'
+import logger, { throttledWarning } from './utilities/logging'
 
 const requiredSettings = ['ELASTICSEARCH_URL', 'PORT']
 const missingSettings = requiredSettings.filter(setting => !process.env[setting])
@@ -40,6 +40,9 @@ app.use(compression())
     logger.error(error)
   })
 
+  const warnRequestTimedOut = throttledWarning(n => `${n} ES requests timed out`, 60000)
+  const warnRequestDropped = throttledWarning(n => `${n} ES requests dropped`, 60000)
+
   const scheduleElasticsearchRequest = fn => {
     return new Promise((resolve, reject) => {
       let canceled = false
@@ -47,6 +50,7 @@ app.use(compression())
       // If task sits in the queue for more than 30s, cancel it and notify the user.
       const timeout = setTimeout(() => {
         canceled = true
+        warnRequestTimedOut()
         reject(new UserVisibleError('Request timed out'))
       }, 30000)
 
@@ -70,6 +74,7 @@ app.use(compression())
           // notify the user and cancel the timeout timer.
           if (err.message === 'This job has been dropped by Bottleneck') {
             clearTimeout(timeout)
+            warnRequestDropped()
             reject(new UserVisibleError('Service overloaded'))
           }
 
