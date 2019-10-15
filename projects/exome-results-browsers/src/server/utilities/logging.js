@@ -1,3 +1,5 @@
+import throttle from 'lodash.throttle'
+
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
 const Severity = {
   DEFAULT: 'DEFAULT',
@@ -54,3 +56,26 @@ class Logger {
 }
 
 export default new Logger()
+
+export const throttledWarning = (formatMessage, wait) => {
+  let numMessages = 0
+  const output = throttle(
+    () => {
+      if (numMessages > 0) {
+        const message = formatMessage(numMessages)
+        console.log(JSON.stringify({ severity: Severity.WARNING, message }))
+      }
+      numMessages = 0
+    },
+    wait,
+    {
+      leading: false,
+      trailing: true,
+    }
+  )
+
+  return () => {
+    numMessages += 1
+    output()
+  }
+}
