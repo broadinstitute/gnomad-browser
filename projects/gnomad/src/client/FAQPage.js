@@ -60,21 +60,9 @@ export default () => (
         </p>
 
         <p>
-          There&apos;s no need to include us as authors on your manuscript, unless we contributed
-          specific advice or analysis for your work. However, we ask that the Consortium be
-          acknowledged in publications as follows:
+          There is no need to include us as authors on your manuscript, unless we contributed
+          specific advice or analysis for your work.
         </p>
-        <blockquote>
-          <p>
-            The authors would like to thank the Genome Aggregation Database (gnomAD) and the groups
-            that provided exome and genome variant data to this resource. A full list of
-            contributing groups can be found at{' '}
-            <Link preserveSelectedDataset={false} to="/about">
-              https://gnomad.broadinstitute.org/about
-            </Link>
-            .
-          </p>
-        </blockquote>
       </Answer>
 
       <Question id="i-have-identified-a-rare-variant-what-phenotype-data-are-available">
@@ -117,24 +105,28 @@ export default () => (
       </Question>
       <Answer>
         <p>
+          These usage guidelines are based on goodwill. They are not a legal contract, but we
+          request that you follow these guidelines if you use our data.
+        </p>
+        <p>
           There are no restrictions or embargoes on the publication of results derived from the
           gnomAD database. However, we encourage people to{' '}
           <ExternalLink href="mailto:exomeconsortium@gmail.com">
             check with the consortium
           </ExternalLink>{' '}
           before embarking on large-scale analyses, to see if we already have something currently
-          underway that overlaps with your plans; generally, we prefer to collaborate with users
-          rather than compete with them. The data are available under the{' '}
-          <ExternalLink href="https://opendatacommons.org/licenses/odbl/1.0/">
-            ODC Open Database License (ODbL)
-          </ExternalLink>{' '}
-          (summary available{' '}
-          <ExternalLink href="https://www.opendatacommons.org/licenses/odbl/1-0/summary/">
-            here
+          underway that overlaps with your plans.
+        </p>
+        <p>
+          The data released by gnomAD are available free of restrictions under the{' '}
+          <ExternalLink href="https://creativecommons.org/publicdomain/zero/1.0/">
+            Creative Commons Zero Public Domain Dedication
           </ExternalLink>
-          ): you are free to share and modify the gnomAD data so long as you attribute any public
-          use of the database, or works produced from the database; keep the resulting data-sets
-          open; and offer your shared or adapted version of the dataset under the same ODbL license.
+          . This means that you can use it for any purpose without legally having to give
+          attribution. However, we request that you actively acknowledge and give attribution to the
+          gnomAD project, and link back to the relevant page, wherever possible. Attribution
+          supports future efforts to release other data. It also reduces the amount of
+          &quot;orphaned data&quot;, helping retain links to authoritative sources.
         </p>
       </Answer>
 
