@@ -22,11 +22,11 @@
 
    ```
    hailctl dataproc submit schema \
-      --pyfiles ./hail-elasticsearch-pipelines/hail_scripts \
+      --pyfiles ./data/data_utils \
       ./projects/exome-results-browsers/browsers/schema/data/prepare_variant_results.py \
-         --variant-annotations-url=gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-annotation-table.ht \
-         --variant-results-url=gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-results-table-meta-rare-denovos-common-merged.ht \
-         --output-url=gs://schizophrenia-browser/190415/variant_results.ht
+         --annotations gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-annotation-table.ht \
+         --results gs://schizophrenia-browser/190415/2019-04-15_schema-browser-variant-results-table-meta-rare-denovos-common-merged.ht \
+         --output gs://schizophrenia-browser/191010/variant_results.ht
    ```
 
 4. Modify the cluster to remove preemptible workers.
@@ -50,9 +50,9 @@
    hailctl dataproc submit schema \
       --pyfiles ./data/data_utils \
       ./data/export_hail_table_to_elasticsearch.py \
-         gs://schizophrenia-browser/190415/variant_results.ht \
+         gs://schizophrenia-browser/191010/variant_results.ht \
          $ELASTICSEARCH_IP \
-         schema_variant_results_2019_04_15 \
+         schema_variant_results_2019_10_10 \
          --num-shards 2
    ```
 
