@@ -63,16 +63,19 @@ export default () => (
       Consortium (ExAC).
     </p>
     <p>
-      The short variant data set provided on this website spans 125,748 exomes and 15,708 genomes
-      from unrelated individuals sequenced as part of various disease-specific and population
-      genetic studies, totalling 141,456 individuals.{' '}
+      The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
+      individuals sequenced as part of various disease-specific and population genetic studies, and
+      is aligned against the GRCh38 reference. The v2 short variant data set provided on this
+      website spans 125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part
+      of various disease-specific and population genetic studies, totalling 141,456 individuals, and
+      is aligned against the GRCh37 reference.{' '}
       <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
         This blog post
       </ExternalLink>{' '}
-      describes the latest release. We have removed individuals known to be affected by severe
-      pediatric disease, as well as their first-degree relatives, so this data set should serve as a
-      useful reference set of allele frequencies for severe pediatric disease studies - however,
-      note that some individuals with severe disease may still be included in the data set, albeit
+      describes the v2.1 release. We have removed individuals known to be affected by severe
+      pediatric disease, as well as their first-degree relatives, so these data sets should serve as
+      useful reference sets of allele frequencies for severe pediatric disease studies - however,
+      note that some individuals with severe disease may still be included in the data sets, albeit
       likely at a frequency equivalent to or lower than that seen in the general population.
     </p>
     <p>
