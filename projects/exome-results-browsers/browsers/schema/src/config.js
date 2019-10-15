@@ -9,8 +9,8 @@ export default {
       type: 'documents',
     },
     variants: {
-      index: 'schema_variant_results_2019_04_15',
-      type: 'variant',
+      index: 'schema_variant_results_2019_10_10',
+      type: 'documents',
     },
   },
   geneResults: {
