@@ -9,7 +9,7 @@ export default {
       type: 'documents',
     },
     variants: {
-      index: 'schema_variant_results_2019_10_10',
+      index: 'schema_variant_results_2019_10_15',
       type: 'documents',
     },
   },
