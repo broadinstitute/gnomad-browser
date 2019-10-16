@@ -30,7 +30,18 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
   fields: {
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
-      resolve: (obj, args, ctx) => fetchClinvarVariantsByTranscript(ctx, obj),
+      resolve: async (obj, args, ctx) => {
+        const cachedVariants = await withCache(
+          ctx,
+          `clinvar:${obj.reference_genome}:transcript:${obj.transcript_id}`,
+          async () => {
+            const variants = await fetchClinvarVariantsByTranscript(ctx, obj)
+            return JSON.stringify(variants)
+          }
+        )
+
+        return JSON.parse(cachedVariants)
+      },
     },
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
@@ -124,7 +135,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
-      resolve: (obj, args, ctx) => {
+      resolve: async (obj, args, ctx) => {
         const { fetchVariantsByTranscript } = datasetsConfig[args.dataset]
         if (!fetchClinvarVariantsByTranscript) {
           throw new UserVisibleError(
@@ -134,7 +145,16 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
 
         assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
 
-        return fetchVariantsByTranscript(ctx, obj)
+        const cachedVariants = await withCache(
+          ctx,
+          `variants:${args.dataset}:transcript:${obj.transcript_id}`,
+          async () => {
+            const variants = await fetchVariantsByTranscript(ctx, obj)
+            return JSON.stringify(variants)
+          }
+        )
+
+        return JSON.parse(cachedVariants)
       },
     },
   },
