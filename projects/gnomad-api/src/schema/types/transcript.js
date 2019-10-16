@@ -60,7 +60,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
 
         const cachedCoverage = await withCache(
           ctx,
-          `coverage:transcript:${index}:${obj.transcript_id}`,
+          `coverage:${args.dataset}:exome:transcript:${obj.transcript_id}`,
           async () => {
             const coverage = await fetchCoverageByTranscript(ctx, {
               index,
@@ -96,7 +96,7 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
 
         const cachedCoverage = await withCache(
           ctx,
-          `coverage:transcript:${index}:${obj.transcript_id}`,
+          `coverage:${args.dataset}:genome:transcript:${obj.transcript_id}`,
           async () => {
             const coverage = await fetchCoverageByTranscript(ctx, {
               index,
