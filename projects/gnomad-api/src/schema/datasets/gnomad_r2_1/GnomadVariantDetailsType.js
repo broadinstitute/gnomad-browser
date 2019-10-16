@@ -138,6 +138,13 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
               if (!process.env.READS_DIR) {
                 return null
               }
+
+              // Hack to handle gnomAD v3
+              // TODO: improve this
+              if (obj.reference_genome !== 'GRCh37') {
+                throw new UserVisibleError('Unable to load reads data')
+              }
+
               try {
                 return await resolveReads(
                   process.env.READS_DIR,
@@ -173,6 +180,13 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
               if (!process.env.READS_DIR) {
                 return null
               }
+
+              // Hack to handle gnomAD v3
+              // TODO: improve this
+              if (obj.reference_genome !== 'GRCh37') {
+                throw new UserVisibleError('Unable to load reads data')
+              }
+
               try {
                 return await resolveReads(
                   process.env.READS_DIR,
