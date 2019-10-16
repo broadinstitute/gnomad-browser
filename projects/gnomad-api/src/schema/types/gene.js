@@ -123,7 +123,18 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantSummaryType),
-      resolve: (obj, args, ctx) => fetchClinvarVariantsByGene(ctx, obj),
+      resolve: async (obj, args, ctx) => {
+        const cachedVariants = await withCache(
+          ctx,
+          `clinvar:${obj.reference_genome}:gene:${obj.gene_id}`,
+          async () => {
+            const variants = await fetchClinvarVariantsByGene(ctx, obj)
+            return JSON.stringify(variants)
+          }
+        )
+
+        return JSON.parse(cachedVariants)
+      },
     },
     pext: {
       type: new GraphQLList(PextRegionType),
@@ -186,7 +197,7 @@ const GeneType = extendObjectType(BaseGeneType, {
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
-      resolve: (obj, args, ctx) => {
+      resolve: async (obj, args, ctx) => {
         const { fetchVariantsByGene } = datasetsConfig[args.dataset]
         if (!fetchVariantsByGene) {
           throw new UserVisibleError(
@@ -196,7 +207,16 @@ const GeneType = extendObjectType(BaseGeneType, {
 
         assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
 
-        return fetchVariantsByGene(ctx, obj)
+        const cachedVariants = await withCache(
+          ctx,
+          `variants:${args.dataset}:gene:${obj.gene_id}`,
+          async () => {
+            const variants = await fetchVariantsByGene(ctx, obj)
+            return JSON.stringify(variants)
+          }
+        )
+
+        return JSON.parse(cachedVariants)
       },
     },
   },
