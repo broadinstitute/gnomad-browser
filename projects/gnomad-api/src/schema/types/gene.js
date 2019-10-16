@@ -69,7 +69,7 @@ const GeneType = extendObjectType(BaseGeneType, {
 
         const cachedCoverage = await withCache(
           ctx,
-          `coverage:gene:${index}:${obj.gene_id}`,
+          `coverage:${args.dataset}:exome:gene:${obj.gene_id}`,
           async () => {
             const coverage = await fetchCoverageByTranscript(ctx, {
               index,
@@ -105,7 +105,7 @@ const GeneType = extendObjectType(BaseGeneType, {
 
         const cachedCoverage = await withCache(
           ctx,
-          `coverage:gene:${index}:${obj.gene_id}`,
+          `coverage:${args.dataset}:genome:gene:${obj.gene_id}`,
           async () => {
             const coverage = await fetchCoverageByTranscript(ctx, {
               index,
