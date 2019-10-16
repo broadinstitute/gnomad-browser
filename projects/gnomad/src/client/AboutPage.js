@@ -65,10 +65,14 @@ export default () => (
     <p>
       The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies, and
-      is aligned against the GRCh38 reference. The v2 short variant data set provided on this
-      website spans 125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part
-      of various disease-specific and population genetic studies, totalling 141,456 individuals, and
-      is aligned against the GRCh37 reference.{' '}
+      is aligned against the GRCh38 reference.{' '}
+      <ExternalLink href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/">
+        This blog post
+      </ExternalLink>{' '}
+      describes the latest release. The v2 short variant data set provided on this website spans
+      125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part of various
+      disease-specific and population genetic studies, totalling 141,456 individuals, and is aligned
+      against the GRCh37 reference.{' '}
       <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
         This blog post
       </ExternalLink>{' '}
