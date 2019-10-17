@@ -49,6 +49,9 @@ export default () => (
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz">
             All chromosomes VCF
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz.tbi">
+            (.tbi)
           </ExternalLink>
           <br />
           <span>235.68 GiB, MD5: f3501102192975da34b5d2c32f7c0791</span>
