@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Button } from '@broad/ui'
+import { Button, ExternalLink } from '@broad/ui'
 
 import Searchbox from './Searchbox'
 
@@ -89,6 +89,7 @@ const Notice = styled.div`
   background: #428bca;
   color: white;
   text-align: center;
+
   a {
     color: white;
     text-decoration: none;
@@ -153,7 +154,15 @@ class NavBar extends Component {
             </li>
           </Menu>
         </NavBarWrapper>
-        <Notice>gnomAD v3 released! 71,702 genomes aligned on GRCh38.</Notice>
+        <Notice>
+          <a
+            href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v3 released! 71,702 genomes aligned on GRCh38.
+          </a>
+        </Notice>
       </OuterWrapper>
     )
   }
