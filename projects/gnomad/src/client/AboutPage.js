@@ -118,12 +118,12 @@ export default () => (
       for any use of these data.
     </p>
     <p>
-      The gnomAD structural variant (SV) data set provided on this website spans 10,738 genomes from
-      unrelated individuals sequenced as part of various disease-specific and population genetic
-      studies. It mostly, but not entirely overlaps with the genome set used for the gnomAD short
-      variant release. This{' '}
+      The gnomAD structural variant (SV) v2.1 data set provided on this website spans 10,847 genomes
+      from unrelated individuals sequenced as part of various disease-specific and population
+      genetic studies, and is aligned against the GRCh37 reference. It mostly (but not entirely)
+      overlaps with the genome set used for the gnomAD short variant release.{' '}
       <ExternalLink href="https://macarthurlab.org/2019/03/20/structural-variants-in-gnomad/">
-        blog post
+        This blog post
       </ExternalLink>{' '}
       describes the SV release. As with the gnomAD short variant data set, we have removed
       individuals known to be affected by severe pediatric disease, as well as their first-degree
