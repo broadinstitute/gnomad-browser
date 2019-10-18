@@ -14,7 +14,7 @@
    ```shell
    hailctl dataproc submit data-load \
       ./data/gnomad_sv/prepare_gnomad_svs.py \
-         --output $GNOMAD_SV_BROWSER_HT_URL
+         $GNOMAD_SV_BROWSER_HT_URL
    ```
 
 3. Load the Hail table into Elasticsearch. Use the `$GNOMAD_SV_BROWSER_HT_URL` from step 2
@@ -26,9 +26,9 @@
       ./data/export_hail_table_to_elasticsearch.py \
          $GNOMAD_SV_BROWSER_HT_URL \
          $ELASTICSEARCH_IP \
-         gnomad_structural_variants \
+         gnomad_structural_variants_r2_1 \
          --id-field variant_id \
-         --num-shards 4
+         --num-shards 2
    ```
 
 4. Delete the Dataproc cluster.
