@@ -300,18 +300,50 @@ export default () => (
       <SectionTitle id="structural-variants">Structural variants</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz">
-            SV sites VCF
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz">
+            SV 2.1 sites VCF
           </ExternalLink>{' '}
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi">
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz.tbi">
             (.tbi)
           </ExternalLink>
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz">
-            SV sites BED
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.bed.gz">
+            SV 2.1 sites BED
           </ExternalLink>{' '}
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.bed.gz.tbi">
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.bed.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz">
+            SV 2.1 (controls) sites VCF
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.bed.gz">
+            SV 2.1 (controls) sites BED
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.bed.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz">
+            SV 2.1 (non-neuro) sites VCF
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz.tbi">
+            (.tbi)
+          </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.bed.gz">
+            SV 2.1 (non-neuro) sites BED
+          </ExternalLink>{' '}
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.bed.gz.tbi">
             (.tbi)
           </ExternalLink>
         </ListItem>

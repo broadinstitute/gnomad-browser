@@ -82,7 +82,9 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
         <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
-          includeExomeCoverage={datasetId !== 'gnomad_sv_r2' && !datasetId.startsWith('gnomad_r3')}
+          includeExomeCoverage={
+            !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
+          }
           start={start}
           stop={stop}
         />
@@ -94,8 +96,12 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
           }}
         />
 
-        {datasetId === 'gnomad_sv_r2' ? (
-          <StructuralVariantsInRegion region={region} width={regionViewerWidth} />
+        {datasetId.startsWith('gnomad_sv') ? (
+          <StructuralVariantsInRegion
+            datasetId={datasetId}
+            region={region}
+            width={regionViewerWidth}
+          />
         ) : (
           <VariantsInRegion datasetId={datasetId} region={region} width={regionViewerWidth} />
         )}

@@ -410,8 +410,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     })
 
   const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
-  const topLevelShortVariantDataset =
-    selectedDataset !== 'gnomad_sv_r2' ? selectedDataset : defaultTopLevelShortVariantDataset
+  const topLevelShortVariantDataset = selectedDataset.startsWith('gnomad_sv')
+    ? defaultTopLevelShortVariantDataset
+    : selectedDataset
 
   let datasets = []
 
@@ -419,13 +420,13 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: selectedDataset !== 'gnomad_sv_r2',
+        isActive: !selectedDataset.startsWith('gnomad_sv'),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: selectedDataset !== 'gnomad_sv_r2',
+        isActive: !selectedDataset.startsWith('gnomad_sv'),
         label: 'More datasets',
         children: [],
       },
@@ -491,12 +492,43 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   if (includeStructuralVariants) {
-    datasets.push({
-      id: 'gnomad_sv_r2',
-      isActive: selectedDataset === 'gnomad_sv_r2',
-      label: labelForDataset('gnomad_sv_r2'),
-      url: datasetLink('gnomad_sv_r2'),
-    })
+    const topLevelStructuralVariantDataset = selectedDataset.startsWith('gnomad_sv')
+      ? selectedDataset
+      : 'gnomad_sv_r2_1'
+
+    datasets.push(
+      {
+        id: 'current_sv_dataset',
+        isActive: selectedDataset.startsWith('gnomad_sv'),
+        label: labelForDataset(topLevelStructuralVariantDataset),
+        url: datasetLink(topLevelStructuralVariantDataset),
+      },
+      {
+        id: 'other_structural_variant',
+        isActive: selectedDataset.startsWith('gnomad_sv'),
+        label: 'More datasets',
+        children: [
+          {
+            id: 'gnomad_sv_r2_1',
+            label: labelForDataset('gnomad_sv_r2_1'),
+            url: datasetLink('gnomad_sv_r2_1'),
+            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples`,
+          },
+          {
+            id: 'gnomad_sv_r2_1_controls',
+            label: labelForDataset('gnomad_sv_r2_1_controls'),
+            url: datasetLink('gnomad_sv_r2_1_controls'),
+            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
+          },
+          {
+            id: 'gnomad_sv_r2_1_non_neuro',
+            label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
+            url: datasetLink('gnomad_sv_r2_1_non_neuro'),
+            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples`,
+          },
+        ],
+      }
+    )
   }
 
   return <NavigationMenu items={datasets} />

@@ -6,22 +6,24 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
-const StructuralVariantsInGene = ({ gene, ...rest }) => {
+const StructuralVariantsInGene = ({ datasetId, gene, ...rest }) => {
   const query = `
-    query StructuralVariantsInGene($geneId: String!, $referenceGenome: ReferenceGenomeId!) {
+    query StructuralVariantsInGene($datasetId: StructuralVariantDatasetId!, $geneId: String!, $referenceGenome: ReferenceGenomeId!) {
       gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-        structural_variants {
+        structural_variants(dataset: $datasetId) {
           ac
           ac_hom
           an
           af
           chrom
-          end_chrom
-          end_pos
+          chrom2
+          end
+          end2
           consequence
           filters
           length
           pos
+          pos2
           type
           variant_id
         }
@@ -33,8 +35,9 @@ const StructuralVariantsInGene = ({ gene, ...rest }) => {
     <Query
       query={query}
       variables={{
+        datasetId,
         geneId: gene.gene_id,
-        referenceGenome: referenceGenomeForDataset('gnomad_sv_r2'),
+        referenceGenome: referenceGenomeForDataset(datasetId),
       }}
     >
       {({ data, error, loading }) => {
@@ -60,6 +63,7 @@ const StructuralVariantsInGene = ({ gene, ...rest }) => {
 }
 
 StructuralVariantsInGene.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     gene_id: PropTypes.string.isRequired,

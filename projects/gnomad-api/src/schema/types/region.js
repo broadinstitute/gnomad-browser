@@ -4,7 +4,8 @@ import { extendObjectType } from '../../utilities/graphql'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
-import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
+import StructuralVariantDatasetArgumentType from '../datasets/StructuralVariantDatasetArgumentType'
+import svDatasets from '../datasets/svDatasets'
 import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import { UserVisibleError } from '../errors'
@@ -76,13 +77,24 @@ const regionType = extendObjectType(BaseRegionType, {
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
+      args: {
+        dataset: { type: new GraphQLNonNull(StructuralVariantDatasetArgumentType) },
+      },
       resolve: (obj, args, ctx) => {
+        const { fetchVariantsByRegion } = svDatasets[args.dataset]
+        if (!fetchVariantsByRegion) {
+          throw new UserVisibleError(
+            `Querying variants by region is not supported for dataset "${args.dataset}"`
+          )
+        }
+
         if (obj.reference_genome !== 'GRCh37') {
           throw new UserVisibleError(
             `gnomAD SV data is not available on reference genome ${obj.reference_genome}`
           )
         }
-        return fetchGnomadStructuralVariantsByRegion(ctx, obj)
+
+        return fetchVariantsByRegion(ctx, obj)
       },
     },
     variants: {

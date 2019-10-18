@@ -6,22 +6,24 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
-const StructuralVariantsInRegion = ({ region, ...rest }) => {
+const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
   const query = `
-    query StructuralVariantsInRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+    query StructuralVariantsInRegion($datasetId: StructuralVariantDatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
       region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-        structural_variants {
+        structural_variants(dataset: $datasetId) {
           ac
           ac_hom
           an
           af
           chrom
-          end_chrom
-          end_pos
+          chrom2
+          end
+          end2
           consequence
           filters
           length
           pos
+          pos2
           type
           variant_id
         }
@@ -33,10 +35,11 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
     <Query
       query={query}
       variables={{
+        datasetId,
         chrom: region.chrom,
         start: region.start,
         stop: region.stop,
-        referenceGenome: referenceGenomeForDataset('gnomad_sv_r2'),
+        referenceGenome: referenceGenomeForDataset(datasetId),
       }}
     >
       {({ data, error, loading }) => {
@@ -64,6 +67,7 @@ const StructuralVariantsInRegion = ({ region, ...rest }) => {
 }
 
 StructuralVariantsInRegion.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   region: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,

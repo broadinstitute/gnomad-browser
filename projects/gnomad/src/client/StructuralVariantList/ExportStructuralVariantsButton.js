@@ -36,11 +36,12 @@ const columns = [
         return `${variant.pos}`
       }
 
-      if (variant.type === 'BND' || variant.type === 'CTX' || variant.chrom !== variant.end_chrom) {
-        return `${variant.chrom}:${variant.pos}|${variant.end_chrom}:${variant.end_pos}`
+      if (variant.type === 'BND' || variant.type === 'CTX') {
+        // eslint-disable-next-line prettier/prettier
+        return `${variant.chrom}:${variant.pos}-${variant.end}|${variant.chrom2}:${variant.pos2}-${variant.end2}`
       }
 
-      return `${variant.pos}-${variant.end_pos}`
+      return `${variant.pos}-${variant.end}`
     },
   },
   {

@@ -5,6 +5,8 @@ import { withCache } from '../../utilities/redis'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
+import StructuralVariantDatasetArgumentType from '../datasets/StructuralVariantDatasetArgumentType'
+import svDatasets from '../datasets/svDatasets'
 import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
@@ -18,8 +20,6 @@ import {
   ExacRegionalMissenseConstraintRegionType,
   fetchExacRegionalMissenseConstraintRegions,
 } from '../datasets/exac/exacRegionalMissenseConstraint'
-
-import fetchGnomadStructuralVariantsByGene from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByGene'
 
 import { UserVisibleError } from '../errors'
 
@@ -183,13 +183,24 @@ const GeneType = extendObjectType(BaseGeneType, {
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
+      args: {
+        dataset: { type: new GraphQLNonNull(StructuralVariantDatasetArgumentType) },
+      },
       resolve: (obj, args, ctx) => {
+        const { fetchVariantsByGene } = svDatasets[args.dataset]
+        if (!fetchVariantsByGene) {
+          throw new UserVisibleError(
+            `Querying variants by gene is not supported for dataset "${args.dataset}"`
+          )
+        }
+
         if (obj.reference_genome !== 'GRCh37') {
           throw new UserVisibleError(
             `gnomAD SV data is not available on reference genome ${obj.reference_genome}`
           )
         }
-        return fetchGnomadStructuralVariantsByGene(ctx, obj)
+
+        return fetchVariantsByGene(ctx, obj)
       },
     },
     variants: {

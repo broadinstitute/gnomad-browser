@@ -179,22 +179,21 @@ class GenePage extends Component {
     const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
     const hasCodingExons = cdsCompositeExons.length > 0
 
-    const regionViewerRegions =
-      datasetId === 'gnomad_sv_r2'
-        ? [
-            {
-              feature_type: 'region',
-              chrom: gene.chrom,
-              start: gene.start,
-              stop: gene.stop,
-            },
-          ]
-        : gene.exons.filter(
-            exon =>
-              exon.feature_type === 'CDS' ||
-              (exon.feature_type === 'UTR' && includeUTRs) ||
-              (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-          )
+    const regionViewerRegions = datasetId.startsWith('gnomad_sv')
+      ? [
+          {
+            feature_type: 'region',
+            chrom: gene.chrom,
+            start: gene.start,
+            stop: gene.stop,
+          },
+        ]
+      : gene.exons.filter(
+          exon =>
+            exon.feature_type === 'CDS' ||
+            (exon.feature_type === 'UTR' && includeUTRs) ||
+            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+        )
 
     return (
       <TrackPage>
@@ -228,7 +227,7 @@ class GenePage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          {datasetId === 'gnomad_sv_r2' ? (
+          {datasetId.startsWith('gnomad_sv') ? (
             <RegionCoverageTrack
               chrom={gene.chrom}
               datasetId={datasetId}
@@ -319,7 +318,7 @@ class GenePage extends Component {
                 </span>
               }
               renderTranscriptLeftPanel={
-                datasetId === 'gnomad_sv_r2'
+                datasetId.startsWith('gnomad_sv')
                   ? ({ transcript }) => <span>{transcript.transcript_id}</span>
                   : ({ transcript }) => (
                       <TranscriptLink
@@ -361,8 +360,8 @@ class GenePage extends Component {
             />
           )}
 
-          {datasetId === 'gnomad_sv_r2' ? (
-            <StructuralVariantsInGene gene={gene} width={regionViewerWidth} />
+          {datasetId.startsWith('gnomad_sv') ? (
+            <StructuralVariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
           ) : (
             <VariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
           )}
