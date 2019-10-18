@@ -177,8 +177,9 @@ class TranscriptPage extends Component {
     const { includeUTRs, includeNonCodingTranscripts } = this.state
     const { gene } = transcript
 
-    if (datasetId === 'gnomad_sv_r2') {
-      return <Redirect to={`/gene/${gene.gene_id}?dataset=gnomad_sv_r2`} />
+    // Cannot query structural variants by transcript, redirect to gene page
+    if (datasetId.startsWith('gnomad_sv')) {
+      return <Redirect to={`/gene/${gene.gene_id}?dataset=${datasetId}`} />
     }
 
     const smallScreen = width < 900

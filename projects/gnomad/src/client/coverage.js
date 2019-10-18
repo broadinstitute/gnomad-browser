@@ -6,7 +6,7 @@ export const coverageDataset = datasetId => {
   }
 
   // SVs should show gnomAD 2.1 coverage
-  if (datasetId === 'gnomad_sv_r2') {
+  if (datasetId.startsWith('gnomad_sv')) {
     return 'gnomad_r2_1'
   }
 

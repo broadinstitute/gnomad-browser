@@ -9,11 +9,21 @@ import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 
+const FILTER_LABELS = {
+  LOW_CALL_RATE: 'Low Call Rate',
+  PCRPLUS_ENRICHED: 'PCR+ Enriched',
+  UNRESOLVED: 'Unresolved',
+  UNSTABLE_AF_PCRMINUS: 'Unstable AF PCR-',
+}
+
 const FILTER_DESCRIPTIONS = {
-  PCRPLUS_ENRICHED: undefined,
-  PREDICTED_GENOTYPING_ARTIFACT: undefined,
-  UNRESOLVED: undefined,
-  VARIABLE_ACROSS_BATCHES: undefined,
+  LOW_CALL_RATE:
+    'Site does not meet minimum requirements for fraction of PCR- samples with non-null genotypes. Flags sites more prone to false discoveries.',
+  PCRPLUS_ENRICHED:
+    'Site enriched for non-reference genotypes among PCR+ samples. Likely reflects technical batch effects. All PCR- samples have been assigned null GTs for these sites.',
+  UNRESOLVED: 'Variant is unresolved',
+  UNSTABLE_AF_PCRMINUS:
+    'Allele frequency for this variant in PCR- samples is sensitive to choice of GQ filtering thresholds. All PCR- samples have been assigned null GTs for these sites.',
 }
 
 const EVIDENCE_LABELS = {
@@ -47,38 +57,20 @@ const COMPLEX_TYPE_LABELS = {
   piDUP_RF: 'Palindromic inverted duplication',
 }
 
-const VariantPosition = ({ variant }) => {
-  if (variant.type === 'INS') {
-    return (
-      <Link to={`/region/${variant.chrom}:${variant.pos}`}>
-        {variant.chrom}:{variant.pos}
-      </Link>
-    )
-  }
+const PointLink = ({ chrom, pos, windowSize }) => (
+  <Link to={`/region/${chrom}-${Math.max(pos - windowSize / 2, 0)}-${pos + windowSize / 2}`}>
+    {chrom}:{pos}
+  </Link>
+)
 
-  if (variant.type === 'BND' || variant.type === 'CTX' || variant.chrom !== variant.end_chrom) {
-    return (
-      <span>
-        <Link to={`/region/${variant.chrom}:${variant.pos}`}>
-          {variant.chrom}:{variant.pos}
-        </Link>{' '}
-        |{' '}
-        <Link to={`/region/${variant.end_chrom}:${variant.end_pos}`}>
-          {variant.end_chrom}:{variant.end_pos}
-        </Link>
-      </span>
-    )
-  }
-
-  return (
-    <Link to={`/region/${variant.chrom}:${variant.pos}-${variant.end_pos}`}>
-      {variant.chrom}:{variant.pos}-{variant.end_pos}
-    </Link>
-  )
+PointLink.propTypes = {
+  chrom: PropTypes.string.isRequired,
+  pos: PropTypes.number.isRequired,
+  windowSize: PropTypes.number,
 }
 
-VariantPosition.propTypes = {
-  variant: StructuralVariantDetailPropType.isRequired,
+PointLink.defaultProps = {
+  windowSize: 10000,
 }
 
 const ComplexTypeHelpButton = ({ complexType }) => {
@@ -124,10 +116,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
       {variant.filters.length > 0 ? (
         variant.filters.map(filter => (
           <Badge key={filter} level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
-            {filter
-              .split('_')
-              .map(s => `${s.charAt(0)}${s.slice(1).toLowerCase()}`)
-              .join(' ')}
+            {FILTER_LABELS[filter] || filter}
           </Badge>
         ))
       ) : (
@@ -147,8 +136,19 @@ const StructuralVariantAttributeList = ({ variant }) => (
     </AttributeList.Item>
     <AttributeList.Item label="Quality score">{variant.qual}</AttributeList.Item>
     <AttributeList.Item label="Position">
-      <VariantPosition variant={variant} />
+      {variant.type === 'BND' || variant.type === 'CTX' || variant.type === 'INS' ? (
+        <PointLink chrom={variant.chrom} pos={variant.pos} />
+      ) : (
+        <Link to={`/region/${variant.chrom}-${variant.pos}-${variant.end}`}>
+          {variant.chrom}:{variant.pos}-{variant.end}
+        </Link>
+      )}
     </AttributeList.Item>
+    {(variant.type === 'BND' || variant.type === 'CTX') && (
+      <AttributeList.Item label="Second Position">
+        <PointLink chrom={variant.chrom2} pos={variant.pos2} />
+      </AttributeList.Item>
+    )}
     {variant.type !== 'BND' && variant.type !== 'CTX' && (
       <AttributeList.Item label="Size">
         {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}

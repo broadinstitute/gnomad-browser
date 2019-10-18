@@ -11,6 +11,8 @@ import { extendObjectType } from '../utilities/graphql'
 
 import DatasetArgumentType from './datasets/DatasetArgumentType'
 import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
+import StructuralVariantDatasetArgumentType from './datasets/StructuralVariantDatasetArgumentType'
+import svDatasets from './datasets/svDatasets'
 
 import ClinvarVariantDetailsType from './datasets/clinvar/ClinvarVariantDetailsType'
 import fetchClinvarVariantDetails from './datasets/clinvar/fetchClinvarVariantDetails'
@@ -19,8 +21,7 @@ import {
   MultiNucleotideVariantDetailsType,
   fetchGnomadMNVDetails,
 } from './datasets/gnomad_r2_1/gnomadMultiNucleotideVariants'
-import fetchGnomadStructuralVariantDetails from './datasets/gnomad_sv_r2/fetchGnomadStructuralVariantDetails'
-import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2/GnomadStructuralVariantDetailsType'
+import GnomadStructuralVariantDetailsType from './datasets/gnomad_sv_r2_1/GnomadStructuralVariantDetailsType'
 
 import { UserVisibleError } from './errors'
 
@@ -123,9 +124,19 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     structural_variant: {
       type: GnomadStructuralVariantDetailsType,
       args: {
+        dataset: { type: new GraphQLNonNull(StructuralVariantDatasetArgumentType) },
         variantId: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => fetchGnomadStructuralVariantDetails(ctx, args.variantId),
+      resolve: (obj, args, ctx) => {
+        const { dataset, variantId } = args
+
+        const { fetchVariantDetails } = svDatasets[args.dataset]
+        if (!fetchVariantDetails) {
+          throw new UserVisibleError(`Querying variants is not supported for dataset "${dataset}"`)
+        }
+
+        return fetchVariantDetails(ctx, variantId)
+      },
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',

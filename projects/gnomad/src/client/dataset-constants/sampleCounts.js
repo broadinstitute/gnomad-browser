@@ -164,6 +164,15 @@ const sampleCounts = {
   exac: {
     total: 60706,
   },
+  gnomad_sv_r2_1: {
+    total: 10847,
+  },
+  gnomad_sv_r2_1_controls: {
+    total: 5192,
+  },
+  gnomad_sv_r2_1_non_neuro: {
+    total: 8342,
+  },
 }
 
 export default sampleCounts

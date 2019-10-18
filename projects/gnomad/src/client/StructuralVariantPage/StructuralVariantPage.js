@@ -77,15 +77,16 @@ StructuralVariantPage.propTypes = {
   variant: StructuralVariantDetailPropType.isRequired,
 }
 
-const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
+const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
   const query = `
-    query StructuralVariant($variantId: String!) {
-      structural_variant(variantId: $variantId) {
+    query StructuralVariant($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
+      structural_variant(dataset: $datasetId, variantId: $variantId) {
         algorithms
         alts
         ac
         an
         chrom
+        chrom2
         consequences {
           consequence
           genes
@@ -96,8 +97,8 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
         }
         cpx_intervals
         cpx_type
-        end_chrom
-        end_pos
+        end
+        end2
         evidence
         filters
         genes
@@ -109,6 +110,7 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
           ac_hom
         }
         pos
+        pos2
         qual
         type
         variant_id
@@ -117,7 +119,7 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
   `
 
   return (
-    <Query query={query} variables={{ variantId }}>
+    <Query query={query} variables={{ datasetId, variantId }}>
       {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
@@ -137,13 +139,20 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
           )
         }
 
-        return <StructuralVariantPage {...rest} variant={data.structural_variant} />
+        return (
+          <StructuralVariantPage
+            {...rest}
+            datasetId={datasetId}
+            variant={data.structural_variant}
+          />
+        )
       }}
     </Query>
   )
 }
 
 ConnectedStructuralVariantPage.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variantId: PropTypes.string.isRequired,
 }
 

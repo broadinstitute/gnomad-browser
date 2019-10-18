@@ -10,7 +10,7 @@ import GnomadVariantPage from './GnomadVariantPage'
 import MNVPage from './MultiNucleotideVariant/MNVPage'
 
 const VariantPage = ({ datasetId, variantId, ...otherProps }) => {
-  if (datasetId === 'gnomad_sv_r2') {
+  if (datasetId.startsWith('gnomad_sv')) {
     return <StructuralVariantPage {...otherProps} datasetId={datasetId} variantId={variantId} />
   }
 
