@@ -181,7 +181,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                       Age distribution is based on the full gnomAD dataset, not the selected subset.
                     </p>
                   )}
-                  <GnomadAgeDistribution variant={variant} />
+                  <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
                 </React.Fragment>
               )}
             </ResponsiveSection>
