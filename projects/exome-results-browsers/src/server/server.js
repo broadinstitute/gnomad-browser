@@ -113,6 +113,12 @@ const httpsRedirectMiddleware = JSON.parse(process.env.ENABLE_HTTPS_REDIRECT || 
     title: browserConfig.browserTitle,
   })
 
+  // Endpoint for Kubernetes readiness probe.
+  // This does not use the httpsRedirectMiddleware because it must return 200.
+  app.use('/ready', (request, response) => {
+    response.send('true')
+  })
+
   app.use(
     '/api',
     httpsRedirectMiddleware,
