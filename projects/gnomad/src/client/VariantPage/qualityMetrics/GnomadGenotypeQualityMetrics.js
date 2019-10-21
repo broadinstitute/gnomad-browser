@@ -107,8 +107,8 @@ export class GnomadGenotypeQualityMetrics extends Component {
 const histogramPropType = PropTypes.shape({
   bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
   bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
-  n_smaller: PropTypes.number.isRequired,
-  n_larger: PropTypes.number.isRequired,
+  n_smaller: PropTypes.number,
+  n_larger: PropTypes.number,
 })
 
 const genotypeQualityMetricPropType = PropTypes.shape({
