@@ -23,6 +23,21 @@ if (missingSettings.length) {
 const app = express()
 app.use(compression())
 
+app.set('trust proxy', JSON.parse(process.env.TRUST_PROXY || 'false'))
+
+// Redirect HTTP requests to HTTPS
+const httpsRedirectMiddleware = JSON.parse(process.env.ENABLE_HTTPS_REDIRECT || 'false')
+  ? (request, response, next) => {
+      if (request.protocol === 'http') {
+        response.redirect(`https://${request.get('host')}${request.url}`)
+      } else {
+        next()
+      }
+    }
+  : (request, response, next) => {
+      next()
+    }
+
 // eslint-disable-line
 ;(async () => {
   const elastic = new elasticsearch.Client({
@@ -100,6 +115,7 @@ app.use(compression())
 
   app.use(
     '/api',
+    httpsRedirectMiddleware,
     graphQLHTTP({
       schema: new GraphQLSchema({ query: RootType }),
       graphiql: true,
@@ -138,14 +154,18 @@ app.use(compression())
   )
 
   const publicDir = path.resolve(__dirname, 'public')
-  app.use(express.static(publicDir))
+  app.use(httpsRedirectMiddleware, express.static(publicDir))
 
   const pagePaths = browserConfig.pages.map(page => page.path)
-  app.get(['/', '/gene/:gene', '/results', ...pagePaths], (request, response) => {
-    response.send(html)
-  })
+  app.get(
+    ['/', '/gene/:gene', '/results', ...pagePaths],
+    httpsRedirectMiddleware,
+    (request, response) => {
+      response.send(html)
+    }
+  )
 
-  app.use((request, response) => {
+  app.use(httpsRedirectMiddleware, (request, response) => {
     response.status(404).send(html)
   })
 
