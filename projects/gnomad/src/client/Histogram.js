@@ -49,14 +49,14 @@ const Histogram = withSize()(
       value: n,
     }))
 
-    if (nSmaller !== undefined) {
+    if (!(nSmaller === undefined || nSmaller === null)) {
       bins.unshift({
         label: `< ${binEdges[0]}`,
         value: nSmaller,
       })
     }
 
-    if (nLarger !== undefined) {
+    if (!(nLarger === undefined || nLarger === null)) {
       bins.push({
         label: `> ${binEdges[binEdges.length - 1]}`,
         value: nLarger,
