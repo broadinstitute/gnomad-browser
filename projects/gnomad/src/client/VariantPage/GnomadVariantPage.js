@@ -131,7 +131,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                 </div>
               )}
 
-              {variant.multiNucleotideVariants.length > 0 && (
+              {(variant.multiNucleotideVariants || []).length > 0 && (
                 <div>
                   <p>
                     <strong>
