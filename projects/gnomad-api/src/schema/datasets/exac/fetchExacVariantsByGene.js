@@ -4,7 +4,7 @@ import { mergeOverlappingRegions } from '../../../utilities/region'
 import shapeExacVariantSummary from './shapeExacVariantSummary'
 
 const fetchExacVariantsByGene = async (ctx, gene) => {
-  const geneId = gene.gene_id
+  const geneId = Number(gene.gene_id.slice(4))
   const filteredRegions = gene.exons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
   const padding = 75
@@ -20,7 +20,7 @@ const fetchExacVariantsByGene = async (ctx, gene) => {
 
   const rangeQueries = mergedRegions.map(region => ({
     range: {
-      pos: {
+      'locus.position': {
         gte: region.start,
         lte: region.stop,
       },
@@ -28,23 +28,20 @@ const fetchExacVariantsByGene = async (ctx, gene) => {
   }))
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'exac_v1_variants',
-    type: 'variant',
+    index: 'exac_variants',
+    type: 'documents',
     size: 10000,
     _source: [
       'AC_Adj',
       'AC_Hemi',
       'AC_Hom',
       'AN_Adj',
-      'alt',
-      'chrom',
+      'alleles',
       'filters',
-      'flags',
+      'locus',
       'populations',
-      'pos',
-      'ref',
       'rsid',
-      'sortedTranscriptConsequences',
+      'sorted_transcript_consequences',
       'variant_id',
     ],
 
@@ -54,9 +51,9 @@ const fetchExacVariantsByGene = async (ctx, gene) => {
           filter: [
             {
               nested: {
-                path: 'sortedTranscriptConsequences',
+                path: 'sorted_transcript_consequences',
                 query: {
-                  term: { 'sortedTranscriptConsequences.gene_id': geneId },
+                  term: { 'sorted_transcript_consequences.gene_id': geneId },
                 },
               },
             },
@@ -64,7 +61,7 @@ const fetchExacVariantsByGene = async (ctx, gene) => {
           ],
         },
       },
-      sort: [{ pos: { order: 'asc' } }],
+      sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
 

@@ -3,33 +3,30 @@ import shapeExacVariantSummary from './shapeExacVariantSummary'
 
 const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'exac_v1_variants',
-    type: 'variant',
+    index: 'exac_variants',
+    type: 'documents',
     size: 10000,
     _source: [
       'AC_Adj',
       'AC_Hemi',
       'AC_Hom',
       'AN_Adj',
-      'alt',
-      'chrom',
+      'alleles',
       'filters',
-      'flags',
+      'locus',
       'populations',
-      'pos',
-      'ref',
       'rsid',
-      'sortedTranscriptConsequences',
+      'sorted_transcript_consequences',
       'variant_id',
     ],
     body: {
       query: {
         bool: {
           filter: [
-            { term: { chrom } },
+            { term: { 'locus.contig': chrom } },
             {
               range: {
-                pos: {
+                'locus.position': {
                   gte: start,
                   lte: stop,
                 },
@@ -38,7 +35,7 @@ const fetchExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
           ],
         },
       },
-      sort: [{ pos: { order: 'asc' } }],
+      sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
 

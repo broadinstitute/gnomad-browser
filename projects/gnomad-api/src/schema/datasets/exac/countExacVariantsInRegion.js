@@ -1,15 +1,15 @@
 const countExacVariantsByRegion = async (ctx, { chrom, start, stop }) => {
   const response = await ctx.database.elastic.count({
-    index: 'exac_v1_variants',
-    type: 'variant',
+    index: 'exac_variants',
+    type: 'documents',
     body: {
       query: {
         bool: {
           filter: [
-            { term: { chrom } },
+            { term: { 'locus.contig': chrom } },
             {
               range: {
-                pos: {
+                'locus.position': {
                   gte: start,
                   lte: stop,
                 },

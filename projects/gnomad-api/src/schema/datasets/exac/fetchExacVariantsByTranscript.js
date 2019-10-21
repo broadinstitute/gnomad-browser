@@ -3,12 +3,12 @@ import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import shapeExacVariantSummary from './shapeExacVariantSummary'
 
 const fetchExacVariantsByTranscript = async (ctx, transcript) => {
-  const transcriptId = transcript.transcript_id
+  const transcriptId = Number(transcript.transcript_id.slice(4))
   const filteredRegions = transcript.exons.filter(exon => exon.feature_type === 'CDS')
   const padding = 75
   const rangeQueries = filteredRegions.map(region => ({
     range: {
-      pos: {
+      'locus.position': {
         gte: region.start - padding,
         lte: region.stop + padding,
       },
@@ -16,23 +16,20 @@ const fetchExacVariantsByTranscript = async (ctx, transcript) => {
   }))
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'exac_v1_variants',
-    type: 'variant',
+    index: 'exac_variants',
+    type: 'documents',
     size: 10000,
     _source: [
       'AC_Adj',
       'AC_Hemi',
       'AC_Hom',
       'AN_Adj',
-      'alt',
-      'chrom',
+      'alleles',
       'filters',
-      'flags',
+      'locus',
       'populations',
-      'pos',
-      'ref',
       'rsid',
-      'sortedTranscriptConsequences',
+      'sorted_transcript_consequences',
       'variant_id',
     ],
 
@@ -42,9 +39,9 @@ const fetchExacVariantsByTranscript = async (ctx, transcript) => {
           filter: [
             {
               nested: {
-                path: 'sortedTranscriptConsequences',
+                path: 'sorted_transcript_consequences',
                 query: {
-                  term: { 'sortedTranscriptConsequences.transcript_id': transcriptId },
+                  term: { 'sorted_transcript_consequences.transcript_id': transcriptId },
                 },
               },
             },
@@ -52,7 +49,7 @@ const fetchExacVariantsByTranscript = async (ctx, transcript) => {
           ],
         },
       },
-      sort: [{ pos: { order: 'asc' } }],
+      sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
 
