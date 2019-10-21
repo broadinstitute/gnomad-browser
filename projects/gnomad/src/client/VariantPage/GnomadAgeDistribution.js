@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@broad/ui'
 
-import ageDistribution from '../dataset-constants/gnomad_r2_1_1/ageDistribution.json'
+import gnomadV2AgeDistribution from '../dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import Histogram from '../Histogram'
 import ControlSection from './ControlSection'
 
@@ -24,6 +24,7 @@ const AgeDistributionPropType = PropTypes.shape({
 
 export default class GnomadAgeDistribution extends Component {
   static propTypes = {
+    datasetId: PropTypes.string.isRequired,
     variant: PropTypes.shape({
       exome: PropTypes.shape({
         age_distribution: AgeDistributionPropType.isRequired,
@@ -44,12 +45,12 @@ export default class GnomadAgeDistribution extends Component {
   }
 
   render() {
-    const { variant } = this.props
+    const { datasetId, variant } = this.props
     const { selectedDataset, selectedSamples } = this.state
 
     const selectedAgeDistribution =
       selectedSamples === 'all'
-        ? ageDistribution[selectedDataset]
+        ? gnomadV2AgeDistribution[selectedDataset]
         : variant[selectedDataset].age_distribution[selectedSamples]
 
     const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
@@ -76,7 +77,7 @@ export default class GnomadAgeDistribution extends Component {
           >
             <option value="het">Heterozygous Variant Carriers</option>
             <option value="hom">Homozygous Variant Carriers</option>
-            <option value="all">All Individuals</option>
+            {datasetId.startsWith('gnomad_r2') && <option value="all">All Individuals</option>}
           </Select>
 
           <SegmentedControl
