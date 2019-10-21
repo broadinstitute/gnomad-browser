@@ -51,20 +51,21 @@ const ControlSection = styled.div`
 
 const nestPopulations = populations => {
   const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
-  return [
+
+  const ancestryPopulations = [
     ...POPULATIONS.filter(popId => indices[popId] !== undefined).map(popId => ({
       ...populations[indices[popId]],
-      subpopulations: [
-        ...(SUBPOPULATIONS[popId] || [])
-          .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
-          .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
-        populations[indices[`${popId}_FEMALE`]],
-        populations[indices[`${popId}_MALE`]],
-      ],
+      subpopulations: [...(SUBPOPULATIONS[popId] || []), 'FEMALE', 'MALE']
+        .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
+        .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
     })),
-    populations[indices.FEMALE],
-    populations[indices.MALE],
   ]
+
+  // ExAC variants do not contain this data
+  if (indices.FEMALE && indices.MALE) {
+    return [...ancestryPopulations, populations[indices.FEMALE], populations[indices.MALE]]
+  }
+  return ancestryPopulations
 }
 
 const combinePopulations = populations => {
