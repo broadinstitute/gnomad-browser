@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@broad/ui'
 
+import exacSiteQualityMetricDistributions from '../../dataset-constants/exac/siteQualityMetricDistributions.json'
 import gnomadV2SiteQualityMetricDistributions from '../../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'
 import gnomadV3SiteQualityMetricDistributions from '../../dataset-constants/gnomad_r3/siteQualityMetricDistributions.json'
 import ControlSection from '../ControlSection'
@@ -31,6 +32,9 @@ const getSiteQualityMetricDistributions = datasetId => {
   }
   if (datasetId.startsWith('gnomad_r2')) {
     return gnomadV2SiteQualityMetricDistributions
+  }
+  if (datasetId === 'exac') {
+    return exacSiteQualityMetricDistributions
   }
   throw new Error(`No quality metric distribution available for dataset "${datasetId}"`)
 }
