@@ -18,7 +18,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
   }
 
   render() {
-    const { variant } = this.props
+    const { datasetId, variant } = this.props
     const { selectedDataset, selectedMetric, selectedSamples } = this.state
 
     const histogramData = variant[selectedDataset].qualityMetrics[selectedMetric][selectedSamples]
@@ -70,7 +70,9 @@ export class GnomadGenotypeQualityMetrics extends Component {
           >
             <option value="genotypeQuality">Genotype quality</option>
             <option value="genotypeDepth">Depth</option>
-            <option value="alleleBalance">Allele balance for heterozygotes</option>
+            {datasetId !== 'exac' && (
+              <option value="alleleBalance">Allele balance for heterozygotes</option>
+            )}
           </Select>
 
           {selectedMetric !== 'alleleBalance' && (
@@ -114,7 +116,7 @@ const histogramPropType = PropTypes.shape({
 const genotypeQualityMetricPropType = PropTypes.shape({
   alleleBalance: PropTypes.shape({
     alt: histogramPropType,
-  }).isRequired,
+  }),
   genotypeDepth: PropTypes.shape({
     all: histogramPropType,
     alt: histogramPropType,
@@ -126,6 +128,7 @@ const genotypeQualityMetricPropType = PropTypes.shape({
 })
 
 GnomadGenotypeQualityMetrics.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
     exome: PropTypes.shape({
       qualityMetrics: genotypeQualityMetricPropType.isRequired,
