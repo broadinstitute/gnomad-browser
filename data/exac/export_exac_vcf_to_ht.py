@@ -513,7 +513,12 @@ def main():
                 for pop_id in ["AFR", "AMR", "EAS", "FIN", "NFE", "OTH", "SAS"]
             }
         ),
-        original_alt_alleles=variant_ids(ds.old_locus, ds.old_alleles),
+        colocated_variants=hl.bind(
+            lambda this_variant_id: variant_ids(ds.old_locus, ds.old_alleles).filter(
+                lambda v_id: v_id != this_variant_id
+            ),
+            variant_id(ds.locus, ds.alleles),
+        ),
         variant_id=variant_id(ds.locus, ds.alleles),
         xpos=x_position(ds.locus),
     )

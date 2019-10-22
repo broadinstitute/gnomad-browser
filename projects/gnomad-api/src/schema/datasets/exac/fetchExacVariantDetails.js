@@ -46,9 +46,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
     ref: variant.alleles[0],
     alt: variant.alleles[1],
     // other fields
-    colocatedVariants: (variant.original_alt_alleles || []).filter(
-      otherVariantId => otherVariantId !== variant.variant_id
-    ),
+    colocatedVariants: variant.colocated_variants || [],
     exome: {
       ac: variant.AC_Adj,
       ac_hemi: variant.AC_Hemi,
