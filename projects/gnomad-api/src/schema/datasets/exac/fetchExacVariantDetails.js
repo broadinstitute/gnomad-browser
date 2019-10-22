@@ -80,21 +80,21 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
         genotypeDepth: {
           all: {
             bin_edges: qualityMetricHistogramBinEdges,
-            bin_freq: parseHistogram(variant.DP_HIST[0]),
+            bin_freq: parseHistogram(variant.DP_HIST.all),
           },
           alt: {
             bin_edges: qualityMetricHistogramBinEdges,
-            bin_freq: parseHistogram(variant.DP_HIST[1]),
+            bin_freq: parseHistogram(variant.DP_HIST.alt),
           },
         },
         genotypeQuality: {
           all: {
             bin_edges: qualityMetricHistogramBinEdges,
-            bin_freq: parseHistogram(variant.GQ_HIST[0]),
+            bin_freq: parseHistogram(variant.GQ_HIST.all),
           },
           alt: {
             bin_edges: qualityMetricHistogramBinEdges,
-            bin_freq: parseHistogram(variant.GQ_HIST[1]),
+            bin_freq: parseHistogram(variant.GQ_HIST.alt),
           },
         },
         siteQualityMetrics: {

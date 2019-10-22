@@ -302,6 +302,15 @@ def main():
         )
     )
 
+    # For DP_HIST and GQ_HIST, the first value in the array contains the histogram for all individuals,
+    # which is the same in each alt allele's variant.
+    ds = ds.annotate(
+        info=ds.info.annotate(
+            DP_HIST=hl.struct(all=ds.info.DP_HIST[0], alt=ds.info.DP_HIST[ds.a_index]),
+            GQ_HIST=hl.struct(all=ds.info.GQ_HIST[0], alt=ds.info.GQ_HIST[ds.a_index]),
+        )
+    )
+
     ds = ds.cache()
 
     print("\n=== Munging data ===")
