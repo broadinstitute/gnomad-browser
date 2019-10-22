@@ -68,5 +68,27 @@ export default () => (
         ))}
       </FileList>
     </section>
+
+    <section>
+      <SectionTitle id="coverage">Coverage</SectionTitle>
+      <FileList>
+        <ListItem>
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/3.0/coverage">
+            Genome coverage Hail Table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/release/3.0/coverage/
+          <wbr />
+          genomes/gnomad.genomes.r3.0.coverage.ht
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/coverage/genomes/gnomad.genomes.r3.0.coverage.summary.tsv.bgz">
+            Genome coverage summary TSV
+          </ExternalLink>
+          <br />
+          <span>66.55 GiB, MD5: 2e605ebff8fbe7748edcbed3b727e3b0</span>
+        </ListItem>
+      </FileList>
+    </section>
   </React.Fragment>
 )
