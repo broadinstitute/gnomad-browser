@@ -10,19 +10,10 @@ import {
 import { UserVisibleError } from '../../errors'
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { VariantInterface } from '../../types/variant'
+import { HistogramType } from '../shared/histogram'
 import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
-
-const HistogramType = new GraphQLObjectType({
-  name: 'Histogram',
-  fields: {
-    bin_edges: { type: new GraphQLList(GraphQLFloat) },
-    bin_freq: { type: new GraphQLList(GraphQLFloat) },
-    n_larger: { type: GraphQLInt },
-    n_smaller: { type: GraphQLInt },
-  },
-})
 
 const GnomadPopulationType = new GraphQLObjectType({
   name: 'GnomadVariantPopulation',
