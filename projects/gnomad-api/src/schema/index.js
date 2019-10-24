@@ -108,9 +108,11 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     searchResults: {
       type: new GraphQLList(SearchResultType),
       args: {
+        dataset: { type: DatasetArgumentType },
         query: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (obj, args, ctx) => resolveSearchResults(ctx, args.query),
+      resolve: (obj, args, ctx) =>
+        resolveSearchResults(ctx, args.dataset || 'gnomad_r2_1', args.query),
     },
     clinvar_variant: {
       type: ClinvarVariantDetailsType,
