@@ -10,9 +10,11 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
+import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
 import StructuralVariantConsequenceList from './StructuralVariantConsequenceList'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import StructuralVariantGenotypeQualityMetrics from './StructuralVariantGenotypeQualityMetrics'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
 import SVReferenceList from './SVReferenceList'
 
@@ -65,8 +67,26 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantConsequenceList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
+        <h2>Genotype Quality Metrics</h2>
+        {variant.genotype_quality ? (
+          <StructuralVariantGenotypeQualityMetrics variant={variant} />
+        ) : (
+          <p>Genotype quality metrics not available for this variant.</p>
+        )}
+      </ResponsiveSection>
+    </Wrapper>
+    <Wrapper>
+      <ResponsiveSection>
         <h2>Population Frequencies</h2>
         <StructuralVariantPopulationsTable variant={variant} />
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <h2>Age Distribution</h2>
+        {variant.age_distribution ? (
+          <StructuralVariantAgeDistribution variant={variant} />
+        ) : (
+          <p>Age distribution not available for this variant.</p>
+        )}
       </ResponsiveSection>
     </Wrapper>
   </Page>
@@ -81,6 +101,20 @@ const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
   const query = `
     query StructuralVariant($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
       structural_variant(dataset: $datasetId, variantId: $variantId) {
+        age_distribution {
+          het {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          hom {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
         algorithms
         alts
         ac
@@ -102,6 +136,20 @@ const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
         evidence
         filters
         genes
+        genotype_quality {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
         length
         populations {
           id

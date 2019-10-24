@@ -1,6 +1,17 @@
 import PropTypes from 'prop-types'
 
+const HistogramPropType = PropTypes.shape({
+  bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+  bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+  n_smaller: PropTypes.number.isRequired,
+  n_larger: PropTypes.number.isRequired,
+})
+
 const StructuralVariantDetailPropType = PropTypes.shape({
+  age_distribution: PropTypes.shape({
+    het: HistogramPropType.isRequired,
+    hom: HistogramPropType.isRequired,
+  }),
   algorithms: PropTypes.arrayOf(PropTypes.string.isRequired),
   alts: PropTypes.arrayOf(PropTypes.string.isRequired),
   ac: PropTypes.number.isRequired,
@@ -26,6 +37,10 @@ const StructuralVariantDetailPropType = PropTypes.shape({
   evidence: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.arrayOf(PropTypes.string.isRequired),
   genes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  genotype_quality: PropTypes.shape({
+    all: HistogramPropType.isRequired,
+    alt: HistogramPropType.isRequired,
+  }),
   length: PropTypes.number.isRequired,
   pos: PropTypes.number.isRequired,
   pos2: PropTypes.number,
