@@ -83,9 +83,14 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
       <ResponsiveSection>
         <h2>Age Distribution</h2>
         {variant.age_distribution ? (
-          <StructuralVariantAgeDistribution variant={variant} />
+          <React.Fragment>
+            {datasetId !== 'gnomad_sv_r2_1' && (
+              <p>Age distribution is based on the full SV dataset, not the selected subset.</p>
+            )}
+            <StructuralVariantAgeDistribution variant={variant} />
+          </React.Fragment>
         ) : (
-          <p>Age distribution not available for this variant.</p>
+          <p>Age data is not available for this variant.</p>
         )}
       </ResponsiveSection>
     </Wrapper>
