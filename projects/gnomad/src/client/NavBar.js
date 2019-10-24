@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Button, ExternalLink } from '@broad/ui'
+import { Button } from '@broad/ui'
 
 import Searchbox from './Searchbox'
 
@@ -120,7 +120,7 @@ class NavBar extends Component {
             </Link>
             <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
           </LogoWrapper>
-          <Searchbox id="navbar-search" width="320px" />
+          <Searchbox id="navbar-search" placeholder="Search" width="360px" />
           <Menu isExpanded={isExpanded}>
             <li>
               <Link to="/about" onClick={this.closeMenu}>
