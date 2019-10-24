@@ -1,4 +1,5 @@
 import { UserVisibleError } from '../../errors'
+import { formatHistogram } from '../shared/histogram'
 
 const fetchGnomadStructuralVariantDetails = async (ctx, variantId, subset = 'all') => {
   try {
@@ -18,6 +19,14 @@ const fetchGnomadStructuralVariantDetails = async (ctx, variantId, subset = 'all
     }
 
     return {
+      age_distribution:
+        // Data not available for MCNVs
+        variant.type === 'MCNV'
+          ? null
+          : {
+              het: formatHistogram(variant.age_hist_het),
+              hom: formatHistogram(variant.age_hist_hom),
+            },
       algorithms: variant.algorithms,
       alts: variant.alts,
       ac: freq.total.ac,
@@ -47,6 +56,14 @@ const fetchGnomadStructuralVariantDetails = async (ctx, variantId, subset = 'all
       evidence: variant.evidence,
       filters: variant.filters,
       genes: variant.genes || [],
+      genotype_quality:
+        // Data not available for MCNVs
+        variant.type === 'MCNV'
+          ? null
+          : {
+              all: formatHistogram(variant.gq_hist_all),
+              alt: formatHistogram(variant.gq_hist_alt),
+            },
       length: variant.length,
       populations: ['afr', 'amr', 'eas', 'eur', 'oth'].map(popId => ({
         id: popId.toUpperCase(),

@@ -1,14 +1,8 @@
 import { flatMap } from 'lodash'
 
 import { UserVisibleError } from '../../errors'
+import { formatHistogram } from '../shared/histogram'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
-
-const formatHistogram = histogramData => ({
-  bin_edges: histogramData.bin_edges.split('|').map(s => Number(s)),
-  bin_freq: histogramData.bin_freq.split('|').map(s => Number(s)),
-  n_larger: histogramData.n_larger,
-  n_smaller: histogramData.n_smaller,
-})
 
 const POPULATIONS = ['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'oth', 'sas']
 

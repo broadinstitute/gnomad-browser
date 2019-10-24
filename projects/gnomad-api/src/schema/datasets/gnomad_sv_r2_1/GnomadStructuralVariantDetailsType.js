@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
+import { HistogramType } from '../shared/histogram'
 
 const GnomadStructuralVariantPopulationDataType = new GraphQLObjectType({
   name: 'GnomadStructuralVariantPopulationData',
@@ -16,6 +17,22 @@ const GnomadStructuralVariantPopulationDataType = new GraphQLObjectType({
     ac: { type: new GraphQLNonNull(GraphQLInt) },
     an: { type: new GraphQLNonNull(GraphQLInt) },
     ac_hom: { type: GraphQLInt },
+  },
+})
+
+const GnomadStructuralVariantAgeDistributionType = new GraphQLObjectType({
+  name: 'GnomadStructuralVariantDetailsAgeDistribution',
+  fields: {
+    het: { type: HistogramType },
+    hom: { type: HistogramType },
+  },
+})
+
+const GnomadStructuralVariantGenotypeQualityType = new GraphQLObjectType({
+  name: 'GnomadStructuralVariantGenotypeQuality',
+  fields: {
+    all: { type: HistogramType },
+    alt: { type: HistogramType },
   },
 })
 
@@ -38,6 +55,7 @@ const GnomadStructuralVariantCopyNumberDataType = new GraphQLObjectType({
 const GnomadStructuralVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadStructuralVariantDetails',
   fields: {
+    age_distribution: { type: GnomadStructuralVariantAgeDistributionType },
     algorithms: { type: new GraphQLList(GraphQLString) },
     alts: { type: new GraphQLList(GraphQLString) },
     ac: { type: GraphQLInt },
@@ -54,6 +72,7 @@ const GnomadStructuralVariantDetailsType = new GraphQLObjectType({
     evidence: { type: new GraphQLList(GraphQLString) },
     filters: { type: new GraphQLList(GraphQLString) },
     genes: { type: new GraphQLList(GraphQLString) },
+    genotype_quality: { type: GnomadStructuralVariantGenotypeQualityType },
     length: { type: GraphQLInt },
     populations: { type: new GraphQLList(GnomadStructuralVariantPopulationDataType) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
