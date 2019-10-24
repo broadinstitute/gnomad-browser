@@ -11,6 +11,20 @@ const StructuralVariantAgeDistribution = ({ variant }) => {
 
   const selectedAgeDistribution = variant.age_distribution[selectedSamples]
 
+  // Only show histogram if there is data to show
+  const isAgeDataAvailable = [
+    ...variant.age_distribution.het.bin_freq,
+    variant.age_distribution.het.n_smaller,
+    variant.age_distribution.het.n_larger,
+    ...variant.age_distribution.hom.bin_freq,
+    variant.age_distribution.hom.n_smaller,
+    variant.age_distribution.hom.n_larger,
+  ].some(n => n !== 0)
+
+  if (!isAgeDataAvailable) {
+    return <p>Age data is not available for this variant.</p>
+  }
+
   return (
     <div>
       <Histogram
