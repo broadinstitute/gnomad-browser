@@ -66,8 +66,7 @@ def sum_mcnv_ac_or_af(alts, values):
 
 
 def import_structural_variants(vcf_path):
-    ds = hl.import_vcf(vcf_path, force_bgz=True).rows()
-    ds = ds.repartition(8, shuffle=True)
+    ds = hl.import_vcf(vcf_path, force_bgz=True, min_partitions=32).rows()
 
     ds = ds.annotate(**{field.lower(): ds.info[field] for field in TOP_LEVEL_INFO_FIELDS})
 
@@ -171,6 +170,28 @@ def import_structural_variants(vcf_path):
     return ds
 
 
+def annotate_with_histograms(ds, histograms):
+    histograms = histograms.transmute(
+        **{
+            field: hl.struct(
+                bin_freq=histograms[f"{field}_bin_freq"],
+                bin_edges=histograms[f"{field}_bin_edges"],
+                n_smaller=histograms[f"{field}_n_smaller"],
+                n_larger=histograms[f"{field}_n_larger"],
+            )
+            for field in ["age_hist_het", "age_hist_hom", "gq_hist_alt", "gq_hist_all"]
+        }
+    )
+
+    histograms = histograms.transmute(variant_id=histograms.rsid.replace("^gnomAD-SV_v2.1_", ""))
+
+    histograms = histograms.key_by(histograms.variant_id).drop("locus", "alleles")
+
+    ds = ds.annotate(**histograms[ds.variant_id])
+
+    return ds
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output")
@@ -182,6 +203,7 @@ def main():
             "non_neuro=gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz",
         ],
     )
+    parser.add_argument("--histograms", default="gs://gnomad-public/papers/2019-sv/gnomad_sv_hists.ht")
     args = parser.parse_args()
 
     hl.init(log="/tmp/hail.log")
@@ -192,6 +214,10 @@ def main():
         subset_name, subset_vcf = subset_arg.split("=")
         subset_ds = import_structural_variants(subset_vcf)
         ds = ds.annotate(freq=ds.freq.annotate(**{subset_name: subset_ds[ds.variant_id].freq}))
+
+    if args.histograms:
+        histograms = hl.read_table(args.histograms)
+        ds = annotate_with_histograms(ds, histograms)
 
     ds.write(args.output)
 
