@@ -179,7 +179,12 @@ class TissueExpressionTrack extends Component {
               >
                 <Button
                   disabled={!isExpressed}
-                  style={{ width: '70px', paddingLeft: '0.25em', paddingRight: '0.25em' }}
+                  style={{
+                    height: 'auto',
+                    width: '70px',
+                    paddingLeft: '0.25em',
+                    paddingRight: '0.25em',
+                  }}
                   onClick={this.toggleExpanded}
                 >
                   {isExpanded ? 'Hide' : 'Show'} tissues
