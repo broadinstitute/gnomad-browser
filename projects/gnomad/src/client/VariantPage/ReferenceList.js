@@ -9,7 +9,7 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
   /* eslint-disable-next-line prettier/prettier */
-  const ucscURL = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&highlight=${ucscReferenceGenomeId}.chr${chrom}%3A${pos}-${pos + (ref.length - 1)}&position=chr${chrom}%3A${pos - 25}-${pos + (ref.length - 1) + 25}`
+  const ucscURL = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&highlight=${ucscReferenceGenomeId}.chr${chrom}%3A${pos}-${pos + (ref.length - 1)}&position=chr${chrom}%3A${pos - 25}-${pos + (ref.length - 1) + 25}`
 
   return (
     <List>
