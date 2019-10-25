@@ -5,7 +5,7 @@ import { ExternalLink, List, ListItem } from '@broad/ui'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 
 const ucscUrl = (chrom, pos, end) =>
-  `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${pos}-${end}`
+  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${pos}-${end}`
 
 const SVUCSCLinks = ({ variant }) => {
   if (variant.type === 'INS') {
