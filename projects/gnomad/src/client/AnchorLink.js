@@ -5,8 +5,7 @@ import styled from 'styled-components'
 
 const AnchorLink = styled.a.attrs({ 'aria-hidden': 'true' })`
   position: absolute;
-  top: 0;
-  left: -15px;
+  transform: translate(-15px, calc(50% - 0.5em));
   display: flex;
   align-items: center;
   width: 15px;
