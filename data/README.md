@@ -44,5 +44,6 @@ a worker is interrupted during a bulk request.
 ## ExAC
 
 * [variants](./docs/exac/variants.md)
+* [coverage](./docs/exac/coverage.md)
 * [constraint](./docs/exac/constraint.md)
 * [regional missense constraint](./docs/exac/regional_missense_constraint.md)
