@@ -95,11 +95,9 @@ export default () => (
       <Answer>
         <p>
           Please cite the{' '}
-          <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
-            gnomAD flagship paper
-          </ExternalLink>{' '}
-          in papers that make use of gnomAD data, and provide a link to the browser if you build
-          online resources that include the data set.
+          <ExternalLink href="https://broad.io/gnomad_lof">gnomAD flagship paper</ExternalLink> in
+          papers that make use of gnomAD data, and provide a link to the browser if you build online
+          resources that include the data set.
         </p>
 
         <p>
@@ -254,10 +252,8 @@ export default () => (
         <p>
           We used a depth corrected probability of mutation for each gene to predict the expected
           variant counts. More details can be found in the{' '}
-          <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
-            gnomAD flagship paper
-          </ExternalLink>
-          . Note that the expected variant counts for bases with a median depth &lt;1 were removed
+          <ExternalLink href="https://broad.io/gnomad_lof">gnomAD flagship paper</ExternalLink>.
+          Note that the expected variant counts for bases with a median depth &lt;1 were removed
           from the totals.
         </p>
       </Answer>

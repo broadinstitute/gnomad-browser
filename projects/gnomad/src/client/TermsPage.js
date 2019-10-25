@@ -50,10 +50,8 @@ export default () => (
     <h2>Citation in publications</h2>
     <p>
       We request that any use of data obtained from the gnomAD browser cite{' '}
-      <ExternalLink href="https://www.biorxiv.org/content/10.1101/531210v2">
-        the gnomAD flagship paper
-      </ExternalLink>{' '}
-      and any online resources that include the data set provide a link to the browser.
+      <ExternalLink href="https://broad.io/gnomad_lof">the gnomAD flagship paper</ExternalLink> and
+      any online resources that include the data set provide a link to the browser.
     </p>
     <p>
       There is no need to include us as authors on your manuscript, unless we contributed specific
