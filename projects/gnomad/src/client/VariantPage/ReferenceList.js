@@ -4,7 +4,7 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@broad/ui'
 
 export const ReferenceList = ({ variant, clinvarVariant }) => {
-  const dbsnpURL = `http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`
+  const dbsnpURL = `https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`
 
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
@@ -26,7 +26,7 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
       {clinvarVariant && (
         <ListItem>
           <ExternalLink
-            href={`http://www.ncbi.nlm.nih.gov/clinvar/?term=${clinvarVariant.allele_id}[alleleid]`}
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/?term=${clinvarVariant.allele_id}[alleleid]`}
           >
             ClinVar ({clinvarVariant.allele_id})
           </ExternalLink>
