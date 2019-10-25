@@ -176,18 +176,14 @@ export const resolveSearchResults = async (ctx, dataset, query) => {
     body: {
       query: {
         bool: {
-          should: [
-            {
-              term: {
-                symbol_upper_case: upperCaseQuery,
-              },
+          must: {
+            bool: {
+              should: [
+                { term: { symbol_upper_case: upperCaseQuery } },
+                { prefix: { search_terms: upperCaseQuery } },
+              ],
             },
-            {
-              prefix: {
-                search_terms: upperCaseQuery,
-              },
-            },
-          ],
+          },
           // Gene must exist in the version of Gencode for the selected dataset
           filter: { exists: { field: `gencode.${gencodeVersion}.gene_symbol` } },
         },
