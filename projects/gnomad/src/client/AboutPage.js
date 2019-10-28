@@ -270,6 +270,7 @@ export default () => (
           <li>Deborah Meyers</li>
           <li>Lili Milani</li>
           <li>Braxton Mitchell</li>
+          <li>Aliya Naheed</li>
           <li>Saman Nazarian</li>
           <li>Ben Neale</li>
           <li>Peter Nilsson</li>
