@@ -61,6 +61,10 @@ export default () => (
   <React.Fragment>
     <section>
       <h2>Variants (GRCh38 liftover)</h2>
+      <p>
+        The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
+        and non-TOPMed).
+      </p>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>
