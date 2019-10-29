@@ -10,6 +10,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import StatusMessage from '../StatusMessage'
+import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
@@ -110,10 +111,14 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           <VariantDetailsContainer>
             <ResponsiveSection>
               <ScrollWrapper>
-                <GnomadVariantOccurrenceTable
-                  variant={variant}
-                  showExomes={!datasetId.startsWith('gnomad_r3')}
-                />
+                {datasetId === 'exac' ? (
+                  <ExacVariantOccurrenceTable variant={variant} />
+                ) : (
+                  <GnomadVariantOccurrenceTable
+                    variant={variant}
+                    showExomes={!datasetId.startsWith('gnomad_r3')}
+                  />
+                )}
               </ScrollWrapper>
 
               {variant.colocatedVariants.length > 0 && (
