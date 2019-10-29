@@ -98,6 +98,10 @@ export default () => (
 
     <section>
       <SectionTitle id="variants">Variants</SectionTitle>
+      <p>
+        The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
+        and non-TOPMed).
+      </p>
       <ColumnsWrapper>
         <Column>
           <h3>Exomes</h3>

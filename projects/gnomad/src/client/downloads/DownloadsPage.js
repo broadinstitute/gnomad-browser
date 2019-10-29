@@ -13,27 +13,22 @@ export default () => (
   <InfoPage>
     <DocumentTitle title="Downloads" />
     <PageHeading>Downloads</PageHeading>
-    <p>
-      gnomAD is available for download in VCF and Hail Table (.ht) formats. The variant dataset
-      files below contain all subsets (non-neuro, non-cancer, controls-only, and non-TOPMed). The
-      files can be downloaded in parallel on the command line with{' '}
-      <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
-    </p>
+    <p>gnomAD is available for download in Hail Table (.ht) and VCF formats.</p>
 
     <p>
-      For example, after installing gsutil, start navigating with this command:{' '}
-      <code>gsutil ls gs://gnomad-public/release/2.1.1</code>
+      Files can be browsed and downloaded in parallel using{' '}
+      <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>. After
+      installing gsutil, start browsing with <code>gsutil ls gs://gnomad-public/release</code>.
     </p>
 
     <p>
       To work efficiently with gnomAD, we recommend using{' '}
-      <ExternalLink href="https://Hail.is/">Hail 0.2</ExternalLink> and our{' '}
+      <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
       <ExternalLink href="https://github.com/macarthur-lab/gnomad_hail">
         Hail utilities for gnomAD
       </ExternalLink>
       .
     </p>
-
     <Tabs
       tabs={[
         {
