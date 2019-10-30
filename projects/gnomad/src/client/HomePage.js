@@ -42,6 +42,14 @@ export default () => (
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="100%" />
       <p>
+        Please note that gnomAD v2.1.1 and v3 contain largely non-overlapping samples and both
+        datasets must be used to capture the full set of variation across gnomAD. For more
+        information, see the FAQ{' '}
+        <Link to={{ pathname: '/faq', hash: 'should-i-switch-to-the-latest-version-of-gnomad' }}>
+          &quot;Should I switch to the latest version of gnomAD?&quot;
+        </Link>
+      </p>
+      <p>
         Examples - Gene:{' '}
         <Link preserveSelectedDataset={false} to="/gene/PCSK9">
           PCSK9
