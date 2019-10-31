@@ -83,7 +83,7 @@ class Query extends Component {
       this.currentRequest.cancel()
     }
 
-    this.currentRequest = cancelable(gqlFetch(process.env.GNOMAD_API_URL)(query, variables))
+    this.currentRequest = cancelable(gqlFetch('/api/')(query, variables))
     this.currentRequest.promise.then(
       response => {
         if (!this.mounted) {

@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 `
 
 const fetchSearchResults = (dataset, query) =>
-  fetch(process.env.GNOMAD_API_URL)(
+  fetch('/api/')(
     `
   query Search($dataset: DatasetId!, $query: String!) {
     searchResults(dataset: $dataset, query: $query) {
