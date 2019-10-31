@@ -6,8 +6,6 @@ import { Button, ExternalLink } from '@broad/ui'
 
 import { IGVBrowser } from './IGVBrowser'
 
-const API_URL = process.env.GNOMAD_API_URL
-
 const ControlContainer = styled.div`
   /* Offset the 80px wide label to center buttons under the IGV browser */
   padding-right: 80px;
@@ -169,14 +167,14 @@ export class GnomadReadData extends Component {
       colorBy: 'strand',
       format: 'bam',
       height: 300,
-      indexURL: `${API_URL}/${nextRead.indexPath}`,
+      indexURL: `/api/${nextRead.indexPath}`,
       name: nextRead.label || `${category} [${exomeOrGenome}] #${tracksLoadedForCategory + 1}`,
       pairsSupported: false,
       readgroup: nextRead.readGroup,
       removable: false,
       samplingDepth: 1000,
       type: 'alignment',
-      url: `${API_URL}/${nextRead.bamPath}`,
+      url: `/api/${nextRead.bamPath}`,
     }
 
     this.setState(state => ({
@@ -251,17 +249,17 @@ export class GnomadReadData extends Component {
     const browserConfig = {
       locus: igvLocus,
       reference: {
-        fastaURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa`,
+        fastaURL: `/api/reads/gnomad_r2_1/hg19.fa`,
         id: 'hg19',
-        indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa.fai`,
+        indexURL: `/api/reads/gnomad_r2_1/hg19.fa.fai`,
       },
       tracks: [
         {
           displayMode: 'SQUISHED',
-          indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
+          indexURL: `/api/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
           name: 'gencode v19',
           removable: false,
-          url: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
+          url: `/api/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
         },
       ],
     }
