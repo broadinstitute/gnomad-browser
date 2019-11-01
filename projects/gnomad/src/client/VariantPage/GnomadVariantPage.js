@@ -16,7 +16,7 @@ import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
-import { GnomadReadData } from './reads/GnomadReadData'
+import GnomadReadData from './reads/GnomadReadData'
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import { VariantDetailsQuery } from './VariantDetailsQuery'
 import VariantFeedback from './VariantFeedback'
@@ -198,12 +198,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               {datasetId.startsWith('gnomad_r3') ? (
                 <p>Read data is not yet available for gnomAD v3.</p>
               ) : (
-                <GnomadReadData
-                  exomeReads={(variant.exome || {}).reads || []}
-                  genomeReads={(variant.genome || {}).reads || []}
-                  igvLocus={`${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`}
-                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-                />
+                <GnomadReadData datasetId={datasetId} variantIds={[variant.variantId]} />
               )}
             </Section>
           </VariantDetailsContainer>

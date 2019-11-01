@@ -100,12 +100,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
             VQSLOD
           }
         }
-        reads {
-          bamPath
-          category
-          indexPath
-          readGroup
-        }
       }
       genome {
         ac
@@ -191,12 +185,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
             SOR
             VQSLOD
           }
-        }
-        reads {
-          bamPath
-          category
-          indexPath
-          readGroup
         }
       }
       flags

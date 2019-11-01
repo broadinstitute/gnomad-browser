@@ -7,13 +7,13 @@ import { ExternalLink, List, ListItem, Page } from '@broad/ui'
 import DocumentTitle from '../../DocumentTitle'
 import GnomadPageHeading from '../../GnomadPageHeading'
 import StatusMessage from '../../StatusMessage'
+import GnomadReadData from '../reads/GnomadReadData'
 import VariantFeedback from '../VariantFeedback'
 import VariantNotFound from '../VariantNotFound'
 import MNVConsequenceList from './MNVConsequenceList'
 import MNVConstituentSNVFrequencyTable from './MNVConstituentSNVFrequencyTable'
 import MNVDetailsQuery from './MNVDetailsQuery'
 import MNVFrequencyTable from './MNVFrequencyTable'
-import MNVReadData from './MNVReadData'
 import MNVSummaryList from './MNVSummaryList'
 
 const Section = styled.section`
@@ -129,7 +129,10 @@ const MNVPage = ({ datasetId, variantId }) => (
                   Reads from individuals carrying the MNV may be shown more than once.
                 </ListItem>
               </List>
-              <MNVReadData variant={variant} />
+              <GnomadReadData
+                datasetId={datasetId}
+                variantIds={variant.constituent_snvs.map(snv => snv.variant_id)}
+              />
             </Section>
           </div>
         )

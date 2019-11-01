@@ -22,6 +22,11 @@ const config = {
         pathRewrite: { '^/api': '' },
         changeOrigin: true,
       },
+      '/reads': {
+        target: process.env.READS_API_URL,
+        pathRewrite: { '^/reads': '' },
+        changeOrigin: true,
+      },
     },
   },
   devtool: 'source-map',

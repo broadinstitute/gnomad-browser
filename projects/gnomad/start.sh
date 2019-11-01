@@ -9,6 +9,7 @@ export PATH=$PATH:$PROJECT_DIR/../../node_modules/.bin
 
 export NODE_ENV="development"
 export GNOMAD_API_URL=${GNOMAD_API_URL:-"https://gnomad.broadinstitute.org/api"}
+export READS_API_URL=${READS_API_URL:-"https://gnomad.broadinstitute.org/reads"}
 
 WEBPACK_DEV_SERVER_ARGS=""
 if [ "$LOGNAME" = "vagrant" ]; then
