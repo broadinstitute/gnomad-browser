@@ -15,8 +15,6 @@
     "express-graphql": "^0.8.0",
     "graphql": "^14.2.1",
     "ioredis": "^4.9.0",
-    "lodash": "^4.17.11",
-    "serve-static": "^1.13.2",
-    "sqlite": "^3.0.0"
+    "lodash": "^4.17.11"
   }
 }

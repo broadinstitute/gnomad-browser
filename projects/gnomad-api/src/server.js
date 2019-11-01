@@ -5,7 +5,6 @@ import elasticsearch from 'elasticsearch'
 import graphQLHTTP from 'express-graphql'
 import cors from 'cors'
 import Redis from 'ioredis'
-import serveStatic from 'serve-static'
 
 import gnomadSchema from './schema'
 import { UserVisibleError } from './schema/errors'
@@ -144,10 +143,6 @@ app.use(
     },
   })
 )
-
-if (process.env.READS_DIR) {
-  app.use(['/reads', '/api/reads'], serveStatic(process.env.READS_DIR, { acceptRanges: true }))
-}
 
 app.listen(process.env.GRAPHQL_PORT, () => {
   logger.info(`Listening on ${process.env.GRAPHQL_PORT}`)

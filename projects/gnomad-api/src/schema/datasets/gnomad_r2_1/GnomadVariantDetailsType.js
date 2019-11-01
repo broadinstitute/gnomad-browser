@@ -7,11 +7,9 @@ import {
   GraphQLString,
 } from 'graphql'
 
-import { UserVisibleError } from '../../errors'
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { VariantInterface } from '../../types/variant'
 import { HistogramType } from '../shared/histogram'
-import { resolveReads, ReadDataType } from '../shared/reads'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
 
@@ -123,30 +121,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-
-              // Hack to handle gnomAD v3
-              // TODO: improve this
-              if (obj.reference_genome !== 'GRCh37') {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_exomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
@@ -165,30 +139,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-
-              // Hack to handle gnomAD v3
-              // TODO: improve this
-              if (obj.reference_genome !== 'GRCh37') {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_genomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
