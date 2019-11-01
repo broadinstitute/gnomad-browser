@@ -425,7 +425,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
         const exomeReads = interleaveReads(
           variantIds.map((variantId, i) => {
             const categoryCount = { het: 0, hom: 0, hemi: 0 }
-            return data[`variant_${i}`].exome.map(read => {
+            return (data[`variant_${i}`].exome || []).map(read => {
               const { category } = read
               categoryCount[category] += 1
               return {
@@ -440,7 +440,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
         const genomeReads = interleaveReads(
           variantIds.map((variantId, i) => {
             const categoryCount = { het: 0, hom: 0, hemi: 0 }
-            return data[`variant_${i}`].genome.map(read => {
+            return (data[`variant_${i}`].genome || []).map(read => {
               const { category } = read
               categoryCount[category] += 1
               return {
