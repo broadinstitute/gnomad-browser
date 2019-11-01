@@ -227,8 +227,6 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     multiNucleotideVariants,
     exome: exomeData
       ? {
-          // Include variant fields so that the reads data resolver can access them.
-          ...sharedVariantFields,
           ac: exomeData.AC_adj.total,
           an: exomeData.AN_adj.total,
           ac_hemi: exomeData.nonpar ? exomeData.AC_adj.male : 0,
@@ -265,8 +263,6 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     flags: ['lcr', 'segdup', 'lc_lof', 'lof_flag'].filter(flag => sharedData.flags[flag]),
     genome: genomeData
       ? {
-          // Include variant fields so that the reads data resolver can access them.
-          ...sharedVariantFields,
           ac: genomeData.AC_adj.total,
           an: genomeData.AN_adj.total,
           ac_hemi: genomeData.nonpar ? genomeData.AC_adj.male : 0,

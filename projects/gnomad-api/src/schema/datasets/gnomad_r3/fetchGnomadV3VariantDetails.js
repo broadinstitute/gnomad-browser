@@ -117,8 +117,6 @@ const fetchGnomadV3VariantDetails = async (ctx, variantId) => {
     exome: null,
     flags: getFlagsForContext({ type: 'region' })(variant),
     genome: {
-      // Include variant fields so that the reads data resolver can access them.
-      ...baseVariantFields,
       ac: variant.freq.adj.total.AC || 0,
       an: variant.freq.adj.total.AN || 0,
       ac_hemi: variant.nonpar ? (variant.freq.adj.male || {}).AC || 0 : 0,

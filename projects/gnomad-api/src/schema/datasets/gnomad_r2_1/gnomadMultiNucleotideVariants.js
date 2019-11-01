@@ -10,7 +10,6 @@ import {
 import { UserVisibleError } from '../../errors'
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
-import { resolveReads, ReadDataType } from '../shared/reads'
 
 export const MultiNucleotideVariantSummaryType = new GraphQLObjectType({
   name: 'MultiNucleotideVariantSummary',
@@ -42,23 +41,6 @@ const MultiNucleotideVariantConstituentSNVType = new GraphQLObjectType({
           ac: { type: GraphQLInt },
           an: { type: GraphQLInt },
           filters: { type: new GraphQLList(GraphQLString) },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_exomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
@@ -69,23 +51,6 @@ const MultiNucleotideVariantConstituentSNVType = new GraphQLObjectType({
           ac: { type: GraphQLInt },
           an: { type: GraphQLInt },
           filters: { type: new GraphQLList(GraphQLString) },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_genomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
@@ -239,28 +204,8 @@ export const fetchGnomadMNVDetails = async (ctx, variantId) => {
       alt: doc.alt,
       constituent_snvs: doc.constituent_snvs.map(snv => ({
         variant_id: snv.variant_id,
-        exome:
-          snv.exome.ac === undefined
-            ? null
-            : {
-                // Forward chrom/pos/ref/alt for reads resolver
-                chrom: snv.chrom,
-                pos: snv.pos,
-                ref: snv.ref,
-                alt: snv.alt,
-                ...snv.exome,
-              },
-        genome:
-          snv.genome.ac === undefined
-            ? null
-            : {
-                // Forward chrom/pos/ref/alt for reads resolver
-                chrom: snv.chrom,
-                pos: snv.pos,
-                ref: snv.ref,
-                alt: snv.alt,
-                ...snv.genome,
-              },
+        exome: snv.exome.ac === undefined ? null : snv.exome,
+        genome: snv.genome.ac === undefined ? null : snv.genome,
       })),
       exome: doc.exome.ac === undefined ? null : doc.exome,
       genome: doc.genome.ac === undefined ? null : doc.genome,
