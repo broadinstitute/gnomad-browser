@@ -34,6 +34,8 @@ spec:
           mountPath: /etc/nginx/conf.d
         - name: readviz-gnomad-r2-1
           mountPath: /readviz/gnomad_r2_1
+        - name: readviz-exac
+          mountPath: /readviz/exac
       - name: app
         image: gcr.io/exac-gnomad/gnomad-reads
         env:
@@ -42,7 +44,7 @@ spec:
         - name: TRUST_PROXY
           value: "3"
         - name: DATASETS
-          value: gnomad_r2_1
+          value: gnomad_r2_1,exac
         - name: GNOMAD_R2_1_EXOMES_READS_DIRECTORY
           value: /readviz/gnomad_r2_1/combined_bams_exomes/combined_bams
         - name: GNOMAD_R2_1_EXOMES_PUBLIC_PATH
@@ -51,6 +53,10 @@ spec:
           value: /readviz/gnomad_r2_1/combined_bams_genomes/combined_bams
         - name: GNOMAD_R2_1_GENOMES_PUBLIC_PATH
           value: /reads/gnomad_r2_1/genomes
+        - name: EXAC_EXOMES_READS_DIRECTORY
+          value: /readviz/exac/combined_bams_v3
+        - name: EXAC_EXOMES_PUBLIC_PATH
+          value: /reads/exac/exomes
         ports:
         - name: http
           containerPort: 8000
@@ -63,6 +69,8 @@ spec:
         volumeMounts:
         - name: readviz-gnomad-r2-1
           mountPath: /readviz/gnomad_r2_1
+        - name: readviz-exac
+          mountPath: /readviz/exac
       nodeSelector:
         cloud.google.com/gke-nodepool: "default-pool"
       volumes:
@@ -77,5 +85,8 @@ spec:
           fsType: ext4
           pdName: readviz-gnomad-r2-1-disk1
           readOnly: true
-
-
+      - name: readviz-exac
+        gcePersistentDisk:
+          fsType: ext4
+          pdName: readviz-exac-disk1
+          readOnly: true
