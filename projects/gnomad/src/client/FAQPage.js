@@ -162,8 +162,9 @@ export default () => (
           new filtering strategies. In particular, starting with gnomAD, we filter each allele
           separately whereas variant QC was done at the site-level (chromosome, position) in ExAC.
           We also continuously work on improving our filtering strategy: for instance, we used a
-          combination of a random forest classifier and hard filters for gnomAD v2 rather than the
-          standard GATK site-level Variant Quality Score Recalibration (VQSR) used for ExAC.
+          combination of a random forest classifier and hard filters (only high-confidence
+          genotypes, inbreeding coefficient &ge; 0.3) for gnomAD v2 rather than the standard GATK
+          site-level Variant Quality Score Recalibration (VQSR) used for ExAC.
         </p>
       </Answer>
 
