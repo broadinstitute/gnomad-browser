@@ -14,11 +14,6 @@ const VariantPage = ({ datasetId, variantId, ...otherProps }) => {
     return <StructuralVariantPage {...otherProps} datasetId={datasetId} variantId={variantId} />
   }
 
-  if (datasetId === 'exac') {
-    window.location = `http://exac.broadinstitute.org/variant/${variantId}`
-    return null
-  }
-
   // Other datasets require variant IDs in the chrom-pos-ref-alt format
   if (!isVariantId(variantId)) {
     return (
