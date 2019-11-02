@@ -37,8 +37,7 @@ const fetchExacVariantDetails = async (ctx, variantId) => {
   const homAgeBins = parseHistogram(variant.AGE_HISTOGRAM_HOM || '0|0|0|0|0|0|0|0|0|0|0|0')
 
   return {
-    gqlType: 'GnomadVariantDetails',
-    // variant interface fields
+    // variant ID fields
     variantId: variant.variant_id,
     reference_genome: 'GRCh37',
     chrom: variant.locus.contig,

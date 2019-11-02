@@ -1,11 +1,9 @@
-// import ExacVariantDetailsType from './exac/ExacVariantDetailsType'
 import countExacVariantsInRegion from './exac/countExacVariantsInRegion'
 // import fetchExacVariantDetails from './exac/fetchExacVariantDetails'
 import fetchExacVariantsByGene from './exac/fetchExacVariantsByGene'
 import fetchExacVariantsByRegion from './exac/fetchExacVariantsByRegion'
 import fetchExacVariantsByTranscript from './exac/fetchExacVariantsByTranscript'
 
-import Gnomad21VariantDetailsType from './gnomad_r2_1/GnomadVariantDetailsType'
 import countGnomad21VariantsInRegion from './gnomad_r2_1/countGnomadVariantsInRegion'
 import fetchGnomad21VariantDetails from './gnomad_r2_1/fetchGnomadVariantDetails'
 import fetchGnomad21VariantsByGene from './gnomad_r2_1/fetchGnomadVariantsByGene'
@@ -27,7 +25,6 @@ const datasetsConfig = {
     fetchVariantsByGene: fetchExacVariantsByGene,
     fetchVariantsByRegion: fetchExacVariantsByRegion,
     fetchVariantsByTranscript: fetchExacVariantsByTranscript,
-    // variantDetailsType: ExacVariantDetailsType,
     exomeCoverageIndex: { index: 'exacv1_coverage', type: 'position' },
     genomeCoverageIndex: {},
   },
@@ -39,7 +36,6 @@ const datasetsConfig = {
     fetchVariantsByGene: (...args) => fetchGnomad21VariantsByGene(...args, 'gnomad'),
     fetchVariantsByRegion: (...args) => fetchGnomad21VariantsByRegion(...args, 'gnomad'),
     fetchVariantsByTranscript: (...args) => fetchGnomad21VariantsByTranscript(...args, 'gnomad'),
-    variantDetailsType: Gnomad21VariantDetailsType,
     exomeCoverageIndex: { index: 'gnomad_exome_coverage_2_1', type: 'variant' },
     genomeCoverageIndex: { index: 'gnomad_genome_coverage_2_1', type: 'variant' },
   },
@@ -75,8 +71,3 @@ datasetsConfig.gnomad_r2_1_non_cancer.label = 'gnomAD v2.1.1 (non-cancer)'
 datasetsConfig.gnomad_r2_1_non_topmed.label = 'gnomAD v2.1.1 (non-TOPMed)'
 
 export default datasetsConfig
-
-export const datasetSpecificTypes = [
-  // ExacVariantDetailsType,
-  Gnomad21VariantDetailsType,
-]

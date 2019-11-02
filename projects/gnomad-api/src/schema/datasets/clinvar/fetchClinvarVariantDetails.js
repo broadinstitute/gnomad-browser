@@ -28,8 +28,7 @@ const fetchClinvarVariantDetails = async (ctx, variantId, referenceGenome) => {
   const doc = response.hits.hits[0]._source // eslint-disable-line no-underscore-dangle
 
   return {
-    gqlType: 'ClinvarVariantDetails',
-    // Variant interface fields
+    // Variant ID fields
     variantId: doc.variant_id,
     reference_genome: referenceGenome,
     chrom: doc.chrom,

@@ -98,19 +98,14 @@ const fetchGnomadV3VariantDetails = async (ctx, variantId) => {
 
   const variant = response.hits.hits[0]._source
 
-  const baseVariantFields = {
+  return {
+    // variant ID fields
     variantId: variant.variant_id,
     reference_genome: 'GRCh38',
     chrom: variant.locus.contig.slice(3),
     pos: variant.locus.position,
     ref: variant.alleles[0],
     alt: variant.alleles[1],
-  }
-
-  return {
-    gqlType: 'GnomadVariantDetails',
-    // variant interface fields
-    ...baseVariantFields,
     // gnomAD specific fields
     colocatedVariants: [],
     multiNucleotideVariants: [],

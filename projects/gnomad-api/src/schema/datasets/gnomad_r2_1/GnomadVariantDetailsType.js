@@ -8,7 +8,6 @@ import {
 } from 'graphql'
 
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
-import { VariantInterface } from '../../types/variant'
 import { HistogramType } from '../shared/histogram'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
@@ -95,7 +94,6 @@ const GnomadVariantAgeDistribution = new GraphQLObjectType({
 
 const GnomadVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadVariantDetails',
-  interfaces: [VariantInterface],
   fields: {
     // variant interface fields
     variantId: { type: new GraphQLNonNull(GraphQLString) },
@@ -145,7 +143,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
     rsid: { type: GraphQLString },
     sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },
-  isTypeOf: variantData => variantData.gqlType === 'GnomadVariantDetails',
 })
 
 export default GnomadVariantDetailsType

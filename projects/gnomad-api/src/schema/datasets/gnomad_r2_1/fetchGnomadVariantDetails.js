@@ -204,24 +204,19 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
 
   const sharedData = exomeData || genomeData
 
-  const sharedVariantFields = {
-    variantId: sharedData.variant_id,
-    reference_genome: 'GRCh37',
-    chrom: sharedData.chrom,
-    pos: sharedData.pos,
-    ref: sharedData.ref,
-    alt: sharedData.alt,
-  }
-
   const [colocatedVariants, multiNucleotideVariants] = await Promise.all([
     fetchColocatedVariants(ctx, variantId, subset),
     fetchGnomadMNVSummariesByVariantId(ctx, variantId),
   ])
 
   return {
-    gqlType: 'GnomadVariantDetails',
-    // variant interface fields
-    ...sharedVariantFields,
+    // variant ID fields
+    variantId: sharedData.variant_id,
+    reference_genome: 'GRCh37',
+    chrom: sharedData.chrom,
+    pos: sharedData.pos,
+    ref: sharedData.ref,
+    alt: sharedData.alt,
     // gnomAD specific fields
     colocatedVariants,
     multiNucleotideVariants,
