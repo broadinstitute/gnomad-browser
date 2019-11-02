@@ -1,5 +1,5 @@
 import countExacVariantsInRegion from './exac/countExacVariantsInRegion'
-// import fetchExacVariantDetails from './exac/fetchExacVariantDetails'
+import fetchExacVariantDetails from './exac/fetchExacVariantDetails'
 import fetchExacVariantsByGene from './exac/fetchExacVariantsByGene'
 import fetchExacVariantsByRegion from './exac/fetchExacVariantsByRegion'
 import fetchExacVariantsByTranscript from './exac/fetchExacVariantsByTranscript'
@@ -21,7 +21,7 @@ const datasetsConfig = {
     label: 'ExAC',
     referenceGenome: 'GRCh37',
     countVariantsInRegion: countExacVariantsInRegion,
-    // fetchVariantDetails: fetchExacVariantDetails,
+    fetchVariantDetails: fetchExacVariantDetails,
     fetchVariantsByGene: fetchExacVariantsByGene,
     fetchVariantsByRegion: fetchExacVariantsByRegion,
     fetchVariantsByTranscript: fetchExacVariantsByTranscript,
