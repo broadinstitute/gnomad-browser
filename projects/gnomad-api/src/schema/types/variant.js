@@ -2,7 +2,6 @@ import {
   GraphQLBoolean,
   GraphQLFloat,
   GraphQLInt,
-  GraphQLInterfaceType,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -10,18 +9,6 @@ import {
 } from 'graphql'
 
 import { ReferenceGenomeType } from '../gene-models/referenceGenome'
-
-export const VariantInterface = new GraphQLInterfaceType({
-  name: 'Variant',
-  fields: {
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
-    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
-    chrom: { type: new GraphQLNonNull(GraphQLString) },
-    pos: { type: new GraphQLNonNull(GraphQLInt) },
-    ref: { type: new GraphQLNonNull(GraphQLString) },
-    alt: { type: new GraphQLNonNull(GraphQLString) },
-  },
-})
 
 const VariantSequencingDataType = new GraphQLObjectType({
   name: 'VariantSequencingData',

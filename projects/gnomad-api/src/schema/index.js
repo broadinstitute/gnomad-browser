@@ -10,13 +10,14 @@ import {
 import { extendObjectType } from '../utilities/graphql'
 
 import DatasetArgumentType from './datasets/DatasetArgumentType'
-import datasetsConfig, { datasetSpecificTypes } from './datasets/datasetsConfig'
+import datasetsConfig from './datasets/datasetsConfig'
 import StructuralVariantDatasetArgumentType from './datasets/StructuralVariantDatasetArgumentType'
 import svDatasets from './datasets/svDatasets'
 
 import ClinvarVariantDetailsType from './datasets/clinvar/ClinvarVariantDetailsType'
 import fetchClinvarVariantDetails from './datasets/clinvar/fetchClinvarVariantDetails'
 
+import GnomadVariantDetailsType from './datasets/gnomad_r2_1/GnomadVariantDetailsType'
 import {
   MultiNucleotideVariantDetailsType,
   fetchGnomadMNVDetails,
@@ -34,7 +35,6 @@ import GeneType from './types/gene'
 import regionType from './types/region'
 import { SearchResultType, resolveSearchResults } from './types/search'
 import TranscriptType from './types/transcript'
-import { VariantInterface } from './types/variant'
 
 const rootType = new GraphQLObjectType({
   name: 'Root',
@@ -142,7 +142,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
     },
     variant: {
       description: 'Look up a single variant or rsid. Example: 1-55516888-G-GA.',
-      type: VariantInterface,
+      type: GnomadVariantDetailsType,
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
         variantId: { type: new GraphQLNonNull(GraphQLString) },
@@ -161,7 +161,6 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
 
 const Schema = new GraphQLSchema({
   query: rootType,
-  types: datasetSpecificTypes,
 })
 
 export default Schema

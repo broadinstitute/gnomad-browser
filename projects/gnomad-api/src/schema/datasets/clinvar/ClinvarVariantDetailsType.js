@@ -1,12 +1,9 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
-import { VariantInterface } from '../../types/variant'
 
 const ClinvarVariantDetailsType = new GraphQLObjectType({
   name: 'ClinvarVariantDetails',
-  interfaces: [VariantInterface],
-  isTypeOf: variantData => variantData.gqlType === 'ClinvarVariantDetails',
   fields: {
     // Variant ID fields
     variantId: { type: new GraphQLNonNull(GraphQLString) },
