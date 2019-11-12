@@ -47,7 +47,7 @@ const VariantReadsType = new GraphQLObjectType({
     exome: {
       type: new GraphQLList(ReadType),
       resolve: async obj => {
-        const { dataset } = obj
+        const { dataset, variantId } = obj
         const { readsDirectory, publicPath } = datasets[dataset].exomes || {}
         if (!(readsDirectory && publicPath)) {
           return null
@@ -57,14 +57,14 @@ const VariantReadsType = new GraphQLObjectType({
           return await resolveReads(readsDirectory, publicPath, obj)
         } catch (err) {
           logger.warn(err)
-          throw new UserVisibleError('Unable to load reads data')
+          throw new UserVisibleError(`Unable to load exome reads for ${variantId}`)
         }
       },
     },
     genome: {
       type: new GraphQLList(ReadType),
       resolve: async obj => {
-        const { dataset } = obj
+        const { dataset, variantId } = obj
         const { readsDirectory, publicPath } = datasets[dataset].genomes || {}
         if (!(readsDirectory && publicPath)) {
           return null
@@ -74,7 +74,7 @@ const VariantReadsType = new GraphQLObjectType({
           return await resolveReads(readsDirectory, publicPath, obj)
         } catch (err) {
           logger.warn(err)
-          throw new UserVisibleError('Unable to load reads data')
+          throw new UserVisibleError(`Unable to load genome reads for ${variantId}`)
         }
       },
     },
