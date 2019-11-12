@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Button, ExternalLink } from '@broad/ui'
+import { Badge, Button, ExternalLink } from '@broad/ui'
 
 import Query from '../../Query'
 import StatusMessage from '../../StatusMessage'
@@ -55,6 +55,7 @@ const ReadDataPropType = PropTypes.shape({
 
 class GnomadReadData extends Component {
   static propTypes = {
+    children: PropTypes.node,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
@@ -64,6 +65,7 @@ class GnomadReadData extends Component {
   }
 
   static defaultProps = {
+    children: undefined,
     showHemizygotes: false,
   }
 
@@ -240,7 +242,7 @@ class GnomadReadData extends Component {
   }
 
   render() {
-    const { chrom, start, stop, showHemizygotes } = this.props
+    const { children, chrom, start, stop, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -285,6 +287,8 @@ class GnomadReadData extends Component {
           , so they accurately represent what HaplotypeCaller was seeing when it called this
           variant.
         </p>
+
+        {children}
 
         <IGVBrowser config={browserConfig} onCreateBrowser={this.onCreateBrowser} />
 
@@ -391,10 +395,6 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
           return <StatusMessage>Unable to load reads</StatusMessage>
         }
 
-        if (graphQLErrors) {
-          return <StatusMessage>{graphQLErrors.map(e => e.message).join(', ')}</StatusMessage>
-        }
-
         const variants = variantIds.map(variantId => {
           const [chrom, pos, ref, alt] = variantId.split('-')
           return { chrom, pos: Number(pos), ref, alt }
@@ -460,7 +460,14 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
             exomeReads={exomeReads}
             genomeReads={genomeReads}
             showHemizygotes={chrom === 'X' || chrom === 'Y'}
-          />
+          >
+            {graphQLErrors && (
+              <p>
+                <Badge level="warning">Warning</Badge>{' '}
+                {graphQLErrors.map(e => e.message).join('. ')}.
+              </p>
+            )}
+          </GnomadReadData>
         )
       }}
     </Query>
