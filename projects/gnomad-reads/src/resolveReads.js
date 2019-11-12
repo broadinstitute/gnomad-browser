@@ -20,8 +20,6 @@ const resolveReads = async (readsDirectory, publicPath, { alt, chrom, pos, ref }
     `combined_chr${chrom}_${`${pos % 1000}`.padStart(3, '0')}.db`
   )
 
-  console.log(dbPath)
-
   const db = await sqlite.open(dbPath)
   const rows = await db.all(
     'select n_expected_samples, n_available_samples, het_or_hom_or_hemi from t where chrom = ? and pos = ? and ref = ? and alt = ?',
