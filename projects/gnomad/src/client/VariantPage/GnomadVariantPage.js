@@ -87,7 +87,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
         {variantId} ({referenceGenomeForDataset(datasetId)})
       </VariantId>
     </GnomadPageHeading>
-    <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
+    <VariantDetailsQuery key={datasetId} datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
