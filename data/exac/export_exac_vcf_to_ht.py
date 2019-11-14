@@ -269,7 +269,7 @@ def split_position_end(position):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--input-url", help="URL of ExAC sites VCF", default="gs://exac/170122_exacv1_bundle/ExAC.r1.sites.vep.vcf.gz"
+        "--input-url", help="URL of ExAC sites VCF", default="gs://gnomad-public/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"
     )
     parser.add_argument("--output-url", help="URL to write Hail table to", required=True)
     parser.add_argument("--subset", help="Filter variants to this chrom:start-end range")
