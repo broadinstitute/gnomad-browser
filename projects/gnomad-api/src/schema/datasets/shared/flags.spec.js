@@ -259,12 +259,12 @@ describe('LOFTEE', () => {
     describe('gene context', () => {
       const variant = {
         sortedTranscriptConsequences: [
-          { gene_id: 'G1', lof: '', consequence: 'frameshift_variant', category: 'lof' },
-          { gene_id: 'G2', lof: 'HC', consequence: 'frameshift_variant', category: 'lof' },
+          { gene_id: 'G1', lof: '', major_consequence: 'frameshift_variant' },
+          { gene_id: 'G2', lof: 'HC', major_consequence: 'frameshift_variant' },
           // This can happen when a coding consequence is sorted above a non-coding consequence
-          { gene_id: 'G3', lof: '', consequence: 'missense_variant', category: 'missense' },
-          { gene_id: 'G3', lof: '', consequence: 'frameshift_variant', category: 'lof' },
-          { gene_id: 'G4', lof: '', consequence: 'missense_variant', category: 'missense' },
+          { gene_id: 'G3', lof: '', major_consequence: 'missense_variant' },
+          { gene_id: 'G3', lof: '', major_consequence: 'frameshift_variant' },
+          { gene_id: 'G4', lof: '', major_consequence: 'missense_variant' },
         ],
       }
 
@@ -289,8 +289,8 @@ describe('LOFTEE', () => {
         [
           {
             sortedTranscriptConsequences: [
-              { lof: '', consequence: 'frameshift_variant', category: 'lof' },
-              { lof: 'HC', consequence: 'frameshift_variant', category: 'lof' },
+              { lof: '', major_consequence: 'frameshift_variant', category: 'lof' },
+              { lof: 'HC', major_consequence: 'frameshift_variant', category: 'lof' },
             ],
           },
           true,
@@ -298,8 +298,8 @@ describe('LOFTEE', () => {
         [
           {
             sortedTranscriptConsequences: [
-              { lof: 'HC', consequence: 'frameshift_variant', category: 'lof' },
-              { lof: '', consequence: 'missense_variant', category: 'missense' },
+              { lof: 'HC', major_consequence: 'frameshift_variant', category: 'lof' },
+              { lof: '', major_consequence: 'missense_variant', category: 'missense' },
             ],
           },
           false,
@@ -307,7 +307,7 @@ describe('LOFTEE', () => {
         [
           {
             sortedTranscriptConsequences: [
-              { lof: '', consequence: 'synonymous_variant', category: 'synonymous' },
+              { lof: '', major_consequence: 'synonymous_variant', category: 'synonymous' },
             ],
           },
           false,
@@ -327,9 +327,24 @@ describe('LOFTEE', () => {
     describe('transcript context', () => {
       const variant = {
         sortedTranscriptConsequences: [
-          { transcript_id: 'T1', lof: '', consequence: 'frameshift_variant', category: 'lof' },
-          { transcript_id: 'T2', lof: 'HC', consequence: 'frameshift_variant', category: 'lof' },
-          { transcript_id: 'T3', lof: '', consequence: 'missense_variant', category: 'missense' },
+          {
+            transcript_id: 'T1',
+            lof: '',
+            major_consequence: 'frameshift_variant',
+            category: 'lof',
+          },
+          {
+            transcript_id: 'T2',
+            lof: 'HC',
+            major_consequence: 'frameshift_variant',
+            category: 'lof',
+          },
+          {
+            transcript_id: 'T3',
+            lof: '',
+            major_consequence: 'missense_variant',
+            category: 'missense',
+          },
         ],
       }
 
