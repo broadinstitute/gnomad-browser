@@ -2,7 +2,13 @@ import React from 'react'
 
 import { ExternalLink, ListItem } from '@broad/ui'
 
-import { ChromosomeVcfLinks, Column, ColumnsWrapper, FileList } from './downloadsPageStyles'
+import {
+  ChromosomeVcfLinks,
+  Column,
+  ColumnsWrapper,
+  FileList,
+  SectionTitle,
+} from './downloadsPageStyles'
 
 const liftoverExomeChromosomeVcfs = [
   { chrom: '1', size: '5.3 GiB', md5: '6afa2df088f1627eb649c6d24d8784e8' },
@@ -60,7 +66,7 @@ const liftoverGenomeChromosomeVcfs = [
 export default () => (
   <React.Fragment>
     <section>
-      <h2>Variants (GRCh38 liftover)</h2>
+      <SectionTitle id="v2-liftover-variants">Variants (GRCh38 liftover)</SectionTitle>
       <p>
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
         and non-TOPMed).

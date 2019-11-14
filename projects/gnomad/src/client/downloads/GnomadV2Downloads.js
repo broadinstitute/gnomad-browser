@@ -76,28 +76,28 @@ export default () => (
       <h2>Summary</h2>
       <List>
         <ListItem>
-          <Link href="#variants">Variants</Link>
+          <Link href="#v2-variants">Variants</Link>
         </ListItem>
         <ListItem>
-          <Link href="#coverage">Coverage</Link>
+          <Link href="#v2-coverage">Coverage</Link>
         </ListItem>
         <ListItem>
-          <Link href="#constraint">Constraint</Link>
+          <Link href="#v2-constraint">Constraint</Link>
         </ListItem>
         <ListItem>
-          <Link href="#multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</Link>
+          <Link href="#v2-multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</Link>
         </ListItem>
         <ListItem>
-          <Link href="#structural-variants">Structural variants</Link>
+          <Link href="#v2-structural-variants">Structural variants</Link>
         </ListItem>
         <ListItem>
-          <Link href="#resources">Resources</Link>
+          <Link href="#v2-resources">Resources</Link>
         </ListItem>
       </List>
     </section>
 
     <section>
-      <SectionTitle id="variants">Variants</SectionTitle>
+      <SectionTitle id="v2-variants">Variants</SectionTitle>
       <p>
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
         and non-TOPMed).
@@ -187,7 +187,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="coverage">Coverage</SectionTitle>
+      <SectionTitle id="v2-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
@@ -225,7 +225,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="constraint">Constraint</SectionTitle>
+      <SectionTitle id="v2-constraint">Constraint</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
@@ -255,7 +255,9 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</SectionTitle>
+      <SectionTitle id="v2-multi-nucleotide-variants">
+        Multi-nucleotide variants (MNVs)
+      </SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
@@ -301,7 +303,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="structural-variants">Structural variants</SectionTitle>
+      <SectionTitle id="v2-structural-variants">Structural variants</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz">
@@ -355,7 +357,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="resources">Resources</SectionTitle>
+      <SectionTitle id="v2-resources">Resources</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">

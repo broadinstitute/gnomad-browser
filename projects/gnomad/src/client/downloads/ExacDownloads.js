@@ -34,7 +34,7 @@ const coverageFiles = [
 export default () => (
   <React.Fragment>
     <section>
-      <SectionTitle id="variants">Variants</SectionTitle>
+      <SectionTitle id="exac-variants">Variants</SectionTitle>
       <h3>Exomes</h3>
       <FileList>
         <ListItem>
@@ -51,7 +51,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="coverage">Coverage</SectionTitle>
+      <SectionTitle id="exac-coverage">Coverage</SectionTitle>
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
           <ListItem>
@@ -70,7 +70,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="constraint">Constraint</SectionTitle>
+      <SectionTitle id="exac-constraint">Constraint</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz">
@@ -81,7 +81,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="resources">Resources</SectionTitle>
+      <SectionTitle id="exac-resources">Resources</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
@@ -92,7 +92,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="resources">Other</SectionTitle>
+      <SectionTitle id="exac-other">Other</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/legacy/exacv1_downloads/release1/manuscript_data">
