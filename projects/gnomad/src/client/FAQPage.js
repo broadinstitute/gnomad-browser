@@ -213,8 +213,10 @@ export default () => (
         <p>
           Finally, gnomAD v3 was mapped to GRCh38, so if your data is also on this build it then it
           probably makes sense to switch to v3. There is also a{' '}
-          <Link to="/downloads">liftover version of gnomAD v2</Link> onto GRCh38 available. We plan
-          to produce a larger GRCh38 aligned exome callset in 2020.
+          <Link to={{ pathname: '/downloads', hash: 'v2-liftover-variants' }}>
+            liftover version of gnomAD v2
+          </Link>{' '}
+          onto GRCh38 available. We plan to produce a larger GRCh38 aligned exome callset in 2020.
         </p>
       </Answer>
 
@@ -300,7 +302,7 @@ export default () => (
           constraint. In addition, if a canonical transcript was missing a &quot;Met&quot; at the
           start, it was considered malformed and not evaluated for constraint metrics. The following
           list describes the reason names given in the constraint_flag column of the{' '}
-          <Link to={{ pathname: '/downloads', hash: '#constraint' }}>constraint files</Link>:
+          <Link to={{ pathname: '/downloads', hash: '#v2-constraint' }}>constraint files</Link>:
         </p>
         <List>
           <ListItem>no_variants: Zero observed synonymous, missense, pLoF variants</ListItem>

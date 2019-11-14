@@ -34,7 +34,7 @@ const genomeChromosomeVcfs = [
 export default () => (
   <React.Fragment>
     <section>
-      <SectionTitle id="variants">Variants</SectionTitle>
+      <SectionTitle id="v3-variants">Variants</SectionTitle>
       <h3>Genomes</h3>
       <FileList>
         <ListItem>
@@ -70,7 +70,7 @@ export default () => (
     </section>
 
     <section>
-      <SectionTitle id="coverage">Coverage</SectionTitle>
+      <SectionTitle id="v3-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/3.0/coverage">
