@@ -8,6 +8,7 @@ import InfoPage from '../InfoPage'
 import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
+import ExacDownloads from './ExacDownloads'
 
 export default () => (
   <InfoPage>
@@ -45,6 +46,11 @@ export default () => (
           id: 'v3',
           label: 'gnomAD v3',
           render: () => <GnomadV3Downloads />,
+        },
+        {
+          id: 'exac',
+          label: 'ExAC',
+          render: () => <ExacDownloads />,
         },
       ]}
     />
