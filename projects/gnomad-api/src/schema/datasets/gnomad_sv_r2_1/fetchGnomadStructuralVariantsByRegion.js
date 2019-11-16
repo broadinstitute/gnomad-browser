@@ -69,10 +69,6 @@ const fetchGnomadStructuralVariantsByRegion = async (
       majorConsequence = 'intergenic'
     }
 
-    if (!variant.freq) {
-      console.log(variant)
-    }
-
     const freq = variant.freq[subset]
 
     return {
