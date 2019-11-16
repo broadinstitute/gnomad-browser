@@ -37,19 +37,19 @@ class Logger {
   info(obj) {
     const record = this.formatRecord(obj)
     record.severity = Severity.INFO
-    console.log(JSON.stringify(record))
+    console.log(JSON.stringify(record)) // eslint-disable-line no-console
   }
 
   warn(obj) {
     const record = this.formatRecord(obj)
     record.severity = Severity.WARNING
-    console.log(JSON.stringify(record))
+    console.log(JSON.stringify(record)) // eslint-disable-line no-console
   }
 
   error(obj) {
     const record = this.formatRecord(obj)
     record.severity = Severity.ERROR
-    console.log(JSON.stringify(record))
+    console.log(JSON.stringify(record)) // eslint-disable-line no-console
   }
 }
 
