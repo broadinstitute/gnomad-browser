@@ -13,7 +13,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
-    'no-console': 0,
     'func-names': ['warn', 'as-needed'],
     'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
     'import/prefer-default-export': 0,
