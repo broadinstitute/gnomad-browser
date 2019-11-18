@@ -9,13 +9,10 @@ import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const getCoverageQuery = ({ includeExomeCoverage = true, includeGenomeCoverage = true } = {}) => {
-  return `
-query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+const coverageQuery = `
+query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    ${
-      includeExomeCoverage
-        ? `exome_coverage(dataset: $datasetId) {
+    exome_coverage(dataset: $datasetId) @include(if: $includeExomeCoverage) {
       pos
       mean
       median
@@ -28,12 +25,8 @@ query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: R
       over_30
       over_50
       over_100
-    }`
-        : ''
     }
-    ${
-      includeGenomeCoverage
-        ? `genome_coverage(dataset: $datasetId) {
+    genome_coverage(dataset: $datasetId) @include(if: $includeGenomeCoverage) {
       pos
       mean
       median
@@ -46,22 +39,21 @@ query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: R
       over_30
       over_50
       over_100
-    }`
-        : ''
     }
   }
 }
 `
-}
 
 const GeneCoverageTrack = ({ datasetId, geneId, includeExomeCoverage, includeGenomeCoverage }) => {
   return (
     <Query
-      query={getCoverageQuery({ includeExomeCoverage, includeGenomeCoverage })}
+      query={coverageQuery}
       variables={{
         geneId,
         datasetId: coverageDataset(datasetId),
         referenceGenome: referenceGenomeForDataset(coverageDataset(datasetId)),
+        includeExomeCoverage,
+        includeGenomeCoverage,
       }}
     >
       {({ data, error, loading }) => {
