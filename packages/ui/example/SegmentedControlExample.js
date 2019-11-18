@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { SegmentedControl } from '..'
+import { SegmentedControl } from '../src'
 
 export default class SegmentedControlExample extends Component {
   state = {

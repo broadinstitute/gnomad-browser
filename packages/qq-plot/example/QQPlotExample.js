@@ -2,7 +2,7 @@ import React from 'react'
 
 import data from '@resources/gwas-eg.json'
 
-import { QQPlot } from '..'
+import { QQPlot } from '../src'
 
 const dataPoints = data.map(d => ({ ...d, pval: d.pvalue }))
 

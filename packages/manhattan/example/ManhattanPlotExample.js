@@ -2,7 +2,7 @@ import React from 'react'
 
 import data from '@resources/gwas-eg.json'
 
-import { ManhattanPlot } from '../ManhattanPlot'
+import { ManhattanPlot } from '../src'
 
 const dataPoints = data.map(d => ({
   chrom: `${d.chromosome}`,

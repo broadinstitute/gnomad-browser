@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Button, Modal } from '..'
+import { Button, Modal } from '../src'
 
 export default class ModalExample extends Component {
   state = {

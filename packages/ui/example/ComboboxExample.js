@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Combobox } from '..'
+import { Combobox } from '../src'
 
 export default class ComboboxExample extends Component {
   state = {
