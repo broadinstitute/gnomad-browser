@@ -44,7 +44,7 @@ export const RegionViewer = ({
     centerPanelWidth,
     isPositionDefined,
     leftPanelWidth,
-    offsetRegions, // used only by track-coverage and track-position-table
+    offsetRegions, // used only by track-coverage
     positionOffset,
     rightPanelWidth,
     scalePosition,
