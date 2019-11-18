@@ -6,11 +6,11 @@ import Slider from 'material-ui/Slider'
 
 import { RegionViewer } from '@broad/region-viewer'
 
-import SashimiTrack from '../index'
-
 import testGene from '@resources/gwas-eg.json'  // eslint-disable-line
 import testCoverage from '@resources/gwas-eg.json'  // eslint-disable-line
 import testJunctions from '@resources/gwas-eg.json'  // eslint-disable-line
+
+import SashimiTrack from '../src'
 
 class SashimiTrackExample extends Component {
   state = {

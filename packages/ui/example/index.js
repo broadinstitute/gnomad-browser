@@ -10,7 +10,7 @@ import {
   PageHeading,
   PrimaryButton,
   TextButton,
-} from '..'
+} from '../src'
 import CategoryFilterControlExample from './CategoryFilterControlExample'
 import CheckboxExample from './CheckboxExample'
 import ComboboxExample from './ComboboxExample'

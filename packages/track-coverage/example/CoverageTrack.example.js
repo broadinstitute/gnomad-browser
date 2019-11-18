@@ -4,7 +4,7 @@ import { RegionViewer } from '@broad/region-viewer'
 
 import exampleData from '@resources/region-viewer-full-PCSK9-v1.json'
 
-import { CoverageTrack } from '../CoverageTrack'
+import { CoverageTrack } from '../src'
 
 const {
   exacv1_coverage: exacCoverage,

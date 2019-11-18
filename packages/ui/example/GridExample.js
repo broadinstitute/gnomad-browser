@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Grid } from '../Grid'
+import { Grid } from '../src'
 
 const Wrapper = styled.div`
   width: 30%;

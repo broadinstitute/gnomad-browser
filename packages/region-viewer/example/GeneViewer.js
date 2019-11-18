@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { RegionViewer } from '..'
+import { RegionViewer } from '../src'
 
 import Query from './Query'
 

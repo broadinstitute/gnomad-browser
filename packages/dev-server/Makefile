@@ -17,7 +17,7 @@ serve:
 COMPONENT_NAME=$(shell basename `pwd`)
 
 prototype:
-	@echo "import Example from '@broad/$(COMPONENT_NAME)/src/example'; export default Example" > ../dev-server/src/current.js ; \
+	@echo "import Example from '@broad/$(COMPONENT_NAME)/example'; export default Example" > ../dev-server/src/current.js ; \
 	make serve
 
 .PHONY: lib clean build serve prototype

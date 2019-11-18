@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Checkbox } from '..'
+import { Checkbox } from '../src'
 
 export default class CheckboxExample extends Component {
   state = {

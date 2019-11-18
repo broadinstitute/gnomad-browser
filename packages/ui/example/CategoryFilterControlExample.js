@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { CategoryFilterControl } from '..'
+import { CategoryFilterControl } from '../src'
 
 const CategoryFilterControlExample = () => {
   const [categorySelections, setCategorySelections] = useState({

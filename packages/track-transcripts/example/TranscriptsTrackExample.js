@@ -1,8 +1,8 @@
 import React from 'react'
 
-import GeneViewer from '@broad/region-viewer/src/example/GeneViewer'
+import GeneViewer from '@broad/region-viewer/example/GeneViewer'
 
-import TranscriptsTrack from '..'
+import TranscriptsTrack from '../src'
 
 const TranscriptsTrackExample = () => (
   <GeneViewer geneSymbol="PCSK9" width={1000}>
