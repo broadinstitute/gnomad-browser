@@ -9,13 +9,10 @@ import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
-const getCoverageQuery = ({ includeExomeCoverage = true, includeGenomeCoverage = true } = {}) => {
-  return `
-query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+const coverageQuery = `
+query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-    ${
-      includeExomeCoverage
-        ? `exome_coverage(dataset: $datasetId) {
+    exome_coverage(dataset: $datasetId) @include(if: $includeExomeCoverage) {
       pos
       mean
       median
@@ -28,12 +25,8 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
       over_30
       over_50
       over_100
-    }`
-        : ''
     }
-    ${
-      includeGenomeCoverage
-        ? `genome_coverage(dataset: $datasetId) {
+    genome_coverage(dataset: $datasetId) @include(if: $includeGenomeCoverage) {
       pos
       mean
       median
@@ -46,13 +39,10 @@ query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Dat
       over_30
       over_50
       over_100
-    }`
-        : ''
     }
   }
 }
 `
-}
 
 const RegionCoverageTrack = ({
   datasetId,
@@ -64,13 +54,15 @@ const RegionCoverageTrack = ({
 }) => {
   return (
     <Query
-      query={getCoverageQuery({ includeExomeCoverage, includeGenomeCoverage })}
+      query={coverageQuery}
       variables={{
         chrom,
         start,
         stop,
         datasetId: coverageDataset(datasetId),
         referenceGenome: referenceGenomeForDataset(coverageDataset(datasetId)),
+        includeExomeCoverage,
+        includeGenomeCoverage,
       }}
     >
       {({ data, error, loading }) => {
