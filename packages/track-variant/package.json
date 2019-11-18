@@ -6,12 +6,18 @@
   "files": [
     "lib"
   ],
+  "scripts": {
+    "example": "gnomadjs-scripts example"
+  },
   "dependencies": {
     "@broad/region-viewer": "*",
     "@broad/utilities": "*",
     "d3-scale": "^2.2.2",
     "polished": "^3.2.0",
     "prop-types": "^15.7.2"
+  },
+  "devDependencies": {
+    "@broad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2"
