@@ -29,6 +29,26 @@ export const resolveRegion = (ctx, { chrom, start, stop }, referenceGenome) => {
     throw new UserVisibleError(`Invalid chromosome: "${chrom}"`)
   }
 
+  if (start < 1) {
+    throw new UserVisibleError('Region start must be greater than 0')
+  }
+
+  if (start >= 1e9) {
+    throw new UserVisibleError('Region start must be less than 1,000,000,000')
+  }
+
+  if (stop < 1) {
+    throw new UserVisibleError('Region stop must be greater than 0')
+  }
+
+  if (stop >= 1e9) {
+    throw new UserVisibleError('Region stop must be less than 1,000,000,000')
+  }
+
+  if (start > stop) {
+    throw new UserVisibleError('Region stop must be greater than region start')
+  }
+
   return {
     reference_genome: referenceGenome,
     chrom,
