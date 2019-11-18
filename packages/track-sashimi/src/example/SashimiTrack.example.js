@@ -5,7 +5,6 @@ import R from 'ramda'
 import Slider from 'material-ui/Slider'
 
 import { RegionViewer } from '@broad/region-viewer'
-import PositionTableTrack from '@broad/track-position-table'
 
 import SashimiTrack from '../index'
 
@@ -101,10 +100,6 @@ class SashimiTrackExample extends Component {
             coverage={coverage_patient}
             coverageColour={'#FF0001'}
             junctions={junctions_patient}
-          />
-          <PositionTableTrack
-            title={''}
-            height={50}
           />
         </RegionViewer>
       </div>
