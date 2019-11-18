@@ -5,5 +5,8 @@
   "license": "MIT",
   "files": [
     "lib"
-  ]
+  ],
+  "devDependencies": {
+    "@broad/scripts": "*"
+  }
 }

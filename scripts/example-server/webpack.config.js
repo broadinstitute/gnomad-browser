@@ -1,16 +1,18 @@
 const path = require('path')
 
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   devServer: {
-    clientLogLevel: 'none',
-    contentBase: 'public',
+    contentBase: 'dist',
     historyApiFallback: true,
-    port: 8008,
-    publicPath: '/static/js',
+    hot: true,
+    port: 8000,
+    publicPath: '/',
   },
   devtool: 'source-map',
   entry: {
-    bundle: './src/index.js',
+    bundle: path.resolve(__dirname, 'entry.js'),
   },
   mode: 'development',
   module: {
@@ -32,10 +34,15 @@ module.exports = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, './public/static/js'),
-    publicPath: '/static/js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     filename: '[name].js',
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './index.html'),
+    }),
+  ],
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
