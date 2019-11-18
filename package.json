@@ -4,6 +4,10 @@
   "author": "msolomon@broadinstitute.org",
   "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/macarthur-lab/gnomadjs.git"
+  },
   "scripts": {
     "lint:css": "stylelint './**/*.js'",
     "lint:js": "eslint .",
@@ -53,6 +57,5 @@
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-dev-server": "^3.3.1"
-  },
-  "repository": "https://github.com/mattsolo1/gnomadjs.git"
+  }
 }
