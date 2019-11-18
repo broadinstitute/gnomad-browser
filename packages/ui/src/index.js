@@ -4,13 +4,6 @@ export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
 
 export { CategoryFilterControl } from './CategoryFilterControl'
 
-export {
-  types,
-  actions,
-  default as createUserInterfaceReducer,
-  screenSize,
-} from './userInterfaceRedux'
-
 export { Badge } from './Badge'
 
 export { Checkbox } from './Checkbox'
