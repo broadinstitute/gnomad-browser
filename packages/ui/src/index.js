@@ -1,24 +1,8 @@
 import './polyfills'
 
-export {
-  MaterialButtonRaised,
-} from './material/button'
-
 export { BaseButton, Button, PrimaryButton, TextButton } from './Button'
 
 export { CategoryFilterControl } from './CategoryFilterControl'
-
-export {
-  Table,
-  VerticalTextLabels,
-  TableVerticalLabel,
-  VerticalLabelText,
-  TableRows,
-  TableRow,
-  TableHeader,
-  TableCell,
-  TableTitleColumn,
-} from './tables/simpleTable'
 
 export {
   types,
@@ -26,33 +10,6 @@ export {
   default as createUserInterfaceReducer,
   screenSize,
 } from './userInterfaceRedux'
-
-export {
-  SectionTitle,
-  GenePage,
-  Summary,
-  TableSection,
-  SettingsContainer,
-  MenusContainer,
-  SearchContainer,
-  DataSelectionGroup,
-  DataSelectionContainer,
-} from './genePage/userInterface'
-
-export {
-  Loading,
-  GeneInfoWrapper,
-  GeneNameWrapper,
-  GeneSymbol,
-  GeneLongName,
-  GeneDetails,
-  GeneAttributes,
-  GeneAttributeKeys,
-  GeneAttributeValues,
-  GeneAttributeKey,
-  GeneAttributeValue,
-  ItemWrapper,
-} from './genePage/geneInfoStyles'
 
 export { Badge } from './Badge'
 
