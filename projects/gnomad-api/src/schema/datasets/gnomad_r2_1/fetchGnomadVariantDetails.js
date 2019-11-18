@@ -1,6 +1,7 @@
 import { flatMap } from 'lodash'
 
 import { UserVisibleError } from '../../errors'
+import { getFlagsForContext } from '../shared/flags'
 import { formatHistogram } from '../shared/histogram'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
 
@@ -255,7 +256,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           },
         }
       : null,
-    flags: ['lcr', 'segdup', 'lc_lof', 'lof_flag'].filter(flag => sharedData.flags[flag]),
+    flags: getFlagsForContext({ type: 'region' })(sharedData),
     genome: genomeData
       ? {
           ac: genomeData.AC_adj.total,
