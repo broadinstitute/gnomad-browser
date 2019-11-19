@@ -14,7 +14,7 @@ export default () => (
       done at the Broad Institute. Results of other studies are available at the following websites:
     </p>
     <h2>
-      Autism - <ExternalLink href="http://asc.broadinstitute.org">ASC</ExternalLink>
+      Autism - <ExternalLink href="https://asc.broadinstitute.org">ASC</ExternalLink>
     </h2>
     <p>
       Founded in 2010, the Autism Sequencing Consortium (ASC) is an international group of
@@ -22,7 +22,7 @@ export default () => (
       displays variant and gene-level data from the most recent ASC exome sequencing analysis.
     </p>
     <h2>
-      Epilepsy - <ExternalLink href="http://epi25.broadinstitute.org">Epi25</ExternalLink>
+      Epilepsy - <ExternalLink href="https://epi25.broadinstitute.org">Epi25</ExternalLink>
     </h2>
     <p>
       The Epi25 collaborative is a global collaboration committed to aggregating, sequencing, and
@@ -32,7 +32,7 @@ export default () => (
       spectrum of epilepsy syndromes to identify individual risk genes.
     </p>
     <h2>
-      Schizophrenia - <ExternalLink href="http://schema.broadinstitute.org">SCHEMA</ExternalLink>
+      Schizophrenia - <ExternalLink href="https://schema.broadinstitute.org">SCHEMA</ExternalLink>
     </h2>
     <p>
       The Schizophrenia Exome Sequencing Meta-analysis (SCHEMA) consortium is a large multi-site
