@@ -5,8 +5,6 @@ set -eu
 PROJECT_DIR=$(dirname "${BASH_SOURCE}")
 cd $PROJECT_DIR
 
-export PATH=$PATH:$PROJECT_DIR/../../node_modules/.bin
-
 export NODE_ENV="development"
 
 # Connect to local databases
@@ -21,12 +19,12 @@ export GRAPHQL_PORT=8007
 rm -rf dist
 
 # Bundle server once before starting nodemon
-webpack --display=errors-only
+yarn run webpack --display=errors-only
 
-webpack --display=errors-only --watch &
+yarn run webpack --display=errors-only --watch &
 PID[0]=$!
 
-nodemon dist/server.js &
+yarn run nodemon dist/server.js &
 PID[1]=$!
 
 trap "kill ${PID[0]} ${PID[1]}; exit 1" INT

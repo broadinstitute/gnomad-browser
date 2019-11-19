@@ -18,8 +18,6 @@ if [[ ! -d ./browsers/${BROWSER} ]]; then
   exit 1
 fi
 
-export PATH=$PATH:$PROJECT_DIR/../../node_modules/.bin
-
 export NODE_ENV="development"
 export BROWSER=$BROWSER
 
@@ -34,15 +32,15 @@ export PORT=$(expr $WEBPACK_DEV_SERVER_PORT + 10)
 rm -rf "dist/${BROWSER}"
 
 # Bundle server once before starting nodemon
-webpack --config=./config/webpack.config.server.js --display=errors-only
+yarn run webpack --config=./config/webpack.config.server.js --display=errors-only
 
-webpack-dev-server --config=./config/webpack.config.client.js --hot --port $WEBPACK_DEV_SERVER_PORT &
+yarn run webpack-dev-server --config=./config/webpack.config.client.js --hot --port $WEBPACK_DEV_SERVER_PORT &
 PID[0]=$!
 
-webpack --config=./config/webpack.config.server.js --display=errors-only --watch &
+yarn run webpack --config=./config/webpack.config.server.js --display=errors-only --watch &
 PID[1]=$!
 
-nodemon dist/${BROWSER}/server.js &
+yarn run nodemon dist/${BROWSER}/server.js &
 PID[2]=$!
 
 trap "kill ${PID[0]} ${PID[1]} ${PID[2]}; exit 1" INT

@@ -18,13 +18,11 @@ if [[ ! -d ./browsers/${BROWSER} ]]; then
   exit 1
 fi
 
-export PATH=$PATH:$PROJECT_DIR/../../node_modules/.bin
-
 export NODE_ENV="production"
 export BROWSER=$BROWSER
 
 rm -rf dist
 
-webpack --config=./config/webpack.config.client.js
+yarn run webpack --config=./config/webpack.config.client.js
 
-webpack --config=./config/webpack.config.server.js
+yarn run webpack --config=./config/webpack.config.server.js
