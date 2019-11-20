@@ -419,6 +419,7 @@ export default () => (
               barColor="#428bca"
               xLabel="Age"
               yLabel="Individuals"
+              formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
             />
           </Column>
           <Column>
@@ -431,6 +432,7 @@ export default () => (
               barColor="#73ab3d"
               xLabel="Age"
               yLabel="Individuals"
+              formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
             />
           </Column>
         </ColumnsWrapper>

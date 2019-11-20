@@ -65,6 +65,7 @@ export default class GnomadAgeDistribution extends Component {
           nLarger={selectedAgeDistribution.n_larger}
           xLabel="Age"
           yLabel="Individuals"
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
         />
 
         <ControlSection>
