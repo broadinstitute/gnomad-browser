@@ -4,8 +4,6 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@broad/ui'
 
 export const ReferenceList = ({ variant, clinvarVariant }) => {
-  const dbsnpURL = `https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`
-
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
   /* eslint-disable-next-line prettier/prettier */
@@ -13,13 +11,15 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
 
   return (
     <List>
-      <ListItem>
-        {variant.rsid && variant.rsid !== '.' ? (
-          <ExternalLink href={dbsnpURL}>dbSNP ({variant.rsid})</ExternalLink>
-        ) : (
-          'Not found in dbSNP'
-        )}
-      </ListItem>
+      {variant.rsid && (
+        <ListItem>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`}
+          >
+            dbSNP ({variant.rsid})
+          </ExternalLink>
+        </ListItem>
+      )}
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
