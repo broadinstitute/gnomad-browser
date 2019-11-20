@@ -749,6 +749,8 @@ export default () => (
           will affect frequency estimates and especially the calculation of Hardy-Weinberg
           Equilibrium. Use caution when interpreting the frequencies of these variants. We are
           currently flagging these variants in the gnomAD browser, and working on a longer-term fix.
+          See our <ExternalLink href="https://doi.org/10.1101/784157">preprint</ExternalLink> for
+          more details.
         </p>
       </Answer>
 
