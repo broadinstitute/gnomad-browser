@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
+import { GraphQLList, GraphQLNonNull } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
@@ -23,7 +23,6 @@ import {
 
 import { UserVisibleError } from '../errors'
 
-import { ExonType } from '../gene-models/exon'
 import { GeneType as BaseGeneType } from '../gene-models/gene'
 
 import {
@@ -37,21 +36,14 @@ import { StructuralVariantSummaryType } from './structuralVariant'
 import TranscriptType from './transcript'
 import { VariantSummaryType } from './variant'
 
+// There are two transcript types in the schema: the list of transcripts in a gene and the top-level transcript field.
+// GraphQL does not allow multiple types with the same name, so rename this one.
 const GeneTranscriptType = extendObjectType(TranscriptType, {
   name: 'GeneTranscript',
 })
 
 const GeneType = extendObjectType(BaseGeneType, {
   fields: {
-    composite_transcript: {
-      type: new GraphQLObjectType({
-        name: 'CompositeTranscript',
-        fields: {
-          exons: { type: new GraphQLList(ExonType) },
-        },
-      }),
-      resolve: obj => ({ exons: obj.exons }),
-    },
     exome_coverage: {
       type: new GraphQLList(CoverageBinType),
       args: {
@@ -146,13 +138,6 @@ const GeneType = extendObjectType(BaseGeneType, {
         }
         return fetchPextRegionsByGene(ctx, obj.gene_id)
       },
-    },
-    transcript: {
-      type: GeneTranscriptType,
-      resolve: obj =>
-        (obj.transcripts || []).find(
-          transcript => transcript.transcript_id === obj.canonical_transcript_id
-        ),
     },
     transcripts: { type: new GraphQLList(GeneTranscriptType) },
     exac_constraint: {
