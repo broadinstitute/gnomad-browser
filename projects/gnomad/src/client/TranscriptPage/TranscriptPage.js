@@ -15,7 +15,6 @@ import GeneCoverageTrack from '../GenePage/GeneCoverageTrack'
 import GeneInfo from '../GenePage/GeneInfo'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
-import StatusMessage from '../StatusMessage'
 import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
@@ -190,12 +189,12 @@ class TranscriptPage extends Component {
     const TranscriptsTrackComponent =
       gene.reference_genome === 'GRCh37' ? TranscriptsTrackWithTissueExpression : TranscriptsTrack
 
+    const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
+    const hasCodingExons = cdsCompositeExons.length > 0
+    const hasUTRs = gene.exons.some(exon => exon.feature_type === 'UTR')
     const hasNonCodingTranscripts = gene.transcripts.some(
       tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
     )
-
-    const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
-    const hasCodingExons = cdsCompositeExons.length > 0
 
     const regionViewerRegions = gene.exons.filter(
       exon =>
@@ -239,13 +238,11 @@ class TranscriptPage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          {hasCodingExons && (
-            <GeneCoverageTrack
-              datasetId={datasetId}
-              geneId={gene.gene_id}
-              includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
-            />
-          )}
+          <GeneCoverageTrack
+            datasetId={datasetId}
+            geneId={gene.gene_id}
+            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+          />
 
           <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
             Include:
@@ -270,7 +267,7 @@ class TranscriptPage extends Component {
                 <Label htmlFor="include-utr-regions">
                   <CheckboxInput
                     checked={includeUTRs}
-                    disabled={!gene.exons.some(exon => exon.feature_type === 'UTR')}
+                    disabled={!hasUTRs}
                     id="include-utr-regions"
                     onChange={e => {
                       this.setState({ includeUTRs: e.target.checked })
@@ -288,7 +285,7 @@ class TranscriptPage extends Component {
                 <Label htmlFor="include-nc-transcripts">
                   <CheckboxInput
                     checked={includeNonCodingTranscripts}
-                    disabled={!hasNonCodingTranscripts}
+                    disabled={!hasNonCodingTranscripts || (!hasCodingExons && !hasUTRs)}
                     id="include-nc-transcripts"
                     onChange={e => {
                       this.setState({ includeNonCodingTranscripts: e.target.checked })
@@ -304,49 +301,41 @@ class TranscriptPage extends Component {
             </Legend>
           </ControlPanel>
 
-          {hasCodingExons && (
-            <TranscriptsTrackComponent
-              activeTranscript={{
-                exons: gene.exons,
-                strand: gene.strand,
-              }}
-              exportFilename={`${gene.gene_id}_transcripts`}
-              expressionLabel={
-                <span>
-                  <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
-                    Isoform expression
-                  </ExternalLink>
-                  <QuestionMark topic="gtex" />
-                </span>
-              }
-              renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
-                <TranscriptLink
-                  to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
-                  isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
-                  isSelected={trackTranscript.transcript_id === transcript.transcript_id}
-                >
-                  {trackTranscript.transcript_id}
-                </TranscriptLink>
-              )}
-              showNonCodingTranscripts={includeNonCodingTranscripts}
-              showUTRs={includeUTRs}
-              transcripts={sortTranscripts(
-                gene.transcripts.map(otherTranscript => ({
-                  ...otherTranscript,
-                  exons: otherTranscript.exons.some(exon => exon.feature_type !== 'exon')
-                    ? otherTranscript.exons.filter(exon => exon.feature_type !== 'exon')
-                    : otherTranscript.exons,
-                })),
-                gene.canonical_transcript_id
-              )}
-            />
-          )}
-
-          {!hasCodingExons && (
-            <StatusMessage>
-              Coverage &amp; transcripts not shown for genes with no coding exons
-            </StatusMessage>
-          )}
+          <TranscriptsTrackComponent
+            activeTranscript={{
+              exons: gene.exons,
+              strand: gene.strand,
+            }}
+            exportFilename={`${gene.gene_id}_transcripts`}
+            expressionLabel={
+              <span>
+                <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
+                  Isoform expression
+                </ExternalLink>
+                <QuestionMark topic="gtex" />
+              </span>
+            }
+            renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
+              <TranscriptLink
+                to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
+                isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
+                isSelected={trackTranscript.transcript_id === transcript.transcript_id}
+              >
+                {trackTranscript.transcript_id}
+              </TranscriptLink>
+            )}
+            showNonCodingTranscripts={includeNonCodingTranscripts}
+            showUTRs={includeUTRs}
+            transcripts={sortTranscripts(
+              gene.transcripts.map(otherTranscript => ({
+                ...otherTranscript,
+                exons: otherTranscript.exons.some(exon => exon.feature_type !== 'exon')
+                  ? otherTranscript.exons.filter(exon => exon.feature_type !== 'exon')
+                  : otherTranscript.exons,
+              })),
+              gene.canonical_transcript_id
+            )}
+          />
 
           {hasCodingExons && gene.pext && (
             <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
