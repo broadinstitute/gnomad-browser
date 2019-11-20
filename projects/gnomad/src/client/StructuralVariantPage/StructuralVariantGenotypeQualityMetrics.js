@@ -20,6 +20,7 @@ const StructuralVariantGenotypeQualityMetrics = ({ variant }) => {
         nLarger={histogramData.n_larger}
         xLabel="Genotype Quality"
         yLabel={selectedSamples === 'all' ? 'All individuals' : 'Variant carriers'}
+        formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
       />
 
       <ControlSection>

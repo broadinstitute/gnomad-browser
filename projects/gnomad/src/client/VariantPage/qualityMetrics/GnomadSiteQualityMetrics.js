@@ -109,15 +109,22 @@ export class GnomadSiteQualityMetrics extends Component {
 
     const metricDescription = qualityMetricDescriptions[selectedMetric]
 
+    const useLogScale = selectedMetric === 'SiteQuality' || selectedMetric === 'DP'
+
+    const formatTooltip = useLogScale
+      ? bin => `1e${Math.log10(bin.x0)}-1e${Math.log10(bin.x1)}: ${bin.n.toLocaleString()} variants`
+      : bin => `${bin.x0}-${bin.x1}: ${bin.n.toLocaleString()} variants`
+
     return (
       <div>
         <BarGraph
           barColor={graphColor}
           bins={selectedMetricBins}
           highlightValue={variantData.qualityMetrics.siteQualityMetrics[selectedMetric]}
-          logScale={selectedMetric === 'SiteQuality' || selectedMetric === 'DP'}
+          logScale={useLogScale}
           xLabel={selectedMetric}
           yLabel="Variants"
+          formatTooltip={formatTooltip}
         />
 
         <ControlSection>

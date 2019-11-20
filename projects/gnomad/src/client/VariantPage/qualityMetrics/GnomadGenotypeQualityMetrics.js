@@ -49,6 +49,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
           nLarger={selectedMetric === 'alleleBalance' ? undefined : histogramData.n_larger}
           xLabel={xLabel}
           yLabel={yLabel}
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
         />
 
         <ControlSection>
