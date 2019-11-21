@@ -44,6 +44,18 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
       syn_z
       pLI
     }
+    exac_constraint {
+      exp_syn
+      obs_syn
+      syn_z
+      exp_mis
+      obs_mis
+      mis_z
+      exp_lof
+      obs_lof
+      lof_z
+      pLI
+    }
     gene {
       gene_id
       reference_genome
@@ -60,18 +72,6 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
         feature_type
         start
         stop
-      }
-      exac_constraint {
-        exp_syn
-        obs_syn
-        syn_z
-        exp_mis
-        obs_mis
-        mis_z
-        exp_lof
-        obs_lof
-        lof_z
-        pLI
       }
       transcripts {
         transcript_id

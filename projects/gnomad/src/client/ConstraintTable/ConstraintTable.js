@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import StatusMessage from '../StatusMessage'
 import ExacConstraintTable from './ExacConstraintTable'
 import GnomadConstraintTable from './GnomadConstraintTable'
 
@@ -13,23 +12,17 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
   const isTranscript = geneOrTranscript.transcript_id !== undefined
 
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
-  const exacConstraint = isTranscript
-    ? geneOrTranscript.gene.exac_constraint
-    : geneOrTranscript.exac_constraint
+  const exacConstraint = geneOrTranscript.exac_constraint
 
   if (datasetId === 'exac') {
     if (!exacConstraint) {
-      return <StatusMessage>Constraint not available for this gene</StatusMessage>
+      return <p>Constraint not available for this {isTranscript ? 'transcript' : 'gene'}</p>
     }
     return <ExacConstraintTable constraint={exacConstraint} />
   }
 
   if (!gnomadConstraint) {
-    return (
-      <StatusMessage>
-        Constraint not available for this {isTranscript ? 'transcript' : 'gene'}
-      </StatusMessage>
-    )
+    return <p>Constraint not available for this {isTranscript ? 'transcript' : 'gene'}</p>
   }
 
   return (
@@ -49,12 +42,6 @@ ConstraintTable.propTypes = {
     PropTypes.shape({
       gnomad_constraint: PropTypes.object,
       exac_constraint: PropTypes.object,
-    }),
-    PropTypes.shape({
-      gnomad_constraint: PropTypes.object,
-      gene: PropTypes.shape({
-        exac_constraint: PropTypes.object,
-      }),
     }),
   ]).isRequired,
   /* eslint-enable react/forbid-prop-types */
