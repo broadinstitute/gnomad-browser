@@ -21,6 +21,11 @@ import {
   fetchExacRegionalMissenseConstraintRegions,
 } from '../datasets/exac/exacRegionalMissenseConstraint'
 
+import {
+  GnomadConstraintType,
+  fetchGnomadConstraintByTranscript,
+} from '../datasets/gnomad_r2_1/gnomadV2Constraint'
+
 import { UserVisibleError } from '../errors'
 
 import { GeneType as BaseGeneType } from '../gene-models/gene'
@@ -140,6 +145,18 @@ const GeneType = extendObjectType(BaseGeneType, {
       },
     },
     transcripts: { type: new GraphQLList(GeneTranscriptType) },
+    gnomad_constraint: {
+      type: GnomadConstraintType,
+      resolve: (obj, args, ctx) => {
+        if (!obj.canonical_transcript_id) {
+          throw new UserVisibleError(
+            `Unable to query gnomAD constraint for gene "${obj.gene_id}", no canonical transcript`
+          )
+        }
+        assertDatasetAndReferenceGenomeMatch('gnomad_r2_1', obj.reference_genome)
+        return fetchGnomadConstraintByTranscript(ctx, obj.canonical_transcript_id)
+      },
+    },
     exac_constraint: {
       type: ExacConstraintType,
       resolve: (obj, args, ctx) => {
