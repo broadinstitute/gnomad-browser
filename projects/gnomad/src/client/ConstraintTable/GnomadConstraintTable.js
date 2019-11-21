@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
-import Query from '../../Query'
-import StatusMessage from '../../StatusMessage'
+import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 import { renderRoundedNumber } from './constraintMetrics'
 
 const Table = styled(BaseTable)`

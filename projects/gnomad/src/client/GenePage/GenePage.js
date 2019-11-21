@@ -8,6 +8,7 @@ import { RegionViewer } from '@broad/region-viewer'
 import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
 import { ExternalLink } from '@broad/ui'
 
+import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
@@ -16,7 +17,6 @@ import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
 
-import Constraint from './constraint/Constraint'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
@@ -210,7 +210,7 @@ class GenePage extends Component {
               {datasetId.startsWith('gnomad_r3') ? (
                 <p>Constraint not yet available for gnomAD v3.</p>
               ) : (
-                <Constraint
+                <ConstraintTable
                   datasetId={datasetId}
                   gene={gene}
                   transcriptId={gene.canonical_transcript_id}

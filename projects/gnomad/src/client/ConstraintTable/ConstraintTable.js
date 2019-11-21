@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import StatusMessage from '../../StatusMessage'
+import StatusMessage from '../StatusMessage'
 import ExacConstraintTable from './ExacConstraintTable'
 import GnomadConstraintTable from './GnomadConstraintTable'
 
-const Constraint = ({ datasetId, gene, transcriptId }) => {
+const ConstraintTable = ({ datasetId, gene, transcriptId }) => {
   if (datasetId === 'exac') {
     const exacConstraint = gene.exac_constraint
     if (!exacConstraint) {
@@ -28,7 +28,7 @@ const Constraint = ({ datasetId, gene, transcriptId }) => {
   )
 }
 
-Constraint.propTypes = {
+ConstraintTable.propTypes = {
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     exac_constraint: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -36,8 +36,8 @@ Constraint.propTypes = {
   transcriptId: PropTypes.string,
 }
 
-Constraint.defaultProps = {
+ConstraintTable.defaultProps = {
   transcriptId: undefined,
 }
 
-export default Constraint
+export default ConstraintTable
