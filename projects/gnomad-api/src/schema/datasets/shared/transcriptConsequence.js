@@ -4,7 +4,6 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
   name: 'TranscriptConsequence',
   fields: {
     canonical: { type: GraphQLBoolean },
-    category: { type: GraphQLString },
     consequence_terms: { type: new GraphQLList(GraphQLString) },
     gene_id: { type: GraphQLString },
     gene_symbol: { type: GraphQLString },
@@ -16,7 +15,6 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
     lof_filter: { type: GraphQLString },
     major_consequence: { type: GraphQLString },
     polyphen_prediction: { type: GraphQLString },
-    protein_id: { type: GraphQLString },
     sift_prediction: { type: GraphQLString },
     transcript_id: { type: GraphQLString },
   },
