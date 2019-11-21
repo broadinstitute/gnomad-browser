@@ -51,12 +51,6 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-const HistogramTooltip = ({ ac, copyNumber }) => (
-  <span>
-    CN={copyNumber}: {ac} samples
-  </span>
-)
-
 const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width } }) => {
   const height = 250
 
@@ -102,7 +96,7 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
                 fill={copyNumber === 2 ? '#bdbdbd' : '#73ab3d'}
                 stroke="#333"
               />
-              <TooltipAnchor tooltipComponent={HistogramTooltip} ac={ac} copyNumber={copyNumber}>
+              <TooltipAnchor tooltip={`CN=${copyNumber}: ${ac} samples`}>
                 <TooltipTrigger
                   x={xScale(copyNumber)}
                   y={yScale.range()[1]}
