@@ -11,6 +11,11 @@ import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummary
 import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
 
 import {
+  ExacConstraintType,
+  fetchExacConstraintByTranscriptId,
+} from '../datasets/exac/exacConstraint'
+
+import {
   GnomadConstraintType,
   fetchGnomadConstraintByTranscript,
 } from '../datasets/gnomad_r2_1/gnomadV2Constraint'
@@ -119,6 +124,13 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
       resolve: (obj, args, ctx) => {
         assertDatasetAndReferenceGenomeMatch('gnomad_r2_1', obj.reference_genome)
         return fetchGnomadConstraintByTranscript(ctx, obj.transcript_id)
+      },
+    },
+    exac_constraint: {
+      type: ExacConstraintType,
+      resolve: (obj, args, ctx) => {
+        assertDatasetAndReferenceGenomeMatch('exac', obj.reference_genome)
+        return fetchExacConstraintByTranscriptId(ctx, obj.transcript_id)
       },
     },
     gtex_tissue_tpms_by_transcript: {
