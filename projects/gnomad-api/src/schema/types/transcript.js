@@ -10,8 +10,10 @@ import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
 import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
 
-import fetchGnomadConstraintByTranscript from '../datasets/gnomad_r2_1/fetchGnomadConstraintByTranscript'
-import GnomadConstraintType from '../datasets/gnomad_r2_1/GnomadConstraintType'
+import {
+  GnomadConstraintType,
+  fetchGnomadConstraintByTranscript,
+} from '../datasets/gnomad_r2_1/gnomadV2Constraint'
 
 import { UserVisibleError } from '../errors'
 
