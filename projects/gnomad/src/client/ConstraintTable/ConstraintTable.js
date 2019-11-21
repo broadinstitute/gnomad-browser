@@ -5,17 +5,31 @@ import StatusMessage from '../StatusMessage'
 import ExacConstraintTable from './ExacConstraintTable'
 import GnomadConstraintTable from './GnomadConstraintTable'
 
-const ConstraintTable = ({ datasetId, gene, transcriptId }) => {
+const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
+  if (datasetId.startsWith('gnomad_r3')) {
+    return <p>Constraint not yet available for gnomAD v3.</p>
+  }
+
+  const isTranscript = geneOrTranscript.transcript_id !== undefined
+
+  const gnomadConstraint = geneOrTranscript.gnomad_constraint
+  const exacConstraint = isTranscript
+    ? geneOrTranscript.gene.exac_constraint
+    : geneOrTranscript.exac_constraint
+
   if (datasetId === 'exac') {
-    const exacConstraint = gene.exac_constraint
     if (!exacConstraint) {
       return <StatusMessage>Constraint not available for this gene</StatusMessage>
     }
     return <ExacConstraintTable constraint={exacConstraint} />
   }
 
-  if (!transcriptId) {
-    return <StatusMessage>Constraint not available for this gene</StatusMessage>
+  if (!gnomadConstraint) {
+    return (
+      <StatusMessage>
+        Constraint not available for this {isTranscript ? 'transcript' : 'gene'}
+      </StatusMessage>
+    )
   }
 
   return (
@@ -23,21 +37,27 @@ const ConstraintTable = ({ datasetId, gene, transcriptId }) => {
       {['controls', 'non_neuro', 'non_cancer', 'non_topmed'].some(subset =>
         datasetId.includes(subset)
       ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
-      <GnomadConstraintTable transcriptId={transcriptId} />
+      <GnomadConstraintTable constraint={gnomadConstraint} />
     </React.Fragment>
   )
 }
 
 ConstraintTable.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  gene: PropTypes.shape({
-    exac_constraint: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  }).isRequired,
-  transcriptId: PropTypes.string,
-}
-
-ConstraintTable.defaultProps = {
-  transcriptId: undefined,
+  /* eslint-disable react/forbid-prop-types */
+  geneOrTranscript: PropTypes.oneOfType([
+    PropTypes.shape({
+      gnomad_constraint: PropTypes.object,
+      exac_constraint: PropTypes.object,
+    }),
+    PropTypes.shape({
+      gnomad_constraint: PropTypes.object,
+      gene: PropTypes.shape({
+        exac_constraint: PropTypes.object,
+      }),
+    }),
+  ]).isRequired,
+  /* eslint-enable react/forbid-prop-types */
 }
 
 export default ConstraintTable
