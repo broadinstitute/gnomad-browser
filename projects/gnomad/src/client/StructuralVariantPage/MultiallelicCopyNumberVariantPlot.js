@@ -79,7 +79,7 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
           left={margin.left}
           scale={xScale}
           stroke="#333"
-          tickFormat={(copyNumber, i) => (i % labelInterval === 0 ? copyNumber : '')}
+          tickFormat={(copyNumber, i) => (i % labelInterval === 0 ? copyNumber.toString() : '')}
           top={height - margin.bottom}
         />
         <AxisLeft
