@@ -4,8 +4,6 @@ import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
 
-import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import { renderRoundedNumber } from './constraintMetrics'
 
 const Table = styled(BaseTable)`
@@ -217,57 +215,4 @@ GnomadConstraintTable.propTypes = {
   }).isRequired,
 }
 
-const constraintQuery = `
-  query GnomadConstraint($transcriptId: String!) {
-    transcript(transcript_id: $transcriptId, reference_genome: GRCh37) {
-      gnomad_constraint {
-        exp_lof
-        exp_mis
-        exp_syn
-        obs_lof
-        obs_mis
-        obs_syn
-        oe_lof
-        oe_lof_lower
-        oe_lof_upper
-        oe_mis
-        oe_mis_lower
-        oe_mis_upper
-        oe_syn
-        oe_syn_lower
-        oe_syn_upper
-        lof_z
-        mis_z
-        syn_z
-        pLI
-      }
-    }
-  }
-`
-
-const ConnectedGnomadConstraintTable = ({ transcriptId }) => (
-  <Query query={constraintQuery} variables={{ transcriptId }}>
-    {({ data, error, loading }) => {
-      if (loading) {
-        return <StatusMessage>Loading constraint...</StatusMessage>
-      }
-      if (error) {
-        return <StatusMessage>Unable to load constraint</StatusMessage>
-      }
-
-      if (!(data.transcript || {}).gnomad_constraint) {
-        return <StatusMessage>No constraint data for this gene</StatusMessage>
-      }
-
-      const constraint = data.transcript.gnomad_constraint
-
-      return <GnomadConstraintTable constraint={constraint} />
-    }}
-  </Query>
-)
-
-ConnectedGnomadConstraintTable.propTypes = {
-  transcriptId: PropTypes.string.isRequired,
-}
-
-export default ConnectedGnomadConstraintTable
+export default GnomadConstraintTable

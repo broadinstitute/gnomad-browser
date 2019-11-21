@@ -23,6 +23,27 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
       start
       stop
     }
+    gnomad_constraint {
+      exp_lof
+      exp_mis
+      exp_syn
+      obs_lof
+      obs_mis
+      obs_syn
+      oe_lof
+      oe_lof_lower
+      oe_lof_upper
+      oe_mis
+      oe_mis_lower
+      oe_mis_upper
+      oe_syn
+      oe_syn_lower
+      oe_syn_upper
+      lof_z
+      mis_z
+      syn_z
+      pLI
+    }
     gene {
       gene_id
       reference_genome

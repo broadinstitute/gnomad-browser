@@ -207,15 +207,7 @@ class GenePage extends Component {
               <h2>
                 Constraint <QuestionMark topic="constraint" />
               </h2>
-              {datasetId.startsWith('gnomad_r3') ? (
-                <p>Constraint not yet available for gnomAD v3.</p>
-              ) : (
-                <ConstraintTable
-                  datasetId={datasetId}
-                  gene={gene}
-                  transcriptId={gene.canonical_transcript_id}
-                />
-              )}
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
             </div>
           </GeneInfoColumnWrapper>
         </TrackPageSection>
