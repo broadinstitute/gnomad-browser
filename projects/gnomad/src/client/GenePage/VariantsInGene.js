@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
 import ClinVarTrack from '../clinvar/ClinVarTrack'
-import datasetLabels from '../datasetLabels'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -22,7 +22,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInGene extends Component {
   static propTypes = {
-    clinVarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
+    clinVarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
@@ -30,6 +30,10 @@ class VariantsInGene extends Component {
     }).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
+  }
+
+  static defaultProps = {
+    clinVarVariants: null,
   }
 
   constructor(props) {
@@ -180,11 +184,13 @@ class VariantsInGene extends Component {
       visibleVariantWindow,
     } = this.state
 
-    const datasetLabel = datasetLabels[datasetId]
+    const datasetLabel = labelForDataset(datasetId)
 
     return (
       <div>
-        <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        {clinVarVariants && (
+          <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        )}
 
         <VariantTrack
           title={`${datasetLabel}\n(${renderedVariants.length})`}
@@ -240,8 +246,8 @@ class VariantsInGene extends Component {
 }
 
 const query = `
-query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
-  gene(gene_id: $geneId) {
+query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     clinvar_variants {
       allele_id
       clinical_significance
@@ -263,7 +269,6 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
       pos
       rsid
       variant_id: variantId
-      xpos
       exome {
         ac
         ac_hemi
@@ -299,7 +304,14 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!) {
 }`
 
 const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
-  <Query query={query} variables={{ datasetId, geneId: gene.gene_id }}>
+  <Query
+    query={query}
+    variables={{
+      datasetId,
+      geneId: gene.gene_id,
+      referenceGenome: referenceGenomeForDataset(datasetId),
+    }}
+  >
     {({ data, error, loading }) => {
       if (loading) {
         return <StatusMessage>Loading variants...</StatusMessage>

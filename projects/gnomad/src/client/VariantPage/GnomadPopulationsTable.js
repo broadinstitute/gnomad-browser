@@ -8,6 +8,7 @@ import { PopulationsTable } from './PopulationsTable'
 
 const POPULATION_NAMES = {
   AFR: 'African',
+  AMI: 'Amish',
   AMR: 'Latino',
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
@@ -33,7 +34,7 @@ const POPULATION_NAMES = {
   SWE: 'Swedish',
 }
 
-const POPULATIONS = ['AFR', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
+const POPULATIONS = ['AFR', 'AMI', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
 
 const SUBPOPULATIONS = {
   EAS: ['JPN', 'KOR', 'OEA'],
@@ -50,20 +51,21 @@ const ControlSection = styled.div`
 
 const nestPopulations = populations => {
   const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
-  return [
-    ...POPULATIONS.map(popId => ({
+
+  const ancestryPopulations = [
+    ...POPULATIONS.filter(popId => indices[popId] !== undefined).map(popId => ({
       ...populations[indices[popId]],
-      subpopulations: [
-        ...(SUBPOPULATIONS[popId] || []).map(
-          subPopId => populations[indices[`${popId}_${subPopId}`]]
-        ),
-        populations[indices[`${popId}_FEMALE`]],
-        populations[indices[`${popId}_MALE`]],
-      ],
+      subpopulations: [...(SUBPOPULATIONS[popId] || []), 'FEMALE', 'MALE']
+        .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
+        .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
     })),
-    populations[indices.FEMALE],
-    populations[indices.MALE],
   ]
+
+  // ExAC variants do not contain this data
+  if (indices.FEMALE && indices.MALE) {
+    return [...ancestryPopulations, populations[indices.FEMALE], populations[indices.MALE]]
+  }
+  return ancestryPopulations
 }
 
 const combinePopulations = populations => {

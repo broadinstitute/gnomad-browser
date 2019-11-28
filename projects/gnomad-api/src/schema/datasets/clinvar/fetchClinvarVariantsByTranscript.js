@@ -1,6 +1,13 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
+import { UserVisibleError } from '../../errors'
 
 const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
+  if (transcript.reference_genome !== 'GRCh37') {
+    throw new UserVisibleError(
+      `ClinVar variants not available on reference genome ${transcript.reference_genome}`
+    )
+  }
+
   const transcriptId = transcript.transcript_id
   const filteredRegions = transcript.exons.filter(exon => exon.feature_type === 'CDS')
   const padding = 75
@@ -34,7 +41,6 @@ const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
       'ref',
       'transcript_id_to_consequence_json',
       'variant_id',
-      'xpos',
     ],
     size: 10000,
     body: {
@@ -54,9 +60,9 @@ const fetchClinvarVariantsByTranscript = async (ctx, transcript) => {
     return {
       // Variant ID fields
       variantId: doc.variant_id,
+      reference_genome: transcript.reference_genome,
       chrom: doc.chrom,
       pos: doc.pos,
-      xpos: doc.xpos,
       ref: doc.ref,
       alt: doc.alt,
       // ClinVar specific fields

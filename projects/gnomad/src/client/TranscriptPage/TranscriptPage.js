@@ -6,16 +6,15 @@ import styled from 'styled-components'
 
 import { QuestionMark } from '@broad/help'
 import { RegionViewer } from '@broad/region-viewer'
-import { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
+import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@broad/track-transcripts'
 import { ExternalLink } from '@broad/ui'
 
+import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import DocumentTitle from '../DocumentTitle'
-import Constraint from '../GenePage/constraint/Constraint'
 import GeneCoverageTrack from '../GenePage/GeneCoverageTrack'
 import GeneInfo from '../GenePage/GeneInfo'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
-import StatusMessage from '../StatusMessage'
 import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
@@ -117,8 +116,8 @@ const sortTranscripts = (transcripts, canonicalTranscriptId) =>
       return 1
     }
 
-    const t1Mean = mean(Object.values(t1.gtex_tissue_expression))
-    const t2Mean = mean(Object.values(t2.gtex_tissue_expression))
+    const t1Mean = mean(Object.values(t1.gtex_tissue_expression || {}))
+    const t2Mean = mean(Object.values(t2.gtex_tissue_expression || {}))
 
     if (t1Mean === t2Mean) {
       return t1.transcript_id.localeCompare(t2.transcript_id)
@@ -132,6 +131,7 @@ class TranscriptPage extends Component {
     datasetId: PropTypes.string.isRequired,
     transcript: PropTypes.shape({
       transcript_id: PropTypes.string.isRequired,
+      reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
@@ -176,8 +176,9 @@ class TranscriptPage extends Component {
     const { includeUTRs, includeNonCodingTranscripts } = this.state
     const { gene } = transcript
 
-    if (datasetId === 'gnomad_sv_r2') {
-      return <Redirect to={`/gene/${gene.gene_id}?dataset=gnomad_sv_r2`} />
+    // Cannot query structural variants by transcript, redirect to gene page
+    if (datasetId.startsWith('gnomad_sv')) {
+      return <Redirect to={`/gene/${gene.gene_id}?dataset=${datasetId}`} />
     }
 
     const smallScreen = width < 900
@@ -185,12 +186,15 @@ class TranscriptPage extends Component {
     // Subtract 30px for padding on Page component
     const regionViewerWidth = width - 30
 
-    const hasNonCodingTranscripts = gene.transcripts.some(
-      tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
-    )
+    const TranscriptsTrackComponent =
+      gene.reference_genome === 'GRCh37' ? TranscriptsTrackWithTissueExpression : TranscriptsTrack
 
     const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
     const hasCodingExons = cdsCompositeExons.length > 0
+    const hasUTRs = gene.exons.some(exon => exon.feature_type === 'UTR')
+    const hasNonCodingTranscripts = gene.transcripts.some(
+      tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
+    )
 
     const regionViewerRegions = gene.exons.filter(
       exon =>
@@ -215,11 +219,7 @@ class TranscriptPage extends Component {
               <h2>
                 Constraint <QuestionMark topic="constraint" />
               </h2>
-              <Constraint
-                datasetId={datasetId}
-                gene={gene}
-                selectedTranscriptId={transcript.transcript_id}
-              />
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />
             </div>
           </GeneInfoColumnWrapper>
         </TrackPageSection>
@@ -230,13 +230,11 @@ class TranscriptPage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          {hasCodingExons && (
-            <GeneCoverageTrack
-              datasetId={datasetId}
-              geneId={gene.gene_id}
-              showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
-            />
-          )}
+          <GeneCoverageTrack
+            datasetId={datasetId}
+            geneId={gene.gene_id}
+            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+          />
 
           <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
             Include:
@@ -261,7 +259,7 @@ class TranscriptPage extends Component {
                 <Label htmlFor="include-utr-regions">
                   <CheckboxInput
                     checked={includeUTRs}
-                    disabled={!gene.exons.some(exon => exon.feature_type === 'UTR')}
+                    disabled={!hasUTRs}
                     id="include-utr-regions"
                     onChange={e => {
                       this.setState({ includeUTRs: e.target.checked })
@@ -279,7 +277,7 @@ class TranscriptPage extends Component {
                 <Label htmlFor="include-nc-transcripts">
                   <CheckboxInput
                     checked={includeNonCodingTranscripts}
-                    disabled={!hasNonCodingTranscripts}
+                    disabled={!hasNonCodingTranscripts || (!hasCodingExons && !hasUTRs)}
                     id="include-nc-transcripts"
                     onChange={e => {
                       this.setState({ includeNonCodingTranscripts: e.target.checked })
@@ -295,51 +293,43 @@ class TranscriptPage extends Component {
             </Legend>
           </ControlPanel>
 
-          {hasCodingExons && (
-            <TranscriptsTrackWithTissueExpression
-              activeTranscript={{
-                exons: gene.exons,
-                strand: gene.strand,
-              }}
-              exportFilename={`${gene.gene_id}_transcripts`}
-              expressionLabel={
-                <span>
-                  <ExternalLink href={`http://www.gtexportal.org/home/gene/${gene.symbol}`}>
-                    Isoform expression
-                  </ExternalLink>
-                  <QuestionMark topic="gtex" />
-                </span>
-              }
-              renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
-                <TranscriptLink
-                  to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
-                  isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
-                  isSelected={trackTranscript.transcript_id === transcript.transcript_id}
-                >
-                  {trackTranscript.transcript_id}
-                </TranscriptLink>
-              )}
-              showNonCodingTranscripts={includeNonCodingTranscripts}
-              showUTRs={includeUTRs}
-              transcripts={sortTranscripts(
-                gene.transcripts.map(otherTranscript => ({
-                  ...otherTranscript,
-                  exons: otherTranscript.exons.some(exon => exon.feature_type !== 'exon')
-                    ? otherTranscript.exons.filter(exon => exon.feature_type !== 'exon')
-                    : otherTranscript.exons,
-                })),
-                gene.canonical_transcript_id
-              )}
-            />
-          )}
+          <TranscriptsTrackComponent
+            activeTranscript={{
+              exons: gene.exons,
+              strand: gene.strand,
+            }}
+            exportFilename={`${gene.gene_id}_transcripts`}
+            expressionLabel={
+              <span>
+                <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
+                  Isoform expression
+                </ExternalLink>
+                <QuestionMark topic="gtex" />
+              </span>
+            }
+            renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
+              <TranscriptLink
+                to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
+                isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
+                isSelected={trackTranscript.transcript_id === transcript.transcript_id}
+              >
+                {trackTranscript.transcript_id}
+              </TranscriptLink>
+            )}
+            showNonCodingTranscripts={includeNonCodingTranscripts}
+            showUTRs={includeUTRs}
+            transcripts={sortTranscripts(
+              gene.transcripts.map(otherTranscript => ({
+                ...otherTranscript,
+                exons: otherTranscript.exons.some(exon => exon.feature_type !== 'exon')
+                  ? otherTranscript.exons.filter(exon => exon.feature_type !== 'exon')
+                  : otherTranscript.exons,
+              })),
+              gene.canonical_transcript_id
+            )}
+          />
 
-          {!hasCodingExons && (
-            <StatusMessage>
-              Coverage &amp; transcripts not shown for genes with no coding exons
-            </StatusMessage>
-          )}
-
-          {hasCodingExons && (
+          {hasCodingExons && gene.pext && (
             <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
           )}
 

@@ -4,28 +4,29 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@broad/ui'
 
 export const ReferenceList = ({ variant, clinvarVariant }) => {
-  /* eslint-disable prettier/prettier */
-  const dbsnpURL = `http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`
-
-  const ucscURL = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${variant.chrom}%3A${variant.pos}-${variant.pos + (variant.ref.length - 1)}&position=chr${variant.chrom}%3A${variant.pos - 25}-${variant.pos + (variant.ref.length - 1) + 25}`
-  /* eslint-enable prettier/prettier */
+  const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
+  const { chrom, pos, ref } = variant
+  /* eslint-disable-next-line prettier/prettier */
+  const ucscURL = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&highlight=${ucscReferenceGenomeId}.chr${chrom}%3A${pos}-${pos + (ref.length - 1)}&position=chr${chrom}%3A${pos - 25}-${pos + (ref.length - 1) + 25}`
 
   return (
     <List>
-      <ListItem>
-        {variant.rsid && variant.rsid !== '.' ? (
-          <ExternalLink href={dbsnpURL}>dbSNP ({variant.rsid})</ExternalLink>
-        ) : (
-          'Not found in dbSNP'
-        )}
-      </ListItem>
+      {variant.rsid && (
+        <ListItem>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`}
+          >
+            dbSNP ({variant.rsid})
+          </ExternalLink>
+        </ListItem>
+      )}
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
       {clinvarVariant && (
         <ListItem>
           <ExternalLink
-            href={`http://www.ncbi.nlm.nih.gov/clinvar/?term=${clinvarVariant.allele_id}[alleleid]`}
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/?term=${clinvarVariant.allele_id}[alleleid]`}
           >
             ClinVar ({clinvarVariant.allele_id})
           </ExternalLink>
@@ -37,6 +38,7 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
 
 ReferenceList.propTypes = {
   variant: PropTypes.shape({
+    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     pos: PropTypes.number.isRequired,
     ref: PropTypes.string.isRequired,

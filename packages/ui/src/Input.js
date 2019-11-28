@@ -3,11 +3,14 @@ import styled from 'styled-components'
 export const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
+  height: calc(2em + 2px);
   padding: 0.375em 0.75em;
   border: 1px solid #6c757d;
   border-radius: 0.25em;
   appearance: none;
   background: none;
+  font-size: 1em;
+  line-height: 1.25;
 
   &:focus {
     outline: none;

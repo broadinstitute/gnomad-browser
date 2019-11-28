@@ -7,7 +7,7 @@ DEPLOY_DIR=$(dirname "${BASH_SOURCE}")
 cd "${DEPLOY_DIR}/.."
 
 source "../../cluster/config.sh"
-IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser-beta"
+IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser"
 
 # Compile JS
 ./build.sh

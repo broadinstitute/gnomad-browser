@@ -21,6 +21,11 @@ const IGVWrapper = styled.div`
     border-left: 1px solid #ccc;
   }
 
+  /* Lengthen track label to make space for variant ID on MNV page */
+  .igv-track-label {
+    max-width: 225px;
+  }
+
   @media (max-width: 600px) {
     .igv-navbar {
       flex-flow: column;

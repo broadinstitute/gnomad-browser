@@ -64,23 +64,18 @@ export const GnomadConstraintType = new GraphQLObjectType({
 })
 
 export const fetchGnomadConstraintByTranscript = async (ctx, transcriptId) => {
-  const response = await ctx.database.elastic.search({
-    index: 'gnomad_constraint_2_1_1',
-    type: 'constraint',
-    body: {
-      query: {
-        bool: {
-          filter: {
-            term: { transcript_id: transcriptId },
-          },
-        },
-      },
-    },
-    size: 1,
-  })
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'gnomad_2_1_1_constraint',
+      type: 'documents',
+      id: transcriptId,
+    })
 
-  const doc = response.hits.hits[0]
-
-  // eslint-disable-next-line no-underscore-dangle
-  return doc ? doc._source : null
+    return response._source // eslint-disable-line no-underscore-dangle
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError('gnomAD constraint not found')
+    }
+    throw err
+  }
 }

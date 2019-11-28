@@ -1,5 +1,7 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import { flatMap, uniqBy } from 'lodash'
+import datasetsConfig from '../datasets/datasetsConfig'
+import { UserVisibleError } from '../errors'
 
 export const SearchResultType = new GraphQLObjectType({
   name: 'SearchResult',
@@ -72,13 +74,19 @@ export const normalizeVariantId = variantId =>
     .replace(/:/g, '-')
     .replace(/^CHR/, '')
 
-export const resolveSearchResults = async (ctx, query) => {
+export const resolveSearchResults = async (ctx, dataset, query) => {
+  if (dataset !== 'gnomad_r2_1' && dataset !== 'gnomad_r3') {
+    throw new UserVisibleError(
+      `Search is not supported for dataset "${datasetsConfig[dataset].label}"`
+    )
+  }
+
   if (isVariantId(query)) {
     const variantId = normalizeVariantId(query)
     return [
       {
         label: variantId,
-        url: `/variant/${variantId}`,
+        url: `/variant/${variantId}?dataset=${dataset}`,
       },
     ]
   }
@@ -88,13 +96,14 @@ export const resolveSearchResults = async (ctx, query) => {
     return [
       {
         label: regionId,
-        url: `/region/${regionId}`,
+        url: `/region/${regionId}?dataset=${dataset}`,
       },
     ]
   }
 
   const upperCaseQuery = query.toUpperCase()
 
+  const gencodeVersion = dataset === 'gnomad_r3' ? 'v29' : 'v19'
   if (/^ENSG[0-9]/.test(upperCaseQuery)) {
     const geneIdSearchResponse = await ctx.database.elastic.search({
       index: 'genes',
@@ -102,8 +111,10 @@ export const resolveSearchResults = async (ctx, query) => {
       _source: ['gene_id', 'symbol'],
       body: {
         query: {
-          prefix: {
-            gene_id: upperCaseQuery,
+          bool: {
+            must: { prefix: { gene_id: upperCaseQuery } },
+            // Gene must exist in the version of Gencode for the selected dataset
+            filter: { exists: { field: `gencode.${gencodeVersion}.gene_symbol` } },
           },
         },
       },
@@ -118,7 +129,7 @@ export const resolveSearchResults = async (ctx, query) => {
       const gene = hit._source
       return {
         label: `${gene.gene_id} (${gene.symbol})`,
-        url: `/gene/${gene.gene_id}`,
+        url: `/gene/${gene.gene_id}?dataset=${dataset}`,
       }
     })
   }
@@ -130,9 +141,9 @@ export const resolveSearchResults = async (ctx, query) => {
       body: {
         query: {
           nested: {
-            path: 'gencode.v19.transcripts',
+            path: `gencode.${gencodeVersion}.transcripts`,
             query: {
-              prefix: { 'gencode.v19.transcripts.transcript_id': upperCaseQuery },
+              prefix: { [`gencode.${gencodeVersion}.transcripts.transcript_id`]: upperCaseQuery },
             },
           },
         },
@@ -147,14 +158,14 @@ export const resolveSearchResults = async (ctx, query) => {
     // Change this to use nested_hits?
     const genes = transcriptIdSearchResponse.hits.hits.map(hit => hit._source)
     const transcripts = flatMap(genes, gene =>
-      gene.gencode.v19.transcripts.filter(transcript =>
+      gene.gencode[gencodeVersion].transcripts.filter(transcript =>
         transcript.transcript_id.startsWith(upperCaseQuery)
       )
     )
 
     return transcripts.map(transcript => ({
       label: `${transcript.transcript_id}`,
-      url: `/transcript/${transcript.transcript_id}`,
+      url: `/transcript/${transcript.transcript_id}?dataset=${dataset}`,
     }))
   }
 
@@ -165,18 +176,16 @@ export const resolveSearchResults = async (ctx, query) => {
     body: {
       query: {
         bool: {
-          should: [
-            {
-              term: {
-                symbol_upper_case: upperCaseQuery,
-              },
+          must: {
+            bool: {
+              should: [
+                { term: { symbol_upper_case: upperCaseQuery } },
+                { prefix: { search_terms: upperCaseQuery } },
+              ],
             },
-            {
-              prefix: {
-                search_terms: upperCaseQuery,
-              },
-            },
-          ],
+          },
+          // Gene must exist in the version of Gencode for the selected dataset
+          filter: { exists: { field: `gencode.${gencodeVersion}.gene_symbol` } },
         },
       },
     },
@@ -198,13 +207,17 @@ export const resolveSearchResults = async (ctx, query) => {
 
   const geneResults = matchingGenes.map(gene => ({
     label: geneNameCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.gene_id})` : gene.symbol,
-    url: `/gene/${gene.gene_id}`,
+    url: `/gene/${gene.gene_id}?dataset=${dataset}`,
   }))
 
   if (geneResults.length < 5 && /^rs[0-9]/i.test(query)) {
+    const variantIndex =
+      dataset === 'gnomad_r3' ? 'gnomad_r3_variants' : 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1'
+    const variantType = dataset === 'gnomad_r3' ? 'documents' : 'variant'
+
     const variantSearchResponse = await ctx.database.elastic.search({
-      index: 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1',
-      type: 'variant',
+      index: variantIndex,
+      type: variantType,
       _source: ['rsid', 'variant_id'],
       body: {
         query: {
@@ -221,7 +234,7 @@ export const resolveSearchResults = async (ctx, query) => {
       variant => variant.variant_id
     ).map(variant => ({
       label: `${variant.variant_id} (${variant.rsid})`,
-      url: `/variant/${variant.variant_id}`,
+      url: `/variant/${variant.variant_id}?dataset=${dataset}`,
     }))
 
     return geneResults.concat(variantResults)

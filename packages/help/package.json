@@ -6,9 +6,8 @@
   "files": [
     "lib"
   ],
-  "peerDependencies": {
-    "react": "^16.8.2",
-    "styled-components": "^4.2.0"
+  "scripts": {
+    "example": "gnomadjs-scripts example"
   },
   "dependencies": {
     "@broad/ui": "*",
@@ -26,5 +25,12 @@
     "remark-html": "^9.0.0",
     "unist-util-visit": "^1.4.0",
     "yaml": "^1.4.0"
+  },
+  "devDependencies": {
+    "@broad/scripts": "*"
+  },
+  "peerDependencies": {
+    "react": "^16.8.2",
+    "styled-components": "^4.2.0"
   }
 }

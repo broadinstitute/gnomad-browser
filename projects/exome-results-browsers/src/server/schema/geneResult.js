@@ -112,7 +112,7 @@ export const fetchGeneResultsForGene = async (ctx, gene) => {
       body: {
         query: {
           bool: {
-            filter: { term: { gene_name: gene.gene_name } },
+            filter: { term: { gene_name: gene.symbol } },
           },
         },
       },

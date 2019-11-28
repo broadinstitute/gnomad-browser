@@ -19,6 +19,7 @@ const ToggleTranscriptsPanel = styled.div`
 
   button {
     width: 70px;
+    height: auto;
     padding-right: 0.25em;
     padding-left: 0.25em;
   }

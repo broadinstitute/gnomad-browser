@@ -6,6 +6,8 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
 
+import { TooltipAnchor } from '@broad/ui'
+
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
 const GraphWrapper = styled.div`
@@ -13,6 +15,15 @@ const GraphWrapper = styled.div`
   width: 100%;
   height: 100%; /* stylelint-disable-line unit-whitelist */
   margin-bottom: 1em;
+`
+
+const BinHoverTarget = styled.rect`
+  pointer-events: visible;
+  fill: none;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.05);
+  }
 `
 
 const tickFormat = n => {
@@ -41,7 +52,18 @@ const labelProps = {
 }
 
 export const BarGraph = withSize()(
-  ({ barColor, bins, highlightValue, logScale, nLarger, nSmaller, size, xLabel, yLabel }) => {
+  ({
+    barColor,
+    bins,
+    formatTooltip,
+    highlightValue,
+    logScale,
+    nLarger,
+    nSmaller,
+    size,
+    xLabel,
+    yLabel,
+  }) => {
     const height = 250
     const { width } = size
 
@@ -84,13 +106,14 @@ export const BarGraph = withSize()(
 
     const yDomain = [0, max(binsCopy, bin => bin.n) || 1]
 
-    const xScale = (logScale ? scaleLog() : scaleLinear())
-      .domain(xDomain)
-      .range([0, width - (margin.left + margin.right)])
+    const plotWidth = width - (margin.left + margin.right)
+    const plotHeight = height - (margin.top + margin.bottom)
+
+    const xScale = (logScale ? scaleLog() : scaleLinear()).domain(xDomain).range([0, plotWidth])
 
     const yScale = scaleLinear()
       .domain(yDomain)
-      .range([height - (margin.top + margin.bottom), margin.top])
+      .range([plotHeight, 0])
 
     return (
       <GraphWrapper>
@@ -114,23 +137,32 @@ export const BarGraph = withSize()(
             stroke="#333"
           />
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {binsCopy.map(bin => (
-              <rect
-                key={bin.x0}
-                x={xScale(bin.x0)}
-                y={yScale(bin.n)}
-                height={yScale(0) - yScale(bin.n)}
-                width={xScale(bin.x1) - xScale(bin.x0)}
-                fill={barColor}
-                stroke="#333"
-              />
-            ))}
+            {binsCopy.map(bin => {
+              const x = xScale(bin.x0)
+              const y = yScale(bin.n)
+              const binWidth = xScale(bin.x1) - x
+              return (
+                <React.Fragment key={bin.x0}>
+                  <rect
+                    x={x}
+                    y={y}
+                    height={plotHeight - y}
+                    width={binWidth}
+                    fill={barColor}
+                    stroke="#333"
+                  />
+                  <TooltipAnchor tooltip={formatTooltip(bin)}>
+                    <BinHoverTarget x={x} y={0} height={plotHeight} width={binWidth} />
+                  </TooltipAnchor>
+                </React.Fragment>
+              )
+            })}
             {highlightValue !== undefined && (
               <line
                 x1={xScale(highlightValue)}
-                y1={yScale(yDomain[1])}
+                y1={0}
                 x2={xScale(highlightValue)}
-                y2={yScale(0)}
+                y2={plotHeight}
                 stroke="#dd2c00"
                 strokeWidth={3}
               />
@@ -153,6 +185,7 @@ BarGraph.propTypes = {
       n: PropTypes.number.isRequired,
     })
   ),
+  formatTooltip: PropTypes.func,
   highlightValue: PropTypes.number,
   logScale: PropTypes.bool,
   nLarger: PropTypes.number,
@@ -166,6 +199,7 @@ BarGraph.propTypes = {
 
 BarGraph.defaultProps = {
   barColor: '#428bca',
+  formatTooltip: bin => `${bin.x0}-${bin.x1}: ${bin.n.toLocaleString()}`,
   highlightValue: undefined,
   logScale: false,
   nLarger: undefined,

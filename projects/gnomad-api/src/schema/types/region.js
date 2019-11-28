@@ -4,7 +4,9 @@ import { extendObjectType } from '../../utilities/graphql'
 
 import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
-import fetchGnomadStructuralVariantsByRegion from '../datasets/gnomad_sv_r2/fetchGnomadStructuralVariantsByRegion'
+import StructuralVariantDatasetArgumentType from '../datasets/StructuralVariantDatasetArgumentType'
+import svDatasets from '../datasets/svDatasets'
+import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
 import { UserVisibleError } from '../errors'
 
@@ -32,10 +34,15 @@ const regionType = extendObjectType(BaseRegionType, {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex
+        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex || {}
         if (!index) {
-          return []
+          throw new UserVisibleError(
+            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
+          )
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchCoverageByRegion(ctx, {
           index,
           type,
@@ -49,10 +56,18 @@ const regionType = extendObjectType(BaseRegionType, {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
       resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex
+        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex || {}
         if (!index) {
-          return []
+          if (args.dataset === 'exac') {
+            return []
+          }
+          throw new UserVisibleError(
+            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
+          )
         }
+
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         return fetchCoverageByRegion(ctx, {
           index,
           type,
@@ -62,7 +77,25 @@ const regionType = extendObjectType(BaseRegionType, {
     },
     structural_variants: {
       type: new GraphQLList(StructuralVariantSummaryType),
-      resolve: async (obj, args, ctx) => fetchGnomadStructuralVariantsByRegion(ctx, obj),
+      args: {
+        dataset: { type: new GraphQLNonNull(StructuralVariantDatasetArgumentType) },
+      },
+      resolve: (obj, args, ctx) => {
+        const { fetchVariantsByRegion } = svDatasets[args.dataset]
+        if (!fetchVariantsByRegion) {
+          throw new UserVisibleError(
+            `Querying variants by region is not supported for dataset "${args.dataset}"`
+          )
+        }
+
+        if (obj.reference_genome !== 'GRCh37') {
+          throw new UserVisibleError(
+            `gnomAD SV data is not available on reference genome ${obj.reference_genome}`
+          )
+        }
+
+        return fetchVariantsByRegion(ctx, obj)
+      },
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
@@ -77,12 +110,15 @@ const regionType = extendObjectType(BaseRegionType, {
           )
         }
 
+        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
           throw new UserVisibleError(
             `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
           )
         }
+
         return fetchVariantsByRegion(ctx, obj)
       },
     },

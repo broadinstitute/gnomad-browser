@@ -23,8 +23,12 @@ const SegmentedControlContainer = styled.span`
   }
 
   label {
+    box-sizing: border-box;
+    height: calc(2em + 2px);
     padding: 0.375em 0.75em;
     cursor: pointer;
+    font-size: 1em;
+    line-height: 1.25;
 
     &:first-of-type {
       border-bottom-left-radius: 0.5em;

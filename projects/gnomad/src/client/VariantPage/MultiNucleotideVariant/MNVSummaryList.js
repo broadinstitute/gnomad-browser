@@ -24,7 +24,12 @@ const MNVSummaryList = ({ multiNucleotideVariants }) => (
           .reduce((acc, el) => (acc ? [...acc, ' and ', el] : [el]), null)}{' '}
         in {mnv.n_individuals} individual{mnv.individuals !== 1 && 's'}
         {mnv.changes_amino_acids && ', altering the amino acid sequence'}.{' '}
-        <Link to={`/variant/${mnv.combined_variant_id}`}>More info</Link>
+        <Link
+          to={`/variant/${mnv.combined_variant_id}?dataset=gnomad_r2_1`}
+          preserveSelectedDataset={false}
+        >
+          More info
+        </Link>
       </ListItem>
     ))}
   </List>

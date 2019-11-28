@@ -88,11 +88,6 @@ export class Searchbox extends Component {
       this.searchRequest.cancel()
     }
 
-    if (!query) {
-      this.setState({ isFetching: false, options: [] })
-      return
-    }
-
     this.searchRequest = new CancelablePromise((resolve, reject) => {
       fetchSearchResults(query).then(resolve, reject)
     })
@@ -114,15 +109,7 @@ export class Searchbox extends Component {
   }
 
   onChange = (e, inputValue) => {
-    this.setState({ inputValue })
-    const trimmedValue = inputValue.trim()
-    // Set isFetching here instead of in fetchSearchResults so that the "Searching..." message's
-    // appearance is not delayed by the debounce on fetchSearchResults
-    if (trimmedValue !== '') {
-      this.setState({ isFetching: true })
-      this.selectOnSearchResponse = false
-    }
-    this.fetchSearchResults(trimmedValue)
+    this.setState({ inputValue }, this.updateResults.bind(this))
   }
 
   onKeyDown = e => {
@@ -141,6 +128,24 @@ export class Searchbox extends Component {
     const { onSelect } = this.props
     this.setState({ inputValue: item.label })
     onSelect(item.value, item)
+  }
+
+  updateResults() {
+    const { inputValue } = this.state
+    const trimmedValue = inputValue.trim()
+
+    // Clear current search results. This prevents pressing "Enter" while new results are loading
+    // from selecting the top result from the previous query.
+    this.setState({ options: [] })
+
+    this.selectOnSearchResponse = false
+
+    // Set isFetching here instead of in fetchSearchResults so that the "Searching..." message's
+    // appearance is not delayed by the debounce on fetchSearchResults
+    if (trimmedValue !== '') {
+      this.setState({ isFetching: true })
+      this.fetchSearchResults(trimmedValue)
+    }
   }
 
   renderMenu = (items, inputValue, style) => {

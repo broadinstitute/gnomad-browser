@@ -1,4 +1,5 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { isEmpty } from 'lodash'
 
 import { fetchAllSearchResults } from '../../utilities/elasticsearch'
 import { UserVisibleError } from '../errors'
@@ -35,11 +36,15 @@ export const GeneType = new GraphQLObjectType({
   },
 })
 
-export const shapeGene = gene => {
-  const gencodeData = gene.gencode.v19
+export const shapeGene = (gene, referenceGenome) => {
+  const gencodeData = referenceGenome === 'GRCh37' ? gene.gencode.v19 : gene.gencode.v29
+
+  if (isEmpty(gencodeData)) {
+    throw new UserVisibleError('Gene not found')
+  }
 
   return {
-    reference_genome: 'GRCh37',
+    reference_genome: referenceGenome,
     gene_id: gene.gene_id,
     symbol: gene.symbol,
     hgnc_id: gene.hgnc_id,
@@ -49,13 +54,16 @@ export const shapeGene = gene => {
     stop: gencodeData.stop,
     exons: gencodeData.exons,
     strand: gencodeData.strand,
-    transcripts: gencodeData.transcripts,
+    transcripts: gencodeData.transcripts.map(transcript => ({
+      ...transcript,
+      reference_genome: referenceGenome,
+    })),
     canonical_transcript_id: gencodeData.canonical_transcript_id,
     omim_id: gene.omim_id,
   }
 }
 
-export const fetchGeneById = async (ctx, geneId) => {
+export const fetchGeneById = async (ctx, geneId, referenceGenome) => {
   try {
     const response = await ctx.database.elastic.get({
       index: 'genes',
@@ -63,7 +71,7 @@ export const fetchGeneById = async (ctx, geneId) => {
       id: geneId,
     })
 
-    return shapeGene(response._source)
+    return shapeGene(response._source, referenceGenome)
   } catch (err) {
     if (err.message === 'Not Found') {
       throw new UserVisibleError('Gene not found')
@@ -72,7 +80,7 @@ export const fetchGeneById = async (ctx, geneId) => {
   }
 }
 
-export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
+export const fetchGeneBySymbol = async (ctx, geneSymbol, referenceGenome) => {
   const response = await ctx.database.elastic.search({
     index: 'genes',
     type: 'documents',
@@ -90,10 +98,13 @@ export const fetchGeneBySymbol = async (ctx, geneSymbol) => {
     throw new UserVisibleError('Gene not found')
   }
 
-  return shapeGene(response.hits.hits[0]._source)
+  return shapeGene(response.hits.hits[0]._source, referenceGenome)
 }
 
-export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
+export const fetchGenesByRegion = async (ctx, region) => {
+  const { reference_genome: referenceGenome, xstart, xstop } = region
+  const gencodeVersion = referenceGenome === 'GRCh37' ? 'v19' : 'v29'
+
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: 'genes',
     type: 'documents',
@@ -104,14 +115,14 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
           filter: [
             {
               range: {
-                'gencode.v19.xstart': {
+                [`gencode.${gencodeVersion}.xstart`]: {
                   lte: xstop,
                 },
               },
             },
             {
               range: {
-                'gencode.v19.xstop': {
+                [`gencode.${gencodeVersion}.xstop`]: {
                   gte: xstart,
                 },
               },
@@ -122,5 +133,5 @@ export const fetchGenesByRegion = async (ctx, { xstart, xstop }) => {
     },
   })
 
-  return hits.map(hit => shapeGene(hit._source))
+  return hits.map(hit => shapeGene(hit._source, referenceGenome))
 }

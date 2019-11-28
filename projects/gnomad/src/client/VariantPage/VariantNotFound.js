@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { RegionViewer, PositionAxisTrack } from '@broad/region-viewer'
 
-import CoverageTrack from '../RegionPage/CoverageTrack'
+import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import Link from '../Link'
 import StatusMessage from '../StatusMessage'
 
@@ -40,10 +40,9 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
         <Link to={`/region/${redirectRegion}`}>View surrounding region</Link>
       </StatusMessage>
       <RegionViewer padding={0} regions={regionViewerRegions} rightPanelWidth={0} width={width}>
-        <CoverageTrack
+        <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
-          showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
           start={regionViewerRegions[0].start}
           stop={regionViewerRegions[0].stop}
         />

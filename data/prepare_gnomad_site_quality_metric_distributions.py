@@ -108,19 +108,26 @@ def format_quality_metric_distributions(metrics: typing.List[MetricHistogram]):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--exome-file", required=True)
-    parser.add_argument("--genome-file", required=True)
+    parser.add_argument("--exome-file")
+    parser.add_argument("--genome-file")
 
     args = parser.parse_args()
 
-    with open(args.exome_file) as exome_file, open(args.genome_file) as genome_file:
-        exome_metrics = [MetricHistogram(**m) for m in json.load(exome_file)]
-        genome_metrics = [MetricHistogram(**m) for m in json.load(genome_file)]
+    if not args.exome_file and not args.genome_file:
+        print("At least one of --exome-file and --genome-file is required", file=sys.stderr)
+        sys.exit(1)
 
-    return {
-        "exome": format_quality_metric_distributions(exome_metrics),
-        "genome": format_quality_metric_distributions(genome_metrics),
-    }
+    metrics = {}
+
+    for sample_set in ["exome", "genome"]:
+        metrics_file_path = getattr(args, f"{sample_set}_file", None)
+        if metrics_file_path:
+            with open(metrics_file_path) as metrics_file:
+                sample_set_metrics = [MetricHistogram(**m) for m in json.load(metrics_file)]
+                sample_set_metrics = format_quality_metric_distributions(sample_set_metrics)
+                metrics[sample_set] = sample_set_metrics
+
+    return metrics
 
 
 if __name__ == "__main__":

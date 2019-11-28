@@ -124,6 +124,11 @@ class TopBar extends Component {
               </Link>
             </li>
           ))}
+          <li>
+            <Link to="/other-studies" onClick={this.closeMenu}>
+              Other Studies
+            </Link>
+          </li>
         </Menu>
       </TopBarWrapper>
     )

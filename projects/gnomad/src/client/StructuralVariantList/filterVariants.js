@@ -4,18 +4,16 @@ import { svTypeLabels } from './structuralVariantTypes'
 const filterVariants = (variants, filter) => {
   let filteredVariants = variants
 
-  filteredVariants = filteredVariants.filter(
-    v =>
-      v.consequence
-        ? filter.includeConsequenceCategories[svConsequenceCategories[v.consequence]]
-        : filter.includeConsequenceCategories.other
+  filteredVariants = filteredVariants.filter(v =>
+    v.consequence
+      ? filter.includeConsequenceCategories[svConsequenceCategories[v.consequence]]
+      : filter.includeConsequenceCategories.other
   )
 
-  filteredVariants = filteredVariants.filter(
-    v =>
-      filter.includeTypes[v.type] === undefined
-        ? filter.includeTypes.OTH
-        : filter.includeTypes[v.type]
+  filteredVariants = filteredVariants.filter(v =>
+    filter.includeTypes[v.type] === undefined
+      ? filter.includeTypes.OTH
+      : filter.includeTypes[v.type]
   )
 
   if (!filter.includeFilteredVariants) {

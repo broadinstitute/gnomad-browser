@@ -2,13 +2,8 @@ const path = require('path')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
 
 const isDev = process.env.NODE_ENV === 'development'
-
-const definitions = {
-  'process.env.GNOMAD_API_URL': JSON.stringify(process.env.GNOMAD_API_URL),
-}
 
 const gaTrackingId = process.env.GA_TRACKING_ID
 if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
@@ -21,6 +16,18 @@ const config = {
     port: 8008,
     publicPath: '/',
     stats: 'errors-only',
+    proxy: {
+      '/api': {
+        target: process.env.GNOMAD_API_URL,
+        pathRewrite: { '^/api': '' },
+        changeOrigin: true,
+      },
+      '/reads': {
+        target: process.env.READS_API_URL,
+        pathRewrite: { '^/reads': '' },
+        changeOrigin: true,
+      },
+    },
   },
   devtool: 'source-map',
   entry: {
@@ -56,7 +63,6 @@ const config = {
     filename: isDev ? '[name].js' : '[name]-[contenthash].js',
   },
   plugins: [
-    new webpack.DefinePlugin(definitions),
     new CopyWebpackPlugin([path.resolve(__dirname, '../src/client/opensearch.xml')], {
       writeToDisk: true,
     }),
