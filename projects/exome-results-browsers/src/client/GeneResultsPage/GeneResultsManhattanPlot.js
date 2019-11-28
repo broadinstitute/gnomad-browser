@@ -7,13 +7,18 @@ import { ManhattanPlot } from '@broad/manhattan'
 
 import browserConfig from '@browser/config'
 
+const pValueColumn = browserConfig.geneResults.pValueColumn || 'pval'
+
 const Wrapper = styled.div`
   overflow: hidden;
   width: 100%;
 `
 
 const GeneResultsManhattanPlot = withSize()(({ results, size: { width }, ...otherProps }) => {
-  const dataPoints = results.filter(r => r.chrom && r.pos && r.pval)
+  const dataPoints = results
+    .filter(r => r.chrom && r.pos && r[pValueColumn])
+    .map(r => ({ ...r, pval: r[pValueColumn] }))
+
   return (
     <Wrapper>
       {!!width && (

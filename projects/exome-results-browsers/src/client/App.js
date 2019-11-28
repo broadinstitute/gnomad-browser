@@ -13,6 +13,7 @@ import GeneResultsPage from './GeneResultsPage/GeneResultsPage'
 import HomePage from './HomePage'
 import { makePage } from './InfoPage'
 import PageNotFoundPage from './PageNotFoundPage'
+import StudiesPage from './StudiesPage'
 import TopBar from './TopBar'
 
 const GlobalStyles = createGlobalStyle`
@@ -56,6 +57,7 @@ const App = () => (
             path="/gene/:gene"
             render={({ match }) => <GenePage geneIdOrSymbol={match.params.gene} />}
           />
+          <Route path="/other-studies" component={StudiesPage} />
           {renderedPages.map(({ path, component }) => (
             <Route key={path} path={path} component={component} />
           ))}

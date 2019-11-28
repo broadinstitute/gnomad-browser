@@ -1,26 +1,9 @@
 import { getFlagsForContext } from '../shared/flags'
+import { getConsequenceForContext } from '../shared/transcriptConsequence'
 import POPULATIONS from './populations'
 
 const shapeExacVariantSummary = context => {
-  let getConsequence
-  switch (context.type) {
-    case 'gene':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
-      break
-    case 'region':
-      getConsequence = variant => (variant.sortedTranscriptConsequences || [])[0]
-      break
-    case 'transcript':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(
-          csq => csq.transcript_id === context.transcriptId
-        )
-      break
-    default:
-      throw Error(`Invalid context for shapeExacVariantSummary: ${context.type}`)
-  }
-
+  const getConsequence = getConsequenceForContext(context)
   const getFlags = getFlagsForContext(context)
 
   return esHit => {
@@ -35,21 +18,23 @@ const shapeExacVariantSummary = context => {
 
     return {
       // Variant ID fields
-      alt: variantData.alt,
-      chrom: variantData.chrom,
-      pos: variantData.pos,
-      ref: variantData.ref,
       variantId: variantData.variant_id,
-      xpos: variantData.xpos,
+      reference_genome: 'GRCh37',
+      chrom: variantData.locus.contig,
+      pos: variantData.locus.position,
+      ref: variantData.alleles[0],
+      alt: variantData.alleles[1],
       // Other fields
       consequence: transcriptConsequence.major_consequence,
-      consequence_in_canonical_transcript: !!transcriptConsequence.canonical,
+      consequence_in_canonical_transcript: transcriptConsequence.canonical,
       flags: getFlags(variantData),
-      gene_id: transcriptConsequence.gene_id,
+      gene_id: transcriptConsequence.gene_id
+        ? `ENSG${transcriptConsequence.gene_id.toString().padStart(11, '0')}`
+        : null,
       gene_symbol: transcriptConsequence.gene_symbol,
-      hgvs: transcriptConsequence.hgvs,
-      hgvsc: transcriptConsequence.hgvsc ? transcriptConsequence.hgvsc.split(':')[1] : null,
-      hgvsp: transcriptConsequence.hgvsp ? transcriptConsequence.hgvsp.split(':')[1] : null,
+      hgvs: transcriptConsequence.hgvsp || transcriptConsequence.hgvsc,
+      hgvsc: transcriptConsequence.hgvsc,
+      hgvsp: transcriptConsequence.hgvsp,
       lof: transcriptConsequence.lof,
       lof_filter: transcriptConsequence.lof_filter,
       lof_flags: transcriptConsequence.lof_flags,

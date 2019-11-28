@@ -1,26 +1,9 @@
 import { getFlagsForContext } from '../shared/flags'
+import { getConsequenceForContext } from '../shared/transcriptConsequence'
 import POPULATIONS from './populations'
 
 const shapeGnomadVariantSummary = (subsetKey, context) => {
-  let getConsequence
-  switch (context.type) {
-    case 'gene':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(csq => csq.gene_id === context.geneId)
-      break
-    case 'region':
-      getConsequence = variant => (variant.sortedTranscriptConsequences || [])[0]
-      break
-    case 'transcript':
-      getConsequence = variant =>
-        (variant.sortedTranscriptConsequences || []).find(
-          csq => csq.transcript_id === context.transcriptId
-        )
-      break
-    default:
-      throw Error(`Invalid context for shapeGnomadVariantSummary: ${context.type}`)
-  }
-
+  const getConsequence = getConsequenceForContext(context)
   const getFlags = getFlagsForContext(context)
 
   return esHit => {
@@ -37,12 +20,12 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
 
     return {
       // Variant ID fields
-      alt: variantData.alt,
+      variantId: variantData.variant_id,
+      reference_genome: 'GRCh37',
       chrom: variantData.chrom,
       pos: variantData.pos,
       ref: variantData.ref,
-      variantId: variantData.variant_id,
-      xpos: variantData.xpos,
+      alt: variantData.alt,
       // Other fields
       consequence: transcriptConsequence.major_consequence,
       consequence_in_canonical_transcript: !!transcriptConsequence.canonical,

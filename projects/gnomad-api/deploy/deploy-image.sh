@@ -21,7 +21,7 @@ gcloud docker -- push ${IMAGE_NAME}:${DEPLOY_TAG}
 gcloud docker -- push ${IMAGE_NAME}:latest
 
 # Update API deployment
-kubectl set image deployment/gnomad-api gnomad-api-pod=${IMAGE_NAME}:${DEPLOY_TAG}
+kubectl set image deployment/gnomad-api app=${IMAGE_NAME}:${DEPLOY_TAG}
 
 # Wait for rollout to finish
 kubectl rollout status deployment/gnomad-api

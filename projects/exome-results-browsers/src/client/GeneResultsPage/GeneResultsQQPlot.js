@@ -4,13 +4,20 @@ import styled from 'styled-components'
 
 import { QQPlot } from '@broad/qq-plot'
 
+import browserConfig from '@browser/config'
+
 const Wrapper = styled.div`
   overflow: hidden;
   width: 100%;
 `
 
+const pValueColumn = browserConfig.geneResults.pValueColumn || 'pval'
+
 const GeneResultsQQPlot = withSize()(({ results, size: { width }, ...otherProps }) => {
-  const dataPoints = results.filter(r => r.pval)
+  const dataPoints = results
+    .filter(r => r[pValueColumn])
+    .map(r => ({ ...r, pval: r[pValueColumn] }))
+
   return (
     <Wrapper>
       {!!width && (

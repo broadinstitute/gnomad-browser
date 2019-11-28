@@ -40,10 +40,12 @@ class Query extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired,
+    url: PropTypes.string,
     variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
+    url: '/api/',
     variables: {},
   }
 
@@ -71,7 +73,7 @@ class Query extends Component {
   }
 
   loadData() {
-    const { query, variables } = this.props
+    const { query, url, variables } = this.props
 
     this.setState({
       loading: true,
@@ -83,7 +85,7 @@ class Query extends Component {
       this.currentRequest.cancel()
     }
 
-    this.currentRequest = cancelable(gqlFetch(process.env.GNOMAD_API_URL)(query, variables))
+    this.currentRequest = cancelable(gqlFetch(url)(query, variables))
     this.currentRequest.promise.then(
       response => {
         if (!this.mounted) {

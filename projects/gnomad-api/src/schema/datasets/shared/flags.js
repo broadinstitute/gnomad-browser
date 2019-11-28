@@ -1,7 +1,9 @@
 export const getBaseFlags = variantData => {
   const flags = []
 
-  if (variantData.flags && variantData.flags.lcr) {
+  // gnomAD v3 variants have an lcr flag at the top level.
+  // gnomAD v2.1 variants have lcr and segdup flags nested under a `flags` object.
+  if (variantData.lcr || (variantData.flags && variantData.flags.lcr)) {
     flags.push('lcr')
   }
 
@@ -12,15 +14,25 @@ export const getBaseFlags = variantData => {
   return flags
 }
 
+const LOF_CONSEQUENCE_TERMS = new Set([
+  'transcript_ablation',
+  'splice_acceptor_variant',
+  'splice_donor_variant',
+  'stop_gained',
+  'frameshift_variant',
+])
+
 // "NC" was removed from the data pipeline some time ago, but some ExAC variants still have it.
 const isLofOnNonCodingTranscript = transcriptConsequence =>
-  (transcriptConsequence.category === 'lof' && !transcriptConsequence.lof) ||
+  (LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) &&
+    !transcriptConsequence.lof) ||
   transcriptConsequence.lof === 'NC'
 
 const getFlagsForGeneContext = (variantData, geneId) => {
   const flags = getBaseFlags(variantData)
 
-  const allConsequences = variantData.sortedTranscriptConsequences || []
+  const allConsequences =
+    variantData.sorted_transcript_consequences || variantData.sortedTranscriptConsequences || []
   const consequencesInGene = allConsequences.filter(csq => csq.gene_id === geneId)
   const lofConsequencesInGene = consequencesInGene.filter(csq => csq.lof)
   const mostSevereConsequenceInGene = consequencesInGene[0]
@@ -55,7 +67,8 @@ const getFlagsForGeneContext = (variantData, geneId) => {
 const getFlagsForRegionContext = variantData => {
   const flags = getBaseFlags(variantData)
 
-  const allConsequences = variantData.sortedTranscriptConsequences || []
+  const allConsequences =
+    variantData.sorted_transcript_consequences || variantData.sortedTranscriptConsequences || []
   const lofConsequences = allConsequences.filter(csq => csq.lof)
   const mostSevereConsequence = allConsequences[0]
 
@@ -88,7 +101,8 @@ const getFlagsForRegionContext = variantData => {
 const getFlagsForTranscriptContext = (variantData, transcriptId) => {
   const flags = getBaseFlags(variantData)
 
-  const allConsequences = variantData.sortedTranscriptConsequences || []
+  const allConsequences =
+    variantData.sorted_transcript_consequences || variantData.sortedTranscriptConsequences || []
   const consequenceInTranscript = allConsequences.find(csq => csq.transcript_id === transcriptId)
 
   if (consequenceInTranscript) {

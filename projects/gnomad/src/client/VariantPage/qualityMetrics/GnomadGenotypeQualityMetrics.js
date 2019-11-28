@@ -18,7 +18,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
   }
 
   render() {
-    const { variant } = this.props
+    const { datasetId, variant } = this.props
     const { selectedDataset, selectedMetric, selectedSamples } = this.state
 
     const histogramData = variant[selectedDataset].qualityMetrics[selectedMetric][selectedSamples]
@@ -49,6 +49,7 @@ export class GnomadGenotypeQualityMetrics extends Component {
           nLarger={selectedMetric === 'alleleBalance' ? undefined : histogramData.n_larger}
           xLabel={xLabel}
           yLabel={yLabel}
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
         />
 
         <ControlSection>
@@ -70,7 +71,9 @@ export class GnomadGenotypeQualityMetrics extends Component {
           >
             <option value="genotypeQuality">Genotype quality</option>
             <option value="genotypeDepth">Depth</option>
-            <option value="alleleBalance">Allele balance for heterozygotes</option>
+            {datasetId !== 'exac' && (
+              <option value="alleleBalance">Allele balance for heterozygotes</option>
+            )}
           </Select>
 
           {selectedMetric !== 'alleleBalance' && (
@@ -99,6 +102,11 @@ export class GnomadGenotypeQualityMetrics extends Component {
             value={selectedDataset}
           />
         </ControlSection>
+
+        <p>
+          Note: This plot may include low-quality genotypes that were excluded from allele counts in
+          the tables above.
+        </p>
       </div>
     )
   }
@@ -107,14 +115,14 @@ export class GnomadGenotypeQualityMetrics extends Component {
 const histogramPropType = PropTypes.shape({
   bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
   bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
-  n_smaller: PropTypes.number.isRequired,
-  n_larger: PropTypes.number.isRequired,
+  n_smaller: PropTypes.number,
+  n_larger: PropTypes.number,
 })
 
 const genotypeQualityMetricPropType = PropTypes.shape({
   alleleBalance: PropTypes.shape({
     alt: histogramPropType,
-  }).isRequired,
+  }),
   genotypeDepth: PropTypes.shape({
     all: histogramPropType,
     alt: histogramPropType,
@@ -126,6 +134,7 @@ const genotypeQualityMetricPropType = PropTypes.shape({
 })
 
 GnomadGenotypeQualityMetrics.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
     exome: PropTypes.shape({
       qualityMetrics: genotypeQualityMetricPropType.isRequired,

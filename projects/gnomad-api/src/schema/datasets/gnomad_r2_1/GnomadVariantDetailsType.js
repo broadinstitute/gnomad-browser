@@ -7,21 +7,10 @@ import {
   GraphQLString,
 } from 'graphql'
 
-import { UserVisibleError } from '../../errors'
-import { VariantInterface } from '../../types/variant'
-import { resolveReads, ReadDataType } from '../shared/reads'
+import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
+import { HistogramType } from '../shared/histogram'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
-
-const HistogramType = new GraphQLObjectType({
-  name: 'Histogram',
-  fields: {
-    bin_edges: { type: new GraphQLList(GraphQLFloat) },
-    bin_freq: { type: new GraphQLList(GraphQLFloat) },
-    n_larger: { type: GraphQLInt },
-    n_smaller: { type: GraphQLInt },
-  },
-})
 
 const GnomadPopulationType = new GraphQLObjectType({
   name: 'GnomadVariantPopulation',
@@ -105,15 +94,14 @@ const GnomadVariantAgeDistribution = new GraphQLObjectType({
 
 const GnomadVariantDetailsType = new GraphQLObjectType({
   name: 'GnomadVariantDetails',
-  interfaces: [VariantInterface],
   fields: {
     // variant interface fields
-    alt: { type: new GraphQLNonNull(GraphQLString) },
+    variantId: { type: new GraphQLNonNull(GraphQLString) },
+    reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     pos: { type: new GraphQLNonNull(GraphQLInt) },
     ref: { type: new GraphQLNonNull(GraphQLString) },
-    variantId: { type: new GraphQLNonNull(GraphQLString) },
-    xpos: { type: new GraphQLNonNull(GraphQLFloat) },
+    alt: { type: new GraphQLNonNull(GraphQLString) },
     // gnomAD specific fields
     colocatedVariants: { type: new GraphQLList(GraphQLString) },
     multiNucleotideVariants: { type: new GraphQLList(MultiNucleotideVariantSummaryType) },
@@ -131,23 +119,6 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_exomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
@@ -166,30 +137,12 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
           populations: { type: new GraphQLList(GnomadPopulationType) },
           age_distribution: { type: GnomadVariantAgeDistribution },
           qualityMetrics: { type: GnomadVariantQualityMetricsType },
-          reads: {
-            type: new GraphQLList(ReadDataType),
-            resolve: async obj => {
-              if (!process.env.READS_DIR) {
-                return null
-              }
-              try {
-                return await resolveReads(
-                  process.env.READS_DIR,
-                  'gnomad_r2_1/combined_bams_genomes',
-                  obj
-                )
-              } catch (err) {
-                throw new UserVisibleError('Unable to load reads data')
-              }
-            },
-          },
         },
       }),
     },
     rsid: { type: GraphQLString },
     sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },
-  isTypeOf: variantData => variantData.gqlType === 'GnomadVariantDetails',
 })
 
 export default GnomadVariantDetailsType

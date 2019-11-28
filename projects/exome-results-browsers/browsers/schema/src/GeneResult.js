@@ -16,35 +16,39 @@ const GeneResultsTable = ({ geneResult }) => (
           <th scope="col">Category</th>
           <th scope="col">Cases</th>
           <th scope="col">Controls</th>
-          <th scope="col">P-Val</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">LoF</th>
-          <td>{geneResult.xcase_lof === null ? '—' : geneResult.xcase_lof}</td>
-          <td>{geneResult.xctrl_lof === null ? '—' : geneResult.xctrl_lof}</td>
-          <td>{geneResult.pval_lof === null ? '—' : geneResult.pval_lof.toPrecision(3)}</td>
+          <td>{geneResult.x_case_lof === null ? '—' : geneResult.x_case_lof}</td>
+          <td>{geneResult.x_ctrl_lof === null ? '—' : geneResult.x_ctrl_lof}</td>
         </tr>
         <tr>
-          <th scope="row">Missense</th>
-          <td>{geneResult.xcase_mis === null ? '—' : geneResult.xcase_mis}</td>
-          <td>{geneResult.xctrl_mis === null ? '—' : geneResult.xctrl_mis}</td>
-          <td>{geneResult.pval_mis === null ? '—' : geneResult.pval_mis.toPrecision(3)}</td>
+          <th scope="row">Missense (MPC&nbsp;&ge;&nbsp;3)</th>
+          <td>{geneResult.x_case_mis3 === null ? '—' : geneResult.x_case_mis3}</td>
+          <td>{geneResult.x_ctrl_mis3 === null ? '—' : geneResult.x_ctrl_mis3}</td>
+        </tr>
+        <tr>
+          <th scope="row">Missense (3&nbsp;&gt;&nbsp;MPC&nbsp;&ge;&nbsp;2)</th>
+          <td>{geneResult.x_case_mis2 === null ? '—' : geneResult.x_case_mis2}</td>
+          <td>{geneResult.x_ctrl_mis2 === null ? '—' : geneResult.x_ctrl_mis2}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <th colSpan={3} scope="row">
-            Overall
-          </th>
-          <td>{geneResult.pval === null ? '—' : geneResult.pval.toPrecision(3)}</td>
+          <th scope="row">De Novo LoF</th>
+          <td colSpan={2}>{geneResult.dn_lof === null ? '—' : geneResult.dn_lof}</td>
         </tr>
         <tr>
-          <th colSpan={3} scope="row">
-            Meta
-          </th>
-          <td>{geneResult.pval_meta === null ? '—' : geneResult.pval_meta.toPrecision(3)}</td>
+          <th scope="row">De Novo Missense</th>
+          <td colSpan={2}>{geneResult.dn_mis === null ? '—' : geneResult.dn_mis}</td>
+        </tr>
+        <tr>
+          <th scope="row">Meta-analysis P-value</th>
+          <td colSpan={2}>
+            {geneResult.pval_meta === null ? '—' : geneResult.pval_meta.toPrecision(3)}
+          </td>
         </tr>
       </tfoot>
     </Table>

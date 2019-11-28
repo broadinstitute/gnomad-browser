@@ -1,6 +1,6 @@
 import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Tab, TabList, TabPanel, Wrapper } from 'react-aria-tabpanel'
@@ -41,36 +41,48 @@ const StyledTabPanel = styled(TabPanel)`
   padding: 0.5em;
 `
 
-export const Tabs = ({ tabs }) => (
-  <Wrapper>
-    <TabList>
-      <TabListWrapper>
+export const Tabs = ({ activeTabId: activeTabProp, tabs, onChange }) => {
+  const [activeTabState, setActiveTabState] = useState(tabs[0].id)
+  const activeTabId = activeTabProp || activeTabState
+
+  return (
+    <Wrapper
+      activeTabId={activeTabId}
+      onChange={tabId => {
+        setActiveTabState(tabId)
+        onChange(tabId)
+      }}
+    >
+      <TabList>
+        <TabListWrapper>
+          {tabs.map(tab => {
+            const { id, label } = tab
+            return (
+              <li key={id}>
+                <StyledTab active={id === activeTabId} id={id}>
+                  {({ isActive }) => <TabLabel isActive={isActive}>{label}</TabLabel>}
+                </StyledTab>
+              </li>
+            )
+          })}
+        </TabListWrapper>
+      </TabList>
+      <div>
         {tabs.map(tab => {
-          const { id, label } = tab
+          const { id, render } = tab
           return (
-            <li key={id}>
-              <StyledTab id={id}>
-                {({ isActive }) => <TabLabel isActive={isActive}>{label}</TabLabel>}
-              </StyledTab>
-            </li>
+            <StyledTabPanel key={id} active={id === activeTabId} tabId={id}>
+              {render()}
+            </StyledTabPanel>
           )
         })}
-      </TabListWrapper>
-    </TabList>
-    <div>
-      {tabs.map(tab => {
-        const { id, render } = tab
-        return (
-          <StyledTabPanel key={id} tabId={id}>
-            {render()}
-          </StyledTabPanel>
-        )
-      })}
-    </div>
-  </Wrapper>
-)
+      </div>
+    </Wrapper>
+  )
+}
 
 Tabs.propTypes = {
+  activeTabId: PropTypes.string,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -78,4 +90,10 @@ Tabs.propTypes = {
       render: PropTypes.func.isRequired,
     })
   ).isRequired,
+  onChange: PropTypes.func,
+}
+
+Tabs.defaultProps = {
+  activeTabId: undefined,
+  onChange: () => {},
 }

@@ -84,6 +84,18 @@ const OuterWrapper = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
 `
 
+const Notice = styled.div`
+  padding: 0.5em;
+  background: #428bca;
+  color: white;
+  text-align: center;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+`
+
 class NavBar extends Component {
   state = {
     isExpanded: false,
@@ -108,7 +120,7 @@ class NavBar extends Component {
             </Link>
             <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
           </LogoWrapper>
-          <Searchbox id="navbar-search" width="320px" />
+          <Searchbox id="navbar-search" placeholder="Search" width="360px" />
           <Menu isExpanded={isExpanded}>
             <li>
               <Link to="/about" onClick={this.closeMenu}>
@@ -142,6 +154,15 @@ class NavBar extends Component {
             </li>
           </Menu>
         </NavBarWrapper>
+        <Notice>
+          <a
+            href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v3 released! 71,702 genomes aligned on GRCh38.
+          </a>
+        </Notice>
       </OuterWrapper>
     )
   }

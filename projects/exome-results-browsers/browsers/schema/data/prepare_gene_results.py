@@ -2,20 +2,26 @@ import argparse
 
 import hail as hl
 
-p = argparse.ArgumentParser()
-p.add_argument("--input-url", required=True)
-p.add_argument("--genes-url", required=True)
-p.add_argument("--output-url", required=True)
-args = p.parse_args()
 
-hl.init(log="/tmp/hail.log")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_url")
+    parser.add_argument("output_url")
+    parser.add_argument("--genes", required=True)
+    args = parser.parse_args()
 
-ds = hl.read_table(args.input_url)
+    hl.init(log="/tmp/hail.log")
 
-ds = ds.annotate(analysis_group="meta")
+    ds = hl.read_table(args.input_url)
 
-genes = hl.read_table(args.genes_url)
-genes = genes.key_by("gene_id")
-ds = ds.annotate(chrom=genes[ds.gene_id].chrom, pos=genes[ds.gene_id].start)
+    ds = ds.annotate(analysis_group="meta")
 
-ds.write(args.output_url)
+    genes = hl.read_table(args.genes)
+    genes = genes.key_by("gene_id")
+    ds = ds.annotate(chrom=genes[ds.gene_id].chrom, pos=genes[ds.gene_id].start)
+
+    ds.write(args.output_url)
+
+
+if __name__ == "__main__":
+    main()

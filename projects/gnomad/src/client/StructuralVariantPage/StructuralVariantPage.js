@@ -10,9 +10,11 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
+import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
 import StructuralVariantConsequenceList from './StructuralVariantConsequenceList'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import StructuralVariantGenotypeQualityMetrics from './StructuralVariantGenotypeQualityMetrics'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
 import SVReferenceList from './SVReferenceList'
 
@@ -65,8 +67,31 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantConsequenceList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
+        <h2>Genotype Quality Metrics</h2>
+        {variant.genotype_quality ? (
+          <StructuralVariantGenotypeQualityMetrics variant={variant} />
+        ) : (
+          <p>Genotype quality metrics not available for this variant.</p>
+        )}
+      </ResponsiveSection>
+    </Wrapper>
+    <Wrapper>
+      <ResponsiveSection>
         <h2>Population Frequencies</h2>
         <StructuralVariantPopulationsTable variant={variant} />
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <h2>Age Distribution</h2>
+        {variant.age_distribution ? (
+          <React.Fragment>
+            {datasetId !== 'gnomad_sv_r2_1' && (
+              <p>Age distribution is based on the full SV dataset, not the selected subset.</p>
+            )}
+            <StructuralVariantAgeDistribution variant={variant} />
+          </React.Fragment>
+        ) : (
+          <p>Age data is not available for this variant.</p>
+        )}
       </ResponsiveSection>
     </Wrapper>
   </Page>
@@ -77,15 +102,30 @@ StructuralVariantPage.propTypes = {
   variant: StructuralVariantDetailPropType.isRequired,
 }
 
-const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
+const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
   const query = `
-    query StructuralVariant($variantId: String!) {
-      structural_variant(variantId: $variantId) {
+    query StructuralVariant($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
+      structural_variant(dataset: $datasetId, variantId: $variantId) {
+        age_distribution {
+          het {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          hom {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
         algorithms
         alts
         ac
         an
         chrom
+        chrom2
         consequences {
           consequence
           genes
@@ -96,11 +136,25 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
         }
         cpx_intervals
         cpx_type
-        end_chrom
-        end_pos
+        end
+        end2
         evidence
         filters
         genes
+        genotype_quality {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
         length
         populations {
           id
@@ -109,6 +163,7 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
           ac_hom
         }
         pos
+        pos2
         qual
         type
         variant_id
@@ -117,23 +172,40 @@ const ConnectedStructuralVariantPage = ({ variantId, ...rest }) => {
   `
 
   return (
-    <Query query={query} variables={{ variantId }}>
-      {({ data, error, loading }) => {
+    <Query query={query} variables={{ datasetId, variantId }}>
+      {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
         }
 
-        if (error || !data.structural_variant) {
-          return <StatusMessage>Failed to load variant</StatusMessage>
+        if (error || !data) {
+          return <StatusMessage>Unable to load variant</StatusMessage>
         }
 
-        return <StructuralVariantPage {...rest} variant={data.structural_variant} />
+        if (!data.structural_variant) {
+          return (
+            <StatusMessage>
+              {graphQLErrors
+                ? graphQLErrors.map(e => e.message).join(', ')
+                : 'Unable to load variant'}
+            </StatusMessage>
+          )
+        }
+
+        return (
+          <StructuralVariantPage
+            {...rest}
+            datasetId={datasetId}
+            variant={data.structural_variant}
+          />
+        )
       }}
     </Query>
   )
 }
 
 ConnectedStructuralVariantPage.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variantId: PropTypes.string.isRequired,
 }
 

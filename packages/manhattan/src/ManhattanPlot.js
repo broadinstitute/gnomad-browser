@@ -107,7 +107,7 @@ export const ManhattanPlot = ({
       ctx.beginPath()
       ctx.moveTo(0, y)
       ctx.lineTo(w, y)
-      ctx.strokeStyle = '#bdbdbd'
+      ctx.strokeStyle = '#e4e4e4'
       ctx.stroke()
     }
 
@@ -203,7 +203,7 @@ export const ManhattanPlot = ({
       const point = points[i]
 
       ctx.beginPath()
-      ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI, false)
+      ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI, false)
       ctx.fillStyle = pointColor(point.data)
       ctx.fill()
     }

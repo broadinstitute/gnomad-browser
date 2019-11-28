@@ -54,7 +54,6 @@ const fetchGnomadVariantsByTranscript = async (ctx, transcript, subset) => {
           'rsid',
           'sortedTranscriptConsequences',
           'variant_id',
-          'xpos',
         ],
         body: {
           query: {

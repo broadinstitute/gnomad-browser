@@ -10,10 +10,10 @@ const StructuralVariantPlot = ({
   width,
 }) => {
   let startX = scalePosition(variant.pos)
-  let stopX = scalePosition(variant.end_pos)
+  let stopX = scalePosition(variant.end)
 
   const startIsDefined = isPositionDefined(variant.pos)
-  const stopIsDefined = isPositionDefined(variant.end_pos)
+  const stopIsDefined = isPositionDefined(variant.end)
 
   const trackHeight = 14
   const barHeight = 10
@@ -84,8 +84,8 @@ StructuralVariantPlot.propTypes = {
   isPositionDefined: PropTypes.func.isRequired,
   scalePosition: PropTypes.func.isRequired,
   variant: PropTypes.shape({
-    end_pos: PropTypes.number.isRequired,
     pos: PropTypes.number.isRequired,
+    end: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
   }).isRequired,
   width: PropTypes.number.isRequired,

@@ -58,7 +58,6 @@ const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
           'rsid',
           'sortedTranscriptConsequences',
           'variant_id',
-          'xpos',
         ],
         body: {
           query: {

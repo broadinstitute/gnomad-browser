@@ -1,7 +1,7 @@
 import { GraphQLEnumType } from 'graphql'
 
 export const ReferenceGenomeType = new GraphQLEnumType({
-  name: 'ReferenceGenome',
+  name: 'ReferenceGenomeId',
   values: {
     GRCh37: {},
     GRCh38: {},

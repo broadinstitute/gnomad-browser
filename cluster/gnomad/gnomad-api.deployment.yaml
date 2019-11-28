@@ -1,0 +1,45 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gnomad-api
+  labels:
+    service: gnomad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gnomad-api
+  template:
+    metadata:
+      labels:
+        name: gnomad-api
+        service: gnomad
+    spec:
+      containers:
+      - name: app
+        image: gcr.io/exac-gnomad/gnomad-api
+        env:
+        - name: DEPLOYMENT_ENV
+          value: production
+        - name: GRAPHQL_PORT
+          value: '80'
+        - name: ELASTICSEARCH_URL
+          value: elasticsearch:9200
+        - name: REDIS_HOST
+          value: redis
+        - name: NODE_ENV
+          value: production
+        - name: TRUST_PROXY
+          value: "2"
+        - name: ENABLE_SSL_REDIRECT
+          value: "true"
+        - name: MAX_CONCURRENT_ES_REQUESTS
+          value: "250"
+        - name: MAX_QUEUED_ES_REQUESTS
+          value: "2500"
+        ports:
+        - name: http
+          containerPort: 80
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "default-pool"

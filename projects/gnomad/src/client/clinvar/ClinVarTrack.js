@@ -127,7 +127,7 @@ const onClickVariant = variant => {
   // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
   clinVarWindow.opener = null
   const { allele_id: alleleId } = variant
-  clinVarWindow.location = `http://www.ncbi.nlm.nih.gov/clinvar/?term=${alleleId}[alleleid]`
+  clinVarWindow.location = `https://www.ncbi.nlm.nih.gov/clinvar/?term=${alleleId}[alleleid]`
 }
 
 class ClinVarTrack extends PureComponent {

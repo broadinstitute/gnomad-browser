@@ -21,6 +21,10 @@ spec:
           value: elasticsearch:9200
         - name: PORT
           value: "80"
+        - name: MAX_CONCURRENT_ES_REQUESTS
+          value: "100"
+        - name: MAX_QUEUED_ES_REQUESTS
+          value: "1000"
         ports:
         - containerPort: 80
       nodeSelector:

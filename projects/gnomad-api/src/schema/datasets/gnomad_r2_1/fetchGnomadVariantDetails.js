@@ -1,14 +1,9 @@
 import { flatMap } from 'lodash'
 
 import { UserVisibleError } from '../../errors'
+import { getFlagsForContext } from '../shared/flags'
+import { formatHistogram } from '../shared/histogram'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
-
-const formatHistogram = histogramData => ({
-  bin_edges: histogramData.bin_edges.split('|').map(s => Number(s)),
-  bin_freq: histogramData.bin_freq.split('|').map(s => Number(s)),
-  n_larger: histogramData.n_larger,
-  n_smaller: histogramData.n_smaller,
-})
 
 const POPULATIONS = ['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'oth', 'sas']
 
@@ -128,7 +123,6 @@ const fetchGnomadVariantData = async (ctx, variantId, subset) => {
             'rsid',
             'sortedTranscriptConsequences',
             'variant_id',
-            'xpos',
           ],
           body: {
             query: {
@@ -211,31 +205,24 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
 
   const sharedData = exomeData || genomeData
 
-  const sharedVariantFields = {
-    alt: sharedData.alt,
-    chrom: sharedData.chrom,
-    pos: sharedData.pos,
-    ref: sharedData.ref,
-    variantId: sharedData.variant_id,
-    xpos: sharedData.xpos,
-  }
-
   const [colocatedVariants, multiNucleotideVariants] = await Promise.all([
     fetchColocatedVariants(ctx, variantId, subset),
     fetchGnomadMNVSummariesByVariantId(ctx, variantId),
   ])
 
   return {
-    gqlType: 'GnomadVariantDetails',
-    // variant interface fields
-    ...sharedVariantFields,
+    // variant ID fields
+    variantId: sharedData.variant_id,
+    reference_genome: 'GRCh37',
+    chrom: sharedData.chrom,
+    pos: sharedData.pos,
+    ref: sharedData.ref,
+    alt: sharedData.alt,
     // gnomAD specific fields
     colocatedVariants,
     multiNucleotideVariants,
     exome: exomeData
       ? {
-          // Include variant fields so that the reads data resolver can access them.
-          ...sharedVariantFields,
           ac: exomeData.AC_adj.total,
           an: exomeData.AN_adj.total,
           ac_hemi: exomeData.nonpar ? exomeData.AC_adj.male : 0,
@@ -269,11 +256,9 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           },
         }
       : null,
-    flags: ['lcr', 'segdup', 'lc_lof', 'lof_flag'].filter(flag => sharedData.flags[flag]),
+    flags: getFlagsForContext({ type: 'region' })(sharedData),
     genome: genomeData
       ? {
-          // Include variant fields so that the reads data resolver can access them.
-          ...sharedVariantFields,
           ac: genomeData.AC_adj.total,
           an: genomeData.AN_adj.total,
           ac_hemi: genomeData.nonpar ? genomeData.AC_adj.male : 0,

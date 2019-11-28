@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Button, ExternalLink } from '@broad/ui'
+import { Badge, Button, ExternalLink } from '@broad/ui'
 
+import Query from '../../Query'
+import StatusMessage from '../../StatusMessage'
 import { IGVBrowser } from './IGVBrowser'
-
-const API_URL = process.env.GNOMAD_API_URL
 
 const ControlContainer = styled.div`
   /* Offset the 80px wide label to center buttons under the IGV browser */
@@ -53,15 +53,19 @@ const ReadDataPropType = PropTypes.shape({
   readGroup: PropTypes.string.isRequired,
 })
 
-export class GnomadReadData extends Component {
+class GnomadReadData extends Component {
   static propTypes = {
+    children: PropTypes.node,
+    chrom: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
     exomeReads: PropTypes.arrayOf(ReadDataPropType).isRequired,
     genomeReads: PropTypes.arrayOf(ReadDataPropType).isRequired,
-    igvLocus: PropTypes.string.isRequired,
     showHemizygotes: PropTypes.bool,
   }
 
   static defaultProps = {
+    children: undefined,
     showHemizygotes: false,
   }
 
@@ -169,14 +173,14 @@ export class GnomadReadData extends Component {
       colorBy: 'strand',
       format: 'bam',
       height: 300,
-      indexURL: `${API_URL}/${nextRead.indexPath}`,
+      indexURL: nextRead.indexPath,
       name: nextRead.label || `${category} [${exomeOrGenome}] #${tracksLoadedForCategory + 1}`,
       pairsSupported: false,
       readgroup: nextRead.readGroup,
       removable: false,
       samplingDepth: 1000,
       type: 'alignment',
-      url: `${API_URL}/${nextRead.bamPath}`,
+      url: nextRead.bamPath,
     }
 
     this.setState(state => ({
@@ -238,7 +242,7 @@ export class GnomadReadData extends Component {
   }
 
   render() {
-    const { igvLocus, showHemizygotes } = this.props
+    const { children, chrom, start, stop, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -248,20 +252,22 @@ export class GnomadReadData extends Component {
       )
     }
 
+    const locus = `${chrom}:${start}-${stop}`
+
     const browserConfig = {
-      locus: igvLocus,
+      locus,
       reference: {
-        fastaURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa`,
+        fastaURL: '/reads/reference/hg19.fa',
         id: 'hg19',
-        indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/hg19.fa.fai`,
+        indexURL: '/reads/reference/hg19.fa.fai',
       },
       tracks: [
         {
           displayMode: 'SQUISHED',
-          indexURL: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed.idx`,
+          indexURL: '/reads/reference/gencode.v19.sorted.bed.idx',
           name: 'gencode v19',
           removable: false,
-          url: `${'https://gnomad.broadinstitute.org/api'}/reads/gnomad_r2_1/gencode.v19.sorted.bed`,
+          url: '/reads/reference/gencode.v19.sorted.bed',
         },
       ],
     }
@@ -281,6 +287,8 @@ export class GnomadReadData extends Component {
           , so they accurately represent what HaplotypeCaller was seeing when it called this
           variant.
         </p>
+
+        {children}
 
         <IGVBrowser config={browserConfig} onCreateBrowser={this.onCreateBrowser} />
 
@@ -324,3 +332,151 @@ export class GnomadReadData extends Component {
     )
   }
 }
+
+const interleaveReads = allVariantReads => {
+  let reads = []
+  ;['het', 'hom', 'hemi'].forEach(category => {
+    const allReadsInCategory = allVariantReads.map(variantReads =>
+      variantReads.filter(read => read.category === category)
+    )
+    while (allReadsInCategory.some(variantReads => variantReads.length)) {
+      reads = reads.concat(
+        allReadsInCategory
+          .map(variantReads => variantReads.shift())
+          .filter(read => read !== undefined)
+      )
+    }
+  })
+  return reads
+}
+
+const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
+  if (variantIds.length === 0) {
+    return null
+  }
+
+  // Reads are not broken down by subset. Request gnomAD 2.1.1 reads for all gnomAD 2.1.1 subsets.
+  const readsDatasetId = datasetId.startsWith('gnomad_r2_1') ? 'gnomad_r2_1' : datasetId
+
+  const query = `
+    {
+      ${variantIds
+        .map(
+          (
+            variantId,
+            i
+          ) => `variant_${i}: variantReads(dataset: ${readsDatasetId}, variantId: "${variantId}") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }`
+        )
+        .join('\n')}
+    }
+  `
+
+  return (
+    <Query query={query} url="/reads/">
+      {({ data, error, graphQLErrors, loading }) => {
+        if (loading) {
+          return <StatusMessage>Loading reads...</StatusMessage>
+        }
+
+        if (error || !data) {
+          return <StatusMessage>Unable to load reads</StatusMessage>
+        }
+
+        const variants = variantIds.map(variantId => {
+          const [chrom, pos, ref, alt] = variantId.split('-')
+          return { chrom, pos: Number(pos), ref, alt }
+        })
+
+        // Assume all variants are on the same chromosome
+        const { chrom } = variants[0]
+
+        const minPosition = variants.reduce(
+          (minPos, variant) => Math.min(minPos, variant.pos),
+          Infinity
+        )
+        const maxPosition = variants.reduce(
+          (maxPos, variant) => Math.max(maxPos, variant.pos),
+          -Infinity
+        )
+
+        const positionDifference = maxPosition - minPosition
+        const [start, stop] =
+          positionDifference > 80
+            ? [minPosition, maxPosition]
+            : [
+                minPosition - Math.ceil((80 - positionDifference) / 2),
+                maxPosition + Math.floor((80 - positionDifference) / 2),
+              ]
+
+        // Concatenate reads from all variants
+        const exomeReads = interleaveReads(
+          variantIds.map((variantId, i) => {
+            const categoryCount = { het: 0, hom: 0, hemi: 0 }
+            return (data[`variant_${i}`].exome || []).map(read => {
+              const { category } = read
+              categoryCount[category] += 1
+              return {
+                ...read,
+                // eslint-disable-next-line prettier/prettier
+                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${categoryCount[category]}`,
+              }
+            })
+          })
+        )
+
+        const genomeReads = interleaveReads(
+          variantIds.map((variantId, i) => {
+            const categoryCount = { het: 0, hom: 0, hemi: 0 }
+            return (data[`variant_${i}`].genome || []).map(read => {
+              const { category } = read
+              categoryCount[category] += 1
+              return {
+                ...read,
+                // eslint-disable-next-line prettier/prettier
+                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${categoryCount[category]}`,
+              }
+            })
+          })
+        )
+
+        return (
+          <GnomadReadData
+            chrom={chrom}
+            start={start}
+            stop={stop}
+            exomeReads={exomeReads}
+            genomeReads={genomeReads}
+            showHemizygotes={chrom === 'X' || chrom === 'Y'}
+          >
+            {graphQLErrors && (
+              <p>
+                <Badge level="warning">Warning</Badge>{' '}
+                {graphQLErrors.map(e => e.message).join('. ')}.
+              </p>
+            )}
+          </GnomadReadData>
+        )
+      }}
+    </Query>
+  )
+}
+
+GnomadReadDataContainer.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  variantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
+
+export default GnomadReadDataContainer

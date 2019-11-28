@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
-import datasetLabels from '../datasetLabels'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -178,7 +178,7 @@ class VariantsInRegion extends Component {
       visibleVariantWindow,
     } = this.state
 
-    const datasetLabel = datasetLabels[datasetId]
+    const datasetLabel = labelForDataset(datasetId)
 
     return (
       <div>
@@ -233,7 +233,9 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
   const { chrom, start, stop } = region
 
   const query = `{
-    region(start: ${start}, stop: ${stop}, chrom: "${chrom}") {
+    region(start: ${start}, stop: ${stop}, chrom: "${chrom}", reference_genome: ${referenceGenomeForDataset(
+    datasetId
+  )}) {
       variants(dataset: ${datasetId}) {
         consequence
         flags
@@ -248,7 +250,6 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
         pos
         rsid
         variant_id: variantId
-        xpos
         exome {
           ac
           ac_hemi

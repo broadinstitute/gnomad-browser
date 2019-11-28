@@ -32,12 +32,11 @@ const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
   }
   return (
     <span className="grid-cell-content">
-      {consequence &&
-        colorKey === 'consequence' && (
-          <VariantCategoryMarker
-            color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
-          />
-        )}
+      {consequence && colorKey === 'consequence' && (
+        <VariantCategoryMarker
+          color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
+        />
+      )}
       <Highlighter searchWords={highlightWords} textToHighlight={renderedConsequence} />
     </span>
   )
@@ -99,14 +98,11 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
         let position
         if (variant.type === 'INS') {
           position = `${variant.pos}`
-        } else if (
-          variant.type === 'BND' ||
-          variant.type === 'CTX' ||
-          variant.chrom !== variant.end_chrom
-        ) {
-          position = `${variant.chrom}:${variant.pos} | ${variant.end_chrom}:${variant.end_pos}`
+        } else if (variant.type === 'BND' || variant.type === 'CTX') {
+          // Only show pos because end == pos + 1 for BNDs and CTXs
+          position = `${variant.chrom}:${variant.pos}} | ${variant.chrom2}:${variant.pos2}`
         } else {
-          position = `${variant.pos} - ${variant.end_pos}`
+          position = `${variant.pos} - ${variant.end}`
         }
 
         return <span className="grid-cell-content">{position}</span>

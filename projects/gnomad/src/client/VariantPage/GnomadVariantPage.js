@@ -5,17 +5,19 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { Page } from '@broad/ui'
 
+import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import StatusMessage from '../StatusMessage'
+import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
-import { GnomadReadData } from './reads/GnomadReadData'
+import GnomadReadData from './reads/GnomadReadData'
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import { VariantDetailsQuery } from './VariantDetailsQuery'
 import VariantFeedback from './VariantFeedback'
@@ -69,12 +71,23 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
   <Page>
     <DocumentTitle title={variantId} />
     <GnomadPageHeading
-      datasetOptions={{ includeExac: false, includeStructuralVariants: false }}
+      datasetOptions={{
+        // ExAC variant page doesn't exist yet
+        includeExac: !datasetId.startsWith('gnomad_r3'),
+        // Only include gnomAD version on the same reference genome
+        includeGnomad2: !datasetId.startsWith('gnomad_r3'),
+        includeGnomad3: datasetId.startsWith('gnomad_r3'),
+        // Variant ID not valid for SVs
+        includeStructuralVariants: false,
+      }}
       selectedDataset={datasetId}
     >
-      <VariantType variantId={variantId} />: <VariantId>{variantId}</VariantId>
+      <VariantType variantId={variantId} />:{' '}
+      <VariantId>
+        {variantId} ({referenceGenomeForDataset(datasetId)})
+      </VariantId>
     </GnomadPageHeading>
-    <VariantDetailsQuery datasetId={datasetId} variantId={variantId}>
+    <VariantDetailsQuery key={datasetId} datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
@@ -88,7 +101,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
-        const { variant, clinvarVariant } = data
+        const { variant, clinvar_variant: clinvarVariant } = data
 
         const numTranscripts = variant.sortedTranscriptConsequences.length
         const geneIds = variant.sortedTranscriptConsequences.map(csq => csq.gene_id)
@@ -98,7 +111,14 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           <VariantDetailsContainer>
             <ResponsiveSection>
               <ScrollWrapper>
-                <GnomadVariantOccurrenceTable variant={variant} />
+                {datasetId === 'exac' ? (
+                  <ExacVariantOccurrenceTable variant={variant} />
+                ) : (
+                  <GnomadVariantOccurrenceTable
+                    variant={variant}
+                    showExomes={!datasetId.startsWith('gnomad_r3')}
+                  />
+                )}
               </ScrollWrapper>
 
               {variant.colocatedVariants.length > 0 && (
@@ -116,7 +136,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                 </div>
               )}
 
-              {variant.multiNucleotideVariants.length > 0 && (
+              {(variant.multiNucleotideVariants || []).length > 0 && (
                 <div>
                   <p>
                     <strong>
@@ -157,30 +177,34 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
               </ScrollWrapper>
             </ResponsiveSection>
             <ResponsiveSection>
-              <h2>Age Distribution</h2>
-              {datasetId !== 'gnomad_r2_1' && (
-                <p>
-                  Age distribution is based on the full gnomAD dataset, not the selected subset.
-                </p>
+              {((variant.exome || {}).age_distribution ||
+                (variant.genome || {}).age_distribution) && (
+                <React.Fragment>
+                  <h2>Age Distribution</h2>
+                  {datasetId.startsWith('gnomad_r2') && datasetId !== 'gnomad_r2_1' && (
+                    <p>
+                      Age distribution is based on the full gnomAD dataset, not the selected subset.
+                    </p>
+                  )}
+                  <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+                </React.Fragment>
               )}
-              <GnomadAgeDistribution variant={variant} />
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>Genotype Quality Metrics</h2>
-              <GnomadGenotypeQualityMetrics variant={variant} />
+              <GnomadGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>Site Quality Metrics</h2>
-              <GnomadSiteQualityMetrics variant={variant} />
+              <GnomadSiteQualityMetrics datasetId={datasetId} variant={variant} />
             </ResponsiveSection>
             <Section>
               <h2>Read Data</h2>
-              <GnomadReadData
-                exomeReads={(variant.exome || {}).reads || []}
-                genomeReads={(variant.genome || {}).reads || []}
-                igvLocus={`${variant.chrom}:${variant.pos - 40}-${variant.pos + 40}`}
-                showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-              />
+              {datasetId.startsWith('gnomad_r3') ? (
+                <p>Read data is not yet available for gnomAD v3.</p>
+              ) : (
+                <GnomadReadData datasetId={datasetId} variantIds={[variant.variantId]} />
+              )}
             </Section>
           </VariantDetailsContainer>
         )

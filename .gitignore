@@ -17,7 +17,6 @@ bundle*.js
 untracked
 stats.txt
 logs
-*public/static/js/*
 prototypes/test/data/*.json
 prototypes/test/data/*.txt
 prototypes/test/data/*.csv
@@ -31,6 +30,5 @@ framework/build
 framework/dist
 framework/public/static/js/*
 python/resources/*
-packages/dev-server/src/current.js
 elastic-mappings
 gnomadt2d.js

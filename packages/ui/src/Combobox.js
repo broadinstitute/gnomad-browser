@@ -10,6 +10,7 @@ export const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  height: calc(2em + 2px);
   padding: 0.375em 1.5em 0.375em 0.75em;
   border-color: #6c757d;
   border-style: solid;
@@ -20,6 +21,7 @@ export const Input = styled.input`
   background-repeat: no-repeat;
   cursor: pointer;
   font-size: 1em;
+  line-height: 1.25;
   outline: none;
 
   &:focus {

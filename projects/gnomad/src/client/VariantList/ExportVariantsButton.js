@@ -5,6 +5,7 @@ import { Button } from '@broad/ui'
 
 const POPULATION_NAMES = {
   AFR: 'African',
+  AMI: 'Amish',
   AMR: 'Latino',
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
@@ -221,7 +222,6 @@ ExportVariantsButton.propTypes = {
       pos: PropTypes.number.isRequired,
       rsid: PropTypes.string,
       variant_id: PropTypes.string.isRequired,
-      xpos: PropTypes.number.isRequired,
       exome: PropTypes.shape({
         filters: PropTypes.arrayOf(PropTypes.string).isRequired,
       }),

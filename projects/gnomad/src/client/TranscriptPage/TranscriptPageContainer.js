@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
@@ -9,8 +10,9 @@ import TranscriptPage from './TranscriptPage'
 const AutosizedTranscriptPage = withWindowSize(TranscriptPage)
 
 const query = `
-query Transcript($transcriptId: String!) {
-  transcript(transcript_id: $transcriptId) {
+query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
+  transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
+    reference_genome
     transcript_id
     chrom
     strand
@@ -21,8 +23,42 @@ query Transcript($transcriptId: String!) {
       start
       stop
     }
+    gnomad_constraint {
+      exp_lof
+      exp_mis
+      exp_syn
+      obs_lof
+      obs_mis
+      obs_syn
+      oe_lof
+      oe_lof_lower
+      oe_lof_upper
+      oe_mis
+      oe_mis_lower
+      oe_mis_upper
+      oe_syn
+      oe_syn_lower
+      oe_syn_upper
+      lof_z
+      mis_z
+      syn_z
+      pLI
+    }
+    exac_constraint {
+      exp_syn
+      obs_syn
+      syn_z
+      exp_mis
+      obs_mis
+      mis_z
+      exp_lof
+      obs_lof
+      lof_z
+      pLI
+    }
     gene {
       gene_id
+      reference_genome
       symbol
       name
       canonical_transcript_id
@@ -36,18 +72,6 @@ query Transcript($transcriptId: String!) {
         feature_type
         start
         stop
-      }
-      exac_constraint {
-        exp_syn
-        obs_syn
-        syn_z
-        exp_mis
-        obs_mis
-        mis_z
-        exp_lof
-        obs_lof
-        lof_z
-        pLI
       }
       transcripts {
         transcript_id
@@ -187,7 +211,10 @@ query Transcript($transcriptId: String!) {
 `
 
 const TranscriptPageContainer = ({ datasetId, transcriptId, ...otherProps }) => (
-  <Query query={query} variables={{ transcriptId }}>
+  <Query
+    query={query}
+    variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
+  >
     {({ data, error, graphQLErrors, loading }) => {
       if (loading) {
         return <StatusMessage>Loading transcript...</StatusMessage>

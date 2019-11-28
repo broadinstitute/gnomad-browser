@@ -8,9 +8,9 @@ import { GenesTrack } from '@broad/track-genes'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import CoverageTrack from './CoverageTrack'
 import EditRegion from './EditRegion'
 import RegionControls from './RegionControls'
+import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
@@ -79,10 +79,12 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
         rightPanelWidth={smallScreen ? 0 : 160}
         width={regionViewerWidth}
       >
-        <CoverageTrack
+        <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}
-          showExomeCoverage={datasetId !== 'gnomad_sv_r2'}
+          includeExomeCoverage={
+            !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
+          }
           start={start}
           stop={stop}
         />
@@ -94,8 +96,12 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
           }}
         />
 
-        {datasetId === 'gnomad_sv_r2' ? (
-          <StructuralVariantsInRegion region={region} width={regionViewerWidth} />
+        {datasetId.startsWith('gnomad_sv') ? (
+          <StructuralVariantsInRegion
+            datasetId={datasetId}
+            region={region}
+            width={regionViewerWidth}
+          />
         ) : (
           <VariantsInRegion datasetId={datasetId} region={region} width={regionViewerWidth} />
         )}
@@ -110,6 +116,7 @@ RegionPage.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   region: PropTypes.shape({
+    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,

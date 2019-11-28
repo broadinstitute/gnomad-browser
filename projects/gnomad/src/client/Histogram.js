@@ -6,6 +6,8 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
 
+import { TooltipAnchor } from '@broad/ui'
+
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
 const GraphWrapper = styled.div`
@@ -13,6 +15,15 @@ const GraphWrapper = styled.div`
   width: 100%;
   height: 100%;
   margin-bottom: 1em;
+`
+
+const BinHoverTarget = styled.rect`
+  pointer-events: visible;
+  fill: none;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.05);
+  }
 `
 
 const yTickFormat = n => {
@@ -41,7 +52,17 @@ const labelProps = {
 }
 
 const Histogram = withSize()(
-  ({ barColor, binEdges, binValues, nLarger, nSmaller, size: { width }, xLabel, yLabel }) => {
+  ({
+    barColor,
+    binEdges,
+    binValues,
+    formatTooltip,
+    nLarger,
+    nSmaller,
+    size: { width },
+    xLabel,
+    yLabel,
+  }) => {
     const height = 250
 
     const bins = binValues.map((n, i) => ({
@@ -49,14 +70,14 @@ const Histogram = withSize()(
       value: n,
     }))
 
-    if (nSmaller !== undefined) {
+    if (!(nSmaller === undefined || nSmaller === null)) {
       bins.unshift({
         label: `< ${binEdges[0]}`,
         value: nSmaller,
       })
     }
 
-    if (nLarger !== undefined) {
+    if (!(nLarger === undefined || nLarger === null)) {
       bins.push({
         label: `> ${binEdges[binEdges.length - 1]}`,
         value: nLarger,
@@ -65,13 +86,16 @@ const Histogram = withSize()(
 
     const yDomain = [0, max(bins, bin => bin.value) || 1]
 
+    const plotWidth = width - (margin.left + margin.right)
+    const plotHeight = height - (margin.top + margin.bottom)
+
     const xBandScale = scaleBand()
       .domain(bins.map(bin => bin.label))
-      .range([0, width - (margin.left + margin.right)])
+      .range([0, plotWidth])
 
     const yScale = scaleLinear()
       .domain(yDomain)
-      .range([height - (margin.top + margin.bottom), margin.top])
+      .range([plotHeight, 0])
 
     const bandWidth = xBandScale.bandwidth()
 
@@ -83,7 +107,7 @@ const Histogram = withSize()(
             labelOffset={25}
             labelProps={labelProps}
             left={margin.left}
-            top={height - margin.bottom}
+            top={margin.top + plotHeight}
             scale={xBandScale}
             stroke="#333"
             tickLabelProps={value => ({
@@ -114,15 +138,24 @@ const Histogram = withSize()(
           />
           <g transform={`translate(${margin.left},${margin.top})`}>
             {bins.map(bin => (
-              <rect
-                key={bin.label}
-                x={xBandScale(bin.label)}
-                y={yScale(bin.value)}
-                height={yScale(0) - yScale(bin.value)}
-                width={bandWidth}
-                fill={barColor}
-                stroke="#333"
-              />
+              <React.Fragment key={bin.label}>
+                <rect
+                  x={xBandScale(bin.label)}
+                  y={yScale(bin.value)}
+                  height={plotHeight - yScale(bin.value)}
+                  width={bandWidth}
+                  fill={barColor}
+                  stroke="#333"
+                />
+                <TooltipAnchor tooltip={formatTooltip(bin)}>
+                  <BinHoverTarget
+                    x={xBandScale(bin.label)}
+                    y={0}
+                    height={plotHeight}
+                    width={bandWidth}
+                  />
+                </TooltipAnchor>
+              </React.Fragment>
             ))}
           </g>
         </svg>
@@ -137,6 +170,7 @@ Histogram.propTypes = {
   barColor: PropTypes.string,
   binEdges: PropTypes.arrayOf(PropTypes.number).isRequired,
   binValues: PropTypes.arrayOf(PropTypes.number).isRequired,
+  formatTooltip: PropTypes.func,
   nLarger: PropTypes.number,
   nSmaller: PropTypes.number,
   size: PropTypes.shape({
@@ -148,6 +182,7 @@ Histogram.propTypes = {
 
 Histogram.defaultProps = {
   barColor: '#428bca',
+  formatTooltip: bin => `${bin.label}: ${bin.value.toLocaleString()}`,
   nLarger: undefined,
   nSmaller: undefined,
   xLabel: undefined,

@@ -23,16 +23,15 @@ export default () => (
     </p>
 
     <p>
-      To date, the SCHEMA consortium members have sequenced and processed the whole exomes of over
-      25,000 schizophrenia cases and 50,000 matched controls using a standardized protocol, yielding
-      one of the largest sequencing data sets of a complex trait to date. Our study has actively
-      recruited from diverse global populations, and includes individuals of European, Latin
-      American, East Asian, Ashkenazi Jewish, and African American ancestry. Because the sequence
-      data was generated with various capture technologies over a span of seven years, we adapted
-      and developed methods to reduce possible confounders, and incorporated this information during
-      the quality control and analysis steps. The first results have provided genome-wide
-      significant results associating rare variants in individual genes to risk of schizophrenia,
-      and later releases are planned with larger number of samples that will further increase power.
+      The SCHEMA dataset contains the results of analysis of 24,248 cases and 97,322 controls, and
+      de novo mutations from 3,444 parent-proband trios. Our study has actively recruited from
+      diverse global populations, and includes individuals of European, Latin American, East Asian,
+      Ashkenazi Jewish, and African American ancestry. Because the sequence data was generated with
+      various capture technologies over a span of seven years, we adapted and developed methods to
+      reduce possible confounders, and incorporated this information during the quality control and
+      analysis steps. The first results have provided genome-wide significant results associating
+      rare variants in individual genes to risk of schizophrenia, and later releases are planned
+      with larger number of samples that will further increase power.
     </p>
 
     <p>
@@ -43,7 +42,7 @@ export default () => (
       effort.
     </p>
 
-    <p>Analysis data last updated April 15th, 2019.</p>
+    <p>Analysis data last updated October 14th, 2019.</p>
 
     <Logo alt="Stanley Center logo" src={stanleyCenterLogo} />
   </React.Fragment>

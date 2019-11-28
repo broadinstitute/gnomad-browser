@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@broad/ui'
 
-import gnomadSiteQualityMetricDistributions from '../../dataset-constants/gnomadSiteQualityMetricDistributions.json'
+import exacSiteQualityMetricDistributions from '../../dataset-constants/exac/siteQualityMetricDistributions.json'
+import gnomadV2SiteQualityMetricDistributions from '../../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'
+import gnomadV3SiteQualityMetricDistributions from '../../dataset-constants/gnomad_r3/siteQualityMetricDistributions.json'
 import ControlSection from '../ControlSection'
 import { BarGraph } from './BarGraph'
 import qualityMetricDescriptions from './qualityMetricDescriptions'
@@ -24,6 +26,19 @@ const allMetrics = [
   'pab_max',
 ]
 
+const getSiteQualityMetricDistributions = datasetId => {
+  if (datasetId === 'gnomad_r3') {
+    return gnomadV3SiteQualityMetricDistributions
+  }
+  if (datasetId.startsWith('gnomad_r2')) {
+    return gnomadV2SiteQualityMetricDistributions
+  }
+  if (datasetId === 'exac') {
+    return exacSiteQualityMetricDistributions
+  }
+  throw new Error(`No quality metric distribution available for dataset "${datasetId}"`)
+}
+
 export class GnomadSiteQualityMetrics extends Component {
   constructor(props) {
     super(props)
@@ -35,11 +50,12 @@ export class GnomadSiteQualityMetrics extends Component {
   }
 
   render() {
-    const { variant } = this.props
+    const { datasetId, variant } = this.props
     const { selectedDataset, selectedMetric } = this.state
 
     const variantData = variant[selectedDataset]
-    const metricData = gnomadSiteQualityMetricDistributions[selectedDataset]
+    const siteQualityMetricDistributions = getSiteQualityMetricDistributions(datasetId)
+    const metricData = siteQualityMetricDistributions[selectedDataset]
 
     let selectedMetricBins
     let selectedSiteQualityBinDescription
@@ -93,15 +109,22 @@ export class GnomadSiteQualityMetrics extends Component {
 
     const metricDescription = qualityMetricDescriptions[selectedMetric]
 
+    const useLogScale = selectedMetric === 'SiteQuality' || selectedMetric === 'DP'
+
+    const formatTooltip = useLogScale
+      ? bin => `1e${Math.log10(bin.x0)}-1e${Math.log10(bin.x1)}: ${bin.n.toLocaleString()} variants`
+      : bin => `${bin.x0}-${bin.x1}: ${bin.n.toLocaleString()} variants`
+
     return (
       <div>
         <BarGraph
           barColor={graphColor}
           bins={selectedMetricBins}
           highlightValue={variantData.qualityMetrics.siteQualityMetrics[selectedMetric]}
-          logScale={selectedMetric === 'SiteQuality' || selectedMetric === 'DP'}
+          logScale={useLogScale}
           xLabel={selectedMetric}
           yLabel="Variants"
+          formatTooltip={formatTooltip}
         />
 
         <ControlSection>
@@ -139,10 +162,12 @@ export class GnomadSiteQualityMetrics extends Component {
         </ControlSection>
 
         {metricDescription && <p>{metricDescription}</p>}
-        <p>
-          Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
-          sites.
-        </p>
+        {!datasetId.startsWith('gnomad_r3') && (
+          <p>
+            Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
+            sites.
+          </p>
+        )}
         {selectedMetric === 'SiteQuality' && (
           <p>This is the site quality distribution for all {selectedSiteQualityBinDescription}.</p>
         )}
@@ -172,6 +197,7 @@ const variantSiteQualityMetricsPropType = PropTypes.shape({
 })
 
 GnomadSiteQualityMetrics.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
     exome: PropTypes.shape({
       qualityMetrics: PropTypes.shape({

@@ -34,6 +34,10 @@ class ErrorBoundary extends React.Component {
         `Render error on ${location.pathname}${location.search}`
       )}&labels=Project%3A%20gnomAD%2CType%3A%20Bug`
 
+      const emailURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+        'Browser bug report'
+      )}&body=${encodeURIComponent(`Render error on ${location.pathname}${location.search}`)}`
+
       return (
         <InfoPage>
           <DocumentTitle title="Error" />
@@ -41,7 +45,8 @@ class ErrorBoundary extends React.Component {
           <p>An error occurred while rendering this page.</p>
           <p>
             This is a bug. Please{' '}
-            <ExternalLink href={issueURL}>file an issue on GitHub</ExternalLink> and{' '}
+            <ExternalLink href={issueURL}>file an issue on GitHub</ExternalLink> or{' '}
+            <ExternalLink href={emailURL}>email us</ExternalLink> and{' '}
             <StyledLink href="/">reload the browser</StyledLink>.
           </p>
         </InfoPage>

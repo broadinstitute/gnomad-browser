@@ -4,6 +4,8 @@ import styled from 'styled-components'
 export const BaseButton = styled.button.attrs({
   type: 'button',
 })`
+  box-sizing: border-box;
+  height: calc(2em + 2px);
   padding: 0.375em 0.75em;
   border-color: ${props => props.borderColor};
   border-style: solid;
@@ -13,6 +15,7 @@ export const BaseButton = styled.button.attrs({
   color: ${props => props.textColor};
   cursor: pointer;
   font-size: 1em;
+  line-height: 1.25;
   outline: none;
   user-select: none;
 

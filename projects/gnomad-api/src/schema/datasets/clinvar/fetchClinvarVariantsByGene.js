@@ -1,7 +1,14 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
+import { UserVisibleError } from '../../errors'
 
 const fetchClinvarVariantsByGene = async (ctx, gene) => {
+  if (gene.reference_genome !== 'GRCh37') {
+    throw new UserVisibleError(
+      `ClinVar variants not available on reference genome ${gene.reference_genome}`
+    )
+  }
+
   const geneId = gene.gene_id
   const filteredRegions = gene.exons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
@@ -38,7 +45,6 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
       'pos',
       'ref',
       'variant_id',
-      'xpos',
     ],
     size: 10000,
     body: {
@@ -58,9 +64,9 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
     return {
       // Variant ID fields
       variantId: doc.variant_id,
+      reference_genome: gene.reference_genome,
       chrom: doc.chrom,
       pos: doc.pos,
-      xpos: doc.xpos,
       ref: doc.ref,
       alt: doc.alt,
       // ClinVar specific fields
