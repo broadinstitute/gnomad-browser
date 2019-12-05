@@ -45,7 +45,7 @@ class VariantTable extends PureComponent {
 
     return (
       <Grid
-        cellData={{ highlightWords: highlightText.split(/\s+/) }}
+        cellData={{ highlightWords: highlightText.split(',').map(s => s.trim()) }}
         columns={columns}
         data={variants}
         numRowsRendered={20}
