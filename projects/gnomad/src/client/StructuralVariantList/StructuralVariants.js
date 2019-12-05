@@ -252,7 +252,10 @@ class StructuralVariants extends Component {
           <Wrapper>
             <StructuralVariantsTable
               ref={this.table}
-              cellData={{ colorKey, highlightWords: filter.searchText.split(/\s+/) }}
+              cellData={{
+                colorKey,
+                highlightWords: filter.searchText.split(',').map(s => s.trim()),
+              }}
               numRowsRendered={numRowsRendered}
               onHoverVariant={this.onHoverVariantInTable}
               onRequestSort={this.onSort}

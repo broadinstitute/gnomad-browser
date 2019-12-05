@@ -21,12 +21,16 @@ const filterVariants = (variants, filter) => {
   }
 
   if (filter.searchText) {
-    const query = filter.searchText.toLowerCase()
-    filteredVariants = filteredVariants.filter(
-      v =>
-        v.variant_id.toLowerCase().includes(query) ||
-        (svConsequenceLabels[v.consequence] || '').toLowerCase().includes(query) ||
-        svTypeLabels[v.type].toLowerCase().includes(query)
+    const searchTerms = filter.searchText
+      .toLowerCase()
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+
+    filteredVariants = filteredVariants.filter(v =>
+      [v.variant_id, svConsequenceLabels[v.consequence] || '', svTypeLabels[v.type]]
+        .map(val => val.toLowerCase())
+        .some(val => searchTerms.some(term => val.includes(term)))
     )
   }
 

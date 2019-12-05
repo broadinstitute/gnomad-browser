@@ -35,15 +35,16 @@ const filterVariants = (variants, filter) => {
   filteredVariants = filteredVariants.filter(v => v.exome || v.genome)
 
   if (filter.searchText) {
-    const query = filter.searchText.toLowerCase()
-    filteredVariants = filteredVariants.filter(
-      v =>
-        v.variant_id.toLowerCase().includes(query) ||
-        (v.rsid || '').toLowerCase().includes(query) ||
-        getLabelForConsequenceTerm(v.consequence)
-          .toLowerCase()
-          .includes(query) ||
-        (v.hgvs || '').toLowerCase().includes(query)
+    const searchTerms = filter.searchText
+      .toLowerCase()
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+
+    filteredVariants = filteredVariants.filter(v =>
+      [v.variant_id, v.rsid || '', getLabelForConsequenceTerm(v.consequence), v.hgvs || '']
+        .map(val => val.toLowerCase())
+        .some(val => searchTerms.some(term => val.includes(term)))
     )
   }
 
