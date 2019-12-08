@@ -16,17 +16,6 @@ app.use(cors())
 
 app.set('trust proxy', JSON.parse(process.env.TRUST_PROXY || 'false'))
 
-// Redirect HTTP requests to HTTPS
-if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
-  app.use((request, response, next) => {
-    if (request.protocol === 'http') {
-      response.redirect(`https://${request.get('host')}${request.url}`)
-    } else {
-      next()
-    }
-  })
-}
-
 const elastic = new elasticsearch.Client({
   apiVersion: '5.5',
   host: process.env.ELASTICSEARCH_URL,
@@ -100,9 +89,24 @@ const redis = new Redis({
   port: 6379,
 })
 
-app.get('/', (request, response) => {
+// Health check endpoint for load balancer.
+// GCE load balancers require a 200 response from the health check endpoint, so
+// this must be registered before the HTTP=>HTTPS redirect middleware, which
+// would return a 30x response.
+app.get('/health/ready', (request, response) => {
   response.send('ok')
 })
+
+// Redirect HTTP requests to HTTPS.
+if (JSON.parse(process.env.ENABLE_HTTPS_REDIRECT || 'false')) {
+  app.use((request, response, next) => {
+    if (request.protocol === 'http') {
+      response.redirect(`https://${request.get('host')}${request.url}`)
+    } else {
+      next()
+    }
+  })
+}
 
 app.use(
   [/^\/api\/?$/],

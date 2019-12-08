@@ -10,8 +10,16 @@ app.use(compression())
 
 app.set('trust proxy', JSON.parse(process.env.TRUST_PROXY || 'false'))
 
-// Redirect HTTP requests to HTTPS
-if (JSON.parse(process.env.ENABLE_SSL_REDIRECT || 'false')) {
+// Health check endpoint for load balancer.
+// GCE load balancers require a 200 response from the health check endpoint, so
+// this must be registered before the HTTP=>HTTPS redirect middleware, which
+// would return a 30x response.
+app.get('/health/ready', (request, response) => {
+  response.send('true')
+})
+
+// Redirect HTTP requests to HTTPS.
+if (JSON.parse(process.env.ENABLE_HTTPS_REDIRECT || 'false')) {
   app.use((request, response, next) => {
     if (request.protocol === 'http') {
       response.redirect(`https://${request.get('host')}${request.url}`)
