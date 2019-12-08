@@ -15,7 +15,7 @@ const app = express()
 app.set('trust proxy', config.TRUST_PROXY)
 
 // Endpoint for health check
-app.get('/ready', (request, response) => {
+app.get('/health/ready', (request, response) => {
   response.send('true')
 })
 
