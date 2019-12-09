@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import { Searchbox, Select } from '@broad/ui'
 
+import { getDefaultDataset, topLevelDataset, labelForDataset } from './datasets'
+
 const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
@@ -49,15 +51,15 @@ export default withRouter(props => {
   } = props
 
   const currentParams = queryString.parse(location.search)
-  const defaultSearchDataset = currentParams.dataset === 'gnomad_r3' ? 'gnomad_r3' : 'gnomad_r2_1'
-  const [searchDataset, setSearchDataset] = useState(defaultSearchDataset)
+  const defaultDataset = currentParams.dataset && currentParams.dataset !== 0 ?  currentParams.dataset : getDefaultDataset()
+  const [searchDataset, setSearchDataset] = useState(defaultDataset)
 
   // Update search dataset when active dataset changes.
   // Cannot rely on props for this because the top bar does not re-render.
   useEffect(() => {
     return history.listen(newLocation => {
       const newParams = queryString.parse(newLocation.search)
-      setSearchDataset(newParams.dataset === 'gnomad_r3' ? 'gnomad_r3' : 'gnomad_r2_1')
+      setSearchDataset(newParams.dataset && newParams.dataset !== 0 ? newParams.dataset : getDefaultDataset())
     })
   })
 
@@ -74,8 +76,7 @@ export default withRouter(props => {
           }
         }}
       >
-        <option value="gnomad_r2_1">gnomAD v2.1.1</option>
-        <option value="gnomad_r3">gnomAD v3</option>
+        {topLevelDataset().map(o => <option value={o} key={o}>{labelForDataset(o)}</option>)}
       </Select>
       <span style={{ flexGrow: 1 }}>
         <Searchbox

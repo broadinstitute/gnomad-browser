@@ -23,11 +23,13 @@ import VariantPage from './VariantPage/VariantPage'
 
 import NavBar from './NavBar'
 
+import {getDefaultDataset} from './datasets'
+
 const MainPanel = styled.div`
   width: 100%;
 `
 
-const defaultDataset = 'gnomad_r2_1'
+const defaultDataset = getDefaultDataset();
 
 const App = () => (
   <div>

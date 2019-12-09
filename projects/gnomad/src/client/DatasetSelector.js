@@ -7,7 +7,7 @@ import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import sampleCounts from './dataset-constants/sampleCounts'
-import { labelForDataset } from './datasets'
+import { getDefaultDataset, labelForDataset } from './datasets'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -409,9 +409,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       search: queryString.stringify({ dataset: datasetId }),
     })
 
-  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
   const topLevelShortVariantDataset = selectedDataset.startsWith('gnomad_sv')
-    ? defaultTopLevelShortVariantDataset
+    ? getDefaultDataset()
     : selectedDataset
 
   let datasets = []
