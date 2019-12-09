@@ -7,7 +7,7 @@ import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import Link from './Link'
 import Searchbox from './Searchbox'
-import GnomadHeading from './GnomadHeading'
+import Heading from './Heading'
 
 const HomePage = styled(InfoPage)`
   display: flex;
@@ -38,7 +38,7 @@ export default () => (
   <HomePage>
     <DocumentTitle />
     <HeadingContainer>
-      <GnomadHeading width="60%" />
+      <Heading width="60%" />
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="100%" />
       <p>
