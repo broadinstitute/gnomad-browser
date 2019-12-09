@@ -9,9 +9,6 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
     ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-cert
 spec:
-  backend:
-    serviceName: gnomad-browser-nodeport
-    servicePort: 80
   rules:
   - host: gnomad.broadinstitute.org
     http:
