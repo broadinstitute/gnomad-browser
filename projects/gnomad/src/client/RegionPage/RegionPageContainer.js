@@ -13,6 +13,28 @@ import RegionPage from './RegionPage'
 
 const AutosizedRegionPage = withWindowSize(RegionPage)
 
+const query = `
+  query FetchRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+    region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+      reference_genome
+      chrom
+      start
+      stop
+      genes {
+        gene_id
+        symbol
+        start
+        stop
+        exons {
+          feature_type
+          start
+          stop
+        }
+      }
+    }
+  }
+`
+
 const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   if (!isRegionId(regionId)) {
     return (
@@ -28,33 +50,12 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
   const start = parseInt(startStr, 10)
   const stop = parseInt(stopStr, 10)
 
-  const query = `
-    query FetchRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
-      region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-        reference_genome
-        chrom
-        start
-        stop
-        genes {
-          gene_id
-          symbol
-          start
-          stop
-          exons {
-            feature_type
-            start
-            stop
-          }
-        }
-      }
-    }
-  `
+  const variables = { chrom, start, stop }
+  variables.referenceGenome = referenceGenomeForDataset(datasetId)
+  variables.datasetId = datasetId
 
   return (
-    <Query
-      query={query}
-      variables={{ chrom, start, stop, referenceGenome: referenceGenomeForDataset(datasetId) }}
-    >
+    <Query query={query} variables={variables}>
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading region...</StatusMessage>
