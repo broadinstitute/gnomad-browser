@@ -16,7 +16,7 @@ import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
 import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
-import GenePage from './GenePage/GenePageContainer'
+import GenePageContainer from './GenePage/GenePageContainer'
 import RegionPageContainer from './RegionPage/RegionPageContainer'
 import TranscriptPageContainer from './TranscriptPage/TranscriptPageContainer'
 import VariantPage from './VariantPage/VariantPage'
@@ -82,7 +82,7 @@ const App = () => (
               const params = queryString.parse(location.search)
               const datasetId = params.dataset || defaultDataset
               return (
-                <GenePage
+                <GenePageContainer
                   datasetId={datasetId}
                   geneIdOrSymbol={match.params.gene}
                   history={history}

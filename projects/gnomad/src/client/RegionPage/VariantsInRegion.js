@@ -229,104 +229,108 @@ class VariantsInRegion extends Component {
   }
 }
 
-const ConnectedVariantsInRegion = ({ datasetId, region, width }) => {
-  const { chrom, start, stop } = region
-
-  const query = `{
-    region(start: ${start}, stop: ${stop}, chrom: "${chrom}", reference_genome: ${referenceGenomeForDataset(
-    datasetId
-  )}) {
-      variants(dataset: ${datasetId}) {
-        consequence
-        flags
-        gene_id
-        gene_symbol
-        hgvs
-        hgvsc
-        hgvsp
-        lof
-        lof_filter
-        lof_flags
-        pos
-        rsid
-        variant_id: variantId
-        exome {
+const query = `
+query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  region(start: $start, stop: $stop, chrom: $chrom, reference_genome: $referenceGenome) {
+    variants(dataset: $datasetId) {
+      consequence
+      flags
+      gene_id
+      gene_symbol
+      hgvs
+      hgvsc
+      hgvsp
+      lof
+      lof_filter
+      lof_flags
+      pos
+      rsid
+      variant_id: variantId
+      exome {
+        ac
+        ac_hemi
+        ac_hom
+        an
+        af
+        filters
+        populations {
+          id
           ac
+          an
           ac_hemi
           ac_hom
-          an
-          af
-          filters
-          populations {
-            id
-            ac
-            an
-            ac_hemi
-            ac_hom
-          }
         }
-        genome {
+      }
+      genome {
+        ac
+        ac_hemi
+        ac_hom
+        an
+        af
+        filters
+        populations {
+          id
           ac
+          an
           ac_hemi
           ac_hom
-          an
-          af
-          filters
-          populations {
-            id
-            ac
-            an
-            ac_hemi
-            ac_hom
-          }
         }
       }
     }
-  }`
+  }
+}`
 
-  return (
-    <Query query={query}>
-      {({ data, error, graphQLErrors, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading variants...</StatusMessage>
-        }
+const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
+  <Query
+    query={query}
+    variables={{
+      datasetId,
+      chrom: region.chrom,
+      start: region.start,
+      stop: region.stop,
+      referenceGenome: referenceGenomeForDataset(datasetId)
+    }}
+  >
+    {({ data, error, graphQLErrors, loading }) => {
+      if (loading) {
+        return <StatusMessage>Loading variants...</StatusMessage>
+      }
 
-        if (error || !(data || {}).region) {
-          return <StatusMessage>Failed to load variants</StatusMessage>
-        }
+      if (error || !(data || {}).region) {
+        return <StatusMessage>Failed to load variants</StatusMessage>
+      }
 
-        const tooManyVariantsError = /Individual variants can only be returned for regions with fewer than \d+ variants/
-        const tooManyVariants =
-          graphQLErrors && graphQLErrors.some(err => tooManyVariantsError.test(err.message))
+      const tooManyVariantsError = /Individual variants can only be returned for regions with fewer than \d+ variants/
+      const tooManyVariants =
+        graphQLErrors && graphQLErrors.some(err => tooManyVariantsError.test(err.message))
 
-        if (tooManyVariants) {
-          return (
-            <TrackPageSection>
-              <StatusMessage>
-                This region has too many variants to display.
-                <br />
-                To view individual variants, select a smaller region.
-              </StatusMessage>
-            </TrackPageSection>
-          )
-        }
-
-        if (!data.region.variants) {
-          return <StatusMessage>Failed to load variants</StatusMessage>
-        }
-
+      if (tooManyVariants) {
         return (
-          <VariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            variants={data.region.variants}
-            width={width}
-          />
+          <TrackPageSection>
+            <StatusMessage>
+              This region has too many variants to display.
+              <br />
+              To view individual variants, select a smaller region.
+            </StatusMessage>
+          </TrackPageSection>
         )
-      }}
-    </Query>
-  )
-}
+      }
+
+      if (!data.region.variants) {
+        return <StatusMessage>Failed to load variants</StatusMessage>
+      }
+
+      return (
+        <VariantsInRegion
+          datasetId={datasetId}
+          region={region}
+          variants={data.region.variants}
+          width={width}
+        />
+      )
+    }}
+  </Query>
+)
 
 ConnectedVariantsInRegion.propTypes = {
   datasetId: PropTypes.string.isRequired,
