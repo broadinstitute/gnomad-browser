@@ -131,6 +131,25 @@ const onClickVariant = variant => {
 }
 
 class ClinVarTrack extends PureComponent {
+  static propTypes = {
+    variants: PropTypes.arrayOf(
+      PropTypes.shape({
+        allele_id: PropTypes.number.isRequired,
+        clinical_significance: PropTypes.string,
+        consequence: PropTypes.string,
+        gold_stars: PropTypes.number,
+        pos: PropTypes.number.isRequired,
+        variantId: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    variantFilter: PropTypes.shape({
+      lof: PropTypes.bool.isRequired,
+      missense: PropTypes.bool.isRequired,
+      synonymous: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
+  }
+
   state = {
     isExpanded: false,
   }
@@ -280,7 +299,10 @@ class ClinVarTrack extends PureComponent {
             <TopPanel>
               <SegmentedControl
                 id="clinvar-track-mode"
-                options={[{ label: 'Bins', value: false }, { label: 'All variants', value: true }]}
+                options={[
+                  { label: 'Bins', value: false },
+                  { label: 'All variants', value: true },
+                ]}
                 value={isExpanded}
                 onChange={value => {
                   this.setState({ isExpanded: value })
@@ -300,25 +322,6 @@ class ClinVarTrack extends PureComponent {
       </Wrapper>
     )
   }
-}
-
-ClinVarTrack.propTypes = {
-  variants: PropTypes.arrayOf(
-    PropTypes.shape({
-      allele_id: PropTypes.number.isRequired,
-      clinical_significance: PropTypes.string,
-      consequence: PropTypes.string,
-      gold_stars: PropTypes.number,
-      pos: PropTypes.number.isRequired,
-      variantId: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  variantFilter: PropTypes.shape({
-    lof: PropTypes.bool.isRequired,
-    missense: PropTypes.bool.isRequired,
-    synonymous: PropTypes.bool.isRequired,
-    other: PropTypes.bool.isRequired,
-  }).isRequired,
 }
 
 export default ClinVarTrack

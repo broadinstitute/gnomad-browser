@@ -33,21 +33,21 @@ const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
   }))
 
   const requests = [
-    { index: 'gnomad_exomes_2_1_1', subset },
+    { index: 'gnomad_exomes_2_1_1', subsetInIndex: subset },
     // All genome samples are non_cancer, so separate non-cancer numbers are not stored
-    { index: 'gnomad_genomes_2_1_1', subset: subset === 'non_cancer' ? 'gnomad' : subset },
+    { index: 'gnomad_genomes_2_1_1', subsetInIndex: subset === 'non_cancer' ? 'gnomad' : subset },
   ]
 
   const [exomeVariants, genomeVariants] = await Promise.all(
-    requests.map(async ({ index, subset }) => {
+    requests.map(async ({ index, subsetInIndex }) => {
       const hits = await fetchAllSearchResults(ctx.database.elastic, {
         index,
         type: 'variant',
         size: 10000,
         _source: [
-          `${subset}.AC_adj`,
-          `${subset}.AN_adj`,
-          `${subset}.nhomalt_adj`,
+          `${subsetInIndex}.AC_adj`,
+          `${subsetInIndex}.AN_adj`,
+          `${subsetInIndex}.nhomalt_adj`,
           'alt',
           'chrom',
           'filters',
@@ -72,7 +72,7 @@ const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
                   },
                 },
                 { bool: { should: rangeQueries } },
-                { range: { [`${subset}.AC_raw`]: { gt: 0 } } },
+                { range: { [`${subsetInIndex}.AC_raw`]: { gt: 0 } } },
               ],
             },
           },
@@ -80,7 +80,7 @@ const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
         },
       })
 
-      return hits.map(shapeGnomadVariantSummary(subset, { type: 'gene', geneId }))
+      return hits.map(shapeGnomadVariantSummary(subsetInIndex, { type: 'gene', geneId }))
     })
   )
 

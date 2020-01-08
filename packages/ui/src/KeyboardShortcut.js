@@ -44,15 +44,12 @@ class MousetrapWrapper {
 const mousetrap = new MousetrapWrapper()
 
 export const KeyboardShortcut = ({ handler, keys }) => {
-  useEffect(
-    () => {
-      mousetrap.bind(keys, handler)
-      return () => {
-        mousetrap.unbind(keys, handler)
-      }
-    },
-    [handler, keys]
-  )
+  useEffect(() => {
+    mousetrap.bind(keys, handler)
+    return () => {
+      mousetrap.unbind(keys, handler)
+    }
+  }, [handler, keys])
   return null
 }
 

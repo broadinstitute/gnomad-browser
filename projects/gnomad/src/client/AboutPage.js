@@ -83,9 +83,9 @@ export default () => (
       likely at a frequency equivalent to or lower than that seen in the general population.
     </p>
     <p>
-      All of the raw data from these projects have been reprocessed through equivalent pipelines, and
-      jointly variant-called to increase consistency across projects. The processing pipelines were
-      written in the{' '}
+      All of the raw data from these projects have been reprocessed through equivalent pipelines,
+      and jointly variant-called to increase consistency across projects. The processing pipelines
+      were written in the{' '}
       <ExternalLink href="https://software.broadinstitute.org/wdl/">
         WDL workflow definition language
       </ExternalLink>{' '}

@@ -7,7 +7,7 @@ import { createLogger } from 'redux-logger'
 
 import { createHelpReducer } from '@broad/help'
 
-// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
+// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved,import/extensions
 import helpTopics from '@broad/help/src/loader!./helpConfig'
 
 import App from './routes'

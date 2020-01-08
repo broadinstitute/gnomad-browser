@@ -174,9 +174,7 @@ const GeneType = extendObjectType(BaseGeneType, {
       resolve: (obj, args, ctx) => {
         if (!obj.canonical_transcript_id) {
           throw new UserVisibleError(
-            `Unable to query ExAC regional missense constraint for gene "${
-              obj.gene_id
-            }", no canonical transcript`
+            `Unable to query ExAC regional missense constraint for gene "${obj.gene_id}", no canonical transcript`
           )
         }
         assertDatasetAndReferenceGenomeMatch('exac', obj.reference_genome)

@@ -135,7 +135,7 @@ class TranscriptPage extends Component {
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
-      strand: PropTypes.string.isRequired,
+      strand: PropTypes.oneOf(['+', '-']).isRequired,
       exons: PropTypes.arrayOf(
         PropTypes.shape({
           feature_type: PropTypes.string.isRequired,
@@ -145,8 +145,10 @@ class TranscriptPage extends Component {
       ).isRequired,
       gene: PropTypes.shape({
         gene_id: PropTypes.string.isRequired,
+        reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
         symbol: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        strand: PropTypes.oneOf(['+', '-']).isRequired,
         exons: PropTypes.arrayOf(
           PropTypes.shape({
             feature_type: PropTypes.string.isRequired,
@@ -154,6 +156,21 @@ class TranscriptPage extends Component {
             stop: PropTypes.number.isRequired,
           })
         ).isRequired,
+        transcripts: PropTypes.arrayOf(
+          PropTypes.shape({
+            transcript_id: PropTypes.string.isRequired,
+            exons: PropTypes.arrayOf(
+              PropTypes.shape({
+                feature_type: PropTypes.string.isRequired,
+                start: PropTypes.number.isRequired,
+                stop: PropTypes.number.isRequired,
+              })
+            ).isRequired,
+          })
+        ).isRequired,
+        canonical_transcript_id: PropTypes.string,
+        pext: PropTypes.any,
+        exac_regional_missense_constraint_regions: PropTypes.any,
       }).isRequired,
     }).isRequired,
     width: PropTypes.number.isRequired,

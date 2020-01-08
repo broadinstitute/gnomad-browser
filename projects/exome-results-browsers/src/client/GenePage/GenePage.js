@@ -92,6 +92,10 @@ query Gene($geneId: String, $geneSymbol: String) {
 `
 
 class GenePage extends Component {
+  static propTypes = {
+    geneIdOrSymbol: PropTypes.string.isRequired,
+  }
+
   state = {
     selectedVariantResultsGroup: browserConfig.variants.groups.options[0],
   }
@@ -206,10 +210,6 @@ class GenePage extends Component {
       </Query>
     )
   }
-}
-
-GenePage.propTypes = {
-  geneIdOrSymbol: PropTypes.string.isRequired,
 }
 
 export default GenePage

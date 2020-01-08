@@ -20,6 +20,8 @@ const NoVariants = styled.div`
 
 class StructuralVariantsTable extends PureComponent {
   static propTypes = {
+    forwardedRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })])
+      .isRequired,
     numRowsRendered: PropTypes.number.isRequired,
     onHoverVariant: PropTypes.func.isRequired,
     rowHeight: PropTypes.number.isRequired,

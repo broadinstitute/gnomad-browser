@@ -27,7 +27,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
     if (allResults.length === response.hits.total) {
       // eslint-disable-next-line no-await-in-loop
       await esClient.clearScroll({
-        scrollId: response._scroll_id,
+        scrollId: response._scroll_id, // eslint-disable-line no-underscore-dangle
       })
       break
     }
@@ -36,7 +36,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
       // eslint-disable-next-line no-await-in-loop
       await esClient.scroll({
         scroll,
-        scrollId: response._scroll_id,
+        scrollId: response._scroll_id, // eslint-disable-line no-underscore-dangle
       })
     )
   }

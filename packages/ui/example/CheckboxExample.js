@@ -4,17 +4,18 @@ import { Checkbox } from '../src'
 
 export default class CheckboxExample extends Component {
   state = {
-    checked: false,
+    isChecked: false,
   }
 
   render() {
+    const { isChecked } = this.state
     return (
       <Checkbox
-        checked={this.state.checked}
+        checked={isChecked}
         id="example-checkbox"
         label="Some option"
-        onChange={checked => {
-          this.setState({ checked })
+        onChange={value => {
+          this.setState({ isChecked: value })
         }}
       />
     )

@@ -47,8 +47,12 @@ const Row = ({
 Row.propTypes = {
   data: PropTypes.shape({
     highlightedVariant: PropTypes.string,
+    isPositionDefined: PropTypes.func.isRequired,
     onHover: PropTypes.func.isRequired,
+    scalePosition: PropTypes.func.isRequired,
+    trackColor: PropTypes.func.isRequired,
     variants: PropTypes.arrayOf(StructuralVariantPropType).isRequired,
+    width: PropTypes.number.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
@@ -108,7 +112,6 @@ StructuralVariantTracks.propTypes = {
 }
 
 StructuralVariantTracks.defaultProps = {
-  forwardedRef: undefined,
   highlightedVariant: null,
 }
 

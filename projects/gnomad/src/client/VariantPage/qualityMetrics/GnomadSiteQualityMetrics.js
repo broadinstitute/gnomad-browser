@@ -39,7 +39,43 @@ const getSiteQualityMetricDistributions = datasetId => {
   throw new Error(`No quality metric distribution available for dataset "${datasetId}"`)
 }
 
+const variantSiteQualityMetricsPropType = PropTypes.shape({
+  AB_MEDIAN: PropTypes.number,
+  AS_RF: PropTypes.number,
+  BaseQRankSum: PropTypes.number,
+  ClippingRankSum: PropTypes.number,
+  DP: PropTypes.number,
+  DP_MEDIAN: PropTypes.number,
+  DREF_MEDIAN: PropTypes.number,
+  FS: PropTypes.number,
+  GQ_MEDIAN: PropTypes.number,
+  InbreedingCoeff: PropTypes.number,
+  MQ: PropTypes.number,
+  MQRankSum: PropTypes.number,
+  QD: PropTypes.number,
+  ReadPosRankSum: PropTypes.number,
+  RF: PropTypes.number,
+  SiteQuality: PropTypes.number,
+  VQSLOD: PropTypes.number,
+})
+
 export class GnomadSiteQualityMetrics extends Component {
+  static propTypes = {
+    datasetId: PropTypes.string.isRequired,
+    variant: PropTypes.shape({
+      exome: PropTypes.shape({
+        qualityMetrics: PropTypes.shape({
+          siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
+        }).isRequired,
+      }),
+      genome: PropTypes.shape({
+        qualityMetrics: PropTypes.shape({
+          siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
+        }).isRequired,
+      }),
+    }).isRequired,
+  }
+
   constructor(props) {
     super(props)
 
@@ -174,40 +210,4 @@ export class GnomadSiteQualityMetrics extends Component {
       </div>
     )
   }
-}
-
-const variantSiteQualityMetricsPropType = PropTypes.shape({
-  AB_MEDIAN: PropTypes.number,
-  AS_RF: PropTypes.number,
-  BaseQRankSum: PropTypes.number,
-  ClippingRankSum: PropTypes.number,
-  DP: PropTypes.number,
-  DP_MEDIAN: PropTypes.number,
-  DREF_MEDIAN: PropTypes.number,
-  FS: PropTypes.number,
-  GQ_MEDIAN: PropTypes.number,
-  InbreedingCoeff: PropTypes.number,
-  MQ: PropTypes.number,
-  MQRankSum: PropTypes.number,
-  QD: PropTypes.number,
-  ReadPosRankSum: PropTypes.number,
-  RF: PropTypes.number,
-  SiteQuality: PropTypes.number,
-  VQSLOD: PropTypes.number,
-})
-
-GnomadSiteQualityMetrics.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  variant: PropTypes.shape({
-    exome: PropTypes.shape({
-      qualityMetrics: PropTypes.shape({
-        siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
-      }).isRequired,
-    }),
-    genome: PropTypes.shape({
-      qualityMetrics: PropTypes.shape({
-        siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
-      }).isRequired,
-    }),
-  }).isRequired,
 }

@@ -25,8 +25,10 @@ class VariantsInGene extends Component {
     clinVarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
-      chrom: PropTypes.string.isRequired,
       gene_id: PropTypes.string.isRequired,
+      chrom: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
     }).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,

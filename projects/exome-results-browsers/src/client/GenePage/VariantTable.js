@@ -35,7 +35,9 @@ class VariantTable extends Component {
     rowIndexLastClickedInNavigator: null,
   }
 
+  /* eslint-disable react/sort-comp */
   grid = React.createRef()
+  /* eslint-enable react/sort-comp */
 
   componentDidUpdate(prevProps) {
     const { rowIndexLastClickedInNavigator } = this.props

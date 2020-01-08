@@ -15,7 +15,33 @@ const NoVariants = styled.div`
 `
 
 class VariantTable extends PureComponent {
-  grid = React.createRef()
+  static propTypes = {
+    columns: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
+    highlightText: PropTypes.string,
+    highlightedVariantId: PropTypes.string,
+    onVisibleRowsChange: PropTypes.func,
+    onHoverVariant: PropTypes.func,
+    onRequestSort: PropTypes.func,
+    rowIndexLastClickedInNavigator: PropTypes.number,
+    sortKey: PropTypes.string.isRequired,
+    sortOrder: PropTypes.oneOf(['ascending', 'descending']).isRequired,
+    variants: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
+  }
+
+  static defaultProps = {
+    highlightText: '',
+    highlightedVariantId: null,
+    onVisibleRowsChange: () => {},
+    onHoverVariant: () => {},
+    onRequestSort: () => {},
+    rowIndexLastClickedInNavigator: null,
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.grid = React.createRef()
+  }
 
   componentDidUpdate(prevProps) {
     const { rowIndexLastClickedInNavigator } = this.props
@@ -66,28 +92,6 @@ class VariantTable extends PureComponent {
       />
     )
   }
-}
-
-VariantTable.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
-  highlightText: PropTypes.string,
-  highlightedVariantId: PropTypes.string,
-  onVisibleRowsChange: PropTypes.func,
-  onHoverVariant: PropTypes.func,
-  onRequestSort: PropTypes.func,
-  rowIndexLastClickedInNavigator: PropTypes.number,
-  sortKey: PropTypes.string.isRequired,
-  sortOrder: PropTypes.oneOf(['ascending', 'descending']).isRequired,
-  variants: PropTypes.arrayOf(PropTypes.object).isRequired, // eslint-disable-line react/forbid-prop-types
-}
-
-VariantTable.defaultProps = {
-  highlightText: '',
-  highlightedVariantId: null,
-  onVisibleRowsChange: () => {},
-  onHoverVariant: () => {},
-  onRequestSort: () => {},
-  rowIndexLastClickedInNavigator: null,
 }
 
 export default VariantTable

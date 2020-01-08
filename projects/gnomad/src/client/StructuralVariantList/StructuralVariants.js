@@ -47,12 +47,12 @@ class StructuralVariants extends Component {
     width: PropTypes.number.isRequired,
   }
 
-  tracks = React.createRef()
-
-  table = React.createRef()
-
   constructor(props) {
     super(props)
+
+    this.tracks = React.createRef()
+
+    this.table = React.createRef()
 
     const defaultFilter = {
       includeConsequenceCategories: {

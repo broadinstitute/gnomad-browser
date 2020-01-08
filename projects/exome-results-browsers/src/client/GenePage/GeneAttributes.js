@@ -38,9 +38,7 @@ const GeneAttributes = ({ gene }) => (
         <dt>Ensembl transcript ID</dt>
         <dd>
           <ExternalLink
-            href={`https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${
-              gene.canonical_transcript.transcript_id
-            }`}
+            href={`https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${gene.canonical_transcript.transcript_id}`}
           >
             {gene.canonical_transcript.transcript_id}
           </ExternalLink>
@@ -51,9 +49,7 @@ const GeneAttributes = ({ gene }) => (
       <dt>UCSC Browser</dt>
       <dd>
         <ExternalLink
-          href={`https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${gene.chrom}%3A${
-            gene.start
-          }-${gene.stop}`}
+          href={`https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${gene.chrom}%3A${gene.start}-${gene.stop}`}
         >{`${gene.chrom}:${gene.start}-${gene.stop}`}</ExternalLink>
       </dd>
     </ListItem>
@@ -90,7 +86,7 @@ GeneAttributes.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-    omim_accession: PropTypes.string,
+    omim_id: PropTypes.string,
   }).isRequired,
 }
 

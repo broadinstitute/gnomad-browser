@@ -6,7 +6,40 @@ import { SegmentedControl, Select } from '@broad/ui'
 import Histogram from '../../Histogram'
 import ControlSection from '../ControlSection'
 
+const histogramPropType = PropTypes.shape({
+  bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
+  bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
+  n_smaller: PropTypes.number,
+  n_larger: PropTypes.number,
+})
+
+const genotypeQualityMetricPropType = PropTypes.shape({
+  alleleBalance: PropTypes.shape({
+    alt: histogramPropType,
+  }),
+  genotypeDepth: PropTypes.shape({
+    all: histogramPropType,
+    alt: histogramPropType,
+  }).isRequired,
+  genotypeQuality: PropTypes.shape({
+    all: histogramPropType,
+    alt: histogramPropType,
+  }).isRequired,
+})
+
 export class GnomadGenotypeQualityMetrics extends Component {
+  static propTypes = {
+    datasetId: PropTypes.string.isRequired,
+    variant: PropTypes.shape({
+      exome: PropTypes.shape({
+        qualityMetrics: genotypeQualityMetricPropType.isRequired,
+      }),
+      genome: PropTypes.shape({
+        qualityMetrics: genotypeQualityMetricPropType.isRequired,
+      }),
+    }).isRequired,
+  }
+
   constructor(props) {
     super(props)
 
@@ -110,37 +143,4 @@ export class GnomadGenotypeQualityMetrics extends Component {
       </div>
     )
   }
-}
-
-const histogramPropType = PropTypes.shape({
-  bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
-  bin_freq: PropTypes.arrayOf(PropTypes.number).isRequired,
-  n_smaller: PropTypes.number,
-  n_larger: PropTypes.number,
-})
-
-const genotypeQualityMetricPropType = PropTypes.shape({
-  alleleBalance: PropTypes.shape({
-    alt: histogramPropType,
-  }),
-  genotypeDepth: PropTypes.shape({
-    all: histogramPropType,
-    alt: histogramPropType,
-  }).isRequired,
-  genotypeQuality: PropTypes.shape({
-    all: histogramPropType,
-    alt: histogramPropType,
-  }).isRequired,
-})
-
-GnomadGenotypeQualityMetrics.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  variant: PropTypes.shape({
-    exome: PropTypes.shape({
-      qualityMetrics: genotypeQualityMetricPropType.isRequired,
-    }),
-    genome: PropTypes.shape({
-      qualityMetrics: genotypeQualityMetricPropType.isRequired,
-    }),
-  }).isRequired,
 }

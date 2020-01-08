@@ -36,5 +36,6 @@ app.get('*', (request, response) => {
 })
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on ${port}`)
 })

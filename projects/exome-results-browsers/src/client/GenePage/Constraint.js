@@ -21,7 +21,6 @@ export const ExacConstraintTable = ({ constraint }) => (
         <th scope="col">Exp. SNVs</th>
         <th scope="col">Obs. SNVs</th>
         <th scope="col">Constraint metrics</th>
-        <th />
       </tr>
     </thead>
     <tbody>
@@ -72,7 +71,6 @@ export const GnomadConstraintTable = ({ constraint }) => (
         <th colSpan={2} scope="col">
           Constraint metrics
         </th>
-        <th />
       </tr>
     </thead>
     <tbody>

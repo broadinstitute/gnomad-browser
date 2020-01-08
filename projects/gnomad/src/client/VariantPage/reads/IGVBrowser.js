@@ -57,6 +57,16 @@ const IGVWrapper = styled.div`
  * https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
  */
 export class IGVBrowser extends Component {
+  static propTypes = {
+    // Documentation for IGV config at https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0
+    config: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    onCreateBrowser: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onCreateBrowser: () => {},
+  }
+
   componentDidMount() {
     const { config, onCreateBrowser } = this.props
 
@@ -109,14 +119,4 @@ export class IGVBrowser extends Component {
   render() {
     return <IGVWrapper ref={this.elementRef} />
   }
-}
-
-IGVBrowser.propTypes = {
-  // Documentation for IGV config at https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0
-  config: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  onCreateBrowser: PropTypes.func,
-}
-
-IGVBrowser.defaultProps = {
-  onCreateBrowser: () => {},
 }

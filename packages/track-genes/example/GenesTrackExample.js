@@ -18,7 +18,7 @@ const regions = [
 
 const GenesTrackExample = () => (
   <RegionViewer padding={0} regions={regions} width={1000}>
-    <GenesTrack genes={regionData.genes} onGeneClick={console.log} />
+    <GenesTrack genes={regionData.genes} />
   </RegionViewer>
 )
 

@@ -2,6 +2,7 @@
 // It is accurate enough for the purposes of determining whether or not to
 // return individual variants for a region.
 // https://www.elastic.co/guide/en/elasticsearch/guide/current/cardinality.html
+// eslint-disable-next-line no-unused-vars
 const countGnomadVariantsInRegion = async (ctx, { chrom, start, stop }, subset) => {
   const response = await ctx.database.elastic.search({
     index: 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1',

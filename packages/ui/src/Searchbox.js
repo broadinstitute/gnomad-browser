@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -79,7 +80,9 @@ export class Searchbox extends Component {
     options: [],
   }
 
+  /* eslint-disable react/sort-comp */
   selectOnSearchResponse = false
+  /* eslint-enable react/sort-comp */
 
   fetchSearchResults = debounce(query => {
     const { fetchSearchResults, onSelect } = this.props

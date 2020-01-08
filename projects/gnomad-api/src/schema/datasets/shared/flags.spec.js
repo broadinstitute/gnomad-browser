@@ -1,12 +1,13 @@
 import { getBaseFlags, getFlagsForContext } from './flags'
 
 describe('lcr', () => {
-  it.each([[{ flags: { lcr: true } }, true], [{ flags: { lcr: false } }, false], [{}, false]])(
-    'should be included only if variant.flags.lcr is true',
-    (variant, expected) => {
-      expect(getBaseFlags(variant).includes('lcr')).toBe(expected)
-    }
-  )
+  it.each([
+    [{ flags: { lcr: true } }, true],
+    [{ flags: { lcr: false } }, false],
+    [{}, false],
+  ])('should be included only if variant.flags.lcr is true', (variant, expected) => {
+    expect(getBaseFlags(variant).includes('lcr')).toBe(expected)
+  })
 })
 
 describe('segdup', () => {
@@ -123,7 +124,13 @@ describe('LOFTEE', () => {
         ],
       }
 
-      it.each([['T1', true], ['T2', false], ['T3', false], ['T4', false], ['T5', false]])(
+      it.each([
+        ['T1', true],
+        ['T2', false],
+        ['T3', false],
+        ['T4', false],
+        ['T5', false],
+      ])(
         'should be included only if the consequence in the specified transcript is LOFTEE annotated LC',
         (transcriptId, expected) => {
           expect(
@@ -213,7 +220,10 @@ describe('LOFTEE', () => {
         ],
         [
           {
-            sortedTranscriptConsequences: [{ lof: '', lof_flags: '' }, { lof: '', lof_flags: '' }],
+            sortedTranscriptConsequences: [
+              { lof: '', lof_flags: '' },
+              { lof: '', lof_flags: '' },
+            ],
           },
           false,
         ],
@@ -238,7 +248,12 @@ describe('LOFTEE', () => {
         ],
       }
 
-      it.each([['T1', true], ['T2', true], ['T3', false], ['T4', false]])(
+      it.each([
+        ['T1', true],
+        ['T2', true],
+        ['T3', false],
+        ['T4', false],
+      ])(
         'should be included only if the consequence in the specified transcript is LOFTEE annotated and LOFTEE flagged',
         (transcriptId, expected) => {
           expect(
@@ -268,7 +283,13 @@ describe('LOFTEE', () => {
         ],
       }
 
-      it.each([['G1', true], ['G2', false], ['G3', false], ['G4', false], ['G5', false]])(
+      it.each([
+        ['G1', true],
+        ['G2', false],
+        ['G3', false],
+        ['G4', false],
+        ['G5', false],
+      ])(
         'it should be included only if the most severe consequence in the specified gene is pLoF according to VEP but not LOFTEE annotated',
         (geneId, expected) => {
           expect(
@@ -348,7 +369,12 @@ describe('LOFTEE', () => {
         ],
       }
 
-      it.each([['T1', true], ['T2', false], ['T3', false], ['T4', false]])(
+      it.each([
+        ['T1', true],
+        ['T2', false],
+        ['T3', false],
+        ['T4', false],
+      ])(
         'it should be included only if the consequence in the specified transcript is pLoF according to VEP but not LOFTEE annotated',
         (transcriptId, expected) => {
           expect(
@@ -447,7 +473,13 @@ describe('LOFTEE', () => {
         ],
       }
 
-      it.each([['T1', true], ['T2', false], ['T3', false], ['T4', false], ['T5', false]])(
+      it.each([
+        ['T1', true],
+        ['T2', false],
+        ['T3', false],
+        ['T4', false],
+        ['T5', false],
+      ])(
         'it should be included only if the consequence in the specified transcript is LOFTEE annotated OS',
         (transcriptId, expected) => {
           expect(

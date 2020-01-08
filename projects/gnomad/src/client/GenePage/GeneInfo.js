@@ -98,6 +98,7 @@ const GeneReferences = ({ gene }) => {
 GeneReferences.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
+    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     symbol: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
