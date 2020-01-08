@@ -101,7 +101,7 @@ app.get('/health/ready', (request, response) => {
 if (JSON.parse(process.env.ENABLE_HTTPS_REDIRECT || 'false')) {
   app.use((request, response, next) => {
     if (request.protocol === 'http') {
-      response.redirect(`https://${request.get('host')}${request.url}`)
+      response.redirect(307, `https://${request.get('host')}${request.url}`)
     } else {
       next()
     }
