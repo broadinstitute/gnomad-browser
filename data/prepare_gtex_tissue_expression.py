@@ -44,12 +44,23 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("transcript_tpms")
-    parser.add_argument("sample_annotations")
-    parser.add_argument("--output", required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--gtex-version", type=int, choices=[7])
+    group.add_argument("--gtex-files", nargs=2, metavar=("transcript_tpms", "sample_annotations"))
+    parser.add_argument("output")
     args = parser.parse_args()
 
-    ds = prepare_gtex_expression_data(args.transcript_tpms, args.sample_annotations)
+    if args.gtex_version:
+        transcript_tpms, sample_annotations = {
+            7: (
+                "gs://gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+                "gs://gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
+            ),
+        }[args.gtex_version]
+    else:
+        transcript_tpms, sample_annotations = args.gtex_files
+
+    ds = prepare_gtex_expression_data(transcript_tpms, sample_annotations)
 
     ds.write(args.output)
 
