@@ -27,7 +27,10 @@ const StructuralVariantGenotypeQualityMetrics = ({ variant }) => {
         <SegmentedControl
           id="genotype-quality-metrics-sample"
           onChange={setSelectedSamples}
-          options={[{ label: 'All', value: 'all' }, { label: 'Variant Carriers', value: 'alt' }]}
+          options={[
+            { label: 'All', value: 'all' },
+            { label: 'Variant Carriers', value: 'alt' },
+          ]}
           value={selectedSamples}
         />
       </ControlSection>

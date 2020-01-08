@@ -12,7 +12,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
   const size = searchParams.size || 1000
   const scroll = searchParams.scroll || '30s'
 
-  responseQueue.push(await esClient.search(Object.assign({}, searchParams, { scroll, size })))
+  responseQueue.push(await esClient.search({ ...searchParams, scroll, size }))
 
   while (responseQueue.length) {
     const response = responseQueue.shift()

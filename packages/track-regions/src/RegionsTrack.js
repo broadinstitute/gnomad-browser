@@ -24,9 +24,15 @@ export const RegionsTrack = ({
 )
 
 RegionsTrack.propTypes = {
+  renderLeftPanel: PropTypes.func,
+  renderRightPanel: PropTypes.func,
+  renderTopPanel: PropTypes.func,
   title: PropTypes.string,
 }
 
 RegionsTrack.defaultProps = {
+  renderLeftPanel: undefined,
+  renderRightPanel: undefined,
+  renderTopPanel: undefined,
   title: '',
 }

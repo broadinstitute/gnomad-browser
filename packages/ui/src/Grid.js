@@ -151,6 +151,14 @@ const DataRow = ({
 
 DataRow.propTypes = {
   data: PropTypes.shape({
+    cellData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    columns: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        isRowHeader: PropTypes.bool,
+        render: PropTypes.func.isRequired,
+      })
+    ).isRequired,
     columnWidths: PropTypes.arrayOf(PropTypes.number.isRequired),
     data: PropTypes.arrayOf(PropTypes.any).isRequired,
     focusedCell: PropTypes.shape({
@@ -158,6 +166,7 @@ DataRow.propTypes = {
       rowIndex: PropTypes.number.isRequired,
     }).isRequired,
     onMouseEnter: PropTypes.func.isRequired,
+    shouldHighlightRow: PropTypes.func.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   style: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -204,6 +213,7 @@ export class Grid extends Component {
     sortOrder: 'ascending',
   }
 
+  /* eslint-disable react/sort-comp */
   focusedCell = { columnIndex: 0, rowIndex: 0 }
 
   focusedElement = null
@@ -211,6 +221,7 @@ export class Grid extends Component {
   gridElement = React.createRef()
 
   list = React.createRef()
+  /* eslint-enable react/sort-comp */
 
   // https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
   onFocus = e => {

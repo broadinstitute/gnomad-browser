@@ -5,8 +5,8 @@ import thunk from 'redux-thunk'
 
 import { HelpButton, HelpModal, createHelpReducer } from '../src'
 
-// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
-import helpTopics from '../loader!./helpConfig'
+// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved,import/extensions
+import helpTopics from '../src/loader!./helpConfig'
 
 import toc from '../../../projects/gnomad/src/client/help/toc.json'
 

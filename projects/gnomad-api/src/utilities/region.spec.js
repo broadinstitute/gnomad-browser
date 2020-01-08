@@ -33,7 +33,10 @@ describe('mergeOverlappingRegions', () => {
         { xstart: 17, xstop: 22 },
         { xstart: 22, xstop: 24 },
       ])
-    ).toEqual([{ xstart: 5, xstop: 14 }, { xstart: 17, xstop: 24 }])
+    ).toEqual([
+      { xstart: 5, xstop: 14 },
+      { xstart: 17, xstop: 24 },
+    ])
   })
 
   it('should handle empty list', () => {
@@ -44,7 +47,11 @@ describe('mergeOverlappingRegions', () => {
 describe('totalRegionSize', () => {
   it('should return total size of all regions', () => {
     expect(
-      totalRegionSize([{ start: 5, stop: 10 }, { start: 12, stop: 13 }, { start: 22, stop: 30 }])
+      totalRegionSize([
+        { start: 5, stop: 10 },
+        { start: 12, stop: 13 },
+        { start: 22, stop: 30 },
+      ])
     ).toBe(14)
   })
 })

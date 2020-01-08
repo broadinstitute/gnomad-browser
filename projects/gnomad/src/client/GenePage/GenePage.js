@@ -135,6 +135,10 @@ class GenePage extends Component {
       reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       symbol: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      chrom: PropTypes.string.isRequired,
+      strand: PropTypes.oneOf(['+', '-']).isRequired,
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
       exons: PropTypes.arrayOf(
         PropTypes.shape({
           feature_type: PropTypes.string.isRequired,
@@ -142,6 +146,21 @@ class GenePage extends Component {
           stop: PropTypes.number.isRequired,
         })
       ).isRequired,
+      transcripts: PropTypes.arrayOf(
+        PropTypes.shape({
+          transcript_id: PropTypes.string.isRequired,
+          exons: PropTypes.arrayOf(
+            PropTypes.shape({
+              feature_type: PropTypes.string.isRequired,
+              start: PropTypes.number.isRequired,
+              stop: PropTypes.number.isRequired,
+            })
+          ).isRequired,
+        })
+      ).isRequired,
+      canonical_transcript_id: PropTypes.string,
+      pext: PropTypes.any,
+      exac_regional_missense_constraint_regions: PropTypes.any,
     }).isRequired,
     geneId: PropTypes.string.isRequired,
     width: PropTypes.number.isRequired,

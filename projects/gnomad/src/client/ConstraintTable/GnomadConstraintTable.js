@@ -139,7 +139,7 @@ const GnomadConstraintTable = ({ constraint }) => {
             </TooltipAnchor>
           </th>
           <th scope="col">Constraint metrics</th>
-          <th />
+          <td />
         </tr>
       </thead>
       <tbody>

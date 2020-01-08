@@ -3,6 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 if (process.env.BROWSER === undefined) {
+  // eslint-disable-next-line no-console
   console.error('BROWSER environment variable must be set')
   process.exit(1)
 }

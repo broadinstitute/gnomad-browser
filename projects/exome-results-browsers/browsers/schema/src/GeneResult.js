@@ -57,13 +57,14 @@ const GeneResultsTable = ({ geneResult }) => (
 
 GeneResultsTable.propTypes = {
   geneResult: PropTypes.shape({
-    xcase_lof: PropTypes.number,
-    xctrl_lof: PropTypes.number,
-    pval_lof: PropTypes.number,
-    xcase_mis: PropTypes.number,
-    xctrl_mis: PropTypes.number,
-    pval_mis: PropTypes.number,
-    pval: PropTypes.number,
+    x_case_lof: PropTypes.number,
+    x_ctrl_lof: PropTypes.number,
+    dn_lof: PropTypes.number,
+    x_case_mis2: PropTypes.number,
+    x_ctrl_mis2: PropTypes.number,
+    x_case_mis3: PropTypes.number,
+    x_ctrl_mis3: PropTypes.number,
+    dn_mis: PropTypes.number,
     pval_meta: PropTypes.number,
   }).isRequired,
 }

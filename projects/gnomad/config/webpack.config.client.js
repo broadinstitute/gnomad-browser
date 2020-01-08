@@ -7,6 +7,7 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const gaTrackingId = process.env.GA_TRACKING_ID
 if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
+  // eslint-disable-next-line no-console
   console.log('\nWarning: No GA tracking ID for production build\n')
 }
 

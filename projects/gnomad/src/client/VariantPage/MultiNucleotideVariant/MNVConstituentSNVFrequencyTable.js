@@ -87,7 +87,7 @@ const MNVConstituentSNVFrequencyTable = ({ snvs }) => {
       </colgroup>
       <thead>
         <tr>
-          <th />
+          <td />
           {snvs.map(snv => (
             <th key={snv.variant_id} colSpan="3" scope="colgroup">
               <Link to={`/variant/${snv.variant_id}`}>{snv.variant_id}</Link>

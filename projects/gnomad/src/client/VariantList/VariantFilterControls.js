@@ -197,6 +197,8 @@ VariantFilterControls.propTypes = {
       synonymous: PropTypes.bool.isRequired,
       other: PropTypes.bool.isRequired,
     }).isRequired,
+    includeExomes: PropTypes.bool.isRequired,
+    includeGenomes: PropTypes.bool.isRequired,
     includeFilteredVariants: PropTypes.bool.isRequired,
     includeSNVs: PropTypes.bool.isRequired,
     includeIndels: PropTypes.bool.isRequired,

@@ -82,6 +82,7 @@ ExacVariantOccurrenceTable.propTypes = {
   variant: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     exome: PropTypes.shape({
+      filters: PropTypes.arrayOf(PropTypes.string).isRequired,
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
       ac_hom: PropTypes.number.isRequired,

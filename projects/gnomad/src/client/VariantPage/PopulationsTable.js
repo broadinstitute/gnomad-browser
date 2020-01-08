@@ -140,13 +140,15 @@ export class PopulationsTable extends Component {
             // Sort male/female subpopulations to bottom of list
             if (
               (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
-              (!b.id.includes('MALE') && !b.id.includes('FEMALE'))
+              !b.id.includes('MALE') &&
+              !b.id.includes('FEMALE')
             ) {
               return 1
             }
             if (
               (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
-              (!a.id.includes('MALE') && !a.id.includes('FEMALE'))
+              !a.id.includes('MALE') &&
+              !a.id.includes('FEMALE')
             ) {
               return -1
             }
@@ -162,13 +164,15 @@ export class PopulationsTable extends Component {
         // Sort male/female populations to bottom of list
         if (
           (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
-          (!b.id.includes('MALE') && !b.id.includes('FEMALE'))
+          !b.id.includes('MALE') &&
+          !b.id.includes('FEMALE')
         ) {
           return 1
         }
         if (
           (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
-          (!a.id.includes('MALE') && !a.id.includes('FEMALE'))
+          !a.id.includes('MALE') &&
+          !a.id.includes('FEMALE')
         ) {
           return -1
         }
@@ -218,11 +222,11 @@ export class PopulationsTable extends Component {
               key={pop.name}
               className={
                 i > 0 &&
-                ((pop.id.includes('MALE') || pop.id.includes('FEMALE')) &&
-                  !(
-                    renderedPopulations[i - 1].id.includes('MALE') ||
-                    renderedPopulations[i - 1].id.includes('MALE')
-                  ))
+                (pop.id.includes('MALE') || pop.id.includes('FEMALE')) &&
+                !(
+                  renderedPopulations[i - 1].id.includes('MALE') ||
+                  renderedPopulations[i - 1].id.includes('MALE')
+                )
                   ? 'border'
                   : undefined
               }

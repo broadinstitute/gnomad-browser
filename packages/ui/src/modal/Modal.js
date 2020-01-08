@@ -42,7 +42,9 @@ export class Modal extends Component {
     size: 'medium',
   }
 
+  /* eslint-disable react/sort-comp */
   fallbackId = `modal-${getId()}`
+  /* eslint-enable react/sort-comp */
 
   getId() {
     const { id } = this.props

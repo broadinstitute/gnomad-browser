@@ -139,12 +139,7 @@ describe('addPadding', () => {
   const filteredRegions = REGIONS.filter(exon => exon.feature_type === 'CDS')
   const add50Bases = addPadding(50)
   it('adds padding regions', () => {
-    expect(
-      R.pipe(
-        add50Bases,
-        R.pluck('feature_type')
-      )(filteredRegions)
-    ).toEqual([
+    expect(R.pipe(add50Bases, R.pluck('feature_type'))(filteredRegions)).toEqual([
       'start_pad',
       'CDS',
       'end_pad',
@@ -166,9 +161,6 @@ describe('addPadding', () => {
     ])
   })
   it('offset added', () => {
-    R.pipe(
-      add50Bases,
-      calculateOffset
-    )(filteredRegions)
+    R.pipe(add50Bases, calculateOffset)(filteredRegions)
   })
 })

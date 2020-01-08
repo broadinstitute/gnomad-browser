@@ -37,14 +37,13 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
 
 ConstraintTable.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  /* eslint-disable react/forbid-prop-types */
-  geneOrTranscript: PropTypes.oneOfType([
-    PropTypes.shape({
-      gnomad_constraint: PropTypes.object,
-      exac_constraint: PropTypes.object,
-    }),
-  ]).isRequired,
-  /* eslint-enable react/forbid-prop-types */
+  geneOrTranscript: PropTypes.shape({
+    transcript_id: PropTypes.string,
+    /* eslint-disable react/forbid-prop-types */
+    gnomad_constraint: PropTypes.object,
+    exac_constraint: PropTypes.object,
+    /* eslint-enable react/forbid-prop-types */
+  }).isRequired,
 }
 
 export default ConstraintTable

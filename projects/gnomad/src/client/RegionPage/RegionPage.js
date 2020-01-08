@@ -120,6 +120,7 @@ RegionPage.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    genes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
   regionId: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,

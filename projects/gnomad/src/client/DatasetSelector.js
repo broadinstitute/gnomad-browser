@@ -155,7 +155,11 @@ class NavigationMenu extends Component {
     expandedItem: null,
   }
 
-  container = React.createRef()
+  constructor(props) {
+    super(props)
+
+    this.container = React.createRef()
+  }
 
   onBlur = () => {
     setTimeout(() => {
@@ -404,10 +408,10 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad3 = true,
   } = datasetOptions
 
-  const datasetLink = datasetId =>
-    Object.assign({}, history.location, {
-      search: queryString.stringify({ dataset: datasetId }),
-    })
+  const datasetLink = datasetId => ({
+    ...history.location,
+    search: queryString.stringify({ dataset: datasetId }),
+  })
 
   const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
   const topLevelShortVariantDataset = selectedDataset.startsWith('gnomad_sv')

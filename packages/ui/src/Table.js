@@ -11,6 +11,7 @@ export const BaseTable = styled.table`
   }
 
   thead {
+    td,
     th {
       border-bottom: 1px solid #000;
       background-position: center right;
