@@ -14,10 +14,7 @@
 
    ```shell
    hailctl dataproc submit data-prep \
-      ./data/prepare_gtex_tissue_expression.py \
-         gs://gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz \
-         gs://gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt \
-         --output $GTEX_V7_HT_URL
+      ./data/prepare_gtex_tissue_expression.py --gtex-version 7 $GTEX_V7_HT_URL
    ```
 
 3. Load data into Elasticsearch.
