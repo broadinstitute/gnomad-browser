@@ -299,9 +299,8 @@ export default () => (
           Genes that were outliers in certain assessments will not have constraint metrics. Please
           note that these assessments were applied to the canonical transcripts of the genes. If a
           gene was not annotated as a protein-coding gene in Gencode v19, we did not calculate
-          constraint. In addition, if a canonical transcript was missing a &quot;Met&quot; at the
-          start, it was considered malformed and not evaluated for constraint metrics. The following
-          list describes the reason names given in the constraint_flag column of the{' '}
+          constraint. The following list describes the reason names given in the constraint_flag
+          column of the{' '}
           <Link to={{ pathname: '/downloads', hash: '#v2-constraint' }}>constraint files</Link>:
         </p>
         <List>
@@ -316,6 +315,30 @@ export default () => (
             synonymous z score &gt; 5
           </ListItem>
         </List>
+      </Answer>
+
+      <Question id="what-is-a-loeuf-score">What is a LOEUF score?</Question>
+      <Answer>
+        <p>
+          LOEUF stands for the &quot;loss-of-function observed/expected upper bound fraction.&quot;
+          It is a conservative estimate of the observed/expected ratio, based on the upper bound of
+          a Poisson-derived confidence interval around the ratio. Low LOEUF scores indicate strong
+          selection against predicted loss-of-function (pLoF) variation in a given gene, while high
+          LOEUF scores suggest a relatively higher tolerance to inactivation. Its advantage over pLI
+          is that it can be used as a continuous value rather than a dichotomous scale (e.g. pLI
+          &gt; 0.9) - if such a single cutoff is still desired, pLI is a perfectly fine metric to
+          use. At large sample sizes, the observed/expected ratio will be a more appropriate measure
+          for selection, but at the moment, LOEUF provides a good compromise of point estimate and
+          significance measure.
+        </p>
+      </Answer>
+
+      <Question id="how-do-you-pronounce-loeuf">How do you pronounce LOEUF?</Question>
+      <Answer>
+        <p>
+          LOEUF is pronounced like its French-inspired name &quot;l&apos;œuf&quot;. Another accepted
+          pronunciation is &quot;luff&quot;.
+        </p>
       </Answer>
     </dl>
 
