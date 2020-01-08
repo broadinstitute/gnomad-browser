@@ -20,7 +20,7 @@ during a bulk request.
 ## Reference data
 
 * [gene models](./docs/gene_models.md)
-* GTEx tissue expression
+* [GTEx tissue expression](./docs/gtex_tissue_expression.md)
 * ClinVar variants
 
 ## gnomAD 3.0
