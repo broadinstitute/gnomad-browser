@@ -88,6 +88,9 @@ export default () => (
           <Link href="#v2-multi-nucleotide-variants">Multi-nucleotide variants (MNVs)</Link>
         </ListItem>
         <ListItem>
+          <Link href="#v2-pext">Proportion expressed across transcripts (pext)</Link>
+        </ListItem>
+        <ListItem>
           <Link href="#v2-structural-variants">Structural variants</Link>
         </ListItem>
         <ListItem>
@@ -299,6 +302,28 @@ export default () => (
             </ListItem>
           </React.Fragment>
         ))}
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v2-pext">Proportion expressed across transcripts (pext)</SectionTitle>
+      <FileList>
+        <ListItem>
+          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/papers/2019-tx-annotation/pre_computed/">
+            All possible SNVs annotated Hail table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/papers/2019-tx-annotation/pre_computed/
+          <wbr />
+          all.possible.snvs.
+          <wbr />
+          tx_annotated.022719.ht
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-tx-annotation/pre_computed/all.possible.snvs.tx_annotated.022719.tsv.bgz">
+            All possible SNVs annotated TSV
+          </ExternalLink>
+        </ListItem>
       </FileList>
     </section>
 

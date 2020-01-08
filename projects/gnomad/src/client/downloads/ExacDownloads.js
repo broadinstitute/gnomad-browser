@@ -54,7 +54,7 @@ export default () => (
       <SectionTitle id="exac-coverage">Coverage</SectionTitle>
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
-          <ListItem>
+          <ListItem key={chrom}>
             <ExternalLink
               href={`https://storage.googleapis.com/gnomad-public/legacy/exac_browser/coverage/Panel.chr${chrom}.coverage.txt.gz`}
             >
