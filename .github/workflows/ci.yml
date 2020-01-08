@@ -14,5 +14,9 @@ jobs:
         node-version: 10.x
     - name: install
       run: yarn install --frozen-lockfile --non-interactive --no-progress
+    - name: eslint
+      run: yarn run lint:js
+    - name: stylelint
+      run: yarn run lint:css
     - name: test
       run: yarn test
