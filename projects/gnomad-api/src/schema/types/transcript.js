@@ -30,7 +30,7 @@ import {
   formatCoverageForCache,
   formatCachedCoverage,
 } from './coverage'
-import { GtexTissueExpressionsType, fetchGtexTissueExpressionsByTranscript } from './gtex'
+import { GtexTissueExpressionType, fetchGtexTissueExpressionByTranscript } from './gtex'
 import { VariantSummaryType } from './variant'
 
 const TranscriptType = extendObjectType(BaseTranscriptType, {
@@ -133,16 +133,9 @@ const TranscriptType = extendObjectType(BaseTranscriptType, {
         return fetchExacConstraintByTranscriptId(ctx, obj.transcript_id)
       },
     },
-    gtex_tissue_tpms_by_transcript: {
-      type: GtexTissueExpressionsType,
-      resolve: (obj, args, ctx) => {
-        if (obj.reference_genome !== 'GRCh37') {
-          throw new UserVisibleError(
-            `Tissue expression is not available on reference genome ${obj.reference_genome}`
-          )
-        }
-        return fetchGtexTissueExpressionsByTranscript(ctx, obj.transcript_id)
-      },
+    gtex_tissue_expression: {
+      type: GtexTissueExpressionType,
+      resolve: (obj, args, ctx) => fetchGtexTissueExpressionByTranscript(ctx, obj),
     },
     variants: {
       type: new GraphQLList(VariantSummaryType),
