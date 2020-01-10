@@ -160,6 +160,7 @@ const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
           id
           ac
           an
+          ac_hemi
           ac_hom
         }
         pos

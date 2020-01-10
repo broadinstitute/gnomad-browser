@@ -16,7 +16,8 @@ const GnomadStructuralVariantPopulationDataType = new GraphQLObjectType({
     id: { type: new GraphQLNonNull(GraphQLString) },
     ac: { type: new GraphQLNonNull(GraphQLInt) },
     an: { type: new GraphQLNonNull(GraphQLInt) },
-    ac_hom: { type: GraphQLInt },
+    ac_hemi: { type: GraphQLInt }, // null for MCNVs
+    ac_hom: { type: GraphQLInt }, // null for MCNVs
   },
 })
 

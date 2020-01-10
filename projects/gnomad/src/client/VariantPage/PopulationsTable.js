@@ -47,6 +47,7 @@ export class PopulationsTable extends Component {
             name: PropTypes.string.isRequired,
             ac: PropTypes.number.isRequired,
             an: PropTypes.number.isRequired,
+            ac_hemi: PropTypes.number,
             ac_hom: PropTypes.number,
           })
         ),
