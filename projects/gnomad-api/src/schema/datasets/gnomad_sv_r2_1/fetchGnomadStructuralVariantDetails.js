@@ -1,3 +1,5 @@
+import { flatMap } from 'lodash'
+
 import { UserVisibleError } from '../../errors'
 import { formatHistogram } from '../shared/histogram'
 
@@ -65,12 +67,48 @@ const fetchGnomadStructuralVariantDetails = async (ctx, variantId, subset = 'all
               alt: formatHistogram(variant.gq_hist_alt),
             },
       length: variant.length,
-      populations: ['afr', 'amr', 'eas', 'eur', 'oth'].map(popId => ({
-        id: popId.toUpperCase(),
-        ac: freq[popId].ac || 0,
-        an: freq[popId].an || 0,
-        ac_hom: variant.type === 'MCNV' ? null : freq[popId].n_homalt,
-      })),
+      populations: [
+        ...flatMap(['afr', 'amr', 'eas', 'eur', 'oth'], popId => [
+          {
+            id: popId.toUpperCase(),
+            ac: freq[popId].ac || 0,
+            an: freq[popId].an || 0,
+            ac_hemi:
+              variant.type === 'MCNV' ? null : (!variant.par && freq[popId].male.n_hemialt) || 0,
+            ac_hom: variant.type === 'MCNV' ? null : freq[popId].n_homalt || 0,
+          },
+          {
+            id: `${popId.toUpperCase()}_FEMALE`,
+            ac: freq[popId].female.ac || 0,
+            an: freq[popId].female.an || 0,
+            ac_hemi: variant.type === 'MCNV' ? null : 0,
+            ac_hom: variant.type === 'MCNV' ? null : freq[popId].female.n_homalt || 0,
+          },
+          {
+            id: `${popId.toUpperCase()}_MALE`,
+            ac: freq[popId].male.ac || 0,
+            an: freq[popId].male.an || 0,
+            ac_hemi:
+              variant.type === 'MCNV' ? null : (!variant.par && freq[popId].male.n_hemialt) || 0,
+            ac_hom: variant.type === 'MCNV' ? null : freq[popId].male.n_homalt || 0,
+          },
+        ]),
+        {
+          id: 'FEMALE',
+          ac: freq.total.female.ac || 0,
+          an: freq.total.female.an || 0,
+          ac_hemi: variant.type === 'MCNV' ? null : 0,
+          ac_hom: variant.type === 'MCNV' ? null : freq.total.female.n_homalt || 0,
+        },
+        {
+          id: 'MALE',
+          ac: freq.total.male.ac || 0,
+          an: freq.total.male.an || 0,
+          ac_hemi:
+            variant.type === 'MCNV' ? null : (!variant.par && freq.total.male.n_hemialt) || 0,
+          ac_hom: variant.type === 'MCNV' ? null : freq.total.male.n_homalt || 0,
+        },
+      ],
       pos: variant.pos,
       pos2: variant.pos2,
       reference_genome: 'GRCh37',
