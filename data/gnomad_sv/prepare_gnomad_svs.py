@@ -1,4 +1,5 @@
 import argparse
+import itertools
 
 import hail as hl
 
@@ -23,6 +24,7 @@ TOP_LEVEL_INFO_FIELDS = [
     "UNRESOLVED_TYPE",
     "UNSTABLE_AF_PCRPLUS",
     "VARIABLE_ACROSS_BATCHES",
+    "PAR",
 ]
 
 PROTEIN_CODING_CONSEQUENCES = [
@@ -53,6 +55,8 @@ PER_POPULATION_FIELDS = [
 ]
 
 POPULATIONS = ["afr", "amr", "eas", "eur", "oth"]
+
+DIVISIONS = POPULATIONS + ["".join(s) for s in itertools.product(POPULATIONS, ["_female", "_male"])]
 
 # For MCNVs, sum AC/AF for all alt alleles except CN=2
 def sum_mcnv_ac_or_af(alts, values):
@@ -101,7 +105,7 @@ def import_structural_variants(vcf_path):
             **{
                 csq.lower(): ds.info[f"PROTEIN_CODING__{csq}"]
                 for csq in PROTEIN_CODING_CONSEQUENCES
-                if csq != "INTERGENIC" and csq != "NEAREST_TSS"
+                if csq not in ("INTERGENIC", "NEAREST_TSS")
             }
         )
     )
@@ -114,7 +118,6 @@ def import_structural_variants(vcf_path):
     ds = ds.annotate(genes=hl.set(all_genes))
 
     # Group per-population values in a struct for each field
-    # ds = ds.annotate(**{field.lower(): expr_for_per_population_field(ds, field) for field in PER_POPULATION_FIELDS})
     ds = ds.annotate(
         freq=hl.struct(
             **dict(
@@ -125,9 +128,13 @@ def import_structural_variants(vcf_path):
                             **{field.lower(): ds.info[f"{pop.upper()}_{field}"] for field in PER_POPULATION_FIELDS}
                         ),
                     )
-                    for pop in POPULATIONS
+                    for pop in DIVISIONS
                 ),
                 total=hl.struct(**{field.lower(): ds.info[field] for field in PER_POPULATION_FIELDS}),
+                total_female=hl.struct(
+                    **{field.lower(): ds.info[f"FEMALE_{field}"] for field in PER_POPULATION_FIELDS}
+                ),
+                total_male=hl.struct(**{field.lower(): ds.info[f"MALE_{field}"] for field in PER_POPULATION_FIELDS}),
             )
         )
     )
@@ -139,7 +146,7 @@ def import_structural_variants(vcf_path):
                 pop: ds.freq[pop].annotate(
                     mcnv=hl.or_missing(ds.type == "MCNV", hl.struct(ac=ds.freq[pop].ac, af=ds.freq[pop].af))
                 )
-                for pop in POPULATIONS + ["total"]
+                for pop in DIVISIONS + ["total", "total_female", "total_male"]
             }
         )
     )
@@ -158,8 +165,46 @@ def import_structural_variants(vcf_path):
                         ),
                     }
                 )
+                for pop in DIVISIONS + ["total", "total_female", "total_male"]
+            }
+        )
+    )
+
+    # Nest female/male values under populations
+    ds = ds.annotate(
+        freq=ds.freq.annotate(
+            **{
+                pop: ds.freq[pop].annotate(female=ds.freq[f"{pop}_female"], male=ds.freq[f"{pop}_male"])
                 for pop in POPULATIONS + ["total"]
             }
+        )
+    )
+    ds = ds.annotate(
+        freq=ds.freq.drop(*["".join(s) for s in itertools.product(POPULATIONS + ["total"], ["_female", "_male"])])
+    )
+
+    # Add hemizygote fields
+    ds = ds.annotate(
+        freq=ds.freq.annotate(
+            **{
+                pop: ds.freq[pop].annotate(
+                    male=ds.freq[pop].male.annotate(
+                        n_hemiref=ds.info[f"{pop.upper()}_MALE_N_HEMIREF"],
+                        n_hemialt=ds.info[f"{pop.upper()}_MALE_N_HEMIALT"],
+                        freq_hemiref=ds.info[f"{pop.upper()}_MALE_FREQ_HEMIREF"],
+                        freq_hemialt=ds.info[f"{pop.upper()}_MALE_FREQ_HEMIALT"],
+                    )
+                )
+                for pop in POPULATIONS
+            },
+            total=ds.freq.total.annotate(
+                male=ds.freq.total.male.annotate(
+                    n_hemiref=ds.info.MALE_N_HEMIREF,
+                    n_hemialt=ds.info.MALE_N_HEMIALT,
+                    freq_hemiref=ds.info.MALE_FREQ_HEMIREF,
+                    freq_hemialt=ds.info.MALE_FREQ_HEMIALT,
+                )
+            ),
         )
     )
 
@@ -198,6 +243,7 @@ def main():
     parser.add_argument("--vcf", default="gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz")
     parser.add_argument(
         "--subset-vcf",
+        nargs="+",
         default=[
             "controls=gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz",
             "non_neuro=gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz",
