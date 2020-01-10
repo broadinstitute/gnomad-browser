@@ -33,11 +33,13 @@ module.exports = function helpFileLoader(content) {
     .use(html)
     .process(content)
     .then(vfile => {
-      let output = `module.exports = ${JSON.stringify({
+      let output = `export default ${JSON.stringify({
         id: topicId,
         title: vfile.data.title,
         content: vfile.contents,
-      })}`
+      })};`
+
+      const imports = []
 
       output = output.replace(/___HELP_CONTENT_IMAGE_([0-9]+)___/g, (match, p1) => {
         const imageIndex = parseInt(p1, 10)
@@ -45,8 +47,14 @@ module.exports = function helpFileLoader(content) {
           this,
           loaderUtils.urlToRequest(vfile.images[imageIndex])
         )
-        return `" + require(${request}) + "`
+        imports.push(`import ___HELP_CONTENT_IMAGE_${imageIndex}__ from ${request}`)
+
+        return `" + ___HELP_CONTENT_IMAGE_${imageIndex}__ + "`
       })
+
+      if (imports.length > 0) {
+        output = `${imports.join(';')};${output}`
+      }
 
       callback(null, output)
     }, callback)
