@@ -32,7 +32,12 @@ module.exports = function helpDirectoryLoader(content) {
         `@broad/help/src/loader/helpFileLoader?directory=${helpDirectory}!${f}`
       )
     )
-    const output = `module.exports = [${requests.map(r => `require(${r})`).join(', ')}]`
+
+    const imports = requests.map((r, i) => `import HELP_FILE_${i} from ${r}`)
+    const output = `${imports.join(';')};export default [${requests
+      .map((r, i) => `HELP_FILE_${i}`)
+      .join(',')}];`
+
     callback(null, output)
   })
 }
