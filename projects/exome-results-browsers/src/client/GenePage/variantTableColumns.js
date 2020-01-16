@@ -118,7 +118,7 @@ const baseColumns = [
     heading: 'Consequence',
     tooltip: 'Predicted functional consequence',
     isSortable: true,
-    minWidth: 140,
+    minWidth: 180,
     render: (row, key, { highlightWords }) =>
       row[key] === null ? null : (
         <span className="grid-cell-content">
