@@ -20,8 +20,12 @@ export default {
       qq: true,
     },
     pValueColumn: 'pval_meta',
-    significanceThresholdLabel: 'Genome-wide significance',
-    significanceThresholdValue: 2.2e-6,
+    significanceThresholds: [
+      {
+        label: 'Genome-wide significance (p = 2.2e-6)',
+        value: 2.2e-6,
+      },
+    ],
     groups: {
       options: ['meta'],
       labels: {},

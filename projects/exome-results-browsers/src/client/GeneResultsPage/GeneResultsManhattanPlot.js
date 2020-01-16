@@ -28,10 +28,7 @@ const GeneResultsManhattanPlot = withSize()(({ results, size: { width }, ...othe
           width={width}
           dataPoints={dataPoints}
           pointLabel={d => `${d.gene_name || d.gene_id} (p = ${d.pval.toExponential(3)})`}
-          thresholdLabel={`${
-            browserConfig.geneResults.significanceThresholdLabel
-          } (p = ${browserConfig.geneResults.significanceThresholdValue.toExponential(2)})`}
-          thresholdValue={browserConfig.geneResults.significanceThresholdValue}
+          thresholds={browserConfig.geneResults.significanceThresholds}
         />
       )}
     </Wrapper>

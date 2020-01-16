@@ -13,9 +13,7 @@ export const ManhattanPlot = ({
   onClickPoint,
   pointColor,
   pointLabel,
-  thresholdColor,
-  thresholdLabel,
-  thresholdValue,
+  thresholds,
   width,
   xLabel,
   yLabel,
@@ -160,32 +158,6 @@ export const ManhattanPlot = ({
 
     ctx.restore()
 
-    // Significance threshold
-    // ====================================================
-
-    if (thresholdValue !== undefined) {
-      ctx.save()
-
-      ctx.transform(1, 0, 0, 1, margin.left, margin.top)
-
-      const thresholdY = yScale(-Math.log10(thresholdValue))
-      ctx.beginPath()
-      ctx.moveTo(0, thresholdY)
-      ctx.lineTo(w, thresholdY)
-      ctx.setLineDash([3, 3])
-      ctx.lineWidth = 2
-      ctx.strokeStyle = thresholdColor
-      ctx.stroke()
-
-      if (thresholdLabel !== undefined) {
-        ctx.font = '10px sans-serif'
-        ctx.fillStyle = '#000'
-        ctx.fillText(thresholdLabel, 2, thresholdY - 4)
-      }
-
-      ctx.restore()
-    }
-
     // Points
     // ====================================================
 
@@ -209,6 +181,34 @@ export const ManhattanPlot = ({
     }
 
     ctx.restore()
+
+    // Significance thresholds
+    // ====================================================
+
+    ctx.save()
+
+    ctx.transform(1, 0, 0, 1, margin.left, margin.top)
+
+    thresholds.forEach(threshold => {
+      const thresholdY = yScale(-Math.log10(threshold.value))
+      ctx.beginPath()
+      ctx.moveTo(0, thresholdY)
+      ctx.lineTo(w, thresholdY)
+      ctx.setLineDash([3, 3])
+      ctx.lineWidth = 2
+      ctx.strokeStyle = threshold.color || '#333'
+      ctx.stroke()
+
+      if (threshold.label) {
+        ctx.font = '10px sans-serif'
+        ctx.fillStyle = '#000'
+        ctx.fillText(threshold.label, 2, thresholdY - 4)
+      }
+    })
+
+    ctx.restore()
+
+    // ====================================================
 
     return canvas
   }, [chromosomes, dataPoints, height, pointColor, width, xLabel, yLabel])
@@ -317,9 +317,13 @@ ManhattanPlot.propTypes = {
   onClickPoint: PropTypes.func,
   pointColor: PropTypes.func,
   pointLabel: PropTypes.func,
-  thresholdColor: PropTypes.string,
-  thresholdLabel: PropTypes.string,
-  thresholdValue: PropTypes.number,
+  thresholds: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      label: PropTypes.string,
+      value: PropTypes.number.isRequired,
+    })
+  ),
   width: PropTypes.number.isRequired,
   xLabel: PropTypes.string,
   yLabel: PropTypes.string,
@@ -332,9 +336,7 @@ ManhattanPlot.defaultProps = {
   onClickPoint: () => {},
   pointColor: rotateColorByChromosome(['rgb(139,53,40)', 'rgb(60,100,166)'], CHROMOSOMES),
   pointLabel: d => d.label,
-  thresholdColor: 'rgb(139,53,40)',
-  thresholdLabel: undefined,
-  thresholdValue: undefined,
+  thresholds: [],
   xLabel: 'Chromosome',
   yLabel: '-log10(p)',
 }
