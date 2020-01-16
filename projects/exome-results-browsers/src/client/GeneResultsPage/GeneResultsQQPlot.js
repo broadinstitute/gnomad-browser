@@ -27,6 +27,7 @@ const GeneResultsQQPlot = withSize()(({ results, size: { width }, ...otherProps 
           width={width}
           dataPoints={dataPoints}
           pointLabel={d => d.gene_name || d.gene_id}
+          thresholds={browserConfig.geneResults.significanceThresholds}
         />
       )}
     </Wrapper>
