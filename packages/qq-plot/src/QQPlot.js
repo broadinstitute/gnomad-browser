@@ -9,6 +9,7 @@ export const QQPlot = ({
   height,
   onClickPoint,
   pointLabel,
+  thresholds,
   width,
   xDomain,
   xLabel,
@@ -184,17 +185,38 @@ export const QQPlot = ({
 
     ctx.restore()
 
+    // Significance thresholds
+    // ====================================================
+
+    thresholds.forEach(threshold => {
+      ctx.save()
+
+      ctx.transform(1, 0, 0, 1, margin.left, margin.top)
+
+      const thresholdY = yScale(-Math.log10(threshold.value))
+      ctx.beginPath()
+      ctx.moveTo(0, thresholdY)
+      ctx.lineTo(w, thresholdY)
+      ctx.setLineDash([3, 3])
+      ctx.lineWidth = 2
+      ctx.strokeStyle = threshold.color || '#333'
+      ctx.stroke()
+
+      if (threshold.label) {
+        ctx.font = '10px sans-serif'
+        ctx.fillStyle = '#000'
+        ctx.fillText(threshold.label, 2, thresholdY - 4)
+      }
+
+      ctx.restore()
+    })
+
+    // ====================================================
+
     return canvas
   }, [dataPoints, height, width, xLabel, yLabel])
 
   const mainCanvas = useRef()
-
-  // useEffect(() => {
-  //   const ctx = mainCanvas.current.getContext('2d')
-  //   ctx.setTransform(scale, 0, 0, scale, 0, 0)
-  //   ctx.clearRect(0, 0, width, height)
-  //   ctx.drawImage(plotCanvas, 0, 0, width, height)
-  // }, [plotCanvas])
 
   const drawPlot = () => {
     const ctx = mainCanvas.current.getContext('2d')
@@ -294,6 +316,13 @@ QQPlot.propTypes = {
   height: PropTypes.number.isRequired,
   onClickPoint: PropTypes.func,
   pointLabel: PropTypes.func,
+  thresholds: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      label: PropTypes.string,
+      value: PropTypes.number.isRequired,
+    })
+  ),
   width: PropTypes.number.isRequired,
   xDomain: PropTypes.arrayOf(PropTypes.number),
   xLabel: PropTypes.string,
@@ -304,6 +333,7 @@ QQPlot.propTypes = {
 QQPlot.defaultProps = {
   onClickPoint: () => {},
   pointLabel: d => d.label,
+  thresholds: [],
   yDomain: undefined,
   xLabel: 'Expected -log10(p)',
   xDomain: undefined,
