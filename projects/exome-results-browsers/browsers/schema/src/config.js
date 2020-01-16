@@ -25,6 +25,10 @@ export default {
         label: 'Genome-wide significance (p = 2.2e-6)',
         value: 2.2e-6,
       },
+      {
+        label: 'FDR < 5% (p = 7.9e-5)',
+        value: 7.9e-5,
+      },
     ],
     groups: {
       options: ['meta'],
