@@ -30,6 +30,13 @@ def main():
         hgvsp=hl.delimit(variants.hgvsp.keys().map(lambda k: k + ":" + variants.hgvsp[k]), ","),
     )
 
+    variants = variants.annotate(
+        csq_canonical=hl.case()
+        .when((variants.csq_canonical == "mis") & (variants.mpc >= 3), "mis3")
+        .when((variants.csq_canonical == "mis") & (variants.mpc >= 2), "mis2")
+        .default(variants.csq_canonical)
+    )
+
     variants = variants.annotate(flags="PASS")
     variants = variants.drop("v")
 
@@ -55,8 +62,6 @@ def main():
     # The latest (2019/04/15) SCHEMA dataset moved the source and in_analysis field from variant level to group level
     # in_analysis is the same for all groups within a variant, but source is not
     variants = variants.annotate(in_analysis=variants.groups.meta.in_analysis, source=variants.groups.meta.source)
-
-    variants = variants.key_by().drop("locus", "alleles")
 
     variants.write(args.output)
 

@@ -9,7 +9,7 @@ export default {
       type: 'documents',
     },
     variants: {
-      index: 'schema_variant_results_2019_10_15',
+      index: 'schema_variant_results_2020_01_16',
       type: 'documents',
     },
   },
@@ -59,14 +59,14 @@ export default {
       },
       {
         key: 'x_case_mis2',
-        heading: 'Case Missense (3\u00a0>\u00a0MPC\u00a0≥\u00a02)',
+        heading: 'Case Missense (2\u00a0≤\u00a0MPC\u00a0<\u00a03)',
         minWidth: 110,
         grow: 0,
         type: 'int',
       },
       {
         key: 'x_ctrl_mis2',
-        heading: 'Control Missense (3\u00a0>\u00a0MPC\u00a0≥\u00a02)',
+        heading: 'Control Missense (2\u00a0≤\u00a0MPC\u00a0<\u00a03)',
         minWidth: 110,
         grow: 0,
         type: 'int',
@@ -165,7 +165,17 @@ export default {
       },
       {
         term: 'mis',
-        label: 'missense',
+        label: 'missense (MPC\u00a0<\u00a02)',
+        category: 'missense',
+      },
+      {
+        term: 'mis2',
+        label: 'missense (2\u00a0≤\u00a0MPC\u00a0<\u00a03)',
+        category: 'missense',
+      },
+      {
+        term: 'mis3',
+        label: 'missense (MPC\u00a0≥\u00a03)',
         category: 'missense',
       },
       {
