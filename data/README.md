@@ -21,7 +21,7 @@ during a bulk request.
 
 * [gene models](./docs/gene_models.md)
 * [GTEx tissue expression](./docs/gtex_tissue_expression.md)
-* ClinVar variants
+* [ClinVar variants](./docs/clinvar.md)
 
 ## gnomAD 3.0
 
