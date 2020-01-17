@@ -37,9 +37,11 @@ def format_regional_missense_constraint(ds):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--regional-missense-constraint", help="URL of regional missense constraint TSV file", required=True
+        "--regional-missense-constraint",
+        help="Regional missense constraint TSV file",
+        default="gs://gnomad-public/legacy/exac_browser/regional_missense_constraint.tsv",
     )
-    parser.add_argument("--output", help="URL to write output Hail table to", required=True)
+    parser.add_argument("output", help="Destination for Hail table")
     args = parser.parse_args()
 
     hl.init(log="/tmp/hail.log")
