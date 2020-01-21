@@ -9,7 +9,7 @@ import StructuralVariantDatasetArgumentType from '../datasets/StructuralVariantD
 import svDatasets from '../datasets/svDatasets'
 import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
-import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
+import ClinvarVariantType from '../datasets/clinvar/ClinvarVariantType'
 import fetchClinvarVariantsByGene from '../datasets/clinvar/fetchClinvarVariantsByGene'
 
 import {
@@ -119,7 +119,7 @@ const GeneType = extendObjectType(BaseGeneType, {
       },
     },
     clinvar_variants: {
-      type: new GraphQLList(ClinvarVariantSummaryType),
+      type: new GraphQLList(ClinvarVariantType),
       resolve: async (obj, args, ctx) => {
         const cachedVariants = await withCache(
           ctx,
