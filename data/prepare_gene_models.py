@@ -227,6 +227,13 @@ def main():
     genes = genes.select(gencode=genes.row_value)
 
     hgnc = hl.import_table(args.hgnc)
+
+    # Fix for alternative HGNC column name
+    try:
+        hgnc = hgnc.rename({'Alias symbols': 'Synonyms'})
+    except:
+        pass
+
     hgnc = hgnc.select(
         hgnc_id=hgnc["HGNC ID"],
         symbol=hgnc["Approved symbol"],
