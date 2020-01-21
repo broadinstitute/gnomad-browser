@@ -14,7 +14,7 @@ import datasetsConfig from './datasets/datasetsConfig'
 import StructuralVariantDatasetArgumentType from './datasets/StructuralVariantDatasetArgumentType'
 import svDatasets from './datasets/svDatasets'
 
-import ClinvarVariantDetailsType from './datasets/clinvar/ClinvarVariantDetailsType'
+import ClinvarVariantType from './datasets/clinvar/ClinvarVariantType'
 import fetchClinvarVariantDetails from './datasets/clinvar/fetchClinvarVariantDetails'
 
 import GnomadVariantDetailsType from './datasets/gnomad_r2_1/GnomadVariantDetailsType'
@@ -116,7 +116,7 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
         resolveSearchResults(ctx, args.dataset || 'gnomad_r2_1', args.query),
     },
     clinvar_variant: {
-      type: ClinvarVariantDetailsType,
+      type: ClinvarVariantType,
       args: {
         variant_id: { type: new GraphQLNonNull(GraphQLString) },
         reference_genome: { type: ReferenceGenomeType },
