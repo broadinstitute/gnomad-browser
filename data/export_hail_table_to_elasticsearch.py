@@ -10,6 +10,7 @@ def main():
     parser.add_argument("table_url", help="URL of Hail table to export")
     parser.add_argument("host", help="Elasticsearch host or IP")
     parser.add_argument("index_name", help="Elasticsearch index name")
+    parser.add_argument("--es-nodes-wan", help="Elasticsearch configuration: if true, connector skips network discovery", default=False, type=bool) 
     parser.add_argument("--block-size", help="Elasticsearch block size to use when exporting", default=200, type=int)
     parser.add_argument("--disable-fields", help="Disable a field in Elasticsearch", action="append", default=[])
     parser.add_argument("--id-field", help="Field to use as Elasticsearch document ID", default=None)
@@ -36,6 +37,7 @@ def main():
         num_shards=args.num_shards,
         port=args.port,
         verbose=True,
+        es_config={'es.nodes.wan.only': 'true' if args.es_nodes_wan else 'false' }
     )
 
 
