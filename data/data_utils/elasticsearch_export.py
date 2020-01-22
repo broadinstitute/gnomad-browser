@@ -70,11 +70,14 @@ def struct_to_dict(struct):
 
 
 def export_table_to_elasticsearch(
-    table, host, index_name, block_size=5000, id_field=None, mapping=None, num_shards=10, port=9200, verbose=True
+    table, host, index_name, block_size=5000, id_field=None, mapping=None, num_shards=10, port=9200, verbose=True, es_config=None
 ):
     es_client = elasticsearch.Elasticsearch(host, port=port)
 
     elasticsearch_config = {"es.write.operation": "index"}
+
+    if es_config:
+        elasticsearch_config = { **elasticsearch_config, **es_config}
 
     if id_field is not None:
         elasticsearch_config["es.mapping.id"] = id_field
