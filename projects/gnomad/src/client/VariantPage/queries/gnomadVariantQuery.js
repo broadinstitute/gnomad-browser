@@ -205,7 +205,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     }
   }
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
-    allele_id
+    clinvar_variation_id
   }
 }
 `

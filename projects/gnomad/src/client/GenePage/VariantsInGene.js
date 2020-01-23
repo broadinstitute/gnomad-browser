@@ -22,7 +22,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInGene extends Component {
   static propTypes = {
-    clinVarVariants: PropTypes.arrayOf(PropTypes.object),
+    clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
@@ -35,7 +35,7 @@ class VariantsInGene extends Component {
   }
 
   static defaultProps = {
-    clinVarVariants: null,
+    clinvarVariants: null,
   }
 
   constructor(props) {
@@ -174,7 +174,7 @@ class VariantsInGene extends Component {
   }
 
   render() {
-    const { clinVarVariants, datasetId, gene, width } = this.props
+    const { clinvarVariants, datasetId, gene, width } = this.props
     const {
       filter,
       renderedVariants,
@@ -190,8 +190,8 @@ class VariantsInGene extends Component {
 
     return (
       <div>
-        {clinVarVariants && (
-          <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        {clinvarVariants && (
+          <ClinVarTrack variants={clinvarVariants} variantFilter={filter.includeCategories} />
         )}
 
         <VariantTrack
@@ -251,12 +251,12 @@ const query = `
 query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     clinvar_variants {
-      allele_id
       clinical_significance
-      consequence
+      clinvar_variation_id
       gold_stars
+      major_consequence
       pos
-      variantId
+      variant_id
     }
     variants(dataset: $datasetId) {
       consequence
@@ -325,7 +325,7 @@ const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
 
       return (
         <VariantsInGene
-          clinVarVariants={data.gene.clinvar_variants}
+          clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
           variants={data.gene.variants}

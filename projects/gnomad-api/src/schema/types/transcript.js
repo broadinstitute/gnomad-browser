@@ -7,7 +7,7 @@ import DatasetArgumentType from '../datasets/DatasetArgumentType'
 import datasetsConfig from '../datasets/datasetsConfig'
 import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
-import ClinvarVariantSummaryType from '../datasets/clinvar/ClinvarVariantSummaryType'
+import ClinvarVariantType from '../datasets/clinvar/ClinvarVariantType'
 import fetchClinvarVariantsByTranscript from '../datasets/clinvar/fetchClinvarVariantsByTranscript'
 
 import {
@@ -36,7 +36,7 @@ import { VariantSummaryType } from './variant'
 const TranscriptType = extendObjectType(BaseTranscriptType, {
   fields: {
     clinvar_variants: {
-      type: new GraphQLList(ClinvarVariantSummaryType),
+      type: new GraphQLList(ClinvarVariantType),
       resolve: async (obj, args, ctx) => {
         const cachedVariants = await withCache(
           ctx,

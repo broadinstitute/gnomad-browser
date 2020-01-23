@@ -26,9 +26,9 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
       {clinvarVariant && (
         <ListItem>
           <ExternalLink
-            href={`https://www.ncbi.nlm.nih.gov/clinvar/?term=${clinvarVariant.allele_id}[alleleid]`}
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinvarVariant.clinvar_variation_id}/`}
           >
-            ClinVar ({clinvarVariant.allele_id})
+            ClinVar ({clinvarVariant.clinvar_variation_id})
           </ExternalLink>
         </ListItem>
       )}
@@ -45,7 +45,7 @@ ReferenceList.propTypes = {
     rsid: PropTypes.string,
   }).isRequired,
   clinvarVariant: PropTypes.shape({
-    allele_id: PropTypes.number.isRequired,
+    clinvar_variation_id: PropTypes.string.isRequired,
   }),
 }
 
