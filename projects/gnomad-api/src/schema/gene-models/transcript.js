@@ -22,7 +22,7 @@ export const TranscriptType = new GraphQLObjectType({
 })
 
 const shapeTranscript = (gene, transcriptId, referenceGenome) => {
-  const gencodeVersion = referenceGenome === 'GRCh37' ? 'v19' : 'v29'
+  const gencodeVersion = referenceGenome === 'GRCh37' ? (process.env.GRCh37_GENCODE_VERSION || 'v19') : (process.env.GRCh38_GENCODE_VERSION || 'v29')
   const transcript = cloneDeep(
     gene.gencode[gencodeVersion].transcripts.find(tx => tx.transcript_id === transcriptId)
   )
@@ -33,7 +33,7 @@ const shapeTranscript = (gene, transcriptId, referenceGenome) => {
 }
 
 export const fetchTranscriptById = async (ctx, transcriptId, referenceGenome) => {
-  const gencodeVersion = referenceGenome === 'GRCh37' ? 'v19' : 'v29'
+  const gencodeVersion = referenceGenome === 'GRCh37' ? (process.env.GRCh37_GENCODE_VERSION || 'v19') : (process.env.GRCh38_GENCODE_VERSION || 'v29')
 
   const response = await ctx.database.elastic.search({
     index: 'genes',
