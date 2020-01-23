@@ -26,10 +26,10 @@ const CONSEQUENCE_COLORS = {
 const DEFAULT_COLOR = '#424242'
 
 function variantColor(clinvarVariant) {
-  if (!clinvarVariant.consequence) {
+  if (!clinvarVariant.major_consequence) {
     return DEFAULT_COLOR
   }
-  const category = getCategoryFromConsequence(clinvarVariant.consequence)
+  const category = getCategoryFromConsequence(clinvarVariant.major_consequence)
   return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
 }
 
@@ -99,12 +99,15 @@ ClinVarVariantAttribute.defaultProps = {
 
 const ClinVarTooltip = ({ variant }) => (
   <div>
-    <strong>{variant.variantId}</strong>
+    <strong>{variant.variant_id}</strong>
     <ClinVarVariantAttributeList>
-      <ClinVarVariantAttribute label="Clinical Signficance" value={variant.clinical_significance} />
+      <ClinVarVariantAttribute
+        label="Clinical Signficance"
+        value={(variant.clinical_significance || []).join(', ')}
+      />
       <ClinVarVariantAttribute
         label="Consequence"
-        value={getLabelForConsequenceTerm(variant.consequence)}
+        value={getLabelForConsequenceTerm(variant.major_consequence)}
       />
       <ClinVarVariantAttribute label="Gold stars" value={variant.gold_stars} />
     </ClinVarVariantAttributeList>
@@ -114,11 +117,11 @@ const ClinVarTooltip = ({ variant }) => (
 
 ClinVarTooltip.propTypes = {
   variant: PropTypes.shape({
-    allele_id: PropTypes.number.isRequired,
     clinical_significance: PropTypes.string,
-    consequence: PropTypes.string,
+    clinvar_variation_id: PropTypes.string.isRequired,
     gold_stars: PropTypes.number,
-    variantId: PropTypes.string.isRequired,
+    major_consequence: PropTypes.string,
+    variant_id: PropTypes.string.isRequired,
   }).isRequired,
 }
 
@@ -126,20 +129,19 @@ const onClickVariant = variant => {
   const clinVarWindow = window.open()
   // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
   clinVarWindow.opener = null
-  const { allele_id: alleleId } = variant
-  clinVarWindow.location = `https://www.ncbi.nlm.nih.gov/clinvar/?term=${alleleId}[alleleid]`
+  clinVarWindow.location = `https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`
 }
 
 class ClinVarTrack extends PureComponent {
   static propTypes = {
     variants: PropTypes.arrayOf(
       PropTypes.shape({
-        allele_id: PropTypes.number.isRequired,
-        clinical_significance: PropTypes.string,
-        consequence: PropTypes.string,
-        gold_stars: PropTypes.number,
+        clinical_significance: PropTypes.arrayOf(PropTypes.string),
+        clinvar_variation_id: PropTypes.string.isRequired,
+        gold_stars: PropTypes.number.isRequired,
+        major_consequence: PropTypes.string,
         pos: PropTypes.number.isRequired,
-        variantId: PropTypes.string.isRequired,
+        variant_id: PropTypes.string.isRequired,
       })
     ).isRequired,
     variantFilter: PropTypes.shape({
@@ -168,8 +170,8 @@ class ClinVarTrack extends PureComponent {
     }
 
     variants.forEach(variant => {
-      const category = variant.consequence
-        ? getCategoryFromConsequence(variant.consequence)
+      const category = variant.major_consequence
+        ? getCategoryFromConsequence(variant.major_consequence)
         : 'other'
 
       const binIndex = variantBinIndex(variant)
@@ -242,8 +244,8 @@ class ClinVarTrack extends PureComponent {
     }
 
     variants.forEach(variant => {
-      const category = variant.consequence
-        ? getCategoryFromConsequence(variant.consequence)
+      const category = variant.major_consequence
+        ? getCategoryFromConsequence(variant.major_consequence)
         : 'other'
 
       variantsByConsequence[category].push(variant)
@@ -279,7 +281,7 @@ class ClinVarTrack extends PureComponent {
       other: variantFilter.other,
     }
     const matchesConsequenceFilter = variant => {
-      const category = getCategoryFromConsequence(variant.consequence) || 'other'
+      const category = getCategoryFromConsequence(variant.major_consequence) || 'other'
       return isCategoryIncluded[category]
     }
 

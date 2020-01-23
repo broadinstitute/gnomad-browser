@@ -57,7 +57,7 @@ const StackedVariantsPlot = ({
       <g>
         {points.map(point => (
           <TooltipAnchor
-            key={point.data.variantId}
+            key={point.data.variant_id}
             tooltipComponent={tooltipComponent}
             variant={point.data}
           >
@@ -87,7 +87,7 @@ StackedVariantsPlot.propTypes = {
   variantLayers: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.shape({
-        variantId: PropTypes.string.isRequired,
+        variant_id: PropTypes.string.isRequired,
         pos: PropTypes.number.isRequired,
       })
     )

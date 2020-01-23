@@ -1,15 +1,10 @@
 import { fetchAllSearchResults } from '../../../utilities/elasticsearch'
 import { mergeOverlappingRegions } from '../../../utilities/region'
-import { UserVisibleError } from '../../errors'
+import getClinvarIndex from './getClinvarIndex'
+import shapeClinvarVariant from './shapeClinvarVariant'
 
 const fetchClinvarVariantsByGene = async (ctx, gene) => {
-  if (gene.reference_genome !== 'GRCh37') {
-    throw new UserVisibleError(
-      `ClinVar variants not available on reference genome ${gene.reference_genome}`
-    )
-  }
-
-  const geneId = gene.gene_id
+  const geneId = Number(gene.gene_id.slice(4))
   const filteredRegions = gene.exons.filter(exon => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
   const padding = 75
@@ -25,57 +20,41 @@ const fetchClinvarVariantsByGene = async (ctx, gene) => {
 
   const rangeQueries = mergedRegions.map(region => ({
     range: {
-      pos: {
+      'locus.position': {
         gte: region.start,
         lte: region.stop,
       },
     },
   }))
 
+  const index = getClinvarIndex(gene.reference_genome)
   const results = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'clinvar_grch37',
-    type: 'variant',
-    _source: [
-      'allele_id',
-      'alt',
-      'chrom',
-      'clinical_significance',
-      'gene_id_to_consequence_json',
-      'gold_stars',
-      'pos',
-      'ref',
-      'variant_id',
-    ],
+    index,
+    type: 'documents',
     size: 10000,
     body: {
       query: {
         bool: {
-          filter: [{ term: { gene_ids: geneId } }, { bool: { should: rangeQueries } }],
+          filter: [
+            {
+              nested: {
+                path: 'sorted_transcript_consequences',
+                query: {
+                  term: { 'sorted_transcript_consequences.gene_id': geneId },
+                },
+              },
+            },
+            { bool: { should: rangeQueries } },
+          ],
         },
       },
-      sort: [{ pos: { order: 'asc' } }],
+      sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
 
-  return results.map(hit => {
-    const doc = hit._source // eslint-disable-line no-underscore-dangle
-    const consequence = JSON.parse(doc.gene_id_to_consequence_json)[geneId]
-
-    return {
-      // Variant ID fields
-      variantId: doc.variant_id,
-      reference_genome: gene.reference_genome,
-      chrom: doc.chrom,
-      pos: doc.pos,
-      ref: doc.ref,
-      alt: doc.alt,
-      // ClinVar specific fields
-      allele_id: doc.allele_id,
-      clinical_significance: doc.clinical_significance,
-      consequence,
-      gold_stars: doc.gold_stars,
-    }
-  })
+  return results.map(
+    shapeClinvarVariant({ type: 'gene', geneId, referenceGenome: gene.reference_genome })
+  )
 }
 
 export default fetchClinvarVariantsByGene

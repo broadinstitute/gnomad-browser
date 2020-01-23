@@ -22,7 +22,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInTranscript extends Component {
   static propTypes = {
-    clinVarVariants: PropTypes.arrayOf(PropTypes.object),
+    clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     transcript: PropTypes.shape({
       transcript_id: PropTypes.string.isRequired,
@@ -35,7 +35,7 @@ class VariantsInTranscript extends Component {
   }
 
   static defaultProps = {
-    clinVarVariants: null,
+    clinvarVariants: null,
   }
 
   constructor(props) {
@@ -167,7 +167,7 @@ class VariantsInTranscript extends Component {
   }
 
   render() {
-    const { clinVarVariants, datasetId, transcript, width } = this.props
+    const { clinvarVariants, datasetId, transcript, width } = this.props
     const {
       filter,
       hoveredVariant,
@@ -182,8 +182,8 @@ class VariantsInTranscript extends Component {
 
     return (
       <div>
-        {clinVarVariants && (
-          <ClinVarTrack variants={clinVarVariants} variantFilter={filter.includeCategories} />
+        {clinvarVariants && (
+          <ClinVarTrack variants={clinvarVariants} variantFilter={filter.includeCategories} />
         )}
 
         <VariantTrack
@@ -243,12 +243,12 @@ const query = `
 query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     clinvar_variants {
-      allele_id
       clinical_significance
-      consequence
+      clinvar_variation_id
       gold_stars
+      major_consequence
       pos
-      variantId
+      variant_id
     }
     variants(dataset: $datasetId) {
       consequence
@@ -316,7 +316,7 @@ const ConnectedVariantsInTranscript = ({ datasetId, transcript, width }) => (
 
       return (
         <VariantsInTranscript
-          clinVarVariants={data.transcript.clinvar_variants}
+          clinvarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
           transcript={transcript}
           variants={data.transcript.variants}

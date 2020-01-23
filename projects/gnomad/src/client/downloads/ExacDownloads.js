@@ -81,6 +81,19 @@ export default () => (
     </section>
 
     <section>
+      <SectionTitle id="exac-regional-missense-constraint">
+        Regional Missense Constraint
+      </SectionTitle>
+      <FileList>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/regional_missense_constraint.tsv">
+            Regional missense constraint TSV
+          </ExternalLink>
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
       <SectionTitle id="exac-resources">Resources</SectionTitle>
       <FileList>
         <ListItem>
