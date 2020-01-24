@@ -1,4 +1,4 @@
-const REGION_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9]+)([-:]([0-9]+)?)?$/i
+const REGION_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9,]+)([-:]([0-9,]+)?)?$/i
 
 export const isRegionId = str => {
   const match = REGION_ID_REGEX.exec(str)
@@ -25,11 +25,11 @@ export const isRegionId = str => {
 export const normalizeRegionId = regionId => {
   const parts = regionId.split(/[-:]/)
   const chrom = parts[0].toUpperCase().replace(/^CHR/, '')
-  let start = Number(parts[1])
+  let start = Number(parts[1].replace(/,/g, ''))
   let end
 
   if (parts[2]) {
-    end = Number(parts[2])
+    end = Number(parts[2].replace(/,/g, ''))
   } else {
     end = start + 20
     start = Math.max(start - 20, 0)
@@ -38,7 +38,7 @@ export const normalizeRegionId = regionId => {
   return `${chrom}-${start}-${end}`
 }
 
-const VARIANT_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9]+)[-:]([acgt]+)[-:]([acgt]+)$/i
+const VARIANT_ID_REGEX = /^(chr)?(\d+|x|y|m|mt)[-:]([0-9,]+)[-:]([acgt]+)[-:]([acgt]+)$/i
 
 export const isVariantId = str => {
   const match = VARIANT_ID_REGEX.exec(str)
@@ -58,6 +58,7 @@ export const isVariantId = str => {
 export const normalizeVariantId = variantId =>
   variantId
     .toUpperCase()
+    .replace(/,/g, '')
     .replace(/:/g, '-')
     .replace(/^CHR/, '')
     .replace(/-0+([1-9][0-9]*)/, '-$1')
