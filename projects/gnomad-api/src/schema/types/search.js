@@ -103,7 +103,11 @@ export const resolveSearchResults = async (ctx, dataset, query) => {
 
   const upperCaseQuery = query.toUpperCase()
 
-  const gencodeVersion = dataset === 'gnomad_r3' ? (process.env.GRCh38_GENCODE_VERSION || 'v29') : (process.env.GRCh37_GENCODE_VERSION || 'v19')
+  const gencodeVersion =
+    dataset === 'gnomad_r3'
+      ? process.env.GRCH38_GENCODE_VERSION || 'v29'
+      : process.env.GRCH37_GENCODE_VERSION || 'v19'
+
   if (/^ENSG[0-9]/.test(upperCaseQuery)) {
     const geneIdSearchResponse = await ctx.database.elastic.search({
       index: 'genes',

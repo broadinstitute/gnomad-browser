@@ -37,7 +37,12 @@ export const GeneType = new GraphQLObjectType({
 })
 
 export const shapeGene = (gene, referenceGenome) => {
-  const gencodeData = gene.gencode[referenceGenome === 'GRCh37' ? (process.env.GRCh37_GENCODE_VERSION || 'v19') : (process.env.GRCh38_GENCODE_VERSION || 'v29')]
+  const gencodeData =
+    gene.gencode[
+      referenceGenome === 'GRCh37'
+        ? process.env.GRCH37_GENCODE_VERSION || 'v19'
+        : process.env.GRCH38_GENCODE_VERSION || 'v29'
+    ]
 
   if (isEmpty(gencodeData)) {
     throw new UserVisibleError('Gene not found')
@@ -103,7 +108,10 @@ export const fetchGeneBySymbol = async (ctx, geneSymbol, referenceGenome) => {
 
 export const fetchGenesByRegion = async (ctx, region) => {
   const { reference_genome: referenceGenome, xstart, xstop } = region
-  const gencodeVersion = referenceGenome === 'GRCh37' ? (process.env.GRCh37_GENCODE_VERSION || 'v19') : (process.env.GRCh38_GENCODE_VERSION || 'v29')
+  const gencodeVersion =
+    referenceGenome === 'GRCh37'
+      ? process.env.GRCH37_GENCODE_VERSION || 'v19'
+      : process.env.GRCH38_GENCODE_VERSION || 'v29'
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
     index: 'genes',
