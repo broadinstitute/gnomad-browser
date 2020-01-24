@@ -12,6 +12,14 @@ def main():
     parser.add_argument("index_name", help="Elasticsearch index name")
     parser.add_argument("--block-size", help="Elasticsearch block size to use when exporting", default=200, type=int)
     parser.add_argument("--disable-fields", help="Disable a field in Elasticsearch", action="append", default=[])
+    parser.add_argument(
+        "--es-config",
+        help="Configuration for Elasticsearch Hadoop connector",
+        action="append",
+        default=[],
+        nargs=2,
+        metavar=("property", "value"),
+    )
     parser.add_argument("--id-field", help="Field to use as Elasticsearch document ID", default=None)
     parser.add_argument("--num-shards", help="Number of elasticsearch shards", default=1, type=int)
     parser.add_argument("--port", help="Elasticsearch port", default=9200, type=int)
@@ -36,6 +44,7 @@ def main():
         num_shards=args.num_shards,
         port=args.port,
         verbose=True,
+        es_config=dict(args.es_config),
     )
 
 
