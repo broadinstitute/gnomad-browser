@@ -6,6 +6,15 @@ Since the gnomAD VCF files may be prohibitively large to download, this API prov
 
 Please note that this resource is under development and the query methods and data types described are subject to frequent change. Additional ways to query the data will likely be added in the future. We would love to hear your [feedback and suggestions](exomeconsortium@gmail.com) as to how this API could be improved.
 
+## Settings
+
+The default [GENCODE releases](https://www.gencodegenes.org/human/releases.html) are v19 for GRCh37 and v29 for GRCh38. If you want to serve a different version, you can set the following environment variables when launching your API Server:
+
++ GRCH37\_GENCODE\_VERSION
++ GRCH38\_GENCODE\_VERSION
+
+For example, if you want to use the v33 release, set `GRCH38_GENCODE_VERSION=v33`.
+
 ## Getting started
 
 To get comfortable building queries, check out the [official introductory guide](http://graphql.org/learn/queries/) and follow along by executing the queries yourself using the [Star Wars GraphiQL API](https://graphql-swapi.parseapp.com/). It may be useful to spend a few minutes doing that before proceeding.
