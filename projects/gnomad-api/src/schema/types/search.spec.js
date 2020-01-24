@@ -25,6 +25,7 @@ describe('isRegionId', () => {
     '2-35324:',
     'y-712321-811232',
     '6:391518-3851275',
+    '1:55,505,222-55,530,526',
   ]
 
   const negativeTestCases = ['chr1-', '5-1243421-a', '3-356788-123245', '54-12432-15440']
@@ -43,6 +44,7 @@ describe('normalizeRegionId', () => {
     { input: '2-35324:', normalized: '2-35304-35344' },
     { input: 'y-712321-811232', normalized: 'Y-712321-811232' },
     { input: '3-10', normalized: '3-0-30' },
+    { input: '1:55,505,222-55,530,526', normalized: '1-55505222-55530526' },
   ]
 
   testCases.forEach(({ input, normalized }) => {
@@ -58,6 +60,7 @@ describe('isVariantId', () => {
     'chr1:13414:a:c',
     '1-15342343-cagc-t',
     'CHR3-12433-A-GATC',
+    '1-55,516,888-G-GA',
   ]
 
   const negativeTestCases = [
@@ -79,6 +82,7 @@ describe('normalizeVariantId', () => {
     { input: 'chr1:13414:a:c', normalized: '1-13414-A-C' },
     { input: '1-15342343-cagc-t', normalized: '1-15342343-CAGC-T' },
     { input: 'CHR3-12433-A-GATC', normalized: '3-12433-A-GATC' },
+    { input: '1-55,516,888-G-GA', normalized: '1-55516888-G-GA' },
   ]
 
   testCases.forEach(({ input, normalized }) => {
