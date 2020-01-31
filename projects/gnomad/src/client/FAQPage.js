@@ -864,9 +864,9 @@ export default () => (
           threshold set to 20 for the -Q option. It is calculated per base of the respective calling
           intervals, includes sites with zero depth (-a flag), and is capped at 100x for a given
           sample and base pair. Mean coverage is then plotted on the browser. The numbers in columns
-          1, 5, 10, etc of our downloadable coverage files refer to the fraction of samples with a
-          depth of coverage of at least 1 read, 5 reads, 10 reads, etc. for the given chromosome and
-          position.
+          over_1, over_5, over_10, etc of our downloadable coverage files refer to the fraction of
+          samples with a depth of coverage of at least 1 read, 5 reads, 10 reads, etc. for the given
+          chromosome and position.
         </p>
       </Answer>
 
