@@ -84,34 +84,22 @@ const baseColumns = [
     ),
   },
   {
-    key: 'hgvsc',
-    heading: 'HGVSc',
-    tooltip: 'HGVS coding sequence',
-    minWidth: 140,
-    grow: 2,
+    key: 'hgvs',
+    heading: 'HGVSp/c',
+    tooltip: 'HGVS protein (if available) or coding sequence',
     isSortable: true,
-    render: (row, key, { highlightWords }) => (
-      <Highlighter
-        className="grid-cell-content"
-        searchWords={highlightWords}
-        textToHighlight={row[key] || ''}
-      />
-    ),
-  },
-  {
-    key: 'hgvsp',
-    heading: 'HGVSp',
-    tooltip: 'HGVS protein sequence',
-    isSortable: true,
-    minWidth: 140,
+    minWidth: 130,
     grow: 2,
-    render: (row, key, { highlightWords }) => (
-      <Highlighter
-        className="grid-cell-content"
-        searchWords={highlightWords}
-        textToHighlight={row[key] || ''}
-      />
-    ),
+    render: (row, key, { highlightWords }) => {
+      const content = row.hgvsp || row.hgvsc || ''
+      return (
+        <Highlighter
+          className="grid-cell-content"
+          searchWords={highlightWords}
+          textToHighlight={content}
+        />
+      )
+    },
   },
   {
     key: 'consequence',
