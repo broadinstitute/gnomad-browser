@@ -27,7 +27,7 @@ const formatPopulations = variantData => [
       ac: ((variantData.freq.adj.populations[popId] || {}).female || {}).AC || 0,
       an: ((variantData.freq.adj.populations[popId] || {}).female || {}).AN || 0,
       ac_hemi: 0,
-      ac_hom: ((variantData.freq.adj.populations[popId] || {}).female || {}).homozygote_count,
+      ac_hom: ((variantData.freq.adj.populations[popId] || {}).female || {}).homozygote_count || 0,
     },
     {
       id: `${popId.toUpperCase()}_MALE`,
@@ -36,7 +36,7 @@ const formatPopulations = variantData => [
       ac_hemi: variantData.nonpar
         ? ((variantData.freq.adj.populations[popId] || {}).male || {}).AC || 0
         : 0,
-      ac_hom: ((variantData.freq.adj.populations[popId] || {}).male || {}).homozygote_count,
+      ac_hom: ((variantData.freq.adj.populations[popId] || {}).male || {}).homozygote_count || 0,
     },
   ]),
   {
