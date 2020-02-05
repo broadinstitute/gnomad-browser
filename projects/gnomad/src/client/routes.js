@@ -14,6 +14,7 @@ import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
 import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
+import PublicationsPage from './PublicationsPage'
 import SearchRedirectPage from './SearchRedirectPage'
 import TermsPage from './TermsPage'
 import GenePageContainer from './GenePage/GenePageContainer'
@@ -144,6 +145,7 @@ const App = () => (
           <Route exact path="/about" component={AboutPage} />
           <Route exact path="/downloads" component={DownloadsPage} />
           <Route exact path="/terms" component={TermsPage} />
+          <Route exact path="/publications" component={PublicationsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
           <Route
