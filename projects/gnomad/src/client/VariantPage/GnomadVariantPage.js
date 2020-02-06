@@ -14,6 +14,7 @@ import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
+import LowAlleleNumberWarning from './LowAlleleNumberWarning'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
@@ -120,6 +121,8 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                   />
                 )}
               </ScrollWrapper>
+
+              <LowAlleleNumberWarning datasetId={datasetId} variant={variant} />
 
               {variant.colocatedVariants.length > 0 && (
                 <div>
