@@ -281,6 +281,8 @@ const ConnectedVariantsInGene = ({ gene, selectedAnalysisGroup, ...rest }) => (
           ac,
           an,
           af,
+          // Add hgvsp field here to allow sorting on it
+          hgvs: v.hgvsp || v.hgvsc,
         }
       })
 
