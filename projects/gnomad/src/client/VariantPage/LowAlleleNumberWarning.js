@@ -29,7 +29,11 @@ const LowAlleleNumberWarning = ({ datasetId, variant }) => {
   return (
     <p>
       <Badge level={noticeLevel}>Warning</Badge> This variant is covered in fewer than 50% of
-      individuals in {labelForDataset(datasetId)} {sampleSet}. This may indicate a low-quality site.
+      individuals in {labelForDataset(datasetId)} {sampleSet}.{' '}
+      {hasLowAlleleNumberInGenomes
+        ? 'This may indicate a low-quality site'
+        : 'Allele frequency estimates may not be reliable'}
+      .
     </p>
   )
 }
