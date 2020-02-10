@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { QuestionMark } from '@broad/help'
 import { Badge, TooltipAnchor } from '@broad/ui'
 
+import { labelForDataset } from '../datasets'
+import sampleCounts from '../dataset-constants/sampleCounts'
 import Link from '../Link'
 import QCFilter from '../QCFilter'
 
@@ -106,7 +108,42 @@ FilteringAlleleFrequency.defaultProps = {
   popmax_population: null,
 }
 
-export const GnomadVariantOccurrenceTable = ({ showExomes, showGenomes, variant }) => {
+const LowAlleleNumberWarning = ({
+  datasetId,
+  hasLowAlleleNumberInExomes,
+  hasLowAlleleNumberInGenomes,
+}) => {
+  const datasetLabel = labelForDataset(datasetId)
+  let sampleSet = null
+  if (hasLowAlleleNumberInGenomes) {
+    sampleSet = hasLowAlleleNumberInExomes
+      ? `both ${datasetLabel} exomes and genomes`
+      : `${datasetLabel} genomes`
+  } else if (hasLowAlleleNumberInExomes) {
+    sampleSet = `${datasetLabel} exomes`
+  }
+
+  const noticeLevel = hasLowAlleleNumberInGenomes ? 'error' : 'warning'
+
+  return (
+    <p>
+      <Badge level={noticeLevel}>Warning</Badge> This variant is covered in fewer than 50% of
+      individuals in {sampleSet}.{' '}
+      {hasLowAlleleNumberInGenomes
+        ? 'This may indicate a low-quality site'
+        : 'Allele frequency estimates may not be reliable'}
+      .
+    </p>
+  )
+}
+
+LowAlleleNumberWarning.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  hasLowAlleleNumberInExomes: PropTypes.bool.isRequired,
+  hasLowAlleleNumberInGenomes: PropTypes.bool.isRequired,
+}
+
+export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenomes, variant }) => {
   const showTotal = showExomes && showGenomes
 
   const isPresentInExome = Boolean(variant.exome)
@@ -133,6 +170,14 @@ export const GnomadVariantOccurrenceTable = ({ showExomes, showGenomes, variant 
   const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
   const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
 
+  // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
+  // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
+  const { exomesTotal, genomesTotal } = sampleCounts[datasetId]
+  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomesTotal
+  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomesTotal
+
+  // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
+  // See https://gnomad.broadinstitute.org/faq#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
   const exomeHighAlleleBalanceSamples = isPresentInExome
     ? variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[18] +
       variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[19]
@@ -182,9 +227,24 @@ export const GnomadVariantOccurrenceTable = ({ showExomes, showGenomes, variant 
           </tr>
           <tr>
             <th scope="row">Allele Number</th>
-            {showExomes && <td>{isPresentInExome && exomeAlleleNumber}</td>}
-            {showGenomes && <td>{isPresentInGenome && genomeAlleleNumber}</td>}
-            {showTotal && <td>{totalAlleleNumber}</td>}
+            {showExomes && (
+              <td>
+                {isPresentInExome && exomeAlleleNumber}
+                {hasLowAlleleNumberInExomes && ' *'}
+              </td>
+            )}
+            {showGenomes && (
+              <td>
+                {isPresentInGenome && genomeAlleleNumber}
+                {hasLowAlleleNumberInGenomes && ' *'}
+              </td>
+            )}
+            {showTotal && (
+              <td>
+                {totalAlleleNumber}
+                {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && ' *'}
+              </td>
+            )}
           </tr>
           <tr>
             <th scope="row">Allele Frequency</th>
@@ -241,6 +301,13 @@ export const GnomadVariantOccurrenceTable = ({ showExomes, showGenomes, variant 
           )}
         </tbody>
       </Table>
+      {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && (
+        <LowAlleleNumberWarning
+          datasetId={datasetId}
+          hasLowAlleleNumberInExomes={hasLowAlleleNumberInExomes}
+          hasLowAlleleNumberInGenomes={hasLowAlleleNumberInGenomes}
+        />
+      )}
       {showHighAlleleBalanceWarning && (
         <p>
           <Badge level="warning">Warning</Badge> {highAlleleBalanceWarningMessage}{' '}
@@ -267,6 +334,7 @@ const histogramPropType = PropTypes.shape({
 })
 
 GnomadVariantOccurrenceTable.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   showExomes: PropTypes.bool,
   showGenomes: PropTypes.bool,
   variant: PropTypes.shape({
