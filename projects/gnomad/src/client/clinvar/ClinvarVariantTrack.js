@@ -278,10 +278,10 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
   const [isFilteredtoGnomad, setIsFilteredtoGnomad] = useState(false)
 
   const isCategoryIncluded = {
-    lof: variantFilter.lof,
-    missense: variantFilter.missense,
-    synonymous: variantFilter.synonymous,
-    other: variantFilter.other,
+    lof: variantFilter.includeCategories.lof,
+    missense: variantFilter.includeCategories.missense,
+    synonymous: variantFilter.includeCategories.synonymous,
+    other: variantFilter.includeCategories.other,
   }
   const matchesConsequenceFilter = variant => {
     const category = getCategoryFromConsequence(variant.major_consequence) || 'other'
@@ -291,6 +291,15 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
   let filteredVariants = variants
     .filter(isClinvarVariantPathogenicOrLikelyPathogenic)
     .filter(matchesConsequenceFilter)
+
+  filteredVariants = filteredVariants.filter(v => {
+    const [chrom, pos, ref, alt] = v.variant_id.split('-') // eslint-disable-line no-unused-vars
+
+    const isSNV = ref.length === 1 && alt.length === 1
+    const isIndel = ref.length !== alt.length
+
+    return (variantFilter.includeSNVs && isSNV) || (variantFilter.includeIndels && isIndel)
+  })
 
   if (isFilteredtoGnomad) {
     const sortedGnomadVariants = sortVariantsById(selectedGnomadVariants)
@@ -401,10 +410,14 @@ ClinvarVariantTrack.propTypes = {
   ).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
   variantFilter: PropTypes.shape({
-    lof: PropTypes.bool.isRequired,
-    missense: PropTypes.bool.isRequired,
-    synonymous: PropTypes.bool.isRequired,
-    other: PropTypes.bool.isRequired,
+    includeCategories: PropTypes.shape({
+      lof: PropTypes.bool.isRequired,
+      missense: PropTypes.bool.isRequired,
+      synonymous: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
+    includeSNVs: PropTypes.bool.isRequired,
+    includeIndels: PropTypes.bool.isRequired,
   }).isRequired,
 }
 
