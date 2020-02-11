@@ -186,7 +186,7 @@ class VariantsInTranscript extends Component {
           <ClinvarVariantTrack
             selectedGnomadVariants={renderedVariants}
             variants={clinvarVariants}
-            variantFilter={filter.includeCategories}
+            variantFilter={filter}
           />
         )}
 
