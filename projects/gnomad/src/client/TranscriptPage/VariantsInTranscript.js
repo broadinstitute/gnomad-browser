@@ -184,6 +184,7 @@ class VariantsInTranscript extends Component {
       <div>
         {clinvarVariants && (
           <ClinvarVariantTrack
+            selectedGnomadVariants={renderedVariants}
             variants={clinvarVariants}
             variantFilter={filter.includeCategories}
           />
