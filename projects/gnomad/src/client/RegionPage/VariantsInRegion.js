@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
+import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -20,6 +21,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInRegion extends Component {
   static propTypes = {
+    clinvarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
     datasetId: PropTypes.string.isRequired,
     region: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
@@ -166,7 +168,7 @@ class VariantsInRegion extends Component {
   }
 
   render() {
-    const { datasetId, region, width } = this.props
+    const { clinvarVariants, datasetId, region, width } = this.props
     const {
       filter,
       renderedVariants,
@@ -182,6 +184,12 @@ class VariantsInRegion extends Component {
 
     return (
       <div>
+        <ClinvarVariantTrack
+          selectedGnomadVariants={renderedVariants}
+          variants={clinvarVariants}
+          variantFilter={filter}
+        />
+
         <VariantTrack
           title={`${datasetLabel}\n(${renderedVariants.length})`}
           variants={renderedVariants}
@@ -232,6 +240,14 @@ class VariantsInRegion extends Component {
 const query = `
 query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   region(start: $start, stop: $stop, chrom: $chrom, reference_genome: $referenceGenome) {
+    clinvar_variants {
+      clinical_significance
+      clinvar_variation_id
+      gold_stars
+      major_consequence
+      pos
+      variant_id
+    }
     variants(dataset: $datasetId) {
       consequence
       flags
@@ -322,6 +338,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
 
       return (
         <VariantsInRegion
+          clinvarVariants={data.region.clinvar_variants}
           datasetId={datasetId}
           region={region}
           variants={data.region.variants}
