@@ -8,6 +8,10 @@ import StructuralVariantDatasetArgumentType from '../datasets/StructuralVariantD
 import svDatasets from '../datasets/svDatasets'
 import { assertDatasetAndReferenceGenomeMatch } from '../datasets/validation'
 
+import ClinvarVariantType from '../datasets/clinvar/ClinvarVariantType'
+import countClinvarVariantsInRegion from '../datasets/clinvar/countClinvarVariantsInRegion'
+import fetchClinvarVariantsByRegion from '../datasets/clinvar/fetchClinvarVariantsByRegion'
+
 import { UserVisibleError } from '../errors'
 
 import { fetchGenesByRegion } from '../gene-models/gene'
@@ -73,6 +77,19 @@ const regionType = extendObjectType(BaseRegionType, {
           type,
           region: obj,
         })
+      },
+    },
+    clinvar_variants: {
+      type: new GraphQLList(ClinvarVariantType),
+      resolve: async (obj, args, ctx) => {
+        const numVariantsInRegion = await countClinvarVariantsInRegion(ctx, obj)
+        if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
+          throw new UserVisibleError(
+            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
+          )
+        }
+
+        return fetchClinvarVariantsByRegion(ctx, obj)
       },
     },
     structural_variants: {
