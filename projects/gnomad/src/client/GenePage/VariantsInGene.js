@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
 
-import ClinVarTrack from '../clinvar/ClinVarTrack'
+import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
@@ -191,7 +191,10 @@ class VariantsInGene extends Component {
     return (
       <div>
         {clinvarVariants && (
-          <ClinVarTrack variants={clinvarVariants} variantFilter={filter.includeCategories} />
+          <ClinvarVariantTrack
+            variants={clinvarVariants}
+            variantFilter={filter.includeCategories}
+          />
         )}
 
         <VariantTrack
