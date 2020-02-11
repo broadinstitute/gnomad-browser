@@ -1,21 +1,19 @@
 import { scaleLinear } from 'd3-scale'
+import sortBy from 'lodash.sortby'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@broad/region-viewer'
-import { SegmentedControl } from '@broad/ui'
+import { Checkbox, SegmentedControl } from '@broad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
 
 import StackedVariantsPlot from './StackedVariantsPlot'
 
-function isPathogenicOrLikelyPathogenic(clinvarVariant) {
-  return (
-    clinvarVariant.clinical_significance &&
-    (clinvarVariant.clinical_significance.includes('Pathogenic') ||
-      clinvarVariant.clinical_significance.includes('Likely_pathogenic'))
-  )
-}
+const isClinvarVariantPathogenicOrLikelyPathogenic = clinvarVariant =>
+  clinvarVariant.clinical_significance &&
+  (clinvarVariant.clinical_significance.includes('Pathogenic') ||
+    clinvarVariant.clinical_significance.includes('Likely_pathogenic'))
 
 const CONSEQUENCE_COLORS = {
   lof: '#dd2c00',
@@ -25,13 +23,28 @@ const CONSEQUENCE_COLORS = {
 
 const DEFAULT_COLOR = '#424242'
 
-function variantColor(clinvarVariant) {
+const clinvarVariantColor = clinvarVariant => {
   if (!clinvarVariant.major_consequence) {
     return DEFAULT_COLOR
   }
   const category = getCategoryFromConsequence(clinvarVariant.major_consequence)
   return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
 }
+
+const sortVariantsById = variants =>
+  sortBy(
+    variants.map(variant => {
+      const [chrom, pos, ref, alt] = variant.variant_id.split('-')
+      return {
+        ...variant,
+        chrom,
+        pos: Number(pos),
+        ref,
+        alt,
+      }
+    }),
+    ['pos', 'ref', 'alt']
+  )
 
 const ClinvarVariantPropType = PropTypes.shape({
   clinical_significance: PropTypes.arrayOf(PropTypes.string),
@@ -214,7 +227,7 @@ const ClinvarStackedVariantsPlot = ({ scalePosition, variants, width }) => {
     <StackedVariantsPlot
       onClickVariant={onClickVariant}
       scalePosition={scalePosition}
-      symbolColor={variantColor}
+      symbolColor={clinvarVariantColor}
       tooltipComponent={ClinvarTooltip}
       variantLayers={layers}
       width={width}
@@ -240,6 +253,7 @@ const TopPanel = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   width: 100%;
 `
 
@@ -259,8 +273,9 @@ const TitlePanel = styled.div`
   padding-right: 20px;
 `
 
-const ClinvarVariantTrack = ({ variants, variantFilter }) => {
+const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isFilteredtoGnomad, setIsFilteredtoGnomad] = useState(false)
 
   const isCategoryIncluded = {
     lof: variantFilter.lof,
@@ -273,9 +288,63 @@ const ClinvarVariantTrack = ({ variants, variantFilter }) => {
     return isCategoryIncluded[category]
   }
 
-  const filteredVariants = variants
-    .filter(isPathogenicOrLikelyPathogenic)
+  let filteredVariants = variants
+    .filter(isClinvarVariantPathogenicOrLikelyPathogenic)
     .filter(matchesConsequenceFilter)
+
+  if (isFilteredtoGnomad) {
+    const sortedGnomadVariants = sortVariantsById(selectedGnomadVariants)
+    let gnomadVariantIndex = 0
+    filteredVariants = sortVariantsById(filteredVariants).filter(variant => {
+      if (gnomadVariantIndex >= sortedGnomadVariants.length) {
+        return false
+      }
+
+      while (
+        gnomadVariantIndex < sortedGnomadVariants.length &&
+        sortedGnomadVariants[gnomadVariantIndex].pos < variant.pos
+      ) {
+        gnomadVariantIndex += 1
+      }
+      if (
+        gnomadVariantIndex >= sortedGnomadVariants.length ||
+        sortedGnomadVariants[gnomadVariantIndex].pos > variant.pos
+      ) {
+        return false
+      }
+
+      // Positions are equal
+      while (
+        gnomadVariantIndex < sortedGnomadVariants.length &&
+        sortedGnomadVariants[gnomadVariantIndex].ref < variant.ref
+      ) {
+        gnomadVariantIndex += 1
+      }
+      if (
+        gnomadVariantIndex >= sortedGnomadVariants.length ||
+        sortedGnomadVariants[gnomadVariantIndex].ref > variant.ref
+      ) {
+        return false
+      }
+
+      // Positions and refs are equal
+      while (
+        gnomadVariantIndex < sortedGnomadVariants.length &&
+        sortedGnomadVariants[gnomadVariantIndex].alt < variant.alt
+      ) {
+        gnomadVariantIndex += 1
+      }
+      if (
+        gnomadVariantIndex >= sortedGnomadVariants.length ||
+        sortedGnomadVariants[gnomadVariantIndex].alt > variant.alt
+      ) {
+        return false
+      }
+
+      // Positions, refs, and alts are equal
+      return true
+    })
+  }
 
   return (
     <Wrapper>
@@ -287,6 +356,13 @@ const ClinvarVariantTrack = ({ variants, variantFilter }) => {
         )}
         renderTopPanel={() => (
           <TopPanel>
+            <Checkbox
+              checked={isFilteredtoGnomad}
+              id="clinvar-track-filter-to-gnomad"
+              label="Filter to selected gnomAD variants"
+              style={{ marginRight: '1em' }}
+              onChange={setIsFilteredtoGnomad}
+            />
             <SegmentedControl
               id="clinvar-track-mode"
               options={[
@@ -318,6 +394,11 @@ const ClinvarVariantTrack = ({ variants, variantFilter }) => {
 }
 
 ClinvarVariantTrack.propTypes = {
+  selectedGnomadVariants: PropTypes.arrayOf(
+    PropTypes.shape({
+      variant_id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
   variantFilter: PropTypes.shape({
     lof: PropTypes.bool.isRequired,

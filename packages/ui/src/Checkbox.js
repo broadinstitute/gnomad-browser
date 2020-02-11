@@ -10,8 +10,8 @@ const CheckboxInput = styled.input`
   margin-right: 0.5em;
 `
 
-export const Checkbox = ({ checked, disabled, id, label, onChange }) => (
-  <Label htmlFor={id}>
+export const Checkbox = ({ checked, disabled, id, label, onChange, ...rest }) => (
+  <Label {...rest} htmlFor={id}>
     <CheckboxInput
       checked={checked}
       disabled={disabled}
