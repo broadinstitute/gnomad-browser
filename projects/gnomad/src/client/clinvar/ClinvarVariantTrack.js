@@ -1,5 +1,4 @@
 import { scaleLinear } from 'd3-scale'
-import sortBy from 'lodash.sortby'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -30,21 +29,6 @@ const clinvarVariantColor = clinvarVariant => {
   const category = getCategoryFromConsequence(clinvarVariant.major_consequence)
   return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
 }
-
-const sortVariantsById = variants =>
-  sortBy(
-    variants.map(variant => {
-      const [chrom, pos, ref, alt] = variant.variant_id.split('-')
-      return {
-        ...variant,
-        chrom,
-        pos: Number(pos),
-        ref,
-        alt,
-      }
-    }),
-    ['pos', 'ref', 'alt']
-  )
 
 const ClinvarVariantPropType = PropTypes.shape({
   clinical_significance: PropTypes.arrayOf(PropTypes.string),
@@ -302,57 +286,8 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
   })
 
   if (isFilteredtoGnomad) {
-    const sortedGnomadVariants = sortVariantsById(selectedGnomadVariants)
-    let gnomadVariantIndex = 0
-    filteredVariants = sortVariantsById(filteredVariants).filter(variant => {
-      if (gnomadVariantIndex >= sortedGnomadVariants.length) {
-        return false
-      }
-
-      while (
-        gnomadVariantIndex < sortedGnomadVariants.length &&
-        sortedGnomadVariants[gnomadVariantIndex].pos < variant.pos
-      ) {
-        gnomadVariantIndex += 1
-      }
-      if (
-        gnomadVariantIndex >= sortedGnomadVariants.length ||
-        sortedGnomadVariants[gnomadVariantIndex].pos > variant.pos
-      ) {
-        return false
-      }
-
-      // Positions are equal
-      while (
-        gnomadVariantIndex < sortedGnomadVariants.length &&
-        sortedGnomadVariants[gnomadVariantIndex].ref < variant.ref
-      ) {
-        gnomadVariantIndex += 1
-      }
-      if (
-        gnomadVariantIndex >= sortedGnomadVariants.length ||
-        sortedGnomadVariants[gnomadVariantIndex].ref > variant.ref
-      ) {
-        return false
-      }
-
-      // Positions and refs are equal
-      while (
-        gnomadVariantIndex < sortedGnomadVariants.length &&
-        sortedGnomadVariants[gnomadVariantIndex].alt < variant.alt
-      ) {
-        gnomadVariantIndex += 1
-      }
-      if (
-        gnomadVariantIndex >= sortedGnomadVariants.length ||
-        sortedGnomadVariants[gnomadVariantIndex].alt > variant.alt
-      ) {
-        return false
-      }
-
-      // Positions, refs, and alts are equal
-      return true
-    })
+    const gnomadVariantSet = new Set(selectedGnomadVariants.map(v => v.variant_id))
+    filteredVariants = filteredVariants.filter(v => gnomadVariantSet.has(v.variant_id))
   }
 
   return (
