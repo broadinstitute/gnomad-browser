@@ -214,7 +214,7 @@ export const QQPlot = ({
     // ====================================================
 
     return canvas
-  }, [dataPoints, height, width, xLabel, yLabel])
+  }, [dataPoints, height, width, xLabel, yLabel, thresholds]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const mainCanvas = useRef()
 

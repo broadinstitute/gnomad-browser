@@ -211,7 +211,7 @@ export const ManhattanPlot = ({
     // ====================================================
 
     return canvas
-  }, [chromosomes, dataPoints, height, pointColor, width, xLabel, yLabel])
+  }, [chromosomes, dataPoints, height, pointColor, width, xLabel, yLabel, thresholds]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const mainCanvas = useRef()
 

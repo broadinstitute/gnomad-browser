@@ -48,7 +48,7 @@ const useCombinedRefs = refs =>
         ref.current = element // eslint-disable-line no-param-reassign
       }
     })
-  }, refs)
+  }, refs) // eslint-disable-line react-hooks/exhaustive-deps
 
 const Canvas = forwardRef(({ children, height, width, ...otherProps }, ref) => {
   const element = useRef(null)

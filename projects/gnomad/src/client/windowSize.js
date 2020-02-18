@@ -18,7 +18,7 @@ export const withWindowSize = Component => {
       return function unsubscribe() {
         resizeCallbacks = resizeCallbacks.filter(cb => cb !== setSize)
       }
-    })
+    }, [])
 
     return <Component {...props} width={size.width} />
   }
