@@ -24,7 +24,7 @@ const DownloadsPage = ({ location }) => {
     } else if (location.hash.startsWith('#exac-')) {
       setActiveTab('exac')
     }
-  }, location.hash)
+  }, [location.hash])
 
   return (
     <InfoPage>
