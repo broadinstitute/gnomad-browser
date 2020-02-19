@@ -418,8 +418,12 @@ export default () => (
           </li>
           <li>Louis Bergelson</li>
           <li>Kristian Cibulskis</li>
+          <li>Miguel Covarrubias</li>
           <li>Yossi Farjoun</li>
           <li>Laura Gauthier</li>
+          <li>Jeff Gentry</li>
+          <li>Thibault Jeandet</li>
+          <li>Diane Kaplan</li>
           <li>Christopher Llanwarne</li>
           <li>Ruchi Munshi</li>
           <li>Sam Novod</li>
@@ -499,6 +503,7 @@ export default () => (
         <h3 id="coordination">Coordination</h3>
         <ContributorList aria-labelledby="coordination">
           <li>Jessica Alföldi</li>
+          <li>Kat Tarasova</li>
         </ContributorList>
         <h3 id="website-team">Website team</h3>
         <ContributorList aria-labelledby="website-team">
@@ -533,12 +538,12 @@ export default () => (
           <li>
             <strong>Heidi Rehm</strong>
           </li>
-          <li>Jessica Alföldi</li>
           <li>Daniel MacArthur</li>
           <li>Ben Neale</li>
           <li>Anne O&apos;Donnell-Luria</li>
           <li>Matthew Solomonson</li>
           <li>Mike Talkowski</li>
+          <li>Kat Tarasova</li>
           <li>Grace Tiao</li>
         </ContributorList>
         <h3 id="funding">Funding</h3>
