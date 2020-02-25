@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { PageHeading } from '@broad/ui'
+import { PageHeading } from '@gnomad/ui'
 
 import InfoPage from './InfoPage'
 import Query from './Query'

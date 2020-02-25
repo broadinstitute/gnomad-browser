@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { QuestionMark } from '@broad/help'
-import { Badge } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Badge } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 import Link from '../Link'

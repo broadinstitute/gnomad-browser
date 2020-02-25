@@ -4,7 +4,7 @@ import React, { Component, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Button, Input, Modal, PrimaryButton } from '@broad/ui'
+import { Button, Input, Modal, PrimaryButton } from '@gnomad/ui'
 
 const Wrapper = styled.div`
   display: flex;

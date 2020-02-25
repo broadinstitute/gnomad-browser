@@ -1,5 +1,5 @@
 {
-  "name": "@broad/track-genes",
+  "name": "@gnomad/track-genes",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -10,11 +10,11 @@
     "example": "gnomadjs-scripts example"
   },
   "dependencies": {
-    "@broad/region-viewer": "*",
+    "@gnomad/region-viewer": "*",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2",

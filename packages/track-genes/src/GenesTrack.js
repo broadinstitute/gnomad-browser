@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Track } from '@broad/region-viewer'
+import { Track } from '@gnomad/region-viewer'
 
 const TitlePanel = styled.div`
   display: flex;

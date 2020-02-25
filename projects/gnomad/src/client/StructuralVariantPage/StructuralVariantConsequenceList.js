@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { ListItem, Modal, OrderedList, TextButton } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
 
 import Link from '../Link'
 import {

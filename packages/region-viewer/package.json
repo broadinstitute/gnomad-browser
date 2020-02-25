@@ -1,5 +1,5 @@
 {
-  "name": "@broad/region-viewer",
+  "name": "@gnomad/region-viewer",
   "version": "1.0.0",
   "license": "MIT",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "ramda": "^0.24.1"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2",

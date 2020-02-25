@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, Link, List, ListItem } from '@broad/ui'
+import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
   ChromosomeVcfLinks,

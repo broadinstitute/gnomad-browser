@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
-import { Grid } from '@broad/ui'
+import { Grid } from '@gnomad/ui'
 
 const NoVariants = styled.div`
   display: flex;

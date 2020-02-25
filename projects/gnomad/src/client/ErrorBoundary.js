@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { ExternalLink, Link as StyledLink, PageHeading } from '@broad/ui'
+import { ExternalLink, Link as StyledLink, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'

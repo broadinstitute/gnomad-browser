@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { getCategoryFromConsequence } from '@broad/utilities'
+import { getCategoryFromConsequence } from '@gnomad/utilities'
 
 import Link from '../Link'
 import { LofteeFilter, LofteeFlag } from './Loftee'

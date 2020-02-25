@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PageHeading } from '@broad/ui'
+import { PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'

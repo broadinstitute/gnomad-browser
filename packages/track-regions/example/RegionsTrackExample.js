@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GeneViewer from '@broad/region-viewer/example/GeneViewer'
+import GeneViewer from '@gnomad/region-viewer/example/GeneViewer'
 
 import { RegionsTrack } from '../src'
 

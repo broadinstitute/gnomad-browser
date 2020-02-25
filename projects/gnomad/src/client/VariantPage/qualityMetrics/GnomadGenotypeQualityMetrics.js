@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl, Select } from '@broad/ui'
+import { SegmentedControl, Select } from '@gnomad/ui'
 
 import Histogram from '../../Histogram'
 import ControlSection from '../ControlSection'

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl, Select } from '@broad/ui'
+import { SegmentedControl, Select } from '@gnomad/ui'
 
 import gnomadV2AgeDistribution from '../dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import Histogram from '../Histogram'

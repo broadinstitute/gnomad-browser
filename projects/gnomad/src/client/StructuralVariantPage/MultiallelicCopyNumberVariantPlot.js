@@ -5,7 +5,7 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
 
-import { TooltipAnchor } from '@broad/ui'
+import { TooltipAnchor } from '@gnomad/ui'
 
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 

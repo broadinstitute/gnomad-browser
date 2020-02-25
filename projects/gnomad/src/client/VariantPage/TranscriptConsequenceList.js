@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { ListItem, Modal, OrderedList, TextButton } from '@broad/ui'
-import { getLabelForConsequenceTerm } from '@broad/utilities'
+import { ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
+import { getLabelForConsequenceTerm } from '@gnomad/utilities'
 
 import Link from '../Link'
 import TranscriptConsequence from './TranscriptConsequence'

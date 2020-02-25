@@ -1,5 +1,5 @@
 {
-  "name": "@broad/help",
+  "name": "@gnomad/help",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -10,8 +10,8 @@
     "example": "gnomadjs-scripts example"
   },
   "dependencies": {
-    "@broad/ui": "*",
     "@fortawesome/fontawesome-free": "^5.8.1",
+    "@gnomad/ui": "*",
     "glob": "^7.1.3",
     "js-worker-search": "^1.4.0",
     "keymirror": "^0.1.1",
@@ -27,7 +27,7 @@
     "yaml": "^1.4.0"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2",

@@ -1,5 +1,5 @@
 {
-  "name": "@broad/utilities",
+  "name": "@gnomad/utilities",
   "main": "src/index.js",
   "version": "0.0.1",
   "license": "MIT",
@@ -7,6 +7,6 @@
     "lib"
   ],
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   }
 }

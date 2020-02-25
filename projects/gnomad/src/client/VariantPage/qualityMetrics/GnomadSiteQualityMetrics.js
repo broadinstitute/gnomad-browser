@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { SegmentedControl, Select } from '@broad/ui'
+import { SegmentedControl, Select } from '@gnomad/ui'
 
 import exacSiteQualityMetricDistributions from '../../dataset-constants/exac/siteQualityMetricDistributions.json'
 import gnomadV2SiteQualityMetricDistributions from '../../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'

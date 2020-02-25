@@ -4,9 +4,9 @@ import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Track } from '@broad/region-viewer'
-import { RegionsPlot } from '@broad/track-regions'
-import { Button } from '@broad/ui'
+import { Track } from '@gnomad/region-viewer'
+import { RegionsPlot } from '@gnomad/track-regions'
+import { Button } from '@gnomad/ui'
 
 const ToggleTranscriptsPanel = styled.div`
   display: flex;

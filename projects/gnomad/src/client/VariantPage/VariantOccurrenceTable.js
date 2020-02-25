@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { Badge, TooltipAnchor } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Badge, TooltipAnchor } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import sampleCounts from '../dataset-constants/sampleCounts'

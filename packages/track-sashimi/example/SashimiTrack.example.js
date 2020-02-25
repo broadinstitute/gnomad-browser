@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import R from 'ramda'
 import Slider from 'material-ui/Slider'
 
-import { RegionViewer } from '@broad/region-viewer'
+import { RegionViewer } from '@gnomad/region-viewer'
 
 import testGene from '@resources/gwas-eg.json'  // eslint-disable-line
 import testCoverage from '@resources/gwas-eg.json'  // eslint-disable-line

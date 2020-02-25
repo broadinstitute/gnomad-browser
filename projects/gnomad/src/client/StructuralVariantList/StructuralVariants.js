@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { PositionAxisTrack } from '@broad/region-viewer'
-import { SegmentedControl } from '@broad/ui'
-import { HUMAN_CHROMOSOMES } from '@broad/utilities'
+import { PositionAxisTrack } from '@gnomad/region-viewer'
+import { SegmentedControl } from '@gnomad/ui'
+import { HUMAN_CHROMOSOMES } from '@gnomad/utilities'
 
 import { TrackPageSection } from '../TrackPage'
 

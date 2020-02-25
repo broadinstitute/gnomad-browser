@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { Checkbox, CategoryFilterControl, SearchInput } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Checkbox, CategoryFilterControl, SearchInput } from '@gnomad/ui'
 
 import {
   svConsequenceCategoryColors,

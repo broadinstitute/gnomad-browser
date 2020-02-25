@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { Button, Modal, TextButton } from '@broad/ui'
+import { Button, Modal, TextButton } from '@gnomad/ui'
 
 import { HelpContent } from './HelpContent'
 import {

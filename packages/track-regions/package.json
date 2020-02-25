@@ -1,5 +1,5 @@
 {
-  "name": "@broad/track-regions",
+  "name": "@gnomad/track-regions",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -13,7 +13,7 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2"

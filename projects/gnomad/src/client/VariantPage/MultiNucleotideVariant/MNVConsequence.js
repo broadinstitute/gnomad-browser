@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { BaseTable } from '@broad/ui'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+import { BaseTable } from '@gnomad/ui'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
 
 import VariantCategoryMarker from '../../VariantList/VariantCategoryMarker'
 

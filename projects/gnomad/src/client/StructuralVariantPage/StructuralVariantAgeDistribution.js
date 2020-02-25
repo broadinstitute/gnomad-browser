@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Select } from '@broad/ui'
+import { Select } from '@gnomad/ui'
 
 import Histogram from '../Histogram'
 import ControlSection from '../VariantPage/ControlSection'

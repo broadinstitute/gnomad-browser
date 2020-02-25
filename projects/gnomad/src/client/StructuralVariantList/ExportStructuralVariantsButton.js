@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Button } from '@broad/ui'
+import { Button } from '@gnomad/ui'
 
 import { svConsequenceLabels } from './structuralVariantConsequences'
 import StructuralVariantPropType from './StructuralVariantPropType'

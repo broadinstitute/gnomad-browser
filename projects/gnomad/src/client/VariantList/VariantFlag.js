@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Badge } from '@broad/ui'
+import { Badge } from '@gnomad/ui'
 
 const flagProps = {
   lcr: {

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { Track } from '@broad/region-viewer'
-import { RegionsPlot } from '@broad/track-regions'
-import { Button } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Track } from '@gnomad/region-viewer'
+import { RegionsPlot } from '@gnomad/track-regions'
+import { Button } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
 

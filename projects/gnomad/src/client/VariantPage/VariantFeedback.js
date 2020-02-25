@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Link as StyledLink, List, ListItem } from '@broad/ui'
+import { Link as StyledLink, List, ListItem } from '@gnomad/ui'
 
 const VariantFeedback = ({ datasetId, variantId }) => {
   const reportEmailBody = `

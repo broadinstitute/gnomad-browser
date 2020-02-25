@@ -3,7 +3,7 @@ import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React, { forwardRef, useCallback, useEffect, useRef } from 'react'
 
-import { getCategoryFromConsequence } from '@broad/utilities'
+import { getCategoryFromConsequence } from '@gnomad/utilities'
 
 const exacClassicColors = {
   lof: transparentize(0.3, '#FF583F'),

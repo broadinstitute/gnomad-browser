@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ExternalLink, PageHeading } from '@broad/ui'
+import { ExternalLink, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'

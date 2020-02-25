@@ -1,5 +1,5 @@
 {
-  "name": "@broad/track-coverage",
+  "name": "@gnomad/track-coverage",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -10,15 +10,15 @@
     "example": "gnomadjs-scripts example"
   },
   "dependencies": {
-    "@broad/region-viewer": "*",
-    "@broad/ui": "*",
+    "@gnomad/region-viewer": "*",
+    "@gnomad/ui": "*",
     "@vx/axis": "^0.0.184",
     "d3-scale": "^2.2.2",
     "d3-shape": "^1.3.5",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2",

@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@broad/region-viewer'
-import { GenesTrack } from '@broad/track-genes'
+import { RegionViewer } from '@gnomad/region-viewer'
+import { GenesTrack } from '@gnomad/track-genes'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'

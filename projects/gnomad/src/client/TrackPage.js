@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Page } from '@broad/ui'
+import { Page } from '@gnomad/ui'
 
 export const TrackPage = styled(Page)`
   max-width: none;
