@@ -2,7 +2,3 @@
     path = cluster/elasticsearch/kubernetes-elasticsearch-cluster
     url = https://github.com/macarthur-lab/gnomadjs-elasticsearch.git
 
-[submodule "hail-db-utils"]
-    path = hail-elasticsearch-pipelines
-    url = https://github.com/macarthur-lab/hail-elasticsearch-pipelines.git
-
