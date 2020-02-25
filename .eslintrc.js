@@ -52,13 +52,6 @@ module.exports = {
       },
     },
     {
-      // Ignore @browser webpack alias in exome-results-browsers
-      files: ['projects/exome-results-browsers/**/*.js'],
-      rules: {
-        'import/no-unresolved': ['error', { ignore: ['^@browser\/'] }],
-      },
-    },
-    {
       files: ['projects/gnomad-api/**/*.js'],
       rules: {
         'no-underscore-dangle': ['error', {
