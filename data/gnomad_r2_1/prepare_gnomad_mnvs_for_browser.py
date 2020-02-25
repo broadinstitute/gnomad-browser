@@ -5,11 +5,8 @@ import tempfile
 
 import hail as hl
 
-from hail_scripts.v02.utils.computed_fields import (
-    CONSEQUENCE_TERM_RANK_LOOKUP,
-    get_expr_for_contig,
-    get_expr_for_xpos,
-)
+from data_utils.computed_fields import normalized_contig, x_position
+from data_utils.computed_fields.vep import consequence_term_rank
 
 p = argparse.ArgumentParser()
 p.add_argument("--mnv-url", help="URL of MNV TSV file", required=True)
@@ -73,9 +70,9 @@ def import_mnv_file(path, **kwargs):
     ds = ds.transmute(locus=hl.locus(ds["locus.contig"], ds["locus.position"]))
 
     ds = ds.transmute(
-        contig=get_expr_for_contig(ds.locus),
+        contig=normalized_contig(ds.locus),
         pos=ds.locus.position,
-        xpos=get_expr_for_xpos(ds.locus),
+        xpos=x_position(ds.locus),
     )
 
     ds = ds.annotate(
@@ -177,7 +174,7 @@ def import_mnv_file(path, **kwargs):
     ds = ds.annotate(
         consequences=hl.sorted(
             ds.consequences,
-            key=lambda c: CONSEQUENCE_TERM_RANK_LOOKUP.get(c.consequence),
+            key=lambda c: consequence_term_rank(c.consequence),
         )
     )
 
@@ -279,9 +276,9 @@ def import_three_bp_mnv_file(path, **kwargs):
     ds = ds.key_by(mnv=ds.tnv)
 
     ds = ds.transmute(
-        contig=get_expr_for_contig(ds.locus),
+        contig=normalized_contig(ds.locus),
         pos=ds.locus.position,
-        xpos=get_expr_for_xpos(ds.locus),
+        xpos=x_position(ds.locus),
     )
 
     ds = ds.transmute(ref=ds.alleles[0], alt=ds.alleles[1], variant_id=ds.tnv)
@@ -401,7 +398,7 @@ def import_three_bp_mnv_file(path, **kwargs):
     ds = ds.annotate(
         consequences=hl.sorted(
             ds.consequences,
-            key=lambda c: CONSEQUENCE_TERM_RANK_LOOKUP.get(c.consequence),
+            key=lambda c: consequence_term_rank(c.consequence),
         )
     )
 
