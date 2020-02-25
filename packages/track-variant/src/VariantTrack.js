@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Track } from '@broad/region-viewer'
+import { Track } from '@gnomad/region-viewer'
 
 import { VariantPlot } from './VariantPlot'
 

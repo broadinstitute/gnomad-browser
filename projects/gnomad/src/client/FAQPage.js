@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, List, ListItem, PageHeading } from '@broad/ui'
+import { ExternalLink, List, ListItem, PageHeading } from '@gnomad/ui'
 
 import ageDistribution from './dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import { withAnchor } from './AnchorLink'

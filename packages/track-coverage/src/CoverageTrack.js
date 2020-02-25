@@ -5,8 +5,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { AxisLeft } from '@vx/axis'
 
-import { Track } from '@broad/region-viewer'
-import { Button, Select } from '@broad/ui'
+import { Track } from '@gnomad/region-viewer'
+import { Button, Select } from '@gnomad/ui'
 
 import { Legend } from './Legend'
 

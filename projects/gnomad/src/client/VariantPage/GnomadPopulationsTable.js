@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Checkbox } from '@broad/ui'
+import { Checkbox } from '@gnomad/ui'
 
 import { PopulationsTable } from './PopulationsTable'
 

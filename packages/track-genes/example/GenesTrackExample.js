@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { RegionViewer } from '@broad/region-viewer'
+import { RegionViewer } from '@gnomad/region-viewer'
 
 import regionData from '@resources/2-175000717-180995530.json'
 

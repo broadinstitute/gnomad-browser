@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { Page } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Page } from '@gnomad/ui'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'

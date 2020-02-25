@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { ExternalLink, List, ListItem, Modal, TextButton } from '@broad/ui'
+import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 import Link from '../Link'

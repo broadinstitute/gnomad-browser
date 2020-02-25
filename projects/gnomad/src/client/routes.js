@@ -4,8 +4,8 @@ import { hot } from 'react-hot-loader/root'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { HelpButton, HelpModal } from '@broad/help'
-import { normalizeRegionId } from '@broad/utilities'
+import { HelpButton, HelpModal } from '@gnomad/help'
+import { normalizeRegionId } from '@gnomad/utilities'
 
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'

@@ -2,7 +2,7 @@ import { symbol, symbolStar } from 'd3-shape'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { TooltipAnchor } from '@broad/ui'
+import { TooltipAnchor } from '@gnomad/ui'
 
 const layoutStackedPoints = (dataLayers, scale, spacing) => {
   const rows = []

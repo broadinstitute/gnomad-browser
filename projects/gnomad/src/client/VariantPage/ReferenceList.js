@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { ExternalLink, List, ListItem } from '@broad/ui'
+import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
 export const ReferenceList = ({ variant, clinvarVariant }) => {
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, List, ListItem, Page } from '@broad/ui'
+import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
 import DocumentTitle from '../../DocumentTitle'
 import GnomadPageHeading from '../../GnomadPageHeading'

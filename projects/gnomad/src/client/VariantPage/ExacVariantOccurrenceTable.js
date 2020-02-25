@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge } from '@broad/ui'
+import { Badge } from '@gnomad/ui'
 
 import sampleCounts from '../dataset-constants/sampleCounts'
 import QCFilter from '../QCFilter'

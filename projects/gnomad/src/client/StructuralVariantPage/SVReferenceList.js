@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, List, ListItem } from '@broad/ui'
+import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 

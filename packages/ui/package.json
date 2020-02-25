@@ -1,5 +1,5 @@
 {
-  "name": "@broad/ui",
+  "name": "@gnomad/ui",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -23,7 +23,7 @@
     "react-window": "^1.7.1"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2",

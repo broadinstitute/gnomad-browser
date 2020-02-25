@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { TooltipAnchor, TooltipHint } from '@broad/ui'
+import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 const ConstraintHighlight = styled.span`
   display: inline-block;

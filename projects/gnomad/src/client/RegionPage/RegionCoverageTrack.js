@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { CoverageTrack } from '@broad/track-coverage'
+import { CoverageTrack } from '@gnomad/track-coverage'
 
 import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Track } from '@broad/region-viewer'
+import { Track } from '@gnomad/region-viewer'
 
 import { PositionAxis } from './PositionAxis'
 

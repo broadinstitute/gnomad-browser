@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
+import { QuestionMark } from '@gnomad/help'
 
 import DatasetSelector from './DatasetSelector'
 

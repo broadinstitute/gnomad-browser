@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { FixedSizeList } from 'react-window'
 
-import { Track } from '@broad/region-viewer'
+import { Track } from '@gnomad/region-viewer'
 
 import Link from '../Link'
 import StructuralVariantPlot from './StructuralVariantPlot'

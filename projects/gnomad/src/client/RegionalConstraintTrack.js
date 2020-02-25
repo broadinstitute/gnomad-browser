@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { Track } from '@broad/region-viewer'
-import { TooltipAnchor } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { Track } from '@gnomad/region-viewer'
+import { TooltipAnchor } from '@gnomad/ui'
 
 const Wrapper = styled.div`
   display: flex;

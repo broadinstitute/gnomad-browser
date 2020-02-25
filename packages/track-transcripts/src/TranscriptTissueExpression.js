@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, TooltipAnchor } from '@broad/ui'
+import { ExternalLink, TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_NAMES } from './gtex'
 import { TranscriptsTrack } from './TranscriptsTrack'

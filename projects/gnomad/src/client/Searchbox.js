@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Searchbox, Select } from '@broad/ui'
+import { Searchbox, Select } from '@gnomad/ui'
 
 const Wrapper = styled.div`
   display: flex;

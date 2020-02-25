@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TextButton } from '@broad/ui'
+import { BaseTable, TextButton } from '@gnomad/ui'
 
 const Table = styled(BaseTable)`
   tr.border {

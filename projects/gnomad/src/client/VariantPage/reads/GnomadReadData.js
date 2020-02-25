@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Badge, Button, ExternalLink } from '@broad/ui'
+import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
 import Query from '../../Query'
 import StatusMessage from '../../StatusMessage'

@@ -5,10 +5,10 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import { createHelpReducer } from '@broad/help'
+import { createHelpReducer } from '@gnomad/help'
 
 // eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved,import/extensions
-import helpTopics from '@broad/help/src/loader!./helpConfig'
+import helpTopics from '@gnomad/help/src/loader!./helpConfig'
 
 import App from './routes'
 

@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import React from 'react'
 import { Link as RRLink, withRouter } from 'react-router-dom'
 
-import { Link as StyledLink } from '@broad/ui'
+import { Link as StyledLink } from '@gnomad/ui'
 
 const StyledRRLink = StyledLink.withComponent(RRLink)
 

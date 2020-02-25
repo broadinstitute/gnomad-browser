@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { TooltipAnchor } from '@broad/ui'
+import { TooltipAnchor } from '@gnomad/ui'
 
 const Icon = styled.span`
   padding: 1px 4px;

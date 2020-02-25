@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import BaseVariantTrack from '@broad/track-variant'
+import BaseVariantTrack from '@gnomad/track-variant'
 
 class VariantTrack extends PureComponent {
   render() {

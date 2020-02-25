@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Badge, List, ListItem } from '@broad/ui'
+import { Badge, List, ListItem } from '@gnomad/ui'
 
 import Link from '../../Link'
 

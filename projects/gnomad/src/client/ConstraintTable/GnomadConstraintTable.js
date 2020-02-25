@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TooltipAnchor, TooltipHint } from '@broad/ui'
+import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import { renderRoundedNumber } from './constraintMetrics'
 

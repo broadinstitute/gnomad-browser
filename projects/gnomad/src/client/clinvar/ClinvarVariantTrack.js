@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Track } from '@broad/region-viewer'
-import { Checkbox, SegmentedControl } from '@broad/ui'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+import { Track } from '@gnomad/region-viewer'
+import { Checkbox, SegmentedControl } from '@gnomad/ui'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
 
 import StackedVariantsPlot from './StackedVariantsPlot'
 

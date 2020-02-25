@@ -29,7 +29,7 @@ module.exports = function helpDirectoryLoader(content) {
     const requests = files.map(f =>
       loaderUtils.stringifyRequest(
         this,
-        `@broad/help/src/loader/helpFileLoader?directory=${helpDirectory}!${f}`
+        `@gnomad/help/src/loader/helpFileLoader?directory=${helpDirectory}!${f}`
       )
     )
 

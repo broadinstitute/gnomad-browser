@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useLayoutEffect, useState } from 'react'
 
-import { PageHeading, ExternalLink, Tabs } from '@broad/ui'
+import { PageHeading, ExternalLink, Tabs } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'

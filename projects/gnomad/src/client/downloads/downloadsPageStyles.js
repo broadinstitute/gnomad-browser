@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, List } from '@broad/ui'
+import { ExternalLink, List } from '@gnomad/ui'
 
 import { withAnchor } from '../AnchorLink'
 

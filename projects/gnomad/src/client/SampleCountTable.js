@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable } from '@broad/ui'
+import { BaseTable } from '@gnomad/ui'
 
 import sampleCounts from './dataset-constants/sampleCounts'
 

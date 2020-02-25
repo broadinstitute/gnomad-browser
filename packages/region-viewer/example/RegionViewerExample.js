@@ -1,5 +1,5 @@
 import React from 'react'
-import TranscriptsTrack from '@broad/track-transcripts'
+import TranscriptsTrack from '@gnomad/track-transcripts'
 
 import GeneViewer from './GeneViewer'
 

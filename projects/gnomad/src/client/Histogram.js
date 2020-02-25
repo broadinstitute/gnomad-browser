@@ -6,7 +6,7 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
 
-import { TooltipAnchor } from '@broad/ui'
+import { TooltipAnchor } from '@gnomad/ui'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.

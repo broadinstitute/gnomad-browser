@@ -1,5 +1,5 @@
 {
-  "name": "@broad/track-variant",
+  "name": "@gnomad/track-variant",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -10,14 +10,14 @@
     "example": "gnomadjs-scripts example"
   },
   "dependencies": {
-    "@broad/region-viewer": "*",
-    "@broad/utilities": "*",
+    "@gnomad/region-viewer": "*",
+    "@gnomad/utilities": "*",
     "d3-scale": "^2.2.2",
     "polished": "^3.2.0",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2"

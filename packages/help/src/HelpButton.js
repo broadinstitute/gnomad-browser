@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { Button } from '@broad/ui'
+import { Button } from '@gnomad/ui'
 
 import { actions as helpActions, isHelpWindowOpen } from './redux'
 

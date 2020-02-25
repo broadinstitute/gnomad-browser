@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { ExternalLink } from '@broad/ui'
+import { ExternalLink } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 

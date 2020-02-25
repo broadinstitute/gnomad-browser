@@ -1,5 +1,5 @@
 {
-  "name": "@broad/manhattan",
+  "name": "@gnomad/manhattan",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
-    "@broad/scripts": "*"
+    "@gnomad/scripts": "*"
   },
   "peerDependencies": {
     "react": "^16.8.2"

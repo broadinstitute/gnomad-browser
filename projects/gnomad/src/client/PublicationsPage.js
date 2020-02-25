@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ExternalLink, List, ListItem, PageHeading } from '@broad/ui'
+import { ExternalLink, List, ListItem, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'

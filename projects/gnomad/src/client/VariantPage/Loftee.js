@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { TooltipAnchor, TooltipHint } from '@broad/ui'
+import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 const lofteeFilterDescriptions = {
   END_TRUNC:

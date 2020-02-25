@@ -3,7 +3,7 @@ import memoizeOne from 'memoize-one'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { Cursor, PositionAxisTrack } from '@broad/region-viewer'
+import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'

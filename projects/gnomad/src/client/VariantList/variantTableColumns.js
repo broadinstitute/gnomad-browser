@@ -1,7 +1,7 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@broad/utilities'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
 
 import Link from '../Link'
 import SampleSourceIcon from './SampleSourceIcon'

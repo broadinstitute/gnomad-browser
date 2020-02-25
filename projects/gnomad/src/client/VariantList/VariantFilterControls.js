@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@broad/help'
-import { CategoryFilterControl, Checkbox, KeyboardShortcut, SearchInput } from '@broad/ui'
+import { QuestionMark } from '@gnomad/help'
+import { CategoryFilterControl, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',

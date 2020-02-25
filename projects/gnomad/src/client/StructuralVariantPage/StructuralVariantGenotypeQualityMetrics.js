@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { SegmentedControl } from '@broad/ui'
+import { SegmentedControl } from '@gnomad/ui'
 
 import Histogram from '../Histogram'
 import ControlSection from '../VariantPage/ControlSection'

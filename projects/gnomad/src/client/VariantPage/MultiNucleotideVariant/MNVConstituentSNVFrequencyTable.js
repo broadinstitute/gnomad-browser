@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge } from '@broad/ui'
+import { Badge } from '@gnomad/ui'
 
 import Link from '../../Link'
 import QCFilter from '../../QCFilter'
