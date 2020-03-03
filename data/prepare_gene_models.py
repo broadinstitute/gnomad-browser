@@ -52,6 +52,7 @@ def get_genes(gencode):
     genes = gencode.filter(gencode.feature == "gene")
     genes = genes.select(
         gene_id=genes.gene_id.split("\\.")[0],
+        gene_version=genes.gene_id.split("\\.")[1],
         gene_symbol=genes.gene_name,
         chrom=genes.interval.start.seqname[3:],
         strand=genes.strand,
@@ -112,6 +113,7 @@ def get_transcripts(gencode):
     transcripts = gencode.filter(gencode.feature == "transcript")
     transcripts = transcripts.select(
         transcript_id=transcripts.transcript_id.split("\\.")[0],
+        transcript_version=transcripts.transcript_id.split("\\.")[1],
         gene_id=transcripts.gene_id.split("\\.")[0],
         chrom=transcripts.interval.start.seqname[3:],
         strand=transcripts.strand,
