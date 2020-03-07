@@ -30,9 +30,9 @@ class ErrorBoundary extends React.Component {
     const { hasError } = this.state
 
     if (hasError) {
-      const issueURL = `https://github.com/macarthur-lab/gnomadjs/issues/new?template=bug_report.md&title=${encodeURIComponent(
+      const issueURL = `https://github.com/broadinstitute/gnomad-browser/issues/new?template=bug_report.md&title=${encodeURIComponent(
         `Render error on ${location.pathname}${location.search}`
-      )}&labels=Project%3A%20gnomAD%2CType%3A%20Bug`
+      )}&labels=Type%3A%20Bug`
 
       const emailURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
         'Browser bug report'

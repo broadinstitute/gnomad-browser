@@ -11,7 +11,7 @@ export default () => (
     <PageHeading>Contact</PageHeading>
     <p>
       Errors in the website can be{' '}
-      <ExternalLink href="https://github.com/macarthur-lab/gnomadjs/issues">
+      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
         reported via GitHub
       </ExternalLink>
       .

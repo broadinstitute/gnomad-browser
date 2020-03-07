@@ -129,7 +129,7 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
     // "NC" annotations were removed from the data pipeline some time ago.
     // Some ExAC variants still have them.
     consequence.lof === 'NC' ||
-    (category === 'lof' && !consequence.lof) // See gnomadjs#364.
+    (category === 'lof' && !consequence.lof) // See https://github.com/broadinstitute/gnomad-browser/issues/364
   ) {
     return (
       <AttributeList>
