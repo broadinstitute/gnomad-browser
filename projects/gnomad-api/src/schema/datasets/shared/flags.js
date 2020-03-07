@@ -52,7 +52,7 @@ const getFlagsForGeneContext = (variantData, geneId) => {
   }
 
   if (mostSevereConsequenceInGene) {
-    // See gnomadjs#364
+    // See https://github.com/broadinstitute/gnomad-browser/issues/364
     if (isLofOnNonCodingTranscript(mostSevereConsequenceInGene)) {
       flags.push('nc_transcript')
     }

@@ -42,7 +42,7 @@ const DownloadsPage = ({ location }) => {
       <p>
         To work efficiently with gnomAD, we recommend using{' '}
         <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
-        <ExternalLink href="https://github.com/macarthur-lab/gnomad_hail">
+        <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
           Hail utilities for gnomAD
         </ExternalLink>
         .

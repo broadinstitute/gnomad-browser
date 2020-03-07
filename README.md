@@ -1,16 +1,14 @@
-# gnomadjs
+# gnomAD browser
 
-JavaScript tools for exploring genomic data
+![CI status](https://github.com/broadinstitute/gnomad-browser/workflows/CI/badge.svg)
 
-![](https://github.com/macarthur-lab/gnomadjs/workflows/CI/badge.svg)
-
-## gnomAD browser
+JavaScript tools for exploring genomic data.
 
 To view the gnomAD browser, go to https://gnomad.broadinstitute.org.
 
 ## License
 
-Licensed under the MIT license. See the [LICENSE](https://github.com/macarthur-lab/gnomadjs/blob/master/LICENSE) file.
+Licensed under the MIT license. See the [LICENSE](https://github.com/broadinstitute/gnomad-browser/blob/master/LICENSE) file.
 
 ## Citation
 
@@ -33,7 +31,7 @@ For information on citing the gnomAD dataset, see the [gnomAD Terms and Data Inf
 - Clone repository and download dependencies:
 
   ```shell
-  git clone --recursive https://github.com/macarthur-lab/gnomadjs.git
+  git clone --recursive https://github.com/broadinstitute/gnomad-browser.git
   cd gnomadjs
   yarn
   ```
