@@ -1,10 +1,7 @@
 {
-  "name": "gnomad",
+  "name": "gnomad-browser",
   "version": "0.0.1",
-  "description": "",
   "private": true,
-  "main": "dist/es/index.js",
-  "author": "Matthew Solomonson <msolomon@broadinstitute.org>",
   "license": "MIT",
   "scripts": {
     "build": "./build.sh",
