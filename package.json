@@ -1,12 +1,9 @@
 {
-  "name": "gnomadjs",
-  "version": "1.0.0",
-  "author": "msolomon@broadinstitute.org",
   "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/macarthur-lab/gnomadjs.git"
+    "url": "https://github.com/broadinstitute/gnomad-browser.git"
   },
   "scripts": {
     "lint:css": "stylelint './**/*.js'",

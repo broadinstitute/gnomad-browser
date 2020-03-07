@@ -1,11 +1,8 @@
 {
   "name": "gnomad-api",
   "version": "1.0.0",
-  "description": "",
   "private": true,
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bottleneck": "^2.19.5",
     "compression": "^1.7.4",
