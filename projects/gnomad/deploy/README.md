@@ -5,7 +5,7 @@
 To build a Docker image containing the app server and its dependencies:
 
 ```shell
-cd gnomadjs/projects/gnomad
+cd gnomad-browser/projects/gnomad
 ./deploy/build-image.sh
 ```
 
@@ -16,7 +16,7 @@ This will create an image named "gnomad-browser" tagged with the hash of the cur
 After an image has been built, deploy it to Kubernetes with:
 
 ```shell
-cd gnomadjs/projects/gnomad
+cd gnomad-browser/projects/gnomad
 ./deploy/deploy-image.sh tag environment
 ```
 
