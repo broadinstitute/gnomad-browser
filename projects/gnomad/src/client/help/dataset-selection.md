@@ -14,7 +14,7 @@ The data selection drop-down specifies which dataset is displayed on the page. C
 + gnomAD v2.1.1 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study.
 + gnomAD v2.1.1 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study.
 + gnomAD v2.1.1 (non-TOPMed): Only samples that are not present in the Trans-Omics for Precision Medicine (TOPMed)/BRAVO release. The allele counts in this subset can thus be added to those of BRAVO to federate both datasets.
-+ ExAC v1.0: same data from [exac.broadinstitute.org](http://exac.broadinstitute.org)
++ ExAC v1.0
 
 ## Structural variants
 
