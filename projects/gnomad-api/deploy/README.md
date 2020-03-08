@@ -5,7 +5,7 @@
 To build a Docker image containing the API server and its dependencies:
 
 ```shell
-cd gnomadjs/projects/gnomad-api
+cd gnomad-browser/projects/gnomad-api
 ./deploy/build-image.sh
 ```
 
@@ -16,7 +16,7 @@ This will create an image named "gnomad-api" tagged with the hash of the current
 After an image has been built, deploy it to Kubernetes with:
 
 ```shell
-cd gnomadjs/projects/gnomad-api
+cd gnomad-browser/projects/gnomad-api
 ./deploy/deploy-image.sh tag
 ```
 
