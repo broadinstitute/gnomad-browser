@@ -148,11 +148,6 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
-              <a href="https://macarthurlab.org/jobs/" rel="noopener noreferrer" target="_blank">
-                Jobs
-              </a>
-            </li>
-            <li>
               <Link to="/faq" onClick={this.closeMenuIfOpen}>
                 FAQ
               </Link>
