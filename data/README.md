@@ -36,7 +36,7 @@ during a bulk request.
 * [site quality metric distributions](./docs/gnomad_r2_1/site_quality_metric_distributions.md)
 * [constraint](./docs/gnomad_r2_1/constraint.md)
 * [multi-nucleotide variants](./docs/gnomad_r2_1/mnvs.md)
-* pext scores
+* [pext scores](./docs/pext.md)
 
 ## gnomAD SVs
 
