@@ -173,10 +173,23 @@ def main():
         help="Path to Hail table with base-level data",
         default="gs://gnomad-public/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
     )
+    parser.add_argument(
+        "--low-max-pext-genes",
+        help="Path to table containing list of genes with low max pext",
+        default="gs://gnomad-public/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
+    )
     parser.add_argument("output_path", help="Path to output Hail table with region-level data")
     args = parser.parse_args()
 
     ds = prepare_pext_data(args.base_level_pext)
+
+    low_max_pext_genes = hl.import_table(args.low_max_pext_genes)
+    low_max_pext_genes = low_max_pext_genes.aggregate(hl.agg.collect_as_set(low_max_pext_genes.ensg))
+    ds = ds.annotate(
+        flags=hl.cond(
+            hl.set(low_max_pext_genes).contains(ds.gene_id), hl.literal(["low_max_pext"]), hl.empty_array(hl.tstr),
+        )
+    )
 
     ds.write(args.output_path)
 
