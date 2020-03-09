@@ -310,7 +310,7 @@ export default () => (
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/papers/2019-tx-annotation/pre_computed/">
-            All possible SNVs annotated Hail table
+            Annotation-level pext for all possible SNVs Hail table
           </ExternalLink>
           <br />
           gs://gnomad-public/papers/2019-tx-annotation/pre_computed/
@@ -321,8 +321,17 @@ export default () => (
         </ListItem>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-tx-annotation/pre_computed/all.possible.snvs.tx_annotated.GTEx.v7.021520.tsv.bgz">
-            All possible SNVs annotated TSV
+            Annotation-level pext for all possible SNVs TSV
           </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/papers/2019-tx-annotation/gnomad_browser/">
+            Base-level pext Hail table
+          </ExternalLink>
+          <br />
+          gs://gnomad-public/papers/2019-tx-annotation/gnomad_browser/
+          <wbr />
+          all.baselevel.021620.ht
         </ListItem>
       </FileList>
     </section>
