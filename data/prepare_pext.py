@@ -161,6 +161,8 @@ def prepare_pext_data(base_level_pext_path):
 
     ds = ds.select("gene_id", "chrom", "start", "stop", "mean", tissues=hl.struct(**{t: ds[t] for t in TISSUE_FIELDS}))
 
+    ds = ds.group_by("gene_id").aggregate(regions=hl.agg.collect(ds.row_value.drop("gene_id")))
+
     return ds
 
 
