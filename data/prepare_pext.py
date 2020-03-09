@@ -166,11 +166,15 @@ def prepare_pext_data(base_level_pext_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("base_level_pext_path", help="Path to Hail table with base-level data")
+    parser.add_argument(
+        "--base-level-pext",
+        help="Path to Hail table with base-level data",
+        default="gs://gnomad-public/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
+    )
     parser.add_argument("output_path", help="Path to output Hail table with region-level data")
     args = parser.parse_args()
 
-    ds = prepare_pext_data(args.base_level_pext_path)
+    ds = prepare_pext_data(args.base_level_pext)
 
     ds.write(args.output_path)
 
