@@ -1,5 +1,7 @@
 import { GraphQLInt, GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
+import { UserVisibleError } from '../errors'
+
 const PextRegionTissueValuesType = new GraphQLObjectType({
   name: 'pextRegionTissueValues',
   fields: {
@@ -70,20 +72,18 @@ export const PextRegionType = new GraphQLObjectType({
 })
 
 export const fetchPextRegionsByGene = async (ctx, geneId) => {
-  const response = await ctx.database.elastic.search({
-    index: 'gnomad_pext_021519',
-    type: 'region',
-    size: 500,
-    body: {
-      query: {
-        bool: {
-          filter: {
-            term: { gene_id: geneId },
-          },
-        },
-      },
-    },
-  })
+  try {
+    const response = await ctx.database.elastic.get({
+      index: 'pext_grch37',
+      type: 'documents',
+      id: geneId,
+    })
 
-  return response.hits.hits.map(hit => hit._source) // eslint-disable-line no-underscore-dangle
+    return response._source.regions
+  } catch (err) {
+    if (err.message === 'Not Found') {
+      throw new UserVisibleError(`pext unavailable for ${geneId}`)
+    }
+    throw err
+  }
 }
