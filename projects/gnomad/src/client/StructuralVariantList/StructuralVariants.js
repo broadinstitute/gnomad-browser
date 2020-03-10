@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { SegmentedControl } from '@gnomad/ui'
-import { HUMAN_CHROMOSOMES } from '@gnomad/utilities'
 
 import { TrackPageSection } from '../TrackPage'
 
@@ -38,6 +37,8 @@ const ControlWrapper = styled(Wrapper)`
     margin-right: 160px;
   }
 `
+
+const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x, i) => `${i + 1}`), 'X', 'Y']
 
 class StructuralVariants extends Component {
   static propTypes = {
