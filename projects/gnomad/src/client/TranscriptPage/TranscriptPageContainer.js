@@ -198,6 +198,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
             whole_blood
           }
         }
+        flags
       }
       exac_regional_missense_constraint_regions {
         start

@@ -360,6 +360,7 @@ class TranscriptPage extends Component {
             <TissueExpressionTrack
               exons={cdsCompositeExons}
               expressionRegions={gene.pext.regions}
+              flags={gene.pext.flags}
             />
           )}
 

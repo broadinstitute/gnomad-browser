@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { QuestionMark } from '@gnomad/help'
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
-import { Button } from '@gnomad/ui'
+import { Badge, Button } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
 
@@ -128,6 +128,11 @@ IndividualTissueTrack.propTypes = {
   tissue: PropTypes.string.isRequired,
 }
 
+const FLAG_DESCRIPTIONS = {
+  low_max_pext:
+    'For this gene, RSEM assigns higher expression to non-coding transcripts than protein coding transcripts. This likely represents an artifact in the isoform expression quantification and results in a low pext value for all bases in the gene.',
+}
+
 class TissueExpressionTrack extends Component {
   static propTypes = {
     exons: PropTypes.arrayOf(
@@ -144,6 +149,7 @@ class TissueExpressionTrack extends Component {
         tissues: PropTypes.objectOf(PropTypes.number).isRequired,
       })
     ).isRequired,
+    flags: PropTypes.arrayOf(PropTypes.string).isRequired,
   }
 
   state = {
@@ -155,7 +161,7 @@ class TissueExpressionTrack extends Component {
   }
 
   render() {
-    const { exons, expressionRegions } = this.props
+    const { exons, expressionRegions, flags } = this.props
     const { isExpanded } = this.state
 
     const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
@@ -232,6 +238,11 @@ class TissueExpressionTrack extends Component {
             }}
           </Track>
         </InnerWrapper>
+        {flags.map(flag => (
+          <InnerWrapper key={flag}>
+            <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
+          </InnerWrapper>
+        ))}
         {isExpanded &&
           tissues.map(tissue => (
             <IndividualTissueTrack
