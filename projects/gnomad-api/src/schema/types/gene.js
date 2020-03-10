@@ -36,7 +36,7 @@ import {
   formatCoverageForCache,
   formatCachedCoverage,
 } from './coverage'
-import { PextRegionType, fetchPextRegionsByGene } from './pext'
+import { PextType, fetchPextByGene } from './pext'
 import { StructuralVariantSummaryType } from './structuralVariant'
 import TranscriptType from './transcript'
 import { VariantSummaryType } from './variant'
@@ -134,14 +134,14 @@ const GeneType = extendObjectType(BaseGeneType, {
       },
     },
     pext: {
-      type: new GraphQLList(PextRegionType),
+      type: PextType,
       resolve: (obj, args, ctx) => {
         if (obj.reference_genome !== 'GRCh37') {
           throw new UserVisibleError(
-            `pext scores are not available on reference genome ${obj.reference_genome}`
+            `pext is not available for reference genome ${obj.reference_genome}`
           )
         }
-        return fetchPextRegionsByGene(ctx, obj.gene_id)
+        return fetchPextByGene(ctx, obj.gene_id)
       },
     },
     transcripts: { type: new GraphQLList(GeneTranscriptType) },

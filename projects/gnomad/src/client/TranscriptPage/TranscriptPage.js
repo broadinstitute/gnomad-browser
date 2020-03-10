@@ -169,7 +169,17 @@ class TranscriptPage extends Component {
           })
         ).isRequired,
         canonical_transcript_id: PropTypes.string,
-        pext: PropTypes.any,
+        pext: PropTypes.shape({
+          regions: PropTypes.arrayOf(
+            PropTypes.shape({
+              start: PropTypes.number.isRequired,
+              stop: PropTypes.number.isRequired,
+              mean: PropTypes.number.isRequired,
+              tissues: PropTypes.objectOf(PropTypes.number).isRequired,
+            })
+          ).isRequired,
+          flags: PropTypes.arrayOf(PropTypes.string).isRequired,
+        }),
         exac_regional_missense_constraint_regions: PropTypes.any,
       }).isRequired,
     }).isRequired,
@@ -347,7 +357,10 @@ class TranscriptPage extends Component {
           />
 
           {hasCodingExons && gene.pext && (
-            <TissueExpressionTrack exons={cdsCompositeExons} expressionRegions={gene.pext} />
+            <TissueExpressionTrack
+              exons={cdsCompositeExons}
+              expressionRegions={gene.pext.regions}
+            />
           )}
 
           {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
