@@ -147,7 +147,7 @@ class TranscriptPage extends Component {
         gene_id: PropTypes.string.isRequired,
         reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
         symbol: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         strand: PropTypes.oneOf(['+', '-']).isRequired,
         exons: PropTypes.arrayOf(
           PropTypes.shape({

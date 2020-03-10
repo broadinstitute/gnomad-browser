@@ -134,7 +134,7 @@ class GenePage extends Component {
       gene_id: PropTypes.string.isRequired,
       reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       symbol: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
+      name: PropTypes.string,
       chrom: PropTypes.string.isRequired,
       strand: PropTypes.oneOf(['+', '-']).isRequired,
       start: PropTypes.number.isRequired,
