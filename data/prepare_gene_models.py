@@ -304,17 +304,24 @@ def main():
         # For GRCh38 (Gencode >= 20) transcripts, use the MANE Select transcripts to annotate transcripts
         # with their matching RefSeq transcript.
         ensembl_to_refseq_map = {}
-        for _, _, ensembl_id, ensembl_version, refseq_id, refseq_version in mane_select_transcripts.collect():
-            ensembl_to_refseq_map[ensembl_id] = {
-                ensembl_version: {"refseq_id": refseq_id, "refseq_version": refseq_version}
+        for transcript in mane_select_transcripts.collect():
+            ensembl_to_refseq_map[transcript.ensembl_id] = {
+                transcript.ensembl_version: hl.Struct(
+                    refseq_id=transcript.refseq_id, refseq_version=transcript.refseq_version
+                )
             }
 
-        for gencode_version in all_gencode_versions:
+        ensembl_to_refseq_map = hl.literal(ensembl_to_refseq_map)
+
+        for gencode_version in ["19", "29"]:
             if int(gencode_version) >= 20:
                 transcript_annotation = lambda transcript: transcript.annotate(
-                    **ensembl_to_refseq_map.get(transcript.transcript_id, {}).get(
+                    **ensembl_to_refseq_map.get(
+                        transcript.transcript_id,
+                        hl.empty_dict(hl.tstr, hl.tstruct(refseq_id=hl.tstr, refseq_version=hl.tstr)),
+                    ).get(
                         transcript.transcript_version,
-                        {"refseq_id": hl.null(hl.tstr), "refseq_version": hl.null(hl.tstr)},
+                        hl.struct(refseq_id=hl.null(hl.tstr), refseq_version=hl.null(hl.tstr)),
                     )
                 )
             else:
