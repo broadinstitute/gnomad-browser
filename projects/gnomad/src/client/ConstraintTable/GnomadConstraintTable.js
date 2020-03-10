@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { Badge, BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import { renderRoundedNumber } from './constraintMetrics'
 
@@ -111,6 +111,17 @@ const renderOEGraph = (constraint, category, color) => {
   )
 }
 
+const CONSTRAINT_FLAG_DESCRIPTIONS = {
+  lof_too_many: 'Too many pLoF variants; pLoF z score < -5',
+  mis_too_many: 'Too many missense variants; missense z score < -5',
+  no_exp_lof: 'Zero expected pLoF variants',
+  no_exp_mis: 'Zero expected missense variants',
+  no_exp_syn: 'Zero expected synonymous variants',
+  no_variants: 'Zero observed synonymous, missense, pLoF variants',
+  syn_outlier:
+    'Too many or too few synonymous variants; synonymous z score < -5 or synonymous z score > 5',
+}
+
 const GnomadConstraintTable = ({ constraint }) => {
   let lofHighlightColor = null
   if (constraint.oe_lof_upper !== null) {
@@ -124,70 +135,80 @@ const GnomadConstraintTable = ({ constraint }) => {
   }
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">
-            <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in the gnomAD flagship paper. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
-              <TooltipHint>Exp. SNVs</TooltipHint>
-            </TooltipAnchor>
-          </th>
-          <th scope="col">
-            <TooltipAnchor tooltip="Includes single nucleotide changes that occurred in the canonical transcript that were found at a frequency of <0.1%, passed all filters, and at sites with a median depth ≥1. The counts represent the number of unique variants and not the allele count of these variants.">
-              <TooltipHint>Obs. SNVs</TooltipHint>
-            </TooltipAnchor>
-          </th>
-          <th scope="col">Constraint metrics</th>
-          <td />
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">Synonymous</th>
-          <td>{renderRoundedNumber(constraint.exp_syn)}</td>
-          <td>{constraint.obs_syn === null ? '—' : constraint.obs_syn}</td>
-          <td>
-            Z ={' '}
-            {renderRoundedNumber(constraint.syn_z, {
-              precision: 2,
-              tooltipPrecision: 3,
-              highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
-            })}
-            <br />
-            {renderOEMetrics(constraint, 'syn')}
-          </td>
-          <td>{renderOEGraph(constraint, 'syn')}</td>
-        </tr>
-        <tr>
-          <th scope="row">Missense</th>
-          <td>{renderRoundedNumber(constraint.exp_mis)}</td>
-          <td>{constraint.obs_mis === null ? '—' : constraint.obs_mis}</td>
-          <td>
-            Z ={' '}
-            {renderRoundedNumber(constraint.mis_z, {
-              precision: 2,
-              tooltipPrecision: 3,
-              highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
-            })}
-            <br />
-            {renderOEMetrics(constraint, 'mis')}
-          </td>
-          <td>{renderOEGraph(constraint, 'mis')}</td>
-        </tr>
-        <tr>
-          <th scope="row">pLoF</th>
-          <td>{renderRoundedNumber(constraint.exp_lof)}</td>
-          <td>{constraint.obs_lof === null ? '—' : constraint.obs_lof}</td>
-          <td>
-            pLI = {renderRoundedNumber(constraint.pLI, { precision: 2, tooltipPrecision: 3 })}
-            <br />
-            {renderOEMetrics(constraint, 'lof', lofHighlightColor)}
-          </td>
-          <td>{renderOEGraph(constraint, 'lof', lofHighlightColor)}</td>
-        </tr>
-      </tbody>
-    </Table>
+    <div>
+      <Table>
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">
+              <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in the gnomAD flagship paper. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
+                <TooltipHint>Exp. SNVs</TooltipHint>
+              </TooltipAnchor>
+            </th>
+            <th scope="col">
+              <TooltipAnchor tooltip="Includes single nucleotide changes that occurred in the canonical transcript that were found at a frequency of <0.1%, passed all filters, and at sites with a median depth ≥1. The counts represent the number of unique variants and not the allele count of these variants.">
+                <TooltipHint>Obs. SNVs</TooltipHint>
+              </TooltipAnchor>
+            </th>
+            <th scope="col">Constraint metrics</th>
+            <td />
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Synonymous</th>
+            <td>{renderRoundedNumber(constraint.exp_syn)}</td>
+            <td>{constraint.obs_syn === null ? '—' : constraint.obs_syn}</td>
+            <td>
+              Z ={' '}
+              {renderRoundedNumber(constraint.syn_z, {
+                precision: 2,
+                tooltipPrecision: 3,
+                highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
+              })}
+              <br />
+              {renderOEMetrics(constraint, 'syn')}
+            </td>
+            <td>{renderOEGraph(constraint, 'syn')}</td>
+          </tr>
+          <tr>
+            <th scope="row">Missense</th>
+            <td>{renderRoundedNumber(constraint.exp_mis)}</td>
+            <td>{constraint.obs_mis === null ? '—' : constraint.obs_mis}</td>
+            <td>
+              Z ={' '}
+              {renderRoundedNumber(constraint.mis_z, {
+                precision: 2,
+                tooltipPrecision: 3,
+                highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
+              })}
+              <br />
+              {renderOEMetrics(constraint, 'mis')}
+            </td>
+            <td>{renderOEGraph(constraint, 'mis')}</td>
+          </tr>
+          <tr>
+            <th scope="row">pLoF</th>
+            <td>{renderRoundedNumber(constraint.exp_lof)}</td>
+            <td>{constraint.obs_lof === null ? '—' : constraint.obs_lof}</td>
+            <td>
+              pLI = {renderRoundedNumber(constraint.pLI, { precision: 2, tooltipPrecision: 3 })}
+              <br />
+              {renderOEMetrics(constraint, 'lof', lofHighlightColor)}
+            </td>
+            <td>{renderOEGraph(constraint, 'lof', lofHighlightColor)}</td>
+          </tr>
+        </tbody>
+      </Table>
+      {constraint.flags &&
+        constraint.flags
+          .filter(flag => !flag.startsWith('no_'))
+          .map(flag => (
+            <p key={flag} style={{ maxWidth: '460px' }}>
+              <Badge level="info">Note</Badge> {CONSTRAINT_FLAG_DESCRIPTIONS[flag]}
+            </p>
+          ))}
+    </div>
   )
 }
 
@@ -212,6 +233,7 @@ GnomadConstraintTable.propTypes = {
     mis_z: PropTypes.number,
     syn_z: PropTypes.number,
     pLI: PropTypes.number,
+    flags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 }
 

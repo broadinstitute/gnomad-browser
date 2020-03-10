@@ -43,6 +43,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
       mis_z
       syn_z
       pLI
+      flags
     }
     exac_constraint {
       exp_syn

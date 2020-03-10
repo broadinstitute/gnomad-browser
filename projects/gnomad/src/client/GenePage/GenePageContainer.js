@@ -48,6 +48,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
       mis_z
       syn_z
       pLI
+      flags
     }
     exac_constraint {
       exp_syn
