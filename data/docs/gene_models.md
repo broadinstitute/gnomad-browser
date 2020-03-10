@@ -75,7 +75,15 @@
    curl -o hgnc.tsv 'https://www.genenames.org/cgi-bin/download/custom?col=gd_hgnc_id&col=gd_app_sym&col=gd_app_name&col=gd_prev_sym&col=gd_aliases&col=md_mim_id&col=md_ensembl_id&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit'
    ```
 
-5. Combine GTF files, HGNC data, and canonical transcripts lists.
+5. Download MANE Select transcripts.
+
+   https://www.ncbi.nlm.nih.gov/refseq/MANE/
+
+   ```shell
+   curl -o mane_summary.tsv.gz 'https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.8/MANE.GRCh38.v0.8.summary.txt.gz'
+   ```
+
+6. Combine GTF files, HGNC data, and canonical transcripts lists.
 
    ```shell
    hailctl dataproc submit data-prep \
@@ -88,10 +96,11 @@
             /path/to/gencode.v19.gtf.bgz \
             $CANONICAL_TRANSCRIPTS_GRCH37_PATH \
          --hgnc /path/to/hgnc.tsv \
+         --mane-select-transcripts /path/to/mane_summary.tsv.gz \
          --output /path/to/genes.ht
    ```
 
-6. Delete the Dataproc cluster
+7. Delete the Dataproc cluster
 
    ```shell
    hailctl dataproc stop data-prep

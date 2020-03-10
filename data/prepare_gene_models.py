@@ -200,6 +200,7 @@ def main():
         required=True,
     )
     parser.add_argument("--hgnc")
+    parser.add_argument("--mane-select-transcripts")
     parser.add_argument("--min-partitions", type=int, default=32)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
@@ -287,6 +288,52 @@ def main():
         )
 
     genes = genes.annotate(search_terms=hl.set(genes.search_terms.map(lambda s: s.upper())))
+
+    if args.mane_select_transcripts:
+        mane_select_transcripts = hl.import_table(args.mane_select_transcripts, force=True)
+        mane_select_transcripts = mane_select_transcripts.select(
+            gene_id=mane_select_transcripts.Ensembl_Gene.split("\\.")[0],
+            matched_gene_version=mane_select_transcripts.Ensembl_Gene.split("\\.")[1],
+            ensembl_id=mane_select_transcripts.Ensembl_nuc.split("\\.")[0],
+            ensembl_version=mane_select_transcripts.Ensembl_nuc.split("\\.")[1],
+            refseq_id=mane_select_transcripts.RefSeq_nuc.split("\\.")[0],
+            refseq_version=mane_select_transcripts.RefSeq_nuc.split("\\.")[1],
+        )
+        mane_select_transcripts = mane_select_transcripts.key_by("gene_id")
+
+        # For GRCh38 (Gencode >= 20) transcripts, use the MANE Select transcripts to annotate transcripts
+        # with their matching RefSeq transcript.
+        ensembl_to_refseq_map = {}
+        for _, _, ensembl_id, ensembl_version, refseq_id, refseq_version in mane_select_transcripts.collect():
+            ensembl_to_refseq_map[ensembl_id] = {
+                ensembl_version: {"refseq_id": refseq_id, "refseq_version": refseq_version}
+            }
+
+        for gencode_version in all_gencode_versions:
+            if int(gencode_version) >= 20:
+                transcript_annotation = lambda transcript: transcript.annotate(
+                    **ensembl_to_refseq_map.get(transcript.transcript_id, {}).get(
+                        transcript.transcript_version,
+                        {"refseq_id": hl.null(hl.tstr), "refseq_version": hl.null(hl.tstr)},
+                    )
+                )
+            else:
+                transcript_annotation = lambda transcript: transcript.annotate(
+                    refseq_id=hl.null(hl.tstr), refseq_version=hl.null(hl.tstr)
+                )
+
+            genes = genes.annotate(
+                gencode=genes.gencode.annotate(
+                    **{
+                        f"v{gencode_version}": genes.gencode[f"v{gencode_version}"].annotate(
+                            transcripts=genes.gencode[f"v{gencode_version}"].transcripts.map(transcript_annotation)
+                        )
+                    }
+                )
+            )
+
+        # Annotate genes with their MANE Select transcript
+        genes = genes.annotate(mane_select_transcript=mane_select_transcripts[genes.gene_id])
 
     genes.describe()
 
