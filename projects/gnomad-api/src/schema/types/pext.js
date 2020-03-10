@@ -1,4 +1,11 @@
-import { GraphQLInt, GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql'
+import {
+  GraphQLInt,
+  GraphQLFloat,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 
 import { UserVisibleError } from '../errors'
 
@@ -61,7 +68,7 @@ const PextRegionTissueValuesType = new GraphQLObjectType({
   },
 })
 
-export const PextRegionType = new GraphQLObjectType({
+const PextRegionType = new GraphQLObjectType({
   name: 'pextRegion',
   fields: {
     start: { type: new GraphQLNonNull(GraphQLInt) },
@@ -71,7 +78,15 @@ export const PextRegionType = new GraphQLObjectType({
   },
 })
 
-export const fetchPextRegionsByGene = async (ctx, geneId) => {
+export const PextType = new GraphQLObjectType({
+  name: 'pext',
+  fields: {
+    regions: { type: new GraphQLNonNull(new GraphQLList(PextRegionType)) },
+    flags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+  },
+})
+
+export const fetchPextByGene = async (ctx, geneId) => {
   try {
     const response = await ctx.database.elastic.get({
       index: 'pext_grch37',
@@ -79,7 +94,7 @@ export const fetchPextRegionsByGene = async (ctx, geneId) => {
       id: geneId,
     })
 
-    return response._source.regions
+    return response._source
   } catch (err) {
     if (err.message === 'Not Found') {
       throw new UserVisibleError(`pext unavailable for ${geneId}`)
