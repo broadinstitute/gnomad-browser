@@ -2,9 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { getCategoryFromConsequence } from '@gnomad/utilities'
-
 import Link from '../Link'
+import { getCategoryFromConsequence } from '../vepConsequences'
 import { LofteeFilter, LofteeFlag } from './Loftee'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 

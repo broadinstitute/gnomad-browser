@@ -1,9 +1,8 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
-
 import Link from '../Link'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'

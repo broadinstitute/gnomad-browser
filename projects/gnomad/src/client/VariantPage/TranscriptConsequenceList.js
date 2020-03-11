@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
-import { getLabelForConsequenceTerm } from '@gnomad/utilities'
 
 import Link from '../Link'
+import { getLabelForConsequenceTerm } from '../vepConsequences'
 import TranscriptConsequence from './TranscriptConsequence'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 

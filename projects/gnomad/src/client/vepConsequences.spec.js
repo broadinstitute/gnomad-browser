@@ -1,4 +1,4 @@
-import { getCategoryFromConsequence, registerConsequences } from './consequences'
+import { getCategoryFromConsequence } from './vepConsequences'
 
 describe('getConsequenceFromCategory', () => {
   it('should return correct category for VEP consequence terms', () => {
@@ -38,19 +38,5 @@ describe('getConsequenceFromCategory', () => {
     expect(getCategoryFromConsequence('intron_variant')).toBe('other')
     expect(getCategoryFromConsequence('splice_region_variant')).toBe('other')
     expect(getCategoryFromConsequence('upstream_gene_variant')).toBe('other')
-  })
-
-  it('should return correct category for registered consequences', () => {
-    registerConsequences([
-      { term: 'lof', category: 'lof' },
-      { term: 'mis', category: 'missense' },
-      { term: 'syn', category: 'synonymous' },
-      { term: 'splice', category: 'other' },
-    ])
-
-    expect(getCategoryFromConsequence('lof')).toBe('lof')
-    expect(getCategoryFromConsequence('mis')).toBe('missense')
-    expect(getCategoryFromConsequence('syn')).toBe('synonymous')
-    expect(getCategoryFromConsequence('splice')).toBe('other')
   })
 })
