@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { isVariantId, normalizeVariantId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
-import { isVariantId, normalizeVariantId } from '@gnomad/utilities'
 
 import DocumentTitle from '../DocumentTitle'
 import StructuralVariantPage from '../StructuralVariantPage/StructuralVariantPage'

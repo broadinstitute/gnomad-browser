@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { isRegionId, normalizeRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
-import { isRegionId, normalizeRegionId } from '@gnomad/utilities'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
