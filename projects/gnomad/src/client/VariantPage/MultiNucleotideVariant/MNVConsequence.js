@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import { BaseTable } from '@gnomad/ui'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
 
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../../vepConsequences'
 import VariantCategoryMarker from '../../VariantList/VariantCategoryMarker'
 
 const categoryColors = {

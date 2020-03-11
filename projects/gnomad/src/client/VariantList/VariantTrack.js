@@ -2,7 +2,8 @@ import { transparentize } from 'polished'
 import React, { PureComponent } from 'react'
 
 import BaseVariantTrack from '@gnomad/track-variant'
-import { getCategoryFromConsequence } from '@gnomad/utilities'
+
+import { getCategoryFromConsequence } from '../vepConsequences'
 
 const consequenceCategoryColors = {
   lof: transparentize(0.3, '#FF583F'),

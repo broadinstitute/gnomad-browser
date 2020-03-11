@@ -1,4 +1,4 @@
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 
 const filterVariants = (variants, filter) => {
   let filteredVariants = variants

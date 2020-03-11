@@ -5,8 +5,8 @@ import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import { Checkbox, SegmentedControl } from '@gnomad/ui'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '@gnomad/utilities'
 
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import StackedVariantsPlot from './StackedVariantsPlot'
 
 const isClinvarVariantPathogenicOrLikelyPathogenic = clinvarVariant =>
