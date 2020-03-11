@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@gnomad/region-viewer": "*",
-    "@gnomad/utilities": "*",
     "d3-scale": "^2.2.2",
-    "polished": "^3.2.0",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
