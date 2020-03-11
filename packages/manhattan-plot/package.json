@@ -1,5 +1,5 @@
 {
-  "name": "@gnomad/manhattan",
+  "name": "@gnomad/manhattan-plot",
   "version": "0.0.1",
   "license": "MIT",
   "main": "src/index.js",
