@@ -1,6 +1,6 @@
 {
-  "name": "@gnomad/utilities",
-  "main": "src/index.js",
+  "name": "@gnomad/identifiers",
+  "main": "src/identifiers.js",
   "version": "0.0.1",
   "license": "MIT",
   "files": [

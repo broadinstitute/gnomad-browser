@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { HelpButton, HelpModal } from '@gnomad/help'
-import { normalizeRegionId } from '@gnomad/utilities'
+import { normalizeRegionId } from '@gnomad/identifiers'
 
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'
