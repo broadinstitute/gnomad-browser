@@ -131,6 +131,7 @@ class TranscriptPage extends Component {
     datasetId: PropTypes.string.isRequired,
     transcript: PropTypes.shape({
       transcript_id: PropTypes.string.isRequired,
+      transcript_version: PropTypes.string.isRequired,
       reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
@@ -145,6 +146,7 @@ class TranscriptPage extends Component {
       ).isRequired,
       gene: PropTypes.shape({
         gene_id: PropTypes.string.isRequired,
+        gene_version: PropTypes.string.isRequired,
         reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
         symbol: PropTypes.string.isRequired,
         name: PropTypes.string,
@@ -159,6 +161,7 @@ class TranscriptPage extends Component {
         transcripts: PropTypes.arrayOf(
           PropTypes.shape({
             transcript_id: PropTypes.string.isRequired,
+            transcript_version: PropTypes.string.isRequired,
             exons: PropTypes.arrayOf(
               PropTypes.shape({
                 feature_type: PropTypes.string.isRequired,
@@ -340,7 +343,7 @@ class TranscriptPage extends Component {
                 isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
                 isSelected={trackTranscript.transcript_id === transcript.transcript_id}
               >
-                {trackTranscript.transcript_id}
+                {trackTranscript.transcript_id}.{trackTranscript.transcript_version}
               </TranscriptLink>
             )}
             showNonCodingTranscripts={includeNonCodingTranscripts}
