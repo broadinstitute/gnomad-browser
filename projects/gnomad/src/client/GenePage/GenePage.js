@@ -241,7 +241,7 @@ class GenePage extends Component {
           </GeneInfoColumnWrapper>
         </TrackPageSection>
         <RegionViewer
-          leftPanelWidth={100}
+          leftPanelWidth={115}
           width={regionViewerWidth}
           padding={75}
           regions={regionViewerRegions}
