@@ -14,6 +14,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
+    gene_version
     symbol
     name
     canonical_transcript_id
@@ -64,6 +65,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
     }
     transcripts {
       transcript_id
+      transcript_version
       strand
       exons {
         feature_type

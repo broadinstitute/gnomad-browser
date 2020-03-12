@@ -132,6 +132,7 @@ class GenePage extends Component {
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
+      gene_version: PropTypes.string.isRequired,
       reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       symbol: PropTypes.string.isRequired,
       name: PropTypes.string,
@@ -149,6 +150,7 @@ class GenePage extends Component {
       transcripts: PropTypes.arrayOf(
         PropTypes.shape({
           transcript_id: PropTypes.string.isRequired,
+          transcript_version: PropTypes.string.isRequired,
           exons: PropTypes.arrayOf(
             PropTypes.shape({
               feature_type: PropTypes.string.isRequired,
@@ -336,13 +338,17 @@ class GenePage extends Component {
             }
             renderTranscriptLeftPanel={
               datasetId.startsWith('gnomad_sv')
-                ? ({ transcript }) => <span>{transcript.transcript_id}</span>
+                ? ({ transcript }) => (
+                    <span>
+                      {transcript.transcript_id}.{transcript.transcript_version}
+                    </span>
+                  )
                 : ({ transcript }) => (
                     <TranscriptLink
                       to={`/transcript/${transcript.transcript_id}`}
                       isCanonical={transcript.transcript_id === gene.canonical_transcript_id}
                     >
-                      {transcript.transcript_id}
+                      {transcript.transcript_id}.{transcript.transcript_version}
                     </TranscriptLink>
                   )
             }

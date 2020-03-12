@@ -14,6 +14,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     reference_genome
     transcript_id
+    transcript_version
     chrom
     strand
     start
@@ -59,6 +60,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
     }
     gene {
       gene_id
+      gene_version
       reference_genome
       symbol
       name
@@ -76,6 +78,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
       }
       transcripts {
         transcript_id
+        transcript_version
         strand
         exons {
           feature_type

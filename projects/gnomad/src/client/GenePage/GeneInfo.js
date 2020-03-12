@@ -109,31 +109,28 @@ GeneReferences.propTypes = {
 }
 
 const GeneInfo = ({ gene }) => {
-  const {
-    gene_id: geneId,
-    reference_genome: referenceGenome,
-    chrom,
-    start,
-    stop,
-    canonical_transcript_id: canonicalTranscriptId,
-  } = gene
+  const canonicalTranscript = gene.canonical_transcript_id
+    ? gene.transcripts.find(transcript => transcript.transcript_id === gene.canonical_transcript_id)
+    : null
 
-  const ucscReferenceGenomeId = referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'
+  const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
   return (
     <AttributeList labelWidth={160}>
       <AttributeList.Item label="Genome build">
-        {referenceGenome} / {ucscReferenceGenomeId}
+        {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
-      <AttributeList.Item label="Ensembl gene ID">{geneId}</AttributeList.Item>
-      {canonicalTranscriptId && (
+      <AttributeList.Item label="Ensembl gene ID">
+        {gene.gene_id}.{gene.gene_version}
+      </AttributeList.Item>
+      {canonicalTranscript && (
         <AttributeList.Item label="Canonical transcript ID">
-          {canonicalTranscriptId}
+          {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
         </AttributeList.Item>
       )}
       <AttributeList.Item label="Region">
-        <Link to={`/region/${chrom}-${start}-${stop}`}>
-          {chrom}:{start}-{stop}
+        <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>
+          {gene.chrom}:{gene.start}-{gene.stop}
         </Link>
       </AttributeList.Item>
       <AttributeList.Item label="References">
@@ -146,11 +143,18 @@ const GeneInfo = ({ gene }) => {
 GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
+    gene_version: PropTypes.string.isRequired,
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
     canonical_transcript_id: PropTypes.string,
+    transcripts: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcript_id: PropTypes.string.isRequired,
+        transcript_version: PropTypes.string.isRequired,
+      })
+    ).isRequired,
   }).isRequired,
 }
 
