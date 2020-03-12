@@ -191,6 +191,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     sortedTranscriptConsequences {
       canonical
       gene_id
+      gene_version
       gene_symbol
       hgvs
       hgvsc
@@ -202,6 +203,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
       polyphen_prediction
       sift_prediction
       transcript_id
+      transcript_version
     }
   }
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {

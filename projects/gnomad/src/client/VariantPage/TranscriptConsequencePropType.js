@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 const TranscriptConsequencePropType = PropTypes.shape({
   consequence_terms: PropTypes.arrayOf(PropTypes.string),
   gene_id: PropTypes.string.isRequired,
+  gene_version: PropTypes.string.isRequired,
   gene_symbol: PropTypes.string.isRequired,
   hgvs: PropTypes.string,
   hgvsc: PropTypes.string,
@@ -14,6 +15,7 @@ const TranscriptConsequencePropType = PropTypes.shape({
   polyphen_prediction: PropTypes.string,
   sift_prediction: PropTypes.string,
   transcript_id: PropTypes.string.isRequired,
+  transcript_version: PropTypes.string.isRequired,
 })
 
 export default TranscriptConsequencePropType

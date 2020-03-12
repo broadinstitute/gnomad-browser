@@ -170,7 +170,7 @@ TranscriptConsequenceDetails.propTypes = {
 const TranscriptConsequence = ({ consequence }) => (
   <div>
     <Link to={`/transcript/${consequence.transcript_id}`}>
-      {consequence.transcript_id}
+      {consequence.transcript_id}.{consequence.transcript_version}
       {consequence.canonical && ' *'}
     </Link>
     <TranscriptConsequenceDetails consequence={consequence} />
