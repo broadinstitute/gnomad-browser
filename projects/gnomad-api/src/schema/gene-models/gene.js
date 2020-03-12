@@ -12,6 +12,7 @@ export const GeneType = new GraphQLObjectType({
   fields: {
     reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     gene_id: { type: new GraphQLNonNull(GraphQLString) },
+    gene_version: { type: new GraphQLNonNull(GraphQLString) },
     symbol: { type: new GraphQLNonNull(GraphQLString) },
     hgnc_id: { type: GraphQLString },
     name: { type: GraphQLString },
@@ -51,6 +52,7 @@ export const shapeGene = (gene, referenceGenome) => {
   return {
     reference_genome: referenceGenome,
     gene_id: gene.gene_id,
+    gene_version: gencodeData.gene_version,
     symbol: gene.symbol,
     hgnc_id: gene.hgnc_id,
     name: gene.name,

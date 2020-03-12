@@ -12,6 +12,7 @@ export const TranscriptType = new GraphQLObjectType({
   fields: {
     reference_genome: { type: new GraphQLNonNull(ReferenceGenomeType) },
     transcript_id: { type: new GraphQLNonNull(GraphQLString) },
+    transcript_version: { type: new GraphQLNonNull(GraphQLString) },
     chrom: { type: new GraphQLNonNull(GraphQLString) },
     start: { type: new GraphQLNonNull(GraphQLInt) },
     stop: { type: new GraphQLNonNull(GraphQLInt) },
