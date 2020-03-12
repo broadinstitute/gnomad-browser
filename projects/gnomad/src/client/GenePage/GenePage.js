@@ -341,14 +341,13 @@ class GenePage extends Component {
                 ? ({ transcript }) => (
                     <span>
                       {transcript.transcript_id}.{transcript.transcript_version}
+                      {transcript.transcript_id === gene.canonical_transcript_id && ' *'}
                     </span>
                   )
                 : ({ transcript }) => (
-                    <TranscriptLink
-                      to={`/transcript/${transcript.transcript_id}`}
-                      isCanonical={transcript.transcript_id === gene.canonical_transcript_id}
-                    >
+                    <TranscriptLink to={`/transcript/${transcript.transcript_id}`}>
                       {transcript.transcript_id}.{transcript.transcript_version}
+                      {transcript.transcript_id === gene.canonical_transcript_id && ' *'}
                     </TranscriptLink>
                   )
             }
