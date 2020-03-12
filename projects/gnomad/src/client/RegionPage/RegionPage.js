@@ -74,6 +74,7 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
         </RegionInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
+        leftPanelWidth={115}
         padding={0}
         regions={regionViewerRegions}
         rightPanelWidth={smallScreen ? 0 : 160}
