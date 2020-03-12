@@ -340,10 +340,10 @@ class TranscriptPage extends Component {
             renderTranscriptLeftPanel={({ transcript: trackTranscript }) => (
               <TranscriptLink
                 to={`/gene/${gene.gene_id}/transcript/${trackTranscript.transcript_id}`}
-                isCanonical={trackTranscript.transcript_id === gene.canonical_transcript_id}
                 isSelected={trackTranscript.transcript_id === transcript.transcript_id}
               >
                 {trackTranscript.transcript_id}.{trackTranscript.transcript_version}
+                {trackTranscript.transcript_id === gene.canonical_transcript_id && ' *'}
               </TranscriptLink>
             )}
             showNonCodingTranscripts={includeNonCodingTranscripts}
