@@ -3,6 +3,7 @@ import { flatMap } from 'lodash'
 import { UserVisibleError } from '../../errors'
 import { getFlagsForContext } from '../shared/flags'
 import { formatHistogram } from '../shared/histogram'
+import { fetchTranscriptsForConsequences } from '../shared/transcriptConsequence'
 import { fetchGnomadMNVSummariesByVariantId } from './gnomadMultiNucleotideVariants'
 
 const POPULATIONS = ['afr', 'amr', 'asj', 'eas', 'fin', 'nfe', 'oth', 'sas']
@@ -204,11 +205,19 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
   }
 
   const sharedData = exomeData || genomeData
+  let transcriptConsequences = sharedData.sortedTranscriptConsequences || []
 
-  const [colocatedVariants, multiNucleotideVariants] = await Promise.all([
+  const [colocatedVariants, multiNucleotideVariants, transcripts] = await Promise.all([
     fetchColocatedVariants(ctx, variantId, subset),
     fetchGnomadMNVSummariesByVariantId(ctx, variantId),
+    fetchTranscriptsForConsequences(ctx, transcriptConsequences, 'GRCh37'),
   ])
+
+  transcriptConsequences = transcriptConsequences.map(consequence => ({
+    ...consequence,
+    gene_version: transcripts[consequence.transcript_id].gene.gene_version,
+    transcript_version: transcripts[consequence.transcript_id].transcript_version,
+  }))
 
   return {
     // variant ID fields
@@ -293,7 +302,7 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
         }
       : null,
     rsid: sharedData.rsid,
-    sortedTranscriptConsequences: sharedData.sortedTranscriptConsequences || [],
+    sortedTranscriptConsequences: transcriptConsequences,
   }
 }
 

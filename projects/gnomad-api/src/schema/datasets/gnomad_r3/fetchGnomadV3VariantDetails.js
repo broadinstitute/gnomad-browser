@@ -2,6 +2,7 @@ import { flatMap } from 'lodash'
 
 import { UserVisibleError } from '../../errors'
 import { getFlagsForContext } from '../shared/flags'
+import { fetchTranscriptsForConsequences } from '../shared/transcriptConsequence'
 import POPULATIONS from './gnomadV3Populations'
 
 const formatHistogram = histogramData => ({
@@ -98,6 +99,21 @@ const fetchGnomadV3VariantDetails = async (ctx, variantId) => {
 
   const variant = response.hits.hits[0]._source
 
+  let transcriptConsequences = (variant.sorted_transcript_consequences || []).map(consequence => ({
+    ...consequence,
+    gene_id: `ENSG${consequence.gene_id.toString().padStart(11, '0')}`,
+    // Backwards compatibility with gnomAD v2.1 variants.
+    // This should eventually be moved to the UI.
+    hgvs: consequence.hgvsp || consequence.hgvsc,
+    transcript_id: `ENST${consequence.transcript_id.toString().padStart(11, '0')}`,
+  }))
+  const transcripts = await fetchTranscriptsForConsequences(ctx, transcriptConsequences, 'GRCh38')
+  transcriptConsequences = transcriptConsequences.map(consequence => ({
+    ...consequence,
+    gene_version: transcripts[consequence.transcript_id].gene.gene_version,
+    transcript_version: transcripts[consequence.transcript_id].transcript_version,
+  }))
+
   return {
     // variant ID fields
     variantId: variant.variant_id,
@@ -155,16 +171,7 @@ const fetchGnomadV3VariantDetails = async (ctx, variantId) => {
       },
     },
     rsid: variant.rsid,
-    sortedTranscriptConsequences: (variant.sorted_transcript_consequences || []).map(
-      consequence => ({
-        ...consequence,
-        gene_id: `ENSG${consequence.gene_id.toString().padStart(11, '0')}`,
-        // Backwards compatibility with gnomAD v2.1 variants.
-        // This should eventually be moved to the UI.
-        hgvs: consequence.hgvsp || consequence.hgvsc,
-        transcript_id: `ENST${consequence.transcript_id.toString().padStart(11, '0')}`,
-      })
-    ),
+    sortedTranscriptConsequences: transcriptConsequences,
   }
 }
 

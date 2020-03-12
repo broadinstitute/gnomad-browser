@@ -87,6 +87,23 @@ export const fetchGeneById = async (ctx, geneId, referenceGenome) => {
   }
 }
 
+export const fetchGenesByIds = async (ctx, geneIds, referenceGenome) => {
+  const response = await ctx.database.elastic.search({
+    index: 'genes',
+    type: 'documents',
+    body: {
+      query: {
+        ids: {
+          type: 'documents',
+          values: geneIds,
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(hit => shapeGene(hit._source, referenceGenome))
+}
+
 export const fetchGeneBySymbol = async (ctx, geneSymbol, referenceGenome) => {
   const response = await ctx.database.elastic.search({
     index: 'genes',

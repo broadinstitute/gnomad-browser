@@ -1,11 +1,14 @@
 import { GraphQLBoolean, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql'
 
+import { fetchGenesByIds } from '../../gene-models/gene'
+
 export const TranscriptConsequenceType = new GraphQLObjectType({
   name: 'TranscriptConsequence',
   fields: {
     canonical: { type: GraphQLBoolean },
     consequence_terms: { type: new GraphQLList(GraphQLString) },
     gene_id: { type: GraphQLString },
+    gene_version: { type: GraphQLString },
     gene_symbol: { type: GraphQLString },
     hgvs: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
@@ -17,6 +20,7 @@ export const TranscriptConsequenceType = new GraphQLObjectType({
     polyphen_prediction: { type: GraphQLString },
     sift_prediction: { type: GraphQLString },
     transcript_id: { type: GraphQLString },
+    transcript_version: { type: GraphQLString },
   },
 })
 
@@ -38,4 +42,29 @@ export const getConsequenceForContext = context => {
     default:
       throw Error(`Invalid context for getConsequenceForContext: ${context.type}`)
   }
+}
+
+export const fetchTranscriptsForConsequences = async (
+  ctx,
+  transcriptConsequences,
+  referenceGenome
+) => {
+  if (transcriptConsequences.length === 0) {
+    return []
+  }
+
+  const geneIds = Array.from(new Set(transcriptConsequences.map(csq => csq.gene_id)))
+  const genes = await fetchGenesByIds(ctx, geneIds, referenceGenome)
+
+  const transcripts = {}
+  genes.forEach(gene => {
+    gene.transcripts.forEach(transcript => {
+      transcripts[transcript.transcript_id] = {
+        ...transcript,
+        gene,
+      }
+    })
+  })
+
+  return transcripts
 }
