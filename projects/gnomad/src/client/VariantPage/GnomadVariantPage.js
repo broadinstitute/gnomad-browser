@@ -18,11 +18,11 @@ import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
 import GnomadReadData from './reads/GnomadReadData'
-import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import { VariantDetailsQuery } from './VariantDetailsQuery'
 import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
+import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
 const Section = styled.section`
   width: 100%;
@@ -103,10 +103,6 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
 
         const { variant, clinvar_variant: clinvarVariant } = data
 
-        const numTranscripts = variant.sortedTranscriptConsequences.length
-        const geneIds = variant.sortedTranscriptConsequences.map(csq => csq.gene_id)
-        const numGenes = new Set(geneIds).size
-
         return (
           <VariantDetailsContainer>
             <ResponsiveSection>
@@ -156,14 +152,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <Section>
               <h2>Annotations</h2>
-              <p>
-                This variant falls on {numTranscripts} transcript
-                {numTranscripts !== 1 && 's'} in {numGenes} gene
-                {numGenes !== 1 && 's'}.
-              </p>
-              <TranscriptConsequenceList
-                sortedTranscriptConsequences={variant.sortedTranscriptConsequences}
-              />
+              <VariantTranscriptConsequences variant={variant} />
             </Section>
             <ResponsiveSection>
               <h2>
