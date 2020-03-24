@@ -35,9 +35,14 @@ const ActiveTranscriptPlotWrapper = styled.div`
   height: 50px;
 `
 
+const ControlPanelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
 const ControlPanel = styled.div`
   display: flex;
-  justify-content: flex-end;
 `
 
 const TranscriptsWrapper = styled.div`
@@ -165,6 +170,7 @@ const exportTranscriptsPlot = (containerElement, filename) => {
 
 export const TranscriptsTrack = ({
   activeTranscript,
+  children,
   exportFilename,
   renderActiveTranscriptRightPanel,
   renderTranscriptLeftPanel,
@@ -223,7 +229,8 @@ export const TranscriptsTrack = ({
               </ActiveTranscriptPlotWrapper>
 
               {isExpanded && (
-                <ControlPanel>
+                <ControlPanelWrapper>
+                  <ControlPanel>{children}</ControlPanel>
                   <Button
                     onClick={() =>
                       exportTranscriptsPlot(transcriptsContainer.current, exportFilename, { width })
@@ -231,7 +238,7 @@ export const TranscriptsTrack = ({
                   >
                     Save plot
                   </Button>
-                </ControlPanel>
+                </ControlPanelWrapper>
               )}
             </React.Fragment>
           )}
@@ -296,6 +303,7 @@ TranscriptsTrack.propTypes = {
     ).isRequired,
     strand: PropTypes.oneOf(['+', '-']).isRequired,
   }).isRequired,
+  children: PropTypes.node,
   exportFilename: PropTypes.string,
   renderActiveTranscriptRightPanel: PropTypes.func,
   renderTranscriptLeftPanel: PropTypes.func,
@@ -317,6 +325,7 @@ TranscriptsTrack.propTypes = {
 }
 
 TranscriptsTrack.defaultProps = {
+  children: undefined,
   exportFilename: 'transcripts',
   renderActiveTranscriptRightPanel: undefined,
   // eslint-disable-next-line react/prop-types
