@@ -65,6 +65,12 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
       symbol
       name
       canonical_transcript_id
+      mane_select_transcript {
+        ensembl_id
+        ensembl_version
+        refseq_id
+        refseq_version
+      }
       hgnc_id
       omim_id
       chrom

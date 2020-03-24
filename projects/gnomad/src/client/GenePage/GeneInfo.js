@@ -123,8 +123,13 @@ const GeneInfo = ({ gene }) => {
       <AttributeList.Item label="Ensembl gene ID">
         {gene.gene_id}.{gene.gene_version}
       </AttributeList.Item>
+      {gene.mane_select_transcript && (
+        <AttributeList.Item label="MANE Select transcript">
+          {gene.mane_select_transcript.ensembl_id}.{gene.mane_select_transcript.ensembl_version}
+        </AttributeList.Item>
+      )}
       {canonicalTranscript && (
-        <AttributeList.Item label="Canonical transcript ID">
+        <AttributeList.Item label="Canonical transcript">
           {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
         </AttributeList.Item>
       )}
@@ -149,6 +154,12 @@ GeneInfo.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
     canonical_transcript_id: PropTypes.string,
+    mane_select_transcript: PropTypes.shape({
+      ensembl_id: PropTypes.string.isRequired,
+      ensembl_version: PropTypes.string.isRequired,
+      refseq_id: PropTypes.string.isRequired,
+      refseq_version: PropTypes.string.isRequired,
+    }),
     transcripts: PropTypes.arrayOf(
       PropTypes.shape({
         transcript_id: PropTypes.string.isRequired,
