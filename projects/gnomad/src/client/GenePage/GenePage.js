@@ -107,13 +107,14 @@ const transcriptFeatureAttributes = {
   },
 }
 
-const sortTranscripts = (transcripts, canonicalTranscriptId) =>
+const sortTranscripts = (transcripts, firstTranscriptId) =>
   transcripts.sort((t1, t2) => {
-    // Sort transcripts by isCanonical, mean expression, transcript ID
-    if (t1.transcript_id === canonicalTranscriptId) {
+    // Sort specific transcript (MANE Select or canonical) first
+    // Then sort transcripts by mean expression and transcript ID
+    if (t1.transcript_id === firstTranscriptId) {
       return -1
     }
-    if (t2.transcript_id === canonicalTranscriptId) {
+    if (t2.transcript_id === firstTranscriptId) {
       return 1
     }
 
@@ -231,6 +232,46 @@ class GenePage extends Component {
             (exon.feature_type === 'exon' && includeNonCodingTranscripts)
         )
 
+    /**
+     * In the transcripts track, mark the MANE Select transcript (if the gene has one) or the canonical transcript
+     * with an asterisk.
+     */
+    const hasManeSelectTranscript =
+      !!gene.mane_select_transcript &&
+      gene.transcripts.some(
+        transcript => transcript.transcript_id === gene.mane_select_transcript.ensembl_id
+      )
+
+    const starredTranscriptId = hasManeSelectTranscript
+      ? gene.mane_select_transcript.ensembl_id
+      : gene.canonical_transcript_id
+
+    const hasCanonicalTranscript =
+      !!gene.canonical_transcript_id &&
+      gene.transcripts.some(transcript => transcript.transcript_id === gene.canonical_transcript_id)
+
+    /**
+     * Describe what the asterisk is referring to.
+     */
+    let starredTranscriptDescription
+    if (hasManeSelectTranscript) {
+      const maneSelectTranscriptMatchesVersion =
+        !!gene.mane_select_transcript &&
+        gene.transcripts.some(
+          transcript =>
+            transcript.transcript_id === gene.mane_select_transcript.ensembl_id &&
+            transcript.transcript_version === gene.mane_select_transcript.ensembl_version
+        )
+      if (maneSelectTranscriptMatchesVersion) {
+        starredTranscriptDescription = 'Transcript is the MANE Select transcript for this gene'
+      } else {
+        starredTranscriptDescription =
+          'Transcript is a version of the MANE Select transcript for this gene'
+      }
+    } else if (hasCanonicalTranscript) {
+      starredTranscriptDescription = 'Transcript is the canonical transcript for this gene'
+    }
+
     return (
       <TrackPage>
         <TrackPageSection>
@@ -347,13 +388,13 @@ class GenePage extends Component {
                 ? ({ transcript }) => (
                     <span>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === gene.canonical_transcript_id && ' *'}
+                      {transcript.transcript_id === starredTranscriptId && ' *'}
                     </span>
                   )
                 : ({ transcript }) => (
                     <TranscriptLink to={`/transcript/${transcript.transcript_id}`}>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === gene.canonical_transcript_id && ' *'}
+                      {transcript.transcript_id === starredTranscriptId && ' *'}
                     </TranscriptLink>
                   )
             }
@@ -366,9 +407,11 @@ class GenePage extends Component {
                   ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
                   : transcript.exons,
               })),
-              gene.canonical_transcript_id
+              starredTranscriptId
             )}
-          />
+          >
+            <span>* {starredTranscriptDescription}</span>
+          </TranscriptsTrackComponent>
 
           {hasCodingExons && gene.pext && (
             <TissueExpressionTrack
