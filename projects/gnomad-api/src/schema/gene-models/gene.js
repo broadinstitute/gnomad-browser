@@ -22,6 +22,17 @@ export const GeneType = new GraphQLObjectType({
     exons: { type: new GraphQLNonNull(new GraphQLList(ExonType)) },
     strand: { type: new GraphQLNonNull(GraphQLString) },
     canonical_transcript_id: { type: GraphQLString },
+    mane_select_transcript: {
+      type: new GraphQLObjectType({
+        name: 'ManeSelectTranscript',
+        fields: {
+          ensembl_id: { type: new GraphQLNonNull(GraphQLString) },
+          ensembl_version: { type: new GraphQLNonNull(GraphQLString) },
+          refseq_id: { type: new GraphQLNonNull(GraphQLString) },
+          refseq_version: { type: new GraphQLNonNull(GraphQLString) },
+        },
+      }),
+    },
     omim_id: { type: GraphQLString },
 
     // Deprecated fields
@@ -66,6 +77,7 @@ export const shapeGene = (gene, referenceGenome) => {
       reference_genome: referenceGenome,
     })),
     canonical_transcript_id: gencodeData.canonical_transcript_id,
+    mane_select_transcript: referenceGenome === 'GRCh38' ? gene.mane_select_transcript : null,
     omim_id: gene.omim_id,
   }
 }
