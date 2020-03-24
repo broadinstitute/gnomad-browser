@@ -172,6 +172,12 @@ class TranscriptPage extends Component {
           })
         ).isRequired,
         canonical_transcript_id: PropTypes.string,
+        mane_select_transcript: PropTypes.shape({
+          ensembl_id: PropTypes.string.isRequired,
+          ensembl_version: PropTypes.string.isRequired,
+          refseq_id: PropTypes.string.isRequired,
+          refseq_version: PropTypes.string.isRequired,
+        }),
         pext: PropTypes.shape({
           regions: PropTypes.arrayOf(
             PropTypes.shape({
