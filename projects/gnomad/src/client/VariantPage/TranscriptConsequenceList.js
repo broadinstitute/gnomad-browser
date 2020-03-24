@@ -9,6 +9,10 @@ import { getLabelForConsequenceTerm } from '../vepConsequences'
 import TranscriptConsequence from './TranscriptConsequence'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 
+const TranscriptNote = styled.div`
+  margin-top: 0.25em;
+`
+
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
  */
@@ -34,6 +38,7 @@ const groupConsequences = (consequences, key) => {
 class ConsequencesInGene extends Component {
   static propTypes = {
     transcriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
+    transcriptNotes: PropTypes.objectOf(PropTypes.node).isRequired,
   }
 
   state = {
@@ -41,7 +46,7 @@ class ConsequencesInGene extends Component {
   }
 
   render() {
-    const { transcriptConsequences } = this.props
+    const { transcriptConsequences, transcriptNotes } = this.props
     const { isExpanded } = this.state
 
     const {
@@ -53,6 +58,12 @@ class ConsequencesInGene extends Component {
       <OrderedList>
         {transcriptConsequences.slice(0, 3).map(csq => (
           <ListItem key={csq.transcript_id}>
+            <Link to={`/transcript/${csq.transcript_id}`}>
+              {csq.transcript_id}.{csq.transcript_version}
+            </Link>
+            {transcriptNotes[csq.transcript_id] && (
+              <TranscriptNote>{transcriptNotes[csq.transcript_id]}</TranscriptNote>
+            )}
             <TranscriptConsequence consequence={csq} />
           </ListItem>
         ))}
@@ -78,6 +89,12 @@ class ConsequencesInGene extends Component {
             <OrderedList>
               {transcriptConsequences.map(csq => (
                 <ListItem key={csq.transcript_id}>
+                  <Link to={`/transcript/${csq.transcript_id}`}>
+                    {csq.transcript_id}.{csq.transcript_version}
+                  </Link>
+                  {transcriptNotes[csq.transcript_id] && (
+                    <TranscriptNote>{transcriptNotes[csq.transcript_id]}</TranscriptNote>
+                  )}
                   <TranscriptConsequence consequence={csq} />
                 </ListItem>
               ))}
@@ -103,10 +120,10 @@ const ConsequenceListWrapper = styled.ol`
 `
 
 const ConsequenceListItem = styled.li`
-  flex-basis: 250px;
+  margin-right: 2em;
 `
 
-export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
+export const TranscriptConsequenceList = ({ sortedTranscriptConsequences, transcriptNotes }) => (
   <ConsequenceListWrapper>
     {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
@@ -121,7 +138,10 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>
                     </h4>
-                    <ConsequencesInGene transcriptConsequences={consequencesInGene} />
+                    <ConsequencesInGene
+                      transcriptConsequences={consequencesInGene}
+                      transcriptNotes={transcriptNotes}
+                    />
                   </ListItem>
                 )
               }
@@ -135,4 +155,9 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
 
 TranscriptConsequenceList.propTypes = {
   sortedTranscriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
+  transcriptNotes: PropTypes.objectOf(PropTypes.node),
+}
+
+TranscriptConsequenceList.defaultProps = {
+  transcriptNotes: {},
 }
