@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import Link from '../Link'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { LofteeFilter, LofteeFlag } from './Loftee'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
@@ -95,7 +94,7 @@ const lofteeAnnotationDescription = consequence => {
   }
 }
 
-const TranscriptConsequenceDetails = ({ consequence }) => {
+const TranscriptConsequence = ({ consequence }) => {
   const category = getCategoryFromConsequence(consequence.major_consequence)
 
   if (category === 'missense') {
@@ -162,20 +161,6 @@ const TranscriptConsequenceDetails = ({ consequence }) => {
 
   return null
 }
-
-TranscriptConsequenceDetails.propTypes = {
-  consequence: TranscriptConsequencePropType.isRequired,
-}
-
-const TranscriptConsequence = ({ consequence }) => (
-  <div>
-    <Link to={`/transcript/${consequence.transcript_id}`}>
-      {consequence.transcript_id}.{consequence.transcript_version}
-      {consequence.canonical && ' *'}
-    </Link>
-    <TranscriptConsequenceDetails consequence={consequence} />
-  </div>
-)
 
 TranscriptConsequence.propTypes = {
   consequence: TranscriptConsequencePropType.isRequired,
