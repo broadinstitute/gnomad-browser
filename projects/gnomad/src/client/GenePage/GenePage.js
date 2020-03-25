@@ -263,10 +263,21 @@ class GenePage extends Component {
             transcript.transcript_version === gene.mane_select_transcript.ensembl_version
         )
       if (maneSelectTranscriptMatchesVersion) {
-        starredTranscriptDescription = 'Transcript is the MANE Select transcript for this gene'
+        starredTranscriptDescription = (
+          <React.Fragment>
+            Transcript is the{' '}
+            <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink>{' '}
+            Select transcript for this gene
+          </React.Fragment>
+        )
       } else {
-        starredTranscriptDescription =
-          'Transcript is a version of the MANE Select transcript for this gene'
+        starredTranscriptDescription = (
+          <React.Fragment>
+            Transcript is a version of the{' '}
+            <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink>{' '}
+            Select transcript for this gene
+          </React.Fragment>
+        )
       }
     } else if (hasCanonicalTranscript) {
       starredTranscriptDescription = 'Transcript is the canonical transcript for this gene'
