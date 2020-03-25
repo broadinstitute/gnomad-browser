@@ -43,6 +43,7 @@ const NotExpressedMessage = styled.div`
   font-size: 10px;
 `
 
+/* eslint-disable-next-line react/prop-types */
 const renderProportionAxis = ({ width }) =>
   width > 20 && (
     <svg width={width} height={31}>
