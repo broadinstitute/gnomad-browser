@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import { ExternalLink } from '@gnomad/ui'
+
 import Query from '../Query'
 
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
@@ -49,9 +51,24 @@ const VariantTranscriptConsequences = ({ variant }) => {
                   consequence.transcript_version ===
                   consequenceGene.mane_select_transcript.ensembl_version
                 ) {
-                  note = `MANE Select transcript for ${consequence.gene_symbol}`
+                  note = (
+                    <React.Fragment>
+                      <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">
+                        MANE
+                      </ExternalLink>{' '}
+                      Select transcript for {consequence.gene_symbol}
+                    </React.Fragment>
+                  )
                 } else {
-                  note = `Different version of MANE Select transcript for ${consequence.gene_symbol}`
+                  note = (
+                    <React.Fragment>
+                      Different version of{' '}
+                      <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">
+                        MANE
+                      </ExternalLink>{' '}
+                      Select transcript for {consequence.gene_symbol}
+                    </React.Fragment>
+                  )
                 }
               } else if (consequenceGene.canonical_transcript_id === consequence.transcript_id) {
                 note = `Canonical transcript for ${consequence.gene_symbol}`
