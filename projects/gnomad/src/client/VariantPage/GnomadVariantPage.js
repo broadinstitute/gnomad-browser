@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { QuestionMark } from '@gnomad/help'
-import { Page } from '@gnomad/ui'
+import { Badge, Page } from '@gnomad/ui'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -117,6 +117,12 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                   />
                 )}
               </ScrollWrapper>
+
+              {variant.flags && variant.flags.includes('lcr') && (
+                <p>
+                  <Badge level="info">Note</Badge> This variant is found in a low complexity region.
+                </p>
+              )}
 
               {variant.colocatedVariants.length > 0 && (
                 <div>
