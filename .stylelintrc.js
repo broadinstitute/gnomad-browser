@@ -140,6 +140,8 @@ module.exports = {
     'declaration-colon-newline-after': null,
     'unit-whitelist': ['%', 'deg', 'em', 'rem', 's', 'px', 'vw', 'vh'],
     'order/properties-order': [propertiesOrder],
+    // "dummyValue" is inserted by stylelint-processor-styled-components in place of function interpolations
+    'value-keyword-case': ['lower', { ignoreKeywords: ['dummyValue'] }]
   },
   ignoreFiles: './**/node_modules/**/*',
 }
