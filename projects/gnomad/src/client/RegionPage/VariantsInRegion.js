@@ -75,8 +75,8 @@ class VariantsInRegion extends Component {
 
   getColumns = memoizeOne((width, chrom) =>
     getColumns({
+      context: 'region',
       width,
-      includeGene: true,
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
     })

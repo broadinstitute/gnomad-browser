@@ -37,9 +37,21 @@ const renderExponentialNumberCell = (row, key) => {
   return truncated.toExponential()
 }
 
+const getConsequenceDescription = context => {
+  switch (context) {
+    case 'gene':
+      return ' for most severe consequence across all transcripts for this gene'
+    case 'region':
+      return ' for most severe consequence across all transcripts'
+    case 'transcript':
+    default:
+      return ' for consequence in this transcript'
+  }
+}
+
 export const getColumns = ({
+  context, // one of 'gene', 'region', or 'transcript'
   width,
-  includeGene = false,
   includeHomozygoteAC = false,
   includeHemizygoteAC = false,
 }) => {
@@ -47,6 +59,7 @@ export const getColumns = ({
     {
       key: 'variant_id',
       heading: 'Variant ID',
+      tooltip: 'Chromosome-position-reference-alternate',
       isRowHeader: true,
       isSortable: true,
       minWidth: 150,
@@ -60,6 +73,7 @@ export const getColumns = ({
     {
       key: 'source',
       heading: 'Source',
+      tooltip: 'Sample set and quality control filters',
       grow: 0,
       minWidth: 100,
       render: variant => (
@@ -72,6 +86,9 @@ export const getColumns = ({
     {
       key: 'hgvs',
       heading: 'Consequence',
+      tooltip: `HGVS protein sequence (where defined) or coding sequence${getConsequenceDescription(
+        context
+      )}`,
       grow: 1,
       isSortable: true,
       minWidth: 160,
@@ -85,6 +102,7 @@ export const getColumns = ({
     {
       key: 'consequence',
       heading: 'Annotation',
+      tooltip: `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(context)}`,
       grow: 0,
       isSortable: true,
       minWidth: 140,
@@ -101,6 +119,7 @@ export const getColumns = ({
     {
       key: 'flags',
       heading: 'Flags',
+      tooltip: 'Flags that may affect annotation and/or confidence',
       grow: 0,
       isSortable: true,
       minWidth: 120,
@@ -112,6 +131,7 @@ export const getColumns = ({
     {
       key: 'ac',
       heading: width < 600 ? 'AC' : 'Allele Count',
+      tooltip: 'Alternate allele count in high quality genotypes',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
@@ -119,6 +139,7 @@ export const getColumns = ({
     {
       key: 'an',
       heading: width < 600 ? 'AN' : 'Allele Number',
+      tooltip: 'Total number of called high quality genotypes',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
@@ -126,6 +147,7 @@ export const getColumns = ({
     {
       key: 'af',
       heading: width < 600 ? 'AF' : 'Allele Frequency',
+      tooltip: 'Alternate allele frequency in high quality genotypes',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
@@ -133,10 +155,11 @@ export const getColumns = ({
     },
   ]
 
-  if (includeGene) {
+  if (context === 'region') {
     columns.splice(2, 0, {
       key: 'gene',
       heading: 'Gene',
+      tooltip: 'Gene in which variant has the most severe consequence',
       isSortable: false,
       minWidth: 100,
       render: row => (
@@ -151,6 +174,7 @@ export const getColumns = ({
     columns.push({
       key: 'ac_hom',
       heading: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
+      tooltip: 'Number of individuals homozygous for alternate allele',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 100,
@@ -161,6 +185,7 @@ export const getColumns = ({
     columns.push({
       key: 'ac_hemi',
       heading: width < 600 ? 'No. Hem' : 'Number of Hemizygotes',
+      tooltip: 'Number of individuals hemizygous for alternate allele',
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 100,
