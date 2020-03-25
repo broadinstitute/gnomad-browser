@@ -126,6 +126,8 @@ const GeneInfo = ({ gene }) => {
       {gene.mane_select_transcript && (
         <AttributeList.Item label="MANE Select transcript">
           {gene.mane_select_transcript.ensembl_id}.{gene.mane_select_transcript.ensembl_version}
+          {' / '}
+          {gene.mane_select_transcript.refseq_id}.{gene.mane_select_transcript.refseq_version}
         </AttributeList.Item>
       )}
       {canonicalTranscript && (
