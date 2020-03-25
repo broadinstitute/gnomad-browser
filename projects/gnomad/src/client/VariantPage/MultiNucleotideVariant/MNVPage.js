@@ -90,12 +90,11 @@ const MNVPage = ({ datasetId, variantId }) => (
                   <List>
                     <ListItem>
                       <ExternalLink
-                        // eslint-disable-next-line prettier/prettier
                         href={`https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${
                           variant.chrom
-                        }%3A${variant.pos}-${variant.pos}&position=chr${
-                          variant.chrom
-                        }%3A${variant.pos - 25}-${variant.pos + 25}`}
+                        }%3A${variant.pos}-${variant.pos}&position=chr${variant.chrom}%3A${
+                          variant.pos - 25
+                        }-${variant.pos + 25}`}
                       >
                         UCSC
                       </ExternalLink>

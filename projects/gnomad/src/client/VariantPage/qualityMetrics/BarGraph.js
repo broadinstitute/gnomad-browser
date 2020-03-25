@@ -111,9 +111,7 @@ export const BarGraph = withSize()(
 
     const xScale = (logScale ? scaleLog() : scaleLinear()).domain(xDomain).range([0, plotWidth])
 
-    const yScale = scaleLinear()
-      .domain(yDomain)
-      .range([plotHeight, 0])
+    const yScale = scaleLinear().domain(yDomain).range([plotHeight, 0])
 
     return (
       <GraphWrapper>

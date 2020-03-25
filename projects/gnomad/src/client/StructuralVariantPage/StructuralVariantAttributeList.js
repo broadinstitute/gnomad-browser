@@ -159,12 +159,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
       {variant.type === 'INS' &&
         variant.alts &&
         `(${variant.alts
-          .map(alt =>
-            alt
-              .replace(/^</, '')
-              .replace(/>$/, '')
-              .replace(/^INS:/, '')
-          )
+          .map(alt => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
           .join(', ')})`}
       <QuestionMark topic={`SV_docs/sv-class_${variant.type}`} />
     </AttributeList.Item>

@@ -430,8 +430,9 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
               categoryCount[category] += 1
               return {
                 ...read,
-                // eslint-disable-next-line prettier/prettier
-                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${categoryCount[category]}`,
+                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${
+                  categoryCount[category]
+                }`,
               }
             })
           })
@@ -445,8 +446,9 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
               categoryCount[category] += 1
               return {
                 ...read,
-                // eslint-disable-next-line prettier/prettier
-                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${categoryCount[category]}`,
+                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${
+                  categoryCount[category]
+                }`,
               }
             })
           })

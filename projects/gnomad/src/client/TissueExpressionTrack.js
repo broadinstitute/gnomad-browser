@@ -75,10 +75,7 @@ const IndividualTissueTrack = ({ exons, expressionRegions, tissue }) => (
         return <NotExpressedMessage>Gene is not expressed in this tissue</NotExpressedMessage>
       }
 
-      const heightScale = scaleLinear()
-        .domain([0, 1])
-        .range([0, 20])
-        .clamp(true)
+      const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
 
       return (
         <PlotWrapper key={tissue}>
@@ -171,10 +168,7 @@ class TissueExpressionTrack extends Component {
 
     const isExpressed = expressionRegions.some(region => region.mean !== 0)
 
-    const heightScale = scaleLinear()
-      .domain([0, 1])
-      .range([0, 20])
-      .clamp(true)
+    const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
 
     return (
       <Wrapper>
