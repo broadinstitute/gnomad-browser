@@ -48,9 +48,7 @@ const StackedVariantsPlot = ({
   const x = variant => scalePosition(variant.pos)
   const { points, height } = layoutStackedPoints(variantLayers, x, symbolSpacing)
 
-  const symbolPath = symbol()
-    .size(symbolSize)
-    .type(symbolType)()
+  const symbolPath = symbol().size(symbolSize).type(symbolType)()
 
   return (
     <svg height={height} width={width}>

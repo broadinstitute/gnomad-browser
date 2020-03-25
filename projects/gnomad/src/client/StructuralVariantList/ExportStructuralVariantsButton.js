@@ -37,7 +37,6 @@ const columns = [
       }
 
       if (variant.type === 'BND' || variant.type === 'CTX') {
-        // eslint-disable-next-line prettier/prettier
         return `${variant.chrom}:${variant.pos}-${variant.end}|${variant.chrom2}:${variant.pos2}-${variant.end2}`
       }
 
@@ -100,10 +99,7 @@ const exportVariantsToCsv = (variants, baseFileName) => {
     .padStart(2, '0')}_${date
     .getMinutes()
     .toString()
-    .padStart(2, '0')}_${date
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}`
+    .padStart(2, '0')}_${date.getSeconds().toString().padStart(2, '0')}`
 
   const blob = new Blob([csv], { type: 'text/csv' })
   const url = URL.createObjectURL(blob)

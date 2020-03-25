@@ -73,9 +73,7 @@ const ClinvarBinnedVariantsPlot = ({ scalePosition, variants, width }) => {
     return Math.max(max, binTotal)
   }, 1)
 
-  const y = scaleLinear()
-    .domain([0, maxVariantsInBin])
-    .range([0, height])
+  const y = scaleLinear().domain([0, maxVariantsInBin]).range([0, height])
 
   return (
     <svg height={height} width={width} style={{ overflow: 'visible' }}>

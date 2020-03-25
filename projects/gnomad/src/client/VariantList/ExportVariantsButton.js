@@ -166,10 +166,7 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
     .padStart(2, '0')}_${date
     .getMinutes()
     .toString()
-    .padStart(2, '0')}_${date
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}`
+    .padStart(2, '0')}_${date.getSeconds().toString().padStart(2, '0')}`
 
   const blob = new Blob([csv], { type: 'text/csv' })
   const url = URL.createObjectURL(blob)

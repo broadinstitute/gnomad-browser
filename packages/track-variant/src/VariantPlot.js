@@ -2,9 +2,7 @@ import { scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { forwardRef, useCallback, useEffect, useRef } from 'react'
 
-const alleleFrequencyScale = scaleLog()
-  .domain([0.00001, 0.001])
-  .range([4, 12])
+const alleleFrequencyScale = scaleLog().domain([0.00001, 0.001]).range([4, 12])
 
 const drawEllipse = (ctx, cx, cy, rx, ry) => {
   const K = 0.5522848

@@ -93,9 +93,7 @@ const Histogram = withSize()(
       .domain(bins.map(bin => bin.label))
       .range([0, plotWidth])
 
-    const yScale = scaleLinear()
-      .domain(yDomain)
-      .range([plotHeight, 0])
+    const yScale = scaleLinear().domain(yDomain).range([plotHeight, 0])
 
     const bandWidth = xBandScale.bandwidth()
 

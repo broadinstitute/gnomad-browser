@@ -69,11 +69,7 @@ export const isVariantId = str => {
 }
 
 export const normalizeVariantId = variantId =>
-  variantId
-    .toUpperCase()
-    .replace(/,/g, '')
-    .replace(/:/g, '-')
-    .replace(/^CHR/, '')
+  variantId.toUpperCase().replace(/,/g, '').replace(/:/g, '-').replace(/^CHR/, '')
 
 export const resolveSearchResults = async (ctx, dataset, query) => {
   if (dataset !== 'gnomad_r2_1' && dataset !== 'gnomad_r3') {
