@@ -80,8 +80,8 @@ class VariantsInTranscript extends Component {
 
   getColumns = memoizeOne((width, chrom) =>
     getColumns({
+      context: 'transcript',
       width,
-      includeGene: false,
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
     })
