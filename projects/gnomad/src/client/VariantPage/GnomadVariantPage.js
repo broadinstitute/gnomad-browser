@@ -118,6 +118,13 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
                 )}
               </ScrollWrapper>
 
+              {variant.flags && variant.flags.includes('par') && (
+                <p>
+                  <Badge level="info">Note</Badge> This variant is found in a pseudoautosomal
+                  region.
+                </p>
+              )}
+
               {variant.flags && variant.flags.includes('lcr') && (
                 <p>
                   <Badge level="info">Note</Badge> This variant is found in a low complexity region.

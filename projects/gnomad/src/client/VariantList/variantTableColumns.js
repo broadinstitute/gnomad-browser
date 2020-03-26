@@ -125,7 +125,7 @@ export const getColumns = ({
       minWidth: 120,
       render: (row, key) =>
         row[key]
-          .filter(flag => flag !== 'segdup')
+          .filter(flag => flag !== 'segdup' && flag !== 'par')
           .map(flag => <VariantFlag key={flag} type={flag} variant={row} />),
     },
     {

@@ -11,6 +11,14 @@ export const getBaseFlags = variantData => {
     flags.push('segdup')
   }
 
+  const chrom = (variantData.locus || {}).contig || variantData.chrom
+  if (
+    (chrom === 'X' || chrom === 'chrX' || chrom === 'Y' || chrom === 'chrY') &&
+    !variantData.nonpar
+  ) {
+    flags.push('par')
+  }
+
   return flags
 }
 
