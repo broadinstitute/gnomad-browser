@@ -16,6 +16,6 @@
     "@gnomad/scripts": "*"
   },
   "peerDependencies": {
-    "react": "^16.8.2"
+    "react": "^16.9.0"
   }
 }
