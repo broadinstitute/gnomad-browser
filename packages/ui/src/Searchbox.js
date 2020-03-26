@@ -74,6 +74,7 @@ export class Searchbox extends Component {
   }
 
   state = {
+    error: null,
     inputValue: '',
     isFetching: false,
     isOpen: false,
@@ -95,13 +96,18 @@ export class Searchbox extends Component {
       fetchSearchResults(query).then(resolve, reject)
     })
 
-    this.searchRequest.then(results => {
-      this.setState({ isFetching: false, options: results })
-      if (this.selectOnSearchResponse && results.length > 0) {
-        onSelect(results[0].value, results[0])
+    this.searchRequest.then(
+      results => {
+        this.setState({ isFetching: false, options: results })
+        if (this.selectOnSearchResponse && results.length > 0) {
+          onSelect(results[0].value, results[0])
+        }
+        this.selectOnSearchResponse = false
+      },
+      error => {
+        this.setState({ isFetching: false, error })
       }
-      this.selectOnSearchResponse = false
-    })
+    )
   }, 400)
 
   componentWillUnmount() {
@@ -139,7 +145,7 @@ export class Searchbox extends Component {
 
     // Clear current search results. This prevents pressing "Enter" while new results are loading
     // from selecting the top result from the previous query.
-    this.setState({ options: [] })
+    this.setState({ error: null, options: [] })
 
     this.selectOnSearchResponse = false
 
@@ -152,7 +158,7 @@ export class Searchbox extends Component {
   }
 
   renderMenu = (items, inputValue, style) => {
-    const { isFetching } = this.state
+    const { error, isFetching } = this.state
     let menuContent
     if (inputValue === '') {
       return <div />
@@ -162,6 +168,10 @@ export class Searchbox extends Component {
       if (isFetching) {
         menuContent = (
           <PlaceholderItem data-testid="searchbox-searching">Searching...</PlaceholderItem>
+        )
+      } else if (error) {
+        menuContent = (
+          <PlaceholderItem data-testid="searchbox-error">Unable to get results</PlaceholderItem>
         )
       } else {
         menuContent = (
