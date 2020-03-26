@@ -1,4 +1,4 @@
-import fetch from 'graphql-fetch'
+import graphqlFetch from 'graphql-fetch'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { withRouter } from 'react-router-dom'
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 `
 
 const fetchSearchResults = (dataset, query) =>
-  fetch('/api/')(
+  graphqlFetch('/api/')(
     `
   query Search($dataset: DatasetId!, $query: String!) {
     searchResults(dataset: $dataset, query: $query) {

@@ -58,4 +58,21 @@ describe('Searchbox', () => {
     expect(results[0]).toHaveTextContent('bar')
     expect(results[1]).toHaveTextContent('baz')
   })
+
+  test('it should show an error message if fetching results fails', async () => {
+    const fetchSearchResults = jest
+      .fn()
+      .mockImplementation(() => Promise.reject(new Error('Something went wrong')))
+
+    const { getByTestId, findByTestId } = render(
+      <Searchbox fetchSearchResults={fetchSearchResults} onSelect={jest.fn()} />
+    )
+
+    const input = getByTestId('searchbox-input')
+    input.focus()
+    fireEvent.change(input, { target: { value: 'ba' } })
+
+    const results = await findByTestId('searchbox-error')
+    expect(results).not.toBeNull()
+  })
 })
