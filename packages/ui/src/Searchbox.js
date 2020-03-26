@@ -53,7 +53,7 @@ const renderInput = props => {
 }
 
 const renderItem = (item, isHighlighted) => (
-  <Item key={item.value} isHighlighted={isHighlighted}>
+  <Item key={item.value} data-testid="searchbox-menu-item" isHighlighted={isHighlighted}>
     {item.label}
   </Item>
 )
@@ -160,9 +160,13 @@ export class Searchbox extends Component {
 
     if (items.length === 0) {
       if (isFetching) {
-        menuContent = <PlaceholderItem>Searching...</PlaceholderItem>
+        menuContent = (
+          <PlaceholderItem data-testid="searchbox-searching">Searching...</PlaceholderItem>
+        )
       } else {
-        menuContent = <PlaceholderItem>No results found</PlaceholderItem>
+        menuContent = (
+          <PlaceholderItem data-testid="searchbox-no-results">No results found</PlaceholderItem>
+        )
       }
     } else {
       menuContent = items
@@ -182,6 +186,7 @@ export class Searchbox extends Component {
         // https://github.com/reactjs/react-autocomplete/blob/41388f7/lib/Autocomplete.js#L404-L410
         getItemValue={() => inputValue}
         inputProps={{
+          'data-testid': 'searchbox-input',
           hasResults: options.length > 0,
           id,
           placeholder,
