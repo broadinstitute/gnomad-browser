@@ -25,4 +25,5 @@ module.exports = {
       testMatch: ['<rootDir>/projects/gnomad-api/**/*.spec.js'],
     },
   ],
+  roots: ['<rootDir>', '<rootDir>/tests'],
 }
