@@ -153,8 +153,8 @@ export default () => (
           of the samples from prior releases are included during the initial joint calling; however,
           we make changes to our sample QC process in each release, which always results in the
           removal of some samples that previously passed. For instance, approximately 10% of the
-          samples in ExAC are missing from gnomAD, so we expect some variants in ExAC, particularly
-          those that were found at low frequencies, to be absent in gnomAD.
+          samples in ExAC are missing from gnomAD v2, so we expect some variants in ExAC,
+          particularly those that were found at low frequencies, to be absent in gnomAD v2.
         </p>
 
         <p>
