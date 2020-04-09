@@ -333,6 +333,11 @@ export default () => (
           <wbr />
           all.baselevel.021620.ht
         </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.tsv.bgz">
+            Base-level pext TSV
+          </ExternalLink>
+        </ListItem>
       </FileList>
     </section>
 
