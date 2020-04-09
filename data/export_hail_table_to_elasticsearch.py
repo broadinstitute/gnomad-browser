@@ -1,4 +1,5 @@
 import argparse
+import datetime
 
 import hail as hl
 
@@ -29,6 +30,12 @@ def main():
     hl.init(log="/tmp/hail.log")
 
     table = hl.read_table(args.table_url)
+
+    table = table.select_globals(
+        exported_from=args.table_url,
+        exported_at=datetime.datetime.utcnow().isoformat(timespec="seconds"),
+        table_globals=table.globals,
+    )
 
     mapping = elasticsearch_mapping_for_table(
         table, disable_fields=args.disable_fields, override_types=dict(arg.split("=") for arg in args.set_type)
