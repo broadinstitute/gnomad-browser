@@ -229,7 +229,7 @@ def main():
 
     genes = genes.select(gencode=genes.row_value)
 
-    hgnc = hl.import_table(args.hgnc)
+    hgnc = hl.import_table(args.hgnc, missing="")
 
     hgnc = hgnc.select(
         hgnc_id=hgnc["HGNC ID"],
@@ -238,9 +238,9 @@ def main():
         previous_symbols=hgnc["Previous symbols"],
         alias_symbols=hgnc["Alias symbols"],
         omim_id=hgnc["OMIM ID(supplied by OMIM)"],
-        gene_id=hgnc["Ensembl ID(supplied by Ensembl)"],
+        gene_id=hl.or_else(hgnc["Ensembl gene ID"], hgnc["Ensembl ID(supplied by Ensembl)"]),
     )
-    hgnc = hgnc.key_by("gene_id")
+    hgnc = hgnc.filter(hl.is_defined(hgnc.gene_id)).key_by("gene_id")
     hgnc = hgnc.annotate(
         previous_symbols=hl.cond(
             hgnc.previous_symbols == "",
