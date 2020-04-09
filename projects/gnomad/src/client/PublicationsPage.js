@@ -31,9 +31,9 @@ export default () => (
           Karczewski, K. J., Francioli, L. C., Tiao, G., Cummings, B. B., Alföldi, J., Wang, Q.,
           Collins, R. L., Laricchia, K. M., Ganna, A., Birnbaum, D. P., Gauthier, L. D., Brand, H.,
           Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G.,
-          Kosmicki, J. A., … MacArthur, D. G. (2019). Variation across 141,456 human exomes and
-          genomes reveals the spectrum of loss-of-function intolerance across human protein-coding
-          genes. In <span style={{ fontStyle: 'italic' }}>bioRxiv</span> (p. 531210).{' '}
+          Kosmicki, J. A., … MacArthur, D. G. (2019). The mutational constraint spectrum quantified
+          from variation in 141,456 humans. In <span style={{ fontStyle: 'italic' }}>bioRxiv</span>{' '}
+          (p. 531210).{' '}
           <ExternalLink href="https://doi.org/10.1101/531210">
             https://doi.org/10.1101/531210
           </ExternalLink>
