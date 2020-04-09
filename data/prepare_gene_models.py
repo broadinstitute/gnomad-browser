@@ -231,18 +231,12 @@ def main():
 
     hgnc = hl.import_table(args.hgnc)
 
-    # Fix for alternative HGNC column name
-    try:
-        hgnc = hgnc.rename({'Alias symbols': 'Synonyms'})
-    except:
-        pass
-
     hgnc = hgnc.select(
         hgnc_id=hgnc["HGNC ID"],
         symbol=hgnc["Approved symbol"],
         name=hgnc["Approved name"],
         previous_symbols=hgnc["Previous symbols"],
-        synonyms=hgnc["Synonyms"],
+        alias_symbols=hgnc["Alias symbols"],
         omim_id=hgnc["OMIM ID(supplied by OMIM)"],
         gene_id=hgnc["Ensembl ID(supplied by Ensembl)"],
     )
@@ -253,8 +247,8 @@ def main():
             hl.empty_array(hl.tstr),
             hgnc.previous_symbols.split(",").map(lambda s: s.strip()),
         ),
-        synonyms=hl.cond(
-            hgnc.synonyms == "", hl.empty_array(hl.tstr), hgnc.synonyms.split(",").map(lambda s: s.strip())
+        alias_symbols=hl.cond(
+            hgnc.alias_symbols == "", hl.empty_array(hl.tstr), hgnc.alias_symbols.split(",").map(lambda s: s.strip())
         ),
     )
 
@@ -275,7 +269,10 @@ def main():
     # Collect all fields that can be used to search by gene name
     genes = genes.annotate(
         symbol_upper_case=genes.symbol.upper(),
-        search_terms=hl.empty_array(hl.tstr).append(genes.symbol).extend(genes.synonyms).extend(genes.previous_symbols),
+        search_terms=hl.empty_array(hl.tstr)
+        .append(genes.symbol)
+        .extend(genes.previous_symbols)
+        .extend(genes.alias_symbols),
     )
     for gencode_version in all_gencode_versions:
         genes = genes.annotate(
