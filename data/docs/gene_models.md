@@ -31,8 +31,6 @@
          --output $CANONICAL_TRANSCRIPTS_GRCH38_PATH
    ```
 
-   TODO: Get canonical transcripts for gnomAD v3 / GRCh38
-
 3. Delete the Dataproc cluster
 
    ```shell
