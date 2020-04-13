@@ -1,19 +1,16 @@
 import styled from 'styled-components'
 
 export const Link = styled.a`
-  color: #428bca;
+  color: #1173bb;
   text-decoration: none;
 
-  &:visited {
-    color: #428bca;
+  &:visited,
+  &:active {
+    color: #1173bb;
   }
 
-  &:active,
+  &:focus,
   &:hover {
-    color: #be4248;
-  }
-
-  &:focus {
     text-decoration: underline;
   }
 `
