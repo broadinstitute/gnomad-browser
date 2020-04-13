@@ -18,17 +18,17 @@ export default () => (
     </p>
 
     <p>
-      You can also contact us by{' '}
-      <ExternalLink href="mailto:exomeconsortium@gmail.com">email</ExternalLink> to report data
-      problems or feature suggestions.
+      You can also{' '}
+      <ExternalLink href="mailto:exomeconsortium@gmail.com">contact us by email</ExternalLink> to
+      report data problems or feature suggestions.
     </p>
 
     <p>
-      Sign up for our low-volume mailing list for future release announcements{' '}
+      Sign up for our low-volume{' '}
       <ExternalLink href="https://groups.google.com/forum/#!forum/exac_data_announcements">
-        here
-      </ExternalLink>
-      .
+        mailing list
+      </ExternalLink>{' '}
+      for future release announcements .
     </p>
   </InfoPage>
 )

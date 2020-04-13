@@ -65,18 +65,18 @@ export default () => (
     <p>
       The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies, and
-      is aligned against the GRCh38 reference.{' '}
+      is aligned against the GRCh38 reference. See the{' '}
       <ExternalLink href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/">
-        This blog post
+        gnomAD v3.0 blog post
       </ExternalLink>{' '}
-      describes the latest release. The v2 short variant data set provided on this website spans
-      125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part of various
-      disease-specific and population genetic studies, totalling 141,456 individuals, and is aligned
-      against the GRCh37 reference.{' '}
+      for details of the latest release. The v2 short variant data set provided on this website
+      spans 125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part of
+      various disease-specific and population genetic studies, totalling 141,456 individuals, and is
+      aligned against the GRCh37 reference. See the{' '}
       <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
-        This blog post
+        gnomAD v2.1 blog post
       </ExternalLink>{' '}
-      describes the v2.1 release. We have removed individuals known to be affected by severe
+      for details of the v2.1 release. We have removed individuals known to be affected by severe
       pediatric disease, as well as their first-degree relatives, so these data sets should serve as
       useful reference sets of allele frequencies for severe pediatric disease studies - however,
       note that some individuals with severe disease may still be included in the data sets, albeit
@@ -119,11 +119,11 @@ export default () => (
       The gnomAD structural variant (SV) v2.1 data set provided on this website spans 10,847 genomes
       from unrelated individuals sequenced as part of various disease-specific and population
       genetic studies, and is aligned against the GRCh37 reference. It mostly (but not entirely)
-      overlaps with the genome set used for the gnomAD short variant release.{' '}
+      overlaps with the genome set used for the gnomAD short variant release. See the{' '}
       <ExternalLink href="https://macarthurlab.org/2019/03/20/structural-variants-in-gnomad/">
-        This blog post
+        Structural variants in gnomAD blog post
       </ExternalLink>{' '}
-      describes the SV release. As with the gnomAD short variant data set, we have removed
+      for details of the SV release. As with the gnomAD short variant data set, we have removed
       individuals known to be affected by severe pediatric disease, as well as their first-degree
       relatives, so this data set should serve as a useful reference set of allele frequencies for
       severe pediatric disease studies - however, note that some individuals with severe disease may

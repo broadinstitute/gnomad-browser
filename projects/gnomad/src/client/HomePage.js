@@ -84,15 +84,15 @@ export default () => (
     </p>
     <p>
       All data here are released for the benefit of the wider biomedical community, without
-      restriction on use - see the terms of use{' '}
+      restriction on use - see the{' '}
       <Link preserveSelectedDataset={false} to="/terms">
-        here
+        terms of use
       </Link>
-      . Sign up for our mailing list for future release announcements{' '}
+      . Sign up for our{' '}
       <ExternalLink href="https://groups.google.com/forum/#!forum/exac_data_announcements">
-        here
-      </ExternalLink>
-      .
+        mailing list
+      </ExternalLink>{' '}
+      for future release announcements.
     </p>
   </HomePage>
 )
