@@ -78,9 +78,36 @@ const scheduleElasticsearchRequest = fn => {
 // This wraps the ES methods used by the API and sends them through the rate limiter
 const limitedElastic = {
   clearScroll: elastic.clearScroll.bind(elastic),
-  search: (...args) => scheduleElasticsearchRequest(() => elastic.search(...args)),
-  scroll: (...args) => scheduleElasticsearchRequest(() => elastic.scroll(...args)),
-  count: (...args) => scheduleElasticsearchRequest(() => elastic.count(...args)),
+  search: (...args) =>
+    scheduleElasticsearchRequest(() => elastic.search(...args)).then(response => {
+      if (response.timed_out) {
+        throw new Error('Elasticsearch search timed out')
+      }
+      // eslint-disable-next-line no-underscore-dangle
+      if (response._shards.failed > 0) {
+        throw new Error('Elasticsearch search partially failed')
+      }
+      return response
+    }),
+  scroll: (...args) =>
+    scheduleElasticsearchRequest(() => elastic.scroll(...args)).then(response => {
+      if (response.timed_out) {
+        throw new Error('Elasticsearch scroll timed out')
+      }
+      // eslint-disable-next-line no-underscore-dangle
+      if (response._shards.failed > 0) {
+        throw new Error('Elasticsearch scroll partially failed failed')
+      }
+      return response
+    }),
+  count: (...args) =>
+    scheduleElasticsearchRequest(() => elastic.count(...args)).then(response => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (response._shards.failed > 0) {
+        throw new Error('Elasticsearch count partially failed')
+      }
+      return response
+    }),
   get: (...args) => scheduleElasticsearchRequest(() => elastic.get(...args)),
 }
 
