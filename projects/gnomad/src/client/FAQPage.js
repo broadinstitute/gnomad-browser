@@ -306,14 +306,11 @@ export default () => (
         <List>
           <ListItem>no_variants: Zero observed synonymous, missense, pLoF variants</ListItem>
           <ListItem>no_exp_lof: Zero expected pLoF variants</ListItem>
-          <ListItem>lof_too_many: Too many pLoF variants; pLoF z score &lt; -5</ListItem>
+          <ListItem>lof_too_many: Too many pLoF variants</ListItem>
           <ListItem>no_exp_mis: Zero expected missense variants</ListItem>
-          <ListItem>mis_too_many: Too many missense variants; missense z score &lt; -5</ListItem>
+          <ListItem>mis_too_many: Too many missense variants</ListItem>
           <ListItem>no_exp_syn: Zero expected synonymous variants</ListItem>
-          <ListItem>
-            syn_outlier: Too many or too few synonymous variants; synonymous z score &lt; -5 or
-            synonymous z score &gt; 5
-          </ListItem>
+          <ListItem>syn_outlier: Too many or too few synonymous variants</ListItem>
         </List>
       </Answer>
 
