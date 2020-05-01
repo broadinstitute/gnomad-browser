@@ -112,14 +112,13 @@ const renderOEGraph = (constraint, category, color) => {
 }
 
 const CONSTRAINT_FLAG_DESCRIPTIONS = {
-  lof_too_many: 'Too many pLoF variants; pLoF z score < -5',
-  mis_too_many: 'Too many missense variants; missense z score < -5',
+  lof_too_many: 'Too many pLoF variants',
+  mis_too_many: 'Too many missense variants',
   no_exp_lof: 'Zero expected pLoF variants',
   no_exp_mis: 'Zero expected missense variants',
   no_exp_syn: 'Zero expected synonymous variants',
   no_variants: 'Zero observed synonymous, missense, pLoF variants',
-  syn_outlier:
-    'Too many or too few synonymous variants; synonymous z score < -5 or synonymous z score > 5',
+  syn_outlier: 'Too many or too few synonymous variants',
 }
 
 const GnomadConstraintTable = ({ constraint }) => {
