@@ -128,6 +128,10 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
+              {/* a instead of Link because the blog is a separate application */}
+              <a href="/blog/">News</a>
+            </li>
+            <li>
               <Link to="/downloads" onClick={this.closeMenu}>
                 Downloads
               </Link>
