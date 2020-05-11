@@ -72,9 +72,9 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
     <DocumentTitle title={variantId} />
     <GnomadPageHeading
       datasetOptions={{
-        // ExAC variant page doesn't exist yet
+        // Include ExAC for GRCh37 datasets
         includeExac: !datasetId.startsWith('gnomad_r3'),
-        // Only include gnomAD version on the same reference genome
+        // Include gnomAD versions based on the same reference genome as the current dataset
         includeGnomad2: !datasetId.startsWith('gnomad_r3'),
         includeGnomad3: datasetId.startsWith('gnomad_r3'),
         // Variant ID not valid for SVs
