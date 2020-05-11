@@ -9,6 +9,7 @@ import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
@@ -17,8 +18,8 @@ import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
+import variantQuery from './queries/gnomadVariantQuery'
 import GnomadReadData from './reads/GnomadReadData'
-import { VariantDetailsQuery } from './VariantDetailsQuery'
 import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
@@ -87,7 +88,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
         {variantId} ({referenceGenomeForDataset(datasetId)})
       </VariantId>
     </GnomadPageHeading>
-    <VariantDetailsQuery key={datasetId} datasetId={datasetId} variantId={variantId}>
+    <Query key={datasetId} query={variantQuery} variables={{ datasetId, variantId }}>
       {({ data, error, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
@@ -212,7 +213,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           </VariantDetailsContainer>
         )
       }}
-    </VariantDetailsQuery>
+    </Query>
   </Page>
 )
 
