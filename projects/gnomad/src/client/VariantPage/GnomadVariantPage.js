@@ -89,7 +89,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
       </VariantId>
     </GnomadPageHeading>
     <Query key={datasetId} query={variantQuery} variables={{ datasetId, variantId }}>
-      {({ data, error, loading }) => {
+      {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading variant...</StatusMessage>
         }
@@ -99,7 +99,16 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
         }
 
         if (!data.variant) {
-          return <VariantNotFound datasetId={datasetId} variantId={variantId} />
+          if (graphQLErrors && graphQLErrors.some(err => err.message === 'Variant not found')) {
+            return <VariantNotFound datasetId={datasetId} variantId={variantId} />
+          }
+          return (
+            <StatusMessage>
+              {graphQLErrors && graphQLErrors.length
+                ? graphQLErrors.map(err => err.message).join(', ')
+                : 'Unable to load variant'}
+            </StatusMessage>
+          )
         }
 
         const { variant } = data
