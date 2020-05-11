@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 
 import gnomadVariantQuery from './queries/gnomadVariantQuery'
 
 export const VariantDetailsQuery = ({ children, datasetId, variantId }) => (
-  <Query
-    query={gnomadVariantQuery}
-    variables={{ datasetId, variantId, referenceGenome: referenceGenomeForDataset(datasetId) }}
-  >
+  <Query query={gnomadVariantQuery} variables={{ datasetId, variantId }}>
     {children}
   </Query>
 )
