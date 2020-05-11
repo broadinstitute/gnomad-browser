@@ -101,7 +101,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
           return <VariantNotFound datasetId={datasetId} variantId={variantId} />
         }
 
-        const { variant, clinvar_variant: clinvarVariant } = data
+        const { variant } = data
 
         return (
           <VariantDetailsContainer>
@@ -159,7 +159,7 @@ const GnomadVariantPage = ({ datasetId, variantId }) => (
             </ResponsiveSection>
             <ResponsiveSection>
               <h2>References</h2>
-              <ReferenceList variant={variant} clinvarVariant={clinvarVariant} />
+              <ReferenceList variant={variant} />
               <h2>Report</h2>
               <VariantFeedback datasetId={datasetId} variantId={variantId} />
             </ResponsiveSection>

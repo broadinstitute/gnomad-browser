@@ -3,7 +3,17 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
-export const ReferenceList = ({ variant, clinvarVariant }) => {
+import Query from '../Query'
+
+const clinvarVariantQuery = `
+query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
+    clinvar_variation_id
+  }
+}
+`
+
+export const ReferenceList = ({ variant }) => {
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
   const ucscURL = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&highlight=${ucscReferenceGenomeId}.chr${chrom}%3A${pos}-${
@@ -24,32 +34,37 @@ export const ReferenceList = ({ variant, clinvarVariant }) => {
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
-      {clinvarVariant && (
-        <ListItem>
-          <ExternalLink
-            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinvarVariant.clinvar_variation_id}/`}
-          >
-            ClinVar ({clinvarVariant.clinvar_variation_id})
-          </ExternalLink>
-        </ListItem>
-      )}
+      <Query
+        query={clinvarVariantQuery}
+        variables={{ variantId: variant.variantId, referenceGenome: variant.reference_genome }}
+      >
+        {({ data, error, loading }) => {
+          if (loading || error || !data.clinvar_variant) {
+            return null
+          }
+
+          return (
+            <ListItem>
+              <ExternalLink
+                href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${data.clinvar_variant.clinvar_variation_id}/`}
+              >
+                ClinVar ({data.clinvar_variant.clinvar_variation_id})
+              </ExternalLink>
+            </ListItem>
+          )
+        }}
+      </Query>
     </List>
   )
 }
 
 ReferenceList.propTypes = {
   variant: PropTypes.shape({
+    variantId: PropTypes.string.isRequired,
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     pos: PropTypes.number.isRequired,
     ref: PropTypes.string.isRequired,
     rsid: PropTypes.string,
   }).isRequired,
-  clinvarVariant: PropTypes.shape({
-    clinvar_variation_id: PropTypes.string.isRequired,
-  }),
-}
-
-ReferenceList.defaultProps = {
-  clinvarVariant: undefined,
 }
