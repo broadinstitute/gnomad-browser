@@ -123,7 +123,7 @@ const fetchGnomadV3VariantDetails = async (ctx, variantId) => {
     ref: variant.alleles[0],
     alt: variant.alleles[1],
     // gnomAD specific fields
-    colocatedVariants: [],
+    colocatedVariants: variant.multiallelic_variants,
     multiNucleotideVariants: [],
     exome: null,
     flags: getFlagsForContext({ type: 'region' })(variant),
