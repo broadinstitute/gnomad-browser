@@ -160,11 +160,11 @@ class NavBar extends Component {
         </NavBarWrapper>
         <Notice>
           <a
-            href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/"
+            href="https://www.nature.com/immersive/d42859-020-00002-x/index.html"
             rel="noopener noreferrer"
             target="_blank"
           >
-            gnomAD v3 released! 71,702 genomes aligned on GRCh38.
+            gnomAD collection published in Nature!
           </a>
         </Notice>
       </OuterWrapper>
