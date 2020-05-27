@@ -58,9 +58,11 @@ export default () => (
     <p>
       The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate
       and harmonize exome and genome sequencing data from a variety of large-scale sequencing
-      projects, and to make summary data available for the wider scientific community. In its first
-      release, which contained exclusively exome data, it was known as the Exome Aggregation
-      Consortium (ExAC).
+      projects, and to make summary data available for the wider scientific community. The project
+      is overseen by co-directors Heidi Rehm and Mark Daly, and council members Daniel MacArthur,
+      Benjamin Neale, Michael Talkowski, Anne O&apos;Donnell-Luria, Grace Tiao, Matthew Solomonson,
+      and Kat Tarasova. In its first release, which contained exclusively exome data, it was known
+      as the Exome Aggregation Consortium (ExAC).
     </p>
     <p>
       The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
