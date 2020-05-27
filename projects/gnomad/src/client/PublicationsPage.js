@@ -33,8 +33,8 @@ export default () => (
           Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G.,
           Kosmicki, J. A., … MacArthur, D. G. The mutational constraint spectrum quantified from
           variation in 141,456 humans. <em>Nature</em> 581, 434–443 (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41586-020-2308-7">
-            https://www.nature.com/articles/s41586-020-2308-7
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
+            https://doi.org/10.1038/s41586-020-2308-7
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -45,8 +45,8 @@ export default () => (
           O’Donnell-Luria, A., Baumann, A., Munshi, R., Walker, M., Whelan, C., Huang, Y.,
           Brookings, T., … Talkowski, M. E. A structural variation reference for medical and
           population genetics. <em>Nature</em> 581, 444–451 (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41586-020-2287-8">
-            https://www.nature.com/articles/s41586-020-2287-8
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2287-8">
+            https://doi.org/10.1038/s41586-020-2287-8
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -58,8 +58,8 @@ export default () => (
           Production Team, The Genome Aggregation Database Consortium, Daly, M. J., &amp; MacArthur,
           D. G. Transcript expression-aware annotation improves rare variant interpretation.{' '}
           <em>Nature</em> 581, 452–458 (2020){' '}
-          <ExternalLink href="https://www.nature.com/articles/s41586-020-2329-2">
-            https://www.nature.com/articles/s41586-020-2329-2
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+            https://doi.org/10.1038/s41586-020-2329-2
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -70,8 +70,8 @@ export default () => (
           Database Production Team, Genome Aggregation Database Consortium, Schreiber, S. L., &amp;
           MacArthur, D. G. Evaluating potential drug targets through human loss-of-function genetic
           variation. <em>Nature</em> 581, 459–464 (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41586-020-2267-z">
-            https://www.nature.com/articles/s41586-020-2267-z
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2267-z">
+            https://doi.org/10.1038/s41586-020-2267-z
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -82,8 +82,8 @@ export default () => (
           (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, &amp;
           MacArthur, D. G. Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708
           genomes. <em>Nature Communications</em> 11, 2539 (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41467-019-12438-5">
-            https://www.nature.com/articles/s41467-019-12438-5
+          <ExternalLink href="https://doi.org/10.1038/s41467-019-12438-5">
+            https://doi.org/10.1038/s41467-019-12438-5
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -94,8 +94,8 @@ export default () => (
           L., Laricchia, K., Guan, A., Alipanahi, B., Morrison, P., Baptista, M. A. S., Merchant, K.
           M., Genome Aggregation Database Production Team, … MacArthur, D. G. The effect of LRRK2
           loss-of-function variants in humans. <em>Nature Medicine</em> (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41591-020-0893-5">
-            https://www.nature.com/articles/s41591-020-0893-5
+          <ExternalLink href="https://doi.org/10.1038/s41591-020-0893-5">
+            https://doi.org/10.1038/s41591-020-0893-5
           </ExternalLink>
         </Citation>
       </ListItem>
@@ -107,8 +107,8 @@ export default () => (
           Aggregation Database (gnomAD) Consortium, Cook, S. A., Barton, P. J. R., MacArthur, D. G.,
           &amp; Ware, J. S. Characterising the loss-of-function impact of 5’ untranslated region
           variants in 15,708 individuals. <em>Nature Communications</em> 11, 2523 (2020).{' '}
-          <ExternalLink href="https://www.nature.com/articles/s41467-019-10717-9">
-            https://www.nature.com/articles/s41467-019-10717-9
+          <ExternalLink href="https://doi.org/10.1038/s41467-019-10717-9">
+            https://doi.org/10.1038/s41467-019-10717-9
           </ExternalLink>
         </Citation>
       </ListItem>
