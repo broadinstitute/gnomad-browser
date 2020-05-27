@@ -10,7 +10,7 @@ SV resulting in IED of a gene are predicted to entirely duplicate at least one p
 
 These variants appear to correlate well with constraint against damaging SNVs, suggesting that IED SVs can be interpreted as likely damaging on average. However, there will be context-specific situations where this is not the case. 
 
-For more details, please refer to [the gnomAD SV preprint](https://broad.io/gnomad_sv).  
+For more details, please refer to [the gnomAD SV paper](https://broad.io/gnomad_sv).  
 
 ### Disclaimer
 

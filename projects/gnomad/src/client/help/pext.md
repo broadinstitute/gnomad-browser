@@ -4,7 +4,7 @@ title: 'Proportion expressed across transcripts (pext) score'
 
 # Proportion expressed across transcripts (pext) score
 
-The pext score, presented in the [2019 gnomAD companion preprint](https://www.biorxiv.org/content/10.1101/554444v1), summarizes isoform expression values accross tissues to allow for quick visualization of the expression status of exonic regions across tissues. 
+The pext score, presented in ["Transcript expression-aware annotation improves rare variant interpretation"](https://broad.io/tx_annotation), summarizes isoform expression values accross tissues to allow for quick visualization of the expression status of exonic regions across tissues.
 
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript for GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![visualization of pext score computation](pext.png)
@@ -36,4 +36,4 @@ We note that the pext values are derived from isoform quantifications using the 
 Also note that for the browser, we have only added expression values for protein-coding (CDS) regions. While UTRs do have expression in transcriptome datasets, we do not include this information for the visualization. 
 
 ## More information
-Check out our bioRxiv pre-print for details on development, validation and utility of pext values for interpretation. We also have a detailed [GitHub page](https://github.com/macarthur-lab/tx_annotation/) that outlines the commands to create these files, and includes steps to annotate your own variant file with pext values with any isoform expression matrix.
+Check out our paper for details on development, validation and utility of pext values for interpretation. We also have a detailed [GitHub page](https://github.com/macarthur-lab/tx_annotation/) that outlines the commands to create these files, and includes steps to annotate your own variant file with pext values with any isoform expression matrix.

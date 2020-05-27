@@ -18,7 +18,7 @@ The data selection drop-down specifies which dataset is displayed on the page. C
 
 ## Structural variants
 
-+ gnomAD SVs v2.1: Structural variant (SV) calls generated from a set of WGS samples that largely overlaps those in gnomAD v2.1. This current SV release includes 10,847 unrelated genomes. See the [gnomAD-SV preprint](https://broad.io/gnomad_sv) for details.
++ gnomAD SVs v2.1: Structural variant (SV) calls generated from a set of WGS samples that largely overlaps those in gnomAD v2.1. This current SV release includes 10,847 unrelated genomes. See the [gnomAD-SV paper](https://broad.io/gnomad_sv) for details.
 + gnomAD SVs v2.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease.
 + gnomAD SVs v2.1 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study.
 
