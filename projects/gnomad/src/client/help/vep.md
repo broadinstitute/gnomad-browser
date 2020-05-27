@@ -20,8 +20,8 @@ LOFTEE considers all stop-gained, splice-disrupting, and frameshift variants, an
 Multi-nucleotide variants (MNVs) were identified using
 [Hail's window_by_locus](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.window_by_locus)
 function. We exhaustively looked for variants that appear in the same individual, in the same haplotype, and within
-2 bp distance for the exome dataset and 10 bp distance for the genome dataset. More information can be found in our
-preprint ["Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes"](https://www.biorxiv.org/content/10.1101/573378v2).
+2 bp distance for the exome dataset and 10 bp distance for the genome dataset. More information can be found in
+["Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes"](https://broad.io/gnomad_mnv).
 
 ## LCR, SEGDUP and DECOY flags
 ### gnomAD v3

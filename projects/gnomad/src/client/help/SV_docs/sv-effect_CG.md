@@ -10,7 +10,7 @@ SV resulting in CG of a gene are predicted to entirely duplicate a gene's canoni
 
 These variants can be expected to result in increased gene copy number. However, further study is required before predicting the functional consequences of CG events, which are likely to be gene specific.  
 
-For more details, please refer to [the gnomAD SV preprint](https://broad.io/gnomad_sv).  
+For more details, please refer to [the gnomAD SV paper](https://broad.io/gnomad_sv).  
 
 ### Disclaimer
 

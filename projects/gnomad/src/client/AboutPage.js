@@ -155,8 +155,8 @@ export default () => (
       , where the components of the gnomAD SV discovery pipeline are available as public methods
       with dedicated Docker images. Extensive technical details of this process are provided in the
       supplementary information of the{' '}
-      <ExternalLink href="https://broad.io/gnomad_sv">gnomAD SV preprint</ExternalLink>; please cite
-      this preprint for use of the SV data.
+      <ExternalLink href="https://broad.io/gnomad_sv">gnomAD SV paper</ExternalLink>; please cite
+      this paper for use of the SV data.
     </p>
     <p>
       The data released by gnomAD are available free of restrictions under the{' '}
