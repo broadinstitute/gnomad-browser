@@ -27,6 +27,9 @@ const shapeGnomadV3VariantSummary = context => {
         ? `ENSG${transcriptConsequence.gene_id.toString().padStart(11, '0')}`
         : null,
       gene_symbol: transcriptConsequence.gene_symbol,
+      transcript_id: transcriptConsequence.transcript_id
+        ? `ENST${transcriptConsequence.transcript_id.toString().padStart(11, '0')}`
+        : null,
       // Backwards compatibility with gnomAD v2.1 variants.
       // This should eventually be moved to the UI.
       hgvs: transcriptConsequence.hgvsp || transcriptConsequence.hgvsc,

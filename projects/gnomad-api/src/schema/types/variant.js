@@ -52,6 +52,7 @@ export const VariantSummaryType = new GraphQLObjectType({
     flags: { type: new GraphQLList(GraphQLString) },
     gene_id: { type: GraphQLString },
     gene_symbol: { type: GraphQLString },
+    transcript_id: { type: GraphQLString },
     hgvs: { type: GraphQLString },
     hgvsc: { type: GraphQLString },
     hgvsp: { type: GraphQLString },
