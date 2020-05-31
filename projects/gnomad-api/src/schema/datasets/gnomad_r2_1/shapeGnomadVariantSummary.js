@@ -32,6 +32,7 @@ const shapeGnomadVariantSummary = (subsetKey, context) => {
       flags: getFlags(variantData, transcriptConsequence),
       gene_id: transcriptConsequence.gene_id,
       gene_symbol: transcriptConsequence.gene_symbol,
+      transcript_id: transcriptConsequence.transcript_id,
       hgvs: transcriptConsequence.hgvs,
       hgvsc: transcriptConsequence.hgvsc ? transcriptConsequence.hgvsc.split(':')[1] : null,
       hgvsp: transcriptConsequence.hgvsp ? transcriptConsequence.hgvsp.split(':')[1] : null,
