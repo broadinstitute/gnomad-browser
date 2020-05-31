@@ -132,7 +132,10 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       },
       {
         label: `Hemizygote Count ${popName}`,
-        getValue: variant => JSON.stringify(variant.populations[popIndex].ac_hemi),
+        getValue: variant =>
+          variant.populations[popIndex].ac_hemi === null
+            ? ''
+            : JSON.stringify(variant.populations[popIndex].ac_hemi),
       },
     ])
   })
@@ -212,7 +215,7 @@ ExportVariantsButton.propTypes = {
           id: PropTypes.string.isRequired,
           ac: PropTypes.number.isRequired,
           an: PropTypes.number.isRequired,
-          ac_hemi: PropTypes.number.isRequired,
+          ac_hemi: PropTypes.number,
           ac_hom: PropTypes.number.isRequired,
         })
       ).isRequired,
