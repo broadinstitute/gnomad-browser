@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
+import { List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
@@ -20,6 +21,37 @@ import VariantTable from '../VariantList/VariantTable'
 import { getColumns } from '../VariantList/variantTableColumns'
 import VariantTrack from '../VariantList/VariantTrack'
 
+const TranscriptsModal = ({ transcripts, onRequestClose }) => (
+  <Modal initialFocusOnButton={false} title="Transcripts" onRequestClose={onRequestClose}>
+    <List>
+      {transcripts.map(transcript => (
+        <ListItem key={transcript.transcript_id}>
+          <Link to={`/transcript/${transcript.transcript_id}`}>
+            {transcript.transcript_id}.{transcript.transcript_version}
+          </Link>
+        </ListItem>
+      ))}
+    </List>
+  </Modal>
+)
+
+TranscriptsModal.propTypes = {
+  transcripts: PropTypes.arrayOf(
+    PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+      transcript_version: PropTypes.string.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+}
+
 class VariantsInGene extends Component {
   static propTypes = {
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
@@ -29,6 +61,19 @@ class VariantsInGene extends Component {
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
+      transcripts: PropTypes.arrayOf(
+        PropTypes.shape({
+          transcript_id: PropTypes.string.isRequired,
+          transcript_version: PropTypes.string.isRequired,
+          exons: PropTypes.arrayOf(
+            PropTypes.shape({
+              feature_type: PropTypes.string.isRequired,
+              start: PropTypes.number.isRequired,
+              stop: PropTypes.number.isRequired,
+            })
+          ).isRequired,
+        })
+      ).isRequired,
     }).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
@@ -69,6 +114,7 @@ class VariantsInGene extends Component {
 
     this.state = {
       filter: defaultFilter,
+      isTranscriptsModalOpen: false,
       rowIndexLastClickedInNavigator: 0,
       renderedVariants,
       sortKey: defaultSortKey,
@@ -177,6 +223,7 @@ class VariantsInGene extends Component {
     const { clinvarVariants, datasetId, gene, width } = this.props
     const {
       filter,
+      isTranscriptsModalOpen,
       renderedVariants,
       rowIndexLastClickedInNavigator,
       sortKey,
@@ -232,7 +279,28 @@ class VariantsInGene extends Component {
             intronic variants, use the{' '}
             <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
           </p>
-          <p>† denotes a consequence that is for a non-canonical transcript</p>
+          <p>
+            The table below shows the HGVS consequence and VEP annotation for each variant&apos;s
+            most severe consequence across all transcripts in this gene. Cases where the most severe
+            consequence occurs in a non-canonical transcript are denoted with †. To see consequences
+            in a specific transcript, use the{' '}
+            <TextButton
+              onClick={() => {
+                this.setState({ isTranscriptsModalOpen: true })
+              }}
+            >
+              transcript view
+            </TextButton>
+            .
+          </p>
+          {isTranscriptsModalOpen && (
+            <TranscriptsModal
+              transcripts={gene.transcripts}
+              onRequestClose={() => {
+                this.setState({ isTranscriptsModalOpen: false })
+              }}
+            />
+          )}
           <VariantTable
             columns={this.getColumns(width, gene.chrom)}
             highlightText={filter.searchText}
