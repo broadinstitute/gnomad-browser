@@ -29,6 +29,14 @@ spec:
         backend:
           serviceName: gnomad-reads-nodeport
           servicePort: 80
+      - path: /blog
+        backend:
+          serviceName: gnomad-blog
+          servicePort: 80
+      - path: /blog/*
+        backend:
+          serviceName: gnomad-blog
+          servicePort: 80
       - path:
         backend:
           serviceName: gnomad-browser-nodeport
