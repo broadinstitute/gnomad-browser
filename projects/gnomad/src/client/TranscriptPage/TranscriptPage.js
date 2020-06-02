@@ -12,16 +12,16 @@ import { ExternalLink } from '@gnomad/ui'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import DocumentTitle from '../DocumentTitle'
 import GeneCoverageTrack from '../GenePage/GeneCoverageTrack'
-import GeneInfo from '../GenePage/GeneInfo'
 import GnomadPageHeading from '../GnomadPageHeading'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
 
+import TranscriptInfo from './TranscriptInfo'
 import VariantsInTranscript from './VariantsInTranscript'
 
-const GeneInfoColumnWrapper = styled.div`
+const TranscriptInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -298,15 +298,15 @@ class TranscriptPage extends Component {
           >
             {transcript.transcript_id}
           </GnomadPageHeading>
-          <GeneInfoColumnWrapper>
-            <GeneInfo gene={gene} />
+          <TranscriptInfoColumnWrapper>
+            <TranscriptInfo transcript={transcript} />
             <div>
               <h2>
                 Constraint <QuestionMark topic="constraint" />
               </h2>
               <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />
             </div>
-          </GeneInfoColumnWrapper>
+          </TranscriptInfoColumnWrapper>
         </TrackPageSection>
         <RegionViewer
           leftPanelWidth={115}
