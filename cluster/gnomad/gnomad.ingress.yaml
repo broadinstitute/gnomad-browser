@@ -7,7 +7,7 @@ metadata:
     service: gnomad
   annotations:
     kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
-    ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-cert
+    networking.gke.io/managed-certificates: gnomad
 spec:
   rules:
   - host: gnomad.broadinstitute.org
