@@ -21,11 +21,6 @@ import TranscriptLink from '../TranscriptLink'
 
 import VariantsInTranscript from './VariantsInTranscript'
 
-const GeneName = styled.span`
-  font-size: 0.75em;
-  font-weight: 400;
-`
-
 const GeneInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -296,12 +291,12 @@ class TranscriptPage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <DocumentTitle title={gene.symbol} />
+          <DocumentTitle title={transcript.transcript_id} />
           <GnomadPageHeading
             datasetOptions={{ includeStructuralVariants: false }}
             selectedDataset={datasetId}
           >
-            {gene.symbol} <GeneName>{gene.name}</GeneName>
+            {transcript.transcript_id}
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
