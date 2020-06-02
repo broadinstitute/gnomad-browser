@@ -53,9 +53,13 @@ const TranscriptInfo = ({ transcript }) => {
         {transcript.transcript_id}.{transcript.transcript_version}
       </AttributeList.Item>
       <AttributeList.Item label="Ensembl gene ID">
-        {transcript.gene.gene_id}.{transcript.gene.gene_version}
+        <Link to={`/gene/${transcript.gene.gene_id}`}>
+          {transcript.gene.gene_id}.{transcript.gene.gene_version}
+        </Link>
       </AttributeList.Item>
-      <AttributeList.Item label="Gene symbol">{transcript.gene.symbol}</AttributeList.Item>
+      <AttributeList.Item label="Gene symbol">
+        <Link to={`/gene/${transcript.gene.gene_id}`}>{transcript.gene.symbol}</Link>
+      </AttributeList.Item>
       <AttributeList.Item label="Region">
         <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
           {transcript.chrom}:{transcript.start}-{transcript.stop}

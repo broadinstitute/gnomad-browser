@@ -125,14 +125,24 @@ const GeneInfo = ({ gene }) => {
       </AttributeList.Item>
       {gene.reference_genome === 'GRCh38' && (
         <AttributeList.Item label="MANE Select transcript">
-          {gene.mane_select_transcript
-            ? `${gene.mane_select_transcript.ensembl_id}.${gene.mane_select_transcript.ensembl_version} / ${gene.mane_select_transcript.refseq_id}.${gene.mane_select_transcript.refseq_version}`
-            : 'Not available'}
+          {gene.mane_select_transcript ? (
+            <React.Fragment>
+              <Link to={`/transcript/${gene.mane_select_transcript.ensembl_id}`}>
+                {gene.mane_select_transcript.ensembl_id}.
+                {gene.mane_select_transcript.ensembl_version}
+              </Link>{' '}
+              / {gene.mane_select_transcript.refseq_id}.{gene.mane_select_transcript.refseq_version}
+            </React.Fragment>
+          ) : (
+            'Not available'
+          )}
         </AttributeList.Item>
       )}
       {canonicalTranscript && (
         <AttributeList.Item label="Canonical transcript">
-          {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
+          <Link to={`/transcript/${canonicalTranscript.transcript_id}`}>
+            {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
+          </Link>
         </AttributeList.Item>
       )}
       <AttributeList.Item label="Region">
