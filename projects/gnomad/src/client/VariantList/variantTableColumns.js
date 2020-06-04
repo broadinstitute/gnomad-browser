@@ -54,6 +54,7 @@ export const getColumns = ({
   width,
   includeHomozygoteAC = false,
   includeHemizygoteAC = false,
+  primaryTranscriptId = null, // Only present in 'gene' context. MANE Select transcript if available, otherwise canonical.
 }) => {
   const columns = [
     {
@@ -95,7 +96,7 @@ export const getColumns = ({
       render: (variant, key, { highlightWords }) => (
         <span className="grid-cell-content">
           <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
-          {variant.isCanon === false && ' †'}
+          {primaryTranscriptId && variant.transcript_id !== primaryTranscriptId && ' †'}
         </span>
       ),
     },

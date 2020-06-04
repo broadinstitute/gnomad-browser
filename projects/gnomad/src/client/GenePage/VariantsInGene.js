@@ -74,6 +74,10 @@ class VariantsInGene extends Component {
           ).isRequired,
         })
       ).isRequired,
+      canonical_transcript_id: PropTypes.string,
+      mane_select_transcript: PropTypes.shape({
+        ensembl_id: PropTypes.string.isRequired,
+      }),
     }).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
@@ -125,14 +129,18 @@ class VariantsInGene extends Component {
     }
   }
 
-  getColumns = memoizeOne((width, chrom) =>
-    getColumns({
+  getColumns = memoizeOne(width => {
+    const { gene } = this.props
+    return getColumns({
       context: 'gene',
       width,
-      includeHomozygoteAC: chrom !== 'Y',
-      includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
+      includeHomozygoteAC: gene.chrom !== 'Y',
+      includeHemizygoteAC: gene.chrom === 'X' || gene.chrom === 'Y',
+      primaryTranscriptId: gene.mane_select_transcript
+        ? gene.mane_select_transcript.ensembl_id
+        : gene.canonical_transcript_id,
     })
-  )
+  })
 
   onFilter = newFilter => {
     this.setState(state => {
@@ -282,8 +290,9 @@ class VariantsInGene extends Component {
           <p>
             The table below shows the HGVS consequence and VEP annotation for each variant&apos;s
             most severe consequence across all transcripts in this gene. Cases where the most severe
-            consequence occurs in a non-canonical transcript are denoted with †. To see consequences
-            in a specific transcript, use the{' '}
+            consequence occurs in a non-MANE Select transcript (or non-canonical transcript if no
+            MANE Select transcript exists) are denoted with †. To see consequences in a specific
+            transcript, use the{' '}
             <TextButton
               onClick={() => {
                 this.setState({ isTranscriptsModalOpen: true })
@@ -302,7 +311,7 @@ class VariantsInGene extends Component {
             />
           )}
           <VariantTable
-            columns={this.getColumns(width, gene.chrom)}
+            columns={this.getColumns(width)}
             highlightText={filter.searchText}
             highlightedVariantId={variantHoveredInTrack}
             onHoverVariant={this.onHoverVariantInTable}
@@ -332,7 +341,6 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
     }
     variants(dataset: $datasetId) {
       consequence
-      isCanon: consequence_in_canonical_transcript
       flags
       hgvs
       hgvsc
@@ -342,6 +350,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
       lof_flags
       pos
       rsid
+      transcript_id
       variant_id: variantId
       exome {
         ac
