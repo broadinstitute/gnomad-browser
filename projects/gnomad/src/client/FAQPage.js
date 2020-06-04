@@ -635,15 +635,33 @@ export default () => (
 
       <Question id="why-doesnt-the-amino-acid-position-and-consequence-on-the-gene-page-match-what-i-expect-for-my-transcript">
         Why doesn&apos;t the amino acid position and consequence on the gene page match what I
-        expect for my transcript?
+        expect for my transcript and how does gnomAD choose which transcript to use for annotating
+        variants?
       </Question>
       <Answer>
         <p>
           The gene page summarizes the most severe functional consequence and protein-level change
-          regardless of the transcript. A &quot;†&quot; denotes a consequence that is for a
-          non-canonical transcript. On the gene page you can select which transcript you would like
-          to view (the canonical one is marked by *). Please also note that our transcripts are
-          annotated using Gencode v29 for gnomAD v3 and Gencode v19 for v2.
+          regardless of the transcript. gnomAD v3 uses the MANE Select transcript as the primary
+          transcript for annotating HGVS nomenclature/consequence, if the severity of the functional
+          consequences are equivalent across transcripts. MANE stands for Matched Annotation from
+          NCBI and EMBL-EBI and MANE Select identifies one high-quality representative transcript
+          per protein-coding gene that is well-supported by experimental data and represents the
+          biology of the gene. More background on the MANE project can be found{' '}
+          <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">here</ExternalLink>. If no
+          MANE Select transcript exists, the Ensembl canonical transcript is selected. A
+          &quot;†&quot; denotes a consequence that is for a non-MANE Select transcript (or
+          non-canonical transcript if no MANE Select exists). On the gene page you can select which
+          transcript you would like to view. The MANE Select transcript (or canonical if no MANE
+          Select exists) is marked by &quot;*&quot;. Please note that v2 still uses the canonical
+          transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts
+          are annotated using Gencode v29 for gnomAD v3 and Gencode v19 for v2. Please note, the
+          browser represents transcript versions from Gencode v29, which may differ from more recent
+          versions selected by the MANE Select project. Please check the version number listed by
+          the &quot;MANE Select transcript&quot; attribute at the top of the gene summary page and
+          check if it is the same or different from the version listed in the browser&apos;s
+          &quot;Show Transcript&quot; list to be warned of possible discrepancies. These issues will
+          be fixed in gnomAD v4 which will be a larger exome dataset on GRCh38 and MANE Select,
+          sourced by Ensembl directly, will be used throughout the database where available.
         </p>
       </Answer>
 
