@@ -66,6 +66,7 @@ class VariantsInGene extends Component {
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
       symbol: PropTypes.string.isRequired,
+      reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
@@ -298,9 +299,11 @@ class VariantsInGene extends Component {
           <p>
             The table below shows the HGVS consequence and VEP annotation for each variant&apos;s
             most severe consequence across all transcripts in this gene. Cases where the most severe
-            consequence occurs in a non-MANE Select transcript (or non-canonical transcript if no
-            MANE Select transcript exists) are denoted with †. To see consequences in a specific
-            transcript, use the{' '}
+            consequence occurs in a{' '}
+            {gene.reference_genome === 'GRCh37'
+              ? 'non-canonical transcript'
+              : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
+            are denoted with †. To see consequences in a specific transcript, use the{' '}
             <TextButton
               onClick={() => {
                 this.setState({ isTranscriptsModalOpen: true })
