@@ -71,7 +71,7 @@ const VariantTranscriptConsequences = ({ variant }) => {
                   )
                 }
               } else if (consequenceGene.canonical_transcript_id === consequence.transcript_id) {
-                note = `Canonical transcript for ${consequence.gene_symbol}`
+                note = `Ensembl canonical transcript for ${consequence.gene_symbol}`
               }
               transcriptNotes[consequence.transcript_id] = note
             })
