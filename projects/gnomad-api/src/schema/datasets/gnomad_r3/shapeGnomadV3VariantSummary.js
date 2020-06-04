@@ -21,7 +21,7 @@ const shapeGnomadV3VariantSummary = context => {
       alt: variantData.alleles[1],
       // Other fields
       consequence: transcriptConsequence.major_consequence,
-      consequence_in_canonical_transcript: transcriptConsequence.canonical,
+      consequence_in_canonical_transcript: !!transcriptConsequence.canonical,
       flags: getFlags(variantData),
       gene_id: transcriptConsequence.gene_id
         ? `ENSG${transcriptConsequence.gene_id.toString().padStart(11, '0')}`
