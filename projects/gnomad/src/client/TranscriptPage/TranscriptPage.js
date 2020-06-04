@@ -296,7 +296,7 @@ class TranscriptPage extends Component {
             datasetOptions={{ includeStructuralVariants: false }}
             selectedDataset={datasetId}
           >
-            {transcript.transcript_id}
+            {transcript.transcript_id}.{transcript.transcript_version}
           </GnomadPageHeading>
           <TranscriptInfoColumnWrapper>
             <TranscriptInfo transcript={transcript} />
