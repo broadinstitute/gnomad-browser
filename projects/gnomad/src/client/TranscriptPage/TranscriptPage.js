@@ -285,7 +285,7 @@ class TranscriptPage extends Component {
         )
       }
     } else if (hasCanonicalTranscript) {
-      starredTranscriptDescription = 'Transcript is the canonical transcript for this gene'
+      starredTranscriptDescription = 'Transcript is the Ensembl canonical transcript for this gene'
     }
 
     return (
