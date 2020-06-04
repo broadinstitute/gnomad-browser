@@ -57,7 +57,7 @@ class StructuralVariantConsequenceList extends Component {
               <ConsequenceListItem key={consequence}>
                 <h3>
                   {svConsequenceLabels[consequence]}{' '}
-                  {!!helpTopic && <QuestionMark topic={`SV_docs/${helpTopic}`} />}
+                  {!!helpTopic && <QuestionMark topic={`sv/${helpTopic}`} />}
                 </h3>
                 <OrderedList>
                   {genes.slice(0, 3).map(gene => (
