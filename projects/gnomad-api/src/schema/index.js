@@ -6,6 +6,7 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
+import { uniq } from 'lodash'
 
 import { extendObjectType } from '../utilities/graphql'
 
@@ -146,15 +147,63 @@ The fields below allow for different ways to look up gnomAD data. Click on the t
       type: GnomadVariantDetailsType,
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
-        variantId: { type: new GraphQLNonNull(GraphQLString) },
+        rsid: { type: GraphQLString },
+        variantId: { type: GraphQLString },
       },
-      resolve: (obj, args, ctx) => {
-        const { dataset, variantId } = args
+      resolve: async (obj, args, ctx) => {
+        const { dataset, rsid, variantId } = args
+        if (!(rsid || variantId)) {
+          throw new UserVisibleError('One of "rsid" or "variantId" is required')
+        }
+        if (rsid && variantId) {
+          throw new UserVisibleError('Only one of "rsid" or "variantId" is allowed')
+        }
+
         const { fetchVariantDetails } = datasetsConfig[dataset]
         if (!fetchVariantDetails) {
           throw new UserVisibleError(`Querying variants is not supported for dataset "${dataset}"`)
         }
-        return fetchVariantDetails(ctx, variantId)
+
+        if (variantId) {
+          return fetchVariantDetails(ctx, variantId)
+        }
+
+        if (!rsid.match(/^rs\d+$/)) {
+          throw new UserVisibleError('Invalid rsID')
+        }
+
+        const esIndex =
+          {
+            gnomad_r3: 'gnomad_r3_variants',
+            exac: 'exac_variants',
+          }[dataset] || 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1'
+        const esType =
+          esIndex === 'gnomad_exomes_2_1_1,gnomad_genomes_2_1_1' ? 'variant' : 'documents'
+
+        const rsidSearchResponse = await ctx.database.elastic.search({
+          index: esIndex,
+          type: esType,
+          _source: ['rsid', 'variant_id'],
+          body: {
+            query: {
+              term: { rsid },
+            },
+          },
+          size: 3,
+        })
+
+        // Since two indices are searched for gnomAD v2, the same variant may be returned twice.
+        // De-duplicate based on variant ID.
+        const variantResults = uniq(rsidSearchResponse.hits.hits.map(doc => doc._source.variant_id))
+
+        if (variantResults.length === 0) {
+          throw new UserVisibleError('Variant not found')
+        }
+        if (variantResults.length > 1) {
+          throw new UserVisibleError('rsID matches multiple variants')
+        }
+
+        return fetchVariantDetails(ctx, variantResults[0])
       },
     },
   }),
