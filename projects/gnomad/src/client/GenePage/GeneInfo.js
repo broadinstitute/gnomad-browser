@@ -109,6 +109,46 @@ GeneReferences.propTypes = {
   }).isRequired,
 }
 
+const ManeSelectTranscriptId = ({ gene }) => {
+  const gencodeVersionOfManeSelectTransript = gene.transcripts.find(
+    transcript => transcript.transcript_id === gene.mane_select_transcript.ensembl_id
+  )
+  const shouldLinkToTranscriptPage =
+    gencodeVersionOfManeSelectTransript &&
+    gencodeVersionOfManeSelectTransript.transcript_version ===
+      gene.mane_select_transcript.ensembl_version
+
+  return (
+    <React.Fragment>
+      {shouldLinkToTranscriptPage ? (
+        <Link to={`/transcript/${gene.mane_select_transcript.ensembl_id}`}>
+          {gene.mane_select_transcript.ensembl_id}.{gene.mane_select_transcript.ensembl_version}
+        </Link>
+      ) : (
+        `${gene.mane_select_transcript.ensembl_id}.${gene.mane_select_transcript.ensembl_version}`
+      )}{' '}
+      / {gene.mane_select_transcript.refseq_id}.{gene.mane_select_transcript.refseq_version}
+    </React.Fragment>
+  )
+}
+
+ManeSelectTranscriptId.propTypes = {
+  gene: PropTypes.shape({
+    mane_select_transcript: PropTypes.shape({
+      ensembl_id: PropTypes.string.isRequired,
+      ensembl_version: PropTypes.string.isRequired,
+      refseq_id: PropTypes.string.isRequired,
+      refseq_version: PropTypes.string.isRequired,
+    }).isRequired,
+    transcripts: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcript_id: PropTypes.string.isRequired,
+        transcript_version: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
+}
+
 const GeneInfo = ({ gene }) => {
   const canonicalTranscript = gene.canonical_transcript_id
     ? gene.transcripts.find(transcript => transcript.transcript_id === gene.canonical_transcript_id)
@@ -132,17 +172,7 @@ const GeneInfo = ({ gene }) => {
             </React.Fragment>
           }
         >
-          {gene.mane_select_transcript ? (
-            <React.Fragment>
-              <Link to={`/transcript/${gene.mane_select_transcript.ensembl_id}`}>
-                {gene.mane_select_transcript.ensembl_id}.
-                {gene.mane_select_transcript.ensembl_version}
-              </Link>{' '}
-              / {gene.mane_select_transcript.refseq_id}.{gene.mane_select_transcript.refseq_version}
-            </React.Fragment>
-          ) : (
-            'Not available'
-          )}
+          {gene.mane_select_transcript ? <ManeSelectTranscriptId gene={gene} /> : 'Not available'}
         </AttributeList.Item>
       )}
       {canonicalTranscript && (
