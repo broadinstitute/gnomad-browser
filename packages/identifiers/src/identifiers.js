@@ -62,3 +62,7 @@ export const normalizeVariantId = variantId =>
     .replace(/:/g, '-')
     .replace(/^CHR/, '')
     .replace(/-0+([1-9][0-9]*)/, '-$1')
+
+const RSID_REGEX = /^rs\d+$/
+
+export const isRsId = rsid => Boolean(rsid.match(RSID_REGEX))
