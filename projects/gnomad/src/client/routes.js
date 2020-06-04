@@ -20,7 +20,7 @@ import TermsPage from './TermsPage'
 import GenePageContainer from './GenePage/GenePageContainer'
 import RegionPageContainer from './RegionPage/RegionPageContainer'
 import TranscriptPageContainer from './TranscriptPage/TranscriptPageContainer'
-import VariantPage from './VariantPage/VariantPage'
+import VariantPageRouter from './VariantPageRouter'
 
 import NavBar from './NavBar'
 
@@ -132,7 +132,7 @@ const App = () => (
             render={({ history, location, match }) => {
               const queryParams = queryString.parse(location.search)
               return (
-                <VariantPage
+                <VariantPageRouter
                   datasetId={queryParams.dataset || defaultDataset}
                   variantId={match.params.variantId}
                   history={history}
