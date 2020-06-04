@@ -10,17 +10,16 @@ export default () => (
     <DocumentTitle title="Contact" />
     <PageHeading>Contact</PageHeading>
     <p>
-      Errors in the website can be{' '}
-      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
-        reported via GitHub
-      </ExternalLink>
-      .
+      Report data problems or feature suggestions by{' '}
+      <ExternalLink href="mailto:exomeconsortium@gmail.com">email</ExternalLink>.
     </p>
 
     <p>
-      You can also{' '}
-      <ExternalLink href="mailto:exomeconsortium@gmail.com">contact us by email</ExternalLink> to
-      report data problems or feature suggestions.
+      Report errors in the website on{' '}
+      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
+        GitHub
+      </ExternalLink>{' '}
+      or by <ExternalLink href="mailto:exomeconsortium@gmail.com">email</ExternalLink>.
     </p>
 
     <p>
@@ -28,7 +27,7 @@ export default () => (
       <ExternalLink href="https://groups.google.com/forum/#!forum/exac_data_announcements">
         mailing list
       </ExternalLink>{' '}
-      for future release announcements .
+      for future release announcements.
     </p>
   </InfoPage>
 )
