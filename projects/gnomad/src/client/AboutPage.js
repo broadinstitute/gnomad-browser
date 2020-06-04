@@ -174,13 +174,6 @@ export default () => (
       Genome Aggregation Database has been approved by the Partners IRB (protocol 2013P001339,
       &quot;Large-scale aggregation of human genomic data&quot;).
     </p>
-    <p>
-      For bug reports, please file an issue on{' '}
-      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
-        GitHub
-      </ExternalLink>
-      .
-    </p>
     <Credits>
       <CreditsSection width="34%">
         <h3 id="principal-investigators">Principal Investigators</h3>
