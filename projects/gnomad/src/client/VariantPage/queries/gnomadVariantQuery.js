@@ -1,6 +1,6 @@
 export default `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
-  variant(variantId: $variantId, dataset: $datasetId) {
+query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
+  variant(variantId: $variantId, rsid: $rsid, dataset: $datasetId) {
     variantId
     reference_genome
     chrom

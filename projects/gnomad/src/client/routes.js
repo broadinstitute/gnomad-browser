@@ -134,7 +134,7 @@ const App = () => (
               return (
                 <VariantPageRouter
                   datasetId={queryParams.dataset || defaultDataset}
-                  variantId={match.params.variantId}
+                  variantIdOrRsId={match.params.variantId}
                   history={history}
                   location={location}
                   match={match}
