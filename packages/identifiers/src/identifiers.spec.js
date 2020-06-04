@@ -1,4 +1,10 @@
-import { isRegionId, normalizeRegionId, isVariantId, normalizeVariantId } from './identifiers'
+import {
+  isRegionId,
+  normalizeRegionId,
+  isVariantId,
+  normalizeVariantId,
+  isRsId,
+} from './identifiers'
 
 const test = (fn, positiveTestCases, negativeTestCases) => {
   positiveTestCases.forEach(query => {
@@ -93,4 +99,12 @@ describe('normalizeVariantId', () => {
       expect(normalizeVariantId(input)).toBe(normalized)
     })
   })
+})
+
+describe('isRsId', () => {
+  const positiveTestCases = ['rs123', 'rs4']
+
+  const negativeTestCases = ['rs', 'RS123', 'rs123abc']
+
+  test(isRsId, positiveTestCases, negativeTestCases)
 })
