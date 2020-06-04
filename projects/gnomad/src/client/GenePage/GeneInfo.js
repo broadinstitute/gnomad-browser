@@ -116,7 +116,7 @@ const GeneInfo = ({ gene }) => {
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
   return (
-    <AttributeList labelWidth={160}>
+    <AttributeList labelWidth={190}>
       <AttributeList.Item label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
@@ -139,7 +139,7 @@ const GeneInfo = ({ gene }) => {
         </AttributeList.Item>
       )}
       {canonicalTranscript && (
-        <AttributeList.Item label="Canonical transcript">
+        <AttributeList.Item label="Ensembl canonical transcript">
           <Link to={`/transcript/${canonicalTranscript.transcript_id}`}>
             {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
           </Link>
