@@ -21,10 +21,14 @@ import VariantTable from '../VariantList/VariantTable'
 import { getColumns } from '../VariantList/variantTableColumns'
 import VariantTrack from '../VariantList/VariantTrack'
 
-const TranscriptsModal = ({ transcripts, onRequestClose }) => (
-  <Modal initialFocusOnButton={false} title="Transcripts" onRequestClose={onRequestClose}>
+const TranscriptsModal = ({ gene, onRequestClose }) => (
+  <Modal
+    initialFocusOnButton={false}
+    title={`${gene.symbol} transcripts`}
+    onRequestClose={onRequestClose}
+  >
     <List>
-      {transcripts.map(transcript => (
+      {gene.transcripts.map(transcript => (
         <ListItem key={transcript.transcript_id}>
           <Link to={`/transcript/${transcript.transcript_id}`}>
             {transcript.transcript_id}.{transcript.transcript_version}
@@ -36,19 +40,22 @@ const TranscriptsModal = ({ transcripts, onRequestClose }) => (
 )
 
 TranscriptsModal.propTypes = {
-  transcripts: PropTypes.arrayOf(
-    PropTypes.shape({
-      transcript_id: PropTypes.string.isRequired,
-      transcript_version: PropTypes.string.isRequired,
-      exons: PropTypes.arrayOf(
-        PropTypes.shape({
-          feature_type: PropTypes.string.isRequired,
-          start: PropTypes.number.isRequired,
-          stop: PropTypes.number.isRequired,
-        })
-      ).isRequired,
-    })
-  ).isRequired,
+  gene: PropTypes.shape({
+    symbol: PropTypes.string.isRequired,
+    transcripts: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcript_id: PropTypes.string.isRequired,
+        transcript_version: PropTypes.string.isRequired,
+        exons: PropTypes.arrayOf(
+          PropTypes.shape({
+            feature_type: PropTypes.string.isRequired,
+            start: PropTypes.number.isRequired,
+            stop: PropTypes.number.isRequired,
+          })
+        ).isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
   onRequestClose: PropTypes.func.isRequired,
 }
 
@@ -58,6 +65,7 @@ class VariantsInGene extends Component {
     datasetId: PropTypes.string.isRequired,
     gene: PropTypes.shape({
       gene_id: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
       chrom: PropTypes.string.isRequired,
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
@@ -304,7 +312,7 @@ class VariantsInGene extends Component {
           </p>
           {isTranscriptsModalOpen && (
             <TranscriptsModal
-              transcripts={gene.transcripts}
+              gene={gene}
               onRequestClose={() => {
                 this.setState({ isTranscriptsModalOpen: false })
               }}
