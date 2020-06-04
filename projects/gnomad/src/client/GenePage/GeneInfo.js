@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import { QuestionMark } from '@gnomad/help'
 import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
@@ -116,7 +117,7 @@ const GeneInfo = ({ gene }) => {
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
   return (
-    <AttributeList labelWidth={190}>
+    <AttributeList labelWidth={215}>
       <AttributeList.Item label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
@@ -124,7 +125,13 @@ const GeneInfo = ({ gene }) => {
         {gene.gene_id}.{gene.gene_version}
       </AttributeList.Item>
       {gene.reference_genome === 'GRCh38' && (
-        <AttributeList.Item label="MANE Select transcript">
+        <AttributeList.Item
+          label={
+            <React.Fragment>
+              MANE Select transcript <QuestionMark topic="mane_select_transcript" />
+            </React.Fragment>
+          }
+        >
           {gene.mane_select_transcript ? (
             <React.Fragment>
               <Link to={`/transcript/${gene.mane_select_transcript.ensembl_id}`}>
@@ -139,7 +146,13 @@ const GeneInfo = ({ gene }) => {
         </AttributeList.Item>
       )}
       {canonicalTranscript && (
-        <AttributeList.Item label="Ensembl canonical transcript">
+        <AttributeList.Item
+          label={
+            <React.Fragment>
+              Ensembl canonical transcript <QuestionMark topic="canonical_transcript" />
+            </React.Fragment>
+          }
+        >
           <Link to={`/transcript/${canonicalTranscript.transcript_id}`}>
             {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
           </Link>
