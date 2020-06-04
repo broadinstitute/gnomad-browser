@@ -184,60 +184,86 @@ VariantPageContent.propTypes = {
   }).isRequired,
 }
 
-const VariantPage = ({ datasetId, variantId }) => (
-  <Page>
-    <DocumentTitle title={variantId} />
-    <GnomadPageHeading
-      datasetOptions={{
-        // Include ExAC for GRCh37 datasets
-        includeExac: !datasetId.startsWith('gnomad_r3'),
-        // Include gnomAD versions based on the same reference genome as the current dataset
-        includeGnomad2: !datasetId.startsWith('gnomad_r3'),
-        includeGnomad3: datasetId.startsWith('gnomad_r3'),
-        // Variant ID not valid for SVs
-        includeStructuralVariants: false,
-      }}
-      selectedDataset={datasetId}
-    >
-      <VariantType variantId={variantId} />:{' '}
-      <VariantId>
-        {variantId} ({referenceGenomeForDataset(datasetId)})
-      </VariantId>
-    </GnomadPageHeading>
-    <Query key={datasetId} query={variantQuery} variables={{ datasetId, variantId }}>
-      {({ data, error, graphQLErrors, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading variant...</StatusMessage>
-        }
+const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
+  const queryVariables = { datasetId }
+  if (variantIdProp) {
+    queryVariables.variantId = variantIdProp
+  } else {
+    queryVariables.rsid = rsId
+  }
 
-        if (error) {
-          return <StatusMessage>Unable to load variant</StatusMessage>
-        }
-
-        if (!data.variant) {
-          if (graphQLErrors && graphQLErrors.some(err => err.message === 'Variant not found')) {
-            return <VariantNotFound datasetId={datasetId} variantId={variantId} />
+  return (
+    <Page>
+      <DocumentTitle title={variantIdProp || rsId} />
+      <Query key={datasetId} query={variantQuery} variables={queryVariables}>
+        {({ data, error, graphQLErrors, loading }) => {
+          let pageContent = null
+          if (loading) {
+            pageContent = <StatusMessage>Loading variant...</StatusMessage>
+          } else if (error) {
+            pageContent = <StatusMessage>Unable to load variant</StatusMessage>
+          } else if (!data.variant) {
+            if (graphQLErrors && graphQLErrors.some(err => err.message === 'Variant not found')) {
+              if (variantIdProp) {
+                pageContent = <VariantNotFound datasetId={datasetId} variantId={variantIdProp} />
+              } else {
+                pageContent = <StatusMessage>Variant not found</StatusMessage>
+              }
+            } else {
+              pageContent = (
+                <StatusMessage>
+                  {graphQLErrors && graphQLErrors.length
+                    ? graphQLErrors.map(err => err.message).join(', ')
+                    : 'Unable to load variant'}
+                </StatusMessage>
+              )
+            }
+          } else {
+            pageContent = <VariantPageContent datasetId={datasetId} variant={data.variant} />
           }
+
+          const variantId = ((data || {}).variant || {}).variantId || variantIdProp
           return (
-            <StatusMessage>
-              {graphQLErrors && graphQLErrors.length
-                ? graphQLErrors.map(err => err.message).join(', ')
-                : 'Unable to load variant'}
-            </StatusMessage>
+            <React.Fragment>
+              <GnomadPageHeading
+                datasetOptions={{
+                  // Include ExAC for GRCh37 datasets
+                  includeExac: !datasetId.startsWith('gnomad_r3'),
+                  // Include gnomAD versions based on the same reference genome as the current dataset
+                  includeGnomad2: !datasetId.startsWith('gnomad_r3'),
+                  includeGnomad3: datasetId.startsWith('gnomad_r3'),
+                  // Variant ID not valid for SVs
+                  includeStructuralVariants: false,
+                }}
+                selectedDataset={datasetId}
+              >
+                {variantId && (
+                  <React.Fragment>
+                    <VariantType variantId={variantId} />:{' '}
+                  </React.Fragment>
+                )}
+                <VariantId>
+                  {variantId || rsId} ({referenceGenomeForDataset(datasetId)})
+                </VariantId>
+              </GnomadPageHeading>
+              {pageContent}
+            </React.Fragment>
           )
-        }
-
-        const { variant } = data
-
-        return <VariantPageContent datasetId={datasetId} variant={variant} />
-      }}
-    </Query>
-  </Page>
-)
+        }}
+      </Query>
+    </Page>
+  )
+}
 
 VariantPage.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  variantId: PropTypes.string.isRequired,
+  rsId: PropTypes.string,
+  variantId: PropTypes.string,
+}
+
+VariantPage.defaultProps = {
+  rsId: undefined,
+  variantId: undefined,
 }
 
 export default VariantPage
