@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { QuestionMark } from '@gnomad/help'
 import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 
 const GeneReferences = ({ gene }) => {
@@ -168,7 +168,7 @@ const GeneInfo = ({ gene }) => {
         <AttributeList.Item
           label={
             <React.Fragment>
-              MANE Select transcript <QuestionMark topic="mane_select_transcript" />
+              MANE Select transcript <InfoButton topic="mane_select_transcript" />
             </React.Fragment>
           }
         >
@@ -179,7 +179,7 @@ const GeneInfo = ({ gene }) => {
         <AttributeList.Item
           label={
             <React.Fragment>
-              Ensembl canonical transcript <QuestionMark topic="canonical_transcript" />
+              Ensembl canonical transcript <InfoButton topic="canonical_transcript" />
             </React.Fragment>
           }
         >

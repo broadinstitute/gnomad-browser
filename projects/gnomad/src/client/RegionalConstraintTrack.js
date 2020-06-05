@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
+
+import InfoButton from './help/InfoButton'
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,7 +94,7 @@ const RegionalConstraintTrack = ({ height, regions }) => (
       renderLeftPanel={() => (
         <SidePanel>
           <span>Regional missense constraint</span>
-          <QuestionMark topic="regional-constraint" />
+          <InfoButton topic="regional-constraint" />
         </SidePanel>
       )}
     >

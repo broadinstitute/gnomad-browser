@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { Badge, Page } from '@gnomad/ui'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -131,7 +131,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
     </Section>
     <ResponsiveSection>
       <h2>
-        Population Frequencies <QuestionMark topic="ancestry" />
+        Population Frequencies <InfoButton topic="ancestry" />
       </h2>
       <ScrollWrapper>
         <GnomadPopulationsTable

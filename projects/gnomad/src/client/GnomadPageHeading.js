@@ -2,9 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
-
 import DatasetSelector from './DatasetSelector'
+import InfoButton from './help/InfoButton'
 
 const PageHeadingWrapper = styled.div`
   display: flex;
@@ -74,7 +73,7 @@ const GnomadPageHeading = ({ children, extra, datasetOptions, selectedDataset })
       <Label>Dataset</Label>
       <DatasetSelector datasetOptions={datasetOptions} selectedDataset={selectedDataset} />
       <span>
-        <QuestionMark topic="dataset-selection" />
+        <InfoButton topic="dataset-selection" />
       </span>
     </PageControlsWrapper>
   </PageHeadingWrapper>

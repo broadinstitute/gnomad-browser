@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
 import { Badge, Button } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
+import InfoButton from './help/InfoButton'
 
 const Wrapper = styled.div`
   display: flex;
@@ -191,7 +191,7 @@ class TissueExpressionTrack extends Component {
                   {isExpanded ? 'Hide' : 'Show'} tissues
                 </Button>
                 <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
-                <QuestionMark topic="pext" style={{ display: 'inline' }} />
+                <InfoButton topic="pext" style={{ display: 'inline' }} />
               </TissueName>
             )}
             renderRightPanel={renderProportionAxis}

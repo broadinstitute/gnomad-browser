@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { CategoryFilterControl, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
+
+import InfoButton from '../help/InfoButton'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',
@@ -158,7 +159,7 @@ const VariantFilterControls = ({ onChange, value }) => {
                 onChange({ ...value, includeFilteredVariants })
               }}
             />
-            <QuestionMark topic="include-filtered-variants" />
+            <InfoButton topic="include-filtered-variants" />
           </span>
         </CheckboxSection>
       </CheckboxFiltersWrapper>

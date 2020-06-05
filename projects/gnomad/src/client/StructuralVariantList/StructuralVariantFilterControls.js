@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { Checkbox, CategoryFilterControl, SearchInput } from '@gnomad/ui'
+
+import InfoButton from '../help/InfoButton'
 
 import {
   svConsequenceCategoryColors,
@@ -76,7 +77,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
     <CategoryFiltersWrapper>
       <CategoryFilterLabel>
         Consequences
-        <QuestionMark topic="sv/sv-effect-overview" />
+        <InfoButton topic="sv/sv-effect-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl
         categories={['lof', 'dup_lof', 'copy_gain', 'other'].map(category => ({
@@ -93,7 +94,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
       />
       <CategoryFilterLabel>
         Classes
-        <QuestionMark topic="sv/sv-class-overview" />
+        <InfoButton topic="sv/sv-class-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl
         categories={svTypes.map(type => ({

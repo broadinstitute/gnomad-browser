@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
 
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import {
   svConsequenceCategories,
@@ -57,7 +57,7 @@ class StructuralVariantConsequenceList extends Component {
               <ConsequenceListItem key={consequence}>
                 <h3>
                   {svConsequenceLabels[consequence]}{' '}
-                  {!!helpTopic && <QuestionMark topic={`sv/${helpTopic}`} />}
+                  {!!helpTopic && <InfoButton topic={`sv/${helpTopic}`} />}
                 </h3>
                 <OrderedList>
                   {genes.slice(0, 3).map(gene => (
