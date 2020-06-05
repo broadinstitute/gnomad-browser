@@ -1,0 +1,18 @@
+{
+  "name": "@gnomad/markdown-loader",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/markdownLoader.js",
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "loader-utils": "^2.0.0",
+    "remark": "^10.0.1",
+    "remark-extract-frontmatter": "^2.0.0",
+    "remark-frontmatter": "^1.3.1",
+    "remark-html": "^9.0.0",
+    "unist-util-visit": "^1.4.0",
+    "yaml": "^1.4.0"
+  }
+}
