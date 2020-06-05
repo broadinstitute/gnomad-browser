@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_delINVdel
 title: 'Complex SV subclass: paired-deletion inversions'  
 ---
 

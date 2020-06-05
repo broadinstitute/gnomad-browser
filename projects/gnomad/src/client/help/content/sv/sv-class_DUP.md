@@ -1,4 +1,5 @@
 ---
+id: sv-class_DUP
 title: 'SV class: duplication'  
 ---
 

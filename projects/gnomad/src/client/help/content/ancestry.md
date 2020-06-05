@@ -1,4 +1,5 @@
 ---
+id: ancestry
 title: 'Ancestry'
 ---
 # Ancestry in gnomAD

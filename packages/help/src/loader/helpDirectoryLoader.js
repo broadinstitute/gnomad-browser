@@ -27,10 +27,7 @@ module.exports = function helpDirectoryLoader(content) {
     }
 
     const requests = files.map(f =>
-      loaderUtils.stringifyRequest(
-        this,
-        `@gnomad/help/src/loader/helpFileLoader?directory=${helpDirectory}!${f}`
-      )
+      loaderUtils.stringifyRequest(this, `@gnomad/help/src/loader/helpFileLoader!${f}`)
     )
 
     const imports = requests.map((r, i) => `import HELP_FILE_${i} from ${r}`)

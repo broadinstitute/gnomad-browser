@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_dupINV_INVdup
 title: 'Complex SV subclass: duplication-flanked inversions'  
 ---
 

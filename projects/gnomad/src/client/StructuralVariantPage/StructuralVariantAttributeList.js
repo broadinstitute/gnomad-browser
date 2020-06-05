@@ -99,7 +99,7 @@ const ComplexTypeHelpButton = ({ complexType }) => {
     return null
   }
 
-  return <InfoButton topic={`sv/${helpTopic}`} />
+  return <InfoButton topic={helpTopic} />
 }
 
 ComplexTypeHelpButton.propTypes = {
@@ -161,7 +161,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
         `(${variant.alts
           .map(alt => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
           .join(', ')})`}
-      <InfoButton topic={`sv/sv-class_${variant.type}`} />
+      <InfoButton topic={`sv-class_${variant.type}`} />
     </AttributeList.Item>
     {variant.type === 'CPX' && (
       <React.Fragment>

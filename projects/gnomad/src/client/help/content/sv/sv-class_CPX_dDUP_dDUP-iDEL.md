@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_dDUP_dDUP-iDEL
 title: 'Complex SV subclass: dispersed duplications'  
 ---
 

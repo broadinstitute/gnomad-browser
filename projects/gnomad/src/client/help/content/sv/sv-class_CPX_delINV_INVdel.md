@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_delINV_INVdel
 title: 'Complex SV subclass: deletion-flanked inversions'  
 ---
 

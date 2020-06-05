@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_dupINVdup
 title: 'Complex SV subclass: paired-duplication inversions'  
 ---
 
