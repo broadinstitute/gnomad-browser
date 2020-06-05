@@ -6,6 +6,9 @@
   "files": [
     "src"
   ],
+  "scripts": {
+    "example": "webpack-dev-server --config=./example/webpack.config.js --port=8000"
+  },
   "dependencies": {
     "loader-utils": "^2.0.0",
     "remark": "^10.0.1",
