@@ -47,6 +47,26 @@ const HelpContent = styled.div`
   li {
     margin-bottom: 0.5em;
   }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  td {
+    padding: 0.5em 10px 0.5em 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: normal;
+    text-align: left;
+  }
+
+  th {
+    padding: 0.5em 10px 0.5em 0;
+    border-bottom: 1px solid #000;
+    background-position: center right;
+    background-repeat: no-repeat;
+    font-weight: bold;
+  }
 `
 
 export default HelpContent
