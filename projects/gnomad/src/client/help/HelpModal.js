@@ -97,7 +97,7 @@ class HelpModal extends Component {
     const { selectedTopic, searchText, searchResults } = this.state
 
     if (selectedTopic) {
-      const topic = helpTopics[selectedTopic]
+      const topic = helpTopics[selectedTopic.toLowerCase()]
       if (!topic) {
         return null
       }
@@ -129,7 +129,7 @@ class HelpModal extends Component {
             <h3>{section.title}</h3>
             <TopicsList>
               {section.children.map(id => {
-                const topic = helpTopics[id]
+                const topic = helpTopics[id.toLowerCase()]
                 if (!topic) {
                   return null
                 }

@@ -36,7 +36,7 @@ const helpTopicsModuleContent = [
   '\nconst helpTopics = [',
   helpFiles.map((f, i) => `  helpTopic${i},`).join('\n'),
   ']\n',
-  'export default helpTopics.reduce((acc, topic) => ({ ...acc, [topic.id]: topic }), {})\n',
+  'export default helpTopics.reduce((acc, topic) => ({ ...acc, [topic.id.toLowerCase()]: topic }), {})\n',
 ].join('\n')
 
 fs.writeFileSync(helpTopicsModulePath, helpTopicsModuleContent)
