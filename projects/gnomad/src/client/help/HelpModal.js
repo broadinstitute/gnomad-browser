@@ -64,7 +64,7 @@ const searchApi = new SearchApi({
 
 Object.values(helpTopics).forEach(topic => {
   searchApi.indexDocument(topic.id, topic.title)
-  searchApi.indexDocument(topic.id, topic.content)
+  searchApi.indexDocument(topic.id, topic.html)
 })
 
 class HelpModal extends Component {
@@ -101,7 +101,7 @@ class HelpModal extends Component {
       if (!topic) {
         return null
       }
-      return <HelpContent dangerouslySetInnerHTML={{ __html: topic.content }} />
+      return <HelpContent dangerouslySetInnerHTML={{ __html: topic.html }} />
     }
 
     if (searchText) {
