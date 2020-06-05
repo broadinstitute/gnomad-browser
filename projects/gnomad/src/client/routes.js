@@ -13,6 +13,7 @@ import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
 import HelpButton from './help/HelpButton'
 import HelpModal from './help/HelpModal'
+import HelpPage from './help/HelpPage'
 import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
 import PublicationsPage from './PublicationsPage'
@@ -149,6 +150,11 @@ const App = () => (
           <Route exact path="/publications" component={PublicationsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
+          <Route
+            exact
+            path="/help/:topic"
+            render={({ match }) => <HelpPage topicId={match.params.topic} />}
+          />
           <Route
             exact
             path="/awesome"
