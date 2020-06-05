@@ -30,7 +30,7 @@ module.exports = function markdownLoader(content) {
     .then(vfile => {
       let output = `export default ${JSON.stringify({
         ...vfile.data,
-        content: vfile.contents,
+        html: vfile.contents,
       })};`
 
       const imports = []
