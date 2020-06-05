@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { RegionViewer } from '@gnomad/region-viewer'
 import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@gnomad/track-transcripts'
 import { ExternalLink } from '@gnomad/ui'
@@ -11,6 +10,7 @@ import { ExternalLink } from '@gnomad/ui'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import TissueExpressionTrack from '../TissueExpressionTrack'
@@ -294,7 +294,7 @@ class GenePage extends Component {
             <GeneInfo gene={gene} />
             <div>
               <h2>
-                Constraint <QuestionMark topic="constraint" />
+                Constraint <InfoButton topic="constraint" />
               </h2>
               <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
             </div>
@@ -391,7 +391,7 @@ class GenePage extends Component {
                 <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
                   Isoform expression
                 </ExternalLink>
-                <QuestionMark topic="gtex" />
+                <InfoButton topic="gtex" />
               </span>
             }
             renderTranscriptLeftPanel={

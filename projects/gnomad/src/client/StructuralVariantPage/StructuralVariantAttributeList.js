@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { QuestionMark } from '@gnomad/help'
 import { Badge } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
@@ -99,7 +99,7 @@ const ComplexTypeHelpButton = ({ complexType }) => {
     return null
   }
 
-  return <QuestionMark topic={`sv/${helpTopic}`} />
+  return <InfoButton topic={`sv/${helpTopic}`} />
 }
 
 ComplexTypeHelpButton.propTypes = {
@@ -161,7 +161,7 @@ const StructuralVariantAttributeList = ({ variant }) => (
         `(${variant.alts
           .map(alt => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
           .join(', ')})`}
-      <QuestionMark topic={`sv/sv-class_${variant.type}`} />
+      <InfoButton topic={`sv/sv-class_${variant.type}`} />
     </AttributeList.Item>
     {variant.type === 'CPX' && (
       <React.Fragment>

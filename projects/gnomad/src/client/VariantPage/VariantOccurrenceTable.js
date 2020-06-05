@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionMark } from '@gnomad/help'
 import { Badge, TooltipAnchor } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import sampleCounts from '../dataset-constants/sampleCounts'
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import QCFilter from '../QCFilter'
 
@@ -255,7 +255,7 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
           <tr>
             <th scope="row">
               <NoWrap>
-                Popmax Filtering AF <QuestionMark topic="faf" />
+                Popmax Filtering AF <InfoButton topic="faf" />
               </NoWrap>
               <br />
               (95% confidence)
