@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_delINVdup_dupINVdel
 title: 'Complex SV subclass: paired-CNV inversions'  
 ---
 

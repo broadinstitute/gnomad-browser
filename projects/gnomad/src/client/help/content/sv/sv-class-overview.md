@@ -1,4 +1,5 @@
 ---
+id: sv-class-overview
 title: 'Structural variant classes'  
 ---
 

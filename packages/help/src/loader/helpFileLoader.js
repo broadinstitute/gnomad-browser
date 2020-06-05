@@ -1,5 +1,3 @@
-const path = require('path')
-
 const loaderUtils = require('loader-utils')
 const remark = require('remark')
 const extract = require('remark-extract-frontmatter')
@@ -23,9 +21,6 @@ const imageFinder = () => (tree, file) => {
 module.exports = function helpFileLoader(content) {
   const callback = this.async()
 
-  const { directory } = loaderUtils.getOptions(this)
-  const topicId = path.relative(directory, this.resource).replace(/\.md$/, '')
-
   remark()
     .use(frontmatter)
     .use(extract, { yaml })
@@ -34,7 +29,7 @@ module.exports = function helpFileLoader(content) {
     .process(content)
     .then(vfile => {
       let output = `export default ${JSON.stringify({
-        id: topicId,
+        id: vfile.data.id,
         title: vfile.data.title,
         content: vfile.contents,
       })};`

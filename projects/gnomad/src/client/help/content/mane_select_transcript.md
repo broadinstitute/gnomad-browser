@@ -1,4 +1,5 @@
 ---
+id: mane_select_transcript
 title: MANE Select transcript
 ---
 

@@ -1,4 +1,5 @@
 ---
+id: canonical_transcript
 title: Ensembl canonical transcript
 ---
 

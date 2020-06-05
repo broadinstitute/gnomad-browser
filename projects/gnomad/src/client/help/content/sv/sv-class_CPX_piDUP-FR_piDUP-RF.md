@@ -1,4 +1,5 @@
 ---
+id: sv-class_CPX_piDUP-FR_piDUP-RF
 title: 'Complex SV subclass: palindromic inverted duplications'  
 ---
 

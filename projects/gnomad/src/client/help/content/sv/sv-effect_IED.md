@@ -1,4 +1,5 @@
 ---
+id: sv-effect_IED
 title: 'SV consequence: intragenic exonic duplication'
 ---
 

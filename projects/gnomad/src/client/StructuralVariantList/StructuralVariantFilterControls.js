@@ -77,7 +77,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
     <CategoryFiltersWrapper>
       <CategoryFilterLabel>
         Consequences
-        <InfoButton topic="sv/sv-effect-overview" />
+        <InfoButton topic="sv-effect-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl
         categories={['lof', 'dup_lof', 'copy_gain', 'other'].map(category => ({
@@ -94,7 +94,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
       />
       <CategoryFilterLabel>
         Classes
-        <InfoButton topic="sv/sv-class-overview" />
+        <InfoButton topic="sv-class-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl
         categories={svTypes.map(type => ({
