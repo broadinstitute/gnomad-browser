@@ -16,6 +16,21 @@ const imageFinder = () => (tree, file) => {
     }
   })
 }
+
+const linkTransformer = () => tree => {
+  visit(tree, 'link', node => {
+    if (node.url.match(/^https?:\/\//)) {
+      if (!node.data) {
+        node.data = {}
+      }
+      if (!node.data.hProperties) {
+        node.data.hProperties = {}
+      }
+      node.data.hProperties.target = '_blank'
+      node.data.hProperties.rel = 'noopener noreferrer'
+    }
+  })
+}
 /* eslint-enable no-param-reassign */
 
 module.exports = function markdownLoader(content) {
@@ -25,6 +40,7 @@ module.exports = function markdownLoader(content) {
     .use(frontmatter)
     .use(extract, { yaml })
     .use(imageFinder)
+    .use(linkTransformer)
     .use(html)
     .process(content)
     .then(vfile => {
