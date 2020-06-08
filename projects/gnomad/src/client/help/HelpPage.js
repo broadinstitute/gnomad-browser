@@ -6,7 +6,7 @@ import { Page } from '@gnomad/ui'
 import DocumentTitle from '../DocumentTitle'
 
 import HelpContent from './HelpContent'
-import helpTopics from './helpTopics'
+import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 
 const HelpPage = ({ topicId }) => {
   const topic = helpTopics[topicId.toLowerCase()]

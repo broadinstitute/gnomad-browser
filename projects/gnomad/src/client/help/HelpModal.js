@@ -7,7 +7,7 @@ import { Button, Modal, TextButton } from '@gnomad/ui'
 
 import HelpContent from './HelpContent'
 import helpState from './helpState'
-import helpTopics from './helpTopics'
+import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 import toc from './toc.json'
 
 const HelpContainer = styled.div`
