@@ -273,7 +273,7 @@ class GenePage extends Component {
       } else {
         starredTranscriptDescription = (
           <React.Fragment>
-            Transcript is a version of the{' '}
+            Transcript is a different version of the{' '}
             <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink>{' '}
             Select transcript for this gene
           </React.Fragment>
