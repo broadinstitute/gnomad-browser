@@ -24,14 +24,17 @@ const BADGE_COLOR = {
 }
 
 const BadgeWrapper = styled.span`
+  position: relative;
+  top: -0.1em;
   display: inline-block;
-  padding: 0.25em 0.4em;
+  padding: 0.25em 0.4em 0.2em;
   border: 1px solid #000;
   border-radius: 0.3em;
   background: ${props => BADGE_COLOR[props.level]};
   color: ${props => (props.level === 'warning' ? '#000' : '#fff')};
   font-size: 0.75em;
   font-weight: bold;
+  line-height: 1;
 `
 
 export const Badge = ({ children, level, tooltip }) =>
