@@ -442,7 +442,13 @@ class GenePage extends Component {
           {datasetId.startsWith('gnomad_sv') ? (
             <StructuralVariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
           ) : (
-            <VariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
+            <VariantsInGene
+              datasetId={datasetId}
+              gene={gene}
+              includeNonCodingTranscripts={includeNonCodingTranscripts}
+              includeUTRs={includeUTRs}
+              width={regionViewerWidth}
+            />
           )}
         </RegionViewer>
       </TrackPage>

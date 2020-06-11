@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
+import { Badge } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
@@ -24,6 +25,8 @@ class VariantsInTranscript extends Component {
   static propTypes = {
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
+    includeNonCodingTranscripts: PropTypes.bool.isRequired,
+    includeUTRs: PropTypes.bool.isRequired,
     transcript: PropTypes.shape({
       transcript_id: PropTypes.string.isRequired,
       chrom: PropTypes.string.isRequired,
@@ -167,7 +170,14 @@ class VariantsInTranscript extends Component {
   }
 
   render() {
-    const { clinvarVariants, datasetId, transcript, width } = this.props
+    const {
+      clinvarVariants,
+      datasetId,
+      includeNonCodingTranscripts,
+      includeUTRs,
+      transcript,
+      width,
+    } = this.props
     const {
       filter,
       hoveredVariant,
@@ -219,8 +229,11 @@ class VariantsInTranscript extends Component {
             />
           </div>
           <p>
+            <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
+              {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
+            </Badge>{' '}
             Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-            intronic variants, use the{' '}
+            variants in UTRs or introns, use the{' '}
             <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
               region view
             </Link>
@@ -300,7 +313,7 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
   }
 }`
 
-const ConnectedVariantsInTranscript = ({ datasetId, transcript, width }) => (
+const ConnectedVariantsInTranscript = ({ datasetId, transcript, ...otherProps }) => (
   <Query
     query={query}
     variables={{
@@ -320,11 +333,11 @@ const ConnectedVariantsInTranscript = ({ datasetId, transcript, width }) => (
 
       return (
         <VariantsInTranscript
+          {...otherProps}
           clinvarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
           transcript={transcript}
           variants={data.transcript.variants}
-          width={width}
         />
       )
     }}
@@ -336,7 +349,6 @@ ConnectedVariantsInTranscript.propTypes = {
   transcript: PropTypes.shape({
     transcript_id: PropTypes.string.isRequired,
   }).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default ConnectedVariantsInTranscript

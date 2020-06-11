@@ -433,6 +433,8 @@ class TranscriptPage extends Component {
 
           <VariantsInTranscript
             datasetId={datasetId}
+            includeNonCodingTranscripts={includeNonCodingTranscripts}
+            includeUTRs={includeUTRs}
             transcript={transcript}
             width={regionViewerWidth}
           />
