@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
-import { List, ListItem, Modal, TextButton } from '@gnomad/ui'
+import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
@@ -88,6 +88,8 @@ class VariantsInGene extends Component {
         ensembl_id: PropTypes.string.isRequired,
       }),
     }).isRequired,
+    includeNonCodingTranscripts: PropTypes.bool.isRequired,
+    includeUTRs: PropTypes.bool.isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
   }
@@ -237,7 +239,14 @@ class VariantsInGene extends Component {
   }
 
   render() {
-    const { clinvarVariants, datasetId, gene, width } = this.props
+    const {
+      clinvarVariants,
+      datasetId,
+      gene,
+      includeNonCodingTranscripts,
+      includeUTRs,
+      width,
+    } = this.props
     const {
       filter,
       isTranscriptsModalOpen,
@@ -292,8 +301,11 @@ class VariantsInGene extends Component {
             />
           </div>
           <p>
+            <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
+              {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
+            </Badge>{' '}
             Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-            intronic variants, use the{' '}
+            variants in UTRs or introns, use the{' '}
             <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
           </p>
           <p>
@@ -397,7 +409,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
   }
 }`
 
-const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
+const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
   <Query
     query={query}
     variables={{
@@ -417,11 +429,11 @@ const ConnectedVariantsInGene = ({ datasetId, gene, width }) => (
 
       return (
         <VariantsInGene
+          {...otherProps}
           clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
           variants={data.gene.variants}
-          width={width}
         />
       )
     }}
@@ -433,7 +445,6 @@ ConnectedVariantsInGene.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
   }).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default ConnectedVariantsInGene
