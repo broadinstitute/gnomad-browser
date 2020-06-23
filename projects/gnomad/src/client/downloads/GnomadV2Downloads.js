@@ -229,6 +229,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v2-constraint">Constraint</SectionTitle>
+      <p>
+        For information on constraint, see{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
+          <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
+          Nature 581, 434–443 (2020).
+        </ExternalLink>
+      </p>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/constraint/">
@@ -261,6 +268,15 @@ export default () => (
       <SectionTitle id="v2-multi-nucleotide-variants">
         Multi-nucleotide variants (MNVs)
       </SectionTitle>
+      <p>
+        For information on multi-nucleotide variants in gnomAD, see{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41467-019-12438-5">
+          <em>
+            Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes.
+          </em>{' '}
+          Nature Communications 11, 2539 (2020).
+        </ExternalLink>
+      </p>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1/mnv/readme.md">
@@ -307,6 +323,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v2-pext">Proportion expressed across transcripts (pext)</SectionTitle>
+      <p>
+        For information on pext, see{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+          <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
+          Nature 581, 452–458 (2020)
+        </ExternalLink>
+      </p>
       <FileList>
         <ListItem>
           <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/papers/2019-tx-annotation/pre_computed/">
@@ -343,6 +366,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v2-structural-variants">Structural variants</SectionTitle>
+      <p>
+        For information on gnomAD structural variants, see{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41586-020-2287-8">
+          <em>A structural variation reference for medical and population genetics.</em> Nature 581,
+          444–451 (2020).
+        </ExternalLink>
+      </p>
       <FileList>
         <ListItem>
           <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz">
