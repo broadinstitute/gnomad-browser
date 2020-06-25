@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
 
 import {
   ChromosomeVcfLinks,
@@ -147,6 +147,22 @@ export default () => (
           </FileList>
         </Column>
       </ColumnsWrapper>
+    </section>
+    <section>
+      <SectionTitle id="v2-liftover-structural-variants">
+        Structural variants (GRCh38 liftover)
+      </SectionTitle>
+      <p>
+        <Badge level="info">Note</Badge> The lifted over structural variant dataset was created by
+        dbVar and has not been assessed by the gnomAD production team.
+      </p>
+      <FileList>
+        <ListItem>
+          <ExternalLink href="https://www.ncbi.nlm.nih.gov/sites/dbvarapp/studies/nstd166/">
+            nstd166 (gnomAD Structural Variants)
+          </ExternalLink>
+        </ListItem>
+      </FileList>
     </section>
   </React.Fragment>
 )
