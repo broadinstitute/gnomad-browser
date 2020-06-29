@@ -166,10 +166,8 @@ VariantPlot.propTypes = {
   variants: PropTypes.arrayOf(
     PropTypes.shape({
       allele_freq: PropTypes.number,
-      consequence: PropTypes.string,
       isHighlighted: PropTypes.bool,
       pos: PropTypes.number.isRequired,
-      variant_id: PropTypes.string.isRequired,
     })
   ).isRequired,
   variantColor: PropTypes.func,
