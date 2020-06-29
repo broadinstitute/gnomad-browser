@@ -291,27 +291,31 @@ export default () => (
         </p>
       </Answer>
 
-      <Question id="why-are-constraint-metrics-missing-for-this-gene">
-        Why are constraint metrics missing for this gene?
+      <Question id="why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note">
+        Why are constraint metrics missing for this gene or annotated with a note?
       </Question>
       <Answer>
         <p>
-          Genes that were outliers in certain assessments will not have constraint metrics. Please
-          note that these assessments were applied to the canonical transcripts of the genes. If a
-          gene was not annotated as a protein-coding gene in Gencode v19, we did not calculate
-          constraint. The following list describes the reason names given in the constraint_flag
-          column of the{' '}
+          Genes that were outliers in certain assessments will not have constraint metrics or will
+          be flagged with a note warning of various error modes. Please note that these assessments
+          were applied to the canonical transcripts of the genes. If a gene was not annotated as a
+          protein-coding gene in Gencode v19, we did not calculate constraint. The following list
+          describes the reason names given in the constraint_flag column of the{' '}
           <Link to={{ pathname: '/downloads', hash: '#v2-constraint' }}>constraint files</Link>:
         </p>
         <List>
           <ListItem>no_variants: Zero observed synonymous, missense, pLoF variants</ListItem>
           <ListItem>no_exp_lof: Zero expected pLoF variants</ListItem>
-          <ListItem>lof_too_many: Too many pLoF variants</ListItem>
+          <ListItem>lof_too_many: More pLoF variants than expected</ListItem>
           <ListItem>no_exp_mis: Zero expected missense variants</ListItem>
-          <ListItem>mis_too_many: Too many missense variants</ListItem>
+          <ListItem>mis_too_many: More missense variants than expected</ListItem>
           <ListItem>no_exp_syn: Zero expected synonymous variants</ListItem>
-          <ListItem>syn_outlier: Too many or too few synonymous variants</ListItem>
+          <ListItem>syn_outlier: More or fewer synonymous variants than expected</ListItem>
         </List>
+        <p>
+          Possible reasons that one might observe the deviations listed above include mismapped
+          reads due to homologous regions or poor quality sequencing data.
+        </p>
       </Answer>
 
       <Question id="what-is-a-loeuf-score">What is a LOEUF score?</Question>
