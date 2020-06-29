@@ -42,9 +42,8 @@ export default () => (
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="100%" />
       <p>
-        Please note that gnomAD v2.1.1 and v3 contain largely non-overlapping samples and both
-        datasets must be used to capture the full set of variation across gnomAD. For more
-        information, see the FAQ{' '}
+        Please note that gnomAD v2.1.1 and v3 have substantially different but overlapping sample
+        compositions and are on different genome builds. For more information, see the FAQ{' '}
         <Link to={{ pathname: '/faq', hash: 'should-i-switch-to-the-latest-version-of-gnomad' }}>
           &quot;Should I switch to the latest version of gnomAD?&quot;
         </Link>

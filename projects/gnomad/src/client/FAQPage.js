@@ -200,7 +200,9 @@ export default () => (
           analyses. However, gnomAD v3 represents a very large increase in the number of genomes,
           and will therefore be a much better resource if your primary interest is in non-coding
           regions or if your coding region of interest is poorly captured in the gnomAD exomes (this
-          can be assessed from the coverage plots in the browser).
+          can be assessed from the coverage plots in the browser). Most of the genomes from v2.1.1
+          are included in v3 and therefore these should not be considered as independent sample
+          sets.
         </p>
 
         <p>
