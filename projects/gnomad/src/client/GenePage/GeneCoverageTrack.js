@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { CoverageTrack } from '@gnomad/track-coverage'
-
 import { coverageDataset } from '../coverage'
 import { referenceGenomeForDataset } from '../datasets'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
+import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 

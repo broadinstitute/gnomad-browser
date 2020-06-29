@@ -19,7 +19,6 @@
     "@gnomad/identifiers": "*",
     "@gnomad/markdown-loader": "*",
     "@gnomad/region-viewer": "*",
-    "@gnomad/track-coverage": "*",
     "@gnomad/track-genes": "*",
     "@gnomad/track-transcripts": "*",
     "@gnomad/track-variant": "*",
