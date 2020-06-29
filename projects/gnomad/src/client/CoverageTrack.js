@@ -8,8 +8,6 @@ import { AxisLeft } from '@vx/axis'
 import { Track } from '@gnomad/region-viewer'
 import { Button, Select } from '@gnomad/ui'
 
-import { Legend } from './Legend'
-
 const TopPanel = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -17,7 +15,58 @@ const TopPanel = styled.div`
   width: 100%;
 `
 
-export class CoverageTrack extends Component {
+const LegendWrapper = styled.ul`
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0 1em 0 0;
+  list-style-type: none;
+`
+
+const LegendItem = styled.li`
+  display: flex;
+  margin-left: 1em;
+`
+
+const LegendSwatch = styled.span`
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid black;
+  margin-right: 0.5em;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: ${props => props.color};
+    opacity: ${props => props.opacity};
+  }
+`
+
+const Legend = ({ datasets }) => (
+  <LegendWrapper>
+    {datasets.map(dataset => (
+      <LegendItem key={dataset.name}>
+        <LegendSwatch color={dataset.color} opacity={dataset.opacity} />
+        {dataset.name}
+      </LegendItem>
+    ))}
+  </LegendWrapper>
+)
+
+Legend.propTypes = {
+  datasets: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      opacity: PropTypes.number,
+    })
+  ).isRequired,
+}
+
+class CoverageTrack extends Component {
   static propTypes = {
     datasets: PropTypes.arrayOf(
       PropTypes.shape({
@@ -227,3 +276,5 @@ export class CoverageTrack extends Component {
     )
   }
 }
+
+export default CoverageTrack
