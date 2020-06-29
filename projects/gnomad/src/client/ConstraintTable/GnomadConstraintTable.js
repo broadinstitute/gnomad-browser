@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
+import Link from '../Link'
 import { renderRoundedNumber } from './constraintMetrics'
 
 const Table = styled(BaseTable)`
@@ -112,13 +113,13 @@ const renderOEGraph = (constraint, category, color) => {
 }
 
 const CONSTRAINT_FLAG_DESCRIPTIONS = {
-  lof_too_many: 'Too many pLoF variants',
-  mis_too_many: 'Too many missense variants',
+  lof_too_many: 'More pLoF variants than expected',
+  mis_too_many: 'More missense variants than expected',
   no_exp_lof: 'Zero expected pLoF variants',
   no_exp_mis: 'Zero expected missense variants',
   no_exp_syn: 'Zero expected synonymous variants',
   no_variants: 'Zero observed synonymous, missense, pLoF variants',
-  syn_outlier: 'Too many or too few synonymous variants',
+  syn_outlier: 'More or fewer synonymous variants than expected',
 }
 
 const GnomadConstraintTable = ({ constraint }) => {
@@ -132,6 +133,8 @@ const GnomadConstraintTable = ({ constraint }) => {
       lofHighlightColor = '#ffc000'
     }
   }
+
+  const constraintFlags = (constraint.flags || []).filter(flag => !flag.startsWith('no_'))
 
   return (
     <div>
@@ -199,14 +202,26 @@ const GnomadConstraintTable = ({ constraint }) => {
           </tr>
         </tbody>
       </Table>
-      {constraint.flags &&
-        constraint.flags
-          .filter(flag => !flag.startsWith('no_'))
-          .map(flag => (
+      {constraintFlags.length > 0 && (
+        <React.Fragment>
+          {constraintFlags.map(flag => (
             <p key={flag} style={{ maxWidth: '460px' }}>
               <Badge level="info">Note</Badge> {CONSTRAINT_FLAG_DESCRIPTIONS[flag]}
             </p>
           ))}
+          <p>
+            <Link
+              preserveSelectedDataset={false}
+              to={{
+                pathname: '/faq',
+                hash: '#why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note',
+              }}
+            >
+              See the FAQ for more information on constraint flags.
+            </Link>
+          </p>
+        </React.Fragment>
+      )}
     </div>
   )
 }
