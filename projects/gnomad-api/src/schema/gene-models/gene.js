@@ -103,6 +103,7 @@ export const fetchGenesByIds = async (ctx, geneIds, referenceGenome) => {
   const response = await ctx.database.elastic.search({
     index: 'genes',
     type: 'documents',
+    size: 100,
     body: {
       query: {
         ids: {
