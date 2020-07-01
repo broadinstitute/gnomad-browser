@@ -754,11 +754,10 @@ export default () => (
         </List>
 
         <p>
-          Several other classes of problem relates to fundamental issues with dbSNP. dbSNP rsIDs do
-          not provide robustly unique identifiers as the rsIDs are based on genomic position and are
-          allele-independent. We generally suggest not using these identifiers at all; if a user is
-          interested in a particular variant we encourage searching for it by chromosome, position,
-          and allele rather than rsID.
+          Several other classes of problem relates to fundamental issues with dbSNP. We generally
+          suggest not using these identifiers at all; if a user is interested in a particular
+          variant we encourage searching for it by chromosome, position, and allele rather than
+          rsID.
         </p>
       </Answer>
 
