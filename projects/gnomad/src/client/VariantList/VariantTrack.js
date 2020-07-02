@@ -1,7 +1,7 @@
 import { transparentize } from 'polished'
 import React, { PureComponent } from 'react'
 
-import BaseVariantTrack from '@gnomad/track-variant'
+import BaseVariantTrack from '@gnomad/track-variants'
 
 import { getCategoryFromConsequence } from '../vepConsequences'
 

@@ -45,13 +45,6 @@ module.exports = {
       },
     },
     {
-      // Allow importing from resources only in package examples
-      files: ['packages/**/example/*.js'],
-      rules: {
-        'import/no-unresolved': ['error', { ignore: ['^@resources\/'] }],
-      },
-    },
-    {
       files: ['projects/gnomad-api/**/*.js'],
       rules: {
         'no-underscore-dangle': ['error', {

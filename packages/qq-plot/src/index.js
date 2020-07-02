@@ -1,1 +1,0 @@
-export { QQPlot } from './QQPlot'
