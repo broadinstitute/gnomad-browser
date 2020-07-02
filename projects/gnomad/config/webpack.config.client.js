@@ -100,8 +100,8 @@ const config = {
     filename: isDev ? '[name].js' : '[name]-[contenthash].js',
   },
   plugins: [
-    new CopyWebpackPlugin([path.resolve(__dirname, '../src/client/opensearch.xml')], {
-      writeToDisk: true,
+    new CopyWebpackPlugin({
+      patterns: [path.resolve(__dirname, '../src/client/opensearch.xml')],
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/client/index.html'),

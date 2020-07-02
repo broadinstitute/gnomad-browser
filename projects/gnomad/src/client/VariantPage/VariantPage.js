@@ -179,8 +179,8 @@ VariantPageContent.propTypes = {
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
     colocatedVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
     multiNucleotideVariants: PropTypes.arrayOf(PropTypes.object),
-    exome: PropTypes.object.isRequired,
-    genome: PropTypes.object.isRequired,
+    exome: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    genome: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   }).isRequired,
 }
 
