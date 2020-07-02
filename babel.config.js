@@ -1,5 +1,3 @@
-const path = require('path')
-
 module.exports = {
   presets: [
     [
@@ -24,14 +22,6 @@ module.exports = {
     'inline-react-svg',
     'react-hot-loader/babel',
     'styled-components',
-    [
-      'module-resolver',
-      {
-        alias: {
-          '@resources': path.resolve(__dirname, './resources'),
-        },
-      },
-    ],
   ],
   env: {
     test: {

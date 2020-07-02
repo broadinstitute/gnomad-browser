@@ -1,1 +1,0 @@
-export { GenesTrack } from './GenesTrack'
