@@ -23,7 +23,7 @@
     "@gnomad/track-transcripts": "^1.0.0",
     "@gnomad/track-variants": "^1.0.0",
     "@gnomad/ui": "^1.0.0",
-    "@vx/axis": "^0.0.184",
+    "@vx/axis": "^0.0.197",
     "core-js": "^3.6.5",
     "d3-array": "^1.2.4",
     "d3-scale": "^2.2.2",
