@@ -20,6 +20,7 @@ const NoVariants = styled.div`
 
 class StructuralVariantsTable extends PureComponent {
   static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     forwardedRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })])
       .isRequired,
     numRowsRendered: PropTypes.number.isRequired,

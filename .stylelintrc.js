@@ -1,9 +1,9 @@
 // Order properties based on idiomatic CSS
 // https://github.com/necolas/idiomatic-css#declaration-order
 
-const priority = ['content'];
+const priority = ['content']
 
-const positioning = ['position', 'z-index', 'top', 'right', 'bottom', 'left'];
+const positioning = ['position', 'z-index', 'top', 'right', 'bottom', 'left']
 
 // https://www.w3.org/TR/css-flexbox-1/
 const FlexibleBoxLayoutModule = [
@@ -15,7 +15,7 @@ const FlexibleBoxLayoutModule = [
   'flex-wrap',
   'flex-direction',
   'order',
-];
+]
 
 const gridParentRules = [
   'grid-template',
@@ -29,7 +29,7 @@ const gridParentRules = [
   'grid-auto-columns',
   'grid-auto-rows',
   'grid-auto-flow',
-];
+]
 
 const gridChildrenRules = [
   'grid-area',
@@ -39,10 +39,10 @@ const gridChildrenRules = [
   'grid-column-end',
   'grid-row-start',
   'grid-row-end',
-];
+]
 
 // https://www.w3.org/TR/css-grid-1/
-const CSSGridLayoutModule = [...gridParentRules, ...gridChildrenRules];
+const CSSGridLayoutModule = [...gridParentRules, ...gridChildrenRules]
 
 // https://www.w3.org/TR/css-align-3/
 const CSSBoxAlignmentModule = [
@@ -52,7 +52,7 @@ const CSSBoxAlignmentModule = [
   'align-items',
   'align-content',
   'align-self',
-];
+]
 
 const boxModel = [
   'display',
@@ -89,7 +89,7 @@ const boxModel = [
   'margin-right',
   'margin-bottom',
   'margin-left',
-];
+]
 
 const backgrounds = [
   'background',
@@ -101,7 +101,7 @@ const backgrounds = [
   'background-origin',
   'background-clip',
   'background-attachment',
-];
+]
 
 const typography = [
   'color',
@@ -122,16 +122,13 @@ const typography = [
   'white-space',
   'word-break',
   'word-spacing',
-];
+]
 
-const propertiesOrder = [...priority, ...positioning, ...boxModel, ...backgrounds, ...typography];
+const propertiesOrder = [...priority, ...positioning, ...boxModel, ...backgrounds, ...typography]
 
 module.exports = {
   processors: ['stylelint-processor-styled-components'],
-  extends: [
-    'stylelint-config-standard',
-    'stylelint-config-styled-components',
-  ],
+  extends: ['stylelint-config-standard', 'stylelint-config-styled-components'],
   plugins: 'stylelint-order',
   syntax: 'scss',
   rules: {
@@ -141,7 +138,7 @@ module.exports = {
     'unit-whitelist': ['%', 'deg', 'em', 'rem', 's', 'px', 'vw', 'vh'],
     'order/properties-order': [propertiesOrder],
     // "dummyValue" is inserted by stylelint-processor-styled-components in place of function interpolations
-    'value-keyword-case': ['lower', { ignoreKeywords: ['dummyValue'] }]
+    'value-keyword-case': ['lower', { ignoreKeywords: ['dummyValue'] }],
   },
   ignoreFiles: './**/node_modules/**/*',
 }

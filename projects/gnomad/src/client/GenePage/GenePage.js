@@ -179,6 +179,7 @@ class GenePage extends Component {
         ).isRequired,
         flags: PropTypes.arrayOf(PropTypes.string).isRequired,
       }),
+      // eslint-disable-next-line react/forbid-prop-types
       exac_regional_missense_constraint_regions: PropTypes.any,
     }).isRequired,
     geneId: PropTypes.string.isRequired,
