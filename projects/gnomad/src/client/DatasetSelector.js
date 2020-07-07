@@ -64,7 +64,7 @@ const NavigationMenuItem = styled.li`
 `
 
 const MoreIcon = styled.span`
-  svg {
+  img {
     position: relative;
     top: 0.11em;
     width: 0.9em;
@@ -364,7 +364,7 @@ class NavigationMenu extends Component {
                     onKeyDown={this.onKeyDownTopLevelItem}
                   >
                     <MoreIcon>
-                      <CaretDown />
+                      <img src={CaretDown} alt="" aria-hidden="true" />
                     </MoreIcon>
                   </TopLevelNavigationLink>
                   <SubNavigationMenu isExpanded={isExpanded}>

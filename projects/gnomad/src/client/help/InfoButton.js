@@ -1,4 +1,5 @@
 import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
+import { hideVisually } from 'polished'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -14,7 +15,7 @@ const Button = styled.button.attrs({ type: 'button' })`
   background: none;
   cursor: pointer;
 
-  svg {
+  img {
     position: relative;
     top: 0.13em;
     width: 14px;
@@ -22,7 +23,7 @@ const Button = styled.button.attrs({ type: 'button' })`
     border-radius: 7px;
   }
 
-  &:focus svg {
+  &:focus img {
     box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
   }
 `
@@ -38,7 +39,8 @@ const InfoButton = ({ topic, style }) => (
     }}
     style={style}
   >
-    <QuestionMarkIcon />
+    <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
+    <span style={hideVisually()}>More information</span>
   </Button>
 )
 

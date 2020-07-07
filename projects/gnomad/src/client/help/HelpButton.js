@@ -1,4 +1,5 @@
 import QuestionIcon from '@fortawesome/fontawesome-free/svgs/solid/question.svg'
+import { hideVisually } from 'polished'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -16,12 +17,11 @@ const StyledHelpButton = styled(Button).attrs({ type: 'button' })`
   border-radius: 50%;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
 
-  svg {
+  img {
     position: relative;
     top: 1px;
     width: 22px;
     height: 22px;
-    fill: #6c757d;
   }
 `
 
@@ -38,7 +38,8 @@ const HelpButton = () => {
         helpState.set(change)
       }}
     >
-      <QuestionIcon />
+      <img src={QuestionIcon} alt="" aria-hidden="true" />
+      <span style={hideVisually()}>Help</span>
     </StyledHelpButton>
   )
 }

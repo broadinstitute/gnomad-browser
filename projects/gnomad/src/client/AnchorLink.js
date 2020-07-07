@@ -29,7 +29,7 @@ export const withAnchor = Component => {
     <AnchorWrapper>
       <Component>
         <AnchorLink href={`#${id}`} id={id}>
-          <LinkIcon height={12} width={12} />
+          <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
         </AnchorLink>
         {children}
       </Component>

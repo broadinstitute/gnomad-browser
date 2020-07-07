@@ -78,7 +78,7 @@ const config = {
         },
       },
       {
-        test: /\.(gif|jpg|png)$/,
+        test: /\.(gif|jpg|png|svg)$/,
         use: {
           loader: 'file-loader',
           options: {
