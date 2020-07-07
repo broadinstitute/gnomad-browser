@@ -157,7 +157,7 @@ const GeneInfo = ({ gene }) => {
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
   return (
-    <AttributeList labelWidth={215}>
+    <AttributeList labelWidth={225}>
       <AttributeList.Item label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>

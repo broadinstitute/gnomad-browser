@@ -399,7 +399,7 @@ class TranscriptPage extends Component {
                 isSelected={trackTranscript.transcript_id === transcript.transcript_id}
               >
                 {trackTranscript.transcript_id}.{trackTranscript.transcript_version}
-                {trackTranscript.transcript_id === starredTranscriptId && ' *'}
+                {trackTranscript.transcript_id === starredTranscriptId && '*'}
               </TranscriptLink>
             )}
             showNonCodingTranscripts={includeNonCodingTranscripts}

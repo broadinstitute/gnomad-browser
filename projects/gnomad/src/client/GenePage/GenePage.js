@@ -24,7 +24,7 @@ import VariantsInGene from './VariantsInGene'
 
 const GeneName = styled.span`
   font-size: 0.75em;
-  font-weight: 400;
+  font-weight: normal;
 `
 
 const GeneInfoColumnWrapper = styled.div`
@@ -400,13 +400,13 @@ class GenePage extends Component {
                 ? ({ transcript }) => (
                     <span>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === starredTranscriptId && ' *'}
+                      {transcript.transcript_id === starredTranscriptId && '*'}
                     </span>
                   )
                 : ({ transcript }) => (
                     <TranscriptLink to={`/transcript/${transcript.transcript_id}`}>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === starredTranscriptId && ' *'}
+                      {transcript.transcript_id === starredTranscriptId && '*'}
                     </TranscriptLink>
                   )
             }
