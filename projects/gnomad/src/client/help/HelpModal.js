@@ -16,6 +16,7 @@ const HelpContainer = styled.div`
   /* Leave space for modal margins, header and footer */
   height: calc(100vh - 210px);
   min-height: 400px;
+  font-size: 16px;
 `
 
 const TopicsList = styled.ol`
