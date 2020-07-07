@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 const HelpContent = styled.div`
-  font-size: 14px;
-
   h1,
   h2,
   h3 {
