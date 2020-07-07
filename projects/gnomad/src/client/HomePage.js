@@ -29,7 +29,7 @@ const SubHeading = styled.h2`
   padding-top: 0;
   padding-bottom: 0;
   font-size: 1.2em;
-  font-weight: lighter;
+  font-weight: normal;
   letter-spacing: 2px;
   text-align: center;
 `
