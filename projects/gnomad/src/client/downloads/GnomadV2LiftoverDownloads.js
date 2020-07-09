@@ -76,11 +76,11 @@ export default () => (
           <h3>Exomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/liftover_grch38/ht/exomes">
+              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/exomes">
                 Sites Hail Table
               </ExternalLink>
               <br />
-              gs://gnomad-public/release/2.1.1/
+              gs://gnomad-public-requester-pays/release/2.1.1/
               <wbr />
               liftover_grch38/ht/exomes/
               <wbr />
@@ -114,11 +114,11 @@ export default () => (
           <h3>Genomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/liftover_grch38/ht/genomes">
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/genomes">
                 Sites Hail Table
               </ExternalLink>
               <br />
-              gs://gnomad-public/release/2.1.1/
+              gs://gnomad-public-requester-pays/release/2.1.1/
               <wbr />
               liftover_grch38/ht/genomes/
               <wbr />

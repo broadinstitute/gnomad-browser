@@ -38,11 +38,11 @@ export default () => (
       <h3>Genomes</h3>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/3.0/ht/genomes">
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0/ht/genomes">
             Sites Hail Table
           </ExternalLink>
           <br />
-          gs://gnomad-public/release/3.0/ht/
+          gs://gnomad-public-requester-pays/release/3.0/ht/
           <wbr />
           genomes/gnomad.genomes.r3.0.sites.ht
         </ListItem>
@@ -73,11 +73,11 @@ export default () => (
       <SectionTitle id="v3-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/3.0/coverage">
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0/coverage">
             Genome coverage Hail Table
           </ExternalLink>
           <br />
-          gs://gnomad-public/release/3.0/coverage/
+          gs://gnomad-public-requester-pays/release/3.0/coverage/
           <wbr />
           genomes/gnomad.genomes.r3.0.coverage.ht
         </ListItem>

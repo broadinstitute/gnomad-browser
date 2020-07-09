@@ -110,11 +110,11 @@ export default () => (
           <h3>Exomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1.1/ht/exomes">
+              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public-requester-pays/release/2.1.1/ht/exomes">
                 Sites Hail Table
               </ExternalLink>
               <br />
-              gs://gnomad-public/release/2.1.1/ht/
+              gs://gnomad-public-requester-pays/release/2.1.1/ht/
               <wbr />
               exomes/gnomad.exomes.r2.1.1.sites.ht
             </ListItem>
@@ -146,11 +146,11 @@ export default () => (
           <h3>Genomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1.1/ht/genomes">
+              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/2.1.1/ht/genomes">
                 Sites Hail Table
               </ExternalLink>
               <br />
-              gs://gnomad-public/release/2.1.1/ht/
+              gs://gnomad-public-requester-pays/release/2.1.1/ht/
               <wbr />
               genomes/gnomad.genomes.r2.1.1.sites.ht
             </ListItem>
@@ -193,11 +193,11 @@ export default () => (
       <SectionTitle id="v2-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public/release/2.1/coverage/exomes">
+          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public-requester-pays/release/2.1/coverage/exomes">
             Exome coverage Hail Table
           </ExternalLink>
           <br />
-          gs://gnomad-public/release/2.1/coverage/
+          gs://gnomad-public-requester-pays/release/2.1/coverage/
           <wbr />
           exomes/gnomad.exomes.r2.1.coverage.ht
         </ListItem>
@@ -209,11 +209,11 @@ export default () => (
           <span>1.57 GiB, MD5: 73cddb8cac2c2db4f82662584ede6d20</span>
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/release/2.1/coverage">
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/2.1/coverage">
             Genome coverage Hail Table
           </ExternalLink>
           <br />
-          gs://gnomad-public/release/2.1/coverage/
+          gs://gnomad-public-requester-pays/release/2.1/coverage/
           <wbr />
           genomes/gnomad.genomes.r2.1.coverage.ht
         </ListItem>
