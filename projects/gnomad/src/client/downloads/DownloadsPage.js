@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useLayoutEffect, useState } from 'react'
 
-import { PageHeading, ExternalLink, Tabs } from '@gnomad/ui'
+import { Badge, ExternalLink, PageHeading, Tabs } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
@@ -47,6 +47,19 @@ const DownloadsPage = ({ location }) => {
         </ExternalLink>
         .
       </p>
+
+      <p>
+        <Badge level="info">Note</Badge> Many Hail Table files are in a{' '}
+        <ExternalLink href="https://cloud.google.com/storage/docs/requester-pays">
+          requester pays
+        </ExternalLink>{' '}
+        bucket, meaning that accessing them may incur charges. See our{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-07-requester-pays-notice/">
+          Requester Pays Notice blog post
+        </ExternalLink>{' '}
+        for more information.
+      </p>
+
       <Tabs
         activeTabId={activeTab}
         tabs={[
