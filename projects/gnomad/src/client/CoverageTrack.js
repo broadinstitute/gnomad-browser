@@ -66,6 +66,14 @@ Legend.propTypes = {
   ).isRequired,
 }
 
+const TitlePanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-right: 30px;
+`
+
 class CoverageTrack extends Component {
   static propTypes = {
     datasets: PropTypes.arrayOf(
@@ -198,9 +206,14 @@ class CoverageTrack extends Component {
     const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
+    const trackTitle =
+      selectedMetric === 'mean' || selectedMetric === 'median'
+        ? `Per-base ${selectedMetric} depth of coverage`
+        : `Fraction of individuals with coverage over ${selectedMetric.slice(5)}`
+
     return (
       <Track
-        renderLeftPanel={null}
+        renderLeftPanel={() => <TitlePanel>{trackTitle}</TitlePanel>}
         renderTopPanel={() => (
           <TopPanel>
             <Legend datasets={datasets} />
@@ -248,11 +261,6 @@ class CoverageTrack extends Component {
               <svg ref={this.plotRef} height={height} width={axisWidth + width}>
                 <AxisLeft
                   hideZero
-                  label="Coverage"
-                  labelProps={{
-                    fontSize: 14,
-                    textAnchor: 'middle',
-                  }}
                   left={axisWidth}
                   tickLabelProps={() => ({
                     dx: '-0.25em',
