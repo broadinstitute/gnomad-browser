@@ -68,14 +68,14 @@ export default () => (
       The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies, and
       is aligned against the GRCh38 reference. See the{' '}
-      <ExternalLink href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/">
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-10-gnomad-v3-0/">
         gnomAD v3.0 blog post
       </ExternalLink>{' '}
       for details of the latest release. The v2 short variant data set provided on this website
       spans 125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part of
       various disease-specific and population genetic studies, totalling 141,456 individuals, and is
       aligned against the GRCh37 reference. See the{' '}
-      <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2018-10-gnomad-v2-1/">
         gnomAD v2.1 blog post
       </ExternalLink>{' '}
       for details of the v2.1 release. We have removed individuals known to be affected by severe
@@ -122,7 +122,7 @@ export default () => (
       from unrelated individuals sequenced as part of various disease-specific and population
       genetic studies, and is aligned against the GRCh37 reference. It mostly (but not entirely)
       overlaps with the genome set used for the gnomAD short variant release. See the{' '}
-      <ExternalLink href="https://macarthurlab.org/2019/03/20/structural-variants-in-gnomad/">
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-03-structural-variants-in-gnomad/">
         Structural variants in gnomAD blog post
       </ExternalLink>{' '}
       for details of the SV release. As with the gnomAD short variant data set, we have removed
