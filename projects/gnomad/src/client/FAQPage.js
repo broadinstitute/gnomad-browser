@@ -174,15 +174,15 @@ export default () => (
       <Answer>
         <p>
           More details on our QC process can be found in our blog posts:{' '}
-          <ExternalLink href="https://macarthurlab.org/2017/02/27/the-genome-aggregation-database-gnomad/">
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2017-02-the-genome-aggregation-database/">
             &quot;The genome Aggregation Database (gnomAD)&quot;
           </ExternalLink>
           ,{' '}
-          <ExternalLink href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2018-10-gnomad-v2-1/">
             &quot;gnomAD v2.1&quot;
           </ExternalLink>
           , and{' '}
-          <ExternalLink href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/">
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-10-gnomad-v3-0/">
             &quot;gnomAD v3.0&quot;
           </ExternalLink>
           .
