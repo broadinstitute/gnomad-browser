@@ -32,7 +32,9 @@ const shapeExacVariantSummary = context => {
         ? `ENSG${transcriptConsequence.gene_id.toString().padStart(11, '0')}`
         : null,
       gene_symbol: transcriptConsequence.gene_symbol,
-      transcript_id: transcriptConsequence.transcript_id,
+      transcript_id: transcriptConsequence.transcript_id
+        ? `ENST${transcriptConsequence.transcript_id.toString().padStart(11, '0')}`
+        : null,
       hgvs: transcriptConsequence.hgvsp || transcriptConsequence.hgvsc,
       hgvsc: transcriptConsequence.hgvsc,
       hgvsp: transcriptConsequence.hgvsp,
