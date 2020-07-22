@@ -314,6 +314,7 @@ export default () => (
           <li>Dan Turner</li>
           <li>Teresa Tusie Luna</li>
           <li>Erkki Vartiainen</li>
+          <li>Marquis Vawter</li>
           <li>James Ware</li>
           <li>Hugh Watkins</li>
           <li>Rinse Weersma</li>
@@ -391,6 +392,7 @@ export default () => (
           <li>NHLBI-GO Exome Sequencing Project (ESP)</li>
           <li>NHLBI TOPMed</li>
           <li>Population Architecture Using Genomics and Epidemiology (PAGE) Consortium</li>
+          <li>Pritzker Neuropsychiatric Disorders Research Consortium</li>
           <li>Schizophrenia Trios from Taiwan</li>
           <li>Sequencing Initiative Suomi (SiSu)</li>
           <li>SIGMA-T2D</li>
