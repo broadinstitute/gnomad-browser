@@ -18,7 +18,6 @@ gcloud --project "$PROJECT" compute networks subnets create "${NETWORK_NAME}-gke
     --range 192.168.0.0/20 \
     --secondary-range gke-pods=10.4.0.0/14,gke-services=10.0.32.0/20 \
     --enable-flow-logs \
-    --logging-filter-expr="(!(src_instance.vm_name.startsWith('gke')) && !(dest_instance.vm_name.startsWith('gke')))" \
     --enable-private-ip-google-access
 
 
