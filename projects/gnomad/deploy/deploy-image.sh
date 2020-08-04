@@ -17,8 +17,8 @@ source "../../cluster/config.sh"
 IMAGE_NAME="gcr.io/${GCLOUD_PROJECT}/gnomad-browser"
 
 # Push to container registry
-gcloud docker -- push "${IMAGE_NAME}:${DEPLOY_TAG}"
-gcloud docker -- push "${IMAGE_NAME}:latest"
+docker push "${IMAGE_NAME}:${DEPLOY_TAG}"
+docker push "${IMAGE_NAME}:latest"
 
 DEPLOYMENT="gnomad-browser"
 
