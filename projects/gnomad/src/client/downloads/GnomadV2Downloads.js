@@ -438,6 +438,11 @@ export default () => (
             Genome calling regions
           </ExternalLink>
         </ListItem>
+        <ListItem>
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/papers/2019-flagship-lof/v1.0/gnomad.v2.1.1.all_lofs.txt.bgz">
+            All pLoF variants
+          </ExternalLink>
+        </ListItem>
       </FileList>
     </section>
   </React.Fragment>
