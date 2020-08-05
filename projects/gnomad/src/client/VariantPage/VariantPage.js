@@ -149,6 +149,16 @@ const VariantPageContent = ({ datasetId, variant }) => (
             <p>Age distribution is based on the full gnomAD dataset, not the selected subset.</p>
           )}
           <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+          <p>
+            <Link
+              to={{
+                pathname: '/faq',
+                hash: '#what-is-the-age-distribution-in-gnomad',
+              }}
+            >
+              See the FAQ for more information on age data.
+            </Link>
+          </p>
         </React.Fragment>
       )}
     </ResponsiveSection>
