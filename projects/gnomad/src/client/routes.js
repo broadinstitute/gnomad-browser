@@ -15,6 +15,7 @@ import HelpButton from './help/HelpButton'
 import HelpModal from './help/HelpModal'
 import HelpPage from './help/HelpPage'
 import HomePage from './HomePage'
+import MOUPage from './MOUPage'
 import PageNotFoundPage from './PageNotFoundPage'
 import PublicationsPage from './PublicationsPage'
 import SearchRedirectPage from './SearchRedirectPage'
@@ -150,6 +151,7 @@ const App = () => (
           <Route exact path="/publications" component={PublicationsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
+          <Route exact path="/mou" component={MOUPage} />
           <Route
             exact
             path="/help/:topic"
