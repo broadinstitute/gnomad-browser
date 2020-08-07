@@ -23,6 +23,10 @@ const StyledHelpButton = styled(Button).attrs({ type: 'button' })`
     width: 22px;
     height: 22px;
   }
+
+  @media print {
+    display: none;
+  }
 `
 
 const HelpButton = () => {

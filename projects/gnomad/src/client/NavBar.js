@@ -82,6 +82,10 @@ const Menu = styled.ul`
 const OuterWrapper = styled.div`
   margin-bottom: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  @media print {
+    display: none;
+  }
 `
 
 const Notice = styled.div`
