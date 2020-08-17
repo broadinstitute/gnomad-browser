@@ -9,9 +9,7 @@ export NODE_ENV="development"
 
 # Connect to local databases
 DEFAULT_ELASTICSEARCH_URL="http://localhost:8001/api/v1/namespaces/default/services/elasticsearch:9200/proxy"
-DEFAULT_REDIS_HOST="localhost"
 export ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-$DEFAULT_ELASTICSEARCH_URL}
-export REDIS_HOST=${REDIS_HOST:-$DEFAULT_REDIS_HOST}
 
 # Server port
 export GRAPHQL_PORT=8007

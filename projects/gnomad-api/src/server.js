@@ -111,10 +111,15 @@ const limitedElastic = {
   get: (...args) => scheduleElasticsearchRequest(() => elastic.get(...args)),
 }
 
-const redis = new Redis({
-  host: process.env.REDIS_HOST,
-  port: 6379,
-})
+const redis = process.env.REDIS_HOST
+  ? new Redis({
+      host: process.env.REDIS_HOST,
+      port: 6379,
+    })
+  : {
+      get: () => null,
+      set: () => {},
+    }
 
 // Health check endpoint for load balancer.
 // GCE load balancers require a 200 response from the health check endpoint, so
