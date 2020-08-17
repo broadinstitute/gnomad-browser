@@ -1,34 +1,16 @@
-.DS_Store
-npm-debug.log
-__pycache__/
-*.pyc
-*.log
-*.cache
-.ipynb_checkpoints
-env
-build
-dist
-.idea
+# Dependencies
 node_modules
-resources/*
-*lib
-bundle.js
-bundle*.js
-untracked
-stats.txt
-logs
-prototypes/test/data/*.json
-prototypes/test/data/*.txt
-prototypes/test/data/*.csv
-prototypes/test/data/*.tsv
-prototypes/test/data/*.swp
-prototypes/node_modules
-prototypes/build
-prototypes/dist
-framework/node_modules
-framework/build
-framework/dist
-framework/public/static/js/*
-python/resources/*
-elastic-mappings
-gnomadt2d.js
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+projects/gnomad/dist
+projects/gnomad-api/dist
+projects/gnomad-reads/dist
