@@ -73,20 +73,20 @@ export default () => (
       <SectionTitle id="v3-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0/coverage">
+          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0.1/coverage">
             Genome coverage Hail Table
           </ExternalLink>
           <br />
-          gs://gnomad-public-requester-pays/release/3.0/coverage/
+          gs://gnomad-public-requester-pays/release/3.0.1/coverage/
           <wbr />
-          genomes/gnomad.genomes.r3.0.coverage.ht
+          genomes/gnomad.genomes.r3.0.1.coverage.ht
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/coverage/genomes/gnomad.genomes.r3.0.coverage.summary.tsv.bgz">
+          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.summary.tsv.bgz">
             Genome coverage summary TSV
           </ExternalLink>
           <br />
-          <span>66.55 GiB, MD5: 2e605ebff8fbe7748edcbed3b727e3b0</span>
+          <span>75.38 GiB, MD5: 6c809627ff7922dcfc8d2c67bba017ff</span>
         </ListItem>
       </FileList>
     </section>
