@@ -20,7 +20,7 @@ export default () => (
         gnomAD data.
       </strong>{' '}
       However, we encourage you to{' '}
-      <ExternalLink href="mailto:exomeconsortium@gmail.com">contact the consortium</ExternalLink>{' '}
+      <ExternalLink href="mailto:gnomad@broadinstitute.org">contact the consortium</ExternalLink>{' '}
       before embarking on large-scale analyses to check if your proposed analysis overlaps with work
       currently underway by the gnomAD consortium. All users of gnomAD data agree to not attempt to
       reidentify participants.
@@ -31,7 +31,7 @@ export default () => (
       errors no doubt remain. If you spot any results that seem impossible, or suggest some kind of
       serious processing or variant-calling artifact, don&apos;t panic: use the &quot;report
       variant&quot; form on the corresponding variant page or{' '}
-      <ExternalLink href="mailto:exomeconsortium@gmail.com">email us</ExternalLink> to let us know,
+      <ExternalLink href="mailto:gnomad@broadinstitute.org">email us</ExternalLink> to let us know,
       and we&apos;ll do our best to address it.
     </p>
 

@@ -10,7 +10,7 @@ about: Report a bug or unexpected behavior
 
 * For concerns about data, check the frequently asked questions
   (https://gnomad.broadinstitute.org/faq) or send an email to
-  exomeconsortium@gmail.com.
+  gnomad@broadinstitute.org.
   
 -->
 

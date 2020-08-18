@@ -14,7 +14,7 @@ Variant issue: (clinically implausible, read support poor, other artifact, etc.)
 Please explain your concern about this variant
 `
 
-  const reportURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+  const reportURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
     'Variant report'
   )}&body=${encodeURIComponent(reportEmailBody)}`
 
@@ -29,7 +29,7 @@ Expected phenotype:
 Additional information that may be helpful for our understanding of the request:
 `
 
-  const requestURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+  const requestURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
     'Request for variant information'
   )}&body=${encodeURIComponent(requestEmailBody)}`
 

@@ -34,7 +34,7 @@ class ErrorBoundary extends React.Component {
         `Render error on ${location.pathname}${location.search}`
       )}&labels=Type%3A%20Bug`
 
-      const emailURL = `mailto:exomeconsortium@gmail.com?subject=${encodeURIComponent(
+      const emailURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
         'Browser bug report'
       )}&body=${encodeURIComponent(`Render error on ${location.pathname}${location.search}`)}`
 
