@@ -10,6 +10,9 @@ __pycache__/
 yarn-debug.log*
 yarn-error.log*
 
+# Deployment configuration
+deploy_config.json
+
 # Build outputs
 projects/gnomad/dist
 projects/gnomad-api/dist

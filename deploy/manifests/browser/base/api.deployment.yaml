@@ -1,0 +1,51 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gnomad-api
+  labels:
+    component: gnomad-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gnomad-api
+  template:
+    metadata:
+      labels:
+        name: gnomad-api
+    spec:
+      containers:
+        - name: app
+          image: gnomad-api
+          env:
+            - name: GRAPHQL_PORT
+              value: '8000'
+            - name: ELASTICSEARCH_URL
+              value: elasticsearch:9200
+            - name: REDIS_HOST
+              value: redis
+            - name: TRUST_PROXY
+              value: '3'
+            - name: MAX_CONCURRENT_ES_REQUESTS
+              value: '10'
+            - name: MAX_QUEUED_ES_REQUESTS
+              value: '100'
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: '500m'
+              memory: '256Mi'
+            limits:
+              cpu: 1
+              memory: '512Mi'
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+      nodeSelector:
+        cloud.google.com/gke-nodepool: 'default-pool'

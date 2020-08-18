@@ -1,0 +1,97 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gnomad-reads
+  labels:
+    component: gnomad-reads
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gnomad-reads
+  template:
+    metadata:
+      labels:
+        name: gnomad-reads
+    spec:
+      containers:
+        - name: web
+          image: gnomad-reads-server
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: '50m'
+              memory: '4Gi'
+            limits:
+              cpu: '100m'
+              memory: '4Gi'
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          volumeMounts:
+            - name: readviz-gnomad-r2-1
+              mountPath: /readviz/gnomad_r2_1
+            - name: readviz-exac
+              mountPath: /readviz/exac
+        - name: app
+          image: gnomad-reads-api
+          env:
+            - name: PORT
+              value: '8000'
+            - name: TRUST_PROXY
+              value: '3'
+            - name: DATASETS
+              value: gnomad_r2_1,exac
+            - name: GNOMAD_R2_1_EXOMES_READS_DIRECTORY
+              value: /readviz/gnomad_r2_1/combined_bams_exomes/combined_bams
+            - name: GNOMAD_R2_1_EXOMES_PUBLIC_PATH
+              value: /reads/gnomad_r2_1/exomes
+            - name: GNOMAD_R2_1_GENOMES_READS_DIRECTORY
+              value: /readviz/gnomad_r2_1/combined_bams_genomes/combined_bams
+            - name: GNOMAD_R2_1_GENOMES_PUBLIC_PATH
+              value: /reads/gnomad_r2_1/genomes
+            - name: EXAC_EXOMES_READS_DIRECTORY
+              value: /readviz/exac/combined_bams_v3
+            - name: EXAC_EXOMES_PUBLIC_PATH
+              value: /reads/exac/exomes
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: '50m'
+              memory: '128Mi'
+            limits:
+              cpu: '100m'
+              memory: '256Mi'
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          volumeMounts:
+            - name: readviz-gnomad-r2-1
+              mountPath: /readviz/gnomad_r2_1
+            - name: readviz-exac
+              mountPath: /readviz/exac
+      nodeSelector:
+        cloud.google.com/gke-nodepool: 'default-pool'
+      volumes:
+        - name: readviz-gnomad-r2-1
+          gcePersistentDisk:
+            fsType: ext4
+            pdName: readviz-gnomad-r2-1-disk1
+            readOnly: true
+        - name: readviz-exac
+          gcePersistentDisk:
+            fsType: ext4
+            pdName: readviz-exac-disk1
+            readOnly: true

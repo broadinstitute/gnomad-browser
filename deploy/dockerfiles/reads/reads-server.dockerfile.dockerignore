@@ -1,0 +1,3 @@
+*
+!deploy/dockerfiles/reads/reads-base.nginx.conf
+!deploy/dockerfiles/reads/reads.nginx.conf
