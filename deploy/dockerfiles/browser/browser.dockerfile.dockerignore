@@ -1,0 +1,9 @@
+*
+!babel.config.js
+!package.json
+!yarn.lock
+!projects/gnomad/package.json
+!projects/gnomad/src/client
+!projects/gnomad/config/webpack.config.client.js
+!deploy/dockerfiles/browser/browser-base.nginx.conf
+!deploy/dockerfiles/browser/browser.nginx.conf

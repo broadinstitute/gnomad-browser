@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-api
+  labels:
+    component: gnomad-api
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-api
+  ports:
+    - port: 80
+      targetPort: 8000

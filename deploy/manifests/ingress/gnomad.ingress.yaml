@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gnomad-ingress
+  labels:
+    tier: production
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
+    networking.gke.io/managed-certificates: gnomad
+spec:
+  rules:
+    - host: gnomad.broadinstitute.org
+      http:
+        paths:
+          - path: /reads
+            backend:
+              serviceName: gnomad-reads
+              servicePort: 80
+          - path: /reads/*
+            backend:
+              serviceName: gnomad-reads
+              servicePort: 80
+          - path: /blog
+            backend:
+              serviceName: gnomad-blog
+              servicePort: 80
+          - path: /blog/*
+            backend:
+              serviceName: gnomad-blog
+              servicePort: 80
+          - path:
+            backend:
+              serviceName: gnomad-browser
+              servicePort: 80

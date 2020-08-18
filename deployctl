@@ -1,0 +1,3 @@
+#!/bin/sh -eu
+
+PYTHONPATH="$(dirname "$0")/deploy:${PYTHONPATH:-}" python3 -m deployctl.__main__ "$@"
