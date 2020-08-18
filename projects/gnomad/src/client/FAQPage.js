@@ -70,7 +70,7 @@ export default () => (
         <p>
           There are no restrictions or embargoes on the publication of results derived from the
           gnomAD database. However, we encourage people to{' '}
-          <ExternalLink href="mailto:exomeconsortium@gmail.com">
+          <ExternalLink href="mailto:gnomad@broadinstitute.org">
             check with the consortium
           </ExternalLink>{' '}
           before embarking on large-scale analyses, to see if we already have something currently
@@ -142,7 +142,7 @@ export default () => (
       <Question id="can-i-contribute-data-to-gnomad">Can I contribute data to gnomAD?</Question>
       <Answer>
         <p>
-          Please <ExternalLink href="mailto:exomeconsortium@gmail.com">contact us</ExternalLink> if
+          Please <ExternalLink href="mailto:gnomad@broadinstitute.org">contact us</ExternalLink> if
           you are a study investigator and are interested in contributing exome/genome sequencing
           data to the gnomAD resource. We are particularly interested in increasing the diversity
           included in gnomAD to improve the resource. However, please be aware that there are a

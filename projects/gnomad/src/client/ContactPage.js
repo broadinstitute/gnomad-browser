@@ -11,7 +11,7 @@ export default () => (
     <PageHeading>Contact</PageHeading>
     <p>
       Report data problems or feature suggestions by{' '}
-      <ExternalLink href="mailto:exomeconsortium@gmail.com">email</ExternalLink>.
+      <ExternalLink href="mailto:gnomad@broadinstitute.org">email</ExternalLink>.
     </p>
 
     <p>
@@ -19,7 +19,7 @@ export default () => (
       <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
         GitHub
       </ExternalLink>{' '}
-      or by <ExternalLink href="mailto:exomeconsortium@gmail.com">email</ExternalLink>.
+      or by <ExternalLink href="mailto:gnomad@broadinstitute.org">email</ExternalLink>.
     </p>
 
     <p>
