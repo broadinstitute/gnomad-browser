@@ -2,6 +2,7 @@
 !babel.config.js
 !package.json
 !yarn.lock
+!projects/gnomad/build.env
 !projects/gnomad/package.json
 !projects/gnomad/src/client
 !projects/gnomad/config/webpack.config.client.js

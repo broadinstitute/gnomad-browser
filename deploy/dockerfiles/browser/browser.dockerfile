@@ -18,7 +18,8 @@ COPY --chown=node:node babel.config.js .
 COPY --chown=node:node projects/gnomad projects/gnomad
 
 # Build
-RUN cd projects/gnomad && yarn run webpack --config=./config/webpack.config.client.js
+COPY --chown=node:node projects/gnomad/build.env .
+RUN export $(cat build.env | xargs); cd projects/gnomad && yarn run webpack --config=./config/webpack.config.client.js
 
 ###############################################################################
 FROM nginx:stable-alpine
