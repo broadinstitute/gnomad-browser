@@ -13,6 +13,8 @@ yarn-error.log*
 # Deployment configuration
 deploy_config.json
 
+projects/gnomad/build.env
+
 # Build outputs
 projects/gnomad/dist
 projects/gnomad-api/dist
