@@ -1,8 +1,0 @@
-configMapGenerator:
-- name: nginx-config
-  files:
-  - nginx.conf
-generatorOptions:
-  disableNameSuffixHash: true
-resources:
-- gnomad-reads.deployment.yaml
