@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 
@@ -32,52 +32,58 @@ const regionType = extendObjectType(BaseRegionType, {
       type: new GraphQLList(geneType),
       resolve: (obj, args, ctx) => fetchGenesByRegion(ctx, obj),
     },
-    exome_coverage: {
-      type: new GraphQLList(CoverageBinType),
+    coverage: {
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
-      resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex || {}
-        if (!index) {
-          throw new UserVisibleError(
-            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
-          )
-        }
+      type: new GraphQLObjectType({
+        name: 'RegionCoverage',
+        fields: {
+          exome: {
+            type: new GraphQLList(CoverageBinType),
+            resolve: ([region, dataset], args, ctx) => {
+              const { index, type } = datasetsConfig[dataset].exomeCoverageIndex || {}
+              if (!index) {
+                throw new UserVisibleError(
+                  `Coverage is not available for ${datasetsConfig[dataset].label}`
+                )
+              }
 
-        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+              assertDatasetAndReferenceGenomeMatch(dataset, region.reference_genome)
 
-        return fetchCoverageByRegion(ctx, {
-          index,
-          type,
-          region: obj,
-        })
-      },
-    },
-    genome_coverage: {
-      type: new GraphQLList(CoverageBinType),
-      args: {
-        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
-      },
-      resolve: (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex || {}
-        if (!index) {
-          if (args.dataset === 'exac') {
-            return []
-          }
-          throw new UserVisibleError(
-            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
-          )
-        }
+              return fetchCoverageByRegion(ctx, {
+                index,
+                type,
+                region,
+              })
+            },
+          },
+          genome: {
+            type: new GraphQLList(CoverageBinType),
+            resolve: ([region, dataset], args, ctx) => {
+              const { index, type } = datasetsConfig[dataset].genomeCoverageIndex || {}
+              if (!index) {
+                if (dataset === 'exac') {
+                  return []
+                }
+                throw new UserVisibleError(
+                  `Coverage is not available for ${datasetsConfig[dataset].label}`
+                )
+              }
 
-        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+              assertDatasetAndReferenceGenomeMatch(dataset, region.reference_genome)
 
-        return fetchCoverageByRegion(ctx, {
-          index,
-          type,
-          region: obj,
-        })
-      },
+              return fetchCoverageByRegion(ctx, {
+                index,
+                type,
+                region,
+              })
+            },
+          },
+        },
+      }),
+      // Pass region and dataset argument down to exome/genome field resolvers
+      resolve: (obj, args) => [obj, args.dataset],
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantType),

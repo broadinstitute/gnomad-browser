@@ -11,33 +11,35 @@ import StatusMessage from '../StatusMessage'
 const coverageQuery = `
 query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-    exome_coverage(dataset: $datasetId) @include(if: $includeExomeCoverage) {
-      pos
-      mean
-      median
-      over_1
-      over_5
-      over_10
-      over_15
-      over_20
-      over_25
-      over_30
-      over_50
-      over_100
-    }
-    genome_coverage(dataset: $datasetId) @include(if: $includeGenomeCoverage) {
-      pos
-      mean
-      median
-      over_1
-      over_5
-      over_10
-      over_15
-      over_20
-      over_25
-      over_30
-      over_50
-      over_100
+    coverage(dataset: $datasetId) {
+      exome @include(if: $includeExomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
+      genome @include(if: $includeGenomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
     }
   }
 }
@@ -72,8 +74,8 @@ const RegionCoverageTrack = ({
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = includeExomeCoverage ? data.region.exome_coverage : null
-        const genomeCoverage = includeGenomeCoverage ? data.region.genome_coverage : null
+        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : null
+        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : null
 
         if (!exomeCoverage && !genomeCoverage) {
           return <StatusMessage>Unable to load coverage</StatusMessage>

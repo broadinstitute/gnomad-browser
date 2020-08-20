@@ -11,33 +11,35 @@ import StatusMessage from '../StatusMessage'
 const coverageQuery = `
 query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    exome_coverage(dataset: $datasetId) @include(if: $includeExomeCoverage) {
-      pos
-      mean
-      median
-      over_1
-      over_5
-      over_10
-      over_15
-      over_20
-      over_25
-      over_30
-      over_50
-      over_100
-    }
-    genome_coverage(dataset: $datasetId) @include(if: $includeGenomeCoverage) {
-      pos
-      mean
-      median
-      over_1
-      over_5
-      over_10
-      over_15
-      over_20
-      over_25
-      over_30
-      over_50
-      over_100
+    coverage(dataset: $datasetId) {
+      exome @include(if: $includeExomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
+      genome @include(if: $includeGenomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
     }
   }
 }
@@ -63,8 +65,8 @@ const GeneCoverageTrack = ({ datasetId, geneId, includeExomeCoverage, includeGen
           return <StatusMessage>Unable to load coverage</StatusMessage>
         }
 
-        const exomeCoverage = includeExomeCoverage ? data.gene.exome_coverage : null
-        const genomeCoverage = includeGenomeCoverage ? data.gene.genome_coverage : null
+        const exomeCoverage = includeExomeCoverage ? data.gene.coverage.exome : null
+        const genomeCoverage = includeGenomeCoverage ? data.gene.coverage.genome : null
 
         if (!exomeCoverage && !genomeCoverage) {
           return <StatusMessage>Unable to load coverage</StatusMessage>
