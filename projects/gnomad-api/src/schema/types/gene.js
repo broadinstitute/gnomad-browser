@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull } from 'graphql'
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql'
 
 import { extendObjectType } from '../../utilities/graphql'
 import { withCache } from '../../utilities/redis'
@@ -49,74 +49,80 @@ const GeneTranscriptType = extendObjectType(TranscriptType, {
 
 const GeneType = extendObjectType(BaseGeneType, {
   fields: {
-    exome_coverage: {
-      type: new GraphQLList(CoverageBinType),
+    coverage: {
       args: {
         dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
       },
-      resolve: async (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].exomeCoverageIndex || {}
-        if (!index) {
-          throw new UserVisibleError(
-            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
-          )
-        }
+      type: new GraphQLObjectType({
+        name: 'GeneCoverage',
+        fields: {
+          exome: {
+            type: new GraphQLList(CoverageBinType),
+            resolve: async ([gene, dataset], args, ctx) => {
+              const { index, type } = datasetsConfig[dataset].exomeCoverageIndex || {}
+              if (!index) {
+                throw new UserVisibleError(
+                  `Coverage is not available for ${datasetsConfig[dataset].label}`
+                )
+              }
 
-        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+              assertDatasetAndReferenceGenomeMatch(dataset, gene.reference_genome)
 
-        const cachedCoverage = await withCache(
-          ctx,
-          `coverage:${args.dataset}:exome:gene:${obj.gene_id}`,
-          async () => {
-            const coverage = await fetchCoverageByTranscript(ctx, {
-              index,
-              type,
-              chrom: obj.chrom,
-              exons: obj.exons,
-            })
+              const cachedCoverage = await withCache(
+                ctx,
+                `coverage:${dataset}:exome:gene:${gene.gene_id}`,
+                async () => {
+                  const coverage = await fetchCoverageByTranscript(ctx, {
+                    index,
+                    type,
+                    chrom: gene.chrom,
+                    exons: gene.exons,
+                  })
 
-            return formatCoverageForCache(coverage)
-          }
-        )
+                  return formatCoverageForCache(coverage)
+                }
+              )
 
-        return formatCachedCoverage(cachedCoverage)
-      },
-    },
-    genome_coverage: {
-      type: new GraphQLList(CoverageBinType),
-      args: {
-        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
-      },
-      resolve: async (obj, args, ctx) => {
-        const { index, type } = datasetsConfig[args.dataset].genomeCoverageIndex || {}
-        if (!index) {
-          if (args.dataset === 'exac') {
-            return []
-          }
-          throw new UserVisibleError(
-            `Coverage is not available for ${datasetsConfig[args.dataset].label}`
-          )
-        }
+              return formatCachedCoverage(cachedCoverage)
+            },
+          },
+          genome: {
+            type: new GraphQLList(CoverageBinType),
+            resolve: async ([gene, dataset], args, ctx) => {
+              const { index, type } = datasetsConfig[dataset].genomeCoverageIndex || {}
+              if (!index) {
+                if (dataset === 'exac') {
+                  return []
+                }
+                throw new UserVisibleError(
+                  `Coverage is not available for ${datasetsConfig[dataset].label}`
+                )
+              }
 
-        assertDatasetAndReferenceGenomeMatch(args.dataset, obj.reference_genome)
+              assertDatasetAndReferenceGenomeMatch(dataset, gene.reference_genome)
 
-        const cachedCoverage = await withCache(
-          ctx,
-          `coverage:${args.dataset}:genome:gene:${obj.gene_id}`,
-          async () => {
-            const coverage = await fetchCoverageByTranscript(ctx, {
-              index,
-              type,
-              chrom: obj.chrom,
-              exons: obj.exons,
-            })
+              const cachedCoverage = await withCache(
+                ctx,
+                `coverage:${dataset}:genome:gene:${gene.gene_id}`,
+                async () => {
+                  const coverage = await fetchCoverageByTranscript(ctx, {
+                    index,
+                    type,
+                    chrom: gene.chrom,
+                    exons: gene.exons,
+                  })
 
-            return formatCoverageForCache(coverage)
-          }
-        )
+                  return formatCoverageForCache(coverage)
+                }
+              )
 
-        return formatCachedCoverage(cachedCoverage)
-      },
+              return formatCachedCoverage(cachedCoverage)
+            },
+          },
+        },
+      }),
+      // Pass gene and dataset argument down to exome/genome field resolvers
+      resolve: (obj, args) => [obj, args.dataset],
     },
     clinvar_variants: {
       type: new GraphQLList(ClinvarVariantType),
