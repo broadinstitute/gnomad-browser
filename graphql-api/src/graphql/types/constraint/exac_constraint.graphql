@@ -1,0 +1,22 @@
+type ExacConstraint {
+  exp_syn: Float
+  exp_mis: Float
+  exp_lof: Float
+
+  obs_syn: Int
+  obs_mis: Int
+  obs_lof: Int
+
+  mu_syn: Float
+  mu_mis: Float
+  mu_lof: Float
+
+  syn_z: Float
+  mis_z: Float
+  lof_z: Float
+
+  pli: Float
+
+  # Deprecated fields
+  pLI: Float
+}

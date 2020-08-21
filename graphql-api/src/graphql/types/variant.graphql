@@ -1,0 +1,184 @@
+type VariantPopulation {
+  id: String!
+  ac: Int!
+  an: Int!
+  homozygote_count: Int!
+  hemizygote_count: Int
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hom: Int!
+  ac_hemi: Int
+}
+
+type VariantAlleleBalance {
+  alt: Histogram
+}
+
+type VariantGenotypeDepth {
+  all: Histogram
+  alt: Histogram
+}
+
+type VariantGenotypeQuality {
+  all: Histogram
+  alt: Histogram
+}
+
+type VariantSiteQualityMetric {
+  metric: String!
+  value: Float
+}
+
+type VariantQualityMetrics {
+  allele_balance: VariantAlleleBalance
+  genotype_depth: VariantGenotypeDepth
+  genotype_quality: VariantGenotypeQuality
+  site_quality_metrics: [VariantSiteQualityMetric!]!
+
+  # Deprecated - replaced by snake case versions
+  alleleBalance: VariantAlleleBalance
+  genotypeDepth: VariantGenotypeDepth
+  genotypeQuality: VariantGenotypeQuality
+  siteQualityMetrics: [VariantSiteQualityMetric!]!
+}
+
+type VariantFilteringAlleleFrequency {
+  popmax: Float
+  popmax_population: String
+}
+
+type VariantAgeDistribution {
+  het: Histogram
+  hom: Histogram
+}
+
+type TranscriptConsequence {
+  consequence_terms: [String!]
+  gene_id: String!
+  gene_version: String
+  gene_symbol: String
+  hgvs: String
+  hgvsc: String
+  hgvsp: String
+  is_canonical: Boolean
+  is_mane_select: Boolean
+  is_mane_select_version: Boolean
+  lof: String
+  lof_flags: String
+  lof_filter: String
+  major_consequence: String
+  polyphen_prediction: String
+  refseq_id: String
+  refseq_version: String!
+  sift_prediction: String
+  transcript_id: String!
+  transcript_version: String
+
+  # Deprecated - replaced by is_canonical
+  canonical: Boolean
+}
+
+type VariantSequencingTypeData {
+  ac: Int
+  an: Int
+  homozygote_count: Int
+  hemizygote_count: Int
+  filters: [String!]
+  populations: [VariantPopulation]
+
+  # Deprecated - calculate from AC and AN
+  # Preserved for compatibility with existing browser queries
+  af: Float
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hom: Int
+  ac_hemi: Int
+}
+
+type Variant {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  rsid: String
+  exome: VariantSequencingTypeData
+  genome: VariantSequencingTypeData
+  flags: [String!]
+  transcript_consequence: TranscriptConsequence
+
+  # Deprecated - replaced by snake case versions
+  # Preserved for compatibility with existing browser queries
+  variantId: String!
+
+  # Deprecated - Use transcript_consequences[0] instead
+  # Preserved for compatibility with existing browser queries
+  consequence: String
+  consequence_in_canonical_transcript: Boolean
+  gene_id: String
+  gene_symbol: String
+  transcript_id: String
+  hgvsc: String
+  hgvsp: String
+  lof: String
+  lof_filter: String
+  lof_flags: String
+
+  # Deprecated - use hgvsp and hgvsc instead
+  hgvs: String
+}
+
+type VariantDetailsSequencingTypeData {
+  ac: Int
+  an: Int
+  homozygote_count: Int
+  hemizygote_count: Int
+  faf95: VariantFilteringAlleleFrequency
+  faf99: VariantFilteringAlleleFrequency
+  filters: [String!]
+  populations: [VariantPopulation]
+  age_distribution: VariantAgeDistribution
+  quality_metrics: VariantQualityMetrics
+
+  # Deprecated - replaced by snake case
+  qualityMetrics: VariantQualityMetrics
+
+  # Deprecated - calculate from AC and AN
+  # Preserved for compatibility with existing browser queries
+  af: Float
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hom: Int
+  ac_hemi: Int
+}
+
+type MultiNucleotideVariantSummary {
+  combined_variant_id: String!,
+  changes_amino_acids: Boolean!
+  n_individuals: Int!,
+  other_constituent_snvs: [String!]!
+}
+
+type VariantDetails {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  rsid: String
+  colocated_variants: [String!]!
+  multi_nucleotide_variants: [MultiNucleotideVariantSummary!]
+  exome: VariantDetailsSequencingTypeData
+  genome: VariantDetailsSequencingTypeData
+  flags: [String!]
+  transcript_consequences: [TranscriptConsequence!]
+
+  # Deprecated - replaced by snake case versions
+  # Preserved for compatibility with existing browser queries
+  variantId: String!
+  colocatedVariants: [String!]!
+  multiNucleotideVariants: [MultiNucleotideVariantSummary!]
+  sortedTranscriptConsequences: [TranscriptConsequence!]
+}

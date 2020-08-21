@@ -1,0 +1,13 @@
+type ClinVarVariant {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  clinical_significance: [String!]
+  clinvar_variation_id: String!
+  gold_stars: Int!
+  major_consequence: String
+  review_status: [String!]!
+}

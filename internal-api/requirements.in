@@ -1,0 +1,4 @@
+# Use same version of aiohttp as Hail
+aiohttp>=3.6,<3.7
+gunicorn==20.0.4
+hail==0.2.55

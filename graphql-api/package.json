@@ -1,0 +1,26 @@
+{
+  "name": "gnomad-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@gnomad/identifiers": "^1.0.0",
+    "@graphql-tools/load-files": "^6.0.12",
+    "@graphql-tools/merge": "^6.0.12",
+    "@graphql-tools/schema": "^6.0.12",
+    "bottleneck": "^2.19.5",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "graphql-query-complexity": "^0.6.0",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.0",
+    "redis": "^3.0.2",
+    "triple-beam": "^1.3.0",
+    "winston": "^3.3.3"
+  },
+  "engines": {
+    "node": ">=11"
+  }
+}

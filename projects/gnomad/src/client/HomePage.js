@@ -50,7 +50,7 @@ export default () => (
       </p>
       <p>
         Examples - Gene:{' '}
-        <Link preserveSelectedDataset={false} to="/gene/PCSK9">
+        <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
           PCSK9
         </Link>
         , Variant:{' '}

@@ -10,8 +10,12 @@ __pycache__/
 yarn-debug.log*
 yarn-error.log*
 
+hail-*.log
+
 # Deployment configuration
 deploy_config.json
+
+data-pipeline/pipeline_config.json
 
 projects/gnomad/build.env
 

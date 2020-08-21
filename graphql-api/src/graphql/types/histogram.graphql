@@ -1,0 +1,6 @@
+type Histogram {
+  bin_edges: [Float!]!
+  bin_freq: [Float!]!
+  n_larger: Int
+  n_smaller: Int
+}

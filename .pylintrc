@@ -3,8 +3,11 @@
 init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.join(os.path.dirname(find_pylintrc()), 'data'))"
 
 [MESSAGES_CONTROL]
-# bad-continuation,line-too-long: conflicts with Black's formatting
-disable=bad-continuation,line-too-long,missing-docstring
+disable=
+  bad-continuation, # conflicts with Black's formatting
+  line-too-long, # conflicts with Black's formatting
+  duplicate-code,
+  missing-docstring
 
 [MISCELLANEOUS]
 notes=FIXME,TODO

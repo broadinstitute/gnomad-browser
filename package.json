@@ -12,7 +12,7 @@
   },
   "workspaces": [
     "projects/gnomad",
-    "projects/gnomad-api",
+    "graphql-api",
     "reads"
   ],
   "devDependencies": {

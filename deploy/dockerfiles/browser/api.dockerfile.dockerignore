@@ -1,7 +1,0 @@
-*
-!babel.config.js
-!package.json
-!yarn.lock
-!projects/gnomad-api/package.json
-!projects/gnomad-api/src
-!projects/gnomad-api/webpack.config.js

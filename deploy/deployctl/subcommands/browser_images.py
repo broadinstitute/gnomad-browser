@@ -16,7 +16,8 @@ def build_images(tag: str = None, push: bool = False) -> None:
 
     images = [
         ("deploy/dockerfiles/browser/browser.dockerfile", config.browser_image_repository),
-        ("deploy/dockerfiles/browser/api.dockerfile", config.api_image_repository),
+        ("deploy/dockerfiles/browser/graphql-api.dockerfile", config.graphql_api_image_repository),
+        ("deploy/dockerfiles/browser/internal-api.dockerfile", config.internal_api_image_repository),
     ]
 
     for dockerfile_path, image_repository in images:

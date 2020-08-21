@@ -1,0 +1,19 @@
+type CoverageBin {
+  pos: Int!
+  mean: Float
+  median: Float
+  over_1: Float
+  over_5: Float
+  over_10: Float
+  over_15: Float
+  over_20: Float
+  over_25: Float
+  over_30: Float
+  over_50: Float
+  over_100: Float
+}
+
+type FeatureCoverage {
+  exome: [CoverageBin!]!
+  genome: [CoverageBin!]!
+}

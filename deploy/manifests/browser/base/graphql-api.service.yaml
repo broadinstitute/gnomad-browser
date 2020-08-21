@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-graphql-api
+  labels:
+    component: gnomad-graphql-api
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-graphql-api
+  ports:
+    - port: 80
+      targetPort: 8000

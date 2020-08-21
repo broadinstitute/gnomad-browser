@@ -2,35 +2,33 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: gnomad-api
+  name: gnomad-graphql-api
   labels:
-    component: gnomad-api
+    component: gnomad-graphql-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: gnomad-api
+      name: gnomad-graphql-api
   template:
     metadata:
       labels:
-        name: gnomad-api
+        name: gnomad-graphql-api
     spec:
       containers:
         - name: app
-          image: gnomad-api
+          image: gnomad-graphql-api
           env:
-            - name: GRAPHQL_PORT
+            - name: PORT
               value: '8000'
-            - name: ELASTICSEARCH_URL
-              value: elasticsearch:9200
-            - name: REDIS_HOST
-              value: redis
+            - name: INTERNAL_API_URL
+              value: http://$(INTERNAL_API_SERVICE)
+            - name: CACHE_REDIS_URL
+              value: redis://redis:6379/1
+            - name: RATE_LIMITER_REDIS_URL
+              value: redis://redis:6379/2
             - name: TRUST_PROXY
               value: '3'
-            - name: MAX_CONCURRENT_ES_REQUESTS
-              value: '10'
-            - name: MAX_QUEUED_ES_REQUESTS
-              value: '100'
           ports:
             - name: http
               containerPort: 8000
@@ -45,7 +43,14 @@ spec:
             httpGet:
               path: /health/ready
               port: http
-            initialDelaySeconds: 3
+            initialDelaySeconds: 10
             periodSeconds: 10
+      initContainers:
+        - name: wait-for-internal-api
+          image: busybox
+          command:
+            - sh
+            - -c
+            - "until wget -q http://$(INTERNAL_API_SERVICE)/health/ready; do sleep 2; done"
       nodeSelector:
         cloud.google.com/gke-nodepool: 'default-pool'

@@ -1,0 +1,71 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gnomad-internal-api
+  labels:
+    component: gnomad-internal-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: gnomad-internal-api
+  template:
+    metadata:
+      labels:
+        name: gnomad-internal-api
+    spec:
+      containers:
+        - name: app
+          image: gnomad-internal-api
+          env:
+            - name: COLLECT_TEMP_DIR
+              value: /tmp/hail
+            - name: DATA_DIRECTORY
+              value: /data/data
+            - name: HAIL_SPARK_CONF
+              value: spark.driver.memory:3g
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: '1'
+              memory: '3Gi'
+            limits:
+              cpu: '1.25'
+              memory: '3.75Gi'
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          volumeMounts:
+            - mountPath: /tmp/hail
+              name: tmp
+            - mountPath: /data
+              name: data
+      volumes:
+        - name: tmp
+          emptyDir:
+            medium: Memory
+        - name: data
+          gcePersistentDisk:
+            fsType: ext4
+            pdName: gnomad-browser-data-201005-1242
+            readOnly: true
+      nodeSelector:
+        cloud.google.com/gke-nodepool: 'hail'
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: component
+                      operator: In
+                      values:
+                        - gnomad-internal-api
+                topologyKey: kubernetes.io/hostname

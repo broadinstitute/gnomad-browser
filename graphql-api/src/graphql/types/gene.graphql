@@ -1,0 +1,50 @@
+type GeneTranscript {
+  reference_genome: ReferenceGenomeId!
+  transcript_id: String!
+  transcript_version: String!
+  chrom: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+  strand: String!
+
+  gtex_tissue_expression: GtexTissueExpression
+}
+
+type ManeSelectTranscript {
+  ensembl_id: String!
+  ensembl_version: String!
+  refseq_id: String!
+  refseq_version: String!
+}
+
+type Gene {
+  reference_genome: ReferenceGenomeId!
+  gene_id: String!
+  gene_version: String!
+  symbol: String!
+  hgnc_id: String
+  omim_id: String
+  name: String
+  chrom: String!
+  start: Int!
+  stop: Int!
+  strand: String!
+  exons: [Exon!]!
+  transcripts: [GeneTranscript!]!
+  canonical_transcript_id: String
+  mane_select_transcript: ManeSelectTranscript
+
+  pext: Pext
+
+  gnomad_constraint: GnomadConstraint
+  exac_constraint: ExacConstraint
+  exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
+
+  variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
+  structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
+
+  clinvar_variants: [ClinVarVariant!] @cost(value: 10)
+
+  coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
+}

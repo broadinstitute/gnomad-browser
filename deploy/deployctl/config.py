@@ -76,12 +76,16 @@ class Configuration:
         return f"gke_{self.project}_{self.zone}_{self.gke_cluster_name}"
 
     @property
-    def api_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-api"
-
-    @property
     def browser_image_repository(self):
         return f"gcr.io/{self.project}/gnomad-browser"
+
+    @property
+    def graphql_api_image_repository(self):
+        return f"gcr.io/{self.project}/gnomad-graphql-api"
+
+    @property
+    def internal_api_image_repository(self):
+        return f"gcr.io/{self.project}/gnomad-internal-api"
 
     @property
     def reads_server_image_repository(self):

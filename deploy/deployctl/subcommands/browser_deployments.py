@@ -19,12 +19,15 @@ commonLabels:
   deployment: '{deployment_name}'
 nameSuffix: '-{deployment_name}'
 images:
-  - name: gnomad-api
-    newName: {api_image_repository}
-    newTag: '{api_tag}'
   - name: gnomad-browser
     newName: {browser_image_repository}
     newTag: '{browser_tag}'
+  - name: gnomad-graphql-api
+    newName: {graphql_api_image_repository}
+    newTag: '{graphql_api_tag}'
+  - name: gnomad-internal-api
+    newName: {internal_api_image_repository}
+    newTag: '{internal_api_tag}'
 """
 
 
@@ -50,7 +53,7 @@ def list_deployments() -> None:
         print(deployment[len("gnomad-browser-") :])
 
 
-def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -> None:
+def create_deployment(name: str, browser_tag: str = None, graphql_api_tag: str = None, internal_api_tag: str = None) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
@@ -73,12 +76,19 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
         browser_tag = get_most_recent_tag(config.browser_image_repository)
         print(f"No browser tag provided, using most recent ({browser_tag})")
 
-    if api_tag:
-        if not image_exists(config.api_image_repository, api_tag):
-            raise RuntimeError(f"could not find image {config.api_image_repository}:{api_tag}")
+    if graphql_api_tag:
+        if not image_exists(config.graphql_api_image_repository, graphql_api_tag):
+            raise RuntimeError(f"could not find image {config.graphql_api_image_repository}:{graphql_api_tag}")
     else:
-        api_tag = get_most_recent_tag(config.api_image_repository)
-        print(f"No API tag provided, using most recent ({browser_tag})")
+        graphql_api_tag = get_most_recent_tag(config.graphql_api_image_repository)
+        print(f"No GraphQL API tag provided, using most recent ({browser_tag})")
+
+    if internal_api_tag:
+        if not image_exists(config.internal_api_image_repository, internal_api_tag):
+            raise RuntimeError(f"could not find image {config.internal_api_image_repository}:{internal_api_tag}")
+    else:
+        internal_api_tag = get_most_recent_tag(config.internal_api_image_repository)
+        print(f"No internal API tag provided, using most recent ({browser_tag})")
 
     os.makedirs(deployment_directory)
 
@@ -87,8 +97,10 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             deployment_name=name,
             browser_image_repository=config.browser_image_repository,
             browser_tag=browser_tag,
-            api_image_repository=config.api_image_repository,
-            api_tag=api_tag,
+            graphql_api_image_repository=config.graphql_api_image_repository,
+            graphql_api_tag=graphql_api_tag,
+            internal_api_image_repository=config.internal_api_image_repository,
+            internal_api_tag=internal_api_tag,
         )
 
         kustomization_file.write(kustomization)
@@ -134,7 +146,8 @@ def main(argv: typing.List[str]) -> None:
     create_parser.set_defaults(action=create_deployment)
     create_parser.add_argument("--name")
     create_parser.add_argument("--browser-tag")
-    create_parser.add_argument("--api-tag")
+    create_parser.add_argument("--graphql-api-tag")
+    create_parser.add_argument("--internal-api-tag")
 
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_deployment)

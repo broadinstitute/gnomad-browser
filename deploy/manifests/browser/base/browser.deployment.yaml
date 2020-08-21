@@ -20,7 +20,7 @@ spec:
           image: gnomad-browser
           env:
             - name: API_URL
-              value: http://$(API_SERVICE)
+              value: http://$(GRAPHQL_API_SERVICE)
             - name: INGRESS_IP
               valueFrom:
                 configMapKeyRef:
