@@ -60,6 +60,14 @@ const DownloadsPage = ({ location }) => {
         for more information.
       </p>
 
+      <p>
+        In addition to the files listed below, gnomAD variants are also available as a{' '}
+        <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
+          BigQuery dataset
+        </ExternalLink>
+        .
+      </p>
+
       <Tabs
         activeTabId={activeTab}
         tabs={[
