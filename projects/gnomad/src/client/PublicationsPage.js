@@ -114,8 +114,18 @@ export default () => (
       </ListItem>
       <ListItem>
         <Citation>
+          Karczewski, K. J., Gauthier, L. D., Daly, M. J. Technical artifact drives apparent
+          deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD.{' '}
+          <em>bioRxiv</em> (p. 784157).{' '}
+          <ExternalLink href="https://doi.org/10.1101/784157">
+            https://doi.org/10.1101/784157
+          </ExternalLink>
+        </Citation>
+      </ListItem>
+      <ListItem>
+        <Citation>
           Lek, M., Karczewski, K., Minikel, E. et al. Analysis of protein-coding genetic variation
-          in 60,706 humans. <span style={{ fontStyle: 'italic' }}>Nature</span> 536, 285–291 (2016).{' '}
+          in 60,706 humans. <em>Nature</em> 536, 285–291 (2016).{' '}
           <ExternalLink href="https://doi.org/10.1038/nature19057">
             https://doi.org/10.1038/nature19057
           </ExternalLink>
