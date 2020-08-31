@@ -21,6 +21,11 @@ spec:
           env:
             - name: API_URL
               value: http://$(API_SERVICE)
+            - name: INGRESS_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: ingress-ip
+                  key: ip
           ports:
             - name: http
               containerPort: 80

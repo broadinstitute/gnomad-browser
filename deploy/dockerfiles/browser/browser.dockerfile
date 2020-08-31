@@ -24,9 +24,12 @@ RUN export $(cat build.env | xargs); cd projects/gnomad && yarn run webpack --co
 ###############################################################################
 FROM nginx:stable-alpine
 
+# Placeholder value replaced in K8S deployment.
+ENV INGRESS_IP=127.0.0.1
+
 COPY --from=0 /home/node/app/projects/gnomad/dist/public /usr/share/nginx/html
 
 COPY deploy/dockerfiles/browser/browser-base.nginx.conf /etc/nginx/browser-base.nginx.conf.template
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD envsubst "\$API_URL" < /etc/nginx/browser-base.nginx.conf.template > /etc/nginx/browser-base.nginx.conf && nginx -g "daemon off;"
+CMD envsubst "\$API_URL \$INGRESS_IP" < /etc/nginx/browser-base.nginx.conf.template > /etc/nginx/browser-base.nginx.conf && nginx -g "daemon off;"
