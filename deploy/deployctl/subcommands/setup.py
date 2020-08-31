@@ -142,6 +142,14 @@ def create_cluster() -> None:
     gcloud(["container", "clusters", "get-credentials", config.gke_cluster_name, f"--zone={config.zone}"])
 
 
+def create_configmap():
+    # Store the IP address used for the ingress load balancer in a configmap so that the browser
+    # can use it for determining the real client IP.
+    ingress_ip = gcloud(["compute", "addresses", "describe", "exac-gnomad-prod", "--global", "--format=value(address)"])
+
+    kubectl(["create", "configmap", "ingress-ip", f"--from-literal=ip={ingress_ip}"])
+
+
 def create_node_pool(node_pool_name: str, node_pool_args: typing.List[str]) -> None:
     gcloud(
         [
@@ -161,7 +169,7 @@ def create_node_pool(node_pool_name: str, node_pool_args: typing.List[str]) -> N
     )
 
 
-def main(argv: typing.List[str]) -> None:  # pylint: disable=unused-argument
+def main(argv: typing.List[str]) -> None:
     parser = argparse.ArgumentParser(prog="deployctl")
 
     parser.parse_args(argv)
@@ -184,6 +192,9 @@ def main(argv: typing.List[str]) -> None:  # pylint: disable=unused-argument
 
         print("Creating cluster...")
         create_cluster()
+
+        print("Creating configmap...")
+        create_configmap()
 
         print("Creating node pools...")
         create_node_pool("redis", ["--num-nodes=1", "--machine-type=n1-highmem-8"])
