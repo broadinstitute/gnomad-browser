@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Link as StyledLink, List, ListItem } from '@gnomad/ui'
+import { Button, ExternalLink, List, ListItem, Modal, PrimaryButton, TextButton } from '@gnomad/ui'
 
-const VariantFeedback = ({ datasetId, variantId }) => {
-  const reportEmailBody = `
+import Link from '../Link'
+
+const getReportVariantEmailUrl = ({ datasetId, variantId }) => {
+  const reportVariantEmailBody = `
 Name:
 Institution:
 
@@ -14,34 +16,120 @@ Variant issue: (clinically implausible, read support poor, other artifact, etc.)
 Please explain your concern about this variant
 `
 
-  const reportURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
+  const reportVariantEmailUrl = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
     'Variant report'
-  )}&body=${encodeURIComponent(reportEmailBody)}`
+  )}&body=${encodeURIComponent(reportVariantEmailBody)}`
 
-  const requestEmailBody = `
+  return reportVariantEmailUrl
+}
+
+const getRequestInfoEmailUrl = ({ datasetId, variantId }) => {
+  const requestInfoEmailBody = `
 Name:
 Institution:
 
 Variant ID: ${variantId} (https://gnomad.broadinstitute.org/variant/${variantId}?dataset=${datasetId})
 
-Expected phenotype:
-
 Additional information that may be helpful for our understanding of the request:
 `
 
-  const requestURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
+  const requestInfoEmailUrl = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
     'Request for variant information'
-  )}&body=${encodeURIComponent(requestEmailBody)}`
+  )}&body=${encodeURIComponent(requestInfoEmailBody)}`
 
+  return requestInfoEmailUrl
+}
+
+const VariantFeedback = ({ datasetId, variantId }) => {
+  const [isRequestInfoModalOpen, setIsRequestInfoModalOpen] = useState(false)
   return (
-    <List>
-      <ListItem>
-        <StyledLink href={reportURL}>Report this variant</StyledLink>
-      </ListItem>
-      <ListItem>
-        <StyledLink href={requestURL}>Request additional information</StyledLink>
-      </ListItem>
-    </List>
+    <>
+      <List>
+        <ListItem>
+          <ExternalLink href={getReportVariantEmailUrl({ datasetId, variantId })}>
+            Report this variant
+          </ExternalLink>
+        </ListItem>
+        <ListItem>
+          <TextButton
+            onClick={() => {
+              setIsRequestInfoModalOpen(true)
+            }}
+          >
+            Request additional information
+          </TextButton>
+        </ListItem>
+      </List>
+      {isRequestInfoModalOpen && (
+        <Modal
+          initialFocusOnButton={false}
+          onRequestClose={() => {
+            setIsRequestInfoModalOpen(false)
+          }}
+          title="Request additional information"
+          footer={
+            <>
+              <Button
+                onClick={() => {
+                  setIsRequestInfoModalOpen(false)
+                }}
+              >
+                Cancel
+              </Button>
+              <PrimaryButton
+                onClick={() => {
+                  window.open(getRequestInfoEmailUrl({ datasetId, variantId }))
+                }}
+                style={{ marginLeft: '1em' }}
+              >
+                Request Information
+              </PrimaryButton>
+            </>
+          }
+        >
+          <p>
+            Before requesting information, please be aware that we are unable to provide any
+            information about the clinical status of variant carriers or access to individual level
+            genotype data. See the following FAQ answers for details:
+            <List>
+              <ListItem>
+                <Link
+                  to={{
+                    pathname: '/faq',
+                    hash: 'i-have-identified-a-rare-variant-what-phenotype-data-are-available',
+                  }}
+                >
+                  I have identified a rare variant in gnomAD that I believe is associated with a
+                  specific clinical phenotype. What phenotype data are available for these
+                  individuals?
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link
+                  to={{
+                    pathname: '/faq',
+                    hash: 'can-i-get-access-to-individual-level-genotype-data-from-gnomad',
+                  }}
+                >
+                  Can I get access to individual-level genotype data from gnomAD?
+                </Link>
+              </ListItem>
+            </List>
+          </p>
+
+          <p>
+            For clinical information, we recommend checking{' '}
+            <ExternalLink href="https://www.genomeconnect.org/">GenomeConnect</ExternalLink>, an
+            online registry developed by the{' '}
+            <ExternalLink href="https://clinicalgenome.org/">
+              Clinical Genome Resource (ClinGen)
+            </ExternalLink>{' '}
+            for people who are interested in sharing de-identified genetic and health information to
+            improve understanding of genetics and health.
+          </p>
+        </Modal>
+      )}
+    </>
   )
 }
 
