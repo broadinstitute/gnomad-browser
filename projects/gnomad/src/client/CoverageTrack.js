@@ -71,7 +71,7 @@ const TitlePanel = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding-right: 30px;
+  padding-right: 40px;
 `
 
 class CoverageTrack extends Component {
