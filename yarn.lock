@@ -959,10 +959,10 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.13.1.tgz#c53b4066edae16cd1fd669f687baf031b45fb9d6"
   integrity sha512-D819f34FLHeBN/4xvw0HR0u7U2G7RqjPSggXqf7LktsxWQ48VAfGwvMrhcVuaZV2fF069c/619RdgCCms0DHhw==
 
-"@gnomad/identifiers@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/identifiers/-/identifiers-1.0.0.tgz#bbcc62b4508fbf4ab5ff59ad8a43b8f0fbb0914f"
-  integrity sha512-rC9NMZLi57XMLBq0h6TNBekbsaagq2KIKMX2OpbNVnoGI7IlKWDYDPJCZD1tNuCEumEl83q5cEcBTGZ2+9ZCUg==
+"@gnomad/identifiers@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/identifiers/-/identifiers-2.0.0.tgz#1689f121586177955a17a0b3d29bb5d48948abee"
+  integrity sha512-J8cQzxgMTOyogHLUUEiYtBSg04kfmd2uJDExfSlVtIz91qlAENcw0L+DyQyZFQ+4Tg7EJm8uDbmDFoT1xqgvoA==
 
 "@gnomad/markdown-loader@^1.0.0":
   version "1.0.0"

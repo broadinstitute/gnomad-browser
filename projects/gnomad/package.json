@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
-    "@gnomad/identifiers": "^1.0.0",
+    "@gnomad/identifiers": "^2.0.0",
     "@gnomad/markdown-loader": "^1.0.0",
     "@gnomad/region-viewer": "^1.0.0",
     "@gnomad/track-genes": "^1.0.0",
