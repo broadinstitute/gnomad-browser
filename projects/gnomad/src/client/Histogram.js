@@ -40,7 +40,7 @@ const yTickFormat = n => {
 }
 
 const margin = {
-  bottom: 55,
+  bottom: 60,
   left: 60,
   right: 10,
   top: 10,
@@ -102,7 +102,7 @@ const Histogram = withSize()(
         <svg height={height} width={width}>
           <AxisBottom
             label={xLabel}
-            labelOffset={25}
+            labelOffset={30}
             labelProps={labelProps}
             left={margin.left}
             top={margin.top + plotHeight}
