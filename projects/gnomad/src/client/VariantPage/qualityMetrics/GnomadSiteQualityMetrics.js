@@ -10,22 +10,6 @@ import ControlSection from '../ControlSection'
 import { BarGraph } from './BarGraph'
 import qualityMetricDescriptions from './qualityMetricDescriptions'
 
-const allMetrics = [
-  'SiteQuality',
-  'FS',
-  'MQRankSum',
-  'InbreedingCoeff',
-  'ReadPosRankSum',
-  'VQSLOD',
-  'QD',
-  'DP',
-  'BaseQRankSum',
-  'MQ',
-  'ClippingRankSum',
-  'RF',
-  'pab_max',
-]
-
 const getSiteQualityMetricDistributions = datasetId => {
   if (datasetId === 'gnomad_r3') {
     return gnomadV3SiteQualityMetricDistributions
@@ -39,25 +23,12 @@ const getSiteQualityMetricDistributions = datasetId => {
   throw new Error(`No quality metric distribution available for dataset "${datasetId}"`)
 }
 
-const variantSiteQualityMetricsPropType = PropTypes.shape({
-  AB_MEDIAN: PropTypes.number,
-  AS_RF: PropTypes.number,
-  BaseQRankSum: PropTypes.number,
-  ClippingRankSum: PropTypes.number,
-  DP: PropTypes.number,
-  DP_MEDIAN: PropTypes.number,
-  DREF_MEDIAN: PropTypes.number,
-  FS: PropTypes.number,
-  GQ_MEDIAN: PropTypes.number,
-  InbreedingCoeff: PropTypes.number,
-  MQ: PropTypes.number,
-  MQRankSum: PropTypes.number,
-  QD: PropTypes.number,
-  ReadPosRankSum: PropTypes.number,
-  RF: PropTypes.number,
-  SiteQuality: PropTypes.number,
-  VQSLOD: PropTypes.number,
-})
+const variantSiteQualityMetricsPropType = PropTypes.arrayOf(
+  PropTypes.shape({
+    metric: PropTypes.string.isRequired,
+    value: PropTypes.number,
+  })
+)
 
 export class GnomadSiteQualityMetrics extends Component {
   static propTypes = {
@@ -139,8 +110,8 @@ export class GnomadSiteQualityMetrics extends Component {
 
     const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
-    const availableMetrics = allMetrics.filter(
-      metric => variantData.qualityMetrics.siteQualityMetrics[metric] !== null
+    const availableMetrics = variantData.qualityMetrics.siteQualityMetrics.filter(
+      ({ value }) => value !== null
     )
 
     const metricDescription = qualityMetricDescriptions[selectedMetric]
@@ -156,7 +127,11 @@ export class GnomadSiteQualityMetrics extends Component {
         <BarGraph
           barColor={graphColor}
           bins={selectedMetricBins}
-          highlightValue={variantData.qualityMetrics.siteQualityMetrics[selectedMetric]}
+          highlightValue={
+            variantData.qualityMetrics.siteQualityMetrics.find(
+              ({ metric }) => metric === selectedMetric
+            ).value
+          }
           logScale={useLogScale}
           xLabel={selectedMetric}
           yLabel="Variants"
@@ -170,11 +145,10 @@ export class GnomadSiteQualityMetrics extends Component {
             }}
             value={selectedMetric}
           >
-            {availableMetrics.map(metric => {
-              const metricValue = variantData.qualityMetrics.siteQualityMetrics[metric]
+            {availableMetrics.map(({ metric, value }) => {
               return (
                 <option key={metric} value={metric}>
-                  {metric} ({metricValue.toPrecision(4).replace(/\.0+$/, '')})
+                  {metric} ({value.toPrecision(4).replace(/\.0+$/, '')})
                 </option>
               )
             })}
