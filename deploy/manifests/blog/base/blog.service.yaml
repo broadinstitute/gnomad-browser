@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-blog
+  labels:
+    component: gnomad-blog
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-blog
+  ports:
+    - port: 80
+      targetPort: 80
