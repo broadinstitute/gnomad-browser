@@ -15,6 +15,7 @@ import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
+import LoFCurationResult from './LoFCurationResult'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
@@ -129,6 +130,23 @@ const VariantPageContent = ({ datasetId, variant }) => (
       <h2>Annotations</h2>
       <VariantTranscriptConsequences variant={variant} />
     </Section>
+
+    {variant.lof_curations && (
+      <Section>
+        <h2>LoF Curation</h2>
+        <div>
+          This variant was manually curated in{' '}
+          {new Set(variant.lof_curations.map(c => c.gene_id)).size} genes.
+          <ul>
+            {variant.lof_curations.map(result => (
+              <li key={result.gene_id}>
+                <LoFCurationResult result={result} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
     <ResponsiveSection>
       <h2>
         Population Frequencies <InfoButton topic="ancestry" />
@@ -191,6 +209,7 @@ VariantPageContent.propTypes = {
     multiNucleotideVariants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    lof_curations: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
   }).isRequired,
 }
 

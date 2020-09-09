@@ -73,14 +73,16 @@ class VariantsInRegion extends Component {
     }
   }
 
-  getColumns = memoizeOne((width, chrom) =>
-    getColumns({
+  getColumns = memoizeOne((width, chrom) => {
+    const { variants } = this.props
+    return getColumns({
       context: 'region',
       width,
+      includeLofCuration: variants.some(variant => variant.lof_curation),
       includeHomozygoteAC: chrom !== 'Y',
       includeHemizygoteAC: chrom === 'X' || chrom === 'Y',
     })
-  )
+  })
 
   onFilter = newFilter => {
     this.setState(state => {
