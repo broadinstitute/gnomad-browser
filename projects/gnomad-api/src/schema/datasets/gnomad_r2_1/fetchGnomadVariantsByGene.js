@@ -8,6 +8,23 @@ import {
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import shapeGnomadVariantSummary from './shapeGnomadVariantSummary'
 
+const fetchLofCurationResults = async (ctx, geneId) => {
+  const response = await ctx.database.elastic.search({
+    index: 'lof_curation_results',
+    type: 'documents',
+    size: 1000,
+    body: {
+      query: {
+        term: {
+          gene_id: geneId,
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(doc => doc._source)
+}
+
 const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
   const geneId = gene.gene_id
   const filteredRegions = gene.exons.filter(exon => exon.feature_type === 'CDS')
@@ -86,9 +103,22 @@ const fetchGnomadVariantsByGene = async (ctx, gene, subset) => {
 
   const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
 
-  // TODO: This can be fetched in parallel with exome/genome data
-  const mnvs = await fetchGnomadMNVsByIntervals(ctx, mergedRegions)
+  // TODO: These can be fetched in parallel with exome/genome data
+  const [mnvs, lofCurationResults] = await Promise.all([
+    fetchGnomadMNVsByIntervals(ctx, mergedRegions),
+    fetchLofCurationResults(ctx, geneId),
+  ])
+
   annotateVariantsWithMNVFlag(combinedVariants, mnvs)
+
+  const lofCurationResultsByVariant = {}
+  lofCurationResults.forEach(result => {
+    lofCurationResultsByVariant[result.variant_id] = result
+  })
+
+  combinedVariants.forEach(variant => {
+    variant.lof_curation = lofCurationResultsByVariant[variant.variantId] // eslint-disable-line no-param-reassign
+  })
 
   return combinedVariants
 }

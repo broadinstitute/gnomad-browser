@@ -7,6 +7,35 @@ import {
 import mergeExomeAndGenomeVariantSummaries from './mergeExomeAndGenomeVariantSummaries'
 import shapeGnomadVariantSummary from './shapeGnomadVariantSummary'
 
+const fetchLofCurationResults = async (ctx, region) => {
+  const { chrom, start, stop } = region
+
+  const response = await ctx.database.elastic.search({
+    index: 'lof_curation_results',
+    type: 'documents',
+    size: 1000,
+    body: {
+      query: {
+        bool: {
+          filter: [
+            { term: { 'locus.contig': chrom } },
+            {
+              range: {
+                'locus.position': {
+                  gte: start,
+                  lte: stop,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(doc => doc._source)
+}
+
 const fetchGnomadVariantsByRegion = async (ctx, region, subset) => {
   const { chrom, start, stop } = region
   const requests = [
@@ -63,9 +92,24 @@ const fetchGnomadVariantsByRegion = async (ctx, region, subset) => {
 
   const combinedVariants = mergeExomeAndGenomeVariantSummaries(exomeVariants, genomeVariants)
 
-  // TODO: This can be fetched in parallel with exome/genome data
-  const mnvs = await fetchGnomadMNVsByIntervals(ctx, [region])
+  // TODO: These can be fetched in parallel with exome/genome data
+  const [mnvs, lofCurationResults] = await Promise.all([
+    fetchGnomadMNVsByIntervals(ctx, [region]),
+    fetchLofCurationResults(ctx, region),
+  ])
+
   annotateVariantsWithMNVFlag(combinedVariants, mnvs)
+
+  const lofCurationResultsByVariant = {}
+  lofCurationResults.forEach(result => {
+    lofCurationResultsByVariant[result.variant_id] =
+      lofCurationResultsByVariant[result.variant_id] || {}
+    lofCurationResultsByVariant[result.variant_id][result.gene_id] = result
+  })
+
+  combinedVariants.forEach(variant => {
+    variant.lof_curation = (lofCurationResultsByVariant[variant.variantId] || {})[variant.gene_id] // eslint-disable-line no-param-reassign
+  })
 
   return combinedVariants
 }
