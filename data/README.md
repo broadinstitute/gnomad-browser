@@ -37,6 +37,7 @@ during a bulk request.
 * [constraint](./docs/gnomad_r2_1/constraint.md)
 * [multi-nucleotide variants](./docs/gnomad_r2_1/mnvs.md)
 * [pext scores](./docs/pext.md)
+* [LoF curation results](./docs/gnomad_r2_1/lof_curation_results.md)
 
 ## gnomAD SVs
 
