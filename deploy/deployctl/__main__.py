@@ -3,6 +3,8 @@
 import argparse
 import sys
 
+from deployctl.subcommands import blog_deployment
+from deployctl.subcommands import blog_images
 from deployctl.subcommands import browser_deployments
 from deployctl.subcommands import browser_images
 from deployctl.subcommands import config
@@ -22,6 +24,8 @@ def main():
         "images": browser_images,
         "reads-deployments": reads_deployments,
         "reads-images": reads_images,
+        "blog-deployment": blog_deployment,
+        "blog-images": blog_images,
         "production": ingress_production,
         "demo": ingress_demo,
         "setup": setup,

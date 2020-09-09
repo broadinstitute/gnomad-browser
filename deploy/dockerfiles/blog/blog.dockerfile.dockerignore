@@ -1,0 +1,3 @@
+*
+!deploy/dockerfiles/blog/blog.nginx.conf
+!deploy/dockerfiles/blog/gcs-proxy.conf

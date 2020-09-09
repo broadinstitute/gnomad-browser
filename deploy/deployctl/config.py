@@ -84,5 +84,13 @@ class Configuration:
     def reads_api_image_repository(self):
         return f"gcr.io/{self.project}/gnomad-reads-api"
 
+    @property
+    def blog_image_repository(self):
+        return f"gcr.io/{self.project}/gnomad-blog"
+
+    @property
+    def blog_auth_image_repository(self):
+        return f"gcr.io/{self.project}/gnomad-blog-auth"
+
 
 config = Configuration(_CONFIG_PATH)  # pylint: disable=invalid-name
