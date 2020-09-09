@@ -23,6 +23,14 @@ const GnomadPopulationType = new GraphQLObjectType({
   },
 })
 
+const GnomadSiteQualityMetricType = new GraphQLObjectType({
+  name: 'GnomadSiteQualityMetric',
+  fields: {
+    metric: { type: new GraphQLNonNull(GraphQLString) },
+    value: { type: GraphQLFloat },
+  },
+})
+
 const GnomadVariantQualityMetricsType = new GraphQLObjectType({
   name: 'GnomadVariantQualityMetrics',
   fields: {
@@ -53,25 +61,7 @@ const GnomadVariantQualityMetricsType = new GraphQLObjectType({
       }),
     },
     siteQualityMetrics: {
-      type: new GraphQLObjectType({
-        name: 'GnomadVariantSiteQualityMetrics',
-        fields: {
-          BaseQRankSum: { type: GraphQLFloat },
-          ClippingRankSum: { type: GraphQLFloat },
-          DP: { type: GraphQLInt },
-          FS: { type: GraphQLFloat },
-          InbreedingCoeff: { type: GraphQLFloat },
-          MQ: { type: GraphQLFloat },
-          MQRankSum: { type: GraphQLFloat },
-          pab_max: { type: GraphQLFloat },
-          QD: { type: GraphQLFloat },
-          ReadPosRankSum: { type: GraphQLFloat },
-          RF: { type: GraphQLFloat },
-          SiteQuality: { type: GraphQLFloat },
-          SOR: { type: GraphQLFloat },
-          VQSLOD: { type: GraphQLFloat },
-        },
-      }),
+      type: new GraphQLList(GnomadSiteQualityMetricType),
     },
   },
 })
