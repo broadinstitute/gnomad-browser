@@ -1,6 +1,8 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
+import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
+
 import Link from '../Link'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
@@ -52,6 +54,7 @@ const getConsequenceDescription = context => {
 export const getColumns = ({
   context, // one of 'gene', 'region', or 'transcript'
   width,
+  includeLofCuration = false,
   includeHomozygoteAC = false,
   includeHemizygoteAC = false,
   primaryTranscriptId = null, // Only present in 'gene' context. MANE Select transcript if available, otherwise canonical.
@@ -155,6 +158,39 @@ export const getColumns = ({
       render: renderExponentialNumberCell,
     },
   ]
+
+  if (includeLofCuration) {
+    columns.splice(4, 0, {
+      key: 'lof_curation',
+      heading: 'LoF Curation',
+      tooltip: 'Results of manual curation of pLoF variants',
+      isSortable: false,
+      minWidth: 100,
+      render: row => {
+        if (!row.lof_curation) {
+          return null
+        }
+
+        const { verdict, flags = [] } = row.lof_curation
+        let content
+        if (flags.length) {
+          const tooltip = `This variant was curated as "${verdict}". The following factors contributed to this verdict: ${flags.join(
+            ', '
+          )}. See variant page for details.`
+
+          content = (
+            <TooltipAnchor tooltip={tooltip}>
+              <TooltipHint>{verdict}</TooltipHint>
+            </TooltipAnchor>
+          )
+        } else {
+          content = verdict
+        }
+
+        return <span className="grid-cell-content">{content}</span>
+      },
+    })
+  }
 
   if (context === 'region') {
     columns.splice(2, 0, {

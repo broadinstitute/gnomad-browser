@@ -141,10 +141,11 @@ class VariantsInGene extends Component {
   }
 
   getColumns = memoizeOne(width => {
-    const { gene } = this.props
+    const { gene, variants } = this.props
     return getColumns({
       context: 'gene',
       width,
+      includeLofCuration: variants.some(variant => variant.lof_curation),
       includeHomozygoteAC: gene.chrom !== 'Y',
       includeHemizygoteAC: gene.chrom === 'X' || gene.chrom === 'Y',
       primaryTranscriptId: gene.mane_select_transcript
