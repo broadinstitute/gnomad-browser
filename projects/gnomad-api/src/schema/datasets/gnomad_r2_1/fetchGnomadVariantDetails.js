@@ -88,6 +88,22 @@ const formatFilteringAlleleFrequency = (variantData, fafField) => {
   }
 }
 
+const fetchLofCurationResults = async (ctx, variantId) => {
+  const response = await ctx.database.elastic.search({
+    index: 'lof_curation_results',
+    type: 'documents',
+    body: {
+      query: {
+        term: {
+          variant_id: variantId,
+        },
+      },
+    },
+  })
+
+  return response.hits.hits.map(doc => doc._source)
+}
+
 const fetchGnomadVariantData = async (ctx, variantId, subset) => {
   const requests = [
     { index: 'gnomad_exomes_2_1_1', subset },
@@ -207,10 +223,16 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
   const sharedData = exomeData || genomeData
   let transcriptConsequences = sharedData.sortedTranscriptConsequences || []
 
-  const [colocatedVariants, multiNucleotideVariants, transcripts] = await Promise.all([
+  const [
+    colocatedVariants,
+    multiNucleotideVariants,
+    transcripts,
+    lofCurationResults,
+  ] = await Promise.all([
     fetchColocatedVariants(ctx, variantId, subset),
     fetchGnomadMNVSummariesByVariantId(ctx, variantId),
     fetchTranscriptsForConsequences(ctx, transcriptConsequences, 'GRCh37'),
+    fetchLofCurationResults(ctx, variantId),
   ])
 
   transcriptConsequences = transcriptConsequences.map(consequence => ({
@@ -218,6 +240,14 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
     gene_version: transcripts[consequence.transcript_id].gene.gene_version,
     transcript_version: transcripts[consequence.transcript_id].transcript_version,
   }))
+
+  const geneSymbols = transcriptConsequences.reduce(
+    (acc, csq) => ({
+      ...acc,
+      [csq.gene_id]: csq.gene_symbol,
+    }),
+    {}
+  )
 
   return {
     // variant ID fields
@@ -321,6 +351,10 @@ const fetchGnomadVariantDetails = async (ctx, variantId, subset) => {
           },
         }
       : null,
+    lof_curations: lofCurationResults.map(result => ({
+      ...result,
+      gene_symbol: geneSymbols[result.gene_id],
+    })),
     rsid: sharedData.rsid,
     sortedTranscriptConsequences: transcriptConsequences,
   }

@@ -8,6 +8,7 @@ import {
 } from 'graphql'
 
 import { ReferenceGenomeType } from '../../gene-models/referenceGenome'
+import { LoFCurationType } from '../../types/curation'
 import { HistogramType } from '../shared/histogram'
 import { TranscriptConsequenceType } from '../shared/transcriptConsequence'
 import { MultiNucleotideVariantSummaryType } from './gnomadMultiNucleotideVariants'
@@ -130,6 +131,7 @@ const GnomadVariantDetailsType = new GraphQLObjectType({
         },
       }),
     },
+    lof_curations: { type: new GraphQLList(LoFCurationType) },
     rsid: { type: GraphQLString },
     sortedTranscriptConsequences: { type: new GraphQLList(TranscriptConsequenceType) },
   },

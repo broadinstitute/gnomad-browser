@@ -10,6 +10,8 @@ import {
 
 import { ReferenceGenomeType } from '../gene-models/referenceGenome'
 
+import { LoFCurationInGeneType } from './curation'
+
 const VariantSequencingDataType = new GraphQLObjectType({
   name: 'VariantSequencingData',
   fields: {
@@ -62,5 +64,6 @@ export const VariantSummaryType = new GraphQLObjectType({
     rsid: { type: GraphQLString },
     exome: { type: VariantSequencingDataType },
     genome: { type: VariantSequencingDataType },
+    lof_curation: { type: LoFCurationInGeneType },
   },
 })
