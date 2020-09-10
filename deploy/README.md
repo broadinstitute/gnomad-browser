@@ -110,16 +110,10 @@ To see other available configuration options, run `./deployctl config list`.
 
 #### Create ingress
 
-- Reserve an IP address.
-
-  ```
-  gcloud --project $PROJECT compute addresses create exac-gnomad-prod --global
-  ```
-
 - Create NodePort services for browser and reads, certificate, and Ingress.
 
   The SSL certificate can only be provisioned after DNS records for gnomad.broadinstitute.org are configured to
-  point to the `exac-gnomad-prod` IP address.
+  point to the load balancer's IP address.
 
   See https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs for more information.
 

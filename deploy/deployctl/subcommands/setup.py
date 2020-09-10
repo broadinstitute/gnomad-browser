@@ -32,6 +32,11 @@ def create_network() -> None:
     )
 
 
+def create_ip_address() -> None:
+    # Reserve a static external IP address to use with a load balancer.
+    gcloud(["compute", "addresses", "create", config.ip_address_name, "--global"])
+
+
 def create_cluster_service_account() -> None:
     # Create a least privilege service account for cluster nodes
     # https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_service_accounts_for_your_nodes
@@ -145,7 +150,9 @@ def create_cluster() -> None:
 def create_configmap():
     # Store the IP address used for the ingress load balancer in a configmap so that the browser
     # can use it for determining the real client IP.
-    ingress_ip = gcloud(["compute", "addresses", "describe", "exac-gnomad-prod", "--global", "--format=value(address)"])
+    ingress_ip = gcloud(
+        ["compute", "addresses", "describe", config.ip_address_name, "--global", "--format=value(address)"]
+    )
 
     kubectl(["create", "configmap", "ingress-ip", f"--from-literal=ip={ingress_ip}"])
 
@@ -180,12 +187,16 @@ def main(argv: typing.List[str]) -> None:
 
     print("This will create the following resources:")
     print(f"- VPC network '{config.network_name}'")
+    print(f"- IP address '{config.ip_address_name}'")
     print(f"- Service account '{config.gke_service_account_name}'")
     print(f"- GKE cluster '{config.gke_cluster_name}'")
 
     if input("Continue? (y/n) ").lower() == "y":
         print("Creating network...")
         create_network()
+
+        print("Reserving IP address...")
+        create_ip_address()
 
         print("Creating service account...")
         create_cluster_service_account()
