@@ -50,6 +50,13 @@ class Configuration:
         return "gnomad"
 
     @property
+    def ip_address_name(self):
+        if self.environment_tag:
+            return f"gnomad-browser-{self.environment_tag}"
+
+        return "gnomad-browser"
+
+    @property
     def gke_service_account_name(self):
         return "gnomad-gke"
 
