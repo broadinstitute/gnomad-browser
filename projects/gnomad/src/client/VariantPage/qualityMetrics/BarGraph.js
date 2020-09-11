@@ -99,7 +99,7 @@ export const BarGraph = withSize()(
             return `>${bins[bins.length - 1].x1}`
           }
 
-          return val
+          return `${val}`
         }
 
     const xDomain = [min(binsCopy, bin => bin.x0), max(binsCopy, bin => bin.x1)]
