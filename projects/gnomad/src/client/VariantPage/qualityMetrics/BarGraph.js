@@ -42,7 +42,7 @@ const tickFormat = n => {
 const margin = {
   bottom: 60,
   left: 60,
-  right: 10,
+  right: 15,
   top: 10,
 }
 
