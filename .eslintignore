@@ -1,3 +1,5 @@
 node_modules
 
-projects/**/dist
+projects/gnomad/dist
+projects/gnomad-api/dist
+reads/dist
