@@ -18,4 +18,4 @@ projects/gnomad/build.env
 # Build outputs
 projects/gnomad/dist
 projects/gnomad-api/dist
-projects/gnomad-reads/dist
+reads/dist

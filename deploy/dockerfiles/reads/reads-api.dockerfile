@@ -9,16 +9,16 @@ ENV NODE_ENV=production
 
 # Install dependencies
 COPY --chown=node:node package.json .
-COPY --chown=node:node projects/gnomad-reads/package.json projects/gnomad-reads/package.json
+COPY --chown=node:node reads/package.json reads/package.json
 COPY --chown=node:node yarn.lock .
 RUN yarn install --production false --frozen-lockfile && yarn cache clean
 
 # Copy source
 COPY --chown=node:node babel.config.js .
-COPY --chown=node:node projects/gnomad-reads projects/gnomad-reads
+COPY --chown=node:node reads reads
 
 # Build
-RUN cd projects/gnomad-reads && yarn run webpack
+RUN cd reads && yarn run webpack
 
 ###############################################################################
 FROM node:10.11.0
@@ -31,12 +31,12 @@ USER node
 ENV NODE_ENV=production
 
 # Install dependencies
-COPY --chown=node:node projects/gnomad-reads/package.json .
+COPY --chown=node:node reads/package.json .
 COPY --chown=node:node yarn.lock .
 RUN yarn install --production --frozen-lockfile && yarn cache clean
 
 # Copy from build stage
-COPY --chown=node:node --from=0 /home/node/app/projects/gnomad-reads/dist ./
+COPY --chown=node:node --from=0 /home/node/app/reads/dist ./
 
 # Run
 CMD ["node", "server.js"]

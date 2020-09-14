@@ -11,7 +11,9 @@
     "test": "jest"
   },
   "workspaces": [
-    "projects/*"
+    "projects/gnomad",
+    "projects/gnomad-api",
+    "reads"
   ],
   "devDependencies": {
     "@babel/core": "^7.10.4",

@@ -2,6 +2,6 @@
 !babel.config.js
 !package.json
 !yarn.lock
-!projects/gnomad-reads/package.json
-!projects/gnomad-reads/src
-!projects/gnomad-reads/webpack.config.js
+!reads/package.json
+!reads/src
+!reads/webpack.config.js
