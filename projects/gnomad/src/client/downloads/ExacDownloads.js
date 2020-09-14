@@ -1,8 +1,14 @@
 import React from 'react'
 
-import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Link, List, ListItem } from '@gnomad/ui'
 
-import { FileList, SectionTitle } from './downloadsPageStyles'
+import {
+  FileList,
+  GenericDownloadLinks,
+  GetUrlButtons,
+  IndexedFileDownloadLinks,
+  SectionTitle,
+} from './downloadsPageStyles'
 
 const coverageFiles = [
   { chrom: '1', size: '121.55 MiB', md5: '8b731303596cd0679901bdae25ae654a' },
@@ -62,14 +68,12 @@ export default () => (
       <h3>Exomes</h3>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz">
-            All chromosomes VCF
-          </ExternalLink>{' '}
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz.tbi">
-            (.tbi)
-          </ExternalLink>
-          <br />
-          <span>4.56 GiB, MD5: f2b57a6f0660a00e7550f62da2654948</span>
+          <IndexedFileDownloadLinks
+            label="All chromosomes VCF"
+            path="/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"
+            size="4.56 GiB"
+            md5="f2b57a6f0660a00e7550f62da2654948"
+          />
         </ListItem>
       </FileList>
     </section>
@@ -79,15 +83,12 @@ export default () => (
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
           <ListItem key={chrom}>
-            <ExternalLink
-              href={`https://storage.googleapis.com/gnomad-public/legacy/exac_browser/coverage/Panel.chr${chrom}.coverage.txt.gz`}
-            >
-              chr{chrom} exome coverage summary TSV
-            </ExternalLink>
-            <br />
-            <span>
-              {size}, MD5: {md5}
-            </span>
+            <GenericDownloadLinks
+              label={`chr${chrom} exome coverage summary TSV`}
+              path={`/legacy/exac_browser/coverage/Panel.chr${chrom}.coverage.txt.gz`}
+              size={size}
+              md5={md5}
+            />
           </ListItem>
         ))}
       </FileList>
@@ -97,9 +98,10 @@ export default () => (
       <SectionTitle id="exac-constraint">Constraint</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz">
-            Gene constraint scores TSV
-          </ExternalLink>
+          <GenericDownloadLinks
+            label="Gene constraint scores TSV"
+            path="/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"
+          />
         </ListItem>
       </FileList>
     </section>
@@ -110,9 +112,10 @@ export default () => (
       </SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/legacy/exac_browser/regional_missense_constraint.tsv">
-            Regional missense constraint TSV
-          </ExternalLink>
+          <GenericDownloadLinks
+            label="Regional missense constraint TSV"
+            path="/legacy/exac_browser/regional_missense_constraint.tsv"
+          />
         </ListItem>
       </FileList>
     </section>
@@ -121,9 +124,11 @@ export default () => (
       <SectionTitle id="exac-resources">Resources</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/intervals/exome_calling_regions.v1.interval_list">
-            Exome calling regions
-          </ExternalLink>
+          <GenericDownloadLinks
+            gcsBucket="gnomad-public"
+            label="Exome calling regions"
+            path="/intervals/exome_calling_regions.v1.interval_list"
+          />
         </ListItem>
       </FileList>
     </section>
@@ -132,19 +137,25 @@ export default () => (
       <SectionTitle id="exac-other">Other</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/legacy/exacv1_downloads/release1/manuscript_data">
-            Manuscript data
-          </ExternalLink>
+          <GetUrlButtons
+            gcsBucket="gnomad-public"
+            label="Manuscript data"
+            path="/legacy/exacv1_downloads/release1/manuscript_data"
+          />
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/legacy/exacv1_downloads/release1/subsets">
-            Subset VCFs (non-TCGA and non-psych)
-          </ExternalLink>
+          <GetUrlButtons
+            gcsBucket="gnomad-public"
+            label="Subset VCFs (non-TCGA and non-psych)"
+            path="/legacy/exacv1_downloads/release1/subsets"
+          />
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public/legacy/exacv1_downloads/release0.3.1/cnv">
-            CNV counts and intolerance scores
-          </ExternalLink>
+          <GetUrlButtons
+            gcsBucket="gnomad-public"
+            label="CNV counts and intolerance scores"
+            path="/legacy/exacv1_downloads/release0.3.1/cnv"
+          />
         </ListItem>
       </FileList>
     </section>
