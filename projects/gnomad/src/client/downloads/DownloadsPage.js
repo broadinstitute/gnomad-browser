@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { useLayoutEffect, useState } from 'react'
+import styled from 'styled-components'
 
-import { Badge, ExternalLink, PageHeading, Tabs } from '@gnomad/ui'
+import { ExternalLink, PageHeading, Tabs } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
@@ -10,6 +11,21 @@ import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
 import ExacDownloads from './ExacDownloads'
+
+const CodeBlock = styled.code`
+  display: inline-block;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background: #333;
+  color: #fafafa;
+  font-family: monospace;
+  line-height: 1.6;
+  word-wrap: break-word;
+
+  &::before {
+    content: '$ ';
+  }
+`
 
 const DownloadsPage = ({ location }) => {
   const [activeTab, setActiveTab] = useState('v2')
@@ -30,13 +46,20 @@ const DownloadsPage = ({ location }) => {
     <InfoPage>
       <DocumentTitle title="Downloads" />
       <PageHeading>Downloads</PageHeading>
-      <p>gnomAD is available for download in Hail Table (.ht) and VCF formats.</p>
-
       <p>
-        Files can be browsed and downloaded in parallel using{' '}
-        <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
-        After installing gsutil, start browsing with{' '}
-        <code>gsutil ls gs://gnomad-public/release</code>.
+        gnomAD data is available for download through{' '}
+        <ExternalLink href="https://cloud.google.com/public-datasets">
+          Google Cloud Public Datasets
+        </ExternalLink>
+        , the{' '}
+        <ExternalLink href="https://registry.opendata.aws/">
+          Registry of Open Data on AWS
+        </ExternalLink>
+        , and{' '}
+        <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
+          Azure Open Datasets
+        </ExternalLink>
+        .
       </p>
 
       <p>
@@ -49,24 +72,57 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <p>
-        <Badge level="info">Note</Badge> Many Hail Table files are in a{' '}
-        <ExternalLink href="https://cloud.google.com/storage/docs/requester-pays">
-          requester pays
-        </ExternalLink>{' '}
-        bucket, meaning that accessing them may incur charges. See our{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-07-requester-pays-notice/">
-          Requester Pays Notice blog post
-        </ExternalLink>{' '}
-        for more information.
-      </p>
-
-      <p>
         In addition to the files listed below, gnomAD variants are also available as a{' '}
         <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
           BigQuery dataset
         </ExternalLink>
         .
       </p>
+
+      <h3>Google Cloud Public Datasets</h3>
+
+      <p>
+        Files can be browsed and downloaded using{' '}
+        <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
+      </p>
+
+      <p>
+        <CodeBlock>gsutil ls gs://gcp-public-data--gnomad/release/</CodeBlock>
+      </p>
+
+      <h3>Registry of Open Data on AWS</h3>
+
+      <p>
+        Files can be browsed and downloaded using the{' '}
+        <ExternalLink href="https://docs.aws.amazon.com/cli/">
+          AWS Command Line Interface
+        </ExternalLink>
+        .
+      </p>
+
+      <p>
+        <CodeBlock>aws s3 ls gs://gnomad-public-us-east-1/release/</CodeBlock>
+      </p>
+
+      <h3>Azure Open Datasets</h3>
+
+      <p>
+        Files can be browsed and downloaded using{' '}
+        <ExternalLink href="https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10">
+          AzCopy
+        </ExternalLink>{' '}
+        or{' '}
+        <ExternalLink href="https://azure.microsoft.com/en-us/features/storage-explorer/">
+          Azure Storage Explorer
+        </ExternalLink>
+        .
+      </p>
+
+      <p>
+        <CodeBlock>azcopy ls https://azureopendatastorage.blob.core.windows.net/gnomad/</CodeBlock>
+      </p>
+
+      <h3>Downloads</h3>
 
       <Tabs
         activeTabId={activeTab}

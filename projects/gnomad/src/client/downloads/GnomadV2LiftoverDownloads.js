@@ -3,10 +3,11 @@ import React from 'react'
 import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
-  ChromosomeVcfLinks,
   Column,
   ColumnsWrapper,
   FileList,
+  GetUrlButtons,
+  IndexedFileDownloadLinks,
   SectionTitle,
 } from './downloadsPageStyles'
 
@@ -88,34 +89,27 @@ export default () => (
           <h3>Exomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/exomes">
-                Sites Hail Table
-              </ExternalLink>
-              <br />
-              gs://gnomad-public-requester-pays/release/2.1.1/
-              <wbr />
-              liftover_grch38/ht/exomes/
-              <wbr />
-              gnomad.exomes.r2.1.1.sites.liftover_grch38.ht
+              <GetUrlButtons
+                label="Sites Hail Table"
+                path="/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht"
+              />
             </ListItem>
 
             <ListItem>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz">
-                All chromosomes VCF
-              </ExternalLink>{' '}
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz.tbi">
-                (.tbi)
-              </ExternalLink>
-              <br />
-              <span>85.31 GiB, MD5: cff8d0cfed50adc9211d1feaed2d4ca7</span>
+              <IndexedFileDownloadLinks
+                label="All chromosomes VCF"
+                path="/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
+                size="85.31 GiB"
+                md5="cff8d0cfed50adc9211d1feaed2d4ca7"
+              />
             </ListItem>
-            {liftoverExomeChromosomeVcfs.map(vcf => (
-              <ListItem key={vcf.chrom}>
-                <ChromosomeVcfLinks
-                  {...vcf}
-                  url={chrom =>
-                    `https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`
-                  }
+            {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
+              <ListItem key={chrom}>
+                <IndexedFileDownloadLinks
+                  label={`chr${chrom} sites VCF`}
+                  path={`/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
+                  size={size}
+                  md5={md5}
                 />
               </ListItem>
             ))}
@@ -126,33 +120,26 @@ export default () => (
           <h3>Genomes</h3>
           <FileList>
             <ListItem>
-              <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/genomes">
-                Sites Hail Table
-              </ExternalLink>
-              <br />
-              gs://gnomad-public-requester-pays/release/2.1.1/
-              <wbr />
-              liftover_grch38/ht/genomes/
-              <wbr />
-              gnomad.genomes.r2.1.1.sites.liftover_grch38.ht
+              <GetUrlButtons
+                label="Sites Hail Table"
+                path="/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht"
+              />
             </ListItem>
             <ListItem>
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz">
-                All chromosomes VCF
-              </ExternalLink>{' '}
-              <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz.tbi">
-                (.tbi)
-              </ExternalLink>
-              <br />
-              <span>743.06 GiB, MD5: 83de3d5b52669f714e810d4fcf047c18</span>
+              <IndexedFileDownloadLinks
+                label="All chromosomes VCF"
+                path="/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
+                size="743.06 GiB"
+                md5="83de3d5b52669f714e810d4fcf047c18"
+              />
             </ListItem>
-            {liftoverGenomeChromosomeVcfs.map(vcf => (
-              <ListItem key={vcf.chrom}>
-                <ChromosomeVcfLinks
-                  {...vcf}
-                  url={chrom =>
-                    `https://storage.googleapis.com/gnomad-public/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`
-                  }
+            {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
+              <ListItem key={chrom}>
+                <IndexedFileDownloadLinks
+                  label={`chr${chrom} sites VCF`}
+                  path={`/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
+                  size={size}
+                  md5={md5}
                 />
               </ListItem>
             ))}

@@ -1,8 +1,14 @@
 import React from 'react'
 
-import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Link, List, ListItem } from '@gnomad/ui'
 
-import { ChromosomeVcfLinks, FileList, SectionTitle } from './downloadsPageStyles'
+import {
+  FileList,
+  GenericDownloadLinks,
+  GetUrlButtons,
+  IndexedFileDownloadLinks,
+  SectionTitle,
+} from './downloadsPageStyles'
 
 const genomeChromosomeVcfs = [
   { chrom: '1', size: '18.4 GiB', md5: 'e78783bb528d4b43ae80282d36107cfe' },
@@ -50,31 +56,26 @@ export default () => (
       <h3>Genomes</h3>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0/ht/genomes">
-            Sites Hail Table
-          </ExternalLink>
-          <br />
-          gs://gnomad-public-requester-pays/release/3.0/ht/
-          <wbr />
-          genomes/gnomad.genomes.r3.0.sites.ht
+          <GetUrlButtons
+            label="Sites Hail Table"
+            path="/release/3.0/ht/genomes/gnomad.genomes.r3.0.sites.ht"
+          />
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz">
-            All chromosomes VCF
-          </ExternalLink>{' '}
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz.tbi">
-            (.tbi)
-          </ExternalLink>
-          <br />
-          <span>235.68 GiB, MD5: f3501102192975da34b5d2c32f7c0791</span>
+          <IndexedFileDownloadLinks
+            label="All chromosomes VCF"
+            path="/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz"
+            size="235.68 GiB"
+            md5="f3501102192975da34b5d2c32f7c0791"
+          />
         </ListItem>
-        {genomeChromosomeVcfs.map(vcf => (
-          <ListItem key={vcf.chrom}>
-            <ChromosomeVcfLinks
-              {...vcf}
-              url={chrom =>
-                `https://storage.googleapis.com/gnomad-public/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.chr${chrom}.vcf.bgz`
-              }
+        {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
+          <ListItem key={chrom}>
+            <IndexedFileDownloadLinks
+              label={`chr${chrom} sites VCF`}
+              path={`/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.chr${chrom}.vcf.bgz`}
+              size={size}
+              md5={md5}
             />
           </ListItem>
         ))}
@@ -85,20 +86,18 @@ export default () => (
       <SectionTitle id="v3-coverage">Coverage</SectionTitle>
       <FileList>
         <ListItem>
-          <ExternalLink href="https://console.cloud.google.com/storage/gnomad-public-requester-pays/release/3.0.1/coverage">
-            Genome coverage Hail Table
-          </ExternalLink>
-          <br />
-          gs://gnomad-public-requester-pays/release/3.0.1/coverage/
-          <wbr />
-          genomes/gnomad.genomes.r3.0.1.coverage.ht
+          <GetUrlButtons
+            label="Genome coverage Hail Table"
+            path="/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.ht"
+          />
         </ListItem>
         <ListItem>
-          <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.summary.tsv.bgz">
-            Genome coverage summary TSV
-          </ExternalLink>
-          <br />
-          <span>75.38 GiB, MD5: 6c809627ff7922dcfc8d2c67bba017ff</span>
+          <GenericDownloadLinks
+            label="Genome coverage summary TSV"
+            path="/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.summary.tsv.bgz"
+            size="75.38 GiB"
+            md5="6c809627ff7922dcfc8d2c67bba017ff"
+          />
         </ListItem>
       </FileList>
     </section>
