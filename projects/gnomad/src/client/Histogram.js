@@ -122,6 +122,7 @@ const Histogram = withSize()(
             label={yLabel}
             labelProps={labelProps}
             left={margin.left}
+            numTicks={Math.min(10, yDomain[1])}
             tickFormat={yTickFormat}
             tickLabelProps={() => ({
               dx: '-0.25em',
