@@ -115,7 +115,7 @@ class HelpModal extends Component {
                   helpState.set({ selectedTopic: topicId })
                 }}
               >
-                {helpTopics[topicId].title}
+                {helpTopics[topicId.toLowerCase()].title}
               </TextButton>
             </li>
           ))}
