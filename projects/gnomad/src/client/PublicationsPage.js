@@ -124,8 +124,12 @@ export default () => (
       </ListItem>
       <ListItem>
         <Citation>
-          Lek, M., Karczewski, K., Minikel, E. et al. Analysis of protein-coding genetic variation
-          in 60,706 humans. <em>Nature</em> 536, 285–291 (2016).{' '}
+          Lek, M., Karczewski, K. J., Minikel, E. V., Samocha, K. E., Banks, E., Fennell, T.,
+          O’Donnell-Luria, A. H., Ware, J. S., Hill, A. J., Cummings, B. B., Tukiainen, T.,
+          Birnbaum, D. P., Kosmicki, J. A., Duncan, L. E., Estrada, K., Zhao, F., Zou, J.,
+          Pierce-Hoffman, E., … Daly, M. J., MacArthur, D. G. &amp; Exome Aggregation Consortium.
+          Analysis of protein-coding genetic variation in 60,706 humans. <em>Nature</em> 536,
+          285–291 (2016).{' '}
           <ExternalLink href="https://doi.org/10.1038/nature19057">
             https://doi.org/10.1038/nature19057
           </ExternalLink>
