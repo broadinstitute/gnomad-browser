@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
   ChromosomeVcfLinks,
@@ -65,6 +65,18 @@ const liftoverGenomeChromosomeVcfs = [
 
 export default () => (
   <React.Fragment>
+    <section>
+      <h2>Summary</h2>
+      <List>
+        <ListItem>
+          <Link href="#v2-liftover-variants">Variants (GRCh38 liftover)</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#v2-liftover-structural-variants">Structural variants (GRCh38 liftover)</Link>
+        </ListItem>
+      </List>
+    </section>
+
     <section>
       <SectionTitle id="v2-liftover-variants">Variants (GRCh38 liftover)</SectionTitle>
       <p>
