@@ -133,7 +133,9 @@ const VariantPageContent = ({ datasetId, variant }) => (
 
     {variant.lof_curations && (
       <Section>
-        <h2>LoF Curation</h2>
+        <h2>
+          LoF Curation <InfoButton topic="lof_curation" />
+        </h2>
         <div>
           This variant was manually curated in{' '}
           {new Set(variant.lof_curations.map(c => c.gene_id)).size} genes.
