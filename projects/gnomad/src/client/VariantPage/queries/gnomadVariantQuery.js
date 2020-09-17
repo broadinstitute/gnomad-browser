@@ -163,6 +163,12 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
       }
     }
     flags
+    lof_curations {
+      gene_id
+      gene_symbol
+      verdict
+      flags
+    }
     rsid
     sortedTranscriptConsequences {
       canonical
