@@ -57,7 +57,7 @@ export default () => (
           Poterba, T., Seed, C., Solomonson, M., Alföldi, J., The Genome Aggregation Database
           Production Team, The Genome Aggregation Database Consortium, Daly, M. J., &amp; MacArthur,
           D. G. Transcript expression-aware annotation improves rare variant interpretation.{' '}
-          <em>Nature</em> 581, 452–458 (2020){' '}
+          <em>Nature</em> 581, 452–458 (2020).{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
             https://doi.org/10.1038/s41586-020-2329-2
           </ExternalLink>
@@ -114,7 +114,7 @@ export default () => (
       </ListItem>
       <ListItem>
         <Citation>
-          Karczewski, K. J., Gauthier, L. D., Daly, M. J. Technical artifact drives apparent
+          Karczewski, K. J., Gauthier, L. D., &amp; Daly, M. J. Technical artifact drives apparent
           deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD.{' '}
           <em>bioRxiv</em> (p. 784157).{' '}
           <ExternalLink href="https://doi.org/10.1101/784157">
