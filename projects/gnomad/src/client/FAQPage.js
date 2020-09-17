@@ -868,12 +868,7 @@ export default () => (
       <Question id="how-do-i-download-the-data">How do I download the data?</Question>
       <Answer>
         <p>
-          Please visit our <Link to="/downloads">downloads page</Link>. These files (as well as
-          several additional files) are available through our{' '}
-          <ExternalLink href="https://console.cloud.google.com/storage/browser/gnomad-public">
-            Google Cloud Storage bucket
-          </ExternalLink>
-          .
+          Please visit our <Link to="/downloads">downloads page</Link>.
         </p>
       </Answer>
     </dl>
