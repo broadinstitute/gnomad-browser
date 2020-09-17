@@ -25,14 +25,19 @@ function. We exhaustively looked for variants that appear in the same individual
 ["Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes"](https://broad.io/gnomad_mnv).
 
 ## LCR, SEGDUP and DECOY flags
-### gnomAD v3
-Variants have been flagged according to whether they fall into low-complexity regions (LCRs) regions.
 
-These regions were identified with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) on GRCh38 at a score threshold of 30. The regions are available for [download here](https://storage.googleapis.com/gnomad-public/resources/grch38/LCRFromHengHg38.txt)
+### gnomAD v3
+Variants have been flagged according to whether they fall into low-complexity regions (LCRs).
+
+These [regions]((https://storage.googleapis.com/gnomad-public/resources/grch38/LCRFromHengHg38.txt)) were identified
+with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) on GRCh38 at a score threshold of 30.
 
 ### gnomAD v2
 Variants have been flagged according to whether they fall into low-complexity regions (LCRs) or segmental duplication (SEGDUP) regions.
 
-For LCRs, these regions were identified with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) on  GRCh37 at a score threshold of 30. The regions are available for [download here](https://storage.googleapis.com/gnomad-public/intervals/LCR.interval_list)
+[Low-complexity regions](https://storage.googleapis.com/gnomad-public/intervals/LCR.interval_list) were identified with the
+[symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) on GRCh37 at a score threshold of 30.
 
-The segmental duplications and decoy files we used are from the Global Alliance for Genomics and Health (GA4GH) Benchmarking Team and the Genome in a Bottle Consortium. Information on the source of these files can be found [here](https://github.com/ga4gh/benchmarking-tools/tree/master/resources/stratification-bed-files/SegmentalDuplications). The segmental duplication regions are also available for download [here](https://console.cloud.google.com/storage/browser/gnomad-public/intervals/hg19_self_chain_split_both.bed) and on on Google Cloud Storage at: `gs://gnomad-public/intervals/hg19_self_chain_split_both.bed`. The decoy regions can be downloaded [here](https://console.cloud.google.com/storage/browser/gnomad-public/intervals/mm-2-merged.GRCh37_compliant.bed) and on on Google Cloud Storage at: `gs://gnomad-public/intervals/mm-2-merged.GRCh37_compliant.bed`
+The [segmental duplication](https://storage.googleapis.com/gnomad-public/intervals/hg19_self_chain_split_both.bed) and
+[decoy](https://storage.googleapis.com/gnomad-public/intervals/mm-2-merged.GRCh37_compliant.bed) regions we used are from
+the Global Alliance for Genomics and Health (GA4GH) Benchmarking Team and the Genome in a Bottle Consortium. Information on the source of these files can be found in [GA4GH's benchmarking-tools GitHub repository](https://github.com/ga4gh/benchmarking-tools/tree/d88448a68a79ed322837bc8eb4d5a096a710993d/resources/stratification-bed-files/SegmentalDuplications).
