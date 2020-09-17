@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, ListItem } from '@gnomad/ui'
+import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import { FileList, SectionTitle } from './downloadsPageStyles'
 
@@ -33,6 +33,30 @@ const coverageFiles = [
 
 export default () => (
   <React.Fragment>
+    <section>
+      <h2>Summary</h2>
+      <List>
+        <ListItem>
+          <Link href="#exac-variants">Variants</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#exac-coverage">Coverage</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#exac-constraint">Constraint</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#exac-regional-missense-constraint">Regional Missense Constraint</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#exac-resources">Resources</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#exac-other">Other</Link>
+        </ListItem>
+      </List>
+    </section>
+
     <section>
       <SectionTitle id="exac-variants">Variants</SectionTitle>
       <h3>Exomes</h3>

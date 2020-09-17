@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, ListItem } from '@gnomad/ui'
+import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import { ChromosomeVcfLinks, FileList, SectionTitle } from './downloadsPageStyles'
 
@@ -33,6 +33,18 @@ const genomeChromosomeVcfs = [
 
 export default () => (
   <React.Fragment>
+    <section>
+      <h2>Summary</h2>
+      <List>
+        <ListItem>
+          <Link href="#v3-variants">Variants</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#v3-coverage">Coverage</Link>
+        </ListItem>
+      </List>
+    </section>
+
     <section>
       <SectionTitle id="v3-variants">Variants</SectionTitle>
       <h3>Genomes</h3>
