@@ -9,6 +9,13 @@ Tracks containing the reference sequence and transcripts (based on Gencode data)
 
 ## Reference data
 
+### Reference sequence
+
+The following files are used for the reference sequence:
+
+- GRCh37: `gs://gcp-public-data--broad-references/hg19/v0/Homo_sapiens_assembly19.fasta`
+- GRCh38: `gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta`
+
 ### Transcripts
 
 The read data component uses a BED format [annotation track](https://github.com/igvteam/igv.js/wiki/Annotation-Track)
