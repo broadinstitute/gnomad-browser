@@ -113,9 +113,11 @@ export default () => (
     <p>
       The generation of this call set was funded primarily by the Broad Institute, and the data here
       are released publicly for the benefit of the wider biomedical community. There are no
-      publication restrictions or embargoes on these data. Please cite the{' '}
-      <ExternalLink href="https://broad.io/gnomad_lof">flagship gnomAD paper</ExternalLink> for any
-      use of these data.
+      publication restrictions or embargoes on these data. Please{' '}
+      <ExternalLink href="https://www.nature.com/articles/s41586-020-2308-7#citeas">
+        cite the flagship gnomAD paper
+      </ExternalLink>{' '}
+      for any use of these data.
     </p>
     <p>
       The gnomAD structural variant (SV) v2.1 data set provided on this website spans 10,847 genomes
