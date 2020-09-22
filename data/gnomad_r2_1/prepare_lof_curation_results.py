@@ -13,6 +13,7 @@ FLAG_MAPPING = {
     "Mapping Error": "Mapping Issue",
     "Mnp": "MNV/Frame Restoring Indel",
     "Mnv/Frame Restore": "MNV/Frame Restoring Indel",
+    "MNV": "MNV/Frame Restoring Indel",
     "Weak Essential Splice Rescue": "Weak/Unrecognized Splice Rescue",
     "Weak Exon Conservation": "Weak Gene Conservation",
 }
@@ -20,6 +21,7 @@ FLAG_MAPPING = {
 VERDICT_MAPPING = {
     "conflicting_evidence": "Uncertain",
     "insufficient_evidence": "Uncertain",
+    "uncertain": "Uncertain",
     "likely_lof": "Likely LoF",
     "likely_not_lof": "Likely not LoF",
     "lof": "LoF",
@@ -32,9 +34,9 @@ def import_results(result_paths):
 
     with hl.hadoop_open("/tmp/import_temp.tsv", "w") as temp_output_file:
         writer = csv.writer(temp_output_file, delimiter="\t", quotechar='"')
-        writer.writerow(["chrom", "position", "ref", "alt", "genes", "verdict", "flags"])
+        writer.writerow(["chrom", "position", "ref", "alt", "genes", "verdict", "flags", "project_index"])
 
-        for path in result_paths:
+        for project_index, path in enumerate(result_paths):
             with hl.hadoop_open(path, "r") as input_file:
                 reader = csv.DictReader(input_file)
 
@@ -67,6 +69,7 @@ def import_results(result_paths):
                         ",".join(genes),
                         verdict,
                         ",".join(variant_flags),
+                        project_index,
                     ]
 
                     writer.writerow(output_row)
@@ -82,7 +85,11 @@ def import_results(result_paths):
 
     ds = ds.explode(ds.genes, name="gene_id")
 
-    ds = ds.key_by(ds.locus, ds.alleles, ds.gene_id)
+    ds = ds.group_by(ds.locus, ds.alleles, ds.gene_id).aggregate(
+        result=hl.agg.take(ds.row.drop("locus", "alleles", "gene_id"), 1, ds.project_index)
+    )
+
+    ds = ds.annotate(**ds.result[0]).drop("result", "project_index")
 
     ds = ds.annotate(
         variant_id=hl.delimit([ds.locus.contig, hl.str(ds.locus.position), ds.alleles[0], ds.alleles[1],], "-",),
@@ -99,11 +106,14 @@ def main():
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
+    # Projects are ranked in order of priority. If a variant/gene pair appears in multiple projects, then the
+    # result from the first project in this list will be used.
     results = [
         "gs://gnomad-public/truth-sets/source/lof-curation/AP4_curation_results.csv",
         "gs://gnomad-public/truth-sets/source/lof-curation/FIG4_curation_results.csv",
         "gs://gnomad-public/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv",
         "gs://gnomad-public/truth-sets/source/lof-curation/MCOLN1_curation_results.csv",
+        "gs://gnomad-public/truth-sets/source/lof-curation/all_homozygous_curation_results.csv",
     ]
 
     hl.init(log=os.devnull, quiet=True)
