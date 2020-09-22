@@ -56,6 +56,7 @@ const ReadDataPropType = PropTypes.shape({
 class GnomadReadData extends Component {
   static propTypes = {
     children: PropTypes.node,
+    referenceGenome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
@@ -242,7 +243,7 @@ class GnomadReadData extends Component {
   }
 
   render() {
-    const { children, chrom, start, stop, showHemizygotes } = this.props
+    const { children, referenceGenome, chrom, start, stop, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -254,23 +255,42 @@ class GnomadReadData extends Component {
 
     const locus = `${chrom}:${start}-${stop}`
 
-    const browserConfig = {
-      locus,
-      reference: {
-        fastaURL: '/reads/reference/hg19.fa',
-        id: 'hg19',
-        indexURL: '/reads/reference/hg19.fa.fai',
-      },
-      tracks: [
-        {
-          displayMode: 'SQUISHED',
-          indexURL: '/reads/reference/gencode.v19.sorted.bed.idx',
-          name: 'gencode v19',
-          removable: false,
-          url: '/reads/reference/gencode.v19.sorted.bed',
-        },
-      ],
-    }
+    const browserConfig =
+      referenceGenome === 'GRCh37'
+        ? {
+            locus,
+            reference: {
+              fastaURL: '/reads/reference/Homo_sapiens_assembly19.fasta',
+              id: 'hg19',
+              indexURL: '/reads/reference/Homo_sapiens_assembly19.fasta.fai',
+            },
+            tracks: [
+              {
+                displayMode: 'SQUISHED',
+                indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
+                name: 'gencode v19',
+                removable: false,
+                url: '/reads/reference/gencode.v19.bed.gz',
+              },
+            ],
+          }
+        : {
+            locus,
+            reference: {
+              fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
+              id: 'hg38',
+              indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+            },
+            tracks: [
+              {
+                displayMode: 'SQUISHED',
+                indexURL: '/reads/reference/gencode.v29.bed.gz.tbi',
+                name: 'gencode v29',
+                removable: false,
+                url: '/reads/reference/gencode.v29.bed.gz',
+              },
+            ],
+          }
 
     return (
       <div>
@@ -456,6 +476,9 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
 
         return (
           <GnomadReadData
+            referenceGenome={
+              readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2_1' ? 'GRCh37' : 'GRCh38'
+            }
             chrom={chrom}
             start={start}
             stop={stop}
