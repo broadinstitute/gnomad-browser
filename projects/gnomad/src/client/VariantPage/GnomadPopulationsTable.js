@@ -17,28 +17,18 @@ const POPULATION_NAMES = {
   OTH: 'Other',
   SAS: 'South Asian',
 
-  FEMALE: 'Female',
-  MALE: 'Male',
-
   // EAS subpopulations
-  JPN: 'Japanese',
-  KOR: 'Korean',
-  OEA: 'Other East Asian',
+  EAS_JPN: 'Japanese',
+  EAS_KOR: 'Korean',
+  EAS_OEA: 'Other East Asian',
 
   // NFE subpopulations
-  BGR: 'Bulgarian',
-  EST: 'Estonian',
-  NWE: 'North-western European',
-  ONF: 'Other non-Finnish European',
-  SEU: 'Southern European',
-  SWE: 'Swedish',
-}
-
-const POPULATIONS = ['AFR', 'AMI', 'AMR', 'ASJ', 'EAS', 'FIN', 'NFE', 'OTH', 'SAS']
-
-const SUBPOPULATIONS = {
-  EAS: ['JPN', 'KOR', 'OEA'],
-  NFE: ['BGR', 'EST', 'NWE', 'ONF', 'SEU', 'SWE'],
+  NFE_BGR: 'Bulgarian',
+  NFE_EST: 'Estonian',
+  NFE_NWE: 'North-western European',
+  NFE_ONF: 'Other non-Finnish European',
+  NFE_SEU: 'Southern European',
+  NFE_SWE: 'Swedish',
 }
 
 const ControlSection = styled.div`
@@ -49,57 +39,82 @@ const ControlSection = styled.div`
   }
 `
 
-const nestPopulations = populations => {
-  const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
+/**
+ * Merge frequency information for multiple populations with the same ID.
+ * This is used to add exome and genome population frequencies.
+ *
+ * @param {Object[]} populations Array of populations.
+ */
+const mergePopulations = populations => {
+  const indices = {}
+  const merged = []
 
-  const ancestryPopulations = [
-    ...POPULATIONS.filter(popId => indices[popId] !== undefined).map(popId => ({
-      ...populations[indices[popId]],
-      subpopulations: [...(SUBPOPULATIONS[popId] || []), 'FEMALE', 'MALE']
-        .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
-        .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
-    })),
-  ]
+  for (let i = 0; i < populations.length; i += 1) {
+    const pop = populations[i]
 
-  // ExAC variants do not contain this data
-  if (indices.FEMALE && indices.MALE) {
-    return [...ancestryPopulations, populations[indices.FEMALE], populations[indices.MALE]]
+    const popIndex = indices[pop.id]
+    if (popIndex === undefined) {
+      merged.push({ ...pop })
+      indices[pop.id] = merged.length - 1
+    } else {
+      merged[popIndex].ac += pop.ac
+      merged[popIndex].an += pop.an
+      if (pop.ac_hemi !== null) {
+        merged[popIndex].ac_hemi += pop.ac_hemi
+      }
+      merged[popIndex].ac_hom += pop.ac_hom
+    }
   }
-  return ancestryPopulations
+
+  return merged
 }
 
-const combinePopulations = populations => {
-  const combined = Object.values(
-    populations.reduce((acc, pop) => {
-      if (!acc[pop.id]) {
-        acc[pop.id] = {
-          id: pop.id,
-          name: pop.id.includes('_')
-            ? POPULATION_NAMES[pop.id.split('_')[1]]
-            : POPULATION_NAMES[pop.id],
-          ac: 0,
-          an: 0,
-          ac_hemi: null,
-          ac_hom: 0,
-          subpopulations: [],
-        }
-      }
-      acc[pop.id].ac += pop.ac
-      acc[pop.id].an += pop.an
-      if (pop.ac_hemi !== null) {
-        acc[pop.id].ac_hemi += pop.ac_hemi
-      }
-      acc[pop.id].ac_hom += pop.ac_hom
+const addPopulationNames = populations => {
+  return populations.map(pop => {
+    let name
+    if (pop.id.includes('FEMALE')) {
+      name = 'Female'
+    } else if (pop.id.includes('MALE')) {
+      name = 'Male'
+    } else {
+      name = POPULATION_NAMES[pop.id]
+    }
+    return { ...pop, name }
+  })
+}
 
-      if (pop.subpopulations) {
-        acc[pop.id].subpopulations = combinePopulations(
-          acc[pop.id].subpopulations.concat(pop.subpopulations)
-        )
+const nestPopulations = populations => {
+  const popIndices = []
+  const subpopulations = {}
+
+  for (let i = 0; i < populations.length; i += 1) {
+    const pop = populations[i]
+
+    // IDs are one of:
+    // * pop
+    // * pop_subpop
+    // * pop_sex
+    // * sex
+    const divisions = pop.id.split('_')
+    if (divisions.length === 1) {
+      popIndices.push(i)
+    } else {
+      const parentPop = divisions[0]
+      if (subpopulations[parentPop] === undefined) {
+        subpopulations[parentPop] = [{ ...pop }]
+      } else {
+        subpopulations[parentPop].push({ ...pop })
       }
-      return acc
-    }, {})
-  )
-  return combined
+    }
+  }
+
+  return popIndices.map(index => {
+    const pop = populations[index]
+    return {
+      ...pop,
+      subpopulations: subpopulations[pop.id],
+    }
+  })
 }
 
 export class GnomadPopulationsTable extends Component {
@@ -146,18 +161,18 @@ export class GnomadPopulationsTable extends Component {
 
     let includedPopulations = []
     if (includeExomes) {
-      includedPopulations = includedPopulations.concat(nestPopulations(exomePopulations))
+      includedPopulations = includedPopulations.concat(exomePopulations)
     }
     if (includeGenomes) {
-      includedPopulations = includedPopulations.concat(nestPopulations(genomePopulations))
+      includedPopulations = includedPopulations.concat(genomePopulations)
     }
 
-    const combinedPopulations = combinePopulations(includedPopulations)
+    const populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
 
     return (
       <div>
         <PopulationsTable
-          populations={combinedPopulations}
+          populations={populations}
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
