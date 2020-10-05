@@ -59,10 +59,10 @@ export default () => (
       The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate
       and harmonize exome and genome sequencing data from a variety of large-scale sequencing
       projects, and to make summary data available for the wider scientific community. The project
-      is overseen by co-directors Heidi Rehm and Mark Daly, and council members Daniel MacArthur,
-      Benjamin Neale, Michael Talkowski, Anne O&apos;Donnell-Luria, Grace Tiao, Matthew Solomonson,
-      and Kat Tarasova. In its first release, which contained exclusively exome data, it was known
-      as the Exome Aggregation Consortium (ExAC).
+      is overseen by co-directors Heidi Rehm and Mark Daly, and steering committee members Daniel
+      MacArthur, Benjamin Neale, Michael Talkowski, Anne O&apos;Donnell-Luria, Grace Tiao, Matthew
+      Solomonson, and Kat Tarasova. In its first release, which contained exclusively exome data, it
+      was known as the Exome Aggregation Consortium (ExAC).
     </p>
     <p>
       The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
@@ -532,8 +532,8 @@ export default () => (
           <li>Steven Ferriera</li>
           <li>Stacey Gabriel</li>
         </ContributorList>
-        <h3 id="gnomad-council">gnomAD Council</h3>
-        <ContributorList aria-labelledby="gnomad-council">
+        <h3 id="steering-committee">Steering Committee</h3>
+        <ContributorList aria-labelledby="steering-committee">
           <li>
             <strong>Mark Daly</strong>
           </li>
