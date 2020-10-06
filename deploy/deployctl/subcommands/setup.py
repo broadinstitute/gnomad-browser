@@ -46,9 +46,7 @@ def create_cluster_service_account() -> None:
         # Deleting and recreating a service account with the same name can lead to unexpected behavior
         # https://cloud.google.com/iam/docs/understanding-service-accounts#deleting_and_recreating_service_accounts
         gcloud(
-            ["iam", "service-accounts", "describe", config.gke_service_account_full_name],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            ["iam", "service-accounts", "describe", config.gke_service_account_full_name], stderr=subprocess.DEVNULL,
         )
         print("Service account already exists")
         return
