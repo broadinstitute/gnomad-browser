@@ -3,12 +3,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { RegionViewer } from '@gnomad/region-viewer'
-import { GenesTrack } from '@gnomad/track-genes'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import EditRegion from './EditRegion'
+import GenesInRegionTrack from './GenesInRegionTrack'
 import RegionControls from './RegionControls'
 import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
@@ -39,8 +39,8 @@ const RegionControlsWrapper = styled.div`
 `
 
 // eslint-disable-next-line no-shadow
-const RegionPage = ({ datasetId, history, region, regionId, width }) => {
-  const { chrom, start, stop, genes } = region
+const RegionPage = ({ datasetId, history, region, width }) => {
+  const { chrom, start, stop } = region
 
   const regionViewerRegions = [
     {
@@ -59,12 +59,12 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
   return (
     <TrackPage>
       <TrackPageSection>
-        <DocumentTitle title={regionId} />
+        <DocumentTitle title={`${region.chrom}-${region.start}-${region.stop}`} />
         <GnomadPageHeading
           extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
           selectedDataset={datasetId}
         >
-          {regionId}
+          {`${region.chrom}-${region.start}-${region.stop}`}
         </GnomadPageHeading>
         <RegionInfoColumnWrapper>
           <RegionInfo region={region} />
@@ -90,9 +90,9 @@ const RegionPage = ({ datasetId, history, region, regionId, width }) => {
           stop={stop}
         />
 
-        <GenesTrack
-          genes={genes}
-          onGeneClick={gene => {
+        <GenesInRegionTrack
+          region={region}
+          onClickGene={gene => {
             history.push(`/gene/${gene.gene_id}`)
           }}
         />
@@ -121,9 +121,7 @@ RegionPage.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-    genes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
-  regionId: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
 }
 
