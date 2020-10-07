@@ -14,7 +14,11 @@ async def init_app(*args) -> web.Application:  # pylint: disable=unused-argument
         spark_conf=settings.HAIL_SPARK_CONF,
     )
 
-    app = web.Application(debug=settings.DEBUG, middlewares=[exception_handler_middleware])
+    app = web.Application(
+        debug=settings.DEBUG,
+        handler_args={"max_line_size": 32768},  # max_line_size is needed to support URLs with long lists of intervals
+        middlewares=[exception_handler_middleware],
+    )
     app.add_routes(routes)
 
     return app
