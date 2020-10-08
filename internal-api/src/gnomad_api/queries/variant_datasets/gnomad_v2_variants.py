@@ -39,8 +39,8 @@ def get_variant_by_id(variant_id: VariantId, dataset_id: str):
     ds = ds.filter(ds.variant_id == str(variant_id))
 
     ds = ds.annotate(
-        exome=ds.exome.annotate(**ds.exome.freq[subset]),
-        genome=ds.genome.annotate(**ds.genome.freq[genome_subset]),
+        exome=ds.exome.annotate(**ds.exome.freq[subset]).drop("freq"),
+        genome=ds.genome.annotate(**ds.genome.freq[genome_subset]).drop("freq"),
         colocated_variants=ds.colocated_variants[subset],
     )
 
@@ -91,10 +91,10 @@ def get_variants_by_gene(gene_id: str, dataset_id: str, intervals: typing.List[h
     )
 
     ds = ds.annotate(
-        exome=ds.exome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        exome=ds.exome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.exome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
-        genome=ds.genome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        genome=ds.genome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.genome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
     )
@@ -142,10 +142,10 @@ def get_variants_by_region(region_id: RegionId, dataset_id: str):
     )
 
     ds = ds.annotate(
-        exome=ds.exome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        exome=ds.exome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.exome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
-        genome=ds.genome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        genome=ds.genome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.genome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
     )
@@ -186,10 +186,10 @@ def get_variants_by_transcript(transcript_id: str, dataset_id: str, intervals: t
     )
 
     ds = ds.annotate(
-        exome=ds.exome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        exome=ds.exome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.exome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
-        genome=ds.genome.drop("age_distribution", "quality_metrics", "faf95", "faf99").annotate(
+        genome=ds.genome.drop("freq", "age_distribution", "quality_metrics", "faf95", "faf99").annotate(
             populations=ds.genome.populations.filter(lambda pop: ~pop.id.contains("_"))
         ),
     )
