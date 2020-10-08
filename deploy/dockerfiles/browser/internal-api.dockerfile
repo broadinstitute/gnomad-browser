@@ -33,6 +33,6 @@ CMD ["gunicorn", \
   "--access-logfile", "-", \
   "--error-logfile", "-", \
   "--timeout", "60", \
-  "--workers", "2", "--worker-class", "aiohttp.GunicornWebWorker", \
+  "--workers", "3", "--worker-class", "aiohttp.GunicornWebWorker", \
   "--worker-tmp-dir", "/dev/shm", \
   "gnomad_api.app:init_app"]

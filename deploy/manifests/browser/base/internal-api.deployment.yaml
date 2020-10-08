@@ -6,7 +6,7 @@ metadata:
   labels:
     component: gnomad-internal-api
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       name: gnomad-internal-api
@@ -24,17 +24,17 @@ spec:
             - name: DATA_DIRECTORY
               value: /data/data
             - name: HAIL_SPARK_CONF
-              value: spark.driver.memory:3g
+              value: spark.driver.memory:2g
           ports:
             - name: http
               containerPort: 8000
           resources:
             requests:
-              cpu: '1'
-              memory: '3Gi'
+              cpu: '3'
+              memory: '9Gi'
             limits:
-              cpu: '1.25'
-              memory: '3.75Gi'
+              cpu: '3.5'
+              memory: '12Gi'
           readinessProbe:
             httpGet:
               path: /health/ready
