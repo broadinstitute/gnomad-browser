@@ -206,7 +206,10 @@ def main(argv: typing.List[str]) -> None:
         create_configmap()
 
         print("Creating node pools...")
-        create_node_pool("hail", ["--num-nodes=1", "--machine-type=e2-standard-4"])
+        create_node_pool(
+            "hail",
+            ["--num-nodes=1", "--machine-type=e2-standard-4", "--enable-autoscaling", "--min-nodes=1", "--max-nodes=5"],
+        )
 
         create_node_pool("redis", ["--num-nodes=1", "--machine-type=e2-highmem-8"])
 
