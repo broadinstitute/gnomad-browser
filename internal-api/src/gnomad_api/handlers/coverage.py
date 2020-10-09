@@ -4,41 +4,6 @@ from ..exceptions import ValidationError
 from ..parameters.parsing import parse_reference_genome, parse_region_id
 from ..queries.coverage import get_coverage_for_region, get_feature_coverage
 from ..responses import json_response
-from ..sources import (
-    GNOMAD_V3_GENOME_COVERAGE,
-    GNOMAD_V3_GENE_FEATURE_COVERAGE,
-    GNOMAD_V3_TRANSCRIPT_FEATURE_COVERAGE,
-    GNOMAD_V2_EXOME_COVERAGE,
-    GNOMAD_V2_GENOME_COVERAGE,
-    GNOMAD_V2_GENE_FEATURE_COVERAGE,
-    GNOMAD_V2_TRANSCRIPT_FEATURE_COVERAGE,
-    EXAC_EXOME_COVERAGE,
-    EXAC_GENE_FEATURE_COVERAGE,
-    EXAC_TRANSCRIPT_FEATURE_COVERAGE,
-)
-
-
-EXOME_COVERAGE_TABLES = {
-    "gnomad_r2_1": GNOMAD_V2_EXOME_COVERAGE,
-    "exac": EXAC_EXOME_COVERAGE,
-}
-
-GENOME_COVERAGE_TABLES = {
-    "gnomad_r2_1": GNOMAD_V2_GENOME_COVERAGE,
-    "gnomad_r3": GNOMAD_V3_GENOME_COVERAGE,
-}
-
-GENE_FEATURE_COVERAGE_TABLES = {
-    "gnomad_r3": GNOMAD_V3_GENE_FEATURE_COVERAGE,
-    "gnomad_r2_1": GNOMAD_V2_GENE_FEATURE_COVERAGE,
-    "exac": EXAC_GENE_FEATURE_COVERAGE,
-}
-
-TRANSCRIPT_FEATURE_COVERAGE_TABLES = {
-    "gnomad_r3": GNOMAD_V3_TRANSCRIPT_FEATURE_COVERAGE,
-    "gnomad_r2_1": GNOMAD_V2_TRANSCRIPT_FEATURE_COVERAGE,
-    "exac": EXAC_TRANSCRIPT_FEATURE_COVERAGE,
-}
 
 
 DATASET_REFERENCE_GENOMES = {
@@ -67,7 +32,7 @@ def exome_coverage_in_region_handler(request: Request) -> Response:
         raise ValidationError(f"{DATASET_LABELS[dataset]} coverage is not available on {reference_genome}")
 
     try:
-        table = EXOME_COVERAGE_TABLES[dataset]
+        table = request.app["exome_coverage"][dataset]
     except KeyError:
         coverage = []
     else:
@@ -88,7 +53,7 @@ def genome_coverage_in_region_handler(request: Request) -> Response:
         raise ValidationError(f"{DATASET_LABELS[dataset]} coverage is not available on {reference_genome}")
 
     try:
-        table = GENOME_COVERAGE_TABLES[dataset]
+        table = request.app["genome_coverage"][dataset]
     except KeyError:
         coverage = []
     else:
@@ -109,7 +74,7 @@ def coverage_in_gene_handler(request: Request) -> Response:
         raise ValidationError(f"{DATASET_LABELS[dataset]} coverage is not available on {reference_genome}")
 
     try:
-        table = GENE_FEATURE_COVERAGE_TABLES[dataset]
+        table = request.app["gene_feature_coverage"][dataset]
     except KeyError:
         coverage = {"exome": [], "genome": []}
     else:
@@ -130,7 +95,7 @@ def coverage_in_transcript_handler(request: Request) -> Response:
         raise ValidationError(f"{DATASET_LABELS[dataset]} coverage is not available on {reference_genome}")
 
     try:
-        table = TRANSCRIPT_FEATURE_COVERAGE_TABLES[dataset]
+        table = request.app["transcript_feature_coverage"][dataset]
     except KeyError:
         coverage = {"exome": [], "genome": []}
     else:

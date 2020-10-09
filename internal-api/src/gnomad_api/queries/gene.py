@@ -3,17 +3,10 @@ import json
 import hail as hl
 
 from ..parameters.types import ReferenceGenome, RegionId
-from ..sources import GRCH37_GENES, GRCH38_GENES, GENE_SEARCH_TERMS
+from ..sources import GENE_SEARCH_TERMS
 
 
-GENE_SOURCES = {
-    "GRCh37": GRCH37_GENES,
-    "GRCh38": GRCH38_GENES,
-}
-
-
-def get_gene_by_id(gene_id: str, reference_genome: ReferenceGenome):
-    ds = hl.read_table(GENE_SOURCES[reference_genome])
+def get_gene_by_id(ds: hl.Table, gene_id: str, reference_genome: ReferenceGenome):
     ds = ds.filter(ds.gene_id == gene_id)
     gene = ds.collect()
 
@@ -23,9 +16,7 @@ def get_gene_by_id(gene_id: str, reference_genome: ReferenceGenome):
     return gene[0].annotate(reference_genome=reference_genome)
 
 
-def get_genes_in_region(region_id: RegionId, reference_genome: ReferenceGenome):
-    ds = hl.read_table(GENE_SOURCES[reference_genome])
-
+def get_genes_in_region(ds: hl.Table,  region_id: RegionId, reference_genome: ReferenceGenome):
     region_interval = hl.locus_interval(
         region_id.chrom if reference_genome == "GRCh37" else "chr" + region_id.chrom,
         region_id.start,

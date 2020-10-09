@@ -6,13 +6,12 @@ from ..parameters.types import ReferenceGenome, RegionId
 from .helpers import collect
 
 
-def get_coverage_for_region(coverage_table: str, region_id: RegionId, reference_genome: ReferenceGenome):
+def get_coverage_for_region(coverage: hl.Table, region_id: RegionId, reference_genome: ReferenceGenome):
     n_bins = 1000
 
     region_size = region_id.stop - region_id.start
     bin_size = math.ceil(region_size / n_bins)
 
-    coverage = hl.read_table(coverage_table)
     coverage = coverage.select(
         "mean",
         "median",
@@ -70,8 +69,7 @@ def get_coverage_for_region(coverage_table: str, region_id: RegionId, reference_
     return collect(ds)
 
 
-def get_feature_coverage(feature_coverage_table: str, feature_id: str):
-    ds = hl.read_table(feature_coverage_table)
+def get_feature_coverage(ds: hl.Table, feature_id: str):
     ds = ds.filter(ds.feature_id == feature_id)
     coverage = ds.collect()
 

@@ -6,10 +6,11 @@ from ..responses import json_response
 
 
 def gene_handler(request: Request) -> Response:
+    gene_tables = request.app["gene_tables"]
     reference_genome = parse_reference_genome(request.match_info["reference_genome"])
     gene_id = request.match_info["gene_id"]
 
-    gene = get_gene_by_id(gene_id, reference_genome)
+    gene = get_gene_by_id(gene_tables[reference_genome], gene_id, reference_genome)
 
     if not gene:
         raise HTTPNotFound(reason="Gene not found")
