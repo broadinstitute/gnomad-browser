@@ -14,7 +14,7 @@ def get_flags(variant):
 
     all_consequences = variant.get("transcript_consequences", [])
     lof_consequences = [csq for csq in all_consequences if csq["lof"]]
-    most_severe_consequence = all_consequences[0]
+    most_severe_consequence = all_consequences[0] if all_consequences else None
 
     if lof_consequences:
         # In some cases, a coding transcript with a non-pLoF VEP annotation may be ranked higher
