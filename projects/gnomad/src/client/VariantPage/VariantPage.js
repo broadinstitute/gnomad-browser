@@ -96,7 +96,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
         </p>
       )}
 
-      {variant.colocatedVariants.length > 0 && (
+      {variant.colocatedVariants && variant.colocatedVariants.length > 0 && (
         <div>
           <p>
             <strong>This variant is multiallelic. Other alt alleles are:</strong>
@@ -207,7 +207,7 @@ VariantPageContent.propTypes = {
     variantId: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    colocatedVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+    colocatedVariants: PropTypes.arrayOf(PropTypes.string),
     multiNucleotideVariants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
