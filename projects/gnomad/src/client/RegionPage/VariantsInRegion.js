@@ -32,6 +32,10 @@ class VariantsInRegion extends Component {
     width: PropTypes.number.isRequired,
   }
 
+  static defaultProps = {
+    clinvarVariants: null,
+  }
+  
   constructor(props) {
     super(props)
 
