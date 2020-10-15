@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ExternalLink } from '@gnomad/ui'
 
-import Query from '../Query'
+import { BaseQuery } from '../Query'
 
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
@@ -20,7 +20,7 @@ const VariantTranscriptConsequences = ({ variant }) => {
         This variant falls on {numTranscripts} transcript{numTranscripts !== 1 && 's'} in {numGenes}{' '}
         gene{numGenes !== 1 && 's'}.
       </p>
-      <Query
+      <BaseQuery
         query={`{\n${geneIds
           .sort()
           .map(
@@ -86,7 +86,7 @@ const VariantTranscriptConsequences = ({ variant }) => {
             </React.Fragment>
           )
         }}
-      </Query>
+      </BaseQuery>
     </div>
   )
 }

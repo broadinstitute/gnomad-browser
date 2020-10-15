@@ -91,7 +91,7 @@ const regionType = extendObjectType(BaseRegionType, {
         const numVariantsInRegion = await countClinvarVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
           throw new UserVisibleError(
-            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
+            'This region has too many variants to display. Select a smaller region to view variants.'
           )
         }
 
@@ -138,7 +138,7 @@ const regionType = extendObjectType(BaseRegionType, {
         const numVariantsInRegion = await countVariantsInRegion(ctx, obj)
         if (numVariantsInRegion > FETCH_INDIVIDUAL_VARIANTS_LIMIT) {
           throw new UserVisibleError(
-            `Individual variants can only be returned for regions with fewer than ${FETCH_INDIVIDUAL_VARIANTS_LIMIT} variants`
+            'This region has too many variants to display. Select a smaller region to view variants.'
           )
         }
 

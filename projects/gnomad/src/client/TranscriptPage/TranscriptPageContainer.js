@@ -3,7 +3,6 @@ import React from 'react'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
 import TranscriptPage from './TranscriptPage'
 
@@ -227,26 +226,11 @@ const TranscriptPageContainer = ({ datasetId, transcriptId, ...otherProps }) => 
   <Query
     query={query}
     variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
+    loadingMessage="Loading transcript"
+    errorMessage="Unable to load transcript"
+    success={data => data.transcript}
   >
-    {({ data, error, graphQLErrors, loading }) => {
-      if (loading) {
-        return <StatusMessage>Loading transcript...</StatusMessage>
-      }
-
-      if (error || !data) {
-        return <StatusMessage>Unable to load transcript</StatusMessage>
-      }
-
-      if (!data.transcript) {
-        return (
-          <StatusMessage>
-            {graphQLErrors
-              ? graphQLErrors.map(e => e.message).join(', ')
-              : 'Unable to load transcript'}
-          </StatusMessage>
-        )
-      }
-
+    {({ data }) => {
       return (
         <AutosizedTranscriptPage
           {...otherProps}

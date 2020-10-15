@@ -6,7 +6,6 @@ import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 
 const coverageQuery = `
 query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
@@ -65,21 +64,20 @@ const RegionCoverageTrack = ({
         includeExomeCoverage,
         includeGenomeCoverage,
       }}
+      loadingMessage="Loading coverage"
+      errorMessage="Unable to load coverage"
+      success={data => {
+        if (!data.region || !data.region.coverage) {
+          return false
+        }
+        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : true
+        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : true
+        return exomeCoverage || genomeCoverage
+      }}
     >
-      {({ data, error, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading coverage...</StatusMessage>
-        }
-        if (error) {
-          return <StatusMessage>Unable to load coverage</StatusMessage>
-        }
-
+      {({ data }) => {
         const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : null
         const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : null
-
-        if (!exomeCoverage && !genomeCoverage) {
-          return <StatusMessage>Unable to load coverage</StatusMessage>
-        }
 
         const coverageConfig =
           datasetId === 'exac'

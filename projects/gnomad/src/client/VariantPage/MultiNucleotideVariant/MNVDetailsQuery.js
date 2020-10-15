@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import Query from '../../Query'
+import { BaseQuery } from '../../Query'
 
 const query = `
 query MultiNucleotideVariant($variantId: String!, $datasetId: DatasetId!) {
@@ -60,9 +60,9 @@ query MultiNucleotideVariant($variantId: String!, $datasetId: DatasetId!) {
 `
 
 const MNVDetailsQuery = ({ children, datasetId, variantId }) => (
-  <Query query={query} variables={{ datasetId, variantId }}>
+  <BaseQuery query={query} variables={{ datasetId, variantId }}>
     {children}
-  </Query>
+  </BaseQuery>
 )
 
 MNVDetailsQuery.propTypes = {

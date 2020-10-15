@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
-import Query from '../Query'
+import { BaseQuery } from '../Query'
 
 const clinvarVariantQuery = `
 query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
@@ -34,7 +34,7 @@ export const ReferenceList = ({ variant }) => {
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
-      <Query
+      <BaseQuery
         query={clinvarVariantQuery}
         variables={{ variantId: variant.variantId, referenceGenome: variant.reference_genome }}
       >
@@ -53,7 +53,7 @@ export const ReferenceList = ({ variant }) => {
             </ListItem>
           )
         }}
-      </Query>
+      </BaseQuery>
     </List>
   )
 }

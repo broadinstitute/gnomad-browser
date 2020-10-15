@@ -3,7 +3,6 @@ import React from 'react'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
 const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
@@ -41,16 +40,11 @@ const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
         stop: region.stop,
         referenceGenome: referenceGenomeForDataset(datasetId),
       }}
+      loadingMessage="Loading variants"
+      errorMessage="Unable to load variants"
+      success={data => data.region && data.region.structural_variants}
     >
-      {({ data, error, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading variants...</StatusMessage>
-        }
-
-        if (error || !((data || {}).region || {}).structural_variants) {
-          return <StatusMessage>Failed to load variants</StatusMessage>
-        }
-
+      {({ data }) => {
         const regionId = `${region.chrom}-${region.start}-${region.stop}`
 
         return (

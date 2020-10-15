@@ -4,7 +4,6 @@ import React from 'react'
 import { GenesTrack } from '@gnomad/track-genes'
 
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 
 const query = `
   query GenesInRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
@@ -34,15 +33,11 @@ const GenesInRegionTrack = ({ region, onClickGene }) => {
         stop: region.stop,
         referenceGenome: region.reference_genome,
       }}
+      loadingMessage="Loading genes"
+      errorMessage="Unable to load genes"
+      success={data => data.region && data.region.genes}
     >
-      {({ data, error, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading genes...</StatusMessage>
-        }
-        if (error || !data || !data.region) {
-          return <StatusMessage>Unable to load genes</StatusMessage>
-        }
-
+      {({ data }) => {
         return <GenesTrack genes={data.region.genes} onGeneClick={onClickGene} />
       }}
     </Query>

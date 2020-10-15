@@ -10,7 +10,6 @@ import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
@@ -321,16 +320,11 @@ const ConnectedVariantsInTranscript = ({ datasetId, transcript, ...otherProps })
       transcriptId: transcript.transcript_id,
       referenceGenome: referenceGenomeForDataset(datasetId),
     }}
+    loadingMessage="Loading variants"
+    errorMessage="Unable to load variants"
+    success={data => data.transcript && data.transcript.variants}
   >
-    {({ data, error, loading }) => {
-      if (loading) {
-        return <StatusMessage>Loading variants...</StatusMessage>
-      }
-
-      if (error || !((data || {}).transcript || {}).variants) {
-        return <StatusMessage>Failed to load variants</StatusMessage>
-      }
-
+    {({ data }) => {
       return (
         <VariantsInTranscript
           {...otherProps}

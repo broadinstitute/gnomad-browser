@@ -9,7 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
-import Query from '../Query'
+import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
@@ -226,7 +226,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
   return (
     <Page>
       <DocumentTitle title={variantIdProp || rsId} />
-      <Query key={datasetId} query={variantQuery} variables={queryVariables}>
+      <BaseQuery key={datasetId} query={variantQuery} variables={queryVariables}>
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
           if (loading) {
@@ -244,7 +244,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
               pageContent = (
                 <StatusMessage>
                   {graphQLErrors && graphQLErrors.length
-                    ? graphQLErrors.map(err => err.message).join(', ')
+                    ? Array.from(new Set(graphQLErrors.map(e => e.message))).join(', ')
                     : 'Unable to load variant'}
                 </StatusMessage>
               )
@@ -281,7 +281,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
             </React.Fragment>
           )
         }}
-      </Query>
+      </BaseQuery>
     </Page>
   )
 }
