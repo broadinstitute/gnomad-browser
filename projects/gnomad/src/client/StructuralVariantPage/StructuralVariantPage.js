@@ -7,7 +7,6 @@ import { Page } from '@gnomad/ui'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
 import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
@@ -173,26 +172,14 @@ const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
   `
 
   return (
-    <Query query={query} variables={{ datasetId, variantId }}>
-      {({ data, error, graphQLErrors, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading variant...</StatusMessage>
-        }
-
-        if (error || !data) {
-          return <StatusMessage>Unable to load variant</StatusMessage>
-        }
-
-        if (!data.structural_variant) {
-          return (
-            <StatusMessage>
-              {graphQLErrors
-                ? graphQLErrors.map(e => e.message).join(', ')
-                : 'Unable to load variant'}
-            </StatusMessage>
-          )
-        }
-
+    <Query
+      query={query}
+      variables={{ datasetId, variantId }}
+      loadingMessage="Loading variant"
+      errorMessage="Unable to load variant"
+      success={data => data.structural_variant}
+    >
+      {({ data }) => {
         return (
           <StructuralVariantPage
             {...rest}

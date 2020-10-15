@@ -1,6 +1,8 @@
 import gqlFetch from 'graphql-fetch'
 import PropTypes from 'prop-types'
-import { Component } from 'react'
+import React, { Component } from 'react'
+
+import StatusMessage from './StatusMessage'
 
 const areVariablesEqual = (variables, otherVariables) => {
   const keys = Object.keys(variables)
@@ -36,7 +38,7 @@ const cancelable = promise => {
   }
 }
 
-class Query extends Component {
+export class BaseQuery extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired,
@@ -116,6 +118,51 @@ class Query extends Component {
     const { children } = this.props
     return children(this.state)
   }
+}
+
+const Query = ({ children, errorMessage, loadingMessage, query, success, url, variables }) => {
+  return (
+    <BaseQuery query={query} url={url} variables={variables}>
+      {({ data, error, graphQLErrors, loading }) => {
+        if (loading) {
+          return <StatusMessage>{loadingMessage}</StatusMessage>
+        }
+        if (error) {
+          return <StatusMessage>{errorMessage}</StatusMessage>
+        }
+
+        if (!data || !success(data)) {
+          return (
+            <StatusMessage>
+              {graphQLErrors && graphQLErrors.length
+                ? Array.from(new Set(graphQLErrors.map(e => e.message))).join(', ')
+                : errorMessage}
+            </StatusMessage>
+          )
+        }
+
+        return children({ data })
+      }}
+    </BaseQuery>
+  )
+}
+
+Query.propTypes = {
+  children: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+  loadingMessage: PropTypes.string,
+  query: PropTypes.string.isRequired,
+  success: PropTypes.func,
+  url: PropTypes.string,
+  variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+}
+
+Query.defaultProps = {
+  errorMessage: 'Error',
+  loadingMessage: 'Loading',
+  success: () => true,
+  url: '/api/',
+  variables: {},
 }
 
 export default Query

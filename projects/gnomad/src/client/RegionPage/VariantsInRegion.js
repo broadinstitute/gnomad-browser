@@ -8,7 +8,6 @@ import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from '../VariantList/ExportVariantsButton'
 import filterVariants from '../VariantList/filterVariants'
@@ -314,36 +313,11 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
       stop: region.stop,
       referenceGenome: referenceGenomeForDataset(datasetId),
     }}
+    loadingMessage="Loading variants"
+    errorMessage="Unable to load variants"
+    success={data => data.region && data.region.variants}
   >
-    {({ data, error, graphQLErrors, loading }) => {
-      if (loading) {
-        return <StatusMessage>Loading variants...</StatusMessage>
-      }
-
-      if (error || !(data || {}).region) {
-        return <StatusMessage>Failed to load variants</StatusMessage>
-      }
-
-      const tooManyVariantsError = /Individual variants can only be returned for regions with fewer than \d+ variants/
-      const tooManyVariants =
-        graphQLErrors && graphQLErrors.some(err => tooManyVariantsError.test(err.message))
-
-      if (tooManyVariants) {
-        return (
-          <TrackPageSection>
-            <StatusMessage>
-              This region has too many variants to display.
-              <br />
-              To view individual variants, select a smaller region.
-            </StatusMessage>
-          </TrackPageSection>
-        )
-      }
-
-      if (!data.region.variants) {
-        return <StatusMessage>Failed to load variants</StatusMessage>
-      }
-
+    {({ data }) => {
       return (
         <VariantsInRegion
           clinvarVariants={data.region.clinvar_variants}

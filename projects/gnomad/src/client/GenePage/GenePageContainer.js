@@ -3,7 +3,6 @@ import React from 'react'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
 import GenePage from './GenePage'
 
@@ -217,24 +216,14 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol, ...otherProps }) => {
   variables.referenceGenome = referenceGenomeForDataset(datasetId)
 
   return (
-    <Query query={query} variables={variables}>
-      {({ data, error, graphQLErrors, loading }) => {
-        if (loading) {
-          return <StatusMessage>Loading gene...</StatusMessage>
-        }
-
-        if (error || !data) {
-          return <StatusMessage>Unable to load gene</StatusMessage>
-        }
-
-        if (!data.gene) {
-          return (
-            <StatusMessage>
-              {graphQLErrors ? graphQLErrors.map(e => e.message).join(', ') : 'Unable to load gene'}
-            </StatusMessage>
-          )
-        }
-
+    <Query
+      query={query}
+      variables={variables}
+      loadingMessage="Loading gene"
+      errorMessage="Unable to load gene"
+      success={data => data.gene}
+    >
+      {({ data }) => {
         return (
           <AutosizedGenePage
             {...otherProps}

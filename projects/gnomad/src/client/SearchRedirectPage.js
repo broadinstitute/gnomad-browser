@@ -6,7 +6,6 @@ import { PageHeading } from '@gnomad/ui'
 
 import InfoPage from './InfoPage'
 import Query from './Query'
-import StatusMessage from './StatusMessage'
 
 const searchQuery = `
 query Search($query: String!) {
@@ -21,15 +20,14 @@ const SearchRedirectPage = ({ query }) => (
   <InfoPage>
     <PageHeading>Search</PageHeading>
 
-    <Query query={searchQuery} variables={{ query }}>
-      {({ data, error, loading }) => {
-        if (loading) {
-          return <StatusMessage>Searching...</StatusMessage>
-        }
-        if (error) {
-          return <StatusMessage>Unable to load search results</StatusMessage>
-        }
-
+    <Query
+      query={searchQuery}
+      variables={{ query }}
+      loadingMessage="Searching"
+      errorMessage="Unable to load search results"
+      success={data => data.searchResults}
+    >
+      {({ data }) => {
         const results = data.searchResults
 
         if (results.length) {

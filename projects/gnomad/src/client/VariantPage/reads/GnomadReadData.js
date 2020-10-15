@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
-import Query from '../../Query'
+import { BaseQuery } from '../../Query'
 import StatusMessage from '../../StatusMessage'
 import { IGVBrowser } from './IGVBrowser'
 
@@ -405,7 +405,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
   `
 
   return (
-    <Query query={query} url="/reads/">
+    <BaseQuery query={query} url="/reads/">
       {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
           return <StatusMessage>Loading reads...</StatusMessage>
@@ -495,7 +495,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
           </GnomadReadData>
         )
       }}
-    </Query>
+    </BaseQuery>
   )
 }
 
