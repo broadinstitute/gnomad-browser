@@ -30,6 +30,10 @@ def apply_elasticsearch(**kwargs) -> None:
     render_template_and_apply(os.path.join(deployment_directory(), "elasticsearch.load-balancer.yaml.jinja2"))
 
 
+def get_elasticsearch_cluster(cluster_name: str) -> None:
+    print(kubectl(["get", "elasticsearch", cluster_name]), end="")
+
+
 def main(argv: typing.List[str]) -> None:
     parser = argparse.ArgumentParser(prog="deployctl")
     subparsers = parser.add_subparsers()
@@ -39,6 +43,10 @@ def main(argv: typing.List[str]) -> None:
     apply_parser.add_argument("--cluster-name", default="gnomad")
     apply_parser.add_argument("--n-data-pods", type=int, default=3)
     apply_parser.add_argument("--n-ingest-pods", type=int, default=0)
+
+    get_parser = subparsers.add_parser("get")
+    get_parser.set_defaults(action=get_elasticsearch_cluster)
+    get_parser.add_argument("--cluster-name", default="gnomad")
 
     args = parser.parse_args(argv)
 
