@@ -47,6 +47,34 @@ def create_network() -> None:
         ]
     )
 
+    # Setup Cloud NAT
+    # https://cloud.google.com/nat/docs/using-nat
+    # This allows pulling external Docker images for Elastic
+    gcloud(
+        [
+            "compute",
+            "routers",
+            "create",
+            f"{config.network_name}-nat-router",
+            f"--network={config.network_name}",
+            f"--region={config.region}",
+        ]
+    )
+
+    gcloud(
+        [
+            "compute",
+            "routers",
+            "nats",
+            "create",
+            f"{config.network_name}-nat",
+            f"--router={config.network_name}-nat-router",
+            "--auto-allocate-nat-external-ips",
+            "--nat-all-subnet-ip-ranges",
+            "--enable-logging",
+        ]
+    )
+
     # Allow Dataproc machines to talk to each other
     # https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/network
     # Dataproc clusters must be created with --tags=dataproc-node for this to apply
@@ -237,6 +265,8 @@ def main(argv: typing.List[str]) -> None:
     print("This will create the following resources:")
     print(f"- VPC network '{config.network_name}'")
     print(f"- IP address '{config.ip_address_name}'")
+    print(f"- Router '{config.network_name}-nat-router'")
+    print(f"- NAT config '{config.network_name}-nat'")
     print(f"- Service account '{config.gke_service_account_name}'")
     print(f"- GKE cluster '{config.gke_cluster_name}'")
 
@@ -261,4 +291,37 @@ def main(argv: typing.List[str]) -> None:
 
         print("Creating K8S resources...")
         manifests_directory = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../manifests"))
+
         kubectl(["apply", "-k", os.path.join(manifests_directory, "redis")])
+
+        # Install Elastic Cloud on Kubernetes operator
+        # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-overview.html
+        kubectl(["apply", "-f", "https://download.elastic.co/downloads/eck/1.2.1/all-in-one.yaml"])
+
+        # Configure firewall rule for ECK admission webhook
+        # https://github.com/elastic/cloud-on-k8s/issues/1437
+        # https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#add_firewall_rules
+        gke_firewall_rule_target_tags = gcloud(
+            [
+                "compute",
+                "firewall-rules",
+                "list",
+                f"--filter=name~^gke-{config.gke_cluster_name}",
+                "--format=value(targetTags.list())",
+            ]
+        ).splitlines()[0]
+
+        gcloud(
+            [
+                "compute",
+                "firewall-rules",
+                "create",
+                f"{config.network_name}-es-webhook",
+                "--action=ALLOW",
+                "--direction=INGRESS",
+                f"--network={config.network_name}",
+                "--rules=tcp:9443",
+                "--source-ranges=172.16.0.0/28",  # Matches GKE cluster master IP range
+                f"--target-tags={gke_firewall_rule_target_tags}",
+            ]
+        )
