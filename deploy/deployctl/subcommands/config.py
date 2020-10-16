@@ -16,16 +16,16 @@ def get_config_value(key: str) -> None:
         value = getattr(config, key)
         if value is not None:
             print(value)
-    except AttributeError:
-        raise AttributeError(f"invalid configuration key '{key}'")
+    except AttributeError as error:
+        raise AttributeError(f"invalid configuration key '{key}'") from error
 
 
 def set_config_value(key: str, value: str) -> None:
-    try:
-        setattr(config, key, value)
-        config.save()
-    except AttributeError:
+    if key not in config.config_keys():
         raise AttributeError(f"invalid configuration key '{key}'")
+
+    setattr(config, key, value)
+    config.save()
 
 
 def main(argv: typing.List[str]) -> None:

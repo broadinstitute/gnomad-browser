@@ -21,9 +21,12 @@ class Configuration:
         except FileNotFoundError:
             pass
 
+    def config_keys(self):
+        return self.__dataclass_fields__.keys()  # pylint: disable=no-member
+
     def dump(self) -> typing.Mapping[str, str]:
         _config = {}
-        for field in self.__dataclass_fields__.keys():  # pylint: disable=no-member
+        for field in self.config_keys():
             _config[field] = getattr(self, field)
 
         return _config
@@ -31,8 +34,8 @@ class Configuration:
     def load(self):
         with open(self._config_path, "r") as config_file:
             _config = json.load(config_file)
-            for field in self.__dataclass_fields__.keys():  # pylint: disable=no-member
-                setattr(self, field, _config[field])
+            for field in self.config_keys():
+                setattr(self, field, _config.get(field, None))
 
     def save(self):
         with open(self._config_path, "w") as config_file:
