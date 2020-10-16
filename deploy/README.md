@@ -12,6 +12,10 @@
 
   To allow pushing images to GCR, register `gcloud` as a Docker credential helper with `gcloud auth configure-docker`.
 
+- Python dependencies
+
+  `pip install -r deploy/deployctl/requirements.txt`
+
 ## Configuration
 
 Select a GCP project and zone to use.
@@ -36,6 +40,14 @@ To see other available configuration options, run `./deployctl config list`.
 #### Prepare data
 
 See [data-pipeline/README.md](../data-pipeline/README.md) for information on running data preparation pipelines.
+
+#### Create Elasticsearch cluster
+
+The setup step installs the [Elastic Cloud on Kubernetes (ECK)](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-overview.html) operator.
+
+To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
+
+To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
 #### Create browser deployment
 

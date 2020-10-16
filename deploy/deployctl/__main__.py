@@ -10,6 +10,7 @@ from deployctl.subcommands import browser_images
 from deployctl.subcommands import config
 from deployctl.subcommands import data_pipeline
 from deployctl.subcommands import dataproc_cluster
+from deployctl.subcommands import elasticsearch
 from deployctl.subcommands import ingress_demo
 from deployctl.subcommands import ingress_production
 from deployctl.subcommands import reads_deployments
@@ -32,6 +33,7 @@ def main():
         "demo": ingress_demo,
         "data-pipeline": data_pipeline,
         "dataproc-cluster": dataproc_cluster,
+        "elasticsearch": elasticsearch,
         "setup": setup,
     }
 

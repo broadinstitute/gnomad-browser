@@ -1,0 +1,164 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ cluster_name }}
+spec:
+  version: 6.8.12
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+    - name: master
+      count: 3
+      config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
+        node.master: true
+        node.data: false
+        node.ingest: false
+        node.ml: false
+      podTemplate:
+        metadata:
+          labels:
+            role: master
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: cloud.google.com/gke-nodepool
+                        operator: NotIn
+                        values:
+                          - elasticsearch-data
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+    - name: coordinating
+      count: 3
+      config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
+        node.master: false
+        node.data: false
+        node.ingest: false
+        node.ml: false
+      podTemplate:
+        metadata:
+          labels:
+            role: coordinating
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: cloud.google.com/gke-nodepool
+                        operator: NotIn
+                        values:
+                          - elasticsearch-data
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+{% if n_data_pods > 0 %}
+    - name: data
+      count: {{ n_data_pods }}
+      config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
+        node.master: false
+        node.data: true
+        node.ingest: false
+        node.ml: false
+        cluster.routing.allocation.disk.watermark.low: '90%'
+      podTemplate:
+        metadata:
+          labels:
+            role: data
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: cloud.google.com/gke-nodepool
+                        operator: In
+                        values:
+                          - elasticsearch-data
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+          containers:
+            - name: elasticsearch
+              env:
+                - name: ES_JAVA_OPTS
+                  value: '-Xms13g -Xmx13g'
+              resources:
+                requests:
+                  cpu: 0.5
+                  memory: 26Gi
+                limits:
+                  cpu: 2
+                  memory: 26Gi
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: standard
+            resources:
+              requests:
+                storage: 3000Gi
+{% endif %}
+{% if n_ingest_pods > 0 %}
+    - name: ingest
+      count: {{ n_ingest_pods }}
+      config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
+        node.master: false
+        node.data: true
+        node.ingest: true
+        node.ml: false
+      podTemplate:
+        metadata:
+          labels:
+            role: ingest
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: cloud.google.com/gke-nodepool
+                        operator: In
+                        values:
+                          - elasticsearch-data
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+          containers:
+            - name: elasticsearch
+              env:
+                - name: ES_JAVA_OPTS
+                  value: '-Xms2g -Xmx2g'
+              resources:
+                requests:
+                  cpu: 0.5
+                  memory: 4Gi
+                limits:
+                  cpu: 1
+                  memory: 4Gi
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: standard
+            resources:
+              requests:
+                storage: 1000Gi
+{% endif %}
