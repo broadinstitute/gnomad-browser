@@ -31,6 +31,57 @@ def create_network() -> None:
         ]
     )
 
+    # Create a subnet for Dataproc nodes
+    gcloud(
+        [
+            "compute",
+            "networks",
+            "subnets",
+            "create",
+            f"{config.network_name}-dataproc",
+            f"--network={config.network_name}",
+            f"--region={config.region}",
+            "--range=192.168.255.0/24",
+            "--enable-flow-logs",
+            "--enable-private-ip-google-access",
+        ]
+    )
+
+    # Allow Dataproc machines to talk to each other
+    # https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/network
+    # Dataproc clusters must be created with --tags=dataproc-node for this to apply
+    gcloud(
+        [
+            "compute",
+            "firewall-rules",
+            "create",
+            f"{config.network_name}-dataproc-internal",
+            "--action=ALLOW",
+            "--direction=INGRESS",
+            f"--network={config.network_name}",
+            "--rules=tcp:0-65535,udp:0-65535,icmp",
+            "--source-tags=dataproc-node",
+            "--target-tags=dataproc-node",
+        ]
+    )
+
+    # Allow SSH access to Dataproc machines from authorized networks
+    # Dataproc clusters must be created with --tags=dataproc-node for this to apply
+    gcloud(
+        [
+            "compute",
+            "firewall-rules",
+            "create",
+            f"{config.network_name}-dataproc-ssh",
+            "--action=ALLOW",
+            "--direction=INGRESS",
+            f"--network={config.network_name}",
+            "--rules=tcp:22",
+            f"--source-ranges={config.authorized_networks}",
+            "--target-tags=dataproc-node",
+        ]
+    )
+
 
 def create_ip_address() -> None:
     # Reserve a static external IP address to use with a load balancer.
