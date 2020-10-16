@@ -31,6 +31,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             f"--subnet={config.network_name}-dataproc",
             "--tags=dataproc-node",
             "--max-idle=1h",
+            "--requester-pays-allow-buckets=gnomad-public-requester-pays",
         ]
         + cluster_args
     )
