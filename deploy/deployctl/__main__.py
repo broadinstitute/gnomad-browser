@@ -8,6 +8,7 @@ from deployctl.subcommands import blog_images
 from deployctl.subcommands import browser_deployments
 from deployctl.subcommands import browser_images
 from deployctl.subcommands import config
+from deployctl.subcommands import data_pipeline
 from deployctl.subcommands import dataproc_cluster
 from deployctl.subcommands import ingress_demo
 from deployctl.subcommands import ingress_production
@@ -29,6 +30,7 @@ def main():
         "blog-images": blog_images,
         "production": ingress_production,
         "demo": ingress_demo,
+        "data-pipeline": data_pipeline,
         "dataproc-cluster": dataproc_cluster,
         "setup": setup,
     }

@@ -13,6 +13,7 @@ class Configuration:
     zone: str = "us-central1-a"
     environment_tag: str = None
     authorized_networks: str = "0.0.0.0/0"
+    data_pipeline_output: str = None
 
     def __init__(self, config_path):
         self._config_path = config_path
