@@ -34,6 +34,13 @@ def get_elasticsearch_cluster(cluster_name: str) -> None:
     print(kubectl(["get", "elasticsearch", cluster_name]), end="")
 
 
+def get_elasticsearch_password(cluster_name: str) -> None:
+    # ECK creates this secret when the cluster is created.
+    print(
+        kubectl(["get", "secret", f"{cluster_name}-es-elastic-user", "-o=go-template={{.data.elastic | base64decode}}"])
+    )
+
+
 def main(argv: typing.List[str]) -> None:
     parser = argparse.ArgumentParser(prog="deployctl")
     subparsers = parser.add_subparsers()
@@ -46,6 +53,10 @@ def main(argv: typing.List[str]) -> None:
 
     get_parser = subparsers.add_parser("get")
     get_parser.set_defaults(action=get_elasticsearch_cluster)
+    get_parser.add_argument("--cluster-name", default="gnomad")
+
+    get_parser = subparsers.add_parser("get-password")
+    get_parser.set_defaults(action=get_elasticsearch_password)
     get_parser.add_argument("--cluster-name", default="gnomad")
 
     args = parser.parse_args(argv)
