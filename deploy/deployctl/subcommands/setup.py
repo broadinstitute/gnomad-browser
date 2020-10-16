@@ -215,7 +215,7 @@ def create_cluster() -> None:
             "--no-enable-basic-auth",
             "--no-enable-legacy-authorization",
             "--no-issue-client-certificate",
-            "--num-nodes=1",
+            "--num-nodes=2",
             "--machine-type=e2-standard-4",
         ]
     )
