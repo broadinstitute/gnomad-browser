@@ -33,6 +33,10 @@ To see other available configuration options, run `./deployctl config list`.
 
 ### Deploy on GKE
 
+#### Prepare data
+
+See [data-pipeline/README.md](../data-pipeline/README.md) for information on running data preparation pipelines.
+
 #### Create browser deployment
 
 - Build Docker images and push to GCR.
