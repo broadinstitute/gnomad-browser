@@ -8,6 +8,8 @@ spec:
     tls:
       selfSignedCertificate:
         disabled: true
+  secureSettings:
+    - secretName: es-snapshots-gcs-credentials
   nodeSets:
     - name: master
       count: 3
@@ -35,6 +37,8 @@ spec:
               securityContext:
                 privileged: true
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+            - name: install-plugins
+              command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
     - name: coordinating
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
@@ -61,6 +65,8 @@ spec:
               securityContext:
                 privileged: true
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+            - name: install-plugins
+              command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
 {% if n_data_pods > 0 %}
     - name: data
       count: {{ n_data_pods }}
@@ -89,6 +95,8 @@ spec:
               securityContext:
                 privileged: true
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+            - name: install-plugins
+              command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
           containers:
             - name: elasticsearch
               env:
@@ -139,6 +147,8 @@ spec:
               securityContext:
                 privileged: true
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+            - name: install-plugins
+              command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
           containers:
             - name: elasticsearch
               env:

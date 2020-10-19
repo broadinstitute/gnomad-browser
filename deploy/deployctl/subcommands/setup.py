@@ -269,6 +269,7 @@ def main(argv: typing.List[str]) -> None:
     print(f"- NAT config '{config.network_name}-nat'")
     print(f"- Service account '{config.gke_service_account_name}'")
     print(f"- GKE cluster '{config.gke_cluster_name}'")
+    print("- Service account 'gnomad-es-snapshots'")
 
     if input("Continue? (y/n) ").lower() == "y":
         print("Creating network...")
@@ -329,4 +330,76 @@ def main(argv: typing.List[str]) -> None:
                 "--source-ranges=172.16.0.0/28",  # Matches GKE cluster master IP range
                 f"--target-tags={gke_firewall_rule_target_tags}",
             ]
+        )
+
+        # Create a service account for Elasticsearch snapshots
+        # https://www.elastic.co/guide/en/cloud-on-k8s/1.2/k8s-snapshots.html#k8s-secure-settings
+        try:
+            # Do not alter the service account if it already exists.
+            # Deleting and recreating a service account with the same name can lead to unexpected behavior
+            # https://cloud.google.com/iam/docs/understanding-service-accounts#deleting_and_recreating_service_accounts
+            gcloud(
+                [
+                    "iam",
+                    "service-accounts",
+                    "describe",
+                    f"gnomad-es-snapshots@{config.project}.iam.gserviceaccount.com",
+                ],
+                stderr=subprocess.DEVNULL,
+            )
+            print("Snapshot account already exists")
+        except subprocess.CalledProcessError:
+            gcloud(
+                [
+                    "iam",
+                    "service-accounts",
+                    "create",
+                    "gnomad-es-snapshots",
+                    "--display-name=gnomAD Elasticsearch snapshots",
+                ]
+            )
+        finally:
+            # Grant the snapshot service account object admin access to the snapshot bucket.
+            # https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add
+            subprocess.check_call(
+                [
+                    "gsutil",
+                    "iam",
+                    "ch",
+                    f"serviceAccount:gnomad-es-snapshots@{config.project}.iam.gserviceaccount.com:roles/storage.admin",
+                    "gs://gnomad-browser-elasticsearch-snapshots",  # TODO: The bucket to use for snapshots should be configurable
+                ],
+                stdout=subprocess.DEVNULL,
+            )
+
+        # Download key for snapshots service account.
+        # https://cloud.google.com/iam/docs/creating-managing-service-account-keys
+        keys_directory = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../keys"))
+        if not os.path.exists(keys_directory):
+            os.mkdir(keys_directory)
+            with open(os.path.join(keys_directory, ".gitignore"), "w") as gitignore_file:
+                gitignore_file.write("*")
+
+        if not os.path.exists(os.path.join(keys_directory, "gcs.client.default.credentials_file")):
+            gcloud(
+                [
+                    "iam",
+                    "service-accounts",
+                    "keys",
+                    "create",
+                    os.path.join(keys_directory, "gcs.client.default.credentials_file"),
+                    f"--iam-account=gnomad-es-snapshots@{config.project}.iam.gserviceaccount.com",
+                ]
+            )
+
+        # Create K8S secret with snapshots service account key.
+        kubectl(
+            [
+                "create",
+                "secret",
+                "generic",
+                "es-snapshots-gcs-credentials",
+                "--from-file=gcs.client.default.credentials_file",
+            ],
+            cwd=keys_directory,
         )
