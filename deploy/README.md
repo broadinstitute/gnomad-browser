@@ -29,6 +29,10 @@ To see other available configuration options, run `./deployctl config list`.
 
 ## Creating a new environment
 
+### Configure project
+
+- [Create a Cloud Monitoring workspace for the project](https://cloud.google.com/monitoring/workspaces/guide#single-project-ws).
+
 ### Create GCP resources
 
 ```
