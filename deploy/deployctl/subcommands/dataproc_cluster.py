@@ -32,6 +32,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             "--tags=dataproc-node",
             "--max-idle=1h",
             "--requester-pays-allow-buckets=gnomad-public-requester-pays",
+            f"--service-account=gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
         ]
         + cluster_args
     )

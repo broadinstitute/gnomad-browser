@@ -271,6 +271,7 @@ def main(argv: typing.List[str]) -> None:
     print(f"- Service account '{config.gke_service_account_name}'")
     print(f"- GKE cluster '{config.gke_cluster_name}'")
     print("- Service account 'gnomad-es-snapshots'")
+    print("- Service account 'gnomad-data-pipeline'")
 
     if input("Continue? (y/n) ").lower() == "y":
         print("Creating network...")
@@ -404,3 +405,62 @@ def main(argv: typing.List[str]) -> None:
             ],
             cwd=keys_directory,
         )
+
+        # Create a service account for data pipeline.
+        try:
+            # Do not alter the service account if it already exists.
+            # Deleting and recreating a service account with the same name can lead to unexpected behavior
+            # https://cloud.google.com/iam/docs/understanding-service-accounts#deleting_and_recreating_service_accounts
+            gcloud(
+                [
+                    "iam",
+                    "service-accounts",
+                    "describe",
+                    f"gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
+                ],
+                stderr=subprocess.DEVNULL,
+            )
+            print("Data pipeline service account already exists")
+        except subprocess.CalledProcessError:
+            gcloud(["iam", "service-accounts", "create", "gnomad-data-pipeline", "--display-name=gnomAD data pipeline"])
+
+            # Grant the data pipeline service account the Dataproc worker role.
+            subprocess.check_call(
+                [
+                    "gcloud",
+                    "projects",
+                    "add-iam-policy-binding",
+                    config.project,
+                    f"--member=serviceAccount:gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
+                    "--role=roles/dataproc.worker",
+                ],
+                stdout=subprocess.DEVNULL,
+            )
+
+            # serviceusage.services.use is necessary to access requester pays buckets
+            subprocess.check_call(
+                [
+                    "gcloud",
+                    "projects",
+                    "add-iam-policy-binding",
+                    config.project,
+                    f"--member=serviceAccount:gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
+                    "--role=roles/roles/serviceusage.serviceUsageConsumer",
+                ],
+                stdout=subprocess.DEVNULL,
+            )
+
+        finally:
+            # Grant the data pipeline service account object admin access to the data pipeline bucket.
+            # https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add
+            subprocess.check_call(
+                [
+                    "gsutil",
+                    "iam",
+                    "ch",
+                    f"serviceAccount:gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com:roles/storage.admin",
+                    # TODO: This should use the same configuration as data pipeline output.
+                    "gs://gnomad-browser-data-pipeline",
+                ],
+                stdout=subprocess.DEVNULL,
+            )
