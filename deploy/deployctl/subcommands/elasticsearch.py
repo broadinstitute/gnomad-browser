@@ -27,7 +27,7 @@ def render_template_and_apply(
 
 def apply_elasticsearch(**kwargs) -> None:
     render_template_and_apply(os.path.join(deployment_directory(), "elasticsearch.yaml.jinja2"), kwargs)
-    render_template_and_apply(os.path.join(deployment_directory(), "elasticsearch.load-balancer.yaml.jinja2"))
+    render_template_and_apply(os.path.join(deployment_directory(), "elasticsearch.load-balancer.yaml.jinja2"), kwargs)
 
 
 def get_elasticsearch_cluster(cluster_name: str) -> None:
