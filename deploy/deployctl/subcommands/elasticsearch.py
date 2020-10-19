@@ -48,8 +48,8 @@ def main(argv: typing.List[str]) -> None:
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_elasticsearch)
     apply_parser.add_argument("--cluster-name", default="gnomad")
-    apply_parser.add_argument("--n-data-pods", type=int, default=3)
-    apply_parser.add_argument("--n-ingest-pods", type=int, default=0)
+    apply_parser.add_argument("--n-data-pods", required=True, type=int)
+    apply_parser.add_argument("--n-ingest-pods", required=True, type=int)
 
     get_parser = subparsers.add_parser("get")
     get_parser.set_defaults(action=get_elasticsearch_cluster)
