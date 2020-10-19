@@ -118,7 +118,7 @@ def create_ip_address() -> None:
 
 def create_cluster_service_account() -> None:
     # Create a least privilege service account for cluster nodes
-    # https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_service_accounts_for_your_nodes
+    # https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa
 
     try:
         # Do not alter the service account if it already exists.
@@ -140,6 +140,7 @@ def create_cluster_service_account() -> None:
     #
     # stackdriver.resourceMetadata.writer is required for Stackdriver monitoring
     # https://cloud.google.com/monitoring/kubernetes-engine/observing
+    # https://cloud.google.com/stackdriver/docs/solutions/gke/troubleshooting#write_permissions
     #
     # storage.objectViewer is required to use private images in the Container Registry
     roles = [
@@ -172,8 +173,8 @@ def create_cluster() -> None:
     # Restrict access to K8S master to IP addresses listed in MASTER_AUTHORIZED_NETWORKS
     # https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks
     #
-    # Enable Stackdriver Kubernetes monitoring and logging
-    # https://cloud.google.com/monitoring/kubernetes-engine/
+    # Enable Cloud Operations for GKE
+    # https://cloud.google.com/stackdriver/docs/solutions/gke
     #
     # Use shielded nodes
     # https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes
