@@ -104,10 +104,10 @@ spec:
                   value: '-Xms13g -Xmx13g'
               resources:
                 requests:
-                  cpu: 0.5
+                  cpu: 3
                   memory: 26Gi
                 limits:
-                  cpu: 2
+                  cpu: 4
                   memory: 26Gi
       volumeClaimTemplates:
         - metadata:
@@ -156,7 +156,7 @@ spec:
                   value: '-Xms2g -Xmx2g'
               resources:
                 requests:
-                  cpu: 0.5
+                  cpu: 1
                   memory: 4Gi
                 limits:
                   cpu: 1
@@ -170,5 +170,5 @@ spec:
             storageClassName: standard
             resources:
               requests:
-                storage: 1000Gi
+                storage: 2000Gi
 {% endif %}
