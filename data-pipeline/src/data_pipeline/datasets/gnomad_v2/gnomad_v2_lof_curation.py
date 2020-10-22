@@ -84,7 +84,7 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
     ds = ds.explode(ds.genes, name="gene_id")
 
     genes = hl.read_table(genes_path)
-    ds = ds.annotate(gene_symbol=genes[ds.gene_id].symbol)
+    ds = ds.annotate(gene_symbol=genes[ds.gene_id].symbol, gene_version=genes[ds.gene_id].gene_version)
 
     ds = ds.group_by(ds.locus, ds.alleles, ds.gene_id).aggregate(
         result=hl.agg.take(ds.row.drop("locus", "alleles", "gene_id"), 1, ds.project_index)
