@@ -105,7 +105,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             hl.read_table(gnomad_v3_pipeline.get_task("prepare_gnomad_v3_coverage").get_output_path())
         ),
-        "args": {"index": "gnomad_v3_genome_coverage", "num_shards": 48, "block_size": 10_000},
+        "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     ##############################################################################################################
     # gnomAD SV v2
@@ -152,13 +152,13 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_exome_coverage").get_output_path())
         ),
-        "args": {"index": "gnomad_v2_exome_coverage", "num_shards": 48, "block_size": 10_000},
+        "args": {"index": "gnomad_v2_exome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_genome_coverage": {
         "get_table": lambda: subset_table(
             hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_genome_coverage").get_output_path())
         ),
-        "args": {"index": "gnomad_v2_genome_coverage", "num_shards": 48, "block_size": 10_000},
+        "args": {"index": "gnomad_v2_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_mnvs": {
         "get_table": lambda: hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_mnvs").get_output_path()),
@@ -210,7 +210,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             hl.read_table(exac_pipeline.get_task("import_exac_coverage").get_output_path())
         ),
-        "args": {"index": "exac_exome_coverage", "num_shards": 16, "block_size": 10_000},
+        "args": {"index": "exac_exome_coverage", "id_field": "xpos", "num_shards": 16, "block_size": 10_000},
     },
     ##############################################################################################################
     # ClinVar

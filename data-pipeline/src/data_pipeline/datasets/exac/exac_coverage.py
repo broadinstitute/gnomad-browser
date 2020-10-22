@@ -1,5 +1,7 @@
 import hail as hl
 
+from data_pipeline.data_types.locus import x_position
+
 
 def import_exac_coverage():
     paths = [
@@ -64,6 +66,8 @@ def import_exac_coverage():
     ds = ds.transmute(locus=hl.locus(ds.chrom, ds.pos, reference_genome="GRCh37"))
 
     ds = ds.key_by(ds.locus)
+
+    ds = ds.annotate(xpos=x_position(ds.locus))
 
     ds = ds.repartition(1000, shuffle=True)
 
