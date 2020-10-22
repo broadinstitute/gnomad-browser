@@ -218,11 +218,13 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
     genes = genes.annotate(symbol=hl.or_else(genes.symbol, genes.gencode_symbol))
 
     genes = genes.annotate(
+        symbol_upper_case=genes.symbol.upper(),
         search_terms=hl.empty_set(hl.tstr)
         .add(genes.symbol)
         .add(genes.gencode_symbol)
         .union(genes.previous_symbols)
-        .union(genes.alias_symbols),
+        .union(genes.alias_symbols)
+        .map(lambda s: s.upper()),
     )
 
     genes = genes.annotate(
