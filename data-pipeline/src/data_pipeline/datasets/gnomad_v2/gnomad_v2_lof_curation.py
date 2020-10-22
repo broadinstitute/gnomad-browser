@@ -2,6 +2,8 @@ import csv
 
 import hail as hl
 
+from data_pipeline.data_types.variant import variant_id
+
 
 FLAG_MAPPING = {
     "Essential Splice Rescue": "Splice Rescue",
@@ -45,8 +47,7 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
                 all_flags = all_flags.union(set(dataset_flags))
 
                 for row in reader:
-                    variant_id = row["Variant ID"]
-                    [chrom, pos, ref, alt] = variant_id.split("-")
+                    [chrom, pos, ref, alt] = row["Variant ID"].split("-")
 
                     variant_flags = [FLAG_MAPPING.get(f, f) for f in raw_dataset_flags if row[f"Flag {f}"] == "TRUE"]
 
@@ -93,6 +94,8 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
     ds = ds.annotate(**ds.result[0]).drop("result", "project_index")
 
     ds = ds.group_by("locus", "alleles").aggregate(lof_curations=hl.agg.collect(ds.row.drop("locus", "alleles")))
+
+    ds = ds.annotate(variant_id=variant_id(ds.locus, ds.alleles))
 
     for flag in sorted(list(all_flags)):
         print(flag)
