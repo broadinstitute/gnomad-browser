@@ -1,0 +1,5 @@
+type Exon {
+  feature_type: String!
+  start: Int!
+  stop: Int!
+}

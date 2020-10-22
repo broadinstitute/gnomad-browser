@@ -1,0 +1,12 @@
+type Query{
+    gene(gene_id: String, gene_symbol: String, reference_genome: ReferenceGenomeId!): Gene @cost(value: 1)
+    region(chrom: String!, start: Int!, stop: Int!, reference_genome: ReferenceGenomeId!): Region! @cost(value: 1)
+    transcript(transcript_id: String!, reference_genome: ReferenceGenomeId!): Transcript @cost(value: 1)
+
+    clinvar_variant(variant_id: String!, reference_genome: ReferenceGenomeId!): ClinVarVariant @cost(value: 1)
+    multiNucleotideVariant(variant_id: String!, dataset: DatasetId!): MultiNucleotideVariantDetails @cost(value: 1)
+    structural_variant(variantId: String!, dataset: StructuralVariantDatasetId!): StructuralVariantDetails @cost(value: 1)
+    variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
+
+    searchResults(query: String!, dataset: DatasetId!): [SearchResult!]
+}

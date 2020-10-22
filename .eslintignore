@@ -1,5 +1,5 @@
 node_modules
 
 projects/gnomad/dist
-projects/gnomad-api/dist
+projects/gnomad-api
 reads/dist

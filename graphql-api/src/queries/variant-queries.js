@@ -1,0 +1,75 @@
+const { assertDatasetAndReferenceGenomeMatch } = require('./helpers/validation-helpers')
+const gnomadV3VariantQueries = require('./variant-datasets/gnomad-v3-variant-queries')
+const gnomadV2VariantQueries = require('./variant-datasets/gnomad-v2-variant-queries')
+const exacVariantQueries = require('./variant-datasets/exac-variant-queries')
+
+const datasetQueries = {
+  gnomad_r3: gnomadV3VariantQueries,
+  gnomad_r2_1: {
+    countVariantsInRegion: (...args) =>
+      gnomadV2VariantQueries.countVariantsInRegion(...args, 'gnomad'),
+    fetchVariantById: (...args) => gnomadV2VariantQueries.fetchVariantById(...args, 'gnomad'),
+    fetchVariantsByGene: (...args) => gnomadV2VariantQueries.fetchVariantsByGene(...args, 'gnomad'),
+    fetchVariantsByRegion: (...args) =>
+      gnomadV2VariantQueries.fetchVariantsByRegion(...args, 'gnomad'),
+    fetchVariantsByTranscript: (...args) =>
+      gnomadV2VariantQueries.fetchVariantsByTranscript(...args, 'gnomad'),
+  },
+  exac: exacVariantQueries,
+}
+
+const gnomadV2Subsets = ['controls', 'non_neuro', 'non_cancer', 'non_topmed']
+
+gnomadV2Subsets.forEach((subset) => {
+  datasetQueries[`gnomad_r2_1_${subset}`] = {
+    countVariantsInRegion: (...args) =>
+      gnomadV2VariantQueries.countVariantsInRegion(...args, subset),
+    fetchVariantById: (...args) => gnomadV2VariantQueries.fetchVariantById(...args, subset),
+    fetchVariantsByGene: (...args) => gnomadV2VariantQueries.fetchVariantsByGene(...args, subset),
+    fetchVariantsByRegion: (...args) =>
+      gnomadV2VariantQueries.fetchVariantsByRegion(...args, subset),
+    fetchVariantsByTranscript: (...args) =>
+      gnomadV2VariantQueries.fetchVariantsByTranscript(...args, subset),
+  }
+})
+
+const countVariantsInRegion = (esClient, datasetId, region) => {
+  assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
+
+  const query = datasetQueries[datasetId].countVariantsInRegion
+  return query(esClient, region)
+}
+
+const fetchVariantById = (esClient, datasetId, variantIdOrRsid) => {
+  const query = datasetQueries[datasetId].fetchVariantById
+  return query(esClient, variantIdOrRsid)
+}
+
+const fetchVariantsByGene = (esClient, datasetId, gene) => {
+  assertDatasetAndReferenceGenomeMatch(datasetId, gene.reference_genome)
+
+  const query = datasetQueries[datasetId].fetchVariantsByGene
+  return query(esClient, gene)
+}
+
+const fetchVariantsByRegion = (esClient, datasetId, region) => {
+  assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
+
+  const query = datasetQueries[datasetId].fetchVariantsByRegion
+  return query(esClient, region)
+}
+
+const fetchVariantsByTranscript = (esClient, datasetId, transcript) => {
+  assertDatasetAndReferenceGenomeMatch(datasetId, transcript.reference_genome)
+
+  const query = datasetQueries[datasetId].fetchVariantsByTranscript
+  return query(esClient, transcript)
+}
+
+module.exports = {
+  countVariantsInRegion,
+  fetchVariantById,
+  fetchVariantsByGene,
+  fetchVariantsByRegion,
+  fetchVariantsByTranscript,
+}

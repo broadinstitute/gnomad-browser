@@ -1,0 +1,4 @@
+enum ReferenceGenomeId {
+  GRCh37
+  GRCh38
+}

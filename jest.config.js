@@ -8,8 +8,8 @@ module.exports = {
       setupFilesAfterEnv: ['@testing-library/jest-dom'],
     },
     {
-      displayName: 'gnomad-api',
-      testMatch: ['<rootDir>/projects/gnomad-api/**/*.spec.js'],
+      displayName: 'graphql-api',
+      testMatch: ['<rootDir>/graphql-api/**/*.spec.js'],
     },
   ],
   roots: ['<rootDir>', '<rootDir>/tests'],
