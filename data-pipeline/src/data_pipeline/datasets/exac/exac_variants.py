@@ -430,14 +430,14 @@ def import_exac_vcf(path):
             ac=ds.info.AC_Adj,
             an=ds.info.AN_Adj,
             homozygote_count=ds.info.AC_Hom,
-            hemizygote_count=ds.info.AC_Hemi,
+            hemizygote_count=hl.or_else(ds.info.AC_Hemi, 0),
             filters=hl.set(hl.if_else(ds.info.AC_Adj == 0, ds.filters.add("AC0"), ds.filters)),
             populations=[
                 hl.struct(
                     id=pop_id,
                     ac=ds.info[f"AC_{pop_id}"],
                     an=ds.info[f"AN_{pop_id}"],
-                    hemizygote_count=ds.info[f"Hemi_{pop_id}"],
+                    hemizygote_count=hl.or_else(ds.info[f"Hemi_{pop_id}"], 0),
                     homozygote_count=ds.info[f"Hom_{pop_id}"],
                 )
                 for pop_id in ["AFR", "AMR", "EAS", "FIN", "NFE", "OTH", "SAS"]
