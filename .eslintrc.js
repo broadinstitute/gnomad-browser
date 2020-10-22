@@ -29,14 +29,21 @@ module.exports = {
     },
     {
       // Set environment for server-side code
-      files: ['projects/gnomad-api/**/*.js', 'projects/*/src/server/**/*.js'],
+      files: [
+        'graphql-api/**/*.js',
+        'projects/gnomad-api/**/*.js',
+        'projects/*/src/server/**/*.js',
+      ],
       env: {
         browser: false,
         node: true,
       },
+      rules: {
+        'no-restricted-syntax': 'off',
+      },
     },
     {
-      files: ['projects/gnomad-api/**/*.js'],
+      files: ['graphql-api/**/*.js', 'projects/gnomad-api/**/*.js'],
       rules: {
         'no-underscore-dangle': [
           'error',

@@ -1,0 +1,28 @@
+type GeneSummary {
+  gene_id: String!
+  symbol: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+}
+
+type RegionCoverage {
+  exome: [CoverageBin!]! @cost(value: 10)
+  genome: [CoverageBin!]! @cost(value: 10)
+}
+
+type Region {
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  start: Int!
+  stop: Int!
+
+  genes: [GeneSummary!]! @cost(value: 10)
+
+  variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
+  structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
+
+  clinvar_variants: [ClinVarVariant!] @cost(value: 10)
+
+  coverage(dataset: DatasetId!): RegionCoverage!
+}

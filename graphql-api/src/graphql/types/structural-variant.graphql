@@ -1,0 +1,97 @@
+type StructuralVariantPopulation {
+  id: String!
+  ac: Int!
+  an: Int!
+  homozygote_count: Int
+  hemizygote_count: Int
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hemi: Int
+  ac_hom: Int
+}
+
+type StructuralVariantAgeDistribution {
+  het: Histogram
+  hom: Histogram
+}
+
+type StructuralVariantGenotypeQuality {
+  all: Histogram
+  alt: Histogram
+}
+
+type StructuralVariantConsequence {
+  consequence: String!
+  genes: [String!]
+}
+
+type StructuralVariantCopyNumber {
+  copy_number: Int!
+  ac: Int!
+}
+
+type StructuralVariant {
+  ac: Int!
+  an: Int!
+  af: Float!
+  homozygote_count: Int
+  hemizygote_count: Int
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  chrom2: String
+  end: Int!
+  end2: Int
+  major_consequence: String
+  filters: [String!]
+  length: Int
+  pos: Int!
+  pos2: Int
+  type: String
+  variant_id: String!
+
+  # Deprecated - replaced by major_consequence
+  consequence: String
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hom: Int
+  ac_hemi: Int
+}
+
+type StructuralVariantDetails {
+  age_distribution: StructuralVariantAgeDistribution
+  algorithms: [String!]
+  alts: [String!]
+  ac: Int!
+  an: Int!
+  af: Float!
+  homozygote_count: Int
+  hemizygote_count: Int
+  chrom: String!
+  chrom2: String
+  major_consequence: String
+  consequences: [StructuralVariantConsequence!]
+  copy_numbers: [StructuralVariantCopyNumber!]
+  cpx_intervals: [String!]
+  cpx_type: String
+  end: Int!
+  end2: Int
+  evidence: [String!]
+  filters: [String!]
+  genes: [String!]
+  genotype_quality: StructuralVariantGenotypeQuality
+  length: Int
+  populations: [StructuralVariantPopulation!]
+  pos: Int!
+  pos2: Int
+  qual: Float
+  reference_genome: ReferenceGenomeId!
+  type: String
+  variant_id: String!
+
+  # Deprecated - replaced by major_consequence
+  consequence: String
+
+  # Deprecated - replaced by homozygote/hemizygote count
+  ac_hom: Int
+  ac_hemi: Int
+}

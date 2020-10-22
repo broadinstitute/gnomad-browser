@@ -1,0 +1,49 @@
+type MultiNucleotideVariantConstituentSNVSequencingData {
+  ac: Int
+  an: Int
+  filters: [String!]
+}
+
+type MultiNucleotideVariantConstituentSNV {
+  variant_id: String!
+  exome: MultiNucleotideVariantConstituentSNVSequencingData
+  genome: MultiNucleotideVariantConstituentSNVSequencingData
+}
+
+type MultiNucleotideVariantConstituentSNVConsequence {
+  variant_id: String!
+  amino_acids: String!
+  codons: String!
+  consequence: String!
+}
+
+type MultiNucleotideVariantConsequence {
+  gene_id: String!
+  gene_name: String!
+  transcript_id: String!
+  category: String
+  amino_acids: String!
+  codons: String!
+  consequence: String!
+  snv_consequences: [MultiNucleotideVariantConstituentSNVConsequence!]!
+}
+
+type MultiNucleotideVariantDetailsSequencingData {
+  ac: Int
+  ac_hom: Int
+  n_individuals: Int
+}
+
+type MultiNucleotideVariantDetails {
+  variant_id: String!
+  referenceGenome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  constituent_snvs: [MultiNucleotideVariantConstituentSNV!]
+  exome: MultiNucleotideVariantDetailsSequencingData
+  genome: MultiNucleotideVariantDetailsSequencingData
+  consequences: [MultiNucleotideVariantConsequence!]
+  related_mnvs: [MultiNucleotideVariantSummary!]!
+}

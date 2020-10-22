@@ -1,0 +1,31 @@
+type GnomadConstraint {
+  exp_lof: Float
+  exp_mis: Float
+  exp_syn: Float
+
+  obs_lof: Int
+  obs_mis: Int
+  obs_syn: Int
+
+  oe_lof: Float
+  oe_lof_lower: Float
+  oe_lof_upper: Float
+
+  oe_mis: Float
+  oe_mis_lower: Float
+  oe_mis_upper: Float
+
+  oe_syn: Float
+  oe_syn_lower: Float
+  oe_syn_upper: Float
+
+  lof_z: Float
+  mis_z: Float
+  syn_z: Float
+
+  pli: Float
+  flags: [String!]
+
+  # Deprecated fields
+  pLI: Float
+}
