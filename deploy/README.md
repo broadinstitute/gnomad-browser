@@ -53,6 +53,8 @@ To check if the operator is ready, run `kubectl -n elastic-system get statefulse
 
 To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
+After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
+
 #### Create browser deployment
 
 - Build Docker images and push to GCR.

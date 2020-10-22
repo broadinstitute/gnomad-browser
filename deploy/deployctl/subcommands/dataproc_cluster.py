@@ -31,8 +31,12 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             f"--subnet={config.network_name}-dataproc",
             "--tags=dataproc-node",
             "--max-idle=1h",
+            "--packages=elasticsearch~=6.8",
             "--requester-pays-allow-buckets=gnomad-public-requester-pays",
             f"--service-account=gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
+            # Required to access Secret Manager
+            # https://cloud.google.com/secret-manager/docs/accessing-the-api#enabling_api_access
+            "--scopes=cloud-platform",
         ]
         + cluster_args
     )
