@@ -201,10 +201,13 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
     # Age distribution #
     ####################
 
-    # Extract overall age distribution
+    # Format age distributions
     ds = ds.transmute(
         age_distribution=hl.struct(
-            het=ds.age_hist_het[g.age_index_dict["gnomad"]], hom=ds.age_hist_hom[g.age_index_dict["gnomad"]],
+            **{
+                subset: hl.struct(het=ds.age_hist_het[index], hom=ds.age_hist_hom[index],)
+                for subset, index in g.age_index_dict.items()
+            },
         )
     )
 
