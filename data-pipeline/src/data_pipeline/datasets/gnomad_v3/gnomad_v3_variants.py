@@ -1,81 +1,18 @@
+import itertools
+
 import hail as hl
 
-from data_pipeline.data_types.locus import normalized_contig, x_position
-from data_pipeline.data_types.variant import variant_id, variant_ids
+from data_pipeline.data_types.variant import variant_id
 
 
 def nullify_nan(value):
     return hl.if_else(hl.is_nan(value), hl.null(value.dtype), value)
 
 
-POPULATIONS = [
-    "afr",
-    "ami",
-    "amr",
-    "asj",
-    "eas",
-    "fin",
-    "nfe",
-    "oth",
-    "sas",
-]
-
-
-def population_frequencies_expression(ds, freq_index_dict):
-    populations = []
-
-    for pop_id in POPULATIONS:
-        populations.append(
-            hl.struct(
-                id=pop_id.upper(),
-                ac=ds.freq[freq_index_dict[f"adj_{pop_id}"]].AC,
-                an=ds.freq[freq_index_dict[f"adj_{pop_id}"]].AN,
-                hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"adj_{pop_id}_male"]].AN, 0),
-                homozygote_count=ds.freq[freq_index_dict[f"adj_{pop_id}"]].homozygote_count,
-            )
-        )
-
-        populations.append(
-            hl.struct(
-                id=f"{pop_id.upper()}_FEMALE",
-                ac=ds.freq[freq_index_dict[f"adj_{pop_id}_female"]].AC,
-                an=ds.freq[freq_index_dict[f"adj_{pop_id}_female"]].AN,
-                hemizygote_count=0,
-                homozygote_count=ds.freq[freq_index_dict[f"adj_{pop_id}_female"]].homozygote_count,
-            )
-        )
-
-        populations.append(
-            hl.struct(
-                id=f"{pop_id.upper()}_MALE",
-                ac=ds.freq[freq_index_dict[f"adj_{pop_id}_male"]].AC,
-                an=ds.freq[freq_index_dict[f"adj_{pop_id}_male"]].AN,
-                hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"adj_{pop_id}_male"]].AC, 0),
-                homozygote_count=ds.freq[freq_index_dict[f"adj_{pop_id}_male"]].homozygote_count,
-            )
-        )
-
-    populations.append(
-        hl.struct(
-            id="FEMALE",
-            ac=ds.freq[freq_index_dict["adj_female"]].AC,
-            an=ds.freq[freq_index_dict["adj_female"]].AN,
-            hemizygote_count=0,
-            homozygote_count=ds.freq[freq_index_dict["adj_female"]].homozygote_count,
-        )
-    )
-
-    populations.append(
-        hl.struct(
-            id="MALE",
-            ac=ds.freq[freq_index_dict["adj_male"]].AC,
-            an=ds.freq[freq_index_dict["adj_male"]].AN,
-            hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict["adj_male"]].AC, 0),
-            homozygote_count=ds.freq[freq_index_dict["adj_male"]].homozygote_count,
-        )
-    )
-
-    return populations
+def freq_index_key(subset=None, pop=None, sex=None, raw=False):
+    parts = [s for s in [subset, pop, sex] if s is not None]
+    parts.append("raw" if raw else "adj")
+    return "-".join(parts)
 
 
 def prepare_gnomad_v3_variants(path):
@@ -83,79 +20,142 @@ def prepare_gnomad_v3_variants(path):
 
     g = hl.eval(ds.globals)
 
+    subsets = set(m.get("subset", None) for m in g.freq_meta)
+
+    def freq(ds, *args, **kwargs):
+        return ds.freq[g.freq_index_dict[freq_index_key(*args, **kwargs)]]
+
     ############################
     # Derived top level fields #
     ############################
 
-    ds = ds.annotate(
-        variant_id=variant_id(ds.locus, ds.alleles),
-        reference_genome="GRCh38",
-        chrom=normalized_contig(ds.locus.contig),
-        pos=ds.locus.position,
-        xpos=x_position(ds.locus),
-        ref=ds.alleles[0],
-        alt=ds.alleles[1],
+    ds = ds.annotate(variant_id=variant_id(ds.locus, ds.alleles))
+
+    ######################
+    # Colocated variants #
+    ######################
+
+    variants_by_locus = ds.select(
+        ds.variant_id,
+        ac_raw=hl.struct(**{subset or "all": freq(ds, subset=subset, raw=True).AC for subset in subsets}),
+    )
+    variants_by_locus = variants_by_locus.group_by("locus").aggregate(
+        variants=hl.agg.collect(variants_by_locus.row_value)
     )
 
+    def subset_filter(subset):
+        return lambda variant: variant.ac_raw[subset] > 0
+
+    variants_by_locus = variants_by_locus.annotate(
+        variant_ids=hl.struct(
+            **{
+                subset
+                or "all": variants_by_locus.variants.filter(subset_filter(subset or "all")).map(
+                    lambda variant: variant.variant_id
+                )
+                for subset in subsets
+            }
+        )
+    )
+
+    ds = ds.annotate(colocated_variants=variants_by_locus[ds.locus].variant_ids)
     ds = ds.annotate(
-        colocated_variants=variant_ids(ds.old_locus, ds.old_alleles).filter(lambda vid: vid != ds.variant_id)
+        colocated_variants=hl.struct(
+            **{
+                subset: ds.colocated_variants[subset].filter(lambda variant_id: variant_id != ds.variant_id)
+                for subset in ds.colocated_variants._fields
+            }
+        )
     )
 
     ###############
     # Frequencies #
     ###############
 
-    ds = ds.annotate(nonpar=ds.info.non_par)
+    subset_populations = {}
+    for subset in subsets:
+        subset_populations[subset] = set(m.get("pop", None) for m in g.freq_meta if m.get("subset", None) == subset)
+
+        subset_populations[subset].discard(None)
+
+        # "global" population is used for downsamplings
+        subset_populations[subset].discard("global")
+
+    ds = ds.annotate(in_autosome_or_par=ds.locus.in_autosome_or_par())
 
     ds = ds.annotate(
         genome=hl.struct(
-            ac=ds.freq[g.freq_index_dict["adj"]].AC,
-            ac_raw=ds.freq[g.freq_index_dict["raw"]].AC,
-            an=ds.freq[g.freq_index_dict["adj"]].AN,
-            hemizygote_count=hl.if_else(ds.nonpar, ds.freq[g.freq_index_dict["adj_male"]].AC, 0),
-            homozygote_count=ds.freq[g.freq_index_dict["adj"]].homozygote_count,
-            populations=population_frequencies_expression(ds, g.freq_index_dict),
+            freq=hl.struct(
+                **{
+                    subset
+                    or "all": hl.struct(
+                        ac=freq(ds, subset=subset).AC,
+                        ac_raw=freq(ds, subset=subset, raw=True).AC,
+                        an=freq(ds, subset=subset).AN,
+                        hemizygote_count=hl.if_else(ds.in_autosome_or_par, 0, freq(ds, subset=subset, sex="XY").AC,),
+                        homozygote_count=freq(ds, subset=subset).homozygote_count,
+                        populations=[
+                            hl.struct(
+                                id="_".join(filter(bool, [pop, sex])),
+                                ac=freq(ds, subset=subset, pop=pop, sex=sex).AC,
+                                an=freq(ds, subset=subset, pop=pop, sex=sex).AN,
+                                hemizygote_count=0
+                                if sex == "XX"
+                                else hl.if_else(
+                                    ds.in_autosome_or_par, 0, freq(ds, subset=subset, pop=pop, sex="XY").AC,
+                                ),
+                                homozygote_count=freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count,
+                            )
+                            for pop, sex in itertools.product(subset_populations[subset], [None, "XX", "XY"])
+                        ],
+                    )
+                    for subset in subsets
+                }
+            )
         )
     )
 
-    ds = ds.drop("freq")
+    ds = ds.drop("freq", "in_autosome_or_par")
 
     ##############################
     # Filtering allele frequency #
     ##############################
 
+    faf_populations = [pop for pop in subset_populations[None] if f"{pop}-adj" in g.faf_index_dict]
+
+    # Get popmax FAFs
     ds = ds.annotate(
         genome=ds.genome.annotate(
             faf95=hl.rbind(
                 hl.sorted(
                     hl.array(
                         [
-                            hl.struct(faf=ds.faf[g.faf_index_dict[f"adj_{pop_id}"]].faf95, population=pop_id.upper(),)
-                            for pop_id in ["afr", "amr", "eas", "nfe", "sas"]
+                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}-adj"]].faf95, population=pop)
+                            for pop in faf_populations
                         ]
                     ),
                     key=lambda f: (-f.faf, f.population),
                 ),
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
-                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population,),
-                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr),),
+                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population),
+                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr)),
                 ),
             ),
             faf99=hl.rbind(
                 hl.sorted(
                     hl.array(
                         [
-                            hl.struct(faf=ds.faf[g.faf_index_dict[f"adj_{pop_id}"]].faf99, population=pop_id.upper(),)
-                            for pop_id in ["afr", "amr", "eas", "nfe", "sas"]
+                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}-adj"]].faf99, population=pop)
+                            for pop in faf_populations
                         ]
                     ),
                     key=lambda f: (-f.faf, f.population),
                 ),
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
-                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population,),
-                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr),),
+                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population),
+                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr)),
                 ),
             ),
         )
@@ -163,34 +163,51 @@ def prepare_gnomad_v3_variants(path):
 
     ds = ds.drop("faf")
 
+    ####################
+    # Age distribution #
+    ####################
+
+    ds = ds.annotate(genome=ds.genome.annotate(age_distribution=hl.struct(het=ds.age_hist_het, hom=ds.age_hist_hom)))
+
+    ds = ds.drop("age_hist_het", "age_hist_hom")
+
     ###################
     # Quality metrics #
     ###################
-
-    ds = ds.annotate(lcr=ds.info.lcr)
 
     ds = ds.annotate(
         genome=ds.genome.annotate(
             filters=ds.filters,
             quality_metrics=hl.struct(
-                allele_balance=hl.struct(alt=ds.ab_hist_alt),
-                genotype_depth=hl.struct(all=ds.dp_hist_all, alt=ds.dp_hist_alt),
-                genotype_quality=hl.struct(all=ds.gq_hist_all, alt=ds.gq_hist_alt),
-                site_quality_metrics=[
-                    hl.struct(metric="FS", value=hl.float(nullify_nan(ds.info.FS))),
-                    hl.struct(metric="InbreedingCoeff", value=hl.float(nullify_nan(ds.info.InbreedingCoeff))),
-                    hl.struct(metric="MQ", value=hl.float(nullify_nan(ds.info.MQ))),
-                    hl.struct(metric="MQRankSum", value=hl.float(ds.info.MQRankSum)),
-                    hl.struct(metric="QD", value=hl.float(ds.info.QD)),
-                    hl.struct(metric="ReadPosRankSum", value=hl.float(ds.info.ReadPosRankSum)),
-                    hl.struct(metric="SiteQuality", value=hl.float(ds.qual)),
-                    hl.struct(metric="SOR", value=hl.float(ds.info.SOR)),
+                allele_balance=hl.struct(
+                    alt=ds.qual_hists.ab_hist_alt.annotate(
+                        bin_edges=ds.qual_hists.ab_hist_alt.bin_edges.map(lambda n: hl.float(hl.format("%.3f", n)))
+                    )
+                ),
+                genotype_depth=hl.struct(all=ds.qual_hists.dp_hist_all, alt=ds.qual_hists.dp_hist_alt),
+                genotype_quality=hl.struct(all=ds.qual_hists.gq_hist_all, alt=ds.qual_hists.gq_hist_alt),
+                site_quality_metrics=[hl.struct(metric="SiteQuality", value=hl.float(nullify_nan(ds.info.QUALapprox)))]
+                + [
+                    hl.struct(metric=metric, value=hl.float(nullify_nan(ds.info[metric])))
+                    for metric in [
+                        "InbreedingCoeff",
+                        "AS_FS",
+                        "AS_MQ",
+                        "AS_MQRankSum",
+                        "AS_pab_max",
+                        "AS_QUALapprox",
+                        "AS_QD",
+                        "AS_ReadPosRankSum",
+                        "AS_SOR",
+                        "AS_VarDP",
+                        "AS_VQSLOD",
+                    ]
                 ],
             ),
         )
     )
 
-    ds = ds.drop("filters", "ab_hist_alt", "dp_hist_all", "dp_hist_alt", "gq_hist_all", "gq_hist_alt", "info", "qual")
+    ds = ds.drop("filters", "qual_hists", "raw_qual_hists", "vqsr")
 
     #########
     # Flags #
@@ -198,17 +215,34 @@ def prepare_gnomad_v3_variants(path):
 
     ds = ds.annotate(
         flags=hl.set(
-            [hl.or_missing(ds.lcr, "lcr"), hl.or_missing(((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.nonpar, "par")]
+            [
+                hl.or_missing(ds.region_flag.lcr, "lcr"),
+                hl.or_missing(ds.region_flag.segdup, "segdup"),
+                hl.or_missing(
+                    ((ds.locus.contig == "chrX") & ds.locus.in_x_par())
+                    | ((ds.locus.contig == "chrY") & ds.locus.in_y_par()),
+                    "par",
+                ),
+                hl.or_missing(ds.info.monoallelic, "monoallelic"),
+            ]
         ).filter(hl.is_defined)
+    )
+
+    ds = ds.drop("region_flag")
+
+    ###############
+    # Annotations #
+    ###############
+
+    ds = ds.transmute(
+        annotations=hl.struct(cadd=ds.cadd, primate_ai=ds.primate_ai, revel=ds.revel, splice_ai=ds.splice_ai)
     )
 
     ################
     # Other fields #
     ################
 
-    ds = ds.annotate(exome=hl.null(ds.genome.dtype))
-
     # Drop unused fields
-    ds = ds.drop("popmax", "a_index", "old_locus", "old_alleles", "was_split")
+    ds = ds.drop("allele_info", "a_index", "info", "popmax", "was_split")
 
     return ds
