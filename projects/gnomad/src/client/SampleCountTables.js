@@ -12,6 +12,7 @@ const populationNames = {
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
   fin: 'Finnish',
+  mid: 'Middle Eastern',
   nfe: 'Non-Finnish European',
   sas: 'South Asian',
   oth: 'Other',
@@ -30,8 +31,9 @@ const TableViewport = styled.div`
   }
 `
 
-const SampleCountTable = () => (
+const SampleCountTables = () => (
   <div>
+    <h4>gnomAD v3</h4>
     <TableViewport>
       <BaseTable>
         <thead>
@@ -39,25 +41,93 @@ const SampleCountTable = () => (
             <th rowSpan={2} scope="col">
               Population
             </th>
-            <th scope="col">gnomAD v3</th>
-            <th colSpan={2} scope="col">
-              gnomAD v2
+            <th scope="col">overall</th>
+            <th scope="col">controls and biobanks</th>
+            <th scope="col">non-cancer</th>
+            <th scope="col">non-neuro</th>
+            <th scope="col">non-TOPMed</th>
+            <th scope="col">non-v2</th>
+            <th scope="col">HGDP</th>
+            <th scope="col">TGP</th>
+          </tr>
+        </thead>
+        <tbody>
+          {['afr', 'ami', 'amr', 'asj', 'eas', 'fin', 'mid', 'nfe', 'sas', 'oth'].map(popId => (
+            <tr key={popId}>
+              <th scope="row">{populationNames[popId]}</th>
+              <td>{(sampleCounts.gnomad_r3.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {(
+                  sampleCounts.gnomad_r3_controls_and_biobanks.genomes[popId] || 0
+                ).toLocaleString()}
+              </td>
+              <td>{(sampleCounts.gnomad_r3_non_cancer.genomes[popId] || 0).toLocaleString()}</td>
+              <td>{(sampleCounts.gnomad_r3_non_neuro.genomes[popId] || 0).toLocaleString()}</td>
+              <td>{(sampleCounts.gnomad_r3_non_topmed.genomes[popId] || 0).toLocaleString()}</td>
+              <td>{(sampleCounts.gnomad_r3_non_v2.genomes[popId] || 0).toLocaleString()}</td>
+              <td>{(sampleCounts.gnomad_r3_hgdp.genomes[popId] || 0).toLocaleString()}</td>
+              <td>{(sampleCounts.gnomad_r3_tgp.genomes[popId] || 0).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tbody>
+          {['XX', 'XY'].map(popId => (
+            <tr key={popId}>
+              <th scope="row">{popId}</th>
+              <td>{sampleCounts.gnomad_r3.genomes[popId].toLocaleString()}</td>
+              <td>
+                {sampleCounts.gnomad_r3_controls_and_biobanks.genomes[popId].toLocaleString()}
+              </td>
+              <td>{sampleCounts.gnomad_r3_non_cancer.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r3_non_neuro.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r3_non_topmed.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r3_non_v2.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r3_hgdp.genomes[popId].toLocaleString()}</td>
+              <td>{sampleCounts.gnomad_r3_tgp.genomes[popId].toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <td>{sampleCounts.gnomad_r3.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_controls_and_biobanks.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_non_cancer.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_non_neuro.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_non_topmed.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_non_v2.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_hgdp.genomesTotal.toLocaleString()}</td>
+            <td>{sampleCounts.gnomad_r3_tgp.genomesTotal.toLocaleString()}</td>
+          </tr>
+        </tfoot>
+      </BaseTable>
+    </TableViewport>
+
+    <h4>gnomAD v2</h4>
+    <TableViewport>
+      <BaseTable>
+        <thead>
+          <tr>
+            <th rowSpan={2} scope="col">
+              Population
             </th>
             <th colSpan={2} scope="col">
-              controls (v2)
+              overall
             </th>
             <th colSpan={2} scope="col">
-              non-cancer (v2)
+              controls
             </th>
             <th colSpan={2} scope="col">
-              non-neuro (v2)
+              non-cancer
             </th>
             <th colSpan={2} scope="col">
-              non-TOPMed (v2)
+              non-neuro
+            </th>
+            <th colSpan={2} scope="col">
+              non-TOPMed
             </th>
           </tr>
           <tr>
-            <th scope="col">genomes</th>
             <th scope="col">exomes</th>
             <th scope="col">genomes</th>
             <th scope="col">exomes</th>
@@ -74,7 +144,6 @@ const SampleCountTable = () => (
           {['afr', 'ami', 'amr', 'asj', 'eas', 'fin', 'nfe', 'sas', 'oth'].map(popId => (
             <tr key={popId}>
               <th scope="row">{populationNames[popId]}</th>
-              <td>{(sampleCounts.gnomad_r3.genomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r2_1.exomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r2_1.genomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r2_1_controls.exomes[popId] || 0).toLocaleString()}</td>
@@ -92,7 +161,6 @@ const SampleCountTable = () => (
           {['female', 'male'].map(popId => (
             <tr key={popId}>
               <th scope="row">{popId.charAt(0).toUpperCase() + popId.slice(1)}</th>
-              <td>{sampleCounts.gnomad_r3.genomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r2_1.exomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r2_1.genomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId].toLocaleString()}</td>
@@ -109,7 +177,6 @@ const SampleCountTable = () => (
         <tfoot>
           <tr>
             <th scope="row">Total</th>
-            <td>{sampleCounts.gnomad_r3.genomesTotal.toLocaleString()}</td>
             <td>{sampleCounts.gnomad_r2_1.exomesTotal.toLocaleString()}</td>
             <td>{sampleCounts.gnomad_r2_1.genomesTotal.toLocaleString()}</td>
             <td>{sampleCounts.gnomad_r2_1_controls.exomesTotal.toLocaleString()}</td>
@@ -131,4 +198,4 @@ const SampleCountTable = () => (
   </div>
 )
 
-export default SampleCountTable
+export default SampleCountTables
