@@ -10,7 +10,7 @@ import DocumentTitle from './DocumentTitle'
 import Histogram from './Histogram'
 import InfoPage from './InfoPage'
 import Link from './Link'
-import SampleCountTable from './SampleCountTable'
+import SampleCountTables from './SampleCountTables'
 
 const FAQSectionHeading = withAnchor(styled.h2``)
 
@@ -451,7 +451,7 @@ export default () => (
         What populations are represented in the gnomAD data?
       </Question>
       <Answer>
-        <SampleCountTable />
+        <SampleCountTables />
       </Answer>
 
       <Question id="what-ethnicities-are-represented-in-the-other-population">
