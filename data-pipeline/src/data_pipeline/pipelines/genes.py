@@ -31,9 +31,9 @@ pipeline.add_download_task(
 )
 
 pipeline.add_download_task(
-    "download_gencode_v29_gtf",
-    "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz",
-    "/external_sources/gencode.v29.gtf.gz",
+    "download_gencode_v35_gtf",
+    "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_35/gencode.v35.annotation.gtf.gz",
+    "/external_sources/gencode.v35.gtf.gz",
 )
 
 pipeline.add_download_task(
@@ -58,7 +58,7 @@ pipeline.add_task(
     prepare_genes,
     "/genes/genes_grch38_base.ht",
     {
-        "gencode_path": pipeline.get_task("download_gencode_v29_gtf"),
+        "gencode_path": pipeline.get_task("download_gencode_v35_gtf"),
         "hgnc_path": pipeline.get_task("download_hgnc_names"),
     },
     {"reference_genome": "GRCh38"},
