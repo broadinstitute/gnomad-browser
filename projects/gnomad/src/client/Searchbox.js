@@ -49,7 +49,10 @@ export default withRouter(props => {
   } = props
 
   const currentParams = queryString.parse(location.search)
-  const defaultSearchDataset = currentParams.dataset === 'gnomad_r3' ? 'gnomad_r3' : 'gnomad_r2_1'
+  const defaultSearchDataset =
+    currentParams.dataset && currentParams.dataset.startsWith('gnomad_r3')
+      ? 'gnomad_r3'
+      : 'gnomad_r2_1'
   const [searchDataset, setSearchDataset] = useState(defaultSearchDataset)
 
   // Update search dataset when active dataset changes.
@@ -57,7 +60,9 @@ export default withRouter(props => {
   useEffect(() => {
     return history.listen(newLocation => {
       const newParams = queryString.parse(newLocation.search)
-      setSearchDataset(newParams.dataset === 'gnomad_r3' ? 'gnomad_r3' : 'gnomad_r2_1')
+      setSearchDataset(
+        newParams.dataset && newParams.dataset.startsWith('gnomad_r3') ? 'gnomad_r3' : 'gnomad_r2_1'
+      )
     })
   })
 

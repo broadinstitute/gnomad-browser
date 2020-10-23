@@ -11,7 +11,7 @@ import { BarGraph } from './BarGraph'
 import qualityMetricDescriptions from './qualityMetricDescriptions'
 
 const getSiteQualityMetricDistributions = datasetId => {
-  if (datasetId === 'gnomad_r3') {
+  if (datasetId.startsWith('gnomad_r3')) {
     return gnomadV3SiteQualityMetricDistributions
   }
   if (datasetId.startsWith('gnomad_r2')) {

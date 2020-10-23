@@ -1,4 +1,10 @@
 export const coverageDataset = datasetId => {
+  // Coverage is not broken down by subset for gnomAD 3.1
+  // Map all subset datasets to the main dataset.
+  if (datasetId.startsWith('gnomad_r3')) {
+    return 'gnomad_r3'
+  }
+
   // Coverage is not broken down by subset for gnomAD 2.1
   // Map all subset datasets to the main dataset.
   if (datasetId.startsWith('gnomad_r2_1')) {

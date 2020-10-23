@@ -437,12 +437,56 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     ]
 
     if (includeGnomad3) {
-      shortVariantDatasets[1].children.push({
-        id: 'gnomad_r3',
-        label: labelForDataset('gnomad_r3'),
-        url: datasetLink('gnomad_r3'),
-        description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
-      })
+      shortVariantDatasets[1].children.push(
+        {
+          id: 'gnomad_r3',
+          label: labelForDataset('gnomad_r3'),
+          url: datasetLink('gnomad_r3'),
+          description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_controls_and_biobanks',
+          label: labelForDataset('gnomad_r3_controls_and_biobanks'),
+          url: datasetLink('gnomad_r3_controls_and_biobanks'),
+          description: `${sampleCounts.gnomad_r3_controls_and_biobanks.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_non_cancer',
+          label: labelForDataset('gnomad_r3_non_cancer'),
+          url: datasetLink('gnomad_r3_non_cancer'),
+          description: `${sampleCounts.gnomad_r3_non_cancer.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_non_neuro',
+          label: labelForDataset('gnomad_r3_non_neuro'),
+          url: datasetLink('gnomad_r3_non_neuro'),
+          description: `${sampleCounts.gnomad_r3_non_neuro.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_non_topmed',
+          label: labelForDataset('gnomad_r3_non_topmed'),
+          url: datasetLink('gnomad_r3_non_topmed'),
+          description: `${sampleCounts.gnomad_r3_non_topmed.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_non_v2',
+          label: labelForDataset('gnomad_r3_non_v2'),
+          url: datasetLink('gnomad_r3_non_v2'),
+          description: `${sampleCounts.gnomad_r3_non_v2.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_hgdp',
+          label: labelForDataset('gnomad_r3_hgdp'),
+          url: datasetLink('gnomad_r3_hgdp'),
+          description: `${sampleCounts.gnomad_r3_hgdp.total.toLocaleString()} samples`,
+        },
+        {
+          id: 'gnomad_r3_tgp',
+          label: labelForDataset('gnomad_r3_tgp'),
+          url: datasetLink('gnomad_r3_tgp'),
+          description: `${sampleCounts.gnomad_r3_tgp.total.toLocaleString()} samples`,
+        }
+      )
     }
 
     if (includeGnomad2) {

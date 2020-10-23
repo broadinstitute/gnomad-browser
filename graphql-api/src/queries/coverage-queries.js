@@ -96,8 +96,8 @@ const fetchCoverage = async (esClient, { index, contig, regions, bucketSize }) =
 const fetchExomeCoverageForRegion = (esClient, datasetId, region) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
 
-  if (datasetId.startsWith('gnomad_r2_1_')) {
-    throw new UserVisibleError('Coverage is not available for gnomAD v2 subsets')
+  if (datasetId.startsWith('gnomad_r2_1_') || datasetId.startsWith('gnomad_r3_')) {
+    throw new UserVisibleError('Coverage is not available for subsets')
   }
 
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
@@ -118,8 +118,8 @@ const fetchExomeCoverageForRegion = (esClient, datasetId, region) => {
 const fetchGenomeCoverageForRegion = (esClient, datasetId, region) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
 
-  if (datasetId.startsWith('gnomad_r2_1_')) {
-    throw new UserVisibleError('Coverage is not available for gnomAD v2 subsets')
+  if (datasetId.startsWith('gnomad_r2_1_') || datasetId.startsWith('gnomad_r3_')) {
+    throw new UserVisibleError('Coverage is not available for subsets')
   }
 
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
@@ -144,8 +144,8 @@ const fetchGenomeCoverageForRegion = (esClient, datasetId, region) => {
 const fetchCoverageForGene = async (esClient, datasetId, gene) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, gene.reference_genome)
 
-  if (datasetId.startsWith('gnomad_r2_1_')) {
-    throw new UserVisibleError('Coverage is not available for gnomAD v2 subsets')
+  if (datasetId.startsWith('gnomad_r2_1_') || datasetId.startsWith('gnomad_r3_')) {
+    throw new UserVisibleError('Coverage is not available for subsets')
   }
 
   const paddedExons = extendRegions(75, gene.exons)
@@ -187,8 +187,8 @@ const fetchCoverageForGene = async (esClient, datasetId, gene) => {
 const fetchCoverageForTranscript = async (esClient, datasetId, transcript) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, transcript.reference_genome)
 
-  if (datasetId.startsWith('gnomad_r2_1_')) {
-    throw new UserVisibleError('Coverage is not available for gnomAD v2 subsets')
+  if (datasetId.startsWith('gnomad_r2_1_') || datasetId.startsWith('gnomad_r3_')) {
+    throw new UserVisibleError('Coverage is not available for subsets')
   }
 
   const paddedExons = extendRegions(75, transcript.exons)
