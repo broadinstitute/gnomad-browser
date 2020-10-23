@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { ExternalLink, List, ListItem, PageHeading } from '@gnomad/ui'
 
-import ageDistribution from './dataset-constants/gnomad_r2_1_1/ageDistribution.json'
+import gnomadV3AgeDistribution from './dataset-constants/gnomad_r3/ageDistribution.json'
+import gnomadV2AgeDistribution from './dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import Histogram from './Histogram'
@@ -468,7 +469,22 @@ export default () => (
         What is the age distribution in gnomAD?
       </Question>
       <Answer>
-        <p>Age data is not available for gnomAD v3.</p>
+        <p>For gnomAD v3, the age distribution is:</p>
+
+        <ColumnsWrapper>
+          <Column>
+            <Histogram
+              binEdges={gnomadV3AgeDistribution.genome.bin_edges}
+              binValues={gnomadV3AgeDistribution.genome.bin_freq}
+              nSmaller={gnomadV3AgeDistribution.genome.n_smaller}
+              nLarger={gnomadV3AgeDistribution.genome.n_larger}
+              barColor="#73ab3d"
+              xLabel="Age"
+              yLabel="Individuals"
+              formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+            />
+          </Column>
+        </ColumnsWrapper>
 
         <p>For gnomAD v2, the age distribution is:</p>
 
@@ -476,10 +492,10 @@ export default () => (
           <Column>
             <p>Exomes</p>
             <Histogram
-              binEdges={ageDistribution.exome.bin_edges}
-              binValues={ageDistribution.exome.bin_freq}
-              nSmaller={ageDistribution.exome.n_smaller}
-              nLarger={ageDistribution.exome.n_larger}
+              binEdges={gnomadV2AgeDistribution.exome.bin_edges}
+              binValues={gnomadV2AgeDistribution.exome.bin_freq}
+              nSmaller={gnomadV2AgeDistribution.exome.n_smaller}
+              nLarger={gnomadV2AgeDistribution.exome.n_larger}
               barColor="#428bca"
               xLabel="Age"
               yLabel="Individuals"
@@ -489,10 +505,10 @@ export default () => (
           <Column>
             <p>Genomes</p>
             <Histogram
-              binEdges={ageDistribution.genome.bin_edges}
-              binValues={ageDistribution.genome.bin_freq}
-              nSmaller={ageDistribution.genome.n_smaller}
-              nLarger={ageDistribution.genome.n_larger}
+              binEdges={gnomadV2AgeDistribution.genome.bin_edges}
+              binValues={gnomadV2AgeDistribution.genome.bin_freq}
+              nSmaller={gnomadV2AgeDistribution.genome.n_smaller}
+              nLarger={gnomadV2AgeDistribution.genome.n_larger}
               barColor="#73ab3d"
               xLabel="Age"
               yLabel="Individuals"
