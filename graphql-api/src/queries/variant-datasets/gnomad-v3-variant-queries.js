@@ -12,7 +12,8 @@ const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 // Count query
 // ================================================================================================
 
-const countVariantsInRegion = async (esClient, region) => {
+// eslint-disable-next-line no-unused-vars
+const countVariantsInRegion = async (esClient, region, subset) => {
   const response = await esClient.search({
     index: 'gnomad_v3_variants',
     type: '_doc',
@@ -50,7 +51,7 @@ const countVariantsInRegion = async (esClient, region) => {
 // Variant query
 // ================================================================================================
 
-const fetchVariantById = async (esClient, variantIdOrRsid) => {
+const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
   const response = await esClient.search({
     index: 'gnomad_v3_variants',
@@ -71,14 +72,43 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
+  if (variant.genome.freq[subset].ac_raw === 0) {
+    return null
+  }
+
+  const filters = variant.genome.filters || []
+
+  if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
+    filters.push('AC0')
+  }
+
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
   return {
     ...variant,
     reference_genome: 'GRCh38',
+    chrom: variant.locus.contig.slice(3), // remove "chr" prefix
+    pos: variant.locus.position,
+    ref: variant.alleles[0],
+    alt: variant.alleles[1],
+    colocated_variants: variant.colocated_variants[subset] || [],
     exome: null,
+    genome: {
+      ...variant.genome,
+      ...variant.genome.freq[subset],
+      filters,
+      quality_metrics: {
+        ...variant.genome.quality_metrics,
+        site_quality_metrics: variant.genome.quality_metrics.site_quality_metrics.filter((m) =>
+          Number.isFinite(m.value)
+        ),
+      },
+    },
     flags,
-    transcript_consequences: variant.transcript_consequences || [],
+    // TODO: Include RefSeq transcripts once the browser supports them.
+    transcript_consequences: (variant.transcript_consequences || []).filter((csq) =>
+      csq.gene_id.startsWith('ENSG')
+    ),
   }
 }
 
@@ -86,7 +116,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
 // Shape variant summary
 // ================================================================================================
 
-const shapeVariantSummary = (context) => {
+const shapeVariantSummary = (subset, context) => {
   const getConsequence = getConsequenceForContext(context)
   const getFlags = getFlagsForContext(context)
 
@@ -94,13 +124,25 @@ const shapeVariantSummary = (context) => {
     const transcriptConsequence = getConsequence(variant) || {}
     const flags = getFlags(variant)
 
+    const filters = variant.genome.filters || []
+
+    if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
+      filters.push('AC0')
+    }
+
     return {
       ...omit(variant, 'transcript_consequences'), // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
+      chrom: variant.locus.contig.slice(3), // Remove "chr" prefix
+      pos: variant.locus.position,
+      ref: variant.alleles[0],
+      alt: variant.alleles[1],
       exome: null,
       genome: {
-        ...variant.genome,
-        populations: variant.genome.populations.filter((pop) => !pop.id.includes('_')),
+        ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+        ...variant.genome.freq[subset],
+        populations: variant.genome.freq[subset].populations.filter((pop) => !pop.id.includes('_')),
+        filters,
       },
       flags,
       transcript_consequence: transcriptConsequence,
@@ -112,7 +154,7 @@ const shapeVariantSummary = (context) => {
 // Gene query
 // ================================================================================================
 
-const fetchVariantsByGene = async (esClient, gene) => {
+const fetchVariantsByGene = async (esClient, gene, subset) => {
   const filteredRegions = gene.exons.filter((exon) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
   const padding = 75
@@ -140,12 +182,11 @@ const fetchVariantsByGene = async (esClient, gene) => {
     type: '_doc',
     size: 10000,
     _source: [
-      'value.genome',
-      'value.alt',
-      'value.chrom',
+      `value.genome.freq.${subset}`,
+      'value.genome.filters',
+      'value.alleles',
+      'value.locus',
       'value.flags',
-      'value.pos',
-      'value.ref',
       'value.rsid',
       'value.transcript_consequences',
       'value.variant_id',
@@ -162,25 +203,25 @@ const fetchVariantsByGene = async (esClient, gene) => {
 
   return hits
     .map((hit) => hit._source.value)
-    .map(shapeVariantSummary({ type: 'gene', geneId: gene.gene_id }))
+    .filter((variant) => variant.genome.freq[subset].ac_raw > 0)
+    .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 }
 
 // ================================================================================================
 // Region query
 // ================================================================================================
 
-const fetchVariantsByRegion = async (esClient, region) => {
+const fetchVariantsByRegion = async (esClient, region, subset) => {
   const hits = await fetchAllSearchResults(esClient, {
     index: 'gnomad_v3_variants',
     type: '_doc',
     size: 10000,
     _source: [
-      'value.genome',
-      'value.alt',
-      'value.chrom',
+      `value.genome.freq.${subset}`,
+      'value.genome.filters',
+      'value.alleles',
+      'value.locus',
       'value.flags',
-      'value.pos',
-      'value.ref',
       'value.rsid',
       'value.transcript_consequences',
       'value.variant_id',
@@ -205,14 +246,17 @@ const fetchVariantsByRegion = async (esClient, region) => {
     },
   })
 
-  return hits.map((hit) => hit._source.value).map(shapeVariantSummary({ type: 'region' }))
+  return hits
+    .map((hit) => hit._source.value)
+    .filter((variant) => variant.genome.freq[subset].ac_raw > 0)
+    .map(shapeVariantSummary(subset, { type: 'region' }))
 }
 
 // ================================================================================================
 // Transcript query
 // ================================================================================================
 
-const fetchVariantsByTranscript = async (esClient, transcript) => {
+const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
   const filteredRegions = transcript.exons.filter((exon) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
   const padding = 75
@@ -240,12 +284,11 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
     type: '_doc',
     size: 10000,
     _source: [
-      'value.genome',
-      'value.alt',
-      'value.chrom',
+      `value.genome.freq.${subset}`,
+      'value.genome.filters',
+      'value.alleles',
+      'value.locus',
       'value.flags',
-      'value.pos',
-      'value.ref',
       'value.rsid',
       'value.transcript_consequences',
       'value.variant_id',
@@ -265,7 +308,10 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
 
   return hits
     .map((hit) => hit._source.value)
-    .map(shapeVariantSummary({ type: 'transcript', transcriptId: transcript.transcript_id }))
+    .filter((variant) => variant.genome.freq[subset].ac_raw > 0)
+    .map(
+      shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
+    )
 }
 
 module.exports = {
