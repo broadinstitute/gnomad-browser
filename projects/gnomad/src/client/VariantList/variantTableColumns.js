@@ -126,7 +126,7 @@ export const getColumns = ({
       tooltip: 'Flags that may affect annotation and/or confidence',
       grow: 0,
       isSortable: true,
-      minWidth: 120,
+      minWidth: 140,
       render: (row, key) =>
         row[key]
           .filter(flag => flag !== 'segdup' && flag !== 'par')
