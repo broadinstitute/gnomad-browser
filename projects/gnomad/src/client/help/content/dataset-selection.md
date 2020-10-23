@@ -9,7 +9,14 @@ The data selection drop-down specifies which dataset is displayed on the page. C
 
 ## Short variants
 
-+ gnomAD v3.0
++ gnomAD v3.1
++ gnomAD v3.1 (controls and biobanks)
++ gnomAD v3.1 (HGDP)
++ gnomAD v3.1 (non-cancer)
++ gnomAD v3.1 (non-neuro)
++ gnomAD v3.1 (non-TOPMed)
++ gnomAD v3.1 (non-v2)
++ gnomAD v3.1 (TGP)
 + gnomAD v2.1.1
 + gnomAD v2.1.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease.
 + gnomAD v2.1.1 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study.

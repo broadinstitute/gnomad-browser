@@ -42,6 +42,29 @@ gnomadV2Subsets.forEach((subset) => {
   }
 })
 
+const gnomadV3Subsets = [
+  'controls_and_biobanks',
+  'hgdp',
+  'non_cancer',
+  'non_neuro',
+  'non_topmed',
+  'non_v2',
+  'tgp',
+]
+
+gnomadV3Subsets.forEach((subset) => {
+  datasetQueries[`gnomad_r3_${subset}`] = {
+    countVariantsInRegion: (...args) =>
+      gnomadV3VariantQueries.countVariantsInRegion(...args, subset),
+    fetchVariantById: (...args) => gnomadV3VariantQueries.fetchVariantById(...args, subset),
+    fetchVariantsByGene: (...args) => gnomadV3VariantQueries.fetchVariantsByGene(...args, subset),
+    fetchVariantsByRegion: (...args) =>
+      gnomadV3VariantQueries.fetchVariantsByRegion(...args, subset),
+    fetchVariantsByTranscript: (...args) =>
+      gnomadV3VariantQueries.fetchVariantsByTranscript(...args, subset),
+  }
+})
+
 const countVariantsInRegion = (esClient, datasetId, region) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
 

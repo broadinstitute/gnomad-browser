@@ -16,6 +16,13 @@ const sampleCounts = {
     genomesTotal: 71702,
     total: 71702,
   },
+  gnomad_r3_controls_and_biobanks: { total: '?' },
+  gnomad_r3_hgdp: { total: '?' },
+  gnomad_r3_non_cancer: { total: '?' },
+  gnomad_r3_non_neuro: { total: '?' },
+  gnomad_r3_non_topmed: { total: '?' },
+  gnomad_r3_non_v2: { total: '?' },
+  gnomad_r3_tgp: { total: '?' },
   gnomad_r2_1: {
     exomes: {
       afr: 8128,
