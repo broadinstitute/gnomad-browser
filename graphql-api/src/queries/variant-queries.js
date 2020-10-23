@@ -4,7 +4,16 @@ const gnomadV2VariantQueries = require('./variant-datasets/gnomad-v2-variant-que
 const exacVariantQueries = require('./variant-datasets/exac-variant-queries')
 
 const datasetQueries = {
-  gnomad_r3: gnomadV3VariantQueries,
+  gnomad_r3: {
+    countVariantsInRegion: (...args) =>
+      gnomadV3VariantQueries.countVariantsInRegion(...args, 'all'),
+    fetchVariantById: (...args) => gnomadV3VariantQueries.fetchVariantById(...args, 'all'),
+    fetchVariantsByGene: (...args) => gnomadV3VariantQueries.fetchVariantsByGene(...args, 'all'),
+    fetchVariantsByRegion: (...args) =>
+      gnomadV3VariantQueries.fetchVariantsByRegion(...args, 'all'),
+    fetchVariantsByTranscript: (...args) =>
+      gnomadV3VariantQueries.fetchVariantsByTranscript(...args, 'all'),
+  },
   gnomad_r2_1: {
     countVariantsInRegion: (...args) =>
       gnomadV2VariantQueries.countVariantsInRegion(...args, 'gnomad'),
