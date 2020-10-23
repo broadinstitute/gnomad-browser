@@ -28,6 +28,11 @@ const TogglePopulationButton = styled(TextButton)`
   text-align: left;
 `
 
+const SEX_IDENTIFIERS = ['FEMALE', 'MALE', 'XX', 'XY']
+
+const isSexSpecificPopulation = pop =>
+  SEX_IDENTIFIERS.includes(pop.id) || SEX_IDENTIFIERS.some(id => pop.id.endsWith(`_${id}`))
+
 export class PopulationsTable extends Component {
   static propTypes = {
     columnLabels: PropTypes.shape({
@@ -139,18 +144,10 @@ export class PopulationsTable extends Component {
           }))
           .sort((a, b) => {
             // Sort male/female subpopulations to bottom of list
-            if (
-              (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
-              !b.id.includes('MALE') &&
-              !b.id.includes('FEMALE')
-            ) {
+            if (isSexSpecificPopulation(a) && !isSexSpecificPopulation(b)) {
               return 1
             }
-            if (
-              (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
-              !a.id.includes('MALE') &&
-              !a.id.includes('FEMALE')
-            ) {
+            if (isSexSpecificPopulation(b) && !isSexSpecificPopulation(a)) {
               return -1
             }
 
@@ -163,18 +160,10 @@ export class PopulationsTable extends Component {
       }))
       .sort((a, b) => {
         // Sort male/female populations to bottom of list
-        if (
-          (a.id.includes('MALE') || a.id.includes('FEMALE')) &&
-          !b.id.includes('MALE') &&
-          !b.id.includes('FEMALE')
-        ) {
+        if (isSexSpecificPopulation(a) && !isSexSpecificPopulation(b)) {
           return 1
         }
-        if (
-          (b.id.includes('MALE') || b.id.includes('FEMALE')) &&
-          !a.id.includes('MALE') &&
-          !a.id.includes('FEMALE')
-        ) {
+        if (isSexSpecificPopulation(b) && !isSexSpecificPopulation(a)) {
           return -1
         }
 
@@ -185,23 +174,23 @@ export class PopulationsTable extends Component {
 
     // Male/female numbers are included in the ancestry populations.
     const totalAlleleCount = renderedPopulations
-      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.ac)
-      .reduce((acc, n) => acc + n)
+      .reduce((acc, n) => acc + n, 0)
     const totalAlleleNumber = renderedPopulations
-      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.an)
-      .reduce((acc, n) => acc + n)
+      .reduce((acc, n) => acc + n, 0)
     const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
 
     const totalHemizygotes = renderedPopulations
-      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.ac_hemi)
-      .reduce((acc, n) => acc + n)
+      .reduce((acc, n) => acc + n, 0)
     const totalHomozygotes = renderedPopulations
-      .filter(pop => !pop.id.includes('MALE') && !pop.id.includes('FEMALE'))
+      .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.ac_hom)
-      .reduce((acc, n) => acc + n)
+      .reduce((acc, n) => acc + n, 0)
 
     const { showHemizygotes, showHomozygotes } = this.props
 
@@ -223,11 +212,8 @@ export class PopulationsTable extends Component {
               key={pop.name}
               className={
                 i > 0 &&
-                (pop.id.includes('MALE') || pop.id.includes('FEMALE')) &&
-                !(
-                  renderedPopulations[i - 1].id.includes('MALE') ||
-                  renderedPopulations[i - 1].id.includes('MALE')
-                )
+                isSexSpecificPopulation(pop) &&
+                !isSexSpecificPopulation(renderedPopulations[i - 1])
                   ? 'border'
                   : undefined
               }
@@ -247,11 +233,8 @@ export class PopulationsTable extends Component {
                   key={`${pop.name}-${subPop.name}`}
                   className={
                     j === 0 ||
-                    ((subPop.id.includes('MALE') || subPop.id.includes('FEMALE')) &&
-                      !(
-                        pop.subpopulations[j - 1].id.includes('MALE') ||
-                        pop.subpopulations[j - 1].id.includes('MALE')
-                      ))
+                    (isSexSpecificPopulation(subPop) &&
+                      !isSexSpecificPopulation(pop.subpopulations[j - 1]))
                       ? 'border'
                       : undefined
                   }

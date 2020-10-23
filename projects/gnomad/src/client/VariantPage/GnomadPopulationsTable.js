@@ -13,6 +13,7 @@ const POPULATION_NAMES = {
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
   FIN: 'European (Finnish)',
+  MID: 'Middle Eastern',
   NFE: 'European (non-Finnish)',
   OTH: 'Other',
   SAS: 'South Asian',
@@ -72,12 +73,16 @@ const mergePopulations = populations => {
 const addPopulationNames = populations => {
   return populations.map(pop => {
     let name
-    if (pop.id.includes('FEMALE')) {
+    if (pop.id === 'FEMALE' || pop.id.endsWith('_FEMALE')) {
       name = 'Female'
-    } else if (pop.id.includes('MALE')) {
+    } else if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
+      name = 'XX'
+    } else if (pop.id === 'MALE' || pop.id.endsWith('_MALE')) {
       name = 'Male'
+    } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
+      name = 'XY'
     } else {
-      name = POPULATION_NAMES[pop.id]
+      name = POPULATION_NAMES[pop.id.toUpperCase()] || pop.id
     }
     return { ...pop, name }
   })
