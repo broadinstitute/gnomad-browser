@@ -1,3 +1,5 @@
+const { withCache } = require('../cache')
+
 const { assertDatasetAndReferenceGenomeMatch } = require('./helpers/validation-helpers')
 const gnomadV3VariantQueries = require('./variant-datasets/gnomad-v3-variant-queries')
 const gnomadV2VariantQueries = require('./variant-datasets/gnomad-v2-variant-queries')
@@ -101,7 +103,15 @@ const fetchVariantsByTranscript = (esClient, datasetId, transcript) => {
 module.exports = {
   countVariantsInRegion,
   fetchVariantById,
-  fetchVariantsByGene,
+  fetchVariantsByGene: withCache(
+    fetchVariantsByGene,
+    (_, datasetId, gene) => `variants:${datasetId}:gene:${gene.gene_id}`,
+    { expiration: 604800 }
+  ),
   fetchVariantsByRegion,
-  fetchVariantsByTranscript,
+  fetchVariantsByTranscript: withCache(
+    fetchVariantsByTranscript,
+    (_, datasetId, transcript) => `variants:${datasetId}:transcript:${transcript.transcript_id}`,
+    { expiration: 3600 }
+  ),
 }
