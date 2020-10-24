@@ -32,6 +32,10 @@ def add_variant_document_id(ds):
     return ds.annotate(document_id=compressed_variant_id(ds.locus, ds.alleles))
 
 
+def filter_clinvar(ds):
+    return ds.filter(hl.len(ds.variant_id) <= 32_766)
+
+
 DATASETS_CONFIG = {
     ##############################################################################################################
     # Genes
@@ -216,8 +220,8 @@ DATASETS_CONFIG = {
     # ClinVar
     ##############################################################################################################
     "clinvar_grch38_variants": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(
+        "get_table": lambda: filter_clinvar(
+            subset_table(
                 hl.read_table(
                     clinvar_grch38_pipeline.get_task(
                         "annotate_clinvar_grch38_transcript_consequences"
@@ -228,20 +232,18 @@ DATASETS_CONFIG = {
         "args": {
             "index": "clinvar_grch38_variants",
             "index_fields": [
-                "document_id",
                 "variant_id",
                 "locus",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
             ],
-            "id_field": "document_id",
             "num_shards": 2,
-            "block_size": 1_000,
+            "block_size": 2_000,
         },
     },
     "clinvar_grch37_variants": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(
+        "get_table": lambda: filter_clinvar(
+            subset_table(
                 hl.read_table(
                     clinvar_grch37_pipeline.get_task(
                         "annotate_clinvar_grch37_transcript_consequences"
@@ -252,15 +254,13 @@ DATASETS_CONFIG = {
         "args": {
             "index": "clinvar_grch37_variants",
             "index_fields": [
-                "document_id",
                 "variant_id",
                 "locus",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
             ],
-            "id_field": "document_id",
             "num_shards": 2,
-            "block_size": 1_000,
+            "block_size": 2_000,
         },
     },
 }
