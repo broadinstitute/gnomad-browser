@@ -14,7 +14,6 @@ import StatusMessage from '../StatusMessage'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
-import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import LoFCurationResult from './LoFCurationResult'
 import MNVSummaryList from './MultiNucleotideVariant/MNVSummaryList'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
@@ -24,6 +23,7 @@ import GnomadReadData from './reads/GnomadReadData'
 import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
+import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
 const Section = styled.section`
@@ -153,13 +153,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
       <h2>
         Population Frequencies <InfoButton topic="ancestry" />
       </h2>
-      <ScrollWrapper>
-        <GnomadPopulationsTable
-          exomePopulations={variant.exome ? variant.exome.populations : []}
-          genomePopulations={variant.genome ? variant.genome.populations : []}
-          showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-        />
-      </ScrollWrapper>
+      <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
     </ResponsiveSection>
     <ResponsiveSection>
       {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
