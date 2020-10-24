@@ -21,12 +21,7 @@ const config = {
   RATE_LIMITER_REDIS_URL: env.RATE_LIMITER_REDIS_URL,
 }
 
-const requiredConfig = [
-  'ELASTICSEARCH_URL',
-  'ELASTICSEARCH_USERNAME',
-  'ELASTICSEARCH_PASSWORD',
-  'RATE_LIMITER_REDIS_URL',
-]
+const requiredConfig = ['ELASTICSEARCH_URL', 'RATE_LIMITER_REDIS_URL']
 
 for (const setting of requiredConfig) {
   if (!config[setting]) {

@@ -5,13 +5,24 @@ const config = require('./config')
 const { UserVisibleError } = require('./errors')
 const logger = require('./logger')
 
-const elastic = new elasticsearch.Client({
+const elasticsearchConfig = {
   node: config.ELASTICSEARCH_URL,
-  auth: {
+}
+
+if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
+  if (!(config.ELASTICSEARCH_USERNAME && config.ELASTICSEARCH_PASSWORD)) {
+    throw Error(
+      'Both ELASTICSEARCH_USERNAME and ELASTICSEARCH_PASSWORD are required if one is provided'
+    )
+  }
+
+  elasticsearchConfig.auth = {
     username: config.ELASTICSEARCH_USERNAME,
     password: config.ELASTICSEARCH_PASSWORD,
-  },
-})
+  }
+}
+
+const elastic = new elasticsearch.Client(elasticsearchConfig)
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
