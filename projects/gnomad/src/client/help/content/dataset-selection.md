@@ -10,7 +10,7 @@ The data selection drop-down specifies which dataset is displayed on the page. C
 ## Short variants
 
 + gnomAD v3.1
-+ gnomAD v3.1 (controls and biobanks)
++ gnomAD v3.1 (controls/biobanks)
 + gnomAD v3.1 (HGDP)
 + gnomAD v3.1 (non-cancer)
 + gnomAD v3.1 (non-neuro)
