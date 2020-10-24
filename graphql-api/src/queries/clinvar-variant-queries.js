@@ -1,5 +1,7 @@
 const { omit } = require('lodash')
 
+const { withCache } = require('../cache')
+
 const { fetchAllSearchResults } = require('./helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('./helpers/region-helpers')
 const { getConsequenceForContext } = require('./variant-datasets/shared/transcriptConsequence')
@@ -216,7 +218,16 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
 module.exports = {
   countClinvarVariantsInRegion,
   fetchClinvarVariantById,
-  fetchClinvarVariantsByGene,
+  fetchClinvarVariantsByGene: withCache(
+    fetchClinvarVariantsByGene,
+    (_, datasetId, gene) => `clinvar_variants:${datasetId}:gene:${gene.gene_id}`,
+    { expiration: 604800 }
+  ),
   fetchClinvarVariantsByRegion,
-  fetchClinvarVariantsByTranscript,
+  fetchClinvarVariantsByTranscript: withCache(
+    fetchClinvarVariantsByTranscript,
+    (_, datasetId, transcript) =>
+      `clinvar_variants:${datasetId}:transcript:${transcript.transcript_id}`,
+    { expiration: 3600 }
+  ),
 }

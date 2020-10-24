@@ -1,4 +1,6 @@
+const { withCache } = require('../cache')
 const { UserVisibleError } = require('../errors')
+
 const {
   extendRegions,
   mergeOverlappingRegions,
@@ -228,6 +230,14 @@ const fetchCoverageForTranscript = async (esClient, datasetId, transcript) => {
 module.exports = {
   fetchExomeCoverageForRegion,
   fetchGenomeCoverageForRegion,
-  fetchCoverageForGene,
-  fetchCoverageForTranscript,
+  fetchCoverageForGene: withCache(
+    fetchCoverageForGene,
+    (_, datasetId, gene) => `coverage:${datasetId}:gene:${gene.gene_id}`,
+    { expiration: 604800 }
+  ),
+  fetchCoverageForTranscript: withCache(
+    fetchCoverageForTranscript,
+    (_, datasetId, transcript) => `coverage:${datasetId}:transcript:${transcript.transcript_id}`,
+    { expiration: 3600 }
+  ),
 }

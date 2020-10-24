@@ -131,7 +131,7 @@ const shapeVariantSummary = (subset, context) => {
     }
 
     return {
-      ...omit(variant, 'transcript_consequences'), // Omit full transcript consequences list to avoid caching it
+      ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
       chrom: variant.locus.contig.slice(3), // Remove "chr" prefix
       pos: variant.locus.position,
