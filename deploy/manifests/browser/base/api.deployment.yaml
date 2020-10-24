@@ -22,7 +22,14 @@ spec:
             - name: PORT
               value: '8000'
             - name: ELASTICSEARCH_URL
-              value: elasticsearch:9200
+              value: http://gnomad-es-http:9200  # FIXME: This depends on using "gnomad" as the ES cluster name
+            - name: ELASTICSEARCH_USERNAME
+              value: elastic
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gnomad-es-elastic-user  # FIXME: This depends on using "gnomad" as the ES cluster name
+                  key: elastic
             - name: TRUST_PROXY
               value: '3'
             - name: MAX_CONCURRENT_ES_REQUESTS
