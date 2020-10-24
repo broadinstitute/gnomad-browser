@@ -54,7 +54,8 @@ spec:
         cloud.google.com/gke-nodepool: redis
       volumes:
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: redis-data
         - name: config
           configMap:
             name: redis-config

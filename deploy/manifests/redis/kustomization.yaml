@@ -7,6 +7,7 @@ generatorOptions:
 resources:
   - redis.deployment.yaml
   - redis.service.yaml
+  - redis-data.pvc.yaml
 images:
   - name: redis
     newName: mirror.gcr.io/library/redis
