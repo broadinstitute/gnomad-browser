@@ -136,11 +136,13 @@ export class PopulationsTable extends Component {
     const renderedPopulations = populations
       .map(pop => ({
         ...pop,
+        // af: pop.an !== 0 ? pop.ac / pop.an : 0,
         af: pop.an !== 0 ? pop.ac / pop.an : 0,
         subpopulations: (pop.subpopulations || [])
           .map(subPop => ({
             ...subPop,
             af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
+            // af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
           }))
           .sort((a, b) => {
             // Sort male/female subpopulations to bottom of list
@@ -207,9 +209,8 @@ export class PopulationsTable extends Component {
           </tr>
         </thead>
         {renderedPopulations.map((pop, i) => (
-          <tbody key={pop.name}>
+          <tbody key={pop.id}>
             <tr
-              key={pop.name}
               className={
                 i > 0 &&
                 isSexSpecificPopulation(pop) &&
