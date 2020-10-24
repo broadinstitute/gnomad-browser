@@ -42,7 +42,7 @@ const SampleCountTables = () => (
               Population
             </th>
             <th scope="col">overall</th>
-            <th scope="col">controls and biobanks</th>
+            <th scope="col">controls/biobanks</th>
             <th scope="col">non-cancer</th>
             <th scope="col">non-neuro</th>
             <th scope="col">non-TOPMed</th>

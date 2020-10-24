@@ -14,7 +14,7 @@ const datasetLabels = {
   gnomad_r2_1_non_neuro: 'gnomAD v2.1.1 (non-neuro)',
   gnomad_r2_1_non_topmed: 'gnomAD v2.1.1 (non-TOPMed)',
   gnomad_r3: 'gnomAD v3',
-  gnomad_r3_controls_and_biobanks: 'gnomAD v3 (controls and biobanks)',
+  gnomad_r3_controls_and_biobanks: 'gnomAD v3 (controls/biobanks)',
   gnomad_r3_hgdp: 'gnomAD v3 (HGDP)',
   gnomad_r3_non_cancer: 'gnomAD v3 (non-cancer)',
   gnomad_r3_non_neuro: 'gnomAD v3 (non-neuro)',
