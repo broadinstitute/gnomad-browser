@@ -23,6 +23,137 @@ const getSiteQualityMetricDistributions = datasetId => {
   throw new Error(`No quality metric distribution available for dataset "${datasetId}"`)
 }
 
+// TODO: clean this up
+const getMetricInfo = ({ datasetId, metric, exomeOrGenome, ac, an }) => {
+  let metricBins
+  let metricDescription
+
+  if (datasetId.startsWith('gnomad_r2') || datasetId === 'exac') {
+    const siteQualityMetricDistributions = getSiteQualityMetricDistributions(datasetId)
+    const metricData = siteQualityMetricDistributions[exomeOrGenome]
+
+    if (metric === 'SiteQuality') {
+      if (ac === 1) {
+        metricBins = metricData.siteQuality.singleton.bin_freq.map((n, i) => ({
+          x0: metricData.siteQuality.singleton.bin_edges[i],
+          x1: metricData.siteQuality.singleton.bin_edges[i + 1],
+          n,
+        }))
+        metricDescription = 'This is the site quality distribution for all singleton variants.'
+      } else if (ac === 2) {
+        metricBins = metricData.siteQuality.doubleton.bin_freq.map((n, i) => ({
+          x0: metricData.siteQuality.doubleton.bin_edges[i],
+          x1: metricData.siteQuality.doubleton.bin_edges[i + 1],
+          n,
+        }))
+        metricDescription = 'This is the site quality distribution for all doubleton variants.'
+      } else {
+        const variantAlleleFreq = an === 0 ? 0 : ac / an
+        const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
+          bin =>
+            bin.min_af <= variantAlleleFreq &&
+            (variantAlleleFreq < bin.max_af ||
+              (variantAlleleFreq === 1 && variantAlleleFreq <= bin.max_af))
+        )
+        metricBins = selectedAlleleFreqBin.histogram.bin_freq.map((n, i) => ({
+          x0: selectedAlleleFreqBin.histogram.bin_edges[i],
+          x1: selectedAlleleFreqBin.histogram.bin_edges[i + 1],
+          n,
+        }))
+        metricDescription = `This is the site quality distribution for all variants with ${
+          selectedAlleleFreqBin.min_af
+        } <= AF ${selectedAlleleFreqBin.max_af === 1 ? '<=' : '<'} ${selectedAlleleFreqBin.max_af}.`
+      }
+    } else {
+      const { histogram } = metricData.otherMetrics.find(m => m.metric === metric)
+
+      metricBins = histogram.bin_freq.map((n, i) => ({
+        x0: histogram.bin_edges[i],
+        x1: histogram.bin_edges[i + 1],
+        n,
+      }))
+
+      metricDescription = qualityMetricDescriptions[metric]
+    }
+  }
+
+  if (datasetId.startsWith('gnomad_r3')) {
+    let key
+    if (metric === 'SiteQuality' || metric === 'AS_QUALapprox') {
+      if (ac === 1) {
+        key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_singleton`
+        metricDescription = `${
+          metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+        } approximation for all singleton variants.`
+      } else if (ac === 2) {
+        key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_doubleton`
+        metricDescription = `${
+          metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+        } approximation for all doubleton variants.`
+      } else {
+        const afBins = [
+          { min: 0, max: 0.00005, key: '0.00005' },
+          { min: 0.00005, max: 0.0001, key: '0.0001' },
+          { min: 0.0001, max: 0.0002, key: '0.0002' },
+          { min: 0.0002, max: 0.0005, key: '0.0005' },
+          { min: 0.0005, max: 0.001, key: '0.001' },
+          { min: 0.001, max: 0.002, key: '0.002' },
+          { min: 0.002, max: 0.005, key: '0.005' },
+          { min: 0.005, max: 0.01, key: '0.01' },
+          { min: 0.01, max: 0.02, key: '0.02' },
+          { min: 0.02, max: 0.05, key: '0.05' },
+          { min: 0.05, max: 0.1, key: '0.1' },
+          { min: 0.1, max: 0.2, key: '0.2' },
+          { min: 0.2, max: 0.5, key: '0.5' },
+          { min: 0.5, max: Infinity, key: '1' },
+        ]
+        const af = an === 0 ? 0 : ac / an
+        const afBin = afBins.find(bin => bin.min <= af && af < bin.max)
+        if (afBin.max === Infinity) {
+          metricDescription = `${
+            metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+          } approximation for all variants with AF >= ${afBin.min}.`
+        } else
+          metricDescription = `${
+            metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+          } approximation for all variants with ${afBin.min} <= AF ${
+            afBin.max === 1 ? '<=' : '<'
+          } ${afBin.max}.`
+        key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_${afBin.key}`
+      }
+    } else if (metric === 'InbreedingCoeff') {
+      const af = an === 0 ? 0 : ac / an
+      if (af < 0.0005) {
+        key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-under_0.0005`
+        metricDescription = 'InbreedingCoeff for all variants with AF < 0.0005.'
+      } else {
+        key = 'InbreedingCoeff-over_0.0005'
+        metricDescription = 'InbreedingCoeff for all variants with AF >= 0.0005.'
+      }
+    } else {
+      key = metric
+      metricDescription = qualityMetricDescriptions[metric]
+    }
+
+    const histogram = gnomadV3SiteQualityMetricDistributions.find(m => m.metric === key)
+    if (metric === 'SiteQuality' || metric === 'AS_QUALapprox') {
+      metricBins = histogram.bin_freq.map((n, i) => ({
+        x0: 10 ** histogram.bin_edges[i],
+        x1: 10 ** histogram.bin_edges[i + 1],
+        n,
+      }))
+    } else {
+      metricBins = histogram.bin_freq.map((n, i) => ({
+        x0: histogram.bin_edges[i],
+        x1: histogram.bin_edges[i + 1],
+        n,
+      }))
+    }
+  }
+
+  return { metricBins, metricDescription }
+}
+
 const variantSiteQualityMetricsPropType = PropTypes.arrayOf(
   PropTypes.shape({
     metric: PropTypes.string.isRequired,
@@ -60,53 +191,15 @@ export class GnomadSiteQualityMetrics extends Component {
     const { datasetId, variant } = this.props
     const { selectedDataset, selectedMetric } = this.state
 
+    const { metricBins, metricDescription } = getMetricInfo({
+      datasetId,
+      metric: selectedMetric,
+      exomeOrGenome: selectedDataset,
+      ac: variant[selectedDataset].ac,
+      an: variant[selectedDataset].an,
+    })
+
     const variantData = variant[selectedDataset]
-    const siteQualityMetricDistributions = getSiteQualityMetricDistributions(datasetId)
-    const metricData = siteQualityMetricDistributions[selectedDataset]
-
-    let selectedMetricBins
-    let selectedSiteQualityBinDescription
-    if (selectedMetric === 'SiteQuality') {
-      if (variantData.ac === 1) {
-        selectedMetricBins = metricData.siteQuality.singleton.bin_freq.map((n, i) => ({
-          x0: metricData.siteQuality.singleton.bin_edges[i],
-          x1: metricData.siteQuality.singleton.bin_edges[i + 1],
-          n,
-        }))
-        selectedSiteQualityBinDescription = 'singleton variants'
-      } else if (variantData.ac === 2) {
-        selectedMetricBins = metricData.siteQuality.doubleton.bin_freq.map((n, i) => ({
-          x0: metricData.siteQuality.doubleton.bin_edges[i],
-          x1: metricData.siteQuality.doubleton.bin_edges[i + 1],
-          n,
-        }))
-        selectedSiteQualityBinDescription = 'doubleton variants'
-      } else {
-        const variantAlleleFreq = variantData.an === 0 ? 0 : variantData.ac / variantData.an
-        const selectedAlleleFreqBin = metricData.siteQuality.af_bins.find(
-          bin =>
-            bin.min_af <= variantAlleleFreq &&
-            (variantAlleleFreq < bin.max_af ||
-              (variantAlleleFreq === 1 && variantAlleleFreq <= bin.max_af))
-        )
-        selectedMetricBins = selectedAlleleFreqBin.histogram.bin_freq.map((n, i) => ({
-          x0: selectedAlleleFreqBin.histogram.bin_edges[i],
-          x1: selectedAlleleFreqBin.histogram.bin_edges[i + 1],
-          n,
-        }))
-        selectedSiteQualityBinDescription = `variants with ${selectedAlleleFreqBin.min_af} <= AF ${
-          selectedAlleleFreqBin.max_af === 1 ? '<=' : '<'
-        } ${selectedAlleleFreqBin.max_af}`
-      }
-    } else {
-      const { histogram } = metricData.otherMetrics.find(m => m.metric === selectedMetric)
-
-      selectedMetricBins = histogram.bin_freq.map((n, i) => ({
-        x0: histogram.bin_edges[i],
-        x1: histogram.bin_edges[i + 1],
-        n,
-      }))
-    }
 
     const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
@@ -114,9 +207,10 @@ export class GnomadSiteQualityMetrics extends Component {
       ({ value }) => value !== null
     )
 
-    const metricDescription = qualityMetricDescriptions[selectedMetric]
-
-    const useLogScale = selectedMetric === 'SiteQuality' || selectedMetric === 'DP'
+    const useLogScale =
+      selectedMetric === 'SiteQuality' ||
+      selectedMetric === 'AS_QUALapprox' ||
+      selectedMetric === 'DP'
 
     const formatTooltip = useLogScale
       ? bin => `1e${Math.log10(bin.x0)}-1e${Math.log10(bin.x1)}: ${bin.n.toLocaleString()} variants`
@@ -126,7 +220,7 @@ export class GnomadSiteQualityMetrics extends Component {
       <div>
         <BarGraph
           barColor={graphColor}
-          bins={selectedMetricBins}
+          bins={metricBins}
           highlightValue={
             variantData.qualityMetrics.siteQualityMetrics.find(
               ({ metric }) => metric === selectedMetric
@@ -177,9 +271,6 @@ export class GnomadSiteQualityMetrics extends Component {
             Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
             sites.
           </p>
-        )}
-        {selectedMetric === 'SiteQuality' && (
-          <p>This is the site quality distribution for all {selectedSiteQualityBinDescription}.</p>
         )}
       </div>
     )
