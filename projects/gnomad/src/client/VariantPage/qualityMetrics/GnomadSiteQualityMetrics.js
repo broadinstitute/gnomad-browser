@@ -132,7 +132,16 @@ const getMetricInfo = ({ datasetId, metric, exomeOrGenome, ac, an }) => {
       }
     } else {
       key = metric
-      metricDescription = qualityMetricDescriptions[metric]
+      if (metric.startsWith('AS_')) {
+        const baseDescription = qualityMetricDescriptions[metric.slice(3)]
+        if (baseDescription) {
+          metricDescription = `Allele-specific ${baseDescription
+            .charAt(0)
+            .toLowerCase()}${baseDescription.slice(1)}`
+        }
+      } else {
+        metricDescription = qualityMetricDescriptions[metric]
+      }
     }
 
     const histogram = gnomadV3SiteQualityMetricDistributions.find(m => m.metric === key)
