@@ -35,7 +35,7 @@ class VariantsInRegion extends Component {
   static defaultProps = {
     clinvarVariants: null,
   }
-  
+
   constructor(props) {
     super(props)
 
