@@ -96,6 +96,9 @@ export default () => (
           <Link href="#v2-structural-variants">Structural variants</Link>
         </ListItem>
         <ListItem>
+          <Link href="#v2-lof-curation-results">Loss-of-function curation results</Link>
+        </ListItem>
+        <ListItem>
           <Link href="#v2-resources">Resources</Link>
         </ListItem>
       </List>
@@ -382,6 +385,42 @@ export default () => (
           <IndexedFileDownloadLinks
             label="SV 2.1 (non-neuro) sites BED"
             path="/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.bed.gz"
+          />
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v2-lof-curation-results">Loss-of-function curation results</SectionTitle>
+      <FileList>
+        <ListItem>
+          <GenericDownloadLinks
+            label="All homozygous LoF curation results"
+            path="/truth-sets/source/lof-curation/all_homozygous_curation_results.csv"
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Lysosomal storage disease genes LoF curation results"
+            path="/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv"
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="AP4 LoF curation results"
+            path="/truth-sets/source/lof-curation/AP4_curation_results.csv"
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="FIG4 LoF curation results"
+            path="/truth-sets/source/lof-curation/FIG4_curation_results.csv"
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="MCOLN1 LoF curation results"
+            path="/truth-sets/source/lof-curation/MCOLN1_curation_results.csv"
           />
         </ListItem>
       </FileList>
