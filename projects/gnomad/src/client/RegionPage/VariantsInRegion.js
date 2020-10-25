@@ -21,7 +21,7 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 class VariantsInRegion extends Component {
   static propTypes = {
-    clinvarVariants: PropTypes.arrayOf(PropTypes.object).isRequired,
+    clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     datasetId: PropTypes.string.isRequired,
     region: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
@@ -32,6 +32,10 @@ class VariantsInRegion extends Component {
     width: PropTypes.number.isRequired,
   }
 
+  static defaultProps = {
+    clinvarVariants: null,
+  }
+  
   constructor(props) {
     super(props)
 
@@ -186,11 +190,13 @@ class VariantsInRegion extends Component {
 
     return (
       <div>
-        <ClinvarVariantTrack
-          selectedGnomadVariants={renderedVariants}
-          variants={clinvarVariants}
-          variantFilter={filter}
-        />
+        {clinvarVariants && (
+          <ClinvarVariantTrack
+            selectedGnomadVariants={renderedVariants}
+            variants={clinvarVariants}
+            variantFilter={filter}
+          />
+        )}
 
         <VariantTrack
           title={`${datasetLabel}\n(${renderedVariants.length})`}
