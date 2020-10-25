@@ -18,6 +18,8 @@ export default {
   // Info field is `rf_tp_probability`
   RF: 'Random forest prediction probability for a site being a true variant.',
   SiteQuality: undefined, // TODO
+  SOR: 'Strand bias estimated by the symmetric odds ratio test.',
+  VarDP: 'Depth over variant genotypes (does not include depth of reference samples).',
   VQSLOD:
     'Log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.',
 }
