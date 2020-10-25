@@ -293,8 +293,7 @@ def main(argv: typing.List[str]) -> None:
         create_node_pool("redis", ["--num-nodes=1", "--machine-type=e2-custom-6-49152"])
 
         create_node_pool(
-            "elasticsearch-data",
-            ["--machine-type=e2-highmem-4", "--enable-autoscaling", "--min-nodes=3", "--max-nodes=15"],
+            "es-data", ["--machine-type=e2-highmem-8", "--enable-autoscaling", "--min-nodes=2", "--max-nodes=4"],
         )
 
         print("Creating K8S resources...")
