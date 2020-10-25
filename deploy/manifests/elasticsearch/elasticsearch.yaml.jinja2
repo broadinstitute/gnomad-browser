@@ -31,7 +31,7 @@ spec:
                       - key: cloud.google.com/gke-nodepool
                         operator: NotIn
                         values:
-                          - elasticsearch-data
+                          - es-data
           initContainers:
             - name: sysctl
               securityContext:
@@ -59,7 +59,7 @@ spec:
                       - key: cloud.google.com/gke-nodepool
                         operator: NotIn
                         values:
-                          - elasticsearch-data
+                          - es-data
           initContainers:
             - name: sysctl
               securityContext:
@@ -89,7 +89,7 @@ spec:
                       - key: cloud.google.com/gke-nodepool
                         operator: In
                         values:
-                          - elasticsearch-data
+                          - es-data
           initContainers:
             - name: sysctl
               securityContext:
@@ -101,14 +101,14 @@ spec:
             - name: elasticsearch
               env:
                 - name: ES_JAVA_OPTS
-                  value: '-Xms13g -Xmx13g'
+                  value: '-Xms26g -Xmx26g'
               resources:
                 requests:
-                  cpu: 3
-                  memory: 26Gi
+                  cpu: 6
+                  memory: 52Gi
                 limits:
-                  cpu: 4
-                  memory: 26Gi
+                  cpu: 7
+                  memory: 52Gi
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data
@@ -141,7 +141,7 @@ spec:
                       - key: cloud.google.com/gke-nodepool
                         operator: In
                         values:
-                          - elasticsearch-data
+                          - es-ingest
           initContainers:
             - name: sysctl
               securityContext:
@@ -153,14 +153,14 @@ spec:
             - name: elasticsearch
               env:
                 - name: ES_JAVA_OPTS
-                  value: '-Xms2g -Xmx2g'
+                  value: '-Xms12g -Xmx12g'
               resources:
                 requests:
-                  cpu: 1
-                  memory: 4Gi
+                  cpu: 3
+                  memory: 24Gi
                 limits:
-                  cpu: 1
-                  memory: 4Gi
+                  cpu: 3.5
+                  memory: 24Gi
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data
