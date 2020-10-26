@@ -84,12 +84,37 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
-  // Include HGDP and 1KG populations with gnomAD subsets
-  let populations = [
-    ...variant.genome.freq[subset].populations,
-    ...variant.genome.freq.hgdp.populations.map((pop) => ({ ...pop, id: `hgdp:${pop.id}` })),
-  ]
+  let { populations } = variant.genome.freq[subset]
 
+  // "XX" and "XY" populations were not stored for v3.1.
+  // Reconstruct them from population-specific XX and XY populations.
+  const xxPopulations = variant.genome.freq[subset].populations.filter(({ id }) =>
+    id.endsWith('_XX')
+  )
+  const xyPopulations = variant.genome.freq[subset].populations.filter(({ id }) =>
+    id.endsWith('_XY')
+  )
+  populations.push(
+    {
+      id: 'XX',
+      ac: xxPopulations.reduce((acc, pop) => acc + pop.ac, 0),
+      an: xxPopulations.reduce((acc, pop) => acc + pop.an, 0),
+      homozygote_count: xxPopulations.reduce((acc, pop) => acc + pop.homozygote_count, 0),
+      hemizygote_count: xxPopulations.reduce((acc, pop) => acc + pop.hemizygote_count, 0),
+    },
+    {
+      id: 'XY',
+      ac: xyPopulations.reduce((acc, pop) => acc + pop.ac, 0),
+      an: xyPopulations.reduce((acc, pop) => acc + pop.an, 0),
+      homozygote_count: xyPopulations.reduce((acc, pop) => acc + pop.homozygote_count, 0),
+      hemizygote_count: xyPopulations.reduce((acc, pop) => acc + pop.hemizygote_count, 0),
+    }
+  )
+
+  // Include HGDP and 1KG populations with gnomAD subsets
+  populations = populations.concat(
+    variant.genome.freq.hgdp.populations.map((pop) => ({ ...pop, id: `hgdp:${pop.id}` }))
+  )
   // Some 1KG samples are included in v2. Since the 1KG population frequencies are based on the full v3.1 dataset,
   // they are invalid for the non-v2 subset.
   if (subset !== 'non_v2') {
