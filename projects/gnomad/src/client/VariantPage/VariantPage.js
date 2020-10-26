@@ -23,6 +23,7 @@ import GnomadReadData from './reads/GnomadReadData'
 import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
+import VariantInSilicoPredictors from './VariantInSilicoPredictors'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
@@ -127,7 +128,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
       <VariantFeedback datasetId={datasetId} variantId={variant.variantId} />
     </ResponsiveSection>
     <Section>
-      <h2>Annotations</h2>
+      <h2>Variant Effect Predictor</h2>
       <VariantTranscriptConsequences variant={variant} />
     </Section>
 
@@ -149,6 +150,14 @@ const VariantPageContent = ({ datasetId, variant }) => (
         </div>
       </Section>
     )}
+
+    {variant.in_silico_predictors && variant.in_silico_predictors.length && (
+      <Section>
+        <h2>In Silico Predictors</h2>
+        <VariantInSilicoPredictors variant={variant} />
+      </Section>
+    )}
+
     <ResponsiveSection>
       <h2>
         Population Frequencies <InfoButton topic="ancestry" />
@@ -208,6 +217,7 @@ VariantPageContent.propTypes = {
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     lof_curations: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
+    in_silico_predictors: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
   }).isRequired,
 }
 

@@ -187,6 +187,10 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
       transcript_id
       transcript_version
     }
+    in_silico_predictors {
+      id
+      value
+    }
   }
 }
 `

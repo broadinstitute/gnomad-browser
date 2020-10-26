@@ -111,6 +111,31 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     }
   }
 
+  const inSilicoPredictors = []
+  if (variant.annotations.revel.revel_score != null) {
+    inSilicoPredictors.push({
+      id: 'revel',
+      value: variant.annotations.revel.revel_score.toPrecision(3),
+    })
+  }
+  if (variant.annotations.cadd.phred != null) {
+    inSilicoPredictors.push({ id: 'cadd', value: variant.annotations.cadd.phred.toPrecision(3) })
+  }
+  if (variant.annotations.splice_ai.max_ds != null) {
+    inSilicoPredictors.push({
+      id: 'splice_ai',
+      value: `${variant.annotations.splice_ai.max_ds.toPrecision(3)} (${
+        variant.annotations.splice_ai.splice_consequence
+      })`,
+    })
+  }
+  if (variant.annotations.primate_ai.primate_ai_score != null) {
+    inSilicoPredictors.push({
+      id: 'primate_ai',
+      value: variant.annotations.primate_ai.primate_ai_score.toPrecision(3),
+    })
+  }
+
   return {
     ...variant,
     reference_genome: 'GRCh38',
@@ -137,6 +162,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     transcript_consequences: (variant.transcript_consequences || []).filter((csq) =>
       csq.gene_id.startsWith('ENSG')
     ),
+    in_silico_predictors: inSilicoPredictors,
   }
 }
 
