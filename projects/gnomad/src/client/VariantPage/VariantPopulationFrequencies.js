@@ -15,14 +15,14 @@ const ScrollWrapper = styled.div`
 const VariantPopulationFrequencies = ({ datasetId, variant }) => {
   if (datasetId.startsWith('gnomad_r3')) {
     const gnomadPopulations = variant.genome.populations.filter(
-      pop => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('tgp:'))
+      pop => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
     )
     const hgdpPopulations = variant.genome.populations
       .filter(pop => pop.id.startsWith('hgdp:'))
       .map(pop => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
     const tgpPopulations = variant.genome.populations
-      .filter(pop => pop.id.startsWith('tgp:'))
-      .map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove tgp: prefix
+      .filter(pop => pop.id.startsWith('1kg:'))
+      .map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove 1kg: prefix
 
     return (
       <Tabs
@@ -53,8 +53,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
             ),
           },
           {
-            id: 'TGP',
-            label: 'TGP',
+            id: '1KG',
+            label: '1KG',
             render: () =>
               datasetId === 'gnomad_r3_non_v2' ? (
                 <p>
