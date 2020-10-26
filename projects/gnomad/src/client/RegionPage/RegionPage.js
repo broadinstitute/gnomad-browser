@@ -93,7 +93,7 @@ const RegionPage = ({ datasetId, history, region, width }) => {
         <GenesInRegionTrack
           region={region}
           onClickGene={gene => {
-            history.push(`/gene/${gene.gene_id}`)
+            history.push(`/gene/${gene.gene_id}?dataset=${datasetId}`)
           }}
         />
 
