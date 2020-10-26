@@ -44,15 +44,7 @@ gnomadV2Subsets.forEach((subset) => {
   }
 })
 
-const gnomadV3Subsets = [
-  'controls_and_biobanks',
-  'hgdp',
-  'non_cancer',
-  'non_neuro',
-  'non_topmed',
-  'non_v2',
-  'tgp',
-]
+const gnomadV3Subsets = ['controls_and_biobanks', 'non_cancer', 'non_neuro', 'non_topmed', 'non_v2']
 
 gnomadV3Subsets.forEach((subset) => {
   datasetQueries[`gnomad_r3_${subset}`] = {

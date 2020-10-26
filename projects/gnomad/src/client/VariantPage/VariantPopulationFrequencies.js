@@ -13,34 +13,6 @@ const ScrollWrapper = styled.div`
 `
 
 const VariantPopulationFrequencies = ({ datasetId, variant }) => {
-  if (datasetId === 'gnomad_r3_hgdp') {
-    const populations = variant.genome.populations.map(pop => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
-    return (
-      <div>
-        <ScrollWrapper>
-          <HGDPPopulationsTable
-            populations={populations}
-            showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-          />
-        </ScrollWrapper>
-      </div>
-    )
-  }
-
-  if (datasetId === 'gnomad_r3_tgp') {
-    const populations = variant.genome.populations.map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove tgp: prefix
-    return (
-      <div>
-        <ScrollWrapper>
-          <TGPPopulationsTable
-            populations={populations}
-            showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-          />
-        </ScrollWrapper>
-      </div>
-    )
-  }
-
   if (datasetId.startsWith('gnomad_r3')) {
     const gnomadPopulations = variant.genome.populations.filter(
       pop => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('tgp:'))

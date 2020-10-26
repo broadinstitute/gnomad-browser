@@ -35,24 +35,6 @@ const sampleCounts = {
     genomesTotal: 16465,
     total: 16465,
   },
-  gnomad_r3_hgdp: {
-    genomes: {
-      afr: 52,
-      ami: 0,
-      amr: 35,
-      asj: 0,
-      eas: 217,
-      fin: 0,
-      mid: 122,
-      nfe: 148,
-      oth: 42,
-      sas: 164,
-      XX: 284,
-      XY: 496,
-    },
-    genomesTotal: 780,
-    total: 780,
-  },
   gnomad_r3_non_cancer: {
     genomes: {
       afr: 20583,
@@ -124,25 +106,6 @@ const sampleCounts = {
     },
     genomesTotal: 57344,
     total: 57344,
-  },
-
-  gnomad_r3_tgp: {
-    genomes: {
-      afr: 632,
-      ami: 0,
-      amr: 340,
-      asj: 0,
-      eas: 501,
-      fin: 92,
-      mid: 0,
-      nfe: 423,
-      oth: 5,
-      sas: 507,
-      XX: 1253,
-      XY: 1247,
-    },
-    genomesTotal: 2500,
-    total: 2500,
   },
   gnomad_r2_1: {
     exomes: {

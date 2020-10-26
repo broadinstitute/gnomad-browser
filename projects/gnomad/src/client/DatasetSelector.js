@@ -473,18 +473,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           label: labelForDataset('gnomad_r3_non_v2'),
           url: datasetLink('gnomad_r3_non_v2'),
           description: `${sampleCounts.gnomad_r3_non_v2.total.toLocaleString()} samples`,
-        },
-        {
-          id: 'gnomad_r3_hgdp',
-          label: labelForDataset('gnomad_r3_hgdp'),
-          url: datasetLink('gnomad_r3_hgdp'),
-          description: `${sampleCounts.gnomad_r3_hgdp.total.toLocaleString()} samples`,
-        },
-        {
-          id: 'gnomad_r3_tgp',
-          label: labelForDataset('gnomad_r3_tgp'),
-          url: datasetLink('gnomad_r3_tgp'),
-          description: `${sampleCounts.gnomad_r3_tgp.total.toLocaleString()} samples`,
         }
       )
     }

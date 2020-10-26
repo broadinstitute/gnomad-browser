@@ -47,8 +47,6 @@ const SampleCountTables = () => (
             <th scope="col">non-neuro</th>
             <th scope="col">non-TOPMed</th>
             <th scope="col">non-v2</th>
-            <th scope="col">HGDP</th>
-            <th scope="col">TGP</th>
           </tr>
         </thead>
         <tbody>
@@ -65,8 +63,6 @@ const SampleCountTables = () => (
               <td>{(sampleCounts.gnomad_r3_non_neuro.genomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r3_non_topmed.genomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r3_non_v2.genomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r3_hgdp.genomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r3_tgp.genomes[popId] || 0).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
@@ -82,8 +78,6 @@ const SampleCountTables = () => (
               <td>{sampleCounts.gnomad_r3_non_neuro.genomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r3_non_topmed.genomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r3_non_v2.genomes[popId].toLocaleString()}</td>
-              <td>{sampleCounts.gnomad_r3_hgdp.genomes[popId].toLocaleString()}</td>
-              <td>{sampleCounts.gnomad_r3_tgp.genomes[popId].toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
@@ -96,8 +90,6 @@ const SampleCountTables = () => (
             <td>{sampleCounts.gnomad_r3_non_neuro.genomesTotal.toLocaleString()}</td>
             <td>{sampleCounts.gnomad_r3_non_topmed.genomesTotal.toLocaleString()}</td>
             <td>{sampleCounts.gnomad_r3_non_v2.genomesTotal.toLocaleString()}</td>
-            <td>{sampleCounts.gnomad_r3_hgdp.genomesTotal.toLocaleString()}</td>
-            <td>{sampleCounts.gnomad_r3_tgp.genomesTotal.toLocaleString()}</td>
           </tr>
         </tfoot>
       </BaseTable>
