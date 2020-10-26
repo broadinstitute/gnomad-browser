@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { Tabs } from '@gnomad/ui'
+
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import HGDPPopulationsTable from './HGDPPopulationsTable'
 import TGPPopulationsTable from './TGPPopulationsTable'
@@ -12,11 +14,12 @@ const ScrollWrapper = styled.div`
 
 const VariantPopulationFrequencies = ({ datasetId, variant }) => {
   if (datasetId === 'gnomad_r3_hgdp') {
+    const populations = variant.genome.populations.map(pop => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
     return (
       <div>
         <ScrollWrapper>
           <HGDPPopulationsTable
-            populations={variant.genome.populations}
+            populations={populations}
             showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
           />
         </ScrollWrapper>
@@ -25,15 +28,77 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
   }
 
   if (datasetId === 'gnomad_r3_tgp') {
+    const populations = variant.genome.populations.map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove tgp: prefix
     return (
       <div>
         <ScrollWrapper>
           <TGPPopulationsTable
-            populations={variant.genome.populations}
+            populations={populations}
             showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
           />
         </ScrollWrapper>
       </div>
+    )
+  }
+
+  if (datasetId.startsWith('gnomad_r3')) {
+    const gnomadPopulations = variant.genome.populations.filter(
+      pop => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('tgp:'))
+    )
+    const hgdpPopulations = variant.genome.populations
+      .filter(pop => pop.id.startsWith('hgdp:'))
+      .map(pop => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
+    const tgpPopulations = variant.genome.populations
+      .filter(pop => pop.id.startsWith('tgp:'))
+      .map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove tgp: prefix
+
+    return (
+      <Tabs
+        tabs={[
+          {
+            id: 'gnomAD',
+            label: 'gnomAD',
+            render: () => (
+              <ScrollWrapper>
+                <GnomadPopulationsTable
+                  exomePopulations={[]}
+                  genomePopulations={gnomadPopulations}
+                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                />
+              </ScrollWrapper>
+            ),
+          },
+          {
+            id: 'HGDP',
+            label: 'HGDP',
+            render: () => (
+              <ScrollWrapper>
+                <HGDPPopulationsTable
+                  populations={hgdpPopulations}
+                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                />
+              </ScrollWrapper>
+            ),
+          },
+          {
+            id: 'TGP',
+            label: 'TGP',
+            render: () =>
+              datasetId === 'gnomad_r3_non_v2' ? (
+                <p>
+                  1000 Genomes Project population frequencies are not available for this subset.
+                </p>
+              ) : (
+                <ScrollWrapper>
+                  <TGPPopulationsTable
+                    populations={tgpPopulations}
+                    showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                  />
+                </ScrollWrapper>
+              ),
+          },
+        ]}
+      />
     )
   }
 
