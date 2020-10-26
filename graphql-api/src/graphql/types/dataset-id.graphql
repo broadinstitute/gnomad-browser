@@ -1,12 +1,10 @@
 enum DatasetId {
   gnomad_r3
   gnomad_r3_controls_and_biobanks
-  gnomad_r3_hgdp
   gnomad_r3_non_cancer
   gnomad_r3_non_neuro
   gnomad_r3_non_topmed
   gnomad_r3_non_v2
-  gnomad_r3_tgp
   gnomad_r2_1
   gnomad_r2_1_controls
   gnomad_r2_1_non_neuro
