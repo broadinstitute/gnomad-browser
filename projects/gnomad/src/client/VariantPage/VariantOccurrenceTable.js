@@ -55,6 +55,7 @@ const POPULATION_NAMES = {
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
   FIN: 'European (Finnish)',
+  MID: 'Middle Eastern',
   NFE: 'European (non-Finnish)',
   OTH: 'Other',
   SAS: 'South Asian',
@@ -88,11 +89,11 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
 
   return (
     <span>
-      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation]}>
+      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation.toUpperCase()]}>
         <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>
-        {POPULATION_NAMES[popmaxPopulation]}
+        {POPULATION_NAMES[popmaxPopulation.toUpperCase()]}
       </FilteringAlleleFrequencyPopulation>
     </span>
   )
