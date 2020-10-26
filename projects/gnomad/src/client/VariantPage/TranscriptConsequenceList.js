@@ -2,16 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
+import { ExternalLink, ListItem, Modal, OrderedList, TextButton } from '@gnomad/ui'
 
 import Link from '../Link'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 import TranscriptConsequence from './TranscriptConsequence'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
-
-const TranscriptNote = styled.div`
-  margin-top: 0.25em;
-`
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
@@ -35,10 +31,48 @@ const groupConsequences = (consequences, key) => {
   }))
 }
 
+const TranscriptInfoWrapper = styled.div`
+  margin-top: 0.25em;
+`
+
+const TranscriptInfo = ({ transcriptConsequence }) => {
+  if (transcriptConsequence.is_mane_select) {
+    if (transcriptConsequence.is_mane_select_version) {
+      return (
+        <TranscriptInfoWrapper>
+          <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
+          transcript for {transcriptConsequence.gene_symbol}
+        </TranscriptInfoWrapper>
+      )
+    }
+
+    return (
+      <TranscriptInfoWrapper>
+        Different version of{' '}
+        <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
+        transcript for {transcriptConsequence.gene_symbol}
+      </TranscriptInfoWrapper>
+    )
+  }
+
+  if (transcriptConsequence.is_canonical) {
+    return (
+      <TranscriptInfoWrapper>
+        Ensembl canonical transcript for {transcriptConsequence.gene_symbol}
+      </TranscriptInfoWrapper>
+    )
+  }
+
+  return null
+}
+
+TranscriptInfo.propTypes = {
+  transcriptConsequence: TranscriptConsequencePropType.isRequired,
+}
+
 class ConsequencesInGene extends Component {
   static propTypes = {
     transcriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
-    transcriptNotes: PropTypes.objectOf(PropTypes.node).isRequired,
   }
 
   state = {
@@ -46,7 +80,7 @@ class ConsequencesInGene extends Component {
   }
 
   render() {
-    const { transcriptConsequences, transcriptNotes } = this.props
+    const { transcriptConsequences } = this.props
     const { isExpanded } = this.state
 
     const {
@@ -61,9 +95,7 @@ class ConsequencesInGene extends Component {
             <Link to={`/transcript/${csq.transcript_id}`}>
               {csq.transcript_id}.{csq.transcript_version}
             </Link>
-            {transcriptNotes[csq.transcript_id] && (
-              <TranscriptNote>{transcriptNotes[csq.transcript_id]}</TranscriptNote>
-            )}
+            <TranscriptInfo transcriptConsequence={csq} />
             <TranscriptConsequence consequence={csq} />
           </ListItem>
         ))}
@@ -92,9 +124,7 @@ class ConsequencesInGene extends Component {
                   <Link to={`/transcript/${csq.transcript_id}`}>
                     {csq.transcript_id}.{csq.transcript_version}
                   </Link>
-                  {transcriptNotes[csq.transcript_id] && (
-                    <TranscriptNote>{transcriptNotes[csq.transcript_id]}</TranscriptNote>
-                  )}
+                  <TranscriptInfo transcriptConsequence={csq} />
                   <TranscriptConsequence consequence={csq} />
                 </ListItem>
               ))}
@@ -123,7 +153,7 @@ const ConsequenceListItem = styled.li`
   margin-right: 2em;
 `
 
-export const TranscriptConsequenceList = ({ sortedTranscriptConsequences, transcriptNotes }) => (
+export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
   <ConsequenceListWrapper>
     {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
@@ -138,10 +168,7 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences, transc
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>
                     </h4>
-                    <ConsequencesInGene
-                      transcriptConsequences={consequencesInGene}
-                      transcriptNotes={transcriptNotes}
-                    />
+                    <ConsequencesInGene transcriptConsequences={consequencesInGene} />
                   </ListItem>
                 )
               }
@@ -155,9 +182,4 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences, transc
 
 TranscriptConsequenceList.propTypes = {
   sortedTranscriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
-  transcriptNotes: PropTypes.objectOf(PropTypes.node),
-}
-
-TranscriptConsequenceList.defaultProps = {
-  transcriptNotes: {},
 }
