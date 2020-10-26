@@ -84,17 +84,17 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
-  // Include HGDP and TGP populations with gnomAD subsets
+  // Include HGDP and 1KG populations with gnomAD subsets
   let populations = [
     ...variant.genome.freq[subset].populations,
     ...variant.genome.freq.hgdp.populations.map((pop) => ({ ...pop, id: `hgdp:${pop.id}` })),
   ]
 
-  // Some TGP samples are included in v2. Since the TGP population frequencies are based on the full v3.1 dataset,
+  // Some 1KG samples are included in v2. Since the 1KG population frequencies are based on the full v3.1 dataset,
   // they are invalid for the non-v2 subset.
   if (subset !== 'non_v2') {
     populations = populations.concat(
-      variant.genome.freq.tgp.populations.map((pop) => ({ ...pop, id: `tgp:${pop.id}` }))
+      variant.genome.freq.tgp.populations.map((pop) => ({ ...pop, id: `1kg:${pop.id}` }))
     )
   }
 
