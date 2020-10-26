@@ -10,6 +10,7 @@ const POPULATION_NAMES = {
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
   FIN: 'European (Finnish)',
+  MID: 'Middle Eastern',
   NFE: 'European (non-Finnish)',
   OTH: 'Other',
   SAS: 'South Asian',
@@ -116,7 +117,7 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
   const datasetPopulations = variants[0].populations.map(pop => pop.id)
   let populationColumns = []
   datasetPopulations.forEach((popId, popIndex) => {
-    const popName = POPULATION_NAMES[popId]
+    const popName = POPULATION_NAMES[popId.toUpperCase()]
     populationColumns = populationColumns.concat([
       {
         label: `Allele Count ${popName}`,
