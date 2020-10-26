@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { ExternalLink } from '@gnomad/ui'
-
-import { BaseQuery } from '../Query'
-
 import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 
@@ -20,73 +16,8 @@ const VariantTranscriptConsequences = ({ variant }) => {
         This variant falls on {numTranscripts} transcript{numTranscripts !== 1 && 's'} in {numGenes}{' '}
         gene{numGenes !== 1 && 's'}.
       </p>
-      <BaseQuery
-        query={`{\n${geneIds
-          .sort()
-          .map(
-            geneId => `
-              ${geneId}: gene(gene_id: "${geneId}", reference_genome: ${variant.reference_genome}) {
-                canonical_transcript_id
-                mane_select_transcript {
-                  ensembl_id
-                  ensembl_version
-                }
-              }
-            `
-          )
-          .join('\n')}}`}
-      >
-        {({ data, error, loading }) => {
-          const transcriptNotes = {}
-          if (!loading && !error && data) {
-            const genes = data
-            sortedTranscriptConsequences.forEach(consequence => {
-              const consequenceGene = genes[consequence.gene_id]
-              let note
-              if (
-                consequenceGene.mane_select_transcript &&
-                consequence.transcript_id === consequenceGene.mane_select_transcript.ensembl_id
-              ) {
-                if (
-                  consequence.transcript_version ===
-                  consequenceGene.mane_select_transcript.ensembl_version
-                ) {
-                  note = (
-                    <React.Fragment>
-                      <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">
-                        MANE
-                      </ExternalLink>{' '}
-                      Select transcript for {consequence.gene_symbol}
-                    </React.Fragment>
-                  )
-                } else {
-                  note = (
-                    <React.Fragment>
-                      Different version of{' '}
-                      <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">
-                        MANE
-                      </ExternalLink>{' '}
-                      Select transcript for {consequence.gene_symbol}
-                    </React.Fragment>
-                  )
-                }
-              } else if (consequenceGene.canonical_transcript_id === consequence.transcript_id) {
-                note = `Ensembl canonical transcript for ${consequence.gene_symbol}`
-              }
-              transcriptNotes[consequence.transcript_id] = note
-            })
-          }
 
-          return (
-            <React.Fragment>
-              <TranscriptConsequenceList
-                sortedTranscriptConsequences={sortedTranscriptConsequences}
-                transcriptNotes={transcriptNotes}
-              />
-            </React.Fragment>
-          )
-        }}
-      </BaseQuery>
+      <TranscriptConsequenceList sortedTranscriptConsequences={sortedTranscriptConsequences} />
     </div>
   )
 }

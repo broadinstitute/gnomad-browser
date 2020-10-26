@@ -171,13 +171,15 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
     }
     rsid
     sortedTranscriptConsequences {
-      canonical
       gene_id
       gene_version
       gene_symbol
       hgvs
       hgvsc
       hgvsp
+      is_canonical
+      is_mane_select
+      is_mane_select_version
       lof
       lof_flags
       lof_filter
