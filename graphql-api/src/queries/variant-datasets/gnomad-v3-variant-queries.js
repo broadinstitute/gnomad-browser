@@ -222,7 +222,9 @@ const shapeVariantSummary = (subset, context) => {
       genome: {
         ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
         ...variant.genome.freq[subset],
-        populations: variant.genome.freq[subset].populations.filter((pop) => !pop.id.includes('_')),
+        populations: variant.genome.freq[subset].populations.filter(
+          (pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+        ),
         filters,
       },
       flags,
