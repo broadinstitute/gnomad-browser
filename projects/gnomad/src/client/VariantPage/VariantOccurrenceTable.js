@@ -172,9 +172,28 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
 
   // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
   // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
-  const { exomesTotal, genomesTotal } = sampleCounts[datasetId]
-  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomesTotal
-  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomesTotal
+  const datasetSampleCounts = sampleCounts[datasetId]
+  let exomeMaxAN
+  let genomeMaxAN
+  if (variant.chrom === 'X') {
+    const xxId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'female' : 'XX'
+    const xyId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'male' : 'XY'
+    exomeMaxAN = datasetSampleCounts.exomes
+      ? datasetSampleCounts.exomes[xxId] * 2 + datasetSampleCounts.exomes[xyId]
+      : null
+    genomeMaxAN = datasetSampleCounts.genomes
+      ? datasetSampleCounts.genomes[xxId] * 2 + datasetSampleCounts.genomes[xyId]
+      : null
+  } else if (variant.chrom === 'Y') {
+    const xyId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'male' : 'XY'
+    exomeMaxAN = datasetSampleCounts.exomes ? datasetSampleCounts.exomes[xyId] : null
+    genomeMaxAN = datasetSampleCounts.genomes ? datasetSampleCounts.genomes[xyId] : null
+  } else {
+    exomeMaxAN = datasetSampleCounts.exomesTotal * 2
+    genomeMaxAN = datasetSampleCounts.genomesTotal * 2
+  }
+  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomeMaxAN / 2
+  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
 
   // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
   // See https://gnomad.broadinstitute.org/faq#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
