@@ -123,6 +123,21 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     )
   }
 
+  if (variant.locus.contig === 'chrY') {
+    populations = populations.map((pop) => {
+      if (pop.id === 'XX' || pop.id.endsWith('XX')) {
+        return {
+          id: pop.id,
+          ac: 0,
+          an: 0,
+          homozygote_count: 0,
+          hemizygote_count: 0,
+        }
+      }
+      return pop
+    })
+  }
+
   const inSilicoPredictors = []
   if (variant.annotations.revel.revel_score != null) {
     inSilicoPredictors.push({
