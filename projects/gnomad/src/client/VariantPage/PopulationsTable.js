@@ -169,6 +169,11 @@ export class PopulationsTable extends Component {
           return -1
         }
 
+        // Always sort xx/xy populations by name
+        if (isSexSpecificPopulation(b) && isSexSpecificPopulation(a)) {
+          return a.name.localeCompare(b.name)
+        }
+
         const [pop1, pop2] = sortAscending ? [a, b] : [b, a]
 
         return sortBy === 'name' ? pop1.name.localeCompare(pop2.name) : pop1[sortBy] - pop2[sortBy]
