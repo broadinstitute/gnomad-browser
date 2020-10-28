@@ -1,12 +1,12 @@
 const datasets = {
-  gnomad_r2_1: {
+  gnomad_r2: {
     exomes: {
       readsDirectory: '/readviz/datasets/gnomad_r2/combined_bams_exomes/combined_bams',
-      publicPath: '/reads/gnomad_r2_1/exomes',
+      publicPath: '/reads/gnomad_r2/exomes',
     },
     genomes: {
       readsDirectory: '/readviz/datasets/gnomad_r2/combined_bams_genomes/combined_bams',
-      publicPath: '/reads/gnomad_r2_1/genomes',
+      publicPath: '/reads/gnomad_r2/genomes',
     },
   },
   exac: {

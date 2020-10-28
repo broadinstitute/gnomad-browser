@@ -375,8 +375,8 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
     return null
   }
 
-  // Reads are not broken down by subset. Request gnomAD 2.1.1 reads for all gnomAD 2.1.1 subsets.
-  const readsDatasetId = datasetId.startsWith('gnomad_r2_1') ? 'gnomad_r2_1' : datasetId
+  // Reads are not broken down by subset. Request gnomAD v2 reads for all gnomAD v2 subsets.
+  const readsDatasetId = datasetId.startsWith('gnomad_r2_1') ? 'gnomad_r2' : datasetId
 
   const query = `
     {
@@ -477,7 +477,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
         return (
           <GnomadReadData
             referenceGenome={
-              readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2_1' ? 'GRCh37' : 'GRCh38'
+              readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2' ? 'GRCh37' : 'GRCh38'
             }
             chrom={chrom}
             start={start}
