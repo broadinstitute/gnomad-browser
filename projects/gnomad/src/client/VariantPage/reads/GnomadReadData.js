@@ -284,10 +284,10 @@ class GnomadReadData extends Component {
             tracks: [
               {
                 displayMode: 'SQUISHED',
-                indexURL: '/reads/reference/gencode.v29.bed.gz.tbi',
-                name: 'gencode v29',
+                indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
+                name: 'gencode v35',
                 removable: false,
-                url: '/reads/reference/gencode.v29.bed.gz',
+                url: '/reads/reference/gencode.v35.bed.gz',
               },
             ],
           }
@@ -375,8 +375,15 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
     return null
   }
 
-  // Reads are not broken down by subset. Request gnomAD v2 reads for all gnomAD v2 subsets.
-  const readsDatasetId = datasetId.startsWith('gnomad_r2_1') ? 'gnomad_r2' : datasetId
+  // Reads are not broken down by subset.
+  let readsDatasetId
+  if (datasetId.startsWith('gnomad_r3')) {
+    readsDatasetId = 'gnomad_r3'
+  } else if (datasetId.startsWith('gnomad_r2')) {
+    readsDatasetId = 'gnomad_r2'
+  } else {
+    readsDatasetId = datasetId
+  }
 
   const query = `
     {
