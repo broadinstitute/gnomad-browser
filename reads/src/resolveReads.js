@@ -1,28 +1,15 @@
 import path from 'path'
 
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import sqlite from 'sqlite'
 
-export const ReadDataType = new GraphQLObjectType({
-  name: 'ReadData',
-  fields: {
-    bamPath: { type: new GraphQLNonNull(GraphQLString) },
-    category: { type: new GraphQLNonNull(GraphQLString) },
-    indexPath: { type: new GraphQLNonNull(GraphQLString) },
-    readGroup: { type: new GraphQLNonNull(GraphQLString) },
-  },
-})
+const ZYGOSITY_CATEGORIES = ['het', 'hom', 'hemi']
 
-const resolveReads = async (readsDirectory, publicPath, { alt, chrom, pos, ref }) => {
-  const dbPath = path.join(
-    readsDirectory,
-    chrom,
-    `combined_chr${chrom}_${`${pos % 1000}`.padStart(3, '0')}.db`
-  )
+const resolveReads = async ({ readsDirectory, publicPath, meta }, { alt, chrom, pos, ref }) => {
+  const dbPath = path.join(readsDirectory, `all_variants_${meta}.chr${chrom}.db`)
 
   const db = await sqlite.open(dbPath)
   const rows = await db.all(
-    'select n_expected_samples, n_available_samples, het_or_hom_or_hemi from t where chrom = ? and pos = ? and ref = ? and alt = ?',
+    'select combined_bamout_id, read_group_id, zygosity from variants where chrom = ? and pos = ? and ref = ? and alt = ?',
     chrom,
     pos,
     ref,
@@ -30,32 +17,12 @@ const resolveReads = async (readsDirectory, publicPath, { alt, chrom, pos, ref }
   )
   await db.close()
 
-  const bamPath = [
-    publicPath,
-    chrom,
-    `combined_chr${chrom}_${`${pos % 1000}`.padStart(3, '0')}.bam`,
-  ].join('/')
-
-  const indexPath = `${bamPath}.bai`
-
-  const reads = []
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const category of ['het', 'hom', 'hemi']) {
-    const row = rows.find(r => r.het_or_hom_or_hemi === category)
-    if (row) {
-      for (let i = 0; i < row.n_available_samples; i += 1) {
-        reads.push({
-          bamPath,
-          category,
-          indexPath,
-          readGroup: `${chrom}-${pos}-${ref}-${alt}_${category}${i}`,
-        })
-      }
-    }
-  }
-
-  return reads
+  return rows.map(row => ({
+    bamPath: `${publicPath}/${row.combined_bamout_id}.bam`,
+    category: ZYGOSITY_CATEGORIES[row.zygosity - 1],
+    indexPath: `${publicPath}/${row.combined_bamout_id}.bai`,
+    readGroup: `${chrom}-${pos}-${ref}-${alt}-${row.zygosity}-${row.read_group_id}`,
+  }))
 }
 
 export default resolveReads

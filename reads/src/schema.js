@@ -10,6 +10,7 @@ import {
 import datasets from './datasets'
 import { UserVisibleError } from './errors'
 import logger from './logging'
+import resolveReadsLegacy from './resolveReadsLegacy'
 import resolveReads from './resolveReads'
 
 const DatasetArgumentType = new GraphQLEnumType({
@@ -34,13 +35,14 @@ const VariantReadsType = new GraphQLObjectType({
       type: new GraphQLList(ReadType),
       resolve: async obj => {
         const { dataset, variantId } = obj
-        const { readsDirectory, publicPath } = datasets[dataset].exomes || {}
-        if (!(readsDirectory && publicPath)) {
+        const config = datasets[dataset].exomes
+        if (!config) {
           return null
         }
 
+        const resolve = config.legacyResolver ? resolveReadsLegacy : resolveReads
         try {
-          return await resolveReads(readsDirectory, publicPath, obj)
+          return await resolve(config, obj)
         } catch (err) {
           logger.warn(err)
           throw new UserVisibleError(`Unable to load exome reads for ${variantId}`)
@@ -51,13 +53,14 @@ const VariantReadsType = new GraphQLObjectType({
       type: new GraphQLList(ReadType),
       resolve: async obj => {
         const { dataset, variantId } = obj
-        const { readsDirectory, publicPath } = datasets[dataset].genomes || {}
-        if (!(readsDirectory && publicPath)) {
+        const config = datasets[dataset].genomes
+        if (!config) {
           return null
         }
 
+        const resolve = config.legacyResolver ? resolveReadsLegacy : resolveReads
         try {
-          return await resolveReads(readsDirectory, publicPath, obj)
+          return await resolve(config, obj)
         } catch (err) {
           logger.warn(err)
           throw new UserVisibleError(`Unable to load genome reads for ${variantId}`)

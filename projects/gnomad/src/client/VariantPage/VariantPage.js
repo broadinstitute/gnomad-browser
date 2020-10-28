@@ -197,11 +197,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
     </ResponsiveSection>
     <Section>
       <h2>Read Data</h2>
-      {datasetId.startsWith('gnomad_r3') ? (
-        <p>Read data is not yet available for gnomAD v3.</p>
-      ) : (
-        <GnomadReadData datasetId={datasetId} variantIds={[variant.variantId]} />
-      )}
+      <GnomadReadData datasetId={datasetId} variantIds={[variant.variantId]} />
     </Section>
   </VariantDetailsContainer>
 )
