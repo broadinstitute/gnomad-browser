@@ -45,20 +45,6 @@ spec:
               value: '8000'
             - name: TRUST_PROXY
               value: '3'
-            - name: DATASETS
-              value: gnomad_r2_1,exac
-            - name: GNOMAD_R2_1_EXOMES_READS_DIRECTORY
-              value: /readviz/datasets/gnomad_r2/combined_bams_exomes/combined_bams
-            - name: GNOMAD_R2_1_EXOMES_PUBLIC_PATH
-              value: /reads/gnomad_r2_1/exomes
-            - name: GNOMAD_R2_1_GENOMES_READS_DIRECTORY
-              value: /readviz/datasets/gnomad_r2/combined_bams_genomes/combined_bams
-            - name: GNOMAD_R2_1_GENOMES_PUBLIC_PATH
-              value: /reads/gnomad_r2_1/genomes
-            - name: EXAC_EXOMES_READS_DIRECTORY
-              value: /readviz/datasets/exac/combined_bams_v3
-            - name: EXAC_EXOMES_PUBLIC_PATH
-              value: /reads/exac/exomes
           ports:
             - name: http
               containerPort: 8000

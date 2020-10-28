@@ -14,21 +14,7 @@ import resolveReads from './resolveReads'
 
 const DatasetArgumentType = new GraphQLEnumType({
   name: 'DatasetId',
-  values: Object.keys(datasets)
-    .filter(datasetId => {
-      const isExomesConfigured =
-        datasets[datasetId].exomes &&
-        datasets[datasetId].exomes.readsDirectory &&
-        datasets[datasetId].exomes.publicPath
-
-      const isGenomesConfigured =
-        datasets[datasetId].genomes &&
-        datasets[datasetId].genomes.readsDirectory &&
-        datasets[datasetId].genomes.publicPath
-
-      return isExomesConfigured || isGenomesConfigured
-    })
-    .reduce((values, datasetId) => ({ ...values, [datasetId]: {} }), {}),
+  values: Object.keys(datasets).reduce((values, datasetId) => ({ ...values, [datasetId]: {} }), {}),
 })
 
 const ReadType = new GraphQLObjectType({
