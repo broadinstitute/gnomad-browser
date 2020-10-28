@@ -36,7 +36,12 @@ const fetchSearchResults = (dataset, query) =>
   }
 `,
     { dataset, query }
-  ).then(response => response.data.searchResults)
+  ).then(response => {
+    if (!response.data.searchResults) {
+      throw new Error('Unable to retrieve search results')
+    }
+    return response.data.searchResults
+  })
 
 export default withRouter(props => {
   const {
