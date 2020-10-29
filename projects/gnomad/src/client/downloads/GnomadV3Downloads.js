@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
   FileList,
@@ -11,30 +11,30 @@ import {
 } from './downloadsPageStyles'
 
 const genomeChromosomeVcfs = [
-  { chrom: '1', size: '18.4 GiB', md5: 'e78783bb528d4b43ae80282d36107cfe' },
-  { chrom: '2', size: '19.46 GiB', md5: 'dfe1310a9eb9d649255bf85950b26140' },
-  { chrom: '3', size: '15.93 GiB', md5: 'f815bd5d61e5e736740da7e57821fd58' },
-  { chrom: '4', size: '15.33 GiB', md5: '862cf872c64a0abf30a41102c9e1f458' },
-  { chrom: '5', size: '14.19 GiB', md5: 'be3ce2085bbef13dca96a09451cb182d' },
-  { chrom: '6', size: '13.47 GiB', md5: 'c211cbeea35cf0ee5d930bc7d85f90ab' },
-  { chrom: '7', size: '13.23 GiB', md5: '0c350900f496559db70eda453014146b' },
-  { chrom: '8', size: '12.28 GiB', md5: '43b7e8dc549aa5a5e3d637c07c2e1586' },
-  { chrom: '9', size: '10.34 GiB', md5: 'd1a0ef9d1c45c213acd8bead72cc73ed' },
-  { chrom: '10', size: '11.02 GiB', md5: '6afea1ff8a767d108b8858d3b9da2740' },
-  { chrom: '11', size: '10.93 GiB', md5: 'ea649b38278aa114e559f515fb7db1f2' },
-  { chrom: '12', size: '10.74 GiB', md5: 'fd0d4f46a3ce791ee067ba9997b6a6ff' },
-  { chrom: '13', size: '7.54 GiB', md5: 'a860c98407c65a10aef6cc8126bccb60' },
-  { chrom: '14', size: '7.35 GiB', md5: '7a26b7b3e53d2980af6964b4c63a0718' },
-  { chrom: '15', size: '6.99 GiB', md5: '3a1072e7bd4715d82b10c8411139f2b2' },
-  { chrom: '16', size: '7.84 GiB', md5: '366093d698523fd2a54262395246f691' },
-  { chrom: '17', size: '7.09 GiB', md5: '122476ac38e1030b8e4d1a98bebe470c' },
-  { chrom: '18', size: '6.0 GiB', md5: '18a5769368d318e4a7832818b39dc5bc' },
-  { chrom: '19', size: '5.68 GiB', md5: '80cc4f45faf931908eb80b13bf7c1459' },
-  { chrom: '20', size: '5.05 GiB', md5: 'c1cb84fb3fca6f4d49c46cc1b1ed0a15' },
-  { chrom: '21', size: '3.34 GiB', md5: '67027dc069875a73bbd11e26bf93a77f' },
-  { chrom: '22', size: '3.66 GiB', md5: 'd8188bb8ca03747fdf165313e1d15cce' },
-  { chrom: 'X', size: '9.51 GiB', md5: '40f30c6a62b4ae850f8880b684b5e04c' },
-  { chrom: 'Y', size: '322.31 MiB', md5: 'f5f61530616d814fe368073a946ae070' },
+  { chrom: '1', size: '180.86 GiB', md5: '3fed7d7a8e5cd7477c34f2b707c9eca4' },
+  { chrom: '2', size: '192.35 GiB', md5: '4fe2d70bf6855d74b89e3fea4ab2f5e2' },
+  { chrom: '3', size: '157.99 GiB', md5: '88be6d8786d56376d3fb641d30634690' },
+  { chrom: '4', size: '151.24 GiB', md5: 'e123e800a797dd1d12cb4f0469ac088c' },
+  { chrom: '5', size: '139.02 GiB', md5: 'd60ae9aafdef8616a0806b9ab0d845bf' },
+  { chrom: '6', size: '132.76 GiB', md5: '8e81f3dd9bc893605fff5a532dadd250' },
+  { chrom: '7', size: '129.4 GiB', md5: 'cb3139514db686c573043aebcac1bc8a' },
+  { chrom: '8', size: '121.4 GiB', md5: '82d67c5d4b3ade6edadcc36bd59e5c05' },
+  { chrom: '9', size: '102.62 GiB', md5: 'a23e1760c30bf37771e96d6bf694d615' },
+  { chrom: '10', size: '109.27 GiB', md5: '3aeb7e71af2594cf808603cd85263922' },
+  { chrom: '11', size: '107.43 GiB', md5: '259a9adf32b0094b294cab968329655d' },
+  { chrom: '12', size: '105.37 GiB', md5: 'ba90ec92f5427f43c0caa8e4447ba0be' },
+  { chrom: '13', size: '74.29 GiB', md5: '21114bfd0a298ae84f44123660962be1' },
+  { chrom: '14', size: '72.61 GiB', md5: 'b3afd0d35557d7e3c2576292f228fa93' },
+  { chrom: '15', size: '68.39 GiB', md5: '6d222908c1fd43f454d862f2f32ccef3' },
+  { chrom: '16', size: '76.12 GiB', md5: 'bc02d6d9234f212b4a8b19673624c7af' },
+  { chrom: '17', size: '68.43 GiB', md5: 'b15096d041d7fa0e5abab52f317eed48' },
+  { chrom: '18', size: '59.38 GiB', md5: 'd145896fe2440f4eb661b934f46602a6' },
+  { chrom: '19', size: '53.82 GiB', md5: 'c5138793924b10fb9735ca9fd449338f' },
+  { chrom: '20', size: '49.07 GiB', md5: '931a3f1ec3a890b2541919f339b34f22' },
+  { chrom: '21', size: '32.81 GiB', md5: '58fbe5e6dd82041a5e231bc8e50c136a' },
+  { chrom: '22', size: '35.62 GiB', md5: 'e44a2dfbc324a595e01a28a1d0074785' },
+  { chrom: 'X', size: '94.95 GiB', md5: '5fa6e3824bffdcb437039da7c86a247c' },
+  { chrom: 'Y', size: '2.27 GiB', md5: '7a2114a7633f7245c2e0b54e9b03f9dc' },
 ]
 
 export default () => (
@@ -53,29 +53,40 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-variants">Variants</SectionTitle>
+      <p>
+        <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/blog/">
+          gnomAD v3.1 blog post
+        </ExternalLink>
+        .
+      </p>
+      <p>
+        The variant dataset files below contain all subsets (non-cancer, non-neuro, non-v2,
+        non-TOPMed, controls/biobanks, 1KG, and HGDP).
+      </p>
+      <p>
+        v3.1 files will be available soon on Google Cloud Public Datasets and Azure Open Datasets.
+      </p>
+
       <h3>Genomes</h3>
       <FileList>
         <ListItem>
           <GetUrlButtons
             label="Sites Hail Table"
-            path="/release/3.0/ht/genomes/gnomad.genomes.r3.0.sites.ht"
-          />
-        </ListItem>
-        <ListItem>
-          <IndexedFileDownloadLinks
-            label="All chromosomes VCF"
-            path="/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.vcf.bgz"
-            size="235.68 GiB"
-            md5="f3501102192975da34b5d2c32f7c0791"
+            path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAzure={false}
           />
         </ListItem>
         {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
           <ListItem key={chrom}>
             <IndexedFileDownloadLinks
               label={`chr${chrom} sites VCF`}
-              path={`/release/3.0/vcf/genomes/gnomad.genomes.r3.0.sites.chr${chrom}.vcf.bgz`}
+              path={`/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
+              gcsBucket="gnomad-public"
+              includeAzure={false}
             />
           </ListItem>
         ))}
