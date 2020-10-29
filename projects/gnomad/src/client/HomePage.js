@@ -42,7 +42,7 @@ export default () => (
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="100%" />
       <p>
-        Please note that gnomAD v2.1.1 and v3 have substantially different but overlapping sample
+        Please note that gnomAD v2.1.1 and v3.1 have substantially different but overlapping sample
         compositions and are on different genome builds. For more information, see the FAQ{' '}
         <Link to={{ pathname: '/faq', hash: 'should-i-switch-to-the-latest-version-of-gnomad' }}>
           &quot;Should I switch to the latest version of gnomAD?&quot;
@@ -73,7 +73,7 @@ export default () => (
     <p>
       The v2 data set (GRCh37/hg19) provided on this website spans 125,748 exome sequences and
       15,708 whole-genome sequences from unrelated individuals sequenced as part of various
-      disease-specific and population genetic studies. The v3 data set (GRCh38) spans 71,702
+      disease-specific and population genetic studies. The v3.1 data set (GRCh38) spans 76,156
       genomes, selected as in v2. The gnomAD Principal Investigators and groups that have
       contributed data to the current release are listed{' '}
       <Link preserveSelectedDataset={false} to="/about">
