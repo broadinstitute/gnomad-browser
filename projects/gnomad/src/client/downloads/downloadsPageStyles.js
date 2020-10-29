@@ -227,7 +227,7 @@ GenericDownloadLinks.defaultProps = {
   md5: undefined,
 }
 
-export const IndexedFileDownloadLinks = ({ label, path, size, md5, includeAzure }) => {
+export const IndexedFileDownloadLinks = ({ label, path, size, md5, gcsBucket, includeAzure }) => {
   return (
     <>
       <span>{label}</span>
@@ -244,7 +244,7 @@ export const IndexedFileDownloadLinks = ({ label, path, size, md5, includeAzure 
         Download from{' '}
         <ExternalLink
           aria-label={`Download ${label} from Google`}
-          href={`https://storage.googleapis.com/gcp-public-data--gnomad${path}`}
+          href={`https://storage.googleapis.com/${gcsBucket}${path}`}
         >
           Google
         </ExternalLink>{' '}
@@ -273,7 +273,7 @@ export const IndexedFileDownloadLinks = ({ label, path, size, md5, includeAzure 
         Download TBI from{' '}
         <ExternalLink
           aria-label={`Download TBI file for ${label} from Google`}
-          href={`https://storage.googleapis.com/gcp-public-data--gnomad${path}.tbi`}
+          href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
         >
           Google
         </ExternalLink>{' '}
@@ -306,11 +306,13 @@ IndexedFileDownloadLinks.propTypes = {
   path: PropTypes.string.isRequired,
   size: PropTypes.string,
   md5: PropTypes.string,
+  gcsBucket: PropTypes.string,
   includeAzure: PropTypes.bool,
 }
 
 IndexedFileDownloadLinks.defaultProps = {
   size: undefined,
   md5: undefined,
+  gcsBucket: 'gcp-public-data--gnomad',
   includeAzure: true,
 }
