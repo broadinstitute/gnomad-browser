@@ -29,5 +29,10 @@ export default () => (
       </ExternalLink>{' '}
       for future release announcements.
     </p>
+
+    <p>
+      Follow us on Twitter{' '}
+      <ExternalLink href="https://twitter.com/gnomad_project">@gnomad_project</ExternalLink>.
+    </p>
   </InfoPage>
 )
