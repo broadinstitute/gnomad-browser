@@ -60,29 +60,35 @@ export default () => (
       and harmonize exome and genome sequencing data from a variety of large-scale sequencing
       projects, and to make summary data available for the wider scientific community. The project
       is overseen by co-directors Heidi Rehm and Mark Daly, and steering committee members Daniel
-      MacArthur, Benjamin Neale, Michael Talkowski, Anne O&apos;Donnell-Luria, Grace Tiao, Matthew
-      Solomonson, and Kat Tarasova. In its first release, which contained exclusively exome data, it
-      was known as the Exome Aggregation Consortium (ExAC).
+      MacArthur, Benjamin Neale, Michael Talkowski, Anne O&apos;Donnell-Luria, Konrad Karczewski,
+      Grace Tiao, Matthew Solomonson, and Kat Tarasova. In its first release, which contained
+      exclusively exome data, it was known as the Exome Aggregation Consortium (ExAC).
     </p>
     <p>
-      The v3 short variant data set provided on this website spans 71,702 genomes from unrelated
+      The v3.1 short variant data set provided on this website spans 76,156 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies, and
       is aligned against the GRCh38 reference. See the{' '}
-      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-10-gnomad-v3-0/">
-        gnomAD v3.0 blog post
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/">
+        gnomAD v3.1 blog post
       </ExternalLink>{' '}
       for details of the latest release. The v2 short variant data set provided on this website
       spans 125,748 exomes and 15,708 genomes from unrelated individuals sequenced as part of
       various disease-specific and population genetic studies, totalling 141,456 individuals, and is
       aligned against the GRCh37 reference. See the{' '}
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/">gnomAD blog</ExternalLink> for
+      details of previous releases (
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-10-gnomad-v3-0/">
+        v3.0
+      </ExternalLink>
+      ,{' '}
       <ExternalLink href="https://gnomad.broadinstitute.org/blog/2018-10-gnomad-v2-1/">
-        gnomAD v2.1 blog post
-      </ExternalLink>{' '}
-      for details of the v2.1 release. We have removed individuals known to be affected by severe
-      pediatric disease, as well as their first-degree relatives, so these data sets should serve as
-      useful reference sets of allele frequencies for severe pediatric disease studies - however,
-      note that some individuals with severe disease may still be included in the data sets, albeit
-      likely at a frequency equivalent to or lower than that seen in the general population.
+        v2.1
+      </ExternalLink>
+      ). We have removed individuals known to be affected by severe pediatric disease, as well as
+      their first-degree relatives, so these data sets should serve as useful reference sets of
+      allele frequencies for severe pediatric disease studies - however, note that some individuals
+      with severe disease may still be included in the data sets, albeit likely at a frequency
+      equivalent to or lower than that seen in the general population.
     </p>
     <p>
       All of the raw data from these projects have been reprocessed through equivalent pipelines,
@@ -197,7 +203,6 @@ export default () => (
           <li>Erwin Bottinger</li>
           <li>Donald Bowden</li>
           <li>Matthew Bown</li>
-          <li>Steven Brant</li>
           <li>Hannia Campos</li>
           <li>John Chambers</li>
           <li>Juliana Chan</li>
@@ -275,6 +280,7 @@ export default () => (
           <li>Ben Neale</li>
           <li>Peter Nilsson</li>
           <li>Michael O&apos;Donovan</li>
+          <li>Yuki Okada</li>
           <li>Dost Ongur</li>
           <li>Lorena Orozco</li>
           <li>Michael Owen</li>
@@ -310,7 +316,7 @@ export default () => (
           <li>Patrick Sullivan</li>
           <li>Jaana Suvisaari</li>
           <li>Kent Taylor</li>
-          <li>Yik Ying Teo</li>
+          <li>Yik-Ying Teo</li>
           <li>Tuomi Tiinamaija</li>
           <li>Ming Tsuang</li>
           <li>Dan Turner</li>
@@ -356,6 +362,7 @@ export default () => (
           <li>GoT2D</li>
           <li>Genotype-Tissue Expression Project (GTEx)</li>
           <li>Health2000</li>
+          <li>Human Genome Diversity Project</li>
           <li>
             Inflammatory Bowel Disease:
             <ul>
@@ -393,6 +400,7 @@ export default () => (
           <li>NHGRI CCDG</li>
           <li>NHLBI-GO Exome Sequencing Project (ESP)</li>
           <li>NHLBI TOPMed</li>
+          <li>Osaka University Graduate School of Medicine</li>
           <li>Population Architecture Using Genomics and Epidemiology (PAGE) Consortium</li>
           <li>Pritzker Neuropsychiatric Disorders Research Consortium</li>
           <li>Schizophrenia Trios from Taiwan</li>
@@ -413,8 +421,8 @@ export default () => (
         </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
-        <h3 id="production-team">Production team</h3>
-        <ContributorList aria-labelledby="production-team">
+        <h3 id="data-generation-contributors">Data generation</h3>
+        <ContributorList aria-labelledby="data-generation-contributors">
           <li>
             <strong>Eric Banks</strong>
           </li>
@@ -426,12 +434,14 @@ export default () => (
           <li>Jeff Gentry</li>
           <li>Thibault Jeandet</li>
           <li>Diane Kaplan</li>
+          <li>Trevyn Langsford</li>
           <li>Christopher Llanwarne</li>
           <li>Ruchi Munshi</li>
           <li>Sam Novod</li>
           <li>Nikelle Petrillo</li>
           <li>David Roazen</li>
           <li>Valentin Ruano-Rubio</li>
+          <li>Nareh Sahakian</li>
           <li>Megan Shand</li>
           <li>Jonn Smith</li>
           <li>Jose Soto</li>
@@ -439,31 +449,33 @@ export default () => (
           <li>Charlotte Tolonen</li>
           <li>Gordon Wade</li>
         </ContributorList>
-        <h3 id="analysis-team">Analysis team</h3>
-        <ContributorList aria-labelledby="analysis-team">
-          <li>
-            <strong>Laurent Francioli</strong>
-          </li>
-          <li>
-            <strong>Konrad Karczewski</strong>
-          </li>
-          <li>
-            <strong>Grace Tiao</strong>
-          </li>
-          <li>
-            <strong>Kristen Laricchia</strong>
-          </li>
+        <h3 id="production-and-analysis-contributors">Production and analysis</h3>
+        <ContributorList aria-labelledby="production-and-analysis-contributors">
           <li>Irina Armean</li>
           <li>Ryan Collins</li>
+          <li>Katherine Chao</li>
           <li>Beryl Cummings</li>
           <li>Mark Daly</li>
+          <li>Eleina England</li>
+          <li>Emily Evangelista</li>
+          <li>Laurent Francioli</li>
+          <li>Julia Goodrich</li>
           <li>Laura Gauthier</li>
+          <li>Konrad Karczewski</li>
+          <li>Kristen Laricchia</li>
+          <li>Monkol Lek</li>
           <li>Eric Minikel</li>
           <li>Ben Neale</li>
           <li>Anne O&apos;Donnell-Luria</li>
+          <li>William Phu</li>
           <li>Tim Poterba</li>
+          <li>Dan Rhodes</li>
           <li>Kaitlin Samocha</li>
+          <li>Eleanor Seaby</li>
           <li>Cotton Seed</li>
+          <li>Moriel Singer-Berk</li>
+          <li>Rachel Son</li>
+          <li>Grace Tiao</li>
           <li>Chris Vittal</li>
           <li>Arcturus Wang</li>
           <li>Qingbo Wang</li>
@@ -471,8 +483,8 @@ export default () => (
           <li>Nicola Whiffin</li>
           <li>Mike Wilson</li>
         </ContributorList>
-        <h3 id="sv-team">Structural Variation team</h3>
-        <ContributorList aria-labelledby="sv-team">
+        <h3 id="structural-variation-contributors">Structural variation</h3>
+        <ContributorList aria-labelledby="structural-variation-contributors">
           <li>
             <strong>Ryan Collins</strong>
           </li>
@@ -502,24 +514,23 @@ export default () => (
         </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
-        <h3 id="coordination">Coordination</h3>
-        <ContributorList aria-labelledby="coordination">
+        <h3 id="coordination-contributors">Coordination</h3>
+        <ContributorList aria-labelledby="coordination-contributors">
           <li>Jessica Alföldi</li>
+          <li>Samantha Baxter</li>
+          <li>Sinéad Chapman</li>
+          <li>Christine Stevens</li>
           <li>Kat Tarasova</li>
         </ContributorList>
-        <h3 id="website-team">Website team</h3>
-        <ContributorList aria-labelledby="website-team">
-          <li>
-            <strong>Matthew Solomonson</strong>
-          </li>
-          <li>
-            <strong>Nick Watts</strong>
-          </li>
+        <h3 id="website-contributors">Website</h3>
+        <ContributorList aria-labelledby="website-contributors">
           <li>Konrad Karczewski</li>
+          <li>Matthew Solomonson</li>
+          <li>Nick Watts</li>
           <li>Ben Weisburd</li>
         </ContributorList>
-        <h3 id="ethics-team">Ethics team</h3>
-        <ContributorList aria-labelledby="ethics-team">
+        <h3 id="ethics-contributors">Ethics</h3>
+        <ContributorList aria-labelledby="ethics-contributors">
           <li>Stacey Donnelly</li>
           <li>Namrata Gupta</li>
           <li>Emily Lipscomb</li>
@@ -540,6 +551,8 @@ export default () => (
           <li>
             <strong>Heidi Rehm</strong>
           </li>
+          <li>Samantha Baxter</li>
+          <li>Konrad Karczewski</li>
           <li>Daniel MacArthur</li>
           <li>Ben Neale</li>
           <li>Anne O&apos;Donnell-Luria</li>
