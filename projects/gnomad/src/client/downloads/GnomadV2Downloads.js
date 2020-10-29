@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
   Column,
@@ -67,13 +67,6 @@ const genomeChromosomeVcfs = [
 
 export default () => (
   <React.Fragment>
-    <p>
-      <strong>Update, March 6, 2019: gnomAD 2.1.1 released</strong>{' '}
-      <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/README.txt">
-        (README.txt)
-      </ExternalLink>
-    </p>
-
     <section>
       <h2>Summary</h2>
       <List>
@@ -106,6 +99,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v2-variants">Variants</SectionTitle>
+      <p>
+        <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
+        <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/README.txt">
+          gnomAD v2.1.1 README
+        </ExternalLink>
+        .
+      </p>
       <p>
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
         and non-TOPMed).
