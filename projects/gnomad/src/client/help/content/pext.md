@@ -5,15 +5,15 @@ title: 'Proportion expressed across transcripts (pext) score'
 
 # Proportion expressed across transcripts (pext) score
 
-The pext score, presented in ["Transcript expression-aware annotation improves rare variant interpretation"](https://broad.io/tx_annotation), summarizes isoform expression values accross tissues to allow for quick visualization of the expression status of exonic regions across tissues.
+The pext score, presented in ["Transcript expression-aware annotation improves rare variant interpretation"](https://broad.io/tx_annotation), summarizes isoform expression values across tissues to allow for quick visualization of the expression status of exonic regions across tissues.
 
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript for GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![visualization of pext score computation](pext.png)
 
-We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the baselevel pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. It can also be thought of as an exon-usage type metric.
+We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the base-level pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. It can also be thought of as an exon-usage type metric.
 
 ## How is this useful?
-This visualization will show you how much an exonic region has evidence of expression accross tissues.
+This visualization will show you how much an exonic region has evidence of expression across tissues.
 
 For example, you may find that there is no evidence of expression for a region in any GTEx tissues. We find that such regions often have low conservation and are enriched for annotation errors. In other cases, you may find a tissue-specific region carrying a variant of interest, which may be relevant to the clinical presentation of a carrier. 
 

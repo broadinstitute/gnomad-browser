@@ -2,6 +2,11 @@
 id: variant-qc
 title: 'Variant QC'
 ---
+
+# gnomAD v3.1
+
+See our [3.1 release blog post](https://gnomad.broadinstitute.org/blog/) for more details about the variant QC process.
+
 # gnomAD v3.0
 For gnomAD v3.0, we computed all our variant QC metrics within Hail and because our new sparse format contains all the GVCFs information, we computed them for each allele separately. We then used the [allele-specific version of GATK Variant Quality Score Recalibration (VQSR)](https://gatkforums.broadinstitute.org/gatk/discussion/9622/allele-specific-annotation-and-filtering) to compute a confidence score for each allele in our data to be real or artifactual. We used the following features:
 * SNPs: `FS`, `SOR`,`ReadPosRankSum`, `MQRankSum`, `QD`, `DP`, `MQ`
