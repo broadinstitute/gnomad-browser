@@ -53,10 +53,10 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          The gnomAD v2 data set contains data from 125,748 exomes and 15,708 whole genomes, all
-          mapped to the GRCh37/hg19 reference sequence. The gnomAD v3 data set contains 71,702 whole
-          genomes (and no exomes), all mapped to the GRCh38 reference sequence. Most of the genomes
-          from v2 are included in v3.
+          The gnomAD v2.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all
+          mapped to the GRCh37/hg19 reference sequence. The gnomAD v3.1 data set contains 76,156
+          whole genomes (and no exomes), all mapped to the GRCh38 reference sequence. Most of the
+          genomes from v2 are included in v3.1.
         </p>
       </Answer>
 
@@ -126,8 +126,8 @@ export default () => (
           any information about the clinical status of variant carriers. We have made every effort
           to exclude individuals with severe pediatric diseases from the gnomAD data set, and
           certainly do not expect our data set to be <em>enriched</em> for such individuals, but we
-          typically cannot rule out the possibility that some of our participants do actually suffer
-          from your disease of interest.
+          typically cannot rule out the possibility that some of our participants do actually have
+          your disease of interest.
         </p>
       </Answer>
 
@@ -144,7 +144,8 @@ export default () => (
           </ExternalLink>
           . However, many other samples come from unpublished cohorts or from samples not in dbGaP.
           There is not currently any mechanism to systematically obtain individual-level genotype
-          data from the database as a whole.
+          data from the database as a whole. A fully genotyped callset from the Human Genome
+          Diversity Project and 1000 Genomes Project is available as part of gnomad v3.1.
         </p>
       </Answer>
 
@@ -220,9 +221,13 @@ export default () => (
           <ExternalLink href="https://gnomad.broadinstitute.org/blog/2018-10-gnomad-v2-1/">
             &quot;gnomAD v2.1&quot;
           </ExternalLink>
-          , and{' '}
+          ,{' '}
           <ExternalLink href="https://gnomad.broadinstitute.org/blog/2019-10-gnomad-v3-0/">
             &quot;gnomAD v3.0&quot;
+          </ExternalLink>
+          , and{' '}
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/">
+            &quot;gnomAD v3.1&quot;
           </ExternalLink>
           .
         </p>
@@ -233,29 +238,31 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          The gnomAD v2 call set contains fewer whole genomes than v3, but also contains a very
+          The gnomAD v2 call set contains fewer whole genomes than v3.1, but also contains a very
           large number of exomes that substantially increase its power as a reference in coding
           regions. Therefore gnomAD v2 is still our recommended dataset for most coding regions
-          analyses. However, gnomAD v3 represents a very large increase in the number of genomes,
+          analyses. However, gnomAD v3.1 represents a very large increase in the number of genomes,
           and will therefore be a much better resource if your primary interest is in non-coding
           regions or if your coding region of interest is poorly captured in the gnomAD exomes (this
           can be assessed from the coverage plots in the browser). Most of the genomes from v2.1.1
-          are included in v3 and therefore these should not be considered as independent sample
+          are included in v3.1 and therefore these should not be considered as independent sample
           sets.
         </p>
 
         <p>
           Another consideration when choosing which dataset to use is the ancestry of the samples
-          you are interested in. gnomAD v3 contains a substantially larger number of African
+          you are interested in. gnomAD v3.1 contains a substantially larger number of African
           American samples than v2 (exomes and genomes combined) and provides allele frequencies in
-          the Amish population for the first time.
+          the Amish population for the first time. gnomAD v3.1 also has a fully genotyped callset
+          available from the Human Genome Diversity Project and 1000 Genomes Project, representing
+          &gt;60 distinct populations.
         </p>
 
         <p>
-          Finally, gnomAD v3 was mapped to GRCh38, so if your data is also on this build it then it
-          probably makes sense to switch to v3. There is also a{' '}
+          Finally, gnomAD v3.1 was mapped to GRCh38, so if your data is also on this build it
+          probably makes sense to switch to v3.1. There is also a{' '}
           <Link to={{ pathname: '/downloads', hash: 'v2-liftover-variants' }}>
-            liftover version of gnomAD v2
+            liftover version of gnomAD v2.1.1
           </Link>{' '}
           onto GRCh38 available. We plan to produce a larger GRCh38 aligned exome callset in 2021.
         </p>
@@ -395,7 +402,7 @@ export default () => (
           <ExternalLink href="ftp://ftp.broadinstitute.org/pub/seq/references/Homo_sapiens_assembly19.fasta">
             GRCh37/hg19
           </ExternalLink>
-          . gnomAD v3 is based on GRCh38.
+          . gnomAD v3.1 is based on GRCh38.
         </p>
       </Answer>
 
@@ -404,8 +411,8 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          For gnomAD v3, version 29 (annotated with VEP version 95). For v2, version 19 (annotated
-          with VEP version 85).
+          gnomAD v3.1 uses version 35 (annotated with VEP version 101). For v3.0 we used version 29
+          (annotated with VEP version 95) and for v2, version 19 (annotated with VEP version 85).
         </p>
       </Answer>
 
@@ -415,8 +422,9 @@ export default () => (
       <Answer>
         <p>
           The majority of samples from the 1000 Genomes Project for which <em>exome sequencing</em>{' '}
-          is available were included (until recently, the only available whole genome data was
-          low-coverage sequencing, and as such, was not included).
+          is available were included in v2. Whole genome sequencing from 3,202 subjects from the
+          1000 Genomes Project was included in gnomAD v3.1, though some were filtered out by our QC
+          pipeline.
         </p>
       </Answer>
 
@@ -460,8 +468,8 @@ export default () => (
       <Answer>
         <p>
           Individuals were classified as &quot;other&quot; if they did not unambiguously cluster
-          with the major populations (i.e. afr, ami, amr, asj, eas, fin, nfe, sas) in a principal
-          component analysis (PCA).
+          with the major populations (i.e. afr, ami, amr, asj, eas, fin, mid, nfe, sas) in a
+          principal component analysis (PCA).
         </p>
       </Answer>
 
@@ -531,6 +539,19 @@ export default () => (
       </Question>
       <Answer>
         <p>
+          Please note that as of v3.1, we have changed the labels we use to classify individuals by
+          chromosomal sex from &quot;male&quot; and &quot;female&quot; to &quot;XY&quot; and
+          &quot;XX&quot;, respectively. While we have always used the terms &quot;male&quot; and
+          &quot;female&quot; to refer to an individual&apos;s chromosomal sex and not to gender, we
+          recognize that this terminology is overloaded and could cause confusion to users. We also
+          note that the terms &quot;male&quot; and &quot;female,&quot; when referring to chromosomal
+          sex, can be applied to individuals with sex chromosomal aneuploidies, such as 47,XYY or
+          45,X. Since we remove samples with sex chromosomal aneuploidies from gnomAD during the QC
+          process, we felt the most straightforward sex classification labels were &quot;XX&quot;
+          and &quot;XY&quot;. These changes are now reflected in both the v3.1 download files and in
+          the browser.
+        </p>
+        <p>
           We used a combination of X-chromosome homozygosity (F-stat,{' '}
           <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html?highlight=impute_sex#hail.methods.impute_sex">
             impute_sex function in Hail
@@ -547,7 +568,26 @@ export default () => (
 
         <List>
           <ListItem>
-            Genomes (gnomAD v3):
+            Genomes (gnomAD v3.1):
+            <List style={{ marginTop: '0.5em' }}>
+              <ListItem>
+                XY: normalized X coverage &lt; 1.29 & normalized Y coverage &gt; 0.1 & normalized Y
+                coverage &lt; 1.16
+              </ListItem>
+              <ListItem>
+                XX: normalized X coverage &gt; 1.45 & normalized X coverage &lt; 2.4 & normalized Y
+                coverage &lt; 0.1
+              </ListItem>
+
+              <ListItem>
+                Instead of using F-stat as a hardfilter, a rough cutoff of 0.5 was used to separate
+                the XX and XY. The final X and Y ploidy cutoffs are determined from the means and
+                standard deviations of those XX and XY distributions.
+              </ListItem>
+            </List>
+          </ListItem>
+          <ListItem>
+            Genomes (gnomAD v3.0):
             <List style={{ marginTop: '0.5em' }}>
               <ListItem>
                 Males: chromosome X (non-PAR) F-stat &gt; 0.2 &amp; 0.5 &lt; normalized X coverage
@@ -587,91 +627,21 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          We use principal components analysis (PCA,{' '}
-          <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca">
-            hwe_normalized_pca function in Hail
-          </ExternalLink>
-          ) on a set of high quality variants (LD-pruned (r2 &lt; 0.1), autosomal, bi-allelic SNVs
-          with allele frequency &gt; 0.1% and call rate &gt; 99%) to determine the ancestry of the
-          samples. For each release, PCA is run on the entire dataset (combining exomes and genomes
-          for gnomAD v2) at once, excluding first and second degree relatives. We then train a
-          random forest classifier on samples with previously known population labels using the PCs
-          as features. We assign ancestry to all samples for which the probability of that ancestry
-          is &gt; 90% according to the random forest model. All other samples are assigned the other
-          ancestry (oth). Detailed numbers for gnomAD v2 and v3 are given below.
-        </p>
-
-        <h4>gnomAD v2</h4>
-
-        <p>
-          For gnomAD v2, we used 94,176 training sites that were shared by exomes and genomes and
-          passed our high quality thresholds for PCA.
-        </p>
-
-        <p>
-          The random forest model was trained using a set of 52,768 samples for which we knew the
-          ancestry. Because there were only 31 South Asian (sas) samples among the genomes, we
-          manually assigned these to other (oth) ancestry as well due to their low number.
-        </p>
-
-        <p>
-          Sub-continental ancestry was computed for European and East Asian samples using the same
-          strategy. The reason for computing sub-continental labels for these two global ancestry
-          groups only was (1) the presence of reliable labels of known sub-population for large
-          enough samples of the data, and (2) the resulting PCA was convincingly splitting the data
-          into separate clusters that matched our known labels.
-        </p>
-
-        <h4>gnomAD v3</h4>
-
-        <p>
-          To select the variants for PCA, we lifted-over the high-quality variants used for gnomAD
-          v2, as well as a set of 5k variants widely used for quality control of GWAS data defined
-          by Shaun Purcell. We then took these variants and applied our quality threshold, leading
-          to 94,148 high quality variants for PCA.
-        </p>
-
-        <p>
-          The random forest model was trained based on 17,906 samples with known ancestry and 14,949
-          samples for which we had a population label from gnomAD v2.
-        </p>
-
-        <p>
-          Sub-continental population assignment has not been performed for gnomAD v3 at this time.
-        </p>
-
-        <p>
-          We used principal components analysis (PCA,{' '}
-          <ExternalLink href="https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca">
-            hwe_normalized_pca function in Hail
-          </ExternalLink>
-          ) to determine the ancestry of the samples. First, a set 94k LD-pruned (r2 &lt; 0.1),
-          autosomal, bi-allelic SNVs with allele frequency &gt; 0.1% and call rate &gt; 99% in both
-          exomes and genomes was extracted. Then PCA was run on both exomes and genomes excluding
-          first and second degree relatives. We then trained a random forest classifier using 52k
-          samples with previously known population labels. We then leveraged a set of 52,768 samples
-          for which we knew the ancestry to train a random forests classifier using the PCs as
-          features. We assigned ancestry to all samples for which the probability of that ancestry
-          was &gt; 90% according to the random forest model. All other samples were assigned the
-          other ancestry (oth). In addition, the 31 South Asian (sas) samples among the genomes were
-          assigned to other as well due to their low number. Sub-continental ancestry was computed
-          for European and East Asian samples using the same strategy. The reason for computing for
-          these two global ancestry groups only was (1) the presence of reliable labels of known
-          sub-population for large enough samples of the data, and (2) the resulting PCA was
-          convincingly splitting the data into separate clusters that matched our known labels.
+          See <Link to="/help/ancestry">ancestry documentation</Link>.
         </p>
       </Answer>
 
-      <Question id="how-many-males-females-have-this-variant-can-it-be-assumed-that-hemizygous-variants-come-only-from-males">
-        How many males/females have this variant? Can it be assumed that hemizygous variants come
-        only from males?
+      <Question id="how-many-xx-xy-have-this-variant-can-it-be-assumed-that-hemizygous-variants-come-only-from-males">
+        How many XX/XY individuals have this variant? Can it be assumed that hemizygous variants
+        come only from XY individuals?
       </Question>
       <Answer>
         <p>
           Sex for genomes was determined by X heterozygosity. Sex for exomes was based on both X
           heterozygosity and Y coverage. Information on allele frequency for males and females for
           each variant is provided in the population frequencies table on the browser and in the
-          INFO fields of our VCF files (example: AC_male, AC_female, AF_female, AC_fin_male). If a
+          INFO fields of our VCF files (example: AC_male, AC_female, AF_female, AC_fin_male in
+          releases prior to v3.0; AC-XY, AC-XX, AF-XX, AC-fin-XY for release v3.1 and later). If a
           variant is on the X chromosome, it can be assumed that hemizygous variants come from males
           and homozygous variants in non-PAR regions come from females.
         </p>
@@ -701,7 +671,7 @@ export default () => (
       <Answer>
         <p>
           The gene page summarizes the most severe functional consequence and protein-level change
-          regardless of the transcript. gnomAD v3 uses the MANE Select transcript as the primary
+          regardless of the transcript. gnomAD v3.1 uses the MANE Select transcript as the primary
           transcript for annotating HGVS nomenclature/consequence, if the severity of the functional
           consequences are equivalent across transcripts. MANE stands for Matched Annotation from
           NCBI and EMBL-EBI and MANE Select identifies one high-quality representative transcript
@@ -714,8 +684,8 @@ export default () => (
           transcript you would like to view. The MANE Select transcript (or canonical if no MANE
           Select exists) is marked by &quot;*&quot;. Please note that v2 still uses the canonical
           transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts
-          are annotated using Gencode v29 for gnomAD v3 and Gencode v19 for v2. Please note, the
-          browser represents transcript versions from Gencode v29, which may differ from more recent
+          are annotated using Gencode v35 for gnomAD v3.1 and Gencode v19 for v2. Please note, the
+          browser represents transcript versions from Gencode v35, which may differ from more recent
           versions selected by the MANE Select project. Please check the version number listed by
           the &quot;MANE Select transcript&quot; attribute at the top of the gene summary page and
           check if it is the same or different from the version listed in the browser&apos;s
@@ -731,9 +701,10 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          Our transcript annotations are based on Gencode v29 for gnomAD v3 and Gencode v19 for v2.
-          Annotations may have changed depending on the version of Gencode used (such as changing
-          from a non-coding to a protein-coding gene, or having a different transcript length).
+          Our transcript annotations are based on Genocode v35 for gnomAD v3.1, Gencode v29 for
+          gnomAD v3 and Gencode v19 for v2. Annotations may have changed depending on the version of
+          Gencode used (such as changing from a non-coding to a protein-coding gene, or having a
+          different transcript length).
         </p>
       </Answer>
 
@@ -805,6 +776,7 @@ export default () => (
           <ListItem>ExAC: dbSNP version 141</ListItem>
           <ListItem>gnomAD v2: dbSNP version 147</ListItem>
           <ListItem>gnomAD v3: dbSNP version 151</ListItem>
+          <ListItem>gnomAD v3.1: dbSNP version 154</ListItem>
         </List>
 
         <p>
@@ -839,15 +811,24 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          It has recently come to our attention that a number of genotypes with a high proportion of
-          alternate allele reads (Allele Balance; AB &ge; 90%) are being called as heterozygous when
-          they may be homozygous. This deflates the number of reported homozygotes, and is
-          especially apparent at common variants and more so for long insertions and deletions. This
-          will affect frequency estimates and especially the calculation of Hardy-Weinberg
-          Equilibrium. Use caution when interpreting the frequencies of these variants. We are
-          currently flagging these variants in the gnomAD browser, and working on a longer-term fix.
-          See our <ExternalLink href="https://doi.org/10.1101/784157">preprint</ExternalLink> for
-          more details.
+          It has recently come to our attention that prior to v3.1 a number of genotypes with a high
+          proportion of alternate allele reads (Allele Balance; AB &ge; 90%) were being called as
+          heterozygous when they may be homozygous. This deflates the number of reported
+          homozygotes, and is especially apparent at common variants and more so for long insertions
+          and deletions. This will affect frequency estimates and especially the calculation of
+          Hardy-Weinberg Equilibrium. Use caution when interpreting the frequencies of these
+          variants. See our{' '}
+          <ExternalLink href="https://doi.org/10.1101/784157">preprint</ExternalLink> for more
+          details.
+        </p>
+        <p>
+          The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward. However,
+          for v3.1, the majority of variant calls were already generated using an uncorrected
+          version of HaplotypeCaller. We therefore made an adjustment to heterozygous genotypes with
+          highly skewed allele balance (&gt;0.9) at common variant sites (&gt;0.01 AF), setting
+          these genotypes to homozygous alternate genotypes. This change is reflected in the
+          aggregate allele frequencies, allele numbers, and allele counts displayed on the browser
+          as well as in the genotype data released for the gnomAD HGDP and 1000 Genomes callset.
         </p>
       </Answer>
 
@@ -858,8 +839,7 @@ export default () => (
         <p>
           Unfortunately, for many reasons (including consent and data usage restrictions) we cannot
           provide the information required for such filtering. The only subsets we provide are
-          controls, non-cancer, non-neuro, and non-TOPMed. At this time, subsets are only available
-          in gnomAD v2.
+          controls, non-cancer, non-neuro, and non-TOPMed.
         </p>
       </Answer>
 
@@ -869,8 +849,8 @@ export default () => (
       <Answer>
         <p>
           We currently do not have a way to submit batch queries on the browser, but we are actively
-          working on developing an API for ExAC/gnomAD. If you would like to learn about GraphQL,
-          which we will use to work with the API, an overview can be found at{' '}
+          working on developing an API for gnomAD. If you would like to learn about GraphQL, which
+          we will use to work with the API, an overview can be found at{' '}
           <ExternalLink href="https://graphql.org">https://graphql.org</ExternalLink>.You can also
           obtain information on all variants from the VCFs and Hail Tables available on our{' '}
           <Link to="/downloads">downloads page</Link>.
@@ -901,11 +881,11 @@ export default () => (
     <dl>
       <Question id="how-was-coverage-calculated">How was coverage calculated?</Question>
       <Answer>
-        <h4>gnomAD v3</h4>
+        <h4>gnomAD v3.0</h4>
 
         <p>
-          Coverage was computed using all 71,702 gnomAD v3 samples from their GVCFs . The gVCFs were
-          produced using a 3-bin blocking scheme:
+          Coverage was computed using all 71,702 gnomAD v3.0 samples from their GVCFs . The gVCFs
+          were produced using a 3-bin blocking scheme:
         </p>
 
         <List>
