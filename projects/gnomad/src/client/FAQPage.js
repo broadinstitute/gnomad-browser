@@ -226,7 +226,7 @@ export default () => (
             &quot;gnomAD v3.0&quot;
           </ExternalLink>
           , and{' '}
-          <ExternalLink href="https://gnomad.broadinstitute.org/blog/">
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/">
             &quot;gnomAD v3.1&quot;
           </ExternalLink>
           .

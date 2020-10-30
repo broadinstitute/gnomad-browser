@@ -68,7 +68,7 @@ export default () => (
       The v3.1 short variant data set provided on this website spans 76,156 genomes from unrelated
       individuals sequenced as part of various disease-specific and population genetic studies, and
       is aligned against the GRCh38 reference. See the{' '}
-      <ExternalLink href="https://gnomad.broadinstitute.org/blog/">
+      <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/">
         gnomAD v3.1 blog post
       </ExternalLink>{' '}
       for details of the latest release. The v2 short variant data set provided on this website
