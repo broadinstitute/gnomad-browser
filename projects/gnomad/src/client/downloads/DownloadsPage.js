@@ -101,7 +101,7 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <p>
-        <CodeBlock>aws s3 ls gs://gnomad-public-us-east-1/release/</CodeBlock>
+        <CodeBlock>aws s3 ls s3://gnomad-public-us-east-1/release/</CodeBlock>
       </p>
 
       <h3>Azure Open Datasets</h3>
