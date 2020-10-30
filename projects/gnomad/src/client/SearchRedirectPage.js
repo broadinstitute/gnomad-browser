@@ -7,9 +7,11 @@ import { PageHeading } from '@gnomad/ui'
 import InfoPage from './InfoPage'
 import Query from './Query'
 
+const defaultSearchDataset = 'gnomad_r2_1'
+
 const searchQuery = `
-query Search($query: String!) {
-  searchResults(query: $query) {
+query Search($query: String!, $dataset: DatasetId!) {
+  searchResults(query: $query, dataset: $dataset) {
     label
     url
   }
@@ -22,7 +24,7 @@ const SearchRedirectPage = ({ query }) => (
 
     <Query
       query={searchQuery}
-      variables={{ query }}
+      variables={{ query, dataset: defaultSearchDataset }}
       loadingMessage="Searching"
       errorMessage="Unable to load search results"
       success={data => data.searchResults}
