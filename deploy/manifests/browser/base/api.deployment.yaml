@@ -45,11 +45,11 @@ spec:
               containerPort: 8000
           resources:
             requests:
-              cpu: '500m'
-              memory: '1Gi'
-            limits:
-              cpu: '1'
+              cpu: '2'
               memory: '2Gi'
+            limits:
+              cpu: '2'
+              memory: '4Gi'
           readinessProbe:
             httpGet:
               path: /health/ready
