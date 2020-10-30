@@ -164,11 +164,11 @@ class NavBar extends Component {
         </NavBarWrapper>
         <Notice>
           <a
-            href="https://www.nature.com/immersive/d42859-020-00002-x/index.html"
+            href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1/"
             rel="noopener noreferrer"
             target="_blank"
           >
-            gnomAD collection published in Nature!
+            gnomAD v3.1 released!
           </a>
         </Notice>
       </OuterWrapper>
