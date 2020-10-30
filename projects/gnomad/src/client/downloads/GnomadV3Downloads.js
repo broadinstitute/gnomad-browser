@@ -37,6 +37,33 @@ const genomeChromosomeVcfs = [
   { chrom: 'Y', size: '2.27 GiB', md5: '7a2114a7633f7245c2e0b54e9b03f9dc' },
 ]
 
+const hgdpAnd1kgChromosomeVcfs = [
+  { chrom: 1, size: '272.23 GiB', md5: '97e46af6ff91096d2fdf91b1667bc50f' },
+  { chrom: 2, size: '286.69 GiB', md5: 'd2b7c75b3e8fa3a96cf80af205f7afe9' },
+  { chrom: 3, size: '233.76 GiB', md5: 'cbcf06402050c75e4caccd762f3b2475' },
+  { chrom: 4, size: '231.49 GiB', md5: '637fb046eae61ebba05c6a73042b3263' },
+  { chrom: 5, size: '210.53 GiB', md5: 'da3033e888bd1cbd3b5a6b521d7a5864' },
+  { chrom: 6, size: '202.28 GiB', md5: '4b637f5b48e8886ccb8df0ed14b359b6' },
+  { chrom: 7, size: '197.99 GiB', md5: '48aa04961bdf16a0b35bb5c8ae36a325' },
+  { chrom: 8, size: '182.11 GiB', md5: '82c67e6f0d982a9ea258d442f1751d9c' },
+  { chrom: 9, size: '154.34 GiB', md5: 'd1fbf21974e0122d35d34b6a30dff855' },
+  { chrom: 10, size: '167.88 GiB', md5: 'a9851cba7565d3058ba13f27c845875e' },
+  { chrom: 11, size: '161.22 GiB', md5: 'a9ea394cac4ddc2273c3472fd63ac893' },
+  { chrom: 12, size: '159.38 GiB', md5: '6d6b6d4a2fc4ddfb5a3bf1193527ff46' },
+  { chrom: 13, size: '115.19 GiB', md5: 'd15b3ba419535133cc25bbd6ab49ce79' },
+  { chrom: 14, size: '110.83 GiB', md5: '08bbf9d586521c8b625dba55f1c949dd' },
+  { chrom: 15, size: '103.12 GiB', md5: '458f34d5bb414b486f62dc7f50f5d489' },
+  { chrom: 16, size: '115.89 GiB', md5: '440d9614fafed099636ff900aa92fb7e' },
+  { chrom: 17, size: '105.74 GiB', md5: '26cce5044954d03a3ac3e09685f7921a' },
+  { chrom: 18, size: '90.45 GiB', md5: '2922953b20b06bd89f7fc77744ec3850' },
+  { chrom: 19, size: '87.02 GiB', md5: 'd09ad50a22801953fdf6bc0df15c460d' },
+  { chrom: 20, size: '77.36 GiB', md5: '9c45b73a067e84d39e67cc28d872bef5' },
+  { chrom: 21, size: '53.59 GiB', md5: '5d978798892cbfc044d71cd13bf950b8' },
+  { chrom: 22, size: '58.18 GiB', md5: '2e6bdc4ae3869a2145dd6897395b8dbc' },
+  { chrom: 'X', size: '125.36 GiB', md5: 'aee8000ad1facf83f6dc79d6176c29f1' },
+  { chrom: 'Y', size: '2.36 GiB', md5: '12909367b2666b8ecc3214d22bbdc211' },
+]
+
 export default () => (
   <React.Fragment>
     <section>
@@ -47,6 +74,9 @@ export default () => (
         </ListItem>
         <ListItem>
           <Link href="#v3-coverage">Coverage</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#v3-hgdp-1kg">HGDP + 1KG callset</Link>
         </ListItem>
       </List>
     </section>
@@ -110,6 +140,50 @@ export default () => (
             md5="6c809627ff7922dcfc8d2c67bba017ff"
           />
         </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v3-hgdp-1kg">HGDP + 1KG callset</SectionTitle>
+      <p>
+        These files contain individual genotypes for all samples in the HGDP and 1KG subsets. See
+        the{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#the-gnomad-hgdp-and-1000-genomes-callset">
+          gnomAD v3.1 blog post
+        </ExternalLink>{' '}
+        for more information.
+      </p>
+
+      <h3>Genomes</h3>
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label="Hail Sparse MatrixTable"
+            path="/release/3.1/mt/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.mt"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Sample metadata TSV"
+            path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.sample_meta.tsv.gz"
+            gcsBucket="gnomad-public"
+            includeAzure={false}
+          />
+        </ListItem>
+        {hgdpAnd1kgChromosomeVcfs.map(({ chrom, size, md5 }) => (
+          <ListItem key={chrom}>
+            <IndexedFileDownloadLinks
+              label={`chr${chrom} VCF`}
+              path={`/release/3.1/vcf/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.chr${chrom}.vcf.bgz`}
+              size={size}
+              md5={md5}
+              gcsBucket="gnomad-public"
+              includeAzure={false}
+            />
+          </ListItem>
+        ))}
       </FileList>
     </section>
   </React.Fragment>

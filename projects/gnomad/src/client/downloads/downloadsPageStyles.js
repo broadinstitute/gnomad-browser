@@ -173,7 +173,7 @@ GetUrlButtons.defaultProps = {
   includeAzure: true,
 }
 
-export const GenericDownloadLinks = ({ gcsBucket, label, path, size, md5 }) => {
+export const GenericDownloadLinks = ({ gcsBucket, label, path, size, md5, includeAzure }) => {
   return (
     <>
       <span>{label}</span>
@@ -200,14 +200,19 @@ export const GenericDownloadLinks = ({ gcsBucket, label, path, size, md5 }) => {
           href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
         >
           Amazon
-        </ExternalLink>{' '}
-        /{' '}
-        <ExternalLink
-          aria-label={`Download ${label} from Microsoft`}
-          href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
-        >
-          Microsoft
         </ExternalLink>
+        {includeAzure && (
+          <>
+            {' '}
+            /{' '}
+            <ExternalLink
+              aria-label={`Download ${label} from Microsoft`}
+              href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
+            >
+              Microsoft
+            </ExternalLink>
+          </>
+        )}
       </span>
     </>
   )
@@ -219,12 +224,14 @@ GenericDownloadLinks.propTypes = {
   path: PropTypes.string.isRequired,
   size: PropTypes.string,
   md5: PropTypes.string,
+  includeAzure: PropTypes.bool,
 }
 
 GenericDownloadLinks.defaultProps = {
   gcsBucket: 'gcp-public-data--gnomad',
   size: undefined,
   md5: undefined,
+  includeAzure: true,
 }
 
 export const IndexedFileDownloadLinks = ({ label, path, size, md5, gcsBucket, includeAzure }) => {

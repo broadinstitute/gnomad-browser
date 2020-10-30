@@ -424,7 +424,11 @@ export default () => (
           The majority of samples from the 1000 Genomes Project for which <em>exome sequencing</em>{' '}
           is available were included in v2. Whole genome sequencing from 3,202 subjects from the
           1000 Genomes Project was included in gnomAD v3.1, though some were filtered out by our QC
-          pipeline.
+          pipeline. A{' '}
+          <Link to={{ pathname: '/downloads', hash: 'v3-hgdp-1kg' }}>
+            fully genotyped callset containing individual genotypes for these data
+          </Link>{' '}
+          is available.
         </p>
       </Answer>
 
