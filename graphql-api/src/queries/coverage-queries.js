@@ -105,7 +105,7 @@ const fetchExomeCoverageForRegion = (esClient, datasetId, region) => {
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
 
   const regionSize = region.stop - region.start + 150
-  const bucketSize = Math.floor(regionSize / 500)
+  const bucketSize = Math.max(Math.floor(regionSize / 500), 1)
 
   return exomeCoverageIndex
     ? fetchCoverage(esClient, {
@@ -127,7 +127,7 @@ const fetchGenomeCoverageForRegion = (esClient, datasetId, region) => {
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
 
   const regionSize = region.stop - region.start + 150
-  const bucketSize = Math.floor(regionSize / 500)
+  const bucketSize = Math.max(Math.floor(regionSize / 500), 1)
 
   return genomeCoverageIndex
     ? fetchCoverage(esClient, {
@@ -153,7 +153,7 @@ const fetchCoverageForGene = async (esClient, datasetId, gene) => {
   const paddedExons = extendRegions(75, gene.exons)
   const mergedExons = mergeOverlappingRegions(paddedExons.sort((a, b) => a.start - b.start))
   const totalIntervalSize = totalRegionSize(mergedExons)
-  const bucketSize = Math.floor(totalIntervalSize / 500)
+  const bucketSize = Math.max(Math.floor(totalIntervalSize / 500), 1)
 
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
@@ -196,7 +196,7 @@ const fetchCoverageForTranscript = async (esClient, datasetId, transcript) => {
   const paddedExons = extendRegions(75, transcript.exons)
   const mergedExons = mergeOverlappingRegions(paddedExons.sort((a, b) => a.start - b.start))
   const totalIntervalSize = totalRegionSize(mergedExons)
-  const bucketSize = Math.floor(totalIntervalSize / 500)
+  const bucketSize = Math.max(Math.floor(totalIntervalSize / 500), 1)
 
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
