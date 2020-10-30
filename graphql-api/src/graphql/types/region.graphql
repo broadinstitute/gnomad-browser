@@ -7,8 +7,8 @@ type GeneSummary {
 }
 
 type RegionCoverage {
-  exome: [CoverageBin!]! @cost(value: 10)
-  genome: [CoverageBin!]! @cost(value: 10)
+  exome: [CoverageBin!]! @cost(value: 5)
+  genome: [CoverageBin!]! @cost(value: 5)
 }
 
 type Region {
@@ -17,7 +17,7 @@ type Region {
   start: Int!
   stop: Int!
 
-  genes: [GeneSummary!]! @cost(value: 10)
+  genes: [GeneSummary!]! @cost(value: 5)
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
