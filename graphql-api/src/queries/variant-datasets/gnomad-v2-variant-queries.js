@@ -102,7 +102,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     variant.exome.freq[exomeSubset].ac_raw === 0 &&
     variant.genome.freq[genomeSubset].ac_raw === 0
   ) {
-    throw new UserVisibleError('Variant not found')
+    throw new UserVisibleError('Variant not found in selected subset.')
   }
 
   const exomeFilters = variant.exome.filters || []
