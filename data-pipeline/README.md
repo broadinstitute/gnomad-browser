@@ -39,7 +39,7 @@ The ClinVar pipelines must be run on clusters with VEP installed and configured 
   ```
   ./deployctl config set project <project-id>
   ./deployctl config set zone <zone>
-  ./deployctl config set pipeline_output_path <gs://bucket/path/to/staging/directory>
+  ./deployctl config set data_pipeline_output <gs://bucket/path/to/staging/directory>
   ```
 
 - Start a cluster.
