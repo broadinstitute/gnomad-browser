@@ -14,4 +14,4 @@ if [ "$LOGNAME" = "vagrant" ]; then
   WEBPACK_DEV_SERVER_ARGS="--host=0.0.0.0 --watch-poll"
 fi
 
-yarn run webpack-dev-server --config=./config/webpack.config.client.js --hot $WEBPACK_DEV_SERVER_ARGS
+yarn run webpack-dev-server --hot $WEBPACK_DEV_SERVER_ARGS

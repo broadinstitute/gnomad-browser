@@ -4,7 +4,7 @@ module.exports = {
   singleQuote: true,
   overrides: [
     {
-      files: 'projects/**/*.js',
+      files: 'browser/**/*.js',
       options: {
         arrowParens: 'avoid',
       },

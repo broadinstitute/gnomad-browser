@@ -29,7 +29,7 @@ module.exports = {
     },
     {
       // Set environment for server-side code
-      files: ['graphql-api/**/*.js', 'projects/*/src/server/**/*.js'],
+      files: ['graphql-api/**/*.js'],
       env: {
         browser: false,
         node: true,

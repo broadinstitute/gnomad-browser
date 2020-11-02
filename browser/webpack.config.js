@@ -14,8 +14,8 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
 }
 
 // Generate help topics
-const helpContentDirectory = path.resolve(__dirname, '../src/client/help/content')
-const helpTopicsModulePath = path.resolve(__dirname, '../src/client/help/helpTopics.js')
+const helpContentDirectory = path.resolve(__dirname, './src/help/content')
+const helpTopicsModulePath = path.resolve(__dirname, './src/help/helpTopics.js')
 const helpFiles = glob.sync('*.md', {
   cwd: helpContentDirectory,
   matchBase: true,
@@ -62,7 +62,7 @@ const config = {
   },
   devtool: 'source-map',
   entry: {
-    bundle: path.resolve(__dirname, '../src/client/index.js'),
+    bundle: path.resolve(__dirname, './src/index.js'),
   },
   mode: isDev ? 'development' : 'production',
   module: {
@@ -95,16 +95,16 @@ const config = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, '../dist/public'),
+    path: path.resolve(__dirname, './dist/public'),
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name]-[contenthash].js',
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [path.resolve(__dirname, '../src/client/opensearch.xml')],
+      patterns: [path.resolve(__dirname, './src/opensearch.xml')],
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/client/index.html'),
+      template: path.resolve(__dirname, './src/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,
     }),
   ],
