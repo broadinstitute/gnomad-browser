@@ -28,7 +28,7 @@ const fetchMultiNuceotideVariantById = async (esClient, datasetId, variantId) =>
       genome: variant.genome.ac !== undefined ? variant.genome : null,
     }
   } catch (err) {
-    if (err.message === 'Not Found') {
+    if (err.meta.body.found === false) {
       return null
     }
     throw err
