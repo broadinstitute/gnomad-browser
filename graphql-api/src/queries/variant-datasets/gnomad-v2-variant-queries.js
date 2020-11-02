@@ -2,6 +2,8 @@ const { omit } = require('lodash')
 
 const { isRsId } = require('@gnomad/identifiers')
 
+const { UserVisibleError } = require('../../errors')
+
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('../helpers/region-helpers')
 
@@ -91,7 +93,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   })
 
   if (response.body.hits.total === 0) {
-    return null
+    throw new UserVisibleError('Variant not found')
   }
 
   const variant = response.body.hits.hits[0]._source.value
@@ -100,7 +102,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     variant.exome.freq[exomeSubset].ac_raw === 0 &&
     variant.genome.freq[genomeSubset].ac_raw === 0
   ) {
-    return null
+    throw new UserVisibleError('Variant not found')
   }
 
   const exomeFilters = variant.exome.filters || []
