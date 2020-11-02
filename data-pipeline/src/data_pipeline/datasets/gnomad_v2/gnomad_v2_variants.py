@@ -33,7 +33,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
                 id=pop_id.upper(),
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}"]].AN,
-                hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AN, 0),
+                hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC, 0),
                 homozygote_count=ds.freq[freq_index_dict[f"{subset}_{pop_id}"]].homozygote_count,
             )
         )
