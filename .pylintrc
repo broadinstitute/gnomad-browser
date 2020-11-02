@@ -1,7 +1,3 @@
-[MASTER]
-# Ensure that pylint can find the data_utils package
-init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.join(os.path.dirname(find_pylintrc()), 'data'))"
-
 [MESSAGES_CONTROL]
 # bad-continuation,line-too-long: conflicts with Black's formatting
 disable=bad-continuation,line-too-long,missing-docstring
