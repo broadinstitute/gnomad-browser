@@ -39,7 +39,7 @@ For information on citing the gnomAD dataset, see the [gnomAD Terms and Data Inf
 - Start a local instance of the gnomAD browser which fetches data from https://gnomad.broadinstitute.org:
 
   ```shell
-  cd projects/gnomad
+  cd browser
   yarn start
   ```
 

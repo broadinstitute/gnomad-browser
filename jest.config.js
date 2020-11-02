@@ -3,8 +3,8 @@
 module.exports = {
   projects: [
     {
-      displayName: 'gnomad',
-      testMatch: ['<rootDir>/projects/gnomad/**/*.spec.js'],
+      displayName: 'browser',
+      testMatch: ['<rootDir>/browser/**/*.spec.js'],
       setupFilesAfterEnv: ['@testing-library/jest-dom'],
     },
     {

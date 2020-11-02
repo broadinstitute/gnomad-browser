@@ -9,17 +9,17 @@ ENV NODE_ENV=production
 
 # Install dependencies
 COPY --chown=node:node package.json .
-COPY --chown=node:node projects/gnomad/package.json projects/gnomad/package.json
+COPY --chown=node:node browser/package.json browser/package.json
 COPY --chown=node:node yarn.lock .
 RUN yarn install --production false --frozen-lockfile && yarn cache clean
 
 # Copy source
 COPY --chown=node:node babel.config.js .
-COPY --chown=node:node projects/gnomad projects/gnomad
+COPY --chown=node:node browser browser
 
 # Build
-COPY --chown=node:node projects/gnomad/build.env .
-RUN export $(cat build.env | xargs); cd projects/gnomad && yarn run webpack --config=./config/webpack.config.client.js
+COPY --chown=node:node browser/build.env .
+RUN export $(cat build.env | xargs); cd browser && yarn run build
 
 ###############################################################################
 FROM nginx:stable-alpine
@@ -27,7 +27,7 @@ FROM nginx:stable-alpine
 # Placeholder value replaced in K8S deployment.
 ENV INGRESS_IP=127.0.0.1
 
-COPY --from=0 /home/node/app/projects/gnomad/dist/public /usr/share/nginx/html
+COPY --from=0 /home/node/app/browser/dist/public /usr/share/nginx/html
 
 COPY deploy/dockerfiles/browser/browser-base.nginx.conf /etc/nginx/browser-base.nginx.conf.template
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/conf.d/default.conf
