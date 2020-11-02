@@ -10,7 +10,7 @@ const fetchGeneById = async (esClient, geneId, referenceGenome) => {
 
     return response.body._source.value
   } catch (err) {
-    if (err.message === 'Not Found') {
+    if (err.meta.body.found === false) {
       return null
     }
     throw err
