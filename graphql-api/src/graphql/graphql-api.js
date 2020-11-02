@@ -1,5 +1,5 @@
 const { graphqlHTTP } = require('express-graphql')
-const { GraphQLError, execute, validate } = require('graphql')
+const { GraphQLError, execute, parse, validate } = require('graphql')
 const {
   default: queryComplexity,
   directiveEstimator,
@@ -11,6 +11,26 @@ const logger = require('../logger')
 
 const { applyRateLimits } = require('./rate-limiting')
 const schema = require('./schema')
+
+const customParseFn = (...args) => {
+  try {
+    return parse(...args)
+  } catch (error) {
+    // Identify parse errors so that customFormatErrorFn will allow them to be returned to the user.
+    throw new GraphQLError(
+      error.message,
+      error.nodes,
+      error.source,
+      error.positions,
+      error.path,
+      error.originalError,
+      {
+        ...error.extensions,
+        isParseError: true,
+      }
+    )
+  }
+}
 
 const customValidateFn = (...args) => {
   // Identify validation errors so that customFormatErrorFn will allow them to be returned to the user.
@@ -34,8 +54,7 @@ const customValidateFn = (...args) => {
 }
 
 const customFormatErrorFn = (error) => {
-  const isValidationError = error.extensions && error.extensions.isValidationError
-  if (isValidationError) {
+  if (error.extensions && (error.extensions.isParseError || error.extensions.isValidationError)) {
     return new GraphQLError(
       error.message,
       error.nodes,
@@ -82,6 +101,7 @@ module.exports = ({ context }) =>
         },
       }),
     ],
+    customParseFn,
     customValidateFn,
     customExecuteFn: async (...args) => {
       // Apply rate limit before executing query.
