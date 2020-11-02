@@ -17,5 +17,4 @@ projects/gnomad/build.env
 
 # Build outputs
 projects/gnomad/dist
-projects/gnomad-api/dist
 reads/dist
