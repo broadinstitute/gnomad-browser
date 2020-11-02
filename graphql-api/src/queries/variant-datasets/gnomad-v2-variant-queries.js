@@ -162,7 +162,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       ? {
           ...variant.genome,
           ...variant.genome.freq[genomeSubset],
-          populations: correctHemizygoteCounts(variant.genome.freq[exomeSubset].populations),
+          populations: correctHemizygoteCounts(variant.genome.freq[genomeSubset].populations),
           // TODO: Remove warning on variant page and return subset specific age distribution
           // age_distribution: variant.genome.age_distribution[genomeSubset],
           age_distribution: variant.genome.age_distribution.gnomad,
