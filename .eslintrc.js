@@ -29,11 +29,7 @@ module.exports = {
     },
     {
       // Set environment for server-side code
-      files: [
-        'graphql-api/**/*.js',
-        'projects/gnomad-api/**/*.js',
-        'projects/*/src/server/**/*.js',
-      ],
+      files: ['graphql-api/**/*.js', 'projects/*/src/server/**/*.js'],
       env: {
         browser: false,
         node: true,
@@ -43,7 +39,7 @@ module.exports = {
       },
     },
     {
-      files: ['graphql-api/**/*.js', 'projects/gnomad-api/**/*.js'],
+      files: ['graphql-api/**/*.js'],
       rules: {
         'no-underscore-dangle': [
           'error',

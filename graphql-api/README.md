@@ -86,15 +86,3 @@ fetch("https://gnomad.broadinstitute.org/api", {
 .then(response => response.json())
 .then(data => console.log(data.data))
 ```
-
-
-## Deployment
-
-### Configuration
-
-The default [GENCODE releases](https://www.gencodegenes.org/human/releases.html) are v19 for GRCh37 and v29 for GRCh38. If you want to serve a different version, you can set the following environment variables when launching your API Server:
-
-+ GRCH37\_GENCODE\_VERSION
-+ GRCH38\_GENCODE\_VERSION
-
-For example, if you want to use the v33 release, set `GRCH38_GENCODE_VERSION=v33`.
