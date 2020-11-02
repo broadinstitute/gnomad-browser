@@ -96,7 +96,7 @@ const limitedElastic = {
       }
       // eslint-disable-next-line no-underscore-dangle
       if (response.body._shards.failed > 0) {
-        throw new Error('Elasticsearch scroll partially failed failed')
+        throw new Error('Elasticsearch scroll partially failed')
       }
       return response
     }),
