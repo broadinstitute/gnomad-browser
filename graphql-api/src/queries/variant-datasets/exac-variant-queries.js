@@ -1,5 +1,7 @@
 const { isRsId } = require('@gnomad/identifiers')
 
+const { UserVisibleError } = require('../../errors')
+
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('../helpers/region-helpers')
 
@@ -64,7 +66,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
   })
 
   if (response.body.hits.total === 0) {
-    return null
+    throw new UserVisibleError('Variant not found')
   }
 
   const variant = response.body.hits.hits[0]._source.value

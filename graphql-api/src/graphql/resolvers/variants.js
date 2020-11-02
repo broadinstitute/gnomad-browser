@@ -9,7 +9,7 @@ const {
   fetchVariantsByTranscript,
 } = require('../../queries/variant-queries')
 
-const resolveVariant = async (obj, args, ctx) => {
+const resolveVariant = (obj, args, ctx) => {
   if (!(args.rsid || args.variantId)) {
     throw new UserVisibleError('One of "rsid" or "variantId" is required')
   }
@@ -37,13 +37,7 @@ const resolveVariant = async (obj, args, ctx) => {
     throw new UserVisibleError('Dataset is required')
   }
 
-  const variant = await fetchVariantById(ctx.esClient, dataset, variantId)
-
-  if (!variant) {
-    throw new UserVisibleError('Variant not found')
-  }
-
-  return variant
+  return fetchVariantById(ctx.esClient, dataset, variantId)
 }
 
 const resolveVariantsInGene = (obj, args, ctx) => {
