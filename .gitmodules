@@ -1,4 +1,0 @@
-[submodule "kubernetes-elasticsearch-cluster"]
-    path = cluster/elasticsearch/kubernetes-elasticsearch-cluster
-    url = https://github.com/macarthur-lab/gnomadjs-elasticsearch.git
-

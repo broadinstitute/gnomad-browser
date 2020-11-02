@@ -31,7 +31,7 @@ For information on citing the gnomAD dataset, see the [gnomAD Terms and Data Inf
 - Clone repository and download dependencies:
 
   ```shell
-  git clone --recursive https://github.com/broadinstitute/gnomad-browser.git
+  git clone https://github.com/broadinstitute/gnomad-browser.git
   cd gnomad-browser
   yarn
   ```
