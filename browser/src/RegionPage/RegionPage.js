@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { RegionViewer } from '@gnomad/region-viewer'
 
+import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -59,7 +60,9 @@ const RegionPage = ({ datasetId, history, region, width }) => {
   return (
     <TrackPage>
       <TrackPageSection>
-        <DocumentTitle title={`${region.chrom}-${region.start}-${region.stop}`} />
+        <DocumentTitle
+          title={`${region.chrom}-${region.start}-${region.stop} | ${labelForDataset(datasetId)}`}
+        />
         <GnomadPageHeading
           extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
           selectedDataset={datasetId}

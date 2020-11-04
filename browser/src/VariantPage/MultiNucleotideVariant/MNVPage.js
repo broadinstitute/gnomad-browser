@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
+import { labelForDataset } from '../../datasets'
 import DocumentTitle from '../../DocumentTitle'
 import GnomadPageHeading from '../../GnomadPageHeading'
 import StatusMessage from '../../StatusMessage'
@@ -38,7 +39,7 @@ const Column = styled.div`
 
 const MNVPage = ({ datasetId, variantId }) => (
   <Page>
-    <DocumentTitle title={variantId} />
+    <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
     <GnomadPageHeading
       datasetOptions={{
         includeExac: false,

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Page } from '@gnomad/ui'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -227,7 +227,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
 
   return (
     <Page>
-      <DocumentTitle title={variantIdProp || rsId} />
+      <DocumentTitle title={`${variantIdProp || rsId} | ${labelForDataset(datasetId)}`} />
       <BaseQuery key={datasetId} query={variantQuery} variables={queryVariables}>
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
