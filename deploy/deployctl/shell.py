@@ -36,7 +36,7 @@ def kubectl(args: typing.List[str], **kwargs) -> str:
 
 
 def get_k8s_deployments(selector: str) -> typing.List[str]:
-    return kubectl(
+    result = kubectl(
         [
             "get",
             "deployments",
@@ -44,7 +44,8 @@ def get_k8s_deployments(selector: str) -> typing.List[str]:
             "--sort-by={.metadata.creationTimestamp}",
             "--output=jsonpath={range .items[*]}{.metadata.name}{'\\n'}",
         ]
-    ).splitlines()
+    )
+    return [line for line in result.splitlines() if line]
 
 
 def get_most_recent_k8s_deployment(selector: str) -> str:
