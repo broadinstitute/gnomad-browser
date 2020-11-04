@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Page } from '@gnomad/ui'
 
+import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
@@ -33,7 +34,7 @@ const ResponsiveSection = styled.section`
 
 const StructuralVariantPage = ({ datasetId, variant }) => (
   <Page>
-    <DocumentTitle title={variant.variant_id} />
+    <DocumentTitle title={`${variant.variant_id} | ${labelForDataset(datasetId)}`} />
     <GnomadPageHeading datasetOptions={{ includeShortVariants: false }} selectedDataset={datasetId}>
       Structural variant: {variant.variant_id}
     </GnomadPageHeading>

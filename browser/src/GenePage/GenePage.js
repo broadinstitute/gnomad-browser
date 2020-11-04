@@ -8,6 +8,7 @@ import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@gnomad/
 import { ExternalLink } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
+import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -287,7 +288,7 @@ class GenePage extends Component {
     return (
       <TrackPage>
         <TrackPageSection>
-          <DocumentTitle title={gene.symbol} />
+          <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} />
           <GnomadPageHeading selectedDataset={datasetId}>
             {gene.symbol} <GeneName>{gene.name}</GeneName>
           </GnomadPageHeading>
