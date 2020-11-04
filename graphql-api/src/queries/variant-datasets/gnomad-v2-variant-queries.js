@@ -122,10 +122,9 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  if (
-    variant.exome.freq[exomeSubset].ac_raw === 0 &&
-    variant.genome.freq[genomeSubset].ac_raw === 0
-  ) {
+  // AC raw may be undefined if the variant does not exist in one of exomes/genomes.
+  // Or 0 if the variant exists in gnomAD but not in the selected subset.
+  if (!variant.exome.freq[exomeSubset].ac_raw && !variant.genome.freq[genomeSubset].ac_raw) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
