@@ -988,11 +988,6 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.13.1.tgz#c53b4066edae16cd1fd669f687baf031b45fb9d6"
   integrity sha512-D819f34FLHeBN/4xvw0HR0u7U2G7RqjPSggXqf7LktsxWQ48VAfGwvMrhcVuaZV2fF069c/619RdgCCms0DHhw==
 
-"@gnomad/identifiers@^1.0.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/identifiers/-/identifiers-1.1.0.tgz#5f64637b2b6fea7a1943c0f2d71d7b7174447fb5"
-  integrity sha512-RfMzqLOKk9dgXAuFd2lRE9+6xgIz/AQf0ErGr/nCuPpdhgSFi+CPHFk6LyePPdK5x7f+8LFXFup4xkNSJwsobg==
-
 "@gnomad/identifiers@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@gnomad/identifiers/-/identifiers-2.0.0.tgz#1689f121586177955a17a0b3d29bb5d48948abee"
