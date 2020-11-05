@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link, List, ListItem, Select } from '@gnomad/ui'
 
 import {
   Column,
@@ -65,6 +65,89 @@ const genomeChromosomeVcfs = [
   { chrom: 'X', size: '17.8 GiB', md5: '77d25e87e94d360eb2acedaaedaf3df1' },
 ]
 
+const LD_POPULATION_NAMES = {
+  afr: 'African',
+  amr: 'Latino',
+  asj: 'Ashkenazi Jewish',
+  eas: 'East Asian',
+  fin: 'European (Finnish)',
+  nfe: 'European (non-Finnish)',
+  est: 'Estonian',
+  nwe: 'North-western European',
+  seu: 'Southern European',
+}
+
+const LDFiles = () => {
+  const [selectedPopulation, setSelectedPopulation] = useState('afr')
+
+  return (
+    <>
+      <p>
+        <label htmlFor="ld-files-population">
+          Population{' '}
+          <Select
+            id="ld-files-population"
+            value={selectedPopulation}
+            onChange={e => setSelectedPopulation(e.target.value)}
+          >
+            <option value="afr">{LD_POPULATION_NAMES.afr}</option>
+            <option value="amr">{LD_POPULATION_NAMES.amr}</option>
+            <option value="asj">{LD_POPULATION_NAMES.asj}</option>
+            <option value="eas">{LD_POPULATION_NAMES.eas}</option>
+            <option value="fin">{LD_POPULATION_NAMES.fin}</option>
+
+            <optgroup label="European (non-Finnish)">
+              <option value="nfe">{LD_POPULATION_NAMES.nfe}</option>
+              <option value="est">{LD_POPULATION_NAMES.est}</option>
+              <option value="nwe">{LD_POPULATION_NAMES.nwe}</option>
+              <option value="seu">{LD_POPULATION_NAMES.seu}</option>
+            </optgroup>
+          </Select>
+        </label>
+      </p>
+
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label={`LD matrix Hail BlockMatrix for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/gnomad.genomes.r2.1.1.${selectedPopulation}.common.adj.ld.bm`}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label={`Variant indices Hail Table for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/gnomad.genomes.r2.1.1.${selectedPopulation}.common.adj.ld.variant_indices.ht`}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label={`LD scores Hail Table for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/scores/gnomad.genomes.r2.1.1.${selectedPopulation}.adj.ld_scores.ht`}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label={`LDSC .ldscore.bgz file for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/scores/gnomad.genomes.r2.1.1.${selectedPopulation}.adj.ld_scores.ldscore.bgz`}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label={`LDSC .M file for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/scores/gnomad.genomes.r2.1.1.${selectedPopulation}.adj.ld_scores.M`}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label={`LDSC .M_5_50 file for ${LD_POPULATION_NAMES[selectedPopulation]} population`}
+            path={`/release/2.1.1/ld/scores/gnomad.genomes.r2.1.1.${selectedPopulation}.adj.ld_scores.M_5_50`}
+          />
+        </ListItem>
+      </FileList>
+    </>
+  )
+}
+
 export default () => (
   <React.Fragment>
     <section>
@@ -90,6 +173,9 @@ export default () => (
         </ListItem>
         <ListItem>
           <Link href="#v2-lof-curation-results">Loss-of-function curation results</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="#v2-linkage-disequilibrium">Linkage disequilibrium</Link>
         </ListItem>
         <ListItem>
           <Link href="#v2-resources">Resources</Link>
@@ -424,6 +510,11 @@ export default () => (
           />
         </ListItem>
       </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v2-linkage-disequilibrium">Linkage disequilibrium</SectionTitle>
+      <LDFiles />
     </section>
 
     <section>
