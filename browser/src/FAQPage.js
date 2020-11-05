@@ -275,10 +275,11 @@ export default () => (
       <Answer>
         <p>
           Short read sequencing can produce mapping issues when a gene has a highly homologous
-          pseudogene. Many variants in such genes (e.g. <Link to="/gene/PRSS1">PRSS1</Link>) will be
-          filtered due to low mapping quality or deviation from Hardy-Weinberg equilibrium; the
-          remaining variants should be interpreted with caution. The gnomAD pipeline does not apply
-          any special filters to regions with a highly similar pseudogene.
+          pseudogene. Many variants in such genes (e.g.{' '}
+          <Link to="/gene/ENSG00000204983">PRSS1</Link>) will be filtered due to low mapping quality
+          or deviation from Hardy-Weinberg equilibrium; the remaining variants should be interpreted
+          with caution. The gnomAD pipeline does not apply any special filters to regions with a
+          highly similar pseudogene.
         </p>
       </Answer>
 
