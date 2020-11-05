@@ -104,7 +104,6 @@ export default () => (
           <GetUrlButtons
             label="Sites Hail Table"
             path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht"
-            includeAzure={false}
           />
         </ListItem>
         {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -114,7 +113,6 @@ export default () => (
               path={`/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeAzure={false}
             />
           </ListItem>
         ))}
@@ -158,14 +156,12 @@ export default () => (
           <GetUrlButtons
             label="Hail Sparse MatrixTable"
             path="/release/3.1/mt/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.mt"
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GenericDownloadLinks
             label="Sample metadata TSV"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.sample_meta.tsv.gz"
-            includeAzure={false}
           />
         </ListItem>
         {hgdpAnd1kgChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -175,7 +171,6 @@ export default () => (
               path={`/release/3.1/vcf/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeAzure={false}
             />
           </ListItem>
         ))}
