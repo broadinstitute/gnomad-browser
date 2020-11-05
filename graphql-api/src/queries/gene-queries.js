@@ -1,3 +1,5 @@
+const { withCache } = require('../cache')
+
 const { fetchAllSearchResults } = require('./helpers/elasticsearch-helpers')
 
 const fetchGeneById = async (esClient, geneId, referenceGenome) => {
@@ -73,7 +75,11 @@ const fetchGenesByRegion = async (esClient, region) => {
 }
 
 module.exports = {
-  fetchGeneById,
+  fetchGeneById: withCache(
+    fetchGeneById,
+    (_, geneId, referenceGenome) => `gene:${geneId}:${referenceGenome}`,
+    { expiration: 86400 }
+  ),
   fetchGeneBySymbol,
   fetchGenesByRegion,
 }
