@@ -94,9 +94,6 @@ export default () => (
         The variant dataset files below contain all subsets (non-cancer, non-neuro, non-v2,
         non-TOPMed, controls/biobanks, 1KG, and HGDP).
       </p>
-      <p>
-        v3.1 files will be available soon on Google Cloud Public Datasets and Azure Open Datasets.
-      </p>
 
       <h3>Genomes</h3>
       <FileList>
