@@ -14,13 +14,16 @@ import ExacDownloads from './ExacDownloads'
 
 const CodeBlock = styled.code`
   display: inline-block;
+  overflow-x: scroll;
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 0.5em 1em;
   border-radius: 0.25em;
   background: #333;
   color: #fafafa;
   font-family: monospace;
   line-height: 1.6;
-  word-wrap: break-word;
+  white-space: nowrap;
 
   &::before {
     content: '$ ';
