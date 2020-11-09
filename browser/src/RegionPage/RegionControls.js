@@ -52,7 +52,7 @@ const zoomedRegion = (region, zoom) => {
 
   return {
     chrom,
-    start: Math.max(0, Math.floor(center - newSize / 2)),
+    start: Math.max(1, Math.floor(center - newSize / 2)),
     stop: Math.floor(center + newSize / 2),
   }
 }
