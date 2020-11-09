@@ -63,18 +63,21 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <p>
-        To work efficiently with gnomAD, we recommend using{' '}
-        <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
+        We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
         <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
           Hail utilities for gnomAD
-        </ExternalLink>
-        .
+        </ExternalLink>{' '}
+        to work with the data.
       </p>
 
       <p>
-        In addition to the files listed below, gnomAD variants are also available as a{' '}
+        In addition to the files listed below, gnomAD variants are available as a{' '}
         <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
           BigQuery dataset
+        </ExternalLink>{' '}
+        and <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
+        <ExternalLink href="https://support.terra.bio/hc/en-us/articles/360051719372-A-demo-workspace-for-working-with-gnomAD-data-in-Terra">
+          a demo workspace for working with gnomAD data
         </ExternalLink>
         .
       </p>
