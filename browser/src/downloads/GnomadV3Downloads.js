@@ -131,6 +131,7 @@ export default () => (
             path="/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.summary.tsv.bgz"
             size="75.38 GiB"
             md5="6c809627ff7922dcfc8d2c67bba017ff"
+            gcsBucket="gnomad-public"
           />
         </ListItem>
       </FileList>
