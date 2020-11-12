@@ -20,6 +20,8 @@ import TranscriptLink from '../TranscriptLink'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
+import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
+import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import VariantsInGene from './VariantsInGene'
 
@@ -289,15 +291,23 @@ class GenePage extends Component {
       <TrackPage>
         <TrackPageSection>
           <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} />
-          <GnomadPageHeading selectedDataset={datasetId}>
+          <GnomadPageHeading
+            selectedDataset={datasetId}
+            datasetOptions={{
+              includeShortVariants: true,
+              includeStructuralVariants: gene.chrom !== 'M',
+              includeExac: gene.chrom !== 'M',
+              includeGnomad2: gene.chrom !== 'M',
+              includeGnomad3: true,
+              includeGnomad3Subsets: gene.chrom !== 'M',
+            }}
+          >
             {gene.symbol} <GeneName>{gene.name}</GeneName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
             <GeneInfo gene={gene} />
             <div>
-              <h2>
-                Constraint <InfoButton topic="constraint" />
-              </h2>
+              <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
               <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
             </div>
           </GeneInfoColumnWrapper>
@@ -309,6 +319,7 @@ class GenePage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
+          {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId.startsWith('gnomad_sv') ? (
             <RegionCoverageTrack
               chrom={gene.chrom}
@@ -317,6 +328,8 @@ class GenePage extends Component {
               start={gene.start}
               stop={gene.stop}
             />
+          ) : gene.chrom === 'M' ? (
+            <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
           ) : (
             <GeneCoverageTrack
               datasetId={datasetId}
@@ -426,7 +439,7 @@ class GenePage extends Component {
             <span>* {starredTranscriptDescription}</span>
           </TranscriptsTrackComponent>
 
-          {hasCodingExons && gene.pext && (
+          {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
             <TissueExpressionTrack
               exons={cdsCompositeExons}
               expressionRegions={gene.pext.regions}
@@ -441,8 +454,15 @@ class GenePage extends Component {
             />
           )}
 
+          {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId.startsWith('gnomad_sv') ? (
             <StructuralVariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
+          ) : gene.chrom === 'M' ? (
+            <MitochondrialVariantsInGene
+              datasetId={datasetId}
+              gene={gene}
+              width={regionViewerWidth}
+            />
           ) : (
             <VariantsInGene
               datasetId={datasetId}

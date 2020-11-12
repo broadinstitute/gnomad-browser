@@ -10,6 +10,8 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
+import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
+import MitochondrialVariantsInRegion from './MitochondrialVariantsInRegion'
 import RegionControls from './RegionControls'
 import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
@@ -66,6 +68,14 @@ const RegionPage = ({ datasetId, history, region, width }) => {
         <GnomadPageHeading
           extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
           selectedDataset={datasetId}
+          datasetOptions={{
+            includeShortVariants: true,
+            includeStructuralVariants: chrom !== 'M',
+            includeExac: chrom !== 'M',
+            includeGnomad2: chrom !== 'M',
+            includeGnomad3: true,
+            includeGnomad3Subsets: chrom !== 'M',
+          }}
         >
           {`${region.chrom}-${region.start}-${region.stop}`}
         </GnomadPageHeading>
@@ -83,15 +93,24 @@ const RegionPage = ({ datasetId, history, region, width }) => {
         rightPanelWidth={smallScreen ? 0 : 160}
         width={regionViewerWidth}
       >
-        <RegionCoverageTrack
-          datasetId={datasetId}
-          chrom={chrom}
-          includeExomeCoverage={
-            !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
-          }
-          start={start}
-          stop={stop}
-        />
+        {region.chrom === 'M' ? (
+          <MitochondrialRegionCoverageTrack
+            datasetId={datasetId}
+            chrom={chrom}
+            start={start}
+            stop={stop}
+          />
+        ) : (
+          <RegionCoverageTrack
+            datasetId={datasetId}
+            chrom={chrom}
+            includeExomeCoverage={
+              !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
+            }
+            start={start}
+            stop={stop}
+          />
+        )}
 
         <GenesInRegionTrack
           region={region}
@@ -100,8 +119,15 @@ const RegionPage = ({ datasetId, history, region, width }) => {
           }}
         />
 
+        {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
           <StructuralVariantsInRegion
+            datasetId={datasetId}
+            region={region}
+            width={regionViewerWidth}
+          />
+        ) : region.chrom === 'M' ? (
+          <MitochondrialVariantsInRegion
             datasetId={datasetId}
             region={region}
             width={regionViewerWidth}

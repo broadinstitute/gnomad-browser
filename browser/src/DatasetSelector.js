@@ -406,6 +406,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad2 = true,
     includeGnomad2Subsets = true,
     includeGnomad3 = true,
+    includeGnomad3Subsets = true,
   } = datasetOptions
 
   const datasetLink = datasetId => ({
@@ -437,13 +438,16 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     ]
 
     if (includeGnomad3) {
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r3',
+        label: labelForDataset('gnomad_r3'),
+        url: datasetLink('gnomad_r3'),
+        description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+      })
+    }
+
+    if (includeGnomad3 && includeGnomad3Subsets) {
       shortVariantDatasets[1].children.push(
-        {
-          id: 'gnomad_r3',
-          label: labelForDataset('gnomad_r3'),
-          url: datasetLink('gnomad_r3'),
-          description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
-        },
         {
           id: 'gnomad_r3_non_cancer',
           label: labelForDataset('gnomad_r3_non_cancer'),
@@ -576,6 +580,8 @@ DatasetSelector.propTypes = {
     includeStructuralVariants: PropTypes.bool,
     includeExac: PropTypes.bool,
     includeGnomad2Subsets: PropTypes.bool,
+    includeGnomad3: PropTypes.bool,
+    includeGnomad3Subsets: PropTypes.bool,
   }),
   selectedDataset: PropTypes.string.isRequired,
 }
@@ -588,6 +594,7 @@ DatasetSelector.defaultProps = {
     includeGnomad2: true,
     includeGnomad2Subsets: true,
     includeGnomad3: true,
+    includeGnomad3Subsets: true,
   },
 }
 

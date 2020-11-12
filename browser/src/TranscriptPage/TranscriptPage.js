@@ -12,6 +12,7 @@ import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GeneCoverageTrack from '../GenePage/GeneCoverageTrack'
+import MitochondrialGeneCoverageTrack from '../GenePage/MitochondrialGeneCoverageTrack'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
@@ -19,6 +20,7 @@ import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import TranscriptLink from '../TranscriptLink'
 
+import MitochondrialVariantsInTranscript from './MitochondrialVariantsInTranscript'
 import TranscriptInfo from './TranscriptInfo'
 import VariantsInTranscript from './VariantsInTranscript'
 
@@ -295,17 +297,22 @@ class TranscriptPage extends Component {
         <TrackPageSection>
           <DocumentTitle title={`${transcript.transcript_id} | ${labelForDataset(datasetId)}`} />
           <GnomadPageHeading
-            datasetOptions={{ includeStructuralVariants: false }}
             selectedDataset={datasetId}
+            datasetOptions={{
+              includeShortVariants: true,
+              includeStructuralVariants: false,
+              includeExac: transcript.chrom !== 'M',
+              includeGnomad2: transcript.chrom !== 'M',
+              includeGnomad3: true,
+              includeGnomad3Subsets: transcript.chrom !== 'M',
+            }}
           >
             {transcript.transcript_id}.{transcript.transcript_version}
           </GnomadPageHeading>
           <TranscriptInfoColumnWrapper>
             <TranscriptInfo transcript={transcript} />
             <div>
-              <h2>
-                Constraint <InfoButton topic="constraint" />
-              </h2>
+              <h2>Constraint {transcript.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
               <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />
             </div>
           </TranscriptInfoColumnWrapper>
@@ -317,11 +324,15 @@ class TranscriptPage extends Component {
           regions={regionViewerRegions}
           rightPanelWidth={smallScreen ? 0 : 160}
         >
-          <GeneCoverageTrack
-            datasetId={datasetId}
-            geneId={gene.gene_id}
-            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
-          />
+          {transcript.chrom === 'M' ? (
+            <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={gene.gene_id} />
+          ) : (
+            <GeneCoverageTrack
+              datasetId={datasetId}
+              geneId={gene.gene_id}
+              includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+            />
+          )}
 
           <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
             Include:
@@ -418,7 +429,7 @@ class TranscriptPage extends Component {
             <span>* {starredTranscriptDescription}</span>
           </TranscriptsTrackComponent>
 
-          {hasCodingExons && gene.pext && (
+          {hasCodingExons && transcript.chrom !== 'M' && gene.pext && (
             <TissueExpressionTrack
               exons={cdsCompositeExons}
               expressionRegions={gene.pext.regions}
@@ -433,13 +444,21 @@ class TranscriptPage extends Component {
             />
           )}
 
-          <VariantsInTranscript
-            datasetId={datasetId}
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            transcript={transcript}
-            width={regionViewerWidth}
-          />
+          {transcript.chrom === 'M' ? (
+            <MitochondrialVariantsInTranscript
+              datasetId={datasetId}
+              transcript={transcript}
+              width={regionViewerWidth}
+            />
+          ) : (
+            <VariantsInTranscript
+              datasetId={datasetId}
+              includeNonCodingTranscripts={includeNonCodingTranscripts}
+              includeUTRs={includeUTRs}
+              transcript={transcript}
+              width={regionViewerWidth}
+            />
+          )}
         </RegionViewer>
       </TrackPage>
     )

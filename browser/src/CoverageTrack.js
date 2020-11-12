@@ -83,31 +83,26 @@ class CoverageTrack extends Component {
             pos: PropTypes.number.isRequired,
             mean: PropTypes.number,
             median: PropTypes.number,
-            over_1: PropTypes.number,
-            over_5: PropTypes.number,
-            over_10: PropTypes.number,
-            over_15: PropTypes.number,
-            over_20: PropTypes.number,
-            over_25: PropTypes.number,
-            over_30: PropTypes.number,
-            over_50: PropTypes.number,
-            over_100: PropTypes.number,
           })
         ).isRequired,
         color: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        // Opacity must be separate from fill color for SVG epxort because
+        // Opacity must be separate from fill color for SVG export because
         // some programs do not recognize RGBA fill colors.
         opacity: PropTypes.number,
       })
     ).isRequired,
+    coverageOverThresholds: PropTypes.arrayOf(PropTypes.number),
     filenameForExport: PropTypes.func,
     height: PropTypes.number,
+    maxCoverage: PropTypes.number,
   }
 
   static defaultProps = {
+    coverageOverThresholds: [],
     filenameForExport: () => 'coverage',
     height: 190,
+    maxCoverage: 100,
   }
 
   state = {
@@ -203,7 +198,7 @@ class CoverageTrack extends Component {
   }
 
   render() {
-    const { datasets, height } = this.props
+    const { coverageOverThresholds, datasets, height, maxCoverage } = this.props
     const { selectedMetric } = this.state
 
     const trackTitle =
@@ -231,17 +226,15 @@ class CoverageTrack extends Component {
                   <option value="mean">Mean</option>
                   <option value="median">Median</option>
                 </optgroup>
-                <optgroup label="Fraction of individuals with coverage over X">
-                  <option value="over_1">Over 1</option>
-                  <option value="over_5">Over 5</option>
-                  <option value="over_10">Over 10</option>
-                  <option value="over_15">Over 15</option>
-                  <option value="over_20">Over 20</option>
-                  <option value="over_25">Over 25</option>
-                  <option value="over_30">Over 30</option>
-                  <option value="over_50">Over 50</option>
-                  <option value="over_100">Over 100</option>
-                </optgroup>
+                {coverageOverThresholds.length > 0 && (
+                  <optgroup label="Fraction of individuals with coverage over X">
+                    {coverageOverThresholds.map(threshold => (
+                      <option key={`${threshold}`} value={`over_${threshold}`}>
+                        Over {threshold}
+                      </option>
+                    ))}
+                  </optgroup>
+                )}
               </Select>
             </label>
             <Button style={{ marginLeft: '1em' }} onClick={() => this.exportPlot()}>
@@ -252,7 +245,9 @@ class CoverageTrack extends Component {
       >
         {({ offsetRegions, scalePosition, width }) => {
           const scaleCoverageMetric = scaleLinear()
-            .domain(selectedMetric === 'mean' || selectedMetric === 'median' ? [0, 100] : [0, 1])
+            .domain(
+              selectedMetric === 'mean' || selectedMetric === 'median' ? [0, maxCoverage] : [0, 1]
+            )
             .range([height, 7])
 
           const axisWidth = 60

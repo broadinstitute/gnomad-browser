@@ -38,6 +38,13 @@ const flagProps = {
     formatTooltip: () =>
       'Multi-nucleotide variant: this variant is found in phase with another variant in some individuals, altering the amino acid sequence\nVariant annotation dubious',
   },
+  // Mitochondrial variants
+  common_low_heteroplasmy: {
+    children: 'Common Low Heteroplasmy',
+    level: 'warning',
+    formatTooltip: () =>
+      'Variant is present at an overall frequency of .001 across all samples with a heteroplasmy level > 0 and < 0.50',
+  },
 }
 
 const VariantFlag = ({ type, variant }) => {

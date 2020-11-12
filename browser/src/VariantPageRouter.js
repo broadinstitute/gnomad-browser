@@ -7,6 +7,7 @@ import { Page, PageHeading } from '@gnomad/ui'
 import DocumentTitle from './DocumentTitle'
 import StructuralVariantPage from './StructuralVariantPage/StructuralVariantPage'
 import VariantPage from './VariantPage/VariantPage'
+import MitochondrialVariantPage from './MitochondrialVariantPage/MitochondrialVariantPage'
 import MNVPage from './VariantPage/MultiNucleotideVariant/MNVPage'
 
 const VariantPageRouter = ({ datasetId, variantIdOrRsId, ...otherProps }) => {
@@ -17,10 +18,20 @@ const VariantPageRouter = ({ datasetId, variantIdOrRsId, ...otherProps }) => {
   }
 
   if (isVariantId(variantIdOrRsId)) {
-    const normalizedVariantId = normalizeVariantId(variantIdOrRsId)
+    const normalizedVariantId = normalizeVariantId(variantIdOrRsId).replace(/^MT/, 'M')
     const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
     if (ref.length === alt.length && ref.length > 1) {
       return <MNVPage {...otherProps} datasetId={datasetId} variantId={normalizedVariantId} />
+    }
+
+    if (chrom === 'M') {
+      return (
+        <MitochondrialVariantPage
+          {...otherProps}
+          datasetId={datasetId}
+          variantId={normalizedVariantId}
+        />
+      )
     }
 
     return <VariantPage {...otherProps} datasetId={datasetId} variantId={normalizedVariantId} />
