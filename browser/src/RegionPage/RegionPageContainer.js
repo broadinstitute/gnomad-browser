@@ -31,7 +31,7 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
       datasetId={datasetId}
       region={{
         reference_genome: referenceGenome,
-        chrom,
+        chrom: chrom[0], // Convert MT to M
         start,
         stop,
       }}

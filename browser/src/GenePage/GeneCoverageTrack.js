@@ -77,6 +77,7 @@ const GeneCoverageTrack = ({ datasetId, geneId, includeExomeCoverage, includeGen
 
         return (
           <CoverageTrack
+            coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
             datasets={coverageConfig}
             filenameForExport={() => `${geneId}_coverage`}
             height={190}

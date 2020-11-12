@@ -86,6 +86,7 @@ const RegionCoverageTrack = ({
 
         return (
           <CoverageTrack
+            coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
             datasets={coverageConfig}
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
             height={200}

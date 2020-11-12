@@ -14,6 +14,12 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
   const exacConstraint = geneOrTranscript.exac_constraint
 
+  if (geneOrTranscript.chrom === 'M') {
+    return (
+      <p>Constraint is not available for mitochondrial {isTranscript ? 'transcripts' : 'genes'}</p>
+    )
+  }
+
   if (datasetId === 'exac') {
     if (!exacConstraint) {
       return <p>Constraint not available for this {isTranscript ? 'transcript' : 'gene'}</p>
@@ -38,6 +44,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
 ConstraintTable.propTypes = {
   datasetId: PropTypes.string.isRequired,
   geneOrTranscript: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
     transcript_id: PropTypes.string,
     /* eslint-disable react/forbid-prop-types */
     gnomad_constraint: PropTypes.object,
