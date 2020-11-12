@@ -18,6 +18,7 @@ from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
 from data_pipeline.pipelines.gnomad_v2 import pipeline as gnomad_v2_pipeline
 from data_pipeline.pipelines.gnomad_v3 import pipeline as gnomad_v3_pipeline
+from data_pipeline.pipelines.mitochondria import pipeline as mitochondria_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -110,6 +111,45 @@ DATASETS_CONFIG = {
             hl.read_table(gnomad_v3_pipeline.get_task("prepare_gnomad_v3_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    },
+    ##############################################################################################################
+    # v3 mitochondria
+    ##############################################################################################################
+    "gnomad_v3_mitochondrial_variants": {
+        "get_table": lambda: subset_table(
+            add_variant_document_id(
+                hl.read_table(
+                    mitochondria_pipeline.get_task(
+                        "annotate_mitochondrial_variant_transcript_consequences"
+                    ).get_output_path()
+                )
+            )
+        ),
+        "args": {
+            "index": "gnomad_v3_mitochondrial_variants",
+            "index_fields": [
+                "document_id",
+                "variant_id",
+                "rsid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "transcript_consequences.transcript_id",
+            ],
+            "id_field": "document_id",
+            "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v3_mitochondrial_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(mitochondria_pipeline.get_task("prepare_mitochondrial_coverage").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v3_mitochondrial_coverage",
+            "id_field": "xpos",
+            "num_shards": 1,
+            "block_size": 10_000,
+        },
     },
     ##############################################################################################################
     # gnomAD SV v2
