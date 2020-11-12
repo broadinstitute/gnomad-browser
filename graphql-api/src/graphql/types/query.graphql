@@ -4,6 +4,7 @@ type Query{
     transcript(transcript_id: String!, reference_genome: ReferenceGenomeId!): Transcript @cost(value: 1)
 
     clinvar_variant(variant_id: String!, reference_genome: ReferenceGenomeId!): ClinVarVariant @cost(value: 1)
+    mitochondrial_variant(variant_id: String, dataset: DatasetId!): MitochondrialVariantDetails @cost(value: 1)
     multiNucleotideVariant(variant_id: String!, dataset: DatasetId!): MultiNucleotideVariantDetails @cost(value: 1)
     structural_variant(variantId: String!, dataset: StructuralVariantDatasetId!): StructuralVariantDetails @cost(value: 1)
     variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)

@@ -82,4 +82,16 @@ module.exports = {
     ac_hom: fieldAliasResolver('homozygote_count'),
     ac_hemi: fieldAliasResolver('hemizygote_count'),
   },
+  MitochondrialVariant: {
+    // Major consequence fields
+    consequence: majorConsequenceFieldResolver('major_consequence'),
+    gene_id: majorConsequenceFieldResolver('gene_id'),
+    gene_symbol: majorConsequenceFieldResolver('gene_symbol'),
+    transcript_id: majorConsequenceFieldResolver('transcript_id'),
+    hgvsc: majorConsequenceFieldResolver('hgvsc'),
+    hgvsp: majorConsequenceFieldResolver('hgvsp'),
+    lof: majorConsequenceFieldResolver('lof'),
+    lof_filter: majorConsequenceFieldResolver('lof_filter'),
+    lof_flags: majorConsequenceFieldResolver('lof_flags'),
+  },
 }

@@ -9,6 +9,8 @@ const clinVarVariantResolvers = require('./resolvers/clinvar-variants')
 const coverageResolvers = require('./resolvers/coverage')
 const geneResolvers = require('./resolvers/gene')
 const geneFieldResolvers = require('./resolvers/gene-fields')
+const mitochondrialCoverageResolvers = require('./resolvers/mitochondrial-coverage')
+const mitochondrialVariantResolvers = require('./resolvers/mitochondrial-variants')
 const multiNucleotideVariantResolves = require('./resolvers/multi-nucleotide-variants')
 const regionResolvers = require('./resolvers/region')
 const regionFieldResolvers = require('./resolvers/region-fields')
@@ -29,6 +31,8 @@ const resolvers = mergeResolvers([
   coverageResolvers,
   geneResolvers,
   geneFieldResolvers,
+  mitochondrialCoverageResolvers,
+  mitochondrialVariantResolvers,
   multiNucleotideVariantResolves,
   regionResolvers,
   regionFieldResolvers,

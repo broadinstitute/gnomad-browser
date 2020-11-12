@@ -1,0 +1,87 @@
+type MitochondrialVariant {
+  ac_het: Int
+  ac_hom: Int
+  an: Int
+  consequence: String
+  filters: [String!]
+  flags: [String!]
+  gene_id: String
+  gene_symbol: String
+  transcript_id: String
+  hgvsc: String
+  hgvsp: String
+  lof: String
+  lof_filter: String
+  lof_flags: String
+  max_heteroplasmy: Float
+  pos: Int!
+  reference_genome: ReferenceGenomeId!
+  rsid: String
+  variant_id: String!
+}
+
+type MitochondrialVariantAgeDistribution {
+  het: Histogram
+  hom: Histogram
+}
+
+type MitochondrialVariantHaplogroup {
+  id: String
+  an: Float
+  ac_het: Int
+  ac_hom: Int
+  faf: Float
+  faf_hom: Float
+}
+
+type MitochondrialVariantGenotypeQualityMetric {
+  name: String!
+  all: Histogram
+  alt: Histogram
+}
+
+type MitochondrialVariantGenotypeQualityFilter {
+  name: String!
+  filtered: Histogram
+}
+
+type MitochondrialVariantSiteQualityMetric {
+  name: String!
+  value: Float
+}
+
+type MitochondrialVariantDetails {
+  ac_het: Int
+  ac_hom: Int
+  age_distribution: MitochondrialVariantAgeDistribution
+  alt: String!
+  an: Int
+  excluded_ac: Int
+  filters: [String!]
+  flags: [String!]!
+  genotype_quality_metrics: [MitochondrialVariantGenotypeQualityMetric!]
+  genotype_quality_filters: [MitochondrialVariantGenotypeQualityFilter!]
+  haplogroup_defining: Boolean
+  haplogroups: [MitochondrialVariantHaplogroup!]
+  heteroplasmy_distribution: Histogram
+  max_heteroplasmy: Float
+  mitotip_score: Float
+  mitotip_trna_prediction: String
+  pon_ml_probability_of_pathogenicity: Float
+  pon_mt_trna_prediction: String
+  pos: Int!
+  ref: String!
+  reference_genome: ReferenceGenomeId!
+  rsid: String
+  site_quality_metrics: [MitochondrialVariantSiteQualityMetric]
+  transcript_consequences: [TranscriptConsequence!]
+  variant_id: String!
+}
+
+type MitochondrialCoverageBin {
+  pos: Float!
+  mean: Float
+  median: Float
+  over_100: Float
+  over_1000: Float
+}
