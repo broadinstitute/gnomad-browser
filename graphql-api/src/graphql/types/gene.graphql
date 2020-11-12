@@ -43,8 +43,10 @@ type Gene {
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
+  mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)
 
   clinvar_variants: [ClinVarVariant!] @cost(value: 10)
 
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
+  mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 }

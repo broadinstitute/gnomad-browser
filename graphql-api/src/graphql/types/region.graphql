@@ -21,8 +21,10 @@ type Region {
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
+  mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)
 
   clinvar_variants: [ClinVarVariant!] @cost(value: 10)
 
   coverage(dataset: DatasetId!): RegionCoverage!
+  mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 }
