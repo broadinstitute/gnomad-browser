@@ -7,9 +7,9 @@ import { Checkbox } from '@gnomad/ui'
 import { PopulationsTable } from './PopulationsTable'
 
 const POPULATION_NAMES = {
-  AFR: 'African',
+  AFR: 'African/African-American',
   AMI: 'Amish',
-  AMR: 'Latino',
+  AMR: 'Latino/Admixed American',
   ASJ: 'Ashkenazi Jewish',
   EAS: 'East Asian',
   FIN: 'European (Finnish)',

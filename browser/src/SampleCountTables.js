@@ -8,7 +8,7 @@ import sampleCounts from './dataset-constants/sampleCounts'
 const populationNames = {
   afr: 'African/African American',
   ami: 'Amish',
-  amr: 'Latino',
+  amr: 'Latino/Admixed American',
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
   fin: 'Finnish',
