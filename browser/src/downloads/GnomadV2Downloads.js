@@ -66,8 +66,8 @@ const genomeChromosomeVcfs = [
 ]
 
 const LD_POPULATION_NAMES = {
-  afr: 'African',
-  amr: 'Latino',
+  afr: 'African/African-American',
+  amr: 'Latino/Admixed American',
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
   fin: 'European (Finnish)',

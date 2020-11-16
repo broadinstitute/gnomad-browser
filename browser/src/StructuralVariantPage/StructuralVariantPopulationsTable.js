@@ -4,7 +4,7 @@ import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 
 const populationNames = {
-  AFR: 'African',
+  AFR: 'African/African-American',
   AMR: 'Latino',
   EAS: 'East Asian',
   EUR: 'European',
