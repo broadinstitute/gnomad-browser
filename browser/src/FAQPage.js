@@ -478,6 +478,44 @@ export default () => (
         </p>
       </Answer>
 
+      <Question id="how-are-population-names-abbreviated">
+        How are population names abbreviated?
+      </Question>
+      <Answer>
+        <p>
+          Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
+          <List>
+            <ListItem>afr: African/African-American</ListItem>
+            <ListItem>ami: Amish</ListItem>
+            <ListItem>amr: Latino/Admixed American</ListItem>
+            <ListItem>asj: Ashkenazi Jewish</ListItem>
+            <ListItem>
+              eas: East Asian
+              <List style={{ marginTop: '0.5em' }}>
+                <ListItem>jpn: Japanese</ListItem>
+                <ListItem>kor: Korean</ListItem>
+                <ListItem>oea: Other East Asian</ListItem>
+              </List>
+            </ListItem>
+            <ListItem>fin: European (Finnish)</ListItem>
+            <ListItem>mid: Middle Eastern</ListItem>
+            <ListItem>
+              nfe: European (non-Finnish)
+              <List style={{ marginTop: '0.5em' }}>
+                <ListItem>bgr: Bulgarian</ListItem>
+                <ListItem>est: Estonian</ListItem>
+                <ListItem>nwe: North-western European</ListItem>
+                <ListItem>onf: Other non-Finnish European</ListItem>
+                <ListItem>seu: Southern European</ListItem>
+                <ListItem>swe: Swedish</ListItem>
+              </List>
+            </ListItem>
+            <ListItem>oth: Other</ListItem>
+            <ListItem>sas: South Asian</ListItem>
+          </List>
+        </p>
+      </Answer>
+
       <Question id="what-is-the-age-distribution-in-gnomad">
         What is the age distribution in gnomAD?
       </Question>
