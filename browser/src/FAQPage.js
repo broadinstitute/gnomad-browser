@@ -7,6 +7,7 @@ import gnomadV3AgeDistribution from './dataset-constants/gnomad_r3/ageDistributi
 import gnomadV2AgeDistribution from './dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
+import HaplogroupLineageTables from './HaplogroupLineageTables'
 import Histogram from './Histogram'
 import InfoPage from './InfoPage'
 import Link from './Link'
@@ -1014,6 +1015,231 @@ export default () => (
             </ExternalLink>
           </ListItem>
         </List>
+      </Answer>
+    </dl>
+
+    <FAQSectionHeading id="mitochondrial-dna">Mitochondrial DNA (mtDNA)</FAQSectionHeading>
+    <dl>
+      <Question id="how-are-variants-called-on-the-mitochondrial-dna">
+        How are variants called on the mitochondrial DNA (mtDNA)?
+      </Question>
+      <Answer>
+        <p>
+          Mitochondrial DNA variants are called using a specialized GATK pipeline that addresses
+          challenges specific to the mtDNA. Homoplasmic and heteroplasmic variants are called using
+          the GATK MuTect2 variant caller in a special &quot;mitochondrial mode&quot;, with
+          extensive filtering of samples and variants as described in our blog post.
+        </p>
+      </Answer>
+
+      <Question id="why-is-the-total-allele-number-lower-for-mtdna-versus-nuclear-variants">
+        Why is the total allele number lower for mtDNA versus nuclear variants?
+      </Question>
+      <Answer>
+        <p>
+          The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples passed
+          mitochondrial-specific filters. Samples were excluded if they showed (i) low mtDNA
+          molecules per cell (as these samples have excess heteroplasmic variants likely due to
+          misalignment of nuclear sequences of mitochondrial origin, NUMTs); or (ii) high mtDNA
+          molecules per cell to exclude cell lines (as these samples have excess numbers of
+          heteroplasmic variants likely due to mutation / selection during cell culture); or (iii)
+          mitochondrial contamination exceeding 2% (problematic for calling heteroplasmic variants).
+          We note that samples with low overall contamination may show high mtDNA contamination,
+          e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if
+          the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line
+          with 1000 mtDNA molecules/cell. See our blog post for details.
+        </p>
+      </Answer>
+
+      <Question id="what-are-numts-and-why-are-they-problematic">
+        What are NUMTs and why are they problematic?
+      </Question>
+      <Answer>
+        <p>
+          Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtDNA that
+          have integrated into the nuclear genome over the course of human evolution. Many ancient
+          NUMTs are part of the reference human genome assembly; however, hundreds of polymorphic
+          NUMTs exist that are present only in some individuals. Reads derived from NUMTs
+          (particularly polymorphic NUMTs) often mis-align to the mtDNA and conversely, reads
+          genuinely arising from the mtDNA genome can mis-align to the NUMTs in the reference
+          genome. NUMTs present problems for calling variants in the mtDNA because reads that
+          mis-align to the mtDNA will often generate false positive calls. For example, in a sample
+          with 30x autosomal coverage and 1500x mtDNA coverage, a homozygous NUMT that mis-aligns to
+          the mtDNA can result in false positive calls at 2% apparent heteroplasmy (30/1530 reads).
+          Other bases in the same NUMT can cause a truly homoplasmic mtDNA allele to be falsely
+          called at 98% heteroplasmy (with the 2% REF alleles deriving from the NUMT mis-alignment).
+          This is one reason why we call all variants 95-100% heteroplasmy as &quot;homoplasmic or
+          near-homoplasmic&quot; -- since the REF alleles could be derived from NUMTs or from
+          sequencing errors. NUMTs are a larger problem for samples with few mtDNA molecules/cell,
+          which is why we exclude samples with &lt; 50 mtDNA copies/cell.
+        </p>
+      </Answer>
+
+      <Question id="why-are-no-variants-reported-below-10-percent-heteroplasmy">
+        Why are no variants reported below 10% heteroplasmy?
+      </Question>
+      <Answer>
+        <p>
+          In gnomAD v3.1 we chose to filter out variants with heteroplasmy below 10%, since low
+          heteroplasmy variants are enriched for sequencing/PCR errors, mis-alignment of NUMTs, and
+          contamination. We anticipate that future releases may include lower heteroplasmy variants
+          as we continue to improve our variant filters and quality control.
+        </p>
+      </Answer>
+
+      <Question id="what-are-haplogroups">What are haplogroups?</Question>
+      <Answer>
+        <p>
+          mtDNA does not recombine and is inherited maternally. mtDNA sequences have historically
+          been grouped together based on sequence similarity into &quot;haplogroups.&quot;. There
+          are over 5000 haplogroups from diverse populations available in the
+          <ExternalLink href="https://www.phylotree.org/">Phylotree</ExternalLink> database. Each
+          gnomAD sample is assigned to a specific haplogroup via{' '}
+          <ExternalLink href="https://github.com/genepi/haplocheck">Haplocheck</ExternalLink>.
+        </p>
+      </Answer>
+
+      <Question id="what-is-a-haplogroup-defining-variant">
+        What is a haplogroup-defining variant?
+      </Question>
+      <Answer>
+        <p>
+          Variants that are homoplasmic in any of the ~5000 haplogroups in the{' '}
+          <ExternalLink href="https://www.phylotree.org/">Phylotree</ExternalLink> database are
+          termed &quot;haplogroup-defining&quot;.
+        </p>
+      </Answer>
+
+      <Question id="what-are-haplogroup-specific-frequencies">
+        What are haplogroup-specific frequencies?
+      </Question>
+      <Answer>
+        <p>
+          For each variant, we report the overall population frequency across all gnomAD samples as
+          well as frequencies within all individuals of a given haplogroup (top-level haplogroups
+          only, nomenclature is per van Oven et al Human Mutation 2009). We note more specific
+          haplogroups cannot be reported due to data use restrictions. Variants are displayed
+          relative to the GRCh38 reference genome, which contains the rCRS mitochondrial sequence
+          which belongs to haplogroup H2a2a1 (within the top-level haplogroup H).
+        </p>
+      </Answer>
+
+      <Question id="why-arent-population-frequencies-available-by-super-population">
+        Why aren&apos;t population frequencies available by super-population?
+      </Question>
+      <Answer>
+        <p>
+          Unlike nuclear variant population frequencies which are reported per super-population
+          (i.e. African, Asian, European), mitochondrial variant population frequencies are reported
+          only per haplogroup in order to view independently arising alleles. While the origin of
+          each top-level haplogroup can historically be categorized into broad super-populations,
+          due to human migration the same haplogroup may be present in multiple populations.
+          Additionally, mitochondrial haplogroups are only a marker of maternal ancestry, and not
+          necessarily concordant with ancestry estimated from nuclear genome analyses.
+        </p>
+      </Answer>
+
+      <Question id="what-is-the-distribution-of-haplogroups-in-gnomad-v3-1">
+        What is the distribution of haplogroups in gnomAD v3.1?
+      </Question>
+      <Answer>
+        <p>
+          The 56,434 samples used to generate the gnomAD v3.1 mitochondrial call are assigned to 33
+          top-level haplogroups, which are arranged phylogenetically into three main
+          &quot;Lineages&quot;:
+          <HaplogroupLineageTables />
+        </p>
+      </Answer>
+
+      <Question id="what-are-the-meanings-of-the-mitochondrial-specific-filters-and-flags">
+        What are the meanings of the mitochondrial-specific filters and flags?
+      </Question>
+      <Answer>
+        <p>
+          Mitochondrial variants were subjected to mitochondrial-specific filters and flags. Filters
+          are used to exclude specific genotypes, variants, or sites from population counts.
+          Genotype filters exclude alleles in individual samples (e.g. poor base quality or low
+          heteroplasmy in that sample), whereas variant filters exclude the allele in all
+          individuals for a given variant, and site filters exclude all variants at a given position
+          (eg all indel and SNP variants overlapping chrM:310). Flags are warnings applied to PASS
+          variants to aid interpretation. The number of filtered genotypes is reported in the
+          excluded allele count (&quot;excluded_AC&quot;), and a histogram is available on variant
+          pages to view the counts of specific filters across different heteroplasmy levels, but
+          these genotypes are not used for allele count and allele frequency calculations.
+        </p>
+        <List>
+          <ListItem>
+            artifact_prone_site (site-level filter): This is one of 6 specific mtDNA positions (301,
+            302, 310, 316, 3107, 16182) where sequence context makes it difficult to distinguish
+            true variants from technical artifacts, and therefore all variants overlapping these
+            sites are filtered out. The homopolymer tracts at location chrM:300-317
+            (AAACCCCCCCTCCCCCGC) cause Illumina sequencing errors in all samples and cause (i) a
+            large coverage dip in this region, (ii) reads with many apparent indels near position
+            chrM:310T, and (iii) apparent substitutions of chrM:301A&rarr;C, chrM:302A&rarr;C,
+            chrM:310T&rarr;C, and chrM:316G&rarr;C. Similarly, homopolymer tracts at location
+            chrM:16180-16193 (AAAACCCCCTCCCC) cause errors and apparent indels at position
+            chrM:16182. The reference genome contains &quot;N&quot; at position chrM:3107, which
+            causes misalignment of many reads.
+          </ListItem>
+          <ListItem>
+            indel_stack (variant filter): Similar to artifact-prone sites, certain indels create a
+            homopolymer tract that causes a drop in coverage and technical sequencing artifacts in
+            multiple individuals. For example, an individual with an insertion at position chrM:5892
+            would typically show multiple alternate alleles (e.g., REF=T, ALT= TC, TCC, TCCC,
+            TCCCCC, TCCCCC, TCCCCCCCC), which represents a multi-allelic call in this sample. Indels
+            that are only present within multi-allelic calls across all samples in the callset are
+            filtered out using this flag. For example, of the 182 different indel variants observed
+            at position chrM:5892, 102 are only detected within multi-allelic calls and are filtered
+            out as indel_stack, whereas alternate variants such as chrM:5892T&rarr;TC and
+            chrM:5892T&rarr;TCC are not always in multi-allelic calls and will pass filters.
+          </ListItem>
+          <ListItem>
+            npg (variant filter): No sample had a pass genotype for the variant (no pass genotype).
+          </ListItem>
+          <ListItem>
+            common_low_heteroplasmy (variant warning flag): This flag is present if the variant is
+            found at an overall frequency of .001 across all samples with a PASS genotype and
+            heteroplasmy level &gt; 0% and &lt; 50% (includes variants &lt; 1% heteroplasmy which
+            are subsequently filtered). This flag indicates that low-heteroplasmy alleles at these
+            variants are likely to be enriched for sequencing errors and NUMT misalignments (which
+            are common across samples), however homoplasmic alleles at these variants will be high
+            quality and can be trusted.
+          </ListItem>
+          <ListItem>
+            base_qual (genotype filter): Median base quality for alternate allele was below minimum
+            (using default of 20 for &quot;min-median-base-quality&quot; parameter)
+          </ListItem>
+          <ListItem>
+            heteroplasmy_below_10_percent (genotype filter): Heteroplasmy level was below 10% in
+            this sample
+          </ListItem>
+          <ListItem>
+            position (genotype filter): Median distance of variant allele from end of reads was
+            below minimum (using default of 1 for &quot;min-median-read-position&quot; parameter)
+          </ListItem>
+          <ListItem>
+            strand_bias (genotype filter): Evidence for alternate allele comes from one read
+            direction only
+          </ListItem>
+          <ListItem>
+            weak_evidence (genotype filter): Mutation does not meet likelihood threshold
+          </ListItem>
+          <ListItem>
+            contamination (genotype filter): Fails MuTect2 contamination filter based on Haplocheck
+            (does not take into account the freemix value or our internal algorithm for calculating
+            contamination)
+          </ListItem>
+        </List>
+      </Answer>
+
+      <Question id="why-are-no-tRNA-or-rRNA-genes-shown-in-the-genes-track">
+        Why are no tRNA or rRNA genes shown in the genes track?
+      </Question>
+      <Answer>
+        <p>
+          The genes track of the region view only shows protein-coding genes. You can search for
+          non-coding genes by name, e.g. MT-RNR1 or MT-TL1.
+        </p>
       </Answer>
     </dl>
   </InfoPage>
