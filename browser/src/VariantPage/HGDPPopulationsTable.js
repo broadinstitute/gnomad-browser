@@ -6,7 +6,7 @@ import { Badge } from '@gnomad/ui'
 import { PopulationsTable } from './PopulationsTable'
 
 const HGDP_POPULATION_GROUPS = {
-  African: ['bantukenya', 'bantusafrica', 'mandenka', 'mozabite', 'yoruba'],
+  African: ['bantukenya', 'bantusafrica', 'mandenka', 'yoruba'],
   'East Asian': [
     'cambodian',
     'dai',
@@ -28,7 +28,7 @@ const HGDP_POPULATION_GROUPS = {
     'yizu',
   ],
   European: ['adygei', 'basque', 'french', 'italian', 'orcadian', 'russian', 'sardinian', 'tuscan'],
-  'Middle Eastern': ['bedouin', 'druze', 'palestinian'],
+  'Middle Eastern': ['bedouin', 'druze', 'mozabite', 'palestinian'],
   'Native American': ['colombian', 'karitiana', 'maya', 'pima', 'surui'],
   'Central/South Asian': [
     'balochi',
