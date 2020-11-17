@@ -174,5 +174,20 @@ export const getColumns = ({
     },
   ]
 
+  if (context === 'region') {
+    columns.splice(2, 0, {
+      key: 'gene',
+      heading: 'Gene',
+      tooltip: 'Gene in which variant has the most severe consequence',
+      isSortable: false,
+      minWidth: 100,
+      render: row => (
+        <span className="grid-cell-content">
+          <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
+        </span>
+      ),
+    })
+  }
+
   return columns
 }

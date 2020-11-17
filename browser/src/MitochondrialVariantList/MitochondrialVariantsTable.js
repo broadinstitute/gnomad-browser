@@ -20,6 +20,7 @@ const NoVariants = styled.div`
 
 class MitochondrialVariantsTable extends PureComponent {
   static propTypes = {
+    context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
     forwardedRef: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.shape({ current: PropTypes.any }), // eslint-disable-line react/forbid-prop-types
@@ -31,7 +32,15 @@ class MitochondrialVariantsTable extends PureComponent {
   }
 
   render() {
-    const { forwardedRef, numRowsRendered, onHoverVariant, variants, width, ...rest } = this.props
+    const {
+      context,
+      forwardedRef,
+      numRowsRendered,
+      onHoverVariant,
+      variants,
+      width,
+      ...rest
+    } = this.props
 
     if (variants.length === 0) {
       return <NoVariants>No variants found</NoVariants>
@@ -41,7 +50,7 @@ class MitochondrialVariantsTable extends PureComponent {
       <Grid
         ref={forwardedRef}
         {...rest}
-        columns={getColumns({ width })}
+        columns={getColumns({ context, width })}
         data={variants}
         numRowsRendered={numRowsRendered}
         onHoverRow={rowIndex => {

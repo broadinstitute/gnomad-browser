@@ -65,6 +65,7 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
         return (
           <MitochondrialVariants
             {...rest}
+            context="transcript"
             exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
             variants={data.transcript.mitochondrial_variants}
           />
