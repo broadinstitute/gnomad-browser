@@ -449,40 +449,7 @@ export default () => (
           <li>Charlotte Tolonen</li>
           <li>Gordon Wade</li>
         </ContributorList>
-        <h3 id="production-and-analysis-contributors">Production and analysis</h3>
-        <ContributorList aria-labelledby="production-and-analysis-contributors">
-          <li>Irina Armean</li>
-          <li>Ryan Collins</li>
-          <li>Katherine Chao</li>
-          <li>Beryl Cummings</li>
-          <li>Mark Daly</li>
-          <li>Eleina England</li>
-          <li>Emily Evangelista</li>
-          <li>Laurent Francioli</li>
-          <li>Julia Goodrich</li>
-          <li>Laura Gauthier</li>
-          <li>Konrad Karczewski</li>
-          <li>Kristen Laricchia</li>
-          <li>Monkol Lek</li>
-          <li>Eric Minikel</li>
-          <li>Ben Neale</li>
-          <li>Anne O&apos;Donnell-Luria</li>
-          <li>William Phu</li>
-          <li>Tim Poterba</li>
-          <li>Dan Rhodes</li>
-          <li>Kaitlin Samocha</li>
-          <li>Eleanor Seaby</li>
-          <li>Cotton Seed</li>
-          <li>Moriel Singer-Berk</li>
-          <li>Rachel Son</li>
-          <li>Grace Tiao</li>
-          <li>Chris Vittal</li>
-          <li>Arcturus Wang</li>
-          <li>Qingbo Wang</li>
-          <li>James Ware</li>
-          <li>Nicola Whiffin</li>
-          <li>Mike Wilson</li>
-        </ContributorList>
+
         <h3 id="structural-variation-contributors">Structural variation</h3>
         <ContributorList aria-labelledby="structural-variation-contributors">
           <li>
@@ -532,8 +499,56 @@ export default () => (
           <li>Grace Tiao</li>
           <li>Nick Watts</li>
         </ContributorList>
+        <h3 id="broad-genomics-platform">Broad Genomics Platform</h3>
+        <ContributorList aria-labelledby="broad-genomics-platform">
+          <li>Kristen Connolly</li>
+          <li>Steven Ferriera</li>
+          <li>Stacey Gabriel</li>
+        </ContributorList>
+        <h3 id="ethics-contributors">Ethics</h3>
+        <ContributorList aria-labelledby="ethics-contributors">
+          <li>Stacey Donnelly</li>
+          <li>Namrata Gupta</li>
+          <li>Emily Lipscomb</li>
+          <li>Andrea Saltzman</li>
+          <li>Molly Schleicher</li>
+        </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
+        <h3 id="production-and-analysis-contributors">Production and analysis</h3>
+        <ContributorList aria-labelledby="production-and-analysis-contributors">
+          <li>Irina Armean</li>
+          <li>Ryan Collins</li>
+          <li>Katherine Chao</li>
+          <li>Beryl Cummings</li>
+          <li>Mark Daly</li>
+          <li>Eleina England</li>
+          <li>Emily Evangelista</li>
+          <li>Laurent Francioli</li>
+          <li>Julia Goodrich</li>
+          <li>Laura Gauthier</li>
+          <li>Konrad Karczewski</li>
+          <li>Kristen Laricchia</li>
+          <li>Monkol Lek</li>
+          <li>Eric Minikel</li>
+          <li>Ben Neale</li>
+          <li>Anne O&apos;Donnell-Luria</li>
+          <li>William Phu</li>
+          <li>Tim Poterba</li>
+          <li>Dan Rhodes</li>
+          <li>Kaitlin Samocha</li>
+          <li>Eleanor Seaby</li>
+          <li>Cotton Seed</li>
+          <li>Moriel Singer-Berk</li>
+          <li>Rachel Son</li>
+          <li>Grace Tiao</li>
+          <li>Chris Vittal</li>
+          <li>Arcturus Wang</li>
+          <li>Qingbo Wang</li>
+          <li>James Ware</li>
+          <li>Nicola Whiffin</li>
+          <li>Mike Wilson</li>
+        </ContributorList>
         <h3 id="coordination-contributors">Coordination</h3>
         <ContributorList aria-labelledby="coordination-contributors">
           <li>Jessica Alföldi</li>
@@ -549,20 +564,7 @@ export default () => (
           <li>Nick Watts</li>
           <li>Ben Weisburd</li>
         </ContributorList>
-        <h3 id="ethics-contributors">Ethics</h3>
-        <ContributorList aria-labelledby="ethics-contributors">
-          <li>Stacey Donnelly</li>
-          <li>Namrata Gupta</li>
-          <li>Emily Lipscomb</li>
-          <li>Andrea Saltzman</li>
-          <li>Molly Schleicher</li>
-        </ContributorList>
-        <h3 id="broad-genomics-platform">Broad Genomics Platform</h3>
-        <ContributorList aria-labelledby="broad-genomics-platform">
-          <li>Kristen Connolly</li>
-          <li>Steven Ferriera</li>
-          <li>Stacey Gabriel</li>
-        </ContributorList>
+
         <h3 id="steering-committee">Steering Committee</h3>
         <ContributorList aria-labelledby="steering-committee">
           <li>
