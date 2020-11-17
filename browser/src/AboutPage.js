@@ -512,6 +512,26 @@ export default () => (
           <li>Christopher Whelan</li>
           <li>Xuefang Zhao</li>
         </ContributorList>
+        <h3 id="mitochondrial-variation-contributors">Mitochondrial variation</h3>
+        <ContributorList aria-labelledby="mitochondrial-variation-contributors">
+          <li>Eric Banks</li>
+          <li>David Benjamin</li>
+          <li>Sarah E. Calvo</li>
+          <li>James Emery</li>
+          <li>Kiran Garimella</li>
+          <li>Laura Gauthier</li>
+          <li>Andrea Haessly</li>
+          <li>Nicole Lake</li>
+          <li>Kristen Laricchia</li>
+          <li>Monkol Lek</li>
+          <li>Daniel MacArthur</li>
+          <li>Vamsi K. Mootha</li>
+          <li>Sebastian Schoenherr</li>
+          <li>Megan Shand</li>
+          <li>Jose Soto</li>
+          <li>Grace Tiao</li>
+          <li>Nick Watts</li>
+        </ContributorList>
       </CreditsSection>
       <CreditsSection width="18%">
         <h3 id="coordination-contributors">Coordination</h3>
