@@ -78,6 +78,9 @@ export default () => (
         <ListItem>
           <Link href="#v3-hgdp-1kg">HGDP + 1KG callset</Link>
         </ListItem>
+        <ListItem>
+          <Link href="#v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</Link>
+        </ListItem>
       </List>
     </section>
 
@@ -172,6 +175,46 @@ export default () => (
             />
           </ListItem>
         ))}
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label="chrM sites Hail Table"
+            path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <IndexedFileDownloadLinks
+            label="chrM sites VCF"
+            path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
+            size="3.21 MiB"
+            md5="925ea0c5c22e60aa3e7717a332cc1627"
+            gcsBucket="gnomad-public"
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="chrM coverage Hail Table"
+            path="/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="chrM sites TSV (reduced annotations)"
+            path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
+            gcsBucket="gnomad-public"
+            includeAzure={false}
+          />
+        </ListItem>
       </FileList>
     </section>
   </React.Fragment>

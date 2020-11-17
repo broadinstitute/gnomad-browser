@@ -1241,6 +1241,17 @@ export default () => (
           non-coding genes by name, e.g. MT-RNR1 or MT-TL1.
         </p>
       </Answer>
+
+      <Question id="can-i-download-all-the-mtdna-variants">
+        Can I download all the mtDNA variants?
+      </Question>
+      <Answer>
+        <p>
+          Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF format or a
+          text file summary. Files are listed on the{' '}
+          <Link to={{ pathname: '/downloads', hash: 'v3-mitochondrial-dna' }}>downloads page</Link>.
+        </p>
+      </Answer>
     </dl>
   </InfoPage>
 )
