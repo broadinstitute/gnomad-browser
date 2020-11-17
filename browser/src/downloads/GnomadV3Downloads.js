@@ -180,6 +180,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
+      <p>
+        For details about these files, see the{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
+          gnomAD v3.1 Mitochondrial DNA Variants blog post
+        </ExternalLink>
+        .
+      </p>
       <FileList>
         <ListItem>
           <GetUrlButtons

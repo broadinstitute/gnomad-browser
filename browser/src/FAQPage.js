@@ -1028,7 +1028,11 @@ export default () => (
           Mitochondrial DNA variants are called using a specialized GATK pipeline that addresses
           challenges specific to the mtDNA. Homoplasmic and heteroplasmic variants are called using
           the GATK MuTect2 variant caller in a special &quot;mitochondrial mode&quot;, with
-          extensive filtering of samples and variants as described in our blog post.
+          extensive filtering of samples and variants as described in our{' '}
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
+            &quot;gnomAD v3.1 Mitochondrial DNA Variants&quot; blog post
+          </ExternalLink>
+          .
         </p>
       </Answer>
 
@@ -1047,7 +1051,11 @@ export default () => (
           We note that samples with low overall contamination may show high mtDNA contamination,
           e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if
           the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line
-          with 1000 mtDNA molecules/cell. See our blog post for details.
+          with 1000 mtDNA molecules/cell. See our{' '}
+          <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
+            &quot;gnomAD v3.1 Mitochondrial DNA Variants&quot; blog post
+          </ExternalLink>{' '}
+          for details.
         </p>
       </Answer>
 
