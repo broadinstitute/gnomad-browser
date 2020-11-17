@@ -65,6 +65,7 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
         return (
           <MitochondrialVariants
             {...rest}
+            context="gene"
             exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
             variants={data.gene.mitochondrial_variants}
           />

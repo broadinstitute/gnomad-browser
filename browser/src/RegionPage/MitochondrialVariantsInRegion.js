@@ -69,6 +69,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
           <MitochondrialVariants
             {...rest}
             chrom={region.chrom}
+            context="region"
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
             variants={data.region.mitochondrial_variants}
           />

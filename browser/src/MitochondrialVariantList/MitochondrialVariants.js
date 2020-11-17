@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 
 class MitochondrialVariants extends Component {
   static propTypes = {
+    context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
     width: PropTypes.number.isRequired,
@@ -165,7 +166,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { exportFileName, width } = this.props
+    const { context, exportFileName, width } = this.props
     const {
       filter,
       renderedVariants,
@@ -219,6 +220,7 @@ class MitochondrialVariants extends Component {
               cellData={{
                 highlightWords: filter.searchText.split(',').map(s => s.trim()),
               }}
+              context={context}
               numRowsRendered={numRowsRendered}
               shouldHighlightRow={this.shouldHighlightTableRow}
               sortKey={sortKey}
