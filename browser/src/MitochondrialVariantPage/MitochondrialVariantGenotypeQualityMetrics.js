@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { SegmentedControl, Select } from '@gnomad/ui'
 
 import Histogram from '../Histogram'
+import Link from '../Link'
 import ControlSection from '../VariantPage/ControlSection'
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 
@@ -79,7 +80,15 @@ const MitochondrialVariantGenotypeQualityMetrics = ({ variant }) => {
 
       <p>
         Note: This plot may include low-quality genotypes that were excluded from allele counts in
-        the tables above.
+        the tables above.{' '}
+        <Link
+          to={{
+            pathname: '/faq',
+            hash: '#what-are-the-meanings-of-the-mitochondrial-specific-filters-and-flags',
+          }}
+        >
+          See the FAQ for details.
+        </Link>
       </p>
     </div>
   )
