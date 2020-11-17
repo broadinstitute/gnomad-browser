@@ -33,7 +33,8 @@ const fetchMitochondrialVariantById = async (esClient, variantIdOrRsid) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  // Remove nc_transcript flag due to issues with LOFTEE on mitochondrial variants
+  const flags = getFlagsForContext({ type: 'region' })(variant).filter((f) => f !== 'nc_transcript')
 
   return {
     ...variant,
@@ -75,7 +76,8 @@ const shapeMitochondrialVariantSummary = (context) => {
 
   return (variant) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    // Remove nc_transcript flag due to issues with LOFTEE on mitochondrial variants
+    const flags = getFlags(variant).filter((f) => f !== 'nc_transcript')
 
     return {
       ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
