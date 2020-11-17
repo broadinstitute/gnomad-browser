@@ -1,13 +1,6 @@
 const { isEmpty } = require('lodash')
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 
-const nullifyEmptyObject = (field) => {
-  return (obj) => {
-    const value = obj[field]
-    return isEmpty(value) ? null : value
-  }
-}
-
 // ================================================================================================
 // Variant query
 // ================================================================================================
@@ -42,15 +35,15 @@ const fetchStructuralVariantById = async (esClient, variantId, subset) => {
     age_distribution:
       !isEmpty(variant.age_distribution.het) || !isEmpty(variant.age_distribution.hom)
         ? {
-            het: nullifyEmptyObject(variant.age_distribution.het),
-            hom: nullifyEmptyObject(variant.age_distribution.hom),
+            het: isEmpty(variant.age_distribution.het) ? null : variant.age_distribution.het,
+            hom: isEmpty(variant.age_distribution.hom) ? null : variant.age_distribution.hom,
           }
         : null,
     genotype_quality:
       !isEmpty(variant.genotype_quality.all) || !isEmpty(variant.genotype_quality.alt)
         ? {
-            all: nullifyEmptyObject(variant.genotype_quality.all),
-            alt: nullifyEmptyObject(variant.genotype_quality.alt),
+            all: isEmpty(variant.genotype_quality.all) ? null : variant.genotype_quality.all,
+            alt: isEmpty(variant.genotype_quality.alt) ? null : variant.genotype_quality.alt,
           }
         : null,
   }
