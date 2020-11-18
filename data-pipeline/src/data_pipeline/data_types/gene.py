@@ -157,7 +157,7 @@ def collect_transcript_exons(transcript_exons):
 
 
 def import_gencode(path, reference_genome):
-    gencode = hl.experimental.import_gtf(path, force=True, reference_genome=reference_genome, skip_invalid_contigs=True)
+    gencode = hl.experimental.import_gtf(path, force=True, reference_genome=reference_genome)
     gencode = gencode.repartition(2000, shuffle=True)
     gencode = gencode.cache()
 
