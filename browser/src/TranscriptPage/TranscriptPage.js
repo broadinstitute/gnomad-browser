@@ -426,7 +426,7 @@ class TranscriptPage extends Component {
               starredTranscriptId
             )}
           >
-            <span>* {starredTranscriptDescription}</span>
+            {starredTranscriptDescription && <span>* {starredTranscriptDescription}</span>}
           </TranscriptsTrackComponent>
 
           {hasCodingExons && transcript.chrom !== 'M' && gene.pext && (
