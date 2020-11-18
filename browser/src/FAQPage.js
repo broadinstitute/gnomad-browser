@@ -1103,7 +1103,7 @@ export default () => (
           are over 5000 haplogroups from diverse populations available in the
           <ExternalLink href="https://www.phylotree.org/">Phylotree</ExternalLink> database. Each
           gnomAD sample is assigned to a specific haplogroup via{' '}
-          <ExternalLink href="https://github.com/genepi/haplocheck">Haplocheck</ExternalLink>.
+          <ExternalLink href="https://github.com/seppinho/haplogrep-cmd">Haplogrep</ExternalLink>.
         </p>
       </Answer>
 
@@ -1233,7 +1233,8 @@ export default () => (
             weak_evidence (genotype filter): Mutation does not meet likelihood threshold
           </ListItem>
           <ListItem>
-            contamination (genotype filter): Fails MuTect2 contamination filter based on Haplocheck
+            contamination (genotype filter): Fails MuTect2 contamination filter based on{' '}
+            <ExternalLink href="https://github.com/genepi/haplocheck">Haplocheck</ExternalLink>
             (does not take into account the freemix value or our internal algorithm for calculating
             contamination)
           </ListItem>
