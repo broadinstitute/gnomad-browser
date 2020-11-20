@@ -8,7 +8,7 @@ def nullify_nan(value):
     return hl.cond(hl.is_nan(value), hl.null(value.dtype), value)
 
 
-def prepare_mitochondrial_variants(path):
+def prepare_mitochondrial_variants(path, mnvs_path=None):
     ds = hl.read_table(path)
 
     haplogroups = hl.eval(ds.globals.hap_order)
@@ -21,7 +21,7 @@ def prepare_mitochondrial_variants(path):
         {"artifact_prone_site": "Artifact-prone site", "indel_stack": "Indel stack", "npg": "No passing genotype"}
     )
 
-    return ds.select(
+    ds = ds.select(
         # ID
         variant_id=variant_id(ds.locus, ds.alleles),
         reference_genome=ds.locus.dtype.reference_genome.name,
@@ -95,6 +95,17 @@ def prepare_mitochondrial_variants(path):
         variant_collapsed=ds.variant_collapsed,
         vep=ds.vep,
     )
+
+    if mnvs_path:
+        mnvs = hl.import_table(mnvs_path, types={"pos": hl.tint, "ref": hl.tstr, "alt": hl.tstr, "AC_hom_MNV": hl.tint})
+        mnvs = mnvs.key_by(
+            locus=hl.locus("chrM", mnvs.pos, reference_genome=ds.locus.dtype.reference_genome),
+            alleles=[mnvs.ref, mnvs.alt],
+        )
+        ds = ds.annotate(ac_hom_mnv=hl.or_else(mnvs[ds.key].AC_hom_MNV, 0))
+        ds = ds.annotate(flags=hl.if_else(ds.ac_hom_mnv > 0, ds.flags.add("mnv"), ds.flags))
+
+    return ds
 
 
 def prepare_mitochondrial_coverage(coverage_path):

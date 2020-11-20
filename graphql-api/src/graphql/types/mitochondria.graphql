@@ -53,6 +53,7 @@ type MitochondrialVariantSiteQualityMetric {
 type MitochondrialVariantDetails {
   ac_het: Int
   ac_hom: Int
+  ac_hom_mnv: Int
   age_distribution: MitochondrialVariantAgeDistribution
   alt: String!
   an: Int

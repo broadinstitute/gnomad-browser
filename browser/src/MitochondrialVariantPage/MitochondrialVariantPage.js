@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Page } from '@gnomad/ui'
+import { Badge, Page } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -85,6 +85,21 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
     <Wrapper>
       <ResponsiveSection>
         <MitochondrialVariantAttributeList variant={variant} />
+        {variant.ac_hom_mnv > 0 && (
+          <p>
+            <Badge level="warning">Warning</Badge> In{' '}
+            {variant.ac_hom_mnv === variant.ac_hom ? (
+              'all'
+            ) : (
+              <>
+                {variant.ac_hom_mnv} of {variant.ac_hom}
+              </>
+            )}{' '}
+            individuals where this variant is homoplasmic or near-homoplasmic (heteroplasmy level ≥
+            0.95), this variant occurs in phase with another variant, potentially altering the amino
+            acid sequence.
+          </p>
+        )}
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>References</h2>
@@ -159,6 +174,7 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!) {
   mitochondrial_variant(variant_id: $variantId, dataset: $datasetId) {
     ac_het
     ac_hom
+    ac_hom_mnv
     age_distribution {
       het {
         bin_freq
