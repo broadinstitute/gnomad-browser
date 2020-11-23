@@ -8,6 +8,44 @@ import { TooltipAnchor } from '@gnomad/ui'
 
 import InfoButton from './help/InfoButton'
 
+export const regionIntersections = regionArrays => {
+  const sortedRegionsArrays = regionArrays.map(regions =>
+    [...regions].sort((a, b) => a.start - b.start)
+  )
+
+  const intersections = []
+
+  const indices = sortedRegionsArrays.map(() => 0)
+
+  while (sortedRegionsArrays.every((regions, i) => indices[i] < regions.length)) {
+    const maxStart = Math.max(...sortedRegionsArrays.map((regions, i) => regions[indices[i]].start))
+    const minStop = Math.min(...sortedRegionsArrays.map((regions, i) => regions[indices[i]].stop))
+
+    if (maxStart < minStop) {
+      const next = Object.assign(
+        ...[
+          {},
+          ...sortedRegionsArrays.map((regions, i) => regions[indices[i]]),
+          {
+            start: maxStart,
+            stop: minStop,
+          },
+        ]
+      )
+
+      intersections.push(next)
+    }
+
+    sortedRegionsArrays.forEach((regions, i) => {
+      if (regions[indices[i]].stop === minStop) {
+        indices[i] += 1
+      }
+    })
+  }
+
+  return intersections
+}
+
 const Wrapper = styled.div`
   display: flex;
   margin-bottom: 1em;
