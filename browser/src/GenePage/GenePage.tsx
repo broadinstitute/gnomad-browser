@@ -553,8 +553,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
-            height={15}
-            regions={gene.exac_regional_missense_constraint_regions}
+            constrainedRegions={gene.exac_regional_missense_constraint_regions}
+            exons={gene.exons}
           />
         )}
 
