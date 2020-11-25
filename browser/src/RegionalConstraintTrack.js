@@ -1,4 +1,3 @@
-import { transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -77,19 +76,21 @@ const RegionAttributeList = styled.dl`
 `
 
 function regionColor(region) {
-  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
+  // https://colorbrewer2.org/#type=diverging&scheme=Spectral&n=5
   let color
-  if (region.obs_exp > 0.6) {
-    color = '#e2e2e2'
+  if (region.obs_exp > 0.8) {
+    color = '#2b83ba'
+  } else if (region.obs_exp > 0.6) {
+    color = '#abdda4'
   } else if (region.obs_exp > 0.4) {
-    color = '#ffeda0'
+    color = '#ffffbf'
   } else if (region.obs_exp > 0.2) {
-    color = '#feb24c'
+    color = '#fdae61'
   } else {
-    color = '#f03b20'
+    color = '#d7191c'
   }
 
-  return region.chisq_diff_null < 10.8 ? transparentize(0.8, color) : color
+  return region.chisq_diff_null < 10.8 ? '#e2e2e2' : color
 }
 
 const renderNumber = number =>
