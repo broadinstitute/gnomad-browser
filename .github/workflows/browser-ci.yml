@@ -1,0 +1,39 @@
+name: Browser CI
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'browser/**'
+  pull_request:
+    paths:
+      - 'browser/**'
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Use yarn cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --non-interactive --no-progress
+      - name: Run ESLint
+        run: yarn run eslint browser
+      - name: Run stylelint
+        run: yarn run stylelint 'browser/**/*.js'
+      - name: Run tests
+        run: yarn run jest --selectProjects browser

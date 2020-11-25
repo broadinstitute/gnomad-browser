@@ -1,9 +1,13 @@
-name: CI
+name: GraphQL API CI
 on:
   push:
     branches:
       - master
+    paths:
+      - 'graphql-api/**'
   pull_request:
+    paths:
+      - 'graphql-api/**'
 jobs:
   checks:
     name: Checks
@@ -28,8 +32,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile --non-interactive --no-progress
       - name: Run ESLint
-        run: yarn run lint:js
-      - name: Run stylelint
-        run: yarn run lint:css
+        run: yarn run eslint graphql-api
       - name: Run tests
-        run: yarn test
+        run: yarn run jest --selectProjects graphql-api
