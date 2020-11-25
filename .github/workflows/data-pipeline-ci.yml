@@ -1,0 +1,37 @@
+name: Data Pipeline CI
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'data-pipeline/**'
+  pull_request:
+    paths:
+      - 'data-pipeline/**'
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Use pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            pip-
+      - name: Install dependencies
+        run: |
+          pip install wheel
+          pip install -r requirements-dev.txt
+          pip install -r data-pipeline/requirements.txt
+      - name: Check formatting
+        run: black --check data-pipeline/src/data_pipeline
+      - name: Run Pylint
+        run: pylint --disable=R,C,W data-pipeline/src/data_pipeline
