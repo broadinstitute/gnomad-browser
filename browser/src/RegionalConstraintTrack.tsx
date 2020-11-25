@@ -1,4 +1,5 @@
 import { transparentize } from 'polished'
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -8,8 +9,8 @@ import { TooltipAnchor } from '@gnomad/ui'
 
 import InfoButton from './help/InfoButton'
 
-export const regionIntersections = regionArrays => {
-  const sortedRegionsArrays = regionArrays.map(regions =>
+export const regionIntersections = (regionArrays: any) => {
+  const sortedRegionsArrays = regionArrays.map((regions: any) =>
     [...regions].sort((a, b) => a.start - b.start)
   )
 
@@ -17,15 +18,22 @@ export const regionIntersections = regionArrays => {
 
   const indices = sortedRegionsArrays.map(() => 0)
 
-  while (sortedRegionsArrays.every((regions, i) => indices[i] < regions.length)) {
-    const maxStart = Math.max(...sortedRegionsArrays.map((regions, i) => regions[indices[i]].start))
-    const minStop = Math.min(...sortedRegionsArrays.map((regions, i) => regions[indices[i]].stop))
+  while (sortedRegionsArrays.every((regions: any, i: any) => indices[i] < regions.length)) {
+    const maxStart = Math.max(
+      ...sortedRegionsArrays.map((regions: any, i: any) => regions[indices[i]].start)
+    )
+    const minStop = Math.min(
+      ...sortedRegionsArrays.map((regions: any, i: any) => regions[indices[i]].stop)
+    )
 
     if (maxStart < minStop) {
       const next = Object.assign(
+        // @ts-expect-error
         ...[
           {},
-          ...sortedRegionsArrays.map((regions, i) => regions[indices[i]]),
+          ...sortedRegionsArrays.map(
+            (regions: { [x: string]: any }, i: string | number) => regions[indices[i]]
+          ),
           {
             start: maxStart,
             stop: minStop,
@@ -36,7 +44,7 @@ export const regionIntersections = regionArrays => {
       intersections.push(next)
     }
 
-    sortedRegionsArrays.forEach((regions, i) => {
+    sortedRegionsArrays.forEach((regions: any, i: any) => {
       if (regions[indices[i]].stop === minStop) {
         indices[i] += 1
       }
@@ -79,17 +87,19 @@ const RegionAttributeList = styled.dl`
 function regionColor(region: any) {
   // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
   let color
-  if (region.obs_exp > 0.6) {
-    color = '#e2e2e2'
+  if (region.obs_exp > 0.8) {
+    color = '#2b83ba'
+  } else if (region.obs_exp > 0.6) {
+    color = '#abdda4'
   } else if (region.obs_exp > 0.4) {
-    color = '#ffeda0'
+    color = '#ffffbf'
   } else if (region.obs_exp > 0.2) {
-    color = '#feb24c'
+    color = '#fdae61'
   } else {
-    color = '#f03b20'
+    color = '#d7191c'
   }
 
-  return region.chisq_diff_null < 10.8 ? transparentize(0.8, color) : color
+  return region.chisq_diff_null < 10.8 ? '#e2e2e2' : color
 }
 
 const renderNumber = (number: any) =>
@@ -137,60 +147,70 @@ type OwnRegionalConstraintTrackProps = {
   }[]
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'RegionalConstraintTrackProps' circular... Remove this comment to see the full error message
-type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
-  typeof RegionalConstraintTrack.defaultProps
+// type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
+//   typeof RegionalConstraintTrack.defaultProps
 
-// @ts-expect-error TS(7022) FIXME: 'RegionalConstraintTrack' implicitly has type 'any... Remove this comment to see the full error message
-const RegionalConstraintTrack = ({ height, regions }: RegionalConstraintTrackProps) => (
-  <Wrapper>
-    <Track
-      renderLeftPanel={() => (
-        <SidePanel>
-          <span>Regional missense constraint</span>
-          <InfoButton topic="regional-constraint" />
-        </SidePanel>
-      )}
-    >
-      {({ scalePosition, width }: any) => (
-        <PlotWrapper>
-          <svg height={height} width={width}>
-            {regions.map((region: any) => {
-              const startX = scalePosition(region.start)
-              const stopX = scalePosition(region.stop)
-              const regionWidth = stopX - startX
+const RegionalConstraintTrack = ({ constrainedRegions, exons, height }: any) => {
+  const constrainedExons = regionIntersections([
+    constrainedRegions,
+    exons.filter((exon: any) => exon.feature_type === 'CDS'),
+  ])
 
-              return (
-                <TooltipAnchor
-                  key={`${region.start}-${region.stop}`}
-                  // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; key: string; region: an... Remove this comment to see the full error message
-                  region={region}
-                  tooltipComponent={RegionTooltip}
-                >
-                  <g>
-                    <rect
-                      x={startX}
-                      y={0}
-                      width={regionWidth}
-                      height={height}
-                      fill={regionColor(region)}
-                      stroke="black"
-                    />
-                    {regionWidth > 30 && (
-                      <text x={(startX + stopX) / 2} y={height / 2} dy="0.33em" textAnchor="middle">
-                        {region.obs_exp.toFixed(2)}
-                      </text>
-                    )}
-                  </g>
-                </TooltipAnchor>
-              )
-            })}
-          </svg>
-        </PlotWrapper>
-      )}
-    </Track>
-  </Wrapper>
-)
+  return (
+    <Wrapper>
+      <Track
+        renderLeftPanel={() => (
+          <SidePanel>
+            <span>Regional missense constraint</span>
+            <InfoButton topic="regional-constraint" />
+          </SidePanel>
+        )}
+      >
+        {({ scalePosition, width }: any) => (
+          <PlotWrapper>
+            <svg height={height} width={width}>
+              {constrainedExons.map((region: any) => {
+                const startX = scalePosition(region.start)
+                const stopX = scalePosition(region.stop)
+                const regionWidth = stopX - startX
+
+                return (
+                  <TooltipAnchor
+                    key={`${region.start}-${region.stop}`}
+                    // @ts-expect-error
+                    region={region}
+                    tooltipComponent={RegionTooltip}
+                  >
+                    <g>
+                      <rect
+                        x={startX}
+                        y={0}
+                        width={regionWidth}
+                        height={height}
+                        fill={regionColor(region)}
+                        stroke="black"
+                      />
+                      {regionWidth > 30 && (
+                        <text
+                          x={(startX + stopX) / 2}
+                          y={height / 2}
+                          dy="0.33em"
+                          textAnchor="middle"
+                        >
+                          {region.obs_exp.toFixed(2)}
+                        </text>
+                      )}
+                    </g>
+                  </TooltipAnchor>
+                )
+              })}
+            </svg>
+          </PlotWrapper>
+        )}
+      </Track>
+    </Wrapper>
+  )
+}
 
 RegionalConstraintTrack.defaultProps = {
   height: 15,
