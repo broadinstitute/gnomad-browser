@@ -1,0 +1,2 @@
+elasticsearch~=6.8
+hail~=0.2.60
