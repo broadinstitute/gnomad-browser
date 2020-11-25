@@ -13,6 +13,7 @@ module.exports = {
     },
     {
       displayName: 'graphql-api',
+      testEnvironment: 'node',
       testMatch: ['<rootDir>/graphql-api/**/*.spec.js'],
     },
   ],
