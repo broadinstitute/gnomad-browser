@@ -1,8 +1,8 @@
 const {
   isRegionId,
-  normalizeRegionId,
   isVariantId,
   normalizeVariantId,
+  parseRegionId,
   isRsId,
 } = require('@gnomad/identifiers')
 
@@ -44,13 +44,26 @@ const fetchSearchResults = async (esClient, datasetId, query) => {
   // ==============================================================================================
 
   if (isRegionId(query)) {
-    const regionId = normalizeRegionId(query)
-    return [
+    const { chrom, start, stop } = parseRegionId(query)
+    const regionId = `${chrom}-${start}-${stop}`
+    const results = [
       {
         label: regionId,
         url: `/region/${regionId}?dataset=${datasetId}`,
       },
     ]
+
+    // If a position is entered, return options for a 40 base region centered
+    // at the position and the position as a one base region.
+    if (start === stop) {
+      const windowRegionId = `${chrom}-${Math.max(1, start - 20)}-${stop + 20}`
+      results.unshift({
+        label: windowRegionId,
+        url: `/region/${windowRegionId}?dataset=${datasetId}`,
+      })
+    }
+
+    return results
   }
 
   // ==============================================================================================
