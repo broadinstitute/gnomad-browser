@@ -156,7 +156,7 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
-              <Link to="/faq" onClick={this.closeMenuIfOpen}>
+              <Link to="/faq" onClick={this.closeMenu}>
                 FAQ
               </Link>
             </li>
