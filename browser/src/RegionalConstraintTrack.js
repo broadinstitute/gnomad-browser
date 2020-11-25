@@ -127,7 +127,7 @@ const SidePanel = styled.div`
   align-items: center;
 `
 
-const RegionalConstraintTrack = ({ constrainedRegions, exons, height }) => {
+const RegionalConstraintTrack = ({ constrainedRegions, exons }) => {
   const constrainedExons = regionIntersections([
     constrainedRegions,
     exons.filter(exon => exon.feature_type === 'CDS'),
@@ -144,7 +144,7 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, height }) => {
       >
         {({ scalePosition, width }) => (
           <PlotWrapper>
-            <svg height={height} width={width}>
+            <svg height={35} width={width}>
               {constrainedExons.map(region => {
                 const startX = scalePosition(region.start)
                 const stopX = scalePosition(region.stop)
@@ -161,24 +161,36 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, height }) => {
                         x={startX}
                         y={0}
                         width={regionWidth}
-                        height={height}
+                        height={15}
                         fill={regionColor(region)}
                         stroke="black"
                       />
-                      {regionWidth > 30 && (
-                        <text
-                          x={(startX + stopX) / 2}
-                          y={height / 2}
-                          dy="0.33em"
-                          textAnchor="middle"
-                        >
-                          {region.obs_exp.toFixed(2)}
-                        </text>
-                      )}
                     </g>
                   </TooltipAnchor>
                 )
               })}
+              <g transform="translate(0,20)">
+                {constrainedRegions.map(region => {
+                  const startX = scalePosition(region.start)
+                  const stopX = scalePosition(region.stop)
+                  const regionWidth = stopX - startX
+                  const midX = (startX + stopX) / 2
+
+                  return (
+                    <g key={`${region.start}-${region.stop}`}>
+                      <line x1={startX} y1={2} x2={startX} y2={11} stroke="#424242" />
+                      <line x1={startX} y1={7} x2={midX - 15} y2={7} stroke="#424242" />
+                      <line x1={midX + 15} y1={7} x2={stopX} y2={7} stroke="#424242" />
+                      <line x1={stopX} y1={2} x2={stopX} y2={11} stroke="#424242" />
+                      {regionWidth > 30 && (
+                        <text x={midX} y={8} dy="0.33em" textAnchor="middle">
+                          {region.obs_exp.toFixed(2)}
+                        </text>
+                      )}
+                    </g>
+                  )
+                })}
+              </g>
             </svg>
           </PlotWrapper>
         )}
@@ -188,7 +200,6 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, height }) => {
 }
 
 RegionalConstraintTrack.propTypes = {
-  height: PropTypes.number,
   exons: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -203,10 +214,6 @@ RegionalConstraintTrack.propTypes = {
       chisq_diff_null: PropTypes.number.isRequired,
     })
   ).isRequired,
-}
-
-RegionalConstraintTrack.defaultProps = {
-  height: 15,
 }
 
 export default RegionalConstraintTrack
