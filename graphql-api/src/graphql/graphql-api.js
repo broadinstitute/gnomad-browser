@@ -54,6 +54,10 @@ const customValidateFn = (...args) => {
 }
 
 const customFormatErrorFn = (error) => {
+  if (!(error instanceof GraphQLError)) {
+    return error
+  }
+
   if (error.extensions && (error.extensions.isParseError || error.extensions.isValidationError)) {
     return new GraphQLError(
       error.message,
