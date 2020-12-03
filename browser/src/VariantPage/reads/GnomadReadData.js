@@ -268,7 +268,7 @@ class GnomadReadData extends Component {
               {
                 displayMode: 'SQUISHED',
                 indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
-                name: 'gencode v19',
+                name: 'GENCODE v19',
                 removable: false,
                 url: '/reads/reference/gencode.v19.bed.gz',
               },
@@ -285,7 +285,7 @@ class GnomadReadData extends Component {
               {
                 displayMode: 'SQUISHED',
                 indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
-                name: 'gencode v35',
+                name: 'GENCODE v35',
                 removable: false,
                 url: '/reads/reference/gencode.v35.bed.gz',
               },

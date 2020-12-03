@@ -8,13 +8,13 @@ title: 'Annotations in gnomAD'
 ## VEP
 
 ### gnomAD v3.1
-Variants in the browser (and all current VCFs available for download) were annotated using VEP version 101 using Gencode v35 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
+Variants in the browser (and all current VCFs available for download) were annotated using VEP version 101 using GENCODE v35 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
 
 ### gnomAD v3.0
-Variants in the browser (and all current VCFs available for download) were annotated using VEP version 95 using Gencode v29 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
+Variants in the browser (and all current VCFs available for download) were annotated using VEP version 95 using GENCODE v29 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
 
 ### gnomAD v2
-Variants in the browser (and all current VCFs available for download) were annotated using VEP version 85 using Gencode v19 on GRCh37, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
+Variants in the browser (and all current VCFs available for download) were annotated using VEP version 85 using GENCODE v19 on GRCh37, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
 
 ## LOFTEE
 

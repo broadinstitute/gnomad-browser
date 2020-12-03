@@ -166,7 +166,7 @@ const GeneInfo = ({ gene }) => {
         {gene.gene_id}.{gene.gene_version}
       </AttributeList.Item>
       {gene.symbol !== gene.gencode_symbol && (
-        <AttributeList.Item label={`Symbol in Gencode v${gencodeVersion}`}>
+        <AttributeList.Item label={`Symbol in GENCODE v${gencodeVersion}`}>
           {gene.gencode_symbol}
         </AttributeList.Item>
       )}

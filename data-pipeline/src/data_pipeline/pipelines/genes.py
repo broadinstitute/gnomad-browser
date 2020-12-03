@@ -21,7 +21,7 @@ from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad
 pipeline = Pipeline()
 
 ###############################################
-# Import Gencode and HGNC files
+# Import GENCODE and HGNC files
 ###############################################
 
 pipeline.add_download_task(
