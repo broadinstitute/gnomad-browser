@@ -15,6 +15,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
     gene_id
     gene_version
     symbol
+    gencode_symbol
     name
     canonical_transcript_id
     mane_select_transcript {
