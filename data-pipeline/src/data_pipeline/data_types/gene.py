@@ -28,7 +28,7 @@ def merge_overlapping_regions(regions):
 
 def get_exons(gencode):
     """
-    Filter Gencode table to exons and format fields.
+    Filter GENCODE table to exons and format fields.
     """
     exons = gencode.filter(hl.set(["exon", "CDS", "UTR"]).contains(gencode.feature))
     exons = exons.select(
@@ -53,7 +53,7 @@ def get_exons(gencode):
 
 def get_genes(gencode):
     """
-    Filter Gencode table to genes and format fields.
+    Filter GENCODE table to genes and format fields.
     """
     genes = gencode.filter(gencode.feature == "gene")
     genes = genes.select(
@@ -112,7 +112,7 @@ def collect_gene_exons(gene_exons):
 
 def get_transcripts(gencode):
     """
-    Filter Gencode table to transcripts and format fields.
+    Filter GENCODE table to transcripts and format fields.
     """
     transcripts = gencode.filter(gencode.feature == "transcript")
     transcripts = transcripts.select(
@@ -214,7 +214,7 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
 
     hgnc = import_hgnc(hgnc_path)
     genes = genes.annotate(**hgnc[genes.gene_id])
-    # If a symbol was not present in HGNC data, use the symbol from Gencode
+    # If a symbol was not present in HGNC data, use the symbol from GENCODE
     genes = genes.annotate(symbol=hl.or_else(genes.symbol, genes.gencode_symbol))
 
     genes = genes.annotate(

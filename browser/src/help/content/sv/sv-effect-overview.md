@@ -5,7 +5,7 @@ title: 'Structural variant consequences'
 
 # Genic consequences of structural variants  
 
-We annotated each SV for multiple potential genic effects using an approach described in [the gnomAD SV paper](https://broad.io/gnomad_sv).  In brief, this approach considers SV size, class, position, and overlap with exons from canonical transcripts of [Gencode v19](https://www.gencodegenes.org/human/release_19.html) protein-coding genes.
+We annotated each SV for multiple potential genic effects using an approach described in [the gnomAD SV paper](https://broad.io/gnomad_sv).  In brief, this approach considers SV size, class, position, and overlap with exons from canonical transcripts of [GENCODE v19](https://www.gencodegenes.org/human/release_19.html) protein-coding genes.
 
 ### Representation in the gnomAD Browser
 

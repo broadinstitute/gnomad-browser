@@ -349,7 +349,7 @@ export default () => (
           Genes that were outliers in certain assessments will not have constraint metrics or will
           be flagged with a note warning of various error modes. Please note that these assessments
           were applied to the canonical transcripts of the genes. If a gene was not annotated as a
-          protein-coding gene in Gencode v19, we did not calculate constraint. The following list
+          protein-coding gene in GENCODE v19, we did not calculate constraint. The following list
           describes the reason names given in the constraint_flag column of the{' '}
           <Link to={{ pathname: '/downloads', hash: '#v2-constraint' }}>constraint files</Link>:
         </p>
@@ -409,7 +409,7 @@ export default () => (
       </Answer>
 
       <Question id="what-version-of-gencode-was-used-to-annotate-variants">
-        What version of Gencode was used to annotate variants?
+        What version of GENCODE was used to annotate variants?
       </Question>
       <Answer>
         <p>
@@ -728,8 +728,8 @@ export default () => (
           transcript you would like to view. The MANE Select transcript (or canonical if no MANE
           Select exists) is marked by &quot;*&quot;. Please note that v2 still uses the canonical
           transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts
-          are annotated using Gencode v35 for gnomAD v3.1 and Gencode v19 for v2. Please note, the
-          browser represents transcript versions from Gencode v35, which may differ from more recent
+          are annotated using GENCODE v35 for gnomAD v3.1 and GENCODE v19 for v2. Please note, the
+          browser represents transcript versions from GENCODE v35, which may differ from more recent
           versions selected by the MANE Select project. Please check the version number listed by
           the &quot;MANE Select transcript&quot; attribute at the top of the gene summary page and
           check if it is the same or different from the version listed in the browser&apos;s
@@ -745,9 +745,9 @@ export default () => (
       </Question>
       <Answer>
         <p>
-          Our transcript annotations are based on Genocode v35 for gnomAD v3.1, Gencode v29 for
-          gnomAD v3 and Gencode v19 for v2. Annotations may have changed depending on the version of
-          Gencode used (such as changing from a non-coding to a protein-coding gene, or having a
+          Our transcript annotations are based on GENCODE v35 for gnomAD v3.1, GENCODE v29 for
+          gnomAD v3 and GENCODE v19 for v2. Annotations may have changed depending on the version of
+          GENCODE used (such as changing from a non-coding to a protein-coding gene, or having a
           different transcript length).
         </p>
       </Answer>

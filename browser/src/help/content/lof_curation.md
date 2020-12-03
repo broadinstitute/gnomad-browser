@@ -65,7 +65,7 @@ _In silico_ splice predictors predict a weak rescue of a canonical splice site v
 
 ### Minority of Transcripts Flag
 
-Variants are annotated as LoF in less than or equal to 50% of protein-coding GENCODE transcripts for the gene ([Harrow et al. 2012](https://pubmed.ncbi.nlm.nih.gov/22955987/)). Gencode transcripts (rather than Ensembl or RefSeq) transcripts were selected for these curations because this is a refined transcript set built on various types of evidence. Another transcript set could have been used and in cases where there is additional transcript information available, there may be benefit from reinterpreting variants in terms of the disease or biologically relevant transcript(s).
+Variants are annotated as LoF in less than or equal to 50% of protein-coding GENCODE transcripts for the gene ([Harrow et al. 2012](https://pubmed.ncbi.nlm.nih.gov/22955987/)). GENCODE transcripts (rather than Ensembl or RefSeq) transcripts were selected for these curations because this is a refined transcript set built on various types of evidence. Another transcript set could have been used and in cases where there is additional transcript information available, there may be benefit from reinterpreting variants in terms of the disease or biologically relevant transcript(s).
 
 ### Weak Exon Conservation Flag
 
