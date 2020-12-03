@@ -23,6 +23,7 @@ type Gene {
   gene_id: String!
   gene_version: String!
   symbol: String!
+  gencode_symbol: String!
   hgnc_id: String
   omim_id: String
   name: String

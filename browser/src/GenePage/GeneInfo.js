@@ -155,6 +155,7 @@ const GeneInfo = ({ gene }) => {
     : null
 
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
+  const gencodeVersion = gene.reference_genome === 'GRCh37' ? '19' : '35'
 
   return (
     <AttributeList labelWidth={225}>
@@ -164,6 +165,11 @@ const GeneInfo = ({ gene }) => {
       <AttributeList.Item label="Ensembl gene ID">
         {gene.gene_id}.{gene.gene_version}
       </AttributeList.Item>
+      {gene.symbol !== gene.gencode_symbol && (
+        <AttributeList.Item label={`Symbol in Gencode v${gencodeVersion}`}>
+          {gene.gencode_symbol}
+        </AttributeList.Item>
+      )}
       {gene.reference_genome === 'GRCh38' && (
         <AttributeList.Item
           label={
@@ -204,6 +210,8 @@ GeneInfo.propTypes = {
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
     gene_version: PropTypes.string.isRequired,
+    symbol: PropTypes.string.isRequired,
+    gencode_symbol: PropTypes.string.isRequired,
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
