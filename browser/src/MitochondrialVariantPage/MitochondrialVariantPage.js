@@ -100,6 +100,13 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
             acid sequence.
           </p>
         )}
+        {variant.flags && variant.flags.includes('common_low_heteroplasmy') && (
+          <p>
+            <Badge level="warning">Warning</Badge> Common low heteroplasmy: this variant is present
+            at an overall frequency of .001 across all samples with a heteroplasmy level &gt; 0 and
+            &lt; 0.50.
+          </p>
+        )}
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>References</h2>
@@ -193,6 +200,7 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!) {
     an
     excluded_ac
     filters
+    flags
     genotype_quality_metrics {
       name
       all {

@@ -7,6 +7,7 @@ const MitochondrialVariantDetailPropType = PropTypes.shape({
   ac_hom_mnv: PropTypes.number.isRequired,
   ac_het: PropTypes.number.isRequired,
   excluded_ac: PropTypes.number,
+  flags: PropTypes.arrayOf(PropTypes.string),
   haplogroup_defining: PropTypes.bool,
   haplogroups: PropTypes.arrayOf(
     PropTypes.shape({
