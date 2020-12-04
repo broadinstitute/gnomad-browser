@@ -134,7 +134,6 @@ export default () => (
             path="/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.summary.tsv.bgz"
             size="75.38 GiB"
             md5="6c809627ff7922dcfc8d2c67bba017ff"
-            gcsBucket="gnomad-public"
           />
         </ListItem>
       </FileList>
@@ -192,7 +191,6 @@ export default () => (
           <GetUrlButtons
             label="chrM sites Hail Table"
             path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht"
-            gcsBucket="gnomad-public-requester-pays"
             includeAzure={false}
           />
         </ListItem>
@@ -202,7 +200,6 @@ export default () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="3.75 MiB"
             md5="2ded3d6c8aac051f9701d0fc4e7329dd"
-            gcsBucket="gnomad-public"
             includeAzure={false}
           />
         </ListItem>
@@ -210,7 +207,6 @@ export default () => (
           <GetUrlButtons
             label="chrM coverage Hail Table"
             path="/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
-            gcsBucket="gnomad-public-requester-pays"
             includeAzure={false}
           />
         </ListItem>
@@ -218,7 +214,6 @@ export default () => (
           <GenericDownloadLinks
             label="chrM sites TSV (reduced annotations)"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
-            gcsBucket="gnomad-public"
             includeAzure={false}
           />
         </ListItem>
