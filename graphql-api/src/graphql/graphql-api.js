@@ -53,7 +53,7 @@ const customValidateFn = (...args) => {
   )
 }
 
-const customFormatErrorFn = (error, request) => {
+const customFormatErrorFn = (error, request, graphqlRequestParams) => {
   if (!(error instanceof GraphQLError)) {
     return error
   }
@@ -88,6 +88,7 @@ const customFormatErrorFn = (error, request) => {
           referer: request.headers.referer || request.headers.referrer,
           protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
         },
+        graphql: graphqlRequestParams,
       },
     })
   }
@@ -101,14 +102,14 @@ const queryComplexityCreateError = (max, actual) => {
 }
 
 module.exports = ({ context }) =>
-  graphqlHTTP(async (request, response, { variables }) => ({
+  graphqlHTTP(async (request, response, requestParams) => ({
     schema,
     graphiql: true,
     context,
     validationRules: [
       queryComplexity({
         maximumComplexity: config.MAX_QUERY_COST,
-        variables,
+        variables: requestParams.variables,
         estimators: [
           directiveEstimator({ name: 'cost' }),
           simpleEstimator({ defaultComplexity: 0 }),
@@ -127,5 +128,5 @@ module.exports = ({ context }) =>
 
       return execute(...args)
     },
-    customFormatErrorFn: (error) => customFormatErrorFn(error, request),
+    customFormatErrorFn: (error) => customFormatErrorFn(error, request, requestParams),
   }))
