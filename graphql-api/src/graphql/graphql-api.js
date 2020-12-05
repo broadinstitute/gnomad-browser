@@ -53,7 +53,7 @@ const customValidateFn = (...args) => {
   )
 }
 
-const customFormatErrorFn = (error) => {
+const customFormatErrorFn = (error, request) => {
   if (!(error instanceof GraphQLError)) {
     return error
   }
@@ -75,7 +75,21 @@ const customFormatErrorFn = (error) => {
   // User visible errors (such as variant not found) are expected to occur during normal use of the
   // browser and do not need to be logged.
   if (!isUserVisible) {
-    logger.error(error)
+    logger.error({
+      message: error.stack,
+      context: {
+        httpRequest: {
+          requestMethod: request.method,
+          requestUrl: `${request.protocol}://${request.hostname}${
+            request.originalUrl || request.url
+          }`,
+          userAgent: request.headers['user-agent'],
+          remoteIp: request.ip,
+          referer: request.headers.referer || request.headers.referrer,
+          protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
+        },
+      },
+    })
   }
 
   const message = isUserVisible ? error.message : 'An unknown error occurred'
@@ -113,5 +127,5 @@ module.exports = ({ context }) =>
 
       return execute(...args)
     },
-    customFormatErrorFn,
+    customFormatErrorFn: (error) => customFormatErrorFn(error, request),
   }))
