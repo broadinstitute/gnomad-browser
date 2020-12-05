@@ -9,6 +9,16 @@ const esClient = require('./elasticsearch').client
 const graphQLApi = require('./graphql/graphql-api')
 const logger = require('./logger')
 
+process.on('uncaughtException', (error) => {
+  logger.error(error)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (error) => {
+  logger.error(error)
+  process.exit(1)
+})
+
 const app = express()
 app.use(compression())
 app.use(cors())
