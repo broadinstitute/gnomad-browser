@@ -38,7 +38,13 @@ const GenesInRegionTrack = ({ region, onClickGene }) => {
       success={data => data.region && data.region.genes}
     >
       {({ data }) => {
-        return <GenesTrack genes={data.region.genes} onGeneClick={onClickGene} />
+        return (
+          <GenesTrack
+            genes={data.region.genes}
+            includeNonCodingGenes={region.chrom === 'M'}
+            onGeneClick={onClickGene}
+          />
+        )
       }}
     </Query>
   )
