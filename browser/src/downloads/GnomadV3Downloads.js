@@ -87,6 +87,11 @@ export default () => (
     <section>
       <SectionTitle id="v3-variants">Variants</SectionTitle>
       <p>
+        <Badge level="error">Warning</Badge> We have identified an issue in gnomAD v3.1 where some
+        variants are missing VEP annotations. This affects both v3.1 Hail Tables and VCFs. We are
+        working to resolve this issue.
+      </p>
+      <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/">
           gnomAD v3.1 blog post

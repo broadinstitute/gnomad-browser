@@ -238,6 +238,14 @@ class VariantsInTranscript extends Component {
             </Link>
             .
           </p>
+          {datasetId.startsWith('gnomad_r3') && (
+            <p>
+              <Badge level="error">Warning</Badge> We have identified an issue in gnomAD v3.1 where
+              some variants are missing VEP annotations. As a result, some variants in this
+              transcript may be missing from the table below. We are working on a resolution for
+              this issue.
+            </p>
+          )}
           <VariantTable
             columns={this.getColumns(width, transcript.chrom)}
             highlightText={filter.searchText}
