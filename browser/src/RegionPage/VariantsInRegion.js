@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
+import { Badge } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
@@ -226,6 +227,13 @@ class VariantsInRegion extends Component {
               variants={renderedVariants}
             />
           </div>
+          {datasetId.startsWith('gnomad_r3') && (
+            <p>
+              <Badge level="error">Warning</Badge> We have identified an issue in gnomAD v3.1 where
+              some variants are missing VEP annotations. As a result, some variants in the table
+              below may be missing consequences. We are working on a resolution for this issue.
+            </p>
+          )}
           <VariantTable
             columns={this.getColumns(width, region.chrom)}
             highlightText={filter.searchText}
