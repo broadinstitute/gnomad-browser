@@ -49,27 +49,6 @@ const ScrollWrapper = styled.div`
   overflow-x: auto;
 `
 
-const VariantType = ({ variantId }) => {
-  const [chrom, pos, ref, alt] = variantId.split('-') // eslint-disable-line no-unused-vars
-  if (!ref || !alt) {
-    return 'Variant'
-  }
-  if (ref.length === 1 && alt.length === 1) {
-    return 'Single nucleotide variant'
-  }
-  if (ref.length < alt.length) {
-    return 'Insertion'
-  }
-  if (ref.length > alt.length) {
-    return 'Deletion'
-  }
-  return 'Variant'
-}
-
-const VariantId = styled.span`
-  white-space: nowrap;
-`
-
 const VariantPageContent = ({ datasetId, variant }) => (
   <VariantDetailsContainer>
     <ResponsiveSection>
@@ -217,6 +196,81 @@ VariantPageContent.propTypes = {
   }).isRequired,
 }
 
+const VariantPageTitleAlleles = styled.span`
+  display: inline-flex;
+  max-width: 320px;
+  white-space: nowrap;
+
+  @media (max-width: 900px) {
+    justify-content: center;
+    max-width: 100%;
+  }
+`
+
+const Separator = styled.span`
+  @media (max-width: 900px) {
+    display: none;
+  }
+`
+
+const VariantPageTitle = ({ datasetId, rsId, variantId }) => {
+  let id
+
+  if (variantId) {
+    const [chrom, pos, ref, alt] = variantId.split('-')
+
+    let variantDescription = 'Variant'
+    if (ref.length === 1 && alt.length === 1) {
+      variantDescription = 'Single nucleotide variant'
+    }
+    if (ref.length < alt.length) {
+      const insertionLength = alt.length - ref.length
+      variantDescription = `Insertion (${insertionLength} base${insertionLength > 1 ? 's' : ''})`
+    }
+    if (ref.length > alt.length) {
+      const deletionLength = ref.length - alt.length
+      variantDescription = `Deletion (${deletionLength} base${deletionLength > 1 ? 's' : ''})`
+    }
+
+    id = (
+      <>
+        <span>{variantDescription}</span>
+        <Separator>: </Separator>
+        <span>
+          {chrom}-{pos}
+        </span>
+        <Separator>-</Separator>
+        <VariantPageTitleAlleles>
+          <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+            {ref}-{alt}
+          </span>
+        </VariantPageTitleAlleles>
+      </>
+    )
+  } else {
+    id = <span>{rsId}</span>
+  }
+
+  return (
+    <>
+      {id}
+      <Separator> </Separator>
+      <span>({referenceGenomeForDataset(datasetId)})</span>
+    </>
+  )
+}
+
+VariantPageTitle.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  rsId: PropTypes.string,
+  variantId: PropTypes.string,
+}
+
+VariantPageTitle.defaultProps = {
+  rsId: undefined,
+  variantId: undefined,
+}
+
 const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
   const queryVariables = { datasetId }
   if (variantIdProp) {
@@ -270,14 +324,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
                 }}
                 selectedDataset={datasetId}
               >
-                {variantId && (
-                  <React.Fragment>
-                    <VariantType variantId={variantId} />:{' '}
-                  </React.Fragment>
-                )}
-                <VariantId>
-                  {variantId || rsId} ({referenceGenomeForDataset(datasetId)})
-                </VariantId>
+                <VariantPageTitle variantId={variantId} rsId={rsId} datasetId={datasetId} />
               </GnomadPageHeading>
               {pageContent}
             </React.Fragment>

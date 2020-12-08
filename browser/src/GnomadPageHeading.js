@@ -29,6 +29,11 @@ const PageHeadingInnerWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  max-width: 100%;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 1em;
+  }
 
   @media (max-width: 900px) {
     display: flex;
@@ -45,6 +50,7 @@ const CenterPanel = styled.div`
 `
 
 const PageHeadingText = styled.h1`
+  max-width: 100%;
   margin: 0;
 
   @media (max-width: 900px) {
