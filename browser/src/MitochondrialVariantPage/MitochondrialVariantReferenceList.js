@@ -15,6 +15,15 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
 
   return (
     <List>
+      {variant.rsid && (
+        <ListItem>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`}
+          >
+            dbSNP ({variant.rsid})
+          </ExternalLink>
+        </ListItem>
+      )}
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
