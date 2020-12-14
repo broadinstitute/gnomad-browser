@@ -147,9 +147,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
       {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
         <React.Fragment>
           <h2>Age Distribution</h2>
-          {/* Add note for subsets */}
-          {((datasetId.startsWith('gnomad_r2') && datasetId !== 'gnomad_r2_1') ||
-            (datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3')) && (
+          {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
             <p>Age distribution is based on the full gnomAD dataset, not the selected subset.</p>
           )}
           <GnomadAgeDistribution datasetId={datasetId} variant={variant} />

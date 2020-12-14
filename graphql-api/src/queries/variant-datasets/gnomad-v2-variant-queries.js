@@ -151,9 +151,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           ...variant.exome,
           ...variant.exome.freq[exomeSubset],
           populations: correctHemizygoteCounts(variant.exome.freq[exomeSubset].populations),
-          // TODO: Remove warning on variant page and return subset specific age distribution
-          // age_distribution: variant.exome.age_distribution[exomeSubset],
-          age_distribution: variant.exome.age_distribution.gnomad,
+          age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
         }
       : null,
@@ -162,9 +160,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           ...variant.genome,
           ...variant.genome.freq[genomeSubset],
           populations: correctHemizygoteCounts(variant.genome.freq[genomeSubset].populations),
-          // TODO: Remove warning on variant page and return subset specific age distribution
-          // age_distribution: variant.genome.age_distribution[genomeSubset],
-          age_distribution: variant.genome.age_distribution.gnomad,
+          age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
         }
       : null,
