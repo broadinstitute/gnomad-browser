@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
+import { isSubset } from '../../datasets'
 import { BaseQuery } from '../../Query'
 import StatusMessage from '../../StatusMessage'
 import { IGVBrowser } from './IGVBrowser'
@@ -56,6 +57,7 @@ const ReadDataPropType = PropTypes.shape({
 class GnomadReadData extends Component {
   static propTypes = {
     children: PropTypes.node,
+    datasetId: PropTypes.string.isRequired,
     referenceGenome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
@@ -243,7 +245,7 @@ class GnomadReadData extends Component {
   }
 
   render() {
-    const { children, referenceGenome, chrom, start, stop, showHemizygotes } = this.props
+    const { children, datasetId, referenceGenome, chrom, start, stop, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -307,6 +309,12 @@ class GnomadReadData extends Component {
           , so they accurately represent what HaplotypeCaller was seeing when it called this
           variant.
         </p>
+        {isSubset(datasetId) && (
+          <p>
+            <Badge level="info">Note</Badge> Samples shown below are not guaranteed to be part of
+            the selected subset.
+          </p>
+        )}
 
         {children}
 
@@ -483,6 +491,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
 
         return (
           <GnomadReadData
+            datasetId={datasetId}
             referenceGenome={
               readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2' ? 'GRCh37' : 'GRCh38'
             }
