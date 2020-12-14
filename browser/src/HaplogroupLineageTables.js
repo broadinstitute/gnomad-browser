@@ -1,12 +1,19 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import { BaseTable } from '@gnomad/ui'
+
+const HaplogroupLineageTable = styled(BaseTable)`
+  td {
+    text-align: right;
+  }
+`
 
 const HaplogroupLineageTables = () => {
   return (
     <>
       <h4>N lineages (&quot;Eurasian&quot;)</h4>
-      <BaseTable>
+      <HaplogroupLineageTable>
         <thead>
           <tr>
             <th scope="col">Haplogroup</th>
@@ -118,10 +125,10 @@ const HaplogroupLineageTables = () => {
             <td>70%</td>
           </tr>
         </tfoot>
-      </BaseTable>
+      </HaplogroupLineageTable>
 
       <h4>L lineages (&quot;African&quot;)</h4>
-      <BaseTable>
+      <HaplogroupLineageTable>
         <thead>
           <tr>
             <th scope="col">Haplogroup</th>
@@ -173,10 +180,10 @@ const HaplogroupLineageTables = () => {
             <td>25%</td>
           </tr>
         </tfoot>
-      </BaseTable>
+      </HaplogroupLineageTable>
 
       <h4>M lineages (&quot;Asian&quot;)</h4>
-      <BaseTable>
+      <HaplogroupLineageTable>
         <thead>
           <tr>
             <th scope="col">Haplogroup</th>
@@ -228,7 +235,7 @@ const HaplogroupLineageTables = () => {
             <td>5%</td>
           </tr>
         </tfoot>
-      </BaseTable>
+      </HaplogroupLineageTable>
     </>
   )
 }

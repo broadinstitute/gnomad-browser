@@ -22,6 +22,12 @@ const TableViewport = styled.div`
   overflow-x: auto;
   width: 100%;
   margin-top: 1em;
+`
+
+const SampleCountTable = styled(BaseTable)`
+  td {
+    text-align: right;
+  }
 
   tbody tr:last-child {
     th,
@@ -35,7 +41,7 @@ const SampleCountTables = () => (
   <div>
     <h4>gnomAD v3</h4>
     <TableViewport>
-      <BaseTable>
+      <SampleCountTable>
         <thead>
           <tr>
             <th rowSpan={2} scope="col">
@@ -92,12 +98,12 @@ const SampleCountTables = () => (
             <td>{sampleCounts.gnomad_r3_non_v2.genomesTotal.toLocaleString()}</td>
           </tr>
         </tfoot>
-      </BaseTable>
+      </SampleCountTable>
     </TableViewport>
 
     <h4>gnomAD v2</h4>
     <TableViewport>
-      <BaseTable>
+      <SampleCountTable>
         <thead>
           <tr>
             <th rowSpan={2} scope="col">
@@ -181,7 +187,7 @@ const SampleCountTables = () => (
             <td>{sampleCounts.gnomad_r2_1_non_topmed.genomesTotal.toLocaleString()}</td>
           </tr>
         </tfoot>
-      </BaseTable>
+      </SampleCountTable>
     </TableViewport>
     <p>
       * For v2 genomes, we have a total of only 31 South Asian samples so they are grouped with
