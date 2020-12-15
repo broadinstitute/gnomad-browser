@@ -7,6 +7,7 @@ const logger = require('./logger')
 
 const elasticsearchConfig = {
   node: config.ELASTICSEARCH_URL,
+  requestTimeout: config.ELASTICSEARCH_REQUEST_TIMEOUT,
 }
 
 if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
