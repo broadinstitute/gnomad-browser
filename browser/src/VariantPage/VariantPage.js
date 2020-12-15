@@ -287,7 +287,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
             pageContent = <StatusMessage>Loading variant...</StatusMessage>
           } else if (error) {
             pageContent = <StatusMessage>Unable to load variant</StatusMessage>
-          } else if (!data.variant) {
+          } else if (!(data || {}).variant) {
             if (graphQLErrors && graphQLErrors.some(err => err.message === 'Variant not found')) {
               if (variantIdProp) {
                 pageContent = <VariantNotFound datasetId={datasetId} variantId={variantIdProp} />
