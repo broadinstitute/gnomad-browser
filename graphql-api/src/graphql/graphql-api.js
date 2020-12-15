@@ -5,6 +5,7 @@ const {
   directiveEstimator,
   simpleEstimator,
 } = require('graphql-query-complexity')
+const { isHttpError } = require('http-errors')
 
 const config = require('../config')
 const logger = require('../logger')
@@ -54,7 +55,7 @@ const customValidateFn = (...args) => {
 }
 
 const customFormatErrorFn = (error, request, graphqlRequestParams) => {
-  if (!(error instanceof GraphQLError)) {
+  if (isHttpError(error.originalError)) {
     return error
   }
 
@@ -124,7 +125,13 @@ module.exports = ({ context }) =>
     customValidateFn,
     customExecuteFn: async (...args) => {
       // Apply rate limit before executing query.
-      await applyRateLimits(request)
+      try {
+        await applyRateLimits(request)
+      } catch (error) {
+        // Throw GraphQLErrors from GraphQL execution.
+        // Errors must be wrapped in GraphQLError for customFormatErrorFn to handle them correctly.
+        throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
+      }
 
       return execute(...args)
     },
