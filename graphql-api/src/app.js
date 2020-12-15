@@ -48,7 +48,7 @@ app.use(function requestLogMiddleware(request, response, next) {
         requestUrl: `${request.protocol}://${request.hostname}${
           request.originalUrl || request.url
         }`,
-        status: response.headersSent ? response.statusCode : undefined,
+        status: response.statusCode,
         userAgent: request.headers['user-agent'],
         remoteIp: request.ip,
         referer: request.headers.referer || request.headers.referrer,
