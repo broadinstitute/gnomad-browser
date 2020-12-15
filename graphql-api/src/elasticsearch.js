@@ -41,9 +41,9 @@ const scheduleElasticsearchRequest = (fn) => {
     // If task sits in the queue for more than 30s, cancel it and notify the user.
     const timeout = setTimeout(() => {
       canceled = true
-      logger.warn('Elasticsearch request timed out')
+      logger.warn('Elasticsearch request timed out in queue')
       reject(new UserVisibleError('Request timed out'))
-    }, config.ELASTICSEARCH_QUERY_TIMEOUT)
+    }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
     esLimiter
       .schedule(() => {
