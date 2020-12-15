@@ -43,6 +43,18 @@ const fetchSearchResults = (dataset, query) =>
     return response.data.searchResults
   })
 
+const getDefaultSearchDataset = selectedDataset => {
+  if (selectedDataset) {
+    if (selectedDataset.startsWith('gnomad_r3')) {
+      return 'gnomad_r3'
+    }
+    if (selectedDataset === 'exac') {
+      return 'exac'
+    }
+  }
+  return 'gnomad_r2_1'
+}
+
 export default withRouter(props => {
   const {
     history,
@@ -54,10 +66,7 @@ export default withRouter(props => {
   } = props
 
   const currentParams = queryString.parse(location.search)
-  const defaultSearchDataset =
-    currentParams.dataset && currentParams.dataset.startsWith('gnomad_r3')
-      ? 'gnomad_r3'
-      : 'gnomad_r2_1'
+  const defaultSearchDataset = getDefaultSearchDataset(currentParams.dataset)
   const [searchDataset, setSearchDataset] = useState(defaultSearchDataset)
 
   // Update search dataset when active dataset changes.
@@ -65,9 +74,7 @@ export default withRouter(props => {
   useEffect(() => {
     return history.listen(newLocation => {
       const newParams = queryString.parse(newLocation.search)
-      setSearchDataset(
-        newParams.dataset && newParams.dataset.startsWith('gnomad_r3') ? 'gnomad_r3' : 'gnomad_r2_1'
-      )
+      setSearchDataset(getDefaultSearchDataset(newParams.dataset))
     })
   })
 
@@ -86,6 +93,7 @@ export default withRouter(props => {
       >
         <option value="gnomad_r2_1">gnomAD v2.1.1</option>
         <option value="gnomad_r3">gnomAD v3.1</option>
+        <option value="exac">ExAC</option>
       </Select>
       <span style={{ flexGrow: 1 }}>
         <Searchbox
