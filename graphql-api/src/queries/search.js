@@ -6,15 +6,9 @@ const {
   isRsId,
 } = require('@gnomad/identifiers')
 
-const { DATASET_LABELS, DATASET_REFERENCE_GENOMES } = require('../datasets')
-const { UserVisibleError } = require('../errors')
+const { DATASET_REFERENCE_GENOMES } = require('../datasets')
 
 const fetchSearchResults = async (esClient, datasetId, query) => {
-  // TODO: Allow any variant dataset
-  if (datasetId !== 'gnomad_r2_1' && datasetId !== 'gnomad_r3') {
-    throw new UserVisibleError(`Search is not supported for dataset "${DATASET_LABELS[datasetId]}"`)
-  }
-
   // ==============================================================================================
   // Variants
   // ==============================================================================================
