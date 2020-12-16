@@ -4,6 +4,11 @@ const { UserVisibleError } = require('../../errors')
 
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('../helpers/region-helpers')
+const {
+  fetchLofCurationResultsByVariant,
+  fetchLofCurationResultsByGene,
+  fetchLofCurationResultsByRegion,
+} = require('../lof-curation-result-queries')
 
 const { getFlagsForContext } = require('./shared/flags')
 const { getConsequenceForContext } = require('./shared/transcriptConsequence')
@@ -73,11 +78,14 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
+  const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
+
   return {
     ...variant,
     reference_genome: 'GRCh37',
     genome: null,
     flags,
+    lof_curations: lofCurationResults,
     transcript_consequences: variant.transcript_consequences || [],
   }
 }
@@ -155,9 +163,23 @@ const fetchVariantsByGene = async (esClient, gene) => {
     },
   })
 
-  return hits
+  const variants = hits
     .map((hit) => hit._source.value)
     .map(shapeVariantSummary({ type: 'gene', geneId: gene.gene_id }))
+
+  const lofCurationResults = await fetchLofCurationResultsByGene(esClient, gene)
+  const lofCurationResultsByVariant = {}
+  lofCurationResults.forEach((result) => {
+    lofCurationResultsByVariant[result.variant_id] = result.lof_curations.find(
+      (c) => c.gene_id === gene.gene_id
+    )
+  })
+
+  variants.forEach((variant) => {
+    variant.lof_curation = lofCurationResultsByVariant[variant.variant_id] // eslint-disable-line no-param-reassign
+  })
+
+  return variants
 }
 
 // ================================================================================================
@@ -200,7 +222,31 @@ const fetchVariantsByRegion = async (esClient, region) => {
     },
   })
 
-  return hits.map((hit) => hit._source.value).map(shapeVariantSummary({ type: 'region' }))
+  const variants = hits.map((hit) => hit._source.value).map(shapeVariantSummary({ type: 'region' }))
+
+  const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, region)
+
+  const lofCurationResultsByVariant = {}
+  lofCurationResults.forEach((result) => {
+    lofCurationResultsByVariant[result.variant_id] = result.lof_curations.reduce(
+      (acc, c) => ({
+        ...acc,
+        [c.gene_id]: c,
+      }),
+      {}
+    )
+  })
+
+  variants.forEach((variant) => {
+    if (variant.transcript_consequence) {
+      // eslint-disable-next-line no-param-reassign
+      variant.lof_curation = (lofCurationResultsByVariant[variant.variant_id] || {})[
+        variant.transcript_consequence.gene_id
+      ]
+    }
+  })
+
+  return variants
 }
 
 // ================================================================================================
