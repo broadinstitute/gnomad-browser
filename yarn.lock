@@ -998,9 +998,9 @@
     yaml "^1.4.0"
 
 "@gnomad/region-viewer@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-1.0.0.tgz#90fae7af432861c3115a92ba96972ee0052c7dfb"
-  integrity sha512-pkTO4+OwP7DgpW51MJNDCS5/UnVkIGyETzlqRAr1bG/ZeOJAKSZx0B4rAZssocxn6Z+7EpuL5PSptUP0zm79UA==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-1.1.0.tgz#83cec38292e1274ee88fa9590e7c9e33b29a4e05"
+  integrity sha512-YplH9Tvubas3Bl3y3SglGQHhe8mh1ZXeun3M4W2V48wA/qSPm0qDIFveMJHjP+e1G/YdgfmZM5e9z/Km8QL36A==
   dependencies:
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
