@@ -37,3 +37,4 @@ To see other available configuration options, run `./deployctl config list`.
   - [Backups](./docs/ElasticsearchSnapshots.md)
   - [Loading large datasets](./docs/LoadingLargeDatasets.md)
 - [Redis cache](./docs/RedisCache.md)
+- [Logging](./docs/Logging.md)
