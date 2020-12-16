@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { Cursor, PositionAxisTrack } from '@gnomad/region-viewer'
+import { PositionAxisTrack } from '@gnomad/region-viewer'
 
+import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 import VariantTrack from '../VariantList/VariantTrack'
 
