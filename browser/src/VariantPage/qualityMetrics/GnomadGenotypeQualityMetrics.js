@@ -136,10 +136,12 @@ export class GnomadGenotypeQualityMetrics extends Component {
           />
         </ControlSection>
 
-        <p>
-          Note: This plot may include low-quality genotypes that were excluded from allele counts in
-          the tables above.
-        </p>
+        {(datasetId.startsWith('gnomad_r2') || datasetId === 'exac') && (
+          <p>
+            Note: This plot may include low-quality genotypes that were excluded from allele counts
+            in the tables above.
+          </p>
+        )}
       </div>
     )
   }
