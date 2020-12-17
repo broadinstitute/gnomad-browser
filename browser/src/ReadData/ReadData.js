@@ -4,9 +4,9 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
-import { isSubset } from '../../datasets'
-import { BaseQuery } from '../../Query'
-import StatusMessage from '../../StatusMessage'
+import { isSubset } from '../datasets'
+import { BaseQuery } from '../Query'
+import StatusMessage from '../StatusMessage'
 import { IGVBrowser } from './IGVBrowser'
 
 const ControlContainer = styled.div`
@@ -54,7 +54,7 @@ const ReadDataPropType = PropTypes.shape({
   readGroup: PropTypes.string.isRequired,
 })
 
-class GnomadReadData extends Component {
+class ReadData extends Component {
   static propTypes = {
     children: PropTypes.node,
     datasetId: PropTypes.string.isRequired,
@@ -378,7 +378,7 @@ const interleaveReads = allVariantReads => {
   return reads
 }
 
-const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
+const ReadDataContainer = ({ datasetId, variantIds }) => {
   if (variantIds.length === 0) {
     return null
   }
@@ -490,7 +490,7 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
         )
 
         return (
-          <GnomadReadData
+          <ReadData
             datasetId={datasetId}
             referenceGenome={
               readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2' ? 'GRCh37' : 'GRCh38'
@@ -508,16 +508,16 @@ const GnomadReadDataContainer = ({ datasetId, variantIds }) => {
                 {graphQLErrors.map(e => e.message).join('. ')}.
               </p>
             )}
-          </GnomadReadData>
+          </ReadData>
         )
       }}
     </BaseQuery>
   )
 }
 
-GnomadReadDataContainer.propTypes = {
+ReadDataContainer.propTypes = {
   datasetId: PropTypes.string.isRequired,
   variantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
-export default GnomadReadDataContainer
+export default ReadDataContainer
