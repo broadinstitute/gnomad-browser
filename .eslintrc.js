@@ -10,7 +10,6 @@ module.exports = {
     'func-names': ['warn', 'as-needed'],
     'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
     'import/prefer-default-export': 0,
-    'import/no-extraneous-dependencies': 0,
     // https://github.com/airbnb/javascript/blob/6d05dd898acfec3299cc2be8b6188be542824965/packages/eslint-config-airbnb/rules/react.js#L489
     'react/static-property-placement': ['error', 'static public field'],
     // Does not handle initial state derived from props in constructor
@@ -25,6 +24,13 @@ module.exports = {
       files: ['**/*spec.js', '**/*test.js', 'tests/**/*.js'],
       env: {
         jest: true,
+      },
+    },
+    {
+      // Allow using devDependencies from workspace root in browser webpack config
+      files: ['browser/webpack.config.js'],
+      rules: {
+        'import/no-extraneous-dependencies': ['error', { packageDir: ['./browser', '.'] }],
       },
     },
     {
