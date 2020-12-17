@@ -1,6 +1,6 @@
-import path from 'path'
+const path = require('path')
 
-import sqlite from 'sqlite'
+const sqlite = require('sqlite')
 
 const ZYGOSITY_CATEGORIES = ['het', 'hom', 'hemi']
 
@@ -25,4 +25,4 @@ const resolveReads = async ({ readsDirectory, publicPath, meta }, { alt, chrom, 
   }))
 }
 
-export default resolveReads
+module.exports = resolveReads

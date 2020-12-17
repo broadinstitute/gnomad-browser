@@ -1,9 +1,9 @@
-import express from 'express'
-import graphQLHTTP from 'express-graphql'
+const express = require('express')
+const graphQLHTTP = require('express-graphql')
 
-import { formatError } from './errors'
-import logger from './logging'
-import schema from './schema'
+const { formatError } = require('./errors')
+const logger = require('./logging')
+const schema = require('./schema')
 
 const config = {
   PORT: JSON.parse(process.env.PORT || '80'),

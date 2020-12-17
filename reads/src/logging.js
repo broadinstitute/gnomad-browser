@@ -53,4 +53,4 @@ class Logger {
   }
 }
 
-export default new Logger()
+module.exports = new Logger()
