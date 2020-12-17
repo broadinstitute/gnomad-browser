@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import Link from '../../Link'
+import Link from '../Link'
 import MNVConsequence, { MNVConsequencePropType } from './MNVConsequence'
 
 const List = styled.ul`

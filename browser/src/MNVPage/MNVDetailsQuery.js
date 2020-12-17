@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { BaseQuery } from '../../Query'
+import { BaseQuery } from '../Query'
 
 const query = `
 query MultiNucleotideVariant($variantId: String!, $datasetId: DatasetId!) {

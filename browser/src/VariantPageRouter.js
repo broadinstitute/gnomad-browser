@@ -8,7 +8,7 @@ import DocumentTitle from './DocumentTitle'
 import StructuralVariantPage from './StructuralVariantPage/StructuralVariantPage'
 import VariantPage from './VariantPage/VariantPage'
 import MitochondrialVariantPage from './MitochondrialVariantPage/MitochondrialVariantPage'
-import MNVPage from './VariantPage/MultiNucleotideVariant/MNVPage'
+import MNVPage from './MNVPage/MNVPage'
 
 const VariantPageRouter = ({ datasetId, variantIdOrRsId, ...otherProps }) => {
   if (datasetId.startsWith('gnomad_sv')) {
