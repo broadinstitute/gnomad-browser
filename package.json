@@ -10,6 +10,9 @@
     "lint:js": "eslint .",
     "test": "jest"
   },
+  "engines": {
+    "node": ">=14.15.2 <15.0.0"
+  },
   "workspaces": [
     "browser",
     "graphql-api",

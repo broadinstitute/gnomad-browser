@@ -21,8 +21,5 @@
     "on-finished": "^2.3.0",
     "on-headers": "^1.0.2",
     "redis": "^3.0.2"
-  },
-  "engines": {
-    "node": ">=11"
   }
 }
