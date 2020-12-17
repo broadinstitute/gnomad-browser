@@ -63,7 +63,4 @@ module.exports = {
   Query: {
     region: resolveRegion,
   },
-  Region: {
-    coverage: (obj, args) => ({ ...obj, dataset: args.dataset }),
-  },
 }
