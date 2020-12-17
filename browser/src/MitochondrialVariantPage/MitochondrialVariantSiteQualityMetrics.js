@@ -5,7 +5,7 @@ import { Select } from '@gnomad/ui'
 
 import gnomadV3MitochondrialVariantSiteQualityMetricDistributions from '../dataset-constants/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantSiteQualityMetricDistributions.json'
 import ControlSection from '../VariantPage/ControlSection'
-import { BarGraph } from '../VariantPage/qualityMetrics/BarGraph'
+import { BarGraph } from '../VariantPage/BarGraph'
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 
 const MitochondrialVariantSiteQualityMetrics = ({ datasetId, variant }) => {
