@@ -17,4 +17,3 @@ browser/build.env
 
 # Build outputs
 browser/dist
-reads/dist

@@ -1,17 +1,17 @@
-import {
+const {
   GraphQLEnumType,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-} from 'graphql'
+} = require('graphql')
 
-import datasets from './datasets'
-import { UserVisibleError } from './errors'
-import logger from './logging'
-import resolveReadsLegacy from './resolveReadsLegacy'
-import resolveReads from './resolveReads'
+const datasets = require('./datasets')
+const { UserVisibleError } = require('./errors')
+const logger = require('./logging')
+const resolveReadsLegacy = require('./resolveReadsLegacy')
+const resolveReads = require('./resolveReads')
 
 const DatasetArgumentType = new GraphQLEnumType({
   name: 'DatasetId',
@@ -72,7 +72,7 @@ const VariantReadsType = new GraphQLObjectType({
 
 const VARIANT_ID_REGEX = /^(\d+|X|Y)-([1-9][0-9]*)-([ACGT]+)-([ACGT]+)$/
 
-export const isVariantId = str => {
+const isVariantId = str => {
   const match = VARIANT_ID_REGEX.exec(str)
   if (!match) {
     return false
@@ -125,4 +125,4 @@ const Schema = new GraphQLSchema({
   query: RootType,
 })
 
-export default Schema
+module.exports = Schema

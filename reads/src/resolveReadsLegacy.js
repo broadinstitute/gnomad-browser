@@ -1,6 +1,6 @@
-import path from 'path'
+const path = require('path')
 
-import sqlite from 'sqlite'
+const sqlite = require('sqlite')
 
 const resolveReadsLegacy = async ({ readsDirectory, publicPath }, { alt, chrom, pos, ref }) => {
   const dbPath = path.join(
@@ -47,4 +47,4 @@ const resolveReadsLegacy = async ({ readsDirectory, publicPath }, { alt, chrom, 
   return reads
 }
 
-export default resolveReadsLegacy
+module.exports = resolveReadsLegacy

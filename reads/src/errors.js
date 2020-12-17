@@ -1,6 +1,6 @@
-import logger from './logging'
+const logger = require('./logging')
 
-export class UserVisibleError extends Error {
+class UserVisibleError extends Error {
   constructor(...args) {
     super(...args)
     this.name = 'UserVisibleError'
@@ -10,7 +10,7 @@ export class UserVisibleError extends Error {
   }
 }
 
-export const formatError = error => {
+const formatError = error => {
   // graphql-js doesn't distinguish between different error types, so this is the
   // only way to determine what errors come from query validation (and thus should
   // be shown to the user)
@@ -35,4 +35,9 @@ export const formatError = error => {
 
   const message = isUserVisible ? error.message : 'An unknown error occurred'
   return { message }
+}
+
+module.exports = {
+  UserVisibleError,
+  formatError,
 }

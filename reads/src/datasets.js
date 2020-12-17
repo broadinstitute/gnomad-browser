@@ -27,4 +27,4 @@ const datasets = {
   },
 }
 
-export default datasets
+module.exports = datasets

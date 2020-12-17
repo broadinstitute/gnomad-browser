@@ -1,7 +1,4 @@
 *
-!babel.config.js
-!package.json
 !yarn.lock
 !reads/package.json
 !reads/src
-!reads/webpack.config.js
