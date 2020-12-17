@@ -7,8 +7,8 @@ import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
-import GnomadReadData from '../VariantPage/reads/GnomadReadData'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import VariantNotFound from '../VariantPage/VariantNotFound'
 import MNVConsequenceList from './MNVConsequenceList'
@@ -129,7 +129,7 @@ const MNVPage = ({ datasetId, variantId }) => (
                   Reads from individuals carrying the MNV may be shown more than once.
                 </ListItem>
               </List>
-              <GnomadReadData
+              <ReadData
                 datasetId={datasetId}
                 variantIds={variant.constituent_snvs.map(snv => snv.variant_id)}
               />

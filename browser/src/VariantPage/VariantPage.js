@@ -11,6 +11,7 @@ import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import { BaseQuery } from '../Query'
+import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
@@ -19,7 +20,6 @@ import LoFCurationResult from './LoFCurationResult'
 import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
 import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
 import variantQuery from './queries/gnomadVariantQuery'
-import GnomadReadData from './reads/GnomadReadData'
 import VariantFeedback from './VariantFeedback'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
@@ -174,7 +174,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
     </ResponsiveSection>
     <Section>
       <h2>Read Data</h2>
-      <GnomadReadData datasetId={datasetId} variantIds={[variant.variantId]} />
+      <ReadData datasetId={datasetId} variantIds={[variant.variantId]} />
     </Section>
   </VariantDetailsContainer>
 )
