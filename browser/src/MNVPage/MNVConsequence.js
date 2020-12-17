@@ -3,8 +3,8 @@ import React from 'react'
 
 import { BaseTable } from '@gnomad/ui'
 
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../../vepConsequences'
-import VariantCategoryMarker from '../../VariantList/VariantCategoryMarker'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
+import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 
 const categoryColors = {
   lof: '#DD2C00',

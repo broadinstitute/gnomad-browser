@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import Link from '../../Link'
-import QCFilter from '../../QCFilter'
+import Link from '../Link'
+import QCFilter from '../QCFilter'
 
 const Table = styled.table`
   th {

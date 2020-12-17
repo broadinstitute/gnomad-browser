@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Badge, List, ListItem } from '@gnomad/ui'
 
-import Link from '../../Link'
+import Link from '../Link'
 
 const MNVSummaryList = ({ multiNucleotideVariants }) => (
   <List>
