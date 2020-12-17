@@ -4,9 +4,9 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4",
-    "express-graphql": "^0.8.0",
-    "graphql": "^14.2.1",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.3.0",
     "sqlite": "^3.0.0"
   }
 }

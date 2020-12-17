@@ -1,5 +1,5 @@
 const express = require('express')
-const graphQLHTTP = require('express-graphql')
+const { graphqlHTTP } = require('express-graphql')
 
 const { formatError } = require('./errors')
 const logger = require('./logging')
@@ -21,7 +21,7 @@ app.get('/health/ready', (request, response) => {
 
 app.use(
   '/reads',
-  graphQLHTTP({
+  graphqlHTTP({
     schema,
     graphiql: true,
     customFormatErrorFn: formatError,
