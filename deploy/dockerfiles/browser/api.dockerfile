@@ -5,6 +5,8 @@ RUN mkdir /app && chown node:node /app
 USER node
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 # Install dependencies
 COPY --chown=node:node graphql-api/package.json /app/
 COPY --chown=node:node yarn.lock .
