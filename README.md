@@ -1,7 +1,5 @@
 # gnomAD browser
 
-![CI status](https://github.com/broadinstitute/gnomad-browser/workflows/CI/badge.svg)
-
 JavaScript tools for exploring genomic data.
 
 To view the gnomAD browser, go to https://gnomad.broadinstitute.org.
