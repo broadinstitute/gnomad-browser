@@ -78,7 +78,7 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             raise RuntimeError(f"could not find image {config.api_image_repository}:{api_tag}")
     else:
         api_tag = get_most_recent_tag(config.api_image_repository)
-        print(f"No API tag provided, using most recent ({browser_tag})")
+        print(f"No API tag provided, using most recent ({api_tag})")
 
     os.makedirs(deployment_directory)
 
