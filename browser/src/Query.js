@@ -120,12 +120,25 @@ export class BaseQuery extends Component {
   }
 }
 
-const Query = ({ children, errorMessage, loadingMessage, query, success, url, variables }) => {
+const Query = ({
+  children,
+  errorMessage,
+  loadingMessage,
+  loadingPlaceholderHeight,
+  query,
+  success,
+  url,
+  variables,
+}) => {
   return (
     <BaseQuery query={query} url={url} variables={variables}>
       {({ data, error, graphQLErrors, loading }) => {
         if (loading) {
-          return <StatusMessage>{loadingMessage}</StatusMessage>
+          return (
+            <div style={{ height: loadingPlaceholderHeight || 'auto' }}>
+              <StatusMessage>{loadingMessage}</StatusMessage>
+            </div>
+          )
         }
         if (error) {
           return <StatusMessage>{errorMessage}</StatusMessage>
@@ -151,6 +164,7 @@ Query.propTypes = {
   children: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
   loadingMessage: PropTypes.string,
+  loadingPlaceholderHeight: PropTypes.number,
   query: PropTypes.string.isRequired,
   success: PropTypes.func,
   url: PropTypes.string,
@@ -160,6 +174,7 @@ Query.propTypes = {
 Query.defaultProps = {
   errorMessage: 'Error',
   loadingMessage: 'Loading',
+  loadingPlaceholderHeight: undefined,
   success: () => true,
   url: '/api/',
   variables: {},
