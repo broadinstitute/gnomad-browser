@@ -4,10 +4,12 @@ import { hot } from 'react-hot-loader/root'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { normalizeRegionId } from '@gnomad/identifiers'
+import { isVariantId, normalizeRegionId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
+import { Page, PageHeading } from '@gnomad/ui'
 
 import AboutPage from './AboutPage'
 import ContactPage from './ContactPage'
+import DocumentTitle from './DocumentTitle'
 import DownloadsPage from './downloads/DownloadsPage'
 import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
@@ -16,6 +18,7 @@ import HelpModal from './help/HelpModal'
 import HelpPage from './help/HelpPage'
 import HomePage from './HomePage'
 import MOUPage from './MOUPage'
+import NavBar from './NavBar'
 import PageNotFoundPage from './PageNotFoundPage'
 import PublicationsPage from './PublicationsPage'
 import SearchRedirectPage from './SearchRedirectPage'
@@ -23,9 +26,10 @@ import TermsPage from './TermsPage'
 import GenePageContainer from './GenePage/GenePageContainer'
 import RegionPageContainer from './RegionPage/RegionPageContainer'
 import TranscriptPageContainer from './TranscriptPage/TranscriptPageContainer'
-import VariantPageRouter from './VariantPageRouter'
-
-import NavBar from './NavBar'
+import MitochondrialVariantPage from './MitochondrialVariantPage/MitochondrialVariantPage'
+import MNVPage from './MNVPage/MNVPage'
+import StructuralVariantPage from './StructuralVariantPage/StructuralVariantPage'
+import VariantPage from './VariantPage/VariantPage'
 
 const MainPanel = styled.div`
   width: 100%;
@@ -134,14 +138,77 @@ const App = () => (
             path="/variant/:variantId"
             render={({ history, location, match }) => {
               const queryParams = queryString.parse(location.search)
+              const datasetId = queryParams.dataset || defaultDataset
+              const variantIdOrRsId = match.params.variantId
+
+              if (datasetId.startsWith('gnomad_sv')) {
+                return (
+                  <StructuralVariantPage
+                    datasetId={datasetId}
+                    variantId={variantIdOrRsId}
+                    history={history}
+                    location={location}
+                    match={match}
+                  />
+                )
+              }
+
+              if (isVariantId(variantIdOrRsId)) {
+                const normalizedVariantId = normalizeVariantId(variantIdOrRsId).replace(/^MT/, 'M')
+                const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
+                if (ref.length === alt.length && ref.length > 1) {
+                  return (
+                    <MNVPage
+                      datasetId={datasetId}
+                      variantId={normalizedVariantId}
+                      history={history}
+                      location={location}
+                      match={match}
+                    />
+                  )
+                }
+
+                if (chrom === 'M') {
+                  return (
+                    <MitochondrialVariantPage
+                      datasetId={datasetId}
+                      variantId={normalizedVariantId}
+                      history={history}
+                      location={location}
+                      match={match}
+                    />
+                  )
+                }
+
+                return (
+                  <VariantPage
+                    datasetId={datasetId}
+                    variantId={normalizedVariantId}
+                    history={history}
+                    location={location}
+                    match={match}
+                  />
+                )
+              }
+
+              if (isRsId(variantIdOrRsId)) {
+                return (
+                  <VariantPage
+                    datasetId={datasetId}
+                    rsId={variantIdOrRsId}
+                    history={history}
+                    location={location}
+                    match={match}
+                  />
+                )
+              }
+
               return (
-                <VariantPageRouter
-                  datasetId={queryParams.dataset || defaultDataset}
-                  variantIdOrRsId={match.params.variantId}
-                  history={history}
-                  location={location}
-                  match={match}
-                />
+                <Page>
+                  <DocumentTitle title="Invalid variant ID" />
+                  <PageHeading>Invalid Variant ID</PageHeading>
+                  <p>Variant IDs must be chrom-pos-ref-alt or rsIDs.</p>
+                </Page>
               )
             }}
           />
