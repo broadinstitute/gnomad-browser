@@ -56,6 +56,7 @@ const GeneCoverageTrack = ({ datasetId, geneId, includeExomeCoverage, includeGen
         includeGenomeCoverage,
       }}
       loadingMessage="Loading coverage"
+      loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"
       success={data => {
         if (!data.gene || !data.gene.coverage) {

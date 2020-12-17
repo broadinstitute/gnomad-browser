@@ -25,6 +25,7 @@ const MitochondrialGeneCoverageTrack = ({ datasetId, geneId }) => {
       query={query}
       variables={{ geneId, datasetId, referenceGenome: referenceGenomeForDataset(datasetId) }}
       loadingMessage="Loading coverage"
+      loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"
       success={data => data.gene && data.gene.mitochondrial_coverage}
     >

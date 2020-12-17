@@ -65,6 +65,7 @@ const RegionCoverageTrack = ({
         includeGenomeCoverage,
       }}
       loadingMessage="Loading coverage"
+      loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"
       success={data => {
         if (!data.region || !data.region.coverage) {
