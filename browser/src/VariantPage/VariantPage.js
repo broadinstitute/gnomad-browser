@@ -17,14 +17,13 @@ import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import LoFCurationResult from './LoFCurationResult'
-import { GnomadGenotypeQualityMetrics } from './qualityMetrics/GnomadGenotypeQualityMetrics'
-import { GnomadSiteQualityMetrics } from './qualityMetrics/GnomadSiteQualityMetrics'
-import variantQuery from './queries/gnomadVariantQuery'
 import VariantFeedback from './VariantFeedback'
+import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 import VariantInSilicoPredictors from './VariantInSilicoPredictors'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
+import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
 const Section = styled.section`
@@ -166,11 +165,11 @@ const VariantPageContent = ({ datasetId, variant }) => (
     </ResponsiveSection>
     <ResponsiveSection>
       <h2>Genotype Quality Metrics</h2>
-      <GnomadGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
+      <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
     </ResponsiveSection>
     <ResponsiveSection>
       <h2>Site Quality Metrics</h2>
-      <GnomadSiteQualityMetrics datasetId={datasetId} variant={variant} />
+      <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
     </ResponsiveSection>
     <Section>
       <h2>Read Data</h2>
@@ -268,6 +267,205 @@ VariantPageTitle.defaultProps = {
   rsId: undefined,
   variantId: undefined,
 }
+
+const variantQuery = `
+query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
+  variant(variantId: $variantId, rsid: $rsid, dataset: $datasetId) {
+    variantId
+    reference_genome
+    chrom
+    pos
+    ref
+    alt
+    colocatedVariants
+    multiNucleotideVariants {
+      combined_variant_id
+      changes_amino_acids
+      n_individuals
+      other_constituent_snvs
+    }
+    exome {
+      ac
+      an
+      ac_hemi
+      ac_hom
+      faf95 {
+        popmax
+        popmax_population
+      }
+      filters
+      populations {
+        id
+        ac
+        an
+        ac_hemi
+        ac_hom
+      }
+      age_distribution {
+        het {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+        hom {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+      }
+      qualityMetrics {
+        alleleBalance {
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        genotypeDepth {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        genotypeQuality {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        siteQualityMetrics {
+          metric
+          value
+        }
+      }
+    }
+    genome {
+      ac
+      an
+      ac_hemi
+      ac_hom
+      faf95 {
+        popmax
+        popmax_population
+      }
+      filters
+      populations {
+        id
+        ac
+        an
+        ac_hemi
+        ac_hom
+      }
+      age_distribution {
+        het {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+        hom {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+      }
+      qualityMetrics {
+        alleleBalance {
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        genotypeDepth {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        genotypeQuality {
+          all {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+          alt {
+            bin_edges
+            bin_freq
+            n_smaller
+            n_larger
+          }
+        }
+        siteQualityMetrics {
+          metric
+          value
+        }
+      }
+    }
+    flags
+    lof_curations {
+      gene_id
+      gene_symbol
+      verdict
+      flags
+    }
+    rsid
+    sortedTranscriptConsequences {
+      gene_id
+      gene_version
+      gene_symbol
+      hgvs
+      hgvsc
+      hgvsp
+      is_canonical
+      is_mane_select
+      is_mane_select_version
+      lof
+      lof_flags
+      lof_filter
+      major_consequence
+      polyphen_prediction
+      sift_prediction
+      transcript_id
+      transcript_version
+    }
+    in_silico_predictors {
+      id
+      value
+    }
+  }
+}
+`
 
 const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
   const queryVariables = { datasetId }

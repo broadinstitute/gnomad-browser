@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 
 import { SegmentedControl, Select } from '@gnomad/ui'
 
-import Histogram from '../../Histogram'
-import ControlSection from '../ControlSection'
+import Histogram from '../Histogram'
+import ControlSection from './ControlSection'
 
 const histogramPropType = PropTypes.shape({
   bin_edges: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -27,7 +27,7 @@ const genotypeQualityMetricPropType = PropTypes.shape({
   }).isRequired,
 })
 
-export class GnomadGenotypeQualityMetrics extends Component {
+class VariantGenotypeQualityMetrics extends Component {
   static propTypes = {
     datasetId: PropTypes.string.isRequired,
     variant: PropTypes.shape({
@@ -146,3 +146,5 @@ export class GnomadGenotypeQualityMetrics extends Component {
     )
   }
 }
+
+export default VariantGenotypeQualityMetrics
