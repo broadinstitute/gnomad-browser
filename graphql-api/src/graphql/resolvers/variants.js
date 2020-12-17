@@ -55,6 +55,10 @@ const resolveVariantsInRegion = async (obj, args, ctx) => {
     throw new UserVisibleError('Dataset is required')
   }
 
+  if (obj.stop - obj.start >= 2.5e6) {
+    throw new UserVisibleError('Select a smaller region to view variants')
+  }
+
   const numVariantsInRegion = await countVariantsInRegion(ctx.esClient, dataset, obj)
   if (numVariantsInRegion > 30000) {
     throw new UserVisibleError(
