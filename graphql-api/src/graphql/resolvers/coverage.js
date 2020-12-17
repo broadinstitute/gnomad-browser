@@ -1,3 +1,4 @@
+const { UserVisibleError } = require('../../errors')
 const {
   fetchExomeCoverageForRegion,
   fetchGenomeCoverageForRegion,
@@ -50,6 +51,16 @@ const resolveCoverageInTranscript = async (obj, args, ctx) => {
 }
 
 module.exports = {
+  Region: {
+    coverage: (obj, args) => {
+      if (obj.stop - obj.start >= 2.5e6) {
+        throw new UserVisibleError('Coverage is not available for a region this large')
+      }
+
+      // Forward region and dataset argument to exome/genome coverage resolvers.
+      return { ...obj, dataset: args.dataset }
+    },
+  },
   RegionCoverage: {
     exome: resolveExomeCoverageInRegion,
     genome: resolveGenomeCoverageInRegion,
