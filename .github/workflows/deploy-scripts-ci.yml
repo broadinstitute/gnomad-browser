@@ -1,0 +1,37 @@
+name: Deploy scripts CI
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'deploy/deployctl/**'
+  pull_request:
+    paths:
+      - 'deploy/deployctl/**'
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Use pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            pip-
+      - name: Install dependencies
+        run: |
+          pip install wheel
+          pip install -r requirements-dev.txt
+          pip install -r deploy/deployctl/requirements.txt
+      - name: Check formatting
+        run: black --check deploy/deployctl
+      - name: Run Pylint
+        run: pylint --disable=R,C,W deploy/deployctl
