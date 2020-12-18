@@ -21,6 +21,10 @@ COPY --chown=node:node browser browser
 COPY --chown=node:node browser/build.env .
 RUN export $(cat build.env | xargs); cd browser && yarn run build
 
+# Compress static files for use with nginx's gzip_static
+RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)$' \
+  | xargs -I{} -n1 sh -c 'gzip -9 -c "$1" > "$1".gz; MTIME=$(date -R -r "$1" +"%Y-%m-%d %H:%M:%S"); touch -d "$MTIME" "$1.gz"' -- {}
+
 ###############################################################################
 FROM nginx:stable-alpine
 
