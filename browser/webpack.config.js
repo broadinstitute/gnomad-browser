@@ -98,7 +98,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, './dist/public'),
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name]-[contenthash].js',
+    filename: isDev ? 'js/[name].js' : 'js/[name]-[contenthash].js',
   },
   plugins: [
     new CopyWebpackPlugin({
