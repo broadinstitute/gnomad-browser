@@ -1,4 +1,3 @@
-import graphqlFetch from 'graphql-fetch'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { withRouter } from 'react-router-dom'
@@ -25,23 +24,31 @@ const Wrapper = styled.div`
   }
 `
 
-const fetchSearchResults = (dataset, query) =>
-  graphqlFetch('/api/')(
-    `
-  query Search($dataset: DatasetId!, $query: String!) {
-    searchResults(dataset: $dataset, query: $query) {
-      label
-      value: url
-    }
+const searchQuery = `
+query Search($dataset: DatasetId!, $query: String!) {
+  searchResults(dataset: $dataset, query: $query) {
+    label
+    value: url
   }
-`,
-    { dataset, query }
-  ).then(response => {
-    if (!response.data.searchResults) {
-      throw new Error('Unable to retrieve search results')
-    }
-    return response.data.searchResults
+}
+`
+
+const fetchSearchResults = (dataset, query) =>
+  fetch('/api/', {
+    body: JSON.stringify({
+      query: searchQuery,
+      variables: { dataset, query },
+    }),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
   })
+    .then(response => response.json())
+    .then(response => {
+      if (!response.data.searchResults) {
+        throw new Error('Unable to retrieve search results')
+      }
+      return response.data.searchResults
+    })
 
 const getDefaultSearchDataset = selectedDataset => {
   if (selectedDataset) {
