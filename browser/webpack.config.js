@@ -44,6 +44,7 @@ fs.writeFileSync(helpTopicsModulePath, helpTopicsModuleContent)
 const config = {
   devServer: {
     historyApiFallback: true,
+    hot: true,
     port: 8008,
     publicPath: '/',
     stats: 'errors-only',

@@ -1,4 +1,5 @@
 import 'core-js/stable'
+import 'whatwg-fetch'
 import React from 'react'
 import { render } from 'react-dom'
 

@@ -1,4 +1,3 @@
-import gqlFetch from 'graphql-fetch'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -87,7 +86,18 @@ export class BaseQuery extends Component {
       this.currentRequest.cancel()
     }
 
-    this.currentRequest = cancelable(gqlFetch(url)(query, variables))
+    this.currentRequest = cancelable(
+      fetch(url, {
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(response => response.json())
+    )
     this.currentRequest.promise.then(
       response => {
         if (!this.mounted) {
