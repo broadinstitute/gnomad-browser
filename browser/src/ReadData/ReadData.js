@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
@@ -7,7 +7,8 @@ import { Badge, Button, ExternalLink } from '@gnomad/ui'
 import { isSubset } from '../datasets'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
-import { IGVBrowser } from './IGVBrowser'
+
+const IGVBrowser = lazy(() => import('./IGVBrowser'))
 
 const ControlContainer = styled.div`
   /* Offset the 80px wide label to center buttons under the IGV browser */
