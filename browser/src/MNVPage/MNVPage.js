@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
+import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import ReadData from '../ReadData/ReadData'
@@ -54,7 +55,11 @@ const MNVPage = ({ datasetId, variantId }) => (
     <MNVDetailsQuery datasetId={datasetId} variantId={variantId}>
       {({ data, error, loading }) => {
         if (loading) {
-          return <StatusMessage>Loading variant...</StatusMessage>
+          return (
+            <Delayed>
+              <StatusMessage>Loading variant...</StatusMessage>
+            </Delayed>
+          )
         }
 
         if (error) {

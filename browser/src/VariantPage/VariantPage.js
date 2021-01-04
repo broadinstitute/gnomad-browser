@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Badge, Page } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
+import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -482,7 +483,11 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
           if (loading) {
-            pageContent = <StatusMessage>Loading variant...</StatusMessage>
+            pageContent = (
+              <Delayed>
+                <StatusMessage>Loading variant...</StatusMessage>
+              </Delayed>
+            )
           } else if (error) {
             pageContent = <StatusMessage>Unable to load variant</StatusMessage>
           } else if (!(data || {}).variant) {
