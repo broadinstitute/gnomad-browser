@@ -31,3 +31,23 @@
   ```
   ./deployctl reads-deployments delete <old-deployment-name>
   ```
+
+## Updating blog deployment
+
+- Build Docker images and push to GCR.
+
+  ```
+  ./deployctl blog-images build --push
+  ```
+
+- Update deployment manifests.
+
+  ```
+  ./deployctl blog-deployment update
+  ```
+
+- Apply deployment.
+
+  ```
+  ./deployctl blog-deployment apply
+  ```
