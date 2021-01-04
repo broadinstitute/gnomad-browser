@@ -37,14 +37,14 @@ def update_deployment(tag: str = None, auth_tag: str = None) -> None:
             raise RuntimeError(f"could not find image {config.blog_image_repository}:{tag}")
     else:
         tag = get_most_recent_tag(config.blog_image_repository)
-        print(f"No browser tag provided, using most recent ({tag})")
+        print(f"No blog tag provided, using most recent ({tag})")
 
     if auth_tag:
         if not image_exists(config.blog_auth_image_repository, auth_tag):
             raise RuntimeError(f"could not find image {config.blog_auth_image_repository}:{auth_tag}")
     else:
         auth_tag = get_most_recent_tag(config.blog_auth_image_repository)
-        print(f"No API tag provided, using most recent ({auth_tag})")
+        print(f"No auth tag provided, using most recent ({auth_tag})")
 
     with open(os.path.join(deployment_directory, "kustomization.yaml"), "w") as kustomization_file:
         kustomization = KUSTOMIZATION_TEMPLATE.format(
