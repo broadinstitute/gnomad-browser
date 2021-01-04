@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import Delayed from './Delayed'
 import StatusMessage from './StatusMessage'
 
 const areVariablesEqual = (variables, otherVariables) => {
@@ -146,10 +147,13 @@ const Query = ({
         if (loading) {
           return (
             <div style={{ height: loadingPlaceholderHeight || 'auto' }}>
-              <StatusMessage>{loadingMessage}</StatusMessage>
+              <Delayed>
+                <StatusMessage>{loadingMessage}</StatusMessage>
+              </Delayed>
             </div>
           )
         }
+
         if (error) {
           return <StatusMessage>{errorMessage}</StatusMessage>
         }
