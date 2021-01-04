@@ -18,6 +18,12 @@ spec:
       containers:
         - name: web
           image: gnomad-reads-server
+          env:
+            - name: INGRESS_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: ingress-ip
+                  key: ip
           imagePullPolicy: Always
           ports:
             - name: http
