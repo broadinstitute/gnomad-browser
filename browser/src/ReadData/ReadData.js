@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component, lazy } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
@@ -319,7 +319,9 @@ class ReadData extends Component {
 
         {children}
 
-        <IGVBrowser config={browserConfig} onCreateBrowser={this.onCreateBrowser} />
+        <Suspense fallback={null}>
+          <IGVBrowser config={browserConfig} onCreateBrowser={this.onCreateBrowser} />
+        </Suspense>
 
         {this.hasReadData('exome') && (
           <ControlContainer>
