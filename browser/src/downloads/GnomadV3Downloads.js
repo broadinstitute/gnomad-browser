@@ -159,8 +159,9 @@ export default () => (
       <FileList>
         <ListItem>
           <GetUrlButtons
-            label="Hail Sparse MatrixTable"
-            path="/release/3.1/mt/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset.mt"
+            label="Hail MatrixTable"
+            path="/release/3.1/mt/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset_dense.mt"
+            includeAzure={false}
           />
         </ListItem>
         <ListItem>
