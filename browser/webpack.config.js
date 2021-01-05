@@ -107,6 +107,13 @@ const config = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       gaTrackingId: process.env.GA_TRACKING_ID,
+      minify: isDev
+        ? false
+        : {
+            collapseWhitespace: true,
+            minifyCSS: true,
+            minifyJS: true,
+          },
     }),
   ],
 }
