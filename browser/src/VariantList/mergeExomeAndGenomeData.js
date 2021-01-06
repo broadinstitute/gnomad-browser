@@ -33,7 +33,7 @@ const mergeExomeAndGenomeData = variants =>
       ac_hom: add(exome.ac_hom, genome.ac_hom),
       filters: exome.filters.concat(genome.filters),
       populations: exome.populations.map((_, i) => ({
-        id: exome.populations[i].id.toUpperCase(),
+        id: exome.populations[i].id,
         ac: exome.populations[i].ac + genome.populations[i].ac,
         an: exome.populations[i].an + genome.populations[i].an,
         ac_hemi: exome.populations[i].ac_hemi + genome.populations[i].ac_hemi,

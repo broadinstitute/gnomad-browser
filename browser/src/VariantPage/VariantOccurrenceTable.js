@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, TooltipAnchor } from '@gnomad/ui'
 
+import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
 import { labelForDataset } from '../datasets'
 import sampleCounts from '../dataset-constants/sampleCounts'
 import InfoButton from '../help/InfoButton'
@@ -48,19 +49,6 @@ const renderGnomadVariantFlag = (variant, exomeOrGenome) => {
   return filters.map(filter => <QCFilter key={filter} filter={filter} />)
 }
 
-const POPULATION_NAMES = {
-  AFR: 'African/African-American',
-  AMI: 'Amish',
-  AMR: 'Latino/Admixed American',
-  ASJ: 'Ashkenazi Jewish',
-  EAS: 'East Asian',
-  FIN: 'European (Finnish)',
-  MID: 'Middle Eastern',
-  NFE: 'European (non-Finnish)',
-  OTH: 'Other',
-  SAS: 'South Asian',
-}
-
 const FilteringAlleleFrequencyValue = styled.span`
   border-bottom: 1px dashed #000;
 
@@ -89,11 +77,11 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
 
   return (
     <span>
-      <TooltipAnchor tooltip={POPULATION_NAMES[popmaxPopulation.toUpperCase()]}>
+      <TooltipAnchor tooltip={GNOMAD_POPULATION_NAMES[popmaxPopulation.toLowerCase()]}>
         <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>
-        {POPULATION_NAMES[popmaxPopulation.toUpperCase()]}
+        {GNOMAD_POPULATION_NAMES[popmaxPopulation.toLowerCase()]}
       </FilteringAlleleFrequencyPopulation>
     </span>
   )

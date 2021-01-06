@@ -3,18 +3,7 @@ import React from 'react'
 
 import { Button } from '@gnomad/ui'
 
-const POPULATION_NAMES = {
-  AFR: 'African/African-American',
-  AMI: 'Amish',
-  AMR: 'Latino/Admixed American',
-  ASJ: 'Ashkenazi Jewish',
-  EAS: 'East Asian',
-  FIN: 'European (Finnish)',
-  MID: 'Middle Eastern',
-  NFE: 'European (non-Finnish)',
-  OTH: 'Other',
-  SAS: 'South Asian',
-}
+import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
 
 const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
   const DEFAULT_COLUMNS = [
@@ -117,7 +106,7 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
   const datasetPopulations = variants[0].populations.map(pop => pop.id)
   let populationColumns = []
   datasetPopulations.forEach((popId, popIndex) => {
-    const popName = POPULATION_NAMES[popId.toUpperCase()]
+    const popName = GNOMAD_POPULATION_NAMES[popId.toLowerCase()]
     populationColumns = populationColumns.concat([
       {
         label: `Allele Count ${popName}`,
