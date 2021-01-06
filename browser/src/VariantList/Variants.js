@@ -192,12 +192,12 @@ class Variants extends Component {
           />
         )}
 
-        <VariantTrack
-          title={`${datasetLabel}\n(${renderedVariants.length})`}
-          variants={renderedVariants}
-        />
-
         <Cursor onClick={this.onNavigatorClick}>
+          <VariantTrack
+            title={`${datasetLabel} variants (${renderedVariants.length})`}
+            variants={renderedVariants}
+          />
+
           <VariantTrack
             title="Viewing in table"
             variants={renderedVariants
