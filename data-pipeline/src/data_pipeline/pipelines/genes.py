@@ -99,7 +99,7 @@ pipeline.add_task(
     "get_grch38_canonical_transcripts",
     get_canonical_transcripts,
     "/genes/canonical_transcripts_grch38.ht",
-    {"genomes": "gs://gnomad-public-requester-pays/release/3.0/ht/genomes/gnomad.genomes.r3.0.sites.ht",},
+    {"genomes": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht"},
 )
 
 ###############################################
