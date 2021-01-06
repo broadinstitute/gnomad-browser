@@ -3,20 +3,8 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@gnomad/ui'
 
+import { GNOMAD_POPULATION_NAMES } from './dataset-constants/gnomadPopulations'
 import sampleCounts from './dataset-constants/sampleCounts'
-
-const populationNames = {
-  afr: 'African/African American',
-  ami: 'Amish',
-  amr: 'Latino/Admixed American',
-  asj: 'Ashkenazi Jewish',
-  eas: 'East Asian',
-  fin: 'Finnish',
-  mid: 'Middle Eastern',
-  nfe: 'Non-Finnish European',
-  sas: 'South Asian',
-  oth: 'Other',
-}
 
 const TableViewport = styled.div`
   overflow-x: auto;
@@ -58,7 +46,7 @@ const SampleCountTables = () => (
         <tbody>
           {['afr', 'ami', 'amr', 'asj', 'eas', 'fin', 'mid', 'nfe', 'sas', 'oth'].map(popId => (
             <tr key={popId}>
-              <th scope="row">{populationNames[popId]}</th>
+              <th scope="row">{GNOMAD_POPULATION_NAMES[popId]}</th>
               <td>{(sampleCounts.gnomad_r3.genomes[popId] || 0).toLocaleString()}</td>
               <td>
                 {(
@@ -141,7 +129,7 @@ const SampleCountTables = () => (
         <tbody>
           {['afr', 'ami', 'amr', 'asj', 'eas', 'fin', 'nfe', 'sas', 'oth'].map(popId => (
             <tr key={popId}>
-              <th scope="row">{populationNames[popId]}</th>
+              <th scope="row">{GNOMAD_POPULATION_NAMES[popId]}</th>
               <td>{(sampleCounts.gnomad_r2_1.exomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r2_1.genomes[popId] || 0).toLocaleString()}</td>
               <td>{(sampleCounts.gnomad_r2_1_controls.exomes[popId] || 0).toLocaleString()}</td>

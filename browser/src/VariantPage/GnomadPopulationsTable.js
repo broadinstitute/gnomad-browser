@@ -4,33 +4,8 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
+import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
 import { PopulationsTable } from './PopulationsTable'
-
-const POPULATION_NAMES = {
-  AFR: 'African/African-American',
-  AMI: 'Amish',
-  AMR: 'Latino/Admixed American',
-  ASJ: 'Ashkenazi Jewish',
-  EAS: 'East Asian',
-  FIN: 'European (Finnish)',
-  MID: 'Middle Eastern',
-  NFE: 'European (non-Finnish)',
-  OTH: 'Other',
-  SAS: 'South Asian',
-
-  // EAS subpopulations
-  EAS_JPN: 'Japanese',
-  EAS_KOR: 'Korean',
-  EAS_OEA: 'Other East Asian',
-
-  // NFE subpopulations
-  NFE_BGR: 'Bulgarian',
-  NFE_EST: 'Estonian',
-  NFE_NWE: 'North-western European',
-  NFE_ONF: 'Other non-Finnish European',
-  NFE_SEU: 'Southern European',
-  NFE_SWE: 'Swedish',
-}
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -82,7 +57,7 @@ const addPopulationNames = populations => {
     } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
       name = 'XY'
     } else {
-      name = POPULATION_NAMES[pop.id.toUpperCase()] || pop.id
+      name = GNOMAD_POPULATION_NAMES[pop.id.toLowerCase()] || pop.id
     }
     return { ...pop, name }
   })
