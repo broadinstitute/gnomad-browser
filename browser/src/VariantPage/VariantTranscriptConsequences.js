@@ -7,9 +7,9 @@ import { TranscriptConsequenceList } from './TranscriptConsequenceList'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 
 const VariantTranscriptConsequences = ({ variant }) => {
-  const { sortedTranscriptConsequences } = variant
-  const numTranscripts = sortedTranscriptConsequences.length
-  const geneIds = Array.from(new Set(sortedTranscriptConsequences.map(csq => csq.gene_id)))
+  const { transcript_consequences: transcriptConsequences } = variant
+  const numTranscripts = transcriptConsequences.length
+  const geneIds = Array.from(new Set(transcriptConsequences.map(csq => csq.gene_id)))
   const numGenes = geneIds.length
 
   return (
@@ -24,7 +24,7 @@ const VariantTranscriptConsequences = ({ variant }) => {
         differ from the symbol shown on gene pages.
       </p>
 
-      <TranscriptConsequenceList sortedTranscriptConsequences={sortedTranscriptConsequences} />
+      <TranscriptConsequenceList transcriptConsequences={transcriptConsequences} />
     </div>
   )
 }
@@ -32,7 +32,7 @@ const VariantTranscriptConsequences = ({ variant }) => {
 VariantTranscriptConsequences.propTypes = {
   variant: PropTypes.shape({
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
-    sortedTranscriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
+    transcript_consequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
   }).isRequired,
 }
 

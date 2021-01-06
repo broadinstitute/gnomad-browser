@@ -36,7 +36,7 @@ export const ReferenceList = ({ variant }) => {
       </ListItem>
       <BaseQuery
         query={clinvarVariantQuery}
-        variables={{ variantId: variant.variantId, referenceGenome: variant.reference_genome }}
+        variables={{ variantId: variant.variant_id, referenceGenome: variant.reference_genome }}
       >
         {({ data, error, loading }) => {
           if (loading || error || !data.clinvar_variant) {
@@ -60,7 +60,7 @@ export const ReferenceList = ({ variant }) => {
 
 ReferenceList.propTypes = {
   variant: PropTypes.shape({
-    variantId: PropTypes.string.isRequired,
+    variant_id: PropTypes.string.isRequired,
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
     pos: PropTypes.number.isRequired,

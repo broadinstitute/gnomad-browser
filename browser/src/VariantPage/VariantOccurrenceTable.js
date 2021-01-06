@@ -187,12 +187,12 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
   // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
   // See https://gnomad.broadinstitute.org/faq#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
   const exomeHighAlleleBalanceSamples = isPresentInExome
-    ? variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[18] +
-      variant.exome.qualityMetrics.alleleBalance.alt.bin_freq[19]
+    ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
+      variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
     : 0
   const genomeHighAlleleBalanceSamples = isPresentInGenome
-    ? variant.genome.qualityMetrics.alleleBalance.alt.bin_freq[18] +
-      variant.genome.qualityMetrics.alleleBalance.alt.bin_freq[19]
+    ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
+      variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
     : 0
   const totalHighAlleleBalanceSamples =
     exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
@@ -356,8 +356,8 @@ GnomadVariantOccurrenceTable.propTypes = {
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
       }).isRequired,
-      qualityMetrics: PropTypes.shape({
-        alleleBalance: PropTypes.shape({
+      quality_metrics: PropTypes.shape({
+        allele_balance: PropTypes.shape({
           alt: histogramPropType,
         }).isRequired,
       }).isRequired,
@@ -371,8 +371,8 @@ GnomadVariantOccurrenceTable.propTypes = {
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
       }).isRequired,
-      qualityMetrics: PropTypes.shape({
-        alleleBalance: PropTypes.shape({
+      quality_metrics: PropTypes.shape({
+        allele_balance: PropTypes.shape({
           alt: histogramPropType,
         }).isRequired,
       }).isRequired,

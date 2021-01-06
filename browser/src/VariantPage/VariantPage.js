@@ -73,13 +73,13 @@ const VariantPageContent = ({ datasetId, variant }) => (
         </p>
       )}
 
-      {variant.colocatedVariants && variant.colocatedVariants.length > 0 && (
+      {variant.colocated_variants && variant.colocated_variants.length > 0 && (
         <div>
           <p>
             <strong>This variant is multiallelic. Other alt alleles are:</strong>
           </p>
           <ul>
-            {variant.colocatedVariants.map(colocatedVariantId => (
+            {variant.colocated_variants.map(colocatedVariantId => (
               <li key={colocatedVariantId}>
                 <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
               </li>
@@ -88,12 +88,12 @@ const VariantPageContent = ({ datasetId, variant }) => (
         </div>
       )}
 
-      {(variant.multiNucleotideVariants || []).length > 0 && (
+      {(variant.multi_nucleotide_variants || []).length > 0 && (
         <div>
           <p>
             <strong>This variant&apos;s consequence may be affected by other variants:</strong>
           </p>
-          <MNVSummaryList multiNucleotideVariants={variant.multiNucleotideVariants} />
+          <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
         </div>
       )}
     </ResponsiveSection>
@@ -101,7 +101,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
       <h2>References</h2>
       <ReferenceList variant={variant} />
       <h2>Report</h2>
-      <VariantFeedback datasetId={datasetId} variantId={variant.variantId} />
+      <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
     </ResponsiveSection>
     <Section>
       <h2>Variant Effect Predictor</h2>
@@ -171,7 +171,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
     </ResponsiveSection>
     <Section>
       <h2>Read Data</h2>
-      <ReadData datasetId={datasetId} variantIds={[variant.variantId]} />
+      <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
     </Section>
   </VariantDetailsContainer>
 )
@@ -179,11 +179,11 @@ const VariantPageContent = ({ datasetId, variant }) => (
 VariantPageContent.propTypes = {
   datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
-    variantId: PropTypes.string.isRequired,
+    variant_id: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    colocatedVariants: PropTypes.arrayOf(PropTypes.string),
-    multiNucleotideVariants: PropTypes.arrayOf(PropTypes.object),
+    colocated_variants: PropTypes.arrayOf(PropTypes.string),
+    multi_nucleotide_variants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     lof_curations: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
@@ -269,14 +269,14 @@ VariantPageTitle.defaultProps = {
 const variantQuery = `
 query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
   variant(variantId: $variantId, rsid: $rsid, dataset: $datasetId) {
-    variantId
+    variant_id
     reference_genome
     chrom
     pos
     ref
     alt
-    colocatedVariants
-    multiNucleotideVariants {
+    colocated_variants
+    multi_nucleotide_variants {
       combined_variant_id
       changes_amino_acids
       n_individuals
@@ -313,8 +313,8 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
           n_larger
         }
       }
-      qualityMetrics {
-        alleleBalance {
+      quality_metrics {
+        allele_balance {
           alt {
             bin_edges
             bin_freq
@@ -322,7 +322,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        genotypeDepth {
+        genotype_depth {
           all {
             bin_edges
             bin_freq
@@ -336,7 +336,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        genotypeQuality {
+        genotype_quality {
           all {
             bin_edges
             bin_freq
@@ -350,7 +350,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        siteQualityMetrics {
+        site_quality_metrics {
           metric
           value
         }
@@ -387,8 +387,8 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
           n_larger
         }
       }
-      qualityMetrics {
-        alleleBalance {
+      quality_metrics {
+        allele_balance {
           alt {
             bin_edges
             bin_freq
@@ -396,7 +396,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        genotypeDepth {
+        genotype_depth {
           all {
             bin_edges
             bin_freq
@@ -410,7 +410,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        genotypeQuality {
+        genotype_quality {
           all {
             bin_edges
             bin_freq
@@ -424,7 +424,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
             n_larger
           }
         }
-        siteQualityMetrics {
+        site_quality_metrics {
           metric
           value
         }
@@ -438,7 +438,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
       flags
     }
     rsid
-    sortedTranscriptConsequences {
+    transcript_consequences {
       gene_id
       gene_version
       gene_symbol
