@@ -14,6 +14,7 @@ import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import { BaseQuery } from '../Query'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
+import TableWrapper from '../TableWrapper'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
@@ -45,14 +46,10 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
-const ScrollWrapper = styled.div`
-  overflow-x: auto;
-`
-
 const VariantPageContent = ({ datasetId, variant }) => (
   <VariantDetailsContainer>
     <ResponsiveSection>
-      <ScrollWrapper>
+      <TableWrapper>
         {datasetId === 'exac' ? (
           <ExacVariantOccurrenceTable variant={variant} />
         ) : (
@@ -62,7 +59,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
             showExomes={!datasetId.startsWith('gnomad_r3')}
           />
         )}
-      </ScrollWrapper>
+      </TableWrapper>
 
       {variant.flags && variant.flags.includes('par') && (
         <p>
