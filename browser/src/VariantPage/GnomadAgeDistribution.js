@@ -83,8 +83,9 @@ export default class GnomadAgeDistribution extends Component {
           >
             <option value="het">Heterozygous Variant Carriers</option>
             <option value="hom">Homozygous Variant Carriers</option>
-            {datasetId.startsWith('gnomad_r2') ||
-              (datasetId.startsWith('gnomad_r3') && <option value="all">All Individuals</option>)}
+            {(datasetId.startsWith('gnomad_r2') || datasetId.startsWith('gnomad_r3')) && (
+              <option value="all">All Individuals</option>
+            )}
           </Select>
 
           <SegmentedControl
