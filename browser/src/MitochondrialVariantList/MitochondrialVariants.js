@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import Cursor from '../RegionViewerCursor'
+import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import VariantTrack from '../VariantList/VariantTrack'
 
@@ -167,7 +168,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { context, exportFileName, width } = this.props
+    const { context, exportFileName, variants, width } = this.props
     const {
       filter,
       renderedVariants,
@@ -176,6 +177,10 @@ class MitochondrialVariants extends Component {
       variantHoveredInTable,
       visibleVariantWindow,
     } = this.state
+
+    if (variants.length === 0) {
+      return <StatusMessage>No variants found</StatusMessage>
+    }
 
     const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
 
@@ -215,23 +220,32 @@ class MitochondrialVariants extends Component {
               />
             </div>
           </Wrapper>
-          <Wrapper>
-            <MitochondrialVariantsTable
-              ref={this.table}
-              cellData={{
-                highlightWords: filter.searchText.split(',').map(s => s.trim()),
-              }}
-              context={context}
-              numRowsRendered={numRowsRendered}
-              shouldHighlightRow={this.shouldHighlightTableRow}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
-              variants={renderedVariants}
-              width={width}
-              onHoverVariant={this.onHoverVariantInTable}
-              onRequestSort={this.onSort}
-              onVisibleRowsChange={this.onVisibleRowsChange}
-            />
+          <Wrapper
+            style={{
+              // Keep the height of the table section constant when filtering variants, avoid layout shift
+              minHeight: 55 + 25 * Math.min(variants.length, NUM_ROWS_RENDERED),
+            }}
+          >
+            {renderedVariants.length ? (
+              <MitochondrialVariantsTable
+                ref={this.table}
+                cellData={{
+                  highlightWords: filter.searchText.split(',').map(s => s.trim()),
+                }}
+                context={context}
+                numRowsRendered={numRowsRendered}
+                shouldHighlightRow={this.shouldHighlightTableRow}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                variants={renderedVariants}
+                width={width}
+                onHoverVariant={this.onHoverVariantInTable}
+                onRequestSort={this.onSort}
+                onVisibleRowsChange={this.onVisibleRowsChange}
+              />
+            ) : (
+              <StatusMessage>No matching variants</StatusMessage>
+            )}
           </Wrapper>
         </TrackPageSection>
       </div>

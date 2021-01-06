@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { SegmentedControl } from '@gnomad/ui'
 
+import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 
 import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
@@ -169,7 +170,7 @@ class StructuralVariants extends Component {
   }
 
   render() {
-    const { chrom, exportFileName, width } = this.props
+    const { chrom, exportFileName, variants, width } = this.props
     const {
       filter,
       highlightedVariantTrack,
@@ -179,6 +180,10 @@ class StructuralVariants extends Component {
       sortOrder,
       colorKey,
     } = this.state
+
+    if (variants.length === 0) {
+      return <StatusMessage>No variants found</StatusMessage>
+    }
 
     const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
 
@@ -250,24 +255,33 @@ class StructuralVariants extends Component {
               />
             </div>
           </Wrapper>
-          <Wrapper>
-            <StructuralVariantsTable
-              ref={this.table}
-              cellData={{
-                colorKey,
-                highlightWords: filter.searchText.split(',').map(s => s.trim()),
-              }}
-              numRowsRendered={numRowsRendered}
-              onHoverVariant={this.onHoverVariantInTable}
-              onRequestSort={this.onSort}
-              onScroll={this.onScrollTable}
-              rowHeight={TABLE_ROW_HEIGHT}
-              shouldHighlightRow={shouldHighlightTableRow}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
-              variants={renderedVariants}
-              width={width}
-            />
+          <Wrapper
+            style={{
+              // Keep the height of the table section constant when filtering variants, avoid layout shift
+              minHeight: 40 + TABLE_ROW_HEIGHT * Math.min(variants.length, NUM_ROWS_RENDERED),
+            }}
+          >
+            {renderedVariants.length ? (
+              <StructuralVariantsTable
+                ref={this.table}
+                cellData={{
+                  colorKey,
+                  highlightWords: filter.searchText.split(',').map(s => s.trim()),
+                }}
+                numRowsRendered={numRowsRendered}
+                onHoverVariant={this.onHoverVariantInTable}
+                onRequestSort={this.onSort}
+                onScroll={this.onScrollTable}
+                rowHeight={TABLE_ROW_HEIGHT}
+                shouldHighlightRow={shouldHighlightTableRow}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                variants={renderedVariants}
+                width={width}
+              />
+            ) : (
+              <StatusMessage>No matching variants</StatusMessage>
+            )}
           </Wrapper>
         </TrackPageSection>
       </div>

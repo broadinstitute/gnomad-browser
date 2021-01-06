@@ -7,6 +7,7 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import { labelForDataset } from '../datasets'
 import Cursor from '../RegionViewerCursor'
+import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from './ExportVariantsButton'
 import filterVariants from './filterVariants'
@@ -159,7 +160,7 @@ class Variants extends Component {
   }
 
   render() {
-    const { children, clinvarVariants, columns, datasetId, exportFileName } = this.props
+    const { children, clinvarVariants, columns, datasetId, exportFileName, variants } = this.props
     const {
       filter,
       renderedVariants,
@@ -172,6 +173,10 @@ class Variants extends Component {
     } = this.state
 
     const datasetLabel = labelForDataset(datasetId)
+
+    if (variants.length === 0) {
+      return <StatusMessage>No variants found</StatusMessage>
+    }
 
     return (
       <div>
@@ -213,18 +218,30 @@ class Variants extends Component {
             />
           </div>
           {children}
-          <VariantTable
-            columns={columns}
-            highlightText={filter.searchText}
-            highlightedVariantId={variantHoveredInTrack}
-            onHoverVariant={this.onHoverVariantInTable}
-            onRequestSort={this.onSort}
-            onVisibleRowsChange={this.onVisibleRowsChange}
-            rowIndexLastClickedInNavigator={rowIndexLastClickedInNavigator}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-            variants={renderedVariants}
-          />
+
+          <div
+            style={{
+              // Keep the height of the table section constant when filtering variants, avoid layout shift
+              minHeight: '540px',
+            }}
+          >
+            {renderedVariants.length ? (
+              <VariantTable
+                columns={columns}
+                highlightText={filter.searchText}
+                highlightedVariantId={variantHoveredInTrack}
+                onHoverVariant={this.onHoverVariantInTable}
+                onRequestSort={this.onSort}
+                onVisibleRowsChange={this.onVisibleRowsChange}
+                rowIndexLastClickedInNavigator={rowIndexLastClickedInNavigator}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                variants={renderedVariants}
+              />
+            ) : (
+              <StatusMessage>No matching variants</StatusMessage>
+            )}
+          </div>
         </TrackPageSection>
       </div>
     )

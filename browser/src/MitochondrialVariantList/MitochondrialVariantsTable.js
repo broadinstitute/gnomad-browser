@@ -1,22 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 
 import { Grid } from '@gnomad/ui'
 
 import MitochondrialVariantPropType from './MitochondrialVariantPropType'
 import { getColumns } from './mitochondrialVariantTableColumns'
-
-const NoVariants = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  border: 1px dashed gray;
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
-`
 
 class MitochondrialVariantsTable extends PureComponent {
   static propTypes = {
@@ -41,10 +29,6 @@ class MitochondrialVariantsTable extends PureComponent {
       width,
       ...rest
     } = this.props
-
-    if (variants.length === 0) {
-      return <NoVariants>No variants found</NoVariants>
-    }
 
     return (
       <Grid
