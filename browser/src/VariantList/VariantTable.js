@@ -1,18 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 
 import { Grid } from '@gnomad/ui'
-
-const NoVariants = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: ${props => props.height}px;
-  border: 1px dashed gray;
-  font-size: 20px;
-  font-weight: bold;
-`
 
 class VariantTable extends PureComponent {
   static propTypes = {
@@ -64,10 +53,6 @@ class VariantTable extends PureComponent {
       sortKey,
       sortOrder,
     } = this.props
-
-    if (variants.length === 0) {
-      return <NoVariants height={500}>No variants found</NoVariants>
-    }
 
     return (
       <Grid

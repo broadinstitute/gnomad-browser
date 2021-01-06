@@ -1,22 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 
 import { Grid } from '@gnomad/ui'
 
 import StructuralVariantPropType from './StructuralVariantPropType'
 import { getColumns } from './structuralVariantTableColumns'
-
-const NoVariants = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  border: 1px dashed gray;
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
-`
 
 class StructuralVariantsTable extends PureComponent {
   static propTypes = {
@@ -40,10 +28,6 @@ class StructuralVariantsTable extends PureComponent {
       width,
       ...rest
     } = this.props
-
-    if (variants.length === 0) {
-      return <NoVariants>No variants found</NoVariants>
-    }
 
     return (
       <Grid
