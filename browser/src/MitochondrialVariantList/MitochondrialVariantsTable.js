@@ -9,6 +9,7 @@ import { getColumns } from './mitochondrialVariantTableColumns'
 const MitochondrialVariantsTable = ({
   context,
   forwardedRef,
+  highlightText,
   numRowsRendered,
   onHoverVariant,
   variants,
@@ -19,6 +20,9 @@ const MitochondrialVariantsTable = ({
     <Grid
       ref={forwardedRef}
       {...rest}
+      cellData={{
+        highlightWords: highlightText.split(',').map(s => s.trim()),
+      }}
       columns={getColumns({ context, width })}
       data={variants}
       numRowsRendered={numRowsRendered}
@@ -36,6 +40,7 @@ MitochondrialVariantsTable.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }), // eslint-disable-line react/forbid-prop-types
   ]).isRequired,
+  highlightText: PropTypes.string.isRequired,
   numRowsRendered: PropTypes.number.isRequired,
   onHoverVariant: PropTypes.func.isRequired,
   variants: PropTypes.arrayOf(MitochondrialVariantPropType).isRequired,

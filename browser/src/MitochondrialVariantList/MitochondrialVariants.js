@@ -229,10 +229,8 @@ class MitochondrialVariants extends Component {
             {renderedVariants.length ? (
               <MitochondrialVariantsTable
                 ref={this.table}
-                cellData={{
-                  highlightWords: filter.searchText.split(',').map(s => s.trim()),
-                }}
                 context={context}
+                highlightText={filter.searchText}
                 numRowsRendered={numRowsRendered}
                 shouldHighlightRow={this.shouldHighlightTableRow}
                 sortKey={sortKey}
