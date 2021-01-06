@@ -102,7 +102,7 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       lof_flags
       pos
       rsid
-      variant_id: variantId
+      variant_id
       exome {
         ac
         ac_hemi

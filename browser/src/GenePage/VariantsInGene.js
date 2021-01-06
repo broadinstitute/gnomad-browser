@@ -188,7 +188,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
       pos
       rsid
       transcript_id
-      variant_id: variantId
+      variant_id
       exome {
         ac
         ac_hemi

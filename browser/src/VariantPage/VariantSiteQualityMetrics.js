@@ -200,13 +200,13 @@ class VariantSiteQualityMetrics extends Component {
     datasetId: PropTypes.string.isRequired,
     variant: PropTypes.shape({
       exome: PropTypes.shape({
-        qualityMetrics: PropTypes.shape({
-          siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
+        quality_metrics: PropTypes.shape({
+          site_quality_metrics: variantSiteQualityMetricsPropType.isRequired,
         }).isRequired,
       }),
       genome: PropTypes.shape({
-        qualityMetrics: PropTypes.shape({
-          siteQualityMetrics: variantSiteQualityMetricsPropType.isRequired,
+        quality_metrics: PropTypes.shape({
+          site_quality_metrics: variantSiteQualityMetricsPropType.isRequired,
         }).isRequired,
       }),
     }).isRequired,
@@ -237,7 +237,7 @@ class VariantSiteQualityMetrics extends Component {
 
     const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
 
-    const availableMetrics = variantData.qualityMetrics.siteQualityMetrics.filter(
+    const availableMetrics = variantData.quality_metrics.site_quality_metrics.filter(
       ({ value }) => value !== null
     )
 
@@ -256,7 +256,7 @@ class VariantSiteQualityMetrics extends Component {
           barColor={graphColor}
           bins={metricBins}
           highlightValue={
-            variantData.qualityMetrics.siteQualityMetrics.find(
+            variantData.quality_metrics.site_quality_metrics.find(
               ({ metric }) => metric === selectedMetric
             ).value
           }

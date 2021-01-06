@@ -14,14 +14,14 @@ const histogramPropType = PropTypes.shape({
 })
 
 const genotypeQualityMetricPropType = PropTypes.shape({
-  alleleBalance: PropTypes.shape({
+  allele_balance: PropTypes.shape({
     alt: histogramPropType,
   }),
-  genotypeDepth: PropTypes.shape({
+  genotype_depth: PropTypes.shape({
     all: histogramPropType,
     alt: histogramPropType,
   }).isRequired,
-  genotypeQuality: PropTypes.shape({
+  genotype_quality: PropTypes.shape({
     all: histogramPropType,
     alt: histogramPropType,
   }).isRequired,
@@ -32,10 +32,10 @@ class VariantGenotypeQualityMetrics extends Component {
     datasetId: PropTypes.string.isRequired,
     variant: PropTypes.shape({
       exome: PropTypes.shape({
-        qualityMetrics: genotypeQualityMetricPropType.isRequired,
+        quality_metrics: genotypeQualityMetricPropType.isRequired,
       }),
       genome: PropTypes.shape({
-        qualityMetrics: genotypeQualityMetricPropType.isRequired,
+        quality_metrics: genotypeQualityMetricPropType.isRequired,
       }),
     }).isRequired,
   }
@@ -45,7 +45,7 @@ class VariantGenotypeQualityMetrics extends Component {
 
     this.state = {
       selectedDataset: props.variant.exome ? 'exome' : 'genome',
-      selectedMetric: 'genotypeQuality', // 'genotypeQality', 'genotypeDepth', or 'alleleBalance'
+      selectedMetric: 'genotype_quality', // 'genotype_quality', 'genotype_depth', or 'allele_balance'
       selectedSamples: 'all', // 'all' or 'alt'
     }
   }
@@ -54,18 +54,18 @@ class VariantGenotypeQualityMetrics extends Component {
     const { datasetId, variant } = this.props
     const { selectedDataset, selectedMetric, selectedSamples } = this.state
 
-    const histogramData = variant[selectedDataset].qualityMetrics[selectedMetric][selectedSamples]
+    const histogramData = variant[selectedDataset].quality_metrics[selectedMetric][selectedSamples]
 
     const xLabel = {
-      genotypeQuality: 'Genotype Quality',
-      genotypeDepth: 'Depth',
-      alleleBalance: 'Allele Balance',
+      genotype_quality: 'Genotype Quality',
+      genotype_depth: 'Depth',
+      allele_balance: 'Allele Balance',
     }[selectedMetric]
 
     let yLabel
     if (selectedSamples === 'all') {
       yLabel = 'All individuals'
-    } else if (selectedMetric === 'alleleBalance') {
+    } else if (selectedMetric === 'allele_balance') {
       yLabel = 'Heterozygous variant carriers'
     } else {
       yLabel = 'Variant carriers'
@@ -79,7 +79,7 @@ class VariantGenotypeQualityMetrics extends Component {
           barColor={graphColor}
           binEdges={histogramData.bin_edges}
           binValues={histogramData.bin_freq}
-          nLarger={selectedMetric === 'alleleBalance' ? undefined : histogramData.n_larger}
+          nLarger={selectedMetric === 'allele_balance' ? undefined : histogramData.n_larger}
           xLabel={xLabel}
           yLabel={yLabel}
           formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
@@ -92,31 +92,31 @@ class VariantGenotypeQualityMetrics extends Component {
               const metric = e.target.value
               const update = { selectedMetric: metric }
               // "All" data is not available for allele balance
-              if (metric === 'alleleBalance') {
+              if (metric === 'allele_balance') {
                 update.selectedSamples = 'alt'
               }
               this.setState(update)
             }}
             value={selectedMetric}
             style={{
-              width: selectedMetric === 'alleleBalance' ? 'auto' : '150px',
+              width: selectedMetric === 'allele_balance' ? 'auto' : '150px',
             }}
           >
-            <option value="genotypeQuality">Genotype quality</option>
-            <option value="genotypeDepth">Depth</option>
+            <option value="genotype_quality">Genotype quality</option>
+            <option value="genotype_depth">Depth</option>
             {datasetId !== 'exac' && (
-              <option value="alleleBalance">Allele balance for heterozygotes</option>
+              <option value="allele_balance">Allele balance for heterozygotes</option>
             )}
           </Select>
 
-          {selectedMetric !== 'alleleBalance' && (
+          {selectedMetric !== 'allele_balance' && (
             <SegmentedControl
               id="genotype-quality-metrics-sample"
               onChange={samples => {
                 this.setState({ selectedSamples: samples })
               }}
               options={[
-                { label: 'All', value: 'all', disabled: selectedMetric === 'alleleBalance' },
+                { label: 'All', value: 'all', disabled: selectedMetric === 'allele_balance' },
                 { label: 'Variant Carriers', value: 'alt' },
               ]}
               value={selectedSamples}

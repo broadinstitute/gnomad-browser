@@ -69,7 +69,7 @@ const ConsequenceListItem = styled.li`
 
 const MitochondrialVariantTranscriptConsequenceList = ({ variant }) => (
   <ConsequenceListWrapper>
-    {groupConsequences(variant.sortedTranscriptConsequences, 'major_consequence').map(
+    {groupConsequences(variant.transcript_consequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
         <ConsequenceListItem key={consequenceTerm}>
           <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
@@ -99,7 +99,7 @@ const MitochondrialVariantTranscriptConsequenceList = ({ variant }) => (
 
 MitochondrialVariantTranscriptConsequenceList.propTypes = {
   variant: PropTypes.shape({
-    sortedTranscriptConsequences: PropTypes.arrayOf(PropTypes.object).isRequired,
+    transcript_consequences: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
 }
 

@@ -248,7 +248,7 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!) {
       name
       value
     }
-    sortedTranscriptConsequences: transcript_consequences {
+    transcript_consequences {
       canonical
       gene_id
       gene_version

@@ -153,9 +153,9 @@ const ConsequenceListItem = styled.li`
   margin-right: 2em;
 `
 
-export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
+export const TranscriptConsequenceList = ({ transcriptConsequences }) => (
   <ConsequenceListWrapper>
-    {groupConsequences(sortedTranscriptConsequences, 'major_consequence').map(
+    {groupConsequences(transcriptConsequences, 'major_consequence').map(
       ({ value: consequenceTerm, consequences }) => (
         <ConsequenceListItem key={consequenceTerm}>
           <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
@@ -181,5 +181,5 @@ export const TranscriptConsequenceList = ({ sortedTranscriptConsequences }) => (
 )
 
 TranscriptConsequenceList.propTypes = {
-  sortedTranscriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
+  transcriptConsequences: PropTypes.arrayOf(TranscriptConsequencePropType).isRequired,
 }
