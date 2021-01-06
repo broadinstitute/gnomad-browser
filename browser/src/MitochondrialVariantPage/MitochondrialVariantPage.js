@@ -10,6 +10,7 @@ import InfoButton from '../help/InfoButton'
 import Histogram from '../Histogram'
 import Link from '../Link'
 import Query from '../Query'
+import TableWrapper from '../TableWrapper'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
@@ -38,10 +39,6 @@ const ResponsiveSection = styled.section`
   @media (max-width: 992px) {
     width: 100%;
   }
-`
-
-const ScrollWrapper = styled.div`
-  overflow-x: auto;
 `
 
 const VariantType = ({ variantId }) => {
@@ -150,9 +147,9 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
       <h2>
         Haplogroup Frequencies <InfoButton topic="mt-haplogroup_frequencies" />
       </h2>
-      <ScrollWrapper>
+      <TableWrapper>
         <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
-      </ScrollWrapper>
+      </TableWrapper>
     </Section>
     <Wrapper>
       <ResponsiveSection>

@@ -5,12 +5,7 @@ import { BaseTable } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from './dataset-constants/gnomadPopulations'
 import sampleCounts from './dataset-constants/sampleCounts'
-
-const TableViewport = styled.div`
-  overflow-x: auto;
-  width: 100%;
-  margin-top: 1em;
-`
+import TableWrapper from './TableWrapper'
 
 const SampleCountTable = styled(BaseTable)`
   td {
@@ -28,7 +23,7 @@ const SampleCountTable = styled(BaseTable)`
 const SampleCountTables = () => (
   <div>
     <h4>gnomAD v3</h4>
-    <TableViewport>
+    <TableWrapper>
       <SampleCountTable>
         <thead>
           <tr>
@@ -87,10 +82,10 @@ const SampleCountTables = () => (
           </tr>
         </tfoot>
       </SampleCountTable>
-    </TableViewport>
+    </TableWrapper>
 
     <h4>gnomAD v2</h4>
-    <TableViewport>
+    <TableWrapper>
       <SampleCountTable>
         <thead>
           <tr>
@@ -176,7 +171,7 @@ const SampleCountTables = () => (
           </tr>
         </tfoot>
       </SampleCountTable>
-    </TableViewport>
+    </TableWrapper>
     <p>
       * For v2 genomes, we have a total of only 31 South Asian samples so they are grouped with
       Other.

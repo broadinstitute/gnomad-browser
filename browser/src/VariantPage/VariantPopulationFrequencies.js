@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import styled from 'styled-components'
 
 import { Tabs } from '@gnomad/ui'
 
+import TableWrapper from '../TableWrapper'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import HGDPPopulationsTable from './HGDPPopulationsTable'
 import TGPPopulationsTable from './TGPPopulationsTable'
-
-const ScrollWrapper = styled.div`
-  overflow-x: auto;
-`
 
 const VariantPopulationFrequencies = ({ datasetId, variant }) => {
   if (datasetId.startsWith('gnomad_r3')) {
@@ -31,25 +27,25 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
             id: 'gnomAD',
             label: 'gnomAD',
             render: () => (
-              <ScrollWrapper>
+              <TableWrapper>
                 <GnomadPopulationsTable
                   exomePopulations={[]}
                   genomePopulations={gnomadPopulations}
                   showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                 />
-              </ScrollWrapper>
+              </TableWrapper>
             ),
           },
           {
             id: 'HGDP',
             label: 'HGDP',
             render: () => (
-              <ScrollWrapper>
+              <TableWrapper>
                 <HGDPPopulationsTable
                   populations={hgdpPopulations}
                   showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                 />
-              </ScrollWrapper>
+              </TableWrapper>
             ),
           },
           {
@@ -61,12 +57,12 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
                   1000 Genomes Project population frequencies are not available for this subset.
                 </p>
               ) : (
-                <ScrollWrapper>
+                <TableWrapper>
                   <TGPPopulationsTable
                     populations={tgpPopulations}
                     showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                   />
-                </ScrollWrapper>
+                </TableWrapper>
               ),
           },
         ]}
@@ -76,13 +72,13 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
 
   return (
     <div>
-      <ScrollWrapper>
+      <TableWrapper>
         <GnomadPopulationsTable
           exomePopulations={variant.exome ? variant.exome.populations : []}
           genomePopulations={variant.genome ? variant.genome.populations : []}
           showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
         />
-      </ScrollWrapper>
+      </TableWrapper>
     </div>
   )
 }
