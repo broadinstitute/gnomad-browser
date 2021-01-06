@@ -187,15 +187,15 @@ class MitochondrialVariants extends Component {
     return (
       <div>
         <Wrapper>
-          <VariantTrack
-            title={`gnomAD\n(${renderedVariants.length})`}
-            variants={renderedVariants.map(variant => ({
-              ...variant,
-              allele_freq: variant.af,
-            }))}
-          />
-
           <Cursor onClick={this.onNavigatorClick}>
+            <VariantTrack
+              title={`gnomAD variants\n(${renderedVariants.length})`}
+              variants={renderedVariants.map(variant => ({
+                ...variant,
+                allele_freq: variant.af,
+              }))}
+            />
+
             <VariantTrack
               title="Viewing in table"
               variants={renderedVariants
