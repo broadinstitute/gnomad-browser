@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
@@ -36,6 +36,8 @@ class Variants extends Component {
   constructor(props) {
     super(props)
 
+    this.table = createRef()
+
     const defaultFilter = {
       includeCategories: {
         lof: true,
@@ -64,7 +66,6 @@ class Variants extends Component {
 
     this.state = {
       filter: defaultFilter,
-      rowIndexLastClickedInNavigator: 0,
       renderedVariants,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -151,12 +152,16 @@ class Variants extends Component {
       index = sortedVariants.length - 1
     }
 
-    this.setState({
-      renderedVariants: sortedVariants,
-      rowIndexLastClickedInNavigator: index,
-      sortKey: 'variant_id',
-      sortOrder: 'ascending',
-    })
+    this.setState(
+      {
+        renderedVariants: sortedVariants,
+        sortKey: 'variant_id',
+        sortOrder: 'ascending',
+      },
+      () => {
+        this.table.current.scrollToDataRow(index)
+      }
+    )
   }
 
   render() {
@@ -164,7 +169,6 @@ class Variants extends Component {
     const {
       filter,
       renderedVariants,
-      rowIndexLastClickedInNavigator,
       sortKey,
       sortOrder,
       variantHoveredInTable,
@@ -227,13 +231,13 @@ class Variants extends Component {
           >
             {renderedVariants.length ? (
               <VariantTable
+                ref={this.table}
                 columns={columns}
                 highlightText={filter.searchText}
                 highlightedVariantId={variantHoveredInTrack}
                 onHoverVariant={this.onHoverVariantInTable}
                 onRequestSort={this.onSort}
                 onVisibleRowsChange={this.onVisibleRowsChange}
-                rowIndexLastClickedInNavigator={rowIndexLastClickedInNavigator}
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 variants={renderedVariants}
