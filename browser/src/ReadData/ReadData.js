@@ -252,6 +252,12 @@ class ReadData extends Component {
       return (
         <div>
           <p>No read data available for this variant.</p>
+          {(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) && (
+            <p>
+              <Badge level="info">Note</Badge> Read data for non-coding regions is not available in
+              gnomAD v2.1.1 and ExAC.
+            </p>
+          )}
         </div>
       )
     }
