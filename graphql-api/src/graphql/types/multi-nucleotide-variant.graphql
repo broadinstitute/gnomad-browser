@@ -36,7 +36,7 @@ type MultiNucleotideVariantDetailsSequencingData {
 
 type MultiNucleotideVariantDetails {
   variant_id: String!
-  referenceGenome: ReferenceGenomeId!
+  reference_genome: ReferenceGenomeId!
   chrom: String!
   pos: Int!
   ref: String!

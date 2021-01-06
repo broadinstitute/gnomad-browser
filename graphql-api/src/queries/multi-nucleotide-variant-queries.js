@@ -19,6 +19,7 @@ const fetchMultiNuceotideVariantById = async (esClient, datasetId, variantId) =>
 
     return {
       ...variant,
+      reference_genome: 'GRCh37',
       constituent_snvs: variant.constituent_snvs.map((snv) => ({
         ...snv,
         exome: snv.exome.ac !== undefined ? snv.exome : null,
