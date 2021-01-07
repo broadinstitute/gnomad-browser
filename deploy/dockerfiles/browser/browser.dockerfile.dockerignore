@@ -2,6 +2,7 @@
 !babel.config.js
 !package.json
 !yarn.lock
+!browser/.browserslistrc
 !browser/build.env
 !browser/package.json
 !browser/src
