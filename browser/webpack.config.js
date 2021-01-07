@@ -117,7 +117,8 @@ const config = {
     }),
   ],
   // Use browserslist queries from .browserslistrc
-  target: 'browserslist',
+  // Set to web in development as workaround for https://github.com/webpack/webpack-dev-server/issues/2758
+  target: isDev ? 'web' : 'browserslist',
 }
 
 if (isDev) {
