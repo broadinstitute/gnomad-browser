@@ -1,8 +1,33 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import { BaseTable, Checkbox, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+
+const CountCell = styled.span`
+  display: inline-block;
+  width: 7ch;
+  margin: auto;
+  text-align: right;
+`
+
+const Table = styled(BaseTable)`
+  width: 100%;
+  margin-bottom: 1em;
+
+  tr.border {
+    td,
+    th {
+      border-top: 2px solid #aaa;
+    }
+  }
+
+  tfoot ${CountCell} {
+    /* Adjust alignment to make up for bold text in footer */
+    padding-right: 0.5ch;
+  }
+`
 
 class MitochondrialVariantHaplogroupFrequenciesTable extends Component {
   static propTypes = {
@@ -85,7 +110,7 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component {
 
     return (
       <div>
-        <BaseTable style={{ width: '100%', marginBottom: '1em' }}>
+        <Table>
           <thead>
             <tr>
               {this.renderColumnHeader('id', 'Haplogroup', null)}
@@ -120,10 +145,16 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component {
             {renderedHaplogroups.map(haplogroup => (
               <tr key={haplogroup.id}>
                 <th scope="row">{haplogroup.id}</th>
-                <td>{haplogroup.an}</td>
-                <td>{haplogroup.ac_hom}</td>
+                <td>
+                  <CountCell>{haplogroup.an}</CountCell>
+                </td>
+                <td>
+                  <CountCell>{haplogroup.ac_hom}</CountCell>
+                </td>
                 <td>{haplogroup.af_hom.toPrecision(4)}</td>
-                <td>{haplogroup.ac_het}</td>
+                <td>
+                  <CountCell>{haplogroup.ac_het}</CountCell>
+                </td>
                 <td>{haplogroup.af_het.toPrecision(4)}</td>
               </tr>
             ))}
@@ -131,14 +162,20 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component {
           <tfoot>
             <tr className="border">
               <th scope="row">Total</th>
-              <td>{totalAlleleNumber}</td>
-              <td>{totalHomoplasmicAlleleCount}</td>
+              <td>
+                <CountCell>{totalAlleleNumber}</CountCell>
+              </td>
+              <td>
+                <CountCell>{totalHomoplasmicAlleleCount}</CountCell>
+              </td>
               <td>{totalHomoplasmicAlleleFrequency.toPrecision(4)}</td>
-              <td>{totalHeteroplasmicAlleleCount}</td>
+              <td>
+                <CountCell>{totalHeteroplasmicAlleleCount}</CountCell>
+              </td>
               <td>{totalHeteroplasmicAlleleFrequency.toPrecision(4)}</td>
             </tr>
           </tfoot>
-        </BaseTable>
+        </Table>
         <Checkbox
           id="haplogroups-toggle-ac0"
           label="Include haplogroups with allele count of 0"
