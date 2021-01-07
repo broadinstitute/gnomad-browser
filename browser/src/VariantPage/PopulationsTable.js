@@ -11,6 +11,11 @@ const Table = styled(BaseTable)`
       border-top: 2px solid #aaa;
     }
   }
+
+  td.right-align {
+    padding-right: 25px;
+    text-align: right;
+  }
 `
 
 const TogglePopulationButton = styled(TextButton)`
@@ -226,10 +231,10 @@ export class PopulationsTable extends Component {
             >
               {this.renderPopulationRowHeader(pop)}
               {expandedPopulations[pop.name] && <td>Overall</td>}
-              <td>{pop.ac}</td>
-              <td>{pop.an}</td>
-              {showHomozygotes && <td>{pop.ac_hom}</td>}
-              {showHemizygotes && <td>{pop.ac_hemi}</td>}
+              <td className="right-align">{pop.ac}</td>
+              <td className="right-align">{pop.an}</td>
+              {showHomozygotes && <td className="right-align">{pop.ac_hom}</td>}
+              {showHemizygotes && <td className="right-align">{pop.ac_hemi}</td>}
               <td>{pop.af.toPrecision(4)}</td>
             </tr>
             {pop.subpopulations &&
@@ -246,10 +251,14 @@ export class PopulationsTable extends Component {
                   }
                 >
                   <td>{subPop.name}</td>
-                  <td>{subPop.ac}</td>
-                  <td>{subPop.an}</td>
-                  {showHomozygotes && <td>{subPop.ac_hom}</td>}
-                  {showHemizygotes && <td>{subPop.ac_hemi !== null ? subPop.ac_hemi : '—'}</td>}
+                  <td className="right-align">{subPop.ac}</td>
+                  <td className="right-align">{subPop.an}</td>
+                  {showHomozygotes && <td className="right-align">{subPop.ac_hom}</td>}
+                  {showHemizygotes && (
+                    <td className="right-align">
+                      {subPop.ac_hemi !== null ? subPop.ac_hemi : '—'}
+                    </td>
+                  )}
                   <td>{subPop.af.toPrecision(4)}</td>
                 </tr>
               ))}
@@ -260,10 +269,10 @@ export class PopulationsTable extends Component {
             <th colSpan={2} scope="row">
               Total
             </th>
-            <td>{totalAlleleCount}</td>
-            <td>{totalAlleleNumber}</td>
-            {showHomozygotes && <td>{totalHomozygotes}</td>}
-            {showHemizygotes && <td>{totalHemizygotes}</td>}
+            <td className="right-align">{totalAlleleCount}</td>
+            <td className="right-align">{totalAlleleNumber}</td>
+            {showHomozygotes && <td className="right-align">{totalHomozygotes}</td>}
+            {showHemizygotes && <td className="right-align">{totalHemizygotes}</td>}
             <td>{totalAlleleFrequency.toPrecision(4)}</td>
           </tr>
         </tfoot>
