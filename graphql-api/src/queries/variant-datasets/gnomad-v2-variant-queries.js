@@ -135,6 +135,18 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           ...variant.exome,
           ...variant.exome.freq[exomeSubset],
           populations: correctHemizygoteCounts(variant.exome.freq[exomeSubset].populations),
+          quality_metrics: {
+            ...variant.exome.quality_metrics,
+            allele_balance: {
+              ...variant.exome.quality_metrics.allele_balance,
+              alt: {
+                ...variant.exome.quality_metrics.allele_balance.alt,
+                bin_edges: variant.exome.quality_metrics.allele_balance.alt.bin_edges.map(
+                  (e) => Math.floor(e * 100) / 100
+                ),
+              },
+            },
+          },
           age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
         }
@@ -144,6 +156,18 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           ...variant.genome,
           ...variant.genome.freq[genomeSubset],
           populations: correctHemizygoteCounts(variant.genome.freq[genomeSubset].populations),
+          quality_metrics: {
+            ...variant.genome.quality_metrics,
+            allele_balance: {
+              ...variant.genome.quality_metrics.allele_balance,
+              alt: {
+                ...variant.genome.quality_metrics.allele_balance.alt,
+                bin_edges: variant.genome.quality_metrics.allele_balance.alt.bin_edges.map(
+                  (e) => Math.floor(e * 100) / 100
+                ),
+              },
+            },
+          },
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
         }
