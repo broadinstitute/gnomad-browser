@@ -12,7 +12,6 @@ import { getColumns } from '../VariantList/variantTableColumns'
 const VariantsInTranscript = ({
   clinvarVariants,
   datasetId,
-  includeNonCodingTranscripts,
   includeUTRs,
   transcript,
   variants,
@@ -29,6 +28,8 @@ const VariantsInTranscript = ({
     [transcript, width]
   )
 
+  const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')
+
   const datasetLabel = labelForDataset(datasetId)
 
   return (
@@ -39,17 +40,27 @@ const VariantsInTranscript = ({
       exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
       variants={variants}
     >
-      <p>
-        <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
-          {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
-        </Badge>{' '}
-        Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-        variants in UTRs or introns, use the{' '}
-        <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
-          region view
-        </Link>
-        .
-      </p>
+      {isCodingTranscript ? (
+        <p>
+          <Badge level={includeUTRs ? 'warning' : 'info'}>{includeUTRs ? 'Warning' : 'Note'}</Badge>{' '}
+          Only variants located in or within 75 base pairs of a coding exon are shown here. To see
+          variants in UTRs or introns, use the{' '}
+          <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
+            region view
+          </Link>
+          .
+        </p>
+      ) : (
+        <p>
+          <Badge level="info">Note</Badge> Only variants located in or within 75 base pairs of an
+          exon are shown here. To see variants in introns, use the{' '}
+          <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
+            region view
+          </Link>
+          .
+        </p>
+      )}
+
       {datasetId.startsWith('gnomad_r3') && (
         <p>
           <Badge level="error">Warning</Badge> We have identified an issue in gnomAD v3.1 where some
@@ -64,13 +75,19 @@ const VariantsInTranscript = ({
 VariantsInTranscript.propTypes = {
   clinvarVariants: PropTypes.arrayOf(PropTypes.object),
   datasetId: PropTypes.string.isRequired,
-  includeNonCodingTranscripts: PropTypes.bool.isRequired,
   includeUTRs: PropTypes.bool.isRequired,
   transcript: PropTypes.shape({
     transcript_id: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    exons: PropTypes.arrayOf(
+      PropTypes.shape({
+        feature_type: PropTypes.string.isRequired,
+        start: PropTypes.number.isRequired,
+        stop: PropTypes.number.isRequired,
+      })
+    ).isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
   width: PropTypes.number.isRequired,
