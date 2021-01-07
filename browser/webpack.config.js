@@ -116,6 +116,8 @@ const config = {
           },
     }),
   ],
+  // Use browserslist queries from .browserslistrc
+  target: 'browserslist',
 }
 
 if (isDev) {
