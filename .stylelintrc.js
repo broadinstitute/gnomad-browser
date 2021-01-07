@@ -135,7 +135,7 @@ module.exports = {
     // This rule sometimes conflicts with ESLint and Prettier in styled components
     // that contain multi-line functions
     'declaration-colon-newline-after': null,
-    'unit-whitelist': ['%', 'deg', 'em', 'rem', 's', 'px', 'vw', 'vh'],
+    'unit-whitelist': ['%', 'ch', 'deg', 'em', 'rem', 's', 'px', 'vw', 'vh'],
     'order/properties-order': [propertiesOrder],
     // "dummyValue" is inserted by stylelint-processor-styled-components in place of function interpolations
     'value-keyword-case': ['lower', { ignoreKeywords: ['dummyValue'] }],

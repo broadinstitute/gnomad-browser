@@ -2,6 +2,7 @@ import React from 'react'
 import Highlighter from 'react-highlight-words'
 
 import Link from '../Link'
+import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import SampleSourceIcon from '../VariantList/SampleSourceIcon'
 import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import {
@@ -10,17 +11,6 @@ import {
   svConsequenceLabels,
 } from './structuralVariantConsequences'
 import { svTypeColors, svTypeLabels } from './structuralVariantTypes'
-
-const renderExponentialNumber = number => {
-  if (number === null || number === undefined) {
-    return ''
-  }
-  const truncated = Number(number.toPrecision(3))
-  if (truncated === 0) {
-    return '0'
-  }
-  return truncated.toExponential()
-}
 
 const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
   const { consequence } = variant
@@ -31,19 +21,19 @@ const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
     renderedConsequence = 'intergenic'
   }
   return (
-    <span className="grid-cell-content">
+    <Cell>
       {consequence && colorKey === 'consequence' && (
         <VariantCategoryMarker
           color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
         />
       )}
       <Highlighter searchWords={highlightWords} textToHighlight={renderedConsequence} />
-    </span>
+    </Cell>
   )
 }
 
 const renderType = (variant, key, { colorKey, highlightWords }) => (
-  <span className="grid-cell-content">
+  <Cell>
     {colorKey === 'type' && (
       <VariantCategoryMarker color={svTypeColors[variant.type] || svTypeColors.OTH} />
     )}
@@ -51,7 +41,7 @@ const renderType = (variant, key, { colorKey, highlightWords }) => (
       searchWords={highlightWords}
       textToHighlight={svTypeLabels[variant.type] || variant.type}
     />
-  </span>
+  </Cell>
 )
 
 export const getColumns = ({ includeHomozygoteAC, width }) => {
@@ -63,9 +53,11 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       isSortable: true,
       minWidth: 110,
       render: (variant, key, { highlightWords }) => (
-        <Link className="grid-cell-content" target="_blank" to={`/variant/${variant.variant_id}`}>
-          <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
-        </Link>
+        <Cell>
+          <Link target="_blank" to={`/variant/${variant.variant_id}`}>
+            <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
+          </Link>
+        </Cell>
       ),
     },
     {
@@ -105,7 +97,7 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
           position = `${variant.pos} - ${variant.end}`
         }
 
-        return <span className="grid-cell-content">{position}</span>
+        return <Cell>{position}</Cell>
       },
     },
     {
@@ -114,18 +106,21 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       isSortable: true,
       minWidth: 100,
       render: variant => {
+        let s
         if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
-          return '—'
+          s = '—'
+        } else {
+          const size = variant.length
+          if (size >= 1e6) {
+            s = `${(size / 1e6).toPrecision(3)} Mb`
+          } else if (size >= 1e3) {
+            s = `${(size / 1e3).toPrecision(3)} kb`
+          } else {
+            s = `${size} bp`
+          }
         }
 
-        const size = variant.length
-        if (size >= 1e6) {
-          return `${(size / 1e6).toPrecision(3)} Mb`
-        }
-        if (size >= 1e3) {
-          return `${(size / 1e3).toPrecision(3)} kb`
-        }
-        return `${size} bp`
+        return <NumericCell>{s}</NumericCell>
       },
     },
     {
@@ -133,19 +128,21 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       heading: 'Allele Count',
       isSortable: true,
       minWidth: 110,
+      render: renderAlleleCountCell,
     },
     {
       key: 'an',
       heading: width < 600 ? 'AN' : 'Allele Number',
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
+      render: renderAlleleCountCell,
     },
     {
       key: 'af',
       heading: 'Allele Frequency',
       isSortable: true,
       minWidth: 110,
-      render: (row, key) => renderExponentialNumber(row[key]),
+      render: renderAlleleFrequencyCell,
     },
   ]
 
@@ -155,7 +152,7 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
       heading: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
       isSortable: true,
       minWidth: width < 600 ? 75 : 100,
-      render: (row, key) => (row[key] === null ? '—' : row[key]),
+      render: renderAlleleCountCell,
     })
   }
 

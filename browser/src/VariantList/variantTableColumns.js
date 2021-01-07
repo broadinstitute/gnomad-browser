@@ -4,6 +4,7 @@ import Highlighter from 'react-highlight-words'
 import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import Link from '../Link'
+import { Cell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
 import VariantCategoryMarker from './VariantCategoryMarker'
@@ -26,18 +27,6 @@ const getConsequenceColor = consequenceTerm => {
 
 const getConsequenceName = consequenceTerm =>
   consequenceTerm ? getLabelForConsequenceTerm(consequenceTerm) : 'N/A'
-
-const renderExponentialNumberCell = (row, key) => {
-  const number = row[key]
-  if (number === null || number === undefined) {
-    return ''
-  }
-  const truncated = Number(number.toPrecision(3))
-  if (truncated === 0) {
-    return '0'
-  }
-  return truncated.toExponential()
-}
 
 const getConsequenceDescription = context => {
   switch (context) {
@@ -69,9 +58,11 @@ export const getColumns = ({
       minWidth: 150,
       grow: 1,
       render: (row, key, { highlightWords }) => (
-        <Link className="grid-cell-content" target="_blank" to={`/variant/${row.variant_id}`}>
-          <Highlighter searchWords={highlightWords} textToHighlight={row.variant_id} />
-        </Link>
+        <Cell>
+          <Link target="_blank" to={`/variant/${row.variant_id}`}>
+            <Highlighter searchWords={highlightWords} textToHighlight={row.variant_id} />
+          </Link>
+        </Cell>
       ),
     },
     {
@@ -97,10 +88,10 @@ export const getColumns = ({
       isSortable: true,
       minWidth: 160,
       render: (variant, key, { highlightWords }) => (
-        <span className="grid-cell-content">
+        <Cell>
           <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
           {primaryTranscriptId && variant.transcript_id !== primaryTranscriptId && ' †'}
-        </span>
+        </Cell>
       ),
     },
     {
@@ -111,13 +102,13 @@ export const getColumns = ({
       isSortable: true,
       minWidth: 140,
       render: (row, key, { highlightWords }) => (
-        <span className="grid-cell-content">
+        <Cell>
           <VariantCategoryMarker color={getConsequenceColor(row[key])} />
           <Highlighter
             searchWords={highlightWords}
             textToHighlight={getConsequenceName(row[key])}
           />
-        </span>
+        </Cell>
       ),
     },
     {
@@ -139,6 +130,7 @@ export const getColumns = ({
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
+      render: renderAlleleCountCell,
     },
     {
       key: 'an',
@@ -147,6 +139,7 @@ export const getColumns = ({
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
+      render: renderAlleleCountCell,
     },
     {
       key: 'af',
@@ -155,7 +148,7 @@ export const getColumns = ({
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 110,
-      render: renderExponentialNumberCell,
+      render: renderAlleleFrequencyCell,
     },
   ]
 
@@ -187,7 +180,7 @@ export const getColumns = ({
           content = verdict
         }
 
-        return <span className="grid-cell-content">{content}</span>
+        return <Cell>{content}</Cell>
       },
     })
   }
@@ -200,9 +193,9 @@ export const getColumns = ({
       isSortable: false,
       minWidth: 100,
       render: row => (
-        <span className="grid-cell-content">
+        <Cell>
           <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
-        </span>
+        </Cell>
       ),
     })
   }
@@ -215,6 +208,7 @@ export const getColumns = ({
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 100,
+      render: renderAlleleCountCell,
     })
   }
 
@@ -226,6 +220,7 @@ export const getColumns = ({
       grow: 0,
       isSortable: true,
       minWidth: width < 600 ? 75 : 100,
+      render: renderAlleleCountCell,
     })
   }
 
