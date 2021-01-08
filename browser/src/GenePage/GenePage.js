@@ -53,6 +53,12 @@ const ControlPanel = styled.div`
   align-items: center;
   width: ${props => props.width}px;
   margin-left: ${props => props.marginLeft}px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 0;
+  }
 `
 
 const Legend = styled.ul`
@@ -349,7 +355,7 @@ class GenePage extends Component {
                     id="include-cds-regions"
                     onChange={() => {}}
                   />
-                  CDS
+                  Coding regions (CDS)
                   <LegendSwatch
                     color={transcriptFeatureAttributes.CDS.fill}
                     height={transcriptFeatureAttributes.CDS.height}
@@ -367,7 +373,7 @@ class GenePage extends Component {
                       this.setState({ includeUTRs: e.target.checked })
                     }}
                   />
-                  UTR
+                  Untranslated regions (UTRs)
                   <LegendSwatch
                     color={transcriptFeatureAttributes.UTR.fill}
                     height={transcriptFeatureAttributes.UTR.height}
@@ -385,7 +391,7 @@ class GenePage extends Component {
                       this.setState({ includeNonCodingTranscripts: e.target.checked })
                     }}
                   />
-                  Non-coding transcript
+                  Non-coding transcripts
                   <LegendSwatch
                     color={transcriptFeatureAttributes.exon.fill}
                     height={transcriptFeatureAttributes.exon.height}
