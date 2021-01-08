@@ -49,16 +49,13 @@ const TranscriptInfo = ({ transcript }) => {
       <AttributeList.Item label="Genome build">
         {transcript.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
-      <AttributeList.Item label="Ensembl transcript ID">
+      <AttributeList.Item label="Ensembl ID">
         {transcript.transcript_id}.{transcript.transcript_version}
       </AttributeList.Item>
-      <AttributeList.Item label="Ensembl gene ID">
+      <AttributeList.Item label="Gene">
         <Link to={`/gene/${transcript.gene.gene_id}`}>
-          {transcript.gene.gene_id}.{transcript.gene.gene_version}
+          {transcript.gene.symbol} ({transcript.gene.gene_id}.{transcript.gene.gene_version})
         </Link>
-      </AttributeList.Item>
-      <AttributeList.Item label="Gene symbol">
-        <Link to={`/gene/${transcript.gene.gene_id}`}>{transcript.gene.symbol}</Link>
       </AttributeList.Item>
       <AttributeList.Item label="Region">
         <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
