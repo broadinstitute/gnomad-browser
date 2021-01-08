@@ -149,6 +149,67 @@ ManeSelectTranscriptId.propTypes = {
   }).isRequired,
 }
 
+const OtherTranscripts = ({ transcripts }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  return (
+    <>
+      <Link key={transcripts[0].transcript_id} to={`/transcript/${transcripts[0].transcript_id}`}>
+        {transcripts[0].transcript_id}.{transcripts[0].transcript_version}
+      </Link>
+      {transcripts.length > 1 && (
+        <>
+          ,{' '}
+          <Link
+            key={transcripts[1].transcript_id}
+            to={`/transcript/${transcripts[1].transcript_id}`}
+          >
+            {transcripts[1].transcript_id}.{transcripts[1].transcript_version}
+          </Link>
+        </>
+      )}
+      {transcripts.length > 2 && (
+        <>
+          ,{' '}
+          <TextButton
+            onClick={() => {
+              setIsExpanded(true)
+            }}
+          >
+            and {transcripts.length - 2} more
+          </TextButton>
+        </>
+      )}
+      {isExpanded && (
+        <Modal
+          initialFocusOnButton={false}
+          title="Other transcripts"
+          onRequestClose={() => setIsExpanded(false)}
+        >
+          <List>
+            {transcripts.map(transcript => (
+              <ListItem key={transcript.transcript_id}>
+                <Link to={`/transcript/${transcript.transcript_id}`}>
+                  {transcript.transcript_id}.{transcript.transcript_version}
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </Modal>
+      )}
+    </>
+  )
+}
+
+OtherTranscripts.propTypes = {
+  transcripts: PropTypes.arrayOf(
+    PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+      transcript_version: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+}
+
 const GeneInfo = ({ gene }) => {
   const canonicalTranscript = gene.canonical_transcript_id
     ? gene.transcripts.find(transcript => transcript.transcript_id === gene.canonical_transcript_id)
@@ -157,19 +218,28 @@ const GeneInfo = ({ gene }) => {
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const gencodeVersion = gene.reference_genome === 'GRCh37' ? '19' : '35'
 
+  const otherTranscripts = gene.transcripts.filter(
+    transcript =>
+      transcript.transcript_id !== (canonicalTranscript || {}).transcript_id &&
+      transcript.transcript_id !== (gene.mane_select_transcript || {}).ensembl_id
+  )
+
   return (
     <AttributeList labelWidth={225}>
       <AttributeList.Item label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
+
       <AttributeList.Item label="Ensembl gene ID">
         {gene.gene_id}.{gene.gene_version}
       </AttributeList.Item>
+
       {gene.symbol !== gene.gencode_symbol && (
         <AttributeList.Item label={`Symbol in GENCODE v${gencodeVersion}`}>
           {gene.gencode_symbol}
         </AttributeList.Item>
       )}
+
       {gene.reference_genome === 'GRCh38' && (
         <AttributeList.Item
           label={
@@ -181,24 +251,35 @@ const GeneInfo = ({ gene }) => {
           {gene.mane_select_transcript ? <ManeSelectTranscriptId gene={gene} /> : 'Not available'}
         </AttributeList.Item>
       )}
-      {canonicalTranscript && (
-        <AttributeList.Item
-          label={
-            <React.Fragment>
-              Ensembl canonical transcript <InfoButton topic="canonical_transcript" />
-            </React.Fragment>
-          }
-        >
+
+      <AttributeList.Item
+        label={
+          <React.Fragment>
+            Ensembl canonical transcript <InfoButton topic="canonical_transcript" />
+          </React.Fragment>
+        }
+      >
+        {canonicalTranscript ? (
           <Link to={`/transcript/${canonicalTranscript.transcript_id}`}>
             {canonicalTranscript.transcript_id}.{canonicalTranscript.transcript_version}
           </Link>
+        ) : (
+          'Not available'
+        )}
+      </AttributeList.Item>
+
+      {otherTranscripts.length > 0 && (
+        <AttributeList.Item label="Other transcripts">
+          <OtherTranscripts transcripts={otherTranscripts} />
         </AttributeList.Item>
       )}
+
       <AttributeList.Item label="Region">
         <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>
           {gene.chrom}:{gene.start}-{gene.stop}
         </Link>
       </AttributeList.Item>
+
       <AttributeList.Item label="References">
         <GeneReferences gene={gene} />
       </AttributeList.Item>
