@@ -45,7 +45,7 @@ const TranscriptInfo = ({ transcript }) => {
   const ucscReferenceGenomeId = transcript.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
   return (
-    <AttributeList labelWidth={160}>
+    <AttributeList style={{ marginTop: '1.25em' }}>
       <AttributeList.Item label="Genome build">
         {transcript.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>

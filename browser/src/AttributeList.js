@@ -5,43 +5,37 @@ import styled from 'styled-components'
 import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 const AttributeList = styled.dl`
+  margin: 0;
+
   dt,
   dd {
-    box-sizing: border-box;
-    line-height: 1.5;
+    display: inline-block;
+    line-height: 1.75;
   }
 
   dt {
-    flex-shrink: 0;
-    width: ${props => props.labelWidth}px;
     font-weight: bold;
-    text-align: right;
+    vertical-align: top;
   }
 
   dd {
-    margin-left: 1em;
+    margin-left: 0.5ch;
   }
 
   @media (max-width: 600px) {
-    dt {
-      width: auto;
-      text-align: left;
+    dt,
+    dd {
+      display: block;
+    }
+
+    dd {
+      margin-left: 2ch;
     }
   }
 `
 
-const AttributeListItemWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 3px;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
-`
-
 const AttributeListItem = ({ children, label, tooltip }) => (
-  <AttributeListItemWrapper>
+  <div>
     <dt>
       {tooltip ? (
         <TooltipAnchor tooltip={tooltip}>
@@ -52,7 +46,7 @@ const AttributeListItem = ({ children, label, tooltip }) => (
       )}
     </dt>
     <dd>{children}</dd>
-  </AttributeListItemWrapper>
+  </div>
 )
 
 AttributeListItem.propTypes = {

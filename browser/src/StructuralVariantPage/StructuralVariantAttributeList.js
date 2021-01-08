@@ -111,7 +111,7 @@ ComplexTypeHelpButton.defaultProps = {
 }
 
 const StructuralVariantAttributeList = ({ variant }) => (
-  <AttributeList labelWidth={variant.type === 'MCNV' ? 180 : 140} style={{ marginTop: '1.25em' }}>
+  <AttributeList style={{ marginTop: '1.25em' }}>
     <AttributeList.Item label="Filter">
       {variant.filters.length > 0 ? (
         variant.filters.map(filter => (
