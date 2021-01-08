@@ -225,7 +225,7 @@ const GeneInfo = ({ gene }) => {
   )
 
   return (
-    <AttributeList labelWidth={225}>
+    <AttributeList style={{ marginTop: '1.25em' }}>
       <AttributeList.Item label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
       </AttributeList.Item>

@@ -12,7 +12,7 @@ const RegionInfo = ({ region }) => {
   const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&position=chr${chrom}%3A${start}-${stop}`
 
   return (
-    <AttributeList labelWidth={120}>
+    <AttributeList style={{ marginTop: '1.25em' }}>
       <AttributeList.Item label="Genome build">
         {referenceGenome} / {ucscReferenceGenomeId}
       </AttributeList.Item>
