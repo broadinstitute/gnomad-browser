@@ -3,16 +3,6 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
-import { BaseQuery } from '../Query'
-
-const clinvarVariantQuery = `
-query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
-  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
-    clinvar_variation_id
-  }
-}
-`
-
 export const ReferenceList = ({ variant }) => {
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
@@ -34,26 +24,15 @@ export const ReferenceList = ({ variant }) => {
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
-      <BaseQuery
-        query={clinvarVariantQuery}
-        variables={{ variantId: variant.variant_id, referenceGenome: variant.reference_genome }}
-      >
-        {({ data, error, loading }) => {
-          if (loading || error || !data.clinvar_variant) {
-            return null
-          }
-
-          return (
-            <ListItem>
-              <ExternalLink
-                href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${data.clinvar_variant.clinvar_variation_id}/`}
-              >
-                ClinVar ({data.clinvar_variant.clinvar_variation_id})
-              </ExternalLink>
-            </ListItem>
-          )
-        }}
-      </BaseQuery>
+      {variant.clinvar && (
+        <ListItem>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar.clinvar_variation_id}/`}
+          >
+            ClinVar ({variant.clinvar.clinvar_variation_id})
+          </ExternalLink>
+        </ListItem>
+      )}
     </List>
   )
 }
@@ -66,5 +45,8 @@ ReferenceList.propTypes = {
     pos: PropTypes.number.isRequired,
     ref: PropTypes.string.isRequired,
     rsid: PropTypes.string,
+    clinvar: PropTypes.shape({
+      clinvar_variation_id: PropTypes.string.isRequired,
+    }),
   }).isRequired,
 }

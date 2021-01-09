@@ -182,6 +182,7 @@ VariantPageContent.propTypes = {
     variant_id: PropTypes.string.isRequired,
     chrom: PropTypes.string.isRequired,
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    clinvar: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     colocated_variants: PropTypes.arrayOf(PropTypes.string),
     multi_nucleotide_variants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -465,6 +466,17 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
 }
 `
 
+const clinvarVariantQuery = `
+query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
+    clinical_significance
+    clinvar_variation_id
+    gold_stars
+    review_status
+  }
+}
+`
+
 const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
   const queryVariables = { datasetId }
   if (variantIdProp) {
@@ -504,7 +516,28 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
               )
             }
           } else {
-            pageContent = <VariantPageContent datasetId={datasetId} variant={data.variant} />
+            const { variant } = data
+            pageContent = (
+              <BaseQuery
+                query={clinvarVariantQuery}
+                variables={{
+                  variantId: variant.variant_id,
+                  referenceGenome: variant.reference_genome,
+                }}
+              >
+                {({ data: clinvarData, error: clinvarError, loading: clinvarLoading }) => {
+                  const clinvarVariant =
+                    clinvarLoading || clinvarError ? null : clinvarData.clinvar_variant
+
+                  return (
+                    <VariantPageContent
+                      datasetId={datasetId}
+                      variant={{ ...variant, clinvar: clinvarVariant }}
+                    />
+                  )
+                }}
+              </BaseQuery>
+            )
           }
 
           const variantId = ((data || {}).variant || {}).variant_id || variantIdProp
