@@ -9,11 +9,6 @@ import { Checkbox, SegmentedControl } from '@gnomad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import StackedVariantsPlot from './StackedVariantsPlot'
 
-const isClinvarVariantPathogenicOrLikelyPathogenic = clinvarVariant =>
-  clinvarVariant.clinical_significance &&
-  (clinvarVariant.clinical_significance.includes('Pathogenic') ||
-    clinvarVariant.clinical_significance.includes('Likely_pathogenic'))
-
 const CONSEQUENCE_COLORS = {
   lof: '#dd2c00',
   missense: 'orange',
@@ -270,9 +265,7 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
     return isCategoryIncluded[category]
   }
 
-  let filteredVariants = variants
-    .filter(isClinvarVariantPathogenicOrLikelyPathogenic)
-    .filter(matchesConsequenceFilter)
+  let filteredVariants = variants.filter(matchesConsequenceFilter)
 
   filteredVariants = filteredVariants.filter(v => {
     const [chrom, pos, ref, alt] = v.variant_id.split('-') // eslint-disable-line no-unused-vars
@@ -292,9 +285,7 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
     <Wrapper>
       <Track
         renderLeftPanel={() => (
-          <TitlePanel>
-            ClinVar pathogenic and likely pathogenic variants ({filteredVariants.length})
-          </TitlePanel>
+          <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
         )}
         renderTopPanel={() => (
           <TopPanel>
