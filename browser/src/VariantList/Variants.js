@@ -185,13 +185,17 @@ class Variants extends Component {
     return (
       <div>
         {clinvarVariants && (
-          <ClinvarVariantTrack
-            selectedGnomadVariants={renderedVariants}
-            variants={clinvarVariants}
-            variantFilter={filter}
-          />
+          <>
+            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+            <ClinvarVariantTrack
+              selectedGnomadVariants={renderedVariants}
+              variants={clinvarVariants}
+              variantFilter={filter}
+            />
+          </>
         )}
 
+        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
         <Cursor onClick={this.onNavigatorClick}>
           <VariantTrack
             title={`${datasetLabel} variants (${renderedVariants.length})`}
