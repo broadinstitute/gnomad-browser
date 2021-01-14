@@ -187,11 +187,7 @@ class Variants extends Component {
         {clinvarVariants && (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack
-              selectedGnomadVariants={renderedVariants}
-              variants={clinvarVariants}
-              variantFilter={filter}
-            />
+            <ClinvarVariantTrack variants={clinvarVariants} />
           </>
         )}
 
