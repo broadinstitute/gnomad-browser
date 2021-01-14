@@ -5,9 +5,38 @@ type ClinVarVariant {
   pos: Int!
   ref: String!
   alt: String!
-  clinical_significance: [String!]
+  clinical_significance: String!
   clinvar_variation_id: String!
   gold_stars: Int!
   major_consequence: String
-  review_status: [String!]!
+  review_status: String!
+}
+
+type ClinVarCondition {
+  name: String!
+  medgen_id: String
+}
+
+type ClinVarSubmission {
+  clinical_significance: String!
+  last_evaluated: String
+  review_status: String!
+  submitter_name: String!
+  conditions: [ClinVarCondition!]!
+}
+
+type ClinVarVariantDetails {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  clinical_significance: String!
+  clinvar_variation_id: String!
+  gold_stars: Int!
+  last_evaluated: String
+  review_status: String!
+  rsid: String
+  submissions: [ClinVarSubmission!]!
 }
