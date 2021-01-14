@@ -19,6 +19,7 @@ import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import LoFCurationResult from './LoFCurationResult'
+import VariantClinvarInfo from './VariantClinvarInfo'
 import VariantFeedback from './VariantFeedback'
 import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
@@ -131,6 +132,13 @@ const VariantPageContent = ({ datasetId, variant }) => (
       <Section>
         <h2>In Silico Predictors</h2>
         <VariantInSilicoPredictors variant={variant} />
+      </Section>
+    )}
+
+    {variant.clinvar && (
+      <Section>
+        <h2>ClinVar</h2>
+        <VariantClinvarInfo variant={variant} />
       </Section>
     )}
 
@@ -472,7 +480,18 @@ query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) 
     clinical_significance
     clinvar_variation_id
     gold_stars
+    last_evaluated
     review_status
+    submissions {
+      clinical_significance
+      conditions {
+        name
+        medgen_id
+      }
+      last_evaluated
+      review_status
+      submitter_name
+    }
   }
 }
 `
