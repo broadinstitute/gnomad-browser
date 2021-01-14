@@ -92,10 +92,6 @@ const shapeVariantSummary = (context) => {
 // Gene query
 // ================================================================================================
 
-const removeDuplicateVariants = (variant, index, allVariants) => {
-  return index === 0 || variant.variant_id !== allVariants[index - 1].variant_id
-}
-
 const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
   const filteredRegions = gene.exons.filter((exon) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1, r2) => r1.xstart - r2.xstart)
@@ -149,7 +145,6 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
 
   return hits
     .map((hit) => hit._source.value)
-    .filter(removeDuplicateVariants)
     .map(shapeVariantSummary({ type: 'gene', geneId: gene.gene_id }))
 }
 
@@ -196,10 +191,7 @@ const fetchClinvarVariantsByRegion = async (esClient, referenceGenome, region) =
     },
   })
 
-  return hits
-    .map((hit) => hit._source.value)
-    .filter(removeDuplicateVariants)
-    .map(shapeVariantSummary({ type: 'region' }))
+  return hits.map((hit) => hit._source.value).map(shapeVariantSummary({ type: 'region' }))
 }
 
 // ================================================================================================
@@ -262,7 +254,6 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
 
   return hits
     .map((hit) => hit._source.value)
-    .filter(removeDuplicateVariants)
     .map(shapeVariantSummary({ type: 'transcript', transcriptId: transcript.transcript_id }))
 }
 
