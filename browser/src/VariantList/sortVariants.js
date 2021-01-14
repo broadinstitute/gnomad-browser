@@ -26,6 +26,7 @@ const comparators = {
   hgvs: makeStringComparator('hgvs'),
   ac_hom: makeNumericComparator('ac_hom'),
   ac_hemi: makeNumericComparator('ac_hemi'),
+  clinical_significance: makeStringComparator('clinical_significance'),
 }
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {

@@ -6,6 +6,7 @@ import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
+import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
@@ -246,7 +247,7 @@ const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
           clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
-          variants={data.gene.variants}
+          variants={annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)}
         />
       )
     }}

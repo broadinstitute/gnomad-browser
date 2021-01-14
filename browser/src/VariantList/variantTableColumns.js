@@ -1,7 +1,7 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
-import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import Link from '../Link'
 import { Cell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
@@ -108,6 +108,23 @@ export const getColumns = ({
             searchWords={highlightWords}
             textToHighlight={getConsequenceName(row[key])}
           />
+        </Cell>
+      ),
+    },
+    {
+      key: 'clinical_significance',
+      heading: 'Clinical Significance',
+      tooltip: 'ClinVar clinical significance',
+      grow: 1,
+      isSortable: true,
+      minWidth: 200,
+      render: variant => (
+        <Cell>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
+          >
+            {variant.clinical_significance}
+          </ExternalLink>
         </Cell>
       ),
     },
