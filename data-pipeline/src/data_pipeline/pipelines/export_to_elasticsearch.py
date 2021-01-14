@@ -271,7 +271,9 @@ DATASETS_CONFIG = {
         ),
         "args": {
             "index": "clinvar_grch38_variants",
+            "id_field": "clinvar_variation_id",
             "index_fields": [
+                "clinvar_variation_id",
                 "variant_id",
                 "locus",
                 "transcript_consequences.gene_id",
@@ -293,7 +295,9 @@ DATASETS_CONFIG = {
         ),
         "args": {
             "index": "clinvar_grch37_variants",
+            "id_field": "clinvar_variation_id",
             "index_fields": [
+                "clinvar_variation_id",
                 "variant_id",
                 "locus",
                 "transcript_consequences.gene_id",
