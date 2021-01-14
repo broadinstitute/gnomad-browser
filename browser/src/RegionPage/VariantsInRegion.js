@@ -5,6 +5,7 @@ import { Badge } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
+import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
@@ -141,7 +142,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
           clinvarVariants={data.region.clinvar_variants}
           datasetId={datasetId}
           region={region}
-          variants={data.region.variants}
+          variants={annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)}
           width={width}
         />
       )
