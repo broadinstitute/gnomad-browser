@@ -1,29 +1,13 @@
-import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { Checkbox, SegmentedControl } from '@gnomad/ui'
+import { CategoryFilterControl, SegmentedControl } from '@gnomad/ui'
 
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
+import BinnedVariantsPlot from '../BinnedVariantsPlot'
+import { getLabelForConsequenceTerm } from '../vepConsequences'
 import StackedVariantsPlot from './StackedVariantsPlot'
-
-const CONSEQUENCE_COLORS = {
-  lof: '#dd2c00',
-  missense: 'orange',
-  synonymous: '#2e7d32',
-}
-
-const DEFAULT_COLOR = '#424242'
-
-const clinvarVariantColor = clinvarVariant => {
-  if (!clinvarVariant.major_consequence) {
-    return DEFAULT_COLOR
-  }
-  const category = getCategoryFromConsequence(clinvarVariant.major_consequence)
-  return CONSEQUENCE_COLORS[category] || DEFAULT_COLOR
-}
 
 const ClinvarVariantPropType = PropTypes.shape({
   clinical_significance: PropTypes.string.isRequired,
@@ -34,90 +18,66 @@ const ClinvarVariantPropType = PropTypes.shape({
   variant_id: PropTypes.string.isRequired,
 })
 
+const CLINICAL_SIGNIFICANCE_CATEGORY_COLORS = {
+  pathogenic: '#E6573D',
+  uncertain: '#FAB470',
+  benign: '#5E6F9E',
+  other: '#bababa',
+}
+
+const CLINICAL_SIGNIFICANCE_GROUPS = {
+  pathogenic: new Set([
+    'Pathogenic',
+    'Likely pathogenic',
+    'Pathogenic/Likely pathogenic',
+    'association',
+    'risk factor',
+  ]),
+  uncertain: new Set([
+    'Uncertain significance',
+    'Conflicting interpretations of pathogenicity',
+    'conflicting data from submitters',
+  ]),
+  benign: new Set(['Benign', 'Likely benign', 'Benign/Likely benign']),
+  other: new Set([
+    'other',
+    'drug response',
+    'Affects',
+    'protective',
+    'no interpretation for the single variant',
+    'not provided',
+    'association not found',
+  ]),
+}
+
+const clinvarVariantClinicalSignificanceCategory = variant => {
+  const clinicalSignificances = variant.clinical_significance.split(', ')
+
+  if (clinicalSignificances.some(s => CLINICAL_SIGNIFICANCE_GROUPS.pathogenic.has(s))) {
+    return 'pathogenic'
+  }
+  if (clinicalSignificances.some(s => CLINICAL_SIGNIFICANCE_GROUPS.uncertain.has(s))) {
+    return 'uncertain'
+  }
+  if (clinicalSignificances.some(s => CLINICAL_SIGNIFICANCE_GROUPS.benign.has(s))) {
+    return 'benign'
+  }
+  return 'other'
+}
+
 // ================================================================
 // Binned variants plot
 // ================================================================
 
-const ClinvarBinnedVariantsPlot = ({ scalePosition, variants, width }) => {
-  const height = 30
-  const nBins = Math.min(100, Math.floor(width / 8))
-  const binWidth = width / nBins
-  const binPadding = 1
-  const bins = [...Array(nBins)].map(() => ({ lof: 0, missense: 0, synonymous: 0, other: 0 }))
-
-  const variantBinIndex = variant => {
-    const variantPosition = scalePosition(variant.pos)
-    return Math.floor(variantPosition / binWidth)
-  }
-
-  variants.forEach(variant => {
-    const category = variant.major_consequence
-      ? getCategoryFromConsequence(variant.major_consequence)
-      : 'other'
-
-    const binIndex = variantBinIndex(variant)
-    if (binIndex >= 0 && binIndex < bins.length) {
-      bins[binIndex][category] += 1
-    }
-  })
-
-  const categories = ['lof', 'missense', 'synonymous', 'other']
-
-  const maxVariantsInBin = bins.reduce((max, bin) => {
-    const binTotal = bin.lof + bin.missense + bin.synonymous + bin.other
-    return Math.max(max, binTotal)
-  }, 1)
-
-  const y = scaleLinear().domain([0, maxVariantsInBin]).range([0, height])
-
+const ClinvarBinnedVariantsPlot = props => {
   return (
-    <svg height={height} width={width} style={{ overflow: 'visible' }}>
-      <g>
-        <text x={-7} y={0} dy="0.3em" textAnchor="end">
-          {maxVariantsInBin}
-        </text>
-        <line x1={-5} y1={0} x2={0} y2={0} stroke="black" strokeWidth={1} />
-
-        <text x={-7} y={height} dy="0.3em" textAnchor="end">
-          0
-        </text>
-
-        <line x1={-5} y1={height} x2={0} y2={height} stroke="black" strokeWidth={1} />
-      </g>
-      <g>
-        {bins.map((bin, binIndex) => {
-          let yOffset = 0
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <g key={binIndex} transform={`translate(${binIndex * binWidth + binPadding},0)`}>
-              {categories.map(category => {
-                const barHeight = y(bin[category])
-                const bar = (
-                  <rect
-                    key={category}
-                    x={0}
-                    y={height - yOffset - barHeight}
-                    width={binWidth - binPadding * 2}
-                    height={barHeight}
-                    fill={CONSEQUENCE_COLORS[category] || DEFAULT_COLOR}
-                  />
-                )
-                yOffset += barHeight
-                return bar
-              })}
-            </g>
-          )
-        })}
-      </g>
-      <line x1={0} y1={height} x2={width} y2={height} stroke="#424242" />
-    </svg>
+    <BinnedVariantsPlot
+      {...props}
+      categoryColor={category => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category]}
+      variantCategory={clinvarVariantClinicalSignificanceCategory}
+      variantCategories={['pathogenic', 'uncertain', 'benign', 'other']}
+    />
   )
-}
-
-ClinvarBinnedVariantsPlot.propTypes = {
-  scalePosition: PropTypes.func.isRequired,
-  variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 // ================================================================
@@ -178,33 +138,30 @@ const onClickVariant = variant => {
 }
 
 const ClinvarStackedVariantsPlot = ({ scalePosition, variants, width }) => {
-  const variantsByConsequence = {
-    lof: [],
-    missense: [],
-    synonymous: [],
+  const variantsByCategory = {
+    pathogenic: [],
+    uncertain: [],
+    benign: [],
     other: [],
   }
 
   variants.forEach(variant => {
-    const category = variant.major_consequence
-      ? getCategoryFromConsequence(variant.major_consequence)
-      : 'other'
-
-    variantsByConsequence[category].push(variant)
+    const category = clinvarVariantClinicalSignificanceCategory(variant)
+    variantsByCategory[category].push({ ...variant, category })
   })
 
   const layers = [
-    variantsByConsequence.lof,
-    variantsByConsequence.missense,
-    variantsByConsequence.synonymous,
-    variantsByConsequence.other,
+    variantsByCategory.pathogenic,
+    variantsByCategory.uncertain,
+    variantsByCategory.benign,
+    variantsByCategory.other,
   ]
 
   return (
     <StackedVariantsPlot
       onClickVariant={onClickVariant}
       scalePosition={scalePosition}
-      symbolColor={clinvarVariantColor}
+      symbolColor={variant => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[variant.category]}
       tooltipComponent={ClinvarTooltip}
       variantLayers={layers}
       width={width}
@@ -229,9 +186,10 @@ const Wrapper = styled.div`
 const TopPanel = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1em;
 `
 
 const PlotWrapper = styled.div`
@@ -250,36 +208,18 @@ const TitlePanel = styled.div`
   padding-right: 20px;
 `
 
-const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isFilteredtoGnomad, setIsFilteredtoGnomad] = useState(false)
-
-  const isCategoryIncluded = {
-    lof: variantFilter.includeCategories.lof,
-    missense: variantFilter.includeCategories.missense,
-    synonymous: variantFilter.includeCategories.synonymous,
-    other: variantFilter.includeCategories.other,
-  }
-  const matchesConsequenceFilter = variant => {
-    const category = getCategoryFromConsequence(variant.major_consequence) || 'other'
-    return isCategoryIncluded[category]
-  }
-
-  let filteredVariants = variants.filter(matchesConsequenceFilter)
-
-  filteredVariants = filteredVariants.filter(v => {
-    const [chrom, pos, ref, alt] = v.variant_id.split('-') // eslint-disable-line no-unused-vars
-
-    const isSNV = ref.length === 1 && alt.length === 1
-    const isIndel = ref.length !== alt.length
-
-    return (variantFilter.includeSNVs && isSNV) || (variantFilter.includeIndels && isIndel)
+const ClinvarVariantTrack = ({ variants }) => {
+  const [includedCategories, setIncludedCategories] = useState({
+    pathogenic: true,
+    uncertain: true,
+    benign: true,
+    other: true,
   })
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  if (isFilteredtoGnomad) {
-    const gnomadVariantSet = new Set(selectedGnomadVariants.map(v => v.variant_id))
-    filteredVariants = filteredVariants.filter(v => gnomadVariantSet.has(v.variant_id))
-  }
+  const filteredVariants = variants.filter(
+    v => includedCategories[clinvarVariantClinicalSignificanceCategory(v)]
+  )
 
   return (
     <Wrapper>
@@ -289,13 +229,34 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
         )}
         renderTopPanel={() => (
           <TopPanel>
-            <Checkbox
-              checked={isFilteredtoGnomad}
-              id="clinvar-track-filter-to-gnomad"
-              label="Filter to selected gnomAD variants"
-              style={{ marginRight: '1em' }}
-              onChange={setIsFilteredtoGnomad}
+            <CategoryFilterControl
+              categories={[
+                {
+                  id: 'pathogenic',
+                  label: 'Pathogenic / likely pathogenic',
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.pathogenic,
+                },
+                {
+                  id: 'uncertain',
+                  label: 'Uncertain significance / conflicting',
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.uncertain,
+                },
+                {
+                  id: 'benign',
+                  label: 'Benign / likely benign',
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.benign,
+                },
+                {
+                  id: 'other',
+                  label: 'Other',
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.other,
+                },
+              ]}
+              categorySelections={includedCategories}
+              id="clinvar-track-included-categories"
+              onChange={setIncludedCategories}
             />
+
             <SegmentedControl
               id="clinvar-track-mode"
               options={[
@@ -327,22 +288,7 @@ const ClinvarVariantTrack = ({ selectedGnomadVariants, variants, variantFilter }
 }
 
 ClinvarVariantTrack.propTypes = {
-  selectedGnomadVariants: PropTypes.arrayOf(
-    PropTypes.shape({
-      variant_id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
-  variantFilter: PropTypes.shape({
-    includeCategories: PropTypes.shape({
-      lof: PropTypes.bool.isRequired,
-      missense: PropTypes.bool.isRequired,
-      synonymous: PropTypes.bool.isRequired,
-      other: PropTypes.bool.isRequired,
-    }).isRequired,
-    includeSNVs: PropTypes.bool.isRequired,
-    includeIndels: PropTypes.bool.isRequired,
-  }).isRequired,
 }
 
 export default React.memo(ClinvarVariantTrack)
