@@ -1,101 +1,262 @@
-import functools
+import csv
+import datetime
 import gzip
+import json
+import os
+import subprocess
+import sys
+from xml.etree import ElementTree
 
 import hail as hl
+from tqdm import tqdm
 
-from data_pipeline.data_types.locus import normalized_contig, x_position
+from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
-CLINVAR_GOLD_STARS = hl.dict(
-    {
-        "no_interpretation_for_the_single_variant": 0,
-        "no_assertion_provided": 0,
-        "no_assertion_criteria_provided": 0,
-        "criteria_provided,_single_submitter": 1,
-        "criteria_provided,_conflicting_interpretations": 1,
-        "criteria_provided,_multiple_submitters,_no_conflicts": 2,
-        "reviewed_by_expert_panel": 3,
-        "practice_guideline": 4,
-    }
-)
+CLINVAR_GOLD_STARS = {
+    "criteria provided, conflicting interpretations": 1,
+    "criteria provided, multiple submitters, no conflicts": 2,
+    "criteria provided, single submitter": 1,
+    "no assertion criteria provided": 0,
+    "no assertion provided": 0,
+    "no interpretation for the single variant": 0,
+    "practice guideline": 4,
+    "reviewed by expert panel": 3,
+}
 
 
-def get_gold_stars(review_status):
-    review_status_str = hl.delimit(hl.sorted(review_status, key=lambda s: s.replace("^_", "z")))
-    return CLINVAR_GOLD_STARS[review_status_str]
+class SkipVariant(Exception):
+    pass
 
 
-def _parse_clinvar_release_date(vcf_path):
-    open_file = hl.hadoop_open if vcf_path.startswith("gs://") else functools.partial(gzip.open, mode="rt")
-    with open_file(vcf_path) as vcf_file:
-        for line in vcf_file:
-            if line.startswith("##fileDate="):
-                clinvar_release_date = line.split("=")[-1].strip()
-                return clinvar_release_date
+def _parse_submission(submission_element, trait_mapping_list_element):
+    submission = {}
 
-            if not line.startswith("#"):
-                return None
+    submission["id"] = submission_element.find("./ClinVarAccession").attrib["Accession"]
 
-    return None
+    submission["submitter_name"] = submission_element.find("./ClinVarAccession").attrib["SubmitterName"]
+
+    submission["clinical_significance"] = None
+    interpretation_element = submission_element.find("./Interpretation")
+    interpretation_description_element = interpretation_element.find("./Description")
+    if interpretation_description_element is not None:
+        submission["clinical_significance"] = interpretation_description_element.text
+
+    submission["last_evaluated"] = interpretation_element.attrib.get("DateLastEvaluated", None)
+    submission["review_status"] = submission_element.find("./ReviewStatus").text
+
+    submission["conditions"] = []
+    trait_elements = submission_element.findall("./TraitSet/Trait")
+    for trait_element in trait_elements:
+        preferred_name_element = None
+        mapping_element = None
+
+        if trait_mapping_list_element is not None:
+            xref_elements = trait_element.findall("XRef")
+            for xref_element in xref_elements:
+                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{xref_element.attrib['ID']}']"
+                mapping_element = trait_mapping_list_element.find(selector)
+                if mapping_element is not None:
+                    break
+
+        if mapping_element is None:
+            preferred_name_element = trait_element.find("./Name/ElementValue[@Type='Preferred']")
+            if preferred_name_element is not None and trait_mapping_list_element is not None:
+                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{preferred_name_element.text}\"]"
+                mapping_element = trait_mapping_list_element.find(selector)
+
+        if mapping_element is None:
+            name_elements = trait_element.findall("./Name/ElementValue")
+            for name_element in name_elements:
+                if preferred_name_element is None:
+                    preferred_name_element = name_element
+
+                if trait_mapping_list_element is not None:
+                    selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{name_element.text}\"]"
+                    mapping_element = trait_mapping_list_element.find(selector)
+                    if mapping_element:
+                        break
+
+        if mapping_element is not None:
+            medgen_element = mapping_element.find("./MedGen")
+            submission["conditions"].append(
+                {"name": medgen_element.attrib["Name"], "medgen_id": medgen_element.attrib["CUI"],}
+            )
+        elif preferred_name_element is not None:
+            submission["conditions"].append({"name": preferred_name_element.text, "medgen_id": None})
+
+    return submission
 
 
-def import_clinvar_vcf(vcf_path, reference_genome):
-    if reference_genome not in ("GRCh37", "GRCh38"):
-        raise ValueError("Unsupported reference genome: " + str(reference_genome))
+def _parse_variant(variant_element):
+    variant = {}
 
-    clinvar_release_date = _parse_clinvar_release_date(vcf_path)
+    if variant_element.find("./InterpretedRecord") is None:
+        raise SkipVariant
 
-    # contigs in the ClinVar GRCh38 VCF are not prefixed with "chr"
-    contig_recoding = None
-    if reference_genome == "GRCh38":
-        ref = hl.get_reference("GRCh38")
-        contig_recoding = {
-            ref_contig.replace("chr", ""): ref_contig for ref_contig in ref.contigs if "chr" in ref_contig
-        }
+    variant["locations"] = {}
+    location_elements = variant_element.findall("./InterpretedRecord/SimpleAllele/Location/SequenceLocation")
+    for element in location_elements:
+        try:
+            variant["locations"][element.attrib["Assembly"]] = {
+                "locus": element.attrib["Chr"] + ":" + element.attrib["positionVCF"],
+                "alleles": [element.attrib["referenceAlleleVCF"], element.attrib["alternateAlleleVCF"],],
+            }
+        except KeyError:
+            pass
 
-    ds = hl.import_vcf(
-        vcf_path,
-        reference_genome=reference_genome,
-        contig_recoding=contig_recoding,
+    if not variant["locations"]:
+        raise SkipVariant
+
+    variant["clinvar_variation_id"] = variant_element.attrib["VariationID"]
+
+    variant["rsid"] = None
+    rsid_element = variant_element.find("./InterpretedRecord/SimpleAllele/XRefList/XRef[@DB='dbSNP']")
+    if rsid_element is not None:
+        variant["rsid"] = rsid_element.attrib["ID"]
+
+    review_status_element = variant_element.find("./InterpretedRecord/ReviewStatus")
+    variant["review_status"] = review_status_element.text
+    variant["gold_stars"] = CLINVAR_GOLD_STARS[variant["review_status"]]
+
+    variant["clinical_significance"] = None
+    clinical_significance_elements = variant_element.findall(
+        "./InterpretedRecord/Interpretations/Interpretation[@Type='Clinical significance']"
+    )
+    if clinical_significance_elements:
+        variant["clinical_significance"] = ", ".join(
+            el.find("Description").text for el in clinical_significance_elements
+        )
+
+    variant["last_evaluated"] = None
+    evaluated_dates = [el.attrib.get("DateLastEvaluated", None) for el in clinical_significance_elements]
+    evaluated_dates = [date for date in evaluated_dates if date]
+    if evaluated_dates:
+        variant["last_evaluated"] = sorted(
+            evaluated_dates, key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"), reverse=True,
+        )[0]
+
+    submission_elements = variant_element.findall("./InterpretedRecord/ClinicalAssertionList/ClinicalAssertion")
+    trait_mapping_list_element = variant_element.find("./InterpretedRecord/TraitMappingList")
+    variant["submissions"] = [_parse_submission(el, trait_mapping_list_element) for el in submission_elements]
+
+    return variant
+
+
+def import_clinvar_xml(clinvar_xml_path):
+    release_date = None
+
+    clinvar_xml_local_path = os.path.join("/tmp", os.path.basename(clinvar_xml_path))
+    print("Copying ClinVar XML")
+    if not os.path.exists(clinvar_xml_local_path):
+        subprocess.check_call(["gsutil", "cp", clinvar_xml_path, clinvar_xml_local_path])
+
+    print("Parsing XML file")
+    with open("/tmp/clinvar_variants.tsv", "w", newline="") as output_file:
+        writer = csv.writer(output_file, delimiter="\t", quotechar="", quoting=csv.QUOTE_NONE)
+        writer.writerow(["locus_GRCh37", "alleles_GRCh37", "locus_GRCh38", "alleles_GRCh38", "variant"])
+
+        open_file = gzip.open if clinvar_xml_local_path.endswith(".gz") else open
+        with open_file(clinvar_xml_local_path, "r") as xml_file:
+            # 800k is an estimate of the number of variants in the XML file
+            progress = tqdm(total=800_000, mininterval=5)
+
+            xml = ElementTree.iterparse(xml_file, events=["end"])
+            for _, element in xml:
+                if element.tag == "ClinVarVariationRelease":
+                    release_date = element.attrib["ReleaseDate"]
+
+                if element.tag == "VariationArchive":
+                    try:
+                        variant = _parse_variant(element)
+
+                        locations = variant.pop("locations")
+                        writer.writerow(
+                            [
+                                locations["GRCh37"]["locus"] if "GRCh37" in locations else "NA",
+                                json.dumps(locations["GRCh37"]["alleles"]) if "GRCh37" in locations else "NA",
+                                "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
+                                if "GRCh38" in locations
+                                else "NA",
+                                json.dumps(locations["GRCh38"]["alleles"]) if "GRCh38" in locations else "NA",
+                                json.dumps(variant),
+                            ]
+                        )
+
+                        progress.update(1)
+
+                    except SkipVariant:
+                        pass
+                    except Exception:
+                        print(
+                            f"Failed to parse variant {element.attrib['VariationID']}", file=sys.stderr,
+                        )
+                        raise
+
+                    # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
+                    element.clear()
+
+            progress.close()
+
+    subprocess.check_call(["hdfs", "dfs", "-cp", "-f", "file:///tmp/clinvar_variants.tsv", "/tmp/clinvar_variants.tsv"])
+
+    ds = hl.import_table(
+        "/tmp/clinvar_variants.tsv",
+        types={
+            "locus_GRCh37": hl.tlocus("GRCh37"),
+            "alleles_GRCh37": hl.tarray(hl.tstr),
+            "locus_GRCh38": hl.tlocus("GRCh38"),
+            "alleles_GRCh38": hl.tarray(hl.tstr),
+            "variant": hl.tstruct(
+                clinvar_variation_id=hl.tstr,
+                rsid=hl.tstr,
+                review_status=hl.tstr,
+                gold_stars=hl.tint,
+                clinical_significance=hl.tstr,
+                last_evaluated=hl.tstr,
+                submissions=hl.tarray(
+                    hl.tstruct(
+                        id=hl.tstr,
+                        submitter_name=hl.tstr,
+                        clinical_significance=hl.tstr,
+                        last_evaluated=hl.tstr,
+                        review_status=hl.tstr,
+                        conditions=hl.tarray(hl.tstruct(name=hl.tstr, medgen_id=hl.tstr)),
+                    )
+                ),
+            ),
+        },
         min_partitions=2000,
-        force_bgz=True,
-        drop_samples=True,
-        skip_invalid_loci=True,
-    ).rows()
+    )
 
-    ds = ds.annotate_globals(version=clinvar_release_date)
-
-    # Verify assumption that there are no multi-allelic variants and that splitting is not necessary.
-    n_multiallelic_variants = ds.aggregate(hl.agg.filter(hl.len(ds.alleles) > 2, hl.agg.count()))
-    assert n_multiallelic_variants == 0, "ClinVar VCF contains multi-allelic variants"
+    ds = ds.annotate_globals(clinvar_release_date=release_date)
 
     return ds
 
 
-def prepare_clinvar_variants(vcf_path, reference_genome):
-    ds = import_clinvar_vcf(vcf_path, reference_genome)
+def prepare_clinvar_variants(clinvar_path, reference_genome):
+    ds = hl.read_table(clinvar_path)
 
-    # There are some variants with only one entry in alleles, ignore them for now.
-    # These could be displayed in the ClinVar track even though they will never match a gnomAD variant.
-    ds = ds.filter(hl.len(ds.alleles) == 2)
+    ds = ds.filter(hl.is_defined(ds[f"locus_{reference_genome}"]) & hl.is_defined(ds[f"alleles_{reference_genome}"]))
 
-    ds = hl.vep(ds)
+    ds = ds.select(locus=ds[f"locus_{reference_genome}"], alleles=ds[f"alleles_{reference_genome}"], **ds.variant)
 
-    ds = ds.select(
-        clinical_significance=hl.sorted(ds.info.CLNSIG, key=lambda s: s.replace("^_", "z")).map(
-            lambda s: s.replace("^_", "")
-        ),
-        clinvar_variation_id=ds.rsid,
-        gold_stars=get_gold_stars(ds.info.CLNREVSTAT),
-        review_status=hl.sorted(ds.info.CLNREVSTAT, key=lambda s: s.replace("^_", "z")).map(
-            lambda s: s.replace("^_", "")
-        ),
-        vep=ds.vep,
+    # Remove any variants with alleles other than ACGT
+    ds = ds.filter(
+        hl.len(hl.set(hl.delimit(ds.alleles, "").split("")).difference(hl.set(["A", "C", "G", "T", ""]))) == 0
     )
 
     ds = ds.annotate(
-        chrom=normalized_contig(ds.locus.contig), variant_id=variant_id(ds.locus, ds.alleles), xpos=x_position(ds.locus)
+        variant_id=variant_id(ds.locus, ds.alleles),
+        chrom=normalized_contig(ds.locus.contig),
+        pos=ds.locus.position,
+        ref=ds.alleles[0],
+        alt=ds.alleles[1],
     )
+
+    ds = ds.key_by("locus", "alleles")
+
+    ds = hl.vep(ds)
 
     return ds

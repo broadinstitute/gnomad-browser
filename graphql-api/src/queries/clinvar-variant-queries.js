@@ -123,6 +123,20 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
     index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
     type: '_doc',
     size: 10000,
+    _source: [
+      'value.alt',
+      'value.chrom',
+      'value.clinical_significance',
+      'value.clinvar_variation_id',
+      'value.gold_stars',
+      'value.major_consequence',
+      'value.pos',
+      'value.ref',
+      'value.reference_genome',
+      'value.review_status',
+      'value.transcript_consequences',
+      'value.variant_id',
+    ],
     body: {
       query: {
         bool: {
@@ -148,6 +162,20 @@ const fetchClinvarVariantsByRegion = async (esClient, referenceGenome, region) =
     index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
     type: '_doc',
     size: 10000,
+    _source: [
+      'value.alt',
+      'value.chrom',
+      'value.clinical_significance',
+      'value.clinvar_variation_id',
+      'value.gold_stars',
+      'value.major_consequence',
+      'value.pos',
+      'value.ref',
+      'value.reference_genome',
+      'value.review_status',
+      'value.transcript_consequences',
+      'value.variant_id',
+    ],
     body: {
       query: {
         bool: {
@@ -205,6 +233,20 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
     index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
     type: '_doc',
     size: 10000,
+    _source: [
+      'value.alt',
+      'value.chrom',
+      'value.clinical_significance',
+      'value.clinvar_variation_id',
+      'value.gold_stars',
+      'value.major_consequence',
+      'value.pos',
+      'value.ref',
+      'value.reference_genome',
+      'value.review_status',
+      'value.transcript_consequences',
+      'value.variant_id',
+    ],
     body: {
       query: {
         bool: {

@@ -26,7 +26,7 @@ const clinvarVariantColor = clinvarVariant => {
 }
 
 const ClinvarVariantPropType = PropTypes.shape({
-  clinical_significance: PropTypes.arrayOf(PropTypes.string),
+  clinical_significance: PropTypes.string.isRequired,
   clinvar_variation_id: PropTypes.string.isRequired,
   gold_stars: PropTypes.number.isRequired,
   major_consequence: PropTypes.string,
@@ -151,7 +151,7 @@ const ClinvarTooltip = ({ variant }) => (
     <ClinvarVariantAttributeList>
       <div>
         <dt>Clinical Signficance</dt>
-        <dd>{(variant.clinical_significance || []).join(', ')}</dd>
+        <dd>{variant.clinical_significance}</dd>
       </div>
       <div>
         <dt>Consequence</dt>

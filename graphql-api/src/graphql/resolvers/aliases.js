@@ -15,7 +15,6 @@ module.exports = {
   },
   ClinVarVariant: {
     major_consequence: majorConsequenceFieldResolver('major_consequence'),
-    pos: (obj) => obj.locus.position,
   },
   Variant: {
     // Old camel case fields
