@@ -60,13 +60,13 @@ const countVariantsInRegion = async (esClient, region, subset) => {
 
 // TODO: Remove after reloading v2 variants
 // See https://github.com/broadinstitute/gnomad-browser/issues/642
-const correctHemizygoteCounts = (populations) => {
+const correctHemizygoteCounts = (populations, nonpar) => {
   const hemizygoteCounts = {}
 
   populations
     .filter((pop) => pop.id.endsWith('_MALE'))
     .forEach((pop) => {
-      hemizygoteCounts[pop.id.slice(0, pop.id.length - 5)] = pop.ac
+      hemizygoteCounts[pop.id.slice(0, pop.id.length - 5)] = nonpar ? pop.ac : 0
     })
 
   return populations.map((pop) => {
@@ -134,7 +134,10 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       ? {
           ...variant.exome,
           ...variant.exome.freq[exomeSubset],
-          populations: correctHemizygoteCounts(variant.exome.freq[exomeSubset].populations),
+          populations: correctHemizygoteCounts(
+            variant.exome.freq[exomeSubset].populations,
+            variant.nonpar
+          ),
           quality_metrics: {
             ...variant.exome.quality_metrics,
             allele_balance: {
@@ -155,7 +158,10 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       ? {
           ...variant.genome,
           ...variant.genome.freq[genomeSubset],
-          populations: correctHemizygoteCounts(variant.genome.freq[genomeSubset].populations),
+          populations: correctHemizygoteCounts(
+            variant.genome.freq[genomeSubset].populations,
+            variant.nonpar
+          ),
           quality_metrics: {
             ...variant.genome.quality_metrics,
             allele_balance: {
@@ -208,7 +214,8 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.exome.freq[exomeSubset],
             populations: correctHemizygoteCounts(
-              variant.exome.freq[exomeSubset].populations
+              variant.exome.freq[exomeSubset].populations,
+              variant.nonpar
             ).filter((pop) => !(pop.id.includes('_') || pop.id === 'FEMALE' || pop.id === 'MALE')),
             filters: exomeFilters,
           }
@@ -218,7 +225,8 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.genome.freq[genomeSubset],
             populations: correctHemizygoteCounts(
-              variant.genome.freq[genomeSubset].populations
+              variant.genome.freq[genomeSubset].populations,
+              variant.nonpar
             ).filter((pop) => !(pop.id.includes('_') || pop.id === 'FEMALE' || pop.id === 'MALE')),
             filters: genomeFilters,
           }
