@@ -66,8 +66,11 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
       clinical_significance
       clinvar_variation_id
       gold_stars
+      hgvsc
+      hgvsp
       major_consequence
       pos
+      review_status
       variant_id
     }
     variants(dataset: $datasetId) {

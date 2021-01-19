@@ -14,6 +14,8 @@ module.exports = {
     pLI: fieldAliasResolver('pli'),
   },
   ClinVarVariant: {
+    hgvsc: majorConsequenceFieldResolver('hgvsc'),
+    hgvsp: majorConsequenceFieldResolver('hgvsp'),
     major_consequence: majorConsequenceFieldResolver('major_consequence'),
   },
   Variant: {

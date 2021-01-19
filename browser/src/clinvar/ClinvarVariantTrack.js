@@ -13,8 +13,11 @@ const ClinvarVariantPropType = PropTypes.shape({
   clinical_significance: PropTypes.string.isRequired,
   clinvar_variation_id: PropTypes.string.isRequired,
   gold_stars: PropTypes.number.isRequired,
+  hgvsc: PropTypes.string,
+  hgvsp: PropTypes.string,
   major_consequence: PropTypes.string,
   pos: PropTypes.number.isRequired,
+  review_status: PropTypes.string.isRequired,
   variant_id: PropTypes.string.isRequired,
 })
 
@@ -110,16 +113,23 @@ const ClinvarTooltip = ({ variant }) => (
     <strong>{variant.variant_id}</strong>
     <ClinvarVariantAttributeList>
       <div>
-        <dt>Clinical Signficance</dt>
+        <dt>Clinical significance</dt>
         <dd>{variant.clinical_significance}</dd>
       </div>
       <div>
-        <dt>Consequence</dt>
+        <dt>HGVS consequence</dt>
+        <dd>{variant.hgvsp || variant.hgvsc || '–'}</dd>
+      </div>
+      <div>
+        <dt>VEP annotation</dt>
         <dd>{getLabelForConsequenceTerm(variant.major_consequence)}</dd>
       </div>
       <div>
-        <dt>Gold stars</dt>
-        <dd>{variant.gold_stars}</dd>
+        <dt>Review status</dt>
+        <dd>
+          {variant.review_status} ({variant.gold_stars}{' '}
+          {variant.gold_stars === 1 ? 'star' : 'stars'})
+        </dd>
       </div>
     </ClinvarVariantAttributeList>
     Click to view in ClinVar
