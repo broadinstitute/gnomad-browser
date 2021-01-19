@@ -507,7 +507,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
             pageContent = <VariantPageContent datasetId={datasetId} variant={data.variant} />
           }
 
-          const variantId = ((data || {}).variant || {}).variantId || variantIdProp
+          const variantId = ((data || {}).variant || {}).variant_id || variantIdProp
           return (
             <React.Fragment>
               <GnomadPageHeading
