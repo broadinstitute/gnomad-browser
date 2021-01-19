@@ -8,6 +8,8 @@ type ClinVarVariant {
   clinical_significance: String!
   clinvar_variation_id: String!
   gold_stars: Int!
+  hgvsc: String
+  hgvsp: String
   major_consequence: String
   review_status: String!
 }

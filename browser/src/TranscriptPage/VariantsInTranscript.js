@@ -105,8 +105,11 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       clinical_significance
       clinvar_variation_id
       gold_stars
+      hgvsc
+      hgvsp
       major_consequence
       pos
+      review_status
       variant_id
     }
     variants(dataset: $datasetId) {
