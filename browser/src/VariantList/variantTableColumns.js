@@ -80,7 +80,7 @@ export const getColumns = ({
     },
     {
       key: 'hgvs',
-      heading: 'Consequence',
+      heading: 'HGVS Consequence',
       tooltip: `HGVS protein sequence (where defined) or coding sequence${getConsequenceDescription(
         context
       )}`,
@@ -96,7 +96,7 @@ export const getColumns = ({
     },
     {
       key: 'consequence',
-      heading: 'Annotation',
+      heading: 'VEP Annotation',
       tooltip: `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(context)}`,
       grow: 0,
       isSortable: true,
