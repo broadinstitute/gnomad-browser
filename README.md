@@ -6,7 +6,7 @@ To view the gnomAD browser, go to https://gnomad.broadinstitute.org.
 
 ## License
 
-Licensed under the MIT license. See the [LICENSE](https://github.com/broadinstitute/gnomad-browser/blob/master/LICENSE) file.
+Licensed under the MIT license. See the [LICENSE](https://github.com/broadinstitute/gnomad-browser/blob/main/LICENSE) file.
 
 ## Citation
 

@@ -2,7 +2,7 @@ name: GraphQL API CI
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'graphql-api/**'
   pull_request:
