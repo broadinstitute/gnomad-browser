@@ -2,7 +2,7 @@ name: Data Pipeline CI
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'data-pipeline/**'
   pull_request:

@@ -2,7 +2,7 @@ name: Deploy scripts CI
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'deploy/deployctl/**'
   pull_request:

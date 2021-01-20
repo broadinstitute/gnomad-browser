@@ -7,7 +7,7 @@ def get_tag_from_git_revision() -> str:
     tag = commit_hash
 
     branch = subprocess.check_output(["git", "symbolic-ref", "--short", "-q", "HEAD"], encoding="utf-8").strip()
-    if branch != "master":
+    if branch != "main":
         tag_branch = re.sub(r"[^a-z0-9_\-\.]", "_", branch)
         tag = f"{tag}-{tag_branch}"
 

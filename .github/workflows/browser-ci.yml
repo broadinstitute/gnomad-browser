@@ -2,7 +2,7 @@ name: Browser CI
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'browser/**'
   pull_request:
