@@ -70,20 +70,25 @@ const GeneReferences = ({ gene }) => {
               </ExternalLink>
             </ListItem>
             {hgncId && (
-              <ListItem>
-                <ExternalLink href={`https://search.clinicalgenome.org/kb/genes/${hgncId}`}>
-                  ClinGen
-                </ExternalLink>
-              </ListItem>
-            )}
-            {hgncId && (
-              <ListItem>
-                <ExternalLink
-                  href={`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/${hgncId}`}
-                >
-                  HGNC
-                </ExternalLink>
-              </ListItem>
+              <>
+                <ListItem>
+                  <ExternalLink href={`https://search.clinicalgenome.org/kb/genes/${hgncId}`}>
+                    ClinGen
+                  </ExternalLink>
+                </ListItem>
+                <ListItem>
+                  <ExternalLink href={`https://search.thegencc.org/genes/${hgncId}`}>
+                    Gene Curation Coalition (GenCC)
+                  </ExternalLink>
+                </ListItem>
+                <ListItem>
+                  <ExternalLink
+                    href={`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/${hgncId}`}
+                  >
+                    HGNC
+                  </ExternalLink>
+                </ListItem>
+              </>
             )}
           </List>
         </Modal>
