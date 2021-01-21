@@ -1,7 +1,7 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { isVariantId, normalizeRegionId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
@@ -45,6 +45,27 @@ const MainPanel = styled.div`
 
 const defaultDataset = 'gnomad_r2_1'
 
+// Hack to make anchor links work on the first navigation to a page
+// See https://github.com/broadinstitute/gnomad-browser/issues/685
+const PageLoading = () => {
+  const location = useLocation()
+  useEffect(() => () => {
+    if (location.hash) {
+      setTimeout(() => {
+        const anchor = document.querySelector(`a${location.hash}`)
+        if (anchor) {
+          anchor.scrollIntoView()
+        } else {
+          document.body.scrollTop = 0
+        }
+      }, 0)
+    } else {
+      document.body.scrollTop = 0
+    }
+  })
+  return null
+}
+
 const App = () => (
   <div>
     <Route
@@ -78,7 +99,7 @@ const App = () => (
     <MainPanel>
       <NavBar />
       <ErrorBoundary>
-        <Suspense fallback={null}>
+        <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route
