@@ -24,16 +24,15 @@ pipeline = Pipeline()
 # Import GENCODE and HGNC files
 ###############################################
 
+GENCODE_V19_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz"
+GENCODE_V35_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_35/gencode.v35.annotation.gtf.gz"
+
 pipeline.add_download_task(
-    "download_gencode_v19_gtf",
-    "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz",
-    "/external_sources/gencode.v19.gtf.gz",
+    "download_gencode_v19_gtf", GENCODE_V19_URL, "/external_sources/" + GENCODE_V19_URL.split("/")[-1]
 )
 
 pipeline.add_download_task(
-    "download_gencode_v35_gtf",
-    "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_35/gencode.v35.annotation.gtf.gz",
-    "/external_sources/gencode.v35.gtf.gz",
+    "download_gencode_v35_gtf", GENCODE_V35_URL, "/external_sources/" + GENCODE_V35_URL.split("/")[-1]
 )
 
 pipeline.add_download_task(
@@ -68,10 +67,14 @@ pipeline.add_task(
 # MANE Select transcripts
 ###############################################
 
+MANE_SELECT_TRANSCRIPTS_URL = (
+    "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.8/MANE.GRCh38.v0.8.summary.txt.gz"
+)
+
 pipeline.add_download_task(
     "download_mane_select_transcripts",
-    "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.8/MANE.GRCh38.v0.8.summary.txt.gz",
-    "/external_sources/MANE.GRCh38.v0.8.summary.txt.gz",
+    MANE_SELECT_TRANSCRIPTS_URL,
+    "/external_sources/" + MANE_SELECT_TRANSCRIPTS_URL.split("/")[-1],
 )
 
 pipeline.add_task(
