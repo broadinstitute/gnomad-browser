@@ -70,7 +70,7 @@ pipeline.add_task(
 
 pipeline.add_download_task(
     "download_mane_select_transcripts",
-    "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.92/MANE.GRCh38.v0.92.summary.txt.gz",
+    "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.8/MANE.GRCh38.v0.8.summary.txt.gz",
     "/external_sources/MANE.GRCh38.v0.8.summary.txt.gz",
 )
 
