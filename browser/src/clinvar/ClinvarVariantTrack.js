@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { CategoryFilterControl, SegmentedControl } from '@gnomad/ui'
+import { Button, CategoryFilterControl } from '@gnomad/ui'
 
 import BinnedVariantsPlot from '../BinnedVariantsPlot'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
@@ -267,15 +267,13 @@ const ClinvarVariantTrack = ({ variants }) => {
               onChange={setIncludedCategories}
             />
 
-            <SegmentedControl
-              id="clinvar-track-mode"
-              options={[
-                { label: 'Bins', value: false },
-                { label: 'All variants', value: true },
-              ]}
-              value={isExpanded}
-              onChange={setIsExpanded}
-            />
+            <Button
+              onClick={() => {
+                setIsExpanded(!isExpanded)
+              }}
+            >
+              {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
+            </Button>
           </TopPanel>
         )}
       >
