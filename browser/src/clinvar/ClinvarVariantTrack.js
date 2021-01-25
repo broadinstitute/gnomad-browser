@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { Button, CategoryFilterControl } from '@gnomad/ui'
 
+import InfoButton from '../help/InfoButton'
 import BinnedVariantsPlot from '../BinnedVariantsPlot'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 import StackedVariantsPlot from './StackedVariantsPlot'
@@ -239,33 +240,36 @@ const ClinvarVariantTrack = ({ variants }) => {
         )}
         renderTopPanel={() => (
           <TopPanel>
-            <CategoryFilterControl
-              categories={[
-                {
-                  id: 'pathogenic',
-                  label: 'Pathogenic / likely pathogenic',
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.pathogenic,
-                },
-                {
-                  id: 'uncertain',
-                  label: 'Uncertain significance / conflicting',
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.uncertain,
-                },
-                {
-                  id: 'benign',
-                  label: 'Benign / likely benign',
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.benign,
-                },
-                {
-                  id: 'other',
-                  label: 'Other',
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.other,
-                },
-              ]}
-              categorySelections={includedCategories}
-              id="clinvar-track-included-categories"
-              onChange={setIncludedCategories}
-            />
+            <div>
+              <CategoryFilterControl
+                categories={[
+                  {
+                    id: 'pathogenic',
+                    label: 'Pathogenic / likely pathogenic',
+                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.pathogenic,
+                  },
+                  {
+                    id: 'uncertain',
+                    label: 'Uncertain significance / conflicting',
+                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.uncertain,
+                  },
+                  {
+                    id: 'benign',
+                    label: 'Benign / likely benign',
+                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.benign,
+                  },
+                  {
+                    id: 'other',
+                    label: 'Other',
+                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.other,
+                  },
+                ]}
+                categorySelections={includedCategories}
+                id="clinvar-track-included-categories"
+                onChange={setIncludedCategories}
+              />{' '}
+              <InfoButton topic="clinvar-variant-categories" />
+            </div>
 
             <Button
               onClick={() => {
