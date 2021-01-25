@@ -42,7 +42,13 @@ const filterVariants = (variants, filter) => {
       .filter(s => s.length > 0)
 
     filteredVariants = filteredVariants.filter(v =>
-      [v.variant_id, v.rsid, getLabelForConsequenceTerm(v.consequence), v.hgvs]
+      [
+        v.variant_id,
+        v.rsid,
+        getLabelForConsequenceTerm(v.consequence),
+        v.hgvs,
+        v.clinical_significance,
+      ]
         .filter(Boolean)
         .map(val => val.toLowerCase())
         .some(val => searchTerms.some(term => val.includes(term)))
