@@ -118,12 +118,15 @@ export const getColumns = ({
       grow: 1,
       isSortable: true,
       minWidth: 200,
-      render: variant => (
+      render: (variant, _, { highlightWords }) => (
         <Cell>
           <ExternalLink
             href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
           >
-            {variant.clinical_significance}
+            <Highlighter
+              searchWords={highlightWords}
+              textToHighlight={variant.clinical_significance || ''}
+            />
           </ExternalLink>
         </Cell>
       ),
