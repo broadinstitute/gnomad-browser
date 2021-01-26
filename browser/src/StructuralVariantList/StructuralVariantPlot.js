@@ -9,12 +9,6 @@ const StructuralVariantPlot = ({
   variant,
   width,
 }) => {
-  let startX = scalePosition(variant.pos)
-  let stopX = scalePosition(variant.end)
-
-  const startIsDefined = isPositionDefined(variant.pos)
-  const stopIsDefined = isPositionDefined(variant.end)
-
   const trackHeight = 14
   const barHeight = 10
   const barY = Math.floor((trackHeight - barHeight) / 2)
@@ -23,6 +17,15 @@ const StructuralVariantPlot = ({
 
   // Ensure minimum width for bars
   const isPointMarker = variant.type === 'INS' || variant.type === 'BND' || variant.type === 'CTX'
+
+  // For SV classes that are not represented by a single point, exclude the padding base from the track.
+  // See https://github.com/broadinstitute/gnomad-browser/issues/687
+  let startX = scalePosition(isPointMarker ? variant.pos : variant.pos + 1)
+  let stopX = scalePosition(variant.end)
+
+  const startIsDefined = isPositionDefined(isPointMarker ? variant.pos : variant.pos + 1)
+  const stopIsDefined = isPositionDefined(variant.end)
+
   if (!isPointMarker && startIsDefined && stopIsDefined && stopX - startX < 3) {
     const diff = 3 - (stopX - startX)
     startX -= diff / 2
