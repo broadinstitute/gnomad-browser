@@ -78,6 +78,10 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       getValue: variant => variant.consequence || '',
     },
     {
+      label: 'ClinVar Clinical Significance',
+      getValue: variant => variant.clinical_significance || '',
+    },
+    {
       label: 'Flags',
       getValue: variant => variant.flags.join(','),
     },
