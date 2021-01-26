@@ -62,7 +62,7 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       },
     },
     {
-      label: 'Consequence',
+      label: 'HGVS Consequence',
       getValue: variant => variant.hgvs || '',
     },
     {
@@ -74,7 +74,7 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       getValue: variant => variant.hgvsc || '',
     },
     {
-      label: 'Annotation',
+      label: 'VEP Annotation',
       getValue: variant => variant.consequence || '',
     },
     {
