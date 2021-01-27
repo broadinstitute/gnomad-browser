@@ -275,7 +275,8 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "clinvar_variation_id",
                 "variant_id",
-                "locus",
+                "chrom",
+                "pos",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
             ],
@@ -299,7 +300,8 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "clinvar_variation_id",
                 "variant_id",
-                "locus",
+                "chrom",
+                "pos",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
             ],
