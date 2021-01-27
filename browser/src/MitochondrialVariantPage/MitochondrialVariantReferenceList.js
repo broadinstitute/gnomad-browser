@@ -30,6 +30,15 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
       <ListItem>
         <ExternalLink href={mitomapURL}>Mitomap</ExternalLink>
       </ListItem>
+      {variant.clinvar && (
+        <ListItem>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar.clinvar_variation_id}/`}
+          >
+            ClinVar ({variant.clinvar.clinvar_variation_id})
+          </ExternalLink>
+        </ListItem>
+      )}
     </List>
   )
 }

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Page } from '@gnomad/ui'
 
+import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -11,6 +12,7 @@ import Histogram from '../Histogram'
 import Link from '../Link'
 import Query from '../Query'
 import TableWrapper from '../TableWrapper'
+import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
@@ -116,6 +118,12 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
       <h2>Annotations</h2>
       <MitochondrialVariantTranscriptConsequenceList variant={variant} />
     </Section>
+    {variant.clinvar && (
+      <Section>
+        <h2>ClinVar</h2>
+        <VariantClinvarInfo variant={variant} />
+      </Section>
+    )}
     <Wrapper>
       <ResponsiveSection>
         <h2>Heteroplasmy Distribution</h2>
@@ -174,7 +182,24 @@ MitochondrialVariantPage.propTypes = {
 }
 
 const variantQuery = `
-query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!) {
+query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
+    clinical_significance
+    clinvar_variation_id
+    gold_stars
+    last_evaluated
+    review_status
+    submissions {
+      clinical_significance
+      conditions {
+        name
+        medgen_id
+      }
+      last_evaluated
+      review_status
+      submitter_name
+    }
+  }
   mitochondrial_variant(variant_id: $variantId, dataset: $datasetId) {
     ac_het
     ac_hom
@@ -274,7 +299,7 @@ const ConnectedMitochondrialVariantPage = ({ datasetId, variantId, ...rest }) =>
   return (
     <Query
       query={variantQuery}
-      variables={{ datasetId, variantId }}
+      variables={{ datasetId, variantId, referenceGenome: referenceGenomeForDataset(datasetId) }}
       loadingMessage="Loading variant"
       errorMessage="Unable to load variant"
       success={data => data.mitochondrial_variant}
@@ -284,7 +309,7 @@ const ConnectedMitochondrialVariantPage = ({ datasetId, variantId, ...rest }) =>
           <MitochondrialVariantPage
             {...rest}
             datasetId={datasetId}
-            variant={data.mitochondrial_variant}
+            variant={{ ...data.mitochondrial_variant, clinvar: data.clinvar_variant }}
           />
         )
       }}
