@@ -18,10 +18,10 @@ const countClinvarVariantsInRegion = async (esClient, referenceGenome, region) =
       query: {
         bool: {
           filter: [
-            { term: { 'locus.contig': region.chrom } },
+            { term: { chrom: region.chrom } },
             {
               range: {
-                'locus.position': {
+                pos: {
                   gte: region.start,
                   lte: region.stop,
                 },
@@ -108,7 +108,7 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
 
   const rangeQueries = mergedRegions.map((region) => ({
     range: {
-      'locus.position': {
+      pos: {
         gte: region.start,
         lte: region.stop,
       },
@@ -139,7 +139,7 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
           filter: [{ term: { gene_id: gene.gene_id } }, { bool: { should: rangeQueries } }],
         },
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
+      sort: [{ pos: { order: 'asc' } }],
     },
   })
 
@@ -175,10 +175,10 @@ const fetchClinvarVariantsByRegion = async (esClient, referenceGenome, region) =
       query: {
         bool: {
           filter: [
-            { term: { 'locus.contig': region.chrom } },
+            { term: { chrom: region.chrom } },
             {
               range: {
-                'locus.position': {
+                pos: {
                   gte: region.start,
                   lte: region.stop,
                 },
@@ -187,7 +187,7 @@ const fetchClinvarVariantsByRegion = async (esClient, referenceGenome, region) =
           ],
         },
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
+      sort: [{ pos: { order: 'asc' } }],
     },
   })
 
@@ -214,7 +214,7 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
 
   const rangeQueries = mergedRegions.map((region) => ({
     range: {
-      'locus.position': {
+      pos: {
         gte: region.start,
         lte: region.stop,
       },
@@ -248,7 +248,7 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
           ],
         },
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
+      sort: [{ pos: { order: 'asc' } }],
     },
   })
 
