@@ -18,7 +18,7 @@ const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 // ================================================================================================
 
 const countVariantsInRegion = async (esClient, region) => {
-  const response = await esClient.search({
+  const response = await esClient.count({
     index: 'exac_variants',
     type: '_doc',
     body: {
@@ -37,18 +37,10 @@ const countVariantsInRegion = async (esClient, region) => {
           ],
         },
       },
-      aggs: {
-        unique_variants: {
-          cardinality: {
-            field: 'variant_id',
-          },
-        },
-      },
     },
-    size: 0,
   })
 
-  return response.body.aggregations.unique_variants.value
+  return response.body.count
 }
 
 // ================================================================================================
