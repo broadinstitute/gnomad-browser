@@ -64,7 +64,7 @@ const GeneReferences = ({ gene }) => {
             )}
             <ListItem>
               <ExternalLink
-                href={`https://decipher.sanger.ac.uk/gene/${geneId}#overview/protein-info`}
+                href={`https://decipher.sanger.ac.uk/gene/${geneId}/overview/protein-genomic-info`}
               >
                 DECIPHER
               </ExternalLink>
