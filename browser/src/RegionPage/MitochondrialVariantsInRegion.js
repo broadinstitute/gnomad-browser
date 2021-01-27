@@ -8,6 +8,17 @@ import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVari
 const query = `
 query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   region(chrom: "M", start: $start, stop: $stop, reference_genome: $referenceGenome) {
+    clinvar_variants {
+      clinical_significance
+      clinvar_variation_id
+      gold_stars
+      hgvsc
+      hgvsp
+      major_consequence
+      pos
+      review_status
+      variant_id
+    }
     mitochondrial_variants(dataset: $datasetId) {
       ac_het
       ac_hom
@@ -69,6 +80,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
           <MitochondrialVariants
             {...rest}
             chrom={region.chrom}
+            clinvarVariants={data.region.clinvar_variants}
             context="region"
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
             variants={data.region.mitochondrial_variants}
