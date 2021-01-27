@@ -44,6 +44,18 @@ const fetchAllSearchResults = async (client, searchParams) => {
   return allResults
 }
 
+// Retrieve index metadata set by data pipeline
+const fetchIndexMetadata = async (esClient, index) => {
+  const response = await esClient.indices.getMapping({
+    index,
+    type: '_doc',
+  })
+
+  // eslint-disable-next-line no-underscore-dangle
+  return Object.values(response.body)[0].mappings._doc._meta
+}
+
 module.exports = {
   fetchAllSearchResults,
+  fetchIndexMetadata,
 }

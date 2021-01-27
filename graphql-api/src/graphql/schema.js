@@ -5,6 +5,7 @@ const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 
 const aliasResolvers = require('./resolvers/aliases')
+const browserMetadataResolvers = require('./resolvers/browser-metadata')
 const clinVarVariantResolvers = require('./resolvers/clinvar-variants')
 const coverageResolvers = require('./resolvers/coverage')
 const geneResolvers = require('./resolvers/gene')
@@ -27,6 +28,7 @@ const typeDefs = mergeTypeDefs([
 
 const resolvers = mergeResolvers([
   aliasResolvers,
+  browserMetadataResolvers,
   clinVarVariantResolvers,
   coverageResolvers,
   geneResolvers,

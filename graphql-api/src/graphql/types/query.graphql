@@ -10,4 +10,6 @@ type Query{
     variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
 
     searchResults(query: String!, dataset: DatasetId!): [SearchResult!]
+
+    meta: BrowserMetadata!
 }

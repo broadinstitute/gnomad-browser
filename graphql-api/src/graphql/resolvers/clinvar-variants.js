@@ -1,6 +1,7 @@
 const { isVariantId, normalizeVariantId } = require('@gnomad/identifiers')
 
 const {
+  fetchClinvarReleaseDate,
   countClinvarVariantsInRegion,
   fetchClinvarVariantById,
   fetchClinvarVariantsByGene,
@@ -9,6 +10,10 @@ const {
 } = require('../../queries/clinvar-variant-queries')
 
 const { UserVisibleError } = require('../../errors')
+
+const resolveClinvarReleaseDate = (_, args, ctx) => {
+  return fetchClinvarReleaseDate(ctx.esClient)
+}
 
 const resolveClinVarVariant = async (_, args, ctx) => {
   if (!isVariantId(args.variant_id)) {
@@ -50,6 +55,9 @@ const resolveClinVarVariantsInTranscript = (obj, args, ctx) => {
 }
 
 module.exports = {
+  BrowserMetadata: {
+    clinvar_release_date: resolveClinvarReleaseDate,
+  },
   Query: {
     clinvar_variant: resolveClinVarVariant,
   },

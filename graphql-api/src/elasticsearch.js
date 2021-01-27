@@ -79,6 +79,7 @@ const scheduleElasticsearchRequest = (fn) => {
 
 // This wraps the ES methods used by the API and sends them through the rate limiter
 const limitedElastic = {
+  indices: elastic.indices,
   clearScroll: elastic.clearScroll.bind(elastic),
   search: (...args) =>
     scheduleElasticsearchRequest(() => elastic.search(...args)).then((response) => {

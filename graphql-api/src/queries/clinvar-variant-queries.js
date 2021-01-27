@@ -1,10 +1,30 @@
-const { omit } = require('lodash')
+const { omit, throttle } = require('lodash')
 
 const { withCache } = require('../cache')
+const logger = require('../logger')
 
-const { fetchAllSearchResults } = require('./helpers/elasticsearch-helpers')
+const { fetchAllSearchResults, fetchIndexMetadata } = require('./helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('./helpers/region-helpers')
 const { getConsequenceForContext } = require('./variant-datasets/shared/transcriptConsequence')
+
+// ================================================================================================
+// Release date query
+// ================================================================================================
+
+const fetchClinvarReleaseDate = async (esClient) => {
+  const metadata = await Promise.all([
+    fetchIndexMetadata(esClient, 'clinvar_grch37_variants'),
+    fetchIndexMetadata(esClient, 'clinvar_grch38_variants'),
+  ])
+
+  const releaseDates = metadata.map((m) => m.table_globals.clinvar_release_date)
+
+  if (releaseDates[0] !== releaseDates[1]) {
+    logger.error({ message: 'ClinVar release dates do not match' })
+  }
+
+  return releaseDates[0]
+}
 
 // ================================================================================================
 // Count query
@@ -250,6 +270,7 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
 }
 
 module.exports = {
+  fetchClinvarReleaseDate: throttle(fetchClinvarReleaseDate, 300000),
   countClinvarVariantsInRegion,
   fetchClinvarVariantById,
   fetchClinvarVariantsByGene: withCache(
