@@ -1,6 +1,8 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
+import { ExternalLink } from '@gnomad/ui'
+
 import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
@@ -47,7 +49,7 @@ export const getColumns = ({
       key: 'variant_id',
       heading: 'Variant ID',
       tooltip: 'Chromosome-position-reference-alternate',
-      grow: 2,
+      grow: 1,
       isRowHeader: true,
       isSortable: true,
       minWidth: 110,
@@ -99,6 +101,26 @@ export const getColumns = ({
             searchWords={highlightWords}
             textToHighlight={getConsequenceName(row[key])}
           />
+        </Cell>
+      ),
+    },
+    {
+      key: 'clinical_significance',
+      heading: 'Clinical Significance',
+      tooltip: 'ClinVar clinical significance',
+      grow: 1,
+      isSortable: true,
+      minWidth: 200,
+      render: (variant, _, { highlightWords }) => (
+        <Cell>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
+          >
+            <Highlighter
+              searchWords={highlightWords}
+              textToHighlight={variant.clinical_significance || ''}
+            />
+          </ExternalLink>
         </Cell>
       ),
     },

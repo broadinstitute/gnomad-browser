@@ -27,6 +27,7 @@ const comparators = {
   ac_hom: makeNumericComparator('ac_hom'),
   af_hom: makeNumericComparator('af_hom'),
   max_heteroplasmy: makeNumericComparator('max_heteroplasmy'),
+  clinical_significance: makeStringComparator('clinical_significance'),
 }
 
 const sortMitochondrialVariants = (variants, { sortKey, sortOrder }) => {

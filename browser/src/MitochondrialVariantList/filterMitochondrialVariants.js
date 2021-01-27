@@ -28,7 +28,13 @@ const filterMitochondrialVariants = (variants, filter) => {
       .filter(s => s.length > 0)
 
     filteredVariants = filteredVariants.filter(v =>
-      [v.variant_id, v.rsid, getLabelForConsequenceTerm(v.consequence), v.hgvsp || v.hgvsc]
+      [
+        v.variant_id,
+        v.rsid,
+        getLabelForConsequenceTerm(v.consequence),
+        v.hgvsp || v.hgvsc,
+        v.clinical_significance,
+      ]
         .filter(Boolean)
         .map(val => val.toLowerCase())
         .some(val => searchTerms.some(term => val.includes(term)))

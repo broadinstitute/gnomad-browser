@@ -4,6 +4,7 @@ import React from 'react'
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
+import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
 const query = `
 query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
@@ -83,7 +84,10 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
             clinvarVariants={data.region.clinvar_variants}
             context="region"
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
-            variants={data.region.mitochondrial_variants}
+            variants={annotateVariantsWithClinvar(
+              data.region.mitochondrial_variants,
+              data.region.clinvar_variants
+            )}
           />
         )
       }}
