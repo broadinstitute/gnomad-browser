@@ -11,7 +11,7 @@ const { getConsequenceForContext } = require('./variant-datasets/shared/transcri
 // ================================================================================================
 
 const countClinvarVariantsInRegion = async (esClient, referenceGenome, region) => {
-  const response = await esClient.search({
+  const response = await esClient.count({
     index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
     type: '_doc',
     body: {
@@ -30,18 +30,10 @@ const countClinvarVariantsInRegion = async (esClient, referenceGenome, region) =
           ],
         },
       },
-      aggs: {
-        unique_variants: {
-          cardinality: {
-            field: 'variant_id',
-          },
-        },
-      },
     },
-    size: 0,
   })
 
-  return response.body.aggregations.unique_variants.value
+  return response.body.count
 }
 
 // ================================================================================================

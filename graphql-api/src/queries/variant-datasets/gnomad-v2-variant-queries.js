@@ -21,7 +21,7 @@ const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 
 // eslint-disable-next-line no-unused-vars
 const countVariantsInRegion = async (esClient, region, subset) => {
-  const response = await esClient.search({
+  const response = await esClient.count({
     index: 'gnomad_v2_variants',
     type: '_doc',
     body: {
@@ -40,18 +40,10 @@ const countVariantsInRegion = async (esClient, region, subset) => {
           ],
         },
       },
-      aggs: {
-        unique_variants: {
-          cardinality: {
-            field: 'variant_id',
-          },
-        },
-      },
     },
-    size: 0,
   })
 
-  return response.body.aggregations.unique_variants.value
+  return response.body.count
 }
 
 // ================================================================================================
