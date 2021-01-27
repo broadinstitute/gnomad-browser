@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
+import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -25,10 +26,15 @@ const Wrapper = styled.div`
 
 class MitochondrialVariants extends Component {
   static propTypes = {
+    clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
     width: PropTypes.number.isRequired,
+  }
+
+  static defaultProps = {
+    clinvarVariants: null,
   }
 
   constructor(props) {
@@ -168,7 +174,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { context, exportFileName, variants, width } = this.props
+    const { clinvarVariants, context, exportFileName, variants, width } = this.props
     const {
       filter,
       renderedVariants,
@@ -186,6 +192,14 @@ class MitochondrialVariants extends Component {
 
     return (
       <div>
+        {clinvarVariants && (
+          <>
+            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+            <ClinvarVariantTrack variants={clinvarVariants} />
+          </>
+        )}
+
+        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
         <Wrapper>
           <Cursor onClick={this.onNavigatorClick}>
             <VariantTrack
