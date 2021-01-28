@@ -5,6 +5,15 @@ import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 
+const dateFormatter = new Intl.DateTimeFormat([], { dateStyle: 'long' })
+
+// Dates in ClinVar date are formatted YYYY-MM-DD
+const formatClinvarDate = dateString => {
+  const [year, month, day] = dateString.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+  return dateFormatter.format(date)
+}
+
 const SubmissionsList = ({ submissions }) => (
   <List>
     {submissions.map(submission => (
@@ -32,7 +41,7 @@ const SubmissionsList = ({ submissions }) => (
           </AttributeList.Item>
           <AttributeList.Item label="Review status">{submission.review_status}</AttributeList.Item>
           <AttributeList.Item label="Last evaluated">
-            {submission.last_evaluated || '–'}
+            {submission.last_evaluated ? formatClinvarDate(submission.last_evaluated) : '–'}
           </AttributeList.Item>
         </AttributeList>
       </ListItem>
@@ -100,7 +109,7 @@ const VariantClinvarInfo = ({ variant }) => {
           {variant.clinvar.gold_stars === 1 ? 'star' : 'stars'})
         </AttributeList.Item>
         <AttributeList.Item label="Last evaluated">
-          {variant.clinvar.last_evaluated || '–'}
+          {variant.clinvar.last_evaluated ? formatClinvarDate(variant.clinvar.last_evaluated) : '–'}
         </AttributeList.Item>
       </AttributeList>
 
@@ -119,8 +128,10 @@ const VariantClinvarInfo = ({ variant }) => {
         <ExternalLink
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar.clinvar_variation_id}/`}
         >
-          ClinVar website.
+          ClinVar website
         </ExternalLink>
+        . Data displayed here is from ClinVar&apos;s{' '}
+        {formatClinvarDate(variant.clinvar.release_date)} release.
       </p>
 
       {isSubmissionsModalOpen && (
@@ -144,6 +155,7 @@ VariantClinvarInfo.propTypes = {
       clinvar_variation_id: PropTypes.string.isRequired,
       gold_stars: PropTypes.number.isRequired,
       last_evaluated: PropTypes.string,
+      release_date: PropTypes.string.isRequired,
       review_status: PropTypes.string.isRequired,
       submissions: PropTypes.arrayOf(
         PropTypes.shape({

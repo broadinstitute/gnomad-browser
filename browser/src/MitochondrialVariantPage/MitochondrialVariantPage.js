@@ -183,6 +183,9 @@ MitochondrialVariantPage.propTypes = {
 
 const variantQuery = `
 query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
     clinical_significance
     clinvar_variation_id
@@ -305,13 +308,12 @@ const ConnectedMitochondrialVariantPage = ({ datasetId, variantId, ...rest }) =>
       success={data => data.mitochondrial_variant}
     >
       {({ data }) => {
-        return (
-          <MitochondrialVariantPage
-            {...rest}
-            datasetId={datasetId}
-            variant={{ ...data.mitochondrial_variant, clinvar: data.clinvar_variant }}
-          />
-        )
+        const variant = { ...data.mitochondrial_variant, clinvar: data.clinvar_variant }
+        if (variant.clinvar) {
+          variant.clinvar.release_date = data.meta.clinvar_release_date
+        }
+
+        return <MitochondrialVariantPage {...rest} datasetId={datasetId} variant={variant} />
       }}
     </Query>
   )

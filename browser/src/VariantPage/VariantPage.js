@@ -476,6 +476,9 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
 
 const clinvarVariantQuery = `
 query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
     clinical_significance
     clinvar_variation_id
@@ -547,6 +550,9 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
                 {({ data: clinvarData, error: clinvarError, loading: clinvarLoading }) => {
                   const clinvarVariant =
                     clinvarLoading || clinvarError ? null : clinvarData.clinvar_variant
+                  if (clinvarVariant) {
+                    clinvarVariant.release_date = clinvarData.meta.clinvar_release_date
+                  }
 
                   return (
                     <VariantPageContent
