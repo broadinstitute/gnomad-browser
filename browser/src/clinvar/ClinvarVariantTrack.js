@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { Button, CategoryFilterControl } from '@gnomad/ui'
+import { Button, CategoryFilterControl, List, ListItem } from '@gnomad/ui'
 
 import InfoButton from '../help/InfoButton'
 import BinnedVariantsPlot from '../BinnedVariantsPlot'
@@ -21,6 +21,15 @@ const ClinvarVariantPropType = PropTypes.shape({
   review_status: PropTypes.string.isRequired,
   variant_id: PropTypes.string.isRequired,
 })
+
+const CLINICAL_SIGNIFICANCE_CATEGORIES = ['pathogenic', 'uncertain', 'benign', 'other']
+
+const CLINICAL_SIGNIFICANCE_CATEGORY_LABELS = {
+  pathogenic: 'Pathogenic / likely pathogenic',
+  uncertain: 'Uncertain significance / conflicting',
+  benign: 'Benign / likely benign',
+  other: 'Other',
+}
 
 const CLINICAL_SIGNIFICANCE_CATEGORY_COLORS = {
   pathogenic: '#E6573D',
@@ -73,15 +82,58 @@ const clinvarVariantClinicalSignificanceCategory = variant => {
 // Binned variants plot
 // ================================================================
 
-const ClinvarBinnedVariantsPlot = props => {
+const TooltipContent = styled.div`
+  line-height: 1;
+  text-align: left;
+
+  ${List} {
+    /* margin-top: 0; */
+  }
+
+  ${ListItem} {
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  p {
+    margin-bottom: 0.5em;
+  }
+`
+
+const ClinvarBinnedVariantsPlot = ({ includedCategories, ...props }) => {
   return (
     <BinnedVariantsPlot
       {...props}
       categoryColor={category => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category]}
+      formatTooltip={bin => {
+        return (
+          <TooltipContent>
+            This bin contains:
+            <List>
+              {CLINICAL_SIGNIFICANCE_CATEGORIES.filter(
+                category => includedCategories[category]
+              ).map(category => {
+                return (
+                  <ListItem key={category}>
+                    {bin[category]} {CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category].toLowerCase()}{' '}
+                    variant{bin[category] !== 1 ? 's' : ''}
+                  </ListItem>
+                )
+              })}
+            </List>
+            Click &quot;Expand to all variants&quot; to see individual variants.
+          </TooltipContent>
+        )
+      }}
       variantCategory={clinvarVariantClinicalSignificanceCategory}
-      variantCategories={['pathogenic', 'uncertain', 'benign', 'other']}
+      variantCategories={CLINICAL_SIGNIFICANCE_CATEGORIES}
     />
   )
+}
+
+ClinvarBinnedVariantsPlot.propTypes = {
+  includedCategories: PropTypes.objectOf(PropTypes.bool).isRequired,
 }
 
 // ================================================================
@@ -242,28 +294,11 @@ const ClinvarVariantTrack = ({ variants }) => {
           <TopPanel>
             <div>
               <CategoryFilterControl
-                categories={[
-                  {
-                    id: 'pathogenic',
-                    label: 'Pathogenic / likely pathogenic',
-                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.pathogenic,
-                  },
-                  {
-                    id: 'uncertain',
-                    label: 'Uncertain significance / conflicting',
-                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.uncertain,
-                  },
-                  {
-                    id: 'benign',
-                    label: 'Benign / likely benign',
-                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.benign,
-                  },
-                  {
-                    id: 'other',
-                    label: 'Other',
-                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS.other,
-                  },
-                ]}
+                categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
+                  id: category,
+                  label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
+                }))}
                 categorySelections={includedCategories}
                 id="clinvar-track-included-categories"
                 onChange={setIncludedCategories}
@@ -287,6 +322,7 @@ const ClinvarVariantTrack = ({ variants }) => {
           return (
             <PlotWrapper>
               <PlotComponent
+                includedCategories={includedCategories}
                 scalePosition={scalePosition}
                 variants={filteredVariants}
                 width={width}

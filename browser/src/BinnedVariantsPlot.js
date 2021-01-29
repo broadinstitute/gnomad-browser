@@ -1,9 +1,22 @@
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
+
+import { TooltipAnchor } from '@gnomad/ui'
+
+const BinHoverTarget = styled.rect`
+  pointer-events: visible;
+  fill: none;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.05);
+  }
+`
 
 const BinnedVariantsPlot = ({
   categoryColor,
+  formatTooltip,
   height,
   scalePosition,
   variantCategory,
@@ -67,7 +80,7 @@ const BinnedVariantsPlot = ({
                 const bar = (
                   <rect
                     key={category}
-                    x={0}
+                    x={binPadding}
                     y={height - yOffset - barHeight}
                     width={binWidth - binPadding * 2}
                     height={barHeight}
@@ -77,6 +90,9 @@ const BinnedVariantsPlot = ({
                 yOffset += barHeight
                 return bar
               })}
+              <TooltipAnchor tooltip={formatTooltip(bin)}>
+                <BinHoverTarget x={0} y={0} height={height} width={binWidth} />
+              </TooltipAnchor>
             </g>
           )
         })}
@@ -88,6 +104,7 @@ const BinnedVariantsPlot = ({
 
 BinnedVariantsPlot.propTypes = {
   categoryColor: PropTypes.func,
+  formatTooltip: PropTypes.func.isRequired,
   height: PropTypes.number,
   scalePosition: PropTypes.func.isRequired,
   variantCategory: PropTypes.func,
