@@ -1,12 +1,227 @@
+import { sum } from 'd3-array'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import { SegmentedControl, Select } from '@gnomad/ui'
+import { Checkbox, Select } from '@gnomad/ui'
 
 import gnomadV2AgeDistribution from '../dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import gnomadV3AgeDistribution from '../dataset-constants/gnomad_r3/ageDistribution.json'
-import Histogram from '../Histogram'
+import Legend, { StripedSwatch } from '../Legend'
+import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
+
+const LegendWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+`
+
+const CheckboxWrapper = styled.div`
+  label {
+    display: block;
+    line-height: 1.5;
+  }
+`
+
+const prepareVariantData = ({
+  includeExomes,
+  includeGenomes,
+  includeHeterozygotes,
+  includeHomozygotes,
+  variant,
+}) => {
+  const histogram = (variant.exome || variant.genome).age_distribution.het
+  const nBins = histogram.bin_freq.length
+
+  const exomeData = includeExomes && variant.exome ? variant.exome.age_distribution : null
+  const genomeData = includeGenomes && variant.genome ? variant.genome.age_distribution : null
+
+  return [
+    [
+      exomeData
+        ? (includeHeterozygotes ? exomeData.het.n_smaller : 0) +
+          (includeHomozygotes ? exomeData.hom.n_smaller : 0)
+        : 0,
+      genomeData
+        ? (includeHeterozygotes ? genomeData.het.n_smaller : 0) +
+          (includeHomozygotes ? genomeData.hom.n_smaller : 0)
+        : 0,
+    ],
+    ...[...Array(nBins)].map((_, i) => [
+      exomeData
+        ? (includeHeterozygotes ? exomeData.het.bin_freq[i] : 0) +
+          (includeHomozygotes ? exomeData.hom.bin_freq[i] : 0)
+        : 0,
+      genomeData
+        ? (includeHeterozygotes ? genomeData.het.bin_freq[i] : 0) +
+          (includeHomozygotes ? genomeData.hom.bin_freq[i] : 0)
+        : 0,
+    ]),
+    [
+      exomeData
+        ? (includeHeterozygotes ? exomeData.het.n_larger : 0) +
+          (includeHomozygotes ? exomeData.hom.n_larger : 0)
+        : 0,
+      genomeData
+        ? (includeHeterozygotes ? genomeData.het.n_larger : 0) +
+          (includeHomozygotes ? genomeData.hom.n_larger : 0)
+        : 0,
+    ],
+  ]
+}
+
+const prepareOverallData = ({ datasetId, includeExomes, includeGenomes }) => {
+  let overallAgeDistribution = null
+  if (datasetId.startsWith('gnomad_r3')) {
+    overallAgeDistribution = gnomadV3AgeDistribution
+  } else if (datasetId.startsWith('gnomad_r2')) {
+    overallAgeDistribution = gnomadV2AgeDistribution
+  }
+
+  if (!overallAgeDistribution) {
+    return null
+  }
+
+  const nBins = (overallAgeDistribution.exome || overallAgeDistribution.genome).bin_freq.length
+
+  const exomeData =
+    includeExomes && overallAgeDistribution.exome ? overallAgeDistribution.exome : null
+  const genomeData =
+    includeGenomes && overallAgeDistribution.genome ? overallAgeDistribution.genome : null
+
+  return [
+    [exomeData ? exomeData.n_smaller : 0, genomeData ? genomeData.n_smaller : 0],
+    ...[...Array(nBins)].map((_, i) => [
+      exomeData ? exomeData.bin_freq[i] : 0,
+      genomeData ? genomeData.bin_freq[i] : 0,
+    ]),
+    [exomeData ? exomeData.n_larger : 0, genomeData ? genomeData.n_larger : 0],
+  ]
+}
+
+const getDefaultSelectedSequencingType = variant => {
+  const hasExome = Boolean(variant.exome)
+  const hasGenome = Boolean(variant.genome)
+
+  if (hasExome && hasGenome) {
+    return 'eg'
+  }
+  if (hasExome) {
+    return 'e'
+  }
+  return 'g'
+}
+
+const GnomadAgeDistribution = ({ datasetId, variant }) => {
+  const [selectedSequencingType, setSelectedSequencingType] = useState(
+    getDefaultSelectedSequencingType(variant)
+  )
+
+  const [includeHeterozygotes, setIncludeHeterozygotes] = useState(true)
+  const [includeHomozygotes, setIncludeHomozygotes] = useState(true)
+
+  const binEdges = (variant.exome || variant.genome).age_distribution.het.bin_edges
+  const bins = [
+    `< ${binEdges[0]}`,
+    ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+    `> ${binEdges[binEdges.length - 1]}`,
+  ]
+
+  const values = prepareVariantData({
+    includeExomes: selectedSequencingType.includes('e'),
+    includeGenomes: selectedSequencingType.includes('g'),
+    includeHeterozygotes,
+    includeHomozygotes,
+    variant,
+  })
+
+  const secondaryValues = prepareOverallData({
+    datasetId,
+    includeExomes: selectedSequencingType.includes('e'),
+    includeGenomes: selectedSequencingType.includes('g'),
+  })
+
+  return (
+    <div>
+      <LegendWrapper>
+        <Legend
+          series={[
+            { label: 'Exome', color: '#428bca' },
+            { label: 'Genome', color: '#73ab3d' },
+          ]}
+        />
+        <Legend
+          series={[
+            { label: 'Variant carriers', color: '#999' },
+            {
+              label: 'All individuals',
+              swatch: <StripedSwatch id="age-distribution-legend-swatch" color="#999" />,
+            },
+          ]}
+        />
+      </LegendWrapper>
+
+      <StackedHistogram
+        id="age-distribution-plot"
+        bins={bins}
+        values={values}
+        secondaryValues={secondaryValues}
+        xLabel="Age"
+        yLabel="Variant carriers"
+        secondaryYLabel="All individuals"
+        barColors={['#428bca', '#73ab3d']}
+        formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
+          const nVariantCarriers = sum(variantCarriersInBin)
+          let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+            nVariantCarriers !== 1 ? 's' : ''
+          }`
+          if (allIndividualsInBin) {
+            const nTotalIndividuals = sum(allIndividualsInBin)
+            tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+              nTotalIndividuals ? 's' : ''
+            }`
+          }
+          tooltipText += ` are in the ${bin} age range`
+          return tooltipText
+        }}
+      />
+
+      <ControlSection>
+        <CheckboxWrapper>
+          <Checkbox
+            checked={includeHeterozygotes}
+            id="age-distribution-include-heterozygotes"
+            label="Include heterozygous variant carriers"
+            onChange={setIncludeHeterozygotes}
+          />
+          <Checkbox
+            checked={includeHomozygotes}
+            id="age-distribution-include-homozygotes"
+            label="Include homozygous variant carriers"
+            onChange={setIncludeHomozygotes}
+          />
+        </CheckboxWrapper>
+
+        <label htmlFor="age-distribution-sequencing-type">
+          Sequencing types:{' '}
+          <Select
+            id="age-distribution-sequencing-type"
+            disabled={!variant.exome || !variant.genome}
+            onChange={e => {
+              setSelectedSequencingType(e.target.value)
+            }}
+            value={selectedSequencingType}
+          >
+            <option value="eg">Exome and Genome</option>
+            <option value="e">Exome</option>
+            <option value="g">Genome</option>
+          </Select>
+        </label>
+      </ControlSection>
+    </div>
+  )
+}
 
 const AgeDistributionPropType = PropTypes.shape({
   het: PropTypes.shape({
@@ -23,88 +238,16 @@ const AgeDistributionPropType = PropTypes.shape({
   }).isRequired,
 })
 
-export default class GnomadAgeDistribution extends Component {
-  static propTypes = {
-    datasetId: PropTypes.string.isRequired,
-    variant: PropTypes.shape({
-      exome: PropTypes.shape({
-        age_distribution: AgeDistributionPropType.isRequired,
-      }),
-      genome: PropTypes.shape({
-        age_distribution: AgeDistributionPropType.isRequired,
-      }),
-    }).isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      selectedDataset: props.variant.exome ? 'exome' : 'genome',
-      selectedSamples: 'het', // "all", "het", or "hom"
-    }
-  }
-
-  render() {
-    const { datasetId, variant } = this.props
-    const { selectedDataset, selectedSamples } = this.state
-
-    const overallAgeDistribution = datasetId.startsWith('gnomad_r3')
-      ? gnomadV3AgeDistribution
-      : gnomadV2AgeDistribution
-
-    const selectedAgeDistribution =
-      selectedSamples === 'all'
-        ? overallAgeDistribution[selectedDataset]
-        : variant[selectedDataset].age_distribution[selectedSamples]
-
-    const graphColor = selectedDataset === 'exome' ? '#428bca' : '#73ab3d'
-
-    return (
-      <div>
-        <Histogram
-          barColor={graphColor}
-          binEdges={selectedAgeDistribution.bin_edges}
-          binValues={selectedAgeDistribution.bin_freq}
-          nSmaller={selectedAgeDistribution.n_smaller}
-          nLarger={selectedAgeDistribution.n_larger}
-          xLabel="Age"
-          yLabel="Individuals"
-          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-        />
-
-        <ControlSection>
-          <Select
-            id="age-distribution-sample"
-            onChange={e => {
-              this.setState({ selectedSamples: e.target.value })
-            }}
-            value={selectedSamples}
-          >
-            <option value="het">Heterozygous Variant Carriers</option>
-            <option value="hom">Homozygous Variant Carriers</option>
-            {(datasetId.startsWith('gnomad_r2') || datasetId.startsWith('gnomad_r3')) && (
-              <option value="all">All Individuals</option>
-            )}
-          </Select>
-
-          <SegmentedControl
-            id="age-distribution-dataset"
-            onChange={dataset => {
-              this.setState({ selectedDataset: dataset })
-            }}
-            options={[
-              { disabled: !variant.exome, label: 'Exomes', value: 'exome' },
-              {
-                disabled: !variant.genome,
-                label: 'Genomes',
-                value: 'genome',
-              },
-            ]}
-            value={selectedDataset}
-          />
-        </ControlSection>
-      </div>
-    )
-  }
+GnomadAgeDistribution.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  variant: PropTypes.shape({
+    exome: PropTypes.shape({
+      age_distribution: AgeDistributionPropType.isRequired,
+    }),
+    genome: PropTypes.shape({
+      age_distribution: AgeDistributionPropType.isRequired,
+    }),
+  }).isRequired,
 }
+
+export default GnomadAgeDistribution
