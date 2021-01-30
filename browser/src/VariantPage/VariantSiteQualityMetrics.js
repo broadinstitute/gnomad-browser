@@ -6,7 +6,7 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft, AxisRight } from '@vx/axis'
 
-import { Select, TooltipAnchor } from '@gnomad/ui'
+import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 
 import exacSiteQualityMetricDistributions from '../dataset-constants/exac/siteQualityMetricDistributions.json'
 import gnomadV2SiteQualityMetricDistributions from '../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'
@@ -743,10 +743,37 @@ const AutosizedSiteQualityMetricsHistogram = withSize()(({ size, ...props }) => 
 ))
 
 // ================================================================================================
-// Metrics component
+// Metrics components
 // ================================================================================================
 
+const variantSiteQualityMetricsPropTypes = {
+  datasetId: PropTypes.string.isRequired,
+  variant: PropTypes.shape({
+    exome: PropTypes.shape({
+      quality_metrics: PropTypes.shape({
+        site_quality_metrics: PropTypes.arrayOf(
+          PropTypes.shape({
+            metric: PropTypes.string.isRequired,
+            value: PropTypes.number,
+          })
+        ).isRequired,
+      }).isRequired,
+    }),
+    genome: PropTypes.shape({
+      quality_metrics: PropTypes.shape({
+        site_quality_metrics: PropTypes.arrayOf(
+          PropTypes.shape({
+            metric: PropTypes.string.isRequired,
+            value: PropTypes.number,
+          })
+        ).isRequired,
+      }).isRequired,
+    }),
+  }).isRequired,
+}
+
 const LegendWrapper = styled.div`
+  margin-top: 1em;
   margin-bottom: 1em;
 `
 
@@ -763,7 +790,7 @@ const getDefaultSelectedSequencingType = variant => {
   return 'g'
 }
 
-const VariantSiteQualityMetrics = ({ datasetId, variant }) => {
+const VariantSiteQualityMetricsDistribution = ({ datasetId, variant }) => {
   const [selectedMetric, setSelectedMetric] = useState('SiteQuality')
   const [selectedSequencingType, setSelectedSequencingType] = useState(
     getDefaultSelectedSequencingType(variant)
@@ -825,6 +852,9 @@ const VariantSiteQualityMetrics = ({ datasetId, variant }) => {
         xLabel={selectedMetric}
       />
 
+      {/* spacer to align controls with genotype quality metrics */}
+      <div style={{ marginBottom: '0.5rem', overflow: 'hidden' }} />
+
       <ControlSection>
         <label htmlFor="site-quality-metrics-metric">
           Metric:{' '}
@@ -878,27 +908,124 @@ const VariantSiteQualityMetrics = ({ datasetId, variant }) => {
   )
 }
 
-const variantSiteQualityMetricsPropType = PropTypes.arrayOf(
-  PropTypes.shape({
-    metric: PropTypes.string.isRequired,
-    value: PropTypes.number,
-  })
-)
+VariantSiteQualityMetricsDistribution.propTypes = variantSiteQualityMetricsPropTypes
 
-VariantSiteQualityMetrics.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  variant: PropTypes.shape({
-    exome: PropTypes.shape({
-      quality_metrics: PropTypes.shape({
-        site_quality_metrics: variantSiteQualityMetricsPropType.isRequired,
-      }).isRequired,
-    }),
-    genome: PropTypes.shape({
-      quality_metrics: PropTypes.shape({
-        site_quality_metrics: variantSiteQualityMetricsPropType.isRequired,
-      }).isRequired,
-    }),
-  }).isRequired,
+const TooltipHint = styled.span`
+  background-image: linear-gradient(to right, #000 75%, transparent 75%);
+  background-position: 0 1.15em;
+  background-size: 4px 2px;
+  background-repeat: repeat-x;
+`
+
+const renderMetric = metric => {
+  let description
+  if (metric.startsWith('AS_')) {
+    const baseDescription = qualityMetricDescriptions[metric.slice(3)]
+    if (baseDescription) {
+      description = `Allele-specific ${baseDescription
+        .charAt(0)
+        .toLowerCase()}${baseDescription.slice(1)}`
+    }
+  } else {
+    description = qualityMetricDescriptions[metric]
+  }
+
+  if (description) {
+    return (
+      <TooltipAnchor tooltip={description}>
+        <TooltipHint>{metric}</TooltipHint>
+      </TooltipAnchor>
+    )
+  }
+  return metric
 }
+
+const VariantSiteQualityMetricsTable = ({ datasetId, variant }) => {
+  const isVariantInExomes = Boolean(variant.exome)
+  const isVariantInGenomes = Boolean(variant.genome)
+
+  const exomeMetricValues = variant.exome
+    ? variant.exome.quality_metrics.site_quality_metrics.reduce(
+        (acc, m) => ({
+          ...acc,
+          [m.metric]: m.value,
+        }),
+        {}
+      )
+    : null
+  const genomeMetricValues = variant.genome
+    ? variant.genome.quality_metrics.site_quality_metrics.reduce(
+        (acc, m) => ({
+          ...acc,
+          [m.metric]: m.value,
+        }),
+        {}
+      )
+    : null
+
+  const availableMetrics = getAvailableMetrics(datasetId)
+
+  return (
+    <BaseTable style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th scope="col">Metric</th>
+          {isVariantInExomes && <th scope="col">Exome samples</th>}
+          {isVariantInGenomes && <th scope="col">Genome samples</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {availableMetrics.map(metric => (
+          <tr key={metric}>
+            <th scope="row">{renderMetric(metric)}</th>
+            {isVariantInExomes && (
+              <td>
+                {exomeMetricValues[metric] != null
+                  ? formatMetricValue(exomeMetricValues[metric], metric)
+                  : '–'}
+              </td>
+            )}
+            {isVariantInGenomes && (
+              <td>
+                {genomeMetricValues[metric] != null
+                  ? formatMetricValue(genomeMetricValues[metric], metric)
+                  : '–'}
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </BaseTable>
+  )
+}
+
+VariantSiteQualityMetricsTable.propTypes = variantSiteQualityMetricsPropTypes
+
+const VariantSiteQualityMetrics = ({ datasetId, variant }) => {
+  const [currentTab, setCurrentTab] = useState('distribution')
+
+  return (
+    <Tabs
+      activeTabId={currentTab}
+      tabs={[
+        {
+          id: 'distribution',
+          label: 'Metric distribution',
+          render: () => (
+            <VariantSiteQualityMetricsDistribution datasetId={datasetId} variant={variant} />
+          ),
+        },
+        {
+          id: 'values',
+          label: 'All metric values',
+          render: () => <VariantSiteQualityMetricsTable datasetId={datasetId} variant={variant} />,
+        },
+      ]}
+      onChange={setCurrentTab}
+    />
+  )
+}
+
+VariantSiteQualityMetrics.propTypes = variantSiteQualityMetricsPropTypes
 
 export default VariantSiteQualityMetrics
