@@ -55,7 +55,7 @@ const StackedHistogram = ({
     bottom: 60,
     left: 60,
     right: secondaryValues ? 60 : 10,
-    top: 10,
+    top: 15,
   }
   const plotWidth = width - (margin.left + margin.right)
   const plotHeight = height - (margin.top + margin.bottom)
