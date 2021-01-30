@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Select } from '@gnomad/ui'
+import { Select, Tabs } from '@gnomad/ui'
 
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
@@ -12,6 +12,7 @@ import ControlSection from './ControlSection'
 const LegendWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 1em;
   margin-bottom: 1em;
 `
 
@@ -68,112 +69,180 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
   const includeGenomes = selectedSequencingType.includes('g')
 
   const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
-  const bins = [...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`)
 
-  const metricName = {
-    genotype_quality: 'Genotype Quality',
-    genotype_depth: 'Depth',
-    allele_balance: 'Allele Balance',
-  }[selectedMetric]
+  const tabs = [
+    {
+      id: 'genotype_quality',
+      label: 'Genotype quality',
+      render: () => (
+        <>
+          <LegendWrapper>
+            <Legend
+              series={[
+                { label: 'Exome', color: '#428bca' },
+                { label: 'Genome', color: '#73ab3d' },
+              ]}
+            />
+            <Legend
+              series={[
+                { label: 'Variant carriers', color: '#999' },
+                {
+                  label: 'All individuals',
+                  swatch: <StripedSwatch id="genotype-quality-legend-swatch" color="#999" />,
+                },
+              ]}
+            />
+          </LegendWrapper>
 
-  let values
-  let secondaryValues
-  let yLabel
-  let formatTooltip
-  if (selectedMetric === 'allele_balance') {
-    values = prepareData({ includeExomes, includeGenomes, samples: 'alt', selectedMetric, variant })
-    yLabel = 'Heterozygous variant carriers'
-    formatTooltip = (bin, variantCarriersInBin) => {
-      const nVariantCarriers = sum(variantCarriersInBin)
-      return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
-        nVariantCarriers !== 1 ? 's' : ''
-      } have an allele balance in the ${bin} range`
-    }
-  } else {
-    bins.push(`> ${binEdges[binEdges.length - 1]}`)
-    values = prepareData({
-      includeExomes,
-      includeGenomes,
-      includeLargerBin: true,
-      samples: 'alt',
-      selectedMetric,
-      variant,
+          <StackedHistogram
+            id="variant-genotype-quality-plot"
+            bins={[
+              ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+              `> ${binEdges[binEdges.length - 1]}`,
+            ]}
+            values={prepareData({
+              includeExomes,
+              includeGenomes,
+              includeLargerBin: true,
+              samples: 'alt',
+              selectedMetric: 'genotype_quality',
+              variant,
+            })}
+            secondaryValues={prepareData({
+              includeExomes,
+              includeGenomes,
+              includeLargerBin: true,
+              samples: 'all',
+              selectedMetric: 'genotype_quality',
+              variant,
+            })}
+            xLabel="Genotype quality"
+            yLabel="Variant carriers"
+            secondaryYLabel="All individuals"
+            barColors={['#428bca', '#73ab3d']}
+            formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
+              const nVariantCarriers = sum(variantCarriersInBin)
+              const nTotalIndividuals = sum(allIndividualsInBin)
+              return `${nVariantCarriers.toLocaleString()} variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              } and ${nTotalIndividuals.toLocaleString()} total individual${
+                nTotalIndividuals ? 's' : ''
+              } have genotype quality in the ${bin} range`
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      id: 'genotype_depth',
+      label: 'Depth',
+      render: () => (
+        <>
+          <LegendWrapper style={{ marginTop: '1em' }}>
+            <Legend
+              series={[
+                { label: 'Exome', color: '#428bca' },
+                { label: 'Genome', color: '#73ab3d' },
+              ]}
+            />
+            <Legend
+              series={[
+                { label: 'Variant carriers', color: '#999' },
+                {
+                  label: 'All individuals',
+                  swatch: <StripedSwatch id="depth-legend-swatch" color="#999" />,
+                },
+              ]}
+            />
+          </LegendWrapper>
+
+          <StackedHistogram
+            id="variant-depth-plot"
+            bins={[
+              ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+              `> ${binEdges[binEdges.length - 1]}`,
+            ]}
+            values={prepareData({
+              includeExomes,
+              includeGenomes,
+              includeLargerBin: true,
+              samples: 'alt',
+              selectedMetric: 'genotype_depth',
+              variant,
+            })}
+            secondaryValues={prepareData({
+              includeExomes,
+              includeGenomes,
+              includeLargerBin: true,
+              samples: 'all',
+              selectedMetric: 'genotype_depth',
+              variant,
+            })}
+            xLabel="Depth"
+            yLabel="Variant carriers"
+            secondaryYLabel="All individuals"
+            barColors={['#428bca', '#73ab3d']}
+            formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
+              const nVariantCarriers = sum(variantCarriersInBin)
+              const nTotalIndividuals = sum(allIndividualsInBin)
+              return `${nVariantCarriers.toLocaleString()} variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              } and ${nTotalIndividuals.toLocaleString()} total individual${
+                nTotalIndividuals ? 's' : ''
+              } have depth in the ${bin} range`
+            }}
+          />
+        </>
+      ),
+    },
+  ]
+
+  if (datasetId !== 'exac') {
+    tabs.push({
+      id: 'allele_balance',
+      label: 'Allele balance for heterozygotes',
+      render: () => (
+        <>
+          <LegendWrapper style={{ marginTop: '1em' }}>
+            <Legend
+              series={[
+                { label: 'Exome', color: '#428bca' },
+                { label: 'Genome', color: '#73ab3d' },
+              ]}
+            />
+          </LegendWrapper>
+          <StackedHistogram
+            id="variant-allele-balance-plot"
+            bins={[...Array(binEdges.length - 1)].map(
+              (_, i) => `${binEdges[i]}-${binEdges[i + 1]}`
+            )}
+            values={prepareData({
+              includeExomes,
+              includeGenomes,
+              samples: 'alt',
+              selectedMetric: 'allele_balance',
+              variant,
+            })}
+            xLabel="Allele balance"
+            yLabel="Heterozygous variant carriers"
+            barColors={['#428bca', '#73ab3d']}
+            formatTooltip={(bin, variantCarriersInBin) => {
+              const nVariantCarriers = sum(variantCarriersInBin)
+              return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              } have an allele balance in the ${bin} range`
+            }}
+          />
+        </>
+      ),
     })
-    secondaryValues = prepareData({
-      includeExomes,
-      includeGenomes,
-      includeLargerBin: true,
-      samples: 'all',
-      selectedMetric,
-      variant,
-    })
-    yLabel = 'Variant carriers'
-    formatTooltip = (bin, variantCarriersInBin, allIndividualsInBin) => {
-      const nVariantCarriers = sum(variantCarriersInBin)
-      const nTotalIndividuals = sum(allIndividualsInBin)
-      return `${nVariantCarriers.toLocaleString()} variant carrier${
-        nVariantCarriers !== 1 ? 's' : ''
-      } and ${nTotalIndividuals.toLocaleString()} total individual${
-        nTotalIndividuals ? 's' : ''
-      } have a ${metricName.toLowerCase()} in the ${bin} range`
-    }
   }
 
   return (
     <div>
-      <LegendWrapper>
-        <Legend
-          series={[
-            { label: 'Exome', color: '#428bca' },
-            { label: 'Genome', color: '#73ab3d' },
-          ]}
-        />
-        {selectedMetric !== 'allele_balance' && (
-          <Legend
-            series={[
-              { label: 'Variant carriers', color: '#999' },
-              {
-                label: 'All individuals',
-                swatch: <StripedSwatch id="genotype-quality-metrics-legend-swatch" color="#999" />,
-              },
-            ]}
-          />
-        )}
-      </LegendWrapper>
-
-      <StackedHistogram
-        id="variant-genotype-quality-metrics-plot"
-        bins={bins}
-        values={values}
-        secondaryValues={secondaryValues}
-        xLabel={metricName}
-        yLabel={yLabel}
-        secondaryYLabel="All individuals"
-        barColors={['#428bca', '#73ab3d']}
-        formatTooltip={formatTooltip}
-      />
+      <Tabs activeTabId={selectedMetric} tabs={tabs} onChange={setSelectedMetric} />
 
       <ControlSection>
-        <label htmlFor="genotype-quality-metrics-metric">
-          Metric:{' '}
-          <Select
-            id="genotype-quality-metrics-metric"
-            onChange={e => {
-              setSelectedMetric(e.target.value)
-            }}
-            value={selectedMetric}
-            style={{
-              width: selectedMetric === 'allele_balance' ? 'auto' : '150px',
-            }}
-          >
-            <option value="genotype_quality">Genotype quality</option>
-            <option value="genotype_depth">Depth</option>
-            {datasetId !== 'exac' && (
-              <option value="allele_balance">Allele balance for heterozygotes</option>
-            )}
-          </Select>
-        </label>
-
         <label htmlFor="genotype-quality-metrics-sequencing-type">
           Sequencing types:{' '}
           <Select
