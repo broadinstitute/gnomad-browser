@@ -121,6 +121,8 @@ const GnomadAgeDistribution = ({ datasetId, variant }) => {
   const [includeHeterozygotes, setIncludeHeterozygotes] = useState(true)
   const [includeHomozygotes, setIncludeHomozygotes] = useState(true)
 
+  const [showAllIndividuals, setShowAllIndividuals] = useState(datasetId !== 'exac')
+
   const binEdges = (variant.exome || variant.genome).age_distribution.het.bin_edges
   const bins = [
     `< ${binEdges[0]}`,
@@ -151,22 +153,24 @@ const GnomadAgeDistribution = ({ datasetId, variant }) => {
             { label: 'Genome', color: '#73ab3d' },
           ]}
         />
-        <Legend
-          series={[
-            { label: 'Variant carriers', color: '#999' },
-            {
-              label: 'All individuals',
-              swatch: <StripedSwatch id="age-distribution-legend-swatch" color="#999" />,
-            },
-          ]}
-        />
+        {showAllIndividuals && (
+          <Legend
+            series={[
+              { label: 'Variant carriers', color: '#999' },
+              {
+                label: 'All individuals',
+                swatch: <StripedSwatch id="age-distribution-legend-swatch" color="#999" />,
+              },
+            ]}
+          />
+        )}
       </LegendWrapper>
 
       <StackedHistogram
         id="age-distribution-plot"
         bins={bins}
         values={values}
-        secondaryValues={secondaryValues}
+        secondaryValues={showAllIndividuals ? secondaryValues : null}
         xLabel="Age"
         yLabel="Variant carriers"
         secondaryYLabel="All individuals"
@@ -176,7 +180,7 @@ const GnomadAgeDistribution = ({ datasetId, variant }) => {
           let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
             nVariantCarriers !== 1 ? 's' : ''
           }`
-          if (allIndividualsInBin) {
+          if (showAllIndividuals && allIndividualsInBin) {
             const nTotalIndividuals = sum(allIndividualsInBin)
             tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
               nTotalIndividuals ? 's' : ''
@@ -200,6 +204,13 @@ const GnomadAgeDistribution = ({ datasetId, variant }) => {
             id="age-distribution-include-homozygotes"
             label="Include homozygous variant carriers"
             onChange={setIncludeHomozygotes}
+          />
+          <Checkbox
+            checked={showAllIndividuals}
+            disabled={secondaryValues === null}
+            id="age-distribution-show-all-individuals"
+            label="Compare to all individuals"
+            onChange={setShowAllIndividuals}
           />
         </CheckboxWrapper>
 
