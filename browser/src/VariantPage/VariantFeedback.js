@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 
-import { Button, ExternalLink, List, ListItem, Modal, PrimaryButton, TextButton } from '@gnomad/ui'
+import { Button, ExternalLink, List, ListItem, Modal, PrimaryButton } from '@gnomad/ui'
 
 import Link from '../Link'
 
@@ -51,13 +51,15 @@ const VariantFeedback = ({ datasetId, variantId }) => {
           </ExternalLink>
         </ListItem>
         <ListItem>
-          <TextButton
-            onClick={() => {
+          <ExternalLink
+            href={getRequestInfoEmailUrl({ datasetId, variantId })}
+            onClick={e => {
+              e.preventDefault()
               setIsRequestInfoModalOpen(true)
             }}
           >
             Request additional information
-          </TextButton>
+          </ExternalLink>
         </ListItem>
       </List>
       {isRequestInfoModalOpen && (
