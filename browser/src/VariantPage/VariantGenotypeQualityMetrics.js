@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Select, Tabs } from '@gnomad/ui'
+import { Checkbox, Select, Tabs } from '@gnomad/ui'
 
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
@@ -61,6 +61,9 @@ const getDefaultSelectedSequencingType = variant => {
 
 const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
   const [selectedMetric, setSelectedMetric] = useState('genotype_quality') // 'genotype_quality', 'genotype_depth', or 'allele_balance'
+
+  const [showAllIndividuals, setShowAllIndividuals] = useState(true)
+
   const [selectedSequencingType, setSelectedSequencingType] = useState(
     getDefaultSelectedSequencingType(variant)
   ) // 'eg', 'e', 'g'
@@ -83,15 +86,17 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
                 { label: 'Genome', color: '#73ab3d' },
               ]}
             />
-            <Legend
-              series={[
-                { label: 'Variant carriers', color: '#999' },
-                {
-                  label: 'All individuals',
-                  swatch: <StripedSwatch id="genotype-quality-legend-swatch" color="#999" />,
-                },
-              ]}
-            />
+            {showAllIndividuals && (
+              <Legend
+                series={[
+                  { label: 'Variant carriers', color: '#999' },
+                  {
+                    label: 'All individuals',
+                    swatch: <StripedSwatch id="genotype-quality-legend-swatch" color="#999" />,
+                  },
+                ]}
+              />
+            )}
           </LegendWrapper>
 
           <StackedHistogram
@@ -108,26 +113,40 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
               selectedMetric: 'genotype_quality',
               variant,
             })}
-            secondaryValues={prepareData({
-              includeExomes,
-              includeGenomes,
-              includeLargerBin: true,
-              samples: 'all',
-              selectedMetric: 'genotype_quality',
-              variant,
-            })}
+            secondaryValues={
+              showAllIndividuals
+                ? prepareData({
+                    includeExomes,
+                    includeGenomes,
+                    includeLargerBin: true,
+                    samples: 'all',
+                    selectedMetric: 'genotype_quality',
+                    variant,
+                  })
+                : null
+            }
             xLabel="Genotype quality"
             yLabel="Variant carriers"
             secondaryYLabel="All individuals"
             barColors={['#428bca', '#73ab3d']}
             formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
               const nVariantCarriers = sum(variantCarriersInBin)
-              const nTotalIndividuals = sum(allIndividualsInBin)
-              return `${nVariantCarriers.toLocaleString()} variant carrier${
+              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
                 nVariantCarriers !== 1 ? 's' : ''
-              } and ${nTotalIndividuals.toLocaleString()} total individual${
-                nTotalIndividuals ? 's' : ''
-              } have genotype quality in the ${bin} range`
+              }`
+
+              if (showAllIndividuals) {
+                const nTotalIndividuals = sum(allIndividualsInBin)
+                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                  nTotalIndividuals ? 's' : ''
+                }`
+              }
+
+              tooltipText += ` ${
+                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+              } genotype quality in the ${bin} range`
+
+              return tooltipText
             }}
           />
         </>
@@ -145,15 +164,17 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
                 { label: 'Genome', color: '#73ab3d' },
               ]}
             />
-            <Legend
-              series={[
-                { label: 'Variant carriers', color: '#999' },
-                {
-                  label: 'All individuals',
-                  swatch: <StripedSwatch id="depth-legend-swatch" color="#999" />,
-                },
-              ]}
-            />
+            {showAllIndividuals && (
+              <Legend
+                series={[
+                  { label: 'Variant carriers', color: '#999' },
+                  {
+                    label: 'All individuals',
+                    swatch: <StripedSwatch id="depth-legend-swatch" color="#999" />,
+                  },
+                ]}
+              />
+            )}
           </LegendWrapper>
 
           <StackedHistogram
@@ -170,26 +191,40 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
               selectedMetric: 'genotype_depth',
               variant,
             })}
-            secondaryValues={prepareData({
-              includeExomes,
-              includeGenomes,
-              includeLargerBin: true,
-              samples: 'all',
-              selectedMetric: 'genotype_depth',
-              variant,
-            })}
+            secondaryValues={
+              showAllIndividuals
+                ? prepareData({
+                    includeExomes,
+                    includeGenomes,
+                    includeLargerBin: true,
+                    samples: 'all',
+                    selectedMetric: 'genotype_depth',
+                    variant,
+                  })
+                : null
+            }
             xLabel="Depth"
             yLabel="Variant carriers"
             secondaryYLabel="All individuals"
             barColors={['#428bca', '#73ab3d']}
             formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
               const nVariantCarriers = sum(variantCarriersInBin)
-              const nTotalIndividuals = sum(allIndividualsInBin)
-              return `${nVariantCarriers.toLocaleString()} variant carrier${
+              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
                 nVariantCarriers !== 1 ? 's' : ''
-              } and ${nTotalIndividuals.toLocaleString()} total individual${
-                nTotalIndividuals ? 's' : ''
-              } have depth in the ${bin} range`
+              }`
+
+              if (showAllIndividuals) {
+                const nTotalIndividuals = sum(allIndividualsInBin)
+                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                  nTotalIndividuals ? 's' : ''
+                }`
+              }
+
+              tooltipText += ` ${
+                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+              } depth in the ${bin} range`
+
+              return tooltipText
             }}
           />
         </>
@@ -229,8 +264,8 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
             formatTooltip={(bin, variantCarriersInBin) => {
               const nVariantCarriers = sum(variantCarriersInBin)
               return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
-                nVariantCarriers !== 1 ? 's' : ''
-              } have an allele balance in the ${bin} range`
+                nVariantCarriers !== 1 ? 's have' : ' has'
+              } an allele balance in the ${bin} range`
             }}
           />
         </>
@@ -243,6 +278,14 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
       <Tabs activeTabId={selectedMetric} tabs={tabs} onChange={setSelectedMetric} />
 
       <ControlSection>
+        <Checkbox
+          checked={selectedMetric !== 'allele_balance' && showAllIndividuals}
+          disabled={selectedMetric === 'allele_balance'}
+          id="genotype-quality-metrics-show-all-individuals"
+          label="Compare to all individuals"
+          onChange={setShowAllIndividuals}
+        />
+
         <label htmlFor="genotype-quality-metrics-sequencing-type">
           Sequencing types:{' '}
           <Select
