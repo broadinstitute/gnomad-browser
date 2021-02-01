@@ -81,6 +81,7 @@ const VariantFeedback = ({ datasetId, variantId }) => {
               <PrimaryButton
                 onClick={() => {
                   window.open(getRequestInfoEmailUrl({ datasetId, variantId }))
+                  setIsRequestInfoModalOpen(false)
                 }}
                 style={{ marginLeft: '1em' }}
               >
