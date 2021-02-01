@@ -77,7 +77,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
       {variant.colocated_variants && variant.colocated_variants.length > 0 && (
         <div>
           <p>
-            <strong>This variant is multiallelic. Other alt alleles are:</strong>
+            <strong>This variant is multiallelic. Other alternate alleles are:</strong>
           </p>
           <ul>
             {variant.colocated_variants.map(colocatedVariantId => (
