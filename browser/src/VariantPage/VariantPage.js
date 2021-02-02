@@ -18,13 +18,13 @@ import TableWrapper from '../TableWrapper'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
-import LoFCurationResult from './LoFCurationResult'
 import VariantClinvarInfo from './VariantClinvarInfo'
 import VariantFeedback from './VariantFeedback'
 import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 import VariantInSilicoPredictors from './VariantInSilicoPredictors'
+import VariantLoFCurationResults from './VariantLoFCurationResults'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
@@ -114,17 +114,7 @@ const VariantPageContent = ({ datasetId, variant }) => (
         <h2>
           LoF Curation <InfoButton topic="lof_curation" />
         </h2>
-        <div>
-          This variant was manually curated in{' '}
-          {new Set(variant.lof_curations.map(c => c.gene_id)).size} genes.
-          <ul>
-            {variant.lof_curations.map(result => (
-              <li key={result.gene_id}>
-                <LoFCurationResult result={result} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <VariantLoFCurationResults variant={variant} />
       </Section>
     )}
 
