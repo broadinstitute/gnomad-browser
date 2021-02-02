@@ -10,8 +10,8 @@ const ExacConstraintTable = ({ constraint }) => (
     <thead>
       <tr>
         <th scope="col">Category</th>
-        <th scope="col">Exp. SNVs</th>
-        <th scope="col">Obs. SNVs</th>
+        <th scope="col">Expected SNVs</th>
+        <th scope="col">Observed SNVs</th>
         <th scope="col">Constraint metric</th>
       </tr>
     </thead>

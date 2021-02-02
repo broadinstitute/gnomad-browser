@@ -144,12 +144,12 @@ const GnomadConstraintTable = ({ constraint }) => {
             <th scope="col">Category</th>
             <th scope="col">
               <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in the gnomAD flagship paper. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
-                <TooltipHint>Exp. SNVs</TooltipHint>
+                <TooltipHint>Expected SNVs</TooltipHint>
               </TooltipAnchor>
             </th>
             <th scope="col">
               <TooltipAnchor tooltip="Includes single nucleotide changes that occurred in the canonical transcript that were found at a frequency of <0.1%, passed all filters, and at sites with a median depth ≥1. The counts represent the number of unique variants and not the allele count of these variants.">
-                <TooltipHint>Obs. SNVs</TooltipHint>
+                <TooltipHint>Observed SNVs</TooltipHint>
               </TooltipAnchor>
             </th>
             <th scope="col">Constraint metrics</th>
