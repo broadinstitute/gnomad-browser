@@ -46,7 +46,6 @@ class StructuralVariants extends Component {
     chrom: PropTypes.string.isRequired,
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
-    width: PropTypes.number.isRequired,
   }
 
   constructor(props) {
@@ -170,7 +169,7 @@ class StructuralVariants extends Component {
   }
 
   render() {
-    const { chrom, exportFileName, variants, width } = this.props
+    const { chrom, exportFileName, variants } = this.props
     const {
       filter,
       highlightedVariantTrack,
@@ -277,7 +276,6 @@ class StructuralVariants extends Component {
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 variants={renderedVariants}
-                width={width}
               />
             ) : (
               <StatusMessage>No matching variants</StatusMessage>

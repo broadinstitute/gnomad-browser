@@ -55,13 +55,11 @@ const VariantsInGene = ({
   includeNonCodingTranscripts,
   includeUTRs,
   variants,
-  width,
 }) => {
   const columns = useMemo(
     () =>
       getColumns({
         context: 'gene',
-        width,
         includeLofCuration: variants.some(variant => variant.lof_curation),
         includeHomozygoteAC: gene.chrom !== 'Y',
         includeHemizygoteAC: gene.chrom === 'X' || gene.chrom === 'Y',
@@ -69,7 +67,7 @@ const VariantsInGene = ({
           ? gene.mane_select_transcript.ensembl_id
           : gene.canonical_transcript_id,
       }),
-    [gene, variants, width]
+    [gene, variants]
   )
 
   const datasetLabel = labelForDataset(datasetId)
@@ -159,7 +157,6 @@ VariantsInGene.propTypes = {
   includeNonCodingTranscripts: PropTypes.bool.isRequired,
   includeUTRs: PropTypes.bool.isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 VariantsInGene.defaultProps = {

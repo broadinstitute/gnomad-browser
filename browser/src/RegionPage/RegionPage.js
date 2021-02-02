@@ -121,19 +121,11 @@ const RegionPage = ({ datasetId, history, region, width }) => {
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
-          <StructuralVariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            width={regionViewerWidth}
-          />
+          <StructuralVariantsInRegion datasetId={datasetId} region={region} />
         ) : region.chrom === 'M' ? (
-          <MitochondrialVariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            width={regionViewerWidth}
-          />
+          <MitochondrialVariantsInRegion datasetId={datasetId} region={region} />
         ) : (
-          <VariantsInRegion datasetId={datasetId} region={region} width={regionViewerWidth} />
+          <VariantsInRegion datasetId={datasetId} region={region} />
         )}
       </RegionViewer>
     </TrackPage>

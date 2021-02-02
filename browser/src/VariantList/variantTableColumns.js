@@ -42,7 +42,6 @@ const getConsequenceDescription = context => {
 
 export const getColumns = ({
   context, // one of 'gene', 'region', or 'transcript'
-  width,
   includeLofCuration = false,
   includeHomozygoteAC = false,
   includeHemizygoteAC = false,
@@ -145,29 +144,29 @@ export const getColumns = ({
     },
     {
       key: 'ac',
-      heading: width < 600 ? 'AC' : 'Allele Count',
+      heading: 'Allele Count',
       tooltip: 'Alternate allele count in high quality genotypes',
       grow: 0,
       isSortable: true,
-      minWidth: width < 600 ? 75 : 110,
+      minWidth: 110,
       render: renderAlleleCountCell,
     },
     {
       key: 'an',
-      heading: width < 600 ? 'AN' : 'Allele Number',
+      heading: 'Allele Number',
       tooltip: 'Total number of called high quality genotypes',
       grow: 0,
       isSortable: true,
-      minWidth: width < 600 ? 75 : 110,
+      minWidth: 110,
       render: renderAlleleCountCell,
     },
     {
       key: 'af',
-      heading: width < 600 ? 'AF' : 'Allele Frequency',
+      heading: 'Allele Frequency',
       tooltip: 'Alternate allele frequency in high quality genotypes',
       grow: 0,
       isSortable: true,
-      minWidth: width < 600 ? 75 : 110,
+      minWidth: 110,
       render: renderAlleleFrequencyCell,
     },
   ]
@@ -223,11 +222,11 @@ export const getColumns = ({
   if (includeHomozygoteAC) {
     columns.push({
       key: 'ac_hom',
-      heading: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
+      heading: 'Number of Homozygotes',
       tooltip: 'Number of individuals homozygous for alternate allele',
       grow: 0,
       isSortable: true,
-      minWidth: width < 600 ? 75 : 100,
+      minWidth: 100,
       render: renderAlleleCountCell,
     })
   }
@@ -235,11 +234,11 @@ export const getColumns = ({
   if (includeHemizygoteAC) {
     columns.push({
       key: 'ac_hemi',
-      heading: width < 600 ? 'No. Hem' : 'Number of Hemizygotes',
+      heading: 'Number of Hemizygotes',
       tooltip: 'Number of individuals hemizygous for alternate allele',
       grow: 0,
       isSortable: true,
-      minWidth: width < 600 ? 75 : 100,
+      minWidth: 100,
       render: renderAlleleCountCell,
     })
   }

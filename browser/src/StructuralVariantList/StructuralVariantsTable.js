@@ -12,14 +12,13 @@ const StructuralVariantsTable = ({
   onHoverVariant,
   rowHeight,
   variants,
-  width,
   ...rest
 }) => {
   return (
     <Grid
       ref={forwardedRef}
       {...rest}
-      columns={getColumns({ includeHomozygoteAC: variants[0].chrom !== 'Y', width })}
+      columns={getColumns({ includeHomozygoteAC: variants[0].chrom !== 'Y' })}
       data={variants}
       numRowsRendered={numRowsRendered}
       onHoverRow={rowIndex => {
@@ -37,7 +36,6 @@ StructuralVariantsTable.propTypes = {
   onHoverVariant: PropTypes.func.isRequired,
   rowHeight: PropTypes.number.isRequired,
   variants: PropTypes.arrayOf(StructuralVariantPropType).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 const MemoizedStructuralVariantsTable = memo(StructuralVariantsTable)

@@ -9,17 +9,16 @@ import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClin
 import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
-const VariantsInRegion = ({ clinvarVariants, datasetId, region, variants, width }) => {
+const VariantsInRegion = ({ clinvarVariants, datasetId, region, variants }) => {
   const columns = useMemo(
     () =>
       getColumns({
         context: 'region',
-        width,
         includeLofCuration: variants.some(variant => variant.lof_curation),
         includeHomozygoteAC: region.chrom !== 'Y',
         includeHemizygoteAC: region.chrom === 'X' || region.chrom === 'Y',
       }),
-    [region, variants, width]
+    [region, variants]
   )
 
   const datasetLabel = labelForDataset(datasetId)
@@ -52,7 +51,6 @@ VariantsInRegion.propTypes = {
     stop: PropTypes.number.isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 VariantsInRegion.defaultProps = {
@@ -125,7 +123,7 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
   }
 }`
 
-const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
+const ConnectedVariantsInRegion = ({ datasetId, region }) => (
   <Query
     query={query}
     variables={{
@@ -146,7 +144,6 @@ const ConnectedVariantsInRegion = ({ datasetId, region, width }) => (
           datasetId={datasetId}
           region={region}
           variants={annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)}
-          width={width}
         />
       )
     }}
@@ -160,7 +157,6 @@ ConnectedVariantsInRegion.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default ConnectedVariantsInRegion
