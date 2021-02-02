@@ -16,17 +16,15 @@ const VariantsInTranscript = ({
   includeUTRs,
   transcript,
   variants,
-  width,
 }) => {
   const columns = useMemo(
     () =>
       getColumns({
         context: 'transcript',
-        width,
         includeHomozygoteAC: transcript.chrom !== 'Y',
         includeHemizygoteAC: transcript.chrom === 'X' || transcript.chrom === 'Y',
       }),
-    [transcript, width]
+    [transcript]
   )
 
   const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')
@@ -91,7 +89,6 @@ VariantsInTranscript.propTypes = {
     ).isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 VariantsInTranscript.defaultProps = {

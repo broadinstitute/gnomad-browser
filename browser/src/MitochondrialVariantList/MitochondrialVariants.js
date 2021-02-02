@@ -30,7 +30,6 @@ class MitochondrialVariants extends Component {
     context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
-    width: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
@@ -174,7 +173,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { clinvarVariants, context, exportFileName, variants, width } = this.props
+    const { clinvarVariants, context, exportFileName, variants } = this.props
     const {
       filter,
       renderedVariants,
@@ -250,7 +249,6 @@ class MitochondrialVariants extends Component {
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 variants={renderedVariants}
-                width={width}
                 onHoverVariant={this.onHoverVariantInTable}
                 onRequestSort={this.onSort}
                 onVisibleRowsChange={this.onVisibleRowsChange}

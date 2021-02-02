@@ -13,7 +13,6 @@ const MitochondrialVariantsTable = ({
   numRowsRendered,
   onHoverVariant,
   variants,
-  width,
   ...rest
 }) => {
   return (
@@ -23,7 +22,7 @@ const MitochondrialVariantsTable = ({
       cellData={{
         highlightWords: highlightText.split(',').map(s => s.trim()),
       }}
-      columns={getColumns({ context, width })}
+      columns={getColumns({ context })}
       data={variants}
       numRowsRendered={numRowsRendered}
       onHoverRow={rowIndex => {
@@ -44,7 +43,6 @@ MitochondrialVariantsTable.propTypes = {
   numRowsRendered: PropTypes.number.isRequired,
   onHoverVariant: PropTypes.func.isRequired,
   variants: PropTypes.arrayOf(MitochondrialVariantPropType).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 const MemoizedMitochondrialVariantsTable = memo(MitochondrialVariantsTable)

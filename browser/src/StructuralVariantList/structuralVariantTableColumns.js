@@ -44,7 +44,7 @@ const renderType = (variant, key, { colorKey, highlightWords }) => (
   </Cell>
 )
 
-export const getColumns = ({ includeHomozygoteAC, width }) => {
+export const getColumns = ({ includeHomozygoteAC }) => {
   const columns = [
     {
       key: 'variant_id',
@@ -132,9 +132,9 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
     },
     {
       key: 'an',
-      heading: width < 600 ? 'AN' : 'Allele Number',
+      heading: 'Allele Number',
       isSortable: true,
-      minWidth: width < 600 ? 75 : 110,
+      minWidth: 110,
       render: renderAlleleCountCell,
     },
     {
@@ -149,9 +149,9 @@ export const getColumns = ({ includeHomozygoteAC, width }) => {
   if (includeHomozygoteAC) {
     columns.push({
       key: 'ac_hom',
-      heading: width < 600 ? 'No. Hom' : 'Number of Homozygotes',
+      heading: 'Number of Homozygotes',
       isSortable: true,
-      minWidth: width < 600 ? 75 : 100,
+      minWidth: 100,
       render: renderAlleleCountCell,
     })
   }

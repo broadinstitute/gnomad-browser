@@ -42,7 +42,6 @@ const getConsequenceDescription = context => {
 
 export const getColumns = ({
   context, // one of 'gene', 'region', or 'transcript'
-  width,
 }) => {
   const columns = [
     {
@@ -136,7 +135,7 @@ export const getColumns = ({
     },
     {
       key: 'an',
-      heading: width < 600 ? 'AN' : 'Allele Number',
+      heading: 'Allele Number',
       tooltip: 'Total number of individuals with high quality sequence at this position.',
       grow: 0,
       isSortable: true,
@@ -145,7 +144,7 @@ export const getColumns = ({
     },
     {
       key: 'ac_hom',
-      heading: width < 600 ? 'Hom. AC' : 'Homoplasmic Allele Count',
+      heading: 'Homoplasmic Allele Count',
       tooltip:
         'Number of individuals with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).',
       grow: 0,
@@ -155,7 +154,7 @@ export const getColumns = ({
     },
     {
       key: 'af_hom',
-      heading: width < 600 ? 'Hom. AF' : 'Homoplasmic Allele Frequency',
+      heading: 'Homoplasmic Allele Frequency',
       tooltip:
         'Proportion of individuals with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).',
       grow: 0,
@@ -166,7 +165,7 @@ export const getColumns = ({
     {
       key: 'ac_het',
       tooltip: 'Number of individuals with a variant at heteroplasmy level 0.10 - 0.95.',
-      heading: width < 600 ? 'Het. AC' : 'Heteroplasmic Allele Count',
+      heading: 'Heteroplasmic Allele Count',
       grow: 0,
       isSortable: true,
       minWidth: 110,
@@ -174,7 +173,7 @@ export const getColumns = ({
     },
     {
       key: 'af_het',
-      heading: width < 600 ? 'Het. AF' : 'Heteroplasmic Allele Frequency',
+      heading: 'Heteroplasmic Allele Frequency',
       tooltip: 'Proportion of individuals with a variant at heteroplasmy level 0.10 - 0.95.',
       grow: 0,
       isSortable: true,

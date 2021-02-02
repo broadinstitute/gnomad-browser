@@ -462,20 +462,15 @@ class GenePage extends Component {
 
           {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId.startsWith('gnomad_sv') ? (
-            <StructuralVariantsInGene datasetId={datasetId} gene={gene} width={regionViewerWidth} />
+            <StructuralVariantsInGene datasetId={datasetId} gene={gene} />
           ) : gene.chrom === 'M' ? (
-            <MitochondrialVariantsInGene
-              datasetId={datasetId}
-              gene={gene}
-              width={regionViewerWidth}
-            />
+            <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} />
           ) : (
             <VariantsInGene
               datasetId={datasetId}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
-              width={regionViewerWidth}
             />
           )}
         </RegionViewer>
