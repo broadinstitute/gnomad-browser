@@ -24,7 +24,7 @@ const NavBarWrapper = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: column;
-    padding: 10px 30px;
+    padding: 10px;
   }
 `
 
