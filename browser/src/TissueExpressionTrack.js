@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
-import { Badge, Button } from '@gnomad/ui'
+import { Badge, Button, SearchInput } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
 import InfoButton from './help/InfoButton'
@@ -131,8 +131,29 @@ const FLAG_DESCRIPTIONS = {
     'For this gene, RSEM assigns higher expression to non-coding transcripts than protein coding transcripts. This likely represents an artifact in the isoform expression quantification and results in a low pext value for all bases in the gene.',
 }
 
+const tissuePredicate = tissueFilterText => {
+  const filterWords = tissueFilterText
+    .toLowerCase()
+    .replace(/[^\w\s]/gi, '')
+    .split(/\s+/)
+    .filter(Boolean)
+
+  return tissue => {
+    const tissueWords = tissue
+      .toLowerCase()
+      .replace(/[^\w\s]/gi, '')
+      .split(/\s+/)
+      .filter(Boolean)
+
+    return filterWords.every(filterWord =>
+      tissueWords.some(tissueWord => tissueWord.includes(filterWord))
+    )
+  }
+}
+
 const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [tissueFilterText, setTissueFilterText] = useState('')
   const mainTrack = useRef()
 
   const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
@@ -215,14 +236,27 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
       ))}
       {isExpanded && (
         <>
-          {tissues.map(tissue => (
-            <IndividualTissueTrack
-              key={tissue}
-              exons={exons}
-              expressionRegions={expressionRegions}
-              tissue={tissue}
-            />
-          ))}
+          <div style={{ margin: '1em 0' }}>
+            <label htmlFor="tissue-expression-track-filter">
+              Filter tissues:{' '}
+              <SearchInput
+                id="tissue-expression-track-filter"
+                placeholder="tissue"
+                value={tissueFilterText}
+                onChange={setTissueFilterText}
+              />
+            </label>
+          </div>
+          {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
+            tissue => (
+              <IndividualTissueTrack
+                key={tissue}
+                exons={exons}
+                expressionRegions={expressionRegions}
+                tissue={tissue}
+              />
+            )
+          )}
           <span>
             <Button
               onClick={() => {
