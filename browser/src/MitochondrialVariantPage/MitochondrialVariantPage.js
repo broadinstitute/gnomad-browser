@@ -8,7 +8,6 @@ import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import Histogram from '../Histogram'
 import Link from '../Link'
 import Query from '../Query'
 import TableWrapper from '../TableWrapper'
@@ -19,6 +18,7 @@ import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeLi
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGenotypeQualityMetrics'
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
+import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
 import MitochondrialVariantReferenceList from './MitochondrialVariantReferenceList'
 import MitochondrialVariantSiteQualityMetrics from './MitochondrialVariantSiteQualityMetrics'
 import MitochondrialVariantTranscriptConsequenceList from './MitochondrialVariantTranscriptConsequenceList'
@@ -127,14 +127,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
     <Wrapper>
       <ResponsiveSection>
         <h2>Heteroplasmy Distribution</h2>
-        <Histogram
-          barColor="#73ab3d"
-          binEdges={variant.heteroplasmy_distribution.bin_edges}
-          binValues={variant.heteroplasmy_distribution.bin_freq}
-          xLabel="Heteroplasmy Level"
-          yLabel="Individuals"
-          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-        />
+        <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>Age Distribution</h2>
