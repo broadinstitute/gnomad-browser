@@ -72,10 +72,14 @@ const SiteQualityMetricsHistogram = ({
   const plotWidth = width - (margin.left + margin.right)
   const plotHeight = height - (margin.top + margin.bottom)
 
-  const bins = [...Array(binEdges.length - 1)].map((_, i) => i)
-  const binLabels = [...Array(binEdges.length - 1)].map(
-    (_, i) => `between ${binEdges[i]} and ${binEdges[i + 1]}`
-  )
+  const bins = [...Array(binEdges.length + 1)].map((_, i) => i)
+  const binLabels = [
+    `< ${binEdges[0]}`,
+    ...[...Array(binEdges.length - 1)].map(
+      (_, i) => `between ${binEdges[i]} and ${binEdges[i + 1]}`
+    ),
+    `> ${binEdges[binEdges.length - 1]}`,
+  ]
 
   const formatTooltip = binIndex => {
     return `${binValues[binIndex].toLocaleString()} variants with ${metric} ${binLabels[binIndex]}`
@@ -85,7 +89,7 @@ const SiteQualityMetricsHistogram = ({
   const bandWidth = xBandScale.bandwidth()
   const xScale = scaleLinear()
     .domain([binEdges[0], binEdges[binEdges.length - 1]])
-    .range([0, plotWidth])
+    .range([bandWidth, plotWidth - bandWidth])
 
   const metricValueX = xScale(metricValue)
   const labelOnLeft = metricValueX > plotWidth * 0.8
@@ -241,8 +245,11 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({ variant }) => {
 
   const binEdges =
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_edges
-  const binValues =
-    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_freq
+  const binValues = [
+    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_smaller || 0,
+    ...gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_freq,
+    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_larger || 0,
+  ]
 
   return (
     <div>
