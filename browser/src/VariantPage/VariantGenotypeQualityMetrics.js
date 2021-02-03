@@ -138,7 +138,7 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
               if (showAllIndividuals) {
                 const nTotalIndividuals = sum(allIndividualsInBin)
                 tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
-                  nTotalIndividuals ? 's' : ''
+                  nTotalIndividuals !== 1 ? 's' : ''
                 }`
               }
 
@@ -216,7 +216,7 @@ const VariantGenotypeQualityMetrics = ({ datasetId, variant }) => {
               if (showAllIndividuals) {
                 const nTotalIndividuals = sum(allIndividualsInBin)
                 tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
-                  nTotalIndividuals ? 's' : ''
+                  nTotalIndividuals !== 1 ? 's' : ''
                 }`
               }
 
