@@ -67,11 +67,11 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantConsequenceList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
+        <h2>Genotype Quality</h2>
         {variant.genotype_quality ? (
           <StructuralVariantGenotypeQualityMetrics variant={variant} />
         ) : (
-          <p>Genotype quality metrics not available for this variant.</p>
+          <p>Genotype quality is available for this variant.</p>
         )}
       </ResponsiveSection>
     </Wrapper>
