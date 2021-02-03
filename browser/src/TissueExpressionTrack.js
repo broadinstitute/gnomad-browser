@@ -1,6 +1,6 @@
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -133,6 +133,7 @@ const FLAG_DESCRIPTIONS = {
 
 const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const mainTrack = useRef()
 
   const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
     GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
@@ -144,7 +145,7 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
 
   return (
     <Wrapper>
-      <InnerWrapper>
+      <InnerWrapper ref={mainTrack}>
         <Track
           renderLeftPanel={() => (
             <TissueName
@@ -212,15 +213,30 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
           <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
         </InnerWrapper>
       ))}
-      {isExpanded &&
-        tissues.map(tissue => (
-          <IndividualTissueTrack
-            key={tissue}
-            exons={exons}
-            expressionRegions={expressionRegions}
-            tissue={tissue}
-          />
-        ))}
+      {isExpanded && (
+        <>
+          {tissues.map(tissue => (
+            <IndividualTissueTrack
+              key={tissue}
+              exons={exons}
+              expressionRegions={expressionRegions}
+              tissue={tissue}
+            />
+          ))}
+          <span>
+            <Button
+              onClick={() => {
+                setIsExpanded(false)
+                setTimeout(() => {
+                  mainTrack.current.scrollIntoView()
+                }, 0)
+              }}
+            >
+              Hide tissues
+            </Button>
+          </span>
+        </>
+      )}
     </Wrapper>
   )
 }
