@@ -47,132 +47,134 @@ const VariantDetailsContainer = styled.div`
   justify-content: space-between;
 `
 
-const VariantPageContent = ({ datasetId, variant }) => (
-  <VariantDetailsContainer>
-    <ResponsiveSection>
-      <TableWrapper>
-        {datasetId === 'exac' ? (
-          <ExacVariantOccurrenceTable variant={variant} />
-        ) : (
-          <GnomadVariantOccurrenceTable
-            datasetId={datasetId}
-            variant={variant}
-            showExomes={!datasetId.startsWith('gnomad_r3')}
-          />
-        )}
-      </TableWrapper>
-
-      {variant.flags && variant.flags.includes('par') && (
-        <p>
-          <Badge level="info">Note</Badge> This variant is found in a pseudoautosomal region.
-        </p>
-      )}
-
-      {variant.flags && variant.flags.includes('lcr') && (
-        <p>
-          <Badge level="info">Note</Badge> This variant is found in a low complexity region.
-        </p>
-      )}
-
-      {variant.colocated_variants && variant.colocated_variants.length > 0 && (
-        <div>
-          <p>
-            <strong>This variant is multiallelic. Other alternate alleles are:</strong>
-          </p>
-          <ul>
-            {variant.colocated_variants.map(colocatedVariantId => (
-              <li key={colocatedVariantId}>
-                <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {(variant.multi_nucleotide_variants || []).length > 0 && (
-        <div>
-          <p>
-            <strong>This variant&apos;s consequence may be affected by other variants:</strong>
-          </p>
-          <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
-        </div>
-      )}
-    </ResponsiveSection>
-    <ResponsiveSection>
-      <h2>References</h2>
-      <ReferenceList variant={variant} />
-      <h2>Report</h2>
-      <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
-    </ResponsiveSection>
-    <Section>
-      <h2>Variant Effect Predictor</h2>
-      <VariantTranscriptConsequences variant={variant} />
-    </Section>
-
-    {variant.lof_curations && (
-      <Section>
-        <h2>
-          LoF Curation <InfoButton topic="lof_curation" />
-        </h2>
-        <VariantLoFCurationResults variant={variant} />
-      </Section>
-    )}
-
-    {variant.in_silico_predictors && variant.in_silico_predictors.length && (
-      <Section>
-        <h2>In Silico Predictors</h2>
-        <VariantInSilicoPredictors variant={variant} />
-      </Section>
-    )}
-
-    {variant.clinvar && (
-      <Section>
-        <h2>ClinVar</h2>
-        <VariantClinvarInfo variant={variant} />
-      </Section>
-    )}
-
-    <ResponsiveSection>
-      <h2>
-        Population Frequencies <InfoButton topic="ancestry" />
-      </h2>
-      <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
-    </ResponsiveSection>
-    <ResponsiveSection>
-      {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
-        <React.Fragment>
-          <h2>Age Distribution</h2>
-          {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
-            <p>Age distribution is based on the full gnomAD dataset, not the selected subset.</p>
+const VariantPageContent = ({ datasetId, variant }) => {
+  return (
+    <VariantDetailsContainer>
+      <ResponsiveSection>
+        <TableWrapper>
+          {datasetId === 'exac' ? (
+            <ExacVariantOccurrenceTable variant={variant} />
+          ) : (
+            <GnomadVariantOccurrenceTable
+              datasetId={datasetId}
+              variant={variant}
+              showExomes={!datasetId.startsWith('gnomad_r3')}
+            />
           )}
-          <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+        </TableWrapper>
+
+        {variant.flags && variant.flags.includes('par') && (
           <p>
-            <Link
-              to={{
-                pathname: '/faq',
-                hash: '#what-is-the-age-distribution-in-gnomad',
-              }}
-            >
-              See the FAQ for more information on age data.
-            </Link>
+            <Badge level="info">Note</Badge> This variant is found in a pseudoautosomal region.
           </p>
-        </React.Fragment>
+        )}
+
+        {variant.flags && variant.flags.includes('lcr') && (
+          <p>
+            <Badge level="info">Note</Badge> This variant is found in a low complexity region.
+          </p>
+        )}
+
+        {variant.colocated_variants && variant.colocated_variants.length > 0 && (
+          <div>
+            <p>
+              <strong>This variant is multiallelic. Other alternate alleles are:</strong>
+            </p>
+            <ul>
+              {variant.colocated_variants.map(colocatedVariantId => (
+                <li key={colocatedVariantId}>
+                  <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {(variant.multi_nucleotide_variants || []).length > 0 && (
+          <div>
+            <p>
+              <strong>This variant&apos;s consequence may be affected by other variants:</strong>
+            </p>
+            <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
+          </div>
+        )}
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <h2>References</h2>
+        <ReferenceList variant={variant} />
+        <h2>Report</h2>
+        <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
+      </ResponsiveSection>
+      <Section>
+        <h2>Variant Effect Predictor</h2>
+        <VariantTranscriptConsequences variant={variant} />
+      </Section>
+
+      {variant.lof_curations && (
+        <Section>
+          <h2>
+            LoF Curation <InfoButton topic="lof_curation" />
+          </h2>
+          <VariantLoFCurationResults variant={variant} />
+        </Section>
       )}
-    </ResponsiveSection>
-    <ResponsiveSection>
-      <h2>Genotype Quality Metrics</h2>
-      <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
-    </ResponsiveSection>
-    <ResponsiveSection>
-      <h2>Site Quality Metrics</h2>
-      <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
-    </ResponsiveSection>
-    <Section>
-      <h2>Read Data</h2>
-      <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
-    </Section>
-  </VariantDetailsContainer>
-)
+
+      {variant.in_silico_predictors && variant.in_silico_predictors.length && (
+        <Section>
+          <h2>In Silico Predictors</h2>
+          <VariantInSilicoPredictors variant={variant} />
+        </Section>
+      )}
+
+      {variant.clinvar && (
+        <Section>
+          <h2>ClinVar</h2>
+          <VariantClinvarInfo variant={variant} />
+        </Section>
+      )}
+
+      <ResponsiveSection>
+        <h2>
+          Population Frequencies <InfoButton topic="ancestry" />
+        </h2>
+        <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
+      </ResponsiveSection>
+      <ResponsiveSection>
+        {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
+          <React.Fragment>
+            <h2>Age Distribution</h2>
+            {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
+              <p>Age distribution is based on the full gnomAD dataset, not the selected subset.</p>
+            )}
+            <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+            <p>
+              <Link
+                to={{
+                  pathname: '/faq',
+                  hash: '#what-is-the-age-distribution-in-gnomad',
+                }}
+              >
+                See the FAQ for more information on age data.
+              </Link>
+            </p>
+          </React.Fragment>
+        )}
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <h2>Genotype Quality Metrics</h2>
+        <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
+      </ResponsiveSection>
+      <ResponsiveSection>
+        <h2>Site Quality Metrics</h2>
+        <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
+      </ResponsiveSection>
+      <Section>
+        <h2>Read Data</h2>
+        <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
+      </Section>
+    </VariantDetailsContainer>
+  )
+}
 
 VariantPageContent.propTypes = {
   datasetId: PropTypes.string.isRequired,
