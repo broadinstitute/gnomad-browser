@@ -1,6 +1,6 @@
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -131,125 +131,116 @@ const FLAG_DESCRIPTIONS = {
     'For this gene, RSEM assigns higher expression to non-coding transcripts than protein coding transcripts. This likely represents an artifact in the isoform expression quantification and results in a low pext value for all bases in the gene.',
 }
 
-class TissueExpressionTrack extends Component {
-  static propTypes = {
-    exons: PropTypes.arrayOf(
-      PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        stop: PropTypes.number.isRequired,
-      })
-    ).isRequired,
-    expressionRegions: PropTypes.arrayOf(
-      PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        stop: PropTypes.number.isRequired,
-        mean: PropTypes.number,
-        tissues: PropTypes.objectOf(PropTypes.number).isRequired,
-      })
-    ).isRequired,
-    flags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }
+const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  state = {
-    isExpanded: false,
-  }
+  const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
+    GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
+  )
 
-  toggleExpanded = () => {
-    this.setState(state => ({ ...state, isExpanded: !state.isExpanded }))
-  }
+  const isExpressed = expressionRegions.some(region => region.mean !== 0)
 
-  render() {
-    const { exons, expressionRegions, flags } = this.props
-    const { isExpanded } = this.state
+  const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
 
-    const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
-      GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
-    )
-
-    const isExpressed = expressionRegions.some(region => region.mean !== 0)
-
-    const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
-
-    return (
-      <Wrapper>
-        <InnerWrapper>
-          <Track
-            renderLeftPanel={() => (
-              <TissueName
-                style={{ fontSize: '12px', justifyContent: 'space-between', marginRight: 0 }}
+  return (
+    <Wrapper>
+      <InnerWrapper>
+        <Track
+          renderLeftPanel={() => (
+            <TissueName
+              style={{ fontSize: '12px', justifyContent: 'space-between', marginRight: 0 }}
+            >
+              <Button
+                disabled={!isExpressed}
+                style={{
+                  height: 'auto',
+                  width: '70px',
+                  paddingLeft: '0.25em',
+                  paddingRight: '0.25em',
+                }}
+                onClick={() => {
+                  setIsExpanded(!isExpanded)
+                }}
               >
-                <Button
-                  disabled={!isExpressed}
-                  style={{
-                    height: 'auto',
-                    width: '70px',
-                    paddingLeft: '0.25em',
-                    paddingRight: '0.25em',
-                  }}
-                  onClick={this.toggleExpanded}
-                >
-                  {isExpanded ? 'Hide' : 'Show'} tissues
-                </Button>
-                <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
-                <InfoButton topic="pext" style={{ display: 'inline' }} />
-              </TissueName>
-            )}
-            renderRightPanel={renderProportionAxis}
-          >
-            {({ scalePosition, width }) => {
-              if (!isExpressed) {
-                return (
-                  <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
-                )
-              }
-
+                {isExpanded ? 'Hide' : 'Show'} tissues
+              </Button>
+              <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
+              <InfoButton topic="pext" style={{ display: 'inline' }} />
+            </TissueName>
+          )}
+          renderRightPanel={renderProportionAxis}
+        >
+          {({ scalePosition, width }) => {
+            if (!isExpressed) {
               return (
-                <PlotWrapper>
-                  <RegionsPlot
-                    axisColor="rgba(0,0,0,0)"
-                    height={20}
-                    regionAttributes={region => {
-                      const height = heightScale(region.mean)
-                      return {
-                        fill: '#428bca',
-                        stroke: '#428bca',
-                        height,
-                        y: 20 - height,
-                      }
-                    }}
-                    scalePosition={scalePosition}
-                    regions={expressionRegions}
-                    width={width}
-                  />
-                  <RegionsPlot
-                    axisColor="rgba(0,0,0,0)"
-                    height={1}
-                    regions={exons}
-                    scalePosition={scalePosition}
-                    width={width}
-                  />
-                </PlotWrapper>
+                <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
               )
-            }}
-          </Track>
+            }
+
+            return (
+              <PlotWrapper>
+                <RegionsPlot
+                  axisColor="rgba(0,0,0,0)"
+                  height={20}
+                  regionAttributes={region => {
+                    const height = heightScale(region.mean)
+                    return {
+                      fill: '#428bca',
+                      stroke: '#428bca',
+                      height,
+                      y: 20 - height,
+                    }
+                  }}
+                  scalePosition={scalePosition}
+                  regions={expressionRegions}
+                  width={width}
+                />
+                <RegionsPlot
+                  axisColor="rgba(0,0,0,0)"
+                  height={1}
+                  regions={exons}
+                  scalePosition={scalePosition}
+                  width={width}
+                />
+              </PlotWrapper>
+            )
+          }}
+        </Track>
+      </InnerWrapper>
+      {flags.map(flag => (
+        <InnerWrapper key={flag}>
+          <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
         </InnerWrapper>
-        {flags.map(flag => (
-          <InnerWrapper key={flag}>
-            <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
-          </InnerWrapper>
+      ))}
+      {isExpanded &&
+        tissues.map(tissue => (
+          <IndividualTissueTrack
+            key={tissue}
+            exons={exons}
+            expressionRegions={expressionRegions}
+            tissue={tissue}
+          />
         ))}
-        {isExpanded &&
-          tissues.map(tissue => (
-            <IndividualTissueTrack
-              key={tissue}
-              exons={exons}
-              expressionRegions={expressionRegions}
-              tissue={tissue}
-            />
-          ))}
-      </Wrapper>
-    )
-  }
+    </Wrapper>
+  )
+}
+
+TissueExpressionTrack.propTypes = {
+  exons: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  expressionRegions: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      mean: PropTypes.number,
+      tissues: PropTypes.objectOf(PropTypes.number).isRequired,
+    })
+  ).isRequired,
+  flags: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default TissueExpressionTrack
