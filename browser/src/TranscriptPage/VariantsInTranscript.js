@@ -21,11 +21,12 @@ const VariantsInTranscript = ({
   const columns = useMemo(
     () =>
       getColumns({
+        clinvarReleaseDate,
         context: 'transcript',
         includeHomozygoteAC: transcript.chrom !== 'Y',
         includeHemizygoteAC: transcript.chrom === 'X' || transcript.chrom === 'Y',
       }),
-    [transcript]
+    [clinvarReleaseDate, transcript]
   )
 
   const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')

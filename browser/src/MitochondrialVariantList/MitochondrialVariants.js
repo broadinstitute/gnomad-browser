@@ -248,6 +248,7 @@ class MitochondrialVariants extends Component {
             {renderedVariants.length ? (
               <MitochondrialVariantsTable
                 ref={this.table}
+                clinvarReleaseDate={clinvarReleaseDate}
                 context={context}
                 highlightText={filter.searchText}
                 numRowsRendered={numRowsRendered}

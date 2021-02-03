@@ -13,12 +13,13 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
   const columns = useMemo(
     () =>
       getColumns({
+        clinvarReleaseDate,
         context: 'region',
         includeLofCuration: variants.some(variant => variant.lof_curation),
         includeHomozygoteAC: region.chrom !== 'Y',
         includeHemizygoteAC: region.chrom === 'X' || region.chrom === 'Y',
       }),
-    [region, variants]
+    [clinvarReleaseDate, region, variants]
   )
 
   const datasetLabel = labelForDataset(datasetId)

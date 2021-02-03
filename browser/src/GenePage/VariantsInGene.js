@@ -60,6 +60,7 @@ const VariantsInGene = ({
   const columns = useMemo(
     () =>
       getColumns({
+        clinvarReleaseDate,
         context: 'gene',
         includeLofCuration: variants.some(variant => variant.lof_curation),
         includeHomozygoteAC: gene.chrom !== 'Y',
@@ -68,7 +69,7 @@ const VariantsInGene = ({
           ? gene.mane_select_transcript.ensembl_id
           : gene.canonical_transcript_id,
       }),
-    [gene, variants]
+    [clinvarReleaseDate, gene, variants]
   )
 
   const datasetLabel = labelForDataset(datasetId)

@@ -6,6 +6,7 @@ import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 import Link from '../Link'
 import { Cell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
+import formatClinvarDate from '../clinvar/formatClinvarDate'
 import SampleSourceIcon from './SampleSourceIcon'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
@@ -41,6 +42,7 @@ const getConsequenceDescription = context => {
 }
 
 export const getColumns = ({
+  clinvarReleaseDate,
   context, // one of 'gene', 'region', or 'transcript'
   includeLofCuration = false,
   includeHomozygoteAC = false,
@@ -113,7 +115,9 @@ export const getColumns = ({
     {
       key: 'clinical_significance',
       heading: 'Clinical Significance',
-      tooltip: 'ClinVar clinical significance',
+      tooltip: `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+        clinvarReleaseDate
+      )} release`,
       grow: 1,
       isSortable: true,
       minWidth: 200,
