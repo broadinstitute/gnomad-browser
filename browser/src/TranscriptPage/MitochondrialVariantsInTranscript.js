@@ -8,6 +8,9 @@ import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClin
 
 const query = `
 query MitochondrialVariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -77,6 +80,7 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
         return (
           <MitochondrialVariants
             {...rest}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.transcript.clinvar_variants}
             context="transcript"
             exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}

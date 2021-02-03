@@ -8,6 +8,9 @@ import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClin
 
 const query = `
 query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   region(chrom: "M", start: $start, stop: $stop, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -80,7 +83,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
         return (
           <MitochondrialVariants
             {...rest}
-            chrom={region.chrom}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.region.clinvar_variants}
             context="region"
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}

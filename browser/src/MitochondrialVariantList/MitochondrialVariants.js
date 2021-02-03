@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
+import formatClinvarDate from '../clinvar/formatClinvarDate'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -26,6 +27,7 @@ const Wrapper = styled.div`
 
 class MitochondrialVariants extends Component {
   static propTypes = {
+    clinvarReleaseDate: PropTypes.string.isRequired,
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
     exportFileName: PropTypes.string.isRequired,
@@ -173,7 +175,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { clinvarVariants, context, exportFileName, variants } = this.props
+    const { clinvarReleaseDate, clinvarVariants, context, exportFileName, variants } = this.props
     const {
       filter,
       renderedVariants,
@@ -195,6 +197,10 @@ class MitochondrialVariants extends Component {
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
             <ClinvarVariantTrack variants={clinvarVariants} />
+            <p style={{ marginLeft: '115px' }}>
+              Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+              release.
+            </p>
           </>
         )}
 
