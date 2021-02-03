@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-
-import { List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 import InfoButton from '../help/InfoButton'
+import InlineList from '../InlineList'
 import Link from '../Link'
 
 import GeneReferences from './GeneReferences'
@@ -47,67 +46,6 @@ ManeSelectTranscriptId.propTypes = {
       })
     ).isRequired,
   }).isRequired,
-}
-
-const OtherTranscripts = ({ transcripts }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
-
-  return (
-    <>
-      <Link key={transcripts[0].transcript_id} to={`/transcript/${transcripts[0].transcript_id}`}>
-        {transcripts[0].transcript_id}.{transcripts[0].transcript_version}
-      </Link>
-      {transcripts.length > 1 && (
-        <>
-          ,{' '}
-          <Link
-            key={transcripts[1].transcript_id}
-            to={`/transcript/${transcripts[1].transcript_id}`}
-          >
-            {transcripts[1].transcript_id}.{transcripts[1].transcript_version}
-          </Link>
-        </>
-      )}
-      {transcripts.length > 2 && (
-        <>
-          ,{' '}
-          <TextButton
-            onClick={() => {
-              setIsExpanded(true)
-            }}
-          >
-            and {transcripts.length - 2} more
-          </TextButton>
-        </>
-      )}
-      {isExpanded && (
-        <Modal
-          initialFocusOnButton={false}
-          title="Other transcripts"
-          onRequestClose={() => setIsExpanded(false)}
-        >
-          <List>
-            {transcripts.map(transcript => (
-              <ListItem key={transcript.transcript_id}>
-                <Link to={`/transcript/${transcript.transcript_id}`}>
-                  {transcript.transcript_id}.{transcript.transcript_version}
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-        </Modal>
-      )}
-    </>
-  )
-}
-
-OtherTranscripts.propTypes = {
-  transcripts: PropTypes.arrayOf(
-    PropTypes.shape({
-      transcript_id: PropTypes.string.isRequired,
-      transcript_version: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 }
 
 const GeneInfo = ({ gene }) => {
@@ -170,7 +108,14 @@ const GeneInfo = ({ gene }) => {
 
       {otherTranscripts.length > 0 && (
         <AttributeList.Item label="Other transcripts">
-          <OtherTranscripts transcripts={otherTranscripts} />
+          <InlineList
+            items={otherTranscripts.map(transcript => (
+              <Link to={`/transcript/${transcript.transcript_id}`}>
+                {transcript.transcript_id}.{transcript.transcript_version}
+              </Link>
+            ))}
+            label="Other transcripts"
+          />
         </AttributeList.Item>
       )}
 
