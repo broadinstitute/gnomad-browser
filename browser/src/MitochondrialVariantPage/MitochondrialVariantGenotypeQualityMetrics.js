@@ -1,82 +1,145 @@
+import { sum } from 'd3-array'
 import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import { SegmentedControl, Select } from '@gnomad/ui'
+import { Checkbox, Select, Tabs } from '@gnomad/ui'
 
-import Histogram from '../Histogram'
+import Legend, { StripedSwatch } from '../Legend'
 import Link from '../Link'
-import ControlSection from '../VariantPage/ControlSection'
+import StackedHistogram from '../StackedHistogram'
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 
-const MitochondrialVariantGenotypeQualityMetrics = ({ variant }) => {
-  const [selectedMetricOrFilter, setSelectedMetricOrFilter] = useState('Depth')
-  const [selectedSamples, setSelectedSamples] = useState('alt')
+const LegendWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+  margin-bottom: 1em;
+`
 
-  const isMetricSelected = selectedMetricOrFilter === 'Depth'
+const MitochondrialVariantGenotypeDepth = ({ variant }) => {
+  const [showAllIndividuals, setShowAllIndividuals] = useState(true)
 
-  let histogram
-  if (isMetricSelected) {
-    const metric = variant.genotype_quality_metrics.find(
-      ({ name }) => name === selectedMetricOrFilter
-    )
-    histogram = metric[selectedSamples]
-  } else {
-    const filter = variant.genotype_quality_filters.find(
-      ({ name }) => name === selectedMetricOrFilter
-    )
-    histogram = filter.filtered
+  const series = [{ label: 'Variant carriers', color: '#73ab3d' }]
+  if (showAllIndividuals) {
+    series.push({
+      label: 'All individuals',
+      swatch: <StripedSwatch id="depth-legend-swatch" color="#73ab3d" />,
+    })
   }
+
+  const metric = variant.genotype_quality_metrics.find(({ name }) => name === 'Depth')
+
+  const binEdges = metric.alt.bin_edges
+  const bins = [
+    ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+    `> ${binEdges[binEdges.length - 1]}`,
+  ]
+
+  const values = [...metric.alt.bin_freq.map(n => [n]), [metric.alt.n_larger]]
+  const secondaryValues = [...metric.all.bin_freq.map(n => [n]), [metric.all.n_larger]]
+
+  return (
+    <>
+      <LegendWrapper style={{ marginTop: '1em' }}>
+        <Legend series={series} />
+      </LegendWrapper>
+
+      <StackedHistogram
+        id="variant-depth-plot"
+        bins={bins}
+        values={values}
+        secondaryValues={showAllIndividuals ? secondaryValues : null}
+        xLabel="Depth"
+        yLabel="Variant carriers"
+        secondaryYLabel="All individuals"
+        barColors={['#73ab3d']}
+        formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
+          const nVariantCarriers = sum(variantCarriersInBin)
+          let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+            nVariantCarriers !== 1 ? 's' : ''
+          }`
+
+          if (showAllIndividuals) {
+            const nTotalIndividuals = sum(allIndividualsInBin)
+            tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+              nTotalIndividuals !== 1 ? 's' : ''
+            }`
+          }
+
+          tooltipText += ` ${
+            nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+          } depth in the ${bin} range`
+
+          return tooltipText
+        }}
+      />
+
+      <div>
+        <Checkbox
+          checked={showAllIndividuals}
+          id="mt-variant-depth-show-all-individuals"
+          label="Compare to all individuals"
+          onChange={setShowAllIndividuals}
+        />
+      </div>
+    </>
+  )
+}
+
+MitochondrialVariantGenotypeDepth.propTypes = {
+  variant: MitochondrialVariantDetailPropType.isRequired,
+}
+
+const MitochondrialVariantGenotypeQualityFilters = ({ variant }) => {
+  const [selectedFilter, setSelectedFilter] = useState(variant.genotype_quality_filters[0].name)
+
+  const histogram = variant.genotype_quality_filters.find(({ name }) => name === selectedFilter)
+    .filtered
+  const binEdges = histogram.bin_edges
+  const bins = [...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`)
+  const values = histogram.bin_freq.map(n => [n])
 
   return (
     <div>
-      <Histogram
-        barColor="#73ab3d"
-        binEdges={histogram.bin_edges}
-        binValues={histogram.bin_freq}
-        nLarger={histogram.n_larger}
-        xLabel={isMetricSelected ? selectedMetricOrFilter : 'Heteroplasmy Level'}
-        yLabel={isMetricSelected ? 'Individuals' : 'Individuals Failing Filter'}
-        formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+      {/* spacer to align plots on tabs */}
+      <div style={{ height: '16px', margin: '1em 0' }} />
+
+      <StackedHistogram
+        id="mt-genotype-filter-plot"
+        bins={bins}
+        values={values}
+        xLabel="Heteroplasmy level"
+        yLabel="Individuals failing filter"
+        barColors={['#73ab3d']}
+        formatTooltip={(bin, individualsInBin) => {
+          const nIndividuals = sum(individualsInBin)
+          return `${nIndividuals.toLocaleString()} individuals${
+            nIndividuals === 1 ? 's' : ''
+          } with a heteroplasmy level in the ${bin} range failed the ${selectedFilter} filter`
+        }}
       />
 
-      <ControlSection>
-        <Select
-          id="genotype-quality-metrics-metric-or-filter"
-          onChange={e => {
-            setSelectedMetricOrFilter(e.target.value)
-          }}
-          value={selectedMetricOrFilter}
-        >
-          <optgroup label="Quality Metrics">
-            {variant.genotype_quality_metrics.map(metric => (
-              <option key={metric.name} value={metric.name}>
-                {metric.name}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label="Quality Filters (Individuals Failing Filter)">
+      <div>
+        <label htmlFor="mt-genotype-quality-filter">
+          Filter:{' '}
+          <Select
+            id="mt-genotype-quality-filter"
+            onChange={e => {
+              setSelectedFilter(e.target.value)
+            }}
+            value={selectedFilter}
+          >
             {variant.genotype_quality_filters.map(filter => {
               const totalFailedFilter = filter.filtered.bin_freq.reduce((acc, n) => acc + n, 0)
               return (
                 <option key={filter.name} value={filter.name}>
-                  {filter.name} ({totalFailedFilter})
+                  {filter.name} ({totalFailedFilter} individuals failing)
                 </option>
               )
             })}
-          </optgroup>
-        </Select>
-
-        {isMetricSelected && (
-          <SegmentedControl
-            id="genotype-quality-metrics-samples"
-            onChange={setSelectedSamples}
-            options={[
-              { label: 'Variant Carriers', value: 'alt' },
-              { label: 'All Individuals', value: 'all' },
-            ]}
-            value={selectedSamples}
-          />
-        )}
-      </ControlSection>
+          </Select>
+        </label>
+      </div>
 
       <p>
         Note: This plot may include low-quality genotypes that were excluded from allele counts in
@@ -91,6 +154,32 @@ const MitochondrialVariantGenotypeQualityMetrics = ({ variant }) => {
         </Link>
       </p>
     </div>
+  )
+}
+
+MitochondrialVariantGenotypeQualityFilters.propTypes = {
+  variant: MitochondrialVariantDetailPropType.isRequired,
+}
+
+const MitochondrialVariantGenotypeQualityMetrics = ({ variant }) => {
+  const [selectedTab, setSelectedTab] = useState('depth') // 'depth' or 'filter'
+  return (
+    <Tabs
+      activeTabId={selectedTab}
+      onChange={setSelectedTab}
+      tabs={[
+        {
+          id: 'depth',
+          label: 'Depth',
+          render: () => <MitochondrialVariantGenotypeDepth variant={variant} />,
+        },
+        {
+          id: 'filters',
+          label: 'Filters',
+          render: () => <MitochondrialVariantGenotypeQualityFilters variant={variant} />,
+        },
+      ]}
+    />
   )
 }
 
