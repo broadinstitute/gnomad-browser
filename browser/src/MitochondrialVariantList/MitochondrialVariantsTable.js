@@ -7,6 +7,7 @@ import MitochondrialVariantPropType from './MitochondrialVariantPropType'
 import { getColumns } from './mitochondrialVariantTableColumns'
 
 const MitochondrialVariantsTable = ({
+  clinvarReleaseDate,
   context,
   forwardedRef,
   highlightText,
@@ -22,7 +23,7 @@ const MitochondrialVariantsTable = ({
       cellData={{
         highlightWords: highlightText.split(',').map(s => s.trim()),
       }}
-      columns={getColumns({ context })}
+      columns={getColumns({ clinvarReleaseDate, context })}
       data={variants}
       numRowsRendered={numRowsRendered}
       onHoverRow={rowIndex => {
@@ -34,6 +35,7 @@ const MitochondrialVariantsTable = ({
 }
 
 MitochondrialVariantsTable.propTypes = {
+  clinvarReleaseDate: PropTypes.string.isRequired,
   context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
   forwardedRef: PropTypes.oneOfType([
     PropTypes.func,
