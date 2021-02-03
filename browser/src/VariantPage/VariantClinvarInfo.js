@@ -4,15 +4,7 @@ import React, { useState } from 'react'
 import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
-
-const dateFormatter = new Intl.DateTimeFormat([], { dateStyle: 'long' })
-
-// Dates in ClinVar date are formatted YYYY-MM-DD
-const formatClinvarDate = dateString => {
-  const [year, month, day] = dateString.split('-').map(Number)
-  const date = new Date(year, month - 1, day)
-  return dateFormatter.format(date)
-}
+import formatClinvarDate from '../clinvar/formatClinvarDate'
 
 const SubmissionsList = ({ submissions }) => (
   <List>

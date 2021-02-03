@@ -5,6 +5,7 @@ import React, { Component, createRef } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
+import formatClinvarDate from '../clinvar/formatClinvarDate'
 import { labelForDataset } from '../datasets'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -20,6 +21,7 @@ import VariantTrack from './VariantTrack'
 class Variants extends Component {
   static propTypes = {
     children: PropTypes.node,
+    clinvarReleaseDate: PropTypes.string.isRequired,
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     datasetId: PropTypes.string.isRequired,
@@ -165,7 +167,15 @@ class Variants extends Component {
   }
 
   render() {
-    const { children, clinvarVariants, columns, datasetId, exportFileName, variants } = this.props
+    const {
+      children,
+      clinvarReleaseDate,
+      clinvarVariants,
+      columns,
+      datasetId,
+      exportFileName,
+      variants,
+    } = this.props
     const {
       filter,
       renderedVariants,
@@ -188,6 +198,10 @@ class Variants extends Component {
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
             <ClinvarVariantTrack variants={clinvarVariants} />
+            <p style={{ marginLeft: '115px' }}>
+              Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+              release.
+            </p>
           </>
         )}
 
