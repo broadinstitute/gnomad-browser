@@ -11,6 +11,7 @@ import Variants from '../VariantList/Variants'
 import { getColumns } from '../VariantList/variantTableColumns'
 
 const VariantsInTranscript = ({
+  clinvarReleaseDate,
   clinvarVariants,
   datasetId,
   includeUTRs,
@@ -33,6 +34,7 @@ const VariantsInTranscript = ({
 
   return (
     <Variants
+      clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
       columns={columns}
       datasetId={datasetId}
@@ -72,6 +74,7 @@ const VariantsInTranscript = ({
 }
 
 VariantsInTranscript.propTypes = {
+  clinvarReleaseDate: PropTypes.string.isRequired,
   clinvarVariants: PropTypes.arrayOf(PropTypes.object),
   datasetId: PropTypes.string.isRequired,
   includeUTRs: PropTypes.bool.isRequired,
@@ -97,6 +100,9 @@ VariantsInTranscript.defaultProps = {
 
 const query = `
 query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -171,6 +177,7 @@ const ConnectedVariantsInTranscript = ({ datasetId, transcript, ...otherProps })
       return (
         <VariantsInTranscript
           {...otherProps}
+          clinvarReleaseDate={data.meta.clinvar_release_date}
           clinvarVariants={data.transcript.clinvar_variants}
           datasetId={datasetId}
           transcript={transcript}

@@ -9,7 +9,7 @@ import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClin
 import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
-const VariantsInRegion = ({ clinvarVariants, datasetId, region, variants }) => {
+const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, region, variants }) => {
   const columns = useMemo(
     () =>
       getColumns({
@@ -25,6 +25,7 @@ const VariantsInRegion = ({ clinvarVariants, datasetId, region, variants }) => {
 
   return (
     <Variants
+      clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
       columns={columns}
       datasetId={datasetId}
@@ -43,6 +44,7 @@ const VariantsInRegion = ({ clinvarVariants, datasetId, region, variants }) => {
 }
 
 VariantsInRegion.propTypes = {
+  clinvarReleaseDate: PropTypes.string.isRequired,
   clinvarVariants: PropTypes.arrayOf(PropTypes.object),
   datasetId: PropTypes.string.isRequired,
   region: PropTypes.shape({
@@ -59,6 +61,9 @@ VariantsInRegion.defaultProps = {
 
 const query = `
 query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   region(start: $start, stop: $stop, chrom: $chrom, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -140,6 +145,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region }) => (
     {({ data }) => {
       return (
         <VariantsInRegion
+          clinvarReleaseDate={data.meta.clinvar_release_date}
           clinvarVariants={data.region.clinvar_variants}
           datasetId={datasetId}
           region={region}

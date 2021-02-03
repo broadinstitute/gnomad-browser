@@ -242,10 +242,6 @@ ClinvarStackedVariantsPlot.propTypes = {
 // Track
 // ================================================================
 
-const Wrapper = styled.div`
-  margin-bottom: 1em;
-`
-
 const TopPanel = styled.div`
   display: flex;
   flex-direction: row;
@@ -285,53 +281,49 @@ const ClinvarVariantTrack = ({ variants }) => {
   )
 
   return (
-    <Wrapper>
-      <Track
-        renderLeftPanel={() => (
-          <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
-        )}
-        renderTopPanel={() => (
-          <TopPanel>
-            <div>
-              <CategoryFilterControl
-                categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
-                  id: category,
-                  label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
-                }))}
-                categorySelections={includedCategories}
-                id="clinvar-track-included-categories"
-                onChange={setIncludedCategories}
-              />{' '}
-              <InfoButton topic="clinvar-variant-categories" />
-            </div>
+    <Track
+      renderLeftPanel={() => <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>}
+      renderTopPanel={() => (
+        <TopPanel>
+          <div>
+            <CategoryFilterControl
+              categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
+                id: category,
+                label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
+                color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
+              }))}
+              categorySelections={includedCategories}
+              id="clinvar-track-included-categories"
+              onChange={setIncludedCategories}
+            />{' '}
+            <InfoButton topic="clinvar-variant-categories" />
+          </div>
 
-            <Button
-              onClick={() => {
-                setIsExpanded(!isExpanded)
-              }}
-            >
-              {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
-            </Button>
-          </TopPanel>
-        )}
-      >
-        {({ scalePosition, width }) => {
-          const PlotComponent = isExpanded ? ClinvarStackedVariantsPlot : ClinvarBinnedVariantsPlot
+          <Button
+            onClick={() => {
+              setIsExpanded(!isExpanded)
+            }}
+          >
+            {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
+          </Button>
+        </TopPanel>
+      )}
+    >
+      {({ scalePosition, width }) => {
+        const PlotComponent = isExpanded ? ClinvarStackedVariantsPlot : ClinvarBinnedVariantsPlot
 
-          return (
-            <PlotWrapper>
-              <PlotComponent
-                includedCategories={includedCategories}
-                scalePosition={scalePosition}
-                variants={filteredVariants}
-                width={width}
-              />
-            </PlotWrapper>
-          )
-        }}
-      </Track>
-    </Wrapper>
+        return (
+          <PlotWrapper>
+            <PlotComponent
+              includedCategories={includedCategories}
+              scalePosition={scalePosition}
+              variants={filteredVariants}
+              width={width}
+            />
+          </PlotWrapper>
+        )
+      }}
+    </Track>
   )
 }
 

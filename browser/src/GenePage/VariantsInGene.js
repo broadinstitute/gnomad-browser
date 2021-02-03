@@ -49,6 +49,7 @@ TranscriptsModal.propTypes = {
 }
 
 const VariantsInGene = ({
+  clinvarReleaseDate,
   clinvarVariants,
   datasetId,
   gene,
@@ -76,6 +77,7 @@ const VariantsInGene = ({
 
   return (
     <Variants
+      clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
       columns={columns}
       datasetId={datasetId}
@@ -127,6 +129,7 @@ const VariantsInGene = ({
 }
 
 VariantsInGene.propTypes = {
+  clinvarReleaseDate: PropTypes.string.isRequired,
   clinvarVariants: PropTypes.arrayOf(PropTypes.object),
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
@@ -165,6 +168,9 @@ VariantsInGene.defaultProps = {
 
 const query = `
 query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -244,6 +250,7 @@ const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
       return (
         <VariantsInGene
           {...otherProps}
+          clinvarReleaseDate={data.meta.clinvar_release_date}
           clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
