@@ -1,51 +1,123 @@
+import { sum } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import { Select } from '@gnomad/ui'
+import { Checkbox } from '@gnomad/ui'
 
 import overallAgeDistribution from '../dataset-constants/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantAgeDistribution.json'
-import Histogram from '../Histogram'
+import Legend, { StripedSwatch } from '../Legend'
+import StackedHistogram from '../StackedHistogram'
 import ControlSection from '../VariantPage/ControlSection'
 
-const MitochondrialVariantAgeDistribution = ({ variant }) => {
-  const [selectedSamples, setSelectedSamples] = useState('hom')
+const LegendWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+`
 
-  const selectedAgeDistribution =
-    selectedSamples === 'all' ? overallAgeDistribution : variant.age_distribution[selectedSamples]
+const CheckboxWrapper = styled.div`
+  label {
+    display: block;
+    line-height: 1.5;
+  }
+`
+
+const MitochondrialVariantAgeDistribution = ({ variant }) => {
+  const [includeHeteroplasmic, setIncludeHeteroplasmic] = useState(true)
+  const [includeHomoplasmic, setIncludeHomoplasmic] = useState(true)
+
+  const [showAllIndividuals, setShowAllIndividuals] = useState(true)
+
+  const binEdges = overallAgeDistribution.bin_edges
+  const bins = [
+    `< ${binEdges[0]}`,
+    ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+    `> ${binEdges[binEdges.length - 1]}`,
+  ]
+
+  const values = [
+    [
+      (includeHeteroplasmic ? variant.age_distribution.het.n_smaller : 0) +
+        (includeHomoplasmic ? variant.age_distribution.hom.n_smaller : 0),
+    ],
+    ...[...Array(overallAgeDistribution.bin_freq.length)].map((_, i) => [
+      (includeHeteroplasmic ? variant.age_distribution.het.bin_freq[i] : 0) +
+        (includeHomoplasmic ? variant.age_distribution.hom.bin_freq[i] : 0),
+    ]),
+    [
+      (includeHeteroplasmic ? variant.age_distribution.het.n_larger : 0) +
+        (includeHomoplasmic ? variant.age_distribution.hom.n_larger : 0),
+    ],
+  ]
+
+  const secondaryValues = [
+    [overallAgeDistribution.n_smaller],
+    ...overallAgeDistribution.bin_freq.map(n => [n]),
+    [overallAgeDistribution.n_larger],
+  ]
+
+  const series = [{ label: 'Variant carriers', color: '#73ab3d' }]
+  if (showAllIndividuals) {
+    series.push({
+      label: 'All individuals',
+      swatch: <StripedSwatch id="age-distribution-legend-swatch" color="#73ab3d" />,
+    })
+  }
 
   return (
-    <>
-      <div style={{ height: '260px' }}>
-        {selectedAgeDistribution.bin_freq.some(n => n > 0) ? (
-          <Histogram
-            barColor="#73ab3d"
-            binEdges={selectedAgeDistribution.bin_edges}
-            binValues={selectedAgeDistribution.bin_freq}
-            nSmaller={selectedAgeDistribution.n_smaller}
-            nLarger={selectedAgeDistribution.n_larger}
-            xLabel="Age"
-            yLabel="Individuals"
-            formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-          />
-        ) : (
-          <p>Age data not available.</p>
-        )}
-      </div>
+    <div>
+      <LegendWrapper>
+        <Legend series={series} />
+      </LegendWrapper>
 
+      <StackedHistogram
+        id="age-distribution-plot"
+        bins={bins}
+        values={values}
+        secondaryValues={showAllIndividuals ? secondaryValues : null}
+        xLabel="Age"
+        yLabel="Variant carriers"
+        secondaryYLabel="All individuals"
+        barColors={['#73ab3d']}
+        formatTooltip={(bin, variantCarriersInBin, allIndividualsInBin) => {
+          const nVariantCarriers = sum(variantCarriersInBin)
+          let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+            nVariantCarriers !== 1 ? 's' : ''
+          }`
+          if (showAllIndividuals && allIndividualsInBin) {
+            const nTotalIndividuals = sum(allIndividualsInBin)
+            tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+              nTotalIndividuals !== 1 ? 's' : ''
+            }`
+          }
+          tooltipText += ` are in the ${bin} age range`
+          return tooltipText
+        }}
+      />
       <ControlSection>
-        <Select
-          id="age-distribution-sample"
-          onChange={e => {
-            setSelectedSamples(e.target.value)
-          }}
-          value={selectedSamples}
-        >
-          <option value="hom">Homoplasmic Variant Carriers</option>
-          <option value="het">Heteroplasmic Variant Carriers</option>
-          <option value="all">All Individuals</option>
-        </Select>
+        <CheckboxWrapper>
+          <Checkbox
+            checked={includeHeteroplasmic}
+            id="age-distribution-include-heteroplasmic"
+            label="Include heteroplasmic variant carriers"
+            onChange={setIncludeHeteroplasmic}
+          />
+          <Checkbox
+            checked={includeHomoplasmic}
+            id="age-distribution-include-homoplasmic"
+            label="Include homoplasmic variant carriers"
+            onChange={setIncludeHomoplasmic}
+          />
+          <Checkbox
+            checked={showAllIndividuals}
+            id="age-distribution-show-all-individuals"
+            label="Compare to all individuals"
+            onChange={setShowAllIndividuals}
+          />
+        </CheckboxWrapper>
       </ControlSection>
-    </>
+    </div>
   )
 }
 
