@@ -5,10 +5,104 @@ import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
-import { Badge, Button, SearchInput } from '@gnomad/ui'
+import { Badge, Button, SearchInput, TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
 import InfoButton from './help/InfoButton'
+
+const getPlotRegions = (expressionRegions, getValueForRegion) => {
+  const roundedRegions = expressionRegions.map(region => ({
+    start: region.start,
+    stop: region.stop,
+    value: Math.round(getValueForRegion(region) * 10) / 10,
+  }))
+
+  const plotRegions = []
+  let currentRegion = roundedRegions[0]
+  for (let i = 1; i < roundedRegions.length; i += 1) {
+    const r = roundedRegions[i]
+    if (r.start <= currentRegion.stop + 1 && r.value === currentRegion.value) {
+      currentRegion.stop = r.stop
+    } else {
+      plotRegions.push(currentRegion)
+      currentRegion = r
+    }
+  }
+  plotRegions.push(currentRegion)
+
+  return plotRegions
+}
+
+const RegionBackground = styled.rect`
+  fill: none;
+  stroke: none;
+`
+
+const Region = styled.rect``
+
+const RegionHoverTarget = styled.g`
+  pointer-events: visible;
+  fill: none;
+
+  &:hover {
+    ${RegionBackground} {
+      fill: rgba(0, 0, 0, 0.05);
+    }
+
+    ${Region} {
+      fill: #000;
+      stroke: #000;
+    }
+  }
+`
+
+const TRACK_HEIGHT = 20
+
+const heightScale = scaleLinear().domain([0, 1]).range([0, TRACK_HEIGHT]).clamp(true)
+
+const PextRegionsPlot = ({ color, regions, scalePosition, width }) => {
+  return (
+    <svg width={width} height={TRACK_HEIGHT}>
+      {regions.map(region => {
+        const x1 = scalePosition(region.start)
+        const x2 = scalePosition(region.stop)
+        const height = heightScale(region.value)
+
+        return (
+          <TooltipAnchor
+            key={`${region.start}-${region.stop}`}
+            tooltip={`${region.start.toLocaleString()}-${region.stop.toLocaleString()}: pext = ${region.value.toLocaleString()}`}
+          >
+            <RegionHoverTarget>
+              <RegionBackground x={x1} y={0} width={x2 - x1} height={TRACK_HEIGHT} />
+              <Region
+                x={x1}
+                y={TRACK_HEIGHT - height}
+                width={x2 - x1}
+                height={height}
+                fill={color}
+                stroke={color}
+              />
+            </RegionHoverTarget>
+          </TooltipAnchor>
+        )
+      })}
+    </svg>
+  )
+}
+
+PextRegionsPlot.propTypes = {
+  color: PropTypes.string.isRequired,
+  regions: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      value: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  scalePosition: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -75,23 +169,11 @@ const IndividualTissueTrack = ({ exons, expressionRegions, tissue }) => (
         return <NotExpressedMessage>Gene is not expressed in this tissue</NotExpressedMessage>
       }
 
-      const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
-
       return (
         <PlotWrapper key={tissue}>
-          <RegionsPlot
-            axisColor="rgba(0,0,0,0)"
-            height={20}
-            regionAttributes={region => {
-              const height = heightScale(region.tissues[tissue])
-              return {
-                fill: GTEX_TISSUE_COLORS[tissue],
-                stroke: GTEX_TISSUE_COLORS[tissue],
-                height,
-                y: 20 - height,
-              }
-            }}
-            regions={expressionRegions}
+          <PextRegionsPlot
+            color={GTEX_TISSUE_COLORS[tissue]}
+            regions={getPlotRegions(expressionRegions, r => r.tissues[tissue])}
             scalePosition={scalePosition}
             width={width}
           />
@@ -162,8 +244,6 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
 
   const isExpressed = expressionRegions.some(region => region.mean !== 0)
 
-  const heightScale = scaleLinear().domain([0, 1]).range([0, 20]).clamp(true)
-
   return (
     <Wrapper>
       <InnerWrapper ref={mainTrack}>
@@ -201,20 +281,10 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
 
             return (
               <PlotWrapper>
-                <RegionsPlot
-                  axisColor="rgba(0,0,0,0)"
-                  height={20}
-                  regionAttributes={region => {
-                    const height = heightScale(region.mean)
-                    return {
-                      fill: '#428bca',
-                      stroke: '#428bca',
-                      height,
-                      y: 20 - height,
-                    }
-                  }}
+                <PextRegionsPlot
+                  color="#428bca"
+                  regions={getPlotRegions(expressionRegions, r => r.mean)}
                   scalePosition={scalePosition}
-                  regions={expressionRegions}
                   width={width}
                 />
                 <RegionsPlot
