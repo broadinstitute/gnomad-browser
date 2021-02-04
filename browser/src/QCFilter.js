@@ -5,7 +5,7 @@ import { Badge } from '@gnomad/ui'
 
 const FILTER_DESCRIPTIONS = {
   AC0: 'Allele count is zero (i.e. no high-confidence genotype)',
-  AS_VQSR: 'Failed allele-specific variant quality recalibration',
+  AS_VQSR: 'Failed allele-specific VQSR filter',
   InbreedingCoeff: 'Has an inbreeding coefficient < -0.3',
   RF: 'Failed random forest filters',
 }
