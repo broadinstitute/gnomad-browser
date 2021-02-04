@@ -41,7 +41,7 @@ const GeneReferences = ({ gene }) => {
           onRequestClose={() => {
             setIsExpanded(false)
           }}
-          title={`References for ${geneSymbol}`}
+          title={`External resources for ${geneSymbol}`}
         >
           <List>
             <ListItem>

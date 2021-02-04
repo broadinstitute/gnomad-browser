@@ -43,7 +43,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantAttributeList variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>References</h2>
+        <h2>External Resources</h2>
         <SVReferenceList variant={variant} />
         <h2>Report</h2>
         <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
