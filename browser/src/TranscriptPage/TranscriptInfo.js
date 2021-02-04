@@ -62,7 +62,7 @@ const TranscriptInfo = ({ transcript }) => {
           {transcript.chrom}:{transcript.start}-{transcript.stop}
         </Link>
       </AttributeList.Item>
-      <AttributeList.Item label="References">
+      <AttributeList.Item label="External resources">
         <TranscriptReferences transcript={transcript} />
       </AttributeList.Item>
     </AttributeList>

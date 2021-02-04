@@ -19,7 +19,7 @@ const RegionInfo = ({ region }) => {
       <AttributeList.Item label="Region size">
         {(stop - start + 1).toLocaleString()} BP
       </AttributeList.Item>
-      <AttributeList.Item label="References">
+      <AttributeList.Item label="External resources">
         <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
       </AttributeList.Item>
     </AttributeList>

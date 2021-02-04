@@ -100,7 +100,7 @@ const VariantPageContent = ({ datasetId, variant }) => {
         )}
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>References</h2>
+        <h2>External Resources</h2>
         <ReferenceList variant={variant} />
         <h2>Report</h2>
         <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />

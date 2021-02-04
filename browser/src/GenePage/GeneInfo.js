@@ -125,7 +125,7 @@ const GeneInfo = ({ gene }) => {
         </Link>
       </AttributeList.Item>
 
-      <AttributeList.Item label="References">
+      <AttributeList.Item label="External resources">
         <GeneReferences gene={gene} />
       </AttributeList.Item>
     </AttributeList>
