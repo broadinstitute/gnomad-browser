@@ -114,17 +114,11 @@ const App = () => {
             <Route
               exact
               path="/gene/:gene"
-              render={({ history, location, match }) => {
+              render={({ location, match }) => {
                 const params = queryString.parse(location.search)
                 const datasetId = params.dataset || defaultDataset
                 return (
-                  <GenePageContainer
-                    datasetId={datasetId}
-                    geneIdOrSymbol={match.params.gene}
-                    history={history}
-                    location={location}
-                    match={match}
-                  />
+                  <GenePageContainer datasetId={datasetId} geneIdOrSymbol={match.params.gene} />
                 )
               }}
             />
@@ -132,35 +126,24 @@ const App = () => {
             <Route
               exact
               path="/region/:regionId"
-              render={({ history, location, match }) => {
+              render={({ location, match }) => {
                 const params = queryString.parse(location.search)
                 const datasetId = params.dataset || defaultDataset
                 const regionId = normalizeRegionId(match.params.regionId)
-                return (
-                  <RegionPageContainer
-                    datasetId={datasetId}
-                    regionId={regionId}
-                    history={history}
-                    location={location}
-                    match={match}
-                  />
-                )
+                return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
               }}
             />
 
             <Route
               exact
               path="/transcript/:transcriptId"
-              render={({ history, location, match }) => {
+              render={({ location, match }) => {
                 const params = queryString.parse(location.search)
                 const datasetId = params.dataset || defaultDataset
                 return (
                   <TranscriptPageContainer
                     datasetId={datasetId}
                     transcriptId={match.params.transcriptId}
-                    history={history}
-                    location={location}
-                    match={match}
                   />
                 )
               }}
@@ -169,21 +152,13 @@ const App = () => {
             <Route
               exact
               path="/variant/:variantId"
-              render={({ history, location, match }) => {
+              render={({ location, match }) => {
                 const queryParams = queryString.parse(location.search)
                 const datasetId = queryParams.dataset || defaultDataset
                 const variantIdOrRsId = match.params.variantId
 
                 if (datasetId.startsWith('gnomad_sv')) {
-                  return (
-                    <StructuralVariantPage
-                      datasetId={datasetId}
-                      variantId={variantIdOrRsId}
-                      history={history}
-                      location={location}
-                      match={match}
-                    />
-                  )
+                  return <StructuralVariantPage datasetId={datasetId} variantId={variantIdOrRsId} />
                 }
 
                 if (isVariantId(variantIdOrRsId)) {
@@ -193,15 +168,7 @@ const App = () => {
                   )
                   const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
                   if (ref.length === alt.length && ref.length > 1) {
-                    return (
-                      <MNVPage
-                        datasetId={datasetId}
-                        variantId={normalizedVariantId}
-                        history={history}
-                        location={location}
-                        match={match}
-                      />
-                    )
+                    return <MNVPage datasetId={datasetId} variantId={normalizedVariantId} />
                   }
 
                   if (chrom === 'M') {
@@ -209,34 +176,15 @@ const App = () => {
                       <MitochondrialVariantPage
                         datasetId={datasetId}
                         variantId={normalizedVariantId}
-                        history={history}
-                        location={location}
-                        match={match}
                       />
                     )
                   }
 
-                  return (
-                    <VariantPage
-                      datasetId={datasetId}
-                      variantId={normalizedVariantId}
-                      history={history}
-                      location={location}
-                      match={match}
-                    />
-                  )
+                  return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
                 }
 
                 if (isRsId(variantIdOrRsId)) {
-                  return (
-                    <VariantPage
-                      datasetId={datasetId}
-                      rsId={variantIdOrRsId}
-                      history={history}
-                      location={location}
-                      match={match}
-                    />
-                  )
+                  return <VariantPage datasetId={datasetId} rsId={variantIdOrRsId} />
                 }
 
                 return (

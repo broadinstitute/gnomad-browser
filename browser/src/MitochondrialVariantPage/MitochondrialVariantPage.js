@@ -291,7 +291,7 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referen
 }
 `
 
-const ConnectedMitochondrialVariantPage = ({ datasetId, variantId, ...rest }) => {
+const ConnectedMitochondrialVariantPage = ({ datasetId, variantId }) => {
   return (
     <Query
       query={variantQuery}
@@ -306,7 +306,7 @@ const ConnectedMitochondrialVariantPage = ({ datasetId, variantId, ...rest }) =>
           variant.clinvar.release_date = data.meta.clinvar_release_date
         }
 
-        return <MitochondrialVariantPage {...rest} datasetId={datasetId} variant={variant} />
+        return <MitochondrialVariantPage datasetId={datasetId} variant={variant} />
       }}
     </Query>
   )
