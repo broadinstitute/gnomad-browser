@@ -19,13 +19,13 @@ const makeNumericComparator = key => makeComparator(key, (v1, v2) => v1 - v2)
 const comparators = {
   variant_id: makeStringComparator('variant_id'),
   consequence: makeStringComparator('consequence'),
-  type: makeStringComparator('type'),
+  class: makeStringComparator('type'),
   pos: makeNumericComparator('pos'),
   length: makeNumericComparator('length'),
   ac: makeNumericComparator('ac'),
   an: makeNumericComparator('an'),
   af: makeNumericComparator('af'),
-  ac_hom: makeNumericComparator('ac_hom'),
+  homozygote_count: makeNumericComparator('ac_hom'),
 }
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {

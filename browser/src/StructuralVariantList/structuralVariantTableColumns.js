@@ -44,117 +44,150 @@ const renderType = (variant, key, { colorKey, highlightWords }) => (
   </Cell>
 )
 
-export const getColumns = ({ includeHomozygoteAC }) => {
-  const columns = [
-    {
-      key: 'variant_id',
-      heading: 'Variant ID',
-      isRowHeader: true,
-      isSortable: true,
-      minWidth: 110,
-      render: (variant, key, { highlightWords }) => (
-        <Cell>
-          <Link target="_blank" to={`/variant/${variant.variant_id}`}>
-            <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
-          </Link>
-        </Cell>
-      ),
-    },
-    {
-      key: 'source',
-      heading: 'Source',
-      grow: 0,
-      minWidth: 70,
-      render: variant => <SampleSourceIcon source="genome" filters={variant.filters} />,
-    },
-    {
-      key: 'consequence',
-      heading: 'Consequence',
-      isSortable: true,
-      minWidth: 160,
-      render: renderConsequence,
-    },
-    {
-      key: 'type',
-      heading: 'Class',
-      isSortable: true,
-      minWidth: 130,
-      render: renderType,
-    },
-    {
-      key: 'pos',
-      heading: 'Position',
-      isSortable: true,
-      minWidth: 200,
-      render: variant => {
-        let position
-        if (variant.type === 'INS') {
-          position = `${variant.pos}`
-        } else if (variant.type === 'BND' || variant.type === 'CTX') {
-          // Only show pos because end == pos + 1 for BNDs and CTXs
-          position = `${variant.chrom}:${variant.pos}} | ${variant.chrom2}:${variant.pos2}`
+const structuralVariantTableColumns = [
+  {
+    key: 'ac',
+    heading: 'Allele Count',
+    isSortable: true,
+    minWidth: 110,
+    render: renderAlleleCountCell,
+  },
+
+  {
+    key: 'an',
+    heading: 'Allele Number',
+    isSortable: true,
+    minWidth: 110,
+    render: renderAlleleCountCell,
+  },
+
+  {
+    key: 'af',
+    heading: 'Allele Frequency',
+    isSortable: true,
+    minWidth: 110,
+    render: renderAlleleFrequencyCell,
+  },
+
+  {
+    key: 'class',
+    heading: 'Class',
+    isSortable: true,
+    minWidth: 130,
+    render: renderType,
+  },
+
+  {
+    key: 'consequence',
+    heading: 'Consequence',
+    isSortable: true,
+    minWidth: 160,
+    render: renderConsequence,
+  },
+
+  {
+    key: 'homozygote_count',
+    heading: 'Number of Homozygotes',
+    isSortable: true,
+    minWidth: 100,
+    render: variant => renderAlleleCountCell(variant, 'ac_hom'),
+    shouldShowInContext: context => context.chrom !== 'Y',
+  },
+
+  {
+    key: 'length',
+    heading: 'Size',
+    isSortable: true,
+    minWidth: 100,
+    render: variant => {
+      let s
+      if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
+        s = '—'
+      } else {
+        const size = variant.length
+        if (size >= 1e6) {
+          s = `${(size / 1e6).toPrecision(3)} Mb`
+        } else if (size >= 1e3) {
+          s = `${(size / 1e3).toPrecision(3)} kb`
         } else {
-          position = `${variant.pos} - ${variant.end}`
+          s = `${size} bp`
         }
+      }
 
-        return <Cell>{position}</Cell>
-      },
+      return <NumericCell>{s}</NumericCell>
     },
-    {
-      key: 'length',
-      heading: 'Size',
-      isSortable: true,
-      minWidth: 100,
-      render: variant => {
-        let s
-        if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
-          s = '—'
-        } else {
-          const size = variant.length
-          if (size >= 1e6) {
-            s = `${(size / 1e6).toPrecision(3)} Mb`
-          } else if (size >= 1e3) {
-            s = `${(size / 1e3).toPrecision(3)} kb`
-          } else {
-            s = `${size} bp`
-          }
-        }
+  },
 
-        return <NumericCell>{s}</NumericCell>
-      },
-    },
-    {
-      key: 'ac',
-      heading: 'Allele Count',
-      isSortable: true,
-      minWidth: 110,
-      render: renderAlleleCountCell,
-    },
-    {
-      key: 'an',
-      heading: 'Allele Number',
-      isSortable: true,
-      minWidth: 110,
-      render: renderAlleleCountCell,
-    },
-    {
-      key: 'af',
-      heading: 'Allele Frequency',
-      isSortable: true,
-      minWidth: 110,
-      render: renderAlleleFrequencyCell,
-    },
-  ]
+  {
+    key: 'pos',
+    heading: 'Position',
+    isSortable: true,
+    minWidth: 200,
+    render: variant => {
+      let position
+      if (variant.type === 'INS') {
+        position = `${variant.pos}`
+      } else if (variant.type === 'BND' || variant.type === 'CTX') {
+        // Only show pos because end == pos + 1 for BNDs and CTXs
+        position = `${variant.chrom}:${variant.pos}} | ${variant.chrom2}:${variant.pos2}`
+      } else {
+        position = `${variant.pos} - ${variant.end}`
+      }
 
-  if (includeHomozygoteAC) {
-    columns.push({
-      key: 'ac_hom',
-      heading: 'Number of Homozygotes',
-      isSortable: true,
-      minWidth: 100,
-      render: renderAlleleCountCell,
-    })
+      return <Cell>{position}</Cell>
+    },
+  },
+
+  {
+    key: 'source',
+    heading: 'Source',
+    grow: 0,
+    minWidth: 70,
+    render: variant => <SampleSourceIcon source="genome" filters={variant.filters} />,
+  },
+
+  {
+    key: 'variant_id',
+    heading: 'Variant ID',
+    isRowHeader: true,
+    isSortable: true,
+    minWidth: 110,
+    render: (variant, key, { highlightWords }) => (
+      <Cell>
+        <Link target="_blank" to={`/variant/${variant.variant_id}`}>
+          <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
+        </Link>
+      </Cell>
+    ),
+  },
+]
+
+export default structuralVariantTableColumns
+
+const getContextType = context => {
+  if (context.transcript_id) {
+    return 'transcript'
   }
+  if (context.gene_id) {
+    return 'gene'
+  }
+  return 'region'
+}
+
+export const getColumnsForContext = context => {
+  const contextType = getContextType(context)
+  const columns = structuralVariantTableColumns
+    .filter(
+      column =>
+        column.shouldShowInContext === undefined || column.shouldShowInContext(context, contextType)
+    )
+    .map(column => ({
+      ...column,
+      description: column.descriptionInContext
+        ? column.descriptionInContext(context, contextType)
+        : column.description,
+    }))
+    .reduce((acc, column) => ({ ...acc, [column.key]: column }), {})
 
   return columns
 }
