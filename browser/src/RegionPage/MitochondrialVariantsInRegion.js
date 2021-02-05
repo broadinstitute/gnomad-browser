@@ -86,7 +86,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
             {...rest}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.region.clinvar_variants}
-            context="region"
+            context={region}
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
             variants={annotateVariantsWithClinvar(
               data.region.mitochondrial_variants,

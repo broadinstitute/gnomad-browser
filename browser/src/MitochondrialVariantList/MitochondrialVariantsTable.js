@@ -4,11 +4,9 @@ import React, { memo } from 'react'
 import { Grid } from '@gnomad/ui'
 
 import MitochondrialVariantPropType from './MitochondrialVariantPropType'
-import { getColumns } from './mitochondrialVariantTableColumns'
 
 const MitochondrialVariantsTable = ({
-  clinvarReleaseDate,
-  context,
+  columns,
   forwardedRef,
   highlightText,
   numRowsRendered,
@@ -23,7 +21,7 @@ const MitochondrialVariantsTable = ({
       cellData={{
         highlightWords: highlightText.split(',').map(s => s.trim()),
       }}
-      columns={getColumns({ clinvarReleaseDate, context })}
+      columns={columns}
       data={variants}
       numRowsRendered={numRowsRendered}
       onHoverRow={rowIndex => {
@@ -35,8 +33,7 @@ const MitochondrialVariantsTable = ({
 }
 
 MitochondrialVariantsTable.propTypes = {
-  clinvarReleaseDate: PropTypes.string.isRequired,
-  context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   forwardedRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }), // eslint-disable-line react/forbid-prop-types

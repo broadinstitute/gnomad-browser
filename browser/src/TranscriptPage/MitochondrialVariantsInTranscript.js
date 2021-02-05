@@ -83,7 +83,7 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
             {...rest}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.transcript.clinvar_variants}
-            context="transcript"
+            context={transcript}
             exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
             variants={annotateVariantsWithClinvar(
               data.transcript.mitochondrial_variants,

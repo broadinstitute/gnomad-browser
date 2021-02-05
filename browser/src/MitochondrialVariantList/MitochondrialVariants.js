@@ -17,6 +17,7 @@ import filterMitochondrialVariants from './filterMitochondrialVariants'
 import sortMitochondrialVariants from './sortMitochondrialVariants'
 import MitochondrialVariantFilterControls from './MitochondrialVariantFilterControls'
 import StructrualVariantPropType from './MitochondrialVariantPropType'
+import { getColumnsForContext } from './mitochondrialVariantTableColumns'
 import MitochondrialVariantsTable from './MitochondrialVariantsTable'
 
 const NUM_ROWS_RENDERED = 20
@@ -25,11 +26,26 @@ const Wrapper = styled.div`
   margin-bottom: 1em;
 `
 
+const DEFAULT_COLUMNS = [
+  'source',
+  'gene',
+  'hgvs',
+  'consequence',
+  'clinical_significance',
+  'flags',
+  'an',
+  'ac_hom',
+  'af_hom',
+  'ac_het',
+  'af_het',
+  'max_heteroplasmy',
+]
+
 class MitochondrialVariants extends Component {
   static propTypes = {
     clinvarReleaseDate: PropTypes.string.isRequired,
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
-    context: PropTypes.oneOf(['gene', 'region', 'transcript']).isRequired,
+    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
   }
@@ -44,6 +60,18 @@ class MitochondrialVariants extends Component {
     this.tracks = React.createRef()
 
     this.table = React.createRef()
+
+    const columnsForContext = getColumnsForContext(props.context)
+    if (columnsForContext.clinical_significance) {
+      columnsForContext.clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+        props.clinvarReleaseDate
+      )} release`
+    }
+
+    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+      .map(columnKey => columnsForContext[columnKey])
+      .filter(Boolean)
+      .map(column => ({ ...column, tooltip: column.description }))
 
     const defaultFilter = {
       includeCategories: {
@@ -69,6 +97,7 @@ class MitochondrialVariants extends Component {
 
     this.state = {
       filter: defaultFilter,
+      renderedTableColumns,
       renderedVariants,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -175,9 +204,10 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { clinvarReleaseDate, clinvarVariants, context, exportFileName, variants } = this.props
+    const { clinvarReleaseDate, clinvarVariants, exportFileName, variants } = this.props
     const {
       filter,
+      renderedTableColumns,
       renderedVariants,
       sortKey,
       sortOrder,
@@ -248,8 +278,7 @@ class MitochondrialVariants extends Component {
             {renderedVariants.length ? (
               <MitochondrialVariantsTable
                 ref={this.table}
-                clinvarReleaseDate={clinvarReleaseDate}
-                context={context}
+                columns={renderedTableColumns}
                 highlightText={filter.searchText}
                 numRowsRendered={numRowsRendered}
                 shouldHighlightRow={this.shouldHighlightTableRow}
