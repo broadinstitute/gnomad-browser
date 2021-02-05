@@ -50,7 +50,7 @@ const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
         return (
           <StructuralVariants
             {...rest}
-            chrom={region.chrom}
+            context={region}
             exportFileName={`gnomad_structural_variants_${regionId}`}
             variants={data.region.structural_variants}
           />

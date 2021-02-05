@@ -46,7 +46,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, ...rest }) => {
         return (
           <StructuralVariants
             {...rest}
-            chrom={gene.chrom}
+            context={gene}
             exportFileName={`gnomad_structural_variants_${gene.gene_id}`}
             variants={data.gene.structural_variants}
           />

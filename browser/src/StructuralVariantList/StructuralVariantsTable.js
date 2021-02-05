@@ -4,9 +4,9 @@ import React, { forwardRef, memo } from 'react'
 import { Grid } from '@gnomad/ui'
 
 import StructuralVariantPropType from './StructuralVariantPropType'
-import { getColumns } from './structuralVariantTableColumns'
 
 const StructuralVariantsTable = ({
+  columns,
   forwardedRef,
   numRowsRendered,
   onHoverVariant,
@@ -18,7 +18,7 @@ const StructuralVariantsTable = ({
     <Grid
       ref={forwardedRef}
       {...rest}
-      columns={getColumns({ includeHomozygoteAC: variants[0].chrom !== 'Y' })}
+      columns={columns}
       data={variants}
       numRowsRendered={numRowsRendered}
       onHoverRow={rowIndex => {
@@ -31,6 +31,7 @@ const StructuralVariantsTable = ({
 }
 
 StructuralVariantsTable.propTypes = {
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   forwardedRef: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   numRowsRendered: PropTypes.number.isRequired,
   onHoverVariant: PropTypes.func.isRequired,

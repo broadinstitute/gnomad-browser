@@ -18,6 +18,7 @@ import {
 import { svTypeColors } from './structuralVariantTypes'
 import StructuralVariantFilterControls from './StructuralVariantFilterControls'
 import StructrualVariantPropType from './StructuralVariantPropType'
+import { getColumnsForContext } from './structuralVariantTableColumns'
 import StructuralVariantsTable from './StructuralVariantsTable'
 import StructuralVariantTracks from './StructuralVariantTracks'
 
@@ -41,9 +42,21 @@ const ControlWrapper = styled(Wrapper)`
 
 const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x, i) => `${i + 1}`), 'X', 'Y']
 
+const DEFAULT_COLUMNS = [
+  'source',
+  'consequence',
+  'class',
+  'pos',
+  'length',
+  'ac',
+  'an',
+  'af',
+  'homozygote_count',
+]
+
 class StructuralVariants extends Component {
   static propTypes = {
-    chrom: PropTypes.string.isRequired,
+    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     exportFileName: PropTypes.string.isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
   }
@@ -54,6 +67,12 @@ class StructuralVariants extends Component {
     this.tracks = React.createRef()
 
     this.table = React.createRef()
+
+    const columnsForContext = getColumnsForContext(props.context)
+    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+      .map(columnKey => columnsForContext[columnKey])
+      .filter(Boolean)
+      .map(column => ({ ...column, tooltip: column.description }))
 
     const defaultFilter = {
       includeConsequenceCategories: {
@@ -86,6 +105,7 @@ class StructuralVariants extends Component {
     this.state = {
       filter: defaultFilter,
       highlightedVariantTrack: null,
+      renderedTableColumns,
       renderedVariants,
       shouldHighlightTableRow: () => false,
       sortKey: defaultSortKey,
@@ -169,10 +189,11 @@ class StructuralVariants extends Component {
   }
 
   render() {
-    const { chrom, exportFileName, variants } = this.props
+    const { context, exportFileName, variants } = this.props
     const {
       filter,
       highlightedVariantTrack,
+      renderedTableColumns,
       renderedVariants,
       shouldHighlightTableRow,
       sortKey,
@@ -190,7 +211,7 @@ class StructuralVariants extends Component {
     // If that chromosome is not the same as the one that the region viewer's coordinates
     // are based on, then offset the positions so that they are based on the
     // region viewer's coordinate system.
-    const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(chrom)
+    const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(context.chrom)
     const positionCorrectedVariants = renderedVariants.map(variant => {
       const copy = { ...variant }
 
@@ -267,6 +288,7 @@ class StructuralVariants extends Component {
                   colorKey,
                   highlightWords: filter.searchText.split(',').map(s => s.trim()),
                 }}
+                columns={renderedTableColumns}
                 numRowsRendered={numRowsRendered}
                 onHoverVariant={this.onHoverVariantInTable}
                 onRequestSort={this.onSort}
