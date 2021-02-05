@@ -220,6 +220,27 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
   }
 }`
 
+const annotateVariantsWithPext = (variants, pext) => {
+  const pextRegions = [...pext.regions]
+  let currentPextRegion = pextRegions.shift()
+
+  return variants.map(variant => {
+    while (pextRegions.length && variant.pos > currentPextRegion.stop) {
+      currentPextRegion = pextRegions.shift()
+    }
+
+    if (
+      currentPextRegion !== undefined &&
+      currentPextRegion.start <= variant.pos &&
+      variant.pos <= currentPextRegion.stop
+    ) {
+      return { ...variant, base_level_pext: currentPextRegion.mean }
+    }
+
+    return variant
+  })
+}
+
 const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
   <Query
     query={query}
@@ -233,6 +254,11 @@ const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
     success={data => data.gene && data.gene.variants}
   >
     {({ data }) => {
+      let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
+      if (gene.pext) {
+        variants = annotateVariantsWithPext(variants, gene.pext)
+      }
+
       return (
         <VariantsInGene
           {...otherProps}
@@ -240,7 +266,7 @@ const ConnectedVariantsInGene = ({ datasetId, gene, ...otherProps }) => (
           clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}
-          variants={annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)}
+          variants={variants}
         />
       )
     }}
@@ -251,6 +277,16 @@ ConnectedVariantsInGene.propTypes = {
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
+    pext: PropTypes.shape({
+      regions: PropTypes.arrayOf(
+        PropTypes.shape({
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+          mean: PropTypes.number.isRequired,
+          tissues: PropTypes.objectOf(PropTypes.number).isRequired,
+        })
+      ).isRequired,
+    }),
   }).isRequired,
 }
 
