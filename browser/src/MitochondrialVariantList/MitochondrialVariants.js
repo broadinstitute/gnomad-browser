@@ -326,6 +326,7 @@ class MitochondrialVariants extends Component {
         {showTableConfigurationModal && (
           <VariantTableConfigurationModal
             availableColumns={mitochondrialVariantTableColumns}
+            context={context}
             defaultColumns={DEFAULT_COLUMNS}
             selectedColumns={selectedColumns}
             onCancel={() => {

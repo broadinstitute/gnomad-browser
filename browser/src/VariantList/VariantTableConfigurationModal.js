@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import DownArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-down.svg'
 import UpArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-up.svg'
 
-import { Button, Modal, PrimaryButton } from '@gnomad/ui'
+import { Badge, Button, Modal, PrimaryButton } from '@gnomad/ui'
 
 const ColumnList = styled.ol`
   padding: 0;
@@ -48,13 +48,26 @@ const ReorderColumnButton = styled(Button)`
   }
 `
 
+const getContextType = context => {
+  if (context.transcript_id) {
+    return 'transcript'
+  }
+  if (context.gene_id) {
+    return 'gene'
+  }
+  return 'region'
+}
+
 const TableColumnSelectionModal = ({
   availableColumns,
+  context,
   defaultColumns,
   selectedColumns,
   onCancel,
   onSave,
 }) => {
+  const contextType = getContextType(context)
+
   const [columnPreferences, setColumnPreferences] = useState(
     availableColumns
       .filter(column => column.key !== 'variant_id')
@@ -119,6 +132,14 @@ const TableColumnSelectionModal = ({
                   {column.heading}
                   <br />
                   {column.description}
+                  {column.shouldShowInContext &&
+                    column.shouldShowInContext(context, contextType) === false &&
+                    column.contextNotes && (
+                      <>
+                        <br />
+                        <Badge level="info">Note</Badge> {column.contextNotes}
+                      </>
+                    )}
                 </div>
               </ColumnLabel>
 
@@ -189,6 +210,7 @@ TableColumnSelectionModal.propTypes = {
       description: PropTypes.string,
     })
   ).isRequired,
+  context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   defaultColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectedColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onCancel: PropTypes.func.isRequired,

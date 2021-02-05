@@ -129,6 +129,7 @@ const variantTableColumns = [
     key: 'gene',
     heading: 'Gene',
     description: 'Gene in which variant has the most severe consequence',
+    contextNotes: 'Only shown when viewing a region',
     minWidth: 100,
     render: row => (
       <Cell>
@@ -142,6 +143,7 @@ const variantTableColumns = [
     key: 'hemizygote_count',
     heading: 'Number of Hemizygotes',
     description: 'Number of individuals hemizygous for alternate allele',
+    contextNotes: 'Only shown when viewing X or Y chromosomes',
     grow: 0,
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hemi'),
@@ -206,6 +208,7 @@ const variantTableColumns = [
     key: 'homozygote_count',
     heading: 'Number of Homozygotes',
     description: 'Number of individuals homozygous for alternate allele',
+    contextNotes: 'Not shown when viewing Y chromosome',
     grow: 0,
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hom'),
@@ -217,6 +220,7 @@ const variantTableColumns = [
     key: 'lof_curation',
     heading: 'LoF Curation',
     description: 'Results of manual curation of pLoF variants',
+    contextNotes: 'Not shown when viewing a transcript',
     minWidth: 100,
     render: row => {
       if (!row.lof_curation) {
