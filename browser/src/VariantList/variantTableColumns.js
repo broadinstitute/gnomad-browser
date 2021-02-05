@@ -79,6 +79,7 @@ const variantTableColumns = [
     grow: 1,
     minWidth: 200,
     compareFunction: makeStringCompareFunction('clinical_significance'),
+    getSearchTerms: variant => variant.clinical_significance,
     render: (variant, _, { highlightWords }) => (
       <Cell>
         <ExternalLink
@@ -101,6 +102,7 @@ const variantTableColumns = [
     grow: 0,
     minWidth: 140,
     compareFunction: makeStringCompareFunction('consequence'),
+    getSearchTerms: variant => [getLabelForConsequenceTerm(variant.consequence)],
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
@@ -156,6 +158,7 @@ const variantTableColumns = [
     grow: 1,
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvs'),
+    getSearchTerms: variant => [variant.hgvs],
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
@@ -228,6 +231,7 @@ const variantTableColumns = [
     minWidth: 150,
     grow: 1,
     compareFunction: makeNumericCompareFunction('pos'),
+    getSearchTerms: variant => [variant.variant_id, variant.rsid],
     render: (row, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${row.variant_id}`}>

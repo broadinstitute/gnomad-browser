@@ -75,6 +75,7 @@ const structuralVariantTableColumns = [
     heading: 'Class',
     minWidth: 130,
     compareFunction: makeStringCompareFunction('type'),
+    getSearchTerms: variant => [svTypeLabels[variant.type]],
     render: renderType,
   },
 
@@ -83,6 +84,7 @@ const structuralVariantTableColumns = [
     heading: 'Consequence',
     minWidth: 160,
     compareFunction: makeStringCompareFunction('consequence'),
+    getSearchTerms: variant => [svConsequenceLabels[variant.consequence] || ''],
     render: renderConsequence,
   },
 
@@ -153,6 +155,7 @@ const structuralVariantTableColumns = [
     isRowHeader: true,
     minWidth: 110,
     compareFunction: makeStringCompareFunction('variant_id'),
+    getSearchTerms: variant => [variant.variant_id],
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>

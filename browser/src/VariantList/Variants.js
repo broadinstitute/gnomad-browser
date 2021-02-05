@@ -98,7 +98,7 @@ class Variants extends Component {
     const defaultSortOrder = 'ascending'
 
     const renderedVariants = sortVariants(
-      mergeExomeAndGenomeData(filterVariants(props.variants, defaultFilter)),
+      mergeExomeAndGenomeData(filterVariants(props.variants, defaultFilter, renderedTableColumns)),
       {
         sortKey: defaultSortKey,
         sortOrder: defaultSortOrder,
@@ -120,9 +120,9 @@ class Variants extends Component {
   onFilter = newFilter => {
     this.setState(state => {
       const { variants } = this.props
-      const { sortKey, sortOrder } = state
+      const { renderedTableColumns, sortKey, sortOrder } = state
       const renderedVariants = sortVariants(
-        mergeExomeAndGenomeData(filterVariants(variants, newFilter)),
+        mergeExomeAndGenomeData(filterVariants(variants, newFilter, renderedTableColumns)),
         {
           sortKey,
           sortOrder,

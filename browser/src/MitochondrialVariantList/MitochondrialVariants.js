@@ -101,7 +101,7 @@ class MitochondrialVariants extends Component {
     const defaultSortOrder = 'ascending'
 
     const renderedVariants = sortMitochondrialVariants(
-      filterMitochondrialVariants(props.variants, defaultFilter),
+      filterMitochondrialVariants(props.variants, defaultFilter, renderedTableColumns),
       {
         sortKey: defaultSortKey,
         sortOrder: defaultSortOrder,
@@ -123,9 +123,9 @@ class MitochondrialVariants extends Component {
   onFilter = newFilter => {
     this.setState(state => {
       const { variants } = this.props
-      const { sortKey, sortOrder } = state
+      const { renderedTableColumns, sortKey, sortOrder } = state
       const renderedVariants = sortMitochondrialVariants(
-        filterMitochondrialVariants(variants, newFilter),
+        filterMitochondrialVariants(variants, newFilter, renderedTableColumns),
         {
           sortKey,
           sortOrder,
