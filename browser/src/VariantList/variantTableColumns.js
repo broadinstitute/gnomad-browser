@@ -97,6 +97,7 @@ const variantTableColumns = [
   {
     key: 'consequence',
     heading: 'VEP Annotation',
+    description: 'Variant Effect Predictor (VEP) annotation',
     descriptionInContext: (context, contextType) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
@@ -151,6 +152,7 @@ const variantTableColumns = [
   {
     key: 'hgvs',
     heading: 'HGVS Consequence',
+    description: 'HGVS protein sequence (where defined) or coding sequence',
     descriptionInContext: (context, contextType) =>
       `HGVS protein sequence (where defined) or coding sequence${getConsequenceDescription(
         contextType

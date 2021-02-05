@@ -10,6 +10,7 @@ import formatClinvarDate from '../clinvar/formatClinvarDate'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 import VariantTrack from '../VariantList/VariantTrack'
 
 import ExportMitochondrialVariantsButton from './ExportMitochondrialVariantsButton'
@@ -70,6 +71,8 @@ class MitochondrialVariants extends Component {
 
     this.table = React.createRef()
 
+    const selectedColumns = DEFAULT_COLUMNS
+
     const columnsForContext = getColumnsForContext(props.context)
     if (columnsForContext.clinical_significance) {
       columnsForContext.clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
@@ -77,7 +80,7 @@ class MitochondrialVariants extends Component {
       )} release`
     }
 
-    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+    const renderedTableColumns = ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -112,6 +115,8 @@ class MitochondrialVariants extends Component {
       filter: defaultFilter,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal: false,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       variantHoveredInTable: null,
@@ -217,11 +222,13 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { clinvarReleaseDate, clinvarVariants, exportFileName, variants } = this.props
+    const { clinvarReleaseDate, clinvarVariants, context, exportFileName, variants } = this.props
     const {
       filter,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal,
       sortKey,
       sortOrder,
       variantHoveredInTable,
@@ -307,6 +314,32 @@ class MitochondrialVariants extends Component {
             )}
           </Wrapper>
         </TrackPageSection>
+
+        {showTableConfigurationModal && (
+          <VariantTableConfigurationModal
+            availableColumns={mitochondrialVariantTableColumns}
+            defaultColumns={DEFAULT_COLUMNS}
+            selectedColumns={selectedColumns}
+            onCancel={() => {
+              this.setState({ showTableConfigurationModal: false })
+            }}
+            onSave={newSelectedColumns => {
+              const columnsForContext = getColumnsForContext(context)
+              this.setState({
+                renderedTableColumns: ['variant_id', ...newSelectedColumns]
+                  .map(columnKey => columnsForContext[columnKey])
+                  .filter(Boolean)
+                  .map(column => ({
+                    ...column,
+                    isSortable: Boolean(column.compareFunction),
+                    tooltip: column.description,
+                  })),
+                selectedColumns: newSelectedColumns,
+                showTableConfigurationModal: false,
+              })
+            }}
+          />
+        )}
       </div>
     )
   }
