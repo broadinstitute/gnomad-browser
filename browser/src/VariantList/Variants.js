@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component, createRef } from 'react'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
+import { Button } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import formatClinvarDate from '../clinvar/formatClinvarDate'
@@ -16,6 +17,7 @@ import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
+import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 
 const DEFAULT_COLUMNS = [
@@ -70,7 +72,9 @@ class Variants extends Component {
       )} release`
     }
 
-    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+    const selectedColumns = DEFAULT_COLUMNS
+
+    const renderedTableColumns = ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -109,6 +113,8 @@ class Variants extends Component {
       filter: defaultFilter,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal: false,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       variantHoveredInTable: null,
@@ -211,6 +217,7 @@ class Variants extends Component {
       children,
       clinvarReleaseDate,
       clinvarVariants,
+      context,
       datasetId,
       exportFileName,
       variants,
@@ -219,6 +226,8 @@ class Variants extends Component {
       filter,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal,
       sortKey,
       sortOrder,
       variantHoveredInTable,
@@ -274,6 +283,15 @@ class Variants extends Component {
               exportFileName={exportFileName}
               variants={renderedVariants}
             />
+
+            <Button
+              onClick={() => {
+                this.setState({ showTableConfigurationModal: true })
+              }}
+              style={{ marginLeft: '1ch' }}
+            >
+              Configure table
+            </Button>
           </div>
           {children}
 
@@ -301,6 +319,32 @@ class Variants extends Component {
             )}
           </div>
         </TrackPageSection>
+
+        {showTableConfigurationModal && (
+          <VariantTableConfigurationModal
+            availableColumns={variantTableColumns}
+            defaultColumns={DEFAULT_COLUMNS}
+            selectedColumns={selectedColumns}
+            onCancel={() => {
+              this.setState({ showTableConfigurationModal: false })
+            }}
+            onSave={newSelectedColumns => {
+              const columnsForContext = getColumnsForContext(context)
+              this.setState({
+                renderedTableColumns: ['variant_id', ...newSelectedColumns]
+                  .map(columnKey => columnsForContext[columnKey])
+                  .filter(Boolean)
+                  .map(column => ({
+                    ...column,
+                    isSortable: Boolean(column.compareFunction),
+                    tooltip: column.description,
+                  })),
+                selectedColumns: newSelectedColumns,
+                showTableConfigurationModal: false,
+              })
+            }}
+          />
+        )}
       </div>
     )
   }

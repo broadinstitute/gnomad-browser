@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { SegmentedControl } from '@gnomad/ui'
+import { Button, SegmentedControl } from '@gnomad/ui'
 
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 
 import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
 import filterStructuralVariants from './filterStructuralVariants'
@@ -77,8 +78,9 @@ class StructuralVariants extends Component {
 
     this.table = React.createRef()
 
+    const selectedColumns = DEFAULT_COLUMNS
     const columnsForContext = getColumnsForContext(props.context)
-    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+    const renderedTableColumns = ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -120,6 +122,8 @@ class StructuralVariants extends Component {
       highlightedVariantTrack: null,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal: false,
       shouldHighlightTableRow: () => false,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -208,6 +212,8 @@ class StructuralVariants extends Component {
       highlightedVariantTrack,
       renderedTableColumns,
       renderedVariants,
+      selectedColumns,
+      showTableConfigurationModal,
       shouldHighlightTableRow,
       sortKey,
       sortOrder,
@@ -286,6 +292,15 @@ class StructuralVariants extends Component {
                 exportFileName={exportFileName}
                 variants={renderedVariants}
               />
+
+              <Button
+                onClick={() => {
+                  this.setState({ showTableConfigurationModal: true })
+                }}
+                style={{ marginLeft: '1ch' }}
+              >
+                Configure table
+              </Button>
             </div>
           </Wrapper>
           <Wrapper
@@ -317,6 +332,32 @@ class StructuralVariants extends Component {
             )}
           </Wrapper>
         </TrackPageSection>
+
+        {showTableConfigurationModal && (
+          <VariantTableConfigurationModal
+            availableColumns={structuralVariantTableColumns}
+            defaultColumns={DEFAULT_COLUMNS}
+            selectedColumns={selectedColumns}
+            onCancel={() => {
+              this.setState({ showTableConfigurationModal: false })
+            }}
+            onSave={newSelectedColumns => {
+              const columnsForContext = getColumnsForContext(context)
+              this.setState({
+                renderedTableColumns: ['variant_id', ...newSelectedColumns]
+                  .map(columnKey => columnsForContext[columnKey])
+                  .filter(Boolean)
+                  .map(column => ({
+                    ...column,
+                    isSortable: Boolean(column.compareFunction),
+                    tooltip: column.description,
+                  })),
+                selectedColumns: newSelectedColumns,
+                showTableConfigurationModal: false,
+              })
+            }}
+          />
+        )}
       </div>
     )
   }
