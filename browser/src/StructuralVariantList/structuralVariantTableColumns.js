@@ -91,6 +91,7 @@ const structuralVariantTableColumns = [
   {
     key: 'homozygote_count',
     heading: 'Number of Homozygotes',
+    contextNotes: 'Not shown when viewing Y chromosome',
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hom'),
     render: variant => renderAlleleCountCell(variant, 'ac_hom'),

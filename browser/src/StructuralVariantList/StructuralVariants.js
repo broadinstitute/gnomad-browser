@@ -345,6 +345,7 @@ class StructuralVariants extends Component {
         {showTableConfigurationModal && (
           <VariantTableConfigurationModal
             availableColumns={structuralVariantTableColumns}
+            context={context}
             defaultColumns={DEFAULT_COLUMNS}
             selectedColumns={selectedColumns}
             onCancel={() => {

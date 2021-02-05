@@ -149,6 +149,7 @@ const mitochondrialVariantTableColumns = [
     key: 'gene',
     heading: 'Gene',
     description: 'Gene in which variant has the most severe consequence',
+    contextNotes: 'Only shown when viewing a region',
     minWidth: 100,
     render: row => (
       <Cell>

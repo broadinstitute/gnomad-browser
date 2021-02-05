@@ -330,6 +330,7 @@ class Variants extends Component {
         {showTableConfigurationModal && (
           <VariantTableConfigurationModal
             availableColumns={variantTableColumns}
+            context={context}
             defaultColumns={DEFAULT_COLUMNS}
             selectedColumns={selectedColumns}
             onCancel={() => {
