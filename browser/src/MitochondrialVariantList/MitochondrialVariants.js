@@ -14,10 +14,11 @@ import VariantTrack from '../VariantList/VariantTrack'
 
 import ExportMitochondrialVariantsButton from './ExportMitochondrialVariantsButton'
 import filterMitochondrialVariants from './filterMitochondrialVariants'
-import sortMitochondrialVariants from './sortMitochondrialVariants'
 import MitochondrialVariantFilterControls from './MitochondrialVariantFilterControls'
 import StructrualVariantPropType from './MitochondrialVariantPropType'
-import { getColumnsForContext } from './mitochondrialVariantTableColumns'
+import mitochondrialVariantTableColumns, {
+  getColumnsForContext,
+} from './mitochondrialVariantTableColumns'
 import MitochondrialVariantsTable from './MitochondrialVariantsTable'
 
 const NUM_ROWS_RENDERED = 20
@@ -40,6 +41,14 @@ const DEFAULT_COLUMNS = [
   'af_het',
   'max_heteroplasmy',
 ]
+
+const sortMitochondrialVariants = (variants, { sortKey, sortOrder }) => {
+  const sortColumn = mitochondrialVariantTableColumns.find(column => column.key === sortKey)
+  const baseCompareFunction = sortColumn.compareFunction
+  const comparator =
+    sortOrder === 'ascending' ? baseCompareFunction : (a, b) => baseCompareFunction(b, a)
+  return [...variants].sort(comparator)
+}
 
 class MitochondrialVariants extends Component {
   static propTypes = {
@@ -71,7 +80,11 @@ class MitochondrialVariants extends Component {
     const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
-      .map(column => ({ ...column, tooltip: column.description }))
+      .map(column => ({
+        ...column,
+        isSortable: Boolean(column.compareFunction),
+        tooltip: column.description,
+      }))
 
     const defaultFilter = {
       includeCategories: {

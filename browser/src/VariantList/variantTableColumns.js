@@ -7,6 +7,7 @@ import Link from '../Link'
 import { Cell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
+import { makeNumericCompareFunction, makeStringCompareFunction } from './sortUtilities'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
 
@@ -46,8 +47,8 @@ const variantTableColumns = [
     heading: 'Allele Count',
     description: 'Alternate allele count in high quality genotypes',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('ac'),
     render: renderAlleleCountCell,
   },
 
@@ -56,8 +57,8 @@ const variantTableColumns = [
     heading: 'Allele Number',
     description: 'Total number of called high quality genotypes',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('an'),
     render: renderAlleleCountCell,
   },
 
@@ -66,8 +67,8 @@ const variantTableColumns = [
     heading: 'Allele Frequency',
     description: 'Alternate allele frequency in high quality genotypes',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('af'),
     render: renderAlleleFrequencyCell,
   },
 
@@ -76,8 +77,8 @@ const variantTableColumns = [
     heading: 'Clinical Significance',
     description: 'ClinVar clinical significance',
     grow: 1,
-    isSortable: true,
     minWidth: 200,
+    compareFunction: makeStringCompareFunction('clinical_significance'),
     render: (variant, _, { highlightWords }) => (
       <Cell>
         <ExternalLink
@@ -98,8 +99,8 @@ const variantTableColumns = [
     descriptionInContext: (context, contextType) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
-    isSortable: true,
     minWidth: 140,
+    compareFunction: makeStringCompareFunction('consequence'),
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
@@ -113,8 +114,8 @@ const variantTableColumns = [
     heading: 'Flags',
     description: 'Flags that may affect annotation and/or confidence',
     grow: 0,
-    isSortable: true,
     minWidth: 140,
+    compareFunction: (v1, v2) => v1.flags.length - v2.flags.length,
     render: (row, key) =>
       row[key]
         .filter(flag => flag !== 'segdup' && flag !== 'par')
@@ -125,7 +126,6 @@ const variantTableColumns = [
     key: 'gene',
     heading: 'Gene',
     description: 'Gene in which variant has the most severe consequence',
-    isSortable: false,
     minWidth: 100,
     render: row => (
       <Cell>
@@ -140,8 +140,8 @@ const variantTableColumns = [
     heading: 'Number of Hemizygotes',
     description: 'Number of individuals hemizygous for alternate allele',
     grow: 0,
-    isSortable: true,
     minWidth: 100,
+    compareFunction: makeNumericCompareFunction('ac_hemi'),
     render: variant => renderAlleleCountCell(variant, 'ac_hemi'),
     shouldShowInContext: context => context.chrom === 'X' || context.chrom === 'Y',
   },
@@ -154,8 +154,8 @@ const variantTableColumns = [
         contextType
       )}`,
     grow: 1,
-    isSortable: true,
     minWidth: 160,
+    compareFunction: makeStringCompareFunction('hgvs'),
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
@@ -168,8 +168,8 @@ const variantTableColumns = [
     heading: 'Number of Homozygotes',
     description: 'Number of individuals homozygous for alternate allele',
     grow: 0,
-    isSortable: true,
     minWidth: 100,
+    compareFunction: makeNumericCompareFunction('ac_hom'),
     render: variant => renderAlleleCountCell(variant, 'ac_hom'),
     shouldShowInContext: context => context.chrom !== 'Y',
   },
@@ -178,7 +178,6 @@ const variantTableColumns = [
     key: 'lof_curation',
     heading: 'LoF Curation',
     description: 'Results of manual curation of pLoF variants',
-    isSortable: false,
     minWidth: 100,
     render: row => {
       if (!row.lof_curation) {
@@ -226,9 +225,9 @@ const variantTableColumns = [
     heading: 'Variant ID',
     description: 'Chromosome-position-reference-alternate',
     isRowHeader: true,
-    isSortable: true,
     minWidth: 150,
     grow: 1,
+    compareFunction: makeNumericCompareFunction('pos'),
     render: (row, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${row.variant_id}`}>
