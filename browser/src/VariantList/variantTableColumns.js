@@ -246,6 +246,21 @@ const variantTableColumns = [
   },
 
   {
+    key: 'rsid',
+    heading: 'rsID',
+    description: 'dbSNP rsID',
+    grow: 1,
+    minWidth: 160,
+    compareFunction: makeStringCompareFunction('rsid'),
+    getSearchTerms: variant => [variant.rsid],
+    render: (variant, key, { highlightWords }) => (
+      <Cell>
+        <Highlighter searchWords={highlightWords} textToHighlight={variant.rsid || ''} />
+      </Cell>
+    ),
+  },
+
+  {
     key: 'source',
     heading: 'Source',
     description: 'Sample set and quality control filters',
