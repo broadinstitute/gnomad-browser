@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words'
 import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import Link from '../Link'
-import { Cell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
+import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
 import { makeNumericCompareFunction, makeStringCompareFunction } from './sortUtilities'
@@ -70,6 +70,25 @@ const variantTableColumns = [
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('af'),
     render: renderAlleleFrequencyCell,
+  },
+
+  {
+    key: 'base_level_pext',
+    heading: 'pext',
+    description: 'Base-level pext score',
+    contextNotes: 'Only shown when viewing a gene',
+    minWidth: 80,
+    compareFunction: makeNumericCompareFunction('base_level_pext'),
+    render: variant => (
+      <NumericCell>
+        {variant.base_level_pext != null &&
+          variant.base_level_pext.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+      </NumericCell>
+    ),
+    shouldShowInContext: (context, contextType) => contextType === 'gene',
   },
 
   {
