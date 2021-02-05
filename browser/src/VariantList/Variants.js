@@ -16,14 +16,30 @@ import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import sortVariants from './sortVariants'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
+import { getColumnsForContext } from './variantTableColumns'
 import VariantTrack from './VariantTrack'
+
+const DEFAULT_COLUMNS = [
+  'source',
+  'gene',
+  'hgvs',
+  'consequence',
+  'lof_curation',
+  'clinical_significance',
+  'flags',
+  'ac',
+  'an',
+  'af',
+  'homozygote_count',
+  'hemizygote_count',
+]
 
 class Variants extends Component {
   static propTypes = {
     children: PropTypes.node,
     clinvarReleaseDate: PropTypes.string.isRequired,
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     datasetId: PropTypes.string.isRequired,
     exportFileName: PropTypes.string,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -39,6 +55,18 @@ class Variants extends Component {
     super(props)
 
     this.table = createRef()
+
+    const columnsForContext = getColumnsForContext(props.context)
+    if (columnsForContext.clinical_significance) {
+      columnsForContext.clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+        props.clinvarReleaseDate
+      )} release`
+    }
+
+    const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
+      .map(columnKey => columnsForContext[columnKey])
+      .filter(Boolean)
+      .map(column => ({ ...column, tooltip: column.description }))
 
     const defaultFilter = {
       includeCategories: {
@@ -68,6 +96,7 @@ class Variants extends Component {
 
     this.state = {
       filter: defaultFilter,
+      renderedTableColumns,
       renderedVariants,
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -171,13 +200,13 @@ class Variants extends Component {
       children,
       clinvarReleaseDate,
       clinvarVariants,
-      columns,
       datasetId,
       exportFileName,
       variants,
     } = this.props
     const {
       filter,
+      renderedTableColumns,
       renderedVariants,
       sortKey,
       sortOrder,
@@ -246,7 +275,7 @@ class Variants extends Component {
             {renderedVariants.length ? (
               <VariantTable
                 ref={this.table}
-                columns={columns}
+                columns={renderedTableColumns}
                 highlightText={filter.searchText}
                 highlightedVariantId={variantHoveredInTrack}
                 onHoverVariant={this.onHoverVariantInTable}

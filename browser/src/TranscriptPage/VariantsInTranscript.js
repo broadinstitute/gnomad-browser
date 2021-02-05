@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
+import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
@@ -8,7 +8,6 @@ import Link from '../Link'
 import Query from '../Query'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
-import { getColumns } from '../VariantList/variantTableColumns'
 
 const VariantsInTranscript = ({
   clinvarReleaseDate,
@@ -18,17 +17,6 @@ const VariantsInTranscript = ({
   transcript,
   variants,
 }) => {
-  const columns = useMemo(
-    () =>
-      getColumns({
-        clinvarReleaseDate,
-        context: 'transcript',
-        includeHomozygoteAC: transcript.chrom !== 'Y',
-        includeHemizygoteAC: transcript.chrom === 'X' || transcript.chrom === 'Y',
-      }),
-    [clinvarReleaseDate, transcript]
-  )
-
   const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')
 
   const datasetLabel = labelForDataset(datasetId)
@@ -37,7 +25,7 @@ const VariantsInTranscript = ({
     <Variants
       clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
-      columns={columns}
+      context={transcript}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
       variants={variants}

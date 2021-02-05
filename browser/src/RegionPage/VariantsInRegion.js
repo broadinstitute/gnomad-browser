@@ -1,34 +1,21 @@
 import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
+import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
 const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, region, variants }) => {
-  const columns = useMemo(
-    () =>
-      getColumns({
-        clinvarReleaseDate,
-        context: 'region',
-        includeLofCuration: variants.some(variant => variant.lof_curation),
-        includeHomozygoteAC: region.chrom !== 'Y',
-        includeHemizygoteAC: region.chrom === 'X' || region.chrom === 'Y',
-      }),
-    [clinvarReleaseDate, region, variants]
-  )
-
   const datasetLabel = labelForDataset(datasetId)
 
   return (
     <Variants
       clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
-      columns={columns}
+      context={region}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
       variants={variants}
