@@ -10,7 +10,6 @@ import { TrackPageSection } from '../TrackPage'
 
 import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
 import filterVariants from './filterVariants'
-import sortVariants from './sortVariants'
 import {
   svConsequenceCategories,
   svConsequenceCategoryColors,
@@ -18,7 +17,9 @@ import {
 import { svTypeColors } from './structuralVariantTypes'
 import StructuralVariantFilterControls from './StructuralVariantFilterControls'
 import StructrualVariantPropType from './StructuralVariantPropType'
-import { getColumnsForContext } from './structuralVariantTableColumns'
+import structuralVariantTableColumns, {
+  getColumnsForContext,
+} from './structuralVariantTableColumns'
 import StructuralVariantsTable from './StructuralVariantsTable'
 import StructuralVariantTracks from './StructuralVariantTracks'
 
@@ -54,6 +55,14 @@ const DEFAULT_COLUMNS = [
   'homozygote_count',
 ]
 
+const sortVariants = (variants, { sortKey, sortOrder }) => {
+  const sortColumn = structuralVariantTableColumns.find(column => column.key === sortKey)
+  const baseCompareFunction = sortColumn.compareFunction
+  const comparator =
+    sortOrder === 'ascending' ? baseCompareFunction : (a, b) => baseCompareFunction(b, a)
+  return [...variants].sort(comparator)
+}
+
 class StructuralVariants extends Component {
   static propTypes = {
     context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -72,7 +81,11 @@ class StructuralVariants extends Component {
     const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
-      .map(column => ({ ...column, tooltip: column.description }))
+      .map(column => ({
+        ...column,
+        isSortable: Boolean(column.compareFunction),
+        tooltip: column.description,
+      }))
 
     const defaultFilter = {
       includeConsequenceCategories: {

@@ -4,6 +4,7 @@ import Highlighter from 'react-highlight-words'
 import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import SampleSourceIcon from '../VariantList/SampleSourceIcon'
+import { makeNumericCompareFunction, makeStringCompareFunction } from '../VariantList/sortUtilities'
 import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import {
   svConsequenceCategories,
@@ -48,48 +49,48 @@ const structuralVariantTableColumns = [
   {
     key: 'ac',
     heading: 'Allele Count',
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('ac'),
     render: renderAlleleCountCell,
   },
 
   {
     key: 'an',
     heading: 'Allele Number',
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('an'),
     render: renderAlleleCountCell,
   },
 
   {
     key: 'af',
     heading: 'Allele Frequency',
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('af'),
     render: renderAlleleFrequencyCell,
   },
 
   {
     key: 'class',
     heading: 'Class',
-    isSortable: true,
     minWidth: 130,
+    compareFunction: makeStringCompareFunction('type'),
     render: renderType,
   },
 
   {
     key: 'consequence',
     heading: 'Consequence',
-    isSortable: true,
     minWidth: 160,
+    compareFunction: makeStringCompareFunction('consequence'),
     render: renderConsequence,
   },
 
   {
     key: 'homozygote_count',
     heading: 'Number of Homozygotes',
-    isSortable: true,
     minWidth: 100,
+    compareFunction: makeNumericCompareFunction('ac_hom'),
     render: variant => renderAlleleCountCell(variant, 'ac_hom'),
     shouldShowInContext: context => context.chrom !== 'Y',
   },
@@ -97,8 +98,8 @@ const structuralVariantTableColumns = [
   {
     key: 'length',
     heading: 'Size',
-    isSortable: true,
     minWidth: 100,
+    compareFunction: makeNumericCompareFunction('length'),
     render: variant => {
       let s
       if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
@@ -121,8 +122,8 @@ const structuralVariantTableColumns = [
   {
     key: 'pos',
     heading: 'Position',
-    isSortable: true,
     minWidth: 200,
+    compareFunction: makeNumericCompareFunction('pos'),
     render: variant => {
       let position
       if (variant.type === 'INS') {
@@ -150,8 +151,8 @@ const structuralVariantTableColumns = [
     key: 'variant_id',
     heading: 'Variant ID',
     isRowHeader: true,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeStringCompareFunction('variant_id'),
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>

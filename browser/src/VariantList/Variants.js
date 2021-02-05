@@ -13,10 +13,9 @@ import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from './ExportVariantsButton'
 import filterVariants from './filterVariants'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
-import sortVariants from './sortVariants'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
-import { getColumnsForContext } from './variantTableColumns'
+import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
 import VariantTrack from './VariantTrack'
 
 const DEFAULT_COLUMNS = [
@@ -33,6 +32,14 @@ const DEFAULT_COLUMNS = [
   'homozygote_count',
   'hemizygote_count',
 ]
+
+const sortVariants = (variants, { sortKey, sortOrder }) => {
+  const sortColumn = variantTableColumns.find(column => column.key === sortKey)
+  const baseCompareFunction = sortColumn.compareFunction
+  const compareFunction =
+    sortOrder === 'ascending' ? baseCompareFunction : (a, b) => baseCompareFunction(b, a)
+  return [...variants].sort(compareFunction)
+}
 
 class Variants extends Component {
   static propTypes = {
@@ -66,7 +73,11 @@ class Variants extends Component {
     const renderedTableColumns = ['variant_id', ...DEFAULT_COLUMNS]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
-      .map(column => ({ ...column, tooltip: column.description }))
+      .map(column => ({
+        ...column,
+        isSortable: Boolean(column.compareFunction),
+        tooltip: column.description,
+      }))
 
     const defaultFilter = {
       includeCategories: {

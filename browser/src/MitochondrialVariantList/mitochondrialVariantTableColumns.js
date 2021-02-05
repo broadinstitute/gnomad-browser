@@ -7,6 +7,7 @@ import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from '../VariantList/SampleSourceIcon'
+import { makeNumericCompareFunction, makeStringCompareFunction } from '../VariantList/sortUtilities'
 import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import VariantFlag from '../VariantList/VariantFlag'
 
@@ -46,8 +47,8 @@ const mitochondrialVariantTableColumns = [
     description: 'Number of individuals with a variant at heteroplasmy level 0.10 - 0.95.',
     heading: 'Heteroplasmic Allele Count',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('ac_het'),
     render: renderAlleleCountCell,
   },
 
@@ -57,8 +58,8 @@ const mitochondrialVariantTableColumns = [
     tooltip:
       'Number of individuals with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('ac_hom'),
     render: renderAlleleCountCell,
   },
 
@@ -67,8 +68,8 @@ const mitochondrialVariantTableColumns = [
     heading: 'Heteroplasmic Allele Frequency',
     description: 'Proportion of individuals with a variant at heteroplasmy level 0.10 - 0.95.',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('af_het'),
     render: renderAlleleFrequencyCell,
   },
 
@@ -78,8 +79,8 @@ const mitochondrialVariantTableColumns = [
     tooltip:
       'Proportion of individuals with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('af_hom'),
     render: renderAlleleFrequencyCell,
   },
 
@@ -88,8 +89,8 @@ const mitochondrialVariantTableColumns = [
     heading: 'Allele Number',
     description: 'Total number of individuals with high quality sequence at this position.',
     grow: 0,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('an'),
     render: renderAlleleCountCell,
   },
 
@@ -98,8 +99,8 @@ const mitochondrialVariantTableColumns = [
     heading: 'Clinical Significance',
     description: 'ClinVar clinical significance',
     grow: 1,
-    isSortable: true,
     minWidth: 200,
+    compareFunction: makeStringCompareFunction('clinical_significance'),
     render: (variant, _, { highlightWords }) => (
       <Cell>
         <ExternalLink
@@ -120,8 +121,8 @@ const mitochondrialVariantTableColumns = [
     descriptionInContext: (context, contextType) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
-    isSortable: true,
     minWidth: 140,
+    compareFunction: makeStringCompareFunction('consequence'),
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
@@ -135,8 +136,8 @@ const mitochondrialVariantTableColumns = [
     heading: 'Flags',
     description: 'Flags that may affect annotation and/or confidence',
     grow: 0,
-    isSortable: true,
     minWidth: 140,
+    compareFunction: (v1, v2) => v1.flags.length - v2.flags.length,
     render: (row, key) =>
       row[key].map(flag => <VariantFlag key={flag} type={flag} variant={row} />),
   },
@@ -145,7 +146,6 @@ const mitochondrialVariantTableColumns = [
     key: 'gene',
     heading: 'Gene',
     description: 'Gene in which variant has the most severe consequence',
-    isSortable: false,
     minWidth: 100,
     render: row => (
       <Cell>
@@ -163,8 +163,8 @@ const mitochondrialVariantTableColumns = [
         contextType
       )}`,
     grow: 1,
-    isSortable: true,
     minWidth: 160,
+    compareFunction: makeStringCompareFunction('hgvs'),
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter
@@ -180,8 +180,8 @@ const mitochondrialVariantTableColumns = [
     heading: 'Max observed heteroplasmy',
     description: 'Maximum heteroplasmy level observed across all individuals (range 0.10 - 1.00).',
     grow: 0,
-    isSortable: true,
     minWidth: 120,
+    compareFunction: makeNumericCompareFunction('max_heteroplasmy'),
     render: (row, key) => <NumericCell>{row[key]}</NumericCell>,
   },
 
@@ -200,8 +200,8 @@ const mitochondrialVariantTableColumns = [
     description: 'Chromosome-position-reference-alternate',
     grow: 1,
     isRowHeader: true,
-    isSortable: true,
     minWidth: 110,
+    compareFunction: makeNumericCompareFunction('pos'),
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
