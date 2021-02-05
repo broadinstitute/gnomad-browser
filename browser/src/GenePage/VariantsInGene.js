@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
@@ -7,7 +7,6 @@ import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import { getColumns } from '../VariantList/variantTableColumns'
 import Variants from '../VariantList/Variants'
 
 const TranscriptsModal = ({ gene, onRequestClose }) => (
@@ -57,21 +56,6 @@ const VariantsInGene = ({
   includeUTRs,
   variants,
 }) => {
-  const columns = useMemo(
-    () =>
-      getColumns({
-        clinvarReleaseDate,
-        context: 'gene',
-        includeLofCuration: variants.some(variant => variant.lof_curation),
-        includeHomozygoteAC: gene.chrom !== 'Y',
-        includeHemizygoteAC: gene.chrom === 'X' || gene.chrom === 'Y',
-        primaryTranscriptId: gene.mane_select_transcript
-          ? gene.mane_select_transcript.ensembl_id
-          : gene.canonical_transcript_id,
-      }),
-    [clinvarReleaseDate, gene, variants]
-  )
-
   const datasetLabel = labelForDataset(datasetId)
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
@@ -80,7 +64,7 @@ const VariantsInGene = ({
     <Variants
       clinvarReleaseDate={clinvarReleaseDate}
       clinvarVariants={clinvarVariants}
-      columns={columns}
+      context={gene}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${gene.gene_id}`}
       variants={variants}

@@ -24,8 +24,8 @@ const comparators = {
   an: makeNumericComparator('an'),
   af: makeNumericComparator('af'),
   hgvs: makeStringComparator('hgvs'),
-  ac_hom: makeNumericComparator('ac_hom'),
-  ac_hemi: makeNumericComparator('ac_hemi'),
+  homozygote_count: makeNumericComparator('ac_hom'),
+  hemizygote_count: makeNumericComparator('ac_hemi'),
   clinical_significance: makeStringComparator('clinical_significance'),
 }
 
