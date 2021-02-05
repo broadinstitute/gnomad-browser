@@ -101,6 +101,7 @@ const mitochondrialVariantTableColumns = [
     grow: 1,
     minWidth: 200,
     compareFunction: makeStringCompareFunction('clinical_significance'),
+    getSearchTerms: variant => [variant.clinical_significance],
     render: (variant, _, { highlightWords }) => (
       <Cell>
         <ExternalLink
@@ -123,6 +124,7 @@ const mitochondrialVariantTableColumns = [
     grow: 0,
     minWidth: 140,
     compareFunction: makeStringCompareFunction('consequence'),
+    getSearchTerms: variant => [getLabelForConsequenceTerm(variant.consequence)],
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
@@ -165,6 +167,7 @@ const mitochondrialVariantTableColumns = [
     grow: 1,
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvs'),
+    getSearchTerms: variant => [variant.hgvsp || variant.hgvsc],
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter
@@ -202,6 +205,7 @@ const mitochondrialVariantTableColumns = [
     isRowHeader: true,
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('pos'),
+    getSearchTerms: variant => [variant.variant_id],
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>

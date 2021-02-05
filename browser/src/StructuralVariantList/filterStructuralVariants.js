@@ -1,7 +1,6 @@
-import { svConsequenceCategories, svConsequenceLabels } from './structuralVariantConsequences'
-import { svTypeLabels } from './structuralVariantTypes'
+import { svConsequenceCategories } from './structuralVariantConsequences'
 
-const filterVariants = (variants, filter) => {
+const filterVariants = (variants, filter, selectedColumns) => {
   let filteredVariants = variants
 
   filteredVariants = filteredVariants.filter(v =>
@@ -21,16 +20,23 @@ const filterVariants = (variants, filter) => {
   }
 
   if (filter.searchText) {
+    const searchColumns = selectedColumns.filter(column => !!column.getSearchTerms)
+    const getVariantSearchTerms = variant =>
+      searchColumns
+        .flatMap(column => column.getSearchTerms(variant))
+        .filter(Boolean)
+        .map(s => s.toLowerCase())
+
     const searchTerms = filter.searchText
       .toLowerCase()
       .split(',')
       .map(s => s.trim())
       .filter(s => s.length > 0)
 
-    filteredVariants = filteredVariants.filter(v =>
-      [v.variant_id, svConsequenceLabels[v.consequence] || '', svTypeLabels[v.type]]
-        .map(val => val.toLowerCase())
-        .some(val => searchTerms.some(term => val.includes(term)))
+    filteredVariants = filteredVariants.filter(variant =>
+      getVariantSearchTerms(variant).some(variantTerm =>
+        searchTerms.some(searchTerm => variantTerm.includes(searchTerm))
+      )
     )
   }
 

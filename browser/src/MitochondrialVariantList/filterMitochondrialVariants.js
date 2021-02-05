@@ -1,6 +1,6 @@
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
+import { getCategoryFromConsequence } from '../vepConsequences'
 
-const filterMitochondrialVariants = (variants, filter) => {
+const filterMitochondrialVariants = (variants, filter, selectedColumns) => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =
@@ -21,23 +21,23 @@ const filterMitochondrialVariants = (variants, filter) => {
   }
 
   if (filter.searchText) {
+    const searchColumns = selectedColumns.filter(column => !!column.getSearchTerms)
+    const getVariantSearchTerms = variant =>
+      searchColumns
+        .flatMap(column => column.getSearchTerms(variant))
+        .filter(Boolean)
+        .map(s => s.toLowerCase())
+
     const searchTerms = filter.searchText
       .toLowerCase()
       .split(',')
       .map(s => s.trim())
       .filter(s => s.length > 0)
 
-    filteredVariants = filteredVariants.filter(v =>
-      [
-        v.variant_id,
-        v.rsid,
-        getLabelForConsequenceTerm(v.consequence),
-        v.hgvsp || v.hgvsc,
-        v.clinical_significance,
-      ]
-        .filter(Boolean)
-        .map(val => val.toLowerCase())
-        .some(val => searchTerms.some(term => val.includes(term)))
+    filteredVariants = filteredVariants.filter(variant =>
+      getVariantSearchTerms(variant).some(variantTerm =>
+        searchTerms.some(searchTerm => variantTerm.includes(searchTerm))
+      )
     )
   }
 

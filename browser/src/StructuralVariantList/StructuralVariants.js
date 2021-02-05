@@ -9,7 +9,7 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 
 import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
-import filterVariants from './filterVariants'
+import filterStructuralVariants from './filterStructuralVariants'
 import {
   svConsequenceCategories,
   svConsequenceCategoryColors,
@@ -110,7 +110,7 @@ class StructuralVariants extends Component {
     const defaultSortKey = 'pos'
     const defaultSortOrder = 'ascending'
 
-    const renderedVariants = sortVariants(filterVariants(props.variants, defaultFilter), {
+    const renderedVariants = sortVariants(filterStructuralVariants(props.variants, defaultFilter), {
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
     })
@@ -131,7 +131,7 @@ class StructuralVariants extends Component {
     this.setState(state => {
       const { variants } = this.props
       const { sortKey, sortOrder } = state
-      const renderedVariants = sortVariants(filterVariants(variants, newFilter), {
+      const renderedVariants = sortVariants(filterStructuralVariants(variants, newFilter), {
         sortKey,
         sortOrder,
       })
