@@ -102,7 +102,7 @@ StructuralVariantPage.propTypes = {
   variant: StructuralVariantDetailPropType.isRequired,
 }
 
-const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
+const ConnectedStructuralVariantPage = ({ datasetId, variantId }) => {
   const query = `
     query StructuralVariant($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
       structural_variant(dataset: $datasetId, variantId: $variantId) {
@@ -181,13 +181,7 @@ const ConnectedStructuralVariantPage = ({ datasetId, variantId, ...rest }) => {
       success={data => data.structural_variant}
     >
       {({ data }) => {
-        return (
-          <StructuralVariantPage
-            {...rest}
-            datasetId={datasetId}
-            variant={data.structural_variant}
-          />
-        )
+        return <StructuralVariantPage datasetId={datasetId} variant={data.structural_variant} />
       }}
     </Query>
   )

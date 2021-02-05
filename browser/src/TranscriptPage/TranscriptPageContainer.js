@@ -86,7 +86,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
 }
 `
 
-const TranscriptPageContainer = ({ datasetId, transcriptId, ...otherProps }) => (
+const TranscriptPageContainer = ({ datasetId, transcriptId }) => (
   <Query
     query={query}
     variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
@@ -95,13 +95,7 @@ const TranscriptPageContainer = ({ datasetId, transcriptId, ...otherProps }) => 
     success={data => data.transcript}
   >
     {({ data }) => {
-      return (
-        <AutosizedTranscriptPage
-          {...otherProps}
-          datasetId={datasetId}
-          transcript={data.transcript}
-        />
-      )
+      return <AutosizedTranscriptPage datasetId={datasetId} transcript={data.transcript} />
     }}
   </Query>
 )

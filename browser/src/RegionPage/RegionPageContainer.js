@@ -11,7 +11,7 @@ import RegionPage from './RegionPage'
 
 const AutosizedRegionPage = withWindowSize(RegionPage)
 
-const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
+const RegionPageContainer = ({ datasetId, regionId }) => {
   if (!isRegionId(regionId)) {
     return (
       <Page>
@@ -27,7 +27,6 @@ const RegionPageContainer = ({ datasetId, regionId, ...otherProps }) => {
 
   return (
     <AutosizedRegionPage
-      {...otherProps}
       datasetId={datasetId}
       region={{
         reference_genome: referenceGenome,

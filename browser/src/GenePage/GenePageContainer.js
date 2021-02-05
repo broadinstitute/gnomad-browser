@@ -209,7 +209,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
 }
 `
 
-const GenePageContainer = ({ datasetId, geneIdOrSymbol, ...otherProps }) => {
+const GenePageContainer = ({ datasetId, geneIdOrSymbol }) => {
   const variables = geneIdOrSymbol.startsWith('ENSG')
     ? { geneId: geneIdOrSymbol }
     : { geneSymbol: geneIdOrSymbol }
@@ -226,12 +226,7 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol, ...otherProps }) => {
     >
       {({ data }) => {
         return (
-          <AutosizedGenePage
-            {...otherProps}
-            datasetId={datasetId}
-            gene={data.gene}
-            geneId={data.gene.gene_id}
-          />
+          <AutosizedGenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
         )
       }}
     </Query>

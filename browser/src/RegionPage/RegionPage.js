@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { RegionViewer } from '@gnomad/region-viewer'
@@ -42,7 +43,9 @@ const RegionControlsWrapper = styled.div`
 `
 
 // eslint-disable-next-line no-shadow
-const RegionPage = ({ datasetId, history, region, width }) => {
+const RegionPage = ({ datasetId, region, width }) => {
+  const history = useHistory()
+
   const { chrom, start, stop } = region
 
   const regionViewerRegions = [
@@ -134,9 +137,6 @@ const RegionPage = ({ datasetId, history, region, width }) => {
 
 RegionPage.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
   region: PropTypes.shape({
     reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
     chrom: PropTypes.string.isRequired,
