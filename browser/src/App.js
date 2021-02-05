@@ -11,6 +11,7 @@ import ErrorBoundary from './ErrorBoundary'
 import HelpButton from './help/HelpButton'
 import HelpModal from './help/HelpModal'
 import NavBar from './NavBar'
+import Notifications from './Notifications'
 
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
@@ -95,6 +96,8 @@ const App = () => {
       />
 
       <NavBar />
+
+      <Notifications />
 
       <ErrorBoundary>
         <Suspense fallback={<PageLoading />}>
