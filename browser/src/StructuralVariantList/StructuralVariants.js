@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button, SegmentedControl } from '@gnomad/ui'
 
+import { showNotification } from '../Notifications'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import userPreferences from '../userPreferences'
 import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 
 import ExportStructuralVariantsButton from './ExportStructuralVariantsButton'
@@ -78,7 +80,14 @@ class StructuralVariants extends Component {
 
     this.table = React.createRef()
 
-    const selectedColumns = DEFAULT_COLUMNS
+    let selectedColumns
+    try {
+      selectedColumns =
+        userPreferences.getPreference('structuralVariantTableColumns') || DEFAULT_COLUMNS
+    } catch (error) {
+      selectedColumns = DEFAULT_COLUMNS
+    }
+
     const columnsForContext = getColumnsForContext(props.context)
     const renderedTableColumns = ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
@@ -355,6 +364,16 @@ class StructuralVariants extends Component {
                 selectedColumns: newSelectedColumns,
                 showTableConfigurationModal: false,
               })
+
+              userPreferences
+                .savePreference('structuralVariantTableColumns', newSelectedColumns)
+                .then(null, error => {
+                  showNotification({
+                    title: 'Error',
+                    message: error.message,
+                    status: 'error',
+                  })
+                })
             }}
           />
         )}

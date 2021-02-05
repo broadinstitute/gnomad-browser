@@ -8,9 +8,11 @@ import { Button } from '@gnomad/ui'
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import formatClinvarDate from '../clinvar/formatClinvarDate'
 import { labelForDataset } from '../datasets'
+import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
 import filterVariants from './filterVariants'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
@@ -72,7 +74,12 @@ class Variants extends Component {
       )} release`
     }
 
-    const selectedColumns = DEFAULT_COLUMNS
+    let selectedColumns
+    try {
+      selectedColumns = userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
+    } catch (error) {
+      selectedColumns = DEFAULT_COLUMNS
+    }
 
     const renderedTableColumns = ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
@@ -342,6 +349,16 @@ class Variants extends Component {
                 selectedColumns: newSelectedColumns,
                 showTableConfigurationModal: false,
               })
+
+              userPreferences
+                .savePreference('variantTableColumns', newSelectedColumns)
+                .then(null, error => {
+                  showNotification({
+                    title: 'Error',
+                    message: error.message,
+                    status: 'error',
+                  })
+                })
             }}
           />
         )}

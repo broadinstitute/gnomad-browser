@@ -7,9 +7,11 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import ClinvarVariantTrack from '../clinvar/ClinvarVariantTrack'
 import formatClinvarDate from '../clinvar/formatClinvarDate'
+import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
+import userPreferences from '../userPreferences'
 import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 import VariantTrack from '../VariantList/VariantTrack'
 
@@ -71,7 +73,13 @@ class MitochondrialVariants extends Component {
 
     this.table = React.createRef()
 
-    const selectedColumns = DEFAULT_COLUMNS
+    let selectedColumns
+    try {
+      selectedColumns =
+        userPreferences.getPreference('mitochondrialVariantTableColumns') || DEFAULT_COLUMNS
+    } catch (error) {
+      selectedColumns = DEFAULT_COLUMNS
+    }
 
     const columnsForContext = getColumnsForContext(props.context)
     if (columnsForContext.clinical_significance) {
@@ -337,6 +345,16 @@ class MitochondrialVariants extends Component {
                 selectedColumns: newSelectedColumns,
                 showTableConfigurationModal: false,
               })
+
+              userPreferences
+                .savePreference('mitochondrialVariantTableColumns', newSelectedColumns)
+                .then(null, error => {
+                  showNotification({
+                    title: 'Error',
+                    message: error.message,
+                    status: 'error',
+                  })
+                })
             }}
           />
         )}
