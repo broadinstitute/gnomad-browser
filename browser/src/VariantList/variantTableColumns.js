@@ -169,6 +169,40 @@ const variantTableColumns = [
   },
 
   {
+    key: 'hgvsc',
+    heading: 'HGVSc Consequence',
+    description: 'HGVS coding sequence',
+    descriptionInContext: (context, contextType) =>
+      `HGVS coding sequence${getConsequenceDescription(contextType)}`,
+    grow: 1,
+    minWidth: 160,
+    compareFunction: makeStringCompareFunction('hgvsc'),
+    getSearchTerms: variant => [variant.hgvsc],
+    render: (variant, key, { highlightWords }) => (
+      <Cell>
+        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsc || ''} />
+      </Cell>
+    ),
+  },
+
+  {
+    key: 'hgvsp',
+    heading: 'HGVSp Consequence',
+    description: 'HGVS protein sequence',
+    descriptionInContext: (context, contextType) =>
+      `HGVS protein sequence${getConsequenceDescription(contextType)}`,
+    grow: 1,
+    minWidth: 160,
+    compareFunction: makeStringCompareFunction('hgvsp'),
+    getSearchTerms: variant => [variant.hgvsp],
+    render: (variant, key, { highlightWords }) => (
+      <Cell>
+        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsp || ''} />
+      </Cell>
+    ),
+  },
+
+  {
     key: 'homozygote_count',
     heading: 'Number of Homozygotes',
     description: 'Number of individuals homozygous for alternate allele',
