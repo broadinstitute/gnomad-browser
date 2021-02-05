@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react'
+import React, { Suspense, lazy, useEffect, useState } from 'react'
 import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom'
@@ -6,12 +6,15 @@ import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'r
 import { isVariantId, normalizeRegionId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
+import Delayed from './Delayed'
 import DocumentTitle from './DocumentTitle'
 import ErrorBoundary from './ErrorBoundary'
 import HelpButton from './help/HelpButton'
 import HelpModal from './help/HelpModal'
 import NavBar from './NavBar'
-import Notifications from './Notifications'
+import Notifications, { showNotification } from './Notifications'
+import StatusMessage from './StatusMessage'
+import userPreferences from './userPreferences'
 
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
@@ -68,6 +71,23 @@ const PageLoading = () => {
 }
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    userPreferences.loadPreferences().then(
+      () => {
+        setIsLoading(false)
+      },
+      error => {
+        setIsLoading(false)
+        showNotification({
+          title: 'Error',
+          message: error.message,
+          status: 'error',
+        })
+      }
+    )
+  }, [])
+
   return (
     <Router>
       {/* On any navigation, send event to Google Analytics. */}
@@ -100,138 +120,146 @@ const App = () => {
       <Notifications />
 
       <ErrorBoundary>
-        <Suspense fallback={<PageLoading />}>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
+        {isLoading ? (
+          <Delayed>
+            <StatusMessage>Loading</StatusMessage>
+          </Delayed>
+        ) : (
+          <Suspense fallback={<PageLoading />}>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
 
-            <Route
-              exact
-              path="/gene/:gene/transcript/:transcriptId"
-              render={({ location, match }) => (
-                <Redirect
-                  to={{ ...location, pathname: `/transcript/${match.params.transcriptId}` }}
-                />
-              )}
-            />
-
-            <Route
-              exact
-              path="/gene/:gene"
-              render={({ location, match }) => {
-                const params = queryString.parse(location.search)
-                const datasetId = params.dataset || defaultDataset
-                return (
-                  <GenePageContainer datasetId={datasetId} geneIdOrSymbol={match.params.gene} />
-                )
-              }}
-            />
-
-            <Route
-              exact
-              path="/region/:regionId"
-              render={({ location, match }) => {
-                const params = queryString.parse(location.search)
-                const datasetId = params.dataset || defaultDataset
-                const regionId = normalizeRegionId(match.params.regionId)
-                return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
-              }}
-            />
-
-            <Route
-              exact
-              path="/transcript/:transcriptId"
-              render={({ location, match }) => {
-                const params = queryString.parse(location.search)
-                const datasetId = params.dataset || defaultDataset
-                return (
-                  <TranscriptPageContainer
-                    datasetId={datasetId}
-                    transcriptId={match.params.transcriptId}
+              <Route
+                exact
+                path="/gene/:gene/transcript/:transcriptId"
+                render={({ location, match }) => (
+                  <Redirect
+                    to={{ ...location, pathname: `/transcript/${match.params.transcriptId}` }}
                   />
-                )
-              }}
-            />
+                )}
+              />
 
-            <Route
-              exact
-              path="/variant/:variantId"
-              render={({ location, match }) => {
-                const queryParams = queryString.parse(location.search)
-                const datasetId = queryParams.dataset || defaultDataset
-                const variantIdOrRsId = match.params.variantId
-
-                if (datasetId.startsWith('gnomad_sv')) {
-                  return <StructuralVariantPage datasetId={datasetId} variantId={variantIdOrRsId} />
-                }
-
-                if (isVariantId(variantIdOrRsId)) {
-                  const normalizedVariantId = normalizeVariantId(variantIdOrRsId).replace(
-                    /^MT/,
-                    'M'
+              <Route
+                exact
+                path="/gene/:gene"
+                render={({ location, match }) => {
+                  const params = queryString.parse(location.search)
+                  const datasetId = params.dataset || defaultDataset
+                  return (
+                    <GenePageContainer datasetId={datasetId} geneIdOrSymbol={match.params.gene} />
                   )
-                  const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
-                  if (ref.length === alt.length && ref.length > 1) {
-                    return <MNVPage datasetId={datasetId} variantId={normalizedVariantId} />
-                  }
+                }}
+              />
 
-                  if (chrom === 'M') {
+              <Route
+                exact
+                path="/region/:regionId"
+                render={({ location, match }) => {
+                  const params = queryString.parse(location.search)
+                  const datasetId = params.dataset || defaultDataset
+                  const regionId = normalizeRegionId(match.params.regionId)
+                  return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
+                }}
+              />
+
+              <Route
+                exact
+                path="/transcript/:transcriptId"
+                render={({ location, match }) => {
+                  const params = queryString.parse(location.search)
+                  const datasetId = params.dataset || defaultDataset
+                  return (
+                    <TranscriptPageContainer
+                      datasetId={datasetId}
+                      transcriptId={match.params.transcriptId}
+                    />
+                  )
+                }}
+              />
+
+              <Route
+                exact
+                path="/variant/:variantId"
+                render={({ location, match }) => {
+                  const queryParams = queryString.parse(location.search)
+                  const datasetId = queryParams.dataset || defaultDataset
+                  const variantIdOrRsId = match.params.variantId
+
+                  if (datasetId.startsWith('gnomad_sv')) {
                     return (
-                      <MitochondrialVariantPage
-                        datasetId={datasetId}
-                        variantId={normalizedVariantId}
-                      />
+                      <StructuralVariantPage datasetId={datasetId} variantId={variantIdOrRsId} />
                     )
                   }
 
-                  return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
-                }
+                  if (isVariantId(variantIdOrRsId)) {
+                    const normalizedVariantId = normalizeVariantId(variantIdOrRsId).replace(
+                      /^MT/,
+                      'M'
+                    )
+                    const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
+                    if (ref.length === alt.length && ref.length > 1) {
+                      return <MNVPage datasetId={datasetId} variantId={normalizedVariantId} />
+                    }
 
-                if (isRsId(variantIdOrRsId)) {
-                  return <VariantPage datasetId={datasetId} rsId={variantIdOrRsId} />
-                }
+                    if (chrom === 'M') {
+                      return (
+                        <MitochondrialVariantPage
+                          datasetId={datasetId}
+                          variantId={normalizedVariantId}
+                        />
+                      )
+                    }
 
-                return (
-                  <Page>
-                    <DocumentTitle title="Invalid variant ID" />
-                    <PageHeading>Invalid Variant ID</PageHeading>
-                    <p>Variant IDs must be chrom-pos-ref-alt or rsIDs.</p>
-                  </Page>
-                )
-              }}
-            />
+                    return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
+                  }
 
-            <Route exact path="/about" component={AboutPage} />
+                  if (isRsId(variantIdOrRsId)) {
+                    return <VariantPage datasetId={datasetId} rsId={variantIdOrRsId} />
+                  }
 
-            <Route exact path="/downloads" component={DownloadsPage} />
+                  return (
+                    <Page>
+                      <DocumentTitle title="Invalid variant ID" />
+                      <PageHeading>Invalid Variant ID</PageHeading>
+                      <p>Variant IDs must be chrom-pos-ref-alt or rsIDs.</p>
+                    </Page>
+                  )
+                }}
+              />
 
-            <Route exact path="/terms" component={TermsPage} />
+              <Route exact path="/about" component={AboutPage} />
 
-            <Route exact path="/publications" component={PublicationsPage} />
+              <Route exact path="/downloads" component={DownloadsPage} />
 
-            <Route exact path="/contact" component={ContactPage} />
+              <Route exact path="/terms" component={TermsPage} />
 
-            <Route exact path="/faq" component={FAQPage} />
+              <Route exact path="/publications" component={PublicationsPage} />
 
-            <Route exact path="/mou" component={MOUPage} />
+              <Route exact path="/contact" component={ContactPage} />
 
-            <Route
-              exact
-              path="/help/:topic"
-              render={({ match }) => <HelpPage topicId={match.params.topic} />}
-            />
+              <Route exact path="/faq" component={FAQPage} />
 
-            <Route
-              exact
-              path="/awesome"
-              render={({ location }) => {
-                const params = queryString.parse(location.search)
-                return <SearchRedirectPage query={params.query} />
-              }}
-            />
+              <Route exact path="/mou" component={MOUPage} />
 
-            <Route component={PageNotFoundPage} />
-          </Switch>
-        </Suspense>
+              <Route
+                exact
+                path="/help/:topic"
+                render={({ match }) => <HelpPage topicId={match.params.topic} />}
+              />
+
+              <Route
+                exact
+                path="/awesome"
+                render={({ location }) => {
+                  const params = queryString.parse(location.search)
+                  return <SearchRedirectPage query={params.query} />
+                }}
+              />
+
+              <Route component={PageNotFoundPage} />
+            </Switch>
+          </Suspense>
+        )}
       </ErrorBoundary>
 
       <HelpModal />
