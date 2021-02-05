@@ -1,8 +1,7 @@
 import React, { Suspense, lazy, useEffect } from 'react'
 import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
-import styled from 'styled-components'
+import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
 import { isVariantId, normalizeRegionId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
@@ -36,72 +35,72 @@ const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
 const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
 const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
 
+// Other pages
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
 const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
 
-const MainPanel = styled.div`
-  width: 100%;
-`
-
 const defaultDataset = 'gnomad_r2_1'
+
+const scrollToAnchorOrStartOfPage = location => {
+  if (location.hash) {
+    setTimeout(() => {
+      const anchor = document.querySelector(`a${location.hash}`)
+      if (anchor) {
+        anchor.scrollIntoView()
+      } else {
+        document.body.scrollTop = 0
+      }
+    }, 0)
+  } else {
+    document.body.scrollTop = 0
+  }
+}
 
 // Hack to make anchor links work on the first navigation to a page
 // See https://github.com/broadinstitute/gnomad-browser/issues/685
 const PageLoading = () => {
   const location = useLocation()
   useEffect(() => () => {
-    if (location.hash) {
-      setTimeout(() => {
-        const anchor = document.querySelector(`a${location.hash}`)
-        if (anchor) {
-          anchor.scrollIntoView()
-        } else {
-          document.body.scrollTop = 0
-        }
-      }, 0)
-    } else {
-      document.body.scrollTop = 0
-    }
+    scrollToAnchorOrStartOfPage(location)
   })
   return null
 }
 
-const App = () => (
-  <div>
-    <Route
-      path="/"
-      render={({ location }) => {
-        if (window.gtag) {
-          window.gtag('config', window.gaTrackingId, {
-            page_path: location.pathname,
-          })
-        }
-        return null
-      }}
-    />
-    <Route
-      path="/"
-      render={({ location }) => {
-        if (location.hash) {
-          setTimeout(() => {
-            const anchor = document.querySelector(`a${location.hash}`)
-            if (anchor) {
-              anchor.scrollIntoView()
-            } else {
-              document.body.scrollTop = 0
-            }
-          }, 0)
-        } else {
-          document.body.scrollTop = 0
-        }
-      }}
-    />
-    <MainPanel>
+const App = () => {
+  return (
+    <Router>
+      {/* On any navigation, send event to Google Analytics. */}
+      <Route
+        path="/"
+        render={({ location }) => {
+          if (window.gtag) {
+            window.gtag('config', window.gaTrackingId, {
+              page_path: location.pathname,
+            })
+          }
+          return null
+        }}
+      />
+
+      {/**
+       * On any navigation, scroll to the anchor specified by location fragment (if any) or to the top of the page.
+       * If the page's module is already loaded, scrolling is handled by this router's render function. If the page's
+       * module is loaded by Suspense, scrolling is handled by the useEffect hook in the PageLoading component.
+       */}
+      <Route
+        path="/"
+        render={({ location }) => {
+          scrollToAnchorOrStartOfPage(location)
+        }}
+      />
+
       <NavBar />
+
       <ErrorBoundary>
         <Suspense fallback={<PageLoading />}>
           <Switch>
             <Route exact path="/" component={HomePage} />
+
             <Route
               exact
               path="/gene/:gene/transcript/:transcriptId"
@@ -111,6 +110,7 @@ const App = () => (
                 />
               )}
             />
+
             <Route
               exact
               path="/gene/:gene"
@@ -128,6 +128,7 @@ const App = () => (
                 )
               }}
             />
+
             <Route
               exact
               path="/region/:regionId"
@@ -146,6 +147,7 @@ const App = () => (
                 )
               }}
             />
+
             <Route
               exact
               path="/transcript/:transcriptId"
@@ -163,6 +165,7 @@ const App = () => (
                 )
               }}
             />
+
             <Route
               exact
               path="/variant/:variantId"
@@ -245,18 +248,27 @@ const App = () => (
                 )
               }}
             />
+
             <Route exact path="/about" component={AboutPage} />
+
             <Route exact path="/downloads" component={DownloadsPage} />
+
             <Route exact path="/terms" component={TermsPage} />
+
             <Route exact path="/publications" component={PublicationsPage} />
+
             <Route exact path="/contact" component={ContactPage} />
+
             <Route exact path="/faq" component={FAQPage} />
+
             <Route exact path="/mou" component={MOUPage} />
+
             <Route
               exact
               path="/help/:topic"
               render={({ match }) => <HelpPage topicId={match.params.topic} />}
             />
+
             <Route
               exact
               path="/awesome"
@@ -265,14 +277,17 @@ const App = () => (
                 return <SearchRedirectPage query={params.query} />
               }}
             />
+
             <Route component={PageNotFoundPage} />
           </Switch>
         </Suspense>
       </ErrorBoundary>
-    </MainPanel>
-    <HelpModal />
-    <HelpButton />
-  </div>
-)
+
+      <HelpModal />
+
+      <HelpButton />
+    </Router>
+  )
+}
 
 export default hot(App)

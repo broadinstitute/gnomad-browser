@@ -3,8 +3,8 @@ import 'whatwg-fetch'
 import React from 'react'
 import { render } from 'react-dom'
 
-import Main from './Main'
+import App from './App'
 
 const mount = document.getElementById('root')
 
-render(<Main />, mount)
+render(<App />, mount)
