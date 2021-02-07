@@ -1,9 +1,11 @@
 import { hideVisually } from 'polished'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import DownArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-down.svg'
 import UpArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-up.svg'
+import GripLines from '@fortawesome/fontawesome-free/svgs/solid/grip-lines.svg'
 
 import { Badge, Button, Modal, PrimaryButton } from '@gnomad/ui'
 
@@ -17,6 +19,7 @@ const ColumnListItem = styled.li`
   align-items: center;
   padding: 0.5em 0;
   border-bottom: 1px solid #ddd;
+  background: #fafafa;
 `
 
 const ColumnLabel = styled.label`
@@ -58,6 +61,14 @@ const getContextType = context => {
   return 'region'
 }
 
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+
+  return result
+}
+
 const TableColumnSelectionModal = ({
   availableColumns,
   context,
@@ -85,9 +96,23 @@ const TableColumnSelectionModal = ({
       .sort((colA, colB) => colA.sortOrder - colB.sortOrder)
   )
 
+  const onDragEnd = useCallback(
+    result => {
+      if (!result.destination) {
+        return
+      }
+
+      setColumnPreferences(
+        reorder(columnPreferences, result.source.index, result.destination.index)
+      )
+    },
+    [columnPreferences]
+  )
+
   return (
     <Modal
       id="table-column-selection"
+      size="large"
       title="Configure table"
       footer={
         <>
@@ -105,76 +130,103 @@ const TableColumnSelectionModal = ({
       onRequestClose={onCancel}
     >
       <p>
-        Select columns to include and their order in the variant table. The first column will always
-        be the variant ID.
+        Select columns to include in the variant table. Drag and drop or use the up/down buttons to
+        reorder columns. The first column in the table will always be the variant ID.
       </p>
-      <ColumnList>
-        {columnPreferences.map((column, columnIndex) => {
-          return (
-            <ColumnListItem key={column.key}>
-              <ColumnLabel htmlFor={`column-selection-${column.key}`}>
-                <input
-                  type="checkbox"
-                  id={`column-selection-${column.key}`}
-                  checked={column.isSelected}
-                  onChange={e => {
-                    setColumnPreferences(
-                      columnPreferences.map(c => {
-                        return {
-                          ...c,
-                          isSelected: c.key === column.key ? e.target.checked : c.isSelected,
-                        }
-                      })
-                    )
-                  }}
-                />
-                <div>
-                  {column.heading}
-                  <br />
-                  {column.description}
-                  {column.shouldShowInContext &&
-                    column.shouldShowInContext(context, contextType) === false &&
-                    column.contextNotes && (
-                      <>
-                        <br />
-                        <Badge level="info">Note</Badge> {column.contextNotes}
-                      </>
-                    )}
-                </div>
-              </ColumnLabel>
 
-              <ReorderColumnButton
-                disabled={columnIndex === 0}
-                onClick={() => {
-                  setColumnPreferences([
-                    ...columnPreferences.slice(0, columnIndex - 1),
-                    columnPreferences[columnIndex],
-                    columnPreferences[columnIndex - 1],
-                    ...columnPreferences.slice(columnIndex + 1),
-                  ])
-                }}
-              >
-                <span style={hideVisually()}>Move column up</span>
-                <img src={UpArrow} alt="" aria-hidden="true" />
-              </ReorderColumnButton>
-              <ReorderColumnButton
-                disabled={columnIndex === columnPreferences.length - 1}
-                onClick={() => {
-                  setColumnPreferences([
-                    ...columnPreferences.slice(0, columnIndex),
-                    columnPreferences[columnIndex + 1],
-                    columnPreferences[columnIndex],
-                    ...columnPreferences.slice(columnIndex + 2),
-                  ])
-                }}
-              >
-                <span style={hideVisually()}>Move column down</span>
-                <img src={DownArrow} alt="" aria-hidden="true" />
-              </ReorderColumnButton>
-            </ColumnListItem>
-          )
-        })}
-      </ColumnList>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {droppableProvided => (
+            <ColumnList ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
+              {columnPreferences.map((column, columnIndex) => {
+                return (
+                  <Draggable key={column.key} draggableId={column.key} index={columnIndex}>
+                    {draggableProvided => (
+                      <ColumnListItem
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.dragHandleProps}
+                        {...draggableProvided.draggableProps}
+                      >
+                        <img
+                          src={GripLines}
+                          alt=""
+                          aria-hidden="true"
+                          width={16}
+                          height={16}
+                          style={{ marginRight: '15px' }}
+                        />
+
+                        <ColumnLabel htmlFor={`column-selection-${column.key}`}>
+                          <input
+                            type="checkbox"
+                            id={`column-selection-${column.key}`}
+                            checked={column.isSelected}
+                            onChange={e => {
+                              setColumnPreferences(
+                                columnPreferences.map(c => {
+                                  return {
+                                    ...c,
+                                    isSelected:
+                                      c.key === column.key ? e.target.checked : c.isSelected,
+                                  }
+                                })
+                              )
+                            }}
+                          />
+                          <div>
+                            {column.heading}
+                            <br />
+                            {column.description}
+                            {column.shouldShowInContext &&
+                              column.shouldShowInContext(context, contextType) === false &&
+                              column.contextNotes && (
+                                <>
+                                  <br />
+                                  <Badge level="info">Note</Badge> {column.contextNotes}
+                                </>
+                              )}
+                          </div>
+                        </ColumnLabel>
+
+                        <ReorderColumnButton
+                          disabled={columnIndex === 0}
+                          onClick={() => {
+                            setColumnPreferences([
+                              ...columnPreferences.slice(0, columnIndex - 1),
+                              columnPreferences[columnIndex],
+                              columnPreferences[columnIndex - 1],
+                              ...columnPreferences.slice(columnIndex + 1),
+                            ])
+                          }}
+                        >
+                          <span style={hideVisually()}>Move column up</span>
+                          <img src={UpArrow} alt="" aria-hidden="true" />
+                        </ReorderColumnButton>
+                        <ReorderColumnButton
+                          disabled={columnIndex === columnPreferences.length - 1}
+                          onClick={() => {
+                            setColumnPreferences([
+                              ...columnPreferences.slice(0, columnIndex),
+                              columnPreferences[columnIndex + 1],
+                              columnPreferences[columnIndex],
+                              ...columnPreferences.slice(columnIndex + 2),
+                            ])
+                          }}
+                        >
+                          <span style={hideVisually()}>Move column down</span>
+                          <img src={DownArrow} alt="" aria-hidden="true" />
+                        </ReorderColumnButton>
+                      </ColumnListItem>
+                    )}
+                  </Draggable>
+                )
+              })}
+              {droppableProvided.placeholder}
+            </ColumnList>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <Button
         onClick={() =>
           setColumnPreferences(
