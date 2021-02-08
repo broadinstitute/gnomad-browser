@@ -87,13 +87,24 @@ const TableColumnSelectionModal = ({
         return {
           ...column,
           isSelected: selectionIndex !== -1,
-          sortOrder:
-            selectionIndex !== -1
-              ? selectionIndex
-              : selectedColumns.length + availableColumns.findIndex(c => c.key === column.key),
+          selectionIndex,
         }
       })
-      .sort((colA, colB) => colA.sortOrder - colB.sortOrder)
+      .sort((colA, colB) => {
+        const isColASelected = colA.selectionIndex !== -1
+        const isColBSelected = colB.selectionIndex !== -1
+
+        if (isColASelected && isColBSelected) {
+          return colA.selectionIndex - colB.selectionIndex
+        }
+        if (isColASelected && !isColBSelected) {
+          return -1
+        }
+        if (!isColASelected && isColBSelected) {
+          return 1
+        }
+        return colA.heading.localeCompare(colB.heading)
+      })
   )
 
   const onDragEnd = useCallback(
@@ -237,14 +248,24 @@ const TableColumnSelectionModal = ({
                 return {
                   ...column,
                   isSelected: selectionIndex !== -1,
-                  sortOrder:
-                    selectionIndex !== -1
-                      ? selectionIndex
-                      : defaultColumns.length +
-                        availableColumns.findIndex(c => c.key === column.key),
+                  selectionIndex,
                 }
               })
-              .sort((colA, colB) => colA.sortOrder - colB.sortOrder)
+              .sort((colA, colB) => {
+                const isColASelected = colA.selectionIndex !== -1
+                const isColBSelected = colB.selectionIndex !== -1
+
+                if (isColASelected && isColBSelected) {
+                  return colA.selectionIndex - colB.selectionIndex
+                }
+                if (isColASelected && !isColBSelected) {
+                  return -1
+                }
+                if (!isColASelected && isColBSelected) {
+                  return 1
+                }
+                return colA.heading.localeCompare(colB.heading)
+              })
           )
         }
       >
