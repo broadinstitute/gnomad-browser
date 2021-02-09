@@ -76,5 +76,5 @@ spec:
         - name: readviz
           gcePersistentDisk:
             fsType: ext4
-            pdName: readviz-data-2020-10-28
+            pdName: readviz-data-2021-02-08
             readOnly: true

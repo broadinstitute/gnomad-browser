@@ -3,7 +3,7 @@ const datasets = {
     genomes: {
       readsDirectory: '/readviz/datasets/gnomad_r3_1',
       publicPath: '/reads/gnomad_r3/genomes',
-      meta: 's45189_gs50_gn904',
+      meta: 's42811_gs50_gn857',
     },
   },
   gnomad_r2: {
