@@ -10,6 +10,7 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
         transcript_id=transcripts.transcript_id,
         chrom=transcripts.interval.start.seqname,
         strand=transcripts.strand,
+        # Subtract one to change from GTF's 1 based indices to BED's 0 based indices
         start=transcripts.interval.start.position - 1,
         stop=transcripts.interval.end.position - 1,
     )
@@ -18,6 +19,7 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
     exons = exons.select(
         transcript_id=exons.transcript_id,
         feature_type=exons.feature,
+        # Subtract one to change from GTF's 1 based indices to BED's 0 based indices
         start=exons.interval.start.position - 1,
         stop=exons.interval.end.position - 1,
     )
@@ -30,17 +32,19 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
     ds = transcripts.select(
         chrom=transcripts.chrom,
         chromStart=transcripts.start,
-        chromEnd=transcripts.stop,
+        # Add one because region end positions are exclusive in BED format
+        chromEnd=transcripts.stop + 1,
         name=transcripts.transcript_id,
         score=0,
         strand=transcripts.strand,
         thickStart=hl.rbind(
             transcripts.exons.filter(lambda exon: exon.feature_type == "CDS"),
-            lambda cds_exons: hl.if_else(hl.len(cds_exons) > 0, cds_exons.head().start, transcripts.start,),
+            lambda cds_exons: hl.if_else(hl.len(cds_exons) > 0, cds_exons.first().start, transcripts.start),
         ),
         thickEnd=hl.rbind(
             transcripts.exons.filter(lambda exon: exon.feature_type == "CDS"),
-            lambda cds_exons: hl.if_else(hl.len(cds_exons) > 0, hl.reversed(cds_exons).head().stop, transcripts.start,),
+            # Add one because region end positions are exclusive in BED format
+            lambda cds_exons: hl.if_else(hl.len(cds_exons) > 0, cds_exons.last().stop + 1, transcripts.start),
         ),
         itemRgb="0",
         blockCount=hl.len(transcripts.exons),
