@@ -72,6 +72,7 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
       gold_stars
       hgvsc
       hgvsp
+      in_gnomad
       major_consequence
       pos
       review_status
