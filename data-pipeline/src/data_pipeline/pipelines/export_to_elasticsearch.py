@@ -33,8 +33,10 @@ def add_variant_document_id(ds):
     return ds.annotate(document_id=compressed_variant_id(ds.locus, ds.alleles))
 
 
-def filter_clinvar(ds):
-    return ds.filter(hl.len(ds.variant_id) <= 32_766)
+def truncate_clinvar_variant_ids(ds):
+    return ds.annotate(
+        variant_id=hl.if_else(hl.len(ds.variant_id) >= 32_766, ds.variant_id[:32_632] + "...", ds.variant_id)
+    )
 
 
 DATASETS_CONFIG = {
@@ -260,7 +262,7 @@ DATASETS_CONFIG = {
     # ClinVar
     ##############################################################################################################
     "clinvar_grch38_variants": {
-        "get_table": lambda: filter_clinvar(
+        "get_table": lambda: truncate_clinvar_variant_ids(
             subset_table(
                 hl.read_table(
                     clinvar_grch38_pipeline.get_task(
@@ -285,7 +287,7 @@ DATASETS_CONFIG = {
         },
     },
     "clinvar_grch37_variants": {
-        "get_table": lambda: filter_clinvar(
+        "get_table": lambda: truncate_clinvar_variant_ids(
             subset_table(
                 hl.read_table(
                     clinvar_grch37_pipeline.get_task(
