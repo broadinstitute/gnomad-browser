@@ -98,6 +98,7 @@ const SUMMARY_QUERY_FIELDS = [
   'value.clinical_significance',
   'value.clinvar_variation_id',
   'value.gold_stars',
+  'value.in_gnomad',
   'value.major_consequence',
   'value.pos',
   'value.ref',

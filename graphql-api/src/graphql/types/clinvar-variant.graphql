@@ -10,6 +10,7 @@ type ClinVarVariant {
   gold_stars: Int!
   hgvsc: String
   hgvsp: String
+  in_gnomad: Boolean
   major_consequence: String
   review_status: String!
 }
