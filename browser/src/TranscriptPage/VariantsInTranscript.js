@@ -111,6 +111,7 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       gold_stars
       hgvsc
       hgvsp
+      in_gnomad
       major_consequence
       pos
       review_status

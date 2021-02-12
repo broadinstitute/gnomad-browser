@@ -179,6 +179,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
       gold_stars
       hgvsc
       hgvsp
+      in_gnomad
       major_consequence
       pos
       review_status

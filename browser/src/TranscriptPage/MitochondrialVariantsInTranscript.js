@@ -18,6 +18,7 @@ query MitochondrialVariantsInTranscript($transcriptId: String!, $datasetId: Data
       gold_stars
       hgvsc
       hgvsp
+      in_gnomad
       major_consequence
       pos
       review_status

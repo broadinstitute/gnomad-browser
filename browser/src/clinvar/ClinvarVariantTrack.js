@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { Button, CategoryFilterControl, List, ListItem } from '@gnomad/ui'
+import { Button, CategoryFilterControl, Checkbox, List, ListItem } from '@gnomad/ui'
 
 import InfoButton from '../help/InfoButton'
 import BinnedVariantsPlot from '../BinnedVariantsPlot'
@@ -16,6 +16,7 @@ const ClinvarVariantPropType = PropTypes.shape({
   gold_stars: PropTypes.number.isRequired,
   hgvsc: PropTypes.string,
   hgvsp: PropTypes.string,
+  in_gnomad: PropTypes.bool.isRequired,
   major_consequence: PropTypes.string,
   pos: PropTypes.number.isRequired,
   review_status: PropTypes.string.isRequired,
@@ -274,10 +275,13 @@ const ClinvarVariantTrack = ({ variants }) => {
     benign: true,
     other: true,
   })
+  const [showOnlyGnomad, setShowOnlyGnomad] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
 
   const filteredVariants = variants.filter(
-    v => includedCategories[clinvarVariantClinicalSignificanceCategory(v)]
+    v =>
+      includedCategories[clinvarVariantClinicalSignificanceCategory(v)] &&
+      (!showOnlyGnomad || v.in_gnomad)
   )
 
   return (
@@ -286,17 +290,25 @@ const ClinvarVariantTrack = ({ variants }) => {
       renderTopPanel={() => (
         <TopPanel>
           <div>
-            <CategoryFilterControl
-              categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
-                id: category,
-                label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
-                color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
-              }))}
-              categorySelections={includedCategories}
-              id="clinvar-track-included-categories"
-              onChange={setIncludedCategories}
-            />{' '}
-            <InfoButton topic="clinvar-variant-categories" />
+            <div style={{ marginBottom: '0.5em' }}>
+              <CategoryFilterControl
+                categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
+                  id: category,
+                  label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
+                }))}
+                categorySelections={includedCategories}
+                id="clinvar-track-included-categories"
+                onChange={setIncludedCategories}
+              />{' '}
+              <InfoButton topic="clinvar-variant-categories" />
+            </div>
+            <Checkbox
+              id="clinvar-track-in-gnomad"
+              label="Only show ClinVar variants that are in gnomAD"
+              checked={showOnlyGnomad}
+              onChange={setShowOnlyGnomad}
+            />
           </div>
 
           <Button
