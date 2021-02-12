@@ -18,7 +18,7 @@ pipeline.add_task(
     "prepare_gnomad_v3_variants",
     prepare_gnomad_v3_variants,
     "/gnomad_v3/gnomad_v3_variants_base.ht",
-    {"path": "gs://gnomad/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht"},
+    {"path": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht"},
 )
 
 pipeline.add_task(
