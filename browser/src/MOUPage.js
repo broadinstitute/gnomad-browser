@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Button, OrderedList as BaseOrderedList, ListItem } from '@gnomad/ui'
+import { Button, OrderedList, ListItem } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
@@ -20,10 +20,6 @@ const PrintButton = styled(Button)`
   @media print {
     display: none;
   }
-`
-
-const OrderedList = styled(BaseOrderedList)`
-  list-style-type: decimal;
 `
 
 export default () => (
