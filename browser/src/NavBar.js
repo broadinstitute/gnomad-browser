@@ -156,6 +156,10 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
+              {/* a instead of Link because the blog is a separate application */}
+              <a href="/blog/changelog/">Changelog</a>
+            </li>
+            <li>
               <Link to="/faq" onClick={this.closeMenu}>
                 FAQ
               </Link>
