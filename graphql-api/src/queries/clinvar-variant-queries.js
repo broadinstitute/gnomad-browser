@@ -7,14 +7,19 @@ const { fetchAllSearchResults, fetchIndexMetadata } = require('./helpers/elastic
 const { mergeOverlappingRegions } = require('./helpers/region-helpers')
 const { getConsequenceForContext } = require('./variant-datasets/shared/transcriptConsequence')
 
+const CLINVAR_VARIANT_INDICES = {
+  GRCh37: 'clinvar_grch37_variants',
+  GRCh38: 'clinvar_grch38_variants',
+}
+
 // ================================================================================================
 // Release date query
 // ================================================================================================
 
 const fetchClinvarReleaseDate = async (esClient) => {
   const metadata = await Promise.all([
-    fetchIndexMetadata(esClient, 'clinvar_grch37_variants'),
-    fetchIndexMetadata(esClient, 'clinvar_grch38_variants'),
+    fetchIndexMetadata(esClient, CLINVAR_VARIANT_INDICES.GRCh37),
+    fetchIndexMetadata(esClient, CLINVAR_VARIANT_INDICES.GRCh38),
   ])
 
   const releaseDates = metadata.map((m) => m.table_globals.clinvar_release_date)
@@ -32,7 +37,7 @@ const fetchClinvarReleaseDate = async (esClient) => {
 
 const countClinvarVariantsInRegion = async (esClient, referenceGenome, region) => {
   const response = await esClient.count({
-    index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
+    index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
     body: {
       query: {
@@ -62,7 +67,7 @@ const countClinvarVariantsInRegion = async (esClient, referenceGenome, region) =
 
 const fetchClinvarVariantById = async (esClient, referenceGenome, variantId) => {
   const response = await esClient.search({
-    index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
+    index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
     body: {
       query: {
@@ -86,6 +91,21 @@ const fetchClinvarVariantById = async (esClient, referenceGenome, variantId) => 
 // ================================================================================================
 // Shape variant summary
 // ================================================================================================
+
+const SUMMARY_QUERY_FIELDS = [
+  'value.alt',
+  'value.chrom',
+  'value.clinical_significance',
+  'value.clinvar_variation_id',
+  'value.gold_stars',
+  'value.major_consequence',
+  'value.pos',
+  'value.ref',
+  'value.reference_genome',
+  'value.review_status',
+  'value.transcript_consequences',
+  'value.variant_id',
+]
 
 const shapeVariantSummary = (context) => {
   const getConsequence = getConsequenceForContext(context)
@@ -128,23 +148,10 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
+    index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
     size: 10000,
-    _source: [
-      'value.alt',
-      'value.chrom',
-      'value.clinical_significance',
-      'value.clinvar_variation_id',
-      'value.gold_stars',
-      'value.major_consequence',
-      'value.pos',
-      'value.ref',
-      'value.reference_genome',
-      'value.review_status',
-      'value.transcript_consequences',
-      'value.variant_id',
-    ],
+    _source: SUMMARY_QUERY_FIELDS,
     body: {
       query: {
         bool: {
@@ -166,23 +173,10 @@ const fetchClinvarVariantsByGene = async (esClient, referenceGenome, gene) => {
 
 const fetchClinvarVariantsByRegion = async (esClient, referenceGenome, region) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
+    index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
     size: 10000,
-    _source: [
-      'value.alt',
-      'value.chrom',
-      'value.clinical_significance',
-      'value.clinvar_variation_id',
-      'value.gold_stars',
-      'value.major_consequence',
-      'value.pos',
-      'value.ref',
-      'value.reference_genome',
-      'value.review_status',
-      'value.transcript_consequences',
-      'value.variant_id',
-    ],
+    _source: SUMMARY_QUERY_FIELDS,
     body: {
       query: {
         bool: {
@@ -234,23 +228,10 @@ const fetchClinvarVariantsByTranscript = async (esClient, referenceGenome, trans
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: `clinvar_${referenceGenome.toLowerCase()}_variants`,
+    index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
     size: 10000,
-    _source: [
-      'value.alt',
-      'value.chrom',
-      'value.clinical_significance',
-      'value.clinvar_variation_id',
-      'value.gold_stars',
-      'value.major_consequence',
-      'value.pos',
-      'value.ref',
-      'value.reference_genome',
-      'value.review_status',
-      'value.transcript_consequences',
-      'value.variant_id',
-    ],
+    _source: SUMMARY_QUERY_FIELDS,
     body: {
       query: {
         bool: {
