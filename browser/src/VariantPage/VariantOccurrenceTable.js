@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, TooltipAnchor } from '@gnomad/ui'
+import { Badge, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
 import { labelForDataset } from '../datasets'
@@ -49,14 +49,6 @@ const renderGnomadVariantFlag = (variant, exomeOrGenome) => {
   return filters.map(filter => <QCFilter key={filter} filter={filter} />)
 }
 
-const FilteringAlleleFrequencyValue = styled.span`
-  border-bottom: 1px dashed #000;
-
-  @media print {
-    border-bottom: none;
-  }
-`
-
 const FilteringAlleleFrequencyPopulation = styled.div`
   display: none;
   white-space: nowrap;
@@ -78,7 +70,7 @@ const FilteringAlleleFrequency = ({ popmax, popmax_population: popmaxPopulation 
   return (
     <span>
       <TooltipAnchor tooltip={GNOMAD_POPULATION_NAMES[popmaxPopulation.toLowerCase()]}>
-        <FilteringAlleleFrequencyValue>{popmax.toPrecision(4)}</FilteringAlleleFrequencyValue>
+        <TooltipHint>{popmax.toPrecision(4)}</TooltipHint>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>
         {GNOMAD_POPULATION_NAMES[popmaxPopulation.toLowerCase()]}

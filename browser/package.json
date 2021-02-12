@@ -19,7 +19,7 @@
     "@gnomad/track-regions": "^1.0.0",
     "@gnomad/track-transcripts": "^1.0.0",
     "@gnomad/track-variants": "^1.0.0",
-    "@gnomad/ui": "^1.0.0",
+    "@gnomad/ui": "^1.1.1",
     "@hot-loader/react-dom": "^16.13.0",
     "@vx/axis": "^0.0.197",
     "core-js": "3.5.0",

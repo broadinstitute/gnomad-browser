@@ -1035,10 +1035,10 @@
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
 
-"@gnomad/ui@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/ui/-/ui-1.0.0.tgz#4a8f493bacae2eaad55b86341aa66dde1239a4f4"
-  integrity sha512-N7SmocWakxofqyREQvTPXcNKuGEXqzQd16Di0f/LIow2FLo/1kA98g1zSYzPosh2KHs5mVuyhYGpi+g4j3HKKw==
+"@gnomad/ui@^1.0.0", "@gnomad/ui@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@gnomad/ui/-/ui-1.1.1.tgz#c4ca40f98bf6914ab2bd79446f4a115e4e512668"
+  integrity sha512-T8GlZnjHphsMOs8uD8DKoaC7WxrUW2TDx/VRwUpYGDroJPa7PmGLAR7K/9IgLjbakSsOgVumzViNHUb4JAYd3A==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.8.1"
     lodash.debounce "^4.0.8"
