@@ -21,11 +21,11 @@ spec:
           env:
             - name: API_URL
               value: http://$(API_SERVICE)
-            - name: INGRESS_IP
+            - name: PROXY_IPS
               valueFrom:
                 configMapKeyRef:
-                  name: ingress-ip
-                  key: ip
+                  name: proxy-ips
+                  key: ips
           ports:
             - name: http
               containerPort: 80

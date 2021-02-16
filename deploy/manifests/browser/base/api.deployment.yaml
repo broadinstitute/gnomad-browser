@@ -31,7 +31,10 @@ spec:
                   name: gnomad-es-elastic-user  # FIXME: This depends on using "gnomad" as the ES cluster name
                   key: elastic
             - name: TRUST_PROXY
-              value: '3'
+              valueFrom:
+                configMapKeyRef:
+                  name: proxy-ips
+                  key: ips
             - name: MAX_CONCURRENT_ES_REQUESTS
               value: '10'
             - name: MAX_QUEUED_ES_REQUESTS

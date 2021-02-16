@@ -20,11 +20,11 @@ spec:
         - name: web
           image: gnomad-blog
           env:
-            - name: INGRESS_IP
+            - name: PROXY_IPS
               valueFrom:
                 configMapKeyRef:
-                  name: ingress-ip
-                  key: ip
+                  name: proxy-ips
+                  key: ips
           resources:
             requests:
               cpu: 100m
