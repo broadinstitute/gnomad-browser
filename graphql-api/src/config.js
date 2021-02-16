@@ -1,5 +1,24 @@
 const { env } = process
 
+// The behavior of Express' trust proxy setting varies based on the type of the argument.
+// Parse the environment variable string into the appropriate type.
+// https://expressjs.com/en/guide/behind-proxies.html
+const parseProxyConfig = (config) => {
+  if (config.toLowerCase() === 'true') {
+    return true
+  }
+  if (config.toLowerCase() === 'false') {
+    return false
+  }
+
+  const isNumber = !Number.isNaN(Number(config))
+  if (isNumber) {
+    return Number(config)
+  }
+
+  return config
+}
+
 const config = {
   // Elasticsearch
   ELASTICSEARCH_URL: env.ELASTICSEARCH_URL,
@@ -12,7 +31,7 @@ const config = {
   CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
   // Web server
   PORT: JSON.parse(env.PORT || '8000'),
-  TRUST_PROXY: JSON.parse(env.TRUST_PROXY || 'false'),
+  TRUST_PROXY: parseProxyConfig(env.TRUST_PROXY || 'false'),
   // Rate limiting
   MAX_CONCURRENT_ELASTICSEARCH_REQUESTS: JSON.parse(env.MAX_CONCURRENT_ES_REQUESTS || '100'),
   MAX_QUEUED_ELASTICSEARCH_REQUESTS: JSON.parse(env.MAX_QUEUED_ES_REQUESTS || '250'),

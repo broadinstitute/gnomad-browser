@@ -226,13 +226,32 @@ def create_cluster() -> None:
 
 
 def create_configmap():
-    # Store the IP address used for the ingress load balancer in a configmap so that the browser
-    # can use it for determining the real client IP.
+    # Store a list of all IP addresses involved in proxying requests.
+    # These are used for determining the real client IP.
     ingress_ip = gcloud(
         ["compute", "addresses", "describe", config.ip_address_name, "--global", "--format=value(address)"]
     )
 
-    kubectl(["create", "configmap", "ingress-ip", f"--from-literal=ip={ingress_ip}"])
+    # Private/internal networks
+    # These ranges match those used for the gnomad-gke subnet.
+    # 127.0.0.1
+    # 192.168.0.0/20
+    # 10.4.0.0/14
+    # 10.0.32.0/20
+    #
+    # Internal IPs for GCE load balancers
+    # https://cloud.google.com/load-balancing/docs/https#how-connections-work
+    # 35.191.0.0/16
+    # 130.211.0.0/22
+    ips = f"127.0.0.1,192.168.0.0/20,10.4.0.0/14,10.0.32.0/20,35.191.0.0/16,130.211.0.0/22,{ingress_ip}"
+    kubectl(
+        [
+            "create",
+            "configmap",
+            "proxy-ips",
+            f"--from-literal=ips={ips}",
+        ]
+    )
 
 
 def create_node_pool(node_pool_name: str, node_pool_args: typing.List[str]) -> None:

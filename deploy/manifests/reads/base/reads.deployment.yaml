@@ -19,11 +19,11 @@ spec:
         - name: web
           image: gnomad-reads-server
           env:
-            - name: INGRESS_IP
+            - name: PROXY_IPS
               valueFrom:
                 configMapKeyRef:
-                  name: ingress-ip
-                  key: ip
+                  name: proxy-ips
+                  key: ips
           imagePullPolicy: Always
           ports:
             - name: http
@@ -50,7 +50,10 @@ spec:
             - name: PORT
               value: '8000'
             - name: TRUST_PROXY
-              value: '3'
+              valueFrom:
+                configMapKeyRef:
+                  name: proxy-ips
+                  key: ips
           ports:
             - name: http
               containerPort: 8000
