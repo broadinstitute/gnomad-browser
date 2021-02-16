@@ -96,7 +96,7 @@ const variantTableColumns = [
     heading: 'Clinical Significance',
     description: 'ClinVar clinical significance',
     grow: 1,
-    minWidth: 200,
+    minWidth: 150,
     compareFunction: makeStringCompareFunction('clinical_significance'),
     getSearchTerms: variant => variant.clinical_significance,
     render: (variant, _, { highlightWords }) => (
