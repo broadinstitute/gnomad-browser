@@ -18,6 +18,7 @@ import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailProp
 import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGenotypeQualityMetrics'
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
 import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
+import MitochondrialVariantPopulationFrequenciesTable from './MitochondrialVariantPopulationFrequenciesTable'
 import MitochondrialVariantReferenceList from './MitochondrialVariantReferenceList'
 import MitochondrialVariantSiteQualityMetrics from './MitochondrialVariantSiteQualityMetrics'
 import MitochondrialVariantTranscriptConsequenceList from './MitochondrialVariantTranscriptConsequenceList'
@@ -136,6 +137,10 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
       </ResponsiveSection>
     </Wrapper>
     <Section>
+      <h2>Population Frequencies</h2>
+      <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
+    </Section>
+    <Section>
       <h2>
         Haplogroup Frequencies <InfoButton topic="mt-haplogroup_frequencies" />
       </h2>
@@ -252,6 +257,12 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referen
     mitotip_trna_prediction
     pon_ml_probability_of_pathogenicity
     pon_mt_trna_prediction
+    populations {
+      id
+      ac_het
+      ac_hom
+      an
+    }
     pos
     ref
     reference_genome

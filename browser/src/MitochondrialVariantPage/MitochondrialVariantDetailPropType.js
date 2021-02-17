@@ -18,6 +18,14 @@ const MitochondrialVariantDetailPropType = PropTypes.shape({
     })
   ).isRequired,
   max_heteroplasmy: PropTypes.number,
+  populations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      an: PropTypes.number.isRequired,
+      ac_het: PropTypes.number.isRequired,
+      ac_hom: PropTypes.number.isRequired,
+    })
+  ),
   pos: PropTypes.number.isRequired,
   ref: PropTypes.string.isRequired,
   reference_genome: PropTypes.string.isRequired,

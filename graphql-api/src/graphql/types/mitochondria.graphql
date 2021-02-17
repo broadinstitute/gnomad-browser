@@ -25,6 +25,14 @@ type MitochondrialVariantAgeDistribution {
   hom: Histogram
 }
 
+type MitochondrialVariantPopulation {
+  id: String!
+  an: Int!
+  ac_het: Int!
+  ac_hom: Int!
+  heteroplasmy_distribution: Histogram!
+}
+
 type MitochondrialVariantHaplogroup {
   id: String
   an: Float
@@ -70,6 +78,7 @@ type MitochondrialVariantDetails {
   mitotip_trna_prediction: String
   pon_ml_probability_of_pathogenicity: Float
   pon_mt_trna_prediction: String
+  populations: [MitochondrialVariantPopulation!]!
   pos: Int!
   ref: String!
   reference_genome: ReferenceGenomeId!
