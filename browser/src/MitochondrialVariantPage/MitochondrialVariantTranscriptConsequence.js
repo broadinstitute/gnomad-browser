@@ -132,6 +132,20 @@ HmtVarInfo.propTypes = {
   }).isRequired,
 }
 
+const MITOTIP_TRNA_PREDICTIONS = {
+  likely_benign: 'Likely benign',
+  possibly_benign: 'Possibly benign',
+  possibly_pathogenic: 'Possibly pathogenic',
+  likely_pathogenic: 'Likely pathogenic',
+}
+
+const PON_MT_TRNA_PREDICTIONS = {
+  neutral: 'Neutral',
+  likely_neutral: 'Likely neutral',
+  likely_pathogenic: 'Likely pathogenic',
+  pathogenic: 'Pathogenic',
+}
+
 const MitochondrialVariantTranscriptConsequence = ({ consequence, variant }) => {
   if (variant.mitotip_trna_prediction || variant.pon_mt_trna_prediction) {
     return (
@@ -144,7 +158,9 @@ const MitochondrialVariantTranscriptConsequence = ({ consequence, variant }) => 
               </ExternalLink>
             </AttributeName>
             <AttributeValue>
-              {variant.mitotip_trna_prediction} ({variant.mitotip_score.toPrecision(3)})
+              {MITOTIP_TRNA_PREDICTIONS[variant.mitotip_trna_prediction] ||
+                variant.mitotip_trna_prediction}{' '}
+              ({variant.mitotip_score.toPrecision(3)})
             </AttributeValue>
           </div>
         )}
@@ -156,8 +172,9 @@ const MitochondrialVariantTranscriptConsequence = ({ consequence, variant }) => 
               </ExternalLink>
             </AttributeName>
             <AttributeValue>
-              {variant.pon_mt_trna_prediction} (
-              {variant.pon_ml_probability_of_pathogenicity.toPrecision(3)})
+              {PON_MT_TRNA_PREDICTIONS[variant.pon_mt_trna_prediction] ||
+                variant.pon_mt_trna_prediction}{' '}
+              ({variant.pon_ml_probability_of_pathogenicity.toPrecision(3)})
             </AttributeValue>
           </div>
         )}
