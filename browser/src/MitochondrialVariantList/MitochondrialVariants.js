@@ -108,7 +108,7 @@ class MitochondrialVariants extends Component {
       searchText: '',
     }
 
-    const defaultSortKey = 'pos'
+    const defaultSortKey = 'variant_id'
     const defaultSortOrder = 'ascending'
 
     const renderedVariants = sortMitochondrialVariants(
