@@ -36,14 +36,14 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component {
 
   state = {
     showAC0Haplogroups: false,
-    sortBy: 'af',
+    sortBy: 'af_hom',
     sortAscending: false,
   }
 
   setSortBy(sortBy) {
     this.setState(state => ({
       sortBy,
-      sortAscending: sortBy === state.sortBy ? !state.sortAscending : state.sortAscending,
+      sortAscending: sortBy === state.sortBy ? !state.sortAscending : false,
     }))
   }
 
