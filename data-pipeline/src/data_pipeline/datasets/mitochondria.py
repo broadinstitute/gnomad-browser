@@ -69,6 +69,21 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         common_low_heteroplasmy=ds.common_low_heteroplasmy,
         heteroplasmy_distribution=ds.hl_hist,
         max_heteroplasmy=ds.max_hl,
+        # Populations
+        populations=hl.sorted(
+            hl.range(hl.len(ds.globals.pop_order)).map(
+                lambda pop_index: hl.struct(
+                    id=ds.globals.pop_order[pop_index],
+                    an=ds.pop_AN[pop_index],
+                    ac_het=ds.pop_AC_het[pop_index],
+                    ac_hom=ds.pop_AC_hom[pop_index],
+                    heteroplasmy_distribution=hl.struct(
+                        bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.pop_hl_hist[pop_index], n_smaller=0, n_larger=0,
+                    ),
+                )
+            ),
+            key=lambda pop: pop.id,
+        ),
         # Haplogroups
         hapmax_af_hom=ds.hapmax_AF_hom,
         hapmax_af_het=ds.hapmax_AF_het,

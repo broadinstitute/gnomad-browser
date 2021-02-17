@@ -8,6 +8,8 @@ const { mergeOverlappingRegions } = require('../helpers/region-helpers')
 const { getFlagsForContext } = require('../variant-datasets/shared/flags')
 const { getConsequenceForContext } = require('../variant-datasets/shared/transcriptConsequence')
 
+const GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX = 'gnomad_v3_mitochondrial_variants'
+
 // ================================================================================================
 // Variant query
 // ================================================================================================
@@ -15,7 +17,7 @@ const { getConsequenceForContext } = require('../variant-datasets/shared/transcr
 const fetchMitochondrialVariantById = async (esClient, variantIdOrRsid) => {
   const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
   const response = await esClient.search({
-    index: 'gnomad_v3_mitochondrial_variants',
+    index: GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -120,7 +122,7 @@ const fetchMitochondrialVariantsByGene = async (esClient, gene) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v3_mitochondrial_variants',
+    index: GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: FIELDS_TO_FETCH,
@@ -145,7 +147,7 @@ const fetchMitochondrialVariantsByGene = async (esClient, gene) => {
 
 const fetchMitochondrialVariantsByRegion = async (esClient, region) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v3_mitochondrial_variants',
+    index: GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: FIELDS_TO_FETCH,
