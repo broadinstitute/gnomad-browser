@@ -464,21 +464,21 @@ def import_exac_vcf(path):
             ),
             quality_metrics=hl.struct(
                 genotype_depth=hl.struct(
-                    all=hl.struct(
+                    all_raw=hl.struct(
                         bin_edges=QUALITY_METRIC_HISTOGRAM_BIN_EDGES,
                         bin_freq=ds.info.DP_HIST.all.split(r"\|").map(hl.float),
                     ),
-                    alt=hl.struct(
+                    alt_raw=hl.struct(
                         bin_edges=QUALITY_METRIC_HISTOGRAM_BIN_EDGES,
                         bin_freq=ds.info.DP_HIST.alt.split(r"\|").map(hl.float),
                     ),
                 ),
                 genotype_quality=hl.struct(
-                    all=hl.struct(
+                    all_raw=hl.struct(
                         bin_edges=QUALITY_METRIC_HISTOGRAM_BIN_EDGES,
                         bin_freq=ds.info.GQ_HIST.all.split(r"\|").map(hl.float),
                     ),
-                    alt=hl.struct(
+                    alt_raw=hl.struct(
                         bin_edges=QUALITY_METRIC_HISTOGRAM_BIN_EDGES,
                         bin_freq=ds.info.GQ_HIST.alt.split(r"\|").map(hl.float),
                     ),

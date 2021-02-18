@@ -181,12 +181,25 @@ def prepare_gnomad_v3_variants(path):
             filters=ds.filters,
             quality_metrics=hl.struct(
                 allele_balance=hl.struct(
-                    alt=ds.qual_hists.ab_hist_alt.annotate(
+                    alt_adj=ds.qual_hists.ab_hist_alt.annotate(
                         bin_edges=ds.qual_hists.ab_hist_alt.bin_edges.map(lambda n: hl.float(hl.format("%.3f", n)))
-                    )
+                    ),
+                    alt_raw=ds.raw_qual_hists.ab_hist_alt.annotate(
+                        bin_edges=ds.raw_qual_hists.ab_hist_alt.bin_edges.map(lambda n: hl.float(hl.format("%.3f", n)))
+                    ),
                 ),
-                genotype_depth=hl.struct(all=ds.qual_hists.dp_hist_all, alt=ds.qual_hists.dp_hist_alt),
-                genotype_quality=hl.struct(all=ds.qual_hists.gq_hist_all, alt=ds.qual_hists.gq_hist_alt),
+                genotype_depth=hl.struct(
+                    all_adj=ds.qual_hists.dp_hist_all,
+                    all_raw=ds.raw_qual_hists.dp_hist_all,
+                    alt_adj=ds.qual_hists.dp_hist_alt,
+                    alt_raw=ds.raw_qual_hists.dp_hist_alt,
+                ),
+                genotype_quality=hl.struct(
+                    all_adj=ds.qual_hists.gq_hist_all,
+                    all_raw=ds.raw_qual_hists.gq_hist_all,
+                    alt_adj=ds.qual_hists.gq_hist_alt,
+                    alt_raw=ds.raw_qual_hists.gq_hist_alt,
+                ),
                 site_quality_metrics=[hl.struct(metric="SiteQuality", value=hl.float(nullify_nan(ds.info.QUALapprox)))]
                 + [
                     hl.struct(metric=metric, value=hl.float(nullify_nan(ds.info[metric])))
