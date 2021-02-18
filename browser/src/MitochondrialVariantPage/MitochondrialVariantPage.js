@@ -8,7 +8,6 @@ import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import Link from '../Link'
 import Query from '../Query'
 import TableWrapper from '../TableWrapper'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
@@ -130,18 +129,10 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
         <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>Age Distribution</h2>
+        <h2>
+          Age Distribution <InfoButton topic="age" />
+        </h2>
         <MitochondrialVariantAgeDistribution variant={variant} />
-        <p>
-          <Link
-            to={{
-              pathname: '/faq',
-              hash: '#what-is-the-age-distribution-in-gnomad',
-            }}
-          >
-            See the FAQ for more information on age data.
-          </Link>
-        </p>
       </ResponsiveSection>
     </Wrapper>
     <Section>
