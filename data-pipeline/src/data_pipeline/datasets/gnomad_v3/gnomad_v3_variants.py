@@ -231,12 +231,12 @@ def prepare_gnomad_v3_variants(path):
 
     ds = ds.drop("region_flag")
 
-    ###############
-    # Annotations #
-    ###############
+    ########################
+    # In silico predictors #
+    ########################
 
     ds = ds.transmute(
-        annotations=hl.struct(cadd=ds.cadd, primate_ai=ds.primate_ai, revel=ds.revel, splice_ai=ds.splice_ai)
+        in_silico_predictors=hl.struct(cadd=ds.cadd, primate_ai=ds.primate_ai, revel=ds.revel, splice_ai=ds.splice_ai)
     )
 
     ################

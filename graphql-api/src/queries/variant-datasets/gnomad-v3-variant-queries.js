@@ -136,28 +136,30 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     })
   }
 
-  const inSilicoPredictors = []
-  if (variant.annotations.revel.revel_score != null) {
-    inSilicoPredictors.push({
+  const inSilicoPredictorsList = []
+  // TODO: An older version of the data pipeline stored these values under 'annotations'
+  const inSilicoPredictors = variant.annotations || variant.in_silico_predictors
+  if (inSilicoPredictors.revel.revel_score != null) {
+    inSilicoPredictorsList.push({
       id: 'revel',
-      value: variant.annotations.revel.revel_score.toPrecision(3),
+      value: inSilicoPredictors.revel.revel_score.toPrecision(3),
     })
   }
-  if (variant.annotations.cadd.phred != null) {
-    inSilicoPredictors.push({ id: 'cadd', value: variant.annotations.cadd.phred.toPrecision(3) })
+  if (inSilicoPredictors.cadd.phred != null) {
+    inSilicoPredictorsList.push({ id: 'cadd', value: inSilicoPredictors.cadd.phred.toPrecision(3) })
   }
-  if (variant.annotations.splice_ai.max_ds != null) {
-    inSilicoPredictors.push({
+  if (inSilicoPredictors.splice_ai.max_ds != null) {
+    inSilicoPredictorsList.push({
       id: 'splice_ai',
-      value: `${variant.annotations.splice_ai.max_ds.toPrecision(3)} (${
-        variant.annotations.splice_ai.splice_consequence
+      value: `${inSilicoPredictors.splice_ai.max_ds.toPrecision(3)} (${
+        inSilicoPredictors.splice_ai.splice_consequence
       })`,
     })
   }
-  if (variant.annotations.primate_ai.primate_ai_score != null) {
-    inSilicoPredictors.push({
+  if (inSilicoPredictors.primate_ai.primate_ai_score != null) {
+    inSilicoPredictorsList.push({
       id: 'primate_ai',
-      value: variant.annotations.primate_ai.primate_ai_score.toPrecision(3),
+      value: inSilicoPredictors.primate_ai.primate_ai_score.toPrecision(3),
     })
   }
 
@@ -187,7 +189,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     transcript_consequences: (variant.transcript_consequences || []).filter((csq) =>
       csq.gene_id.startsWith('ENSG')
     ),
-    in_silico_predictors: inSilicoPredictors,
+    in_silico_predictors: inSilicoPredictorsList,
   }
 }
 
