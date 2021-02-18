@@ -7,6 +7,7 @@ import { Page } from '@gnomad/ui'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import InfoButton from '../help/InfoButton'
 import Query from '../Query'
 import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
@@ -81,7 +82,9 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <StructuralVariantPopulationsTable variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>Age Distribution</h2>
+        <h2>
+          Age Distribution <InfoButton topic="age" />
+        </h2>
         {variant.age_distribution ? (
           <React.Fragment>
             {datasetId !== 'gnomad_sv_r2_1' && (
