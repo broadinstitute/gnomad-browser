@@ -18,15 +18,15 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
     for pop_id in POPULATIONS:
         # Genomes do not have SAS data
         if f"{subset}_{pop_id}" not in freq_index_dict:
-            populations.append(hl.struct(id=pop_id.upper(), ac=0, an=0, hemizygote_count=0, homozygote_count=0))
-            populations.append(hl.struct(id=f"{pop_id.upper()}_XX", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
-            populations.append(hl.struct(id=f"{pop_id.upper()}_XY", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
+            populations.append(hl.struct(id=pop_id, ac=0, an=0, hemizygote_count=0, homozygote_count=0))
+            populations.append(hl.struct(id=f"{pop_id}_XX", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
+            populations.append(hl.struct(id=f"{pop_id}_XY", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
 
             continue
 
         populations.append(
             hl.struct(
-                id=pop_id.upper(),
+                id=pop_id,
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}"]].AN,
                 hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC, 0),
@@ -39,11 +39,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
             if f"{subset}_{pop_id}_{sub_pop_id}" not in freq_index_dict:
                 populations.append(
                     hl.struct(
-                        id=f"{pop_id.upper()}_{sub_pop_id.upper()}",
-                        ac=0,
-                        an=0,
-                        hemizygote_count=hl.null(hl.tint),
-                        homozygote_count=0,
+                        id=f"{pop_id}_{sub_pop_id}", ac=0, an=0, hemizygote_count=hl.null(hl.tint), homozygote_count=0,
                     )
                 )
 
@@ -51,7 +47,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
             populations.append(
                 hl.struct(
-                    id=f"{pop_id.upper()}_{sub_pop_id.upper()}",
+                    id=f"{pop_id}_{sub_pop_id}",
                     ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}_{sub_pop_id}"]].AC,
                     an=ds.freq[freq_index_dict[f"{subset}_{pop_id}_{sub_pop_id}"]].AN,
                     hemizygote_count=hl.null(hl.tint),
@@ -61,7 +57,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
         populations.append(
             hl.struct(
-                id=f"{pop_id.upper()}_XX",
+                id=f"{pop_id}_XX",
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}_female"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}_female"]].AN,
                 hemizygote_count=0,
@@ -71,7 +67,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
         populations.append(
             hl.struct(
-                id=f"{pop_id.upper()}_XY",
+                id=f"{pop_id}_XY",
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AN,
                 hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC, 0),
@@ -145,8 +141,7 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                             hl.array(
                                 [
                                     hl.struct(
-                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf95,
-                                        population=pop_id.upper(),
+                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf95, population=pop_id,
                                     )
                                     for pop_id in (
                                         ["afr", "amr", "eas", "nfe"] + (["sas"] if exome_or_genome == "exome" else [])
@@ -166,8 +161,7 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                             hl.array(
                                 [
                                     hl.struct(
-                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf99,
-                                        population=pop_id.upper(),
+                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf99, population=pop_id,
                                     )
                                     for pop_id in (
                                         ["afr", "amr", "eas", "nfe"] + (["sas"] if exome_or_genome == "exome" else [])
