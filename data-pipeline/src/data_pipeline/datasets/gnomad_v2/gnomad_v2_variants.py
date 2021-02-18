@@ -19,12 +19,8 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
         # Genomes do not have SAS data
         if f"{subset}_{pop_id}" not in freq_index_dict:
             populations.append(hl.struct(id=pop_id.upper(), ac=0, an=0, hemizygote_count=0, homozygote_count=0))
-            populations.append(
-                hl.struct(id=f"{pop_id.upper()}_FEMALE", ac=0, an=0, hemizygote_count=0, homozygote_count=0)
-            )
-            populations.append(
-                hl.struct(id=f"{pop_id.upper()}_MALE", ac=0, an=0, hemizygote_count=0, homozygote_count=0)
-            )
+            populations.append(hl.struct(id=f"{pop_id.upper()}_XX", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
+            populations.append(hl.struct(id=f"{pop_id.upper()}_XY", ac=0, an=0, hemizygote_count=0, homozygote_count=0))
 
             continue
 
@@ -65,7 +61,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
         populations.append(
             hl.struct(
-                id=f"{pop_id.upper()}_FEMALE",
+                id=f"{pop_id.upper()}_XX",
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}_female"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}_female"]].AN,
                 hemizygote_count=0,
@@ -75,7 +71,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
         populations.append(
             hl.struct(
-                id=f"{pop_id.upper()}_MALE",
+                id=f"{pop_id.upper()}_XY",
                 ac=ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC,
                 an=ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AN,
                 hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_{pop_id}_male"]].AC, 0),
@@ -85,7 +81,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
     populations.append(
         hl.struct(
-            id="FEMALE",
+            id="XX",
             ac=ds.freq[freq_index_dict[f"{subset}_female"]].AC,
             an=ds.freq[freq_index_dict[f"{subset}_female"]].AN,
             hemizygote_count=0,
@@ -95,7 +91,7 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
 
     populations.append(
         hl.struct(
-            id="MALE",
+            id="XY",
             ac=ds.freq[freq_index_dict[f"{subset}_male"]].AC,
             an=ds.freq[freq_index_dict[f"{subset}_male"]].AN,
             hemizygote_count=hl.if_else(ds.nonpar, ds.freq[freq_index_dict[f"{subset}_male"]].AC, 0),
