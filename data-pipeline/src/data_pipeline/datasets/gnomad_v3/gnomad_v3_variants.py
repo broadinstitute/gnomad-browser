@@ -106,7 +106,8 @@ def prepare_gnomad_v3_variants(path):
                                 ),
                                 homozygote_count=freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count,
                             )
-                            for pop, sex in itertools.product(subset_populations[subset], [None, "XX", "XY"])
+                            for pop, sex in list(itertools.product(subset_populations[subset], [None, "XX", "XY"]))
+                            + [(None, "XX"), (None, "XY")]
                         ],
                     )
                     for subset in subsets
