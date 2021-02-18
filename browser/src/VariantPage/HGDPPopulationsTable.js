@@ -171,6 +171,9 @@ const groupPopulations = populations => {
     })
   })
 
+  // "XX" and "XY" populations were originally not stored for v3.1.
+  // Reconstruct them from population-specific XX and XY populations.
+  // TODO: After reloading variants, this can be replaced by populationsById.XX and populationsById.XY
   groupedPopulations.push(
     {
       id: 'XX',
