@@ -178,7 +178,30 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       filters,
       populations,
       quality_metrics: {
-        ...variant.genome.quality_metrics,
+        // TODO: An older version of the data pipeline stored only adj quality metric histograms.
+        // Maintain the same behavior by returning the adj version until the API schema is updated to allow
+        // selecting which version to return.
+        allele_balance: {
+          alt:
+            variant.genome.quality_metrics.allele_balance.alt ||
+            variant.genome.quality_metrics.allele_balance.alt_adj,
+        },
+        genotype_depth: {
+          alt:
+            variant.genome.quality_metrics.genotype_depth.alt ||
+            variant.genome.quality_metrics.genotype_depth.alt_adj,
+          all:
+            variant.genome.quality_metrics.genotype_depth.all ||
+            variant.genome.quality_metrics.genotype_depth.all_adj,
+        },
+        genotype_quality: {
+          alt:
+            variant.genome.quality_metrics.genotype_quality.alt ||
+            variant.genome.quality_metrics.genotype_quality.alt_adj,
+          all:
+            variant.genome.quality_metrics.genotype_quality.all ||
+            variant.genome.quality_metrics.genotype_quality.all_adj,
+        },
         site_quality_metrics: variant.genome.quality_metrics.site_quality_metrics.filter((m) =>
           Number.isFinite(m.value)
         ),

@@ -74,6 +74,32 @@ const correctHemizygoteCounts = (populations, nonpar) => {
   })
 }
 
+const formatVariantQualityMetrics = (qualityMetrics) => {
+  // TODO: An older version of the data pipeline did not support raw and adj quality metric histograms.
+  // gnomAD v2 has only raw histograms. Return those by default until the API schema is updated to allow
+  // selecting which version to return.
+
+  const alleleBalanceHistogram =
+    qualityMetrics.allele_balance.alt || qualityMetrics.allele_balance.alt_raw
+  return {
+    allele_balance: {
+      alt: {
+        ...alleleBalanceHistogram,
+        bin_edges: alleleBalanceHistogram.bin_edges.map((e) => Math.floor(e * 100) / 100),
+      },
+    },
+    genotype_depth: {
+      alt: qualityMetrics.genotype_depth.alt || qualityMetrics.genotype_depth.alt_raw,
+      all: qualityMetrics.genotype_depth.all || qualityMetrics.genotype_depth.all_raw,
+    },
+    genotype_quality: {
+      alt: qualityMetrics.genotype_quality.alt || qualityMetrics.genotype_quality.alt_raw,
+      all: qualityMetrics.genotype_quality.all || qualityMetrics.genotype_quality.all_raw,
+    },
+    site_quality_metrics: qualityMetrics.site_quality_metrics,
+  }
+}
+
 const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   const exomeSubset = subset
   const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
@@ -130,18 +156,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
             variant.exome.freq[exomeSubset].populations,
             variant.nonpar
           ),
-          quality_metrics: {
-            ...variant.exome.quality_metrics,
-            allele_balance: {
-              ...variant.exome.quality_metrics.allele_balance,
-              alt: {
-                ...variant.exome.quality_metrics.allele_balance.alt,
-                bin_edges: variant.exome.quality_metrics.allele_balance.alt.bin_edges.map(
-                  (e) => Math.floor(e * 100) / 100
-                ),
-              },
-            },
-          },
+          quality_metrics: formatVariantQualityMetrics(variant.exome.quality_metrics),
           age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
         }
@@ -154,18 +169,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
             variant.genome.freq[genomeSubset].populations,
             variant.nonpar
           ),
-          quality_metrics: {
-            ...variant.genome.quality_metrics,
-            allele_balance: {
-              ...variant.genome.quality_metrics.allele_balance,
-              alt: {
-                ...variant.genome.quality_metrics.allele_balance.alt,
-                bin_edges: variant.genome.quality_metrics.allele_balance.alt.bin_edges.map(
-                  (e) => Math.floor(e * 100) / 100
-                ),
-              },
-            },
-          },
+          quality_metrics: formatVariantQualityMetrics(variant.genome.quality_metrics),
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
         }
