@@ -217,7 +217,11 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
 
     ds = ds.transmute(
         quality_metrics=hl.struct(
-            allele_balance=hl.struct(alt_raw=ds.ab_hist_alt),
+            allele_balance=hl.struct(
+                alt_raw=ds.ab_hist_alt.annotate(
+                    bin_edges=ds.ab_hist_alt.bin_edges.map(lambda n: hl.float(hl.format("%.3f", n)))
+                )
+            ),
             genotype_depth=hl.struct(all_raw=ds.dp_hist_all, alt_raw=ds.dp_hist_alt),
             genotype_quality=hl.struct(all_raw=ds.gq_hist_all, alt_raw=ds.gq_hist_alt),
             # Use the same fields as the VCFs

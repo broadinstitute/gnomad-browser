@@ -85,6 +85,7 @@ const formatVariantQualityMetrics = (qualityMetrics) => {
     allele_balance: {
       alt: {
         ...alleleBalanceHistogram,
+        // TODO: Remove after rounding in data pipeline?
         bin_edges: alleleBalanceHistogram.bin_edges.map((e) => Math.floor(e * 100) / 100),
       },
     },
