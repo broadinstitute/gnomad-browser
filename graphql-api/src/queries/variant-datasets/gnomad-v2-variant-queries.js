@@ -56,14 +56,20 @@ const correctHemizygoteCounts = (populations, nonpar) => {
   const hemizygoteCounts = {}
 
   populations
-    .filter((pop) => pop.id.endsWith('_MALE'))
+    .filter((pop) => pop.id.endsWith('_MALE') || pop.id.endsWith('_XY'))
     .forEach((pop) => {
-      hemizygoteCounts[pop.id.slice(0, pop.id.length - 5)] = nonpar ? pop.ac : 0
+      hemizygoteCounts[pop.id.replace(/_(male|xy)$/i, '')] = nonpar ? pop.ac : 0
     })
 
   return populations.map((pop) => {
     // Counts are correct for subpopulations and sexes
-    if (pop.id.includes('_') || pop.id === 'FEMALE' || pop.id === 'MALE') {
+    if (
+      pop.id.includes('_') ||
+      pop.id === 'FEMALE' ||
+      pop.id === 'MALE' ||
+      pop.id === 'XX' ||
+      pop.id === 'XY'
+    ) {
       return pop
     }
 
@@ -213,7 +219,16 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             populations: correctHemizygoteCounts(
               variant.exome.freq[exomeSubset].populations,
               variant.nonpar
-            ).filter((pop) => !(pop.id.includes('_') || pop.id === 'FEMALE' || pop.id === 'MALE')),
+            ).filter(
+              (pop) =>
+                !(
+                  pop.id.includes('_') ||
+                  pop.id === 'FEMALE' ||
+                  pop.id === 'MALE' ||
+                  pop.id === 'XX' ||
+                  pop.id === 'XY'
+                )
+            ),
             filters: exomeFilters,
           }
         : null,
@@ -224,7 +239,16 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             populations: correctHemizygoteCounts(
               variant.genome.freq[genomeSubset].populations,
               variant.nonpar
-            ).filter((pop) => !(pop.id.includes('_') || pop.id === 'FEMALE' || pop.id === 'MALE')),
+            ).filter(
+              (pop) =>
+                !(
+                  pop.id.includes('_') ||
+                  pop.id === 'FEMALE' ||
+                  pop.id === 'MALE' ||
+                  pop.id === 'XX' ||
+                  pop.id === 'XY'
+                )
+            ),
             filters: genomeFilters,
           }
         : null,
