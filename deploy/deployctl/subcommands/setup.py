@@ -244,14 +244,7 @@ def create_configmap():
     # 35.191.0.0/16
     # 130.211.0.0/22
     ips = f"127.0.0.1,192.168.0.0/20,10.4.0.0/14,10.0.32.0/20,35.191.0.0/16,130.211.0.0/22,{ingress_ip}"
-    kubectl(
-        [
-            "create",
-            "configmap",
-            "proxy-ips",
-            f"--from-literal=ips={ips}",
-        ]
-    )
+    kubectl(["create", "configmap", "proxy-ips", f"--from-literal=ips={ips}"])
 
 
 def create_node_pool(node_pool_name: str, node_pool_args: typing.List[str]) -> None:
