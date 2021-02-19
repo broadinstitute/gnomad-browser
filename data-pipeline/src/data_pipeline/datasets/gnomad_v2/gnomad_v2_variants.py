@@ -107,6 +107,8 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
 
     g = hl.eval(ds.globals)
 
+    subsets = ["gnomad", "controls", "non_neuro", "non_topmed"] + (["non_cancer"] if exome_or_genome == "exome" else [])
+
     ds = ds.select_globals()
 
     ds = ds.annotate(
@@ -120,13 +122,25 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                     homozygote_count=ds.freq[g.freq_index_dict[subset]].homozygote_count,
                     populations=population_frequencies_expression(ds, g.freq_index_dict, subset),
                 )
-                for subset in (
-                    ["gnomad", "controls", "non_neuro", "non_topmed"]
-                    + (["non_cancer"] if exome_or_genome == "exome" else [])
-                )
+                for subset in subsets
             }
         )
     )
+
+    ###########################################
+    # Subsets in which the variant is present #
+    ###########################################
+
+    ds = ds.annotate(
+        subsets=hl.set(
+            hl.array([(subset, ds.freq[subset].ac_raw > 0) for subset in subsets])
+            .filter(lambda t: t[1])
+            .map(lambda t: t[0])
+        )
+    )
+
+    if exome_or_genome == "genome":
+        ds = ds.annotate(subsets=ds.subsets.add("non_cancer"))
 
     ##############################
     # Filtering allele frequency #
@@ -305,6 +319,9 @@ def prepare_gnomad_v2_variants(exome_variants_path, genome_variants_path):
         ref=variants.alleles[0],
         alt=variants.alleles[1],
     )
+
+    # Variant is in a subset if it is in the subset in either exome or genome samples
+    variants = variants.annotate(subsets=variants.exome.subsets.union(variants.genome.subsets))
 
     # Flags
     variants = variants.annotate(
