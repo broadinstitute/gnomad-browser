@@ -12,3 +12,20 @@ repos:
       - id: black
         language_version: python3
         types: [python]
+  - repo: local
+    hooks:
+      - id: git-secrets pre-commit
+        name: git-secrets (pre-commit/push hook)
+        entry: git-secrets --pre_commit_hook --
+        language: system
+        stages: [commit, push]
+      - id: git-secrets commit-msg
+        name: git-secrets (commit-msg hook)
+        entry: git-secrets --commit_msg_hook --
+        language: system
+        stages: [commit-msg]
+      - id: git-secrets prepare-commit-msg
+        name: git-secrets (prepare-commit-msg hook)
+        entry: git-secrets --prepare_commit_msg_hook --
+        language: system
+        stages: [prepare-commit-msg]
