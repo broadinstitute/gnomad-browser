@@ -17,7 +17,9 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
     # Drop irrelevant consequences
     transcript_consequences = transcript_consequences.map(
         lambda c: c.annotate(
-            consequence_terms=c.consequence_terms.filter(lambda t: ~OMIT_CONSEQUENCE_TERMS.contains(t))
+            consequence_terms=c.consequence_terms.filter(
+                lambda t: ~OMIT_CONSEQUENCE_TERMS.contains(t)  # pylint: disable=invalid-unary-operand-type
+            )
         )
     ).filter(lambda c: c.consequence_terms.size() > 0)
 
