@@ -118,6 +118,18 @@ def prepare_gnomad_v3_variants(path):
 
     ds = ds.drop("freq", "in_autosome_or_par")
 
+    ###########################################
+    # Subsets in which the variant is present #
+    ###########################################
+
+    ds = ds.annotate(
+        subsets=hl.set(
+            hl.array([(subset, ds.genome.freq[subset].ac_raw > 0) for subset in subsets if subset is not None])
+            .filter(lambda t: t[1])
+            .map(lambda t: t[0])
+        )
+    )
+
     ##############################
     # Filtering allele frequency #
     ##############################
