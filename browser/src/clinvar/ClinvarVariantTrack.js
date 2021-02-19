@@ -315,6 +315,7 @@ const ClinvarVariantTrack = ({ variants }) => {
             onClick={() => {
               setIsExpanded(!isExpanded)
             }}
+            style={{ flexShrink: 0 }}
           >
             {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
           </Button>
