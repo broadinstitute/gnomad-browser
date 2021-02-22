@@ -193,7 +193,7 @@ export class PopulationsTable extends Component {
       .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.an)
       .reduce((acc, n) => acc + n, 0)
-    const totalAlleleFrequency = totalAlleleCount / totalAlleleNumber
+    const totalAlleleFrequency = totalAlleleNumber !== 0 ? totalAlleleCount / totalAlleleNumber : 0
 
     const totalHemizygotes = renderedPopulations
       .filter(pop => !isSexSpecificPopulation(pop))
