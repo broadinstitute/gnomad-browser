@@ -108,6 +108,8 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   }
 
   // Include HGDP and 1KG populations with gnomAD subsets
+  // TODO: An earlier version of the data pipeline stored subset population frequencies even if the variant was
+  // not present in the subset. After updating variants, these checks for ac_raw > 0 should no longer be necessary.
   if (variant.genome.freq.hgdp.ac_raw > 0) {
     populations = populations.concat(
       variant.genome.freq.hgdp.populations.map((pop) => ({ ...pop, id: `hgdp:${pop.id}` }))

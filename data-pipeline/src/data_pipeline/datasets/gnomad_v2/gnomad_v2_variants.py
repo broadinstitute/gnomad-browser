@@ -127,6 +127,22 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
         )
     )
 
+    # If a variant is not present in a subset, do not store population frequencies for that subset
+    ds = ds.annotate(
+        freq=ds.freq.annotate(
+            **{
+                subset: ds.freq[subset].annotate(
+                    populations=hl.if_else(
+                        ds.freq[subset].ac_raw == 0,
+                        hl.empty_array(ds.freq[subset].populations.dtype.element_type),
+                        ds.freq[subset].populations,
+                    )
+                )
+                for subset in subsets
+            }
+        )
+    )
+
     ###########################################
     # Subsets in which the variant is present #
     ###########################################
