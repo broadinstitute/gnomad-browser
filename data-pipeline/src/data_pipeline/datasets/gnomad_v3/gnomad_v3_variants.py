@@ -92,19 +92,25 @@ def prepare_gnomad_v3_variants(path):
                         ac=freq(ds, subset=subset).AC,
                         ac_raw=freq(ds, subset=subset, raw=True).AC,
                         an=freq(ds, subset=subset).AN,
-                        hemizygote_count=hl.if_else(ds.in_autosome_or_par, 0, freq(ds, subset=subset, sex="XY").AC,),
+                        hemizygote_count=hl.if_else(
+                            ds.in_autosome_or_par, 0, hl.or_else(freq(ds, subset=subset, sex="XY").AC, 0)
+                        ),
                         homozygote_count=freq(ds, subset=subset).homozygote_count,
                         populations=[
                             hl.struct(
                                 id="_".join(filter(bool, [pop, sex])),
-                                ac=freq(ds, subset=subset, pop=pop, sex=sex).AC,
-                                an=freq(ds, subset=subset, pop=pop, sex=sex).AN,
+                                ac=hl.or_else(freq(ds, subset=subset, pop=pop, sex=sex).AC, 0),
+                                an=hl.or_else(freq(ds, subset=subset, pop=pop, sex=sex).AN, 0),
                                 hemizygote_count=0
                                 if sex == "XX"
                                 else hl.if_else(
-                                    ds.in_autosome_or_par, 0, freq(ds, subset=subset, pop=pop, sex="XY").AC,
+                                    ds.in_autosome_or_par,
+                                    0,
+                                    hl.or_else(freq(ds, subset=subset, pop=pop, sex="XY").AC, 0),
                                 ),
-                                homozygote_count=freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count,
+                                homozygote_count=hl.or_else(
+                                    freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count, 0
+                                ),
                             )
                             for pop, sex in list(itertools.product(subset_populations[subset], [None, "XX", "XY"]))
                             + [(None, "XX"), (None, "XY")]
