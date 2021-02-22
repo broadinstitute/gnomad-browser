@@ -39,31 +39,50 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
           {
             id: 'HGDP',
             label: 'HGDP',
-            render: () => (
-              <TableWrapper>
-                <HGDPPopulationsTable
-                  populations={hgdpPopulations}
-                  showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-                />
-              </TableWrapper>
-            ),
+            render: () => {
+              if (hgdpPopulations.length === 0) {
+                return <p>HGDP population frequencies are not available for this variant.</p>
+              }
+
+              return (
+                <TableWrapper>
+                  <HGDPPopulationsTable
+                    populations={hgdpPopulations}
+                    showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                  />
+                </TableWrapper>
+              )
+            },
           },
           {
             id: '1KG',
             label: '1KG',
-            render: () =>
-              datasetId === 'gnomad_r3_non_v2' ? (
-                <p>
-                  1000 Genomes Project population frequencies are not available for this subset.
-                </p>
-              ) : (
+            render: () => {
+              if (tgpPopulations.length === 0) {
+                return (
+                  <p>
+                    1000 Genomes Project population frequencies are not available for this variant.
+                  </p>
+                )
+              }
+
+              if (datasetId === 'gnomad_r3_non_v2') {
+                return (
+                  <p>
+                    1000 Genomes Project population frequencies are not available for this subset.
+                  </p>
+                )
+              }
+
+              return (
                 <TableWrapper>
                   <TGPPopulationsTable
                     populations={tgpPopulations}
                     showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                   />
                 </TableWrapper>
-              ),
+              )
+            },
           },
         ]}
       />
