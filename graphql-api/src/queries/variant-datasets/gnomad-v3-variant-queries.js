@@ -123,6 +123,8 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     )
   }
 
+  // TODO: An earlier version of the data pipeline had missing values for AC, AN, and homozygote count for XX population
+  // frequencies for variants in chrY. After reloading variants, this should no longer be necessary.
   if (variant.locus.contig === 'chrY') {
     populations = populations.map((pop) => {
       if (pop.id === 'XX' || pop.id.endsWith('XX')) {
