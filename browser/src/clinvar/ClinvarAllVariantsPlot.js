@@ -4,6 +4,13 @@ import React from 'react'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
+import {
+  CLINICAL_SIGNIFICANCE_CATEGORY_COLORS,
+  clinvarVariantClinicalSignificanceCategory,
+} from './clinvarVariantCategories'
+import ClinvarVariantPropType from './ClinvarVariantPropType'
+import ClinvarVariantTooltip from './ClinvarVariantTooltip'
+
 const layoutStackedPoints = (dataLayers, scale, spacing) => {
   const rows = []
 
@@ -34,21 +41,39 @@ const layoutStackedPoints = (dataLayers, scale, spacing) => {
   }
 }
 
-const StackedVariantsPlot = ({
-  onClickVariant,
-  symbolColor,
-  symbolSize,
-  symbolSpacing,
-  symbolType,
-  scalePosition,
-  tooltipComponent,
-  variantLayers,
-  width,
-}) => {
-  const x = variant => scalePosition(variant.pos)
-  const { points, height } = layoutStackedPoints(variantLayers, x, symbolSpacing)
+const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
+  const variantsByCategory = {
+    pathogenic: [],
+    uncertain: [],
+    benign: [],
+    other: [],
+  }
 
-  const symbolPath = symbol().size(symbolSize).type(symbolType)()
+  variants.forEach(variant => {
+    const category = clinvarVariantClinicalSignificanceCategory(variant)
+    variantsByCategory[category].push({ ...variant, category })
+  })
+
+  const layers = [
+    variantsByCategory.pathogenic,
+    variantsByCategory.uncertain,
+    variantsByCategory.benign,
+    variantsByCategory.other,
+  ]
+
+  const x = variant => scalePosition(variant.pos)
+  const { points, height } = layoutStackedPoints(layers, x, 6)
+
+  const symbolColor = variant => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[variant.category]
+
+  const symbolPath = symbol().size(12).type(symbolStar)()
+
+  const onClickVariant = variant => {
+    const clinVarWindow = window.open()
+    // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+    clinVarWindow.opener = null
+    clinVarWindow.location = `https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`
+  }
 
   return (
     <svg height={height} width={width}>
@@ -56,7 +81,7 @@ const StackedVariantsPlot = ({
         {points.map(point => (
           <TooltipAnchor
             key={point.data.variant_id}
-            tooltipComponent={tooltipComponent}
+            tooltipComponent={ClinvarVariantTooltip}
             variant={point.data}
           >
             <path
@@ -74,31 +99,10 @@ const StackedVariantsPlot = ({
   )
 }
 
-StackedVariantsPlot.propTypes = {
-  onClickVariant: PropTypes.func,
+ClinvarAllVariantsPlot.propTypes = {
   scalePosition: PropTypes.func.isRequired,
-  symbolColor: PropTypes.func,
-  symbolSize: PropTypes.number,
-  symbolSpacing: PropTypes.number,
-  symbolType: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  tooltipComponent: PropTypes.func.isRequired,
-  variantLayers: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        variant_id: PropTypes.string.isRequired,
-        pos: PropTypes.number.isRequired,
-      })
-    )
-  ).isRequired,
+  variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
   width: PropTypes.number.isRequired,
 }
 
-StackedVariantsPlot.defaultProps = {
-  onClickVariant: () => {},
-  symbolColor: () => '#000',
-  symbolSize: 12,
-  symbolSpacing: 6,
-  symbolType: symbolStar,
-}
-
-export default StackedVariantsPlot
+export default ClinvarAllVariantsPlot
