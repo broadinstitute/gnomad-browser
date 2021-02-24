@@ -6,6 +6,7 @@ import { ExternalLink, PageHeading, Tabs } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
+import Link from '../Link'
 
 import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
@@ -129,6 +130,19 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <h3>Downloads</h3>
+
+      <p>
+        See{' '}
+        <Link
+          to={{
+            pathname: '/faq',
+            hash: 'whats-the-difference-between-gnomad-v2-and-v3',
+          }}
+        >
+          &ldquo;What&apos;s the difference between gnomAD v2 and v3?&rdquo;
+        </Link>{' '}
+        to decide which version is right for you.
+      </p>
 
       <Tabs
         activeTabId={activeTab}
