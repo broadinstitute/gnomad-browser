@@ -15,6 +15,8 @@ const {
 const { getFlagsForContext } = require('./shared/flags')
 const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 
+const GNOMAD_V2_VARIANT_INDEX = 'gnomad_v2_variants'
+
 // ================================================================================================
 // Count query
 // ================================================================================================
@@ -22,7 +24,7 @@ const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 // eslint-disable-next-line no-unused-vars
 const countVariantsInRegion = async (esClient, region, subset) => {
   const response = await esClient.count({
-    index: 'gnomad_v2_variants',
+    index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -113,7 +115,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
   const response = await esClient.search({
-    index: 'gnomad_v2_variants',
+    index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -289,7 +291,7 @@ const fetchVariantsByGene = async (esClient, gene, subset) => {
   const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v2_variants',
+    index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -348,7 +350,7 @@ const fetchVariantsByRegion = async (esClient, region, subset) => {
   const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v2_variants',
+    index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -449,7 +451,7 @@ const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
   const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v2_variants',
+    index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [

@@ -13,13 +13,15 @@ const {
 const { getFlagsForContext } = require('./shared/flags')
 const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 
+const EXAC_VARIANT_INDEX = 'exac_variants'
+
 // ================================================================================================
 // Count query
 // ================================================================================================
 
 const countVariantsInRegion = async (esClient, region) => {
   const response = await esClient.count({
-    index: 'exac_variants',
+    index: EXAC_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -50,7 +52,7 @@ const countVariantsInRegion = async (esClient, region) => {
 const fetchVariantById = async (esClient, variantIdOrRsid) => {
   const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
   const response = await esClient.search({
-    index: 'exac_variants',
+    index: EXAC_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -155,7 +157,7 @@ const fetchVariantsByGene = async (esClient, gene) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'exac_variants',
+    index: EXAC_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -204,7 +206,7 @@ const fetchVariantsByGene = async (esClient, gene) => {
 
 const fetchVariantsByRegion = async (esClient, region) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'exac_variants',
+    index: EXAC_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -293,7 +295,7 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'exac_variants',
+    index: EXAC_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
