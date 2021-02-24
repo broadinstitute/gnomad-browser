@@ -10,6 +10,8 @@ const { mergeOverlappingRegions } = require('../helpers/region-helpers')
 const { getFlagsForContext } = require('./shared/flags')
 const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 
+const GNOMAD_V3_VARIANT_INDEX = 'gnomad_v3_variants'
+
 // ================================================================================================
 // Count query
 // ================================================================================================
@@ -17,7 +19,7 @@ const { getConsequenceForContext } = require('./shared/transcriptConsequence')
 // eslint-disable-next-line no-unused-vars
 const countVariantsInRegion = async (esClient, region, subset) => {
   const response = await esClient.count({
-    index: 'gnomad_v3_variants',
+    index: GNOMAD_V3_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -48,7 +50,7 @@ const countVariantsInRegion = async (esClient, region, subset) => {
 const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
   const response = await esClient.search({
-    index: 'gnomad_v3_variants',
+    index: GNOMAD_V3_VARIANT_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -288,7 +290,7 @@ const fetchVariantsByGene = async (esClient, gene, subset) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v3_variants',
+    index: GNOMAD_V3_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -323,7 +325,7 @@ const fetchVariantsByGene = async (esClient, gene, subset) => {
 
 const fetchVariantsByRegion = async (esClient, region, subset) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v3_variants',
+    index: GNOMAD_V3_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -390,7 +392,7 @@ const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
   }))
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_v3_variants',
+    index: GNOMAD_V3_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
