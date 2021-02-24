@@ -39,6 +39,10 @@ const coverageFiles = [
 
 export default () => (
   <React.Fragment>
+    <p>
+      The ExAC data set contains data from 60,706 exomes, all mapped to the GRCh37/hg19 reference
+      sequence.
+    </p>
     <section>
       <h2>Summary</h2>
       <List>
