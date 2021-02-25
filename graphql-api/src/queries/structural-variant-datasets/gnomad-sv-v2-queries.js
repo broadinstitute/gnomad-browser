@@ -25,7 +25,8 @@ const fetchStructuralVariantById = async (esClient, variantId, subset) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  if (variant.freq[subset].ac === 0) {
+  // If the variant is not in the subset, then variant.freq[subset] will be an empty object.
+  if (!variant.freq[subset].ac) {
     return null
   }
 
