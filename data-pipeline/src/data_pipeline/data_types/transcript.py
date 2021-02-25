@@ -61,5 +61,6 @@ def extract_transcripts(genes_path):
     ds = ds.explode(ds.transcripts)
     ds = ds.annotate(**ds.transcripts).drop("transcripts")
     ds = ds.key_by("transcript_id")
+    ds = ds.repartition(2000, shuffle=True)
 
     return ds
