@@ -28,7 +28,7 @@ module.exports = {
     },
     {
       // Allow using devDependencies from workspace root in browser webpack config
-      files: ['browser/webpack.config.js'],
+      files: ['browser/webpack.config.js', 'browser/build/*.js'],
       rules: {
         'import/no-extraneous-dependencies': ['error', { packageDir: ['./browser', '.'] }],
       },

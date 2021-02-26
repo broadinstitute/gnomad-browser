@@ -3,7 +3,9 @@
 !package.json
 !yarn.lock
 !browser/.browserslistrc
+!browser/build
 !browser/build.env
+!browser/build.sh
 !browser/help
 !browser/package.json
 !browser/src

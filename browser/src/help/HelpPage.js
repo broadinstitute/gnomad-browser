@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Page } from '@gnomad/ui'
-
 import DocumentTitle from '../DocumentTitle'
+import InfoPage from '../InfoPage'
 
 import HelpContent from './HelpContent'
 import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
@@ -12,14 +11,14 @@ const HelpPage = ({ topicId }) => {
   const topic = helpTopics[topicId.toLowerCase()]
 
   return (
-    <Page>
+    <InfoPage>
       <DocumentTitle title={(topic || {}).title || 'Not found'} />
       {topic ? (
         <HelpContent dangerouslySetInnerHTML={{ __html: topic.html }} />
       ) : (
         <p>Topic not found</p>
       )}
-    </Page>
+    </InfoPage>
   )
 }
 
