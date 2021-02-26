@@ -1,3 +1,5 @@
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 const HelpContent = styled.div`
@@ -18,7 +20,7 @@ const HelpContent = styled.div`
   p {
     margin-top: 15px;
     margin-bottom: 15px;
-    line-height: 150%;
+    line-height: 1.4;
   }
 
   a {
@@ -34,12 +36,12 @@ const HelpContent = styled.div`
     margin: 0 0 0 10px;
     font-size: 14px;
     font-style: italic;
-    line-height: 150%;
+    line-height: 1.4;
   }
 
   ul {
     padding-left: 20px;
-    margin: 1em 0 0;
+    margin: 1em 0;
   }
 
   li {
@@ -67,4 +69,24 @@ const HelpContent = styled.div`
   }
 `
 
-export default HelpContent
+// eslint-disable-next-line react/prop-types
+export default props => {
+  const history = useHistory()
+
+  /* Hack to make regular anchor elements from Markdown content work with React Router */
+  return (
+    /* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
+    <HelpContent
+      {...props}
+      onClick={e => {
+        if (e.target.tagName === 'A') {
+          const isRelativeLink = e.target.getAttribute('href').startsWith('/')
+          if (isRelativeLink) {
+            e.preventDefault()
+            history.push(e.target.getAttribute('href'))
+          }
+        }
+      }}
+    />
+  )
+}

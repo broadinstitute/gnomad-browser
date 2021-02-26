@@ -1,0 +1,5 @@
+---
+question: 'Why is the total allele number lower for mtDNA versus nuclear variants?'
+---
+
+The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples passed mitochondrial-specific filters. Samples were excluded if they showed (i) low mtDNA molecules per cell (as these samples have excess heteroplasmic variants likely due to misalignment of nuclear sequences of mitochondrial origin, NUMTs); or (ii) high mtDNA molecules per cell to exclude cell lines (as these samples have excess numbers of heteroplasmic variants likely due to mutation / selection during cell culture); or (iii) mitochondrial contamination exceeding 2% (problematic for calling heteroplasmic variants). We note that samples with low overall contamination may show high mtDNA contamination, e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line with 1000 mtDNA molecules/cell. See our ["gnomAD v3.1 Mitochondrial DNA Variants" blog post](https://gnomad.broadinstitute.org/blog/2020-11-gnomad-v3-1-mitochondrial-dna-variants/) for details.

@@ -20,7 +20,7 @@ import userPreferences from './userPreferences'
 const AboutPage = lazy(() => import('./AboutPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
 const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
-const FAQPage = lazy(() => import('./FAQPage'))
+const FAQPage = lazy(() => import('./help/FAQPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))

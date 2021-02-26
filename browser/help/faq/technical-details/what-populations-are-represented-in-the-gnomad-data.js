@@ -3,9 +3,11 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from './dataset-constants/gnomadPopulations'
-import sampleCounts from './dataset-constants/sampleCounts'
-import TableWrapper from './TableWrapper'
+import { GNOMAD_POPULATION_NAMES } from '../../../src/dataset-constants/gnomadPopulations'
+import sampleCounts from '../../../src/dataset-constants/sampleCounts'
+import TableWrapper from '../../../src/TableWrapper'
+
+import { Question, Answer } from '../../../src/help/faqStyles'
 
 const SampleCountTable = styled(BaseTable)`
   td {
@@ -179,4 +181,13 @@ const SampleCountTables = () => (
   </div>
 )
 
-export default SampleCountTables
+export default () => (
+  <>
+    <Question id="what-populations-are-represented-in-the-gnomad-data">
+      What populations are represented in the gnomAD data?
+    </Question>
+    <Answer>
+      <SampleCountTables />
+    </Answer>
+  </>
+)

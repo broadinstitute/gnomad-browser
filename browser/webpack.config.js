@@ -1,7 +1,5 @@
-const fs = require('fs')
 const path = require('path')
 
-const glob = require('glob')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -12,34 +10,6 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
   // eslint-disable-next-line no-console
   console.log('\nWarning: No GA tracking ID for production build\n')
 }
-
-// Generate help topics
-const helpContentDirectory = path.resolve(__dirname, './help/topics')
-const helpTopicsModulePath = path.resolve(__dirname, './src/help/helpTopics.js')
-const helpFiles = glob.sync('*.md', {
-  cwd: helpContentDirectory,
-  matchBase: true,
-  absolute: true,
-})
-
-const helpTopicsModuleContent = [
-  helpFiles
-    .map((f, i) => {
-      let importPath = path.relative(path.dirname(helpTopicsModulePath), f)
-      if (!importPath.startsWith('.')) {
-        importPath = `./${importPath}`
-      }
-
-      return `import helpTopic${i} from '${importPath}'`
-    })
-    .join('\n'),
-  '\nconst helpTopics = [',
-  helpFiles.map((f, i) => `  helpTopic${i},`).join('\n'),
-  ']\n',
-  'export default helpTopics.reduce((acc, topic) => ({ ...acc, [topic.id.toLowerCase()]: topic }), {})\n',
-].join('\n')
-
-fs.writeFileSync(helpTopicsModulePath, helpTopicsModuleContent)
 
 const config = {
   devServer: {
