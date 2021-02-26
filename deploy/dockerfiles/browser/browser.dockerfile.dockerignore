@@ -4,6 +4,7 @@
 !yarn.lock
 !browser/.browserslistrc
 !browser/build.env
+!browser/help
 !browser/package.json
 !browser/src
 !browser/webpack.config.js
