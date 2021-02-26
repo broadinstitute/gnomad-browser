@@ -12,11 +12,11 @@ import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
+import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
-import TranscriptLink from '../TranscriptLink'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneInfo from './GeneInfo'
@@ -424,10 +424,10 @@ class GenePage extends Component {
                     </span>
                   )
                 : ({ transcript }) => (
-                    <TranscriptLink to={`/transcript/${transcript.transcript_id}`}>
+                    <Link to={`/transcript/${transcript.transcript_id}`}>
                       {transcript.transcript_id}.{transcript.transcript_version}
                       {transcript.transcript_id === starredTranscriptId && '*'}
-                    </TranscriptLink>
+                    </Link>
                   )
             }
             showNonCodingTranscripts={includeNonCodingTranscripts}
