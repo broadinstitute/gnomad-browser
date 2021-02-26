@@ -113,7 +113,7 @@ const VariantPageContent = ({ datasetId, variant }) => {
       {variant.lof_curations && (
         <Section>
           <h2>
-            LoF Curation <InfoButton topic="lof_curation" />
+            LoF Curation <InfoButton topic="lof-curation" />
           </h2>
           <VariantLoFCurationResults variant={variant} />
         </Section>

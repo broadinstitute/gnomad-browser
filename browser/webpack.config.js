@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
 }
 
 // Generate help topics
-const helpContentDirectory = path.resolve(__dirname, './src/help/content')
+const helpContentDirectory = path.resolve(__dirname, './help/topics')
 const helpTopicsModulePath = path.resolve(__dirname, './src/help/helpTopics.js')
 const helpFiles = glob.sync('*.md', {
   cwd: helpContentDirectory,

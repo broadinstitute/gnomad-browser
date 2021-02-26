@@ -82,7 +82,7 @@ const GeneInfo = ({ gene }) => {
         <AttributeList.Item
           label={
             <React.Fragment>
-              MANE Select transcript <InfoButton topic="mane_select_transcript" />
+              MANE Select transcript <InfoButton topic="mane-select-transcript" />
             </React.Fragment>
           }
         >
@@ -93,7 +93,7 @@ const GeneInfo = ({ gene }) => {
       <AttributeList.Item
         label={
           <React.Fragment>
-            Ensembl canonical transcript <InfoButton topic="canonical_transcript" />
+            Ensembl canonical transcript <InfoButton topic="canonical-transcript" />
           </React.Fragment>
         }
       >
