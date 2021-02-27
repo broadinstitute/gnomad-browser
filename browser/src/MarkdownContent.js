@@ -39,6 +39,7 @@ const MarkdownContentWrapper = styled.div`
     line-height: 1.4;
   }
 
+  ol,
   ul {
     padding-left: 20px;
     margin: 1em 0;
