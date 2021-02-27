@@ -26,19 +26,26 @@ const entries = FAQ_TABLE_OF_CONTENTS.map(
           path.join(path.resolve(__dirname, '../help/faq'), `**/${entry}.js`)
         )[0]
         if (jsPath) {
-          entryImports.push(path.relative(path.dirname(FAQ_PATH), jsPath).replace(/\.js$/, ''))
-          return `<FAQEntry${entryIndex} />`
+          const importPath = path.relative(path.dirname(FAQ_PATH), jsPath).replace(/\.js$/, '')
+          entryImports.push(`import * as faqEntry${entryIndex} from '${importPath}'`)
+          return `
+            <Question id={slugify(faqEntry${entryIndex}.question)}>{faqEntry${entryIndex}.question}</Question>
+            <Answer>
+              {faqEntry${entryIndex}.renderAnswer()}
+            </Answer>
+          `
         }
 
         const mdPath = glob.sync(
           path.join(path.resolve(__dirname, '../help/faq'), `**/${entry}.md`)
         )[0]
         if (mdPath) {
-          entryImports.push(path.relative(path.dirname(FAQ_PATH), mdPath))
+          const importPath = path.relative(path.dirname(FAQ_PATH), mdPath)
+          entryImports.push(`import faqEntry${entryIndex} from '${importPath}'`)
           return `
-            <Question id={slugify(FAQEntry${entryIndex}.question)}>{FAQEntry${entryIndex}.question}</Question>
+            <Question id={slugify(faqEntry${entryIndex}.question)}>{faqEntry${entryIndex}.question}</Question>
             <Answer>
-              <MarkdownContent dangerouslySetInnerHTML={{ __html: FAQEntry${entryIndex}.html }} />
+              <MarkdownContent dangerouslySetInnerHTML={{ __html: faqEntry${entryIndex}.html }} />
             </Answer>
           `
         }
@@ -61,7 +68,7 @@ import MarkdownContent from '../MarkdownContent'
 
 import { Question, Answer, SectionHeading } from './faqStyles'
 
-${entryImports.map((f, i) => `import FAQEntry${i + 1} from '${f}'`).join('\n')}
+${entryImports.join('\n')}
 
 const slugify = string =>
   string

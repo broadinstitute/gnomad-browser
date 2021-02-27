@@ -7,8 +7,6 @@ import { GNOMAD_POPULATION_NAMES } from '../../../src/dataset-constants/gnomadPo
 import sampleCounts from '../../../src/dataset-constants/sampleCounts'
 import TableWrapper from '../../../src/TableWrapper'
 
-import { Question, Answer } from '../../../src/help/faqStyles'
-
 const SampleCountTable = styled(BaseTable)`
   td {
     text-align: right;
@@ -181,13 +179,6 @@ const SampleCountTables = () => (
   </div>
 )
 
-export default () => (
-  <>
-    <Question id="what-populations-are-represented-in-the-gnomad-data">
-      What populations are represented in the gnomAD data?
-    </Question>
-    <Answer>
-      <SampleCountTables />
-    </Answer>
-  </>
-)
+export const question = 'What populations are represented in the gnomAD data?'
+
+export const renderAnswer = () => <SampleCountTables />
