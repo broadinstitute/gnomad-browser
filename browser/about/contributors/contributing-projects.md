@@ -1,0 +1,66 @@
+- 1000 Genomes
+- 1958 Birth Cohort
+- African American Coronary Artery Calcification project (AACAC)
+- ALSGEN
+- Alzheimer's Disease Sequencing Project (ADSP)
+- Atrial Fibrillation Genetics Consortium (AFGen)
+  - Duke Catheterization Genetics (CATHGEN)
+- Bangladesh Risk of Acute Vascular Events (BRAVE) Study
+- BioMe Biobank
+- Bulgarian Trios
+- COPD-Gene
+- Estonian Genome Center, University of Tartu (EGCUT)
+- Finland-United States Investigation of NIDDM Genetics (FUSION)
+- Finnish Migraine Study
+- Finnish Twin Cohort Study
+- FINN-ADGEN
+- FINRISK
+- Framingham Heart Study
+- Genetics of Cardiometabolic Health in the Amish
+- Génome Québec - Genizon Biobank
+- Genomic Psychiatry Cohort
+- GoT2D
+- Genotype-Tissue Expression Project (GTEx)
+- Health2000
+- Human Genome Diversity Project
+- Inflammatory Bowel Disease:
+  - 1000IBD project
+  - Helsinki University Hospital Finland
+  - NIDDK IBD Genetics Consortium
+  - Quebec IBD Genetics Consortium
+- Jackson Heart Study
+- Jewish Genome Project - funded by Bonei Olam
+- Kuopio Alzheimer Study
+- LifeLines Cohort
+- Lung Tissue Research Consortium (LTRC)
+- McLean Program for Neuropsychiatric Research, Psychotic Disorders Division
+- MESTA
+- METabolic Syndrome In Men (METSIM)
+- Multi-Ethnic Study of Atherosclerosis (MESA)
+- Myocardial Infarction Genetics Consortium (MIGen):
+  - Leicester Exome Seq
+  - North German MI Study
+  - Ottawa Genomics Heart Study
+  - Pakistan Risk of Myocardial Infarction Study (PROMIS)
+  - Precocious Coronary Artery Disease Study (PROCARDIS)
+  - Registre Gironi del COR (REGICOR)
+  - South German MI Study
+  - Variation in Recovery: Role of Gender on Outcomes of Young AMI Patients (VIRGO)
+- National Institute of Mental Health (NIMH) Controls
+- NHGRI CCDG
+- NHLBI-GO Exome Sequencing Project (ESP)
+- NHLBI TOPMed
+- Osaka University Graduate School of Medicine
+- Population Architecture Using Genomics and Epidemiology (PAGE) Consortium
+- Pritzker Neuropsychiatric Disorders Research Consortium
+- Schizophrenia Trios from Taiwan
+- Sequencing Initiative Suomi (SiSu)
+- SIGMA-T2D
+- SubPopulations and InteRmediate Outcome Measures In COPD Study (SPIROMICS)
+- Swedish Schizophrenia & Bipolar Studies
+- T2D-GENES
+  - GoDARTS
+- T2D-SEARCH
+- The Cancer Genome Atlas (TCGA)
+- Whole Genome Sequencing in Psychiatric Disorders (WGSPD)
+- Women's Health Initiative (WHI)
