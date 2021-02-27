@@ -38,7 +38,7 @@ const entries = FAQ_TABLE_OF_CONTENTS.map(
           return `
             <Question id={slugify(FAQEntry${entryIndex}.question)}>{FAQEntry${entryIndex}.question}</Question>
             <Answer>
-              <HelpContent dangerouslySetInnerHTML={{ __html: FAQEntry${entryIndex}.html }} />
+              <MarkdownContent dangerouslySetInnerHTML={{ __html: FAQEntry${entryIndex}.html }} />
             </Answer>
           `
         }
@@ -57,9 +57,9 @@ import { PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
+import MarkdownContent from '../MarkdownContent'
 
 import { Question, Answer, SectionHeading } from './faqStyles'
-import HelpContent from './HelpContent'
 
 ${entryImports.map((f, i) => `import FAQEntry${i + 1} from '${f}'`).join('\n')}
 

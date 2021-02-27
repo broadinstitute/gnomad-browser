@@ -5,7 +5,8 @@ import styled from 'styled-components'
 
 import { Button, Modal, TextButton } from '@gnomad/ui'
 
-import HelpContent from './HelpContent'
+import MarkdownContent from '../MarkdownContent'
+
 import helpState from './helpState'
 import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 import toc from './toc.json'
@@ -102,7 +103,7 @@ class HelpModal extends Component {
       if (!topic) {
         return null
       }
-      return <HelpContent dangerouslySetInnerHTML={{ __html: topic.html }} />
+      return <MarkdownContent dangerouslySetInnerHTML={{ __html: topic.html }} />
     }
 
     if (searchText) {
