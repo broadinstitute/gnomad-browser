@@ -5,8 +5,6 @@ import gnomadV3AgeDistribution from '../../../src/dataset-constants/gnomad_r3/ag
 import gnomadV2AgeDistribution from '../../../src/dataset-constants/gnomad_r2_1_1/ageDistribution.json'
 import Histogram from '../../../src/Histogram'
 
-import { Question, Answer } from '../../../src/help/faqStyles'
-
 const ColumnsWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -24,62 +22,59 @@ const Column = styled.div`
   }
 `
 
-export default () => (
+export const question = 'What is the age distribution in gnomAD?'
+
+export const renderAnswer = () => (
   <>
-    <Question id="what-is-the-age-distribution-in-gnomad">
-      What is the age distribution in gnomAD?
-    </Question>
-    <Answer>
-      <p>For gnomAD v3, the age distribution is:</p>
-      <ColumnsWrapper>
-        <Column>
-          <Histogram
-            binEdges={gnomadV3AgeDistribution.genome.bin_edges}
-            binValues={gnomadV3AgeDistribution.genome.bin_freq}
-            nSmaller={gnomadV3AgeDistribution.genome.n_smaller}
-            nLarger={gnomadV3AgeDistribution.genome.n_larger}
-            barColor="#73ab3d"
-            xLabel="Age"
-            yLabel="Individuals"
-            formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-          />
-        </Column>
-      </ColumnsWrapper>
-      <p>For gnomAD v2, the age distribution is:</p>
-      <ColumnsWrapper>
-        <Column>
-          <p>Exomes</p>
-          <Histogram
-            binEdges={gnomadV2AgeDistribution.exome.bin_edges}
-            binValues={gnomadV2AgeDistribution.exome.bin_freq}
-            nSmaller={gnomadV2AgeDistribution.exome.n_smaller}
-            nLarger={gnomadV2AgeDistribution.exome.n_larger}
-            barColor="#428bca"
-            xLabel="Age"
-            yLabel="Individuals"
-            formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-          />
-        </Column>
-        <Column>
-          <p>Genomes</p>
-          <Histogram
-            binEdges={gnomadV2AgeDistribution.genome.bin_edges}
-            binValues={gnomadV2AgeDistribution.genome.bin_freq}
-            nSmaller={gnomadV2AgeDistribution.genome.n_smaller}
-            nLarger={gnomadV2AgeDistribution.genome.n_larger}
-            barColor="#73ab3d"
-            xLabel="Age"
-            yLabel="Individuals"
-            formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-          />
-        </Column>
-      </ColumnsWrapper>
-      <p>
-        Please note that cohorts vary in how they report age (some report the age at diagnosis,
-        others report the age of last visit, etc), so the ages associated with the gnomAD data can
-        be thought of as the last known age of the individual. Information on age was not available
-        for all samples. We have age data for 85,462 exome samples and 11,242 genome samples.
-      </p>
-    </Answer>
+    <p>For gnomAD v3, the age distribution is:</p>
+    <ColumnsWrapper>
+      <Column>
+        <Histogram
+          binEdges={gnomadV3AgeDistribution.genome.bin_edges}
+          binValues={gnomadV3AgeDistribution.genome.bin_freq}
+          nSmaller={gnomadV3AgeDistribution.genome.n_smaller}
+          nLarger={gnomadV3AgeDistribution.genome.n_larger}
+          barColor="#73ab3d"
+          xLabel="Age"
+          yLabel="Individuals"
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+        />
+      </Column>
+    </ColumnsWrapper>
+    <p>For gnomAD v2, the age distribution is:</p>
+    <ColumnsWrapper>
+      <Column>
+        <p>Exomes</p>
+        <Histogram
+          binEdges={gnomadV2AgeDistribution.exome.bin_edges}
+          binValues={gnomadV2AgeDistribution.exome.bin_freq}
+          nSmaller={gnomadV2AgeDistribution.exome.n_smaller}
+          nLarger={gnomadV2AgeDistribution.exome.n_larger}
+          barColor="#428bca"
+          xLabel="Age"
+          yLabel="Individuals"
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+        />
+      </Column>
+      <Column>
+        <p>Genomes</p>
+        <Histogram
+          binEdges={gnomadV2AgeDistribution.genome.bin_edges}
+          binValues={gnomadV2AgeDistribution.genome.bin_freq}
+          nSmaller={gnomadV2AgeDistribution.genome.n_smaller}
+          nLarger={gnomadV2AgeDistribution.genome.n_larger}
+          barColor="#73ab3d"
+          xLabel="Age"
+          yLabel="Individuals"
+          formatTooltip={bin => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+        />
+      </Column>
+    </ColumnsWrapper>
+    <p>
+      Please note that cohorts vary in how they report age (some report the age at diagnosis, others
+      report the age of last visit, etc), so the ages associated with the gnomAD data can be thought
+      of as the last known age of the individual. Information on age was not available for all
+      samples. We have age data for 85,462 exome samples and 11,242 genome samples.
+    </p>
   </>
 )

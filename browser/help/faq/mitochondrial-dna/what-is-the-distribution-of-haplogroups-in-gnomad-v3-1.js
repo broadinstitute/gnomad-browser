@@ -3,8 +3,6 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@gnomad/ui'
 
-import { Question, Answer } from '../../../src/help/faqStyles'
-
 const HaplogroupLineageTable = styled(BaseTable)`
   margin-bottom: 1em;
 
@@ -244,13 +242,6 @@ const HaplogroupLineageTables = () => {
   )
 }
 
-export default () => (
-  <>
-    <Question id="what-is-the-distribution-of-haplogroups-in-gnomad-v3-1">
-      What is the distribution of haplogroups in gnomAD v3.1?
-    </Question>
-    <Answer>
-      <HaplogroupLineageTables />
-    </Answer>
-  </>
-)
+export const question = 'What is the distribution of haplogroups in gnomAD v3.1?'
+
+export const renderAnswer = () => <HaplogroupLineageTables />
