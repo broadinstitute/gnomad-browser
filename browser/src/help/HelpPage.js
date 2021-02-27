@@ -3,8 +3,8 @@ import React from 'react'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
+import MarkdownContent from '../MarkdownContent'
 
-import HelpContent from './HelpContent'
 import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 
 const HelpPage = ({ topicId }) => {
@@ -14,7 +14,7 @@ const HelpPage = ({ topicId }) => {
     <InfoPage>
       <DocumentTitle title={(topic || {}).title || 'Not found'} />
       {topic ? (
-        <HelpContent dangerouslySetInnerHTML={{ __html: topic.html }} />
+        <MarkdownContent dangerouslySetInnerHTML={{ __html: topic.html }} />
       ) : (
         <p>Topic not found</p>
       )}

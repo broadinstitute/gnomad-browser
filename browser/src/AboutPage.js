@@ -17,8 +17,8 @@ import structuralVariationTeam from '../about/contributors/structural-variation.
 import websiteTeam from '../about/contributors/website.md'
 
 import DocumentTitle from './DocumentTitle'
-import HelpContent from './help/HelpContent'
 import InfoPage from './InfoPage'
+import MarkdownContent from './MarkdownContent'
 
 const Credits = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ export default () => (
     <DocumentTitle title="About gnomAD" />
     <PageHeading id="about-gnomad">About gnomAD</PageHeading>
 
-    <HelpContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
+    <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
 
     <Credits>
       <CreditsSection width="34%">

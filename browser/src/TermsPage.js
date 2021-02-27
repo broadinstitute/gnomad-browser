@@ -5,14 +5,14 @@ import { PageHeading } from '@gnomad/ui'
 import termsContent from '../about/terms.md'
 
 import DocumentTitle from './DocumentTitle'
-import HelpContent from './help/HelpContent'
 import InfoPage from './InfoPage'
+import MarkdownContent from './MarkdownContent'
 
 export default () => (
   <InfoPage>
     <DocumentTitle title="Terms and Data Information" />
     <PageHeading>Terms and Data Information</PageHeading>
 
-    <HelpContent dangerouslySetInnerHTML={{ __html: termsContent.html }} />
+    <MarkdownContent dangerouslySetInnerHTML={{ __html: termsContent.html }} />
   </InfoPage>
 )

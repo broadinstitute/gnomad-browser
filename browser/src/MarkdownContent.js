@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
-const HelpContent = styled.div`
+const MarkdownContentWrapper = styled.div`
   h1,
   h2,
   h3 {
@@ -76,7 +76,7 @@ export default props => {
   /* Hack to make regular anchor elements from Markdown content work with React Router */
   return (
     /* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
-    <HelpContent
+    <MarkdownContentWrapper
       {...props}
       onClick={e => {
         if (e.target.tagName === 'A') {
