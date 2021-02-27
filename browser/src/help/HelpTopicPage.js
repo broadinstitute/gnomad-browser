@@ -7,7 +7,7 @@ import MarkdownContent from '../MarkdownContent'
 
 import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 
-const HelpPage = ({ topicId }) => {
+const HelpTopicPage = ({ topicId }) => {
   const topic = helpTopics[topicId.toLowerCase()]
 
   return (
@@ -22,8 +22,8 @@ const HelpPage = ({ topicId }) => {
   )
 }
 
-HelpPage.propTypes = {
+HelpTopicPage.propTypes = {
   topicId: PropTypes.string.isRequired,
 }
 
-export default HelpPage
+export default HelpTopicPage
