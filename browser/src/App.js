@@ -21,7 +21,7 @@ const AboutPage = lazy(() => import('./AboutPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
 const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
 const FAQPage = lazy(() => import('./help/FAQPage'))
-const HelpPage = lazy(() => import('./help/HelpPage'))
+const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))
 const PublicationsPage = lazy(() => import('./PublicationsPage'))
@@ -244,7 +244,7 @@ const App = () => {
               <Route
                 exact
                 path="/help/:topic"
-                render={({ match }) => <HelpPage topicId={match.params.topic} />}
+                render={({ match }) => <HelpTopicPage topicId={match.params.topic} />}
               />
 
               <Route
