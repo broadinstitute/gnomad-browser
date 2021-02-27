@@ -1,0 +1,143 @@
+- Maria Abreu
+- Carlos A Aguilar Salinas
+- Tariq Ahmad
+- Christine M. Albert
+- Nicholette Allred
+- David Altshuler
+- Diego Ardissino
+- Gil Atzmon
+- John Barnard
+- Laurent Beaugerie
+- Gary Beecham
+- Emelia J. Benjamin
+- Michael Boehnke
+- Lori Bonnycastle
+- Erwin Bottinger
+- Donald Bowden
+- Matthew Bown
+- Hannia Campos
+- John Chambers
+- Juliana Chan
+- Daniel Chasman
+- Rex Chisholm
+- Judy Cho
+- Rajiv Chowdhury
+- Mina Chung
+- Wendy Chung
+- Bruce Cohen
+- Adolfo Correa
+- Dana Dabelea
+- Mark Daly
+- John Danesh
+- Dawood Darbar
+- Joshua Denny
+- Ravindranath Duggirala
+- Josée Dupuis
+- Patrick T. Ellinor
+- Roberto Elosua
+- Jeanette Erdmann
+- Tõnu Esko
+- Martt Färkkilä
+- Diane Fatkin
+- Jose Florez
+- Andre Franke
+- Gad Getz
+- David Glahn
+- Ben Glaser
+- Stephen Glatt
+- David Goldstein
+- Clicerio Gonzalez
+- Leif Groop
+- Christopher Haiman
+- Ira Hall
+- Craig Hanis
+- Matthew Harms
+- Mikko Hiltunen
+- Matti Holi
+- Christina Hultman
+- Chaim Jalas
+- Mikko Kallela
+- Jaakko Kaprio
+- Sekar Kathiresan
+- Eimear Kenny
+- Bong-Jo Kim
+- Young Jin Kim
+- George Kirov
+- Jaspal Kooner
+- Seppo Koskinen
+- Harlan M. Krumholz
+- Subra Kugathasan
+- Soo Heon Kwak
+- Markku Laakso
+- Terho Lehtimäki
+- Ruth Loos
+- Steven A. Lubitz
+- Ronald Ma
+- Daniel MacArthur
+- Gregory M. Marcus
+- Jaume Marrugat
+- Kari Mattila
+- Steve McCarroll
+- Mark McCarthy
+- Jacob McCauley
+- Dermot McGovern
+- Ruth McPherson
+- James Meigs
+- Olle Melander
+- Deborah Meyers
+- Lili Milani
+- Braxton Mitchell
+- Aliya Naheed
+- Saman Nazarian
+- Ben Neale
+- Peter Nilsson
+- Michael O'Donovan
+- Yuki Okada
+- Dost Ongur
+- Lorena Orozco
+- Michael Owen
+- Colin Palmer
+- Aarno Palotie
+- Kyong Soo Park
+- Carlos Pato
+- Ann Pulver
+- Dan Rader
+- Nazneen Rahman
+- Alex Reiner
+- Anne Remes
+- Stephen Rich
+- John D. Rioux
+- Samuli Ripatti
+- Dan Roden
+- Jerome I. Rotter
+- Danish Saleheen
+- Veikko Salomaa
+- Nilesh Samani
+- Jeremiah Scharf
+- Heribert Schunkert
+- Svati Shah
+- Moore Shoemaker
+- Tai Shyong
+- Edwin K. Silverman
+- Pamela Sklar
+- Gustav Smith
+- Hilkka Soininen
+- Harry Sokol
+- Tim Spector
+- Nathan Stitziel
+- Patrick Sullivan
+- Jaana Suvisaari
+- Kent Taylor
+- Yik-Ying Teo
+- Tuomi Tiinamaija
+- Ming Tsuang
+- Dan Turner
+- Teresa Tusie Luna
+- Erkki Vartiainen
+- Marquis Vawter
+- James Ware
+- Hugh Watkins
+- Rinse Weersma
+- Maija Wessman
+- James Wilson
+- Ramnik Xavier
