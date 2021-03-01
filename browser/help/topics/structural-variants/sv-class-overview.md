@@ -1,9 +1,7 @@
 ---
 id: sv-class-overview
-title: 'Structural variant classes'
+title: 'Classes of structural variants in gnomAD'
 ---
-
-# Classes of structural variants in gnomAD
 
 Structural variants (SVs) are defined as genomic rearrangements involving at least 50bp of DNA, and are categorized into mutational classes based on their breakpoint signature(s) and/or changes in copy number.
 

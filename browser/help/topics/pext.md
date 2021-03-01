@@ -3,8 +3,6 @@ id: pext
 title: 'Proportion expressed across transcripts (pext) score'
 ---
 
-# Proportion expressed across transcripts (pext) score
-
 The pext score, presented in ["Transcript expression-aware annotation improves rare variant interpretation"](https://broad.io/tx_annotation), summarizes isoform expression values across tissues to allow for quick visualization of the expression status of exonic regions across tissues.
 
 Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript for GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:

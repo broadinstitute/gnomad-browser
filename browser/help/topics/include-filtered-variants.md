@@ -3,8 +3,6 @@ id: include-filtered-variants
 title: 'Include filtered variants'
 ---
 
-# Include filtered variants
-
 Enabling this checkbox will include variants that did not pass our quality control process.
 
 If filtered variants are included, the data source icons in the variant table will be distinguished with reduced opacity and a dotted border to indicate lower reliability. A variant’s filter status can be discovered by hovering over the icon (e.g. AC0, RF).

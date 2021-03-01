@@ -1,9 +1,7 @@
 ---
 id: sv-effect_IED
-title: 'SV consequence: intragenic exonic duplication'
+title: 'SV consequence: intragenic exonic duplication (IED)'
 ---
-
-## ![](https://placehold.it/15/7459B2/000000?text=+) Intragenic exonic duplication (IED)
 
 ### Description
 

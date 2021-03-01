@@ -3,8 +3,6 @@ id: dataset-selection
 title: 'Dataset selection'
 ---
 
-# Selecting datasets
-
 The data selection drop-down specifies which dataset is displayed on the page. Currently these are:
 
 ## Short variants

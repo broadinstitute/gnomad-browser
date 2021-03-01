@@ -1,9 +1,7 @@
 ---
 id: sv-class_CTX
-title: 'SV class: translocation'
+title: 'SV class: translocation (CTX)'
 ---
-
-## ![](https://placehold.it/15/397246/000000?text=+) Translocations (CTX)
 
 Classification: _Balanced canonical SV_
 

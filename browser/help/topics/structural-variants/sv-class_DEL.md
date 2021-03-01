@@ -1,9 +1,7 @@
 ---
 id: sv-class_DEL
-title: 'SV class: deletion'
+title: 'SV class: deletion (DEL)'
 ---
-
-## ![](https://placehold.it/15/D43925/000000?text=+) Deletions (DEL)
 
 Classification: _Unbalanced canonical SV_
 

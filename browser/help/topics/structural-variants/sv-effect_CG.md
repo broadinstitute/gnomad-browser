@@ -1,9 +1,7 @@
 ---
 id: sv-effect_CG
-title: 'SV consequence: copy gain'
+title: 'SV consequence: copy gain (CG)'
 ---
-
-## ![](https://placehold.it/15/2376B2/000000?text=+) Copy gain (CG)
 
 ### Description
 

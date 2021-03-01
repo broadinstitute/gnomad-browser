@@ -1,9 +1,7 @@
 ---
 id: sv-class_BND
-title: 'SV class: breakend'
+title: 'SV class: breakend (BND)'
 ---
-
-## ![](https://placehold.it/15/397246/000000?text=+) Breakends (BND)
 
 Classification: _Incompletely resolved single breakpoint; not a complete SV_
 

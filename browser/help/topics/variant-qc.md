@@ -3,11 +3,12 @@ id: variant-qc
 title: 'Variant QC'
 ---
 
-# gnomAD v3.1
+## gnomAD v3.1
 
 See our [3.1 release blog post](https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/) for more details about the variant QC process.
 
-# gnomAD v3.0
+## gnomAD v3.0
+
 For gnomAD v3.0, we computed all our variant QC metrics within Hail and because our new sparse format contains all the GVCFs information, we computed them for each allele separately. We then used the [allele-specific version of GATK Variant Quality Score Recalibration (VQSR)](https://gatkforums.broadinstitute.org/gatk/discussion/9622/allele-specific-annotation-and-filtering) to compute a confidence score for each allele in our data to be real or artifactual. We used the following features:
 * SNPs: `FS`, `SOR`,`ReadPosRankSum`, `MQRankSum`, `QD`, `DP`, `MQ`
 * indels: `FS`, `SOR`, `ReadPosRankSum`, `MQRankSum`, `QD`, `DP`
@@ -21,7 +22,8 @@ In addition to VQSR, we also  applied the following hard filters:
 
 In total, 12.7% of SNVs and 34.2% of indels were filtered, leaving  526,001,545 SNVs and 69,168,024 indels that passed all filters in our release.
 
-# gnomAD v2.1
+## gnomAD v2.1
+
 For gnomAD v2.1 variants QC, we used all sites present in the 141,456 release samples as well as sites present in family members forming trios (717 trios in genomes, 6,029 trios in exomes) that passed all of the sample QC filters. Including these trios allowed us to look at transmission and Mendelian violations for evaluation purposes. Variant QC was performed on the exomes and genomes separately but using the same pipeline (although different thresholds were used).
 
 We used a random forests (RF) model using allele-specific annotations as our main tool for variant quality  control. This updated model is described below and performs markedly better than both VQSR and our previous RF model (used on gnomAD v2.0.2) on all the evaluation metrics we used. In addition to our RF filter, we also excluded all sites failing the following two hard filters:
@@ -30,13 +32,13 @@ We used a random forests (RF) model using allele-specific annotations as our mai
 
 Finally, for this release we have moved the information about sites falling in low complexity (‘lcr’), decoy (`decoy`)  and segmental duplication (`segdup`) regions to the `INFO` field. This means that the information is still easily available in the VCF but variants in these regions that pass other filters will have a `PASS` value in the `FILTER` column. In the browser, `lcr`, `decoy` and `segdup` are displayed in the `Flags` column.
 
-## Random forests model
+### Random forests model
 
 We used a random forests (RF) model developed with Hail and pyspark. Our model was applied to exomes and genomes separately. Our model considered each allele separately and emitted a prediction for each allele. We used a combination of features output by the GATK Haplotype Caller and features that we computed from the genotypes directly.  In particular, we  introduced the following two allele-specific features:
 1. `qd`: This metric is inspired by the GATK quality / depth (`QD`) metric, but is computed per-allele, only on the carriers of that allele. So for each allele, `qd` is computed as the sum of the non-reference genotype likelihoods divided by the sum of the depth in all carrier of that allele.
 2. `pab_max`: This metric is the highest p-value for sampling the observed allele balance under a binomial model. Because we take the highest value, we effectively consider the "best looking" sample in terms of allele-balance.
 
-### Random forests features
+#### Random forests features
 
 <table>
   <tr>
@@ -132,7 +134,7 @@ Feature</td>
 
 Note that since random forests doesn’t tolerate missing data, we have naively imputed all missing values using the median value for that feature.
 
-### Random forest training examples
+#### Random forest training examples
 
 Our strategy for selecting training sites was the same as for gnomAD v2.0.2; however, because we had an increase in our number of trios, we had more positive transmitted singletons alleles than previously. The table below summarizes our training examples.
 
@@ -184,7 +186,7 @@ Our strategy for selecting training sites was the same as for gnomAD v2.0.2; how
 
 Note that for training the model, we used a balanced training set by randomly downsampling the class that had more training examples to match the number of training examples in the other class.
 
-### Random forests filtering thresholds
+#### Random forests filtering thresholds
 
 In order to set a threshold for the PASS / RF filter in the release, we have used a slightly different set of evaluation metrics. The reason being that some of the classical metrics such as transition/transversion ratio and insertion:deletion ratio are very difficult to interpret in large callsets. On the other hand, we have additional data and resources that can serve as useful proxy for callset quality, such as large number of trios, validated variants (e.g. validated _de novo_ mutations in our exomes) or public databases such as ClinVar. We used the following metrics to determine a cutoff on the random forests model output, to build what we believed to be a high quality set of variants:
 * Precision / recall against two well characterized samples:

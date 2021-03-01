@@ -1,9 +1,7 @@
 ---
 id: sv-effect_pLoF
-title: 'SV consequence: loss of function'
+title: 'SV consequence: predicted loss-of-function (pLoF)'
 ---
-
-## ![](https://placehold.it/15/D43925/000000?text=+) Predicted loss-of-function (pLoF)
 
 ### Description
 

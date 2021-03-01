@@ -3,8 +3,6 @@ id: clinvar-variant-categories
 title: ClinVar variant categories
 ---
 
-# ClinVar variant categories
-
 ClinVar variants shown in this track are divided into four categories based on clinical significance.
 
 * Pathogenic / likely pathogenic

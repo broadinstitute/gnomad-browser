@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_delINV_INVdel
-title: 'Complex SV subclass: deletion-flanked inversions'
+title: 'Complex SV subclass: deletion-flanked inversions (delINV & INVdel)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Deletion-flanked inversions (delINV & INVdel)
 
 Classification: _unbalanced complex SV_
 

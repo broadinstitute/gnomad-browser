@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_INS-iDEL
-title: 'Complex SV subclass: insertions with insertion-site deletions'
+title: 'Complex SV subclass: insertions with insertion-site deletions (INS-iDEL)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Insertions with insertion-site deletions (INS-iDEL)
 
 Classification: _unbalanced complex SV_
 

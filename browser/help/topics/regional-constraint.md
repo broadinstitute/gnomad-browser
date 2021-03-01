@@ -3,8 +3,6 @@ id: regional-constraint
 title: 'Regional constraint'
 ---
 
-# Regional constraint
-
 Important: Currently regional constraint is only available / displayed when selecting the ExAC dataset. In addition, it is only displayed for genes that exhibit regional missense constraint.
 
 ## Overall interpretation
