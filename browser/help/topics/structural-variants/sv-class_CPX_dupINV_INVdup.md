@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_dupINV_INVdup
-title: 'Complex SV subclass: duplication-flanked inversions'
+title: 'Complex SV subclass: duplication-flanked inversions (dupINV & INVdup)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Duplication-flanked inversions (dupINV & INVdup)
 
 Classification: _unbalanced complex SV_
 

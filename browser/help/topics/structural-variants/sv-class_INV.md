@@ -1,9 +1,7 @@
 ---
 id: sv-class_INV
-title: 'SV class: inversion'
+title: 'SV class: inversion (INV)'
 ---
-
-## ![](https://placehold.it/15/FA931E/000000?text=+) Inversions (INV)
 
 Classification: _Balanced canonical SV_
 

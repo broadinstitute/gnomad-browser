@@ -3,8 +3,6 @@ id: sv-class_MCNV
 title: 'SV class: multiallelic CNV'
 ---
 
-## ![](https://placehold.it/15/7459B2/000000?text=+) Multiallelic CNV
-
 Classification: _Unbalanced canonical<sup>*</sup> SV_
 
 ![Multiallelic CNV (MCNV)](gnomAD_browser.SV_schematics_MCNV.png)

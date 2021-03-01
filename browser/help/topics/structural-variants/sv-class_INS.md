@@ -1,9 +1,7 @@
 ---
 id: sv-class_INS
-title: 'SV class: insertion'
+title: 'SV class: insertion (INS)'
 ---
-
-## ![](https://placehold.it/15/D474E0/000000?text=+) Insertions (INS)
 
 Classification: _Balanced<sup>*</sup> canonical SV_
 

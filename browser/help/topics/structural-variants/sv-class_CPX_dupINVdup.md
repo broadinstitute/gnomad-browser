@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_dupINVdup
-title: 'Complex SV subclass: paired-duplication inversions'
+title: 'Complex SV subclass: paired-duplication inversions (dupINVdup)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Paired-duplication inversions (dupINVdup)
 
 Classification: _unbalanced complex SV_
 

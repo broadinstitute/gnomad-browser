@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_piDUP-FR_piDUP-RF
-title: 'Complex SV subclass: palindromic inverted duplications'
+title: 'Complex SV subclass: palindromic inverted duplications (piDUP-FR & piDUP-RF)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Palindromic inverted duplications (piDUP-FR & piDUP-RF)
 
 #### Configuration A (piDUP-FR)
 

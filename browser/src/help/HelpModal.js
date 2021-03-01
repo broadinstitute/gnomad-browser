@@ -103,7 +103,15 @@ class HelpModal extends Component {
       if (!topic) {
         return null
       }
-      return <MarkdownContent dangerouslySetInnerHTML={{ __html: topic.html }} />
+      return (
+        <>
+          <MarkdownContent>
+            <h1>{topic.title}</h1>
+            {/* eslint-disable-next-line react/no-danger */}
+            <div dangerouslySetInnerHTML={{ __html: topic.html }} />
+          </MarkdownContent>
+        </>
+      )
     }
 
     if (searchText) {

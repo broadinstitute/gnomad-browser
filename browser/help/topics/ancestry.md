@@ -1,8 +1,8 @@
 ---
 id: ancestry
-title: 'Ancestry'
+title: 'Ancestry in gnomAD'
 ---
-# Ancestry in gnomAD
+
 In gnomAD we provide two levels of ancestry. First, we provide global ancestry for super-populations: African/African American (`afr`),Amish (`ami`), American Admixed/Latino  (`amr`), Ashkenazi Jewish (`asj`), East Asian (`eas`), Finnish (`fin`), Non-Finnish European (`nfe`) and South Asian (`sas`). Individuals were classified as "other" (`oth`) if they did not unambiguously cluster with the major populations in a principal component analysis (PCA).
 
 For gnomAD v2, we also provide sub-continental information for the East Asian (Koreans (`kor`) and Japanes (`jpn`)) and Non-Finnish Euopean(Bulgarian (`bgr`, Estonian (`est`), North-Western European (`nwe`), Southern European (`seu`) and Swedish (`swe`)) populations.

@@ -3,8 +3,6 @@ id: lof-curation
 title: Loss-of-Function Curation
 ---
 
-# Loss-of-Function Curation
-
 The Loss-of-Function (LoF) classification is a result of a specialized and manual curation of predicted loss of function (pLoF) variants that have passed all LOFTEE filters and other QC flags in gnomAD and determines how likely these variants are to result in loss of function. For each curated variant, two curators performed an independent curation, and this is a process that yields a **prediction** for the likelihood of loss of function. Note that these predictions are based on _in silico_ metrics only, and do not incorporate experimental evidence, so should be regarded as more confident than automated curations but still uncertain.
 
 ## Classification Categories

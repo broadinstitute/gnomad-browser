@@ -3,8 +3,6 @@ id: faf
 title: 'Filtering allele frequency'
 ---
 
-#  Filtering allele frequency
-
 This annotation contains a threshold filter allele frequency for a variant.
 Technically, this is the highest disease-specific maximum credible population AF for which the observed AC is not compatible with pathogenicity.
 More practically, If the filter allele frequency of a variant is above the maximum credible population AF for a condition of interest, then that variant should be filtered (ie not considered a candidate causative variant).

@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_delINVdel
-title: 'Complex SV subclass: paired-deletion inversions'
+title: 'Complex SV subclass: paired-deletion inversions (delINVdel)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Paired-deletion inversions (delINVdel)
 
 Classification: _unbalanced complex SV_
 

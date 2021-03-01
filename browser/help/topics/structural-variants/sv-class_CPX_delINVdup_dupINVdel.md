@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_delINVdup_dupINVdel
-title: 'Complex SV subclass: paired-CNV inversions'
+title: 'Complex SV subclass: paired-CNV inversions (delINVdup & dupINVdel)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Paired-CNV inversions (delINVdup & dupINVdel)
 
 Classification: _unbalanced complex SV_
 

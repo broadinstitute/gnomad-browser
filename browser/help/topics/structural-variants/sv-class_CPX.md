@@ -3,8 +3,6 @@ id: sv-class_CPX
 title: 'SV class: complex SV'
 ---
 
-## ![](https://placehold.it/15/71E38C/000000?text=+) Complex SVs
-
 Complex SVs are rearrangements involving at least two distinct canonical SV signatures and/or changes in copy number.
 
 Complex SVs are single variants contained on a single haplotype and are transmitted stably as individual alleles. Most complex SVs are assumed to have arisen in a single mutational event. Complex SVs do not include sites with multiple distinct overlapping rearrangements occurring in different subsets of gnomAD samples (i.e., all rearranged intervals involved in complex SVs appear in the same subset of gnomAD samples).

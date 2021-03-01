@@ -1,9 +1,7 @@
 ---
 id: sv-class_DUP
-title: 'SV class: duplication'
+title: 'SV class: duplication (DUP)'
 ---
-
-## ![](https://placehold.it/15/2376B2/000000?text=+) Duplications (DUP)
 
 Classification: _Unbalanced canonical SV_
 

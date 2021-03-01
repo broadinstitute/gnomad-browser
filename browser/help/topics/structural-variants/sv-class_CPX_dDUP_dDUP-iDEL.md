@@ -1,9 +1,7 @@
 ---
 id: sv-class_CPX_dDUP_dDUP-iDEL
-title: 'Complex SV subclass: dispersed duplications'
+title: 'Complex SV subclass: dispersed duplications (dDUP & dDUP-iDEL)'
 ---
-
-## ![](https://placehold.it/15/71E38C/000000?text=+) Dispersed duplications (dDUP & dDUP-iDEL)
 
 Classification: _unbalanced complex SV_
 
