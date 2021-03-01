@@ -8,7 +8,7 @@ GTEx tissue-specific isoform expression values are displayed next to the transcr
 While we hope the isoform expression data are useful for interpretation, please note that the calculations may not always reflect true biology, depending on many factors including gene size, number of annotated transcripts, as well as GC content. The calculations are based on unstranded RNA-seq data, which may obfuscate the quantification of antisense transcripts.
 
 
-## How the isoform-expression was calculated.
+### How the isoform-expression was calculated.
 
 Isoform expression values were calculated by the GTEx Analysis Working Group using RSEM v1.2.22 on the GTEx v7 dataset. Raw isoform quantification values are available for download here: https://www.gtexportal.org/home/datasets
 
