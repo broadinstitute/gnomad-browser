@@ -10,17 +10,18 @@ Since `pLI` > 0.9 is widely used in research and clinical interpretation of Mend
 The sections below give an explanation of both the _observed / expected_ and the _probability of being loss-of-function intolerant_ scores.
 
 
-## Observed / expected (`oe`)
+### Observed / expected (`oe`)
 
 The constraint score shown in gnomAD is the ratio of the observed / expected (`oe`) number of loss-of-function variants in that gene. The expected counts are based on a mutational model that takes sequence context, coverage and methylation into account.
 
-### Interpretation
+#### Interpretation
 Observed/expected (`oe`) is a continuous measure of how tolerant a gene is to a certain class of variation (e.g. loss-of-function). When a gene has a low `oe` value, it is under stronger selection for that class of variation than a gene with a higher value. Because counts depend on gene size and sample size, the precision of the `oe` values varies a lot from one gene to the next. Therefore in addition to the `oe` value, we also display the 90% confidence interval (CI) for each of the `oe` values. When evaluating how constrained a gene is, it is essential to take the 90% CI into consideration.
 
 Although `oe` is a continuous value,  we understand that it can be useful to use a threshold for certain applications. In particular, for the interpretation of Mendelian diseases cases, we suggest using the upper bound of the `oe` CI < 0.35 as a threshold if needed. Again, ideally `oe` should be used as a continuous value rather than a cutoff and evaluating the `oe` 90% CI is a must.
 
-## Probability of being loss-of-function intolerant (`pLI`)
-### Overall interpretation
+### Probability of being loss-of-function intolerant (`pLI`)
+
+#### Overall interpretation
 
 We developed metrics to measure a transcript's intolerance to variation by predicting the number of variants expected to be seen in the gnomAD dataset and comparing those expectations to the observed amount of variation. Transcripts that are significantly depleted of their expected variation are considered constrained, or intolerant, of such variation.
 
@@ -30,19 +31,19 @@ For protein-truncating variation, we assume that there are three classes of gene
 
 More details can be found in the supplement of [Lek et al Nature 2016](https://www.nature.com/articles/nature19057).
 
-### Transcripts included in the analyses
+#### Transcripts included in the analyses
 
 We used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,621 transcripts. Additionally, we excluded 795 transcripts that had zero observed variants when removing exons with a median depth < 1 as well as 251 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10<sup>-4</sup> and 10<sup>-3</sup>, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10<sup>-4</sup> and 10<sup>-3</sup>, respectively). When all outliers were removed, there were 18,225 transcripts left for analyses.
 
-### Observed variant count
+#### Observed variant count
 
 The observed variant count is the number of unique single nucleotide variants in the canonical transcript of each gene with 123 or fewer alternative alleles (minor allele frequency < 0.1%). Variants in exons with a median depth < 1 were removed from the total counts.
 
-### Expected variant count
+#### Expected variant count
 
 We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in section 4.1 of the supplement in [Lek et al Nature 2016](https://www.nature.com/articles/nature19057). Expected variants in exons with a median depth < 1 were removed from the total counts.
 
-### Synonymous and missense Z scores
+#### Synonymous and missense Z scores
 
 Higher (more positive) Z scores indicate that the transcript is more intolerant of variation (more constrained).
 
@@ -50,7 +51,7 @@ To generate Z scores, we used a previously described, but slightly modified, seq
 
 For more information, see [Samocha et al Nature Genetics 2014](https://www.nature.com/articles/ng.3050) and [Lek et al Nature 2016](https://www.nature.com/articles/nature19057).
 
-### pLI (probability of being loss-of-function intolerant)
+#### pLI (probability of being loss-of-function intolerant)
 
 pLI scores closer to one indicate more intolerance to protein-truncating variation. For a set of transcripts intolerant of protein-truncating variation, we suggest pLI ≥ 0.9.
 

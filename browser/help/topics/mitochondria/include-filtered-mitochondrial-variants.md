@@ -9,7 +9,7 @@ If filtered variants are included, the data source icons in the variant table wi
 
 Be careful when including filtered variants: some poor quality variants (and summary statistics) will be added to the table. This feature should be used with caution.
 
-## Filters
+### Filters
 
 - Artifact-prone site: variant overlaps site that is commonly reported in literature to be artifact-prone
 - Indel stack: allele where all samples with the variant call had at least 2 different indels called at the position
