@@ -84,31 +84,37 @@ ShowURLButton.propTypes = {
   url: PropTypes.string.isRequired,
 }
 
-export const GetUrlButtons = ({ gcsBucket, label, path, includeAzure }) => {
+const renderDownloadOptions = elements => {
+  return elements
+    .filter(el => el)
+    .flatMap((el, i) => [<React.Fragment key={`${i}`}> / </React.Fragment>, el])
+    .slice(1)
+}
+
+export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure }) => {
   return (
     <>
       <span>{label}</span>
       <br />
       Show URL for{' '}
-      <ShowURLButton
-        aria-label={`Show Google URL for ${label}`}
-        label={label}
-        url={`gs://${gcsBucket}${path}`}
-      >
-        Google
-      </ShowURLButton>{' '}
-      /{' '}
-      <ShowURLButton
-        aria-label={`Show Amazon URL for ${label}`}
-        label={label}
-        url={`s3://gnomad-public-us-east-1${path}`}
-      >
-        Amazon
-      </ShowURLButton>
-      {includeAzure && (
-        <>
-          {' '}
-          /{' '}
+      {renderDownloadOptions([
+        <ShowURLButton
+          aria-label={`Show Google URL for ${label}`}
+          label={label}
+          url={`gs://${gcsBucket}${path}`}
+        >
+          Google
+        </ShowURLButton>,
+        includeAWS && (
+          <ShowURLButton
+            aria-label={`Show Amazon URL for ${label}`}
+            label={label}
+            url={`s3://gnomad-public-us-east-1${path}`}
+          >
+            Amazon
+          </ShowURLButton>
+        ),
+        includeAzure && (
           <ShowURLButton
             aria-label={`Show Microsoft URL for ${label}`}
             label={label}
@@ -116,33 +122,32 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAzure }) => {
           >
             Microsoft
           </ShowURLButton>
-        </>
-      )}
+        ),
+      ])}
       {navigator.clipboard && navigator.clipboard.writeText && (
         <>
           <br />
           Copy URL for{' '}
-          <TextButton
-            aria-label={`Copy Google URL for ${label}`}
-            onClick={() => {
-              navigator.clipboard.writeText(`gs://${gcsBucket}${path}`)
-            }}
-          >
-            Google
-          </TextButton>{' '}
-          /{' '}
-          <TextButton
-            aria-label={`Copy Amazon URL for ${label}`}
-            onClick={() => {
-              navigator.clipboard.writeText(`s3://gnomad-public-us-east-1${path}`)
-            }}
-          >
-            Amazon
-          </TextButton>
-          {includeAzure && (
-            <>
-              {' '}
-              /{' '}
+          {renderDownloadOptions([
+            <TextButton
+              aria-label={`Copy Google URL for ${label}`}
+              onClick={() => {
+                navigator.clipboard.writeText(`gs://${gcsBucket}${path}`)
+              }}
+            >
+              Google
+            </TextButton>,
+            includeAWS && (
+              <TextButton
+                aria-label={`Copy Amazon URL for ${label}`}
+                onClick={() => {
+                  navigator.clipboard.writeText(`s3://gnomad-public-us-east-1${path}`)
+                }}
+              >
+                Amazon
+              </TextButton>
+            ),
+            includeAzure && (
               <TextButton
                 aria-label={`Copy Microsoft URL for ${label}`}
                 onClick={() => {
@@ -153,8 +158,8 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAzure }) => {
               >
                 Microsoft
               </TextButton>
-            </>
-          )}
+            ),
+          ])}
         </>
       )}
     </>
@@ -165,15 +170,25 @@ GetUrlButtons.propTypes = {
   gcsBucket: PropTypes.string,
   label: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  includeAWS: PropTypes.bool,
   includeAzure: PropTypes.bool,
 }
 
 GetUrlButtons.defaultProps = {
   gcsBucket: 'gcp-public-data--gnomad',
+  includeAWS: true,
   includeAzure: true,
 }
 
-export const GenericDownloadLinks = ({ gcsBucket, label, path, size, md5, includeAzure }) => {
+export const GenericDownloadLinks = ({
+  gcsBucket,
+  label,
+  path,
+  size,
+  md5,
+  includeAWS,
+  includeAzure,
+}) => {
   return (
     <>
       <span>{label}</span>
@@ -188,31 +203,30 @@ export const GenericDownloadLinks = ({ gcsBucket, label, path, size, md5, includ
       )}
       <span>
         Download from{' '}
-        <ExternalLink
-          aria-label={`Download ${label} from Google`}
-          href={`https://storage.googleapis.com/${gcsBucket}${path}`}
-        >
-          Google
-        </ExternalLink>{' '}
-        /{' '}
-        <ExternalLink
-          aria-label={`Download ${label} from Amazon`}
-          href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
-        >
-          Amazon
-        </ExternalLink>
-        {includeAzure && (
-          <>
-            {' '}
-            /{' '}
+        {renderDownloadOptions([
+          <ExternalLink
+            aria-label={`Download ${label} from Google`}
+            href={`https://storage.googleapis.com/${gcsBucket}${path}`}
+          >
+            Google
+          </ExternalLink>,
+          includeAWS && (
+            <ExternalLink
+              aria-label={`Download ${label} from Amazon`}
+              href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
+            >
+              Amazon
+            </ExternalLink>
+          ),
+          includeAzure && (
             <ExternalLink
               aria-label={`Download ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
             >
               Microsoft
             </ExternalLink>
-          </>
-        )}
+          ),
+        ])}
       </span>
     </>
   )
@@ -224,6 +238,7 @@ GenericDownloadLinks.propTypes = {
   path: PropTypes.string.isRequired,
   size: PropTypes.string,
   md5: PropTypes.string,
+  includeAWS: PropTypes.bool,
   includeAzure: PropTypes.bool,
 }
 
@@ -231,10 +246,19 @@ GenericDownloadLinks.defaultProps = {
   gcsBucket: 'gcp-public-data--gnomad',
   size: undefined,
   md5: undefined,
+  includeAWS: true,
   includeAzure: true,
 }
 
-export const IndexedFileDownloadLinks = ({ label, path, size, md5, gcsBucket, includeAzure }) => {
+export const IndexedFileDownloadLinks = ({
+  label,
+  path,
+  size,
+  md5,
+  gcsBucket,
+  includeAWS,
+  includeAzure,
+}) => {
   return (
     <>
       <span>{label}</span>
@@ -249,60 +273,58 @@ export const IndexedFileDownloadLinks = ({ label, path, size, md5, gcsBucket, in
       )}
       <span>
         Download from{' '}
-        <ExternalLink
-          aria-label={`Download ${label} from Google`}
-          href={`https://storage.googleapis.com/${gcsBucket}${path}`}
-        >
-          Google
-        </ExternalLink>{' '}
-        /{' '}
-        <ExternalLink
-          aria-label={`Download ${label} from Amazon`}
-          href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
-        >
-          Amazon
-        </ExternalLink>
-        {includeAzure && (
-          <>
-            {' '}
-            /{' '}
+        {renderDownloadOptions([
+          <ExternalLink
+            aria-label={`Download ${label} from Google`}
+            href={`https://storage.googleapis.com/${gcsBucket}${path}`}
+          >
+            Google
+          </ExternalLink>,
+          includeAWS && (
+            <ExternalLink
+              aria-label={`Download ${label} from Amazon`}
+              href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
+            >
+              Amazon
+            </ExternalLink>
+          ),
+          includeAzure && (
             <ExternalLink
               aria-label={`Download ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
             >
               Microsoft
             </ExternalLink>
-          </>
-        )}
+          ),
+        ])}
       </span>
       <br />
       <span>
         Download TBI from{' '}
-        <ExternalLink
-          aria-label={`Download TBI file for ${label} from Google`}
-          href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
-        >
-          Google
-        </ExternalLink>{' '}
-        /{' '}
-        <ExternalLink
-          aria-label={`Download TBI file for ${label} from Amazon`}
-          href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
-        >
-          Amazon
-        </ExternalLink>
-        {includeAzure && (
-          <>
-            {' '}
-            /{' '}
+        {renderDownloadOptions([
+          <ExternalLink
+            aria-label={`Download TBI file for ${label} from Google`}
+            href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
+          >
+            Google
+          </ExternalLink>,
+          includeAWS && (
+            <ExternalLink
+              aria-label={`Download TBI file for ${label} from Amazon`}
+              href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
+            >
+              Amazon
+            </ExternalLink>
+          ),
+          includeAzure && (
             <ExternalLink
               aria-label={`Download TBI file for ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}.tbi`}
             >
               Microsoft
             </ExternalLink>
-          </>
-        )}
+          ),
+        ])}
       </span>
     </>
   )
@@ -314,6 +336,7 @@ IndexedFileDownloadLinks.propTypes = {
   size: PropTypes.string,
   md5: PropTypes.string,
   gcsBucket: PropTypes.string,
+  includeAWS: PropTypes.bool,
   includeAzure: PropTypes.bool,
 }
 
@@ -321,5 +344,6 @@ IndexedFileDownloadLinks.defaultProps = {
   size: undefined,
   md5: undefined,
   gcsBucket: 'gcp-public-data--gnomad',
+  includeAWS: true,
   includeAzure: true,
 }
