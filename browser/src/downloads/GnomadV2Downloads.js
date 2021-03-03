@@ -506,6 +506,24 @@ export default () => (
             path="/truth-sets/source/lof-curation/MCOLN1_curation_results.csv"
           />
         </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Haploinsufficient genes LoF curation results"
+            path="/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv"
+            gcsBucket="gnomad-public"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Metabolic conditions genes LoF curation results"
+            path="/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv"
+            gcsBucket="gnomad-public"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
       </FileList>
     </section>
 
