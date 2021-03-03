@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { RegionViewer } from '@gnomad/region-viewer'
@@ -44,8 +43,6 @@ const RegionControlsWrapper = styled.div`
 
 // eslint-disable-next-line no-shadow
 const RegionPage = ({ datasetId, region, width }) => {
-  const history = useHistory()
-
   const { chrom, start, stop } = region
 
   const regionViewerRegions = [
@@ -115,12 +112,7 @@ const RegionPage = ({ datasetId, region, width }) => {
           />
         )}
 
-        <GenesInRegionTrack
-          region={region}
-          onClickGene={gene => {
-            history.push(`/gene/${gene.gene_id}?dataset=${datasetId}`)
-          }}
-        />
+        <GenesInRegionTrack region={region} />
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (

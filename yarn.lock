@@ -1009,10 +1009,10 @@
     prop-types "^15.7.2"
     ramda "^0.24.1"
 
-"@gnomad/track-genes@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-1.2.0.tgz#2216443cd65476aa8f06248a41a4494319132a73"
-  integrity sha512-H+AKyZQLjRPtcMAwaLIgIxP+mWBLbqAnXBljvPjMKV+K3ihK68vc41JwUDHSf1Oxz64o0/8wPblzxv6JWRDEHQ==
+"@gnomad/track-genes@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-2.0.0.tgz#4436bca53763331ae17b099d7bdcfad321855749"
+  integrity sha512-XNBeL3EB/hN8rNu7Mu+tOxGFNVEtTeElp5xvLoZWTAbnDi10lo/ycL7U28JjJKbM0uR+u/wap1HtALHHFaKJmw==
   dependencies:
     "@gnomad/region-viewer" "^1.0.0"
     prop-types "^15.7.2"
