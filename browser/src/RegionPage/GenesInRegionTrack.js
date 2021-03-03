@@ -5,8 +5,30 @@ import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { GenesPlot } from '@gnomad/track-genes'
 
+import Link from '../Link'
 import Query from '../Query'
 import BaseStatusMessage from '../StatusMessage'
+
+const GeneLink = styled(Link)`
+  text {
+    fill: #1173bb;
+    text-decoration: none;
+  }
+
+  &:visited,
+  &:active {
+    text {
+      fill: #1173bb;
+    }
+  }
+
+  &:focus,
+  &:hover {
+    text {
+      text-decoration: underline;
+    }
+  }
+`
 
 const TopPanel = styled.div`
   display: flex;
@@ -59,7 +81,7 @@ const query = `
 
 const isCodingGene = gene => gene.exons.some(exon => exon.feature_type === 'CDS')
 
-const GenesInRegionTrack = ({ genes, region, onClickGene }) => {
+const GenesInRegionTrack = ({ genes, region }) => {
   const codingGenes = genes.filter(isCodingGene)
 
   const hasCodingGenes = codingGenes.length > 0
@@ -105,7 +127,11 @@ const GenesInRegionTrack = ({ genes, region, onClickGene }) => {
           <GenesPlot
             genes={includeNonCodingGenes ? genes : codingGenes}
             includeNonCodingGenes
-            onGeneClick={onClickGene}
+            renderGeneLabel={gene => (
+              <GeneLink to={`/gene/${gene.gene_id}`}>
+                <text textAnchor="middle">{gene.symbol}</text>
+              </GeneLink>
+            )}
             scalePosition={scalePosition}
             width={width}
           />
@@ -137,7 +163,6 @@ GenesInRegionTrack.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
-  onClickGene: PropTypes.func.isRequired,
 }
 
 const GenesInRegionTrackContainer = ({ region, ...otherProps }) => {

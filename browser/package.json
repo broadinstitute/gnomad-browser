@@ -15,7 +15,7 @@
     "@gnomad/identifiers": "^2.1.0",
     "@gnomad/markdown-loader": "^1.0.0",
     "@gnomad/region-viewer": "^1.0.0",
-    "@gnomad/track-genes": "^1.2.0",
+    "@gnomad/track-genes": "^2.0.0",
     "@gnomad/track-regions": "^1.0.0",
     "@gnomad/track-transcripts": "^1.0.0",
     "@gnomad/track-variants": "^1.0.0",
