@@ -99,6 +99,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
       Show URL for{' '}
       {renderDownloadOptions([
         <ShowURLButton
+          key="gcp"
           aria-label={`Show Google URL for ${label}`}
           label={label}
           url={`gs://${gcsBucket}${path}`}
@@ -107,6 +108,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
         </ShowURLButton>,
         includeAWS && (
           <ShowURLButton
+            key="aws"
             aria-label={`Show Amazon URL for ${label}`}
             label={label}
             url={`s3://gnomad-public-us-east-1${path}`}
@@ -116,6 +118,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
         ),
         includeAzure && (
           <ShowURLButton
+            key="azure"
             aria-label={`Show Microsoft URL for ${label}`}
             label={label}
             url={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
@@ -130,6 +133,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
           Copy URL for{' '}
           {renderDownloadOptions([
             <TextButton
+              key="gcp"
               aria-label={`Copy Google URL for ${label}`}
               onClick={() => {
                 navigator.clipboard.writeText(`gs://${gcsBucket}${path}`)
@@ -139,6 +143,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
             </TextButton>,
             includeAWS && (
               <TextButton
+                key="aws"
                 aria-label={`Copy Amazon URL for ${label}`}
                 onClick={() => {
                   navigator.clipboard.writeText(`s3://gnomad-public-us-east-1${path}`)
@@ -149,6 +154,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
             ),
             includeAzure && (
               <TextButton
+                key="azure"
                 aria-label={`Copy Microsoft URL for ${label}`}
                 onClick={() => {
                   navigator.clipboard.writeText(
@@ -205,6 +211,7 @@ export const GenericDownloadLinks = ({
         Download from{' '}
         {renderDownloadOptions([
           <ExternalLink
+            key="gcp"
             aria-label={`Download ${label} from Google`}
             href={`https://storage.googleapis.com/${gcsBucket}${path}`}
           >
@@ -212,6 +219,7 @@ export const GenericDownloadLinks = ({
           </ExternalLink>,
           includeAWS && (
             <ExternalLink
+              key="aws"
               aria-label={`Download ${label} from Amazon`}
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
             >
@@ -220,6 +228,7 @@ export const GenericDownloadLinks = ({
           ),
           includeAzure && (
             <ExternalLink
+              key="azure"
               aria-label={`Download ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
             >
@@ -275,6 +284,7 @@ export const IndexedFileDownloadLinks = ({
         Download from{' '}
         {renderDownloadOptions([
           <ExternalLink
+            key="gcp"
             aria-label={`Download ${label} from Google`}
             href={`https://storage.googleapis.com/${gcsBucket}${path}`}
           >
@@ -282,6 +292,7 @@ export const IndexedFileDownloadLinks = ({
           </ExternalLink>,
           includeAWS && (
             <ExternalLink
+              key="aws"
               aria-label={`Download ${label} from Amazon`}
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
             >
@@ -290,6 +301,7 @@ export const IndexedFileDownloadLinks = ({
           ),
           includeAzure && (
             <ExternalLink
+              key="azure"
               aria-label={`Download ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
             >
@@ -303,6 +315,7 @@ export const IndexedFileDownloadLinks = ({
         Download TBI from{' '}
         {renderDownloadOptions([
           <ExternalLink
+            key="gcp"
             aria-label={`Download TBI file for ${label} from Google`}
             href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
           >
@@ -310,6 +323,7 @@ export const IndexedFileDownloadLinks = ({
           </ExternalLink>,
           includeAWS && (
             <ExternalLink
+              key="aws"
               aria-label={`Download TBI file for ${label} from Amazon`}
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
             >
@@ -318,6 +332,7 @@ export const IndexedFileDownloadLinks = ({
           ),
           includeAzure && (
             <ExternalLink
+              key="azure"
               aria-label={`Download TBI file for ${label} from Microsoft`}
               href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}.tbi`}
             >
