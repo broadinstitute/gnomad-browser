@@ -475,6 +475,20 @@ export default () => (
 
     <section>
       <SectionTitle id="v2-lof-curation-results">Loss-of-function curation results</SectionTitle>
+      <p>
+        For information on loss-of-function curation results, see{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
+          <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
+          Nature 581, 434–443 (2020)
+        </ExternalLink>{' '}
+        (all homozygous LoF curation results) and{' '}
+        <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+          <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
+          Nature 581, 452–458 (2020)
+        </ExternalLink>{' '}
+        (haploinsufficient genes LoF curation results).
+      </p>
+
       <FileList>
         <ListItem>
           <GenericDownloadLinks
