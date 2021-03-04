@@ -4,11 +4,12 @@ import styled from 'styled-components'
 
 import { Badge, Page } from '@gnomad/ui'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import VariantFeedback from '../VariantPage/VariantFeedback'
@@ -294,6 +295,14 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referen
 `
 
 const ConnectedMitochondrialVariantPage = ({ datasetId, variantId }) => {
+  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+    return (
+      <StatusMessage>
+        Mitochondrial variants are not available in {labelForDataset(datasetId)}
+      </StatusMessage>
+    )
+  }
+
   return (
     <Query
       query={variantQuery}
