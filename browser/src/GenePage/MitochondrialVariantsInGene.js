@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
@@ -50,6 +51,14 @@ query MitochondrialVariantsInGene($geneId: String!, $datasetId: DatasetId!, $ref
 `
 
 const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
+  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+    return (
+      <StatusMessage>
+        Mitochondrial variants are not available in {labelForDataset(datasetId)}
+      </StatusMessage>
+    )
+  }
+
   return (
     <Query
       query={query}

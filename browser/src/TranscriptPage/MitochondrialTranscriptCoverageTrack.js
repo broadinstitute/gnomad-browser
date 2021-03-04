@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { referenceGenomeForDataset } from '../datasets'
-import Query from '../Query'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import CoverageTrack from '../CoverageTrack'
+import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 
 const query = `
 query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
@@ -20,6 +21,14 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
 `
 
 const MitochondrialTranscriptCoverageTrack = ({ datasetId, transcriptId }) => {
+  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+    return (
+      <StatusMessage>
+        Mitochondrial genome coverage is not available in {labelForDataset(datasetId)}
+      </StatusMessage>
+    )
+  }
+
   return (
     <Query
       query={query}
