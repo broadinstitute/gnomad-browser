@@ -8,6 +8,7 @@ import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
+import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
@@ -299,6 +300,11 @@ const ConnectedMitochondrialVariantPage = ({ datasetId, variantId }) => {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}
+        <br />
+        <br />
+        <Link to={`/variant/${variantId}?dataset=gnomad_r3`} preserveSelectedDataset={false}>
+          Search for this variant in gnomAD v3
+        </Link>
       </StatusMessage>
     )
   }

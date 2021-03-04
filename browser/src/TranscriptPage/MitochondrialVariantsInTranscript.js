@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
+import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
@@ -55,6 +56,14 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}
+        <br />
+        <br />
+        <Link
+          to={`/transcript/${transcript.transcript_id}?dataset=gnomad_r3`}
+          preserveSelectedDataset={false}
+        >
+          View this transcript in gnomAD v3 to see mitochondrial variants
+        </Link>
       </StatusMessage>
     )
   }
