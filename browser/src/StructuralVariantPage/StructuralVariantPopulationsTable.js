@@ -4,26 +4,45 @@ import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 
 const populationNames = {
-  AFR: 'African/African-American',
-  AMR: 'Latino',
-  EAS: 'East Asian',
-  EUR: 'European',
-  OTH: 'Other',
+  afr: 'African/African-American',
+  amr: 'Latino',
+  eas: 'East Asian',
+  eur: 'European',
+  oth: 'Other',
 }
 
 const nestPopulations = populations => {
-  const indices = populations.reduce((acc, pop, i) => ({ ...acc, [pop.id]: i }), {})
+  const popIndices = []
+  const subpopulations = {}
 
-  const ancestryPopulations = ['AFR', 'AMR', 'EAS', 'EUR', 'OTH']
-    .filter(popId => indices[popId] !== undefined)
-    .map(popId => ({
-      ...populations[indices[popId]],
-      subpopulations: ['XX', 'XY']
-        .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
-        .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
-    }))
+  for (let i = 0; i < populations.length; i += 1) {
+    const pop = populations[i]
 
-  return [...ancestryPopulations, populations[indices.XX], populations[indices.XY]]
+    // IDs are one of:
+    // * pop
+    // * pop_subpop
+    // * pop_sex
+    // * sex
+    const divisions = pop.id.split('_')
+    if (divisions.length === 1) {
+      popIndices.push(i)
+    } else {
+      const parentPop = divisions[0]
+      if (subpopulations[parentPop] === undefined) {
+        subpopulations[parentPop] = [{ ...pop }]
+      } else {
+        subpopulations[parentPop].push({ ...pop })
+      }
+    }
+  }
+
+  return popIndices.map(index => {
+    const pop = populations[index]
+    return {
+      ...pop,
+      subpopulations: subpopulations[pop.id],
+    }
+  })
 }
 
 const addPopulationNames = populations => {
@@ -34,7 +53,9 @@ const addPopulationNames = populations => {
     } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
       name = 'XY'
     } else {
-      name = populationNames[pop.id] || pop.id
+      // TODO: An earlier version of the data pipeline stored population IDs in uppercase
+      // toLowerCase can be removed after reloading variants
+      name = populationNames[pop.id.toLowerCase()] || pop.id
     }
     return { ...pop, name }
   })
