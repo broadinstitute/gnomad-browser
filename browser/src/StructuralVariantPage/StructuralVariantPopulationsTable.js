@@ -9,9 +9,6 @@ const populationNames = {
   EAS: 'East Asian',
   EUR: 'European',
   OTH: 'Other',
-
-  FEMALE: 'Female',
-  MALE: 'Male',
 }
 
 const nestPopulations = populations => {
@@ -21,22 +18,38 @@ const nestPopulations = populations => {
     .filter(popId => indices[popId] !== undefined)
     .map(popId => ({
       ...populations[indices[popId]],
-      subpopulations: ['FEMALE', 'MALE']
+      subpopulations: ['XX', 'XY']
         .filter(subPopId => indices[`${popId}_${subPopId}`] !== undefined)
         .map(subPopId => populations[indices[`${popId}_${subPopId}`]]),
     }))
 
-  return [...ancestryPopulations, populations[indices.FEMALE], populations[indices.MALE]]
+  return [...ancestryPopulations, populations[indices.XX], populations[indices.XY]]
+}
+
+const addPopulationNames = populations => {
+  return populations.map(pop => {
+    let name
+    if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
+      name = 'XX'
+    } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
+      name = 'XY'
+    } else {
+      name = populationNames[pop.id] || pop.id
+    }
+    return { ...pop, name }
+  })
 }
 
 const StructuralVariantPopulationsTable = ({ variant }) => {
   const populations = nestPopulations(
-    variant.populations.map(population => ({
-      ...population,
-      name: population.id.includes('_')
-        ? populationNames[population.id.split('_')[1]]
-        : populationNames[population.id],
-    }))
+    // TODO: the data pipeline now stores population IDs with XX and XY instead of FEMALE and MALE
+    // This ID mapping can be removed after reloading variants
+    addPopulationNames(
+      variant.populations.map(population => ({
+        ...population,
+        id: population.id.replace('FEMALE', 'XX').replace('MALE', 'XY'),
+      }))
+    )
   )
 
   const columnLabels =
