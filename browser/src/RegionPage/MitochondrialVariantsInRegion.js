@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
+import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
@@ -51,10 +52,16 @@ query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: Datas
 `
 
 const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
+  const regionId = `${region.chrom}-${region.start}-${region.stop}`
   if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}
+        <br />
+        <br />
+        <Link to={`/region/${regionId}?dataset=gnomad_r3`} preserveSelectedDataset={false}>
+          View this region in gnomAD v3 to see mitochondrial variants
+        </Link>
       </StatusMessage>
     )
   }
@@ -73,8 +80,6 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
       success={data => data.region && data.region.mitochondrial_variants}
     >
       {({ data }) => {
-        const regionId = `${region.chrom}-${region.start}-${region.stop}`
-
         data.region.mitochondrial_variants.forEach(v => {
           /* eslint-disable no-param-reassign */
           if (v.an !== 0) {
