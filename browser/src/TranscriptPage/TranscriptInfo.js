@@ -5,6 +5,7 @@ import { ExternalLink } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
 import Link from '../Link'
+import InfoButton from '../help/InfoButton'
 
 const TranscriptReferences = ({ transcript }) => {
   const {
@@ -44,6 +45,10 @@ TranscriptReferences.propTypes = {
 const TranscriptInfo = ({ transcript }) => {
   const ucscReferenceGenomeId = transcript.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
 
+  const isManeSelectTranscript =
+    transcript.transcript_id === (transcript.gene.mane_select_transcript || {}).ensembl_id
+  const isCanonicalTranscript = transcript.transcript_id === transcript.gene.canonical_transcript_id
+
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
       <AttributeList.Item label="Genome build">
@@ -56,6 +61,23 @@ const TranscriptInfo = ({ transcript }) => {
         <Link to={`/gene/${transcript.gene.gene_id}`}>
           {transcript.gene.symbol} ({transcript.gene.gene_id}.{transcript.gene.gene_version})
         </Link>
+        {isManeSelectTranscript && (
+          <>
+            <br />
+            This transcript is{' '}
+            {transcript.transcript_version !==
+              transcript.gene.mane_select_transcript.ensembl_version && 'a version of '}
+            the MANE Select transcript for {transcript.gene.symbol}{' '}
+            <InfoButton topic="mane-select-transcript" />
+          </>
+        )}
+        {isCanonicalTranscript && (
+          <>
+            <br />
+            This transcript is {isManeSelectTranscript && 'also '}the Ensembl canonical transcript
+            for {transcript.gene.symbol} <InfoButton topic="canonical-transcript" />
+          </>
+        )}
       </AttributeList.Item>
       <AttributeList.Item label="Region">
         <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
@@ -81,6 +103,11 @@ TranscriptInfo.propTypes = {
       gene_id: PropTypes.string.isRequired,
       gene_version: PropTypes.string.isRequired,
       symbol: PropTypes.string.isRequired,
+      mane_select_transcript: PropTypes.shape({
+        ensembl_id: PropTypes.string.isRequired,
+        ensembl_version: PropTypes.string.isRequired,
+      }),
+      canonical_transcript_id: PropTypes.string,
     }).isRequired,
   }).isRequired,
 }
