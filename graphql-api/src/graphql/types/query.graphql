@@ -10,6 +10,7 @@ type Query{
     variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
 
     searchResults(query: String!, dataset: DatasetId!): [SearchResult!]
+    gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
 
     meta: BrowserMetadata!
 }

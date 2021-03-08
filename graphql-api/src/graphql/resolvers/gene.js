@@ -1,5 +1,9 @@
 const { UserVisibleError } = require('../../errors')
-const { fetchGeneById, fetchGeneBySymbol } = require('../../queries/gene-queries')
+const {
+  fetchGeneById,
+  fetchGeneBySymbol,
+  fetchGenesMatchingText,
+} = require('../../queries/gene-queries')
 
 const resolveGene = async (_, args, ctx) => {
   if (args.gene_id) {
@@ -21,8 +25,13 @@ const resolveGene = async (_, args, ctx) => {
   throw new UserVisibleError("One of 'gene_id' or 'gene_symbol' is required")
 }
 
+const resolveGeneSearch = (_, args, ctx) => {
+  return fetchGenesMatchingText(ctx.esClient, args.query, args.reference_genome)
+}
+
 module.exports = {
   Query: {
     gene: resolveGene,
+    gene_search: resolveGeneSearch,
   },
 }
