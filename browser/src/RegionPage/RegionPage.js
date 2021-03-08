@@ -71,9 +71,9 @@ const RegionPage = ({ datasetId, region, width }) => {
           datasetOptions={{
             includeShortVariants: true,
             includeStructuralVariants: chrom !== 'M',
-            includeExac: chrom !== 'M',
-            includeGnomad2: chrom !== 'M',
-            includeGnomad3: true,
+            includeExac: region.reference_genome === 'GRCh37' && chrom !== 'M',
+            includeGnomad2: region.reference_genome === 'GRCh37' && chrom !== 'M',
+            includeGnomad3: region.reference_genome === 'GRCh38' || chrom === 'M',
             includeGnomad3Subsets: chrom !== 'M',
           }}
         >
