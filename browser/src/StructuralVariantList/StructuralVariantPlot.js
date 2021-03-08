@@ -26,10 +26,22 @@ const StructuralVariantPlot = ({
   const startIsDefined = isPositionDefined(isPointMarker ? variant.pos : variant.pos + 1)
   const stopIsDefined = isPositionDefined(variant.end)
 
+  // Set a minimum width for bars.
   if (!isPointMarker && startIsDefined && stopIsDefined && stopX - startX < 3) {
     const diff = 3 - (stopX - startX)
     startX -= diff / 2
     stopX += diff / 2
+  }
+
+  // If one endpoint is undefined, which should only happen if the SV extends outside the visible region,
+  // offset the start/stop coordinate to make room for the arrow marker at the end of the bar.
+  if (!isPointMarker) {
+    if (!startIsDefined) {
+      startX += arrowWidth
+    }
+    if (!stopIsDefined) {
+      stopX -= arrowWidth
+    }
   }
 
   return (
