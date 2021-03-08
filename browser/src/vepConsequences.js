@@ -184,6 +184,15 @@ const rankedVepConsequences = [
 const categoryByTerm = Object.create(null)
 const labelByTerm = Object.create(null)
 
+export const VEP_CONSEQUENCE_CATEGORIES = ['lof', 'missense', 'synonymous', 'other']
+
+export const VEP_CONSEQUENCE_CATEGORY_LABELS = {
+  lof: 'pLoF',
+  missense: 'Missense',
+  synonymous: 'Synonymous',
+  other: 'Other',
+}
+
 export const getCategoryFromConsequence = consequenceTerm => categoryByTerm[consequenceTerm]
 
 export const getLabelForConsequenceTerm = consequenceTerm =>
