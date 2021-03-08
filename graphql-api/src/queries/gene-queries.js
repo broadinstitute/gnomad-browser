@@ -75,6 +75,50 @@ const fetchGenesByRegion = async (esClient, region) => {
   return hits.map((hit) => hit._source.value)
 }
 
+const fetchGenesMatchingText = async (esClient, query, referenceGenome) => {
+  const upperCaseQuery = query.toUpperCase()
+
+  // Ensembl ID
+  if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
+    const gene = await fetchGeneById(esClient, upperCaseQuery, referenceGenome)
+    return [
+      {
+        ensembl_id: gene.gene_id,
+        symbol: gene.symbol,
+      },
+    ]
+  }
+
+  // Symbol
+  const response = await esClient.search({
+    index: `genes_${referenceGenome.toLowerCase()}`,
+    type: '_doc',
+    _source: ['gene_id', 'value.symbol'],
+    body: {
+      query: {
+        bool: {
+          should: [
+            { term: { symbol_upper_case: upperCaseQuery } },
+            { prefix: { search_terms: upperCaseQuery } },
+          ],
+        },
+      },
+    },
+    size: 5,
+  })
+
+  if (response.body.hits.total === 0) {
+    return []
+  }
+
+  return response.body.hits.hits
+    .map((hit) => hit._source)
+    .map((doc) => ({
+      ensembl_id: doc.gene_id,
+      symbol: doc.value.symbol,
+    }))
+}
+
 module.exports = {
   fetchGeneById: withCache(
     fetchGeneById,
@@ -83,4 +127,5 @@ module.exports = {
   ),
   fetchGeneBySymbol,
   fetchGenesByRegion,
+  fetchGenesMatchingText,
 }

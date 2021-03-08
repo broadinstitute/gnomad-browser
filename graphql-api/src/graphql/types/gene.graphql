@@ -51,3 +51,8 @@ type Gene {
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 }
+
+type GeneSearchResult {
+  ensembl_id: String!
+  symbol: String
+}
