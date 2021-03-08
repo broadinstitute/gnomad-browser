@@ -67,21 +67,4 @@ The ClinVar pipelines must be run on clusters with an appropriate version of VEP
 ### ClinVar variant pipelines
 
 The ClinVar variant pipelines run VEP and thus must be run on clusters with an appropriate version of VEP installed.
-
-* To match gnomAD v2.1, GRCh37 ClinVar variants should be annotated with VEP 85. To start a cluster with VEP 85 installed, use:
-
-  ```
-  ./deployctl dataproc-cluster start vep85 --vep GRCh37
-  ```
-
-* To match gnomAD v3.1, GRCh38 ClinVar variants should be annotated with VEP 101. To start a cluster with VEP 101 installed, use:
-
-  ```
-  ./deployctl dataproc-cluster start vep101 \
-    --init=gs://gnomad-browser-data-pipeline/init-vep101.sh \
-    --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
-    --master-machine-type n1-highmem-8 \
-    --worker-machine-type n1-highmem-8 \
-    --worker-boot-disk-size=200 \
-    --secondary-worker-boot-disk-size=200
-  ```
+See [deploy/docs/UpdateClinvarVariants.md](../deploy/docs/UpdateClinvarVariants.md)
