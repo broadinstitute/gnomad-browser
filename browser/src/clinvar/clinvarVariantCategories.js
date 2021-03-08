@@ -1,3 +1,5 @@
+import { getCategoryFromConsequence } from '../vepConsequences'
+
 export const CLINICAL_SIGNIFICANCE_CATEGORIES = ['pathogenic', 'uncertain', 'benign', 'other']
 
 const CLINICAL_SIGNIFICANCE_GROUPS = {
@@ -52,4 +54,44 @@ export const CLINICAL_SIGNIFICANCE_CATEGORY_COLORS = {
   uncertain: '#FAB470',
   benign: '#5E6F9E',
   other: '#bababa',
+}
+
+export const CONSEQUENCE_CATEGORIES = [
+  'frameshift',
+  'other_lof',
+  'missense',
+  'splice_region',
+  'synonymous',
+  'other',
+]
+
+export const CONSEQUENCE_CATEGORY_LABELS = {
+  frameshift: 'Frameshift',
+  other_lof: 'Other pLoF',
+  missense: 'Missense',
+  splice_region: 'Splice region',
+  synonymous: 'Synonymous',
+  other: 'Other',
+}
+
+export const clinvarVariantConsequenceCategory = variant => {
+  const consequence = variant.major_consequence
+  const consequenceCategory = getCategoryFromConsequence(consequence)
+
+  if (consequence === 'frameshift_variant') {
+    return 'frameshift'
+  }
+  if (consequenceCategory === 'lof') {
+    return 'other_lof'
+  }
+  if (consequenceCategory === 'missense') {
+    return 'missense'
+  }
+  if (consequence === 'splice_region_variant') {
+    return 'splice_region'
+  }
+  if (consequence === 'synonymous_variant') {
+    return 'synonymous'
+  }
+  return 'other'
 }
