@@ -2,8 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import { referenceGenomeForDataset } from '../datasets'
-import Query from '../Query'
+import Delayed from '../Delayed'
+import DocumentTitle from '../DocumentTitle'
+import { BaseQuery } from '../Query'
+import StatusMessage from '../StatusMessage'
 import { withWindowSize } from '../windowSize'
+
+import GeneNotFound from './GeneNotFound'
 import GenePage from './GenePage'
 
 const AutosizedGenePage = withWindowSize(GenePage)
@@ -217,19 +222,44 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }) => {
   variables.referenceGenome = referenceGenomeForDataset(datasetId)
 
   return (
-    <Query
-      query={query}
-      variables={variables}
-      loadingMessage="Loading gene"
-      errorMessage="Unable to load gene"
-      success={data => data.gene}
-    >
-      {({ data }) => {
+    <BaseQuery query={query} variables={variables}>
+      {({ data, error, graphQLErrors, loading }) => {
+        if (loading) {
+          return (
+            <Delayed>
+              <StatusMessage>Loading gene</StatusMessage>
+            </Delayed>
+          )
+        }
+
+        if (error) {
+          return <StatusMessage>Unable to load gene</StatusMessage>
+        }
+
+        if (!data || !data.gene) {
+          if (graphQLErrors && graphQLErrors.some(e => e.message === 'Gene not found')) {
+            return (
+              <>
+                <DocumentTitle title="Not found" />
+                <GeneNotFound geneIdOrSymbol={geneIdOrSymbol} datasetId={datasetId} />
+              </>
+            )
+          }
+
+          return (
+            <StatusMessage>
+              {graphQLErrors && graphQLErrors.length
+                ? Array.from(new Set(graphQLErrors.map(e => e.message))).join(', ')
+                : 'Unable to load gene'}
+            </StatusMessage>
+          )
+        }
+
         return (
           <AutosizedGenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
         )
       }}
-    </Query>
+    </BaseQuery>
   )
 }
 
