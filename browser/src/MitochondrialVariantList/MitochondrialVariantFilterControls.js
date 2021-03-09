@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { CategoryFilterControl, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 
+import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
 
 const SearchWrapper = styled.div`
@@ -30,22 +31,15 @@ const consequenceCategoryColors = {
   other: '#757575',
 }
 
-const consequenceCategoryLabels = {
-  lof: 'pLoF',
-  missense: 'Missense',
-  synonymous: 'Synonymous',
-  other: 'Other',
-}
-
 const MitochondrialVariantFilterControls = ({ onChange, value }) => {
   const searchInput = useRef(null)
   return (
     <SettingsWrapper>
       <div>
         <CategoryFilterControl
-          categories={['lof', 'missense', 'synonymous', 'other'].map(category => ({
+          categories={VEP_CONSEQUENCE_CATEGORIES.map(category => ({
             id: category,
-            label: consequenceCategoryLabels[category],
+            label: VEP_CONSEQUENCE_CATEGORY_LABELS[category],
             className: 'category',
             color: consequenceCategoryColors[category],
           }))}
