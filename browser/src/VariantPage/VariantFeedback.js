@@ -94,21 +94,22 @@ const VariantFeedback = ({ datasetId, variantId }) => {
             Before requesting information, please be aware that we are unable to provide any
             information about the clinical status of variant carriers or access to individual level
             genotype data. See the following FAQ answers for details:
-            <List>
-              <ListItem>
-                <Link to="/help/i-have-identified-a-rare-variant-what-phenotype-data-are-available">
-                  I have identified a rare variant in gnomAD that I believe is associated with a
-                  specific clinical phenotype. What phenotype data are available for these
-                  individuals?
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/help/can-i-get-access-to-individual-level-genotype-data-from-gnomad">
-                  Can I get access to individual-level genotype data from gnomAD?
-                </Link>
-              </ListItem>
-            </List>
           </p>
+
+          <List>
+            <ListItem>
+              <Link to="/help/i-have-identified-a-rare-variant-what-phenotype-data-are-available">
+                I have identified a rare variant in gnomAD that I believe is associated with a
+                specific clinical phenotype. What phenotype data are available for these
+                individuals?
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/help/can-i-get-access-to-individual-level-genotype-data-from-gnomad">
+                Can I get access to individual-level genotype data from gnomAD?
+              </Link>
+            </ListItem>
+          </List>
 
           <p>
             For clinical information, we recommend checking{' '}
