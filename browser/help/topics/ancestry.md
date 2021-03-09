@@ -38,4 +38,4 @@ Sub-continental ancestry was computed for European and East Asian samples using 
 
 ### gnomAD population breakdown
 
-See the FAQ for a [breakdown of populations represented in gnomAD](/faq#what-populations-are-represented-in-the-gnomad-data).
+See the FAQ ["What populations are represented in the gnomAD data?"](/help/what-populations-are-represented-in-the-gnomad-data).

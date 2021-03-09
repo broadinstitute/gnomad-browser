@@ -177,7 +177,7 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
   const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
 
   // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
-  // See https://gnomad.broadinstitute.org/faq#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
+  // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
   const exomeHighAlleleBalanceSamples = isPresentInExome
     ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
       variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
@@ -311,13 +311,7 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
       {showHighAlleleBalanceWarning && (
         <p>
           <Badge level="warning">Warning</Badge> {highAlleleBalanceWarningMessage}{' '}
-          <Link
-            to={{
-              pathname: '/faq',
-              hash:
-                '#why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium',
-            }}
-          >
+          <Link to="/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium">
             More details.
           </Link>
         </p>
