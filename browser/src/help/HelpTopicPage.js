@@ -5,7 +5,7 @@ import { PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
-import MarkdownContent from '../MarkdownContent'
+import Link from '../Link'
 
 import helpTopics from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 
@@ -20,9 +20,14 @@ const HelpTopicPage = ({ topicId }) => {
       <PageHeading>{title}</PageHeading>
 
       {topic ? (
-        <MarkdownContent dangerouslySetInnerHTML={{ __html: topic.html }} />
+        topic.render()
       ) : (
-        <p>Topic not found</p>
+        <>
+          <p>Topic not found</p>
+          <p>
+            <Link to="/help">See all help topics</Link>
+          </p>
+        </>
       )}
     </InfoPage>
   )

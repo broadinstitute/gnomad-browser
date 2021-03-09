@@ -1,10 +1,10 @@
 import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
 import { hideVisually } from 'polished'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import helpState from './helpState'
+import HelpTopicModal from './HelpTopicModal'
 
 const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
@@ -28,21 +28,31 @@ const Button = styled.button.attrs({ type: 'button' })`
   }
 `
 
-/* eslint-disable-next-line react/prop-types */
-const InfoButton = ({ topic, style }) => (
-  <Button
-    onClick={() => {
-      helpState.set({
-        isOpen: true,
-        selectedTopic: topic,
-      })
-    }}
-    style={style}
-  >
-    <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
-    <span style={hideVisually()}>More information</span>
-  </Button>
-)
+const InfoButton = ({ topic: topicId, ...otherProps }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  return (
+    <>
+      <Button
+        {...otherProps}
+        onClick={() => {
+          setIsModalOpen(true)
+        }}
+      >
+        <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
+        <span style={hideVisually()}>More information</span>
+      </Button>
+      {isModalOpen && (
+        <HelpTopicModal
+          initialFocusOnButton={false}
+          topicId={topicId}
+          onRequestClose={() => {
+            setIsModalOpen(false)
+          }}
+        />
+      )}
+    </>
+  )
+}
 
 InfoButton.propTypes = {
   topic: PropTypes.string.isRequired,
