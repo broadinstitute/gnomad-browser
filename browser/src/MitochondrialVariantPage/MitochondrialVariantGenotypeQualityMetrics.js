@@ -144,13 +144,8 @@ const MitochondrialVariantGenotypeQualityFilters = ({ variant }) => {
       <p>
         Note: This plot may include low-quality genotypes that were excluded from allele counts in
         the tables above.{' '}
-        <Link
-          to={{
-            pathname: '/faq',
-            hash: '#what-are-the-meanings-of-the-mitochondrial-specific-filters-and-flags',
-          }}
-        >
-          See the FAQ for details.
+        <Link to="/help/what-are-the-meanings-of-the-mitochondrial-specific-filters-and-flags">
+          More information.
         </Link>
       </p>
     </div>

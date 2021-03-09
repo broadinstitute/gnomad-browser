@@ -9,9 +9,9 @@ about: Report a bug or unexpected behavior
   diagnose and fix the issue.
 
 * For concerns about data, check the frequently asked questions
-  (https://gnomad.broadinstitute.org/faq) or send an email to
-  gnomad@broadinstitute.org.
-  
+  (https://gnomad.broadinstitute.org/help#frequently-asked-questions) or
+  send an email to gnomad@broadinstitute.org.
+
 -->
 
 ### What you did:

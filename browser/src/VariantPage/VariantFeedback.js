@@ -96,24 +96,14 @@ const VariantFeedback = ({ datasetId, variantId }) => {
             genotype data. See the following FAQ answers for details:
             <List>
               <ListItem>
-                <Link
-                  to={{
-                    pathname: '/faq',
-                    hash: 'i-have-identified-a-rare-variant-what-phenotype-data-are-available',
-                  }}
-                >
+                <Link to="/help/i-have-identified-a-rare-variant-what-phenotype-data-are-available">
                   I have identified a rare variant in gnomAD that I believe is associated with a
                   specific clinical phenotype. What phenotype data are available for these
                   individuals?
                 </Link>
               </ListItem>
               <ListItem>
-                <Link
-                  to={{
-                    pathname: '/faq',
-                    hash: 'can-i-get-access-to-individual-level-genotype-data-from-gnomad',
-                  }}
-                >
+                <Link to="/help/can-i-get-access-to-individual-level-genotype-data-from-gnomad">
                   Can I get access to individual-level genotype data from gnomAD?
                 </Link>
               </ListItem>

@@ -16,11 +16,10 @@ export default () => (
     <DocumentTitle title="Publications" />
     <PageHeading>Publications</PageHeading>
     <p>
-      This page lists publications by the gnomAD group. For information on how to cite gnomAD data,{' '}
-      <Link
-        to={{ pathname: '/faq', hash: '#how-should-i-cite-discoveries-made-using-gnomad-data' }}
-      >
-        see the FAQ
+      This page lists publications by the gnomAD group. For information on how to cite gnomAD data,
+      see{' '}
+      <Link to="/help/how-should-i-cite-discoveries-made-using-gnomad-data">
+        &ldquo;How should I cite discoveries made using gnomAD data&rdquo;
       </Link>
       .
     </p>

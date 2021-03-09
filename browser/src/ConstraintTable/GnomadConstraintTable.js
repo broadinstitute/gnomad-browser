@@ -212,12 +212,9 @@ const GnomadConstraintTable = ({ constraint }) => {
           <p>
             <Link
               preserveSelectedDataset={false}
-              to={{
-                pathname: '/faq',
-                hash: '#why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note',
-              }}
+              to="/help/why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note"
             >
-              See the FAQ for more information on constraint flags.
+              More information on constraint flags.
             </Link>
           </p>
         </React.Fragment>
