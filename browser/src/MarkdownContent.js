@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 const MarkdownContentWrapper = styled.div`
+  font-size: 16px;
+
   h1,
   h2,
   h3 {

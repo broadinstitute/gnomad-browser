@@ -9,8 +9,6 @@ import { Page, PageHeading } from '@gnomad/ui'
 import Delayed from './Delayed'
 import DocumentTitle from './DocumentTitle'
 import ErrorBoundary from './ErrorBoundary'
-import HelpButton from './help/HelpButton'
-import HelpModal from './help/HelpModal'
 import NavBar from './NavBar'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
@@ -20,7 +18,7 @@ import userPreferences from './userPreferences'
 const AboutPage = lazy(() => import('./AboutPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
 const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
-const FAQPage = lazy(() => import('./help/FAQPage'))
+const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))
@@ -237,15 +235,27 @@ const App = () => {
 
               <Route exact path="/contact" component={ContactPage} />
 
-              <Route exact path="/faq" component={FAQPage} />
-
               <Route exact path="/mou" component={MOUPage} />
+
+              <Route
+                exact
+                path="/faq"
+                render={({ location }) => {
+                  if (location.hash) {
+                    return <Redirect to={`/help/${location.hash.slice(1)}`} />
+                  }
+
+                  return <Redirect to="/help" />
+                }}
+              />
 
               <Route
                 exact
                 path="/help/:topic"
                 render={({ match }) => <HelpTopicPage topicId={match.params.topic} />}
               />
+
+              <Route exact path="/help" component={HelpPage} />
 
               <Route
                 exact
@@ -261,10 +271,6 @@ const App = () => {
           </Suspense>
         )}
       </ErrorBoundary>
-
-      <HelpModal />
-
-      <HelpButton />
     </Router>
   )
 }

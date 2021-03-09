@@ -159,8 +159,8 @@ class NavBar extends Component {
               <a href="/blog/changelog/">Changelog</a>
             </li>
             <li>
-              <Link to="/faq" onClick={this.closeMenu}>
-                FAQ
+              <Link to="/help" onClick={this.closeMenu}>
+                Help
               </Link>
             </li>
           </Menu>

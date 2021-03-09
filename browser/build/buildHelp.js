@@ -4,29 +4,85 @@ const fs = require('fs')
 const path = require('path')
 
 const glob = require('glob')
+const prettier = require('prettier')
 
-const files = glob.sync(`${path.resolve(__dirname, '../help/topics')}/**/*.md`, {
+const OUTPUT_PATH = path.resolve(__dirname, '../src/help/helpTopics.js')
+
+const helpTopicFiles = glob.sync(`${path.resolve(__dirname, '../help/topics')}/**/*.md`, {
   matchBase: true,
   absolute: true,
 })
 
-const OUTPUT_PATH = path.resolve(__dirname, '../src/help/helpTopics.js')
+const helpImports = helpTopicFiles
+  .map((f, i) => {
+    let importPath = path.relative(path.dirname(OUTPUT_PATH), f)
+    if (!importPath.startsWith('.')) {
+      importPath = `./${importPath}`
+    }
 
-const content = [
-  files
+    return `import topic${i} from '${importPath}'`
+  })
+  .join(';')
+
+const helpTopics = `
+  const topics = [${helpTopicFiles.map((_, i) => `topic${i}`).join(',')}];
+`
+
+const faqFiles = glob.sync(`${path.resolve(__dirname, '../help/faq')}/**/*.@(js|md)`, {
+  matchBase: true,
+  absolute: true,
+})
+
+const faqImports = faqFiles
+  .map((f, i) => {
+    const importPath = path.relative(path.dirname(OUTPUT_PATH), f)
+    if (f.endsWith('.js')) {
+      return `import * as faqEntry${i} from '${importPath.replace(/\.js$/, '')}'`
+    }
+
+    return `import faqEntry${i} from '${importPath}'`
+  })
+  .join(';')
+
+const faqEntries = `
+  const faqEntries = [${faqFiles
     .map((f, i) => {
-      let importPath = path.relative(path.dirname(OUTPUT_PATH), f)
-      if (!importPath.startsWith('.')) {
-        importPath = `./${importPath}`
-      }
-
-      return `import topic${i} from '${importPath}'`
+      const id = path.basename(f).replace(/\.(js|md)$/, '')
+      return `{id: '${id}', ...faqEntry${i}}`
     })
-    .join('\n'),
-  '\nconst topics = [',
-  files.map((f, i) => `  topic${i},`).join('\n'),
-  ']\n',
-  'export default topics.reduce((acc, topic) => ({ ...acc, [topic.id.toLowerCase()]: topic }), {})\n',
-].join('\n')
+    .join(',')}];
+`
 
-fs.writeFileSync(OUTPUT_PATH, content)
+const content = `
+  import React from 'react';
+
+  ${helpImports};
+  ${faqImports};
+
+  import MarkdownContent from '../MarkdownContent';
+
+  ${helpTopics};
+  ${faqEntries};
+
+  export const indexTexts = [
+    ...topics.map(t => ({ id: t.id.toLowerCase(), texts: [t.title, t.html] })),
+    ...faqEntries.map(e => ({
+      id: e.id,
+      texts: e.html ? [e.question, e.html] : [e.question],
+    }))
+  ];
+
+  export default [
+    ...topics.map(t => ({ id: t.id.toLowerCase(), title: t.title, render: () => <MarkdownContent dangerouslySetInnerHTML={{ __html: t.html }} /> })),
+    ...faqEntries.map(e => ({
+      id: e.id,
+      title: e.question,
+      render: e.renderAnswer ? e.renderAnswer : () => <MarkdownContent dangerouslySetInnerHTML={{ __html: e.html }} />,
+    }))
+  ].reduce((acc, e) => ({ ...acc, [e.id]: e }), {});
+`
+
+fs.writeFileSync(
+  OUTPUT_PATH,
+  prettier.format(content, { ...prettier.resolveConfig.sync(OUTPUT_PATH), filepath: OUTPUT_PATH })
+)
