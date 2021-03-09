@@ -188,7 +188,7 @@ export const VEP_CONSEQUENCE_CATEGORIES = ['lof', 'missense', 'synonymous', 'oth
 
 export const VEP_CONSEQUENCE_CATEGORY_LABELS = {
   lof: 'pLoF',
-  missense: 'Missense',
+  missense: 'Missense / Inframe indel',
   synonymous: 'Synonymous',
   other: 'Other',
 }

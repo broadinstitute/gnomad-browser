@@ -202,11 +202,11 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
         >
           <path d={triangle} fill="#333" stroke="none" />
           <text dy="0.3em" fontSize={12} x={6}>
-            Missense
+            Missense / Inframe indel
           </text>
         </g>
         <g
-          transform="translate(233,0)"
+          transform="translate(318,0)"
           onMouseEnter={() => setHighlightedCategory('splice_region')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
@@ -216,7 +216,7 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
           </text>
         </g>
         <g
-          transform="translate(322,0)"
+          transform="translate(406,0)"
           onMouseEnter={() => setHighlightedCategory('other')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
