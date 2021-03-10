@@ -48,7 +48,8 @@ const MitochondrialVariantFilterControls = ({ onChange, value }) => {
           onChange={includeCategories => {
             onChange({ ...value, includeCategories })
           }}
-        />
+        />{' '}
+        <InfoButton topic="consequence-category-filter" />
       </div>
       <div>
         <Checkbox
