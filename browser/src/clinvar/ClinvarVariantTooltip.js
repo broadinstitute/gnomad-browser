@@ -5,11 +5,18 @@ import { getLabelForConsequenceTerm } from '../vepConsequences'
 
 import ClinvarVariantPropType from './ClinvarVariantPropType'
 
+const ClinvarVariantTooltipWrapper = styled.div`
+  max-width: 100%;
+`
+
 const ClinvarVariantAttributeList = styled.dl`
   margin: 0.5em 0;
 
   div {
-    margin-bottom: 0.25em;
+    overflow: hidden;
+    margin-bottom: 0.5em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   dt,
@@ -57,7 +64,7 @@ const renderGnomadAF = variant => {
 }
 
 const ClinvarVariantTooltip = ({ variant }) => (
-  <div>
+  <ClinvarVariantTooltipWrapper>
     <strong>{variant.variant_id}</strong>
     <ClinvarVariantAttributeList>
       <div>
@@ -91,7 +98,7 @@ const ClinvarVariantTooltip = ({ variant }) => (
       )}
     </ClinvarVariantAttributeList>
     Click to view in ClinVar
-  </div>
+  </ClinvarVariantTooltipWrapper>
 )
 
 ClinvarVariantTooltip.propTypes = {
