@@ -97,6 +97,7 @@ const SUMMARY_QUERY_FIELDS = [
   'value.chrom',
   'value.clinical_significance',
   'value.clinvar_variation_id',
+  'value.gnomad',
   'value.gold_stars',
   'value.in_gnomad',
   'value.major_consequence',

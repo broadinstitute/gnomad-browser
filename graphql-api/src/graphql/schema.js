@@ -7,6 +7,7 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const aliasResolvers = require('./resolvers/aliases')
 const browserMetadataResolvers = require('./resolvers/browser-metadata')
 const clinVarVariantResolvers = require('./resolvers/clinvar-variants')
+const clinVarVariantFieldResolvers = require('./resolvers/clinvar-variant-fields')
 const coverageResolvers = require('./resolvers/coverage')
 const geneResolvers = require('./resolvers/gene')
 const geneFieldResolvers = require('./resolvers/gene-fields')
@@ -30,6 +31,7 @@ const resolvers = mergeResolvers([
   aliasResolvers,
   browserMetadataResolvers,
   clinVarVariantResolvers,
+  clinVarVariantFieldResolvers,
   coverageResolvers,
   geneResolvers,
   geneFieldResolvers,
