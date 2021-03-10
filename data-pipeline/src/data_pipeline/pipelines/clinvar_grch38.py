@@ -38,7 +38,7 @@ pipeline.add_task(
 
 pipeline.add_task(
     "vep_clinvar_grch38_variants",
-    lambda path: hl.vep(hl.read_table(path)),
+    lambda path: hl.vep(hl.read_table(path)).drop("vep_proc_id"),
     "/clinvar/clinvar_grch38_vepped.ht",
     {"path": pipeline.get_task("prepare_clinvar_grch38_variants")},
 )
