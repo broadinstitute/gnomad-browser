@@ -261,12 +261,38 @@ def prepare_clinvar_variants(clinvar_path, reference_genome):
 
 
 def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants_path=None):
-    if gnomad_exome_variants_path and gnomad_genome_variants_path:
-        gnomad_exome_variants = hl.read_table(gnomad_exome_variants_path).select()
-        gnomad_genome_variants = hl.read_table(gnomad_genome_variants_path).select()
-        return gnomad_exome_variants.union(gnomad_genome_variants)
+    gnomad_exome_variants = None
+    gnomad_genome_variants = None
 
-    return hl.read_table(gnomad_exome_variants_path or gnomad_genome_variants_path).select()
+    if gnomad_exome_variants_path:
+        gnomad_exome_variants = hl.read_table(gnomad_exome_variants_path)
+        gnomad_exome_variants = gnomad_exome_variants.select(
+            exome=hl.struct(
+                filters=gnomad_exome_variants.filters,
+                ac=gnomad_exome_variants.freq[0].AC,
+                an=gnomad_exome_variants.freq[0].AN,
+            )
+        )
+
+    if gnomad_genome_variants_path:
+        gnomad_genome_variants = hl.read_table(gnomad_genome_variants_path)
+        gnomad_genome_variants = gnomad_genome_variants.select(
+            genome=hl.struct(
+                filters=gnomad_genome_variants.filters,
+                ac=gnomad_genome_variants.freq[0].AC,
+                an=gnomad_genome_variants.freq[0].AN,
+            )
+        )
+
+    gnomad_variants = None
+    if gnomad_exome_variants and gnomad_genome_variants:
+        gnomad_variants = gnomad_exome_variants.join(gnomad_genome_variants, how="outer")
+    elif gnomad_exome_variants:
+        gnomad_variants = gnomad_exome_variants.annotate(genome=hl.missing(gnomad_exome_variants.exome.dtype))
+    elif gnomad_genome_variants:
+        gnomad_variants = gnomad_genome_variants.annotate(exome=hl.missing(gnomad_genome_variants.genome.dtype))
+
+    return gnomad_variants
 
 
 def annotate_clinvar_variants_in_gnomad(
@@ -274,4 +300,6 @@ def annotate_clinvar_variants_in_gnomad(
 ):
     gnomad_variants = _get_gnomad_variants(gnomad_exome_variants_path, gnomad_genome_variants_path)
     ds = hl.read_table(clinvar_path)
-    return ds.annotate(in_gnomad=hl.is_defined(gnomad_variants[ds.key]))
+    ds = ds.annotate(gnomad=gnomad_variants[ds.key])
+    ds = ds.annotate(in_gnomad=hl.is_defined(ds.gnomad))
+    return ds
