@@ -39,7 +39,7 @@ pipeline.add_task(
 pipeline.add_task(
     "vep_clinvar_grch37_variants",
     # tolerate_parse_error to ignore not a number error from "NaN" gene symbol
-    lambda path: hl.vep(hl.read_table(path), tolerate_parse_error=True),
+    lambda path: hl.vep(hl.read_table(path), tolerate_parse_error=True).drop("vep_proc_id"),
     "/clinvar/clinvar_grch37_vepped.ht",
     {"path": pipeline.get_task("prepare_clinvar_grch37_variants")},
 )
