@@ -1,3 +1,14 @@
+type ClinVarVariantGnomadSequencingTypeData {
+  ac: Int!
+  an: Int!
+  filters: [String!]!
+}
+
+type ClinVarVariantGnomadData {
+  exome: ClinVarVariantGnomadSequencingTypeData
+  genome: ClinVarVariantGnomadSequencingTypeData
+}
+
 type ClinVarVariant {
   variant_id: String!
   reference_genome: ReferenceGenomeId!
@@ -7,6 +18,7 @@ type ClinVarVariant {
   alt: String!
   clinical_significance: String!
   clinvar_variation_id: String!
+  gnomad: ClinVarVariantGnomadData
   gold_stars: Int!
   hgvsc: String
   hgvsp: String
