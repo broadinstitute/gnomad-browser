@@ -26,6 +26,36 @@ const ClinvarVariantAttributeList = styled.dl`
   }
 `
 
+const renderInGnomad = variant => {
+  if (variant.gnomad) {
+    if (variant.gnomad.exome && variant.gnomad.genome) {
+      return `Yes - exomes${variant.gnomad.exome.filters.length ? ' (filtered)' : ''} and genomes${
+        variant.gnomad.genome.filters.length ? ' (filtered)' : ''
+      }`
+    }
+    if (variant.gnomad.exome) {
+      return `Yes - exomes${variant.gnomad.exome.filters.length ? ' (filtered)' : ''}`
+    }
+    if (variant.gnomad.exome) {
+      return `Yes - genomes${variant.gnomad.genome.filters.length ? ' (filtered)' : ''}`
+    }
+  }
+  return 'No'
+}
+
+const renderGnomadAF = variant => {
+  if (!variant.gnomad) {
+    return '–'
+  }
+
+  const ac = ((variant.gnomad.exome || {}).ac || 0) + ((variant.gnomad.genome || {}).ac || 0)
+  const an = ((variant.gnomad.exome || {}).an || 0) + ((variant.gnomad.genome || {}).an || 0)
+  const af = an === 0 ? 0 : ac / an
+
+  const truncated = Number(af.toPrecision(3))
+  return truncated === 0 || truncated === 1 ? af.toFixed(0) : af.toExponential(2)
+}
+
 const ClinvarVariantTooltip = ({ variant }) => (
   <div>
     <strong>{variant.variant_id}</strong>
@@ -49,6 +79,16 @@ const ClinvarVariantTooltip = ({ variant }) => (
           {variant.gold_stars === 1 ? 'star' : 'stars'})
         </dd>
       </div>
+      <div>
+        <dt>In gnomAD?</dt>
+        <dd>{renderInGnomad(variant)}</dd>
+      </div>
+      {variant.in_gnomad && (
+        <div>
+          <dt>gnomAD AF</dt>
+          <dd>{renderGnomadAF(variant)}</dd>
+        </div>
+      )}
     </ClinvarVariantAttributeList>
     Click to view in ClinVar
   </div>

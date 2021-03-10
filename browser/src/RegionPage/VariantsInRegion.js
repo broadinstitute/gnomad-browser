@@ -56,6 +56,18 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
     clinvar_variants {
       clinical_significance
       clinvar_variation_id
+      gnomad {
+        exome {
+          ac
+          an
+          filters
+        }
+        genome {
+          ac
+          an
+          filters
+        }
+      }
       gold_stars
       hgvsc
       hgvsp

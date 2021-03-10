@@ -96,6 +96,18 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
     clinvar_variants {
       clinical_significance
       clinvar_variation_id
+      gnomad {
+        exome {
+          ac
+          an
+          filters
+        }
+        genome {
+          ac
+          an
+          filters
+        }
+      }
       gold_stars
       hgvsc
       hgvsp
