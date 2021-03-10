@@ -84,7 +84,8 @@ const VariantFilterControls = ({ onChange, value }) => {
           onChange={includeCategories => {
             onChange({ ...value, includeCategories })
           }}
-        />
+        />{' '}
+        <InfoButton topic="consequence-category-filter" />
         {Object.keys(keyboardShortcuts).map(category => (
           <KeyboardShortcut
             key={category}
