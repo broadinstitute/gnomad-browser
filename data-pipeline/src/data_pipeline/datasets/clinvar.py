@@ -262,20 +262,11 @@ def prepare_clinvar_variants(clinvar_path, reference_genome):
 
 def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants_path=None):
     if gnomad_exome_variants_path and gnomad_genome_variants_path:
-        gnomad_exome_variants = hl.read_table(gnomad_exome_variants_path)
-        gnomad_exome_variants = gnomad_exome_variants.filter(hl.len(gnomad_exome_variants.filters) == 0)
-        gnomad_exome_variants = gnomad_exome_variants.select()
-
-        gnomad_genome_variants = hl.read_table(gnomad_genome_variants_path)
-        gnomad_genome_variants = gnomad_genome_variants.filter(hl.len(gnomad_genome_variants.filters) == 0)
-        gnomad_genome_variants = gnomad_genome_variants.select()
-
+        gnomad_exome_variants = hl.read_table(gnomad_exome_variants_path).select()
+        gnomad_genome_variants = hl.read_table(gnomad_genome_variants_path).select()
         return gnomad_exome_variants.union(gnomad_genome_variants)
 
-    gnomad_variants = hl.read_table(gnomad_exome_variants_path or gnomad_genome_variants_path)
-    gnomad_variants = gnomad_variants.filter(hl.len(gnomad_variants.filters) == 0)
-    gnomad_variants = gnomad_variants.select()
-    return gnomad_variants
+    return hl.read_table(gnomad_exome_variants_path or gnomad_genome_variants_path).select()
 
 
 def annotate_clinvar_variants_in_gnomad(
