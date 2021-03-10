@@ -45,23 +45,23 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    "annotate_clinvar_grch37_variants_in_gnomad",
-    annotate_clinvar_variants_in_gnomad,
+    "annotate_clinvar_grch37_transcript_consequences",
+    annotate_transcript_consequences,
     "/clinvar/clinvar_grch37_annotated_1.ht",
     {
-        "clinvar_path": pipeline.get_task("vep_clinvar_grch37_variants"),
-        "gnomad_exome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
-        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
+        "variants_path": pipeline.get_task("vep_clinvar_grch37_variants"),
+        "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
     },
 )
 
 pipeline.add_task(
-    "annotate_clinvar_grch37_transcript_consequences",
-    annotate_transcript_consequences,
+    "annotate_clinvar_grch37_variants_in_gnomad",
+    annotate_clinvar_variants_in_gnomad,
     "/clinvar/clinvar_grch37_annotated_2.ht",
     {
-        "variants_path": pipeline.get_task("annotate_clinvar_grch37_variants_in_gnomad"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
+        "clinvar_path": pipeline.get_task("annotate_clinvar_grch37_transcript_consequences"),
+        "gnomad_exome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
+        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
 )
 

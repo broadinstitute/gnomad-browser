@@ -44,23 +44,23 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    "annotate_clinvar_grch38_variants_in_gnomad",
-    annotate_clinvar_variants_in_gnomad,
+    "annotate_clinvar_grch38_transcript_consequences",
+    annotate_transcript_consequences,
     "/clinvar/clinvar_grch38_annotated_1.ht",
     {
-        "clinvar_path": pipeline.get_task("vep_clinvar_grch38_variants"),
-        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht",
+        "variants_path": pipeline.get_task("vep_clinvar_grch38_variants"),
+        "transcripts_path": genes_pipeline.get_task("extract_grch38_transcripts"),
+        "mane_transcripts_path": genes_pipeline.get_task("import_mane_select_transcripts"),
     },
 )
 
 pipeline.add_task(
-    "annotate_clinvar_grch38_transcript_consequences",
-    annotate_transcript_consequences,
+    "annotate_clinvar_grch38_variants_in_gnomad",
+    annotate_clinvar_variants_in_gnomad,
     "/clinvar/clinvar_grch38_annotated_2.ht",
     {
-        "variants_path": pipeline.get_task("annotate_clinvar_grch38_variants_in_gnomad"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch38_transcripts"),
-        "mane_transcripts_path": genes_pipeline.get_task("import_mane_select_transcripts"),
+        "clinvar_path": pipeline.get_task("annotate_clinvar_grch38_transcript_consequences"),
+        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht",
     },
 )
 

@@ -265,9 +265,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: truncate_clinvar_variant_ids(
             subset_table(
                 hl.read_table(
-                    clinvar_grch38_pipeline.get_task(
-                        "annotate_clinvar_grch38_transcript_consequences"
-                    ).get_output_path()
+                    clinvar_grch38_pipeline.get_task("annotate_clinvar_grch38_variants_in_gnomad").get_output_path()
                 )
             )
         ),
@@ -290,9 +288,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: truncate_clinvar_variant_ids(
             subset_table(
                 hl.read_table(
-                    clinvar_grch37_pipeline.get_task(
-                        "annotate_clinvar_grch37_transcript_consequences"
-                    ).get_output_path()
+                    clinvar_grch37_pipeline.get_task("annotate_clinvar_grch37_variants_in_gnomad").get_output_path()
                 )
             )
         ),
