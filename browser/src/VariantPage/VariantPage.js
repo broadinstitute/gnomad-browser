@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, Page } from '@gnomad/ui'
+import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Delayed from '../Delayed'
@@ -19,7 +19,6 @@ import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
 import VariantClinvarInfo from './VariantClinvarInfo'
-import VariantFeedback from './VariantFeedback'
 import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
@@ -102,8 +101,10 @@ const VariantPageContent = ({ datasetId, variant }) => {
       <ResponsiveSection>
         <h2>External Resources</h2>
         <ReferenceList variant={variant} />
-        <h2>Report</h2>
-        <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
+        <h2>Feedback</h2>
+        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+          Report an issue with this variant
+        </ExternalLink>
       </ResponsiveSection>
       <Section>
         <h2>Variant Effect Predictor</h2>

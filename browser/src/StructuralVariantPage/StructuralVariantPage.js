@@ -2,14 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Page } from '@gnomad/ui'
+import { ExternalLink, Page } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Query from '../Query'
-import VariantFeedback from '../VariantPage/VariantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
 import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
@@ -46,8 +45,10 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
       <ResponsiveSection>
         <h2>External Resources</h2>
         <SVReferenceList variant={variant} />
-        <h2>Report</h2>
-        <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
+        <h2>Feedback</h2>
+        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+          Report an issue with this variant
+        </ExternalLink>
       </ResponsiveSection>
     </Wrapper>
     {variant.type === 'MCNV' && (
