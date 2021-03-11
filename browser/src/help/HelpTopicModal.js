@@ -17,7 +17,7 @@ const HelpTopicModal = ({ topicId, ...otherProps }) => {
     import('./helpTopics').then(
       mod => {
         const helpTopics = mod.default
-        const topic = helpTopics[topicId]
+        const topic = helpTopics[topicId.toLowerCase()]
 
         if (topic) {
           setTitle(topic.title)
