@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, Page } from '@gnomad/ui'
+import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -13,7 +13,6 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
-import VariantFeedback from '../VariantPage/VariantFeedback'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
@@ -112,8 +111,10 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
       <ResponsiveSection>
         <h2>External Resources</h2>
         <MitochondrialVariantReferenceList variant={variant} />
-        <h2>Report</h2>
-        <VariantFeedback datasetId={datasetId} variantId={variant.variant_id} />
+        <h2>Feedback</h2>
+        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+          Report an issue with this variant
+        </ExternalLink>
       </ResponsiveSection>
     </Wrapper>
     <Section>

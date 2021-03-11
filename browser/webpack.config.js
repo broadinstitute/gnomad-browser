@@ -2,6 +2,7 @@ const path = require('path')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { EnvironmentPlugin } = require('webpack')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -73,6 +74,9 @@ const config = {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [path.resolve(__dirname, './src/opensearch.xml')],
+    }),
+    new EnvironmentPlugin({
+      REPORT_VARIANT_URL: null,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
