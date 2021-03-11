@@ -245,7 +245,9 @@ const App = () => {
                     return <Redirect to={`/help/${location.hash.slice(1)}`} />
                   }
 
-                  return <Redirect to="/help" />
+                  return (
+                    <Redirect to={{ pathname: '/help', hash: '#frequently-asked-questions' }} />
+                  )
                 }}
               />
 
