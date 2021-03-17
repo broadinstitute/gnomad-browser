@@ -3,7 +3,13 @@ import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-import { isVariantId, normalizeRegionId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
+import {
+  isRegionId,
+  isVariantId,
+  normalizeRegionId,
+  normalizeVariantId,
+  isRsId,
+} from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import Delayed from './Delayed'
@@ -155,6 +161,16 @@ const App = () => {
                 render={({ location, match }) => {
                   const params = queryString.parse(location.search)
                   const datasetId = params.dataset || defaultDataset
+                  if (!isRegionId(match.params.regionId)) {
+                    return (
+                      <Page>
+                        <DocumentTitle title="Invalid region" />
+                        <PageHeading>Invalid region</PageHeading>
+                        <p>Region must be formatted chrom-start-stop.</p>
+                      </Page>
+                    )
+                  }
+
                   const regionId = normalizeRegionId(match.params.regionId)
                   return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
                 }}
