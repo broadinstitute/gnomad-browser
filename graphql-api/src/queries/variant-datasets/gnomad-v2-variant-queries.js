@@ -113,7 +113,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   const exomeSubset = subset
   const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
 
-  const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
+  const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',
@@ -304,7 +304,7 @@ const fetchVariantsByGene = async (esClient, gene, subset) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],
@@ -363,7 +363,7 @@ const fetchVariantsByRegion = async (esClient, region, subset) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],
@@ -464,7 +464,7 @@ const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],

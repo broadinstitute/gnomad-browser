@@ -30,6 +30,7 @@ def prepare_gnomad_v3_variants(path):
     ############################
 
     ds = ds.annotate(variant_id=variant_id(ds.locus, ds.alleles))
+    ds = ds.rename({"rsid": "rsids"})
 
     ######################
     # Colocated variants #
