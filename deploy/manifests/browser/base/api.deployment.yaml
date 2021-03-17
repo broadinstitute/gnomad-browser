@@ -46,11 +46,11 @@ spec:
               value: '100'
             # Individual rate limiting
             - name: MAX_REQUESTS_PER_MINUTE
-              value: '30'
+              value: '60'
             - name: MAX_QUERY_COST
               value: '25'
             - name: MAX_QUERY_COST_PER_MINUTE
-              value: '150'
+              value: '300'
           ports:
             - name: http
               containerPort: 8000
