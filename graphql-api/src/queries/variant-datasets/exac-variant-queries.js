@@ -50,7 +50,7 @@ const countVariantsInRegion = async (esClient, region) => {
 // ================================================================================================
 
 const fetchVariantById = async (esClient, variantIdOrRsid) => {
-  const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
+  const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: EXAC_VARIANT_INDEX,
     type: '_doc',
@@ -167,7 +167,7 @@ const fetchVariantsByGene = async (esClient, gene) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],
@@ -216,7 +216,7 @@ const fetchVariantsByRegion = async (esClient, region) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],
@@ -305,7 +305,7 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
       'value.flags',
       'value.pos',
       'value.ref',
-      'value.rsid',
+      'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
     ],

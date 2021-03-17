@@ -98,7 +98,7 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "document_id",
                 "variant_id",
-                "rsid",
+                "rsids",
                 "locus",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
@@ -184,7 +184,7 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "document_id",
                 "variant_id",
-                "rsid",
+                "rsids",
                 "locus",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",
@@ -242,7 +242,7 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "document_id",
                 "variant_id",
-                "rsid",
+                "rsids",
                 "locus",
                 "transcript_consequences.gene_id",
                 "transcript_consequences.transcript_id",

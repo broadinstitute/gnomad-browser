@@ -336,6 +336,8 @@ def prepare_gnomad_v2_variants(exome_variants_path, genome_variants_path):
         alt=variants.alleles[1],
     )
 
+    variants = variants.transmute(rsids=hl.set([variants.rsid]))
+
     # Variant is in a subset if it is in the subset in either exome or genome samples
     variants = variants.annotate(subsets=variants.exome.subsets.union(variants.genome.subsets))
 
