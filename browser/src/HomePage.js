@@ -1,7 +1,8 @@
+import queryString from 'query-string'
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink } from '@gnomad/ui'
+import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
@@ -22,7 +23,7 @@ const HeadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 2em;
 `
 
 const SubHeading = styled.h2`
@@ -48,16 +49,47 @@ export default () => (
           &quot;Should I switch to the latest version of gnomAD?&quot;
         </Link>
       </p>
-      <p>
-        Examples - Gene:{' '}
-        <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
-          PCSK9
-        </Link>
-        , Variant:{' '}
-        <Link preserveSelectedDataset={false} to="/variant/1-55516888-G-GA">
-          1-55516888-G-GA
-        </Link>
-      </p>
+      <figure style={{ margin: '1em 0' }}>
+        <figcaption>Examples</figcaption>
+        <List>
+          <ListItem>
+            Gene:{' '}
+            <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
+              PCSK9
+            </Link>
+          </ListItem>
+          <ListItem>
+            Transcript:{' '}
+            <Link preserveSelectedDataset={false} to="/transcript/ENST00000302118">
+              ENST00000302118
+            </Link>
+          </ListItem>
+          <ListItem>
+            gnomAD v2 variant:{' '}
+            <Link
+              preserveSelectedDataset={false}
+              to={{
+                pathname: '/variant/1-55516888-G-GA',
+                search: queryString.stringify({ dataset: 'gnomad_r2_1' }),
+              }}
+            >
+              1-55516888-G-GA
+            </Link>
+          </ListItem>
+          <ListItem>
+            gnomAD v3 variant:{' '}
+            <Link
+              preserveSelectedDataset={false}
+              to={{
+                pathname: '/variant/1-55051215-G-GA',
+                search: queryString.stringify({ dataset: 'gnomad_r3' }),
+              }}
+            >
+              1-55051215-G-GA
+            </Link>
+          </ListItem>
+        </List>
+      </figure>
     </HeadingContainer>
 
     <p>
