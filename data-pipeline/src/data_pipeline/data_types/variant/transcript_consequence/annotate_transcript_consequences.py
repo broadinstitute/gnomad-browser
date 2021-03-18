@@ -57,6 +57,9 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
 
     transcripts = hl.read_table(transcripts_path)
 
+    # TODO: This can potentially be improved by removing Table.collect
+    # See https://hail.zulipchat.com/#narrow/stream/123010-Hail-0.2E2.20support/topic/Optimize.20annotation.20with.20small.20dataset
+    # and https://github.com/Nealelab/ukb_common/blob/ad94d20f8c9f3b711e40a473425925775f0b1f30/utils/generic.py#L18
     transcript_info = hl.dict(
         [
             (row.transcript_id, row.transcript_info)
