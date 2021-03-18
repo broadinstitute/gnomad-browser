@@ -470,6 +470,9 @@ def annotate_variants_with_mnvs(variants_path, mnvs_path):
     )
     ds = ds.group_by(ds.locus, ds.alleles).aggregate(multi_nucleotide_variants=hl.agg.collect(ds.row.drop("snv")))
 
+    # This checkpoint is necessary for the following annotate to be distributed across all workers
+    ds = ds.checkpoint("/tmp/mnvs.ht", overwrite=True)
+
     variants = hl.read_table(variants_path)
 
     variants = variants.annotate(multi_nucleotide_variants=ds[variants.key].multi_nucleotide_variants)
