@@ -44,7 +44,7 @@ Then move ES shards from temporary pods onto permanent pods.
   ```
 
 - Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
-  on new indices to data from temporary pos to permanent data pos. Watch shard movement with the
+  on new indices to move data from temporary pods to permanent data pods. Watch shard movement with the
   [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html)
 
   ```
