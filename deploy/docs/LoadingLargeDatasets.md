@@ -11,6 +11,7 @@ Then move ES shards from temporary pods onto permanent pods.
      --zone $ZONE \
      --service-account $SERVICE_ACCOUNT \
      --num-nodes 48 \
+     --machine-type e2-highmem-4 \
      --enable-autorepair --enable-autoupgrade \
      --shielded-secure-boot \
      --metadata=disable-legacy-endpoints=true
