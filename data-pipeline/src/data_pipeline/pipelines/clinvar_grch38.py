@@ -60,7 +60,7 @@ pipeline.add_task(
     "/clinvar/clinvar_grch38_annotated_2.ht",
     {
         "clinvar_path": pipeline.get_task("annotate_clinvar_grch38_transcript_consequences"),
-        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.ht",
+        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht",
     },
 )
 
