@@ -2,10 +2,15 @@ const { withCache } = require('../cache')
 
 const { fetchAllSearchResults } = require('./helpers/elasticsearch-helpers')
 
+const GENE_INDICES = {
+  GRCh37: 'genes_grch37',
+  GRCh38: 'genes_grch38',
+}
+
 const fetchGeneById = async (esClient, geneId, referenceGenome) => {
   try {
     const response = await esClient.get({
-      index: `genes_${referenceGenome.toLowerCase()}`,
+      index: GENE_INDICES[referenceGenome],
       type: '_doc',
       id: geneId,
     })
@@ -22,7 +27,7 @@ const fetchGeneById = async (esClient, geneId, referenceGenome) => {
 
 const fetchGeneBySymbol = async (esClient, geneSymbol, referenceGenome) => {
   const response = await esClient.search({
-    index: `genes_${referenceGenome.toLowerCase()}`,
+    index: GENE_INDICES[referenceGenome],
     type: '_doc',
     body: {
       query: {
@@ -45,7 +50,7 @@ const fetchGenesByRegion = async (esClient, region) => {
   const { reference_genome: referenceGenome, xstart, xstop } = region
 
   const hits = await fetchAllSearchResults(esClient, {
-    index: `genes_${referenceGenome.toLowerCase()}`,
+    index: GENE_INDICES[referenceGenome],
     type: '_doc',
     size: 200,
     body: {
@@ -91,7 +96,7 @@ const fetchGenesMatchingText = async (esClient, query, referenceGenome) => {
 
   // Symbol
   const response = await esClient.search({
-    index: `genes_${referenceGenome.toLowerCase()}`,
+    index: GENE_INDICES[referenceGenome],
     type: '_doc',
     _source: ['gene_id', 'value.symbol'],
     body: {
