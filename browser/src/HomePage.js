@@ -43,8 +43,8 @@ export default () => (
       <SubHeading>genome aggregation database</SubHeading>
       <Searchbox width="100%" />
       <p>
-        Please note that gnomAD v2.1.1 and v3.1 have substantially different but overlapping sample
-        compositions and are on different genome builds. For more information, see{' '}
+        Please note that gnomAD v2.1.1 and v3.1.1 have substantially different but overlapping
+        sample compositions and are on different genome builds. For more information, see{' '}
         <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
           &quot;Should I switch to the latest version of gnomAD?&quot;
         </Link>
