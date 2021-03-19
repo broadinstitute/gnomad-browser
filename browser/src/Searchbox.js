@@ -206,7 +206,7 @@ export default withRouter(props => {
           }
         }}
       >
-        <option value="gnomad_r3">gnomAD v3.1</option>
+        <option value="gnomad_r3">gnomAD v3.1.1</option>
         <option value="gnomad_r2_1">gnomAD v2.1.1</option>
         <option value="exac">ExAC</option>
       </Select>
