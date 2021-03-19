@@ -3,6 +3,9 @@
 To speed up loading large datasets into Elasticsearch, spin up many temporary pods and spread indexing across them.
 Then move ES shards from temporary pods onto permanent pods.
 
+- Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
+  on existing indices so that data stays on permanent data pods and does not migrate to temporary ingest pods.
+
 - Create GKE node pool.
 
   ```
