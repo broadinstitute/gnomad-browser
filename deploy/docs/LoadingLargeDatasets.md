@@ -50,13 +50,18 @@ Then move ES shards from temporary pods onto permanent pods.
   ```
 
 - Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
-  on new indices to move data from temporary pods to permanent data pods. Watch shard movement with the
-  [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html)
+  on new indices to move data from temporary pods to permanent data pods.
 
   ```
   curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
   {"index.routing.allocation.require._name": "gnomad-es-data-*"}
   EOF
+  ```
+
+  Watch shard movement with the [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html).
+
+  ```
+  curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_cat/shards?v" | grep RELOCATING
   ```
 
 - Remove ingest pods.
