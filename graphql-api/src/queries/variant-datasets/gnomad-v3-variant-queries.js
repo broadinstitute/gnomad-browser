@@ -154,10 +154,10 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   if (inSilicoPredictors.cadd.phred != null) {
     inSilicoPredictorsList.push({ id: 'cadd', value: inSilicoPredictors.cadd.phred.toPrecision(3) })
   }
-  if (inSilicoPredictors.splice_ai.max_ds != null) {
+  if (inSilicoPredictors.splice_ai.splice_ai_score != null) {
     inSilicoPredictorsList.push({
       id: 'splice_ai',
-      value: `${inSilicoPredictors.splice_ai.max_ds.toPrecision(3)} (${
+      value: `${inSilicoPredictors.splice_ai.splice_ai_score.toPrecision(3)} (${
         inSilicoPredictors.splice_ai.splice_consequence
       })`,
     })
