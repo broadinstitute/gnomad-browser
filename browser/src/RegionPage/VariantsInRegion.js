@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { Badge } from '@gnomad/ui'
-
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -19,15 +17,7 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
       variants={variants}
-    >
-      {datasetId.startsWith('gnomad_r3') && (
-        <p>
-          <Badge level="error">Warning</Badge> We have identified an issue in gnomAD v3.1 where some
-          variants are missing VEP annotations. As a result, some variants in the table below may be
-          missing consequences. We are working on a resolution for this issue.
-        </p>
-      )}
-    </Variants>
+    />
   )
 }
 
