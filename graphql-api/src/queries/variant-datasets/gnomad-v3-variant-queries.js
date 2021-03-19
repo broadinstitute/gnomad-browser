@@ -149,10 +149,15 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     inSilicoPredictorsList.push({
       id: 'revel',
       value: inSilicoPredictors.revel.revel_score.toPrecision(3),
+      flags: inSilicoPredictors.revel.has_duplicate ? ['has_duplicate'] : [],
     })
   }
   if (inSilicoPredictors.cadd.phred != null) {
-    inSilicoPredictorsList.push({ id: 'cadd', value: inSilicoPredictors.cadd.phred.toPrecision(3) })
+    inSilicoPredictorsList.push({
+      id: 'cadd',
+      value: inSilicoPredictors.cadd.phred.toPrecision(3),
+      flags: inSilicoPredictors.cadd.has_duplicate ? ['has_duplicate'] : [],
+    })
   }
   if (inSilicoPredictors.splice_ai.splice_ai_score != null) {
     inSilicoPredictorsList.push({
@@ -160,12 +165,14 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       value: `${inSilicoPredictors.splice_ai.splice_ai_score.toPrecision(3)} (${
         inSilicoPredictors.splice_ai.splice_consequence
       })`,
+      flags: inSilicoPredictors.splice_ai.has_duplicate ? ['has_duplicate'] : [],
     })
   }
   if (inSilicoPredictors.primate_ai.primate_ai_score != null) {
     inSilicoPredictorsList.push({
       id: 'primate_ai',
       value: inSilicoPredictors.primate_ai.primate_ai_score.toPrecision(3),
+      flags: inSilicoPredictors.primate_ai.has_duplicate ? ['has_duplicate'] : [],
     })
   }
 

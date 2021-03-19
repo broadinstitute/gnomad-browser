@@ -454,6 +454,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
     in_silico_predictors {
       id
       value
+      flags
     }
   }
 }
