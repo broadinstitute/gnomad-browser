@@ -40,7 +40,9 @@ Then move ES shards from temporary pods onto permanent pods.
   ```
 
 - Look at the total size of all indices in Elasticsearch to see how much storage will be required for permanent pods.
-  Edit the `volumeClaimTemplates` section of the `data` node set in elasticsearch.yaml.jinja2 accordingly. Keep in mind
+  Add up the values in the `store.size` column output from the [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html).
+
+- Edit the `volumeClaimTemplates` section of the `data` node set in elasticsearch.yaml.jinja2 accordingly. Keep in mind
   that the storage request there is per-pod. If necessary, add permanent data pods to the cluster.
 
   ```
