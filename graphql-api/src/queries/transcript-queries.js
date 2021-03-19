@@ -1,7 +1,12 @@
+const TRANSCRIPT_INDICES = {
+  GRCh37: 'transcripts_grch37',
+  GRCh38: 'transcripts_grch38',
+}
+
 const fetchTranscriptById = async (es, transcriptId, referenceGenome) => {
   try {
     const response = await es.get({
-      index: `transcripts_${referenceGenome.toLowerCase()}`,
+      index: TRANSCRIPT_INDICES[referenceGenome],
       type: '_doc',
       id: transcriptId,
     })
