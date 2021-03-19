@@ -139,6 +139,8 @@ def export_table_to_elasticsearch(
     if es_client.indices.exists(index=index):
         es_client.indices.delete(index=index)
 
+    # TODO: Automatically set shard allocation based on available nodes.
+    # If temporary ingest nodes are present, use them. Otherwise, use existing permanent data nodes.
     es_client.indices.create(index=index, body=request_body)
 
     elasticsearch_config = {"es.write.operation": "index"}
