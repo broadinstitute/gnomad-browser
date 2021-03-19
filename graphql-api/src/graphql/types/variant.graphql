@@ -177,6 +177,7 @@ type MultiNucleotideVariantSummary {
 type VariantInSilicoPredictor {
   id: String!
   value: String!
+  flags: [String!]!
 }
 
 type VariantDetails {

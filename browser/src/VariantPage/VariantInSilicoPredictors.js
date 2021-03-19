@@ -2,13 +2,20 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { List, ListItem } from '@gnomad/ui'
+import { Badge, List, ListItem } from '@gnomad/ui'
 
 const PREDICTORS = {
   cadd: { label: 'CADD', warningThreshold: 10, dangerThreshold: 20 },
   revel: { label: 'REVEL', warningThreshold: 0.5, dangerThreshold: 0.75 },
   primate_ai: { label: 'PrimateAI', warningThreshold: 0.5, dangerThreshold: 0.7 },
   splice_ai: { label: 'SpliceAI', warningThreshold: 0.5, dangerThreshold: 0.8 },
+}
+
+const FLAG_DESCRIPTIONS = {
+  cadd: { has_duplicate: 'This variant has multiple CADD scores' },
+  revel: { has_duplicate: 'This variant has multiple REVEL scores' },
+  primate_ai: { has_duplicate: 'This variant has multiple PrimateAI scores' },
+  splice_ai: { has_duplicate: 'This variant has multiple SpliceAI scores' },
 }
 
 const Marker = styled.span`
@@ -37,7 +44,7 @@ const VariantInSilicoPredictors = ({ variant }) => {
         annotations.
       </p>
       <List>
-        {variant.in_silico_predictors.map(({ id, value }) => {
+        {variant.in_silico_predictors.map(({ id, value, flags }) => {
           const predictor = PREDICTORS[id]
 
           let color = null
@@ -57,12 +64,24 @@ const VariantInSilicoPredictors = ({ variant }) => {
               <ListItem key={id}>
                 {color && <Marker color={color} />}
                 {predictor.label}: {value}
+                {flags && flags.length > 0 && (
+                  <p style={{ marginTop: '0.5em' }}>
+                    <Badge level="info">Note</Badge>{' '}
+                    {flags.map(flag => FLAG_DESCRIPTIONS[id][flag] || flag).join(', ')}
+                  </p>
+                )}
               </ListItem>
             )
           }
           return (
             <ListItem key={id}>
               {id}: {value}
+              {flags && flags.length > 0 && (
+                <p style={{ marginTop: '0.5em' }}>
+                  <Badge level="info">Note</Badge>{' '}
+                  {flags.map(flag => FLAG_DESCRIPTIONS[id][flag] || flag).join(', ')}
+                </p>
+              )}
             </ListItem>
           )
         })}
@@ -77,6 +96,7 @@ VariantInSilicoPredictors.propTypes = {
       PropTypes.shape({
         id: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
+        flags: PropTypes.arrayOf(PropTypes.string).isRequired,
       })
     ).isRequired,
   }).isRequired,
