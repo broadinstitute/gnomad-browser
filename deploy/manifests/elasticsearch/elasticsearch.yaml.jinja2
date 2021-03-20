@@ -77,9 +77,8 @@ spec:
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
-{% if n_data_pods > 0 %}
-    - name: data
-      count: {{ n_data_pods }}
+    - name: data-blue
+      count: 2
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.master: false
         node.data: true
@@ -128,8 +127,7 @@ spec:
             storageClassName: standard
             resources:
               requests:
-                storage: 3000Gi
-{% endif %}
+                storage: 1750Gi
 {% if n_ingest_pods > 0 %}
     - name: ingest
       count: {{ n_ingest_pods }}
