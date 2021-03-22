@@ -304,9 +304,7 @@ def main(argv: typing.List[str]) -> None:
         print("Creating node pools...")
         create_node_pool("redis", ["--num-nodes=1", "--machine-type=e2-custom-6-49152"])
 
-        create_node_pool(
-            "es-data", ["--machine-type=e2-highmem-8", "--enable-autoscaling", "--min-nodes=2", "--max-nodes=4"],
-        )
+        create_node_pool("es-data", ["--machine-type=e2-highmem-8"])
 
         print("Creating K8S resources...")
         manifests_directory = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../manifests"))
