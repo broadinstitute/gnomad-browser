@@ -123,6 +123,7 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
             // transparent instead of none is necessary for tooltip hover
             fill="transparent"
             opacity={opacity}
+            style={{ cursor: 'pointer' }}
           />
           <line
             x1={point.xStart}
@@ -132,6 +133,7 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
             stroke="#333"
             strokeWidth={0.5}
             opacity={opacity}
+            style={{ cursor: 'pointer' }}
           />
           <path
             d={cross}
@@ -140,6 +142,7 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
             strokeWidth={0.5}
             transform={`translate(${point.xEnd},${plotHeight - point.y}) rotate(45)`}
             opacity={opacity}
+            style={{ cursor: 'pointer' }}
           />
         </g>
       )
@@ -168,6 +171,7 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
         strokeWidth={0.5}
         opacity={opacity}
         onClick={() => onClickVariant(variant)}
+        style={{ cursor: 'pointer' }}
       />
     )
   }
