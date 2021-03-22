@@ -13,6 +13,8 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
     `${pos}${ref}>${alt}`
   )}`
 
+  const mseqdrURL = `https://mseqdr.org/variant.php?variant=M-${pos}-${ref}-${alt}&dataset=gnomad_r3`
+
   return (
     <List>
       {variant.rsid && (
@@ -29,6 +31,9 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
       </ListItem>
       <ListItem>
         <ExternalLink href={mitomapURL}>Mitomap</ExternalLink>
+      </ListItem>
+      <ListItem>
+        <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
       {variant.clinvar && (
         <ListItem>
