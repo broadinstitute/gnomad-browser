@@ -22,7 +22,7 @@ module.exports = {
     // Old camel case fields
     variantId: fieldAliasResolver('variant_id'),
     // Single rsID
-    rsid: (obj) => obj.rsid || (obj.rsids || [])[0],
+    rsid: (obj) => (obj.rsids || [])[0],
     // Major consequence fields
     consequence: majorConsequenceFieldResolver('major_consequence'),
     consequence_in_canonical_transcript: majorConsequenceFieldResolver('canonical'),
@@ -41,7 +41,7 @@ module.exports = {
   },
   VariantDetails: {
     // Single rsID
-    rsid: (obj) => obj.rsid || (obj.rsids || [])[0],
+    rsid: (obj) => (obj.rsids || [])[0],
     // Old camel case fields
     colocatedVariants: fieldAliasResolver('colocated_variants'),
     multiNucleotideVariants: fieldAliasResolver('multi_nucleotide_variants'),

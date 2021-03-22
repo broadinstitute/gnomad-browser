@@ -79,7 +79,7 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
       lof_filter
       lof_flags
       pos
-      rsid
+      rsids
       variant_id
       exome {
         ac

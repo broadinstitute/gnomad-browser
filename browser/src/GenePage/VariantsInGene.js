@@ -184,7 +184,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
       lof_filter
       lof_flags
       pos
-      rsid
+      rsids
       transcript_id
       variant_id
       exome {

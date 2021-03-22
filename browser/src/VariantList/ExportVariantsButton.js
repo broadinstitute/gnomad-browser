@@ -16,8 +16,8 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       getValue: variant => JSON.stringify(variant.pos),
     },
     {
-      label: 'rsID',
-      getValue: variant => variant.rsid || '',
+      label: 'rsIDs',
+      getValue: variant => (variant.rsids || []).join(';'),
     },
     {
       label: 'Reference',
@@ -214,7 +214,7 @@ ExportVariantsButton.propTypes = {
         })
       ).isRequired,
       pos: PropTypes.number.isRequired,
-      rsid: PropTypes.string,
+      rsids: PropTypes.arrayOf(PropTypes.string),
       variant_id: PropTypes.string.isRequired,
       exome: PropTypes.shape({
         filters: PropTypes.arrayOf(PropTypes.string).isRequired,

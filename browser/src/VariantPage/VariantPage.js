@@ -431,7 +431,7 @@ query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
       verdict
       flags
     }
-    rsid
+    rsids
     transcript_consequences {
       gene_id
       gene_version

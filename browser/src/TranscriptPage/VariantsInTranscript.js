@@ -119,7 +119,7 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       lof_filter
       lof_flags
       pos
-      rsid
+      rsids
       variant_id
       exome {
         ac

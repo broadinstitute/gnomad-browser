@@ -7,7 +7,11 @@ import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from './SampleSourceIcon'
-import { makeNumericCompareFunction, makeStringCompareFunction } from './sortUtilities'
+import {
+  makeCompareFunction,
+  makeNumericCompareFunction,
+  makeStringCompareFunction,
+} from './sortUtilities'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
 
@@ -270,15 +274,20 @@ const variantTableColumns = [
 
   {
     key: 'rsid',
-    heading: 'rsID',
-    description: 'dbSNP rsID',
+    heading: 'rsIDs',
+    description: 'dbSNP rsIDs',
     grow: 1,
     minWidth: 160,
-    compareFunction: makeStringCompareFunction('rsid'),
-    getSearchTerms: variant => [variant.rsid],
+    compareFunction: makeCompareFunction('rsids', (rsids1, rsids2) =>
+      rsids1[0].localeCompare(rsids2[0])
+    ),
+    getSearchTerms: variant => variant.rsids || [],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.rsid || ''} />
+        <Highlighter
+          searchWords={highlightWords}
+          textToHighlight={(variant.rsids || []).join(', ')}
+        />
       </Cell>
     ),
   },
@@ -305,7 +314,7 @@ const variantTableColumns = [
     minWidth: 150,
     grow: 1,
     compareFunction: makeNumericCompareFunction('pos'),
-    getSearchTerms: variant => [variant.variant_id, variant.rsid],
+    getSearchTerms: variant => [variant.variant_id].concat(variant.rsids || []),
     render: (row, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${row.variant_id}`}>

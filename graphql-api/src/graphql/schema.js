@@ -21,6 +21,7 @@ const structuralVariantResolvers = require('./resolvers/structural-variants')
 const transcriptResolvers = require('./resolvers/transcript')
 const transcriptFieldResolvers = require('./resolvers/transcript-fields')
 const variantResolvers = require('./resolvers/variants')
+const variantFieldResolvers = require('./resolvers/variant-fields')
 
 const typeDefs = mergeTypeDefs([
   ...loadFilesSync(path.join(__dirname, './types')),
@@ -45,6 +46,7 @@ const resolvers = mergeResolvers([
   transcriptResolvers,
   transcriptFieldResolvers,
   variantResolvers,
+  variantFieldResolvers,
 ])
 
 const schema = makeExecutableSchema({
