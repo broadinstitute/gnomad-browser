@@ -91,10 +91,18 @@ const ClinvarVariantTooltip = ({ variant }) => (
         <dd>{renderInGnomad(variant)}</dd>
       </div>
       {variant.in_gnomad && (
-        <div>
-          <dt>gnomAD AF</dt>
-          <dd>{renderGnomadAF(variant)}</dd>
-        </div>
+        <>
+          <div>
+            <dt>gnomAD allele count</dt>
+            <dd>
+              {((variant.gnomad.exome || {}).ac || 0) + ((variant.gnomad.genome || {}).ac || 0)}
+            </dd>
+          </div>
+          <div>
+            <dt>gnomAD allele frequency</dt>
+            <dd>{renderGnomadAF(variant)}</dd>
+          </div>
+        </>
       )}
     </ClinvarVariantAttributeList>
     Click to view in ClinVar
