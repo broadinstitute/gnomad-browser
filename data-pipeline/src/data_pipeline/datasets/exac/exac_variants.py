@@ -425,7 +425,7 @@ def import_exac_vcf(path):
         xpos=x_position(ds.locus),
         ref=ds.alleles[0],
         alt=ds.alleles[1],
-        rsids=hl.set([ds.rsid]),
+        rsids=hl.or_missing(hl.is_defined(ds.rsid), hl.set([ds.rsid])),
         exome=hl.struct(
             ac=ds.info.AC_Adj,
             an=ds.info.AN_Adj,
