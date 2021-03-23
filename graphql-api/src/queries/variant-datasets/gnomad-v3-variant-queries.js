@@ -433,10 +433,45 @@ const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
     )
 }
 
+// ================================================================================================
+// Search
+// ================================================================================================
+
+const fetchMatchingVariants = async (esClient, { rsid = null, variantId = null }, subset) => {
+  let query
+  if (rsid) {
+    query = { term: { rsids: rsid } }
+  } else if (variantId) {
+    query = { term: { variant_id: variantId } }
+  } else {
+    throw new UserVisibleError('Unsupported search')
+  }
+
+  const hits = await fetchAllSearchResults(esClient, {
+    index: GNOMAD_V3_VARIANT_INDEX,
+    type: '_doc',
+    size: 100,
+    _source: [`value.genome.freq.${subset}`, 'value.variant_id'],
+    body: {
+      query: {
+        bool: {
+          filter: query,
+        },
+      },
+    },
+  })
+
+  return hits
+    .map((hit) => hit._source.value)
+    .filter((variant) => variant.genome.freq[subset].ac_raw > 0)
+    .map((variant) => ({ variant_id: variant.variant_id }))
+}
+
 module.exports = {
   countVariantsInRegion,
   fetchVariantById,
   fetchVariantsByGene,
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
+  fetchMatchingVariants,
 }

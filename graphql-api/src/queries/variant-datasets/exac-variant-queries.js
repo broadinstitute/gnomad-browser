@@ -327,10 +327,42 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
     .map(shapeVariantSummary({ type: 'transcript', transcriptId: transcript.transcript_id }))
 }
 
+// ================================================================================================
+// Search
+// ================================================================================================
+
+const fetchMatchingVariants = async (esClient, { rsid = null, variantId = null }) => {
+  let query
+  if (rsid) {
+    query = { term: { rsids: rsid } }
+  } else if (variantId) {
+    query = { term: { variant_id: variantId } }
+  } else {
+    throw new UserVisibleError('Unsupported search')
+  }
+
+  const hits = await fetchAllSearchResults(esClient, {
+    index: EXAC_VARIANT_INDEX,
+    type: '_doc',
+    size: 100,
+    _source: ['value.variant_id'],
+    body: {
+      query: {
+        bool: {
+          filter: query,
+        },
+      },
+    },
+  })
+
+  return hits.map((hit) => hit._source.value).map((variant) => ({ variant_id: variant.variant_id }))
+}
+
 module.exports = {
   countVariantsInRegion,
   fetchVariantById,
   fetchVariantsByGene,
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
+  fetchMatchingVariants,
 }

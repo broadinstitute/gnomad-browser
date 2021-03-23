@@ -15,6 +15,8 @@ const datasetQueries = {
       gnomadV3VariantQueries.fetchVariantsByRegion(...args, 'all'),
     fetchVariantsByTranscript: (...args) =>
       gnomadV3VariantQueries.fetchVariantsByTranscript(...args, 'all'),
+    fetchMatchingVariants: (...args) =>
+      gnomadV3VariantQueries.fetchMatchingVariants(...args, 'all'),
   },
   gnomad_r2_1: {
     countVariantsInRegion: (...args) =>
@@ -25,6 +27,8 @@ const datasetQueries = {
       gnomadV2VariantQueries.fetchVariantsByRegion(...args, 'gnomad'),
     fetchVariantsByTranscript: (...args) =>
       gnomadV2VariantQueries.fetchVariantsByTranscript(...args, 'gnomad'),
+    fetchMatchingVariants: (...args) =>
+      gnomadV2VariantQueries.fetchMatchingVariants(...args, 'gnomad'),
   },
   exac: exacVariantQueries,
 }
@@ -41,6 +45,8 @@ gnomadV2Subsets.forEach((subset) => {
       gnomadV2VariantQueries.fetchVariantsByRegion(...args, subset),
     fetchVariantsByTranscript: (...args) =>
       gnomadV2VariantQueries.fetchVariantsByTranscript(...args, subset),
+    fetchMatchingVariants: (...args) =>
+      gnomadV2VariantQueries.fetchMatchingVariants(...args, subset),
   }
 })
 
@@ -56,6 +62,8 @@ gnomadV3Subsets.forEach((subset) => {
       gnomadV3VariantQueries.fetchVariantsByRegion(...args, subset),
     fetchVariantsByTranscript: (...args) =>
       gnomadV3VariantQueries.fetchVariantsByTranscript(...args, subset),
+    fetchMatchingVariants: (...args) =>
+      gnomadV3VariantQueries.fetchMatchingVariants(...args, subset),
   }
 })
 
@@ -92,6 +100,11 @@ const fetchVariantsByTranscript = (esClient, datasetId, transcript) => {
   return query(esClient, transcript)
 }
 
+const fetchMatchingVariants = (esClient, datasetId, search) => {
+  const query = datasetQueries[datasetId].fetchMatchingVariants
+  return query(esClient, search)
+}
+
 module.exports = {
   countVariantsInRegion,
   fetchVariantById,
@@ -106,4 +119,5 @@ module.exports = {
     (_, datasetId, transcript) => `variants:${datasetId}:transcript:${transcript.transcript_id}`,
     { expiration: 3600 }
   ),
+  fetchMatchingVariants,
 }

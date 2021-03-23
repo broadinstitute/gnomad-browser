@@ -11,6 +11,7 @@ type Query{
 
     searchResults(query: String!, dataset: DatasetId!): [SearchResult!]
     gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
+    variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
 
     meta: BrowserMetadata!
 }
