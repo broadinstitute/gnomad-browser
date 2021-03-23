@@ -4,7 +4,7 @@ import React, { lazy } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
-import { List, ListItem, Page, PageHeading } from '@gnomad/ui'
+import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
 import { labelForDataset } from './datasets'
 import DocumentTitle from './DocumentTitle'
@@ -31,6 +31,14 @@ const VariantSearchPage = ({ datasetId, query }) => {
     <Page>
       <DocumentTitle title={`${query} | ${labelForDataset(datasetId)}`} />
       <PageHeading>{query}</PageHeading>
+
+      {isRsId(query) && (
+        <p style={{ fontSize: '16px' }}>
+          <Badge level="info">Note</Badge> We discourage searching by rsIDs as they can be
+          ambiguous, and generally recommend searching for variants using chromosome, position,
+          reference, and alternate alleles to ensure an accurate match.
+        </p>
+      )}
 
       <Query
         query={VARIANT_SEARCH_QUERY}
@@ -59,7 +67,7 @@ const VariantSearchPage = ({ datasetId, query }) => {
 
           return (
             <>
-              <p style={{ fontSize: '16px' }}>Multiple variants found:</p>
+              <p style={{ fontSize: '16px' }}>Multiple matching variants found:</p>
               <List>
                 {matchingVariants.map(variantId => (
                   <ListItem key={variantId}>
