@@ -202,47 +202,35 @@ const Separator = styled.span`
   }
 `
 
-const VariantPageTitle = ({ datasetId, rsId, variantId }) => {
-  let id
+const VariantPageTitle = ({ datasetId, variantId }) => {
+  const [chrom, pos, ref, alt] = variantId.split('-')
 
-  if (variantId) {
-    const [chrom, pos, ref, alt] = variantId.split('-')
-
-    let variantDescription = 'Variant'
-    if (ref.length === 1 && alt.length === 1) {
-      variantDescription = 'Single nucleotide variant'
-    }
-    if (ref.length < alt.length) {
-      const insertionLength = alt.length - ref.length
-      variantDescription = `Insertion (${insertionLength} base${insertionLength > 1 ? 's' : ''})`
-    }
-    if (ref.length > alt.length) {
-      const deletionLength = ref.length - alt.length
-      variantDescription = `Deletion (${deletionLength} base${deletionLength > 1 ? 's' : ''})`
-    }
-
-    id = (
-      <>
-        <span>{variantDescription}</span>
-        <Separator>: </Separator>
-        <span>
-          {chrom}-{pos}
-        </span>
-        <Separator>-</Separator>
-        <VariantPageTitleAlleles>
-          <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
-            {ref}-{alt}
-          </span>
-        </VariantPageTitleAlleles>
-      </>
-    )
-  } else {
-    id = <span>{rsId}</span>
+  let variantDescription = 'Variant'
+  if (ref.length === 1 && alt.length === 1) {
+    variantDescription = 'Single nucleotide variant'
+  }
+  if (ref.length < alt.length) {
+    const insertionLength = alt.length - ref.length
+    variantDescription = `Insertion (${insertionLength} base${insertionLength > 1 ? 's' : ''})`
+  }
+  if (ref.length > alt.length) {
+    const deletionLength = ref.length - alt.length
+    variantDescription = `Deletion (${deletionLength} base${deletionLength > 1 ? 's' : ''})`
   }
 
   return (
     <>
-      {id}
+      <span>{variantDescription}</span>
+      <Separator>: </Separator>
+      <span>
+        {chrom}-{pos}
+      </span>
+      <Separator>-</Separator>
+      <VariantPageTitleAlleles>
+        <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+          {ref}-{alt}
+        </span>
+      </VariantPageTitleAlleles>
       <Separator> </Separator>
       <span>({referenceGenomeForDataset(datasetId)})</span>
     </>
@@ -251,18 +239,12 @@ const VariantPageTitle = ({ datasetId, rsId, variantId }) => {
 
 VariantPageTitle.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  rsId: PropTypes.string,
-  variantId: PropTypes.string,
-}
-
-VariantPageTitle.defaultProps = {
-  rsId: undefined,
-  variantId: undefined,
+  variantId: PropTypes.string.isRequired,
 }
 
 const variantQuery = `
-query GnomadVariant($variantId: String, $rsid: String, $datasetId: DatasetId!) {
-  variant(variantId: $variantId, rsid: $rsid, dataset: $datasetId) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
+  variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
     chrom
@@ -485,18 +467,11 @@ query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) 
 }
 `
 
-const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
-  const queryVariables = { datasetId }
-  if (variantIdProp) {
-    queryVariables.variantId = variantIdProp
-  } else {
-    queryVariables.rsid = rsId
-  }
-
+const VariantPage = ({ datasetId, variantId }) => {
   return (
     <Page>
-      <DocumentTitle title={`${variantIdProp || rsId} | ${labelForDataset(datasetId)}`} />
-      <BaseQuery key={datasetId} query={variantQuery} variables={queryVariables}>
+      <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
+      <BaseQuery key={datasetId} query={variantQuery} variables={{ datasetId, variantId }}>
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
           if (loading) {
@@ -509,11 +484,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
             pageContent = <StatusMessage>Unable to load variant</StatusMessage>
           } else if (!(data || {}).variant) {
             if (graphQLErrors && graphQLErrors.some(err => err.message === 'Variant not found')) {
-              if (variantIdProp) {
-                pageContent = <VariantNotFound datasetId={datasetId} variantId={variantIdProp} />
-              } else {
-                pageContent = <StatusMessage>Variant not found</StatusMessage>
-              }
+              pageContent = <VariantNotFound datasetId={datasetId} variantId={variantId} />
             } else {
               pageContent = (
                 <StatusMessage>
@@ -551,7 +522,6 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
             )
           }
 
-          const variantId = ((data || {}).variant || {}).variant_id || variantIdProp
           return (
             <React.Fragment>
               <GnomadPageHeading
@@ -566,7 +536,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
                 }}
                 selectedDataset={datasetId}
               >
-                <VariantPageTitle variantId={variantId} rsId={rsId} datasetId={datasetId} />
+                <VariantPageTitle variantId={variantId} datasetId={datasetId} />
               </GnomadPageHeading>
               {pageContent}
             </React.Fragment>
@@ -579,13 +549,7 @@ const VariantPage = ({ datasetId, rsId, variantId: variantIdProp }) => {
 
 VariantPage.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  rsId: PropTypes.string,
-  variantId: PropTypes.string,
-}
-
-VariantPage.defaultProps = {
-  rsId: undefined,
-  variantId: undefined,
+  variantId: PropTypes.string.isRequired,
 }
 
 export default VariantPage
