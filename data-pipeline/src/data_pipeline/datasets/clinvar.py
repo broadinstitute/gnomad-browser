@@ -274,6 +274,9 @@ def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants
             )
         )
 
+        # For purposes of marking ClinVar variants as "in gnomAD", exclude AC=0 gnomAD variants
+        gnomad_exome_variants = gnomad_exome_variants.filter(gnomad_exome_variants.exome.ac > 0)
+
     if gnomad_genome_variants_path:
         gnomad_genome_variants = hl.read_table(gnomad_genome_variants_path)
         gnomad_genome_variants = gnomad_genome_variants.select(
@@ -283,6 +286,9 @@ def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants
                 an=gnomad_genome_variants.freq[0].AN,
             )
         )
+
+        # For purposes of marking ClinVar variants as "in gnomAD", exclude AC=0 gnomAD variants
+        gnomad_genome_variants = gnomad_genome_variants.filter(gnomad_genome_variants.genome.ac > 0)
 
     gnomad_variants = None
     if gnomad_exome_variants and gnomad_genome_variants:
