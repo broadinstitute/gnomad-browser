@@ -131,6 +131,11 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     throw new UserVisibleError('Variant not found')
   }
 
+  // An rsID may match multiple variants
+  if (response.body.hits.total > 1) {
+    throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
+  }
+
   const variant = response.body.hits.hits[0]._source.value
 
   // AC raw may be undefined if the variant does not exist in one of exomes/genomes.
