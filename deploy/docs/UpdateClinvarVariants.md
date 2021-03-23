@@ -11,7 +11,9 @@
       GRCh37
 
       ```
-      ./deployctl dataproc-cluster start vep85 --vep GRCh37
+      ./deployctl dataproc-cluster start vep85 \
+         --vep GRCh37 \
+         --num-secondary-workers 32
       ```
 
       GRCh38
@@ -23,7 +25,8 @@
          --master-machine-type n1-highmem-8 \
          --worker-machine-type n1-highmem-8 \
          --worker-boot-disk-size=200 \
-         --secondary-worker-boot-disk-size=200
+         --secondary-worker-boot-disk-size=200 \
+         --num-secondary-workers 16
       ```
 
    2. Run pipeline
