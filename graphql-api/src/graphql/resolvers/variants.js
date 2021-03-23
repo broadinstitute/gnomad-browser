@@ -7,6 +7,7 @@ const {
   fetchVariantsByGene,
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
+  fetchMatchingVariants,
 } = require('../../queries/variant-queries')
 
 const resolveVariant = (obj, args, ctx) => {
@@ -78,9 +79,31 @@ const resolveVariantsInTranscript = (obj, args, ctx) => {
   return fetchVariantsByTranscript(ctx.esClient, dataset, obj)
 }
 
+const resolveVariantSearch = (obj, args, ctx) => {
+  const { dataset } = args
+  if (!dataset) {
+    throw new UserVisibleError('Dataset is required')
+  }
+
+  if (isVariantId(args.query)) {
+    return fetchMatchingVariants(ctx.esClient, dataset, {
+      variantId: normalizeVariantId(args.query),
+    })
+  }
+
+  if (isRsId(args.query)) {
+    return fetchMatchingVariants(ctx.esClient, dataset, {
+      rsid: args.query,
+    })
+  }
+
+  throw new UserVisibleError('Unrecognized query. Search by variant ID or rsID.')
+}
+
 module.exports = {
   Query: {
     variant: resolveVariant,
+    variant_search: resolveVariantSearch,
   },
   Gene: {
     variants: resolveVariantsInGene,

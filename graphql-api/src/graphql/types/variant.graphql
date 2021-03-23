@@ -210,3 +210,7 @@ type VariantDetails {
   multiNucleotideVariants: [MultiNucleotideVariantSummary!]
   sortedTranscriptConsequences: [TranscriptConsequence!]
 }
+
+type VariantSearchResult {
+  variant_id: String!
+}
