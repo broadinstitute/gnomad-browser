@@ -243,7 +243,7 @@ VariantPageTitle.propTypes = {
 }
 
 const variantQuery = `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
@@ -439,14 +439,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!) {
       flags
     }
   }
-}
-`
 
-const clinvarVariantQuery = `
-query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
-  meta {
-    clinvar_release_date
-  }
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
     clinical_significance
     clinvar_variation_id
@@ -464,6 +457,10 @@ query ClinvarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) 
       submitter_name
     }
   }
+
+  meta {
+    clinvar_release_date
+  }
 }
 `
 
@@ -471,7 +468,11 @@ const VariantPage = ({ datasetId, variantId }) => {
   return (
     <Page>
       <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
-      <BaseQuery key={datasetId} query={variantQuery} variables={{ datasetId, variantId }}>
+      <BaseQuery
+        key={datasetId}
+        query={variantQuery}
+        variables={{ datasetId, referenceGenome: referenceGenomeForDataset(datasetId), variantId }}
+      >
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
           if (loading) {
@@ -495,31 +496,13 @@ const VariantPage = ({ datasetId, variantId }) => {
               )
             }
           } else {
-            const { variant } = data
-            pageContent = (
-              <BaseQuery
-                query={clinvarVariantQuery}
-                variables={{
-                  variantId: variant.variant_id,
-                  referenceGenome: variant.reference_genome,
-                }}
-              >
-                {({ data: clinvarData, error: clinvarError, loading: clinvarLoading }) => {
-                  const clinvarVariant =
-                    clinvarLoading || clinvarError ? null : clinvarData.clinvar_variant
-                  if (clinvarVariant) {
-                    clinvarVariant.release_date = clinvarData.meta.clinvar_release_date
-                  }
-
-                  return (
-                    <VariantPageContent
-                      datasetId={datasetId}
-                      variant={{ ...variant, clinvar: clinvarVariant }}
-                    />
-                  )
-                }}
-              </BaseQuery>
-            )
+            const variant = {
+              ...data.variant,
+              clinvar: data.clinvar_variant
+                ? { ...data.clinvar_variant, release_date: data.meta.clinvar_release_date }
+                : null,
+            }
+            pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
           }
 
           return (
