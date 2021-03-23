@@ -46,7 +46,7 @@ spec:
               value: '100'
             # Individual rate limiting
             - name: MAX_REQUESTS_PER_MINUTE
-              value: '60'
+              value: '30'
             - name: MAX_QUERY_COST
               value: '25'
             - name: MAX_QUERY_COST_PER_MINUTE
