@@ -3,13 +3,7 @@ import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-import {
-  isRegionId,
-  isVariantId,
-  normalizeRegionId,
-  normalizeVariantId,
-  isRsId,
-} from '@gnomad/identifiers'
+import { isRegionId, normalizeRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import Delayed from './Delayed'
@@ -34,14 +28,7 @@ const TermsPage = lazy(() => import('./TermsPage'))
 const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
 const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
-
-// Variant pages
-const MitochondrialVariantPage = lazy(() =>
-  import('./MitochondrialVariantPage/MitochondrialVariantPage')
-)
-const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
-const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
-const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
+const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
 // Other pages
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
@@ -197,46 +184,8 @@ const App = () => {
                 render={({ location, match }) => {
                   const queryParams = queryString.parse(location.search)
                   const datasetId = queryParams.dataset || defaultDataset
-                  const variantIdOrRsId = match.params.variantId
-
-                  if (datasetId.startsWith('gnomad_sv')) {
-                    return (
-                      <StructuralVariantPage datasetId={datasetId} variantId={variantIdOrRsId} />
-                    )
-                  }
-
-                  if (isVariantId(variantIdOrRsId)) {
-                    const normalizedVariantId = normalizeVariantId(variantIdOrRsId).replace(
-                      /^MT/,
-                      'M'
-                    )
-                    const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
-                    if (ref.length === alt.length && ref.length > 1) {
-                      return <MNVPage datasetId={datasetId} variantId={normalizedVariantId} />
-                    }
-
-                    if (chrom === 'M') {
-                      return (
-                        <MitochondrialVariantPage
-                          datasetId={datasetId}
-                          variantId={normalizedVariantId}
-                        />
-                      )
-                    }
-
-                    return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
-                  }
-
-                  if (isRsId(variantIdOrRsId)) {
-                    return <VariantPage datasetId={datasetId} rsId={variantIdOrRsId} />
-                  }
-
                   return (
-                    <Page>
-                      <DocumentTitle title="Invalid variant ID" />
-                      <PageHeading>Invalid Variant ID</PageHeading>
-                      <p>Variant IDs must be chrom-pos-ref-alt or rsIDs.</p>
-                    </Page>
+                    <VariantPageRouter datasetId={datasetId} variantId={match.params.variantId} />
                   )
                 }}
               />
