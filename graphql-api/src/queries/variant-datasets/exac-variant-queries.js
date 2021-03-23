@@ -68,6 +68,11 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
     throw new UserVisibleError('Variant not found')
   }
 
+  // An rsID may match multiple variants
+  if (response.body.hits.total > 1) {
+    throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
+  }
+
   const variant = response.body.hits.hits[0]._source.value
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
