@@ -86,15 +86,9 @@ const formatVariantQualityMetrics = (qualityMetrics) => {
   // TODO: An older version of the data pipeline did not support raw and adj quality metric histograms.
   // gnomAD v2 has only raw histograms. Return those by default until the API schema is updated to allow
   // selecting which version to return.
-
-  const alleleBalanceHistogram = qualityMetrics.allele_balance.alt_raw
   return {
     allele_balance: {
-      alt: {
-        ...alleleBalanceHistogram,
-        // TODO: Remove after rounding in data pipeline?
-        bin_edges: alleleBalanceHistogram.bin_edges.map((e) => Math.floor(e * 100) / 100),
-      },
+      alt: qualityMetrics.allele_balance.alt_raw,
     },
     genotype_depth: {
       alt: qualityMetrics.genotype_depth.alt_raw,
