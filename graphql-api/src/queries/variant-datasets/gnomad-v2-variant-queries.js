@@ -52,36 +52,6 @@ const countVariantsInRegion = async (esClient, region, subset) => {
 // Variant query
 // ================================================================================================
 
-// TODO: Remove after reloading v2 variants
-// See https://github.com/broadinstitute/gnomad-browser/issues/642
-const correctHemizygoteCounts = (populations, nonpar) => {
-  const hemizygoteCounts = {}
-
-  populations
-    .filter((pop) => pop.id.endsWith('_MALE') || pop.id.endsWith('_XY'))
-    .forEach((pop) => {
-      hemizygoteCounts[pop.id.replace(/_(male|xy)$/i, '')] = nonpar ? pop.ac : 0
-    })
-
-  return populations.map((pop) => {
-    // Counts are correct for subpopulations and sexes
-    if (
-      pop.id.includes('_') ||
-      pop.id === 'FEMALE' ||
-      pop.id === 'MALE' ||
-      pop.id === 'XX' ||
-      pop.id === 'XY'
-    ) {
-      return pop
-    }
-
-    return {
-      ...pop,
-      hemizygote_count: hemizygoteCounts[pop.id],
-    }
-  })
-}
-
 const formatVariantQualityMetrics = (qualityMetrics) => {
   // TODO: An older version of the data pipeline did not support raw and adj quality metric histograms.
   // gnomAD v2 has only raw histograms. Return those by default until the API schema is updated to allow
@@ -159,10 +129,6 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       ? {
           ...variant.exome,
           ...variant.exome.freq[exomeSubset],
-          populations: correctHemizygoteCounts(
-            variant.exome.freq[exomeSubset].populations,
-            variant.nonpar
-          ),
           quality_metrics: formatVariantQualityMetrics(variant.exome.quality_metrics),
           age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
@@ -172,10 +138,6 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
       ? {
           ...variant.genome,
           ...variant.genome.freq[genomeSubset],
-          populations: correctHemizygoteCounts(
-            variant.genome.freq[genomeSubset].populations,
-            variant.nonpar
-          ),
           quality_metrics: formatVariantQualityMetrics(variant.genome.quality_metrics),
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
@@ -216,10 +178,7 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
         ? {
             ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.exome.freq[exomeSubset],
-            populations: correctHemizygoteCounts(
-              variant.exome.freq[exomeSubset].populations,
-              variant.nonpar
-            ).filter(
+            populations: variant.exome.freq[exomeSubset].populations.filter(
               (pop) =>
                 !(
                   pop.id.includes('_') ||
@@ -236,10 +195,7 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
         ? {
             ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.genome.freq[genomeSubset],
-            populations: correctHemizygoteCounts(
-              variant.genome.freq[genomeSubset].populations,
-              variant.nonpar
-            ).filter(
+            populations: variant.genome.freq[genomeSubset].populations.filter(
               (pop) =>
                 !(
                   pop.id.includes('_') ||
