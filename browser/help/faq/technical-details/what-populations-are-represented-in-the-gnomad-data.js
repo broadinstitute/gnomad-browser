@@ -139,9 +139,9 @@ const SampleCountTables = () => (
           ))}
         </tbody>
         <tbody>
-          {['female', 'male'].map(popId => (
+          {['XX', 'XY'].map(popId => (
             <tr key={popId}>
-              <th scope="row">{popId.charAt(0).toUpperCase() + popId.slice(1)}</th>
+              <th scope="row">{popId}</th>
               <td>{sampleCounts.gnomad_r2_1.exomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r2_1.genomes[popId].toLocaleString()}</td>
               <td>{sampleCounts.gnomad_r2_1_controls.exomes[popId].toLocaleString()}</td>

@@ -157,18 +157,15 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
   let exomeMaxAN
   let genomeMaxAN
   if (variant.chrom === 'X') {
-    const xxId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'female' : 'XX'
-    const xyId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'male' : 'XY'
     exomeMaxAN = datasetSampleCounts.exomes
-      ? datasetSampleCounts.exomes[xxId] * 2 + datasetSampleCounts.exomes[xyId]
+      ? datasetSampleCounts.exomes.XX * 2 + datasetSampleCounts.exomes.XY
       : null
     genomeMaxAN = datasetSampleCounts.genomes
-      ? datasetSampleCounts.genomes[xxId] * 2 + datasetSampleCounts.genomes[xyId]
+      ? datasetSampleCounts.genomes.XX * 2 + datasetSampleCounts.genomes.XY
       : null
   } else if (variant.chrom === 'Y') {
-    const xyId = datasetId.startsWith('gnomad_r2') || datasetId === 'exac' ? 'male' : 'XY'
-    exomeMaxAN = datasetSampleCounts.exomes ? datasetSampleCounts.exomes[xyId] : null
-    genomeMaxAN = datasetSampleCounts.genomes ? datasetSampleCounts.genomes[xyId] : null
+    exomeMaxAN = datasetSampleCounts.exomes ? datasetSampleCounts.exomes.XY : null
+    genomeMaxAN = datasetSampleCounts.genomes ? datasetSampleCounts.genomes.XY : null
   } else {
     exomeMaxAN = datasetSampleCounts.exomesTotal * 2
     genomeMaxAN = datasetSampleCounts.genomesTotal * 2
