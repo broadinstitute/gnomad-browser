@@ -48,21 +48,9 @@ const mergePopulations = populations => {
 const addPopulationNames = populations => {
   return populations.map(pop => {
     let name
-    // TODO: the data pipeline now stores population IDs with XX and XY instead of FEMALE and MALE
-    // Checks for FEMALE and MALE can be removed after reloading variants
-    if (
-      pop.id === 'XX' ||
-      pop.id.endsWith('_XX') ||
-      pop.id === 'FEMALE' ||
-      pop.id.endsWith('_FEMALE')
-    ) {
+    if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
       name = 'XX'
-    } else if (
-      pop.id === 'XY' ||
-      pop.id.endsWith('_XY') ||
-      pop.id === 'MALE' ||
-      pop.id.endsWith('_MALE')
-    ) {
+    } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
       name = 'XY'
     } else {
       name = GNOMAD_POPULATION_NAMES[pop.id.toLowerCase()] || pop.id

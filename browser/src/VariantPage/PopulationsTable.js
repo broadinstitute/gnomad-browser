@@ -33,7 +33,7 @@ const TogglePopulationButton = styled(TextButton)`
   text-align: left;
 `
 
-const SEX_IDENTIFIERS = ['FEMALE', 'MALE', 'XX', 'XY']
+const SEX_IDENTIFIERS = ['XX', 'XY']
 
 const isSexSpecificPopulation = pop =>
   SEX_IDENTIFIERS.includes(pop.id) || SEX_IDENTIFIERS.some(id => pop.id.endsWith(`_${id}`))
@@ -150,7 +150,7 @@ export class PopulationsTable extends Component {
             // af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
           }))
           .sort((a, b) => {
-            // Sort male/female subpopulations to bottom of list
+            // Sort XX/XY subpopulations to bottom of list
             if (isSexSpecificPopulation(a) && !isSexSpecificPopulation(b)) {
               return 1
             }
@@ -166,7 +166,7 @@ export class PopulationsTable extends Component {
           }),
       }))
       .sort((a, b) => {
-        // Sort male/female populations to bottom of list
+        // Sort XX/XY populations to bottom of list
         if (isSexSpecificPopulation(a) && !isSexSpecificPopulation(b)) {
           return 1
         }
@@ -184,7 +184,7 @@ export class PopulationsTable extends Component {
         return sortBy === 'name' ? pop1.name.localeCompare(pop2.name) : pop1[sortBy] - pop2[sortBy]
       })
 
-    // Male/female numbers are included in the ancestry populations.
+    // XX/XY numbers are included in the ancestry populations.
     const totalAlleleCount = renderedPopulations
       .filter(pop => !isSexSpecificPopulation(pop))
       .map(pop => pop.ac)

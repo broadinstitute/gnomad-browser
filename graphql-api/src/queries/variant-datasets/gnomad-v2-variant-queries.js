@@ -179,14 +179,7 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.exome.freq[exomeSubset],
             populations: variant.exome.freq[exomeSubset].populations.filter(
-              (pop) =>
-                !(
-                  pop.id.includes('_') ||
-                  pop.id === 'FEMALE' ||
-                  pop.id === 'MALE' ||
-                  pop.id === 'XX' ||
-                  pop.id === 'XY'
-                )
+              (pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
           }
@@ -196,14 +189,7 @@ const shapeVariantSummary = (exomeSubset, genomeSubset, context) => {
             ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
             ...variant.genome.freq[genomeSubset],
             populations: variant.genome.freq[genomeSubset].populations.filter(
-              (pop) =>
-                !(
-                  pop.id.includes('_') ||
-                  pop.id === 'FEMALE' ||
-                  pop.id === 'MALE' ||
-                  pop.id === 'XX' ||
-                  pop.id === 'XY'
-                )
+              (pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: genomeFilters,
           }
