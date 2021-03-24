@@ -144,7 +144,7 @@ const LDFiles = () => {
 export default () => (
   <React.Fragment>
     <p>
-      The gnomAD v2.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all
+      The gnomAD v2.1.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all
       mapped to the GRCh37/hg19 reference sequence.
     </p>
     <section>

@@ -67,7 +67,7 @@ const hgdpAnd1kgChromosomeVcfs = [
 export default () => (
   <React.Fragment>
     <p>
-      The gnomAD v3.1 data set contains 76,156 whole genomes (and no exomes), all mapped to the
+      The gnomAD v3.1.1 data set contains 76,156 whole genomes (and no exomes), all mapped to the
       GRCh38 reference sequence.
     </p>
     <section>

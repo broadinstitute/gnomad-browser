@@ -67,8 +67,8 @@ const liftoverGenomeChromosomeVcfs = [
 export default () => (
   <React.Fragment>
     <p>
-      The gnomAD v2.1 liftover data set contains data from 125,748 exomes and 15,708 whole genomes,
-      lifted over from the GRCh37 to the GRCh38 reference sequence.
+      The gnomAD v2.1.1 liftover data set contains data from 125,748 exomes and 15,708 whole
+      genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
     </p>
     <section>
       <h2>Summary</h2>

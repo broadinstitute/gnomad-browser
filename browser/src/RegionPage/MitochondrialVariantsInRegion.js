@@ -72,7 +72,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
         <br />
         <br />
         <Link to={`/region/${regionId}?dataset=gnomad_r3`} preserveSelectedDataset={false}>
-          View this region in gnomAD v3 to see mitochondrial variants
+          View this region in gnomAD v3.1 to see mitochondrial variants
         </Link>
       </StatusMessage>
     )

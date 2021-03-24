@@ -74,7 +74,7 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
           to={`/transcript/${transcript.transcript_id}?dataset=gnomad_r3`}
           preserveSelectedDataset={false}
         >
-          View this transcript in gnomAD v3 to see mitochondrial variants
+          View this transcript in gnomAD v3.1 to see mitochondrial variants
         </Link>
       </StatusMessage>
     )
