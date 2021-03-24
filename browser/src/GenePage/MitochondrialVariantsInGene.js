@@ -71,7 +71,7 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
         <br />
         <br />
         <Link to={`/gene/${gene.gene_id}?dataset=gnomad_r3`} preserveSelectedDataset={false}>
-          View this gene in gnomAD v3 to see mitochondrial variants
+          View this gene in gnomAD v3.1 to see mitochondrial variants
         </Link>
       </StatusMessage>
     )
