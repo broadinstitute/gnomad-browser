@@ -53,25 +53,14 @@ const addPopulationNames = populations => {
     } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
       name = 'XY'
     } else {
-      // TODO: An earlier version of the data pipeline stored population IDs in uppercase
-      // toLowerCase can be removed after reloading variants
-      name = populationNames[pop.id.toLowerCase()] || pop.id
+      name = populationNames[pop.id] || pop.id
     }
     return { ...pop, name }
   })
 }
 
 const StructuralVariantPopulationsTable = ({ variant }) => {
-  const populations = nestPopulations(
-    // TODO: the data pipeline now stores population IDs with XX and XY instead of FEMALE and MALE
-    // This ID mapping can be removed after reloading variants
-    addPopulationNames(
-      variant.populations.map(population => ({
-        ...population,
-        id: population.id.replace('FEMALE', 'XX').replace('MALE', 'XY'),
-      }))
-    )
-  )
+  const populations = nestPopulations(addPopulationNames(variant.populations))
 
   const columnLabels =
     variant.type === 'MCNV'

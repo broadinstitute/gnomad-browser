@@ -47,12 +47,14 @@ FREQ_FIELDS = [
     "N_HOMALT",
 ]
 
-POPULATIONS = ["AFR", "AMR", "EAS", "EUR", "OTH"]
+POPULATIONS = ["afr", "amr", "eas", "eur", "oth"]
 
-DIVISIONS = list(itertools.chain.from_iterable([pop, f"{pop}_FEMALE", f"{pop}_MALE"] for pop in POPULATIONS)) + [
-    "FEMALE",
-    "MALE",
-]
+DIVISIONS = list(
+    itertools.chain.from_iterable(
+        [(pop, pop.upper()), (f"{pop}_XX", f"{pop.upper()}_FEMALE"), (f"{pop}_XY", f"{pop.upper()}_MALE")]
+        for pop in POPULATIONS
+    )
+) + [("XX", "FEMALE"), ("XY", "MALE")]
 
 # For MCNVs, sum AC/AF for all alt alleles except CN=2
 def sum_mcnv_ac_or_af(alts, values):
@@ -126,8 +128,8 @@ def import_structural_variants(vcf_path):
         freq=hl.struct(
             **{field.lower(): ds.info[field] for field in FREQ_FIELDS},
             populations=[
-                hl.struct(id=pop, **{field.lower(): ds.info[f"{pop}_{field}"] for field in FREQ_FIELDS})
-                for pop in DIVISIONS
+                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{pop_key}_{field}"] for field in FREQ_FIELDS})
+                for (pop_id, pop_key) in DIVISIONS
             ],
         )
     )
@@ -176,23 +178,27 @@ def import_structural_variants(vcf_path):
                 (
                     pop_id,
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par, ds.info[f"{pop_id}_MALE_N_HEMIALT"], 0
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par,
+                        ds.info[f"{pop_id.upper()}_MALE_N_HEMIALT"],
+                        0,
                     ),
                 )
                 for pop_id in POPULATIONS
             ]
-            + [(f"{pop_id}_FEMALE", 0) for pop_id in POPULATIONS]
+            + [(f"{pop_id}_XX", 0) for pop_id in POPULATIONS]
             + [
                 (
-                    f"{pop_id}_MALE",
+                    f"{pop_id}_XY",
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par, ds.info[f"{pop_id}_MALE_N_HEMIALT"], 0
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par,
+                        ds.info[f"{pop_id.upper()}_MALE_N_HEMIALT"],
+                        0,
                     ),
                 )
                 for pop_id in POPULATIONS
             ]
-            + [("FEMALE", 0)]
-            + [("MALE", hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par, ds.info.MALE_N_HEMIALT, 0))]
+            + [("XX", 0)]
+            + [("XY", hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & ~ds.par, ds.info.MALE_N_HEMIALT, 0))]
         )
     )
 
