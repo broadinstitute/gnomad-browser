@@ -1,13 +1,15 @@
 const { isEmpty } = require('lodash')
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 
+const GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX = 'gnomad_structural_variants_v2'
+
 // ================================================================================================
 // Variant query
 // ================================================================================================
 
 const fetchStructuralVariantById = async (esClient, variantId, subset) => {
   const response = await esClient.search({
-    index: 'gnomad_structural_variants_v2',
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
     body: {
       query: {
@@ -56,7 +58,7 @@ const fetchStructuralVariantById = async (esClient, variantId, subset) => {
 
 const fetchStructuralVariantsByGene = async (esClient, gene, subset) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_structural_variants_v2',
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
@@ -111,7 +113,7 @@ const fetchStructuralVariantsByGene = async (esClient, gene, subset) => {
 
 const fetchStructuralVariantsByRegion = async (esClient, region, subset) => {
   const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_structural_variants_v2',
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
     size: 10000,
     _source: [
