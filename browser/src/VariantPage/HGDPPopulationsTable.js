@@ -171,51 +171,7 @@ const groupPopulations = populations => {
     })
   })
 
-  // "XX" and "XY" populations were originally not stored for v3.1.
-  // Reconstruct them from population-specific XX and XY populations.
-  // TODO: After reloading variants, this can be replaced by populationsById.XX and populationsById.XY
-  groupedPopulations.push(
-    {
-      id: 'XX',
-      name: 'XX',
-      ac: populations
-        .filter(pop => pop.id.endsWith('_XX'))
-        .map(pop => pop.ac)
-        .reduce((a, b) => a + b),
-      an: populations
-        .filter(pop => pop.id.endsWith('_XX'))
-        .map(pop => pop.an)
-        .reduce((a, b) => a + b),
-      ac_hom: populations
-        .filter(pop => pop.id.endsWith('_XX'))
-        .map(pop => pop.ac_hom)
-        .reduce((a, b) => a + b),
-      ac_hemi: populations
-        .filter(pop => pop.id.endsWith('_XX'))
-        .map(pop => pop.ac_hemi)
-        .reduce((a, b) => a + b),
-    },
-    {
-      id: 'XY',
-      name: 'XY',
-      ac: populations
-        .filter(pop => pop.id.endsWith('_XY'))
-        .map(pop => pop.ac)
-        .reduce((a, b) => a + b),
-      an: populations
-        .filter(pop => pop.id.endsWith('_XY'))
-        .map(pop => pop.an)
-        .reduce((a, b) => a + b),
-      ac_hom: populations
-        .filter(pop => pop.id.endsWith('_XY'))
-        .map(pop => pop.ac_hom)
-        .reduce((a, b) => a + b),
-      ac_hemi: populations
-        .filter(pop => pop.id.endsWith('_XY'))
-        .map(pop => pop.ac_hemi)
-        .reduce((a, b) => a + b),
-    }
-  )
+  groupedPopulations.push(populationsById.XX, populationsById.XY)
 
   return groupedPopulations
 }

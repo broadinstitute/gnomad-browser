@@ -87,33 +87,6 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   let { populations } = variant.genome.freq[subset]
 
-  if (!populations.some(({ id }) => id === 'XX' || id === 'XY')) {
-    // "XX" and "XY" populations were originally not stored for v3.1.
-    // Reconstruct them from population-specific XX and XY populations.
-    const xxPopulations = variant.genome.freq[subset].populations.filter(({ id }) =>
-      id.endsWith('_XX')
-    )
-    const xyPopulations = variant.genome.freq[subset].populations.filter(({ id }) =>
-      id.endsWith('_XY')
-    )
-    populations.push(
-      {
-        id: 'XX',
-        ac: xxPopulations.reduce((acc, pop) => acc + pop.ac, 0),
-        an: xxPopulations.reduce((acc, pop) => acc + pop.an, 0),
-        homozygote_count: xxPopulations.reduce((acc, pop) => acc + pop.homozygote_count, 0),
-        hemizygote_count: xxPopulations.reduce((acc, pop) => acc + pop.hemizygote_count, 0),
-      },
-      {
-        id: 'XY',
-        ac: xyPopulations.reduce((acc, pop) => acc + pop.ac, 0),
-        an: xyPopulations.reduce((acc, pop) => acc + pop.an, 0),
-        homozygote_count: xyPopulations.reduce((acc, pop) => acc + pop.homozygote_count, 0),
-        hemizygote_count: xyPopulations.reduce((acc, pop) => acc + pop.hemizygote_count, 0),
-      }
-    )
-  }
-
   // Include HGDP and 1KG populations with gnomAD subsets
   // TODO: An earlier version of the data pipeline stored subset population frequencies even if the variant was
   // not present in the subset. After updating variants, these checks for ac_raw > 0 should no longer be necessary.
