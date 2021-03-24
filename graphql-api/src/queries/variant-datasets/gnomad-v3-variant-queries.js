@@ -101,23 +101,6 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     )
   }
 
-  // TODO: An earlier version of the data pipeline had missing values for AC, AN, and homozygote count for XX population
-  // frequencies for variants in chrY. After reloading variants, this should no longer be necessary.
-  if (variant.locus.contig === 'chrY') {
-    populations = populations.map((pop) => {
-      if (pop.id === 'XX' || pop.id.endsWith('XX')) {
-        return {
-          id: pop.id,
-          ac: 0,
-          an: 0,
-          homozygote_count: 0,
-          hemizygote_count: 0,
-        }
-      }
-      return pop
-    })
-  }
-
   const inSilicoPredictorsList = []
   const inSilicoPredictors = variant.in_silico_predictors
   if (inSilicoPredictors.revel.revel_score != null) {
