@@ -88,20 +88,12 @@ const fetchVariantById = async (esClient, variantIdOrRsid) => {
         // TODO: An older version of the data pipeline did not support raw and adj quality metric histograms.
         // ExAC has only raw histograms. Return those by default until the API schema is updated to allow selecting which version to return.
         genotype_depth: {
-          alt:
-            variant.exome.quality_metrics.genotype_depth.alt ||
-            variant.exome.quality_metrics.genotype_depth.alt_raw,
-          all:
-            variant.exome.quality_metrics.genotype_depth.all ||
-            variant.exome.quality_metrics.genotype_depth.all_raw,
+          alt: variant.exome.quality_metrics.genotype_depth.alt_raw,
+          all: variant.exome.quality_metrics.genotype_depth.all_raw,
         },
         genotype_quality: {
-          alt:
-            variant.exome.quality_metrics.genotype_quality.alt ||
-            variant.exome.quality_metrics.genotype_quality.alt_raw,
-          all:
-            variant.exome.quality_metrics.genotype_quality.all ||
-            variant.exome.quality_metrics.genotype_quality.all_raw,
+          alt: variant.exome.quality_metrics.genotype_quality.alt_raw,
+          all: variant.exome.quality_metrics.genotype_quality.all_raw,
         },
         site_quality_metrics: variant.exome.quality_metrics.site_quality_metrics,
       },
