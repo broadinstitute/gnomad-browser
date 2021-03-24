@@ -87,8 +87,7 @@ const formatVariantQualityMetrics = (qualityMetrics) => {
   // gnomAD v2 has only raw histograms. Return those by default until the API schema is updated to allow
   // selecting which version to return.
 
-  const alleleBalanceHistogram =
-    qualityMetrics.allele_balance.alt || qualityMetrics.allele_balance.alt_raw
+  const alleleBalanceHistogram = qualityMetrics.allele_balance.alt_raw
   return {
     allele_balance: {
       alt: {
@@ -98,12 +97,12 @@ const formatVariantQualityMetrics = (qualityMetrics) => {
       },
     },
     genotype_depth: {
-      alt: qualityMetrics.genotype_depth.alt || qualityMetrics.genotype_depth.alt_raw,
-      all: qualityMetrics.genotype_depth.all || qualityMetrics.genotype_depth.all_raw,
+      alt: qualityMetrics.genotype_depth.alt_raw,
+      all: qualityMetrics.genotype_depth.all_raw,
     },
     genotype_quality: {
-      alt: qualityMetrics.genotype_quality.alt || qualityMetrics.genotype_quality.alt_raw,
-      all: qualityMetrics.genotype_quality.all || qualityMetrics.genotype_quality.all_raw,
+      alt: qualityMetrics.genotype_quality.alt_raw,
+      all: qualityMetrics.genotype_quality.all_raw,
     },
     site_quality_metrics: qualityMetrics.site_quality_metrics,
   }
