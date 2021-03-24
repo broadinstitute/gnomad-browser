@@ -148,8 +148,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
   }
 
   const inSilicoPredictorsList = []
-  // TODO: An older version of the data pipeline stored these values under 'annotations'
-  const inSilicoPredictors = variant.annotations || variant.in_silico_predictors
+  const inSilicoPredictors = variant.in_silico_predictors
   if (inSilicoPredictors.revel.revel_score != null) {
     inSilicoPredictorsList.push({
       id: 'revel',
