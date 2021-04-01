@@ -7,5 +7,4 @@
 - Anne O'Donnell-Luria
 - Matthew Solomonson
 - Mike Talkowski
-- Kat Tarasova
 - Grace Tiao
