@@ -249,6 +249,7 @@ def prepare_clinvar_variants(clinvar_path, reference_genome):
 
     ds = ds.annotate(
         variant_id=variant_id(ds.locus, ds.alleles),
+        reference_genome=reference_genome,
         chrom=normalized_contig(ds.locus.contig),
         pos=ds.locus.position,
         ref=ds.alleles[0],
