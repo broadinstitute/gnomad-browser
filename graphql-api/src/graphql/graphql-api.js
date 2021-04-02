@@ -1,5 +1,6 @@
 const { graphqlHTTP } = require('express-graphql')
-const { GraphQLError, execute, parse, validate } = require('graphql')
+const { GraphQLError, execute, getOperationAST, parse, validate } = require('graphql')
+const { getVariableValues } = require('graphql/execution/values')
 const {
   default: queryComplexity,
   directiveEstimator,
@@ -123,7 +124,42 @@ module.exports = ({ context }) =>
     ],
     customParseFn,
     customValidateFn,
-    customExecuteFn: async (...args) => {
+    customExecuteFn: async (args) => {
+      const { document, operationName, variableValues } = args
+
+      const operationAST = getOperationAST(document, operationName)
+      if (!operationAST) {
+        return {
+          errors: [new GraphQLError(`Unknown operation named "${operationName}"`)],
+        }
+      }
+
+      // Catch problems with variable values (missing required values, invalid enum values, etc) and return them to the user.
+      const { errors: variableErrors = [] } = getVariableValues(
+        schema,
+        operationAST.variableDefinitions,
+        variableValues
+      )
+      if (variableErrors.length > 0) {
+        return {
+          errors: variableErrors.map(
+            (error) =>
+              new GraphQLError(
+                error.message,
+                error.nodes,
+                error.source,
+                error.positions,
+                error.path,
+                error.originalError,
+                {
+                  ...error.extensions,
+                  isUserVisible: true,
+                }
+              )
+          ),
+        }
+      }
+
       // Apply rate limit before executing query.
       try {
         await applyRateLimits(request)
@@ -133,7 +169,7 @@ module.exports = ({ context }) =>
         throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
       }
 
-      return execute(...args)
+      return execute(args)
     },
     customFormatErrorFn: (error) => customFormatErrorFn(error, request, requestParams),
   }))
