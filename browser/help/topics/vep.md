@@ -31,7 +31,7 @@ function. We exhaustively looked for variants that appear in the same individual
 #### gnomAD v3
 Variants have been flagged according to whether they fall into low-complexity regions (LCRs).
 
-These [regions]((https://storage.googleapis.com/gnomad-public/resources/grch38/LCRFromHengHg38.txt)) were identified
+These [regions](https://storage.googleapis.com/gnomad-public/resources/grch38/LCRFromHengHg38.txt) were identified
 with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) on GRCh38 at a score threshold of 30.
 
 #### gnomAD v2
