@@ -61,6 +61,18 @@ const PageLoading = () => {
   return null
 }
 
+const GoogleAnalytics = () => {
+  const location = useLocation()
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('config', window.gaTrackingId, {
+        page_path: location.pathname,
+      })
+    }
+  }, [location.pathname])
+  return null
+}
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -82,17 +94,7 @@ const App = () => {
   return (
     <Router>
       {/* On any navigation, send event to Google Analytics. */}
-      <Route
-        path="/"
-        render={({ location }) => {
-          if (window.gtag) {
-            window.gtag('config', window.gaTrackingId, {
-              page_path: location.pathname,
-            })
-          }
-          return null
-        }}
-      />
+      <Route path="/" component={GoogleAnalytics} />
 
       {/**
        * On any navigation, scroll to the anchor specified by location fragment (if any) or to the top of the page.
