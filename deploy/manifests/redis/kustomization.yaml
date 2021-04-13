@@ -5,9 +5,8 @@ configMapGenerator:
 generatorOptions:
   disableNameSuffixHash: true
 resources:
-  - redis.deployment.yaml
+  - redis.statefulset.yaml
   - redis.service.yaml
-  - redis-data.pvc.yaml
 images:
   - name: redis
     newName: mirror.gcr.io/library/redis

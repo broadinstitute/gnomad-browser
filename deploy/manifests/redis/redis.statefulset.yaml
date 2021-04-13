@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: redis
   labels:
     service: redis
 spec:
+  serviceName: redis
   replicas: 1
   selector:
     matchLabels:
@@ -47,18 +48,25 @@ spec:
               memory: '36Gi'
           volumeMounts:
             - mountPath: /data
-              name: data
+              name: redis-data
             - mountPath: /etc/redis
               name: config
       nodeSelector:
         cloud.google.com/gke-nodepool: redis
       volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: redis-data
         - name: config
           configMap:
             name: redis-config
             items:
               - key: redis.conf
                 path: redis.conf
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 100Gi
