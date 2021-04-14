@@ -88,14 +88,13 @@ const OuterWrapper = styled.div`
 `
 
 const Notice = styled.div`
-  padding: 0.5em;
-  background: #428bca;
+  padding: 0.75em 0.5em;
+  background: rgb(17, 115, 187);
   color: white;
   text-align: center;
 
   a {
     color: white;
-    text-decoration: none;
   }
 `
 
@@ -166,13 +165,12 @@ class NavBar extends Component {
           </Menu>
         </NavBarWrapper>
         <Notice>
-          <a
-            href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v3.1 released!
+          We want to hear about how you use gnomAD and your wish list! Please take 5 minutes to fill
+          out{' '}
+          <a href="http://broad.io/gnomad_user_survey" rel="noopener noreferrer" target="_blank">
+            our user survey
           </a>
+          .
         </Notice>
       </OuterWrapper>
     )
