@@ -129,7 +129,6 @@ export default () => (
       <FileList>
         <ListItem>
           <GenericDownloadLinks
-            gcsBucket="gnomad-public"
             label="Exome calling regions"
             path="/intervals/exome_calling_regions.v1.interval_list"
           />

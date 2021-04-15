@@ -556,14 +556,12 @@ export default () => (
       <FileList>
         <ListItem>
           <GenericDownloadLinks
-            gcsBucket="gnomad-public"
             label="Exome calling regions"
             path="/intervals/exome_calling_regions.v1.interval_list"
           />
         </ListItem>
         <ListItem>
           <GenericDownloadLinks
-            gcsBucket="gnomad-public"
             label="Genome calling regions"
             path="/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list"
           />
