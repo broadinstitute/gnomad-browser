@@ -108,8 +108,6 @@ export default () => (
           <GetUrlButtons
             label="Sites Hail Table"
             path="/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"
-            gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
@@ -120,7 +118,6 @@ export default () => (
               path={`/release/3.1.1/vcf/genomes/gnomad.genomes.v3.1.1.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              gcsBucket="gnomad-public"
               includeAWS={false}
               includeAzure={false}
             />
