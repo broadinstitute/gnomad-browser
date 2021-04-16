@@ -73,30 +73,6 @@ const VariantPageContent = ({ datasetId, variant }) => {
             <Badge level="info">Note</Badge> This variant is found in a low complexity region.
           </p>
         )}
-
-        {variant.colocated_variants && variant.colocated_variants.length > 0 && (
-          <div>
-            <p>
-              <strong>This variant is multiallelic. Other alternate alleles are:</strong>
-            </p>
-            <ul>
-              {variant.colocated_variants.map(colocatedVariantId => (
-                <li key={colocatedVariantId}>
-                  <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {(variant.multi_nucleotide_variants || []).length > 0 && (
-          <div>
-            <p>
-              <strong>This variant&apos;s consequence may be affected by other variants:</strong>
-            </p>
-            <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
-          </div>
-        )}
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>External Resources</h2>
@@ -106,6 +82,35 @@ const VariantPageContent = ({ datasetId, variant }) => {
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>
+
+      {((variant.colocated_variants || []).length > 0 ||
+        (variant.multi_nucleotide_variants || []).length > 0) && (
+        <Section>
+          <h2>Related Variants</h2>
+          {variant.colocated_variants && variant.colocated_variants.length > 0 && (
+            <div>
+              <h3>Other Alternate Alleles</h3>
+              <p>This variant is multiallelic. Other alternate alleles are:</p>
+              <ul>
+                {variant.colocated_variants.map(colocatedVariantId => (
+                  <li key={colocatedVariantId}>
+                    <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {(variant.multi_nucleotide_variants || []).length > 0 && (
+            <div>
+              <h3>Multi-nucleotide Variants</h3>
+              <p>This variant&apos;s consequence may be affected by other variants:</p>
+              <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
+            </div>
+          )}
+        </Section>
+      )}
+
       <Section>
         <h2>Variant Effect Predictor</h2>
         <VariantTranscriptConsequences variant={variant} />
