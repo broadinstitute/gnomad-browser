@@ -18,6 +18,7 @@ from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
 from data_pipeline.pipelines.gnomad_v2 import pipeline as gnomad_v2_pipeline
 from data_pipeline.pipelines.gnomad_v3 import pipeline as gnomad_v3_pipeline
+from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
 from data_pipeline.pipelines.mitochondria import pipeline as mitochondria_pipeline
 
 
@@ -36,6 +37,12 @@ def add_variant_document_id(ds):
 def truncate_clinvar_variant_ids(ds):
     return ds.annotate(
         variant_id=hl.if_else(hl.len(ds.variant_id) >= 32_766, ds.variant_id[:32_632] + "...", ds.variant_id)
+    )
+
+
+def add_liftover_document_id(ds):
+    return ds.annotate(
+        document_id=ds.source.reference_genome[4:] + "-" + compressed_variant_id(ds.source.locus, ds.source.alleles)
     )
 
 
@@ -305,6 +312,21 @@ DATASETS_CONFIG = {
             ],
             "num_shards": 2,
             "block_size": 2_000,
+        },
+    },
+    ##############################################################################################################
+    # Liftover
+    ##############################################################################################################
+    "liftover": {
+        "get_table": lambda: add_liftover_document_id(
+            hl.read_table(liftover_pipeline.get_task("prepare_liftover").get_output_path())
+        ),
+        "args": {
+            "index": "liftover",
+            # "index_fields": [] # Index all fields
+            "id_field": "document_id",
+            "num_shards": 8,
+            "block_size": 1_000,
         },
     },
 }
