@@ -10,4 +10,4 @@ resources:
 images:
   - name: redis
     newName: mirror.gcr.io/library/redis
-    newTag: alpine
+    newTag: 5-alpine
