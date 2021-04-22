@@ -13,5 +13,7 @@ type Query{
     gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
     variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
 
+    liftover(source_variant_id: String, liftover_variant_id: String, reference_genome: ReferenceGenomeId!): [LiftoverResult!]!
+
     meta: BrowserMetadata!
 }
