@@ -23,6 +23,7 @@ import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 import VariantInSilicoPredictors from './VariantInSilicoPredictors'
+import VariantLiftover from './VariantLiftover'
 import VariantLoFCurationResults from './VariantLoFCurationResults'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
@@ -84,7 +85,8 @@ const VariantPageContent = ({ datasetId, variant }) => {
       </ResponsiveSection>
 
       {((variant.colocated_variants || []).length > 0 ||
-        (variant.multi_nucleotide_variants || []).length > 0) && (
+        (variant.multi_nucleotide_variants || []).length > 0 ||
+        (variant.liftover || variant.liftover_sources || []).length > 0) && (
         <Section>
           <h2>Related Variants</h2>
           {variant.colocated_variants && variant.colocated_variants.length > 0 && (
@@ -107,6 +109,10 @@ const VariantPageContent = ({ datasetId, variant }) => {
               <p>This variant&apos;s consequence may be affected by other variants:</p>
               <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
             </div>
+          )}
+
+          {(variant.liftover || variant.liftover_sources || []).length > 0 && (
+            <VariantLiftover variant={variant} />
           )}
         </Section>
       )}
@@ -182,6 +188,8 @@ VariantPageContent.propTypes = {
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
     clinvar: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     colocated_variants: PropTypes.arrayOf(PropTypes.string),
+    liftover: PropTypes.arrayOf(PropTypes.object),
+    liftover_sources: PropTypes.arrayOf(PropTypes.object),
     multi_nucleotide_variants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -248,7 +256,7 @@ VariantPageTitle.propTypes = {
 }
 
 const variantQuery = `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
@@ -463,6 +471,22 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     }
   }
 
+  liftover(source_variant_id: $variantId, reference_genome: $referenceGenome) @include(if: $includeLiftoverAsSource) {
+    liftover {
+      variant_id
+      reference_genome
+    }
+    datasets
+  }
+
+  liftover_sources: liftover(liftover_variant_id: $variantId, reference_genome: $referenceGenome) @include(if: $includeLiftoverAsTarget) {
+    source {
+      variant_id
+      reference_genome
+    }
+    datasets
+  }
+
   meta {
     clinvar_release_date
   }
@@ -476,7 +500,13 @@ const VariantPage = ({ datasetId, variantId }) => {
       <BaseQuery
         key={datasetId}
         query={variantQuery}
-        variables={{ datasetId, referenceGenome: referenceGenomeForDataset(datasetId), variantId }}
+        variables={{
+          datasetId,
+          includeLiftoverAsSource: datasetId.startsWith('gnomad_r2_1'),
+          includeLiftoverAsTarget: datasetId.startsWith('gnomad_r3'),
+          referenceGenome: referenceGenomeForDataset(datasetId),
+          variantId,
+        }}
       >
         {({ data, error, graphQLErrors, loading }) => {
           let pageContent = null
@@ -506,6 +536,8 @@ const VariantPage = ({ datasetId, variantId }) => {
               clinvar: data.clinvar_variant
                 ? { ...data.clinvar_variant, release_date: data.meta.clinvar_release_date }
                 : null,
+              liftover: data.liftover,
+              liftover_sources: data.liftover_sources,
             }
             pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
           }
