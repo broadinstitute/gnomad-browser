@@ -1,0 +1,10 @@
+type LiftoverVariant {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+}
+
+type LiftoverResult {
+  source: LiftoverVariant!
+  liftover: LiftoverVariant!
+  datasets: [String!]!
+}
