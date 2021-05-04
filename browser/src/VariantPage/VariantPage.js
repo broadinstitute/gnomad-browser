@@ -525,7 +525,13 @@ const VariantPage = ({ datasetId, variantId }) => {
               pageContent = (
                 <StatusMessage>
                   {graphQLErrors && graphQLErrors.length
-                    ? Array.from(new Set(graphQLErrors.map(e => e.message))).join(', ')
+                    ? Array.from(
+                        new Set(
+                          graphQLErrors
+                            .filter(e => !e.message.includes('ClinVar'))
+                            .map(e => e.message)
+                        )
+                      ).join(', ')
                     : 'Unable to load variant'}
                 </StatusMessage>
               )
