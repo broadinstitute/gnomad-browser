@@ -73,7 +73,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  if (variant.genome.freq[subset].ac_raw === 0) {
+  if (!(variant.genome.freq[subset] || {}).ac_raw) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
