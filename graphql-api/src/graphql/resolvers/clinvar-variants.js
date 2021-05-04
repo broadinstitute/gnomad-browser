@@ -25,7 +25,7 @@ const resolveClinVarVariant = async (_, args, ctx) => {
   const variant = await fetchClinvarVariantById(ctx.esClient, args.reference_genome, variantId)
 
   if (!variant) {
-    throw new UserVisibleError('Variant not found')
+    throw new UserVisibleError('ClinVar variant not found')
   }
 
   return variant
