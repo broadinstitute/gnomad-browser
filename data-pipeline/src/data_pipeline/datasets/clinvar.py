@@ -162,8 +162,9 @@ def import_clinvar_xml(clinvar_xml_path):
 
         open_file = gzip.open if clinvar_xml_local_path.endswith(".gz") else open
         with open_file(clinvar_xml_local_path, "r") as xml_file:
-            # 800k is an estimate of the number of variants in the XML file
-            progress = tqdm(total=800_000, mininterval=5)
+            # The exact number of variants in the XML file is unknown.
+            # Approximate it to show a progress bar.
+            progress = tqdm(total=860_000, mininterval=5)
 
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
