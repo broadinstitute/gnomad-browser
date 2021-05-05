@@ -14,9 +14,7 @@ from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
-CLINVAR_XML_URL = (
-    "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/ClinVarVariationRelease_00-latest.xml.gz"
-)
+CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/weekly_release/ClinVarVariationRelease_00-latest_weekly.xml.gz"
 
 
 CLINVAR_GOLD_STARS = {
