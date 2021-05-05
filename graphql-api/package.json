@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@elastic/elasticsearch": "6",
-    "@gnomad/identifiers": "^2.1.0",
+    "@gnomad/identifiers": "^2.2.0",
     "@graphql-tools/load-files": "^6.0.12",
     "@graphql-tools/merge": "^6.0.12",
     "@graphql-tools/schema": "^6.0.12",
