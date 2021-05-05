@@ -5,6 +5,7 @@ from data_pipeline.pipeline import Pipeline, run_pipeline
 from data_pipeline.data_types.variant import annotate_transcript_consequences
 
 from data_pipeline.datasets.clinvar import (
+    CLINVAR_XML_URL,
     import_clinvar_xml,
     prepare_clinvar_variants,
     annotate_clinvar_variants_in_gnomad,
@@ -16,9 +17,7 @@ from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 pipeline = Pipeline()
 
 pipeline.add_download_task(
-    "download_clinvar_xml",
-    "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/ClinVarVariationRelease_00-latest.xml.gz",
-    "/external_sources/clinvar.xml.gz",
+    "download_clinvar_xml", CLINVAR_XML_URL, "/external_sources/clinvar.xml.gz",
 )
 
 pipeline.add_task(
