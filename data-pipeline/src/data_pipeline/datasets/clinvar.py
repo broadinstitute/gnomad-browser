@@ -14,6 +14,11 @@ from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
+CLINVAR_XML_URL = (
+    "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/ClinVarVariationRelease_00-latest.xml.gz"
+)
+
+
 CLINVAR_GOLD_STARS = {
     "criteria provided, conflicting interpretations": 1,
     "criteria provided, multiple submitters, no conflicts": 2,
