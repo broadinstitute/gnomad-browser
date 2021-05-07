@@ -15,5 +15,7 @@ type Query{
 
     liftover(source_variant_id: String, liftover_variant_id: String, reference_genome: ReferenceGenomeId!): [LiftoverResult!]!
 
+    variant_cooccurrence(variants: [String!]!, dataset: DatasetId!): VariantCooccurrence
+
     meta: BrowserMetadata!
 }

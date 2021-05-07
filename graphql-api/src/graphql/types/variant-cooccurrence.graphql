@@ -1,0 +1,12 @@
+type VariantCooccurrenceInPopulation {
+  id: String!
+  genotype_counts: [Int!]!
+  p_compound_heterozygous: Float
+}
+
+type VariantCooccurrence {
+  variant_ids: [String!]!
+  genotype_counts: [Int!]!
+  p_compound_heterozygous: Float
+  populations: [VariantCooccurrenceInPopulation!]!
+}
