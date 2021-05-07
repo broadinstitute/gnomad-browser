@@ -20,6 +20,7 @@ from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeli
 from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as gnomad_v2_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v2_lof_curation_results import pipeline as gnomad_v2_lof_curation_results_pipeline
 from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_variants_pipeline
+from data_pipeline.pipelines.gnomad_v2_variant_cooccurrence import pipeline as gnomad_v2_variant_cooccurrence_pipeline
 from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
 from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
@@ -249,6 +250,18 @@ DATASETS_CONFIG = {
             "index_fields": ["document_id", "variant_id", "locus", "lof_curations.gene_id"],
             "id_field": "document_id",
             "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v2_variant_cooccurrence": {
+        "get_table": lambda: hl.read_table(
+            gnomad_v2_variant_cooccurrence_pipeline.get_task("prepare_variant_cooccurrence").get_output_path()
+        ).add_index(name="document_id"),
+        "args": {
+            "index": "gnomad_v2_variant_cooccurrence",
+            "index_fields": ["variant_ids", "document_id"],
+            "id_field": "document_id",
+            "num_shards": 2,
             "block_size": 1_000,
         },
     },
