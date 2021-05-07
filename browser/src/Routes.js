@@ -23,6 +23,10 @@ const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
+const VariantCooccurrencePage = lazy(() =>
+  import('./VariantCooccurrencePage/VariantCooccurrencePage')
+)
+
 // Other pages
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
 const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
@@ -98,6 +102,16 @@ const Routes = () => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
           return <VariantPageRouter datasetId={datasetId} variantId={match.params.variantId} />
+        }}
+      />
+
+      <Route
+        exact
+        path="/variant-cooccurrence"
+        render={({ location }) => {
+          const params = queryString.parse(location.search)
+          const datasetId = params.dataset || defaultDataset
+          return <VariantCooccurrencePage datasetId={datasetId} />
         }}
       />
 

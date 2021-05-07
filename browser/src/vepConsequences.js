@@ -198,6 +198,9 @@ export const getCategoryFromConsequence = consequenceTerm => categoryByTerm[cons
 export const getLabelForConsequenceTerm = consequenceTerm =>
   labelByTerm[consequenceTerm] || consequenceTerm
 
+export const getConsequenceRank = consequenceTerm =>
+  rankedVepConsequences.findIndex(consequence => consequence.term === consequenceTerm)
+
 export const registerConsequences = consequences => {
   consequences.forEach(consequence => {
     categoryByTerm[consequence.term] = consequence.category
