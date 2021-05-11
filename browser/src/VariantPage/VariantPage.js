@@ -425,6 +425,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
       gene_symbol
       verdict
       flags
+      project
     }
     rsids
     transcript_consequences {

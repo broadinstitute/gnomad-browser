@@ -89,6 +89,7 @@ type LoFCuration {
   gene_symbol: String
   verdict: String!
   flags: [String!]
+  project: String!
 }
 
 type VariantSequencingTypeData {
