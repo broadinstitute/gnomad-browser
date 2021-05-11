@@ -16,6 +16,7 @@ import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
+import { getConsequenceRank } from '../vepConsequences'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
@@ -115,6 +116,24 @@ const VariantPageContent = ({ datasetId, variant }) => {
           {(variant.liftover || variant.liftover_sources || []).length > 0 && (
             <VariantLiftover variant={variant} />
           )}
+
+          {(((variant.exome || {}).ac || 0) + ((variant.genome || {}).ac || 0)) /
+            (((variant.exome || {}).an || 0) + ((variant.genome || {}).an || 0) || 1) <=
+            0.05 &&
+            Math.min(
+              ...variant.transcript_consequences.map(csq =>
+                getConsequenceRank(csq.major_consequence)
+              )
+            ) <= getConsequenceRank('3_prime_UTR_variant') && (
+              <div>
+                <h3>Variant Co-occurrence</h3>
+                <p>
+                  <Link to="/variant-cooccurrence">
+                    Check if this variant occurs on the same haplotype as another variant.
+                  </Link>
+                </p>
+              </div>
+            )}
         </Section>
       )}
 
@@ -196,6 +215,7 @@ VariantPageContent.propTypes = {
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     lof_curations: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
     in_silico_predictors: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
+    transcript_consequences: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
   }).isRequired,
 }
 
