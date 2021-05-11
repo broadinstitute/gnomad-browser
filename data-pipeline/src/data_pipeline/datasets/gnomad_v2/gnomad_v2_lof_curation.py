@@ -1,4 +1,5 @@
 import csv
+import re
 
 import hail as hl
 
@@ -34,11 +35,13 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
 
     with hl.hadoop_open("/tmp/import_temp.tsv", "w") as temp_output_file:
         writer = csv.writer(temp_output_file, delimiter="\t", quotechar='"')
-        writer.writerow(["chrom", "position", "ref", "alt", "genes", "verdict", "flags", "project_index"])
+        writer.writerow(["chrom", "position", "ref", "alt", "genes", "verdict", "flags", "project", "project_index"])
 
         for project_index, path in enumerate(curation_result_paths):
             with hl.hadoop_open(path, "r") as input_file:
                 reader = csv.DictReader(input_file)
+
+                project = re.sub(r"(_curation_results)?\.csv$", "", path.split("/")[-1])
 
                 raw_dataset_flags = [f.lstrip("Flag ") for f in reader.fieldnames if f.startswith("Flag ")]
 
@@ -68,6 +71,7 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
                         ",".join(genes),
                         verdict,
                         ",".join(variant_flags),
+                        project,
                         project_index,
                     ]
 
