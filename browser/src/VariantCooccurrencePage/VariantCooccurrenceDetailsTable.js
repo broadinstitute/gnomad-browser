@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 import { parseVariantId } from '@gnomad/identifiers'
 
+import Link from '../Link'
+
 const Table = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
@@ -52,7 +54,9 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
           <tr>
             <td colSpan={2} />
             <th colSpan={3} scope="colgroup">
-              {variant2.chrom}-{variant2.pos}-{truncate(variant2.ref)}-{truncate(variant2.alt)}
+              <Link to={`/variant/${variantIds[1]}`}>
+                {variant2.chrom}-{variant2.pos}-{truncate(variant2.ref)}-{truncate(variant2.alt)}
+              </Link>
             </th>
           </tr>
         </thead>
@@ -71,7 +75,9 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
           </tr>
           <tr>
             <th rowSpan={3} scope="rowgroup">
-              {variant1.chrom}-{variant1.pos}-{truncate(variant1.ref)}-{truncate(variant1.alt)}
+              <Link to={`/variant/${variantIds[0]}`}>
+                {variant1.chrom}-{variant1.pos}-{truncate(variant1.ref)}-{truncate(variant1.alt)}
+              </Link>
             </th>
             <th scope="row">
               {truncate(variant1.ref)}/{truncate(variant1.ref)}

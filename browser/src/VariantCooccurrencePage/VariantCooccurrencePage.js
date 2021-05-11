@@ -416,7 +416,9 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
                   </p>
                   <Wrapper>
                     <ResponsiveSection>
-                      <h3>{variantIds[0]}</h3>
+                      <h3>
+                        <Link to={`/variant/${variantIds[0]}`}>{variantIds[0]}</Link>
+                      </h3>
                       <TranscriptConsequenceList
                         transcriptConsequences={data.variant1.transcript_consequences.filter(csq =>
                           genesInCommon.has(csq.gene_id)
@@ -425,7 +427,9 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
                     </ResponsiveSection>
 
                     <ResponsiveSection>
-                      <h3>{variantIds[1]}</h3>
+                      <h3>
+                        <Link to={`/variant/${variantIds[1]}`}>{variantIds[1]}</Link>
+                      </h3>
                       <TranscriptConsequenceList
                         transcriptConsequences={data.variant2.transcript_consequences.filter(csq =>
                           genesInCommon.has(csq.gene_id)
