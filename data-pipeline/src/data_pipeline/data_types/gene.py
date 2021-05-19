@@ -3,7 +3,7 @@ import hail as hl
 from .locus import normalized_contig, x_position
 
 
-def merge_overlapping_regions(regions):
+def merge_overlapping_exons(regions):
     return hl.if_else(
         hl.len(regions) > 1,
         hl.rbind(
@@ -11,7 +11,11 @@ def merge_overlapping_regions(regions):
             lambda sorted_regions: sorted_regions[1:].fold(
                 lambda acc, region: hl.if_else(
                     region.start <= acc[-1].stop + 1,
-                    acc[:-1].append(acc[-1].annotate(stop=hl.max(region.stop, acc[-1].stop))),
+                    acc[:-1].append(
+                        acc[-1].annotate(
+                            stop=hl.max(region.stop, acc[-1].stop), xstop=hl.max(region.xstop, acc[-1].xstop)
+                        )
+                    ),
                     acc.append(region),
                 ),
                 [sorted_regions[0]],
@@ -95,9 +99,9 @@ def collect_gene_exons(gene_exons):
     )
 
     exons = (
-        merge_overlapping_regions(gene_exons.filter(lambda exon: exon.feature_type == "CDS"))
-        .extend(merge_overlapping_regions(gene_exons.filter(lambda exon: exon.feature_type == "UTR")))
-        .extend(merge_overlapping_regions(non_coding_transcript_exons))
+        merge_overlapping_exons(gene_exons.filter(lambda exon: exon.feature_type == "CDS"))
+        .extend(merge_overlapping_exons(gene_exons.filter(lambda exon: exon.feature_type == "UTR")))
+        .extend(merge_overlapping_exons(non_coding_transcript_exons))
     )
 
     exons = exons.map(lambda exon: exon.select("feature_type", "start", "stop", "xstart", "xstop"))
