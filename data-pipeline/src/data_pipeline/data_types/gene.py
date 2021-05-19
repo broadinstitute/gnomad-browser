@@ -38,7 +38,9 @@ def get_exons(gencode):
     exons = exons.select(
         feature_type=exons.feature,
         transcript_id=exons.transcript_id.split("\\.")[0],
+        transcript_version=exons.transcript_id.split("\\.")[1],
         gene_id=exons.gene_id.split("\\.")[0],
+        gene_version=exons.gene_id.split("\\.")[1],
         chrom=normalized_contig(exons.interval.start.contig),
         strand=exons.strand,
         start=exons.interval.start.position,
@@ -123,6 +125,7 @@ def get_transcripts(gencode):
         transcript_id=transcripts.transcript_id.split("\\.")[0],
         transcript_version=transcripts.transcript_id.split("\\.")[1],
         gene_id=transcripts.gene_id.split("\\.")[0],
+        gene_version=transcripts.gene_id.split("\\.")[1],
         chrom=normalized_contig(transcripts.interval.start.contig),
         strand=transcripts.strand,
         start=transcripts.interval.start.position,
@@ -173,20 +176,24 @@ def import_gencode(path, reference_genome):
     exons = get_exons(gencode)
     exons = exons.cache()
 
-    gene_exons = exons.group_by(exons.gene_id).aggregate(exons=hl.agg.collect(exons.row_value))
-    genes = genes.annotate(exons=collect_gene_exons(gene_exons[genes.gene_id].exons))
+    gene_exons = exons.group_by(exons.gene_id, exons.gene_version).aggregate(exons=hl.agg.collect(exons.row_value))
+    genes = genes.annotate(exons=collect_gene_exons(gene_exons[genes.gene_id, genes.gene_version].exons))
 
-    transcript_exons = exons.group_by(exons.transcript_id).aggregate(exons=hl.agg.collect(exons.row_value))
+    transcript_exons = exons.group_by(exons.transcript_id, exons.transcript_version).aggregate(
+        exons=hl.agg.collect(exons.row_value)
+    )
     transcripts = transcripts.annotate(
-        exons=collect_transcript_exons(transcript_exons[transcripts.transcript_id].exons)
+        exons=collect_transcript_exons(
+            transcript_exons[transcripts.transcript_id, transcripts.transcript_version].exons
+        )
     )
 
     # Annotate genes with their transcripts
     gene_transcripts = transcripts.key_by()
-    gene_transcripts = gene_transcripts.group_by(gene_transcripts.gene_id).aggregate(
+    gene_transcripts = gene_transcripts.group_by(gene_transcripts.gene_id, gene_transcripts.gene_version).aggregate(
         transcripts=hl.agg.collect(gene_transcripts.row_value)
     )
-    genes = genes.annotate(**gene_transcripts[genes.gene_id])
+    genes = genes.annotate(transcripts=gene_transcripts[genes.gene_id, genes.gene_version].transcripts)
 
     return genes
 
