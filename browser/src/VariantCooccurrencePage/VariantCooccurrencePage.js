@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { isVariantId } from '@gnomad/identifiers'
-import { Input, List, ListItem, Page, PrimaryButton } from '@gnomad/ui'
+import { Badge, Input, List, ListItem, Page, PrimaryButton } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -18,6 +18,7 @@ import { getConsequenceRank } from '../vepConsequences'
 
 import CooccurrenceDataPropType from './CooccurrenceDataPropType'
 import VariantCooccurrenceDetailsTable from './VariantCooccurrenceDetailsTable'
+import VariantCooccurrenceHaplotypeCountsTable from './VariantCooccurrenceHaplotypeCountsTable'
 import VariantCooccurrenceSummaryTable from './VariantCooccurrenceSummaryTable'
 
 const Section = styled.section`
@@ -88,6 +89,25 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
           genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
         />
         <p>{cooccurrenceDescription}.</p>
+
+        {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
+          <details>
+            <summary>More information about probability of co-occurrence</summary>
+            <p>
+              <Badge level="warning">Note</Badge> Probability values are not well calibrated.
+              Interpret with caution.
+            </p>
+            <p>Estimated haplotype counts:</p>
+            <VariantCooccurrenceHaplotypeCountsTable
+              variantIds={cooccurrenceData.variant_ids}
+              haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
+            />
+            <p>
+              The probability that these variants occur in different haplotypes is{' '}
+              {(cooccurrenceInSelectedPopulation.p_compound_heterozygous * 100).toFixed(2)}%
+            </p>
+          </details>
+        )}
       </ResponsiveSection>
     </Wrapper>
   )
@@ -210,10 +230,12 @@ query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: 
   variant_cooccurrence(variants: $variants, dataset: $datasetId) {
     variant_ids
     genotype_counts
+    haplotype_counts
     p_compound_heterozygous
     populations {
       id
       genotype_counts
+      haplotype_counts
       p_compound_heterozygous
     }
   }
