@@ -112,7 +112,7 @@ const RegionPage = ({ datasetId, region, width }) => {
           />
         )}
 
-        <GenesInRegionTrack region={region} />
+        <GenesInRegionTrack genes={region.genes} region={region} />
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
@@ -134,6 +134,7 @@ RegionPage.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    genes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
   width: PropTypes.number.isRequired,
 }

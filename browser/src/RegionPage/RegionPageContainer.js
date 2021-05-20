@@ -6,10 +6,29 @@ import { Page, PageHeading } from '@gnomad/ui'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
+import Query from '../Query'
 import { withWindowSize } from '../windowSize'
 import RegionPage from './RegionPage'
 
 const AutosizedRegionPage = withWindowSize(RegionPage)
+
+const query = `
+  query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+    region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+      genes {
+        gene_id
+        symbol
+        start
+        stop
+        exons {
+          feature_type
+          start
+          stop
+        }
+      }
+    }
+  }
+`
 
 const RegionPageContainer = ({ datasetId, regionId }) => {
   if (!isRegionId(regionId)) {
@@ -26,15 +45,28 @@ const RegionPageContainer = ({ datasetId, regionId }) => {
   const referenceGenome = referenceGenomeForDataset(datasetId)
 
   return (
-    <AutosizedRegionPage
-      datasetId={datasetId}
-      region={{
-        reference_genome: referenceGenome,
-        chrom: chrom === 'MT' ? 'M' : chrom,
-        start,
-        stop,
+    <Query
+      query={query}
+      variables={{ chrom, start, stop, referenceGenome }}
+      loadingMessage="Loading region"
+      errorMessage="Unable to load region"
+      success={data => data.region}
+    >
+      {({ data }) => {
+        return (
+          <AutosizedRegionPage
+            datasetId={datasetId}
+            region={{
+              ...data.region,
+              reference_genome: referenceGenome,
+              chrom: chrom === 'MT' ? 'M' : chrom,
+              start,
+              stop,
+            }}
+          />
+        )
       }}
-    />
+    </Query>
   )
 }
 
