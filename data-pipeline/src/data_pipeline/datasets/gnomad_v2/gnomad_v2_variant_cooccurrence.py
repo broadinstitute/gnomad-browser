@@ -11,6 +11,9 @@ def prepare_variant_cooccurrence(path):
     ds = ds.select(
         variant_ids=[variant_id(ds.locus1, ds.alleles1), variant_id(ds.locus2, ds.alleles2)],
         genotype_counts=ds.phase_info["all"].gt_counts.adj,
+        haplotype_counts=hl.or_missing(
+            ~ds.phase_info["all"].em.adj.hap_counts.any(hl.is_nan), ds.phase_info["all"].em.adj.hap_counts,
+        ),
         p_compound_heterozygous=hl.or_missing(
             ~hl.is_nan(ds.phase_info["all"].em.adj.p_chet),  # pylint: disable=invalid-unary-operand-type
             ds.phase_info["all"].em.adj.p_chet,
@@ -21,6 +24,9 @@ def prepare_variant_cooccurrence(path):
             lambda pop: hl.struct(
                 id=pop,
                 genotype_counts=ds.phase_info[pop].gt_counts.adj,
+                haplotype_counts=hl.or_missing(
+                    ~ds.phase_info[pop].em.adj.hap_counts.any(hl.is_nan), ds.phase_info[pop].em.adj.hap_counts,
+                ),
                 p_compound_heterozygous=hl.or_missing(
                     ~hl.is_nan(ds.phase_info[pop].em.adj.p_chet),  # pylint: disable=invalid-unary-operand-type
                     ds.phase_info[pop].em.adj.p_chet,
