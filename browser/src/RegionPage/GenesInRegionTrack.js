@@ -6,7 +6,6 @@ import { Track } from '@gnomad/region-viewer'
 import { GenesPlot } from '@gnomad/track-genes'
 
 import Link from '../Link'
-import Query from '../Query'
 import BaseStatusMessage from '../StatusMessage'
 
 const GeneLink = styled(Link)`
@@ -59,24 +58,6 @@ const TitlePanel = styled.div`
 const StatusMessage = styled(BaseStatusMessage)`
   padding: 0;
   margin: 0 auto 1em;
-`
-
-const query = `
-  query GenesInRegion($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
-    region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-      genes {
-        gene_id
-        symbol
-        start
-        stop
-        exons {
-          feature_type
-          start
-          stop
-        }
-      }
-    }
-  }
 `
 
 const isCodingGene = gene => gene.exons.some(exon => exon.feature_type === 'CDS')
@@ -165,34 +146,4 @@ GenesInRegionTrack.propTypes = {
   }).isRequired,
 }
 
-const GenesInRegionTrackContainer = ({ region, ...otherProps }) => {
-  return (
-    <Query
-      query={query}
-      variables={{
-        chrom: region.chrom,
-        start: region.start,
-        stop: region.stop,
-        referenceGenome: region.reference_genome,
-      }}
-      loadingMessage="Loading genes"
-      errorMessage="Unable to load genes"
-      success={data => data.region && data.region.genes}
-    >
-      {({ data }) => {
-        return <GenesInRegionTrack {...otherProps} genes={data.region.genes} region={region} />
-      }}
-    </Query>
-  )
-}
-
-GenesInRegionTrackContainer.propTypes = {
-  region: PropTypes.shape({
-    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
-    chrom: PropTypes.string.isRequired,
-    start: PropTypes.number.isRequired,
-    stop: PropTypes.number.isRequired,
-  }).isRequired,
-}
-
-export default GenesInRegionTrackContainer
+export default GenesInRegionTrack
