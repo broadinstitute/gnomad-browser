@@ -1,9 +1,17 @@
-type GeneSummary {
+type RegionGeneTranscript {
+  transcript_id: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+}
+
+type RegionGene {
   gene_id: String!
   symbol: String!
   start: Int!
   stop: Int!
   exons: [Exon!]!
+  transcripts: [RegionGeneTranscript!]!
 }
 
 type RegionCoverage {
@@ -17,7 +25,7 @@ type Region {
   start: Int!
   stop: Int!
 
-  genes: [GeneSummary!]! @cost(value: 5)
+  genes: [RegionGene!]! @cost(value: 5)
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
