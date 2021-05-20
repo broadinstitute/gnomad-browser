@@ -17,6 +17,7 @@ module.exports = {
     hgvsc: majorConsequenceFieldResolver('hgvsc'),
     hgvsp: majorConsequenceFieldResolver('hgvsp'),
     major_consequence: majorConsequenceFieldResolver('major_consequence'),
+    transcript_id: majorConsequenceFieldResolver('transcript_id'),
   },
   Variant: {
     // Old camel case fields
