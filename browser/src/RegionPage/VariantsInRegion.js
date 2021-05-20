@@ -65,6 +65,7 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     variants(dataset: $datasetId) {

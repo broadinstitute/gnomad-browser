@@ -36,6 +36,7 @@ query MitochondrialVariantsInTranscript($transcriptId: String!, $datasetId: Data
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     mitochondrial_variants(dataset: $datasetId) {

@@ -36,6 +36,7 @@ query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: Datas
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     mitochondrial_variants(dataset: $datasetId) {
