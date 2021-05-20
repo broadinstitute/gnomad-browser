@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ExternalLink, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
-import formatClinvarDate from '../clinvar/formatClinvarDate'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 
 const SubmissionsList = ({ submissions }) => (
   <List>
