@@ -22,6 +22,7 @@ const ClinvarVariantPropType = PropTypes.shape({
   major_consequence: PropTypes.string,
   pos: PropTypes.number.isRequired,
   review_status: PropTypes.string.isRequired,
+  transcript_id: PropTypes.string.isRequired,
   variant_id: PropTypes.string.isRequired,
 })
 

@@ -36,6 +36,7 @@ query MitochondrialVariantsInGene($geneId: String!, $datasetId: DatasetId!, $ref
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     mitochondrial_variants(dataset: $datasetId) {

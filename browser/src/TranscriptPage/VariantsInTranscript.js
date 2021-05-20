@@ -107,6 +107,7 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     variants(dataset: $datasetId) {

@@ -172,6 +172,7 @@ query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome:
       major_consequence
       pos
       review_status
+      transcript_id
       variant_id
     }
     variants(dataset: $datasetId) {
