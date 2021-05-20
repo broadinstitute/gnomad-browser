@@ -13,7 +13,53 @@ import {
 import ClinvarVariantPropType from './ClinvarVariantPropType'
 import ClinvarVariantTooltip from './ClinvarVariantTooltip'
 
-const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
+// For a description of HGVS frameshift notation, see
+// https://varnomen.hgvs.org/recommendations/protein/variant/frameshift/
+const getFrameshiftTerminationSitePosition = (variant, transcript) => {
+  const match = /^p\.[a-z]{3}(\d+)[a-z]{3,}?fsTer(\d+|\?)$/i.exec(variant.hgvsp)
+
+  // If HGVSp annotation does not match a frameshift, draw the termination site at the variant's position
+  if (!match) {
+    return variant.pos
+  }
+
+  // Codon of the first amino acid changed
+  const position = Number(match[1])
+  // Codon within the new reading frame of the termination site
+  const terminationSitePosition = match[2]
+
+  const exons = transcript.exons.sort((e1, e2) => e1.start - e2.start)
+
+  // Codon positions extracted from HGVS notation start at the CDS region and may extend into the 3' UTR
+  const codingAndDownstreamExons = exons.slice(exons.findIndex(e => e.feature_type === 'CDS'))
+
+  // Termination site position may be "?" if the new reading frame does not encounter a stop codon
+  // In this case, place the termination site at the end of the transcript
+  if (terminationSitePosition === '?') {
+    return codingAndDownstreamExons[codingAndDownstreamExons.length - 1].stop
+  }
+
+  // Offset in bases from the start of the transcript's CDS region to the termination site
+  // Codon numbers are 1 indexed
+  const baseOffset = (position - 1 + Number(terminationSitePosition) - 1) * 3
+
+  let remainingOffset = baseOffset
+  // Termination site should always fall within an exon
+  const exonContainingTerminationSite = codingAndDownstreamExons.find(e => {
+    const exonSize = e.stop - e.start + 1
+    if (remainingOffset < exonSize) {
+      return true
+    }
+    remainingOffset -= exonSize
+    return false
+  })
+
+  return exonContainingTerminationSite.start + remainingOffset
+}
+
+const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width }) => {
+  window.transcripts = transcripts
+
   const [highlightedCategory, _setHighlightedCategory] = useState(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +95,10 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
       const xEnd =
         variant.major_consequence === 'frameshift_variant' && variant.hgvsp
           ? scalePosition(
-              variant.pos + Number(variant.hgvsp.slice(variant.hgvsp.indexOf('Ter') + 3))
+              getFrameshiftTerminationSitePosition(
+                variant,
+                transcripts.find(t => t.transcript_id === variant.transcript_id)
+              )
             )
           : xStart
 
@@ -253,6 +302,18 @@ const ClinvarAllVariantsPlot = ({ scalePosition, variants, width }) => {
 
 ClinvarAllVariantsPlot.propTypes = {
   scalePosition: PropTypes.func.isRequired,
+  transcripts: PropTypes.arrayOf(
+    PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
   width: PropTypes.number.isRequired,
 }
