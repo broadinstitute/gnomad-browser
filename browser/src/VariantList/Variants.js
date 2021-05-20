@@ -53,6 +53,7 @@ class Variants extends Component {
     context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     datasetId: PropTypes.string.isRequired,
     exportFileName: PropTypes.string,
+    transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
     variants: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
@@ -227,6 +228,7 @@ class Variants extends Component {
       context,
       datasetId,
       exportFileName,
+      transcripts,
       variants,
     } = this.props
     const {
@@ -253,7 +255,7 @@ class Variants extends Component {
         {clinvarVariants && (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack variants={clinvarVariants} />
+            <ClinvarVariantTrack transcripts={transcripts} variants={clinvarVariants} />
             <p style={{ marginLeft: '115px' }}>
               Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
               release.

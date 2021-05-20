@@ -25,6 +25,14 @@ const query = `
           start
           stop
         }
+        transcripts {
+          transcript_id
+          exons {
+            feature_type
+            start
+            stop
+          }
+        }
       }
     }
   }

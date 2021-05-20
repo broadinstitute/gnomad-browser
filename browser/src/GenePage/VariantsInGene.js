@@ -67,6 +67,7 @@ const VariantsInGene = ({
       context={gene}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${gene.gene_id}`}
+      transcripts={gene.transcripts}
       variants={variants}
     >
       <p>

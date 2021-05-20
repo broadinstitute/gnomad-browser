@@ -16,6 +16,7 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
       context={region}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
+      transcripts={region.genes.flatMap(gene => gene.transcripts)}
       variants={variants}
     />
   )
@@ -29,6 +30,11 @@ VariantsInRegion.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    genes: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
+      })
+    ).isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
 }

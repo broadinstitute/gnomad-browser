@@ -59,6 +59,7 @@ class MitochondrialVariants extends Component {
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     exportFileName: PropTypes.string.isRequired,
+    transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
   }
 
@@ -230,7 +231,14 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const { clinvarReleaseDate, clinvarVariants, context, exportFileName, variants } = this.props
+    const {
+      clinvarReleaseDate,
+      clinvarVariants,
+      context,
+      exportFileName,
+      transcripts,
+      variants,
+    } = this.props
     const {
       filter,
       renderedTableColumns,
@@ -254,7 +262,7 @@ class MitochondrialVariants extends Component {
         {clinvarVariants && (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack variants={clinvarVariants} />
+            <ClinvarVariantTrack transcripts={transcripts} variants={clinvarVariants} />
             <p style={{ marginLeft: '115px' }}>
               Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
               release.
