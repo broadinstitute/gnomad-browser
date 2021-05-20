@@ -115,6 +115,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
             clinvarVariants={data.region.clinvar_variants}
             context={region}
             exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
+            transcripts={region.genes.flatMap(gene => gene.transcripts)}
             variants={annotateVariantsWithClinvar(
               data.region.mitochondrial_variants,
               data.region.clinvar_variants
@@ -132,6 +133,11 @@ MitochondrialVariantsInRegion.propTypes = {
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
+    genes: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
+      })
+    ).isRequired,
   }).isRequired,
 }
 

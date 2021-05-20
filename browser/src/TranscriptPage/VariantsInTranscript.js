@@ -28,6 +28,7 @@ const VariantsInTranscript = ({
       context={transcript}
       datasetId={datasetId}
       exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
+      transcripts={[transcript]}
       variants={variants}
     >
       {isCodingTranscript ? (

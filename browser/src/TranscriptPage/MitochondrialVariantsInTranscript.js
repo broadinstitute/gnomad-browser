@@ -116,6 +116,7 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
             clinvarVariants={data.transcript.clinvar_variants}
             context={transcript}
             exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
+            transcripts={[transcript]}
             variants={annotateVariantsWithClinvar(
               data.transcript.mitochondrial_variants,
               data.transcript.clinvar_variants

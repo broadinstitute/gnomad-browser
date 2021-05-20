@@ -113,6 +113,7 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
             clinvarVariants={data.gene.clinvar_variants}
             context={gene}
             exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
+            transcripts={gene.transcripts}
             variants={annotateVariantsWithClinvar(
               data.gene.mitochondrial_variants,
               data.gene.clinvar_variants
@@ -128,6 +129,7 @@ MitochondrialVariantsInGene.propTypes = {
   datasetId: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     gene_id: PropTypes.string.isRequired,
+    transcripts: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 }
 

@@ -68,7 +68,7 @@ const SelectCategoryButton = styled(Button)`
   line-height: 18px;
 `
 
-const ClinvarVariantTrack = ({ variants }) => {
+const ClinvarVariantTrack = ({ transcripts, variants }) => {
   const [
     includedClinicalSignificanceCategories,
     setIncludedClinicalSignificanceCategories,
@@ -180,6 +180,7 @@ const ClinvarVariantTrack = ({ variants }) => {
         return isExpanded ? (
           <ClinvarAllVariantsPlot
             scalePosition={scalePosition}
+            transcripts={transcripts}
             variants={filteredVariants}
             width={width}
           />
@@ -197,6 +198,7 @@ const ClinvarVariantTrack = ({ variants }) => {
 }
 
 ClinvarVariantTrack.propTypes = {
+  transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
 }
 
