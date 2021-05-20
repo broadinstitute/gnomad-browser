@@ -53,6 +53,17 @@ const fetchGenesByRegion = async (esClient, region) => {
     index: GENE_INDICES[referenceGenome],
     type: '_doc',
     size: 200,
+    _source: [
+      'value.exons',
+      'value.gene_id',
+      'value.start',
+      'value.stop',
+      'value.symbol',
+      'value.transcripts.exons',
+      'value.transcripts.start',
+      'value.transcripts.stop',
+      'value.transcripts.transcript_id',
+    ],
     body: {
       query: {
         bool: {
