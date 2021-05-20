@@ -162,6 +162,16 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
     }
 
     if (category === 'frameshift') {
+      const transcript = transcripts.find(t => t.transcript_id === variant.transcript_id)
+      const terminationSitePosition = getFrameshiftTerminationSitePosition(variant, transcript)
+      const frameshiftExonRegions = transcript.exons
+        .sort((e1, e2) => e1.start - e2.start)
+        .filter(e => e.start <= terminationSitePosition && e.stop >= variant.pos)
+        .map(e => ({
+          start: Math.max(e.start, variant.pos),
+          stop: Math.min(e.stop, terminationSitePosition),
+        }))
+
       return (
         <g onClick={() => onClickVariant(variant)}>
           <rect
@@ -174,16 +184,36 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
             opacity={opacity}
             style={{ cursor: 'pointer' }}
           />
-          <line
-            x1={point.xStart}
-            y1={plotHeight - point.y}
-            x2={point.xEnd}
-            y2={plotHeight - point.y}
-            stroke="#333"
-            strokeWidth={0.5}
-            opacity={opacity}
-            style={{ cursor: 'pointer' }}
-          />
+          {frameshiftExonRegions.map((r, i, regions) => {
+            const lineY = plotHeight - point.y
+            return (
+              <React.Fragment key={`${r.start}-${r.stop}`}>
+                {i !== 0 && (
+                  <line
+                    x1={scalePosition(regions[i - 1].stop)}
+                    y1={lineY}
+                    x2={scalePosition(r.start)}
+                    y2={lineY}
+                    stroke="#333"
+                    strokeDasharray="2 5"
+                    strokeWidth={0.5}
+                    opacity={opacity}
+                    style={{ cursor: 'pointer' }}
+                  />
+                )}
+                <line
+                  x1={scalePosition(r.start)}
+                  y1={lineY}
+                  x2={scalePosition(r.stop)}
+                  y2={lineY}
+                  stroke="#333"
+                  strokeWidth={0.5}
+                  opacity={opacity}
+                  style={{ cursor: 'pointer' }}
+                />
+              </React.Fragment>
+            )
+          })}
           <path
             d={cross}
             fill={fill}
