@@ -25,7 +25,7 @@ type ClinVarVariant {
   in_gnomad: Boolean
   major_consequence: String
   review_status: String!
-  transcript_id: String!
+  transcript_id: String
 }
 
 type ClinVarCondition {
