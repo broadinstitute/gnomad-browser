@@ -7,14 +7,12 @@ import { Badge, Input, List, ListItem, Page, PrimaryButton } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
-import { BaseQuery } from '../Query'
+import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TranscriptConsequenceList } from '../VariantPage/TranscriptConsequenceList'
-import { getConsequenceRank } from '../vepConsequences'
 
 import CooccurrenceDataPropType from './CooccurrenceDataPropType'
 import VariantCooccurrenceDetailsTable from './VariantCooccurrenceDetailsTable'
@@ -316,7 +314,9 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
         <VariantCoocurrenceForm onSubmit={setVariantIds} />
       </Section>
       {variantIds && (
-        <BaseQuery
+        <Query
+          errorMessage="Unable to load co-occurrence"
+          loadingMessage="Loading co-occurrence"
           query={query}
           variables={{
             variants: variantIds,
@@ -324,95 +324,14 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
             variant2: variantIds[1],
             datasetId,
           }}
+          success={data => data.variant_cooccurrence}
         >
-          {({ data, error, loading }) => {
-            if (loading) {
-              return (
-                <Delayed>
-                  <StatusMessage>Loading co-occurrence...</StatusMessage>
-                </Delayed>
-              )
-            }
+          {({ data }) => {
+            const genesInCommon = [data.variant1, data.variant2]
+              .map(v => new Set(v.transcript_consequences.map(csq => csq.gene_id)))
+              .reduce((acc, genes) => new Set([...acc].filter(geneId => genes.has(geneId))))
 
-            if (error || !data) {
-              return <StatusMessage>Unable to load co-occurrence</StatusMessage>
-            }
-
-            if (!data.variant1) {
-              return <StatusMessage>{variantIds[0]} is not found in gnomAD</StatusMessage>
-            }
-
-            if (!data.variant2) {
-              return <StatusMessage>{variantIds[1]} is not found in gnomAD</StatusMessage>
-            }
-
-            const variant1Genes = new Set(
-              data.variant1.transcript_consequences.map(csq => csq.gene_id)
-            )
-            const variant2Genes = new Set(
-              data.variant2.transcript_consequences.map(csq => csq.gene_id)
-            )
-
-            const genesInCommon = Array.from(
-              new Set([...variant1Genes].filter(geneId => variant2Genes.has(geneId)))
-            )
-
-            const variant1TranscriptConsequences = data.variant1.transcript_consequences
-            const variant2TranscriptConsequences = data.variant2.transcript_consequences
-
-            if (!data.variant_cooccurrence) {
-              let reasonForNoData = null
-
-              // Do we expect to have cooccurrence data for this pair of variants?
-              if (genesInCommon.length === 0) {
-                reasonForNoData =
-                  'Variant co-occurrence is only available for variants that occur in the same gene.'
-              } else if (
-                !genesInCommon.some(geneId => {
-                  const variant1MostSevereConsequenceRank = Math.min(
-                    ...variant1TranscriptConsequences
-                      .filter(csq => csq.gene_id === geneId)
-                      .map(csq => getConsequenceRank(csq.major_consequence))
-                  )
-                  const variant2MostSevereConsequenceRank = Math.min(
-                    ...variant2TranscriptConsequences
-                      .filter(csq => csq.gene_id === geneId)
-                      .map(csq => getConsequenceRank(csq.major_consequence))
-                  )
-                  return (
-                    variant1MostSevereConsequenceRank <=
-                      getConsequenceRank('3_prime_UTR_variant') &&
-                    variant2MostSevereConsequenceRank <= getConsequenceRank('3_prime_UTR_variant')
-                  )
-                })
-              ) {
-                reasonForNoData =
-                  'Variant co-occurrence is only available for coding or UTR variants that occur in the same gene.'
-              } else {
-                const variant1AF =
-                  (((data.variant1.exome || {}).ac || 0) + ((data.variant1.genome || {}).ac || 0)) /
-                  (((data.variant1.exome || {}).an || 0) + ((data.variant1.genome || {}).an || 0) ||
-                    1)
-
-                const variant2AF =
-                  (((data.variant2.exome || {}).ac || 0) + ((data.variant2.genome || {}).ac || 0)) /
-                  (((data.variant2.exome || {}).an || 0) + ((data.variant2.genome || {}).an || 0) ||
-                    1)
-
-                if (variant1AF > 0.05 || variant2AF > 0.05) {
-                  reasonForNoData =
-                    'Variant co-occurrence is only available for variants with a global allele frequency ≤ 5%.'
-                }
-              }
-
-              if (!reasonForNoData) {
-                reasonForNoData = 'There are no carriers of both variants in gnomAD.'
-              }
-
-              return <p>{reasonForNoData}</p>
-            }
-
-            const geneSymbols = variant1TranscriptConsequences.reduce((acc, csq) => ({
+            const geneSymbols = data.variant1.transcript_consequences.reduce((acc, csq) => ({
               ...acc,
               [csq.gene_id]: csq.gene_symbol,
             }))
@@ -423,9 +342,9 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
                 <Section>
                   <h2>VEP Annotations</h2>
                   <p>
-                    These variants both occur in {genesInCommon.length} gene
-                    {genesInCommon.length === 1 ? '' : 's'}:{' '}
-                    {Array.from(new Set(variant1TranscriptConsequences.map(csq => csq.gene_id)))
+                    These variants both occur in {genesInCommon.size} gene
+                    {genesInCommon.size === 1 ? '' : 's'}:{' '}
+                    {Array.from(genesInCommon)
                       .map(geneId => (
                         <Link key={geneId} to={`/gene/${geneId}`}>
                           {geneSymbols[geneId]}
@@ -433,8 +352,8 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
                       ))
                       .flatMap(el => [', ', el])
                       .slice(1)}
-                    . Only annotations for{' '}
-                    {genesInCommon.length === 1 ? 'this gene' : 'these genes'} are shown here.
+                    . Only annotations for {genesInCommon.size === 1 ? 'this gene' : 'these genes'}{' '}
+                    are shown here.
                   </p>
                   <Wrapper>
                     <ResponsiveSection>
@@ -463,7 +382,7 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
               </>
             )
           }}
-        </BaseQuery>
+        </Query>
       )}
     </>
   )
