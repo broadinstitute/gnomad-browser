@@ -1,40 +1,16 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
-import queryString from 'query-string'
 import { hot } from 'react-hot-loader/root'
-import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom'
-
-import { isRegionId, normalizeRegionId } from '@gnomad/identifiers'
-import { Page, PageHeading } from '@gnomad/ui'
+import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 
 import Delayed from './Delayed'
-import DocumentTitle from './DocumentTitle'
 import ErrorBoundary from './ErrorBoundary'
-import NavBar from './NavBar'
+
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
 
-// Content pages
-const AboutPage = lazy(() => import('./AboutPage'))
-const ContactPage = lazy(() => import('./ContactPage'))
-const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
-const HelpPage = lazy(() => import('./help/HelpPage'))
-const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
-const HomePage = lazy(() => import('./HomePage'))
-const MOUPage = lazy(() => import('./MOUPage'))
-const PublicationsPage = lazy(() => import('./PublicationsPage'))
-const TermsPage = lazy(() => import('./TermsPage'))
-
-const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
-const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
-const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
-const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
-
-// Other pages
-const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
-const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
-
-const defaultDataset = 'gnomad_r2_1'
+const NavBar = lazy(() => import('./NavBar'))
+const Routes = lazy(() => import('./Routes'))
 
 const scrollToAnchorOrStartOfPage = location => {
   if (location.hash) {
@@ -108,135 +84,19 @@ const App = () => {
         }}
       />
 
-      <NavBar />
-
-      <Notifications />
-
       <ErrorBoundary>
         {isLoading ? (
           <Delayed>
             <StatusMessage>Loading</StatusMessage>
           </Delayed>
         ) : (
-          <Suspense fallback={<PageLoading />}>
-            <Switch>
-              <Route exact path="/" component={HomePage} />
+          <Suspense fallback={null}>
+            <NavBar />
+            <Notifications />
 
-              <Route
-                exact
-                path="/gene/:gene/transcript/:transcriptId"
-                render={({ location, match }) => (
-                  <Redirect
-                    to={{ ...location, pathname: `/transcript/${match.params.transcriptId}` }}
-                  />
-                )}
-              />
-
-              <Route
-                exact
-                path="/gene/:gene"
-                render={({ location, match }) => {
-                  const params = queryString.parse(location.search)
-                  const datasetId = params.dataset || defaultDataset
-                  return (
-                    <GenePageContainer datasetId={datasetId} geneIdOrSymbol={match.params.gene} />
-                  )
-                }}
-              />
-
-              <Route
-                exact
-                path="/region/:regionId"
-                render={({ location, match }) => {
-                  const params = queryString.parse(location.search)
-                  const datasetId = params.dataset || defaultDataset
-                  if (!isRegionId(match.params.regionId)) {
-                    return (
-                      <Page>
-                        <DocumentTitle title="Invalid region" />
-                        <PageHeading>Invalid region</PageHeading>
-                        <p>Region must be formatted chrom-start-stop.</p>
-                      </Page>
-                    )
-                  }
-
-                  const regionId = normalizeRegionId(match.params.regionId)
-                  return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
-                }}
-              />
-
-              <Route
-                exact
-                path="/transcript/:transcriptId"
-                render={({ location, match }) => {
-                  const params = queryString.parse(location.search)
-                  const datasetId = params.dataset || defaultDataset
-                  return (
-                    <TranscriptPageContainer
-                      datasetId={datasetId}
-                      transcriptId={match.params.transcriptId}
-                    />
-                  )
-                }}
-              />
-
-              <Route
-                exact
-                path="/variant/:variantId"
-                render={({ location, match }) => {
-                  const queryParams = queryString.parse(location.search)
-                  const datasetId = queryParams.dataset || defaultDataset
-                  return (
-                    <VariantPageRouter datasetId={datasetId} variantId={match.params.variantId} />
-                  )
-                }}
-              />
-
-              <Route exact path="/about" component={AboutPage} />
-
-              <Route exact path="/downloads" component={DownloadsPage} />
-
-              <Route exact path="/terms" component={TermsPage} />
-
-              <Route exact path="/publications" component={PublicationsPage} />
-
-              <Route exact path="/contact" component={ContactPage} />
-
-              <Route exact path="/mou" component={MOUPage} />
-
-              <Route
-                exact
-                path="/faq"
-                render={({ location }) => {
-                  if (location.hash) {
-                    return <Redirect to={`/help/${location.hash.slice(1)}`} />
-                  }
-
-                  return (
-                    <Redirect to={{ pathname: '/help', hash: '#frequently-asked-questions' }} />
-                  )
-                }}
-              />
-
-              <Route
-                exact
-                path="/help/:topic"
-                render={({ match }) => <HelpTopicPage topicId={match.params.topic} />}
-              />
-
-              <Route exact path="/help" component={HelpPage} />
-
-              <Route
-                exact
-                path="/awesome"
-                render={({ location }) => {
-                  const params = queryString.parse(location.search)
-                  return <SearchRedirectPage query={params.query} />
-                }}
-              />
-
-              <Route component={PageNotFoundPage} />
-            </Switch>
+            <Suspense fallback={<PageLoading />}>
+              <Routes />
+            </Suspense>
           </Suspense>
         )}
       </ErrorBoundary>
