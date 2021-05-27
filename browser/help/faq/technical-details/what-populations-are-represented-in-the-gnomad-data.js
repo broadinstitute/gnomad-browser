@@ -127,15 +127,35 @@ const SampleCountTables = () => (
             <tr key={popId}>
               <th scope="row">{GNOMAD_POPULATION_NAMES[popId]}</th>
               <td>{(sampleCounts.gnomad_r2_1.exomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r2_1.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {popId === 'sas'
+                  ? '*'
+                  : (sampleCounts.gnomad_r2_1.genomes[popId] || 0).toLocaleString()}
+              </td>
               <td>{(sampleCounts.gnomad_r2_1_controls.exomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r2_1_controls.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {popId === 'sas'
+                  ? '*'
+                  : (sampleCounts.gnomad_r2_1_controls.genomes[popId] || 0).toLocaleString()}
+              </td>
               <td>{(sampleCounts.gnomad_r2_1_non_cancer.exomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r2_1_non_cancer.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {popId === 'sas'
+                  ? '*'
+                  : (sampleCounts.gnomad_r2_1_non_cancer.genomes[popId] || 0).toLocaleString()}
+              </td>
               <td>{(sampleCounts.gnomad_r2_1_non_neuro.exomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r2_1_non_neuro.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {popId === 'sas'
+                  ? '*'
+                  : (sampleCounts.gnomad_r2_1_non_neuro.genomes[popId] || 0).toLocaleString()}
+              </td>
               <td>{(sampleCounts.gnomad_r2_1_non_topmed.exomes[popId] || 0).toLocaleString()}</td>
-              <td>{(sampleCounts.gnomad_r2_1_non_topmed.genomes[popId] || 0).toLocaleString()}</td>
+              <td>
+                {popId === 'sas'
+                  ? '*'
+                  : (sampleCounts.gnomad_r2_1_non_topmed.genomes[popId] || 0).toLocaleString()}
+              </td>
             </tr>
           ))}
         </tbody>
