@@ -6,7 +6,8 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
-import sampleCounts from './dataset-constants/sampleCounts'
+import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
+
 import { labelForDataset } from './datasets'
 
 const NavigationMenuWrapper = styled.ul`

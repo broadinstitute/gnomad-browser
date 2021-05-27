@@ -9,12 +9,14 @@ ENV NODE_ENV=production
 
 # Install dependencies
 COPY --chown=node:node package.json .
+COPY --chown=node:node dataset-metadata/package.json dataset-metadata/package.json
 COPY --chown=node:node browser/package.json browser/package.json
 COPY --chown=node:node yarn.lock .
 RUN yarn install --production false --frozen-lockfile && yarn cache clean
 
 # Copy source
 COPY --chown=node:node babel.config.js .
+COPY --chown=node:node dataset-metadata dataset-metadata
 COPY --chown=node:node browser browser
 
 # Build

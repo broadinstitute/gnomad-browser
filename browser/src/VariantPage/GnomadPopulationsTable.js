@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+
 import { PopulationsTable } from './PopulationsTable'
 
 const ControlSection = styled.div`

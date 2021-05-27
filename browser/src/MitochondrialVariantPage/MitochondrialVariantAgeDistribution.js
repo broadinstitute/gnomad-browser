@@ -5,7 +5,8 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
-import overallAgeDistribution from '../dataset-constants/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantAgeDistribution.json'
+import overallAgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantAgeDistribution.json'
+
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from '../VariantPage/ControlSection'

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 
