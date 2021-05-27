@@ -1,3 +1,6 @@
+const { isVariantId } = require('@gnomad/identifiers')
+
+const { DATASET_LABELS } = require('../datasets')
 const { UserVisibleError } = require('../errors')
 const { fetchVariantById } = require('./variant-queries')
 
@@ -71,6 +74,24 @@ const assertCooccurrenceShouldBeAvailable = (variants) => {
 }
 
 const fetchVariantCooccurrence = async (es, dataset, variantIds) => {
+  if (variantIds.length !== 2) {
+    throw new UserVisibleError('A pair of variants is required')
+  }
+
+  if (!variantIds.every((variantId) => isVariantId(variantId))) {
+    throw new UserVisibleError('Invalid variant ID')
+  }
+
+  if (variantIds[0] === variantIds[1]) {
+    throw new UserVisibleError('Variants must be different')
+  }
+
+  if (dataset !== 'gnomad_r2_1') {
+    throw new UserVisibleError(
+      `Variant cooccurrence is not available for ${DATASET_LABELS[dataset]}`
+    )
+  }
+
   const variants = await Promise.all(
     variantIds.map(async (variantId) => {
       try {
