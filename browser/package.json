@@ -1,6 +1,6 @@
 {
-  "name": "gnomad-browser",
-  "version": "0.0.1",
+  "name": "@gnomad/browser",
+  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "scripts": {

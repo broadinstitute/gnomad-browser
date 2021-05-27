@@ -1,5 +1,5 @@
 {
-  "name": "gnomad-api",
+  "name": "@gnomad/graphql-api",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
