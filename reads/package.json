@@ -1,5 +1,5 @@
 {
-  "name": "gnomad-reads",
+  "name": "@gnomad/reads",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
