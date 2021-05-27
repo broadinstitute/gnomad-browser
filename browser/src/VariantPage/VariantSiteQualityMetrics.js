@@ -8,9 +8,10 @@ import { AxisBottom, AxisLeft, AxisRight } from '@vx/axis'
 
 import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 
-import exacSiteQualityMetricDistributions from '../dataset-constants/exac/siteQualityMetricDistributions.json'
-import gnomadV2SiteQualityMetricDistributions from '../dataset-constants/gnomad_r2_1_1/siteQualityMetricDistributions.json'
-import gnomadV3SiteQualityMetricDistributions from '../dataset-constants/gnomad_r3/siteQualityMetricDistributions.json'
+import exacSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/exac/siteQualityMetricDistributions.json'
+import gnomadV2SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v2/siteQualityMetricDistributions.json'
+import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3/siteQualityMetricDistributions.json'
+
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
 

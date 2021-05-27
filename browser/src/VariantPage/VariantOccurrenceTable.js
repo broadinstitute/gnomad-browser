@@ -4,9 +4,10 @@ import styled from 'styled-components'
 
 import { Badge, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '../dataset-constants/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
+
 import { labelForDataset } from '../datasets'
-import sampleCounts from '../dataset-constants/sampleCounts'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import QCFilter from '../QCFilter'

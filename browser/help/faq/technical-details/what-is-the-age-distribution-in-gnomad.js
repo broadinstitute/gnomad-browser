@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import gnomadV3AgeDistribution from '../../../src/dataset-constants/gnomad_r3/ageDistribution.json'
-import gnomadV2AgeDistribution from '../../../src/dataset-constants/gnomad_r2_1_1/ageDistribution.json'
+import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3/ageDistribution.json'
+import gnomadV2AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v2/ageDistribution.json'
+
 import Histogram from '../../../src/Histogram'
 
 const ColumnsWrapper = styled.div`

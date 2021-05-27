@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
-import overallAgeDistribution from '../dataset-constants/gnomad_sv_r2_1/ageDistribution.json'
+import overallAgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-sv-v2/ageDistribution.json'
+
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from '../VariantPage/ControlSection'

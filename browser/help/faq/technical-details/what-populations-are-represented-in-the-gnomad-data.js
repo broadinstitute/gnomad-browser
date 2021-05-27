@@ -3,8 +3,9 @@ import styled from 'styled-components'
 
 import { BaseTable } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '../../../src/dataset-constants/gnomadPopulations'
-import sampleCounts from '../../../src/dataset-constants/sampleCounts'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
+
 import TableWrapper from '../../../src/TableWrapper'
 
 const SampleCountTable = styled(BaseTable)`

@@ -1,4 +1,4 @@
-export const GNOMAD_POPULATION_NAMES = {
+const GNOMAD_POPULATION_NAMES = {
   afr: 'African/African-American',
   ami: 'Amish',
   amr: 'Latino/Admixed American',
@@ -22,4 +22,8 @@ export const GNOMAD_POPULATION_NAMES = {
   nfe_onf: 'Other non-Finnish European',
   nfe_seu: 'Southern European',
   nfe_swe: 'Swedish',
+}
+
+module.exports = {
+  GNOMAD_POPULATION_NAMES,
 }

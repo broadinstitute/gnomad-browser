@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import sampleCounts from '../dataset-constants/sampleCounts'
+import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
+
 import QCFilter from '../QCFilter'
 
 const Table = styled.table`
