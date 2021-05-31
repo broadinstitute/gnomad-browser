@@ -30,13 +30,20 @@ const getFrameshiftTerminationSitePosition = (variant, transcript) => {
 
   const exons = transcript.exons.sort((e1, e2) => e1.start - e2.start)
 
-  // Codon positions extracted from HGVS notation start at the CDS region and may extend into the 3' UTR
+  // Codon numbers in HGVSp notation start from the 5' end for the + strand and the 3' end for the - strand.
+  if (transcript.strand === '-') {
+    exons.reverse()
+  }
+
+  // Codon positions extracted from HGVS notation start at the CDS region and may extend into the downstream UTR
   const codingAndDownstreamExons = exons.slice(exons.findIndex(e => e.feature_type === 'CDS'))
 
   // Termination site position may be "?" if the new reading frame does not encounter a stop codon
   // In this case, place the termination site at the end of the transcript
   if (terminationSitePosition === '?') {
-    return codingAndDownstreamExons[codingAndDownstreamExons.length - 1].stop
+    return transcript.strand === '-'
+      ? codingAndDownstreamExons[0].start
+      : codingAndDownstreamExons[codingAndDownstreamExons.length - 1].stop
   }
 
   // Offset in bases from the start of the transcript's CDS region to the termination site
@@ -54,12 +61,12 @@ const getFrameshiftTerminationSitePosition = (variant, transcript) => {
     return false
   })
 
-  return exonContainingTerminationSite.start + remainingOffset
+  return transcript.strand === '-'
+    ? exonContainingTerminationSite.stop - remainingOffset
+    : exonContainingTerminationSite.start + remainingOffset
 }
 
 const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width }) => {
-  window.transcripts = transcripts
-
   const [highlightedCategory, _setHighlightedCategory] = useState(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,16 +98,25 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
   const rowHeight = 10
   layers.forEach(variantsInLayer => {
     variantsInLayer.forEach(variant => {
-      const xStart = scalePosition(variant.pos)
-      const xEnd =
-        variant.major_consequence === 'frameshift_variant' && variant.hgvsp
-          ? scalePosition(
-              getFrameshiftTerminationSitePosition(
-                variant,
-                transcripts.find(t => t.transcript_id === variant.transcript_id)
-              )
-            )
-          : xStart
+      let xStart
+      let xEnd
+
+      if (variant.major_consequence === 'frameshift_variant') {
+        // For transcripts on the negative strand, the termination site will be at a lower global position
+        // than the variant's position.
+        const pos1 = scalePosition(variant.pos)
+        const pos2 = scalePosition(
+          getFrameshiftTerminationSitePosition(
+            variant,
+            transcripts.find(t => t.transcript_id === variant.transcript_id)
+          )
+        )
+        xStart = Math.min(pos1, pos2)
+        xEnd = Math.max(pos1, pos2)
+      } else {
+        xStart = scalePosition(variant.pos)
+        xEnd = xStart
+      }
 
       let rowIndex = rows.findIndex(
         rowPoints =>
@@ -164,12 +180,14 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
     if (category === 'frameshift') {
       const transcript = transcripts.find(t => t.transcript_id === variant.transcript_id)
       const terminationSitePosition = getFrameshiftTerminationSitePosition(variant, transcript)
+      const frameshiftMinPos = Math.min(variant.pos, terminationSitePosition)
+      const frameshiftMaxPos = Math.max(variant.pos, terminationSitePosition)
       const frameshiftExonRegions = transcript.exons
         .sort((e1, e2) => e1.start - e2.start)
-        .filter(e => e.start <= terminationSitePosition && e.stop >= variant.pos)
+        .filter(e => e.start <= frameshiftMaxPos && e.stop >= frameshiftMinPos)
         .map(e => ({
-          start: Math.max(e.start, variant.pos),
-          stop: Math.min(e.stop, terminationSitePosition),
+          start: Math.max(e.start, frameshiftMinPos),
+          stop: Math.min(e.stop, frameshiftMaxPos),
         }))
 
       return (
@@ -219,7 +237,9 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
             fill={fill}
             stroke="#666"
             strokeWidth={0.5}
-            transform={`translate(${point.xEnd},${plotHeight - point.y}) rotate(45)`}
+            transform={`translate(${scalePosition(terminationSitePosition)},${
+              plotHeight - point.y
+            }) rotate(45)`}
             opacity={opacity}
             style={{ cursor: 'pointer' }}
           />
