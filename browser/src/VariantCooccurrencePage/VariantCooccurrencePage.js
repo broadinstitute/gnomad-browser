@@ -7,6 +7,7 @@ import { Badge, Input, List, ListItem, Page, PrimaryButton } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
+import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -151,7 +152,7 @@ const FormValidationMessage = styled.span`
 
 const SubmitButton = styled(PrimaryButton).attrs({ type: 'submit' })``
 
-const VariantCoocurrenceForm = ({ onSubmit }) => {
+const VariantCoocurrenceForm = ({ datasetId, onSubmit }) => {
   const [variant1Id, setVariant1Id] = useState('')
   const [variant2Id, setVariant2Id] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -198,7 +199,9 @@ const VariantCoocurrenceForm = ({ onSubmit }) => {
           <Input
             aria-describedby={isVariant1Invalid ? 'cooccurrence-variant1-error' : undefined}
             id="cooccurrence-variant1"
-            placeholder="chromosome-position-reference-alternate"
+            placeholder={`chromosome-position-reference-alternate (${referenceGenomeForDataset(
+              datasetId
+            )})`}
             required
             value={variant1Id}
             onChange={e => {
@@ -219,7 +222,9 @@ const VariantCoocurrenceForm = ({ onSubmit }) => {
           <Input
             aria-describedby={isVariant2Invalid ? 'cooccurrence-variant2-error' : undefined}
             id="cooccurrence-variant2"
-            placeholder="chromosome-position-reference-alternate"
+            placeholder={`chromosome-position-reference-alternate (${referenceGenomeForDataset(
+              datasetId
+            )})`}
             required
             value={variant2Id}
             onChange={e => {
@@ -244,6 +249,7 @@ const VariantCoocurrenceForm = ({ onSubmit }) => {
 }
 
 VariantCoocurrenceForm.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 
@@ -336,7 +342,7 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
           <ListItem>Have a global allele frequency &le; 5%</ListItem>
         </List>
 
-        <VariantCoocurrenceForm onSubmit={setVariantIds} />
+        <VariantCoocurrenceForm datasetId={datasetId} onSubmit={setVariantIds} />
       </Section>
       {variantIds && (
         <Query
