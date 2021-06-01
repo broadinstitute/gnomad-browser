@@ -308,6 +308,7 @@ const VariantCoocurrenceContainer = ({ datasetId }) => {
         <p>Co-occurrence is available for coding and UTR variants that:</p>
         <List>
           <ListItem>Occur in the same gene</ListItem>
+          <ListItem>Appear in gnomAD exome samples</ListItem>
           <ListItem>Have a global allele frequency &le; 5%</ListItem>
         </List>
 

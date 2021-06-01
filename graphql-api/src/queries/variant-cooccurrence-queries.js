@@ -58,13 +58,15 @@ const assertCooccurrenceShouldBeAvailable = (variants) => {
     )
   }
 
+  if (!variants.every((variant) => Boolean(variant.exome))) {
+    throw new UserVisibleError(
+      'Variant co-occurrence is only available for variants that appear in gnomAD exome samples'
+    )
+  }
+
   if (
     !variants
-      .map(
-        (variant) =>
-          (((variant.exome || {}).ac || 0) + ((variant.genome || {}).ac || 0)) /
-          (((variant.exome || {}).an || 0) + ((variant.genome || {}).an || 0) || 1)
-      )
+      .map((variant) => ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1))
       .every((af) => af <= 0.05)
   ) {
     throw new UserVisibleError(
