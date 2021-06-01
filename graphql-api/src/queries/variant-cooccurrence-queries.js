@@ -101,6 +101,69 @@ const getCategoryCounts = (variant) => {
   }
 }
 
+// JS port of Hail's hl.experimental.haplotypeFreqEM
+// https://github.com/hail-is/hail/blob/1a861505c1fc2ea3c9d7b32a47be7af10d13907c/hail/src/main/scala/is/hail/experimental/package.scala
+//
+// Input genotype counts must be ordered [AABB, AABb, AAbb, AaBB, AaBb, Aabb, aaBB, aaBb, aabb]
+// Output haplotype counts are ordered [AB, aB, Ab, ab]
+const estimateHaplotypeCounts = (genotypeCounts) => {
+  assert.equal(genotypeCounts.length, 9, 'Counts for 9 possible genotype combinations are required')
+
+  const nSamples = genotypeCounts.reduce((acc, n) => acc + n, 0)
+
+  // Need some non-ref samples to compute
+  if (genotypeCounts[0] === nSamples) {
+    return null
+  }
+
+  const nHaplotypes = nSamples * 2
+
+  const counts = [
+    2.0 * genotypeCounts[0] + genotypeCounts[1] + genotypeCounts[3], // n.AB => 2*n.AABB + n.AABb + n.AaBB
+    2.0 * genotypeCounts[6] + genotypeCounts[3] + genotypeCounts[7], // n.aB => 2*n.aaBB + n.AaBB + n.aaBb
+    2.0 * genotypeCounts[2] + genotypeCounts[1] + genotypeCounts[5], // n.Ab => 2*n.AAbb + n.AABb + n.Aabb
+    2.0 * genotypeCounts[8] + genotypeCounts[5] + genotypeCounts[7], // n.ab => 2*n.aabb + n.Aabb + n.aaBb
+  ]
+
+  // Initial estimate with AaBb contributing equally to each haplotype
+  let pNext = counts.map((n) => n + genotypeCounts[4] / 2).map((n) => n / nHaplotypes)
+  let pCurrent = pNext.map((p) => p + 1)
+
+  // EM
+  let iterations = 0
+  while (
+    Math.max(...zip(pNext, pCurrent).map(([a, b]) => Math.abs(a - b))) > 1e-7 &&
+    iterations <= 100
+  ) {
+    pCurrent = pNext
+
+    const k = pCurrent[0] * pCurrent[3] + pCurrent[1] * pCurrent[2]
+    pNext = [
+      pCurrent[0] * pCurrent[3],
+      pCurrent[1] * pCurrent[2],
+      pCurrent[1] * pCurrent[2],
+      pCurrent[0] * pCurrent[3],
+    ]
+      .map((p) => p * (genotypeCounts[4] / k))
+      .map((p, i) => p + counts[i])
+      .map((p) => p / nHaplotypes)
+
+    iterations += 1
+  }
+
+  const haplotypeCounts = pNext.map((p) => p * nHaplotypes)
+
+  return haplotypeCounts.some((n) => Number.isNaN(n)) ? null : haplotypeCounts
+}
+
+// See https://github.com/broadinstitute/gnomad_chets/blob/8586cdd36931780bfc127573fbb31da185a44209/phasing.py#L140-L148
+const getProbabilityCompoundHeterozygous = (haplotypeCounts) => {
+  const pCompoundHeterozygous =
+    (haplotypeCounts[1] * haplotypeCounts[2]) /
+    (haplotypeCounts[0] * haplotypeCounts[3] + haplotypeCounts[1] * haplotypeCounts[2])
+  return Number.isNaN(pCompoundHeterozygous) ? null : pCompoundHeterozygous
+}
+
 const fetchVariantCooccurrence = async (es, dataset, variantIds) => {
   if (variantIds.length !== 2) {
     throw new UserVisibleError('A pair of variants is required')
@@ -168,21 +231,27 @@ const fetchVariantCooccurrence = async (es, dataset, variantIds) => {
   const variantCategoryCountsA = getCategoryCounts(variants[0])
   const variantCategoryCountsB = getCategoryCounts(variants[1])
 
+  const genotypeCounts = [
+    Math.min(variantCategoryCountsA.nHomRef, variantCategoryCountsB.nHomRef), // AABB
+    variantCategoryCountsB.nHet, // AABb
+    variantCategoryCountsB.nHomAlt, // AAbb
+    variantCategoryCountsA.nHet, // AaBB
+    0, // AaBb
+    0, // Aabb
+    variantCategoryCountsA.nHomAlt, // aaBB
+    0, // aaBb
+    0, // aabb
+  ]
+
+  const haplotypeCounts = estimateHaplotypeCounts(genotypeCounts)
+
   return {
     variant_ids: variantIds,
-    genotype_counts: [
-      Math.min(variantCategoryCountsA.nHomRef, variantCategoryCountsB.nHomRef), // AABB
-      variantCategoryCountsB.nHet, // AABb
-      variantCategoryCountsB.nHomAlt, // AAbb
-      variantCategoryCountsA.nHet, // AaBB
-      0, // AaBb
-      0, // Aabb
-      variantCategoryCountsA.nHomAlt, // aaBB
-      0, // aaBb
-      0, // aabb
-    ],
-    haplotype_counts: null,
-    p_compound_heterozygous: null,
+    genotype_counts: genotypeCounts,
+    haplotype_counts: haplotypeCounts,
+    p_compound_heterozygous: haplotypeCounts
+      ? getProbabilityCompoundHeterozygous(haplotypeCounts)
+      : null,
     populations: zip(variantCategoryCountsA.populations, variantCategoryCountsB.populations).map(
       ([popCategoryCountsA, popCategoryCountsB]) => {
         assert.equal(
@@ -190,21 +259,28 @@ const fetchVariantCooccurrence = async (es, dataset, variantIds) => {
           popCategoryCountsB.id,
           'Expected variant population frequencies to be in the same order'
         )
+
+        const popGenotypeCounts = [
+          Math.min(popCategoryCountsA.nHomRef, popCategoryCountsB.nHomRef), // AABB
+          popCategoryCountsB.nHet, // AABb
+          popCategoryCountsB.nHomAlt, // AAbb
+          popCategoryCountsA.nHet, // AaBB
+          0, // AaBb
+          0, // Aabb
+          popCategoryCountsA.nHomAlt, // aaBB
+          0, // aaBb
+          0, // aabb
+        ]
+
+        const popHaplotypeCounts = estimateHaplotypeCounts(popGenotypeCounts)
+
         return {
           id: popCategoryCountsA.id,
-          genotype_counts: [
-            Math.min(popCategoryCountsA.nHomRef, popCategoryCountsB.nHomRef), // AABB
-            popCategoryCountsB.nHet, // AABb
-            popCategoryCountsB.nHomAlt, // AAbb
-            popCategoryCountsA.nHet, // AaBB
-            0, // AaBb
-            0, // Aabb
-            popCategoryCountsA.nHomAlt, // aaBB
-            0, // aaBb
-            0, // aabb
-          ],
-          haplotype_counts: null,
-          p_compound_heterozygous: null,
+          genotype_counts: popGenotypeCounts,
+          haplotype_counts: popHaplotypeCounts,
+          p_compound_heterozygous: popHaplotypeCounts
+            ? getProbabilityCompoundHeterozygous(popHaplotypeCounts)
+            : null,
         }
       }
     ),
