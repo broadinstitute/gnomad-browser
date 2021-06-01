@@ -117,7 +117,8 @@ const VariantPageContent = ({ datasetId, variant }) => {
             <VariantLiftover variant={variant} />
           )}
 
-          {((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1) <= 0.05 &&
+          {datasetId === 'gnomad_r2_1' &&
+            ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1) <= 0.05 &&
             Math.min(
               ...variant.transcript_consequences.map(csq =>
                 getConsequenceRank(csq.major_consequence)
