@@ -82,52 +82,22 @@ const assertCooccurrenceShouldBeAvailable = (variants) => {
 const getCategoryCounts = (variant) => {
   // gnomAD v2 and v3 have the frequencies for the full dataset stored under different keys.
   // gnomAD v2 uses "gnomad" and v3 "all". This code currently only supports gnomAD v2.
-  const exomeFreq = ((variant.exome || {}).freq || {}).gnomad || {}
-  const genomeFreq = ((variant.genome || {}).freq || {}).gnomad || {}
-
-  const exomeAncestryPopulationFrequencies = (exomeFreq.populations || []).filter(
-    (pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-  )
-  const genomeAncestryPopulationFrequencies = (genomeFreq.populations || []).filter(
-    (pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-  )
-
-  const ac = (exomeFreq.ac || 0) + (genomeFreq.ac || 0)
-  const an = (exomeFreq.an || 0) + (genomeFreq.an || 0)
-  const nHomAlt = (exomeFreq.homozygote_count || 0) + (genomeFreq.homozygote_count || 0)
-  const nHet = ac - 2 * nHomAlt
-  const nHomRef = an / 2 - ac + nHomAlt // AN / 2 - nHomAlt - nHet
+  const exomeFreq = variant.exome.freq.gnomad
 
   return {
-    nHomAlt,
-    nHet,
-    nHomRef,
-    populations: zip(exomeAncestryPopulationFrequencies, genomeAncestryPopulationFrequencies).map(
-      ([exomePopFreq, genomePopFreq]) => {
-        if (exomePopFreq !== undefined && genomePopFreq !== undefined) {
-          assert.equal(
-            exomePopFreq.id,
-            genomePopFreq.id,
-            'Exome and genome populations are not in the same order'
-          )
-        }
-
-        const acPop = ((exomePopFreq || {}).ac || 0) + ((genomePopFreq || {}).ac || 0)
-        const anPop = ((exomePopFreq || {}).an || 0) + ((genomePopFreq || {}).an || 0)
-        const nHomAltPop =
-          ((exomePopFreq || {}).homozygote_count || 0) +
-          ((genomePopFreq || {}).homozygote_count || 0)
-        const nHetPop = acPop - 2 * nHomAltPop
-        const nHomRefPop = anPop / 2 - acPop + nHomAlt // AN / 2 - nHomAlt - nHet
-
+    nHomAlt: exomeFreq.homozygote_count,
+    nHet: exomeFreq.ac - 2 * exomeFreq.homozygote_count,
+    nHomRef: exomeFreq.an / 2 - exomeFreq.ac + exomeFreq.homozygote_count, // AN / 2 - nHomAlt - nHet
+    populations: exomeFreq.populations
+      .filter((pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY'))
+      .map((exomePop) => {
         return {
-          id: (exomePopFreq || genomePopFreq).id,
-          nHomAlt: nHomAltPop,
-          nHet: nHetPop,
-          nHomRef: nHomRefPop,
+          id: exomePop.id,
+          nHomAlt: exomePop.homozygote_count,
+          nHet: exomePop.ac - 2 * exomePop.homozygote_count,
+          nHomRef: exomePop.an / 2 - exomePop.ac + exomePop.homozygote_count, // AN / 2 - nHomAlt - nHet
         }
-      }
-    ),
+      }),
   }
 }
 
