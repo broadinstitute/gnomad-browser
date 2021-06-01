@@ -37,6 +37,24 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `
 
+const renderProbabilityCompoundHeterozygous = p => {
+  if (p === 1) {
+    return '100%'
+  }
+  if (p > 0.99) {
+    return '>99%'
+  }
+
+  if (p === 0) {
+    return '0%'
+  }
+  if (p < 0.01) {
+    return '<1%'
+  }
+
+  return `${(p * 100).toFixed(0)}%`
+}
+
 const VariantCoocurrence = ({ cooccurrenceData }) => {
   const [selectedPopulation, setSelectedPopulation] = useState('All')
 
@@ -101,8 +119,10 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
               haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
             />
             <p>
-              The probability that these variants occur in different haplotypes is{' '}
-              {(cooccurrenceInSelectedPopulation.p_compound_heterozygous * 100).toFixed(2)}%
+              The estimated probability that these variants occur in different haplotypes is{' '}
+              {renderProbabilityCompoundHeterozygous(
+                cooccurrenceInSelectedPopulation.p_compound_heterozygous
+              )}
             </p>
           </details>
         )}
