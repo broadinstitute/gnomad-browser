@@ -85,35 +85,34 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
   }
 
   return (
-    <Wrapper>
-      <ResponsiveSection>
+    <>
+      <Section>
         <h2>Overview</h2>
         <VariantCooccurrenceSummaryTable
           cooccurrenceData={cooccurrenceData}
           selectedPopulation={selectedPopulation}
           onSelectPopulation={setSelectedPopulation}
         />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>
-          {selectedPopulation === 'All'
-            ? 'Details'
-            : `Details for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} Population`}
-        </h2>
-        <VariantCooccurrenceDetailsTable
-          variantIds={cooccurrenceData.variant_ids}
-          genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
-        />
-        <p>{cooccurrenceDescription}.</p>
+      </Section>
+
+      <h2>
+        {selectedPopulation === 'All'
+          ? 'Details'
+          : `Details for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} Population`}
+      </h2>
+      <Wrapper>
+        <ResponsiveSection>
+          <h3>Genotype Counts</h3>
+          <VariantCooccurrenceDetailsTable
+            variantIds={cooccurrenceData.variant_ids}
+            genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
+          />
+          <p>{cooccurrenceDescription}.</p>
+        </ResponsiveSection>
 
         {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
-          <details>
-            <summary>More information about probability of co-occurrence</summary>
-            <p>
-              <Badge level="warning">Note</Badge> Probability values are not well calibrated.
-              Interpret with caution.
-            </p>
-            <p>Estimated haplotype counts:</p>
+          <ResponsiveSection>
+            <h3>Estimated Haplotype Counts</h3>
             <VariantCooccurrenceHaplotypeCountsTable
               variantIds={cooccurrenceData.variant_ids}
               haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
@@ -123,11 +122,16 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
               {renderProbabilityCompoundHeterozygous(
                 cooccurrenceInSelectedPopulation.p_compound_heterozygous
               )}
+              .
             </p>
-          </details>
+            <p>
+              <Badge level="warning">Note</Badge> Probability values are not well calibrated.
+              Interpret with caution.
+            </p>
+          </ResponsiveSection>
         )}
-      </ResponsiveSection>
-    </Wrapper>
+      </Wrapper>
+    </>
   )
 }
 
