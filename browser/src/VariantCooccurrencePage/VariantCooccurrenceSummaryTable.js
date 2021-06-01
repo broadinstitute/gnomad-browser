@@ -22,21 +22,26 @@ const getCooccurrencePattern = probabilityOfCompoundHet => {
 }
 
 const Table = styled(BaseTable)`
-  th:first-child {
+  td,
+  th {
+    padding-left: 2em;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-right: 2em;
     padding-left: 1ch;
+    white-space: nowrap;
 
     button {
       text-align: left;
     }
   }
 
-  td:nth-child(2) {
-    padding-right: 6em;
-    text-align: right;
-  }
-
-  td:nth-child(3) {
-    padding-right: 6em;
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(4) {
+    padding-right: 4em;
     text-align: right;
   }
 `
@@ -51,8 +56,9 @@ const VariantCooccurrenceSummaryTable = ({
       <thead>
         <tr>
           <th scope="col">Population</th>
-          <th scope="col">Samples suggesting variants appear on different haplotypes</th>
-          <th scope="col">Samples suggesting variants appear on same haplotype</th>
+          <th scope="col">Samples consistent with variants appearing on different haplotypes</th>
+          <th scope="col">Samples consistent with variants appearing on the same haplotype</th>
+          <th scope="col">Samples consistent with either co-occurrence pattern</th>
           <th scope="col">Likely co&#x2011;occurrence pattern</th>
         </tr>
       </thead>
@@ -79,7 +85,14 @@ const VariantCooccurrenceSummaryTable = ({
                 pop.genotype_counts[6]
               ).toLocaleString()}
             </td>
-            <td>{(pop.genotype_counts[4] + pop.genotype_counts[8]).toLocaleString()}</td>
+            <td>
+              {(
+                pop.genotype_counts[5] +
+                pop.genotype_counts[7] +
+                pop.genotype_counts[8]
+              ).toLocaleString()}
+            </td>
+            <td>{pop.genotype_counts[4].toLocaleString()}</td>
             <td>{getCooccurrencePattern(pop.p_compound_heterozygous)}</td>
           </tr>
         ))}
@@ -106,8 +119,13 @@ const VariantCooccurrenceSummaryTable = ({
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
             {(
-              cooccurrenceData.genotype_counts[4] + cooccurrenceData.genotype_counts[8]
+              cooccurrenceData.genotype_counts[5] +
+              cooccurrenceData.genotype_counts[7] +
+              cooccurrenceData.genotype_counts[8]
             ).toLocaleString()}
+          </td>
+          <td style={{ borderTop: '2px solid #aaa' }}>
+            {cooccurrenceData.genotype_counts[4].toLocaleString()}
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
             {getCooccurrencePattern(cooccurrenceData.p_compound_heterozygous)}

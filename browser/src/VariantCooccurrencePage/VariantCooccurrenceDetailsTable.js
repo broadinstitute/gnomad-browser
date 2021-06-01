@@ -39,6 +39,7 @@ const truncate = (str, maxLength = 5) => {
 
 const DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR = 'rgb(255, 119, 114)'
 const SAME_HAPLOTYPE_HIGHLIGHT_COLOR = 'rgb(0, 202, 235)'
+const INDETERMINATE_HIGHLIGHT_COLOR = 'rgb(191, 117, 240)'
 
 const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
   const variant1 = parseVariantId(variantIds[0])
@@ -85,16 +86,14 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
             <td>{genotypeCounts[0].toLocaleString()}</td>
             <td
               style={{
-                background:
-                  genotypeCounts[1] !== 0 ? DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR : undefined,
+                background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[1].toLocaleString()}
             </td>
             <td
               style={{
-                background:
-                  genotypeCounts[2] !== 0 ? DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR : undefined,
+                background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[2].toLocaleString()}
@@ -106,20 +105,21 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
             </th>
             <td
               style={{
-                background:
-                  genotypeCounts[3] !== 0 ? DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR : undefined,
+                background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[3].toLocaleString()}
             </td>
             <td
               style={{
-                background: genotypeCounts[4] !== 0 ? SAME_HAPLOTYPE_HIGHLIGHT_COLOR : undefined,
+                background: INDETERMINATE_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[4].toLocaleString()}
             </td>
-            <td>{genotypeCounts[5].toLocaleString()}</td>
+            <td style={{ background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR }}>
+              {genotypeCounts[5].toLocaleString()}
+            </td>
           </tr>
           <tr>
             <th scope="row">
@@ -127,16 +127,17 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
             </th>
             <td
               style={{
-                background:
-                  genotypeCounts[6] !== 0 ? DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR : undefined,
+                background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[6].toLocaleString()}
             </td>
-            <td>{genotypeCounts[7].toLocaleString()}</td>
+            <td style={{ background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR }}>
+              {genotypeCounts[7].toLocaleString()}
+            </td>
             <td
               style={{
-                background: genotypeCounts[8] !== 0 ? SAME_HAPLOTYPE_HIGHLIGHT_COLOR : undefined,
+                background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR,
               }}
             >
               {genotypeCounts[8].toLocaleString()}
@@ -145,11 +146,14 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
         </tbody>
       </Table>
       <p>
-        <LegendSwatch color={DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR} /> Samples that suggest variants
-        appear on different haplotypes.
+        <LegendSwatch color={DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR} /> Samples consistent with
+        variants appearing on different haplotypes.
         <br />
-        <LegendSwatch color={SAME_HAPLOTYPE_HIGHLIGHT_COLOR} /> Samples that suggest variants appear
-        on the same haplotype.
+        <LegendSwatch color={SAME_HAPLOTYPE_HIGHLIGHT_COLOR} /> Samples consistent with variants
+        appearing on the same haplotype.
+        <br />
+        <LegendSwatch color={INDETERMINATE_HIGHLIGHT_COLOR} /> Samples consistent with either
+        co-occurrence pattern.
       </p>
     </div>
   )
