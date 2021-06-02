@@ -19,9 +19,9 @@ const FormValidationMessage = styled.span`
 
 const SubmitButton = styled(PrimaryButton).attrs({ type: 'submit' })``
 
-const VariantCoocurrenceVariantIdsForm = ({ datasetId, onSubmit }) => {
-  const [variant1Id, setVariant1Id] = useState('')
-  const [variant2Id, setVariant2Id] = useState('')
+const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }) => {
+  const [variant1Id, setVariant1Id] = useState(defaultValues[0] || '')
+  const [variant2Id, setVariant2Id] = useState(defaultValues[1] || '')
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
@@ -117,7 +117,12 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, onSubmit }) => {
 
 VariantCoocurrenceVariantIdsForm.propTypes = {
   datasetId: PropTypes.string.isRequired,
+  defaultValues: PropTypes.arrayOf(PropTypes.string),
   onSubmit: PropTypes.func.isRequired,
+}
+
+VariantCoocurrenceVariantIdsForm.defaultProps = {
+  defaultValues: [],
 }
 
 export default VariantCoocurrenceVariantIdsForm

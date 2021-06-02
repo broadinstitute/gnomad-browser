@@ -127,7 +127,12 @@ const VariantPageContent = ({ datasetId, variant }) => {
               <div>
                 <h3>Variant Co-occurrence</h3>
                 <p>
-                  <Link to="/variant-cooccurrence">
+                  <Link
+                    to={{
+                      pathname: '/variant-cooccurrence',
+                      search: `variant=${variant.variant_id}`,
+                    }}
+                  >
                     Check if this variant occurs on the same haplotype as another variant.
                   </Link>
                 </p>
