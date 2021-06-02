@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { isVariantId } from '@gnomad/identifiers'
@@ -424,6 +425,7 @@ VariantCoocurrenceContainer.propTypes = {
 }
 
 const VariantCoocurrencePage = ({ datasetId }) => {
+  const location = useLocation()
   return (
     <Page>
       <DocumentTitle title="Variant Co-occurrence" />
@@ -443,7 +445,14 @@ const VariantCoocurrencePage = ({ datasetId }) => {
       {datasetId === 'gnomad_r2_1' ? (
         <VariantCoocurrenceContainer datasetId={datasetId} />
       ) : (
-        <StatusMessage>Variant co-occurrence is only available for gnomAD v2.</StatusMessage>
+        <StatusMessage>
+          Variant co-occurrence is only available for gnomAD v2.1.1
+          <br />
+          <br />
+          <Link to={`${location.pathname}?dataset=gnomad_r2_1`} preserveSelectedDataset={false}>
+            View variant co-occurrence in gnomAD v2.1.1
+          </Link>
+        </StatusMessage>
       )}
     </Page>
   )
