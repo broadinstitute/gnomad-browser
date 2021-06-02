@@ -88,6 +88,21 @@ export default () => (
               1-55051215-G-GA
             </Link>
           </ListItem>
+          <ListItem>
+            Variant co-occurrence:{' '}
+            <Link
+              preserveSelectedDataset={false}
+              to={{
+                pathname: '/variant-cooccurrence',
+                search: queryString.stringify({
+                  dataset: 'gnomad_r2_1',
+                  variant: ['1-55505647-G-T', '1-55523855-G-A'],
+                }),
+              }}
+            >
+              1-55505647-G-T and 1-55523855-G-A
+            </Link>
+          </ListItem>
         </List>
       </figure>
     </HeadingContainer>
