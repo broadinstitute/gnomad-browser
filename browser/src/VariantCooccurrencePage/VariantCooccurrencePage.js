@@ -215,103 +215,90 @@ query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: 
 }
 `
 
-const VariantCoocurrenceContainer = ({ datasetId }) => {
-  const [variantIds, setVariantIds] = useState(null)
-
+const VariantCoocurrenceContainer = ({ datasetId, variantIds }) => {
   return (
-    <>
-      <Section>
-        <h2>Select a variant pair</h2>
-        <p>Co-occurrence is available for coding and UTR variants that:</p>
-        <List>
-          <ListItem>Occur in the same gene</ListItem>
-          <ListItem>Appear in gnomAD exome samples</ListItem>
-          <ListItem>Have a global allele frequency &le; 5%</ListItem>
-        </List>
+    <Query
+      errorMessage="Unable to load co-occurrence"
+      loadingMessage="Loading co-occurrence"
+      query={query}
+      variables={{
+        variants: variantIds,
+        variant1: variantIds[0],
+        variant2: variantIds[1],
+        datasetId,
+      }}
+      success={data => data.variant_cooccurrence}
+    >
+      {({ data }) => {
+        const genesInCommon = [data.variant1, data.variant2]
+          .map(v => new Set(v.transcript_consequences.map(csq => csq.gene_id)))
+          .reduce((acc, genes) => new Set([...acc].filter(geneId => genes.has(geneId))))
 
-        <VariantCooccurrenceVariantIdsForm datasetId={datasetId} onSubmit={setVariantIds} />
-      </Section>
-      {variantIds && (
-        <Query
-          errorMessage="Unable to load co-occurrence"
-          loadingMessage="Loading co-occurrence"
-          query={query}
-          variables={{
-            variants: variantIds,
-            variant1: variantIds[0],
-            variant2: variantIds[1],
-            datasetId,
-          }}
-          success={data => data.variant_cooccurrence}
-        >
-          {({ data }) => {
-            const genesInCommon = [data.variant1, data.variant2]
-              .map(v => new Set(v.transcript_consequences.map(csq => csq.gene_id)))
-              .reduce((acc, genes) => new Set([...acc].filter(geneId => genes.has(geneId))))
+        const geneSymbols = data.variant1.transcript_consequences.reduce((acc, csq) => ({
+          ...acc,
+          [csq.gene_id]: csq.gene_symbol,
+        }))
 
-            const geneSymbols = data.variant1.transcript_consequences.reduce((acc, csq) => ({
-              ...acc,
-              [csq.gene_id]: csq.gene_symbol,
-            }))
+        return (
+          <>
+            <VariantCoocurrence cooccurrenceData={data.variant_cooccurrence} />
 
-            return (
-              <>
-                <VariantCoocurrence cooccurrenceData={data.variant_cooccurrence} />
-                <Section>
-                  <h2>VEP Annotations</h2>
-                  <p>
-                    These variants both occur in {genesInCommon.size} gene
-                    {genesInCommon.size === 1 ? '' : 's'}:{' '}
-                    {Array.from(genesInCommon)
-                      .map(geneId => (
-                        <Link key={geneId} to={`/gene/${geneId}`}>
-                          {geneSymbols[geneId]}
-                        </Link>
-                      ))
-                      .flatMap(el => [', ', el])
-                      .slice(1)}
-                    . Only annotations for {genesInCommon.size === 1 ? 'this gene' : 'these genes'}{' '}
-                    are shown here.
-                  </p>
-                  <Wrapper>
-                    <ResponsiveSection>
-                      <h3>
-                        <Link to={`/variant/${variantIds[0]}`}>{variantIds[0]}</Link>
-                      </h3>
-                      <TranscriptConsequenceList
-                        transcriptConsequences={data.variant1.transcript_consequences.filter(csq =>
-                          genesInCommon.has(csq.gene_id)
-                        )}
-                      />
-                    </ResponsiveSection>
+            <Section>
+              <h2>VEP Annotations</h2>
+              <p>
+                These variants both occur in {genesInCommon.size} gene
+                {genesInCommon.size === 1 ? '' : 's'}:{' '}
+                {Array.from(genesInCommon)
+                  .map(geneId => (
+                    <Link key={geneId} to={`/gene/${geneId}`}>
+                      {geneSymbols[geneId]}
+                    </Link>
+                  ))
+                  .flatMap(el => [', ', el])
+                  .slice(1)}
+                . Only annotations for {genesInCommon.size === 1 ? 'this gene' : 'these genes'} are
+                shown here.
+              </p>
+              <Wrapper>
+                <ResponsiveSection>
+                  <h3>
+                    <Link to={`/variant/${variantIds[0]}`}>{variantIds[0]}</Link>
+                  </h3>
+                  <TranscriptConsequenceList
+                    transcriptConsequences={data.variant1.transcript_consequences.filter(csq =>
+                      genesInCommon.has(csq.gene_id)
+                    )}
+                  />
+                </ResponsiveSection>
 
-                    <ResponsiveSection>
-                      <h3>
-                        <Link to={`/variant/${variantIds[1]}`}>{variantIds[1]}</Link>
-                      </h3>
-                      <TranscriptConsequenceList
-                        transcriptConsequences={data.variant2.transcript_consequences.filter(csq =>
-                          genesInCommon.has(csq.gene_id)
-                        )}
-                      />
-                    </ResponsiveSection>
-                  </Wrapper>
-                </Section>
-              </>
-            )
-          }}
-        </Query>
-      )}
-    </>
+                <ResponsiveSection>
+                  <h3>
+                    <Link to={`/variant/${variantIds[1]}`}>{variantIds[1]}</Link>
+                  </h3>
+                  <TranscriptConsequenceList
+                    transcriptConsequences={data.variant2.transcript_consequences.filter(csq =>
+                      genesInCommon.has(csq.gene_id)
+                    )}
+                  />
+                </ResponsiveSection>
+              </Wrapper>
+            </Section>
+          </>
+        )
+      }}
+    </Query>
   )
 }
 
 VariantCoocurrenceContainer.propTypes = {
   datasetId: PropTypes.string.isRequired,
+  variantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 const VariantCoocurrencePage = ({ datasetId }) => {
   const location = useLocation()
+  const [variantIds, setVariantIds] = useState(null)
+
   return (
     <Page>
       <DocumentTitle title="Variant Co-occurrence" />
@@ -329,7 +316,22 @@ const VariantCoocurrencePage = ({ datasetId }) => {
         Variant Co-Occurrence
       </GnomadPageHeading>
       {datasetId === 'gnomad_r2_1' ? (
-        <VariantCoocurrenceContainer datasetId={datasetId} />
+        <>
+          <Section>
+            <h2>Select a variant pair</h2>
+            <p>Co-occurrence is available for coding and UTR variants that:</p>
+            <List>
+              <ListItem>Occur in the same gene</ListItem>
+              <ListItem>Appear in gnomAD exome samples</ListItem>
+              <ListItem>Have a global allele frequency &le; 5%</ListItem>
+            </List>
+
+            <VariantCooccurrenceVariantIdsForm datasetId={datasetId} onSubmit={setVariantIds} />
+          </Section>
+          {variantIds && (
+            <VariantCoocurrenceContainer datasetId={datasetId} variantIds={variantIds} />
+          )}
+        </>
       ) : (
         <StatusMessage>
           Variant co-occurrence is only available for gnomAD v2.1.1
