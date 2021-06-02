@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Badge, List, ListItem, Page } from '@gnomad/ui'
@@ -296,8 +297,15 @@ VariantCoocurrenceContainer.propTypes = {
 }
 
 const VariantCoocurrencePage = ({ datasetId }) => {
+  const history = useHistory()
   const location = useLocation()
-  const [variantIds, setVariantIds] = useState(null)
+
+  let { variant: variantIds } = queryString.parse(location.search)
+  if (variantIds === undefined) {
+    variantIds = []
+  } else if (typeof variantIds === 'string') {
+    variantIds = [variantIds]
+  }
 
   return (
     <Page>
@@ -326,9 +334,22 @@ const VariantCoocurrencePage = ({ datasetId }) => {
               <ListItem>Have a global allele frequency &le; 5%</ListItem>
             </List>
 
-            <VariantCooccurrenceVariantIdsForm datasetId={datasetId} onSubmit={setVariantIds} />
+            <VariantCooccurrenceVariantIdsForm
+              datasetId={datasetId}
+              defaultValues={variantIds}
+              onSubmit={newVariantIds => {
+                history.push({
+                  ...location,
+                  search: queryString.stringify({
+                    variant: newVariantIds,
+                    dataset: datasetId,
+                  }),
+                })
+              }}
+            />
           </Section>
-          {variantIds && (
+
+          {variantIds.length === 2 && (
             <VariantCoocurrenceContainer datasetId={datasetId} variantIds={variantIds} />
           )}
         </>
