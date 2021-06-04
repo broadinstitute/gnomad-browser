@@ -308,7 +308,8 @@ export default () => (
           <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
           Nature 581, 434–443 (2020).
         </ExternalLink>{' '}
-        Descriptions of the fields in these files can be found on pages 74-77 of the{' '}
+        Descriptions of the fields in these files can be found in the Supplementary Dataset 11
+        section on pages 74-77 of the{' '}
         <ExternalLink href="https://www.nature.com/articles/s41586-020-2308-7#Sec12">
           Supplementary Information
         </ExternalLink>
