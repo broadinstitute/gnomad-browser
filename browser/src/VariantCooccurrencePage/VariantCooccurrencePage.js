@@ -86,6 +86,14 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
     cooccurrenceDescription = `${cooccurrenceDescription} individuals in the ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population in gnomAD`
   }
 
+  // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
+  const sharedCarrierExists =
+    cooccurrenceData.genotype_counts[4] +
+      cooccurrenceData.genotype_counts[5] +
+      cooccurrenceData.genotype_counts[7] +
+      cooccurrenceData.genotype_counts[8] >
+    0
+
   return (
     <>
       <Section>
@@ -95,6 +103,13 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
           selectedPopulation={selectedPopulation}
           onSelectPopulation={setSelectedPopulation}
         />
+
+        {sharedCarrierExists && (
+          <p>
+            <Badge level="info">Note</Badge> Only samples covered at both variant sites are included
+            in this table.
+          </p>
+        )}
       </Section>
 
       <h2>
@@ -110,6 +125,19 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
             genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
           />
           <p>{cooccurrenceDescription}.</p>
+          {sharedCarrierExists ? (
+            <p>
+              <Badge level="info">Note</Badge> Only samples covered at both variant sites are
+              included in this table.
+            </p>
+          ) : (
+            <p>
+              <Badge level="info">Note</Badge> Because no individual in gnomAD carries both
+              variants, this table was computed based on the separate variant information and does
+              not account for the possibility that some samples may not be covered at both variant
+              sites.
+            </p>
+          )}
         </ResponsiveSection>
 
         {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
