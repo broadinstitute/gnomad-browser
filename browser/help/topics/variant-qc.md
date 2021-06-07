@@ -5,7 +5,7 @@ title: 'Variant QC'
 
 ### gnomAD v3.1
 
-See our [3.1 release blog post](https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/) for more details about the variant QC process.
+See our [3.1 release blog post](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/) for more details about the variant QC process.
 
 ### gnomAD v3.0
 
