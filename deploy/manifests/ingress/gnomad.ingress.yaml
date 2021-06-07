@@ -29,6 +29,14 @@ spec:
             backend:
               serviceName: gnomad-blog
               servicePort: 80
+          - path: /news
+            backend:
+              serviceName: gnomad-blog
+              servicePort: 80
+          - path: /news/*
+            backend:
+              serviceName: gnomad-blog
+              servicePort: 80
           - path:
             backend:
               serviceName: gnomad-browser
