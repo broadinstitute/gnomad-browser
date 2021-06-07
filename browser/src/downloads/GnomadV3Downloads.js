@@ -92,7 +92,7 @@ export default () => (
       <SectionTitle id="v3-variants">Variants</SectionTitle>
       <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2021-03-gnomad-v3-1-1/">
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-03-gnomad-v3-1-1/">
           gnomAD v3.1.1 changelog
         </ExternalLink>
         .
@@ -151,7 +151,7 @@ export default () => (
       <p>
         These files contain individual genotypes for all samples in the HGDP and 1KG subsets. See
         the{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#the-gnomad-hgdp-and-1000-genomes-callset">
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#the-gnomad-hgdp-and-1000-genomes-callset">
           gnomAD v3.1 blog post
         </ExternalLink>{' '}
         for more information.
@@ -195,7 +195,7 @@ export default () => (
       <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
       <p>
         For details about these files, see the{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/blog/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
           gnomAD v3.1 Mitochondrial DNA Variants blog post
         </ExternalLink>
         .
