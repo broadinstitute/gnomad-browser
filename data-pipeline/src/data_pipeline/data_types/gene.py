@@ -243,4 +243,9 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
         transcripts=genes.transcripts.map(lambda transcript: transcript.annotate(reference_genome=reference_genome)),
     )
 
+    chip_genes = {"ENSG00000171456", "ENSG00000119772", "ENSG00000168769"}
+    genes = genes.annotate(
+        flags=hl.set([hl.or_missing(hl.set(chip_genes).contains(genes.gene_id), "chip")]).filter(hl.is_defined)
+    )
+
     return genes

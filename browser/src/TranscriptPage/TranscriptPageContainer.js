@@ -81,6 +81,7 @@ query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
         start
         stop
       }
+      flags
     }
   }
 }

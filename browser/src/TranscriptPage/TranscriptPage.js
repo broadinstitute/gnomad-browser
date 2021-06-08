@@ -8,6 +8,7 @@ import { RegionViewer } from '@gnomad/region-viewer'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
+import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -151,7 +152,10 @@ const TranscriptPage = ({ datasetId, transcript, width }) => {
           Transcript: {transcript.transcript_id}.{transcript.transcript_version}
         </GnomadPageHeading>
         <TranscriptInfoColumnWrapper>
-          <TranscriptInfo transcript={transcript} />
+          <div style={{ maxWidth: '50%' }}>
+            <TranscriptInfo transcript={transcript} />
+            <GeneFlags gene={transcript.gene} />
+          </div>
           <div>
             <h2>Constraint {transcript.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
             <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />

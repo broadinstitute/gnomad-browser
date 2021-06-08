@@ -36,6 +36,8 @@ type Gene {
   canonical_transcript_id: String
   mane_select_transcript: ManeSelectTranscript
 
+  flags: [String!]!
+
   pext: Pext
 
   gnomad_constraint: GnomadConstraint

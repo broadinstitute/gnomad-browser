@@ -40,6 +40,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
       start
       stop
     }
+    flags
     gnomad_constraint {
       exp_lof
       exp_mis
