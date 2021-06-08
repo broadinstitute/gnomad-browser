@@ -1,3 +1,5 @@
+import hail as hl
+
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.helpers import annotate_table
@@ -182,17 +184,36 @@ pipeline.add_task(
     },
 )
 
+
+def annotate_with_preferred_transcript(table_path):
+    ds = hl.read_table(table_path)
+
+    if "mane_select_transcript" in ds.row:
+        preferred_transcript_id = hl.or_else(ds.mane_select_transcript.ensembl_id, ds.canonical_transcript_id)
+    else:
+        preferred_transcript_id = ds.canonical_transcript_id
+
+    return ds.annotate(preferred_transcript_id=preferred_transcript_id)
+
+
 pipeline.add_task(
     "annotate_grch37_genes_step_3",
-    annotate_table,
+    annotate_with_preferred_transcript,
     "/genes/genes_grch37_annotated_3.ht",
+    {"table_path": pipeline.get_task("annotate_grch37_genes_step_2")},
+)
+
+pipeline.add_task(
+    "annotate_grch37_genes_step_4",
+    annotate_table,
+    "/genes/genes_grch37_annotated_4.ht",
     {
-        "table_path": pipeline.get_task("annotate_grch37_genes_step_2"),
+        "table_path": pipeline.get_task("annotate_grch37_genes_step_3"),
         "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
         "exac_regional_missense_constraint": pipeline.get_task("prepare_exac_regional_missense_constraint"),
         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
     },
-    {"join_on": "canonical_transcript_id"},
+    {"join_on": "preferred_transcript_id"},
 )
 
 pipeline.add_task(
@@ -216,6 +237,13 @@ pipeline.add_task(
     },
 )
 
+pipeline.add_task(
+    "annotate_grch38_genes_step_3",
+    annotate_with_preferred_transcript,
+    "/genes/genes_grch38_annotated_3.ht",
+    {"table_path": pipeline.get_task("annotate_grch38_genes_step_2")},
+)
+
 ###############################################
 # Extract transcripts
 ###############################################
@@ -224,14 +252,14 @@ pipeline.add_task(
     "extract_grch37_transcripts",
     extract_transcripts,
     "/genes/transcripts_grch37_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch37_genes_step_3")},
+    {"genes_path": pipeline.get_task("annotate_grch37_genes_step_4")},
 )
 
 pipeline.add_task(
     "extract_grch38_transcripts",
     extract_transcripts,
     "/genes/transcripts_grch38_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_2")},
+    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_3")},
 )
 
 ###############################################

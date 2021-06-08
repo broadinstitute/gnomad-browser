@@ -51,7 +51,7 @@ DATASETS_CONFIG = {
     # Genes
     ##############################################################################################################
     "genes_grch37": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch37_genes_step_3").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch37_genes_step_4").get_output_path()),
         "args": {
             "index": "genes_grch37",
             "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
@@ -60,7 +60,7 @@ DATASETS_CONFIG = {
         },
     },
     "genes_grch38": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch38_genes_step_2").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch38_genes_step_3").get_output_path()),
         "args": {
             "index": "genes_grch38",
             "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
