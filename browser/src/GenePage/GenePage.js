@@ -19,6 +19,7 @@ import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
+import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
 import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
@@ -311,7 +312,10 @@ class GenePage extends Component {
             {gene.symbol} <GeneName>{gene.name}</GeneName>
           </GnomadPageHeading>
           <GeneInfoColumnWrapper>
-            <GeneInfo gene={gene} />
+            <div style={{ maxWidth: '50%' }}>
+              <GeneInfo gene={gene} />
+              <GeneFlags gene={gene} />
+            </div>
             <div>
               <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
               <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
