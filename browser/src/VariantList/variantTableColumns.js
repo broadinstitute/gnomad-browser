@@ -245,6 +245,7 @@ const variantTableColumns = [
     description: 'Results of manual curation of pLoF variants',
     contextNotes: 'Not shown when viewing a transcript',
     minWidth: 100,
+    compareFunction: makeStringCompareFunction(row => (row.lof_curation || {}).verdict),
     render: row => {
       if (!row.lof_curation) {
         return null
