@@ -56,26 +56,29 @@ const fetchStructuralVariantById = async (esClient, variantId, subset) => {
 // Gene query
 // ================================================================================================
 
+const esFieldsToFetch = (subset) => [
+  'value.chrom',
+  'value.chrom2',
+  'value.consequences',
+  'value.end',
+  'value.end2',
+  'value.filters',
+  `value.freq.${subset}`,
+  'value.intergenic',
+  'value.length',
+  'value.pos',
+  'value.pos2',
+  'value.reference_genome',
+  'value.type',
+  'value.variant_id',
+]
+
 const fetchStructuralVariantsByGene = async (esClient, gene, subset) => {
   const hits = await fetchAllSearchResults(esClient, {
     index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
     size: 10000,
-    _source: [
-      'value.chrom',
-      'value.chrom2',
-      'value.consequences',
-      'value.end',
-      'value.end2',
-      'value.filters',
-      `value.freq.${subset}`,
-      'value.intergenic',
-      'value.length',
-      'value.pos',
-      'value.pos2',
-      'value.type',
-      'value.variant_id',
-    ],
+    _source: esFieldsToFetch(subset),
     body: {
       query: {
         bool: {
@@ -116,21 +119,7 @@ const fetchStructuralVariantsByRegion = async (esClient, region, subset) => {
     index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
     size: 10000,
-    _source: [
-      'value.chrom',
-      'value.chrom2',
-      'value.consequences',
-      'value.end',
-      'value.end2',
-      'value.filters',
-      `value.freq.${subset}`,
-      'value.intergenic',
-      'value.length',
-      'value.pos',
-      'value.pos2',
-      'value.type',
-      'value.variant_id',
-    ],
+    _source: esFieldsToFetch(subset),
     body: {
       query: {
         bool: {
