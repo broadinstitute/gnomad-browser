@@ -60,10 +60,7 @@ const DEFAULT_COLUMNS = [
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {
   const sortColumn = structuralVariantTableColumns.find(column => column.key === sortKey)
-  const baseCompareFunction = sortColumn.compareFunction
-  const comparator =
-    sortOrder === 'ascending' ? baseCompareFunction : (a, b) => baseCompareFunction(b, a)
-  return [...variants].sort(comparator)
+  return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
 class StructuralVariants extends Component {

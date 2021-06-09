@@ -1,6 +1,6 @@
 export const isEmpty = val => val === undefined || val === null || val === ''
 
-export const makeCompareFunction = (key, fn) => (v1, v2) => {
+export const makeCompareFunction = (key, fn) => (v1, v2, order = 'ascending') => {
   let key1
   let key2
 
@@ -18,7 +18,8 @@ export const makeCompareFunction = (key, fn) => (v1, v2) => {
   if (isEmpty(key2)) {
     return -1
   }
-  return fn(key1, key2)
+
+  return order === 'ascending' ? fn(key1, key2) : fn(key2, key1)
 }
 
 export const makeStringCompareFunction = key =>

@@ -39,10 +39,7 @@ const DEFAULT_COLUMNS = [
 
 const sortVariants = (variants, { sortKey, sortOrder }) => {
   const sortColumn = variantTableColumns.find(column => column.key === sortKey)
-  const baseCompareFunction = sortColumn.compareFunction
-  const compareFunction =
-    sortOrder === 'ascending' ? baseCompareFunction : (a, b) => baseCompareFunction(b, a)
-  return [...variants].sort(compareFunction)
+  return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
 class Variants extends Component {
