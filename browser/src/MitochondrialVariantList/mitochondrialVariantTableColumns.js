@@ -140,7 +140,7 @@ const mitochondrialVariantTableColumns = [
     description: 'Flags that may affect annotation and/or confidence',
     grow: 0,
     minWidth: 140,
-    compareFunction: (v1, v2) => v1.flags.length - v2.flags.length,
+    compareFunction: makeNumericCompareFunction(variant => variant.flags.length || null),
     render: (row, key) =>
       row[key].map(flag => <VariantFlag key={flag} type={flag} variant={row} />),
   },
