@@ -2,6 +2,10 @@
 
 1. Delete clinvar.xml from the data pipeline output bucket so that the data pipeline will download the latest version
 
+   ```
+   gsutil rm gs://gnomad-browser-data-pipeline/output/external_sources/clinvar.xml.gz
+   ```
+
 2. Run data pipeline
 
    ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1, GRCh37 ClinVar variants should be annotated with VEP 85. To match gnomAD v3.1, GRCh38 ClinVar variants should be annotated with VEP 101.
