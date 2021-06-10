@@ -27,31 +27,36 @@ const PageHeadingWrapper = styled.div`
 
 const PageHeadingInnerWrapper = styled.div`
   display: flex;
+  flex-shrink: 1;
   flex-direction: row;
   align-items: center;
+  overflow: hidden;
   max-width: 100%;
+  padding: 3px 0;
 
   @media (max-width: 1200px) {
     margin-bottom: 1em;
   }
 
   @media (max-width: 900px) {
-    display: flex;
     flex-direction: column;
   }
 `
 
 const CenterPanel = styled.div`
-  flex-grow: 1;
+  flex-shrink: 0;
 
   @media (max-width: 900px) {
-    margin-bottom: 0.25em;
+    margin: 0.25em 0;
   }
 `
 
 const PageHeadingText = styled.h1`
+  overflow: hidden;
   max-width: 100%;
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   @media (max-width: 900px) {
     display: flex;
@@ -62,7 +67,12 @@ const PageHeadingText = styled.h1`
 
 const PageControlsWrapper = styled.div`
   display: flex;
+  flex-shrink: 0;
   align-items: center;
+
+  @media (min-width: 900px) {
+    margin-left: 1ch;
+  }
 `
 
 const Label = styled.span`
