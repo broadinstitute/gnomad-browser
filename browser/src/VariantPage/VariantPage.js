@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, ExternalLink, Page, TooltipAnchor } from '@gnomad/ui'
+import { Badge, Button, ExternalLink, Page, TooltipAnchor } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Delayed from '../Delayed'
@@ -573,6 +573,19 @@ const VariantPage = ({ datasetId, variantId }) => {
                   includeStructuralVariants: false,
                 }}
                 selectedDataset={datasetId}
+                extra={
+                  navigator.clipboard &&
+                  navigator.clipboard.writeText && (
+                    <Button
+                      onClick={() => {
+                        navigator.clipboard.writeText(variantId)
+                      }}
+                      style={{ margin: '0 1em' }}
+                    >
+                      Copy variant ID
+                    </Button>
+                  )
+                }
               >
                 <VariantPageTitle variantId={variantId} datasetId={datasetId} />
               </GnomadPageHeading>
