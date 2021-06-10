@@ -37,7 +37,7 @@ We used the canonical transcripts of protein-coding genes as defined by GENCODE 
 
 #### Observed variant count
 
-The observed variant count is the number of unique single nucleotide variants in the canonical transcript of each gene with 123 or fewer alternative alleles (minor allele frequency < 0.1%). Variants in exons with a median depth < 1 were removed from the total counts.
+The observed variant count is the number of unique single nucleotide variants in the transcript with 123 or fewer alternative alleles (minor allele frequency < 0.1%). Variants in exons with a median depth < 1 were removed from the total counts.
 
 #### Expected variant count
 
