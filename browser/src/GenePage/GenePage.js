@@ -27,8 +27,11 @@ import StructuralVariantsInGene from './StructuralVariantsInGene'
 import VariantsInGene from './VariantsInGene'
 
 const GeneName = styled.span`
+  overflow: hidden;
   font-size: 0.75em;
   font-weight: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const GeneInfoColumnWrapper = styled.div`

@@ -198,14 +198,14 @@ VariantPageContent.propTypes = {
   }).isRequired,
 }
 
-const VariantPageTitleAlleles = styled.span`
+const TitleWrapper = styled.span`
   display: inline-flex;
-  max-width: 320px;
-  white-space: nowrap;
+  flex-direction: row;
+  align-items: center;
+  max-width: 100%;
 
   @media (max-width: 900px) {
-    justify-content: center;
-    max-width: 100%;
+    flex-direction: column;
   }
 `
 
@@ -213,6 +213,14 @@ const Separator = styled.span`
   @media (max-width: 900px) {
     display: none;
   }
+`
+
+const TitleAlleles = styled.span`
+  flex-shrink: 1;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const VariantPageTitle = ({ datasetId, variantId }) => {
@@ -232,21 +240,19 @@ const VariantPageTitle = ({ datasetId, variantId }) => {
   }
 
   return (
-    <>
+    <TitleWrapper>
       <span>{variantDescription}</span>
-      <Separator>: </Separator>
+      <Separator style={{ width: '1ch' }}>:</Separator>
       <span>
         {chrom}-{pos}
       </span>
       <Separator>-</Separator>
-      <VariantPageTitleAlleles>
-        <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
-          {ref}-{alt}
-        </span>
-      </VariantPageTitleAlleles>
-      <Separator> </Separator>
+      <TitleAlleles>
+        {ref}-{alt}
+      </TitleAlleles>
+      <Separator style={{ width: '1ch' }}> </Separator>
       <span>({referenceGenomeForDataset(datasetId)})</span>
-    </>
+    </TitleWrapper>
   )
 }
 
