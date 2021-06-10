@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, ExternalLink, Page } from '@gnomad/ui'
+import { Badge, ExternalLink, Page, TooltipAnchor } from '@gnomad/ui'
 
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Delayed from '../Delayed'
@@ -202,6 +202,7 @@ const TitleWrapper = styled.span`
   display: inline-flex;
   flex-direction: row;
   align-items: center;
+  overflow: hidden;
   max-width: 100%;
 
   @media (max-width: 900px) {
@@ -243,14 +244,18 @@ const VariantPageTitle = ({ datasetId, variantId }) => {
     <TitleWrapper>
       <span>{variantDescription}</span>
       <Separator style={{ width: '1ch' }}>:</Separator>
-      <span>
-        {chrom}-{pos}
-      </span>
-      <Separator>-</Separator>
-      <TitleAlleles>
-        {ref}-{alt}
-      </TitleAlleles>
-      <Separator style={{ width: '1ch' }}> </Separator>
+      <TooltipAnchor tooltip={variantId}>
+        <TitleWrapper>
+          <span>
+            {chrom}-{pos}
+          </span>
+          <Separator>-</Separator>
+          <TitleAlleles>
+            {ref}-{alt}
+          </TitleAlleles>
+        </TitleWrapper>
+      </TooltipAnchor>
+      <Separator> </Separator>
       <span>({referenceGenomeForDataset(datasetId)})</span>
     </TitleWrapper>
   )
