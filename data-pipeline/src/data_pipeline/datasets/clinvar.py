@@ -10,6 +10,7 @@ from xml.etree import ElementTree
 import hail as hl
 from tqdm import tqdm
 
+from data_pipeline.datasets.mitochondria import FILTER_NAMES as MITOCHONDRIAL_VARIANT_FILTER_NAMES
 from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
@@ -265,7 +266,9 @@ def prepare_clinvar_variants(clinvar_path, reference_genome):
     return ds
 
 
-def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants_path=None):
+def _get_gnomad_variants(
+    gnomad_exome_variants_path=None, gnomad_genome_variants_path=None, gnomad_mitochondrial_variants_path=None
+):
     gnomad_exome_variants = None
     gnomad_genome_variants = None
 
@@ -303,13 +306,40 @@ def _get_gnomad_variants(gnomad_exome_variants_path=None, gnomad_genome_variants
     elif gnomad_genome_variants:
         gnomad_variants = gnomad_genome_variants.annotate(exome=hl.missing(gnomad_genome_variants.genome.dtype))
 
+    if gnomad_mitochondrial_variants_path:
+        gnomad_mitochondrial_variants = hl.read_table(gnomad_mitochondrial_variants_path)
+        gnomad_mitochondrial_variants = gnomad_mitochondrial_variants.select(
+            genome=hl.struct(
+                filters=gnomad_mitochondrial_variants.filters.map(
+                    lambda f: MITOCHONDRIAL_VARIANT_FILTER_NAMES.get(f, f)
+                ),
+                # AC/AN fields in the MT variants table are int64 instead of int32.
+                # They need to be converted to the same type as the nuclear variants' fields to union the tables.
+                ac=hl.int(gnomad_mitochondrial_variants.AC_hom + gnomad_mitochondrial_variants.AC_het),
+                an=hl.int(gnomad_mitochondrial_variants.AN),
+            )
+        )
+        gnomad_mitochondrial_variants = gnomad_mitochondrial_variants.filter(
+            gnomad_mitochondrial_variants.genome.ac > 0
+        )
+        gnomad_mitochondrial_variants = gnomad_mitochondrial_variants.annotate(
+            exome=hl.missing(gnomad_mitochondrial_variants.genome.dtype)
+        )
+
+        gnomad_variants = gnomad_variants.union(gnomad_mitochondrial_variants)
+
     return gnomad_variants
 
 
 def annotate_clinvar_variants_in_gnomad(
-    clinvar_path, gnomad_exome_variants_path=None, gnomad_genome_variants_path=None
+    clinvar_path,
+    gnomad_exome_variants_path=None,
+    gnomad_genome_variants_path=None,
+    gnomad_mitochondrial_variants_path=None,
 ):
-    gnomad_variants = _get_gnomad_variants(gnomad_exome_variants_path, gnomad_genome_variants_path)
+    gnomad_variants = _get_gnomad_variants(
+        gnomad_exome_variants_path, gnomad_genome_variants_path, gnomad_mitochondrial_variants_path
+    )
     ds = hl.read_table(clinvar_path)
     ds = ds.annotate(gnomad=gnomad_variants[ds.key])
     ds = ds.annotate(in_gnomad=hl.is_defined(ds.gnomad))

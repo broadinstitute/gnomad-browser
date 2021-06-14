@@ -4,6 +4,11 @@ from data_pipeline.data_types.locus import normalized_contig, x_position
 from data_pipeline.data_types.variant import variant_id
 
 
+FILTER_NAMES = hl.dict(
+    {"artifact_prone_site": "Artifact-prone site", "indel_stack": "Indel stack", "npg": "No passing genotype"}
+)
+
+
 def nullify_nan(value):
     return hl.cond(hl.is_nan(value), hl.null(value.dtype), value)
 
@@ -17,10 +22,6 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         hl_hist=ds.hl_hist.annotate(bin_edges=ds.hl_hist.bin_edges.map(lambda n: hl.float(hl.format("%.2f", n))))
     )
 
-    filter_names = hl.dict(
-        {"artifact_prone_site": "Artifact-prone site", "indel_stack": "Indel stack", "npg": "No passing genotype"}
-    )
-
     ds = ds.select(
         # ID
         variant_id=variant_id(ds.locus, ds.alleles),
@@ -31,7 +32,7 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         alt=ds.alleles[1],
         rsid=ds.rsid,
         # Quality
-        filters=ds.filters.map(lambda f: filter_names.get(f, f)),
+        filters=ds.filters.map(lambda f: FILTER_NAMES.get(f, f)),
         qual=ds.qual,
         genotype_quality_metrics=[hl.struct(name="Depth", alt=ds.dp_hist_alt, all=ds.dp_hist_all)],
         genotype_quality_filters=[
