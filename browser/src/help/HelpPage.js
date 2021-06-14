@@ -33,10 +33,15 @@ indexTexts.forEach(({ id, texts }) => {
 const HelpPageWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
   width: 100%;
-  max-width: 1500px;
+  max-width: 1680px;
   padding-right: 240px; /* balance navigation */
   margin: 0 auto 40px;
+
+  @media (max-width: 1280px) {
+    padding-right: 0;
+  }
 `
 
 const HelpNavigation = styled.section`
