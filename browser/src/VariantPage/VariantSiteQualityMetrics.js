@@ -45,6 +45,12 @@ const qualityMetricDescriptions = {
     'Log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.',
 }
 
+const getSiteQualityMetricDescription = datasetId => {
+  return datasetId.startsWith('gnomad_r2') || datasetId === 'exac'
+    ? 'Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
+    : 'Sum of PL[0] values; used to approximate the Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
+}
+
 // ================================================================================================
 // Data munging
 // ================================================================================================
@@ -918,9 +924,11 @@ const TooltipHint = styled.span`
   background-repeat: repeat-x;
 `
 
-const renderMetric = metric => {
+const renderMetric = (metric, datasetId) => {
   let description
-  if (metric.startsWith('AS_')) {
+  if (metric === 'SiteQuality') {
+    description = getSiteQualityMetricDescription(datasetId)
+  } else if (metric.startsWith('AS_')) {
     const baseDescription = qualityMetricDescriptions[metric.slice(3)]
     if (baseDescription) {
       description = `Allele-specific ${baseDescription
@@ -978,7 +986,7 @@ const VariantSiteQualityMetricsTable = ({ datasetId, variant }) => {
       <tbody>
         {availableMetrics.map(metric => (
           <tr key={metric}>
-            <th scope="row">{renderMetric(metric)}</th>
+            <th scope="row">{renderMetric(metric, datasetId)}</th>
             {isVariantInExomes && (
               <td>
                 {exomeMetricValues[metric] != null
