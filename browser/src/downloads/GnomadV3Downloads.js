@@ -213,7 +213,6 @@ export default () => (
         <ListItem>
           <IndexedFileDownloadLinks
             label="chrM sites VCF"
-            gcsBucket="gnomad-public"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="4.51 MiB"
             md5="abe40b5685e9804000a38fb6e8c2351c"
@@ -233,7 +232,6 @@ export default () => (
         <ListItem>
           <GenericDownloadLinks
             label="chrM sites TSV (reduced annotations)"
-            gcsBucket="gnomad-public"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
             size="1 MiB"
             md5="45a91b22ddc3c1176c103d4afee080f5"
