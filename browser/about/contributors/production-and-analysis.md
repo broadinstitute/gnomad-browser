@@ -8,6 +8,7 @@
 - Laurent Francioli
 - Julia Goodrich
 - Laura Gauthier
+- Sanna Gudmundsson
 - Konrad Karczewski
 - Kristen Laricchia
 - Monkol Lek
