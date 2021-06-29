@@ -141,21 +141,18 @@ export default () => (
       <FileList>
         <ListItem>
           <GetUrlButtons
-            gcsBucket="gnomad-public"
             label="Manuscript data"
             path="/legacy/exacv1_downloads/release1/manuscript_data"
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
-            gcsBucket="gnomad-public"
             label="Subset VCFs (non-TCGA and non-psych)"
             path="/legacy/exacv1_downloads/release1/subsets"
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
-            gcsBucket="gnomad-public"
             label="CNV counts and intolerance scores"
             path="/legacy/exacv1_downloads/release0.3.1/cnv"
           />
