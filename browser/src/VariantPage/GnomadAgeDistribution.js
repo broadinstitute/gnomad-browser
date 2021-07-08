@@ -203,7 +203,11 @@ const GnomadAgeDistribution = ({ datasetId, variant }) => {
           <Checkbox
             checked={includeHomozygotes}
             id="age-distribution-include-homozygotes"
-            label="Include homozygous variant carriers"
+            label={
+              variant.chrom === 'X' || variant.chrom === 'Y'
+                ? 'Include homozygous and hemizygous variant carriers'
+                : 'Include homozygous variant carriers'
+            }
             onChange={setIncludeHomozygotes}
           />
           <Checkbox
@@ -253,6 +257,7 @@ const AgeDistributionPropType = PropTypes.shape({
 GnomadAgeDistribution.propTypes = {
   datasetId: PropTypes.string.isRequired,
   variant: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
     exome: PropTypes.shape({
       age_distribution: AgeDistributionPropType.isRequired,
     }),
