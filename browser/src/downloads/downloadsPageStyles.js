@@ -121,7 +121,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
             key="azure"
             aria-label={`Show Microsoft URL for ${label}`}
             label={label}
-            url={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
+            url={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
           >
             Microsoft
           </ShowURLButton>
@@ -158,7 +158,7 @@ export const GetUrlButtons = ({ gcsBucket, label, path, includeAWS, includeAzure
                 aria-label={`Copy Microsoft URL for ${label}`}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://azureopendatastorage.blob.core.windows.net/gnomad${path}`
+                    `https://datasetgnomad.blob.core.windows.net/dataset${path}`
                   )
                 }}
               >
@@ -230,7 +230,7 @@ export const GenericDownloadLinks = ({
             <ExternalLink
               key="azure"
               aria-label={`Download ${label} from Microsoft`}
-              href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
+              href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
             >
               Microsoft
             </ExternalLink>
@@ -303,7 +303,7 @@ export const IndexedFileDownloadLinks = ({
             <ExternalLink
               key="azure"
               aria-label={`Download ${label} from Microsoft`}
-              href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}`}
+              href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
             >
               Microsoft
             </ExternalLink>
@@ -334,7 +334,7 @@ export const IndexedFileDownloadLinks = ({
             <ExternalLink
               key="azure"
               aria-label={`Download TBI file for ${label} from Microsoft`}
-              href={`https://azureopendatastorage.blob.core.windows.net/gnomad${path}.tbi`}
+              href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.tbi`}
             >
               Microsoft
             </ExternalLink>

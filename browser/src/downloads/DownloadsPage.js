@@ -126,7 +126,7 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <p>
-        <CodeBlock>azcopy ls https://azureopendatastorage.blob.core.windows.net/gnomad/</CodeBlock>
+        <CodeBlock>azcopy ls https://datasetgnomad.blob.core.windows.net/dataset/</CodeBlock>
       </p>
 
       <h3>Downloads</h3>
