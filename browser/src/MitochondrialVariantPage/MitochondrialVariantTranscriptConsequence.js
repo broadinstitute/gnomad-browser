@@ -132,6 +132,39 @@ HmtVarInfo.propTypes = {
   }).isRequired,
 }
 
+class HmtVarInfoErrorBoundary extends React.Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = { error: null }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error }
+  }
+
+  render() {
+    const { children } = this.props
+    const { error } = this.state
+
+    if (error) {
+      return (
+        <div style={{ marginTop: '0.25em' }}>
+          <AttributeName>
+            <ExternalLink href="https://www.hmtvar.uniba.it/">HmtVar</ExternalLink>
+          </AttributeName>
+          <AttributeValue>An error occurred when fetching data</AttributeValue>
+        </div>
+      )
+    }
+
+    return children
+  }
+}
+
 const MITOTIP_TRNA_PREDICTIONS = {
   likely_benign: 'Likely benign',
   possibly_benign: 'Possibly benign',
@@ -178,7 +211,9 @@ const MitochondrialVariantTranscriptConsequence = ({ consequence, variant }) => 
             </AttributeValue>
           </div>
         )}
-        <HmtVarInfo variant={variant} />
+        <HmtVarInfoErrorBoundary>
+          <HmtVarInfo variant={variant} />
+        </HmtVarInfoErrorBoundary>
       </AttributeList>
     )
   }
