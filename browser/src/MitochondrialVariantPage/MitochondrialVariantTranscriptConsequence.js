@@ -114,9 +114,11 @@ const HmtVarInfo = ({ variant }) => {
         </AttributeName>
         <AttributeValue>
           {response.pathogenicity
-            .split('_')
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(' ')}{' '}
+            ? response.pathogenicity
+                .split('_')
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                .join(' ')
+            : '–'}{' '}
           ({response.disease_score.toPrecision(3)})
         </AttributeValue>
       </div>
