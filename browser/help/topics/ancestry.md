@@ -8,7 +8,7 @@ In gnomAD we provide two levels of ancestry. First, we provide global ancestry f
 For gnomAD v2, we also provide sub-continental information for the East Asian (Koreans (`kor`) and Japanes (`jpn`)) and Non-Finnish Euopean(Bulgarian (`bgr`, Estonian (`est`), North-Western European (`nwe`), Southern European (`seu`) and Swedish (`swe`)) populations.
 
 ### Global ancestry assignment
-Using the [`hwe_normalized_pca` function in Hail](https://hail.is/docs/devel/methods/genetics.html?highlight=hwe#hail.methods.hwe_normalized_pca) we computed the 10 first principal components (PCs) on well-behaved bi-allelic autosomal QC SNVs on all unrelated samples. For each release, PCA is run on the entire dataset (combining exomes and genomes for gnomAD v2) at once, excluding first and second degree relatives. We then train a random forest classifier on samples with previously known population labels using the PCs as features. We assign ancestry to all samples for which the probability of that ancestry is > 90% according to the random forest model. All other samples are assigned the other ancestry (`oth`). Detailed numbers for gnomAD v2 and v3 are given below.
+Using the [`hwe_normalized_pca` function in Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca) we computed the 10 first principal components (PCs) on well-behaved bi-allelic autosomal QC SNVs on all unrelated samples. For each release, PCA is run on the entire dataset (combining exomes and genomes for gnomAD v2) at once, excluding first and second degree relatives. We then train a random forest classifier on samples with previously known population labels using the PCs as features. We assign ancestry to all samples for which the probability of that ancestry is > 90% according to the random forest model. All other samples are assigned the other ancestry (`oth`). Detailed numbers for gnomAD v2 and v3 are given below.
 
 #### gnomAD v3.1
 
@@ -30,7 +30,7 @@ Sub-continental ancestry was computed for European and East Asian samples using 
     - Sites where the allele frequency in that global population was < 0.1%
     - Sites where any platform had > 0.1% missingness (or more than 1 missing sample if there were less than 1,000 samples for a given platform)
 3. Remaining sites were LD-pruned in that population down to r<sup>2</sup> = 0.1
-4. PCs were computed using [`hwe_normalized_pca` in Hail](https://hail.is/docs/devel/methods/genetics.html?highlight=hwe#hail.methods.hwe_normalized_pca).
+4. PCs were computed using [`hwe_normalized_pca` in Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca).
 5. A random forest (RF) model was created using:
     - European samples: 3 first PCs as features and known sub-continental population labels for 17,102 samples
     - East Asian samples: first 2 PCs as features and known sub-continental population labels for 2,067 samples.
