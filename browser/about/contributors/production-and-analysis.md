@@ -10,8 +10,10 @@
 - Laura Gauthier
 - Sanna Gudmundsson
 - Konrad Karczewski
+- Zan Koenig
 - Kristen Laricchia
 - Monkol Lek
+- Alicia Martin
 - Eric Minikel
 - Ben Neale
 - Anne O'Donnell-Luria
@@ -30,3 +32,4 @@
 - James Ware
 - Nicola Whiffin
 - Mike Wilson
+- Mary Yohannes
