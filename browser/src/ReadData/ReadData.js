@@ -306,16 +306,23 @@ class ReadData extends Component {
         <p>
           This interactive{' '}
           <ExternalLink href="https://github.com/igvteam/igv.js">IGV.js</ExternalLink> visualization
-          shows reads that went into calling this variant.
+          shows reads that went into calling this variant. Reads may not be available for every
+          sample carrying this variant.
         </p>
         <p>
-          Note: These are reassembled reads produced by{' '}
+          These are reassembled reads produced by{' '}
           <ExternalLink href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput">
             GATK HaplotypeCaller --bamOutput
           </ExternalLink>
           , so they accurately represent what HaplotypeCaller was seeing when it called this
           variant.
         </p>
+        {datasetId.startsWith('gnomad_r2') && (
+          <p>
+            <Badge level="info">Note</Badge> Reads shown here may include low quality genotypes that
+            were excluded from allele counts.
+          </p>
+        )}
         {isSubset(datasetId) && (
           <p>
             <Badge level="info">Note</Badge> Samples shown below are not guaranteed to be part of
