@@ -12,6 +12,7 @@ import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
+import { variantFeedbackUrl } from '../variantFeedback'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
@@ -112,7 +113,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
         <h2>External Resources</h2>
         <MitochondrialVariantReferenceList variant={variant} />
         <h2>Feedback</h2>
-        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>

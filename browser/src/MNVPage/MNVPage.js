@@ -10,6 +10,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
+import { variantFeedbackUrl } from '../variantFeedback'
 import VariantNotFound from '../VariantPage/VariantNotFound'
 import MNVConsequenceList from './MNVConsequenceList'
 import MNVConstituentSNVFrequencyTable from './MNVConstituentSNVFrequencyTable'
@@ -106,9 +107,7 @@ const MNVPage = ({ datasetId, variantId }) => (
                     </ListItem>
                   </List>
                   <h2>Feedback</h2>
-                  <ExternalLink
-                    href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}
-                  >
+                  <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
                     Report an issue with this variant
                   </ExternalLink>
                 </Column>

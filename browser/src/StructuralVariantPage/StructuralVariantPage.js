@@ -9,6 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Query from '../Query'
+import { variantFeedbackUrl } from '../variantFeedback'
 import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
 import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
@@ -46,7 +47,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         <h2>External Resources</h2>
         <SVReferenceList variant={variant} />
         <h2>Feedback</h2>
-        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>
