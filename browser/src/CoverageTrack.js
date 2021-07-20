@@ -155,7 +155,7 @@ class CoverageTrack extends Component {
     ))
   }
 
-  renderBars({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width }) {
+  renderBars({ isPositionDefined, scaleCoverageMetric, scalePosition, totalBases, width }) {
     const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
@@ -168,7 +168,7 @@ class CoverageTrack extends Component {
             bucket =>
               bucket[selectedMetric] !== undefined &&
               bucket[selectedMetric] !== null &&
-              offsetRegions.some(region => region.start <= bucket.pos && region.stop >= bucket.pos)
+              isPositionDefined(bucket.pos)
           )
           .map(bucket => {
             const barHeight = height - scaleCoverageMetric(bucket[selectedMetric])
@@ -190,11 +190,23 @@ class CoverageTrack extends Component {
     ))
   }
 
-  renderPlot({ offsetRegions, scaleCoverageMetric, scalePosition, width }) {
-    const totalBases = offsetRegions.reduce((acc, region) => acc + region.stop - region.start, 0)
+  renderPlot({ isPositionDefined, regions, scaleCoverageMetric, scalePosition, width }) {
+    const totalBases = regions.reduce((acc, region) => acc + region.stop - region.start, 0)
     return totalBases < 100
-      ? this.renderBars({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width })
-      : this.renderArea({ offsetRegions, scaleCoverageMetric, scalePosition, totalBases, width })
+      ? this.renderBars({
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
+      : this.renderArea({
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
   }
 
   render() {
@@ -243,7 +255,7 @@ class CoverageTrack extends Component {
           </TopPanel>
         )}
       >
-        {({ offsetRegions, scalePosition, width }) => {
+        {({ isPositionDefined, regions, scalePosition, width }) => {
           const scaleCoverageMetric = scaleLinear()
             .domain(
               selectedMetric === 'mean' || selectedMetric === 'median' ? [0, maxCoverage] : [0, 1]
@@ -268,7 +280,13 @@ class CoverageTrack extends Component {
                   stroke="#333"
                 />
                 <g transform={`translate(${axisWidth},0)`}>
-                  {this.renderPlot({ offsetRegions, scalePosition, scaleCoverageMetric, width })}
+                  {this.renderPlot({
+                    isPositionDefined,
+                    regions,
+                    scalePosition,
+                    scaleCoverageMetric,
+                    width,
+                  })}
                   <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
                 </g>
               </svg>
