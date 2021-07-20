@@ -1000,50 +1000,48 @@
     unist-util-visit "^1.4.0"
     yaml "^1.4.0"
 
-"@gnomad/region-viewer@^1.0.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-1.1.0.tgz#83cec38292e1274ee88fa9590e7c9e33b29a4e05"
-  integrity sha512-YplH9Tvubas3Bl3y3SglGQHhe8mh1ZXeun3M4W2V48wA/qSPm0qDIFveMJHjP+e1G/YdgfmZM5e9z/Km8QL36A==
-  dependencies:
-    d3-scale "^2.2.2"
-    prop-types "^15.7.2"
-    ramda "^0.24.1"
-
-"@gnomad/track-genes@^2.0.0":
+"@gnomad/region-viewer@^1.0.0||^2.0.0", "@gnomad/region-viewer@^2.0.0":
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-2.0.0.tgz#4436bca53763331ae17b099d7bdcfad321855749"
-  integrity sha512-XNBeL3EB/hN8rNu7Mu+tOxGFNVEtTeElp5xvLoZWTAbnDi10lo/ycL7U28JjJKbM0uR+u/wap1HtALHHFaKJmw==
+  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-2.0.0.tgz#06108b0a1f51a1bf5312e075e9487fe3c8bf6516"
+  integrity sha512-lk07Ux/6zdX02yEnFMancBUFOgIapDtDOqO+OXwW0PzbjLtq6mLUt0wQOCaZb17+BM9D66RTYmEOCG2Cd2MNHw==
   dependencies:
-    "@gnomad/region-viewer" "^1.0.0"
     prop-types "^15.7.2"
 
-"@gnomad/track-regions@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-regions/-/track-regions-1.0.0.tgz#360b05a3da91ac23df7b5b589606d75435fee54a"
-  integrity sha512-K83x9R/mECYLG/MpNhsfSNl6pi9EUulrCkAQZkQ6mW6YGkqHEAYSrIlA3exrRwD/2VeB94S8Jt2ZAl/aoGUvGA==
+"@gnomad/track-genes@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-2.0.1.tgz#811df17f12b0cd42bd32631c2f3fd6a9da53b46c"
+  integrity sha512-+bJIOT/A8OVxuwE49ZmcThEF+aamR4uUmSryfAub+ow+z9+LMTsHfNUyqzaXGSw+46B+NmrD045PHDMH/bd2FA==
   dependencies:
-    "@gnomad/region-viewer" "^1.0.0"
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
     prop-types "^15.7.2"
 
-"@gnomad/track-transcripts@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-1.0.0.tgz#030d038c852cf49ca3503809b15fb84042037daf"
-  integrity sha512-ssrhgjuugl38ioQqlZ3soamiOQzkVibP031x+bTF837LRAzvIA4dyrEQobSD+xcSnTIw+1nGAcrrfX1vhjziEw==
+"@gnomad/track-regions@^1.0.0", "@gnomad/track-regions@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-regions/-/track-regions-1.0.1.tgz#6631a009e7dc8981d6e7f04e10845ed57e259516"
+  integrity sha512-fE6JoltyXKBG+kI5RJABo9gAwZfAzG4zVcxj8b65fzw6t/uPjttit+NAVB8IgSuUYbLgMgmswv25sQNAP2YmFA==
+  dependencies:
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
+    prop-types "^15.7.2"
+
+"@gnomad/track-transcripts@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-1.0.1.tgz#f66bb5b6f3bdddc0340958cae03c5274941cc58b"
+  integrity sha512-4z9XAWghs8x+UxMpB4lv8uqQMjRTXgy2zMizlXZugf4uU28rjBiXltZoVAA2LSwEGqFQpNf6f4wVBsH3Pcj+uA==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.8.1"
-    "@gnomad/region-viewer" "^1.0.0"
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
     "@gnomad/track-regions" "^1.0.0"
     "@gnomad/ui" "^1.0.0"
     d3-array "^1.2.4"
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
 
-"@gnomad/track-variants@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-variants/-/track-variants-1.0.0.tgz#668887d54b679f355235a0a08a7abe63282ffea4"
-  integrity sha512-ryqhsnsR/Ioo5jWauB8KuGW5v9EypHM1OIJwVnYpEiXBARjYxF7dYMIRVy0TDRjGfyvcKiHhjqvIzpg1DPC+Qw==
+"@gnomad/track-variants@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-variants/-/track-variants-1.0.1.tgz#7e5d4bf9af2a8b0cbdb369c256973ff34187bfb7"
+  integrity sha512-RvzHSfLQKBZvPzVXfGH4gHdCUJav2e8gQt97NnIWO4yvqpM7+mqA3tIuAAIrvb8OoHDfFbaYH6ZDBAIdZSPqVQ==
   dependencies:
-    "@gnomad/region-viewer" "^1.0.0"
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
 
@@ -7815,11 +7813,6 @@ raf-schd@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-4.0.2.tgz#bd44c708188f2e84c810bf55fcea9231bcaed8a0"
   integrity sha512-VhlMZmGy6A6hrkJWHLNTGl5gtgMUm+xfGza6wbwnE914yeQ5Ybm18vgM734RZhMgfw4tacUrWseGZlpUrrakEQ==
-
-ramda@^0.24.1:
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
-  integrity sha1-w7d1UZfzW43DUCIoJixMkd22uFc=
 
 randombytes@^2.1.0:
   version "2.1.0"
