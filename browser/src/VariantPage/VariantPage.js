@@ -15,6 +15,7 @@ import { BaseQuery } from '../Query'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
+import { variantFeedbackUrl } from '../variantFeedback'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
@@ -79,7 +80,7 @@ const VariantPageContent = ({ datasetId, variant }) => {
         <h2>External Resources</h2>
         <ReferenceList variant={variant} />
         <h2>Feedback</h2>
-        <ExternalLink href={process.env.REPORT_VARIANT_URL || 'mailto:gnomad@broadinstitute.org'}>
+        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>
