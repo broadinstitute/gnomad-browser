@@ -17,10 +17,14 @@ Data preparation for the gnomAD browser is split into multiple pipelines:
 - genes
 - clinvar_grch37
 - clinvar_grch38
-- exac
-- gnomad_v2
+- exac_coverage
+- exac_variants
+- gnomad_v2_coverage
+- gnomad_v2_variants
+- gnomad_v2_lof_curation_results
 - gnomad_sv_v2
-- gnomad_v3
+- gnomad_v3_coverage
+- gnomad_v3_variants
 
 The genes pipeline must be run first. The others can be run in any order.
 
