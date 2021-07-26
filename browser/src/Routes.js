@@ -9,7 +9,7 @@ import DocumentTitle from './DocumentTitle'
 
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
-const ContactPage = lazy(() => import('./ContactPage'))
+const FeedbackPage = lazy(() => import('./FeedbackPage'))
 const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
@@ -109,7 +109,9 @@ const Routes = () => {
 
       <Route exact path="/publications" component={PublicationsPage} />
 
-      <Route exact path="/contact" component={ContactPage} />
+      <Route exact path="/feedback" component={FeedbackPage} />
+
+      <Route exact path="/contact" render={() => <Redirect to="/feedback" />} />
 
       <Route exact path="/mou" component={MOUPage} />
 

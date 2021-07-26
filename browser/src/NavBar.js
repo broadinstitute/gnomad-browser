@@ -149,8 +149,8 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
-              <Link to="/contact" onClick={this.closeMenu}>
-                Contact
+              <Link to="/feedback" onClick={this.closeMenu}>
+                Feedback
               </Link>
             </li>
             <li>
