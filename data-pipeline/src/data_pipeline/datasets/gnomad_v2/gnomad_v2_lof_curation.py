@@ -16,7 +16,6 @@ FLAG_MAPPING = {
     "Mnv/Frame Restore": "MNV/Frame Restoring Indel",
     "MNV": "MNV/Frame Restoring Indel",
     "Weak Essential Splice Rescue": "Weak/Unrecognized Splice Rescue",
-    "Weak Exon Conservation": "Weak Gene Conservation",
 }
 
 VERDICT_MAPPING = {
