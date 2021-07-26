@@ -13,11 +13,15 @@ from data_pipeline.pipeline import _pipeline_config
 
 from data_pipeline.pipelines.clinvar_grch37 import pipeline as clinvar_grch37_pipeline
 from data_pipeline.pipelines.clinvar_grch38 import pipeline as clinvar_grch38_pipeline
-from data_pipeline.pipelines.exac import pipeline as exac_pipeline
+from data_pipeline.pipelines.exac_coverage import pipeline as exac_coverage_pipeline
+from data_pipeline.pipelines.exac_variants import pipeline as exac_variants_pipeline
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
-from data_pipeline.pipelines.gnomad_v2 import pipeline as gnomad_v2_pipeline
-from data_pipeline.pipelines.gnomad_v3 import pipeline as gnomad_v3_pipeline
+from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as gnomad_v2_coverage_pipeline
+from data_pipeline.pipelines.gnomad_v2_lof_curation_results import pipeline as gnomad_v2_lof_curation_results_pipeline
+from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_variants_pipeline
+from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
+from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
 from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
 from data_pipeline.pipelines.mitochondria import pipeline as mitochondria_pipeline
 
@@ -96,7 +100,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             add_variant_document_id(
                 hl.read_table(
-                    gnomad_v3_pipeline.get_task("annotate_gnomad_v3_transcript_consequences").get_output_path()
+                    gnomad_v3_variants_pipeline.get_task("annotate_gnomad_v3_transcript_consequences").get_output_path()
                 )
             )
         ),
@@ -117,7 +121,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v3_genome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v3_pipeline.get_task("prepare_gnomad_v3_coverage").get_output_path())
+            hl.read_table(gnomad_v3_coverage_pipeline.get_task("prepare_gnomad_v3_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
@@ -182,7 +186,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             add_variant_document_id(
                 hl.read_table(
-                    gnomad_v2_pipeline.get_task("annotate_gnomad_v2_transcript_consequences").get_output_path()
+                    gnomad_v2_variants_pipeline.get_task("annotate_gnomad_v2_transcript_consequences").get_output_path()
                 )
             )
         ),
@@ -203,18 +207,20 @@ DATASETS_CONFIG = {
     },
     "gnomad_v2_exome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_exome_coverage").get_output_path())
+            hl.read_table(gnomad_v2_coverage_pipeline.get_task("prepare_gnomad_v2_exome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v2_exome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_genome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_genome_coverage").get_output_path())
+            hl.read_table(gnomad_v2_coverage_pipeline.get_task("prepare_gnomad_v2_genome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v2_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_mnvs": {
-        "get_table": lambda: hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_mnvs").get_output_path()),
+        "get_table": lambda: hl.read_table(
+            gnomad_v2_variants_pipeline.get_task("prepare_gnomad_v2_mnvs").get_output_path()
+        ),
         "args": {
             "index": "gnomad_v2_mnvs",
             "index_fields": ["variant_id"],
@@ -225,7 +231,11 @@ DATASETS_CONFIG = {
     },
     "gnomad_v2_lof_curation_results": {
         "get_table": lambda: add_variant_document_id(
-            hl.read_table(gnomad_v2_pipeline.get_task("prepare_gnomad_v2_lof_curation_results").get_output_path())
+            hl.read_table(
+                gnomad_v2_lof_curation_results_pipeline.get_task(
+                    "prepare_gnomad_v2_lof_curation_results"
+                ).get_output_path()
+            )
         ),
         "args": {
             "index": "gnomad_v2_lof_curation_results",
@@ -241,7 +251,9 @@ DATASETS_CONFIG = {
     "exac_variants": {
         "get_table": lambda: subset_table(
             add_variant_document_id(
-                hl.read_table(exac_pipeline.get_task("annotate_exac_transcript_consequences").get_output_path())
+                hl.read_table(
+                    exac_variants_pipeline.get_task("annotate_exac_transcript_consequences").get_output_path()
+                )
             )
         ),
         "args": {
@@ -261,7 +273,7 @@ DATASETS_CONFIG = {
     },
     "exac_exome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(exac_pipeline.get_task("import_exac_coverage").get_output_path())
+            hl.read_table(exac_coverage_pipeline.get_task("import_exac_coverage").get_output_path())
         ),
         "args": {"index": "exac_exome_coverage", "id_field": "xpos", "num_shards": 16, "block_size": 10_000},
     },

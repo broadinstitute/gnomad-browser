@@ -2,17 +2,12 @@ from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.data_types.variant import annotate_transcript_consequences
 
-from data_pipeline.datasets.exac.exac_coverage import import_exac_coverage
 from data_pipeline.datasets.exac.exac_variants import import_exac_vcf
 
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
 
 pipeline = Pipeline()
-
-###############################################
-# Variants
-###############################################
 
 pipeline.add_task(
     "import_exac_vcf",
@@ -29,14 +24,6 @@ pipeline.add_task(
         "variants_path": pipeline.get_task("import_exac_vcf"),
         "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
     },
-)
-
-###############################################
-# Coverage
-###############################################
-
-pipeline.add_task(
-    "import_exac_coverage", import_exac_coverage, "/exac/exac_coverage.ht",
 )
 
 ###############################################
