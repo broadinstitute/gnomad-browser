@@ -87,16 +87,16 @@ const OuterWrapper = styled.div`
   }
 `
 
-const Notice = styled.div`
-  padding: 0.75em 0.5em;
-  background: rgb(17, 115, 187);
-  color: white;
-  text-align: center;
-
-  a {
-    color: white;
-  }
-`
+// const Notice = styled.div`
+//   padding: 0.75em 0.5em;
+//   background: rgb(17, 115, 187);
+//   color: white;
+//   text-align: center;
+//
+//   a {
+//     color: white;
+//   }
+// `
 
 class NavBar extends Component {
   state = {
@@ -164,14 +164,7 @@ class NavBar extends Component {
             </li>
           </Menu>
         </NavBarWrapper>
-        <Notice>
-          We want to hear about how you use gnomAD and your wish list! Please take 5 minutes to fill
-          out{' '}
-          <a href="http://broad.io/gnomad_user_survey" rel="noopener noreferrer" target="_blank">
-            our user survey
-          </a>
-          .
-        </Notice>
+        {/* <Notice></Notice> */}
       </OuterWrapper>
     )
   }

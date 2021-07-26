@@ -9,6 +9,12 @@ export default () => (
   <InfoPage>
     <DocumentTitle title="Feedback" />
     <PageHeading>Feedback</PageHeading>
+
+    <p>
+      Tell us how you use gnomAD and your wish list by filling out{' '}
+      <ExternalLink href="http://broad.io/gnomad_user_survey">our user survey</ExternalLink>.
+    </p>
+
     <p>
       Report data problems or feature suggestions by{' '}
       <ExternalLink href="mailto:gnomad@broadinstitute.org">email</ExternalLink>.
