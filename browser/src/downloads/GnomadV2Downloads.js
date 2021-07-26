@@ -541,6 +541,15 @@ export default () => (
             includeAzure={false}
           />
         </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="gnomAD addendum LoF curation results"
+            path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
+            gcsBucket="gnomad-public"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
       </FileList>
     </section>
 

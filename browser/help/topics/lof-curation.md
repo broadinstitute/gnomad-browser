@@ -57,6 +57,10 @@ This flag indicated there are two indels that were observed in cis. While at lea
 
 _In silico_ splice predictors predict a cryptic in-frame splice site to rescue a canonical splice site abolished by the pLoF variant in question. Alternatively, the presence of a cryptic splice site within 6bp of the abolished canonical splice site can be considered rescued in some cases. These cryptic sites may be either up or downstream of the canonical splice site (see homozygous versus heterozygous curations).
 
+#### Splice Variant at In-frame Exon Flag
+
+The variant is a splice disrupting variant that is adjacent to an in-frame exon and therefore not expected to result in NMD.
+
 #### Weak/Unrecognized Splice Rescue Flag
 
 _In silico_ splice predictors predict a weak rescue of a canonical splice site variant by a cryptic in-frame splice site up or downstream of the canonical splice site, or the cryptic splice sites are unrecognized by splicing predictors. “Weak” rescue by _in silico_ splice predictors is defined as a prediction that differs by <50% from the prediction scores at the canonical splice site.
