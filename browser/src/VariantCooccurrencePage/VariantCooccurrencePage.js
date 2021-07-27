@@ -117,6 +117,7 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
           ? 'Details'
           : `Details for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} Population`}
       </h2>
+      <p>Select a population in the overview table to view genotype counts for that population.</p>
       <Wrapper>
         <ResponsiveSection>
           <h3>Genotype Counts</h3>
