@@ -57,18 +57,31 @@ const renderProbabilityCompoundHeterozygous = p => {
   return `${(p * 100).toFixed(0)}%`
 }
 
-const VariantCoocurrence = ({ cooccurrenceData }) => {
-  const [selectedPopulation, setSelectedPopulation] = useState('All')
-
-  const cooccurrenceInSelectedPopulation =
-    selectedPopulation === 'All'
-      ? cooccurrenceData
-      : cooccurrenceData.populations.find(pop => pop.id === selectedPopulation)
-
-  let cooccurrenceDescription
+const getCooccurrenceDescription = (
+  cooccurrenceInSelectedPopulation,
+  selectedPopulation = 'All'
+) => {
+  let cooccurrenceDescription = null
   if (cooccurrenceInSelectedPopulation.p_compound_heterozygous === null) {
-    cooccurrenceDescription =
-      'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
+    const variantAOccurs =
+      [3, 4, 5, 6, 7, 8].reduce(
+        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
+        0
+      ) > 0
+
+    const variantBOccurs =
+      [1, 2, 4, 5, 7, 8].reduce(
+        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
+        0
+      ) > 0
+
+    if (!variantAOccurs || !variantBOccurs) {
+      if (variantAOccurs || variantBOccurs) {
+        cooccurrenceDescription = 'One of these variants is not observed in'
+      } else {
+        cooccurrenceDescription = 'These variants are not observed'
+      }
+    }
   } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > 0.505) {
     cooccurrenceDescription =
       'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most'
@@ -80,11 +93,29 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
       'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
   }
 
-  if (selectedPopulation === 'All') {
-    cooccurrenceDescription = `${cooccurrenceDescription} individuals in gnomAD`
-  } else {
-    cooccurrenceDescription = `${cooccurrenceDescription} individuals in the ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population in gnomAD`
+  if (cooccurrenceDescription) {
+    if (selectedPopulation === 'All') {
+      cooccurrenceDescription = `${cooccurrenceDescription} individuals in gnomAD.`
+    } else {
+      cooccurrenceDescription = `${cooccurrenceDescription} individuals in the ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population in gnomAD.`
+    }
   }
+
+  return cooccurrenceDescription
+}
+
+const VariantCoocurrence = ({ cooccurrenceData }) => {
+  const [selectedPopulation, setSelectedPopulation] = useState('All')
+
+  const cooccurrenceInSelectedPopulation =
+    selectedPopulation === 'All'
+      ? cooccurrenceData
+      : cooccurrenceData.populations.find(pop => pop.id === selectedPopulation)
+
+  const cooccurrenceDescription = getCooccurrenceDescription(
+    cooccurrenceInSelectedPopulation,
+    selectedPopulation
+  )
 
   // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
   const sharedCarrierExists =
@@ -110,6 +141,15 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
             in this table.
           </p>
         )}
+
+        {[cooccurrenceData, ...cooccurrenceData.populations].some(
+          c => c.p_compound_heterozygous === null
+        ) && (
+          <p>
+            * A likely co-occurrence pattern cannot be calculated in some cases, such as when only
+            one of the variants is observed in a population.
+          </p>
+        )}
       </Section>
 
       <h2>
@@ -125,7 +165,7 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
             variantIds={cooccurrenceData.variant_ids}
             genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
           />
-          <p>{cooccurrenceDescription}.</p>
+          {cooccurrenceDescription && <p>{cooccurrenceDescription}</p>}
           {sharedCarrierExists ? (
             <p>
               <Badge level="info">Note</Badge> Only samples covered at both variant sites are
