@@ -96,7 +96,7 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
 
   return (
     <>
-      <Section>
+      <Section style={{ marginBottom: '2em' }}>
         <h2>Overview</h2>
         <VariantCooccurrenceSummaryTable
           cooccurrenceData={cooccurrenceData}
@@ -354,7 +354,7 @@ const VariantCoocurrencePage = ({ datasetId }) => {
       </GnomadPageHeading>
       {datasetId === 'gnomad_r2_1' ? (
         <>
-          <Section>
+          <Section style={{ marginBottom: '2em' }}>
             <h2>Select a variant pair</h2>
             <p>Co-occurrence is available for coding and UTR variants that:</p>
             <List>
