@@ -68,16 +68,16 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
   let cooccurrenceDescription
   if (cooccurrenceInSelectedPopulation.p_compound_heterozygous === null) {
     cooccurrenceDescription =
-      'The co-occurence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
+      'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
   } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > 0.505) {
     cooccurrenceDescription =
-      'Based on their co-occurence pattern in gnomAD, these variants are likely found on different haplotypes in most'
+      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most'
   } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous < 0.164) {
     cooccurrenceDescription =
-      'Based on their co-occurence pattern in gnomAD, these variants are likely found on the same haplotype in most'
+      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most'
   } else {
     cooccurrenceDescription =
-      'The co-occurence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
+      'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
   }
 
   if (selectedPopulation === 'All') {
