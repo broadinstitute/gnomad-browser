@@ -142,7 +142,10 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
         </ResponsiveSection>
 
         <ResponsiveSection>
-          <h3>Estimated Haplotype Counts</h3>
+          <h3>
+            {cooccurrenceInSelectedPopulation.genotype_counts[4] > 0 && <>Estimated </>}Haplotype
+            Counts
+          </h3>
           <VariantCooccurrenceHaplotypeCountsTable
             variantIds={cooccurrenceData.variant_ids}
             haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
