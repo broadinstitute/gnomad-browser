@@ -213,9 +213,10 @@ export default () => (
         <ListItem>
           <IndexedFileDownloadLinks
             label="chrM sites VCF"
+            gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
-            size="4.51 MiB"
-            md5="abe40b5685e9804000a38fb6e8c2351c"
+            size="4.77 MiB"
+            md5="fbdf6807628c13b5379b359f12a39c61"
             includeAWS={false}
             includeAzure={false}
           />
