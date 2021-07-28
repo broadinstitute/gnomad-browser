@@ -8,14 +8,18 @@ import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulati
 
 import CooccurrenceDataPropType from './CooccurrenceDataPropType'
 
-const getCooccurrencePattern = probabilityOfCompoundHet => {
-  if (probabilityOfCompoundHet === null) {
-    return 'Uncertain'
+const getCooccurrencePattern = cooccurrenceData => {
+  if (cooccurrenceData.p_compound_heterozygous === null) {
+    return (
+      <>
+        No prediction<sup>*</sup>
+      </>
+    )
   }
-  if (probabilityOfCompoundHet > 0.505) {
+  if (cooccurrenceData.p_compound_heterozygous > 0.505) {
     return 'Different haplotypes'
   }
-  if (probabilityOfCompoundHet < 0.164) {
+  if (cooccurrenceData.p_compound_heterozygous < 0.164) {
     return 'Same haplotype'
   }
   return 'Uncertain'
@@ -93,7 +97,7 @@ const VariantCooccurrenceSummaryTable = ({
               ).toLocaleString()}
             </td>
             <td>{pop.genotype_counts[4].toLocaleString()}</td>
-            <td>{getCooccurrencePattern(pop.p_compound_heterozygous)}</td>
+            <td>{getCooccurrencePattern(pop)}</td>
           </tr>
         ))}
       </tbody>
@@ -128,7 +132,7 @@ const VariantCooccurrenceSummaryTable = ({
             {cooccurrenceData.genotype_counts[4].toLocaleString()}
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
-            {getCooccurrencePattern(cooccurrenceData.p_compound_heterozygous)}
+            {getCooccurrencePattern(cooccurrenceData)}
           </td>
         </tr>
       </tfoot>
