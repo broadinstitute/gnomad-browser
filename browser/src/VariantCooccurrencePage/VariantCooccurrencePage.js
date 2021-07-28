@@ -141,26 +141,28 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
           )}
         </ResponsiveSection>
 
-        {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
-          <ResponsiveSection>
-            <h3>Estimated Haplotype Counts</h3>
-            <VariantCooccurrenceHaplotypeCountsTable
-              variantIds={cooccurrenceData.variant_ids}
-              haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
-            />
-            <p>
-              The estimated probability that these variants occur in different haplotypes is{' '}
-              {renderProbabilityCompoundHeterozygous(
-                cooccurrenceInSelectedPopulation.p_compound_heterozygous
-              )}
-              .
-            </p>
-            <p>
-              <Badge level="warning">Note</Badge> Probability values are not well calibrated.
-              Interpret with caution.
-            </p>
-          </ResponsiveSection>
-        )}
+        <ResponsiveSection>
+          <h3>Estimated Haplotype Counts</h3>
+          <VariantCooccurrenceHaplotypeCountsTable
+            variantIds={cooccurrenceData.variant_ids}
+            haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
+          />
+          {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
+            <>
+              <p>
+                The estimated probability that these variants occur in different haplotypes is{' '}
+                {renderProbabilityCompoundHeterozygous(
+                  cooccurrenceInSelectedPopulation.p_compound_heterozygous
+                )}
+                .
+              </p>
+              <p>
+                <Badge level="warning">Note</Badge> Probability values are not well calibrated.
+                Interpret with caution.
+              </p>
+            </>
+          )}
+        </ResponsiveSection>
       </Wrapper>
     </>
   )
