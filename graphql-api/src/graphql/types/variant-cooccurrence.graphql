@@ -1,14 +1,14 @@
 type VariantCooccurrenceInPopulation {
   id: String!
   genotype_counts: [Int!]!
-  haplotype_counts: [Float!]
+  haplotype_counts: [Float!]!
   p_compound_heterozygous: Float
 }
 
 type VariantCooccurrence {
   variant_ids: [String!]!
   genotype_counts: [Int!]!
-  haplotype_counts: [Float!]
+  haplotype_counts: [Float!]!
   p_compound_heterozygous: Float
   populations: [VariantCooccurrenceInPopulation!]!
 }

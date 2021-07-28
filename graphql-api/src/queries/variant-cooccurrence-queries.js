@@ -102,11 +102,11 @@ const getCategoryCounts = (variant) => {
 }
 
 // JS port of Hail's hl.experimental.haplotypeFreqEM
-// https://github.com/hail-is/hail/blob/1a861505c1fc2ea3c9d7b32a47be7af10d13907c/hail/src/main/scala/is/hail/experimental/package.scala
+// https://github.com/hail-is/hail/blob/1a861505c1fc2ea3c9d7b32a47be7af10d13907c/hail/src/main/scala/is/hail/experimental/package.scala#L38-L84
 //
 // Input genotype counts must be ordered [AABB, AABb, AAbb, AaBB, AaBb, Aabb, aaBB, aaBb, aabb]
 // Output haplotype counts are ordered [AB, aB, Ab, ab]
-const estimateHaplotypeCounts = (genotypeCounts) => {
+const haplotypeFreqEM = (genotypeCounts) => {
   assert.equal(genotypeCounts.length, 9, 'Counts for 9 possible genotype combinations are required')
 
   const nSamples = genotypeCounts.reduce((acc, n) => acc + n, 0)
@@ -153,7 +153,27 @@ const estimateHaplotypeCounts = (genotypeCounts) => {
 
   const haplotypeCounts = pNext.map((p) => p * nHaplotypes)
 
-  return haplotypeCounts.some((n) => Number.isNaN(n)) ? null : haplotypeCounts
+  return haplotypeCounts
+}
+
+const estimateHaplotypeCounts = (genotypeCounts) => {
+  // hl.experimental.haplotype_freq_em returns all NaNs in some cases, such as when one of the two variants does not occur.
+  // However, we only need to use it when there are samples that are heterozygous for both variants (genotypeCounts[4] > 0).
+  // In other cases, we can directly calculate haplotype counts.
+  // haplotypeFreqEM returns all NaNs when one of the two variants does not occur.
+
+  if (genotypeCounts[4] === 0) {
+    // genotype counts are ordered [AABB, AABb, AAbb, AaBB, AaBb, Aabb, aaBB, aaBb, aabb]
+    // haplotype counts are ordered [AB, aB, Ab, ab]
+    return [
+      2.0 * genotypeCounts[0] + genotypeCounts[1] + genotypeCounts[3], // n.AB => 2*n.AABB + n.AABb + n.AaBB
+      2.0 * genotypeCounts[6] + genotypeCounts[3] + genotypeCounts[7], // n.aB => 2*n.aaBB + n.AaBB + n.aaBb
+      2.0 * genotypeCounts[2] + genotypeCounts[1] + genotypeCounts[5], // n.Ab => 2*n.AAbb + n.AABb + n.Aabb
+      2.0 * genotypeCounts[8] + genotypeCounts[5] + genotypeCounts[7], // n.ab => 2*n.aabb + n.Aabb + n.aaBb
+    ]
+  }
+
+  return haplotypeFreqEM(genotypeCounts)
 }
 
 // See https://github.com/broadinstitute/gnomad_chets/blob/8586cdd36931780bfc127573fbb31da185a44209/phasing.py#L140-L148
