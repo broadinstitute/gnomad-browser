@@ -23,7 +23,12 @@ from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_var
 from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
 from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
-from data_pipeline.pipelines.mitochondria import pipeline as mitochondria_pipeline
+from data_pipeline.pipelines.gnomad_v3_mitochondrial_variants import (
+    pipeline as gnomad_v3_mitochondrial_variants_pipeline,
+)
+from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
+    pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
+)
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -132,7 +137,7 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             add_variant_document_id(
                 hl.read_table(
-                    mitochondria_pipeline.get_task(
+                    gnomad_v3_mitochondrial_variants_pipeline.get_task(
                         "annotate_mitochondrial_variant_transcript_consequences"
                     ).get_output_path()
                 )
@@ -155,7 +160,9 @@ DATASETS_CONFIG = {
     },
     "gnomad_v3_mitochondrial_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(mitochondria_pipeline.get_task("prepare_mitochondrial_coverage").get_output_path())
+            hl.read_table(
+                gnomad_v3_mitochondrial_coverage_pipeline.get_task("prepare_mitochondrial_coverage").get_output_path()
+            )
         ),
         "args": {
             "index": "gnomad_v3_mitochondrial_coverage",

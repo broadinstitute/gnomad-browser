@@ -1,6 +1,6 @@
 import hail as hl
 
-from data_pipeline.data_types.locus import normalized_contig, x_position
+from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
@@ -122,13 +122,3 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         ds = ds.annotate(flags=hl.if_else(ds.ac_hom_mnv > 0, ds.flags.add("mnv"), ds.flags))
 
     return ds
-
-
-def prepare_mitochondrial_coverage(coverage_path):
-    coverage = hl.read_table(coverage_path)
-
-    coverage = coverage.annotate(xpos=x_position(coverage.locus))
-
-    coverage = coverage.select("xpos", "mean", "median", "over_100", "over_1000")
-
-    return coverage

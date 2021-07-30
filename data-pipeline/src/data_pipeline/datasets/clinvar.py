@@ -10,7 +10,9 @@ from xml.etree import ElementTree
 import hail as hl
 from tqdm import tqdm
 
-from data_pipeline.datasets.mitochondria import FILTER_NAMES as MITOCHONDRIAL_VARIANT_FILTER_NAMES
+from data_pipeline.datasets.gnomad_v3.gnomad_v3_mitochondrial_variants import (
+    FILTER_NAMES as MITOCHONDRIAL_VARIANT_FILTER_NAMES,
+)
 from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
@@ -85,7 +87,7 @@ def _parse_submission(submission_element, trait_mapping_list_element):
         if mapping_element is not None:
             medgen_element = mapping_element.find("./MedGen")
             submission["conditions"].append(
-                {"name": medgen_element.attrib["Name"], "medgen_id": medgen_element.attrib["CUI"],}
+                {"name": medgen_element.attrib["Name"], "medgen_id": medgen_element.attrib["CUI"]}
             )
         elif preferred_name_element is not None:
             submission["conditions"].append({"name": preferred_name_element.text, "medgen_id": None})
@@ -105,7 +107,7 @@ def _parse_variant(variant_element):
         try:
             variant["locations"][element.attrib["Assembly"]] = {
                 "locus": element.attrib["Chr"] + ":" + element.attrib["positionVCF"],
-                "alleles": [element.attrib["referenceAlleleVCF"], element.attrib["alternateAlleleVCF"],],
+                "alleles": [element.attrib["referenceAlleleVCF"], element.attrib["alternateAlleleVCF"]],
             }
         except KeyError:
             pass
