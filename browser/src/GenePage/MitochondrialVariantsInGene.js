@@ -57,7 +57,6 @@ query MitochondrialVariantsInGene($geneId: String!, $datasetId: DatasetId!, $ref
       max_heteroplasmy
       pos
       reference_genome
-      rsid
       variant_id
     }
   }

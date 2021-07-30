@@ -15,7 +15,7 @@ const GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX = 'gnomad_v3_mitochondrial_variants'
 // ================================================================================================
 
 const fetchMitochondrialVariantById = async (esClient, variantIdOrRsid) => {
-  const idField = isRsId(variantIdOrRsid) ? 'rsid' : 'variant_id'
+  const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX,
     type: '_doc',
@@ -67,7 +67,7 @@ const FIELDS_TO_FETCH = [
   'flags',
   'locus',
   'max_heteroplasmy',
-  'rsid',
+  'rsids',
   'transcript_consequences',
   'variant_id',
 ].map((f) => `value.${f}`)

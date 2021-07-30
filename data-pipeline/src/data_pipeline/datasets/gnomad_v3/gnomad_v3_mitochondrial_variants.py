@@ -30,10 +30,9 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         pos=ds.locus.position,
         ref=ds.alleles[0],
         alt=ds.alleles[1],
-        rsid=ds.rsid,
+        rsids=ds.rsid,
         # Quality
         filters=ds.filters.map(lambda f: FILTER_NAMES.get(f, f)),
-        qual=ds.qual,
         genotype_quality_metrics=[hl.struct(name="Depth", alt=ds.dp_hist_alt, all=ds.dp_hist_all)],
         genotype_quality_filters=[
             hl.struct(
@@ -44,8 +43,10 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
                 filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.contamination_hist),
             ),
             hl.struct(
-                name="Heteroplasmy below 10%",
-                filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.heteroplasmy_below_10_percent_hist),
+                name="Heteroplasmy below minimum heteroplasmy threshold",
+                filtered=hl.struct(
+                    bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.heteroplasmy_below_min_het_threshold_hist
+                ),
             ),
             hl.struct(name="Position", filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.position_hist)),
             hl.struct(

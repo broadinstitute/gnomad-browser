@@ -14,7 +14,7 @@ Mitochondrial variants were subjected to mitochondrial-specific filters and flag
 
 - base_qual (genotype filter): Median base quality for alternate allele was below minimum (using default of 20 for "min-median-base-quality" parameter)
 
-- heteroplasmy_below_10_percent (genotype filter): Heteroplasmy level was below 10% in this sample
+- heteroplasmy_below_min_het_threshold (genotype filter): Heteroplasmy level was below 10% in this sample
 
 - position (genotype filter): Median distance of variant allele from end of reads was below minimum (using default of 1 for "min-median-read-position" parameter)
 

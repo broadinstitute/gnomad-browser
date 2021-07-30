@@ -17,6 +17,7 @@ type MitochondrialVariant {
   pos: Int!
   reference_genome: ReferenceGenomeId!
   rsid: String
+  rsids: [String!]
   variant_id: String!
 }
 
@@ -83,6 +84,7 @@ type MitochondrialVariantDetails {
   ref: String!
   reference_genome: ReferenceGenomeId!
   rsid: String
+  rsids: [String]
   site_quality_metrics: [MitochondrialVariantSiteQualityMetric]
   transcript_consequences: [TranscriptConsequence!]
   variant_id: String!

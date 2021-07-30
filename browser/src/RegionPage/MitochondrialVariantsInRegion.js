@@ -57,7 +57,6 @@ query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: Datas
       max_heteroplasmy
       pos
       reference_genome
-      rsid
       variant_id
     }
   }
