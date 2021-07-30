@@ -25,6 +25,8 @@ Data preparation for the gnomAD browser is split into multiple pipelines:
 - gnomad_sv_v2
 - gnomad_v3_coverage
 - gnomad_v3_variants
+- gnomad_v3_mitochondrial_coverage
+- gnomad_v3_mitochondrial_variants
 
 The genes pipeline must be run first. The others can be run in any order.
 
