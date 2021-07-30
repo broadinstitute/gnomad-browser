@@ -270,7 +270,7 @@ query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referen
     pos
     ref
     reference_genome
-    rsid
+    rsids
     site_quality_metrics {
       name
       value

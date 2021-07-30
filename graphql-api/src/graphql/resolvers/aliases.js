@@ -89,6 +89,8 @@ module.exports = {
     ac_hemi: fieldAliasResolver('hemizygote_count'),
   },
   MitochondrialVariant: {
+    // Single rsID
+    rsid: (obj) => (obj.rsids || [])[0],
     // Major consequence fields
     consequence: majorConsequenceFieldResolver('major_consequence'),
     gene_id: majorConsequenceFieldResolver('gene_id'),
@@ -99,5 +101,9 @@ module.exports = {
     lof: majorConsequenceFieldResolver('lof'),
     lof_filter: majorConsequenceFieldResolver('lof_filter'),
     lof_flags: majorConsequenceFieldResolver('lof_flags'),
+  },
+  MitochondrialVariantDetails: {
+    // Single rsID
+    rsid: (obj) => (obj.rsids || [])[0],
   },
 }

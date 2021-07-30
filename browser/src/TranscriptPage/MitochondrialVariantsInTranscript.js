@@ -57,7 +57,6 @@ query MitochondrialVariantsInTranscript($transcriptId: String!, $datasetId: Data
       max_heteroplasmy
       pos
       reference_genome
-      rsid
       variant_id
     }
   }

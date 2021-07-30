@@ -17,13 +17,30 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
 
   return (
     <List>
-      {variant.rsid && (
+      {(variant.rsids || []).length === 1 && (
         <ListItem>
           <ExternalLink
-            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsid}`}
+            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${variant.rsids[0]}`}
           >
-            dbSNP ({variant.rsid})
+            dbSNP ({variant.rsids[0]})
           </ExternalLink>
+        </ListItem>
+      )}
+      {(variant.rsids || []).length > 1 && (
+        <ListItem>
+          dbSNP (
+          {variant.rsids
+            .map(rsid => (
+              <ExternalLink
+                key={rsid}
+                href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${rsid}`}
+              >
+                {rsid}
+              </ExternalLink>
+            ))
+            .reduce((acc, el) => [...acc, ', ', el], [])
+            .slice(1)}
+          )
         </ListItem>
       )}
       <ListItem>
