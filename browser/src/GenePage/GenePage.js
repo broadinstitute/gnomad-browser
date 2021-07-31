@@ -1,18 +1,18 @@
-import { mean } from 'd3-array'
+import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
+import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@gnomad/region-viewer'
-import TranscriptsTrack, { TranscriptsTrackWithTissueExpression } from '@gnomad/track-transcripts'
-import { ExternalLink } from '@gnomad/ui'
+import { RegionViewer, Track } from '@gnomad/region-viewer'
+import { TranscriptPlot } from '@gnomad/track-transcripts'
+import { Button } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import TissueExpressionTrack from '../TissueExpressionTrack'
@@ -21,6 +21,7 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
+import GeneTranscriptsTrack from './GeneTranscriptsTrack'
 import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
 import { getPreferredTranscript } from './preferredTranscript'
@@ -106,6 +107,37 @@ const LegendSwatch = styled.span`
   }
 `
 
+const TrackWrapper = styled.div`
+  margin-bottom: 1em;
+`
+
+const ToggleTranscriptsPanel = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  padding-right: 5px;
+
+  button {
+    width: 70px;
+    height: auto;
+    padding-right: 0.25em;
+    padding-left: 0.25em;
+  }
+
+  svg {
+    fill: #424242;
+  }
+`
+
+const CompositeTranscriptPlotWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 50px;
+`
+
 const transcriptFeatureAttributes = {
   exon: {
     fill: '#bdbdbd',
@@ -120,27 +152,6 @@ const transcriptFeatureAttributes = {
     height: 4,
   },
 }
-
-const sortTranscripts = (transcripts, firstTranscriptId) =>
-  transcripts.sort((t1, t2) => {
-    // Sort specific transcript (MANE Select or canonical) first
-    // Then sort transcripts by mean expression and transcript ID
-    if (t1.transcript_id === firstTranscriptId) {
-      return -1
-    }
-    if (t2.transcript_id === firstTranscriptId) {
-      return 1
-    }
-
-    const t1Mean = mean(Object.values(t1.gtex_tissue_expression || {}))
-    const t2Mean = mean(Object.values(t2.gtex_tissue_expression || {}))
-
-    if (t1Mean === t2Mean) {
-      return t1.transcript_id.localeCompare(t2.transcript_id)
-    }
-
-    return t2Mean - t1Mean
-  })
 
 class GenePage extends Component {
   static propTypes = {
@@ -209,20 +220,18 @@ class GenePage extends Component {
     this.state = {
       includeNonCodingTranscripts: !hasCDS,
       includeUTRs: false,
+      showTranscripts: false,
     }
   }
 
   render() {
     const { datasetId, gene, geneId, width } = this.props
-    const { includeUTRs, includeNonCodingTranscripts } = this.state
+    const { includeUTRs, includeNonCodingTranscripts, showTranscripts } = this.state
 
     const smallScreen = width < 900
 
     // Subtract 30px for padding on Page component
     const regionViewerWidth = width - 30
-
-    const TranscriptsTrackComponent =
-      gene.reference_genome === 'GRCh37' ? TranscriptsTrackWithTissueExpression : TranscriptsTrack
 
     const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
     const hasCodingExons = cdsCompositeExons.length > 0
@@ -247,7 +256,6 @@ class GenePage extends Component {
             (exon.feature_type === 'exon' && includeNonCodingTranscripts)
         )
 
-    // In the transcripts track, mark the preferred transcript with an asterisk.
     const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
     return (
@@ -361,41 +369,55 @@ class GenePage extends Component {
             </Legend>
           </ControlPanel>
 
-          <TranscriptsTrackComponent
-            activeTranscript={{
-              exons: gene.exons,
-              strand: gene.strand,
-            }}
-            exportFilename={`${gene.gene_id}_transcripts`}
-            expressionLabel={
-              <span>
-                <ExternalLink href={`https://www.gtexportal.org/home/gene/${gene.symbol}`}>
-                  Isoform expression
-                </ExternalLink>
-                <InfoButton topic="gtex" />
-              </span>
-            }
-            renderTranscriptLeftPanel={
-              datasetId.startsWith('gnomad_sv')
-                ? ({ transcript }) => (
-                    <span>
-                      {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === preferredTranscriptId && '*'}
-                    </span>
-                  )
-                : ({ transcript }) => (
-                    <Link to={`/transcript/${transcript.transcript_id}`}>
-                      {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === preferredTranscriptId && '*'}
-                    </Link>
-                  )
-            }
-            showNonCodingTranscripts={includeNonCodingTranscripts}
-            showUTRs={includeUTRs}
-            transcripts={sortTranscripts(gene.transcripts, preferredTranscriptId)}
-          >
-            {preferredTranscriptDescription && <span>* {preferredTranscriptDescription}</span>}
-          </TranscriptsTrackComponent>
+          <TrackWrapper>
+            <Track
+              renderLeftPanel={() => {
+                return (
+                  <ToggleTranscriptsPanel width={width}>
+                    <Button
+                      onClick={() => {
+                        this.setState(state => ({ showTranscripts: !state.showTranscripts }))
+                      }}
+                    >
+                      {showTranscripts ? 'Hide' : 'Show'} transcripts
+                    </Button>
+                    <img
+                      alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
+                      src={gene.strand === '-' ? LeftArrow : RightArrow}
+                      height={20}
+                      width={20}
+                    />
+                  </ToggleTranscriptsPanel>
+                )
+              }}
+            >
+              {({ scalePosition, width: trackWidth }) => (
+                <CompositeTranscriptPlotWrapper>
+                  <TranscriptPlot
+                    height={20}
+                    scalePosition={scalePosition}
+                    showNonCodingExons={includeNonCodingTranscripts}
+                    showUTRs={includeUTRs}
+                    transcript={{ exons: gene.exons }}
+                    width={trackWidth}
+                  />
+                </CompositeTranscriptPlotWrapper>
+              )}
+            </Track>
+          </TrackWrapper>
+
+          {showTranscripts && (
+            <TrackWrapper>
+              <GeneTranscriptsTrack
+                datasetId={datasetId}
+                gene={gene}
+                includeNonCodingTranscripts={includeNonCodingTranscripts}
+                includeUTRs={includeUTRs}
+                preferredTranscriptId={preferredTranscriptId}
+                preferredTranscriptDescription={preferredTranscriptDescription}
+              />
+            </TrackWrapper>
+          )}
 
           {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
             <TissueExpressionTrack
