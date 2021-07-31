@@ -439,15 +439,7 @@ class GenePage extends Component {
             }
             showNonCodingTranscripts={includeNonCodingTranscripts}
             showUTRs={includeUTRs}
-            transcripts={sortTranscripts(
-              gene.transcripts.map(transcript => ({
-                ...transcript,
-                exons: transcript.exons.some(exon => exon.feature_type !== 'exon')
-                  ? transcript.exons.filter(exon => exon.feature_type !== 'exon')
-                  : transcript.exons,
-              })),
-              starredTranscriptId
-            )}
+            transcripts={sortTranscripts(gene.transcripts, starredTranscriptId)}
           >
             {starredTranscriptDescription && <span>* {starredTranscriptDescription}</span>}
           </TranscriptsTrackComponent>
