@@ -23,6 +23,7 @@ import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
 import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
+import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import VariantsInGene from './VariantsInGene'
 
@@ -246,56 +247,8 @@ class GenePage extends Component {
             (exon.feature_type === 'exon' && includeNonCodingTranscripts)
         )
 
-    /**
-     * In the transcripts track, mark the MANE Select transcript (if the gene has one) or the canonical transcript
-     * with an asterisk.
-     */
-    const hasManeSelectTranscript =
-      !!gene.mane_select_transcript &&
-      gene.transcripts.some(
-        transcript => transcript.transcript_id === gene.mane_select_transcript.ensembl_id
-      )
-
-    const starredTranscriptId = hasManeSelectTranscript
-      ? gene.mane_select_transcript.ensembl_id
-      : gene.canonical_transcript_id
-
-    const hasCanonicalTranscript =
-      !!gene.canonical_transcript_id &&
-      gene.transcripts.some(transcript => transcript.transcript_id === gene.canonical_transcript_id)
-
-    /**
-     * Describe what the asterisk is referring to.
-     */
-    let starredTranscriptDescription
-    if (hasManeSelectTranscript) {
-      const maneSelectTranscriptMatchesVersion =
-        !!gene.mane_select_transcript &&
-        gene.transcripts.some(
-          transcript =>
-            transcript.transcript_id === gene.mane_select_transcript.ensembl_id &&
-            transcript.transcript_version === gene.mane_select_transcript.ensembl_version
-        )
-      if (maneSelectTranscriptMatchesVersion) {
-        starredTranscriptDescription = (
-          <React.Fragment>
-            Transcript is the{' '}
-            <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink>{' '}
-            Select transcript for this gene
-          </React.Fragment>
-        )
-      } else {
-        starredTranscriptDescription = (
-          <React.Fragment>
-            Transcript is a different version of the{' '}
-            <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink>{' '}
-            Select transcript for this gene
-          </React.Fragment>
-        )
-      }
-    } else if (hasCanonicalTranscript) {
-      starredTranscriptDescription = 'Transcript is the Ensembl canonical transcript for this gene'
-    }
+    // In the transcripts track, mark the preferred transcript with an asterisk.
+    const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
     return (
       <TrackPage>
@@ -427,21 +380,21 @@ class GenePage extends Component {
                 ? ({ transcript }) => (
                     <span>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === starredTranscriptId && '*'}
+                      {transcript.transcript_id === preferredTranscriptId && '*'}
                     </span>
                   )
                 : ({ transcript }) => (
                     <Link to={`/transcript/${transcript.transcript_id}`}>
                       {transcript.transcript_id}.{transcript.transcript_version}
-                      {transcript.transcript_id === starredTranscriptId && '*'}
+                      {transcript.transcript_id === preferredTranscriptId && '*'}
                     </Link>
                   )
             }
             showNonCodingTranscripts={includeNonCodingTranscripts}
             showUTRs={includeUTRs}
-            transcripts={sortTranscripts(gene.transcripts, starredTranscriptId)}
+            transcripts={sortTranscripts(gene.transcripts, preferredTranscriptId)}
           >
-            {starredTranscriptDescription && <span>* {starredTranscriptDescription}</span>}
+            {preferredTranscriptDescription && <span>* {preferredTranscriptDescription}</span>}
           </TranscriptsTrackComponent>
 
           {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
