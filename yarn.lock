@@ -1023,17 +1023,13 @@
     "@gnomad/region-viewer" "^1.0.0||^2.0.0"
     prop-types "^15.7.2"
 
-"@gnomad/track-transcripts@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-1.0.1.tgz#f66bb5b6f3bdddc0340958cae03c5274941cc58b"
-  integrity sha512-4z9XAWghs8x+UxMpB4lv8uqQMjRTXgy2zMizlXZugf4uU28rjBiXltZoVAA2LSwEGqFQpNf6f4wVBsH3Pcj+uA==
+"@gnomad/track-transcripts@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-2.0.0.tgz#539c34df53f7fdf404bb9d522d436077119937aa"
+  integrity sha512-mErP1dXDsAXNKV7nGOJQAgWQqXd9dhHARpjDXsjOjJ4imkSymbhwaY1Cy0dyooDiAswUvd6/qYoTu6o7jxcXlA==
   dependencies:
-    "@fortawesome/fontawesome-free" "^5.8.1"
     "@gnomad/region-viewer" "^1.0.0||^2.0.0"
     "@gnomad/track-regions" "^1.0.0"
-    "@gnomad/ui" "^1.0.0"
-    d3-array "^1.2.4"
-    d3-scale "^2.2.2"
     prop-types "^15.7.2"
 
 "@gnomad/track-variants@^1.0.1":
@@ -1045,10 +1041,10 @@
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
 
-"@gnomad/ui@^1.0.0", "@gnomad/ui@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@gnomad/ui/-/ui-1.1.1.tgz#c4ca40f98bf6914ab2bd79446f4a115e4e512668"
-  integrity sha512-T8GlZnjHphsMOs8uD8DKoaC7WxrUW2TDx/VRwUpYGDroJPa7PmGLAR7K/9IgLjbakSsOgVumzViNHUb4JAYd3A==
+"@gnomad/ui@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/ui/-/ui-1.2.0.tgz#d03da5eae324b34005a586f535f848619e52d1ea"
+  integrity sha512-PRLiyhEl1L7f5hWL7RDigIFsldkEmUQdoaDkjZcJ/us0vfUvRgU0ppr5u0AqTVRE+Ef6C5tUvHkpZjub67eSUQ==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.8.1"
     lodash.debounce "^4.0.8"
