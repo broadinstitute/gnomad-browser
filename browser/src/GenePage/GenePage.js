@@ -15,7 +15,6 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
-import TissueExpressionTrack from '../TissueExpressionTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
@@ -26,6 +25,7 @@ import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
 import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
+import TissueExpressionTrack from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
 
 const GeneName = styled.span`

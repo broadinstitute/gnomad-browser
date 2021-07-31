@@ -7,8 +7,8 @@ import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
 import { Badge, Button, SearchInput, TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from './gtex'
-import InfoButton from './help/InfoButton'
+import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from '../gtex'
+import InfoButton from '../help/InfoButton'
 
 const getPlotRegions = (expressionRegions, getValueForRegion) => {
   const roundedRegions = expressionRegions.map(region => ({
