@@ -8,14 +8,6 @@ import { TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_NAMES } from '../gtex'
 
-const TISSUES = [
-  'Mean',
-  'Median',
-  ...Object.entries(GTEX_TISSUE_NAMES)
-    .sort((t1, t2) => t1[1].localeCompare(t2[1]))
-    .map(t => t[0]),
-]
-
 const margin = {
   bottom: 150,
   left: 120,
@@ -23,7 +15,9 @@ const margin = {
   top: 45,
 }
 
-const TranscriptsTissueExpressionPlot = ({ transcripts, starredTranscriptId }) => {
+const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscriptId }) => {
+  const renderedTissues = ['Mean', 'Median', ...tissues]
+
   const transcriptsWithMeanAndMedianExpresion = transcripts.map(transcript => {
     const expressionValues = Object.values(transcript.gtex_tissue_expression)
     return {
@@ -44,31 +38,31 @@ const TranscriptsTissueExpressionPlot = ({ transcripts, starredTranscriptId }) =
 
   const cellSize = 18
   const gutterWidth = 9
-  const plotWidth = 1 + TISSUES.length * cellSize + gutterWidth
+  const plotWidth = 1 + renderedTissues.length * cellSize + gutterWidth
   const plotHeight = transcripts.length * cellSize
 
   const height = plotHeight + margin.top + margin.bottom
   const width = plotWidth + margin.left + margin.right
 
   const baseXScale = scaleBand()
-    .domain(TISSUES)
+    .domain(renderedTissues)
     .range([1, plotWidth - gutterWidth])
 
   const xBandWidth = baseXScale.bandwidth()
 
   const xScale = scaleOrdinal()
-    .domain(TISSUES)
+    .domain(renderedTissues)
     .range([
-      ...TISSUES.slice(0, 2).map(baseXScale),
-      ...TISSUES.slice(2).map(tissueId => baseXScale(tissueId) + gutterWidth),
+      ...renderedTissues.slice(0, 2).map(baseXScale),
+      ...renderedTissues.slice(2).map(tissueId => baseXScale(tissueId) + gutterWidth),
     ])
 
   const xAxisScale = scaleOrdinal()
-    .domain(TISSUES)
+    .domain(renderedTissues)
     .range(
       [
-        ...TISSUES.slice(0, 2).map(baseXScale),
-        ...TISSUES.slice(2).map(tissueId => baseXScale(tissueId) + gutterWidth),
+        ...renderedTissues.slice(0, 2).map(baseXScale),
+        ...renderedTissues.slice(2).map(tissueId => baseXScale(tissueId) + gutterWidth),
       ].map(x => x + xBandWidth / 2)
     )
 
@@ -153,7 +147,7 @@ const TranscriptsTissueExpressionPlot = ({ transcripts, starredTranscriptId }) =
             key={transcript.transcript_id}
             transform={`translate(0, ${yScale(transcript.transcript_id)})`}
           >
-            {TISSUES.map(tissueId => {
+            {renderedTissues.map(tissueId => {
               let tooltipText
               if (tissueId === 'Mean' || tissueId === 'Median') {
                 tooltipText = `${
@@ -197,6 +191,7 @@ const TranscriptsTissueExpressionPlot = ({ transcripts, starredTranscriptId }) =
 }
 
 TranscriptsTissueExpressionPlot.propTypes = {
+  tissues: PropTypes.arrayOf(PropTypes.string),
   transcripts: PropTypes.arrayOf(
     PropTypes.shape({
       transcript_id: PropTypes.string.isRequired,
@@ -208,6 +203,9 @@ TranscriptsTissueExpressionPlot.propTypes = {
 }
 
 TranscriptsTissueExpressionPlot.defaultProps = {
+  tissues: Object.entries(GTEX_TISSUE_NAMES)
+    .sort((t1, t2) => t1[1].localeCompare(t2[1]))
+    .map(t => t[0]),
   starredTranscriptId: null,
 }
 
