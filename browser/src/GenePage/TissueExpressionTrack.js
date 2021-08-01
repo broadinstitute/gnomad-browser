@@ -5,10 +5,12 @@ import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
-import { Badge, Button, SearchInput, TooltipAnchor } from '@gnomad/ui'
+import { Badge, Button, Modal, SearchInput, TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from '../gtex'
 import InfoButton from '../help/InfoButton'
+
+import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 
 const getPlotRegions = (expressionRegions, getValueForRegion) => {
   const roundedRegions = expressionRegions.map(region => ({
@@ -233,8 +235,22 @@ const tissuePredicate = tissueFilterText => {
   }
 }
 
-const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
+const ControlsWrapper = styled.div`
+  margin: 1em 0;
+`
+
+const TissueExpressionTrack = ({
+  exons,
+  expressionRegions,
+  flags,
+  transcripts,
+  preferredTranscriptId,
+  preferredTranscriptDescription,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [showTranscriptTissueExpressionModal, setShowTranscriptTissueExpressionModal] = useState(
+    false
+  )
   const [tissueFilterText, setTissueFilterText] = useState('')
   const mainTrack = useRef()
 
@@ -245,103 +261,129 @@ const TissueExpressionTrack = ({ exons, expressionRegions, flags }) => {
   const isExpressed = expressionRegions.some(region => region.mean !== 0)
 
   return (
-    <Wrapper>
-      <InnerWrapper ref={mainTrack}>
-        <Track
-          renderLeftPanel={() => (
-            <TissueName
-              style={{ fontSize: '12px', justifyContent: 'space-between', marginRight: 0 }}
-            >
+    <>
+      <Wrapper>
+        <InnerWrapper ref={mainTrack}>
+          <Track
+            renderLeftPanel={() => (
+              <TissueName
+                style={{ fontSize: '12px', justifyContent: 'space-between', marginRight: 0 }}
+              >
+                <Button
+                  disabled={!isExpressed}
+                  style={{
+                    height: 'auto',
+                    width: '70px',
+                    paddingLeft: '0.25em',
+                    paddingRight: '0.25em',
+                  }}
+                  onClick={() => {
+                    setIsExpanded(!isExpanded)
+                  }}
+                >
+                  {isExpanded ? 'Hide' : 'Show'} tissues
+                </Button>
+                <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
+                <InfoButton topic="pext" style={{ display: 'inline' }} />
+              </TissueName>
+            )}
+            renderRightPanel={renderProportionAxis}
+          >
+            {({ scalePosition, width }) => {
+              if (!isExpressed) {
+                return (
+                  <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
+                )
+              }
+
+              return (
+                <PlotWrapper>
+                  <PextRegionsPlot
+                    color="#428bca"
+                    regions={getPlotRegions(expressionRegions, r => r.mean)}
+                    scalePosition={scalePosition}
+                    width={width}
+                  />
+                  <RegionsPlot
+                    axisColor="rgba(0,0,0,0)"
+                    height={1}
+                    regions={exons}
+                    scalePosition={scalePosition}
+                    width={width}
+                  />
+                </PlotWrapper>
+              )
+            }}
+          </Track>
+        </InnerWrapper>
+        {flags.map(flag => (
+          <InnerWrapper key={flag}>
+            <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
+          </InnerWrapper>
+        ))}
+        {isExpanded && (
+          <>
+            <ControlsWrapper>
+              <label htmlFor="tissue-expression-track-filter">
+                Filter tissues:{' '}
+                <SearchInput
+                  id="tissue-expression-track-filter"
+                  placeholder="tissue"
+                  value={tissueFilterText}
+                  onChange={setTissueFilterText}
+                />
+              </label>
               <Button
-                disabled={!isExpressed}
-                style={{
-                  height: 'auto',
-                  width: '70px',
-                  paddingLeft: '0.25em',
-                  paddingRight: '0.25em',
-                }}
+                style={{ marginLeft: '1ch' }}
                 onClick={() => {
-                  setIsExpanded(!isExpanded)
+                  setShowTranscriptTissueExpressionModal(true)
                 }}
               >
-                {isExpanded ? 'Hide' : 'Show'} tissues
+                Show transcript tissue expression
               </Button>
-              <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
-              <InfoButton topic="pext" style={{ display: 'inline' }} />
-            </TissueName>
-          )}
-          renderRightPanel={renderProportionAxis}
-        >
-          {({ scalePosition, width }) => {
-            if (!isExpressed) {
-              return (
-                <NotExpressedMessage>Gene is not expressed in GTEx tissues</NotExpressedMessage>
+            </ControlsWrapper>
+            {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
+              tissue => (
+                <IndividualTissueTrack
+                  key={tissue}
+                  exons={exons}
+                  expressionRegions={expressionRegions}
+                  tissue={tissue}
+                />
               )
-            }
-
-            return (
-              <PlotWrapper>
-                <PextRegionsPlot
-                  color="#428bca"
-                  regions={getPlotRegions(expressionRegions, r => r.mean)}
-                  scalePosition={scalePosition}
-                  width={width}
-                />
-                <RegionsPlot
-                  axisColor="rgba(0,0,0,0)"
-                  height={1}
-                  regions={exons}
-                  scalePosition={scalePosition}
-                  width={width}
-                />
-              </PlotWrapper>
-            )
+            )}
+            <span>
+              <Button
+                onClick={() => {
+                  setIsExpanded(false)
+                  setTimeout(() => {
+                    mainTrack.current.scrollIntoView()
+                  }, 0)
+                }}
+              >
+                Hide tissues
+              </Button>
+            </span>
+          </>
+        )}
+      </Wrapper>
+      {showTranscriptTissueExpressionModal && (
+        <Modal
+          size="xlarge"
+          title="Transcript tissue expression"
+          onRequestClose={() => {
+            setShowTranscriptTissueExpressionModal(false)
           }}
-        </Track>
-      </InnerWrapper>
-      {flags.map(flag => (
-        <InnerWrapper key={flag}>
-          <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS[flag]}
-        </InnerWrapper>
-      ))}
-      {isExpanded && (
-        <>
-          <div style={{ margin: '1em 0' }}>
-            <label htmlFor="tissue-expression-track-filter">
-              Filter tissues:{' '}
-              <SearchInput
-                id="tissue-expression-track-filter"
-                placeholder="tissue"
-                value={tissueFilterText}
-                onChange={setTissueFilterText}
-              />
-            </label>
-          </div>
-          {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
-            tissue => (
-              <IndividualTissueTrack
-                key={tissue}
-                exons={exons}
-                expressionRegions={expressionRegions}
-                tissue={tissue}
-              />
-            )
-          )}
-          <span>
-            <Button
-              onClick={() => {
-                setIsExpanded(false)
-                setTimeout(() => {
-                  mainTrack.current.scrollIntoView()
-                }, 0)
-              }}
-            >
-              Hide tissues
-            </Button>
-          </span>
-        </>
+        >
+          <TranscriptsTissueExpression
+            transcripts={transcripts}
+            includeNonCodingTranscripts
+            preferredTranscriptId={preferredTranscriptId}
+            preferredTranscriptDescription={preferredTranscriptDescription}
+          />
+        </Modal>
       )}
-    </Wrapper>
+    </>
   )
 }
 
@@ -361,6 +403,26 @@ TissueExpressionTrack.propTypes = {
     })
   ).isRequired,
   flags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  transcripts: PropTypes.arrayOf(
+    PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+      transcript_version: PropTypes.string.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+  preferredTranscriptId: PropTypes.string,
+  preferredTranscriptDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+}
+
+TissueExpressionTrack.defaultProps = {
+  preferredTranscriptId: null,
+  preferredTranscriptDescription: null,
 }
 
 export default TissueExpressionTrack

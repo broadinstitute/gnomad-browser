@@ -424,6 +424,9 @@ class GenePage extends Component {
               exons={cdsCompositeExons}
               expressionRegions={gene.pext.regions}
               flags={gene.pext.flags}
+              transcripts={gene.transcripts}
+              preferredTranscriptId={preferredTranscriptId}
+              preferredTranscriptDescription={preferredTranscriptDescription}
             />
           )}
 
