@@ -416,6 +416,7 @@ const TissueExpressionTrack = ({
             includeNonCodingTranscripts
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}
+            defaultSortTissuesBy={sortTissuesBy}
           />
         </Modal>
       )}
