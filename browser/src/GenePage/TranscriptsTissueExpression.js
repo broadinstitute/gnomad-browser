@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+
+import { Select } from '@gnomad/ui'
+
+import { GTEX_TISSUE_NAMES } from '../gtex'
 
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpressionPlot from './TranscriptsTissueExpressionPlot'
@@ -20,13 +24,49 @@ const TranscriptsTissueExpression = ({
   preferredTranscriptId,
   preferredTranscriptDescription,
 }) => {
-  let renderedTranscripts = sortedTranscripts(transcripts, preferredTranscriptId)
+  const [sortTranscriptsBy, setSortTranscriptsBy] = useState('default')
+
+  let renderedTranscripts =
+    sortTranscriptsBy === 'default'
+      ? sortedTranscripts(transcripts, preferredTranscriptId)
+      : [...transcripts].sort((t1, t2) => {
+          const t1Expression = t1.gtex_tissue_expression[sortTranscriptsBy] || 0
+          const t2Expression = t2.gtex_tissue_expression[sortTranscriptsBy] || 0
+
+          if (t1Expression === t2Expression) {
+            return t1.transcript_id.localeCompare(t2.transcript_id)
+          }
+
+          return t2Expression - t1Expression
+        })
+
   if (!includeNonCodingTranscripts) {
     renderedTranscripts = renderedTranscripts.filter(isTranscriptCoding)
   }
 
   return (
     <div>
+      <div>
+        <label htmlFor="transcript-tissue-expression-sort-transcripts-by">
+          Sort transcripts by:{' '}
+          <Select
+            id="transcript-tissue-expression-sort-transcripts-by"
+            value={sortTranscriptsBy}
+            onChange={e => setSortTranscriptsBy(e.target.value)}
+          >
+            <option value="default">Default</option>
+            <optgroup label="Expression in tissue">
+              {Object.entries(GTEX_TISSUE_NAMES).map(([tissueId, tissueName]) => {
+                return (
+                  <option key={tissueId} value={tissueId}>
+                    {tissueName}
+                  </option>
+                )
+              })}
+            </optgroup>
+          </Select>
+        </label>
+      </div>
       {preferredTranscriptDescription && <p>* {preferredTranscriptDescription}</p>}
       <ScrollWrapper>
         <TranscriptsTissueExpressionPlot
