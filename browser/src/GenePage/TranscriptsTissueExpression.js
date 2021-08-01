@@ -24,6 +24,7 @@ const TranscriptsTissueExpression = ({
   includeNonCodingTranscripts,
   preferredTranscriptId,
   preferredTranscriptDescription,
+  defaultSortTissuesBy,
 }) => {
   const [sortTranscriptsBy, setSortTranscriptsBy] = useState('default')
 
@@ -41,7 +42,7 @@ const TranscriptsTissueExpression = ({
           return t2Expression - t1Expression
         })
 
-  const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
+  const [sortTissuesBy, setSortTissuesBy] = useState(defaultSortTissuesBy)
   let tissues
   if (sortTissuesBy === 'max-expression') {
     const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
@@ -138,11 +139,13 @@ TranscriptsTissueExpression.propTypes = {
   includeNonCodingTranscripts: PropTypes.bool.isRequired,
   preferredTranscriptId: PropTypes.string,
   preferredTranscriptDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  defaultSortTissuesBy: PropTypes.oneOf(['alphabetical', 'max-expression']),
 }
 
 TranscriptsTissueExpression.defaultProps = {
   preferredTranscriptId: null,
   preferredTranscriptDescription: null,
+  defaultSortTissuesBy: 'alphabetical',
 }
 
 export default TranscriptsTissueExpression
