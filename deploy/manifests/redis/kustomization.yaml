@@ -9,5 +9,4 @@ resources:
   - redis.service.yaml
 images:
   - name: redis
-    newName: mirror.gcr.io/library/redis
-    newTag: 5-alpine
+    newTag: '5'
