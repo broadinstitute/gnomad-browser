@@ -147,13 +147,13 @@ const renderProportionAxis = ({ width }) =>
       <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
       <g transform="translate(0, 6)">
         <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-        <text x={5} y={0} dy="0.3em" fill="#000" fontSize={10} textAnchor="start">
+        <text x={5} y={0} dy="0.45em" fill="#000" fontSize={10} textAnchor="start">
           1
         </text>
       </g>
       <g transform="translate(0, 24)">
         <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-        <text x={5} y={0} dy="0.2em" fill="#000" fontSize={10} textAnchor="start">
+        <text x={5} y={0} dy="0.1em" fill="#000" fontSize={10} textAnchor="start">
           0
         </text>
       </g>
