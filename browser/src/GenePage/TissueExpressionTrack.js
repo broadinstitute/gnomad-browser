@@ -128,6 +128,10 @@ const PlotWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 5px 0;
+
+  &:hover {
+    background: #e2e2e2;
+  }
 `
 
 const NotExpressedMessage = styled.div`
