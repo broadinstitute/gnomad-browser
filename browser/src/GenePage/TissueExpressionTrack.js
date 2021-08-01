@@ -1,3 +1,4 @@
+import { max } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useRef, useState } from 'react'
@@ -5,7 +6,7 @@ import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
-import { Badge, Button, Modal, SearchInput, TooltipAnchor } from '@gnomad/ui'
+import { Badge, Button, Modal, SearchInput, Select, TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from '../gtex'
 import InfoButton from '../help/InfoButton'
@@ -254,9 +255,33 @@ const TissueExpressionTrack = ({
   const [tissueFilterText, setTissueFilterText] = useState('')
   const mainTrack = useRef()
 
-  const tissues = Object.keys(GTEX_TISSUE_NAMES).sort((t1, t2) =>
-    GTEX_TISSUE_NAMES[t1].localeCompare(GTEX_TISSUE_NAMES[t2])
-  )
+  const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
+  let tissues
+  if (sortTissuesBy === 'max-expression') {
+    const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
+      (acc, tissueId) => ({
+        ...acc,
+        [tissueId]: max(
+          transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId] || 0)
+        ),
+      }),
+      {}
+    )
+    tissues = Object.entries(GTEX_TISSUE_NAMES)
+      .sort((t1, t2) => {
+        const t1MaxExpression = maxExpressionByTissue[t1[0]]
+        const t2MaxExpression = maxExpressionByTissue[t2[0]]
+        if (t1MaxExpression === t2MaxExpression) {
+          return t1[1].localeCompare(t2[1])
+        }
+        return t2MaxExpression - t1MaxExpression
+      })
+      .map(t => t[0])
+  } else {
+    tissues = Object.entries(GTEX_TISSUE_NAMES)
+      .sort((t1, t2) => t1[1].localeCompare(t2[1]))
+      .map(t => t[0])
+  }
 
   const isExpressed = expressionRegions.some(region => region.mean !== 0)
 
@@ -324,14 +349,16 @@ const TissueExpressionTrack = ({
         {isExpanded && (
           <>
             <ControlsWrapper>
-              <label htmlFor="tissue-expression-track-filter">
-                Filter tissues:{' '}
-                <SearchInput
-                  id="tissue-expression-track-filter"
-                  placeholder="tissue"
-                  value={tissueFilterText}
-                  onChange={setTissueFilterText}
-                />
+              <label htmlFor="tissue-expression-track-sort-tissues-by">
+                Sort tissues by:{' '}
+                <Select
+                  id="tissue-expression-track-sort-tissues-by"
+                  value={sortTissuesBy}
+                  onChange={e => setSortTissuesBy(e.target.value)}
+                >
+                  <option value="alphabetical">Alphabetical</option>
+                  <option value="max-expression">Max transcript expression in tissue</option>
+                </Select>
               </label>
               <Button
                 style={{ marginLeft: '1ch' }}
@@ -341,6 +368,15 @@ const TissueExpressionTrack = ({
               >
                 Show transcript tissue expression
               </Button>
+              <label htmlFor="tissue-expression-track-filter" style={{ marginLeft: '1ch' }}>
+                Filter tissues:{' '}
+                <SearchInput
+                  id="tissue-expression-track-filter"
+                  placeholder="tissue"
+                  value={tissueFilterText}
+                  onChange={setTissueFilterText}
+                />
+              </label>
             </ControlsWrapper>
             {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
               tissue => (
