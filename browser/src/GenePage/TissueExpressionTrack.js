@@ -144,58 +144,86 @@ const NotExpressedMessage = styled.div`
   font-size: 10px;
 `
 
-/* eslint-disable-next-line react/prop-types */
-const renderProportionAxis = ({ width }) =>
-  width > 20 && (
-    <svg width={width} height={31}>
-      <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
-      <g transform="translate(0, 6)">
-        <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-        <text x={5} y={0} dy="0.45em" fill="#000" fontSize={10} textAnchor="start">
-          1
-        </text>
-      </g>
-      <g transform="translate(0, 24)">
-        <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
-        <text x={5} y={0} dy="0.1em" fill="#000" fontSize={10} textAnchor="start">
-          0
-        </text>
-      </g>
-    </svg>
-  )
-
-const IndividualTissueTrack = ({ exons, expressionRegions, tissue }) => (
-  <Track
-    renderLeftPanel={() => <TissueName>{GTEX_TISSUE_NAMES[tissue]}</TissueName>}
-    renderRightPanel={renderProportionAxis}
-  >
-    {({ scalePosition, width }) => {
-      const isExpressed = expressionRegions.some(region => region.tissues[tissue] !== 0)
-
-      if (!isExpressed) {
-        return <NotExpressedMessage>Gene is not expressed in this tissue</NotExpressedMessage>
+const IndividualTissueTrack = ({
+  exons,
+  expressionRegions,
+  maxExpressionInTissue,
+  maxExpressionInAnyTissue,
+  tissue,
+}) => {
+  const isExpressed = expressionRegions.some(region => region.tissues[tissue] !== 0)
+  return (
+    <Track
+      renderLeftPanel={() => <TissueName>{GTEX_TISSUE_NAMES[tissue]}</TissueName>}
+      renderRightPanel={({ width }) =>
+        width > 36 && (
+          <svg width={width} height={31}>
+            <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
+            <g transform="translate(0, 6)">
+              <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+              <text x={5} y={0} dy="0.45em" fill="#000" fontSize={10} textAnchor="start">
+                1
+              </text>
+            </g>
+            <g transform="translate(0, 24)">
+              <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+              <text x={5} y={0} dy="0.1em" fill="#000" fontSize={10} textAnchor="start">
+                0
+              </text>
+            </g>
+            <TooltipAnchor
+              tooltip={
+                isExpressed
+                  ? `Max transcript expression in ${
+                      GTEX_TISSUE_NAMES[tissue]
+                    } = ${maxExpressionInTissue.toFixed(2)}`
+                  : `Gene is not expressed in ${GTEX_TISSUE_NAMES[tissue]}`
+              }
+            >
+              <rect x={12} y={2} width={25} height={27} fill="none" pointerEvents="visible" />
+            </TooltipAnchor>
+            <circle
+              cx={25}
+              cy={15}
+              r={Math.sqrt(
+                64 *
+                  (maxExpressionInAnyTissue === 0
+                    ? 0
+                    : maxExpressionInTissue / maxExpressionInAnyTissue)
+              )}
+              fill="#333"
+              pointerEvents="none"
+            />
+          </svg>
+        )
       }
+    >
+      {({ scalePosition, width }) => {
+        if (!isExpressed) {
+          return <NotExpressedMessage>Gene is not expressed in this tissue</NotExpressedMessage>
+        }
 
-      return (
-        <PlotWrapper key={tissue}>
-          <PextRegionsPlot
-            color={GTEX_TISSUE_COLORS[tissue]}
-            regions={getPlotRegions(expressionRegions, r => r.tissues[tissue])}
-            scalePosition={scalePosition}
-            width={width}
-          />
-          <RegionsPlot
-            axisColor="rgba(0,0,0,0)"
-            height={1}
-            regions={exons}
-            scalePosition={scalePosition}
-            width={width}
-          />
-        </PlotWrapper>
-      )
-    }}
-  </Track>
-)
+        return (
+          <PlotWrapper key={tissue}>
+            <PextRegionsPlot
+              color={GTEX_TISSUE_COLORS[tissue]}
+              regions={getPlotRegions(expressionRegions, r => r.tissues[tissue])}
+              scalePosition={scalePosition}
+              width={width}
+            />
+            <RegionsPlot
+              axisColor="rgba(0,0,0,0)"
+              height={1}
+              regions={exons}
+              scalePosition={scalePosition}
+              width={width}
+            />
+          </PlotWrapper>
+        )
+      }}
+    </Track>
+  )
+}
 
 IndividualTissueTrack.propTypes = {
   exons: PropTypes.arrayOf(
@@ -212,6 +240,8 @@ IndividualTissueTrack.propTypes = {
       tissues: PropTypes.objectOf(PropTypes.number).isRequired,
     })
   ).isRequired,
+  maxExpressionInTissue: PropTypes.number.isRequired,
+  maxExpressionInAnyTissue: PropTypes.number.isRequired,
   tissue: PropTypes.string.isRequired,
 }
 
@@ -260,17 +290,20 @@ const TissueExpressionTrack = ({
   const mainTrack = useRef()
 
   const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
+
+  const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
+    (acc, tissueId) => ({
+      ...acc,
+      [tissueId]: max(
+        transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId] || 0)
+      ),
+    }),
+    {}
+  )
+  const maxExpressionInAnyTissue = max(Object.values(maxExpressionByTissue))
+
   let tissues
   if (sortTissuesBy === 'max-expression') {
-    const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
-      (acc, tissueId) => ({
-        ...acc,
-        [tissueId]: max(
-          transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId] || 0)
-        ),
-      }),
-      {}
-    )
     tissues = Object.entries(GTEX_TISSUE_NAMES)
       .sort((t1, t2) => {
         const t1MaxExpression = maxExpressionByTissue[t1[0]]
@@ -316,7 +349,25 @@ const TissueExpressionTrack = ({
                 <InfoButton topic="pext" style={{ display: 'inline' }} />
               </TissueName>
             )}
-            renderRightPanel={renderProportionAxis}
+            renderRightPanel={({ width }) =>
+              width > 50 && (
+                <svg width={width} height={31}>
+                  <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
+                  <g transform="translate(0, 6)">
+                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                    <text x={5} y={0} dy="0.45em" fill="#000" fontSize={10} textAnchor="start">
+                      1
+                    </text>
+                  </g>
+                  <g transform="translate(0, 24)">
+                    <line x1={0} y1={0} x2={3} y2={0} stroke="#333" />
+                    <text x={5} y={0} dy="0.1em" fill="#000" fontSize={10} textAnchor="start">
+                      0
+                    </text>
+                  </g>
+                </svg>
+              )
+            }
           >
             {({ scalePosition, width }) => {
               if (!isExpressed) {
@@ -388,6 +439,8 @@ const TissueExpressionTrack = ({
                   key={tissue}
                   exons={exons}
                   expressionRegions={expressionRegions}
+                  maxExpressionInTissue={maxExpressionByTissue[tissue]}
+                  maxExpressionInAnyTissue={maxExpressionInAnyTissue}
                   tissue={tissue}
                 />
               )
