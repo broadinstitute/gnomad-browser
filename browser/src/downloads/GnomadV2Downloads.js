@@ -185,7 +185,7 @@ export default () => (
       <SectionTitle id="v2-variants">Variants</SectionTitle>
       <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
-        <ExternalLink href="https://storage.googleapis.com/gnomad-public/release/2.1.1/README.txt">
+        <ExternalLink href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/README.txt">
           gnomAD v2.1.1 README
         </ExternalLink>
         .
@@ -545,7 +545,7 @@ export default () => (
           <GenericDownloadLinks
             label="gnomAD addendum LoF curation results"
             path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
-            gcsBucket="gnomad-public"
+            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
