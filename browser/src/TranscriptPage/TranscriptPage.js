@@ -167,7 +167,7 @@ const TranscriptPage = ({ datasetId, transcript, width }) => {
         width={regionViewerWidth}
         padding={75}
         regions={regionViewerRegions}
-        rightPanelWidth={smallScreen ? 0 : 160}
+        rightPanelWidth={smallScreen ? 0 : 80}
       >
         {transcript.chrom === 'M' ? (
           <MitochondrialTranscriptCoverageTrack

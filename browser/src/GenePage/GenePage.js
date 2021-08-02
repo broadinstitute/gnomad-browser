@@ -291,7 +291,7 @@ class GenePage extends Component {
           width={regionViewerWidth}
           padding={75}
           regions={regionViewerRegions}
-          rightPanelWidth={smallScreen ? 0 : 160}
+          rightPanelWidth={smallScreen ? 0 : 80}
         >
           {/* eslint-disable-next-line no-nested-ternary */}
           {datasetId.startsWith('gnomad_sv') ? (

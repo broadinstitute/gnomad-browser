@@ -90,7 +90,7 @@ const RegionPage = ({ datasetId, region, width }) => {
         leftPanelWidth={115}
         padding={0}
         regions={regionViewerRegions}
-        rightPanelWidth={smallScreen ? 0 : 160}
+        rightPanelWidth={smallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
         {region.chrom === 'M' ? (
