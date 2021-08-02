@@ -8,6 +8,113 @@ import { TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_NAMES } from '../gtex'
 
+const mergeOverlappingRegions = regions => {
+  if (regions.length === 0) {
+    return []
+  }
+
+  const mergedRegions = [{ ...regions[0] }]
+
+  let previousRegion = mergedRegions[0]
+
+  for (let i = 1; i < regions.length; i += 1) {
+    const nextRegion = regions[i]
+
+    if (nextRegion.start <= previousRegion.stop + 1) {
+      if (nextRegion.stop > previousRegion.stop) {
+        previousRegion.stop = nextRegion.stop
+      }
+    } else {
+      previousRegion = { ...nextRegion }
+      mergedRegions.push(previousRegion)
+    }
+  }
+
+  return mergedRegions
+}
+
+const regionViewerScale = (domainRegions, range) => {
+  const totalRegionSize = domainRegions.reduce(
+    (acc, region) => acc + (region.stop - region.start + 1),
+    0
+  )
+
+  const scale = position => {
+    const distanceToPosition = domainRegions
+      .filter(region => region.start <= position)
+      .reduce(
+        (acc, region) =>
+          region.start <= position && position <= region.stop
+            ? acc + position - region.start
+            : acc + (region.stop - region.start + 1),
+        0
+      )
+
+    return range[0] + (range[1] - range[0]) * (distanceToPosition / totalRegionSize)
+  }
+
+  return scale
+}
+
+const TranscriptsPlot = ({ transcripts, width }) => {
+  const composite = mergeOverlappingRegions(
+    transcripts
+      .flatMap(transcript => transcript.exons)
+      .filter(exon => exon.feature_type !== 'UTR')
+      .map(exon => ({
+        ...exon,
+        start: Math.max(exon.start - 25, 0),
+        stop: exon.stop + 25,
+      }))
+      .sort((r1, r2) => r1.start - r2.start)
+  )
+
+  const xScale = regionViewerScale(composite, [0, width])
+
+  return (
+    <g>
+      {transcripts.map((transcript, i) => {
+        return (
+          <g key={transcript.transcript_id} transform={`translate(0, ${i * 18})`}>
+            {transcript.exons
+              .filter(exon => exon.feature_type !== 'UTR')
+              .map(exon => {
+                const x1 = xScale(exon.start)
+                const x2 = xScale(exon.stop)
+                return (
+                  <rect
+                    key={`${exon.start}-${exon.stop}`}
+                    x={x1}
+                    y={6}
+                    width={x2 - x1}
+                    height={6}
+                    fill={exon.feature_type === 'CDS' ? '#424242' : '#bdbdbd'}
+                  />
+                )
+              })}
+          </g>
+        )
+      })}
+    </g>
+  )
+}
+
+TranscriptsPlot.propTypes = {
+  transcripts: PropTypes.arrayOf(
+    PropTypes.shape({
+      transcript_id: PropTypes.string.isRequired,
+      exons: PropTypes.arrayOf(
+        PropTypes.shape({
+          feature_type: PropTypes.string.isRequired,
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+  width: PropTypes.number.isRequired,
+}
+
 const margin = {
   bottom: 150,
   left: 120,
@@ -36,13 +143,14 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
 
   const opacityScale = scaleLinear().domain([0, maxTissueExpression]).range([0, 1])
 
+  const transcriptsWidth = 150
   const cellSize = 18
   const gutterWidth = 9
   const plotWidth = 1 + renderedTissues.length * cellSize + gutterWidth
   const plotHeight = transcripts.length * cellSize
 
   const height = plotHeight + margin.top + margin.bottom
-  const width = plotWidth + margin.left + margin.right
+  const width = plotWidth + margin.left + margin.right + transcriptsWidth
 
   const baseXScale = scaleBand()
     .domain(renderedTissues)
@@ -185,6 +293,12 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
             })}
           </g>
         ))}
+      </g>
+      <text x={width - transcriptsWidth} y={margin.top - 10} dy="0.25em" fill="#000">
+        Exons
+      </text>
+      <g transform={`translate(${width - transcriptsWidth}, ${margin.top})`}>
+        <TranscriptsPlot transcripts={transcripts} width={transcriptsWidth} />
       </g>
     </svg>
   )
