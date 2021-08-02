@@ -150,6 +150,7 @@ const IndividualTissueTrack = ({
   maxExpressionInTissue,
   maxExpressionInAnyTissue,
   tissue,
+  transcriptWithMaxExpressionInTissue,
 }) => {
   const isExpressed = expressionRegions.some(region => region.tissues[tissue] !== 0)
   return (
@@ -176,7 +177,9 @@ const IndividualTissueTrack = ({
                 isExpressed
                   ? `Max transcript expression in ${
                       GTEX_TISSUE_NAMES[tissue]
-                    } = ${maxExpressionInTissue.toFixed(2)}`
+                    } = ${maxExpressionInTissue.toFixed(2)} (${
+                      transcriptWithMaxExpressionInTissue.transcript_id
+                    }.${transcriptWithMaxExpressionInTissue.transcript_version})`
                   : `Gene is not expressed in ${GTEX_TISSUE_NAMES[tissue]}`
               }
             >
@@ -243,6 +246,14 @@ IndividualTissueTrack.propTypes = {
   maxExpressionInTissue: PropTypes.number.isRequired,
   maxExpressionInAnyTissue: PropTypes.number.isRequired,
   tissue: PropTypes.string.isRequired,
+  transcriptWithMaxExpressionInTissue: PropTypes.shape({
+    transcript_id: PropTypes.string.isRequired,
+    transcript_version: PropTypes.string.isRequired,
+  }),
+}
+
+IndividualTissueTrack.defaultProps = {
+  transcriptWithMaxExpressionInTissue: null,
 }
 
 const FLAG_DESCRIPTIONS = {
@@ -291,23 +302,33 @@ const TissueExpressionTrack = ({
 
   const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
 
-  const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
-    (acc, tissueId) => ({
+  const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce((acc, tissueId) => {
+    let maxExpressionInTissue = 0
+    let transcriptWithMaxExpressionInTissue = null
+    transcripts.forEach(transcript => {
+      const expressionInTissue = transcript.gtex_tissue_expression[tissueId]
+      if (expressionInTissue > maxExpressionInTissue) {
+        maxExpressionInTissue = expressionInTissue
+        transcriptWithMaxExpressionInTissue = transcript
+      }
+    })
+
+    return {
       ...acc,
-      [tissueId]: max(
-        transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId] || 0)
-      ),
-    }),
-    {}
-  )
-  const maxExpressionInAnyTissue = max(Object.values(maxExpressionByTissue))
+      [tissueId]: {
+        expression: maxExpressionInTissue,
+        transcript: transcriptWithMaxExpressionInTissue,
+      },
+    }
+  }, {})
+  const maxExpressionInAnyTissue = max(Object.values(maxExpressionByTissue).map(v => v.expression))
 
   let tissues
   if (sortTissuesBy === 'max-expression') {
     tissues = Object.entries(GTEX_TISSUE_NAMES)
       .sort((t1, t2) => {
-        const t1MaxExpression = maxExpressionByTissue[t1[0]]
-        const t2MaxExpression = maxExpressionByTissue[t2[0]]
+        const t1MaxExpression = maxExpressionByTissue[t1[0]].expression
+        const t2MaxExpression = maxExpressionByTissue[t2[0]].expression
         if (t1MaxExpression === t2MaxExpression) {
           return t1[1].localeCompare(t2[1])
         }
@@ -439,8 +460,9 @@ const TissueExpressionTrack = ({
                   key={tissue}
                   exons={exons}
                   expressionRegions={expressionRegions}
-                  maxExpressionInTissue={maxExpressionByTissue[tissue]}
+                  maxExpressionInTissue={maxExpressionByTissue[tissue].expression}
                   maxExpressionInAnyTissue={maxExpressionInAnyTissue}
+                  transcriptWithMaxExpressionInTissue={maxExpressionByTissue[tissue].transcript}
                   tissue={tissue}
                 />
               )
