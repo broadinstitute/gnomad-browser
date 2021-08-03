@@ -238,6 +238,10 @@ query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: 
       ac
       an
     }
+    multi_nucleotide_variants {
+      combined_variant_id
+      other_constituent_snvs
+    }
     transcript_consequences {
       gene_id
       gene_version
@@ -266,6 +270,10 @@ query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: 
     genome {
       ac
       an
+    }
+    multi_nucleotide_variants {
+      combined_variant_id
+      other_constituent_snvs
     }
     transcript_consequences {
       gene_id
@@ -314,8 +322,34 @@ const VariantCoocurrenceContainer = ({ datasetId, variantIds }) => {
           [csq.gene_id]: csq.gene_symbol,
         }))
 
+        const multiNucleotideVariants = (
+          (data.variant1 || {}).multi_nucleotide_variants || []
+        ).filter(mnv => mnv.other_constituent_snvs.includes(variantIds[1]))
+
         return (
           <>
+            {multiNucleotideVariants.length > 0 && (
+              <Section>
+                <h2>Multi-nucleotide Variants</h2>
+                <p>
+                  These variants are found in-phase in some individuals as{' '}
+                  {multiNucleotideVariants.length === 1
+                    ? 'a multi-nucleotide variant'
+                    : 'multi-nucleotide variants'}
+                  .
+                </p>
+                <List>
+                  {multiNucleotideVariants.map(mnv => (
+                    <ListItem key={mnv.combined_variant_id}>
+                      <Link to={`/variant/${mnv.combined_variant_id}`}>
+                        {mnv.combined_variant_id}
+                      </Link>
+                    </ListItem>
+                  ))}
+                </List>
+              </Section>
+            )}
+
             <VariantCoocurrence cooccurrenceData={data.variant_cooccurrence} />
 
             <Section>
