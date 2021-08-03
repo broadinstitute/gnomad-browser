@@ -9,9 +9,7 @@ pipeline.add_task(
     "prepare_mitochondrial_coverage",
     prepare_mitochondrial_coverage,
     "/mitochondria/mitochondria_genome_coverage.ht",
-    {
-        "coverage_path": "gs://gnomad-public-requester-pays/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
-    },
+    {"coverage_path": "gs://gcp-public-data--gnomad/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"},
 )
 
 ###############################################

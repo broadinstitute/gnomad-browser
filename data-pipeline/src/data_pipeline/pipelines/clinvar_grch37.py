@@ -59,8 +59,8 @@ pipeline.add_task(
     "/clinvar/clinvar_grch37_annotated_2.ht",
     {
         "clinvar_path": pipeline.get_task("annotate_clinvar_grch37_transcript_consequences"),
-        "gnomad_exome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
-        "gnomad_genome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
+        "gnomad_exome_variants_path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
+        "gnomad_genome_variants_path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
 )
 

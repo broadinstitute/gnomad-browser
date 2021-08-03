@@ -15,14 +15,14 @@ pipeline.add_task(
     {
         # If a result for a variant/gene pair is present in more than one file, the result in the first file in this list takes precedence.
         "curation_result_paths": [
-            "gs://gnomad-public/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/AP4_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/FIG4_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/MCOLN1_curation_results.csv",
-            "gs://gnomad-public/truth-sets/source/lof-curation/all_homozygous_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/AP4_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/FIG4_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv",
+            "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/MCOLN1_curation_results.csv",
+            "gs://gnomad-public-requester-pays/truth-sets/source/lof-curation/all_homozygous_curation_results.csv",
         ]
     },
 )

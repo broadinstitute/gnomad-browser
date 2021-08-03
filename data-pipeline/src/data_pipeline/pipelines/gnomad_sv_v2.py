@@ -14,10 +14,10 @@ pipeline.add_task(
     prepare_gnomad_structural_variants,
     "/gnomad_sv_v2/structural_variants.ht",
     {
-        "vcf_path": "gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz",
-        "controls_vcf_path": "gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz",
-        "non_neuro_vcf_path": "gs://gnomad-public/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz",
-        "histograms_path": "gs://gnomad-public/papers/2019-sv/gnomad_sv_hists.ht",
+        "vcf_path": "gs://gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz",
+        "controls_vcf_path": "gs://gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz",
+        "non_neuro_vcf_path": "gs://gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz",
+        "histograms_path": "gs://gcp-public-data--gnomad/papers/2019-sv/gnomad_sv_hists.ht",
     },
 )
 
