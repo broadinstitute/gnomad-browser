@@ -13,7 +13,7 @@ pipeline.add_task(
     "import_exac_vcf",
     import_exac_vcf,
     "/exac/exac_variants.ht",
-    {"path": "gs://gnomad-public/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"},
+    {"path": "gs://gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"},
 )
 
 pipeline.add_task(

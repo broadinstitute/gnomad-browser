@@ -97,8 +97,8 @@ pipeline.add_task(
     get_canonical_transcripts,
     "/genes/canonical_transcripts_grch37.ht",
     {
-        "exomes": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
-        "genomes": "gs://gnomad-public-requester-pays/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
+        "exomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
+        "genomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
 )
 
@@ -106,7 +106,7 @@ pipeline.add_task(
     "get_grch38_canonical_transcripts",
     get_canonical_transcripts,
     "/genes/canonical_transcripts_grch38.ht",
-    {"genomes": "gs://gnomad-public-requester-pays/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"},
+    {"genomes": "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"},
 )
 
 ###############################################
@@ -129,8 +129,8 @@ pipeline.add_task(
     prepare_pext_data,
     "/pext_grch37.ht",
     {
-        "base_level_pext_path": "gs://gnomad-public/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
-        "low_max_pext_genes_path": "gs://gnomad-public/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
+        "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
+        "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
     },
 )
 
@@ -142,21 +142,23 @@ pipeline.add_task(
     "prepare_exac_constraint",
     prepare_exac_constraint,
     "/constraint/exac_constraint.ht",
-    {"path": "gs://gnomad-public/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"},
+    {
+        "path": "gs://gcp-public-data--gnomad/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"
+    },
 )
 
 pipeline.add_task(
     "prepare_exac_regional_missense_constraint",
     prepare_exac_regional_missense_constraint,
     "/constraint/exac_regional_missense_constraint.ht",
-    {"path": "gs://gnomad-public/legacy/exac_browser/regional_missense_constraint.tsv"},
+    {"path": "gs://gcp-public-data--gnomad/legacy/exac_browser/regional_missense_constraint.tsv"},
 )
 
 pipeline.add_task(
     "prepare_gnomad_v2_constraint",
     prepare_gnomad_v2_constraint,
     "/constraint/gnomad_v2_constraint.ht",
-    {"path": "gs://gnomad-public/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
 )
 
 ###############################################

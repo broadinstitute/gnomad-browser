@@ -20,13 +20,13 @@ pipeline = Pipeline()
 
 pipeline.add_download_task(
     "download_mnvs",
-    "https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_v0.tsv",
+    "https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1/mnv/gnomad_mnv_coding_v0.tsv",
     "/gnomad_v2/gnomad_mnv_coding_v0.tsv",
 )
 
 pipeline.add_download_task(
     "download_3bp_mnvs",
-    "https://storage.googleapis.com/gnomad-public/release/2.1/mnv/gnomad_mnv_coding_3bp_fullannotation.tsv",
+    "https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1/mnv/gnomad_mnv_coding_3bp_fullannotation.tsv",
     "/gnomad_v2/gnomad_mnv_coding_3bp_fullannotation.tsv",
 )
 
@@ -63,8 +63,8 @@ pipeline.add_task(
     prepare_gnomad_v2_variants,
     "/gnomad_v2/gnomad_v2_variants_base.ht",
     {
-        "exome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
-        "genome_variants_path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
+        "exome_variants_path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
+        "genome_variants_path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
 )
 

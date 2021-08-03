@@ -54,7 +54,7 @@ pipeline.add_task(
     "/liftover.ht",
     {
         "gnomad_v2_liftover_path": "gs://gnomad-browser/gnomad-liftover/output.ht",
-        "gnomad_v3_variants_path": "gs://gnomad-public-requester-pays/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht",
+        "gnomad_v3_variants_path": "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht",
     },
 )
 
