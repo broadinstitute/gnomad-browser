@@ -210,6 +210,21 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
         </text>
       </g>
 
+      {transcripts.slice(1).map(transcript => {
+        const y = margin.top + yScale(transcript.transcript_id)
+        return (
+          <line
+            key={transcript.transcript_id}
+            x1={0}
+            y1={y}
+            x2={width}
+            y2={y}
+            stroke="#ccc"
+            strokeWidth={1}
+          />
+        )
+      })}
+
       <AxisLeft
         left={margin.left}
         numTicks={transcripts.length}
