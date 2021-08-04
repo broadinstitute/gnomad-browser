@@ -108,9 +108,9 @@ const GeneTranscriptsTrack = ({
                     <TooltipAnchor
                       tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
                         2
-                      )}\nMost expressed in ${
+                      )} TPM\nMost expressed in ${
                         GTEX_TISSUE_NAMES[tissueMostExpressedIn]
-                      } (${maxExpression.toFixed(2)})`}
+                      } (${maxExpression.toFixed(2)} TPM)`}
                     >
                       <rect
                         x={0}

@@ -177,7 +177,7 @@ const IndividualTissueTrack = ({
                 isExpressed
                   ? `Max transcript expression in ${
                       GTEX_TISSUE_NAMES[tissue]
-                    } = ${maxExpressionInTissue.toFixed(2)} (${
+                    } = ${maxExpressionInTissue.toFixed(2)} TPM (${
                       transcriptWithMaxExpressionInTissue.transcript_id
                     }.${transcriptWithMaxExpressionInTissue.transcript_version})`
                   : `Gene is not expressed in ${GTEX_TISSUE_NAMES[tissue]}`

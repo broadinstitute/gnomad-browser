@@ -275,11 +275,13 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
               if (tissueId === 'Mean' || tissueId === 'Median') {
                 tooltipText = `${
                   transcript.transcript_id
-                } ${tissueId} expression: ${transcript.gtex_tissue_expression[tissueId].toFixed(2)}`
+                } ${tissueId} expression: ${transcript.gtex_tissue_expression[tissueId].toFixed(
+                  2
+                )} TPM`
               } else {
                 tooltipText = `${transcript.transcript_id} expression in ${
                   GTEX_TISSUE_NAMES[tissueId]
-                } tissues: ${transcript.gtex_tissue_expression[tissueId].toFixed(2)}`
+                } tissues: ${transcript.gtex_tissue_expression[tissueId].toFixed(2)} TPM`
               }
 
               return (
