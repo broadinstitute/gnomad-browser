@@ -1,11 +1,13 @@
+import { max, mean } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
 import TranscriptsTrack from '@gnomad/track-transcripts'
-import { Button, Modal } from '@gnomad/ui'
+import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
+import { GTEX_TISSUE_NAMES } from '../gtex'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
@@ -31,7 +33,14 @@ const GeneTranscriptsTrack = ({
 }) => {
   const transcriptsTrack = useRef(null)
 
+  const isTissueExpressionAvailable = gene.reference_genome === 'GRCh37'
   const [showTissueExpressionModal, setShowTissueExpressionModal] = useState(false)
+
+  const maxMeanExpression = isTissueExpressionAvailable
+    ? max(
+        gene.transcripts.map(transcript => mean(Object.values(transcript.gtex_tissue_expression)))
+      )
+    : undefined
 
   return (
     <>
@@ -40,7 +49,7 @@ const GeneTranscriptsTrack = ({
           <TranscriptsInfoWrapper>
             <span>{preferredTranscriptDescription && <>* {preferredTranscriptDescription}</>}</span>
             <span>
-              {gene.reference_genome === 'GRCh37' && (
+              {isTissueExpressionAvailable && (
                 <Button
                   style={{ marginRight: '1ch' }}
                   onClick={() => {
@@ -79,6 +88,51 @@ const GeneTranscriptsTrack = ({
                   </Link>
                 </TranscriptLabel>
               )
+        }
+        renderTranscriptRightPanel={
+          !isTissueExpressionAvailable
+            ? null
+            : ({ transcript, width }) => {
+                if (width < 36) {
+                  return null
+                }
+
+                const meanExpression = mean(Object.values(transcript.gtex_tissue_expression))
+                const maxExpression = max(Object.values(transcript.gtex_tissue_expression))
+                const tissueMostExpressedIn = Object.keys(transcript.gtex_tissue_expression).find(
+                  tissue => transcript.gtex_tissue_expression[tissue] === maxExpression
+                )
+
+                return (
+                  <svg width={width} height={10}>
+                    <TooltipAnchor
+                      tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
+                        2
+                      )}\nMost expressed in ${
+                        GTEX_TISSUE_NAMES[tissueMostExpressedIn]
+                      } (${maxExpression.toFixed(2)})`}
+                    >
+                      <rect
+                        x={0}
+                        y={0}
+                        width={30}
+                        height={10}
+                        fill="none"
+                        pointerEvents="visible"
+                      />
+                    </TooltipAnchor>
+                    <circle
+                      cx={15}
+                      cy={5}
+                      r={Math.sqrt(
+                        25 * (maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression)
+                      )}
+                      fill="#333"
+                      pointerEvents="none"
+                    />
+                  </svg>
+                )
+              }
         }
         showNonCodingTranscripts={includeNonCodingTranscripts}
         showUTRs={includeUTRs}
