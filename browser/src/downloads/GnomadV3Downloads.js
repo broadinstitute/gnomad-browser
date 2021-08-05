@@ -206,18 +206,16 @@ export default () => (
             label="chrM sites Hail Table"
             gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <IndexedFileDownloadLinks
             label="chrM sites VCF"
-            gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="4.77 MiB"
             md5="fbdf6807628c13b5379b359f12a39c61"
-            includeAWS={false}
+            includeGCP={false}
             includeAzure={false}
           />
         </ListItem>
@@ -226,7 +224,6 @@ export default () => (
             label="chrM coverage Hail Table"
             gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
@@ -236,7 +233,6 @@ export default () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
             size="1 MiB"
             md5="45a91b22ddc3c1176c103d4afee080f5"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
