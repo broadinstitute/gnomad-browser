@@ -1,5 +1,4 @@
----
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gnomad-ingress
@@ -8,36 +7,57 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: exac-gnomad-prod
     ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-browser-cert
+    networking.gke.io/v1beta1.FrontendConfig: "gnomad-frontend-config"
 spec:
   rules:
-    - host: gnomad.broadinstitute.org
-      http:
-        paths:
-          - path: /reads
-            backend:
-              serviceName: gnomad-reads
-              servicePort: 80
-          - path: /reads/*
-            backend:
-              serviceName: gnomad-reads
-              servicePort: 80
-          - path: /blog
-            backend:
-              serviceName: gnomad-blog
-              servicePort: 80
-          - path: /blog/*
-            backend:
-              serviceName: gnomad-blog
-              servicePort: 80
-          - path: /news
-            backend:
-              serviceName: gnomad-blog
-              servicePort: 80
-          - path: /news/*
-            backend:
-              serviceName: gnomad-blog
-              servicePort: 80
-          - path:
-            backend:
-              serviceName: gnomad-browser
-              servicePort: 80
+  - host: gnomad.broadinstitute.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: gnomad-reads
+            port:
+              number: 80
+        path: /reads
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-reads
+            port:
+              number: 80
+        path: /reads/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-blog
+            port:
+              number: 80
+        path: /blog
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-blog
+            port:
+              number: 80
+        path: /blog/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-blog
+            port:
+              number: 80
+        path: /news
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-blog
+            port:
+              number: 80
+        path: /news/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: gnomad-browser
+            port:
+              number: 80
+        pathType: ImplementationSpecific
