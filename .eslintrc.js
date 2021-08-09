@@ -6,7 +6,12 @@ module.exports = {
   parser: 'babel-eslint',
   plugins: ['prettier'],
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'func-names': ['warn', 'as-needed'],
     'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
     'import/prefer-default-export': 0,
