@@ -35,6 +35,42 @@ const Wrapper = styled.div`
 
 export const fetchSearchResults = (dataset, query) => {
   // ==============================================================================================
+  // Structural Variants
+  // ==============================================================================================
+
+  const STRUCTURAL_VARIANT_ID_REGEX = /^(MCNV|INS|DEL)_(\d+|X|Y)_([1-9][0-9]*)$/i
+
+  const isStructuralVariantId = str => {
+    const match = STRUCTURAL_VARIANT_ID_REGEX.exec(str)
+    if (!match) {
+      return false
+    }
+
+    const chrom = match[2]
+    const chromNumber = Number(chrom)
+    if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+      return false
+    }
+
+    const id = Number(match[3])
+    if (id > 1e9) {
+      return false
+    }
+
+    return true
+  }
+
+  if (isStructuralVariantId(query)) {
+    const structuralVariantId = query.toUpperCase()
+    return Promise.resolve([
+      {
+        label: structuralVariantId,
+        value: `/variant/${structuralVariantId}?dataset=${dataset}`,
+      },
+    ])
+  }
+
+  // ==============================================================================================
   // Variants
   // ==============================================================================================
 
@@ -208,6 +244,7 @@ export default withRouter(props => {
       >
         <option value="gnomad_r3">gnomAD v3.1.1</option>
         <option value="gnomad_r2_1">gnomAD v2.1.1</option>
+        <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
         <option value="exac">ExAC</option>
       </Select>
       <span style={{ flexGrow: 1 }}>
