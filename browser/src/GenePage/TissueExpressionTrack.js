@@ -1,4 +1,4 @@
-import { max } from 'd3-array'
+import { max, mean } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useRef, useState } from 'react'
@@ -147,8 +147,9 @@ const NotExpressedMessage = styled.div`
 const IndividualTissueTrack = ({
   exons,
   expressionRegions,
-  maxExpressionInTissue,
-  maxExpressionInAnyTissue,
+  maxTranscriptExpressionInTissue,
+  maxMeanTranscriptExpressionInAnyTissue,
+  meanTranscriptExpressionInTissue,
   tissue,
   transcriptWithMaxExpressionInTissue,
 }) => {
@@ -175,11 +176,13 @@ const IndividualTissueTrack = ({
             <TooltipAnchor
               tooltip={
                 isExpressed
-                  ? `Max transcript expression in ${
-                      GTEX_TISSUE_NAMES[tissue]
-                    } = ${maxExpressionInTissue.toFixed(2)} TPM (${
-                      transcriptWithMaxExpressionInTissue.transcript_id
-                    }.${transcriptWithMaxExpressionInTissue.transcript_version})`
+                  ? `Mean transcript expression in this tissue = ${meanTranscriptExpressionInTissue.toFixed(
+                      2
+                    )} TPM\nMax transcript expression in this tissue = ${maxTranscriptExpressionInTissue.toFixed(
+                      2
+                    )} (${transcriptWithMaxExpressionInTissue.transcript_id}.${
+                      transcriptWithMaxExpressionInTissue.transcript_version
+                    })`
                   : `Gene is not expressed in ${GTEX_TISSUE_NAMES[tissue]}`
               }
             >
@@ -190,9 +193,9 @@ const IndividualTissueTrack = ({
               cy={15}
               r={Math.sqrt(
                 64 *
-                  (maxExpressionInAnyTissue === 0
+                  (maxMeanTranscriptExpressionInAnyTissue === 0
                     ? 0
-                    : maxExpressionInTissue / maxExpressionInAnyTissue)
+                    : meanTranscriptExpressionInTissue / maxMeanTranscriptExpressionInAnyTissue)
               )}
               fill="#333"
               pointerEvents="none"
@@ -243,8 +246,9 @@ IndividualTissueTrack.propTypes = {
       tissues: PropTypes.objectOf(PropTypes.number).isRequired,
     })
   ).isRequired,
-  maxExpressionInTissue: PropTypes.number.isRequired,
-  maxExpressionInAnyTissue: PropTypes.number.isRequired,
+  maxTranscriptExpressionInTissue: PropTypes.number.isRequired,
+  maxMeanTranscriptExpressionInAnyTissue: PropTypes.number.isRequired,
+  meanTranscriptExpressionInTissue: PropTypes.number.isRequired,
   tissue: PropTypes.string.isRequired,
   transcriptWithMaxExpressionInTissue: PropTypes.shape({
     transcript_id: PropTypes.string.isRequired,
@@ -302,33 +306,41 @@ const TissueExpressionTrack = ({
 
   const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
 
-  const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce((acc, tissueId) => {
-    let maxExpressionInTissue = 0
+  const expressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce((acc, tissueId) => {
+    let maxTranscriptExpressionInTissue = 0
     let transcriptWithMaxExpressionInTissue = null
     transcripts.forEach(transcript => {
       const expressionInTissue = transcript.gtex_tissue_expression[tissueId]
-      if (expressionInTissue > maxExpressionInTissue) {
-        maxExpressionInTissue = expressionInTissue
+      if (expressionInTissue > maxTranscriptExpressionInTissue) {
+        maxTranscriptExpressionInTissue = expressionInTissue
         transcriptWithMaxExpressionInTissue = transcript
       }
     })
 
+    const meanTranscriptExpressionInTissue = mean(
+      transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId])
+    )
+
     return {
       ...acc,
       [tissueId]: {
-        expression: maxExpressionInTissue,
-        transcript: transcriptWithMaxExpressionInTissue,
+        maxTranscriptExpressionInTissue,
+        meanTranscriptExpressionInTissue,
+        transcriptWithMaxExpressionInTissue,
       },
     }
   }, {})
-  const maxExpressionInAnyTissue = max(Object.values(maxExpressionByTissue).map(v => v.expression))
+
+  const maxMeanTranscriptExpressionInAnyTissue = max(
+    Object.values(expressionByTissue).map(v => v.meanTranscriptExpressionInTissue)
+  )
 
   let tissues
   if (sortTissuesBy === 'max-expression') {
     tissues = Object.entries(GTEX_TISSUE_NAMES)
       .sort((t1, t2) => {
-        const t1MaxExpression = maxExpressionByTissue[t1[0]].expression
-        const t2MaxExpression = maxExpressionByTissue[t2[0]].expression
+        const t1MaxExpression = expressionByTissue[t1[0]].maxTranscriptExpressionInTissue
+        const t2MaxExpression = expressionByTissue[t2[0]].maxTranscriptExpressionInTissue
         if (t1MaxExpression === t2MaxExpression) {
           return t1[1].localeCompare(t2[1])
         }
@@ -460,9 +472,16 @@ const TissueExpressionTrack = ({
                   key={tissue}
                   exons={exons}
                   expressionRegions={expressionRegions}
-                  maxExpressionInTissue={maxExpressionByTissue[tissue].expression}
-                  maxExpressionInAnyTissue={maxExpressionInAnyTissue}
-                  transcriptWithMaxExpressionInTissue={maxExpressionByTissue[tissue].transcript}
+                  maxTranscriptExpressionInTissue={
+                    expressionByTissue[tissue].maxTranscriptExpressionInTissue
+                  }
+                  maxMeanTranscriptExpressionInAnyTissue={maxMeanTranscriptExpressionInAnyTissue}
+                  meanTranscriptExpressionInTissue={
+                    expressionByTissue[tissue].meanTranscriptExpressionInTissue
+                  }
+                  transcriptWithMaxExpressionInTissue={
+                    expressionByTissue[tissue].transcriptWithMaxExpressionInTissue
+                  }
                   tissue={tissue}
                 />
               )
