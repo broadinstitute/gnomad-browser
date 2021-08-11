@@ -9,6 +9,15 @@ describe('fetchSearchResults', () => {
     }
   })
 
+  it('should return a variant page link for structural variant IDs', async () => {
+    expect(await fetchSearchResults('gnomad_sv_r2_1', 'MCNV_4_185')).toEqual([
+      {
+        label: 'MCNV_4_185',
+        value: '/variant/MCNV_4_185?dataset=gnomad_sv_r2_1',
+      },
+    ])
+  })
+
   it('should return a variant page link for variant IDs', async () => {
     expect(await fetchSearchResults(esClient, 'gnomad_r3', '1-55516888-G-GA')).toEqual([
       {
