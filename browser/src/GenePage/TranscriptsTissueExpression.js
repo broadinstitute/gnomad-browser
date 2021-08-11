@@ -1,4 +1,4 @@
-import { max } from 'd3-array'
+import { mean } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -44,11 +44,11 @@ const TranscriptsTissueExpression = ({
 
   const [sortTissuesBy, setSortTissuesBy] = useState(defaultSortTissuesBy)
   let tissues
-  if (sortTissuesBy === 'max-expression') {
-    const maxExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
+  if (sortTissuesBy === 'mean-expression') {
+    const meanExpressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce(
       (acc, tissueId) => ({
         ...acc,
-        [tissueId]: max(
+        [tissueId]: mean(
           transcripts.map(transcript => transcript.gtex_tissue_expression[tissueId] || 0)
         ),
       }),
@@ -56,12 +56,12 @@ const TranscriptsTissueExpression = ({
     )
     tissues = Object.entries(GTEX_TISSUE_NAMES)
       .sort((t1, t2) => {
-        const t1MaxExpression = maxExpressionByTissue[t1[0]]
-        const t2MaxExpression = maxExpressionByTissue[t2[0]]
-        if (t1MaxExpression === t2MaxExpression) {
+        const t1Expression = meanExpressionByTissue[t1[0]]
+        const t2Expression = meanExpressionByTissue[t2[0]]
+        if (t1Expression === t2Expression) {
           return t1[1].localeCompare(t2[1])
         }
-        return t2MaxExpression - t1MaxExpression
+        return t2Expression - t1Expression
       })
       .map(t => t[0])
   } else {
@@ -106,7 +106,7 @@ const TranscriptsTissueExpression = ({
             onChange={e => setSortTissuesBy(e.target.value)}
           >
             <option value="alphabetical">Alphabetical</option>
-            <option value="max-expression">Max transcript expression in tissue</option>
+            <option value="mean-expression">Mean transcript expression in tissue</option>
           </Select>
         </label>
       </div>
@@ -139,7 +139,7 @@ TranscriptsTissueExpression.propTypes = {
   includeNonCodingTranscripts: PropTypes.bool.isRequired,
   preferredTranscriptId: PropTypes.string,
   preferredTranscriptDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  defaultSortTissuesBy: PropTypes.oneOf(['alphabetical', 'max-expression']),
+  defaultSortTissuesBy: PropTypes.oneOf(['alphabetical', 'mean-expression']),
 }
 
 TranscriptsTissueExpression.defaultProps = {
