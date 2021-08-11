@@ -336,15 +336,15 @@ const TissueExpressionTrack = ({
   )
 
   let tissues
-  if (sortTissuesBy === 'max-expression') {
+  if (sortTissuesBy === 'mean-expression') {
     tissues = Object.entries(GTEX_TISSUE_NAMES)
       .sort((t1, t2) => {
-        const t1MaxExpression = expressionByTissue[t1[0]].maxTranscriptExpressionInTissue
-        const t2MaxExpression = expressionByTissue[t2[0]].maxTranscriptExpressionInTissue
-        if (t1MaxExpression === t2MaxExpression) {
+        const t1Expression = expressionByTissue[t1[0]].meanTranscriptExpressionInTissue
+        const t2Expression = expressionByTissue[t2[0]].meanTranscriptExpressionInTissue
+        if (t1Expression === t2Expression) {
           return t1[1].localeCompare(t2[1])
         }
-        return t2MaxExpression - t1MaxExpression
+        return t2Expression - t1Expression
       })
       .map(t => t[0])
   } else {
@@ -445,7 +445,7 @@ const TissueExpressionTrack = ({
                   onChange={e => setSortTissuesBy(e.target.value)}
                 >
                   <option value="alphabetical">Alphabetical</option>
-                  <option value="max-expression">Max transcript expression in tissue</option>
+                  <option value="mean-expression">Mean transcript expression in tissue</option>
                 </Select>
               </label>
               <Button
