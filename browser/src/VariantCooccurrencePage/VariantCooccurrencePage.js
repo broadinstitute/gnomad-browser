@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Badge, List, ListItem, Page } from '@gnomad/ui'
+import { Badge, ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -200,8 +200,13 @@ const VariantCoocurrence = ({ cooccurrenceData }) => {
                 .
               </p>
               <p>
-                <Badge level="warning">Note</Badge> Probability values are not well calibrated.
-                Interpret with caution.
+                <Badge level="warning">Note</Badge> Probability values are not well calibrated,
+                particularly where both variants are extremely rare. Interpret with caution. Please
+                see{' '}
+                <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
+                  our blog post on variant co-occurrence
+                </ExternalLink>{' '}
+                for accuracy estimates and additional detail.
               </p>
             </>
           )}
