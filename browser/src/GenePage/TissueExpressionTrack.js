@@ -192,10 +192,14 @@ const IndividualTissueTrack = ({
               cx={25}
               cy={15}
               r={Math.sqrt(
-                64 *
-                  (maxMeanTranscriptExpressionInAnyTissue === 0
-                    ? 0
-                    : meanTranscriptExpressionInTissue / maxMeanTranscriptExpressionInAnyTissue)
+                meanTranscriptExpressionInTissue === 0
+                  ? 0
+                  : 0.25 +
+                      63.75 *
+                        (maxMeanTranscriptExpressionInAnyTissue === 0
+                          ? 0
+                          : meanTranscriptExpressionInTissue /
+                            maxMeanTranscriptExpressionInAnyTissue)
               )}
               fill="#333"
               pointerEvents="none"

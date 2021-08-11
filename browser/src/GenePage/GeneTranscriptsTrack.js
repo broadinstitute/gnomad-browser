@@ -125,7 +125,11 @@ const GeneTranscriptsTrack = ({
                       cx={15}
                       cy={5}
                       r={Math.sqrt(
-                        25 * (maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression)
+                        meanExpression === 0
+                          ? 0
+                          : 0.25 +
+                              23.75 *
+                                (maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression)
                       )}
                       fill="#333"
                       pointerEvents="none"
