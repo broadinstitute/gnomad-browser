@@ -75,7 +75,10 @@ const TranscriptsPlot = ({ transcripts, width }) => {
     <g>
       {transcripts.map((transcript, i) => {
         return (
-          <g key={transcript.transcript_id} transform={`translate(0, ${i * 18})`}>
+          <g
+            key={transcript.transcript_id}
+            transform={`translate(0, ${i * (18 * 1.2) + 18 * 0.1})`}
+          >
             {transcript.exons
               .filter(exon => exon.feature_type !== 'UTR')
               .map(exon => {
@@ -145,9 +148,10 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
 
   const transcriptsWidth = 150
   const cellSize = 18
+  const padding = 0.2
   const gutterWidth = 9
   const plotWidth = 1 + renderedTissues.length * cellSize + gutterWidth
-  const plotHeight = transcripts.length * cellSize
+  const plotHeight = transcripts.length * cellSize * (1 + padding)
 
   const height = plotHeight + margin.top + margin.bottom
   const width = plotWidth + margin.left + margin.right + transcriptsWidth
@@ -177,8 +181,11 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
   const yScale = scaleBand()
     .domain(transcriptsWithMeanAndMedianExpresion.map(t => t.transcript_id))
     .range([0, plotHeight])
+    .padding(padding)
 
   const yBandWidth = yScale.bandwidth()
+
+  const halfYPadding = (yScale.step() * yScale.paddingInner()) / 2
 
   const transcriptLabels = transcripts.reduce(
     (acc, transcript) => ({
@@ -211,7 +218,8 @@ const TranscriptsTissueExpressionPlot = ({ tissues, transcripts, starredTranscri
       </g>
 
       {transcripts.slice(1).map(transcript => {
-        const y = margin.top + yScale(transcript.transcript_id)
+        const y = margin.top + yScale(transcript.transcript_id) - halfYPadding
+
         return (
           <line
             key={transcript.transcript_id}
