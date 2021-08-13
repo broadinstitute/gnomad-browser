@@ -9,14 +9,11 @@ import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import Link from '../Link'
-import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import { BaseQuery } from '../Query'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
-import { getConsequenceRank } from '../vepConsequences'
 import ExacVariantOccurrenceTable from './ExacVariantOccurrenceTable'
 import { ReferenceList } from './ReferenceList'
 import GnomadAgeDistribution from './GnomadAgeDistribution'
@@ -25,9 +22,9 @@ import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 import VariantInSilicoPredictors from './VariantInSilicoPredictors'
-import VariantLiftover from './VariantLiftover'
 import VariantLoFCurationResults from './VariantLoFCurationResults'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
+import VariantRelatedVariants, { variantHasRelatedVariants } from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
@@ -86,58 +83,10 @@ const VariantPageContent = ({ datasetId, variant }) => {
         </ExternalLink>
       </ResponsiveSection>
 
-      {((variant.colocated_variants || []).length > 0 ||
-        (variant.multi_nucleotide_variants || []).length > 0 ||
-        (variant.liftover || variant.liftover_sources || []).length > 0) && (
+      {variantHasRelatedVariants(variant, datasetId) && (
         <Section>
           <h2>Related Variants</h2>
-          {variant.colocated_variants && variant.colocated_variants.length > 0 && (
-            <div>
-              <h3>Other Alternate Alleles</h3>
-              <p>This variant is multiallelic. Other alternate alleles are:</p>
-              <ul>
-                {variant.colocated_variants.map(colocatedVariantId => (
-                  <li key={colocatedVariantId}>
-                    <Link to={`/variant/${colocatedVariantId}`}>{colocatedVariantId}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {(variant.multi_nucleotide_variants || []).length > 0 && (
-            <div>
-              <h3>Multi-nucleotide Variants</h3>
-              <p>This variant&apos;s consequence may be affected by other variants:</p>
-              <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
-            </div>
-          )}
-
-          {(variant.liftover || variant.liftover_sources || []).length > 0 && (
-            <VariantLiftover variant={variant} />
-          )}
-
-          {datasetId === 'gnomad_r2_1' &&
-            ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1) <= 0.05 &&
-            Math.min(
-              ...variant.transcript_consequences.map(csq =>
-                getConsequenceRank(csq.major_consequence)
-              )
-            ) <= getConsequenceRank('3_prime_UTR_variant') && (
-              <div>
-                <h3>Variant Co-occurrence</h3>
-                <p>
-                  <Link
-                    to={{
-                      pathname: '/variant-cooccurrence',
-                      search: `variant=${variant.variant_id}`,
-                    }}
-                  >
-                    Check if this variant occurs on the same haplotype as another variant.
-                  </Link>
-                </p>
-              </div>
-            )}
+          <VariantRelatedVariants datasetId={datasetId} variant={variant} />
         </Section>
       )}
 
@@ -211,10 +160,6 @@ VariantPageContent.propTypes = {
     chrom: PropTypes.string.isRequired,
     flags: PropTypes.arrayOf(PropTypes.string).isRequired,
     clinvar: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    colocated_variants: PropTypes.arrayOf(PropTypes.string),
-    liftover: PropTypes.arrayOf(PropTypes.object),
-    liftover_sources: PropTypes.arrayOf(PropTypes.object),
-    multi_nucleotide_variants: PropTypes.arrayOf(PropTypes.object),
     exome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     genome: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     lof_curations: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
