@@ -13,7 +13,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@gnomad/dataset-metadata": "*",
-    "@gnomad/identifiers": "^2.3.0",
+    "@gnomad/identifiers": "^2.3.1",
     "@gnomad/markdown-loader": "^1.0.0",
     "@gnomad/region-viewer": "^2.0.0",
     "@gnomad/track-genes": "^2.0.1",
