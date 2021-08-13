@@ -290,7 +290,15 @@ const tissuePredicate = tissueFilterText => {
 }
 
 const ControlsWrapper = styled.div`
-  margin: 1em 0;
+  margin: 1em 0 0.5em -115px;
+`
+
+const RightPanel = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.375em;
+  margin-top: 1.25em;
 `
 
 const TissueExpressionTrack = ({
@@ -440,36 +448,54 @@ const TissueExpressionTrack = ({
         ))}
         {isExpanded && (
           <>
-            <ControlsWrapper>
-              <label htmlFor="tissue-expression-track-sort-tissues-by">
-                Sort tissues by:{' '}
-                <Select
-                  id="tissue-expression-track-sort-tissues-by"
-                  value={sortTissuesBy}
-                  onChange={e => setSortTissuesBy(e.target.value)}
-                >
-                  <option value="alphabetical">Alphabetical</option>
-                  <option value="mean-expression">Mean transcript expression in tissue</option>
-                </Select>
-              </label>
-              <Button
-                style={{ marginLeft: '1ch' }}
-                onClick={() => {
-                  setShowTranscriptTissueExpressionModal(true)
-                }}
-              >
-                Show transcript tissue expression
-              </Button>
-              <label htmlFor="tissue-expression-track-filter" style={{ marginLeft: '1ch' }}>
-                Filter tissues:{' '}
-                <SearchInput
-                  id="tissue-expression-track-filter"
-                  placeholder="tissue"
-                  value={tissueFilterText}
-                  onChange={setTissueFilterText}
-                />
-              </label>
-            </ControlsWrapper>
+            <Track
+              renderRightPanel={({ width }) => {
+                return (
+                  width > 30 && (
+                    <RightPanel>
+                      <InfoButton topic="pext-track-transcript-tissue-expression" />
+                    </RightPanel>
+                  )
+                )
+              }}
+            >
+              {() => {
+                return (
+                  <ControlsWrapper>
+                    <label htmlFor="tissue-expression-track-sort-tissues-by">
+                      Sort tissues by:{' '}
+                      <Select
+                        id="tissue-expression-track-sort-tissues-by"
+                        value={sortTissuesBy}
+                        onChange={e => setSortTissuesBy(e.target.value)}
+                      >
+                        <option value="alphabetical">Alphabetical</option>
+                        <option value="mean-expression">
+                          Mean transcript expression in tissue
+                        </option>
+                      </Select>
+                    </label>
+                    <Button
+                      style={{ marginLeft: '1ch' }}
+                      onClick={() => {
+                        setShowTranscriptTissueExpressionModal(true)
+                      }}
+                    >
+                      Show transcript tissue expression
+                    </Button>
+                    <label htmlFor="tissue-expression-track-filter" style={{ marginLeft: '1ch' }}>
+                      Filter tissues:{' '}
+                      <SearchInput
+                        id="tissue-expression-track-filter"
+                        placeholder="tissue"
+                        value={tissueFilterText}
+                        onChange={setTissueFilterText}
+                      />
+                    </label>
+                  </ControlsWrapper>
+                )
+              }}
+            </Track>
             {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
               tissue => (
                 <IndividualTissueTrack
