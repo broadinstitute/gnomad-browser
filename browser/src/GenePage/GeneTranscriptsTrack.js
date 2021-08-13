@@ -8,6 +8,7 @@ import TranscriptsTrack from '@gnomad/track-transcripts'
 import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
 import { GTEX_TISSUE_NAMES } from '../gtex'
+import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
@@ -21,6 +22,13 @@ const TranscriptsInfoWrapper = styled.div`
 
 const TranscriptLabel = styled.span`
   font-size: 11px;
+`
+
+const RightPanel = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.375em;
 `
 
 const GeneTranscriptsTrack = ({
@@ -44,7 +52,17 @@ const GeneTranscriptsTrack = ({
 
   return (
     <>
-      <Track>
+      <Track
+        renderRightPanel={({ width }) => {
+          return (
+            width > 30 && (
+              <RightPanel>
+                <InfoButton topic="transcript-tissue-expression" />
+              </RightPanel>
+            )
+          )
+        }}
+      >
         {() => (
           <TranscriptsInfoWrapper>
             <span>{preferredTranscriptDescription && <>* {preferredTranscriptDescription}</>}</span>
