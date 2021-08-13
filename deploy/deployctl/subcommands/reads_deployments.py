@@ -1,7 +1,7 @@
 import argparse
 import datetime
+import glob
 import os
-import pathlib
 import string
 import sys
 import typing
@@ -38,9 +38,9 @@ def deployments_directory() -> str:
 def list_deployments() -> None:
     print("Local configurations")
     print("====================")
-    paths = reversed(sorted(pathlib.Path(deployments_directory()).iterdir(), key=os.path.getmtime))
+    paths = reversed(sorted(glob.iglob(f"{deployments_directory()}/*/kustomization.yaml"), key=os.path.getmtime))
     for path in paths:
-        print(os.path.basename(path))
+        print(os.path.basename(os.path.dirname(path)))
 
     print()
 
