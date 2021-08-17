@@ -7,6 +7,7 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { referenceGenomeForDataset } from '../datasets'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -55,6 +56,7 @@ class MitochondrialVariants extends Component {
     clinvarReleaseDate: PropTypes.string.isRequired,
     clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    datasetId: PropTypes.string.isRequired,
     exportFileName: PropTypes.string.isRequired,
     transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
@@ -232,6 +234,7 @@ class MitochondrialVariants extends Component {
       clinvarReleaseDate,
       clinvarVariants,
       context,
+      datasetId,
       exportFileName,
       transcripts,
       variants,
@@ -259,7 +262,11 @@ class MitochondrialVariants extends Component {
         {clinvarVariants && (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack transcripts={transcripts} variants={clinvarVariants} />
+            <ClinvarVariantTrack
+              referenceGenome={referenceGenomeForDataset(datasetId)}
+              transcripts={transcripts}
+              variants={clinvarVariants}
+            />
             <p style={{ marginLeft: '115px' }}>
               Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
               release.
