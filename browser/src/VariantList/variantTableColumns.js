@@ -308,6 +308,23 @@ const variantTableColumns = [
   },
 
   {
+    key: 'transcript_id',
+    heading: 'Transcript',
+    description: 'Transcript in which the displayed consequence occurs',
+    contextNotes: 'Not shown when viewing a transcript',
+    grow: 0,
+    minWidth: 160,
+    render: row => (
+      <Cell>
+        <Link to={`/transcript/${row.transcript_id}`}>
+          {row.transcript_id}.{row.transcript_version}
+        </Link>
+      </Cell>
+    ),
+    shouldShowInContext: (context, contextType) => contextType !== 'transcript',
+  },
+
+  {
     key: 'variant_id',
     heading: 'Variant ID',
     description: 'Chromosome-position-reference-alternate',

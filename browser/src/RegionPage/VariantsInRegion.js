@@ -87,6 +87,8 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
       lof_flags
       pos
       rsids
+      transcript_id
+      transcript_version
       variant_id
       exome {
         ac
