@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { Button, CategoryFilterControl, Checkbox } from '@gnomad/ui'
+import { Button, CategoryFilterControl, Checkbox, Modal } from '@gnomad/ui'
 
 import InfoButton from '../help/InfoButton'
 import {
@@ -20,6 +20,7 @@ import {
 } from './clinvarVariantCategories'
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
+import ClinvarVariantDetails from './ClinvarVariantDetails'
 import ClinvarVariantPropType from './ClinvarVariantPropType'
 
 const TopPanel = styled.div`
@@ -69,6 +70,8 @@ const SelectCategoryButton = styled(Button)`
 `
 
 const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }) => {
+  const [selectedVariant, setSelectedVariant] = useState(null)
+
   const [
     includedClinicalSignificanceCategories,
     setIncludedClinicalSignificanceCategories,
@@ -103,97 +106,116 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }) => {
   )
 
   return (
-    <Track
-      renderLeftPanel={() => <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>}
-      renderTopPanel={() => (
-        <TopPanel>
-          <ControlRow>
-            <div>
-              <CategoryFilterControl
-                categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
-                  id: category,
-                  label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
-                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
-                }))}
-                categorySelections={includedClinicalSignificanceCategories}
-                id="clinvar-track-included-categories"
-                onChange={setIncludedClinicalSignificanceCategories}
-              />{' '}
-              <InfoButton topic="clinvar-variant-categories" />
-            </div>
-          </ControlRow>
-          <ControlRow>
-            <ConsequenceCategoryFiltersWrapper>
-              {VEP_CONSEQUENCE_CATEGORIES.map(category => (
-                <React.Fragment key={category}>
-                  <Checkbox
-                    id={`clinvar-track-include-${category}`}
-                    label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
-                    checked={includedConsequenceCategories[category]}
-                    onChange={value => {
-                      setIncludedConsequenceCategories({
-                        ...includedConsequenceCategories,
-                        [category]: value,
-                      })
-                    }}
-                  />{' '}
-                  <SelectCategoryButton
-                    onClick={() => {
-                      setIncludedConsequenceCategories({
-                        ...VEP_CONSEQUENCE_CATEGORIES.reduce(
-                          (acc, c) => ({
-                            ...acc,
-                            [c]: c === category,
-                          }),
-                          {}
-                        ),
-                      })
-                    }}
-                  >
-                    only
-                  </SelectCategoryButton>
-                </React.Fragment>
-              ))}
-            </ConsequenceCategoryFiltersWrapper>
+    <>
+      <Track
+        renderLeftPanel={() => (
+          <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
+        )}
+        renderTopPanel={() => (
+          <TopPanel>
+            <ControlRow>
+              <div>
+                <CategoryFilterControl
+                  categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
+                    id: category,
+                    label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
+                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
+                  }))}
+                  categorySelections={includedClinicalSignificanceCategories}
+                  id="clinvar-track-included-categories"
+                  onChange={setIncludedClinicalSignificanceCategories}
+                />{' '}
+                <InfoButton topic="clinvar-variant-categories" />
+              </div>
+            </ControlRow>
+            <ControlRow>
+              <ConsequenceCategoryFiltersWrapper>
+                {VEP_CONSEQUENCE_CATEGORIES.map(category => (
+                  <React.Fragment key={category}>
+                    <Checkbox
+                      id={`clinvar-track-include-${category}`}
+                      label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
+                      checked={includedConsequenceCategories[category]}
+                      onChange={value => {
+                        setIncludedConsequenceCategories({
+                          ...includedConsequenceCategories,
+                          [category]: value,
+                        })
+                      }}
+                    />{' '}
+                    <SelectCategoryButton
+                      onClick={() => {
+                        setIncludedConsequenceCategories({
+                          ...VEP_CONSEQUENCE_CATEGORIES.reduce(
+                            (acc, c) => ({
+                              ...acc,
+                              [c]: c === category,
+                            }),
+                            {}
+                          ),
+                        })
+                      }}
+                    >
+                      only
+                    </SelectCategoryButton>
+                  </React.Fragment>
+                ))}
+              </ConsequenceCategoryFiltersWrapper>
 
-            <Button
-              onClick={() => {
-                setIsExpanded(!isExpanded)
-              }}
-              style={{ flexShrink: 0 }}
-            >
-              {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
-            </Button>
-          </ControlRow>
-          <ControlRow>
-            <Checkbox
-              id="clinvar-track-in-gnomad"
-              label="Only show ClinVar variants that are in gnomAD"
-              checked={showOnlyGnomad}
-              onChange={setShowOnlyGnomad}
+              <Button
+                onClick={() => {
+                  setIsExpanded(!isExpanded)
+                }}
+                style={{ flexShrink: 0 }}
+              >
+                {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
+              </Button>
+            </ControlRow>
+            <ControlRow>
+              <Checkbox
+                id="clinvar-track-in-gnomad"
+                label="Only show ClinVar variants that are in gnomAD"
+                checked={showOnlyGnomad}
+                onChange={setShowOnlyGnomad}
+              />
+            </ControlRow>
+          </TopPanel>
+        )}
+      >
+        {({ scalePosition, width }) => {
+          return isExpanded ? (
+            <ClinvarAllVariantsPlot
+              scalePosition={scalePosition}
+              transcripts={transcripts}
+              variants={filteredVariants}
+              width={width}
+              onClickVariant={setSelectedVariant}
             />
-          </ControlRow>
-        </TopPanel>
+          ) : (
+            <ClinvarBinnedVariantsPlot
+              includedCategories={includedClinicalSignificanceCategories}
+              scalePosition={scalePosition}
+              variants={filteredVariants}
+              width={width}
+            />
+          )
+        }}
+      </Track>
+      {selectedVariant && (
+        <Modal
+          size="large"
+          title={selectedVariant.variant_id}
+          onRequestClose={() => {
+            setSelectedVariant(null)
+          }}
+        >
+          <ClinvarVariantDetails
+            referenceGenome={referenceGenome}
+            variantId={selectedVariant.variant_id}
+          />
+        </Modal>
       )}
-    >
-      {({ scalePosition, width }) => {
-        return isExpanded ? (
-          <ClinvarAllVariantsPlot
-            scalePosition={scalePosition}
-            transcripts={transcripts}
-            variants={filteredVariants}
-            width={width}
-          />
-        ) : (
-          <ClinvarBinnedVariantsPlot
-            includedCategories={includedClinicalSignificanceCategories}
-            scalePosition={scalePosition}
-            variants={filteredVariants}
-            width={width}
-          />
-        )
-      }}
-    </Track>
+    </>
   )
 }
 
