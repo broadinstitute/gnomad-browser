@@ -147,7 +147,7 @@ export class GnomadPopulationsTable extends Component {
     const populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
 
     return (
-      <div>
+      <>
         <PopulationsTable
           populations={populations}
           showHemizygotes={showHemizygotes}
@@ -175,7 +175,7 @@ export class GnomadPopulationsTable extends Component {
             }}
           />
         </ControlSection>
-      </div>
+      </>
     )
   }
 }
