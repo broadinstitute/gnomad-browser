@@ -40,15 +40,16 @@ const ResponsiveSection = styled(Section)`
   }
 `
 
-const VariantDetailsContainer = styled.div`
+const FlexWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  width: 100%;
 `
 
 const VariantPageContent = ({ datasetId, variant }) => {
   return (
-    <VariantDetailsContainer>
+    <FlexWrapper>
       <ResponsiveSection>
         <TableWrapper>
           {datasetId === 'exac' ? (
@@ -82,6 +83,13 @@ const VariantPageContent = ({ datasetId, variant }) => {
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>
+
+      <Section>
+        <h2>
+          Population Frequencies <InfoButton topic="ancestry" />
+        </h2>
+        <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
+      </Section>
 
       {variantHasRelatedVariants(variant, datasetId) && (
         <Section>
@@ -118,25 +126,24 @@ const VariantPageContent = ({ datasetId, variant }) => {
         </Section>
       )}
 
-      <ResponsiveSection>
-        <h2>
-          Population Frequencies <InfoButton topic="ancestry" />
-        </h2>
-        <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
-          <React.Fragment>
-            <h2>
-              Age Distribution <InfoButton topic="age" />
-            </h2>
-            {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
-              <p>Age distribution is based on the full gnomAD dataset, not the selected subset.</p>
-            )}
-            <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
-          </React.Fragment>
-        )}
-      </ResponsiveSection>
+      <FlexWrapper>
+        <ResponsiveSection>
+          {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
+            <React.Fragment>
+              <h2>
+                Age Distribution <InfoButton topic="age" />
+              </h2>
+              {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
+                <p>
+                  Age distribution is based on the full gnomAD dataset, not the selected subset.
+                </p>
+              )}
+              <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+            </React.Fragment>
+          )}
+        </ResponsiveSection>
+      </FlexWrapper>
+
       <ResponsiveSection>
         <h2>Genotype Quality Metrics</h2>
         <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
@@ -149,7 +156,7 @@ const VariantPageContent = ({ datasetId, variant }) => {
         <h2>Read Data</h2>
         <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
       </Section>
-    </VariantDetailsContainer>
+    </FlexWrapper>
   )
 }
 

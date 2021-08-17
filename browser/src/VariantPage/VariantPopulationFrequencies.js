@@ -90,15 +90,13 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
   }
 
   return (
-    <div>
-      <TableWrapper>
-        <GnomadPopulationsTable
-          exomePopulations={variant.exome ? variant.exome.populations : []}
-          genomePopulations={variant.genome ? variant.genome.populations : []}
-          showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
-        />
-      </TableWrapper>
-    </div>
+    <TableWrapper>
+      <GnomadPopulationsTable
+        exomePopulations={variant.exome ? variant.exome.populations : []}
+        genomePopulations={variant.genome ? variant.genome.populations : []}
+        showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+      />
+    </TableWrapper>
   )
 }
 

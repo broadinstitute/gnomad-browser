@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { BaseTable, TextButton } from '@gnomad/ui'
 
 const Table = styled(BaseTable)`
+  min-width: 100%;
+
   tr.border {
     td,
     th {
@@ -12,6 +14,7 @@ const Table = styled(BaseTable)`
     }
   }
 
+  th.right-align,
   td.right-align {
     padding-right: 25px;
     text-align: right;
@@ -96,7 +99,7 @@ export class PopulationsTable extends Component {
     }))
   }
 
-  renderColumnHeader(key, label, colSpan = undefined) {
+  renderColumnHeader(key, label, props = {}) {
     const { sortAscending, sortBy } = this.state
     let ariaSortAttr = 'none'
     if (sortBy === key) {
@@ -104,7 +107,7 @@ export class PopulationsTable extends Component {
     }
 
     return (
-      <th colSpan={colSpan} aria-sort={ariaSortAttr} scope="col">
+      <th {...props} aria-sort={ariaSortAttr} scope="col">
         <button type="button" onClick={() => this.setSortBy(key)}>
           {label}
         </button>
@@ -210,12 +213,24 @@ export class PopulationsTable extends Component {
       <Table>
         <thead>
           <tr>
-            {this.renderColumnHeader('name', 'Population', 2)}
-            {this.renderColumnHeader('ac', columnLabels.ac || 'Allele Count')}
-            {this.renderColumnHeader('an', columnLabels.an || 'Allele Number')}
-            {showHomozygotes && this.renderColumnHeader('ac_hom', 'Number of Homozygotes')}
-            {showHemizygotes && this.renderColumnHeader('ac_hemi', 'Number of Hemizygotes')}
-            {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency')}
+            {this.renderColumnHeader('name', 'Population', { colSpan: 2 })}
+            {this.renderColumnHeader('ac', columnLabels.ac || 'Allele Count', {
+              className: 'right-align',
+            })}
+            {this.renderColumnHeader('an', columnLabels.an || 'Allele Number', {
+              className: 'right-align',
+            })}
+            {showHomozygotes &&
+              this.renderColumnHeader('ac_hom', 'Number of Homozygotes', {
+                className: 'right-align',
+              })}
+            {showHemizygotes &&
+              this.renderColumnHeader('ac_hemi', 'Number of Hemizygotes', {
+                className: 'right-align',
+              })}
+            {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency', {
+              style: { paddingLeft: '25px' },
+            })}
           </tr>
         </thead>
         {renderedPopulations.map((pop, i) => (
@@ -235,7 +250,7 @@ export class PopulationsTable extends Component {
               <td className="right-align">{pop.an}</td>
               {showHomozygotes && <td className="right-align">{pop.ac_hom}</td>}
               {showHemizygotes && <td className="right-align">{pop.ac_hemi}</td>}
-              <td>{pop.af.toPrecision(4)}</td>
+              <td style={{ paddingLeft: '25px' }}>{pop.af.toPrecision(4)}</td>
             </tr>
             {pop.subpopulations &&
               expandedPopulations[pop.name] &&
@@ -259,7 +274,7 @@ export class PopulationsTable extends Component {
                       {subPop.ac_hemi !== null ? subPop.ac_hemi : '—'}
                     </td>
                   )}
-                  <td>{subPop.af.toPrecision(4)}</td>
+                  <td style={{ paddingLeft: '25px' }}>{subPop.af.toPrecision(4)}</td>
                 </tr>
               ))}
           </tbody>
@@ -273,7 +288,7 @@ export class PopulationsTable extends Component {
             <td className="right-align">{totalAlleleNumber}</td>
             {showHomozygotes && <td className="right-align">{totalHomozygotes}</td>}
             {showHemizygotes && <td className="right-align">{totalHemizygotes}</td>}
-            <td>{totalAlleleFrequency.toPrecision(4)}</td>
+            <td style={{ paddingLeft: '25px' }}>{totalAlleleFrequency.toPrecision(4)}</td>
           </tr>
         </tfoot>
       </Table>
