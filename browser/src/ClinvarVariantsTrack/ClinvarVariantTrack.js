@@ -68,7 +68,7 @@ const SelectCategoryButton = styled(Button)`
   line-height: 18px;
 `
 
-const ClinvarVariantTrack = ({ transcripts, variants }) => {
+const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }) => {
   const [
     includedClinicalSignificanceCategories,
     setIncludedClinicalSignificanceCategories,
@@ -198,6 +198,7 @@ const ClinvarVariantTrack = ({ transcripts, variants }) => {
 }
 
 ClinvarVariantTrack.propTypes = {
+  referenceGenome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
   transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
 }

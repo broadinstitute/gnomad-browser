@@ -7,7 +7,7 @@ import { Button } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset } from '../datasets'
+import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -242,6 +242,7 @@ class Variants extends Component {
     } = this.state
 
     const datasetLabel = labelForDataset(datasetId)
+    const referenceGenome = referenceGenomeForDataset(datasetId)
 
     if (variants.length === 0) {
       return <StatusMessage>No variants found</StatusMessage>
@@ -252,7 +253,11 @@ class Variants extends Component {
         {clinvarVariants && (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack transcripts={transcripts} variants={clinvarVariants} />
+            <ClinvarVariantTrack
+              referenceGenome={referenceGenome}
+              transcripts={transcripts}
+              variants={clinvarVariants}
+            />
             <p style={{ marginLeft: '115px' }}>
               Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
               release.
