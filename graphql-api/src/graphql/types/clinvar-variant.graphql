@@ -50,7 +50,9 @@ type ClinVarVariantDetails {
   alt: String!
   clinical_significance: String!
   clinvar_variation_id: String!
+  gnomad: ClinVarVariantGnomadData
   gold_stars: Int!
+  in_gnomad: Boolean!
   last_evaluated: String
   review_status: String!
   rsid: String
