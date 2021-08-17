@@ -30,6 +30,7 @@ module.exports = {
     gene_id: majorConsequenceFieldResolver('gene_id'),
     gene_symbol: majorConsequenceFieldResolver('gene_symbol'),
     transcript_id: majorConsequenceFieldResolver('transcript_id'),
+    transcript_version: majorConsequenceFieldResolver('transcript_version'),
     hgvsc: majorConsequenceFieldResolver('hgvsc'),
     hgvsp: majorConsequenceFieldResolver('hgvsp'),
     hgvs: (obj) => {

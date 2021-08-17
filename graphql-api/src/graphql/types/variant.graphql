@@ -69,10 +69,10 @@ type TranscriptConsequence {
   major_consequence: String
   polyphen_prediction: String
   refseq_id: String
-  refseq_version: String!
+  refseq_version: String
   sift_prediction: String
   transcript_id: String!
-  transcript_version: String
+  transcript_version: String!
 
   # Deprecated - replaced by is_canonical
   canonical: Boolean
@@ -137,6 +137,7 @@ type Variant {
   gene_id: String
   gene_symbol: String
   transcript_id: String
+  transcript_version: String
   hgvsc: String
   hgvsp: String
   lof: String
