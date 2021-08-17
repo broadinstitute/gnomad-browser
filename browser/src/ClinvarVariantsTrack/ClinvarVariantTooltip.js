@@ -105,7 +105,7 @@ const ClinvarVariantTooltip = ({ variant }) => (
         </>
       )}
     </ClinvarVariantAttributeList>
-    Click to view in ClinVar
+    Click for more information
   </ClinvarVariantTooltipWrapper>
 )
 

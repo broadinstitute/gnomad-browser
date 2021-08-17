@@ -66,7 +66,13 @@ const getFrameshiftTerminationSitePosition = (variant, transcript) => {
     : exonContainingTerminationSite.start + remainingOffset
 }
 
-const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width }) => {
+const ClinvarAllVariantsPlot = ({
+  scalePosition,
+  transcripts,
+  variants,
+  width,
+  onClickVariant,
+}) => {
   const [highlightedCategory, _setHighlightedCategory] = useState(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -145,13 +151,6 @@ const ClinvarAllVariantsPlot = ({ scalePosition, transcripts, variants, width })
   const cross = useMemo(() => symbol().size(40).type(symbolCross)(), [])
   const diamond = useMemo(() => symbol().size(32).type(symbolDiamond)(), [])
   const triangle = useMemo(() => symbol().size(32).type(symbolTriangle)(), [])
-
-  const onClickVariant = variant => {
-    const clinVarWindow = window.open()
-    // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
-    clinVarWindow.opener = null
-    clinVarWindow.location = `https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`
-  }
 
   /**
    * Render symbol based on variant's consequence
@@ -366,6 +365,7 @@ ClinvarAllVariantsPlot.propTypes = {
   ).isRequired,
   variants: PropTypes.arrayOf(ClinvarVariantPropType).isRequired,
   width: PropTypes.number.isRequired,
+  onClickVariant: PropTypes.func.isRequired,
 }
 
 export default ClinvarAllVariantsPlot
