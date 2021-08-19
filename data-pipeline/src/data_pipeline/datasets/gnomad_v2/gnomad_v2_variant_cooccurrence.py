@@ -23,9 +23,9 @@ def fix_haplotype_counts(genotype_counts, haplotype_counts):
 
 def shape_phase_info_data(phase_info):
     return hl.rbind(
-        fix_haplotype_counts(phase_info.gt_counts.adj, phase_info.em.adj.hap_counts),
+        fix_haplotype_counts(phase_info.gt_counts, phase_info.em.hap_counts),
         lambda haplotype_counts: hl.struct(
-            genotype_counts=phase_info.gt_counts.adj,
+            genotype_counts=phase_info.gt_counts,
             haplotype_counts=haplotype_counts,
             p_compound_heterozygous=hl.rbind(
                 (haplotype_counts[1] * haplotype_counts[2])
