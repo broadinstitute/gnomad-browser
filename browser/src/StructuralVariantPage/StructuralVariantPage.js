@@ -52,6 +52,12 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         </ExternalLink>
       </ResponsiveSection>
     </Wrapper>
+
+    <section>
+      <h2>Population Frequencies</h2>
+      <StructuralVariantPopulationsTable variant={variant} />
+    </section>
+
     {variant.type === 'MCNV' && (
       <Wrapper>
         <ResponsiveSection>
@@ -60,6 +66,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         </ResponsiveSection>
       </Wrapper>
     )}
+
     <Wrapper>
       <ResponsiveSection>
         <h2>Consequences</h2>
@@ -69,6 +76,9 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
         </p>
         <StructuralVariantConsequenceList variant={variant} />
       </ResponsiveSection>
+    </Wrapper>
+
+    <Wrapper>
       <ResponsiveSection>
         <h2>Genotype Quality</h2>
         {variant.genotype_quality ? (
@@ -77,12 +87,7 @@ const StructuralVariantPage = ({ datasetId, variant }) => (
           <p>Genotype quality is available for this variant.</p>
         )}
       </ResponsiveSection>
-    </Wrapper>
-    <Wrapper>
-      <ResponsiveSection>
-        <h2>Population Frequencies</h2>
-        <StructuralVariantPopulationsTable variant={variant} />
-      </ResponsiveSection>
+
       <ResponsiveSection>
         <h2>
           Age Distribution <InfoButton topic="age" />
