@@ -119,15 +119,17 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
       </ResponsiveSection>
     </Wrapper>
     <Section>
-      <h2>Annotations</h2>
-      <MitochondrialVariantTranscriptConsequenceList variant={variant} />
+      <h2>Population Frequencies</h2>
+      <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
     </Section>
-    {variant.clinvar && (
-      <Section>
-        <h2>ClinVar</h2>
-        <VariantClinvarInfo variant={variant} />
-      </Section>
-    )}
+    <Section>
+      <h2>
+        Haplogroup Frequencies <InfoButton topic="mt-haplogroup-frequencies" />
+      </h2>
+      <TableWrapper>
+        <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
+      </TableWrapper>
+    </Section>
     <Wrapper>
       <ResponsiveSection>
         <h2>Heteroplasmy Distribution</h2>
@@ -140,18 +142,19 @@ const MitochondrialVariantPage = ({ datasetId, variant }) => (
         <MitochondrialVariantAgeDistribution variant={variant} />
       </ResponsiveSection>
     </Wrapper>
-    <Section>
-      <h2>Population Frequencies</h2>
-      <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
-    </Section>
-    <Section>
-      <h2>
-        Haplogroup Frequencies <InfoButton topic="mt-haplogroup-frequencies" />
-      </h2>
-      <TableWrapper>
-        <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
-      </TableWrapper>
-    </Section>
+    <Wrapper>
+      <ResponsiveSection>
+        <h2>Annotations</h2>
+        <MitochondrialVariantTranscriptConsequenceList variant={variant} />
+      </ResponsiveSection>
+
+      {variant.clinvar && (
+        <ResponsiveSection>
+          <h2>ClinVar</h2>
+          <VariantClinvarInfo variant={variant} />
+        </ResponsiveSection>
+      )}
+    </Wrapper>
     <Wrapper>
       <ResponsiveSection>
         <h2>Genotype Quality Metrics</h2>
