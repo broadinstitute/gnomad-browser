@@ -109,7 +109,7 @@ const fetchGenesMatchingText = async (esClient, query, referenceGenome) => {
   const response = await esClient.search({
     index: GENE_INDICES[referenceGenome],
     type: '_doc',
-    _source: ['gene_id', 'value.symbol'],
+    _source: ['gene_id', 'value.gene_version', 'value.symbol'],
     body: {
       query: {
         bool: {
@@ -131,6 +131,7 @@ const fetchGenesMatchingText = async (esClient, query, referenceGenome) => {
     .map((hit) => hit._source)
     .map((doc) => ({
       ensembl_id: doc.gene_id,
+      ensembl_version: doc.value.gene_version,
       symbol: doc.value.symbol,
     }))
 }

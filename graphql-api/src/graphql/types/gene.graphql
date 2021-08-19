@@ -56,5 +56,6 @@ type Gene {
 
 type GeneSearchResult {
   ensembl_id: String!
+  ensembl_version: String!
   symbol: String
 }
