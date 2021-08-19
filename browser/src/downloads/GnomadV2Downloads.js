@@ -173,6 +173,9 @@ export default () => (
           <Link href="#v2-lof-curation-results">Loss-of-function curation results</Link>
         </ListItem>
         <ListItem>
+          <Link href="#v2-variant-cooccurrence">Variant co-occurrence</Link>
+        </ListItem>
+        <ListItem>
           <Link href="#v2-linkage-disequilibrium">Linkage disequilibrium</Link>
         </ListItem>
         <ListItem>
@@ -545,6 +548,21 @@ export default () => (
           <GenericDownloadLinks
             label="gnomAD addendum LoF curation results"
             path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v2-variant-cooccurrence">Variant co-occurrence</SectionTitle>
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label="Variant co-occurrence Hail Table"
+            path="/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"
             gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
