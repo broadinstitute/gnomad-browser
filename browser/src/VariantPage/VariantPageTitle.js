@@ -24,6 +24,24 @@ const Separator = styled.span`
   }
 `
 
+const VariantIdWrapper = styled.span`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  max-width: 100%;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`
+
+const VariantIdSeparator = styled.span`
+  @media (max-width: 600px) {
+    display: none;
+  }
+`
+
 const TitleAlleles = styled.span`
   flex-shrink: 1;
   overflow: hidden;
@@ -53,15 +71,15 @@ const VariantPageTitle = ({ datasetId, variantId }) => {
       <span>{variantDescription}</span>
       <Separator style={{ width: '1ch' }}>:</Separator>
       <TooltipAnchor tooltip={variantId}>
-        <TitleWrapper>
+        <VariantIdWrapper>
           <span>
             {chrom}-{pos}
           </span>
-          <Separator>-</Separator>
+          <VariantIdSeparator>-</VariantIdSeparator>
           <TitleAlleles>
             {ref}-{alt}
           </TitleAlleles>
-        </TitleWrapper>
+        </VariantIdWrapper>
       </TooltipAnchor>
       <Separator> </Separator>
       <span>({referenceGenomeForDataset(datasetId)})</span>
