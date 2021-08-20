@@ -7,15 +7,31 @@ import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import { getConsequenceRank } from '../vepConsequences'
 import VariantLiftover from './VariantLiftover'
 
+const isVariantEligibleForCooccurrence = (variant, datasetId) => {
+  if (datasetId !== 'gnomad_r2_1') {
+    return false
+  }
+
+  const exomeAC = ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1)
+  const majorConsequenceRank = Math.min(
+    ...variant.transcript_consequences.map(csq => getConsequenceRank(csq.major_consequence))
+  )
+
+  return exomeAC <= 0.05 && majorConsequenceRank <= getConsequenceRank('3_prime_UTR_variant')
+}
+
 export const variantHasRelatedVariants = (variant, datasetId) => {
   const hasColocatedVariants = (variant.colocated_variants || []).length > 0
   const hasRelatedMultiNucleotideVariants = (variant.multi_nucleotide_variants || []).length > 0
   const hasLiftover = (variant.liftover || variant.liftover_sources || []).length > 0
-  const hasCooccurrence =
-    datasetId === 'gnomad_r2_1' &&
-    ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1) <= 0.05
+  const isEligibleForCooccurrence = isVariantEligibleForCooccurrence(variant, datasetId)
 
-  return hasColocatedVariants || hasRelatedMultiNucleotideVariants || hasLiftover || hasCooccurrence
+  return (
+    hasColocatedVariants ||
+    hasRelatedMultiNucleotideVariants ||
+    hasLiftover ||
+    isEligibleForCooccurrence
+  )
 }
 
 const Wrapper = styled.div`
@@ -63,25 +79,21 @@ const VariantRelatedVariants = ({ datasetId, variant }) => {
         </Item>
       )}
 
-      {datasetId === 'gnomad_r2_1' &&
-        ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1) <= 0.05 &&
-        Math.min(
-          ...variant.transcript_consequences.map(csq => getConsequenceRank(csq.major_consequence))
-        ) <= getConsequenceRank('3_prime_UTR_variant') && (
-          <Item>
-            <h3>Variant Co-occurrence</h3>
-            <p>
-              <Link
-                to={{
-                  pathname: '/variant-cooccurrence',
-                  search: `variant=${variant.variant_id}`,
-                }}
-              >
-                Check if this variant occurs on the same haplotype as another variant.
-              </Link>
-            </p>
-          </Item>
-        )}
+      {isVariantEligibleForCooccurrence(variant, datasetId) && (
+        <Item>
+          <h3>Variant Co-occurrence</h3>
+          <p>
+            <Link
+              to={{
+                pathname: '/variant-cooccurrence',
+                search: `variant=${variant.variant_id}`,
+              }}
+            >
+              Check if this variant occurs on the same haplotype as another variant.
+            </Link>
+          </p>
+        </Item>
+      )}
     </Wrapper>
   )
 }
