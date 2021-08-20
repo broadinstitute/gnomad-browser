@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
 
 import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
@@ -17,11 +18,24 @@ export const variantHasRelatedVariants = (variant, datasetId) => {
   return hasColocatedVariants || hasRelatedMultiNucleotideVariants || hasLiftover || hasCooccurrence
 }
 
+const Wrapper = styled.div`
+  columns: 2;
+  column-gap: 30px;
+
+  @media (max-width: 992px) {
+    columns: 1;
+  }
+`
+
+const Item = styled.div`
+  break-inside: avoid;
+`
+
 const VariantRelatedVariants = ({ datasetId, variant }) => {
   return (
-    <>
+    <Wrapper>
       {variant.colocated_variants && variant.colocated_variants.length > 0 && (
-        <div>
+        <Item>
           <h3>Other Alternate Alleles</h3>
           <p>This variant is multiallelic. Other alternate alleles are:</p>
           <ul>
@@ -31,19 +45,22 @@ const VariantRelatedVariants = ({ datasetId, variant }) => {
               </li>
             ))}
           </ul>
-        </div>
+        </Item>
       )}
 
       {(variant.multi_nucleotide_variants || []).length > 0 && (
-        <div>
+        <Item>
           <h3>Multi-nucleotide Variants</h3>
           <p>This variant&apos;s consequence may be affected by other variants:</p>
           <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
-        </div>
+        </Item>
       )}
 
       {(variant.liftover || variant.liftover_sources || []).length > 0 && (
-        <VariantLiftover variant={variant} />
+        <Item>
+          <h3>Liftover</h3>
+          <VariantLiftover variant={variant} />
+        </Item>
       )}
 
       {datasetId === 'gnomad_r2_1' &&
@@ -51,7 +68,7 @@ const VariantRelatedVariants = ({ datasetId, variant }) => {
         Math.min(
           ...variant.transcript_consequences.map(csq => getConsequenceRank(csq.major_consequence))
         ) <= getConsequenceRank('3_prime_UTR_variant') && (
-          <div>
+          <Item>
             <h3>Variant Co-occurrence</h3>
             <p>
               <Link
@@ -63,9 +80,9 @@ const VariantRelatedVariants = ({ datasetId, variant }) => {
                 Check if this variant occurs on the same haplotype as another variant.
               </Link>
             </p>
-          </div>
+          </Item>
         )}
-    </>
+    </Wrapper>
   )
 }
 
