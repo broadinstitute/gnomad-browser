@@ -16,8 +16,7 @@ const VariantLiftover = ({ variant }) => {
 
     const isPlural = variant.liftover.length > 1
     return (
-      <div>
-        <h3>Liftover</h3>
+      <>
         <p>
           This variant lifts over to the following {liftoverTargetReferenceGenome} variant
           {isPlural ? 's' : ''}:
@@ -55,7 +54,7 @@ const VariantLiftover = ({ variant }) => {
             )
           })}
         </ul>
-      </div>
+      </>
     )
   }
 
@@ -67,8 +66,7 @@ const VariantLiftover = ({ variant }) => {
 
     const isPlural = variant.liftover_sources.length > 1
     return (
-      <div>
-        <h3>Liftover</h3>
+      <>
         <p>
           The following {liftoverSourceReferenceGenome} variant{isPlural ? 's' : ''} lift
           {isPlural ? '' : 's'} over to this variant:
@@ -106,7 +104,7 @@ const VariantLiftover = ({ variant }) => {
             )
           })}
         </ul>
-      </div>
+      </>
     )
   }
 
