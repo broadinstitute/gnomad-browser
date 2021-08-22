@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -10,15 +12,25 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
   const datasetLabel = labelForDataset(datasetId)
 
   return (
-    <Variants
-      clinvarReleaseDate={clinvarReleaseDate}
-      clinvarVariants={clinvarVariants}
-      context={region}
-      datasetId={datasetId}
-      exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-      transcripts={region.genes.flatMap(gene => gene.transcripts)}
-      variants={variants}
-    />
+    <>
+      <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+      <ClinvarVariantTrack
+        referenceGenome={referenceGenomeForDataset(datasetId)}
+        transcripts={region.genes.flatMap(gene => gene.transcripts)}
+        variants={clinvarVariants}
+      />
+      <p style={{ marginLeft: '115px' }}>
+        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
+      </p>
+
+      <Variants
+        clinvarReleaseDate={clinvarReleaseDate}
+        context={region}
+        datasetId={datasetId}
+        exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
+        variants={variants}
+      />
+    </>
   )
 }
 

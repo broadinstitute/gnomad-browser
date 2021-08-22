@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 
 import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
@@ -61,49 +63,59 @@ const VariantsInGene = ({
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
 
   return (
-    <Variants
-      clinvarReleaseDate={clinvarReleaseDate}
-      clinvarVariants={clinvarVariants}
-      context={gene}
-      datasetId={datasetId}
-      exportFileName={`${datasetLabel}_${gene.gene_id}`}
-      transcripts={gene.transcripts}
-      variants={variants}
-    >
-      <p>
-        <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
-          {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
-        </Badge>{' '}
-        Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-        variants in UTRs or introns, use the{' '}
-        <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
+    <>
+      <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+      <ClinvarVariantTrack
+        referenceGenome={referenceGenomeForDataset(datasetId)}
+        transcripts={gene.transcripts}
+        variants={clinvarVariants}
+      />
+      <p style={{ marginLeft: '115px' }}>
+        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
       </p>
-      <p>
-        The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
-        severe consequence across all transcripts in this gene. Cases where the most severe
-        consequence occurs in a{' '}
-        {gene.reference_genome === 'GRCh37'
-          ? 'non-canonical transcript'
-          : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
-        are denoted with †. To see consequences in a specific transcript, use the{' '}
-        <TextButton
-          onClick={() => {
-            setIsTranscriptsModalOpen(true)
-          }}
-        >
-          transcript view
-        </TextButton>
-        .
-      </p>
-      {isTranscriptsModalOpen && (
-        <TranscriptsModal
-          gene={gene}
-          onRequestClose={() => {
-            setIsTranscriptsModalOpen(false)
-          }}
-        />
-      )}
-    </Variants>
+
+      <Variants
+        clinvarReleaseDate={clinvarReleaseDate}
+        context={gene}
+        datasetId={datasetId}
+        exportFileName={`${datasetLabel}_${gene.gene_id}`}
+        variants={variants}
+      >
+        <p>
+          <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
+            {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
+          </Badge>{' '}
+          Only variants located in or within 75 base pairs of a coding exon are shown here. To see
+          variants in UTRs or introns, use the{' '}
+          <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
+        </p>
+        <p>
+          The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
+          severe consequence across all transcripts in this gene. Cases where the most severe
+          consequence occurs in a{' '}
+          {gene.reference_genome === 'GRCh37'
+            ? 'non-canonical transcript'
+            : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
+          are denoted with †. To see consequences in a specific transcript, use the{' '}
+          <TextButton
+            onClick={() => {
+              setIsTranscriptsModalOpen(true)
+            }}
+          >
+            transcript view
+          </TextButton>
+          .
+        </p>
+        {isTranscriptsModalOpen && (
+          <TranscriptsModal
+            gene={gene}
+            onRequestClose={() => {
+              setIsTranscriptsModalOpen(false)
+            }}
+          />
+        )}
+      </Variants>
+    </>
   )
 }
 

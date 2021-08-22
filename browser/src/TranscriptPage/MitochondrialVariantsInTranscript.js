@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
@@ -109,19 +111,30 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
         })
 
         return (
-          <MitochondrialVariants
-            {...rest}
-            clinvarReleaseDate={data.meta.clinvar_release_date}
-            clinvarVariants={data.transcript.clinvar_variants}
-            context={transcript}
-            datasetId={datasetId}
-            exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
-            transcripts={[transcript]}
-            variants={annotateVariantsWithClinvar(
-              data.transcript.mitochondrial_variants,
-              data.transcript.clinvar_variants
-            )}
-          />
+          <>
+            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+            <ClinvarVariantTrack
+              referenceGenome={referenceGenomeForDataset(datasetId)}
+              transcripts={[transcript]}
+              variants={data.transcript.clinvar_variants}
+            />
+            <p style={{ marginLeft: '115px' }}>
+              Data displayed here is from ClinVar&apos;s{' '}
+              {formatClinvarDate(data.meta.clinvar_release_date)} release.
+            </p>
+
+            <MitochondrialVariants
+              {...rest}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              context={transcript}
+              datasetId={datasetId}
+              exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
+              variants={annotateVariantsWithClinvar(
+                data.transcript.mitochondrial_variants,
+                data.transcript.clinvar_variants
+              )}
+            />
+          </>
         )
       }}
     </Query>

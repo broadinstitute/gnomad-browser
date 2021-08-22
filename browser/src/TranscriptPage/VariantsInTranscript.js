@@ -3,6 +3,8 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
@@ -22,36 +24,48 @@ const VariantsInTranscript = ({
   const datasetLabel = labelForDataset(datasetId)
 
   return (
-    <Variants
-      clinvarReleaseDate={clinvarReleaseDate}
-      clinvarVariants={clinvarVariants}
-      context={transcript}
-      datasetId={datasetId}
-      exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
-      transcripts={[transcript]}
-      variants={variants}
-    >
-      {isCodingTranscript ? (
-        <p>
-          <Badge level={includeUTRs ? 'warning' : 'info'}>{includeUTRs ? 'Warning' : 'Note'}</Badge>{' '}
-          Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-          variants in UTRs or introns, use the{' '}
-          <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
-            region view
-          </Link>
-          .
-        </p>
-      ) : (
-        <p>
-          <Badge level="info">Note</Badge> Only variants located in or within 75 base pairs of an
-          exon are shown here. To see variants in introns, use the{' '}
-          <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
-            region view
-          </Link>
-          .
-        </p>
-      )}
-    </Variants>
+    <>
+      <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+      <ClinvarVariantTrack
+        referenceGenome={referenceGenomeForDataset(datasetId)}
+        transcripts={[transcript]}
+        variants={clinvarVariants}
+      />
+      <p style={{ marginLeft: '115px' }}>
+        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
+      </p>
+
+      <Variants
+        clinvarReleaseDate={clinvarReleaseDate}
+        context={transcript}
+        datasetId={datasetId}
+        exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
+        variants={variants}
+      >
+        {isCodingTranscript ? (
+          <p>
+            <Badge level={includeUTRs ? 'warning' : 'info'}>
+              {includeUTRs ? 'Warning' : 'Note'}
+            </Badge>{' '}
+            Only variants located in or within 75 base pairs of a coding exon are shown here. To see
+            variants in UTRs or introns, use the{' '}
+            <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
+              region view
+            </Link>
+            .
+          </p>
+        ) : (
+          <p>
+            <Badge level="info">Note</Badge> Only variants located in or within 75 base pairs of an
+            exon are shown here. To see variants in introns, use the{' '}
+            <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
+              region view
+            </Link>
+            .
+          </p>
+        )}
+      </Variants>
+    </>
   )
 }
 
