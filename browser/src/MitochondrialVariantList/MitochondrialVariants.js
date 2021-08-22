@@ -5,9 +5,7 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { referenceGenomeForDataset } from '../datasets'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -54,16 +52,9 @@ const sortMitochondrialVariants = (variants, { sortKey, sortOrder }) => {
 class MitochondrialVariants extends Component {
   static propTypes = {
     clinvarReleaseDate: PropTypes.string.isRequired,
-    clinvarVariants: PropTypes.arrayOf(PropTypes.object),
     context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    datasetId: PropTypes.string.isRequired,
     exportFileName: PropTypes.string.isRequired,
-    transcripts: PropTypes.arrayOf(PropTypes.object).isRequired,
     variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
-  }
-
-  static defaultProps = {
-    clinvarVariants: null,
   }
 
   constructor(props) {
@@ -230,15 +221,7 @@ class MitochondrialVariants extends Component {
   }
 
   render() {
-    const {
-      clinvarReleaseDate,
-      clinvarVariants,
-      context,
-      datasetId,
-      exportFileName,
-      transcripts,
-      variants,
-    } = this.props
+    const { context, exportFileName, variants } = this.props
     const {
       filter,
       renderedTableColumns,
@@ -252,28 +235,20 @@ class MitochondrialVariants extends Component {
     } = this.state
 
     if (variants.length === 0) {
-      return <StatusMessage>No variants found</StatusMessage>
+      return (
+        <>
+          <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+          <TrackPageSection>
+            <p>No gnomAD variants found.</p>
+          </TrackPageSection>
+        </>
+      )
     }
 
     const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
 
     return (
       <div>
-        {clinvarVariants && (
-          <>
-            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack
-              referenceGenome={referenceGenomeForDataset(datasetId)}
-              transcripts={transcripts}
-              variants={clinvarVariants}
-            />
-            <p style={{ marginLeft: '115px' }}>
-              Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-              release.
-            </p>
-          </>
-        )}
-
         <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
         <Wrapper>
           <Cursor onClick={this.onNavigatorClick}>

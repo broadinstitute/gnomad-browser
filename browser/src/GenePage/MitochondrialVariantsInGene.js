@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
@@ -106,19 +108,30 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
         })
 
         return (
-          <MitochondrialVariants
-            {...rest}
-            clinvarReleaseDate={data.meta.clinvar_release_date}
-            clinvarVariants={data.gene.clinvar_variants}
-            context={gene}
-            datasetId={datasetId}
-            exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
-            transcripts={gene.transcripts}
-            variants={annotateVariantsWithClinvar(
-              data.gene.mitochondrial_variants,
-              data.gene.clinvar_variants
-            )}
-          />
+          <>
+            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+            <ClinvarVariantTrack
+              referenceGenome={referenceGenomeForDataset(datasetId)}
+              transcripts={gene.transcripts}
+              variants={data.gene.clinvar_variants}
+            />
+            <p style={{ marginLeft: '115px' }}>
+              Data displayed here is from ClinVar&apos;s{' '}
+              {formatClinvarDate(data.meta.clinvar_release_date)} release.
+            </p>
+
+            <MitochondrialVariants
+              {...rest}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              context={gene}
+              datasetId={datasetId}
+              exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
+              variants={annotateVariantsWithClinvar(
+                data.gene.mitochondrial_variants,
+                data.gene.clinvar_variants
+              )}
+            />
+          </>
         )
       }}
     </Query>
