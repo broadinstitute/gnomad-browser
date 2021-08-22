@@ -43,7 +43,7 @@ const renderInGnomad = variant => {
     if (variant.gnomad.exome) {
       return `Yes - exomes${variant.gnomad.exome.filters.length ? ' (filtered)' : ''}`
     }
-    if (variant.gnomad.exome) {
+    if (variant.gnomad.genome) {
       return `Yes - genomes${variant.gnomad.genome.filters.length ? ' (filtered)' : ''}`
     }
   }
