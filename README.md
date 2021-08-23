@@ -19,26 +19,4 @@ For information on citing the gnomAD dataset, see the [gnomAD Terms and Data Inf
 
 ## Development
 
-### Requirements
-
-- [Node.js](https://nodejs.org)
-- [yarn](https://yarnpkg.com)
-
-### Getting started
-
-- Clone repository and download dependencies:
-
-  ```shell
-  git clone https://github.com/broadinstitute/gnomad-browser.git
-  cd gnomad-browser
-  yarn
-  ```
-
-- Start a local instance of the gnomAD browser which fetches data from https://gnomad.broadinstitute.org:
-
-  ```shell
-  cd browser
-  yarn start
-  ```
-
-- Open http://localhost:8008 in a web browser.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
