@@ -1,4 +1,4 @@
-FROM node:14.15.2-alpine
+FROM node:14.15.2-alpine as build
 
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -30,7 +30,7 @@ RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)
 ###############################################################################
 FROM nginx:stable-alpine
 
-COPY --from=0 /home/node/app/browser/dist/public /usr/share/nginx/html
+COPY --from=build /home/node/app/browser/dist/public /usr/share/nginx/html
 
 COPY deploy/dockerfiles/browser/browser-base.nginx.conf /etc/nginx/browser-base.nginx.conf.template
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/conf.d/default.conf
