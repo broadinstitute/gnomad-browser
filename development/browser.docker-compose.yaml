@@ -1,0 +1,21 @@
+services:
+  browser:
+    build:
+      context: .
+      dockerfile: deploy/dockerfiles/browser/browser.dockerfile
+      target: build
+    command:
+      - sh
+      - -c
+      - yarn workspace '@gnomad/browser' run webpack serve --host $$(awk 'END { print $$1 }' /etc/hosts)
+    environment:
+      - NODE_ENV=development
+      - GNOMAD_API_URL
+      - READS_API_URL
+    ports:
+      - 8008:8008
+    volumes:
+      - ./browser/about:/home/node/app/browser/about
+      - ./browser/help:/home/node/app/browser/help
+      - ./browser/src:/home/node/app/browser/src
+      - ./dataset-metadata:/home/node/app/dataset-metadata

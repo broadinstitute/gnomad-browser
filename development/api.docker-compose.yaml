@@ -1,0 +1,43 @@
+services:
+  elasticsearch-proxy:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk
+    command:
+      - sh
+      - -c
+      - gcloud container clusters get-credentials gnomad --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
+    environment:
+      - PROJECT
+      - ZONE
+    ports:
+      - 9200:9200
+    volumes:
+      - $HOME/.config/gcloud:/root/.config/gcloud
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+  api:
+    build:
+      context: .
+      dockerfile: deploy/dockerfiles/browser/api.dockerfile
+    command: npx nodemon --ext js,graphql graphql-api/src/app.js
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - ELASTICSEARCH_URL=http://elasticsearch-proxy:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD
+      - CACHE_REDIS_URL=redis://redis:6379/1
+      - RATE_LIMITER_REDIS_URL=redis://redis:6379/2
+    ports:
+      - 8010:8000
+    volumes:
+      - ./dataset-metadata:/app/dataset-metadata
+      - ./graphql-api/src:/app/graphql-api/src
+    depends_on:
+      - elasticsearch-proxy
+      - redis
+volumes:
+  redis_data:
