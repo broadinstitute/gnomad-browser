@@ -20,20 +20,6 @@ const isVariantEligibleForCooccurrence = (variant, datasetId) => {
   return exomeAC <= 0.05 && majorConsequenceRank <= getConsequenceRank('3_prime_UTR_variant')
 }
 
-export const variantHasRelatedVariants = (variant, datasetId) => {
-  const hasColocatedVariants = (variant.colocated_variants || []).length > 0
-  const hasRelatedMultiNucleotideVariants = (variant.multi_nucleotide_variants || []).length > 0
-  const hasLiftover = (variant.liftover || variant.liftover_sources || []).length > 0
-  const isEligibleForCooccurrence = isVariantEligibleForCooccurrence(variant, datasetId)
-
-  return (
-    hasColocatedVariants ||
-    hasRelatedMultiNucleotideVariants ||
-    hasLiftover ||
-    isEligibleForCooccurrence
-  )
-}
-
 const Wrapper = styled.div`
   columns: 2;
   column-gap: 30px;
@@ -46,6 +32,12 @@ const Wrapper = styled.div`
 const Item = styled.div`
   break-inside: avoid;
 `
+
+const getLocusWindow = ({ chrom, pos }, range = 20) => {
+  const start = Math.max(1, pos - range)
+  const stop = pos + range
+  return `${chrom}-${start}-${stop}`
+}
 
 const VariantRelatedVariants = ({ datasetId, variant }) => {
   return (
@@ -94,6 +86,15 @@ const VariantRelatedVariants = ({ datasetId, variant }) => {
           </p>
         </Item>
       )}
+
+      <Item>
+        <h3>Nearby Variants</h3>
+        <p>
+          <Link to={`/region/${getLocusWindow(variant, 20)}`}>
+            View variants located within 20 bases of this variant.
+          </Link>
+        </p>
+      </Item>
     </Wrapper>
   )
 }

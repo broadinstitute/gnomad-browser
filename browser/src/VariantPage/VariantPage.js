@@ -25,7 +25,7 @@ import VariantInSilicoPredictors from './VariantInSilicoPredictors'
 import VariantLoFCurationResults from './VariantLoFCurationResults'
 import VariantPageTitle from './VariantPageTitle'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
-import VariantRelatedVariants, { variantHasRelatedVariants } from './VariantRelatedVariants'
+import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 
@@ -92,12 +92,10 @@ const VariantPageContent = ({ datasetId, variant }) => {
         <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
       </Section>
 
-      {variantHasRelatedVariants(variant, datasetId) && (
-        <Section>
-          <h2>Related Variants</h2>
-          <VariantRelatedVariants datasetId={datasetId} variant={variant} />
-        </Section>
-      )}
+      <Section>
+        <h2>Related Variants</h2>
+        <VariantRelatedVariants datasetId={datasetId} variant={variant} />
+      </Section>
 
       <Section>
         <h2>Variant Effect Predictor</h2>
