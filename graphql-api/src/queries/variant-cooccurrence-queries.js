@@ -84,20 +84,60 @@ const getCategoryCounts = (variant) => {
   // gnomAD v2 uses "gnomad" and v3 "all". This code currently only supports gnomAD v2.
   const exomeFreq = variant.exome.freq.gnomad
 
+  const populationFrequencies = exomeFreq.populations.reduce((acc, pop) => {
+    if (pop.id.includes('_')) {
+      const [popId, subPopId] = pop.id.split('_')
+      return {
+        ...acc,
+        [popId]: {
+          ...acc[popId],
+          [subPopId]: pop,
+        },
+      }
+    }
+
+    return {
+      ...acc,
+      [pop.id]: pop,
+    }
+  }, {})
+
+  let nIndividuals
+  if (variant.chrom === 'X') {
+    nIndividuals = populationFrequencies.XX.an / 2 + populationFrequencies.XY.an
+  } else if (variant.chrom === 'Y') {
+    nIndividuals = populationFrequencies.XY.an
+  } else {
+    nIndividuals = exomeFreq.an / 2
+  }
+
+  let getNumIndividualsInPopulation
+  if (variant.chrom === 'X') {
+    getNumIndividualsInPopulation = (popFreq) => popFreq.XX.an / 2 + popFreq.XY.an
+  } else if (variant.chrom === 'Y') {
+    getNumIndividualsInPopulation = (popFreq) => popFreq.XY.an
+  } else {
+    getNumIndividualsInPopulation = (popFreq) => popFreq.an / 2
+  }
+
+  const populationIds = exomeFreq.populations
+    .map((pop) => pop.id)
+    .filter((popId) => !(popId.includes('_') || popId === 'XX' || popId === 'XY'))
+
   return {
     nHomAlt: exomeFreq.homozygote_count,
     nHet: exomeFreq.ac - 2 * exomeFreq.homozygote_count,
-    nHomRef: exomeFreq.an / 2 - exomeFreq.ac + exomeFreq.homozygote_count, // AN / 2 - nHomAlt - nHet
-    populations: exomeFreq.populations
-      .filter((pop) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY'))
-      .map((exomePop) => {
-        return {
-          id: exomePop.id,
-          nHomAlt: exomePop.homozygote_count,
-          nHet: exomePop.ac - 2 * exomePop.homozygote_count,
-          nHomRef: exomePop.an / 2 - exomePop.ac + exomePop.homozygote_count, // AN / 2 - nHomAlt - nHet
-        }
-      }),
+    nHomRef: nIndividuals - exomeFreq.ac + exomeFreq.homozygote_count, // AN / 2 - nHomAlt - nHet
+    populations: populationIds.map((popId) => {
+      const popFreq = populationFrequencies[popId]
+      const nIndividualsInPop = getNumIndividualsInPopulation(popFreq)
+      return {
+        id: popFreq.id,
+        nHomAlt: popFreq.homozygote_count,
+        nHet: popFreq.ac - 2 * popFreq.homozygote_count,
+        nHomRef: nIndividualsInPop - popFreq.ac + popFreq.homozygote_count, // AN / 2 - nHomAlt - nHet
+      }
+    }),
   }
 }
 
