@@ -27,6 +27,7 @@ module.exports = {
     // Major consequence fields
     consequence: majorConsequenceFieldResolver('major_consequence'),
     consequence_in_canonical_transcript: majorConsequenceFieldResolver('canonical'),
+    domains: majorConsequenceFieldResolver('domains'),
     gene_id: majorConsequenceFieldResolver('gene_id'),
     gene_symbol: majorConsequenceFieldResolver('gene_symbol'),
     transcript_id: majorConsequenceFieldResolver('transcript_id'),
