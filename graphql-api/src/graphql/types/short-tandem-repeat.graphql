@@ -1,0 +1,41 @@
+type ShortTandemRepeatGene {
+  ensembl_id: String!
+  symbol: String!
+  region: String!
+}
+
+type ShortTandemRepeatAssociatedDisease {
+  name: String!
+  omim_id: String!
+  benign_threshold: Int!
+  pathogenic_threshold: Int!
+}
+
+type ShortTandemRepeatVariantRegion {
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  start: Int!
+  stop: Int!
+}
+
+type ShortTandemRepeatVariantPopulation {
+  id: String!
+  repeats: [[Int!]!]!
+}
+
+type ShortTandemRepeatVariant {
+  id: String!
+  region: ShortTandemRepeatVariantRegion!
+  repeat_unit: String!
+  repeats: [[Int!]!]!
+  populations: [ShortTandemRepeatVariantPopulation!]!
+}
+
+type ShortTandemRepeat {
+  locus_id: String!
+  gene: ShortTandemRepeatGene!
+  inheritance_mode: String!
+  associated_disease: ShortTandemRepeatAssociatedDisease!
+  stripy_id: String!
+  variants: [ShortTandemRepeatVariant!]!
+}

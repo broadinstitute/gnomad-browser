@@ -17,6 +17,7 @@ const mitochondrialVariantResolvers = require('./resolvers/mitochondrial-variant
 const multiNucleotideVariantResolves = require('./resolvers/multi-nucleotide-variants')
 const regionResolvers = require('./resolvers/region')
 const regionFieldResolvers = require('./resolvers/region-fields')
+const shortTandemRepeatResolvers = require('./resolvers/short-tandem-repeats')
 const structuralVariantResolvers = require('./resolvers/structural-variants')
 const transcriptResolvers = require('./resolvers/transcript')
 const transcriptFieldResolvers = require('./resolvers/transcript-fields')
@@ -43,6 +44,7 @@ const resolvers = mergeResolvers([
   multiNucleotideVariantResolves,
   regionResolvers,
   regionFieldResolvers,
+  shortTandemRepeatResolvers,
   structuralVariantResolvers,
   transcriptResolvers,
   transcriptFieldResolvers,
