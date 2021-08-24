@@ -164,6 +164,9 @@ const TranscriptConsequence = ({ consequence }) => {
       ) : (
         <Attribute name="HGVSc">{consequence.hgvsc}</Attribute>
       )}
+      {consequence.domains && consequence.domains.length > 0 && (
+        <Attribute name="Domains">{consequence.domains.join(', ')}</Attribute>
+      )}
       {consequenceSpecificAttributes}
     </AttributeList>
   )
