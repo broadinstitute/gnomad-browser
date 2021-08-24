@@ -31,6 +31,10 @@ const Wrapper = styled.div`
 
 const Item = styled.div`
   break-inside: avoid;
+
+  h3 {
+    margin-top: 0;
+  }
 `
 
 const getLocusWindow = ({ chrom, pos }, range = 20) => {
