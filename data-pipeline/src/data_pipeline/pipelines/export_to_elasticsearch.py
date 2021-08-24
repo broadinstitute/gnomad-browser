@@ -31,6 +31,7 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_variants import (
 from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
     pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
 )
+from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -176,6 +177,20 @@ DATASETS_CONFIG = {
             "id_field": "xpos",
             "num_shards": 1,
             "block_size": 10_000,
+        },
+    },
+    ##############################################################################################################
+    # gnomAD v3 short tandem repeats
+    ##############################################################################################################
+    "gnomad_v3_short_tandem_repeats": {
+        "get_table": lambda: hl.read_table(
+            gnomad_v3_short_tandem_repeats_pipeline.get_task("prepare_short_tandem_repeats").get_output_path()
+        ),
+        "args": {
+            "index": "gnomad_v3_short_tandem_repeats",
+            "index_fields": ["locus_id", "gene.ensembl_id", "variants.region"],
+            "id_field": "locus_id",
+            "num_shards": 1,
         },
     },
     ##############################################################################################################
