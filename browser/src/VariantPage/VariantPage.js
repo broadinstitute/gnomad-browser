@@ -348,6 +348,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     }
     rsids
     transcript_consequences {
+      domains
       gene_id
       gene_version
       gene_symbol
