@@ -16,5 +16,7 @@ type Query{
 
     variant_cooccurrence(variants: [String!]!, dataset: DatasetId!): VariantCooccurrence @cost(value: 5)
 
+    short_tandem_repeat(locus_id: String!, dataset: DatasetId!): ShortTandemRepeat @cost(value: 1)
+
     meta: BrowserMetadata!
 }
