@@ -54,6 +54,7 @@ type VariantAgeDistribution {
 
 type TranscriptConsequence {
   consequence_terms: [String!]
+  domains: [String!]
   gene_id: String!
   gene_version: String
   gene_symbol: String
@@ -134,6 +135,7 @@ type Variant {
   # Preserved for compatibility with existing browser queries
   consequence: String
   consequence_in_canonical_transcript: Boolean
+  domains: [String!]
   gene_id: String
   gene_symbol: String
   transcript_id: String
