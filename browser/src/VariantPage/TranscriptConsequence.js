@@ -97,6 +97,8 @@ const lofteeAnnotationDescription = consequence => {
 const TranscriptConsequence = ({ consequence }) => {
   const category = getCategoryFromConsequence(consequence.major_consequence)
 
+  let consequenceSpecificAttributes = null
+
   if (category === 'missense') {
     const polyphenColor =
       {
@@ -106,9 +108,8 @@ const TranscriptConsequence = ({ consequence }) => {
 
     const siftColor = consequence.sift_prediction === 'tolerated' ? colors.green : colors.red
 
-    return (
-      <AttributeList>
-        <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
+    consequenceSpecificAttributes = (
+      <>
         {consequence.polyphen_prediction && (
           <Attribute name="Polyphen">
             <Marker color={polyphenColor} /> {consequence.polyphen_prediction}
@@ -119,30 +120,27 @@ const TranscriptConsequence = ({ consequence }) => {
             <Marker color={siftColor} /> {consequence.sift_prediction}
           </Attribute>
         )}
-      </AttributeList>
+      </>
     )
-  }
-
-  if (
+  } else if (
     // "NC" annotations were removed from the data pipeline some time ago.
     // Some ExAC variants still have them.
     consequence.lof === 'NC' ||
     (category === 'lof' && !consequence.lof) // See https://github.com/broadinstitute/gnomad-browser/issues/364
   ) {
-    return (
-      <AttributeList>
-        <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
+    consequenceSpecificAttributes = (
+      <>
+        {consequence.domains && consequence.domains.length > 0 && (
+          <Attribute name="Domains">{consequence.domains.join(', ')}</Attribute>
+        )}
         <Attribute name="pLoF">
           <Marker color={colors.red} /> Low-confidence (Non-protein-coding transcript)
         </Attribute>
-      </AttributeList>
+      </>
     )
-  }
-
-  if (consequence.lof) {
-    return (
-      <AttributeList>
-        <Attribute name="HGVSp">{consequence.hgvs}</Attribute>
+  } else if (consequence.lof) {
+    consequenceSpecificAttributes = (
+      <>
         <Attribute name="pLoF">
           {lofteeAnnotationMarker(consequence)} {lofteeAnnotationDescription(consequence)}
         </Attribute>
@@ -155,11 +153,20 @@ const TranscriptConsequence = ({ consequence }) => {
               .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ' ', el]), [])}
           </Attribute>
         )}
-      </AttributeList>
+      </>
     )
   }
 
-  return null
+  return (
+    <AttributeList>
+      {consequence.hgvsp ? (
+        <Attribute name="HGVSp">{consequence.hgvsp}</Attribute>
+      ) : (
+        <Attribute name="HGVSc">{consequence.hgvsc}</Attribute>
+      )}
+      {consequenceSpecificAttributes}
+    </AttributeList>
+  )
 }
 
 TranscriptConsequence.propTypes = {
