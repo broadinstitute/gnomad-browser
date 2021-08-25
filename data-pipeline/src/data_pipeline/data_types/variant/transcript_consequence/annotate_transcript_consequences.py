@@ -28,7 +28,7 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
         lambda c: c.annotate(major_consequence=hl.sorted(c.consequence_terms, key=consequence_term_rank)[0])
     ).map(
         lambda c: c.annotate(
-            domains=c.domains.map(lambda domain: domain.db + ":" + domain.name),
+            domains=hl.set(c.domains.map(lambda domain: domain.db + ":" + domain.name).filter(hl.is_defined)),
             hgvsc=c.hgvsc.split(":")[-1],
             hgvsp=hgvsp_from_consequence_amino_acids(c),
             is_canonical=hl.bool(c.canonical),
