@@ -34,9 +34,12 @@ const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
 const defaultDataset = 'gnomad_r2_1'
 
 const Routes = () => {
+  // ==================================================================================
   //
-  // Routes must also be added as a rewrite rule in Nginx configuration.
+  //                                     NOTE!
   //
+  // New routes must also be added as a rewrite rule in Nginx configuration.
+  // ==================================================================================
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
@@ -161,6 +164,12 @@ const Routes = () => {
       <Route component={PageNotFoundPage} />
     </Switch>
   )
+  // ==================================================================================
+  //
+  //                                     NOTE!
+  //
+  // New routes must also be added as a rewrite rule in Nginx configuration.
+  // ==================================================================================
 }
 
 export default Routes
