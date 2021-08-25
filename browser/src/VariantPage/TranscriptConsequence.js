@@ -1,7 +1,9 @@
+import { ExternalLink } from '@gnomad/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import InlineList from '../InlineList'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { LofteeFilter, LofteeFlag } from './Loftee'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
@@ -94,6 +96,50 @@ const lofteeAnnotationDescription = consequence => {
   }
 }
 
+const PREFERRED_DOMAIN_DATABASES = new Set(['Pfam'])
+
+const renderDomain = domain => {
+  if (domain.database === 'Pfam') {
+    return (
+      <ExternalLink href={`https://pfam.xfam.org/family/${domain.name}`}>
+        {domain.name} ({domain.database})
+      </ExternalLink>
+    )
+  }
+
+  return `${domain.name} (${domain.database})`
+}
+
+const TranscriptConsequenceProteinDomains = ({ consequence }) => {
+  const domains = consequence.domains
+    .map(domain => {
+      const [database, name] = domain.split(':')
+      return { database: database.replace(/_domains?/, ''), name }
+    })
+    .sort((domain1, domain2) => {
+      if (
+        PREFERRED_DOMAIN_DATABASES.has(domain1.database) &&
+        !PREFERRED_DOMAIN_DATABASES.has(domain2.database)
+      ) {
+        return -1
+      }
+      if (
+        !PREFERRED_DOMAIN_DATABASES.has(domain1.database) &&
+        PREFERRED_DOMAIN_DATABASES.has(domain2.database)
+      ) {
+        return 1
+      }
+
+      return domain1.database.localeCompare(domain2.database)
+    })
+
+  return <InlineList items={domains.map(renderDomain)} label="Protein domains" maxLength={2} />
+}
+
+TranscriptConsequenceProteinDomains.propTypes = {
+  consequence: TranscriptConsequencePropType.isRequired,
+}
+
 const TranscriptConsequence = ({ consequence }) => {
   const category = getCategoryFromConsequence(consequence.major_consequence)
 
@@ -165,7 +211,9 @@ const TranscriptConsequence = ({ consequence }) => {
         <Attribute name="HGVSc">{consequence.hgvsc}</Attribute>
       )}
       {consequence.domains && consequence.domains.length > 0 && (
-        <Attribute name="Domains">{consequence.domains.join(', ')}</Attribute>
+        <Attribute name="Domains">
+          <TranscriptConsequenceProteinDomains consequence={consequence} />
+        </Attribute>
       )}
       {consequenceSpecificAttributes}
     </AttributeList>
