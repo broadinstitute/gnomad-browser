@@ -62,6 +62,11 @@ const exportVariantsToCsv = (variants, datasetId, baseFileName) => {
       },
     },
     {
+      label: 'Transcript',
+      getValue: variant =>
+        variant.transcript_id ? `${variant.transcript_id}.${variant.transcript_version}` : '',
+    },
+    {
       label: 'HGVS Consequence',
       getValue: variant => variant.hgvs || '',
     },

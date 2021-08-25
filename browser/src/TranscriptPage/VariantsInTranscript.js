@@ -136,6 +136,8 @@ query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $refe
       lof_flags
       pos
       rsids
+      transcript_id
+      transcript_version
       variant_id
       exome {
         ac
