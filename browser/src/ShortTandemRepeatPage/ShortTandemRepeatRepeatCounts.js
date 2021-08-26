@@ -1,5 +1,5 @@
 import { max, mean } from 'd3-array'
-import { scaleBand, scaleLinear } from 'd3-scale'
+import { scaleBand, scaleLinear, scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useMemo, useState } from 'react'
 import { withSize } from 'react-sizeme'
@@ -47,7 +47,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, size: { width }, thresholds }) => {
+  ({ maxRepeats, repeats, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
     const nBins = Math.min(maxRepeats + 1, Math.floor(width / 10))
@@ -83,9 +83,17 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
     const xBandwidth = xScale.bandwidth()
 
-    const yScale = scaleLinear()
-      .domain([0, max(data, d => d.count) || 1])
-      .range([plotHeight, 0])
+    let yScale
+    if (scaleType === 'log') {
+      const maxLog = Math.ceil(Math.log10(max(data, d => d.count) || 1))
+      yScale = scaleLog()
+        .domain([1, 10 ** maxLog])
+        .range([plotHeight - 10, 0])
+    } else {
+      yScale = scaleLinear()
+        .domain([0, max(data, d => d.count) || 1])
+        .range([plotHeight, 0])
+    }
 
     const maxNumLabels = Math.floor((width - (margin.left + margin.right)) / 20)
 
@@ -133,7 +141,11 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
             left={margin.left}
             scale={yScale}
             stroke="#333"
-            tickFormat={tickFormat}
+            tickFormat={
+              scaleType === 'log'
+                ? n => (Number.isInteger(Math.log10(n)) ? tickFormat(n) : '')
+                : tickFormat
+            }
             tickLabelProps={() => ({
               dx: '-0.25em',
               dy: '0.25em',
@@ -143,33 +155,46 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
             })}
             top={margin.top}
           />
+          {scaleType === 'log' && (
+            <line
+              x1={margin.left}
+              y1={margin.top}
+              x2={margin.left}
+              y2={margin.top + plotHeight}
+              stroke="#333"
+              strokeWidth={2}
+            />
+          )}
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {data.map(d => (
-              <React.Fragment key={`${d.binIndex}`}>
-                <rect
-                  x={xScale(d.binIndex)}
-                  y={yScale(d.count)}
-                  height={plotHeight - yScale(d.count)}
-                  width={xBandwidth}
-                  fill="#73ab3d"
-                  stroke="#333"
-                />
-                <TooltipAnchor
-                  tooltip={`${d.label} repeat${
-                    d.label === '1' ? '' : 's'
-                  }: ${d.count.toLocaleString()} allele${d.count === 1 ? '' : 's'}`}
-                >
-                  <TooltipTrigger
+            {data.map(d => {
+              const y = d.count === 0 ? plotHeight : yScale(d.count)
+              return (
+                <React.Fragment key={`${d.binIndex}`}>
+                  <rect
                     x={xScale(d.binIndex)}
-                    y={0}
-                    height={plotHeight}
+                    y={y}
+                    height={plotHeight - y}
                     width={xBandwidth}
-                    fill="none"
-                    style={{ pointerEvents: 'visible' }}
+                    fill="#73ab3d"
+                    stroke="#333"
                   />
-                </TooltipAnchor>
-              </React.Fragment>
-            ))}
+                  <TooltipAnchor
+                    tooltip={`${d.label} repeat${
+                      d.label === '1' ? '' : 's'
+                    }: ${d.count.toLocaleString()} allele${d.count === 1 ? '' : 's'}`}
+                  >
+                    <TooltipTrigger
+                      x={xScale(d.binIndex)}
+                      y={0}
+                      height={plotHeight}
+                      width={xBandwidth}
+                      fill="none"
+                      style={{ pointerEvents: 'visible' }}
+                    />
+                  </TooltipAnchor>
+                </React.Fragment>
+              )
+            })}
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
@@ -245,6 +270,7 @@ ShortTandemRepeatRepeatCountsPlot.displayName = 'ShortTandemRepeatRepeatCountsPl
 ShortTandemRepeatRepeatCountsPlot.propTypes = {
   maxRepeats: PropTypes.number.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  scaleType: PropTypes.oneOf(['linear', 'log']),
   thresholds: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -254,12 +280,14 @@ ShortTandemRepeatRepeatCountsPlot.propTypes = {
 }
 
 ShortTandemRepeatRepeatCountsPlot.defaultProps = {
+  scaleType: 'linear',
   thresholds: [],
 }
 
 const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds }) => {
   const [selectedAncestralPopulation, setSelectedAncestralPopulation] = useState('')
   const [selectedSex, setSelectedSex] = useState('')
+  const [selectedScale, setSelectedScale] = useState('linear')
 
   const selectedPopulation = [selectedAncestralPopulation, selectedSex].filter(Boolean).join('_')
 
@@ -279,42 +307,60 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
           shortTandemRepeatVariant.repeats[shortTandemRepeatVariant.repeats.length - 1][0]
         }
         repeats={repeatsInSelectedPopulation}
+        scaleType={selectedScale}
         thresholds={thresholds}
       />
-      <div>
-        <label
-          htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
-        >
-          Population:{' '}
-          <Select
-            id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
-            value={selectedAncestralPopulation}
-            onChange={e => {
-              setSelectedAncestralPopulation(e.target.value)
-            }}
+      <div style={{ display: 'flex', flexDirection: 'row-wrap', justifyContent: 'space-between' }}>
+        <div>
+          <label
+            htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
           >
-            <option value="">Global</option>
-            {ancestralPopulationIds.map(popId => (
-              <option key={popId} value={popId}>
-                {GNOMAD_POPULATION_NAMES[popId]}
-              </option>
-            ))}
-          </Select>
-        </label>{' '}
-        <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}>
-          Sex:{' '}
-          <Select
-            id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}
-            value={selectedSex}
-            onChange={e => {
-              setSelectedSex(e.target.value)
-            }}
-          >
-            <option value="">All</option>
-            <option value="XX">XX</option>
-            <option value="XY">XY</option>
-          </Select>
-        </label>
+            Population:{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
+              value={selectedAncestralPopulation}
+              onChange={e => {
+                setSelectedAncestralPopulation(e.target.value)
+              }}
+            >
+              <option value="">Global</option>
+              {ancestralPopulationIds.map(popId => (
+                <option key={popId} value={popId}>
+                  {GNOMAD_POPULATION_NAMES[popId]}
+                </option>
+              ))}
+            </Select>
+          </label>{' '}
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}>
+            Sex:{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}
+              value={selectedSex}
+              onChange={e => {
+                setSelectedSex(e.target.value)
+              }}
+            >
+              <option value="">All</option>
+              <option value="XX">XX</option>
+              <option value="XY">XY</option>
+            </Select>
+          </label>
+        </div>
+        <div>
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-scale`}>
+            Scale:{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-scale`}
+              value={selectedScale}
+              onChange={e => {
+                setSelectedScale(e.target.value)
+              }}
+            >
+              <option value="linear">Linear</option>
+              <option value="log">Log</option>
+            </Select>
+          </label>
+        </div>
       </div>
     </div>
   )
