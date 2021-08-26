@@ -1,7 +1,7 @@
 import { max, mean } from 'd3-array'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
@@ -41,13 +41,6 @@ const tickFormat = n => {
   return `${n}`
 }
 
-const margin = {
-  bottom: 50,
-  left: 60,
-  right: 10,
-  top: 10,
-}
-
 const labelProps = {
   fontSize: 14,
   textAnchor: 'middle',
@@ -55,20 +48,38 @@ const labelProps = {
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
   ({ maxRepeats, repeats, size: { width }, thresholds }) => {
-    const height = 250
+    const height = 300
 
-    const data = Array.from(Array(maxRepeats + 1).keys()).map(n => ({
-      repeat: n,
-      count: 0,
-    }))
+    const nBins = Math.min(maxRepeats + 1, Math.floor(width / 10))
+    const binSize = Math.ceil(maxRepeats / nBins)
 
-    repeats.forEach(([repeatCount, nAlleles]) => {
-      data[repeatCount].count = nAlleles
-    })
+    const data = useMemo(() => {
+      const d = Array.from(Array(nBins).keys()).map((n, i) => ({
+        binIndex: i,
+        label: binSize === 1 ? `${n}` : `${n * binSize} - ${n * binSize + binSize - 1}`,
+        count: 0,
+      }))
+
+      repeats.forEach(([repeatCount, nAlleles]) => {
+        const binIndex = Math.floor(repeatCount / binSize)
+        d[binIndex].count += nAlleles
+      })
+
+      return d
+    }, [repeats, nBins, binSize])
+
+    const margin = {
+      bottom: binSize === 1 ? 50 : 75,
+      left: 60,
+      right: 10,
+      top: 10,
+    }
 
     const xScale = scaleBand()
-      .domain(data.map(d => d.repeat))
+      .domain(data.map(d => d.binIndex))
       .range([0, width - (margin.left + margin.right)])
+
+    const xBandwidth = xScale.bandwidth()
 
     const yScale = scaleLinear()
       .domain([0, max(data, d => d.count) || 1])
@@ -76,18 +87,42 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
     const maxNumLabels = Math.floor((width - (margin.left + margin.right)) / 20)
 
-    const labelInterval = Math.max(Math.round(maxRepeats / maxNumLabels), 1)
+    const labelInterval = Math.max(Math.round(nBins / maxNumLabels), 1)
 
     return (
       <GraphWrapper>
         <svg height={height} width={width}>
           <AxisBottom
             label="Repeats"
+            labelOffset={binSize === 1 ? 10 : 35}
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
             stroke="#333"
-            tickFormat={(repeat, i) => (i % labelInterval === 0 ? repeat.toString() : '')}
+            tickFormat={binIndex => (binIndex % labelInterval === 0 ? data[binIndex].label : '')}
+            tickLabelProps={
+              binSize === 1
+                ? () => {
+                    return {
+                      dy: '0.25em',
+                      fill: '#000',
+                      fontSize: 10,
+                      textAnchor: 'middle',
+                    }
+                  }
+                : binIndex => {
+                    return {
+                      dx: '-0.25em',
+                      dy: '0.25em',
+                      fill: '#000',
+                      fontSize: 10,
+                      textAnchor: 'end',
+                      transform: `translate(0, 0), rotate(-40 ${
+                        xScale(binIndex) + xBandwidth / 2
+                      }, 0)`,
+                    }
+                  }
+            }
             top={height - margin.bottom}
           />
           <AxisLeft
@@ -97,29 +132,36 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
             scale={yScale}
             stroke="#333"
             tickFormat={tickFormat}
+            tickLabelProps={() => ({
+              dx: '-0.25em',
+              dy: '0.25em',
+              fill: '#000',
+              fontSize: 10,
+              textAnchor: 'end',
+            })}
             top={margin.top}
           />
           <g transform={`translate(${margin.left},${margin.top})`}>
             {data.map(d => (
-              <React.Fragment key={`${d.repeat}`}>
+              <React.Fragment key={`${d.binIndex}`}>
                 <rect
-                  x={xScale(d.repeat)}
+                  x={xScale(d.binIndex)}
                   y={yScale(d.count)}
                   height={yScale(0) - yScale(d.count)}
-                  width={xScale.bandwidth()}
+                  width={xBandwidth}
                   fill="#73ab3d"
                   stroke="#333"
                 />
                 <TooltipAnchor
-                  tooltip={`${d.repeat} repeat${
-                    d.repeat === 1 ? '' : 's'
+                  tooltip={`${d.label} repeat${
+                    d.label === '1' ? '' : 's'
                   }: ${d.count.toLocaleString()} allele${d.count === 1 ? '' : 's'}`}
                 >
                   <TooltipTrigger
-                    x={xScale(d.repeat)}
+                    x={xScale(d.binIndex)}
                     y={yScale.range()[1]}
                     height={yScale.range()[0] - yScale.range()[1]}
-                    width={xScale.bandwidth()}
+                    width={xBandwidth}
                     fill="none"
                     style={{ pointerEvents: 'visible' }}
                   />
@@ -141,7 +183,9 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                   (acc, threshold) => {
                     const labelWidth = 100
 
-                    const thresholdX = xScale(threshold.value)
+                    const binIndex = Math.floor(threshold.value / binSize)
+                    const positionWithBin = (threshold.value - binIndex * binSize) / binSize
+                    const thresholdX = xScale(binIndex) + positionWithBin * xBandwidth
 
                     const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
 
