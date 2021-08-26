@@ -50,8 +50,8 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
   ({ maxRepeats, repeats, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
-    const nBins = Math.min(maxRepeats + 1, Math.floor(width / 10))
-    const binSize = Math.ceil(maxRepeats / nBins)
+    const binSize = Math.max(1, Math.ceil(maxRepeats / (width / 10)))
+    const nBins = Math.floor(maxRepeats / binSize) + 1
 
     const data = useMemo(() => {
       const d = Array.from(Array(nBins).keys()).map((n, i) => ({
