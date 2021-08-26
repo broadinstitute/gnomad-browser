@@ -26,14 +26,21 @@ const VariantsInTranscript = ({
   return (
     <>
       <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-      <ClinvarVariantTrack
-        referenceGenome={referenceGenomeForDataset(datasetId)}
-        transcripts={[transcript]}
-        variants={clinvarVariants}
-      />
-      <p style={{ marginLeft: '115px' }}>
-        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
-      </p>
+      {clinvarVariants.length > 0 ? (
+        <>
+          <ClinvarVariantTrack
+            referenceGenome={referenceGenomeForDataset(datasetId)}
+            transcripts={[transcript]}
+            variants={clinvarVariants}
+          />
+          <p style={{ marginLeft: '115px' }}>
+            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+            release.
+          </p>
+        </>
+      ) : (
+        <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this transcript.</p>
+      )}
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}

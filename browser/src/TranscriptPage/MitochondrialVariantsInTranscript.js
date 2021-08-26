@@ -113,15 +113,21 @@ const MitochondrialVariantsInTranscript = ({ datasetId, transcript, ...rest }) =
         return (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack
-              referenceGenome={referenceGenomeForDataset(datasetId)}
-              transcripts={[transcript]}
-              variants={data.transcript.clinvar_variants}
-            />
-            <p style={{ marginLeft: '115px' }}>
-              Data displayed here is from ClinVar&apos;s{' '}
-              {formatClinvarDate(data.meta.clinvar_release_date)} release.
-            </p>
+            {data.transcript.clinvar_variants.length > 0 ? (
+              <>
+                <ClinvarVariantTrack
+                  referenceGenome={referenceGenomeForDataset(datasetId)}
+                  transcripts={[transcript]}
+                  variants={data.transcript.clinvar_variants}
+                />
+                <p style={{ marginLeft: '115px' }}>
+                  Data displayed here is from ClinVar&apos;s{' '}
+                  {formatClinvarDate(data.meta.clinvar_release_date)} release.
+                </p>
+              </>
+            ) : (
+              <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this transcript.</p>
+            )}
 
             <MitochondrialVariants
               {...rest}

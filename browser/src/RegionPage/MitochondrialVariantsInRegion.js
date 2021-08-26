@@ -112,15 +112,21 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, ...rest }) => {
         return (
           <>
             <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
-            <ClinvarVariantTrack
-              referenceGenome={referenceGenomeForDataset(datasetId)}
-              transcripts={region.genes.flatMap(gene => gene.transcripts)}
-              variants={data.region.clinvar_variants}
-            />
-            <p style={{ marginLeft: '115px' }}>
-              Data displayed here is from ClinVar&apos;s{' '}
-              {formatClinvarDate(data.meta.clinvar_release_date)} release.
-            </p>
+            {data.region.clinvar_variants.length > 0 ? (
+              <>
+                <ClinvarVariantTrack
+                  referenceGenome={referenceGenomeForDataset(datasetId)}
+                  transcripts={region.genes.flatMap(gene => gene.transcripts)}
+                  variants={data.region.clinvar_variants}
+                />
+                <p style={{ marginLeft: '115px' }}>
+                  Data displayed here is from ClinVar&apos;s{' '}
+                  {formatClinvarDate(data.meta.clinvar_release_date)} release.
+                </p>
+              </>
+            ) : (
+              <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this region.</p>
+            )}
 
             <MitochondrialVariants
               {...rest}
