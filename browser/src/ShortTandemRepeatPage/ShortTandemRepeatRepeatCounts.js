@@ -1,4 +1,4 @@
-import { max } from 'd3-array'
+import { max, mean } from 'd3-array'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
@@ -132,7 +132,11 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
             {
               thresholds
                 .filter(threshold => threshold.value <= maxRepeats)
-                .sort((t1, t2) => t2.value - t1.value)
+                .sort(
+                  mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
+                    ? (t1, t2) => t1.value - t2.value
+                    : (t1, t2) => t2.value - t1.value
+                )
                 .reduce(
                   (acc, threshold) => {
                     const labelWidth = 100
@@ -142,7 +146,9 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                     const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
 
                     const yOffset =
-                      thresholdX <= acc.previousX - labelWidth ? 0 : acc.previousYOffset + 12
+                      Math.abs(thresholdX - acc.previousX) > labelWidth
+                        ? 0
+                        : acc.previousYOffset + 12
 
                     const element = (
                       <g key={threshold.label}>
