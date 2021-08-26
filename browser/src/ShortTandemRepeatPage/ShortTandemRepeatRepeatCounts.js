@@ -72,8 +72,10 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
       bottom: binSize === 1 ? 50 : 75,
       left: 60,
       right: 10,
-      top: 10,
+      top: 20,
     }
+
+    const plotHeight = height - (margin.top + margin.bottom)
 
     const xScale = scaleBand()
       .domain(data.map(d => d.binIndex))
@@ -83,7 +85,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
     const yScale = scaleLinear()
       .domain([0, max(data, d => d.count) || 1])
-      .range([height - (margin.top + margin.bottom), margin.top])
+      .range([plotHeight, 0])
 
     const maxNumLabels = Math.floor((width - (margin.left + margin.right)) / 20)
 
@@ -147,7 +149,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                 <rect
                   x={xScale(d.binIndex)}
                   y={yScale(d.count)}
-                  height={yScale(0) - yScale(d.count)}
+                  height={plotHeight - yScale(d.count)}
                   width={xBandwidth}
                   fill="#73ab3d"
                   stroke="#333"
@@ -159,8 +161,8 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                 >
                   <TooltipTrigger
                     x={xScale(d.binIndex)}
-                    y={yScale.range()[1]}
-                    height={yScale.range()[0] - yScale.range()[1]}
+                    y={0}
+                    height={plotHeight}
                     width={xBandwidth}
                     fill="none"
                     style={{ pointerEvents: 'visible' }}
