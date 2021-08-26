@@ -31,43 +31,63 @@ def _population_sort_key(pop):
     return (pop_id, "")
 
 
-def _prepare_str_variant(variant):
-    populations = [pop_id for pop_id in variant["AlleleCountHistogram"].keys() if pop_id != "Total"]
-    return {
-        "region": {"reference_genome": "GRCh38", **_parse_region_id(variant["ReferenceRegion"])},
-        "repeat_unit": variant["RepeatUnit"],
-        "repeats": _prepare_histogram(variant["AlleleCountHistogram"]["Total"]),
-        "populations": sorted(
-            [
-                {"id": pop_id.replace("/", "_"), "repeats": _prepare_histogram(variant["AlleleCountHistogram"][pop_id])}
-                for pop_id in populations
-            ],
-            key=_population_sort_key,
-        ),
-    }
-
-
 def prepare_gnomad_v3_short_tandem_repeats(path):
     with hl.hadoop_open(path) as input_file:
         data = json.load(input_file)
 
     ds = [
         {
-            "locus_id": locus["LocusId"],
+            "id": locus["LocusId"],
             "gene": {"ensembl_id": locus["GeneId"], "symbol": locus["GeneName"], "region": locus["GeneRegion"]},
             "inheritance_mode": locus["InheritanceMode"],
             "associated_disease": {
                 # ’ characters get garbled somewhere in ES or ES-Hadoop
                 "name": locus["Disease"].replace("’", "'"),
                 "omim_id": locus["OMIMDiseaseLink"].split("/")[-1],
-                "benign_threshold": int(locus["NormalMax"]),
-                "pathogenic_threshold": int(locus["PathologicMin"]),
+                "normal_threshold": int(locus["NormalMax"]),
+                "pathogenic_threshold": int(locus["PathogenicMin"]),
             },
             "stripy_id": locus["STRipyLink"].split("/")[-1],
-            "variants": [
-                {"id": variant_id, **_prepare_str_variant(variant)}
-                for variant_id, variant in locus["VariantId"].items()
-            ],
+            "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
+            "repeat_unit": locus["RepeatUnit"],
+            "repeats": _prepare_histogram(locus["AlleleCountHistogram"]["Total"]),
+            "populations": sorted(
+                [
+                    {
+                        "id": pop_id.replace("/", "_"),
+                        "repeats": _prepare_histogram(locus["AlleleCountHistogram"][pop_id]),
+                    }
+                    for pop_id in locus["AlleleCountHistogram"].keys()
+                    if pop_id != "Total"
+                ],
+                key=_population_sort_key,
+            ),
+            "adjacent_repeats": sorted(
+                [
+                    {
+                        "id": adjacent_repeat_id,
+                        "reference_region": {
+                            "reference_genome": "GRCh38",
+                            **_parse_region_id(adjacent_repeat["ReferenceRegion"]),
+                        },
+                        "repeat_unit": adjacent_repeat["RepeatUnit"],
+                        "repeats": _prepare_histogram(adjacent_repeat["AlleleCountHistogram"]["Total"]),
+                        "populations": sorted(
+                            [
+                                {
+                                    "id": pop_id.replace("/", "_"),
+                                    "repeats": _prepare_histogram(adjacent_repeat["AlleleCountHistogram"][pop_id]),
+                                }
+                                for pop_id in adjacent_repeat["AlleleCountHistogram"].keys()
+                                if pop_id != "Total"
+                            ],
+                            key=_population_sort_key,
+                        ),
+                    }
+                    for adjacent_repeat_id, adjacent_repeat in locus.get("AdjacentRepeats", {}).items()
+                ],
+                key=lambda repeat: repeat["id"],
+            ),
         }
         for locus in data.values()
     ]
@@ -75,17 +95,21 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
     return hl.Table.parallelize(
         ds,
         hl.tstruct(
-            locus_id=hl.tstr,
+            id=hl.tstr,
             gene=hl.tstruct(ensembl_id=hl.tstr, symbol=hl.tstr, region=hl.tstr),
             inheritance_mode=hl.tstr,
             associated_disease=hl.tstruct(
-                name=hl.tstr, omim_id=hl.tstr, benign_threshold=hl.tint, pathogenic_threshold=hl.tint
+                name=hl.tstr, omim_id=hl.tstr, normal_threshold=hl.tint, pathogenic_threshold=hl.tint
             ),
+            reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
+            repeat_unit=hl.tstr,
+            repeats=hl.tarray(hl.tarray(hl.tint)),
+            populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
             stripy_id=hl.tstr,
-            variants=hl.tarray(
+            adjacent_repeats=hl.tarray(
                 hl.tstruct(
                     id=hl.tstr,
-                    region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
+                    reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
                     repeat_unit=hl.tstr,
                     repeats=hl.tarray(hl.tarray(hl.tint)),
                     populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),

@@ -5,7 +5,7 @@ const SHORT_TANDEM_REPEAT_INDICES = {
   gnomad_r3: 'gnomad_v3_short_tandem_repeats',
 }
 
-const fetchShortTandemRepeatById = async (esClient, datasetId, locusId) => {
+const fetchShortTandemRepeatById = async (esClient, datasetId, shortTandemRepeatId) => {
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
@@ -16,7 +16,7 @@ const fetchShortTandemRepeatById = async (esClient, datasetId, locusId) => {
     const response = await esClient.get({
       index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
       type: '_doc',
-      id: locusId,
+      id: shortTandemRepeatId,
     })
 
     return response.body._source.value

@@ -188,8 +188,8 @@ DATASETS_CONFIG = {
         ),
         "args": {
             "index": "gnomad_v3_short_tandem_repeats",
-            "index_fields": ["locus_id", "gene.ensembl_id", "variants.region"],
-            "id_field": "locus_id",
+            "index_fields": ["id", "gene.ensembl_id", "reference_region", "adjacent_repeats.reference_region"],
+            "id_field": "id",
             "num_shards": 1,
         },
     },

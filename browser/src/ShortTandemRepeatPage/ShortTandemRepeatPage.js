@@ -9,10 +9,10 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
 
-import ShortTandemRepeatLocusAttributes from './ShortTandemRepeatLocusAttributes'
+import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatRepeatCounts from './ShortTandemRepeatRepeatCounts'
-import ShortTandemRepeatVariantAttributes from './ShortTandemRepeatVariantAttributes'
+import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
 
 const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
@@ -32,9 +32,9 @@ const FlexWrapper = styled.div`
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   return (
     <>
-      <FlexWrapper>
+      <FlexWrapper style={{ marginBottom: '2em' }}>
         <ResponsiveSection>
-          <ShortTandemRepeatLocusAttributes shortTandemRepeat={shortTandemRepeat} />
+          <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
         </ResponsiveSection>
         <ResponsiveSection>
           <h2>External Resources</h2>
@@ -48,36 +48,46 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         </ResponsiveSection>
       </FlexWrapper>
 
-      <section>
-        <h2>Variants</h2>
-        {shortTandemRepeat.variants.map(shortTandemRepeatVariant => {
-          return (
-            <section key={shortTandemRepeatVariant.id}>
-              <h3>{shortTandemRepeatVariant.id}</h3>
-              <ShortTandemRepeatVariantAttributes
-                shortTandemRepeatVariant={shortTandemRepeatVariant}
-              />
-              <ShortTandemRepeatRepeatCounts
-                shortTandemRepeatVariant={shortTandemRepeatVariant}
-                thresholds={[
-                  {
-                    label: 'Benign threshold',
-                    value: shortTandemRepeat.associated_disease.benign_threshold + 1,
-                  },
-                  {
-                    label: 'Pathogenic threshold',
-                    value: shortTandemRepeat.associated_disease.pathogenic_threshold,
-                  },
-                  {
-                    label: 'Read length (150 bp)',
-                    value: Math.floor(150 / shortTandemRepeatVariant.repeat_unit.length) + 1,
-                  },
-                ]}
-              />
-            </section>
-          )
-        })}
-      </section>
+      <ShortTandemRepeatRepeatCounts
+        shortTandemRepeat={shortTandemRepeat}
+        thresholds={[
+          {
+            label: 'Normal threshold',
+            value: shortTandemRepeat.associated_disease.normal_threshold + 1,
+          },
+          {
+            label: 'Pathogenic threshold',
+            value: shortTandemRepeat.associated_disease.pathogenic_threshold,
+          },
+          {
+            label: 'Read length (150 bp)',
+            value: Math.floor(150 / shortTandemRepeat.repeat_unit.length) + 1,
+          },
+        ]}
+      />
+
+      {shortTandemRepeat.adjacent_repeats.length > 0 && (
+        <section style={{ marginTop: '2em' }}>
+          <h2>Adjacent Repeats</h2>
+          {shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
+            return (
+              <section key={adjacentRepeat.id} style={{ marginBottom: '2em' }}>
+                <h3>{adjacentRepeat.id}</h3>
+                <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
+                <ShortTandemRepeatRepeatCounts
+                  shortTandemRepeat={adjacentRepeat}
+                  thresholds={[
+                    {
+                      label: 'Read length (150 bp)',
+                      value: Math.floor(150 / adjacentRepeat.repeat_unit.length) + 1,
+                    },
+                  ]}
+                />
+              </section>
+            )
+          })}
+        </section>
+      )}
     </>
   )
 }
@@ -87,9 +97,9 @@ ShortTandemRepeatPage.propTypes = {
 }
 
 const query = `
-query ShortTandemRepeat($locusId: String!, $datasetId: DatasetId!) {
-  short_tandem_repeat(locus_id: $locusId, dataset: $datasetId) {
-    locus_id
+query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
+  short_tandem_repeat(id: $strId, dataset: $datasetId) {
+    id
     gene {
       ensembl_id
       symbol
@@ -99,13 +109,24 @@ query ShortTandemRepeat($locusId: String!, $datasetId: DatasetId!) {
     associated_disease {
       name
       omim_id
-      benign_threshold
+      normal_threshold
       pathogenic_threshold
     }
-    stripy_id
-    variants {
+    reference_region {
+      chrom
+      start
+      stop
+    }
+    repeat_unit
+    repeats
+    populations {
       id
-      region {
+      repeats
+    }
+    stripy_id
+    adjacent_repeats {
+      id
+      reference_region {
         chrom
         start
         stop
@@ -121,10 +142,10 @@ query ShortTandemRepeat($locusId: String!, $datasetId: DatasetId!) {
 }
 `
 
-const ShortTandemRepeatPageContainer = ({ datasetId, locusId }) => {
+const ShortTandemRepeatPageContainer = ({ datasetId, strId }) => {
   return (
     <Page>
-      <DocumentTitle title={`${locusId} | Short Tandem Repeat | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`${strId} | Short Tandem Repeat | ${labelForDataset(datasetId)}`} />
       <GnomadPageHeading
         datasetOptions={{
           includeShortVariants: true,
@@ -136,13 +157,13 @@ const ShortTandemRepeatPageContainer = ({ datasetId, locusId }) => {
         }}
         selectedDataset={datasetId}
       >
-        Short Tandem Repeat: {locusId}
+        Short Tandem Repeat: {strId}
       </GnomadPageHeading>
       <Query
         query={query}
         variables={{
           datasetId,
-          locusId,
+          strId,
         }}
         loadingMessage="Loading short tandem repeat"
         errorMessage="Unable to load short tandem repeat"
@@ -158,7 +179,7 @@ const ShortTandemRepeatPageContainer = ({ datasetId, locusId }) => {
 
 ShortTandemRepeatPageContainer.propTypes = {
   datasetId: PropTypes.string.isRequired,
-  locusId: PropTypes.string.isRequired,
+  strId: PropTypes.string.isRequired,
 }
 
 export default ShortTandemRepeatPageContainer
