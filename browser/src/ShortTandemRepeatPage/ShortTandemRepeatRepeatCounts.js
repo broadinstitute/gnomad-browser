@@ -255,34 +255,27 @@ ShortTandemRepeatRepeatCountsPlot.defaultProps = {
   thresholds: [],
 }
 
-const populationName = populationId => {
-  if (populationId === 'XX' || populationId === 'XY') {
-    return populationId
-  }
-
-  if (populationId.includes('_')) {
-    const [ancestry, sex] = populationId.split('_')
-    return `${GNOMAD_POPULATION_NAMES[ancestry]} (${sex})`
-  }
-
-  return GNOMAD_POPULATION_NAMES[populationId]
-}
-
 const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds }) => {
-  const [selectedPopulation, setSelectedPopulation] = useState('global')
+  const [selectedAncestralPopulation, setSelectedAncestralPopulation] = useState('')
+  const [selectedSex, setSelectedSex] = useState('')
 
-  const maxRepeats =
-    shortTandemRepeatVariant.repeats[shortTandemRepeatVariant.repeats.length - 1][0]
+  const selectedPopulation = [selectedAncestralPopulation, selectedSex].filter(Boolean).join('_')
 
   const repeatsInSelectedPopulation =
-    selectedPopulation === 'global'
+    selectedPopulation === ''
       ? shortTandemRepeatVariant.repeats
       : shortTandemRepeatVariant.populations.find(pop => pop.id === selectedPopulation).repeats
+
+  const ancestralPopulationIds = shortTandemRepeatVariant.populations
+    .map(pop => pop.id)
+    .filter(popId => !(popId.endsWith('XX') || popId.endsWith('XY')))
 
   return (
     <div style={{ width: '100%' }}>
       <ShortTandemRepeatRepeatCountsPlot
-        maxRepeats={maxRepeats}
+        maxRepeats={
+          shortTandemRepeatVariant.repeats[shortTandemRepeatVariant.repeats.length - 1][0]
+        }
         repeats={repeatsInSelectedPopulation}
         thresholds={thresholds}
       />
@@ -293,17 +286,31 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
           Population:{' '}
           <Select
             id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
-            value={selectedPopulation}
+            value={selectedAncestralPopulation}
             onChange={e => {
-              setSelectedPopulation(e.target.value)
+              setSelectedAncestralPopulation(e.target.value)
             }}
           >
-            <option value="global">Global</option>
-            {shortTandemRepeatVariant.populations.map(pop => (
-              <option key={pop.id} value={pop.id}>
-                {populationName(pop.id)}
+            <option value="">Global</option>
+            {ancestralPopulationIds.map(popId => (
+              <option key={popId} value={popId}>
+                {GNOMAD_POPULATION_NAMES[popId]}
               </option>
             ))}
+          </Select>
+        </label>{' '}
+        <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}>
+          Sex:{' '}
+          <Select
+            id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}
+            value={selectedSex}
+            onChange={e => {
+              setSelectedSex(e.target.value)
+            }}
+          >
+            <option value="">All</option>
+            <option value="XX">XX</option>
+            <option value="XY">XY</option>
           </Select>
         </label>
       </div>
