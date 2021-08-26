@@ -121,11 +121,11 @@ const Routes = () => {
 
       <Route
         exact
-        path="/short-tandem-repeat/:locusId"
+        path="/short-tandem-repeat/:strId"
         render={({ location, match }) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
-          return <ShortTandemRepeatPage datasetId={datasetId} locusId={match.params.locusId} />
+          return <ShortTandemRepeatPage datasetId={datasetId} strId={match.params.strId} />
         }}
       />
 

@@ -10,8 +10,6 @@ import { Select, TooltipAnchor } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import { ShortTandemRepeatVariantPropType } from './ShortTandemRepeatPropTypes'
-
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
 const GraphWrapper = styled.div`
@@ -284,7 +282,7 @@ ShortTandemRepeatRepeatCountsPlot.defaultProps = {
   thresholds: [],
 }
 
-const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds }) => {
+const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeat, thresholds }) => {
   const [selectedAncestralPopulation, setSelectedAncestralPopulation] = useState('')
   const [selectedSex, setSelectedSex] = useState('')
   const [selectedScale, setSelectedScale] = useState('linear')
@@ -293,31 +291,27 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
 
   const repeatsInSelectedPopulation =
     selectedPopulation === ''
-      ? shortTandemRepeatVariant.repeats
-      : shortTandemRepeatVariant.populations.find(pop => pop.id === selectedPopulation).repeats
+      ? shortTandemRepeat.repeats
+      : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulation).repeats
 
-  const ancestralPopulationIds = shortTandemRepeatVariant.populations
+  const ancestralPopulationIds = shortTandemRepeat.populations
     .map(pop => pop.id)
     .filter(popId => !(popId.endsWith('XX') || popId.endsWith('XY')))
 
   return (
     <div style={{ width: '100%' }}>
       <ShortTandemRepeatRepeatCountsPlot
-        maxRepeats={
-          shortTandemRepeatVariant.repeats[shortTandemRepeatVariant.repeats.length - 1][0]
-        }
+        maxRepeats={shortTandemRepeat.repeats[shortTandemRepeat.repeats.length - 1][0]}
         repeats={repeatsInSelectedPopulation}
         scaleType={selectedScale}
         thresholds={thresholds}
       />
       <div style={{ display: 'flex', flexDirection: 'row-wrap', justifyContent: 'space-between' }}>
         <div>
-          <label
-            htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
-          >
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-population`}>
             Population:{' '}
             <Select
-              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-population`}
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-population`}
               value={selectedAncestralPopulation}
               onChange={e => {
                 setSelectedAncestralPopulation(e.target.value)
@@ -331,10 +325,10 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
               ))}
             </Select>
           </label>{' '}
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}>
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-sex`}>
             Sex:{' '}
             <Select
-              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-sex`}
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-sex`}
               value={selectedSex}
               onChange={e => {
                 setSelectedSex(e.target.value)
@@ -347,10 +341,10 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
           </label>
         </div>
         <div>
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-scale`}>
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}>
             Scale:{' '}
             <Select
-              id={`short-tandem-repeat-${shortTandemRepeatVariant.id}-repeat-counts-scale`}
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}
               value={selectedScale}
               onChange={e => {
                 setSelectedScale(e.target.value)
@@ -367,7 +361,16 @@ const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeatVariant, thresholds })
 }
 
 ShortTandemRepeatRepeatCounts.propTypes = {
-  shortTandemRepeatVariant: ShortTandemRepeatVariantPropType.isRequired,
+  shortTandemRepeat: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    populations: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
   thresholds: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,

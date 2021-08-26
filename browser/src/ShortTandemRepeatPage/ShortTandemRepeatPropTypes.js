@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 
-export const ShortTandemRepeatVariantPropType = PropTypes.shape({
+export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
-  region: PropTypes.shape({
+  reference_region: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
@@ -18,7 +18,7 @@ export const ShortTandemRepeatVariantPropType = PropTypes.shape({
 })
 
 export const ShortTandemRepeatPropType = PropTypes.shape({
-  locus_id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   gene: PropTypes.shape({
     ensembl_id: PropTypes.string.isRequired,
     symbol: PropTypes.string.isRequired,
@@ -28,9 +28,22 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
   associated_disease: PropTypes.shape({
     name: PropTypes.string.isRequired,
     omim_id: PropTypes.string.isRequired,
-    benign_threshold: PropTypes.number.isRequired,
+    normal_threshold: PropTypes.number.isRequired,
     pathogenic_threshold: PropTypes.number.isRequired,
   }).isRequired,
   stripy_id: PropTypes.string.isRequired,
-  variants: PropTypes.arrayOf(ShortTandemRepeatVariantPropType).isRequired,
+  reference_region: PropTypes.shape({
+    chrom: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
+  repeat_unit: PropTypes.string.isRequired,
+  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  populations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    })
+  ).isRequired,
+  adjacent_repeats: PropTypes.arrayOf(ShortTandemRepeatAdjacentRepeatPropType).isRequired,
 })
