@@ -1,5 +1,12 @@
 const { UserVisibleError } = require('../../errors')
-const { fetchShortTandemRepeatById } = require('../../queries/short-tandem-repeat-queries')
+const {
+  fetchAllShortTandemRepeats,
+  fetchShortTandemRepeatById,
+} = require('../../queries/short-tandem-repeat-queries')
+
+const resolveAllShortTandemRepeats = (obj, args, ctx) => {
+  return fetchAllShortTandemRepeats(ctx.esClient, args.dataset)
+}
 
 const resolveShortTandemRepeat = async (obj, args, ctx) => {
   const shortTandemRepeat = await fetchShortTandemRepeatById(ctx.esClient, args.dataset, args.id)
@@ -14,5 +21,6 @@ const resolveShortTandemRepeat = async (obj, args, ctx) => {
 module.exports = {
   Query: {
     short_tandem_repeat: resolveShortTandemRepeat,
+    short_tandem_repeats: resolveAllShortTandemRepeats,
   },
 }
