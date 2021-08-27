@@ -35,10 +35,10 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
           {shortTandemRepeat.associated_disease.name}
         </ExternalLink>
       </AttributeList.Item>
-      <AttributeList.Item label="Normal threshold">
+      <AttributeList.Item label="Normal range">
         &le; {shortTandemRepeat.associated_disease.normal_threshold} repeats
       </AttributeList.Item>
-      <AttributeList.Item label="Pathogenic threshold">
+      <AttributeList.Item label="Pathogenic range">
         &ge; {shortTandemRepeat.associated_disease.pathogenic_threshold} repeats
       </AttributeList.Item>
     </AttributeList>
