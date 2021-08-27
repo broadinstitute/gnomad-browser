@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
+import { ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -10,8 +10,9 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
 
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
+import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
-import ShortTandemRepeatRepeatCounts from './ShortTandemRepeatRepeatCounts'
+import ShortTandemRepeatRepeatCountsPlot from './ShortTandemRepeatRepeatCountsPlot'
 import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
 
 const ResponsiveSection = styled.section`
@@ -30,6 +31,11 @@ const FlexWrapper = styled.div`
 `
 
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
+  const [selectedPopulationId, setSelectedPopulationId] = useState('')
+  const [selectedScaleType, setSelectedScaleType] = useState('linear')
+
+  const populationIds = shortTandemRepeat.populations.map(pop => pop.id)
+
   return (
     <>
       <FlexWrapper style={{ marginBottom: '2em' }}>
@@ -48,7 +54,13 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         </ResponsiveSection>
       </FlexWrapper>
 
-      <ShortTandemRepeatRepeatCounts
+      <ShortTandemRepeatRepeatCountsPlot
+        maxRepeats={shortTandemRepeat.repeats[shortTandemRepeat.repeats.length - 1][0]}
+        repeats={
+          selectedPopulationId === ''
+            ? shortTandemRepeat.repeats
+            : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulationId).repeats
+        }
         shortTandemRepeat={shortTandemRepeat}
         thresholds={[
           {
@@ -64,7 +76,29 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             value: Math.floor(150 / shortTandemRepeat.repeat_unit.length) + 1,
           },
         ]}
+        scaleType={selectedScaleType}
       />
+      <FlexWrapper>
+        <ShortTandemRepeatPopulationOptions
+          id={shortTandemRepeat.id}
+          populationIds={populationIds}
+          selectedPopulationId={selectedPopulationId}
+          onSelectPopulationId={setSelectedPopulationId}
+        />
+        <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}>
+          Scale:{' '}
+          <Select
+            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}
+            value={selectedScaleType}
+            onChange={e => {
+              setSelectedScaleType(e.target.value)
+            }}
+          >
+            <option value="linear">Linear</option>
+            <option value="log">Log</option>
+          </Select>
+        </label>
+      </FlexWrapper>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginTop: '2em' }}>
@@ -74,15 +108,43 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               <section key={adjacentRepeat.id} style={{ marginBottom: '2em' }}>
                 <h3>{adjacentRepeat.id}</h3>
                 <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
-                <ShortTandemRepeatRepeatCounts
-                  shortTandemRepeat={adjacentRepeat}
+                <ShortTandemRepeatRepeatCountsPlot
+                  maxRepeats={adjacentRepeat.repeats[adjacentRepeat.repeats.length - 1][0]}
+                  repeats={
+                    selectedPopulationId === ''
+                      ? adjacentRepeat.repeats
+                      : adjacentRepeat.populations.find(pop => pop.id === selectedPopulationId)
+                          .repeats
+                  }
                   thresholds={[
                     {
                       label: 'Read length (150 bp)',
                       value: Math.floor(150 / adjacentRepeat.repeat_unit.length) + 1,
                     },
                   ]}
+                  scaleType={selectedScaleType}
                 />
+                <FlexWrapper>
+                  <ShortTandemRepeatPopulationOptions
+                    id={adjacentRepeat.id}
+                    populationIds={populationIds}
+                    selectedPopulationId={selectedPopulationId}
+                    onSelectPopulationId={setSelectedPopulationId}
+                  />
+                  <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
+                    Scale:{' '}
+                    <Select
+                      id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
+                      value={selectedScaleType}
+                      onChange={e => {
+                        setSelectedScaleType(e.target.value)
+                      }}
+                    >
+                      <option value="linear">Linear</option>
+                      <option value="log">Log</option>
+                    </Select>
+                  </label>
+                </FlexWrapper>
               </section>
             )
           })}
