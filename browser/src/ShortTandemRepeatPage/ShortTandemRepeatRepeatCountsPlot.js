@@ -1,14 +1,12 @@
 import { max, mean } from 'd3-array'
 import { scaleBand, scaleLinear, scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@vx/axis'
 
-import { Select, TooltipAnchor } from '@gnomad/ui'
-
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { TooltipAnchor } from '@gnomad/ui'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -282,105 +280,4 @@ ShortTandemRepeatRepeatCountsPlot.defaultProps = {
   thresholds: [],
 }
 
-const ShortTandemRepeatRepeatCounts = ({ shortTandemRepeat, thresholds }) => {
-  const [selectedAncestralPopulation, setSelectedAncestralPopulation] = useState('')
-  const [selectedSex, setSelectedSex] = useState('')
-  const [selectedScale, setSelectedScale] = useState('linear')
-
-  const selectedPopulation = [selectedAncestralPopulation, selectedSex].filter(Boolean).join('_')
-
-  const repeatsInSelectedPopulation =
-    selectedPopulation === ''
-      ? shortTandemRepeat.repeats
-      : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulation).repeats
-
-  const ancestralPopulationIds = shortTandemRepeat.populations
-    .map(pop => pop.id)
-    .filter(popId => !(popId.endsWith('XX') || popId.endsWith('XY')))
-
-  return (
-    <div style={{ width: '100%' }}>
-      <ShortTandemRepeatRepeatCountsPlot
-        maxRepeats={shortTandemRepeat.repeats[shortTandemRepeat.repeats.length - 1][0]}
-        repeats={repeatsInSelectedPopulation}
-        scaleType={selectedScale}
-        thresholds={thresholds}
-      />
-      <div style={{ display: 'flex', flexDirection: 'row-wrap', justifyContent: 'space-between' }}>
-        <div>
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-population`}>
-            Population:{' '}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-population`}
-              value={selectedAncestralPopulation}
-              onChange={e => {
-                setSelectedAncestralPopulation(e.target.value)
-              }}
-            >
-              <option value="">Global</option>
-              {ancestralPopulationIds.map(popId => (
-                <option key={popId} value={popId}>
-                  {GNOMAD_POPULATION_NAMES[popId]}
-                </option>
-              ))}
-            </Select>
-          </label>{' '}
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-sex`}>
-            Sex:{' '}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-sex`}
-              value={selectedSex}
-              onChange={e => {
-                setSelectedSex(e.target.value)
-              }}
-            >
-              <option value="">All</option>
-              <option value="XX">XX</option>
-              <option value="XY">XY</option>
-            </Select>
-          </label>
-        </div>
-        <div>
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}>
-            Scale:{' '}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}
-              value={selectedScale}
-              onChange={e => {
-                setSelectedScale(e.target.value)
-              }}
-            >
-              <option value="linear">Linear</option>
-              <option value="log">Log</option>
-            </Select>
-          </label>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-ShortTandemRepeatRepeatCounts.propTypes = {
-  shortTandemRepeat: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-    populations: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-      })
-    ).isRequired,
-  }).isRequired,
-  thresholds: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
-    })
-  ),
-}
-
-ShortTandemRepeatRepeatCounts.defaultProps = {
-  thresholds: [],
-}
-
-export default ShortTandemRepeatRepeatCounts
+export default ShortTandemRepeatRepeatCountsPlot
