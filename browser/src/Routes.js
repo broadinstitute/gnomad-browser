@@ -24,6 +24,7 @@ const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPa
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
 const ShortTandemRepeatPage = lazy(() => import('./ShortTandemRepeatPage/ShortTandemRepeatPage'))
+const ShortTandemRepeatsPage = lazy(() => import('./ShortTandemRepeatsPage/ShortTandemRepeatsPage'))
 const VariantCooccurrencePage = lazy(() =>
   import('./VariantCooccurrencePage/VariantCooccurrencePage')
 )
@@ -116,6 +117,16 @@ const Routes = () => {
           const params = queryString.parse(location.search)
           const datasetId = params.dataset || defaultDataset
           return <VariantCooccurrencePage datasetId={datasetId} />
+        }}
+      />
+
+      <Route
+        exact
+        path="/short-tandem-repeats"
+        render={({ location }) => {
+          const queryParams = queryString.parse(location.search)
+          const datasetId = queryParams.dataset || defaultDataset
+          return <ShortTandemRepeatsPage datasetId={datasetId} />
         }}
       />
 
