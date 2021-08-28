@@ -61,7 +61,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             ? shortTandemRepeat.repeats
             : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        shortTandemRepeat={shortTandemRepeat}
+        repeatUnit={shortTandemRepeat.repeat_unit}
         thresholds={[
           {
             label: 'Normal threshold',
@@ -70,10 +70,6 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           {
             label: 'Pathogenic threshold',
             value: shortTandemRepeat.associated_disease.pathogenic_threshold,
-          },
-          {
-            label: 'Read length (150 bp)',
-            value: Math.floor(150 / shortTandemRepeat.repeat_unit.length) + 1,
           },
         ]}
         scaleType={selectedScaleType}
@@ -116,12 +112,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                       : adjacentRepeat.populations.find(pop => pop.id === selectedPopulationId)
                           .repeats
                   }
-                  thresholds={[
-                    {
-                      label: 'Read length (150 bp)',
-                      value: Math.floor(150 / adjacentRepeat.repeat_unit.length) + 1,
-                    },
-                  ]}
+                  repeatUnit={adjacentRepeat.repeat_unit}
                   scaleType={selectedScaleType}
                 />
                 <FlexWrapper>
