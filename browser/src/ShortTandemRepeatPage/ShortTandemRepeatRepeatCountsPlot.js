@@ -43,7 +43,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, size: { width }, scaleType, thresholds }) => {
+  ({ maxRepeats, repeats, repeatUnit, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
     const binSize = Math.max(1, Math.ceil(maxRepeats / (width / 10)))
@@ -195,7 +195,13 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
           <g transform={`translate(${margin.left}, 0)`}>
             {
-              thresholds
+              [
+                ...thresholds,
+                {
+                  value: 150 / repeatUnit.length,
+                  label: 'Read length (150 bp)',
+                },
+              ]
                 .filter(threshold => threshold.value <= maxRepeats)
                 .sort(
                   mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
@@ -208,7 +214,12 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
                     const binIndex = Math.floor(threshold.value / binSize)
                     const positionWithBin = (threshold.value - binIndex * binSize) / binSize
-                    const thresholdX = xScale(binIndex) + positionWithBin * xBandwidth
+                    // Read length line should be drawn at the center of the range for its value.
+                    // Other thresholds are drawn at the left edge since they delimit a range greater than or equal to the threshold value.
+                    const thresholdX =
+                      xScale(binIndex) +
+                      positionWithBin * xBandwidth +
+                      (threshold.label === 'Read length (150 bp)' ? xBandwidth / binSize / 2 : 0)
 
                     const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
 
@@ -266,6 +277,7 @@ ShortTandemRepeatRepeatCountsPlot.displayName = 'ShortTandemRepeatRepeatCountsPl
 ShortTandemRepeatRepeatCountsPlot.propTypes = {
   maxRepeats: PropTypes.number.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  repeatUnit: PropTypes.string.isRequired,
   scaleType: PropTypes.oneOf(['linear', 'log']),
   thresholds: PropTypes.arrayOf(
     PropTypes.shape({
