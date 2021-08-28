@@ -118,8 +118,8 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                   }
                 : binIndex => {
                     return {
-                      dx: '-0.25em',
-                      dy: '0.25em',
+                      dx: '-0.75em',
+                      dy: '0.2em',
                       fill: '#000',
                       fontSize: 10,
                       textAnchor: 'end',
