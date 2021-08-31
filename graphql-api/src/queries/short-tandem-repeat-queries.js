@@ -8,6 +8,17 @@ const SHORT_TANDEM_REPEAT_INDICES = {
   gnomad_r3: 'gnomad_v3_short_tandem_repeats',
 }
 
+const SUMMARY_FIELDS = [
+  'id',
+  'value.id',
+  'value.gene',
+  'value.inheritance_mode',
+  'value.associated_disease',
+  'value.stripy_id',
+  'value.reference_region',
+  'value.repeat_unit',
+]
+
 const fetchAllShortTandemRepeats = async (esClient, datasetId) => {
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
@@ -19,16 +30,7 @@ const fetchAllShortTandemRepeats = async (esClient, datasetId) => {
     index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
     type: '_doc',
     size: 10000,
-    _source: [
-      'id',
-      'value.id',
-      'value.gene',
-      'value.inheritance_mode',
-      'value.associated_disease',
-      'value.stripy_id',
-      'value.reference_region',
-      'value.repeat_unit',
-    ],
+    _source: SUMMARY_FIELDS,
     body: {
       query: {
         match_all: {},
@@ -64,6 +66,80 @@ const fetchShortTandemRepeatById = async (esClient, datasetId, shortTandemRepeat
   }
 }
 
+const fetchShortTandemRepeatsByGene = async (esClient, datasetId, ensemblGeneId) => {
+  if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
+    throw new UserVisibleError(
+      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+    )
+  }
+
+  const response = await esClient.search({
+    index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
+    type: '_doc',
+    size: 100,
+    _source: SUMMARY_FIELDS,
+    body: {
+      query: {
+        bool: {
+          filter: {
+            term: {
+              ensembl_id: ensemblGeneId,
+            },
+          },
+        },
+      },
+      sort: [{ id: { order: 'asc' } }],
+    },
+  })
+
+  return response.body.hits.hits.map((hit) => hit._source.value)
+}
+
+const fetchShortTandemRepeatsByRegion = async (esClient, datasetId, region) => {
+  if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
+    throw new UserVisibleError(
+      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+    )
+  }
+
+  const response = await esClient.search({
+    index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
+    type: '_doc',
+    size: 100,
+    _source: SUMMARY_FIELDS,
+    body: {
+      query: {
+        bool: {
+          filter: [
+            {
+              term: {
+                'reference_region.chrom': region.chrom,
+              },
+            },
+            {
+              range: {
+                'reference_region.start': {
+                  lte: region.stop,
+                },
+              },
+            },
+            {
+              range: {
+                'reference_region.stop': {
+                  gte: region.start,
+                },
+              },
+            },
+          ],
+        },
+      },
+      sort: [{ id: { order: 'asc' } }],
+    },
+  })
+
+  return response.body.hits.hits.map((hit) => hit._source.value)
+}
+
 module.exports = {
   fetchAllShortTandemRepeats: withCache(
     fetchAllShortTandemRepeats,
@@ -71,4 +147,6 @@ module.exports = {
     { expiration: 86400 }
   ),
   fetchShortTandemRepeatById,
+  fetchShortTandemRepeatsByGene,
+  fetchShortTandemRepeatsByRegion,
 }

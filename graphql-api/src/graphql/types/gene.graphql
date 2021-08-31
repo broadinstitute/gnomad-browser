@@ -53,6 +53,8 @@ type Gene {
 
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
+
+  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
 }
 
 type GeneSearchResult {
