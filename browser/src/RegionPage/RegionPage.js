@@ -2,9 +2,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { Badge } from '@gnomad/ui'
+
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import Link from '../Link'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -73,7 +76,18 @@ const RegionPage = ({ datasetId, region }) => {
           {`${region.chrom}-${region.start}-${region.stop}`}
         </GnomadPageHeading>
         <RegionInfoColumnWrapper>
-          <RegionInfo region={region} />
+          <div>
+            <RegionInfo region={region} />
+            {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
+              <p>
+                <Badge level="info">Note</Badge> This region contains a{' '}
+                <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
+                  short tandem repeat
+                </Link>
+                .
+              </p>
+            )}
+          </div>
           <RegionControlsWrapper>
             <RegionControls region={region} />
           </RegionControlsWrapper>
@@ -131,6 +145,11 @@ RegionPage.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
     genes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    short_tandem_repeats: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      })
+    ),
   }).isRequired,
 }
 
