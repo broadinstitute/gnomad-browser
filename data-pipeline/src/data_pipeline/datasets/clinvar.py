@@ -167,7 +167,7 @@ def import_clinvar_xml(clinvar_xml_path):
         with open_file(clinvar_xml_local_path, "r") as xml_file:
             # The exact number of variants in the XML file is unknown.
             # Approximate it to show a progress bar.
-            progress = tqdm(total=970_000, mininterval=5)
+            progress = tqdm(total=1_000_000, mininterval=5)
 
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
