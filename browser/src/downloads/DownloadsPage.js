@@ -75,11 +75,8 @@ const DownloadsPage = ({ location }) => {
       </p>
 
       <p>
-        In addition to the files listed below, gnomAD variants are available as a{' '}
-        <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
-          BigQuery dataset
-        </ExternalLink>{' '}
-        and <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
+        In addition to the files listed below,{' '}
+        <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
         <ExternalLink href="https://support.terra.bio/hc/en-us/articles/360051719372-A-demo-workspace-for-working-with-gnomAD-data-in-Terra">
           a demo workspace for working with gnomAD data
         </ExternalLink>
@@ -95,6 +92,14 @@ const DownloadsPage = ({ location }) => {
 
       <p>
         <CodeBlock>gsutil ls gs://gcp-public-data--gnomad/release/</CodeBlock>
+      </p>
+
+      <p>
+        gnomAD variants are also available as a{' '}
+        <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
+          BigQuery dataset
+        </ExternalLink>
+        .
       </p>
 
       <h3>Registry of Open Data on AWS</h3>
@@ -127,6 +132,14 @@ const DownloadsPage = ({ location }) => {
 
       <p>
         <CodeBlock>azcopy ls https://datasetgnomad.blob.core.windows.net/dataset/</CodeBlock>
+      </p>
+
+      <p>
+        gnomAD variants are also available in Parquet format.{' '}
+        <ExternalLink href="https://docs.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
+          Find more information on the Azure website
+        </ExternalLink>
+        .
       </p>
 
       <h3>Downloads</h3>
