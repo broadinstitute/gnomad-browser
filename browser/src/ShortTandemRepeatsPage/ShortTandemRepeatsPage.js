@@ -93,7 +93,7 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
 const ShortTandemRepeatsPageContainer = ({ datasetId }) => {
   return (
     <Page>
-      <DocumentTitle title={`Short Tandem Repeats | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`Pathogenic Short Tandem Repeats | ${labelForDataset(datasetId)}`} />
       <GnomadPageHeading
         datasetOptions={{
           includeShortVariants: true,
@@ -105,7 +105,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }) => {
         }}
         selectedDataset={datasetId}
       >
-        Short Tandem Repeats
+        Pathogenic Short Tandem Repeats
       </GnomadPageHeading>
       {datasetId === 'gnomad_r3' ? (
         <Query

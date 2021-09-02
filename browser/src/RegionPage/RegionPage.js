@@ -80,7 +80,7 @@ const RegionPage = ({ datasetId, region }) => {
             <RegionInfo region={region} />
             {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
               <p>
-                <Badge level="info">Note</Badge> This region contains a{' '}
+                <Badge level="info">Note</Badge> This region contains a pathogenic{' '}
                 <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
                   short tandem repeat
                 </Link>
