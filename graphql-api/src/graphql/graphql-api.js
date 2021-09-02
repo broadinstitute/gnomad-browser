@@ -130,7 +130,19 @@ module.exports = ({ context }) =>
       const operationAST = getOperationAST(document, operationName)
       if (!operationAST) {
         return {
-          errors: [new GraphQLError(`Unknown operation named "${operationName}"`)],
+          errors: [
+            new GraphQLError(
+              `Unknown operation "${operationName}"`,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              {
+                isUserVisible: true,
+              }
+            ),
+          ],
         }
       }
 
