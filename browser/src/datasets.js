@@ -28,4 +28,5 @@ export const labelForDataset = datasetId => datasetLabels[datasetId] || 'Unknown
 
 export const isSubset = datasetId =>
   (datasetId.startsWith('gnomad_r2') && datasetId !== 'gnomad_r2_1') ||
+  (datasetId.startsWith('gnomad_sv_r2_1') && datasetId !== 'gnomad_sv_r2_1') ||
   (datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3')

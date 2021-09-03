@@ -33,29 +33,66 @@ const Wrapper = styled.div`
   }
 `
 
-export const fetchSearchResults = (dataset, query) => {
-  // ==============================================================================================
-  // Variants
-  // ==============================================================================================
-
-  if (isVariantId(query)) {
-    const variantId = normalizeVariantId(query)
-    return Promise.resolve([
-      {
-        label: variantId,
-        value: `/variant/${variantId}?dataset=${dataset}`,
-      },
-    ])
+const STRUCTURAL_VARIANT_ID_REGEX = /^(BND|CPX|CTX|DEL|DUP|INS|INV|MCNV|OTH)_(\d+|X|Y)_([1-9][0-9]*)$/i
+const isStructuralVariantId = str => {
+  const match = STRUCTURAL_VARIANT_ID_REGEX.exec(str)
+  if (!match) {
+    return false
   }
 
-  if (isRsId(query)) {
-    const rsId = query
-    return Promise.resolve([
-      {
-        label: rsId,
-        value: `/variant/${rsId}?dataset=${dataset}`,
-      },
-    ])
+  const chrom = match[2]
+  const chromNumber = Number(chrom)
+  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+    return false
+  }
+
+  const id = Number(match[3])
+  if (id > 1e9) {
+    return false
+  }
+
+  return true
+}
+
+export const fetchSearchResults = (dataset, query) => {
+  if (dataset.startsWith('gnomad_sv')) {
+    // ==============================================================================================
+    // Structural Variants
+    // ==============================================================================================
+
+    if (isStructuralVariantId(query)) {
+      const structuralVariantId = query.toUpperCase()
+      return Promise.resolve([
+        {
+          label: structuralVariantId,
+          value: `/variant/${structuralVariantId}?dataset=${dataset}`,
+        },
+      ])
+    }
+  } else {
+    // ==============================================================================================
+    // Variants
+    // ==============================================================================================
+
+    if (isVariantId(query)) {
+      const variantId = normalizeVariantId(query)
+      return Promise.resolve([
+        {
+          label: variantId,
+          value: `/variant/${variantId}?dataset=${dataset}`,
+        },
+      ])
+    }
+
+    if (isRsId(query)) {
+      const rsId = query
+      return Promise.resolve([
+        {
+          label: rsId,
+          value: `/variant/${rsId}?dataset=${dataset}`,
+        },
+      ])
+    }
   }
 
   // ==============================================================================================
@@ -163,6 +200,9 @@ const getDefaultSearchDataset = selectedDataset => {
     if (selectedDataset.startsWith('gnomad_r3')) {
       return 'gnomad_r3'
     }
+    if (selectedDataset.startsWith('gnomad_sv_r2')) {
+      return 'gnomad_sv_r2_1'
+    }
     if (selectedDataset === 'exac') {
       return 'exac'
     }
@@ -208,6 +248,7 @@ export default withRouter(props => {
       >
         <option value="gnomad_r3">gnomAD v3.1.1</option>
         <option value="gnomad_r2_1">gnomAD v2.1.1</option>
+        <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
         <option value="exac">ExAC</option>
       </Select>
       <span style={{ flexGrow: 1 }}>
