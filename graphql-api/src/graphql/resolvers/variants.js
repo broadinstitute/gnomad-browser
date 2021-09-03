@@ -1,6 +1,8 @@
 const { isRsId, isVariantId, normalizeVariantId } = require('@gnomad/identifiers')
 
+const { DATASET_REFERENCE_GENOMES } = require('../../datasets')
 const { UserVisibleError } = require('../../errors')
+const { fetchClinvarVariantByClinvarVariationId } = require('../../queries/clinvar-variant-queries')
 const {
   countVariantsInRegion,
   fetchVariantById,
@@ -79,25 +81,42 @@ const resolveVariantsInTranscript = (obj, args, ctx) => {
   return fetchVariantsByTranscript(ctx.esClient, dataset, obj)
 }
 
-const resolveVariantSearch = (obj, args, ctx) => {
-  const { dataset } = args
+const resolveVariantSearch = async (obj, args, ctx) => {
+  const { dataset, query } = args
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
   }
 
-  if (isVariantId(args.query)) {
+  if (isVariantId(query)) {
     return fetchMatchingVariants(ctx.esClient, dataset, {
-      variantId: normalizeVariantId(args.query),
+      variantId: normalizeVariantId(query),
     })
   }
 
-  if (isRsId(args.query)) {
+  if (isRsId(query)) {
     return fetchMatchingVariants(ctx.esClient, dataset, {
-      rsid: args.query,
+      rsid: query,
     })
   }
 
-  throw new UserVisibleError('Unrecognized query. Search by variant ID or rsID.')
+  if (/^[0-9]+$/.test(query)) {
+    try {
+      const clinvarVariant = await fetchClinvarVariantByClinvarVariationId(
+        ctx.esClient,
+        DATASET_REFERENCE_GENOMES[dataset],
+        query
+      )
+      return fetchMatchingVariants(ctx.esClient, dataset, {
+        variantId: clinvarVariant.variant_id,
+      })
+    } catch (err) {
+      return []
+    }
+  }
+
+  throw new UserVisibleError(
+    'Unrecognized query. Search by variant ID, rsID, or ClinVar variation ID.'
+  )
 }
 
 module.exports = {
