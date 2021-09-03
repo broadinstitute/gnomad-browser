@@ -1,4 +1,4 @@
-import { fetchSearchResults } from './Searchbox'
+import { fetchSearchResults } from './search'
 
 describe('fetchSearchResults', () => {
   beforeEach(() => {
