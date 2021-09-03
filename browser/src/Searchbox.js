@@ -200,6 +200,9 @@ const getDefaultSearchDataset = selectedDataset => {
     if (selectedDataset.startsWith('gnomad_r3')) {
       return 'gnomad_r3'
     }
+    if (selectedDataset.startsWith('gnomad_sv_r2')) {
+      return 'gnomad_sv_r2_1'
+    }
     if (selectedDataset === 'exac') {
       return 'exac'
     }
