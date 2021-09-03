@@ -10,16 +10,21 @@ const { DATASET_REFERENCE_GENOMES } = require('../datasets')
 
 const STRUCTURAL_VARIANT_ID_REGEX = /^(MCNV|INS|DEL|DUP|INV|CPX|OTH)_(\d+|X|Y)_([1-9][0-9]*)$/i
 const isStructuralVariantId = (str) => {
-
   const match = STRUCTURAL_VARIANT_ID_REGEX.exec(str)
-  if (!match) { return false }
+  if (!match) {
+    return false
+  }
 
   const chrom = match[2]
   const chromNumber = Number(chrom)
-  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) { return false }
+  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+    return false
+  }
 
   const id = Number(match[3])
-  if (id > 1e9) { return false }
+  if (id > 1e9) {
+    return false
+  }
 
   return true
 }
