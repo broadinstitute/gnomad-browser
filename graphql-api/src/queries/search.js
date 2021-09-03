@@ -8,29 +8,65 @@ const {
 
 const { DATASET_REFERENCE_GENOMES } = require('../datasets')
 
-const fetchSearchResults = async (esClient, datasetId, query) => {
-  // ==============================================================================================
-  // Variants
-  // ==============================================================================================
-
-  if (isVariantId(query)) {
-    const variantId = normalizeVariantId(query)
-    return [
-      {
-        label: variantId,
-        url: `/variant/${variantId}?dataset=${datasetId}`,
-      },
-    ]
+const STRUCTURAL_VARIANT_ID_REGEX = /^(BND|CPX|CTX|DEL|DUP|INS|INV|MCNV|OTH)_(\d+|X|Y)_([1-9][0-9]*)$/i
+const isStructuralVariantId = (str) => {
+  const match = STRUCTURAL_VARIANT_ID_REGEX.exec(str)
+  if (!match) {
+    return false
   }
 
-  if (isRsId(query)) {
-    const rsId = query
-    return [
-      {
-        label: rsId,
-        url: `/variant/${rsId}?dataset=${datasetId}`,
-      },
-    ]
+  const chrom = match[2]
+  const chromNumber = Number(chrom)
+  if (!Number.isNaN(chromNumber) && (chromNumber < 1 || chromNumber > 22)) {
+    return false
+  }
+
+  const id = Number(match[3])
+  if (id > 1e9) {
+    return false
+  }
+
+  return true
+}
+
+const fetchSearchResults = async (esClient, datasetId, query) => {
+  if (datasetId.startsWith('gnomad_sv')) {
+    // ==============================================================================================
+    // Structural Variants
+    // ==============================================================================================
+    if (isStructuralVariantId(query)) {
+      const structuralVariantId = query.toUpperCase()
+      return Promise.resolve([
+        {
+          label: structuralVariantId,
+          value: `/variant/${structuralVariantId}?dataset=${datasetId}`,
+        },
+      ])
+    }
+  } else {
+    // ==============================================================================================
+    // Variants
+    // ==============================================================================================
+
+    if (isVariantId(query)) {
+      const variantId = normalizeVariantId(query)
+      return [
+        {
+          label: variantId,
+          url: `/variant/${variantId}?dataset=${datasetId}`,
+        },
+      ]
+    }
+
+    if (isRsId(query)) {
+      const rsId = query
+      return [
+        {
+          label: rsId,
+          url: `/variant/${rsId}?dataset=${datasetId}`,
+        },
+      ]
+    }
   }
 
   // ==============================================================================================
