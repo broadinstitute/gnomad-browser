@@ -9,7 +9,6 @@ type Query{
     structural_variant(variantId: String!, dataset: StructuralVariantDatasetId!): StructuralVariantDetails @cost(value: 1)
     variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
 
-    searchResults(query: String!, dataset: DatasetId!): [SearchResult!]
     gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
     variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
 
