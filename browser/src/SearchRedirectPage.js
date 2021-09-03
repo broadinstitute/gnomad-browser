@@ -1,52 +1,96 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { PageHeading } from '@gnomad/ui'
 
+import Delayed from './Delayed'
 import InfoPage from './InfoPage'
-import Query from './Query'
+import StatusMessage from './StatusMessage'
+import { fetchSearchResults } from './search'
 
 const defaultSearchDataset = 'gnomad_r2_1'
 
-const searchQuery = `
-query Search($query: String!, $dataset: DatasetId!) {
-  searchResults(query: $query, dataset: $dataset) {
-    label
-    url
+const cancelable = promise => {
+  let isCanceled = false
+  const wrapper = new Promise((resolve, reject) => {
+    promise.then(
+      value => {
+        if (!isCanceled) {
+          resolve(value)
+        }
+      },
+      error => {
+        if (!isCanceled) {
+          reject(error)
+        }
+      }
+    )
+  })
+
+  return {
+    cancel: () => {
+      isCanceled = true
+    },
+    promise: wrapper,
   }
 }
-`
 
-const SearchRedirectPage = ({ query }) => (
-  <InfoPage>
-    <PageHeading>Search</PageHeading>
+const SearchRedirect = ({ query }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [searchResults, setSearchResults] = useState([])
 
-    <Query
-      query={searchQuery}
-      variables={{ query, dataset: defaultSearchDataset }}
-      loadingMessage="Searching"
-      errorMessage="Unable to load search results"
-      success={data => data.searchResults}
-    >
-      {({ data }) => {
-        const results = data.searchResults
+  useEffect(() => {
+    setIsLoading(true)
+    setError(null)
+    const request = cancelable(fetchSearchResults(defaultSearchDataset, query))
+    request.promise.then(setSearchResults, setError).finally(() => {
+      setIsLoading(false)
+    })
+    return () => {
+      request.cancel()
+    }
+  }, [query])
 
-        if (results.length) {
-          return <Redirect to={results[0].url} />
-        }
+  if (isLoading) {
+    return (
+      <Delayed>
+        <StatusMessage>Searching</StatusMessage>
+      </Delayed>
+    )
+  }
 
-        return (
-          <p>
-            No results found for &quot;
-            {query}
-            &quot;.
-          </p>
-        )
-      }}
-    </Query>
-  </InfoPage>
-)
+  if (error) {
+    return <StatusMessage>Unable to load search results</StatusMessage>
+  }
+
+  if (searchResults.length > 0) {
+    return <Redirect to={searchResults[0].value} />
+  }
+
+  return (
+    <p>
+      No results found for &quot;
+      {query}
+      &quot;.
+    </p>
+  )
+}
+
+SearchRedirect.propTypes = {
+  query: PropTypes.string.isRequired,
+}
+
+const SearchRedirectPage = ({ query }) => {
+  return (
+    <InfoPage>
+      <PageHeading>Search</PageHeading>
+
+      <SearchRedirect query={query} />
+    </InfoPage>
+  )
+}
 
 SearchRedirectPage.propTypes = {
   query: PropTypes.string.isRequired,
