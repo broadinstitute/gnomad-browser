@@ -11,6 +11,7 @@ import DocumentTitle from './DocumentTitle'
 import Link from './Link'
 import useRequest from './useRequest'
 import StatusMessage from './StatusMessage'
+import { fetchVariantSearchResults } from './search'
 
 const MitochondrialVariantPage = lazy(() =>
   import('./MitochondrialVariantPage/MitochondrialVariantPage')
@@ -18,31 +19,6 @@ const MitochondrialVariantPage = lazy(() =>
 const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
 const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
 const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
-
-const fetchVariantSearchResults = (datasetId, query) => {
-  return fetch('/api/', {
-    body: JSON.stringify({
-      query: `
-        query VariantSearch($query: String!, $datasetId: DatasetId!) {
-          variant_search(query: $query, dataset: $datasetId) {
-            variant_id
-          }
-        }
-      `,
-      variables: { datasetId, query },
-    }),
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then(response => response.json())
-    .then(response => {
-      if (!response.data.variant_search) {
-        throw new Error('Unable to retrieve search results')
-      }
-
-      return response.data.variant_search.map(result => result.variant_id)
-    })
-}
 
 const VariantSearch = ({ datasetId, query }) => {
   const search = useCallback(() => fetchVariantSearchResults(datasetId, query), [datasetId, query])
