@@ -30,7 +30,7 @@ const isStructuralVariantId = (str) => {
 }
 
 const fetchSearchResults = async (esClient, datasetId, query) => {
-  if (dataset.startsWith('gnomad_sv')) {
+  if (datasetId.startsWith('gnomad_sv')) {
     // ==============================================================================================
     // Structural Variants
     // ==============================================================================================
