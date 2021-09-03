@@ -114,7 +114,7 @@ const VariantPageRouter = ({ datasetId, variantId }) => {
     return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
   }
 
-  if (isRsId(variantId)) {
+  if (isRsId(variantId) || /^[0-9]+$/.test(variantId)) {
     return <VariantSearchPage datasetId={datasetId} query={variantId} />
   }
 
@@ -122,7 +122,7 @@ const VariantPageRouter = ({ datasetId, variantId }) => {
     <Page>
       <DocumentTitle title="Invalid variant ID" />
       <PageHeading>Invalid Variant ID</PageHeading>
-      <p>Variant IDs must be chrom-pos-ref-alt or rsIDs.</p>
+      <p>Expected chrom-pos-ref-alt variant ID, rsID, or ClinVar variation ID.</p>
     </Page>
   )
 }

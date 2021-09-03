@@ -88,6 +88,28 @@ const fetchClinvarVariantById = async (esClient, referenceGenome, variantId) => 
   return variant
 }
 
+const fetchClinvarVariantByClinvarVariationId = async (
+  esClient,
+  referenceGenome,
+  clinvarVariationID
+) => {
+  try {
+    const response = await esClient.get({
+      index: CLINVAR_VARIANT_INDICES[referenceGenome],
+      type: '_doc',
+      id: clinvarVariationID,
+    })
+
+    return response.body._source.value
+  } catch (err) {
+    // meta will not be present if the request times out in the queue before reaching ES
+    if (err.meta && err.meta.body.found === false) {
+      return null
+    }
+    throw err
+  }
+}
+
 // ================================================================================================
 // Shape variant summary
 // ================================================================================================
@@ -256,6 +278,7 @@ module.exports = {
   fetchClinvarReleaseDate: throttle(fetchClinvarReleaseDate, 300000),
   countClinvarVariantsInRegion,
   fetchClinvarVariantById,
+  fetchClinvarVariantByClinvarVariationId,
   fetchClinvarVariantsByGene: withCache(
     fetchClinvarVariantsByGene,
     (_, datasetId, gene) => `clinvar_variants:${datasetId}:gene:${gene.gene_id}`,

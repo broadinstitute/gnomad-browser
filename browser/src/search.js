@@ -48,6 +48,16 @@ export const fetchSearchResults = (dataset, query) => {
         },
       ])
     }
+
+    if (/^[0-9]+$/.test(query)) {
+      const clinvarVariationId = query
+      return Promise.resolve([
+        {
+          label: clinvarVariationId,
+          value: `/variant/${clinvarVariationId}?dataset=${dataset}`,
+        },
+      ])
+    }
   }
 
   // ==============================================================================================
