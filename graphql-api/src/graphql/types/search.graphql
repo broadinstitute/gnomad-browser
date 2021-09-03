@@ -1,4 +1,0 @@
-type SearchResult {
-  label: String!
-  url: String!
-}
