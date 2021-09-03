@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   }
 `
 
-const STRUCTURAL_VARIANT_ID_REGEX = /^(MCNV|INS|DEL|DUP|INV|CPX|OTH)_(\d+|X|Y)_([1-9][0-9]*)$/i
+const STRUCTURAL_VARIANT_ID_REGEX = /^(BND|CPX|CTX|DEL|DUP|INS|INV|MCNV|OTH)_(\d+|X|Y)_([1-9][0-9]*)$/i
 const isStructuralVariantId = str => {
   const match = STRUCTURAL_VARIANT_ID_REGEX.exec(str)
   if (!match) {
