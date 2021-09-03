@@ -67,109 +67,109 @@ const fetchSearchResults = async (esClient, datasetId, query) => {
         },
       ]
     }
+  }
 
-    // ==============================================================================================
-    // Region
-    // ==============================================================================================
+  // ==============================================================================================
+  // Region
+  // ==============================================================================================
 
-    if (isRegionId(query)) {
-      const { chrom, start, stop } = parseRegionId(query)
-      const regionId = `${chrom}-${start}-${stop}`
-      const results = [
-        {
-          label: regionId,
-          url: `/region/${regionId}?dataset=${datasetId}`,
-        },
-      ]
+  if (isRegionId(query)) {
+    const { chrom, start, stop } = parseRegionId(query)
+    const regionId = `${chrom}-${start}-${stop}`
+    const results = [
+      {
+        label: regionId,
+        url: `/region/${regionId}?dataset=${datasetId}`,
+      },
+    ]
 
-      // If a position is entered, return options for a 40 base region centered
-      // at the position and the position as a one base region.
-      if (start === stop) {
-        const windowRegionId = `${chrom}-${Math.max(1, start - 20)}-${stop + 20}`
-        results.unshift({
-          label: windowRegionId,
-          url: `/region/${windowRegionId}?dataset=${datasetId}`,
-        })
-      }
-
-      return results
+    // If a position is entered, return options for a 40 base region centered
+    // at the position and the position as a one base region.
+    if (start === stop) {
+      const windowRegionId = `${chrom}-${Math.max(1, start - 20)}-${stop + 20}`
+      results.unshift({
+        label: windowRegionId,
+        url: `/region/${windowRegionId}?dataset=${datasetId}`,
+      })
     }
 
-    // ==============================================================================================
-    // Gene ID
-    // ==============================================================================================
+    return results
+  }
 
-    const upperCaseQuery = query.toUpperCase()
+  // ==============================================================================================
+  // Gene ID
+  // ==============================================================================================
 
-    if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
-      const geneId = upperCaseQuery
-      return [
-        {
-          label: geneId,
-          url: `/gene/${geneId}?dataset=${datasetId}`,
-        },
-      ]
-    }
+  const upperCaseQuery = query.toUpperCase()
 
-    // ==============================================================================================
-    // Transcript ID
-    // ==============================================================================================
+  if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
+    const geneId = upperCaseQuery
+    return [
+      {
+        label: geneId,
+        url: `/gene/${geneId}?dataset=${datasetId}`,
+      },
+    ]
+  }
 
-    if (/^ENST\d{11}$/.test(upperCaseQuery)) {
-      const transcriptId = upperCaseQuery
-      return [
-        {
-          label: transcriptId,
-          url: `/transcript/${transcriptId}?dataset=${datasetId}`,
-        },
-      ]
-    }
+  // ==============================================================================================
+  // Transcript ID
+  // ==============================================================================================
 
-    // ==============================================================================================
-    // Gene symbol
-    // ==============================================================================================
+  if (/^ENST\d{11}$/.test(upperCaseQuery)) {
+    const transcriptId = upperCaseQuery
+    return [
+      {
+        label: transcriptId,
+        url: `/transcript/${transcriptId}?dataset=${datasetId}`,
+      },
+    ]
+  }
 
-    const referenceGenome = DATASET_REFERENCE_GENOMES[datasetId]
-    const geneSymbolSearchResponse = await esClient.search({
-      index: `genes_${referenceGenome.toLowerCase()}`,
-      type: '_doc',
-      _source: ['gene_id', 'value.symbol'],
-      body: {
-        query: {
-          bool: {
-            should: [
-              { term: { symbol_upper_case: upperCaseQuery } },
-              { prefix: { search_terms: upperCaseQuery } },
-            ],
-          },
+  // ==============================================================================================
+  // Gene symbol
+  // ==============================================================================================
+
+  const referenceGenome = DATASET_REFERENCE_GENOMES[datasetId]
+  const geneSymbolSearchResponse = await esClient.search({
+    index: `genes_${referenceGenome.toLowerCase()}`,
+    type: '_doc',
+    _source: ['gene_id', 'value.symbol'],
+    body: {
+      query: {
+        bool: {
+          should: [
+            { term: { symbol_upper_case: upperCaseQuery } },
+            { prefix: { search_terms: upperCaseQuery } },
+          ],
         },
       },
-      size: 5,
-    })
+    },
+    size: 5,
+  })
 
-    const matchingGenes =
-      geneSymbolSearchResponse.body.hits.total > 0
-        ? geneSymbolSearchResponse.body.hits.hits.map((hit) => hit._source)
-        : []
+  const matchingGenes =
+    geneSymbolSearchResponse.body.hits.total > 0
+      ? geneSymbolSearchResponse.body.hits.hits.map((hit) => hit._source)
+      : []
 
-    const geneNameCounts = {}
-    matchingGenes.forEach((gene) => {
-      if (geneNameCounts[gene.value.symbol] === undefined) {
-        geneNameCounts[gene.value.symbol] = 0
-      }
-      geneNameCounts[gene.value.symbol] += 1
-    })
+  const geneNameCounts = {}
+  matchingGenes.forEach((gene) => {
+    if (geneNameCounts[gene.value.symbol] === undefined) {
+      geneNameCounts[gene.value.symbol] = 0
+    }
+    geneNameCounts[gene.value.symbol] += 1
+  })
 
-    const geneResults = matchingGenes.map((gene) => ({
-      label:
-        geneNameCounts[gene.value.symbol] > 1
-          ? `${gene.value.symbol} (${gene.gene_id})`
-          : gene.value.symbol,
-      url: `/gene/${gene.gene_id}?dataset=${datasetId}`,
-    }))
+  const geneResults = matchingGenes.map((gene) => ({
+    label:
+      geneNameCounts[gene.value.symbol] > 1
+        ? `${gene.value.symbol} (${gene.gene_id})`
+        : gene.value.symbol,
+    url: `/gene/${gene.gene_id}?dataset=${datasetId}`,
+  }))
 
-    return geneResults
-  }
+  return geneResults
 }
 
 module.exports = {
