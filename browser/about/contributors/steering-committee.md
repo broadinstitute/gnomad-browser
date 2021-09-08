@@ -5,6 +5,7 @@
 - Daniel MacArthur
 - Ben Neale
 - Anne O'Donnell-Luria
+- Kaitlin Samocha
 - Matthew Solomonson
 - Mike Talkowski
 - Grace Tiao
