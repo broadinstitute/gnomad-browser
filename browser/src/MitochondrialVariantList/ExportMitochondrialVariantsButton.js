@@ -32,7 +32,7 @@ const columns = [
   },
   {
     label: 'Max observed heteroplasmy',
-    getValue: variant => JSON.stringify(variant.max_hl),
+    getValue: variant => JSON.stringify(variant.max_heteroplasmy),
   },
 ]
 
