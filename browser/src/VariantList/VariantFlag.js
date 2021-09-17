@@ -3,44 +3,44 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-const flagProps = {
+export const FLAGS_CONFIG = {
   lcr: {
-    children: 'LCR',
+    label: 'LCR',
     level: 'info',
     formatTooltip: () => 'Found in a low complexity region\nVariant annotation or quality dubious',
   },
   lc_lof: {
-    children: 'LC pLoF',
+    label: 'LC pLoF',
     level: 'error',
     formatTooltip: variant =>
       `Low-confidence pLoF: ${variant.lof_filter}\nVariant annotation or quality dubious`,
   },
   lof_flag: {
-    children: 'pLoF flag',
+    label: 'pLoF flag',
     level: 'warning',
     formatTooltip: variant =>
       `Flagged by LOFTEE: ${variant.lof_flags}\nVariant annotation or quality dubious`,
   },
   nc_transcript: {
-    children: 'NC Transcript',
+    label: 'NC Transcript',
     level: 'error',
     formatTooltip: () => 'Non-protein-coding transcript\nVariant annotation dubious',
   },
   os_lof: {
-    children: 'OS pLoF',
+    label: 'OS pLoF',
     level: 'info',
     formatTooltip: () =>
       'Variant predicted to create or disrupt a splice site outside the canonical splice site (beta)',
   },
   mnv: {
-    children: 'MNV',
+    label: 'MNV',
     level: 'error',
     formatTooltip: () =>
       'Multi-nucleotide variant: this variant is found in phase with another variant in some individuals, altering the amino acid sequence\nVariant annotation dubious',
   },
   // Mitochondrial variants
   common_low_heteroplasmy: {
-    children: 'Common Low Heteroplasmy',
+    label: 'Common Low Heteroplasmy',
     level: 'warning',
     formatTooltip: () =>
       'Variant is present at an overall frequency of .001 across all samples with a heteroplasmy level > 0 and < 0.50',
@@ -48,16 +48,16 @@ const flagProps = {
 }
 
 const VariantFlag = ({ type, variant }) => {
-  const { children, level, formatTooltip } = flagProps[type]
+  const { label, level, formatTooltip } = FLAGS_CONFIG[type]
   return (
     <Badge level={level} tooltip={formatTooltip(variant)}>
-      {children}
+      {label}
     </Badge>
   )
 }
 
 VariantFlag.propTypes = {
-  type: PropTypes.oneOf(Object.keys(flagProps)).isRequired,
+  type: PropTypes.oneOf(Object.keys(FLAGS_CONFIG)).isRequired,
   variant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 }
 

@@ -3,12 +3,40 @@ import React from 'react'
 
 import { Button } from '@gnomad/ui'
 
+import { FLAGS_CONFIG } from '../VariantList/VariantFlag'
+import { getLabelForConsequenceTerm } from '../vepConsequences'
+
 import MitochondrialVariantPropType from './MitochondrialVariantPropType'
 
 const columns = [
   {
     label: 'Variant ID',
     getValue: variant => variant.variant_id,
+  },
+  {
+    label: 'Filters',
+    getValue: variant => (variant.filters.length === 0 ? 'PASS' : variant.filters.join(',')),
+  },
+  {
+    label: 'HGVS Consequence',
+    getValue: variant => variant.hgvsp || variant.hgvsc || '',
+  },
+  {
+    label: 'VEP Annotation',
+    getValue: variant =>
+      variant.consequence ? getLabelForConsequenceTerm(variant.consequence) : '',
+  },
+  {
+    label: 'ClinVar Clinical Significance',
+    getValue: variant => variant.clinical_significance || '',
+  },
+  {
+    label: 'ClinVar Variation ID',
+    getValue: variant => variant.clinvar_variation_id || '',
+  },
+  {
+    label: 'Flags',
+    getValue: variant => variant.flags.map(flag => FLAGS_CONFIG[flag].label).join(';'),
   },
   {
     label: 'Allele Number',
