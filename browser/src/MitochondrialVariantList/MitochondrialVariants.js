@@ -280,6 +280,7 @@ class MitochondrialVariants extends Component {
             <div>
               <ExportMitochondrialVariantsButton
                 exportFileName={exportFileName}
+                includeGene={context.gene_id === undefined && context.transcript_id === undefined}
                 variants={renderedVariants}
               />
             </div>

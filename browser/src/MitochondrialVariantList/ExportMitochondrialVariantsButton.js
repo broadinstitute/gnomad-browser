@@ -8,7 +8,7 @@ import { getLabelForConsequenceTerm } from '../vepConsequences'
 
 import MitochondrialVariantPropType from './MitochondrialVariantPropType'
 
-const columns = [
+const BASE_COLUMNS = [
   {
     label: 'Variant ID',
     getValue: variant => variant.variant_id,
@@ -64,7 +64,15 @@ const columns = [
   },
 ]
 
-const exportVariantsToCsv = (variants, baseFileName) => {
+const exportVariantsToCsv = (variants, baseFileName, includeGene) => {
+  const columns = [...BASE_COLUMNS]
+  if (includeGene) {
+    columns.splice(2, 0, {
+      label: 'Gene',
+      getValue: variant => variant.gene_symbol || '',
+    })
+  }
+
   const headerRow = columns.map(c => c.label)
 
   const csv = `${headerRow}\r\n${variants
@@ -107,11 +115,11 @@ const exportVariantsToCsv = (variants, baseFileName) => {
   link.click()
 }
 
-const ExportMitochondrialVariantsButton = ({ exportFileName, variants, ...rest }) => (
+const ExportMitochondrialVariantsButton = ({ exportFileName, includeGene, variants, ...rest }) => (
   <Button
     {...rest}
     onClick={() => {
-      exportVariantsToCsv(variants, exportFileName)
+      exportVariantsToCsv(variants, exportFileName, includeGene)
     }}
   >
     Export variants to CSV
@@ -120,7 +128,12 @@ const ExportMitochondrialVariantsButton = ({ exportFileName, variants, ...rest }
 
 ExportMitochondrialVariantsButton.propTypes = {
   exportFileName: PropTypes.string.isRequired,
+  includeGene: PropTypes.bool,
   variants: PropTypes.arrayOf(MitochondrialVariantPropType).isRequired,
+}
+
+ExportMitochondrialVariantsButton.defaultProps = {
+  includeGene: false,
 }
 
 export default ExportMitochondrialVariantsButton
