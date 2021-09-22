@@ -49,7 +49,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             },
             "stripy_id": locus["STRipyLink"].split("/")[-1],
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
-            "repeat_unit": locus["RepeatUnit"],
+            "reference_repeat_unit": locus["ReferenceRepeatUnit"],
             "repeats": _prepare_histogram(locus["AlleleCountHistogram"]["Total"]),
             "populations": sorted(
                 [
@@ -70,7 +70,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                             "reference_genome": "GRCh38",
                             **_parse_region_id(adjacent_repeat["ReferenceRegion"]),
                         },
-                        "repeat_unit": adjacent_repeat["RepeatUnit"],
+                        "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
                         "repeats": _prepare_histogram(adjacent_repeat["AlleleCountHistogram"]["Total"]),
                         "populations": sorted(
                             [
@@ -102,7 +102,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 name=hl.tstr, omim_id=hl.tstr, normal_threshold=hl.tint, pathogenic_threshold=hl.tint
             ),
             reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
-            repeat_unit=hl.tstr,
+            reference_repeat_unit=hl.tstr,
             repeats=hl.tarray(hl.tarray(hl.tint)),
             populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
             stripy_id=hl.tstr,
@@ -110,7 +110,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 hl.tstruct(
                     id=hl.tstr,
                     reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
-                    repeat_unit=hl.tstr,
+                    reference_repeat_unit=hl.tstr,
                     repeats=hl.tarray(hl.tarray(hl.tint)),
                     populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
                 )

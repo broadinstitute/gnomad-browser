@@ -8,7 +8,9 @@ import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatProp
 const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }) => {
   return (
     <AttributeList>
-      <AttributeList.Item label="Repeat unit">{adjacentRepeat.repeat_unit}</AttributeList.Item>
+      <AttributeList.Item label="Reference repeat unit">
+        {adjacentRepeat.reference_repeat_unit}
+      </AttributeList.Item>
       <AttributeList.Item label="Reference region">
         <Link
           to={`/region/${adjacentRepeat.reference_region.chrom}-${adjacentRepeat.reference_region.start}-${adjacentRepeat.reference_region.stop}`}

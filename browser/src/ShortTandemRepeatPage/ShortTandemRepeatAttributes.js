@@ -16,7 +16,9 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
         </Link>
       </AttributeList.Item>
       <AttributeList.Item label="Gene region">{shortTandemRepeat.gene.region}</AttributeList.Item>
-      <AttributeList.Item label="Repeat unit">{shortTandemRepeat.repeat_unit}</AttributeList.Item>
+      <AttributeList.Item label="Reference repeat unit">
+        {shortTandemRepeat.reference_repeat_unit}
+      </AttributeList.Item>
       <AttributeList.Item label="Reference region">
         <Link
           to={`/region/${shortTandemRepeat.reference_region.chrom}-${shortTandemRepeat.reference_region.start}-${shortTandemRepeat.reference_region.stop}`}

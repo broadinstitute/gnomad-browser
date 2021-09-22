@@ -18,7 +18,7 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Repeat unit</th>
+            <th scope="col">Reference repeat unit</th>
             <th scope="col">Region</th>
             <th scope="col">Inheritance mode</th>
             <th scope="col">Associated disease</th>
@@ -33,7 +33,7 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
                     {shortTandemRepeat.id}
                   </Link>
                 </th>
-                <td>{shortTandemRepeat.repeat_unit}</td>
+                <td style={{ minWidth: '18ch' }}>{shortTandemRepeat.reference_repeat_unit}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.gene.region}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.inheritance_mode}</td>
                 <td style={{ minWidth: '30ch' }}>
@@ -61,7 +61,7 @@ ShortTandemRepeatsPage.propTypes = {
         symbol: PropTypes.string.isRequired,
         region: PropTypes.string.isRequired,
       }).isRequired,
-      repeat_unit: PropTypes.string.isRequired,
+      reference_repeat_unit: PropTypes.string.isRequired,
       associated_disease: PropTypes.shape({
         name: PropTypes.string.isRequired,
         omim_id: PropTypes.string.isRequired,
@@ -80,7 +80,7 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
       symbol
       region
     }
-    repeat_unit
+    reference_repeat_unit
     associated_disease {
       name
       omim_id
