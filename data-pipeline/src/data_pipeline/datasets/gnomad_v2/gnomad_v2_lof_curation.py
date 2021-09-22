@@ -42,7 +42,7 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
 
                 project = re.sub(r"(_curation_results)?\.csv$", "", path.split("/")[-1])
 
-                raw_dataset_flags = [f.lstrip("Flag ") for f in reader.fieldnames if f.startswith("Flag ")]
+                raw_dataset_flags = [f[5:] for f in reader.fieldnames if f.startswith("Flag ")]
 
                 dataset_flags = [FLAG_MAPPING.get(f, f) for f in raw_dataset_flags]
 
