@@ -11,7 +11,7 @@
 - Get a shell in the Redis pod.
 
   ```
-  kubectl exec -ti $REDIS_POD -- /bin/sh
+  kubectl exec -ti $REDIS_POD -- /bin/bash
   ```
 
 - Run Redis CLI.
