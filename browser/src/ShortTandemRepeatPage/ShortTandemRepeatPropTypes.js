@@ -7,7 +7,7 @@ export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
-  repeat_unit: PropTypes.string.isRequired,
+  reference_repeat_unit: PropTypes.string.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   populations: PropTypes.arrayOf(
     PropTypes.shape({
@@ -37,7 +37,7 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
-  repeat_unit: PropTypes.string.isRequired,
+  reference_repeat_unit: PropTypes.string.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   populations: PropTypes.arrayOf(
     PropTypes.shape({

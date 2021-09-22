@@ -16,7 +16,7 @@ const SUMMARY_FIELDS = [
   'value.associated_disease',
   'value.stripy_id',
   'value.reference_region',
-  'value.repeat_unit',
+  'value.reference_repeat_unit',
 ]
 
 const fetchAllShortTandemRepeats = async (esClient, datasetId) => {

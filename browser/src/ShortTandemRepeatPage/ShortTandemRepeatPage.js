@@ -61,7 +61,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             ? shortTandemRepeat.repeats
             : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        repeatUnit={shortTandemRepeat.repeat_unit}
+        referenceRepeatUnit={shortTandemRepeat.reference_repeat_unit}
         thresholds={[
           {
             label: 'Normal threshold',
@@ -112,7 +112,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                       : adjacentRepeat.populations.find(pop => pop.id === selectedPopulationId)
                           .repeats
                   }
-                  repeatUnit={adjacentRepeat.repeat_unit}
+                  referenceRepeatUnit={adjacentRepeat.reference_repeat_unit}
                   scaleType={selectedScaleType}
                 />
                 <FlexWrapper>
@@ -170,7 +170,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       start
       stop
     }
-    repeat_unit
+    reference_repeat_unit
     repeats
     populations {
       id
@@ -184,7 +184,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         start
         stop
       }
-      repeat_unit
+      reference_repeat_unit
       repeats
       populations {
         id

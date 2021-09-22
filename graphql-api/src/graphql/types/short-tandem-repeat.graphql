@@ -26,7 +26,7 @@ type ShortTandemRepeatPopulation {
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
-  repeat_unit: String!
+  reference_repeat_unit: String!
   repeats: [[Int!]!]!
   populations: [ShortTandemRepeatPopulation!]!
 }
@@ -38,7 +38,7 @@ type ShortTandemRepeat {
   associated_disease: ShortTandemRepeatAssociatedDisease!
   stripy_id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
-  repeat_unit: String!
+  reference_repeat_unit: String!
 }
 
 type ShortTandemRepeatDetails {
@@ -48,7 +48,7 @@ type ShortTandemRepeatDetails {
   associated_disease: ShortTandemRepeatAssociatedDisease!
   stripy_id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
-  repeat_unit: String!
+  reference_repeat_unit: String!
   repeats: [[Int!]!]!
   populations: [ShortTandemRepeatPopulation!]!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!

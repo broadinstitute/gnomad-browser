@@ -43,7 +43,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, repeatUnit, size: { width }, scaleType, thresholds }) => {
+  ({ maxRepeats, repeats, referenceRepeatUnit, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
     const binSize = Math.max(1, Math.ceil(maxRepeats / (width / 10)))
@@ -198,7 +198,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
               [
                 ...thresholds,
                 {
-                  value: 150 / repeatUnit.length,
+                  value: 150 / referenceRepeatUnit.length,
                   label: 'Read length (150 bp)',
                 },
               ]
@@ -277,7 +277,7 @@ ShortTandemRepeatRepeatCountsPlot.displayName = 'ShortTandemRepeatRepeatCountsPl
 ShortTandemRepeatRepeatCountsPlot.propTypes = {
   maxRepeats: PropTypes.number.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  repeatUnit: PropTypes.string.isRequired,
+  referenceRepeatUnit: PropTypes.string.isRequired,
   scaleType: PropTypes.oneOf(['linear', 'log']),
   thresholds: PropTypes.arrayOf(
     PropTypes.shape({
