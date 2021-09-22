@@ -23,12 +23,26 @@ type ShortTandemRepeatPopulation {
   repeats: [[Int!]!]!
 }
 
+type ShortTandemRepeatRepeatUnit {
+  repeat_unit: String!
+  classification: String!
+  repeats: [[Int!]!]!
+  populations: [ShortTandemRepeatPopulation!]!
+}
+
+type ShortTandemRepeatAdjacentRepeatRepeatUnit {
+  repeat_unit: String!
+  repeats: [[Int!]!]!
+  populations: [ShortTandemRepeatPopulation!]!
+}
+
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
   repeats: [[Int!]!]!
   populations: [ShortTandemRepeatPopulation!]!
+  repeat_units: [ShortTandemRepeatAdjacentRepeatRepeatUnit!]!
 }
 
 type ShortTandemRepeat {
@@ -51,5 +65,6 @@ type ShortTandemRepeatDetails {
   reference_repeat_unit: String!
   repeats: [[Int!]!]!
   populations: [ShortTandemRepeatPopulation!]!
+  repeat_units: [ShortTandemRepeatRepeatUnit!]!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }

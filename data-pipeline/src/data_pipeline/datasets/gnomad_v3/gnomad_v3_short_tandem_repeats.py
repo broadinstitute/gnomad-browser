@@ -104,6 +104,72 @@ def _prepare_populations(locus):
     )
 
 
+def _prepare_repeat_units(locus):
+    repeat_units = sorted(set(key.split("/")[2] for key in locus["AlleleCountHistogram"].keys()))
+    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
+
+    return [
+        {
+            "repeat_unit": repeat_unit,
+            "repeats": _prepare_histogram(
+                _get_total_histogram(
+                    {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == repeat_unit}
+                )
+            ),
+            "populations": sorted(
+                list(
+                    itertools.chain.from_iterable(
+                        [
+                            {
+                                "id": population,
+                                "repeats": _prepare_histogram(
+                                    _get_total_histogram(
+                                        {
+                                            k: v
+                                            for k, v in locus["AlleleCountHistogram"].items()
+                                            if k.split("/")[2] == repeat_unit and k.split("/")[0] == population
+                                        }
+                                    )
+                                ),
+                            },
+                            {
+                                "id": f"{population}_XX",
+                                "repeats": _prepare_histogram(
+                                    locus["AlleleCountHistogram"][f"{population}/XX/{repeat_unit}"]
+                                ),
+                            },
+                            {
+                                "id": f"{population}_XY",
+                                "repeats": _prepare_histogram(
+                                    locus["AlleleCountHistogram"][f"{population}/XY/{repeat_unit}"]
+                                ),
+                            },
+                        ]
+                        for population in populations
+                    )
+                )
+                + [
+                    {
+                        "id": sex,
+                        "repeats": _prepare_histogram(
+                            _get_total_histogram(
+                                {
+                                    k: v
+                                    for k, v in locus["AlleleCountHistogram"].items()
+                                    if k.split("/")[2] == repeat_unit and k.split("/")[1] == sex
+                                }
+                            )
+                        ),
+                    }
+                    for sex in ["XX", "XY"]
+                ],
+                key=_population_sort_key,
+            ),
+        }
+        for repeat_unit in repeat_units
+    ]
+
+
 def prepare_gnomad_v3_short_tandem_repeats(path):
     with hl.hadoop_open(path) as input_file:
         data = json.load(input_file)
@@ -125,6 +191,15 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
             "repeats": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
             "populations": _prepare_populations(locus),
+            "repeat_units": [
+                {
+                    **repeat_unit,
+                    "classification": locus["RepeatUnitClassification"]
+                    .get(repeat_unit["repeat_unit"], "unknown")
+                    .lower(),
+                }
+                for repeat_unit in _prepare_repeat_units(locus)
+            ],
             "adjacent_repeats": sorted(
                 [
                     {
@@ -136,6 +211,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
                         "repeats": _prepare_histogram(_get_total_histogram(adjacent_repeat["AlleleCountHistogram"])),
                         "populations": _prepare_populations(adjacent_repeat),
+                        "repeat_units": _prepare_repeat_units(adjacent_repeat),
                     }
                     for adjacent_repeat_id, adjacent_repeat in locus.get("AdjacentRepeats", {}).items()
                 ],
@@ -158,6 +234,14 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             reference_repeat_unit=hl.tstr,
             repeats=hl.tarray(hl.tarray(hl.tint)),
             populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
+            repeat_units=hl.tarray(
+                hl.tstruct(
+                    repeat_unit=hl.tstr,
+                    classification=hl.tstr,
+                    repeats=hl.tarray(hl.tarray(hl.tint)),
+                    populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
+                )
+            ),
             stripy_id=hl.tstr,
             adjacent_repeats=hl.tarray(
                 hl.tstruct(
@@ -166,6 +250,13 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     reference_repeat_unit=hl.tstr,
                     repeats=hl.tarray(hl.tarray(hl.tint)),
                     populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
+                    repeat_units=hl.tarray(
+                        hl.tstruct(
+                            repeat_unit=hl.tstr,
+                            repeats=hl.tarray(hl.tarray(hl.tint)),
+                            populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
+                        )
+                    ),
                 )
             ),
         ),
