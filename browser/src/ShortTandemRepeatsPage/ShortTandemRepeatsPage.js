@@ -37,11 +37,15 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
                 <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.gene.region}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.inheritance_mode}</td>
                 <td style={{ minWidth: '30ch' }}>
-                  <ExternalLink
-                    href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
-                  >
-                    {shortTandemRepeat.associated_disease.name}
-                  </ExternalLink>
+                  {shortTandemRepeat.associated_disease.omim_id ? (
+                    <ExternalLink
+                      href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
+                    >
+                      {shortTandemRepeat.associated_disease.name}
+                    </ExternalLink>
+                  ) : (
+                    shortTandemRepeat.associated_disease.name
+                  )}
                 </td>
               </tr>
             )
@@ -64,7 +68,7 @@ ShortTandemRepeatsPage.propTypes = {
       reference_repeat_unit: PropTypes.string.isRequired,
       associated_disease: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        omim_id: PropTypes.string.isRequired,
+        omim_id: PropTypes.string,
       }).isRequired,
       inheritance_mode: PropTypes.string.isRequired,
     })
