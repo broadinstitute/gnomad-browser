@@ -553,6 +553,15 @@ export default () => (
             includeAzure={false}
           />
         </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="NSD1 LoF curation results"
+            path="/truth-sets/source/lof-curation/NSD1_curation_results.csv"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
       </FileList>
     </section>
 
