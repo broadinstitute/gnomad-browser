@@ -43,7 +43,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             "associated_disease": {
                 # ’ characters get garbled somewhere in ES or ES-Hadoop
                 "name": locus["Disease"].replace("’", "'"),
-                "omim_id": locus["OMIMDiseaseLink"].split("/")[-1],
+                "omim_id": locus["OMIMDiseaseLink"].split("/")[-1] if locus["OMIMDiseaseLink"] else None,
                 "normal_threshold": int(locus["NormalMax"]) if locus["NormalMax"] is not None else None,
                 "pathogenic_threshold": int(locus["PathogenicMin"]) if locus["PathogenicMin"] is not None else None,
             },

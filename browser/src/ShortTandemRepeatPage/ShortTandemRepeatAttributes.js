@@ -31,11 +31,15 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
         {shortTandemRepeat.inheritance_mode}
       </AttributeList.Item>
       <AttributeList.Item label="Associated disease">
-        <ExternalLink
-          href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
-        >
-          {shortTandemRepeat.associated_disease.name}
-        </ExternalLink>
+        {shortTandemRepeat.associated_disease.omim_id ? (
+          <ExternalLink
+            href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
+          >
+            {shortTandemRepeat.associated_disease.name}
+          </ExternalLink>
+        ) : (
+          shortTandemRepeat.associated_disease.name
+        )}
       </AttributeList.Item>
       {shortTandemRepeat.associated_disease.normal_threshold !== null && (
         <AttributeList.Item label="Normal range">
