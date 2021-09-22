@@ -28,8 +28,8 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
   associated_disease: PropTypes.shape({
     name: PropTypes.string.isRequired,
     omim_id: PropTypes.string.isRequired,
-    normal_threshold: PropTypes.number.isRequired,
-    pathogenic_threshold: PropTypes.number.isRequired,
+    normal_threshold: PropTypes.number,
+    pathogenic_threshold: PropTypes.number,
   }).isRequired,
   stripy_id: PropTypes.string.isRequired,
   reference_region: PropTypes.shape({

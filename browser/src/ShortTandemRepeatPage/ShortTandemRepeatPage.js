@@ -36,6 +36,20 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
 
   const populationIds = shortTandemRepeat.populations.map(pop => pop.id)
 
+  const plotThresholds = []
+  if (shortTandemRepeat.associated_disease.normal_threshold !== null) {
+    plotThresholds.push({
+      label: 'Normal threshold',
+      value: shortTandemRepeat.associated_disease.normal_threshold + 1,
+    })
+  }
+  if (shortTandemRepeat.associated_disease.pathogenic_threshold !== null) {
+    plotThresholds.push({
+      label: 'Pathogenic threshold',
+      value: shortTandemRepeat.associated_disease.pathogenic_threshold,
+    })
+  }
+
   return (
     <>
       <FlexWrapper style={{ marginBottom: '2em' }}>
@@ -62,16 +76,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulationId).repeats
         }
         referenceRepeatUnit={shortTandemRepeat.reference_repeat_unit}
-        thresholds={[
-          {
-            label: 'Normal threshold',
-            value: shortTandemRepeat.associated_disease.normal_threshold + 1,
-          },
-          {
-            label: 'Pathogenic threshold',
-            value: shortTandemRepeat.associated_disease.pathogenic_threshold,
-          },
-        ]}
+        thresholds={plotThresholds}
         scaleType={selectedScaleType}
       />
       <FlexWrapper>
