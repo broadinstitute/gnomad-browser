@@ -1,5 +1,17 @@
 import PropTypes from 'prop-types'
 
+const ShortTandemRepeatRepeatUnitPropType = PropTypes.shape({
+  repeat_unit: PropTypes.string.isRequired,
+  classification: PropTypes.string,
+  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  populations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    })
+  ).isRequired,
+})
+
 export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   reference_region: PropTypes.shape({
@@ -15,6 +27,7 @@ export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
       repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     })
   ).isRequired,
+  repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
 })
 
 export const ShortTandemRepeatPropType = PropTypes.shape({
@@ -45,5 +58,6 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
       repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     })
   ).isRequired,
+  repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
   adjacent_repeats: PropTypes.arrayOf(ShortTandemRepeatAdjacentRepeatPropType).isRequired,
 })

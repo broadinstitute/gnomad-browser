@@ -31,6 +31,21 @@ const FlexWrapper = styled.div`
 `
 
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
+  const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
+    shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
+  )
+  const [selectedAdjacentRepeatRepeatUnits, setSelectedAdjacentRepeatRepeatUnits] = useState(
+    shortTandemRepeat.adjacent_repeats.reduce(
+      (acc, adjacentRepeat) => ({
+        [adjacentRepeat.id]:
+          adjacentRepeat.repeat_units.length === 1
+            ? adjacentRepeat.repeat_units[0].repeat_unit
+            : '',
+      }),
+      {}
+    )
+  )
+
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
   const [selectedScaleType, setSelectedScaleType] = useState('linear')
 
@@ -72,10 +87,20 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         maxRepeats={shortTandemRepeat.repeats[shortTandemRepeat.repeats.length - 1][0]}
         repeats={
           selectedPopulationId === ''
-            ? shortTandemRepeat.repeats
-            : shortTandemRepeat.populations.find(pop => pop.id === selectedPopulationId).repeats
+            ? (selectedRepeatUnit
+                ? shortTandemRepeat.repeat_units.find(
+                    repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
+                  )
+                : shortTandemRepeat
+              ).repeats
+            : (selectedRepeatUnit
+                ? shortTandemRepeat.repeat_units.find(
+                    repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
+                  )
+                : shortTandemRepeat
+              ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        referenceRepeatUnit={shortTandemRepeat.reference_repeat_unit}
+        repeatUnit={selectedRepeatUnit || shortTandemRepeat.reference_repeat_unit}
         thresholds={plotThresholds}
         scaleType={selectedScaleType}
       />
@@ -86,6 +111,27 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           selectedPopulationId={selectedPopulationId}
           onSelectPopulationId={setSelectedPopulationId}
         />
+
+        <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
+          Repeat unit:{' '}
+          <Select
+            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
+            value={selectedRepeatUnit}
+            onChange={e => {
+              setSelectedRepeatUnit(e.target.value)
+            }}
+          >
+            <option value="" disabled={shortTandemRepeat.repeat_units.length === 1}>
+              All
+            </option>
+            {shortTandemRepeat.repeat_units.map(repeatUnit => (
+              <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                {repeatUnit.repeat_unit}
+              </option>
+            ))}
+          </Select>
+        </label>
+
         <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}>
           Scale:{' '}
           <Select
@@ -113,11 +159,27 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                   maxRepeats={adjacentRepeat.repeats[adjacentRepeat.repeats.length - 1][0]}
                   repeats={
                     selectedPopulationId === ''
-                      ? adjacentRepeat.repeats
-                      : adjacentRepeat.populations.find(pop => pop.id === selectedPopulationId)
-                          .repeats
+                      ? (selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                          ? adjacentRepeat.repeat_units.find(
+                              repeatUnit =>
+                                repeatUnit.repeat_unit ===
+                                selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                            )
+                          : adjacentRepeat
+                        ).repeats
+                      : (selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                          ? adjacentRepeat.repeat_units.find(
+                              repeatUnit =>
+                                repeatUnit.repeat_unit ===
+                                selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                            )
+                          : adjacentRepeat
+                        ).populations.find(pop => pop.id === selectedPopulationId).repeats
                   }
-                  referenceRepeatUnit={adjacentRepeat.reference_repeat_unit}
+                  repeatUnit={
+                    selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id] ||
+                    adjacentRepeat.reference_repeat_unit
+                  }
                   scaleType={selectedScaleType}
                 />
                 <FlexWrapper>
@@ -127,6 +189,32 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                     selectedPopulationId={selectedPopulationId}
                     onSelectPopulationId={setSelectedPopulationId}
                   />
+
+                  <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}>
+                    Repeat unit:{' '}
+                    <Select
+                      id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}
+                      value={selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]}
+                      onChange={e => {
+                        setSelectedAdjacentRepeatRepeatUnits(
+                          prevSelectedAdjacentRepeatRepeatUnits => ({
+                            ...prevSelectedAdjacentRepeatRepeatUnits,
+                            [adjacentRepeat.id]: e.target.value,
+                          })
+                        )
+                      }}
+                    >
+                      <option value="" disabled={adjacentRepeat.repeat_units.length === 1}>
+                        All
+                      </option>
+                      {adjacentRepeat.repeat_units.map(repeatUnit => (
+                        <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                          {repeatUnit.repeat_unit}
+                        </option>
+                      ))}
+                    </Select>
+                  </label>
+
                   <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
                     Scale:{' '}
                     <Select
@@ -181,6 +269,15 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       id
       repeats
     }
+    repeat_units {
+      repeat_unit
+      classification
+      repeats
+      populations {
+        id
+        repeats
+      }
+    }
     stripy_id
     adjacent_repeats {
       id
@@ -194,6 +291,14 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       populations {
         id
         repeats
+      }
+      repeat_units {
+        repeat_unit
+        repeats
+        populations {
+          id
+          repeats
+        }
       }
     }
   }
