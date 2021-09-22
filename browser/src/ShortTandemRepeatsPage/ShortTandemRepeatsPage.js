@@ -28,7 +28,7 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
           {shortTandemRepeats.map(shortTandemRepeat => {
             return (
               <tr key={shortTandemRepeat.id}>
-                <th scope="row">
+                <th scope="row" style={{ whiteSpace: 'nowrap' }}>
                   <Link to={`/short-tandem-repeat/${shortTandemRepeat.id}`}>
                     {shortTandemRepeat.id}
                   </Link>
