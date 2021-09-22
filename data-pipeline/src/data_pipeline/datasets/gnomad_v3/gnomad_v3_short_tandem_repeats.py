@@ -1,4 +1,6 @@
+import itertools
 import json
+from collections import defaultdict
 
 import hail as hl
 
@@ -31,6 +33,77 @@ def _population_sort_key(pop):
     return (pop_id, "")
 
 
+def _get_total_histogram(histogram):
+    total = defaultdict(int)
+    for v in histogram.values():
+        for k, n in v.items():
+            total[k] += n
+
+    return total
+
+
+def _prepare_populations(locus):
+    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
+
+    return sorted(
+        list(
+            itertools.chain.from_iterable(
+                [
+                    {
+                        "id": population,
+                        "repeats": _prepare_histogram(
+                            _get_total_histogram(
+                                {
+                                    k: v
+                                    for k, v in locus["AlleleCountHistogram"].items()
+                                    if k.split("/")[0] == population
+                                }
+                            )
+                        ),
+                    },
+                    {
+                        "id": f"{population}_XX",
+                        "repeats": _prepare_histogram(
+                            _get_total_histogram(
+                                {
+                                    k: v
+                                    for k, v in locus["AlleleCountHistogram"].items()
+                                    if k.split("/")[0] == population and k.split("/")[1] == "XX"
+                                }
+                            )
+                        ),
+                    },
+                    {
+                        "id": f"{population}_XY",
+                        "repeats": _prepare_histogram(
+                            _get_total_histogram(
+                                {
+                                    k: v
+                                    for k, v in locus["AlleleCountHistogram"].items()
+                                    if k.split("/")[0] == population and k.split("/")[1] == "XY"
+                                }
+                            )
+                        ),
+                    },
+                ]
+                for population in populations
+            )
+        )
+        + [
+            {
+                "id": sex,
+                "repeats": _prepare_histogram(
+                    _get_total_histogram(
+                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[1] == sex}
+                    )
+                ),
+            }
+            for sex in ["XX", "XY"]
+        ],
+        key=_population_sort_key,
+    )
+
+
 def prepare_gnomad_v3_short_tandem_repeats(path):
     with hl.hadoop_open(path) as input_file:
         data = json.load(input_file)
@@ -50,18 +123,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             "stripy_id": locus["STRipyLink"].split("/")[-1],
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
-            "repeats": _prepare_histogram(locus["AlleleCountHistogram"]["Total"]),
-            "populations": sorted(
-                [
-                    {
-                        "id": pop_id.replace("/", "_"),
-                        "repeats": _prepare_histogram(locus["AlleleCountHistogram"][pop_id]),
-                    }
-                    for pop_id in locus["AlleleCountHistogram"].keys()
-                    if pop_id != "Total"
-                ],
-                key=_population_sort_key,
-            ),
+            "repeats": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
+            "populations": _prepare_populations(locus),
             "adjacent_repeats": sorted(
                 [
                     {
@@ -71,18 +134,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                             **_parse_region_id(adjacent_repeat["ReferenceRegion"]),
                         },
                         "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
-                        "repeats": _prepare_histogram(adjacent_repeat["AlleleCountHistogram"]["Total"]),
-                        "populations": sorted(
-                            [
-                                {
-                                    "id": pop_id.replace("/", "_"),
-                                    "repeats": _prepare_histogram(adjacent_repeat["AlleleCountHistogram"][pop_id]),
-                                }
-                                for pop_id in adjacent_repeat["AlleleCountHistogram"].keys()
-                                if pop_id != "Total"
-                            ],
-                            key=_population_sort_key,
-                        ),
+                        "repeats": _prepare_histogram(_get_total_histogram(adjacent_repeat["AlleleCountHistogram"])),
+                        "populations": _prepare_populations(adjacent_repeat),
                     }
                     for adjacent_repeat_id, adjacent_repeat in locus.get("AdjacentRepeats", {}).items()
                 ],
