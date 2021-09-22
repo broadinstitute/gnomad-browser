@@ -7,8 +7,8 @@ type ShortTandemRepeatGene {
 type ShortTandemRepeatAssociatedDisease {
   name: String!
   omim_id: String!
-  normal_threshold: Int!
-  pathogenic_threshold: Int!
+  normal_threshold: Int
+  pathogenic_threshold: Int
 }
 
 type ShortTandemRepeatReferenceRegion {

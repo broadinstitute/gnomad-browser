@@ -44,8 +44,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 # ’ characters get garbled somewhere in ES or ES-Hadoop
                 "name": locus["Disease"].replace("’", "'"),
                 "omim_id": locus["OMIMDiseaseLink"].split("/")[-1],
-                "normal_threshold": int(locus["NormalMax"]),
-                "pathogenic_threshold": int(locus["PathogenicMin"]),
+                "normal_threshold": int(locus["NormalMax"]) if locus["NormalMax"] is not None else None,
+                "pathogenic_threshold": int(locus["PathogenicMin"]) if locus["PathogenicMin"] is not None else None,
             },
             "stripy_id": locus["STRipyLink"].split("/")[-1],
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
