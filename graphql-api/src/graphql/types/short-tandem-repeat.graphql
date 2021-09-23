@@ -18,6 +18,11 @@ type ShortTandemRepeatReferenceRegion {
   stop: Int!
 }
 
+type ShortTandemRepeatRepeatUnit {
+  repeat_unit: String!
+  classification: String!
+}
+
 type ShortTandemRepeatRepeatCountsPopulation {
   id: String!
   repeats: [[Int!]!]!
@@ -25,7 +30,6 @@ type ShortTandemRepeatRepeatCountsPopulation {
 
 type ShortTandemRepeatRepeatCountsRepeatUnit {
   repeat_unit: String!
-  classification: String!
   repeats: [[Int!]!]!
   populations: [ShortTandemRepeatRepeatCountsPopulation!]!
 }
@@ -36,23 +40,12 @@ type ShortTandemRepeatRepeatCounts {
   repeat_units: [ShortTandemRepeatRepeatCountsRepeatUnit!]!
 }
 
-type ShortTandemRepeatAdjacentRepeatRepeatCountsRepeatUnit {
-  repeat_unit: String!
-  repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
-}
-
-type ShortTandemRepeatAdjacentRepeatRepeatCounts {
-  total: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
-  repeat_units: [ShortTandemRepeatAdjacentRepeatRepeatCountsRepeatUnit!]!
-}
-
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
-  repeat_counts: ShortTandemRepeatAdjacentRepeatRepeatCounts!
+  repeat_units: [String!]!
+  repeat_counts: ShortTandemRepeatRepeatCounts!
 }
 
 type ShortTandemRepeat {
@@ -73,6 +66,7 @@ type ShortTandemRepeatDetails {
   stripy_id: String
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
+  repeat_units: [ShortTandemRepeatRepeatUnit!]!
   repeat_counts: ShortTandemRepeatRepeatCounts!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }
