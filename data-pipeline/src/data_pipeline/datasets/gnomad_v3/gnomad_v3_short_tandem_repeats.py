@@ -108,70 +108,73 @@ def _prepare_repeat_units(locus):
     repeat_units = sorted(set(key.split("/")[2] for key in locus["AlleleCountHistogram"].keys()))
     populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
 
-    return [
-        {
-            "repeat_unit": repeat_unit,
-            "repeats": _prepare_histogram(
-                _get_total_histogram(
-                    {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == repeat_unit}
-                )
-            ),
-            "populations": sorted(
-                list(
-                    itertools.chain.from_iterable(
-                        [
-                            {
-                                "id": population,
-                                "repeats": _prepare_histogram(
-                                    _get_total_histogram(
-                                        {
-                                            k: v
-                                            for k, v in locus["AlleleCountHistogram"].items()
-                                            if k.split("/")[2] == repeat_unit and k.split("/")[0] == population
-                                        }
-                                    )
-                                ),
-                            },
-                            {
-                                "id": f"{population}_XX",
-                                "repeats": _prepare_histogram(
-                                    locus["AlleleCountHistogram"][f"{population}/XX/{repeat_unit}"]
-                                )
-                                if f"{population}/XX/{repeat_unit}" in locus["AlleleCountHistogram"]
-                                else [],
-                            },
-                            {
-                                "id": f"{population}_XY",
-                                "repeats": _prepare_histogram(
-                                    locus["AlleleCountHistogram"][f"{population}/XY/{repeat_unit}"]
-                                )
-                                if f"{population}/XY/{repeat_unit}" in locus["AlleleCountHistogram"]
-                                else [],
-                            },
-                        ]
-                        for population in populations
+    return sorted(
+        [
+            {
+                "repeat_unit": repeat_unit,
+                "repeats": _prepare_histogram(
+                    _get_total_histogram(
+                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == repeat_unit}
                     )
-                )
-                + [
-                    {
-                        "id": sex,
-                        "repeats": _prepare_histogram(
-                            _get_total_histogram(
+                ),
+                "populations": sorted(
+                    list(
+                        itertools.chain.from_iterable(
+                            [
                                 {
-                                    k: v
-                                    for k, v in locus["AlleleCountHistogram"].items()
-                                    if k.split("/")[2] == repeat_unit and k.split("/")[1] == sex
-                                }
-                            )
-                        ),
-                    }
-                    for sex in ["XX", "XY"]
-                ],
-                key=_population_sort_key,
-            ),
-        }
-        for repeat_unit in repeat_units
-    ]
+                                    "id": population,
+                                    "repeats": _prepare_histogram(
+                                        _get_total_histogram(
+                                            {
+                                                k: v
+                                                for k, v in locus["AlleleCountHistogram"].items()
+                                                if k.split("/")[2] == repeat_unit and k.split("/")[0] == population
+                                            }
+                                        )
+                                    ),
+                                },
+                                {
+                                    "id": f"{population}_XX",
+                                    "repeats": _prepare_histogram(
+                                        locus["AlleleCountHistogram"][f"{population}/XX/{repeat_unit}"]
+                                    )
+                                    if f"{population}/XX/{repeat_unit}" in locus["AlleleCountHistogram"]
+                                    else [],
+                                },
+                                {
+                                    "id": f"{population}_XY",
+                                    "repeats": _prepare_histogram(
+                                        locus["AlleleCountHistogram"][f"{population}/XY/{repeat_unit}"]
+                                    )
+                                    if f"{population}/XY/{repeat_unit}" in locus["AlleleCountHistogram"]
+                                    else [],
+                                },
+                            ]
+                            for population in populations
+                        )
+                    )
+                    + [
+                        {
+                            "id": sex,
+                            "repeats": _prepare_histogram(
+                                _get_total_histogram(
+                                    {
+                                        k: v
+                                        for k, v in locus["AlleleCountHistogram"].items()
+                                        if k.split("/")[2] == repeat_unit and k.split("/")[1] == sex
+                                    }
+                                )
+                            ),
+                        }
+                        for sex in ["XX", "XY"]
+                    ],
+                    key=_population_sort_key,
+                ),
+            }
+            for repeat_unit in repeat_units
+        ],
+        key=lambda r: r["repeat_unit"],
+    )
 
 
 def _prepare_repeat_cooccurrence_histogram(histogram):
