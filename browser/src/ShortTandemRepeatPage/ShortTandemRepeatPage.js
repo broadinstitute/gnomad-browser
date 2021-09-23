@@ -32,14 +32,16 @@ const FlexWrapper = styled.div`
 
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
-    shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
+    shortTandemRepeat.repeat_counts.repeat_units.length === 1
+      ? shortTandemRepeat.repeat_counts.repeat_units[0].repeat_unit
+      : ''
   )
   const [selectedAdjacentRepeatRepeatUnits, setSelectedAdjacentRepeatRepeatUnits] = useState(
     shortTandemRepeat.adjacent_repeats.reduce(
       (acc, adjacentRepeat) => ({
         [adjacentRepeat.id]:
-          adjacentRepeat.repeat_units.length === 1
-            ? adjacentRepeat.repeat_units[0].repeat_unit
+          adjacentRepeat.repeat_counts.repeat_units.length === 1
+            ? adjacentRepeat.repeat_counts.repeat_units[0].repeat_unit
             : '',
       }),
       {}
@@ -49,7 +51,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
   const [selectedScaleType, setSelectedScaleType] = useState('linear')
 
-  const populationIds = shortTandemRepeat.populations.map(pop => pop.id)
+  const populationIds = shortTandemRepeat.repeat_counts.populations.map(pop => pop.id)
 
   const plotThresholds = []
   if (shortTandemRepeat.associated_disease.normal_threshold !== null) {
@@ -86,20 +88,22 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
       </FlexWrapper>
 
       <ShortTandemRepeatRepeatCountsPlot
-        maxRepeats={shortTandemRepeat.repeats[shortTandemRepeat.repeats.length - 1][0]}
+        maxRepeats={
+          shortTandemRepeat.repeat_counts.total[shortTandemRepeat.repeat_counts.total.length - 1][0]
+        }
         repeats={
+          // eslint-disable-next-line no-nested-ternary
           selectedPopulationId === ''
-            ? (selectedRepeatUnit
-                ? shortTandemRepeat.repeat_units.find(
-                    repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
-                  )
-                : shortTandemRepeat
-              ).repeats
+            ? selectedRepeatUnit
+              ? shortTandemRepeat.repeat_counts.repeat_units.find(
+                  repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
+                ).repeats
+              : shortTandemRepeat.repeat_counts.total
             : (selectedRepeatUnit
-                ? shortTandemRepeat.repeat_units.find(
+                ? shortTandemRepeat.repeat_counts.repeat_units.find(
                     repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
                   )
-                : shortTandemRepeat
+                : shortTandemRepeat.repeat_counts
               ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
         repeatUnit={selectedRepeatUnit || shortTandemRepeat.reference_repeat_unit}
@@ -123,10 +127,10 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               setSelectedRepeatUnit(e.target.value)
             }}
           >
-            <option value="" disabled={shortTandemRepeat.repeat_units.length === 1}>
+            <option value="" disabled={shortTandemRepeat.repeat_counts.repeat_units.length === 1}>
               All
             </option>
-            {shortTandemRepeat.repeat_units.map(repeatUnit => (
+            {shortTandemRepeat.repeat_counts.repeat_units.map(repeatUnit => (
               <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                 {repeatUnit.repeat_unit}
               </option>
@@ -158,24 +162,28 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 <h3>{adjacentRepeat.id}</h3>
                 <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
                 <ShortTandemRepeatRepeatCountsPlot
-                  maxRepeats={adjacentRepeat.repeats[adjacentRepeat.repeats.length - 1][0]}
+                  maxRepeats={
+                    adjacentRepeat.repeat_counts.total[
+                      adjacentRepeat.repeat_counts.total.length - 1
+                    ][0]
+                  }
                   repeats={
+                    // eslint-disable-next-line no-nested-ternary
                     selectedPopulationId === ''
-                      ? (selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                          ? adjacentRepeat.repeat_units.find(
-                              repeatUnit =>
-                                repeatUnit.repeat_unit ===
-                                selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                            )
-                          : adjacentRepeat
-                        ).repeats
+                      ? selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                        ? adjacentRepeat.repeat_counts.repeat_units.find(
+                            repeatUnit =>
+                              repeatUnit.repeat_unit ===
+                              selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
+                          ).repeats
+                        : adjacentRepeat.repeat_counts.total
                       : (selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                          ? adjacentRepeat.repeat_units.find(
+                          ? adjacentRepeat.repeat_counts.repeat_units.find(
                               repeatUnit =>
                                 repeatUnit.repeat_unit ===
                                 selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
                             )
-                          : adjacentRepeat
+                          : adjacentRepeat.repeat_counts
                         ).populations.find(pop => pop.id === selectedPopulationId).repeats
                   }
                   repeatUnit={
@@ -206,10 +214,13 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                         )
                       }}
                     >
-                      <option value="" disabled={adjacentRepeat.repeat_units.length === 1}>
+                      <option
+                        value=""
+                        disabled={adjacentRepeat.repeat_counts.repeat_units.length === 1}
+                      >
                         All
                       </option>
-                      {adjacentRepeat.repeat_units.map(repeatUnit => (
+                      {adjacentRepeat.repeat_counts.repeat_units.map(repeatUnit => (
                         <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                           {repeatUnit.repeat_unit}
                         </option>
@@ -266,18 +277,20 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       stop
     }
     reference_repeat_unit
-    repeats
-    populations {
-      id
-      repeats
-    }
-    repeat_units {
-      repeat_unit
-      classification
-      repeats
+    repeat_counts {
+      total
       populations {
         id
         repeats
+      }
+      repeat_units {
+        repeat_unit
+        classification
+        repeats
+        populations {
+          id
+          repeats
+        }
       }
     }
     stripy_id
@@ -289,17 +302,19 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         stop
       }
       reference_repeat_unit
-      repeats
-      populations {
-        id
-        repeats
-      }
-      repeat_units {
-        repeat_unit
-        repeats
+      repeat_counts {
+        total
         populations {
           id
           repeats
+        }
+        repeat_units {
+          repeat_unit
+          repeats
+          populations {
+            id
+            repeats
+          }
         }
       }
     }
