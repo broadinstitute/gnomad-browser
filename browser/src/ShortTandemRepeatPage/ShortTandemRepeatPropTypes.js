@@ -20,14 +20,16 @@ export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
     stop: PropTypes.number.isRequired,
   }).isRequired,
   reference_repeat_unit: PropTypes.string.isRequired,
-  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  populations: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-    })
-  ).isRequired,
-  repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
+  repeat_counts: PropTypes.shape({
+    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    populations: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      })
+    ).isRequired,
+    repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
+  }).isRequired,
 })
 
 export const ShortTandemRepeatPropType = PropTypes.shape({
@@ -51,13 +53,15 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
     stop: PropTypes.number.isRequired,
   }).isRequired,
   reference_repeat_unit: PropTypes.string.isRequired,
-  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  populations: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-    })
-  ).isRequired,
-  repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
+  repeat_counts: PropTypes.shape({
+    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    populations: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      })
+    ).isRequired,
+    repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
+  }).isRequired,
   adjacent_repeats: PropTypes.arrayOf(ShortTandemRepeatAdjacentRepeatPropType).isRequired,
 })

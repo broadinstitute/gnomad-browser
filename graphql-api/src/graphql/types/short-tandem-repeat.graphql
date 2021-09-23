@@ -18,31 +18,41 @@ type ShortTandemRepeatReferenceRegion {
   stop: Int!
 }
 
-type ShortTandemRepeatPopulation {
+type ShortTandemRepeatRepeatCountsPopulation {
   id: String!
   repeats: [[Int!]!]!
 }
 
-type ShortTandemRepeatRepeatUnit {
+type ShortTandemRepeatRepeatCountsRepeatUnit {
   repeat_unit: String!
   classification: String!
   repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatPopulation!]!
+  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
 }
 
-type ShortTandemRepeatAdjacentRepeatRepeatUnit {
+type ShortTandemRepeatRepeatCounts {
+  total: [[Int!]!]!
+  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
+  repeat_units: [ShortTandemRepeatRepeatCountsRepeatUnit!]!
+}
+
+type ShortTandemRepeatAdjacentRepeatRepeatCountsRepeatUnit {
   repeat_unit: String!
   repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatPopulation!]!
+  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
+}
+
+type ShortTandemRepeatAdjacentRepeatRepeatCounts {
+  total: [[Int!]!]!
+  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
+  repeat_units: [ShortTandemRepeatAdjacentRepeatRepeatCountsRepeatUnit!]!
 }
 
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
-  repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatPopulation!]!
-  repeat_units: [ShortTandemRepeatAdjacentRepeatRepeatUnit!]!
+  repeat_counts: ShortTandemRepeatAdjacentRepeatRepeatCounts!
 }
 
 type ShortTandemRepeat {
@@ -63,8 +73,6 @@ type ShortTandemRepeatDetails {
   stripy_id: String
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
-  repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatPopulation!]!
-  repeat_units: [ShortTandemRepeatRepeatUnit!]!
+  repeat_counts: ShortTandemRepeatRepeatCounts!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }
