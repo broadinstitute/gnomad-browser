@@ -136,13 +136,17 @@ def _prepare_repeat_units(locus):
                                 "id": f"{population}_XX",
                                 "repeats": _prepare_histogram(
                                     locus["AlleleCountHistogram"][f"{population}/XX/{repeat_unit}"]
-                                ),
+                                )
+                                if f"{population}/XX/{repeat_unit}" in locus["AlleleCountHistogram"]
+                                else [],
                             },
                             {
                                 "id": f"{population}_XY",
                                 "repeats": _prepare_histogram(
                                     locus["AlleleCountHistogram"][f"{population}/XY/{repeat_unit}"]
-                                ),
+                                )
+                                if f"{population}/XY/{repeat_unit}" in locus["AlleleCountHistogram"]
+                                else [],
                             },
                         ]
                         for population in populations
