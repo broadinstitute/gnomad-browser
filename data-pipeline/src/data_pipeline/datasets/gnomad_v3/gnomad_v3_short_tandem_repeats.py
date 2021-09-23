@@ -198,9 +198,13 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             "repeat_units": [
                 {
                     **repeat_unit,
+                    # Loci with only one repeat unit do not have a RepeatUnitClassification field.
+                    # In those cases, the repeat unit is pathogenic.
                     "classification": locus["RepeatUnitClassification"]
                     .get(repeat_unit["repeat_unit"], "unknown")
-                    .lower(),
+                    .lower()
+                    if "RepeatUnitClassification" in locus
+                    else "pathogenic",
                 }
                 for repeat_unit in _prepare_repeat_units(locus)
             ],
