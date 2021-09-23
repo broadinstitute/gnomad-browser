@@ -343,22 +343,24 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             "stripy_id": locus["STRipyLink"].split("/")[-1] if "STRipyLink" in locus else None,
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
-            "repeat_counts": {
-                "total": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
-                "populations": _prepare_populations(locus),
-                "repeat_units": [
+            "repeat_units": sorted(
+                (
                     {
-                        **repeat_unit,
+                        "repeat_unit": repeat_unit,
                         # Loci with only one repeat unit do not have a RepeatUnitClassification field.
                         # In those cases, the repeat unit is pathogenic.
-                        "classification": locus["RepeatUnitClassification"]
-                        .get(repeat_unit["repeat_unit"], "unknown")
-                        .lower()
+                        "classification": locus["RepeatUnitClassification"].get(repeat_unit, "unknown").lower()
                         if "RepeatUnitClassification" in locus
                         else "pathogenic",
                     }
-                    for repeat_unit in _prepare_repeat_units(locus)
-                ],
+                    for repeat_unit in set(k.split("/")[2] for k in locus["AlleleCountHistogram"].keys())
+                ),
+                key=lambda r: r["repeat_unit"],
+            ),
+            "repeat_counts": {
+                "total": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
+                "populations": _prepare_populations(locus),
+                "repeat_units": _prepare_repeat_units(locus),
             },
             "repeat_cooccurrence": {
                 "total": _prepare_repeat_cooccurrence_histogram(_get_total_histogram(locus["AlleleCountScatterPlot"])),
@@ -374,6 +376,9 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                             **_parse_region_id(adjacent_repeat["ReferenceRegion"]),
                         },
                         "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
+                        "repeat_units": sorted(
+                            set(k.split("/")[2] for k in adjacent_repeat["AlleleCountHistogram"].keys())
+                        ),
                         "repeat_counts": {
                             "total": _prepare_histogram(_get_total_histogram(adjacent_repeat["AlleleCountHistogram"])),
                             "populations": _prepare_populations(adjacent_repeat),
@@ -406,13 +411,13 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
             ),
             reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
             reference_repeat_unit=hl.tstr,
+            repeat_units=hl.tarray(hl.tstruct(repeat_unit=hl.tstr, classification=hl.tstr)),
             repeat_counts=hl.tstruct(
                 total=hl.tarray(hl.tarray(hl.tint)),
                 populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
                 repeat_units=hl.tarray(
                     hl.tstruct(
                         repeat_unit=hl.tstr,
-                        classification=hl.tstr,
                         repeats=hl.tarray(hl.tarray(hl.tint)),
                         populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),
                     )
@@ -435,6 +440,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     id=hl.tstr,
                     reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
                     reference_repeat_unit=hl.tstr,
+                    repeat_units=hl.tarray(hl.tstr),
                     repeat_counts=hl.tstruct(
                         total=hl.tarray(hl.tarray(hl.tint)),
                         populations=hl.tarray(hl.tstruct(id=hl.tstr, repeats=hl.tarray(hl.tarray(hl.tint)))),

@@ -32,17 +32,13 @@ const FlexWrapper = styled.div`
 
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
-    shortTandemRepeat.repeat_counts.repeat_units.length === 1
-      ? shortTandemRepeat.repeat_counts.repeat_units[0].repeat_unit
-      : ''
+    shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
   )
   const [selectedAdjacentRepeatRepeatUnits, setSelectedAdjacentRepeatRepeatUnits] = useState(
     shortTandemRepeat.adjacent_repeats.reduce(
       (acc, adjacentRepeat) => ({
         [adjacentRepeat.id]:
-          adjacentRepeat.repeat_counts.repeat_units.length === 1
-            ? adjacentRepeat.repeat_counts.repeat_units[0].repeat_unit
-            : '',
+          adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : '',
       }),
       {}
     )
@@ -127,10 +123,10 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               setSelectedRepeatUnit(e.target.value)
             }}
           >
-            <option value="" disabled={shortTandemRepeat.repeat_counts.repeat_units.length === 1}>
+            <option value="" disabled={shortTandemRepeat.repeat_units.length === 1}>
               All
             </option>
-            {shortTandemRepeat.repeat_counts.repeat_units.map(repeatUnit => (
+            {shortTandemRepeat.repeat_units.map(repeatUnit => (
               <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                 {repeatUnit.repeat_unit}
               </option>
@@ -214,15 +210,12 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                         )
                       }}
                     >
-                      <option
-                        value=""
-                        disabled={adjacentRepeat.repeat_counts.repeat_units.length === 1}
-                      >
+                      <option value="" disabled={adjacentRepeat.repeat_units.length === 1}>
                         All
                       </option>
-                      {adjacentRepeat.repeat_counts.repeat_units.map(repeatUnit => (
-                        <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                          {repeatUnit.repeat_unit}
+                      {adjacentRepeat.repeat_units.map(repeatUnit => (
+                        <option key={repeatUnit} value={repeatUnit}>
+                          {repeatUnit}
                         </option>
                       ))}
                     </Select>
@@ -277,6 +270,10 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       stop
     }
     reference_repeat_unit
+    repeat_units {
+      repeat_unit
+      classification
+    }
     repeat_counts {
       total
       populations {
@@ -285,7 +282,6 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       }
       repeat_units {
         repeat_unit
-        classification
         repeats
         populations {
           id
@@ -302,6 +298,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         stop
       }
       reference_repeat_unit
+      repeat_units
       repeat_counts {
         total
         populations {
