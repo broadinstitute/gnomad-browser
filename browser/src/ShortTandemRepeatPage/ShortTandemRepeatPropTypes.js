@@ -44,7 +44,7 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
     normal_threshold: PropTypes.number,
     pathogenic_threshold: PropTypes.number,
   }).isRequired,
-  stripy_id: PropTypes.string.isRequired,
+  stripy_id: PropTypes.string,
   reference_region: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,

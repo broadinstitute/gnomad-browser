@@ -71,16 +71,18 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         <ResponsiveSection>
           <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
         </ResponsiveSection>
-        <ResponsiveSection>
-          <h2>External Resources</h2>
-          <List>
-            <ListItem>
-              <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
-                STRipy
-              </ExternalLink>
-            </ListItem>
-          </List>
-        </ResponsiveSection>
+        {shortTandemRepeat.stripy_id && (
+          <ResponsiveSection>
+            <h2>External Resources</h2>
+            <List>
+              <ListItem>
+                <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
+                  STRipy
+                </ExternalLink>
+              </ListItem>
+            </List>
+          </ResponsiveSection>
+        )}
       </FlexWrapper>
 
       <ShortTandemRepeatRepeatCountsPlot
