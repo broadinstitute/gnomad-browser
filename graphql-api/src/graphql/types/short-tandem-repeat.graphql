@@ -60,7 +60,7 @@ type ShortTandemRepeatDetails {
   gene: ShortTandemRepeatGene!
   inheritance_mode: String!
   associated_disease: ShortTandemRepeatAssociatedDisease!
-  stripy_id: String!
+  stripy_id: String
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
   repeats: [[Int!]!]!

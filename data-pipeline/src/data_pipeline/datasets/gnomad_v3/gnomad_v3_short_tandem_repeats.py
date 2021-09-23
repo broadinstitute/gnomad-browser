@@ -186,7 +186,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 "normal_threshold": int(locus["NormalMax"]) if locus["NormalMax"] is not None else None,
                 "pathogenic_threshold": int(locus["PathogenicMin"]) if locus["PathogenicMin"] is not None else None,
             },
-            "stripy_id": locus["STRipyLink"].split("/")[-1],
+            "stripy_id": locus["STRipyLink"].split("/")[-1] if "STRipyLink" in locus else None,
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
             "repeats": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
