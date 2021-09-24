@@ -1,4 +1,4 @@
-import { max } from 'd3-array'
+import { max, mean } from 'd3-array'
 import { scaleBand, scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -22,7 +22,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
-  ({ maxRepeats, repeatCooccurrence, size: { width } }) => {
+  ({ maxRepeats, repeatCooccurrence, size: { width }, thresholds }) => {
     const height = 300
 
     const margin = {
@@ -182,6 +182,103 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
               )
             })}
           </g>
+
+          <g transform={`translate(${margin.left}, 0)`}>
+            {
+              thresholds
+                .filter(threshold => threshold.value <= maxRepeats[0])
+                .sort(
+                  mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
+                    ? (t1, t2) => t1.value - t2.value
+                    : (t1, t2) => t2.value - t1.value
+                )
+                .reduce(
+                  (acc, threshold) => {
+                    const labelWidth = 100
+
+                    const binIndex = Math.floor(threshold.value / xBinSize)
+                    const positionWithBin = (threshold.value - binIndex * xBinSize) / xBinSize
+                    const thresholdX = xScale(binIndex) + positionWithBin * xBandwidth
+
+                    const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
+
+                    const yOffset =
+                      Math.abs(thresholdX - acc.previousX) > labelWidth
+                        ? 0
+                        : acc.previousYOffset + 12
+
+                    const element = (
+                      <g key={threshold.label}>
+                        <line
+                          x1={thresholdX}
+                          y1={yOffset + 2}
+                          x2={thresholdX}
+                          y2={height - margin.bottom}
+                          stroke="#333"
+                          strokeDasharray="3 3"
+                        />
+                        <text
+                          x={thresholdX}
+                          y={yOffset}
+                          dx={labelAnchor === 'end' ? -5 : 5}
+                          dy="0.75em"
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor={labelAnchor}
+                        >
+                          {threshold.label}
+                        </text>
+                      </g>
+                    )
+
+                    return {
+                      previousX: thresholdX,
+                      previousYOffset: yOffset,
+                      elements: [element, ...acc.elements],
+                    }
+                  },
+                  {
+                    previousX: Infinity,
+                    previousYOffset: 0,
+                    elements: [],
+                  }
+                ).elements
+            }
+          </g>
+
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            {thresholds
+              .filter(threshold => threshold.value <= maxRepeats[1])
+              .map((threshold, i) => {
+                const binIndex = Math.floor(threshold.value / yBinSize)
+                const positionWithBin = (threshold.value - binIndex * yBinSize) / yBinSize
+                const thresholdY = yScale(binIndex) + (1 - positionWithBin) * yBandwidth
+
+                return (
+                  <g key={threshold.label}>
+                    <line
+                      x1={0}
+                      y1={thresholdY}
+                      x2={plotWidth}
+                      y2={thresholdY}
+                      stroke="#333"
+                      strokeDasharray="3 3"
+                    />
+                    <text
+                      x={plotWidth}
+                      y={thresholdY}
+                      dy={i % 2 === 0 ? '1.1em' : '-0.5em'}
+                      fill="#000"
+                      fontSize={10}
+                      textAnchor="end"
+                      pointerEvents="none"
+                    >
+                      {threshold.label}
+                    </text>
+                  </g>
+                )
+              })}
+          </g>
         </svg>
       </GraphWrapper>
     )
@@ -193,6 +290,16 @@ ShortTandemRepeatRepeatCooccurrencePlot.displayName = 'ShortTandemRepeatRepeatCo
 ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   repeatCooccurrence: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  thresholds: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+    })
+  ),
+}
+
+ShortTandemRepeatRepeatCooccurrencePlot.defaultProps = {
+  thresholds: [],
 }
 
 export default ShortTandemRepeatRepeatCooccurrencePlot

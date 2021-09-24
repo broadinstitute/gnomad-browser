@@ -164,6 +164,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 pop => pop.id === selectedPopulationId
               ).repeats
         }
+        thresholds={plotThresholds}
       />
 
       <FlexWrapper>
