@@ -37,6 +37,9 @@ const ShortTandemRepeatPopulationOptions = ({
           <option value="">Global</option>
           {populationIds
             .filter(popId => !(popId.endsWith('XX') || popId.endsWith('XY')))
+            .sort((pop1, pop2) =>
+              GNOMAD_POPULATION_NAMES[pop1].localeCompare(GNOMAD_POPULATION_NAMES[pop2])
+            )
             .map(popId => (
               <option key={popId} value={popId}>
                 {GNOMAD_POPULATION_NAMES[popId]}
