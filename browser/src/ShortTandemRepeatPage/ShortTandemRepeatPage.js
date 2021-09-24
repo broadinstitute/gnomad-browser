@@ -40,6 +40,12 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
   const [selectedScaleType, setSelectedScaleType] = useState('linear')
 
+  const [selectedCooccurrenceRepeatUnits, setSelectedCooccurrenceRepeatUnits] = useState(
+    shortTandemRepeat.repeat_cooccurrence.repeat_units.length === 1
+      ? shortTandemRepeat.repeat_cooccurrence.repeat_units[0].repeat_units.join(' / ')
+      : ''
+  )
+
   const populationIds = shortTandemRepeat.repeat_counts.populations.map(pop => pop.id)
 
   const plotThresholds = []
@@ -150,10 +156,19 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         repeatCooccurrence={
           // eslint-disable-next-line no-nested-ternary
           selectedPopulationId === ''
-            ? shortTandemRepeat.repeat_cooccurrence.total
-            : shortTandemRepeat.repeat_cooccurrence.populations.find(
-                pop => pop.id === selectedPopulationId
-              ).repeats
+            ? selectedCooccurrenceRepeatUnits
+              ? shortTandemRepeat.repeat_cooccurrence.repeat_units.find(
+                  repeatUnit =>
+                    repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
+                ).repeats
+              : shortTandemRepeat.repeat_cooccurrence.total
+            : (selectedCooccurrenceRepeatUnits
+                ? shortTandemRepeat.repeat_cooccurrence.repeat_units.find(
+                    repeatUnit =>
+                      repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
+                  )
+                : shortTandemRepeat.repeat_cooccurrence
+              ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
         thresholds={plotThresholds}
       />
@@ -165,6 +180,31 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           selectedPopulationId={selectedPopulationId}
           onSelectPopulationId={setSelectedPopulationId}
         />
+
+        <label
+          htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-cooccurrence-repeat-units`}
+        >
+          Repeat units:{' '}
+          <Select
+            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-cooccurrence-repeat-units`}
+            value={selectedCooccurrenceRepeatUnits}
+            onChange={e => {
+              setSelectedCooccurrenceRepeatUnits(e.target.value)
+            }}
+          >
+            {shortTandemRepeat.repeat_cooccurrence.repeat_units.length > 1 && (
+              <option value="">All</option>
+            )}
+            {shortTandemRepeat.repeat_cooccurrence.repeat_units.map(repeatUnit => {
+              const value = repeatUnit.repeat_units.join(' / ')
+              return (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              )
+            })}
+          </Select>
+        </label>
       </FlexWrapper>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (

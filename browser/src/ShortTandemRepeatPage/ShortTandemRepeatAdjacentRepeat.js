@@ -30,6 +30,12 @@ const ShortTandemRepeatAdjacentRepeat = ({
     adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
   )
 
+  const [selectedCooccurrenceRepeatUnits, setSelectedCooccurrenceRepeatUnits] = useState(
+    adjacentRepeat.repeat_cooccurrence.repeat_units.length === 1
+      ? adjacentRepeat.repeat_cooccurrence.repeat_units[0].repeat_units.join(' / ')
+      : ''
+  )
+
   return (
     <section style={{ marginBottom: '2em' }}>
       <h3>{adjacentRepeat.id}</h3>
@@ -108,10 +114,19 @@ const ShortTandemRepeatAdjacentRepeat = ({
         repeatCooccurrence={
           // eslint-disable-next-line no-nested-ternary
           selectedPopulationId === ''
-            ? adjacentRepeat.repeat_cooccurrence.total
-            : adjacentRepeat.repeat_cooccurrence.populations.find(
-                pop => pop.id === selectedPopulationId
-              ).repeats
+            ? selectedCooccurrenceRepeatUnits
+              ? adjacentRepeat.repeat_cooccurrence.repeat_units.find(
+                  repeatUnit =>
+                    repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
+                ).repeats
+              : adjacentRepeat.repeat_cooccurrence.total
+            : (selectedCooccurrenceRepeatUnits
+                ? adjacentRepeat.repeat_cooccurrence.repeat_units.find(
+                    repeatUnit =>
+                      repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
+                  )
+                : adjacentRepeat.repeat_cooccurrence
+              ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
       />
 
@@ -122,6 +137,31 @@ const ShortTandemRepeatAdjacentRepeat = ({
           selectedPopulationId={selectedPopulationId}
           onSelectPopulationId={onSelectPopulationId}
         />
+
+        <label
+          htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-cooccurrence-repeat-units`}
+        >
+          Repeat units:{' '}
+          <Select
+            id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-cooccurrence-repeat-units`}
+            value={selectedCooccurrenceRepeatUnits}
+            onChange={e => {
+              setSelectedCooccurrenceRepeatUnits(e.target.value)
+            }}
+          >
+            {adjacentRepeat.repeat_cooccurrence.repeat_units.length > 1 && (
+              <option value="">All</option>
+            )}
+            {adjacentRepeat.repeat_cooccurrence.repeat_units.map(repeatUnit => {
+              const value = repeatUnit.repeat_units.join(' / ')
+              return (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              )
+            })}
+          </Select>
+        </label>
       </FlexWrapper>
     </section>
   )
