@@ -85,6 +85,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         )}
       </FlexWrapper>
 
+      <h2>Repeat Counts</h2>
       <ShortTandemRepeatRepeatCountsPlot
         maxRepeats={
           shortTandemRepeat.repeat_counts.total[shortTandemRepeat.repeat_counts.total.length - 1][0]
@@ -151,6 +152,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         </label>
       </FlexWrapper>
 
+      <h2>Repeat Count Co-occurrence</h2>
       <ShortTandemRepeatRepeatCooccurrencePlot
         maxRepeats={[
           max(shortTandemRepeat.repeat_cooccurrence.total, d => d[0]),
@@ -183,6 +185,8 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               <section key={adjacentRepeat.id} style={{ marginBottom: '2em' }}>
                 <h3>{adjacentRepeat.id}</h3>
                 <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
+
+                <h4>Repeat Counts</h4>
                 <ShortTandemRepeatRepeatCountsPlot
                   maxRepeats={
                     adjacentRepeat.repeat_counts.total[
@@ -262,6 +266,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                   </label>
                 </FlexWrapper>
 
+                <h4>Repeat Count Co-occurrence</h4>
                 <ShortTandemRepeatRepeatCooccurrencePlot
                   maxRepeats={[
                     max(adjacentRepeat.repeat_cooccurrence.total, d => d[0]),
