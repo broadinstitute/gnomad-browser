@@ -46,12 +46,22 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
   ({ maxRepeats, repeats, repeatUnit, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
-    const binSize = Math.max(1, Math.ceil(maxRepeats / (width / 10)))
+    const margin = {
+      bottom: 75,
+      left: 60,
+      right: 10,
+      top: 20,
+    }
+
+    const plotWidth = width - (margin.left + margin.right)
+    const plotHeight = height - (margin.top + margin.bottom)
+
+    const binSize = Math.max(1, Math.ceil(maxRepeats / (plotWidth / 10)))
     const nBins = Math.floor(maxRepeats / binSize) + 1
 
     const data = useMemo(() => {
-      const d = Array.from(Array(nBins).keys()).map((n, i) => ({
-        binIndex: i,
+      const d = Array.from(Array(nBins).keys()).map(n => ({
+        binIndex: n,
         label: binSize === 1 ? `${n}` : `${n * binSize} - ${n * binSize + binSize - 1}`,
         count: 0,
       }))
@@ -64,18 +74,9 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
       return d
     }, [repeats, nBins, binSize])
 
-    const margin = {
-      bottom: binSize === 1 ? 50 : 75,
-      left: 60,
-      right: 10,
-      top: 20,
-    }
-
-    const plotHeight = height - (margin.top + margin.bottom)
-
     const xScale = scaleBand()
       .domain(data.map(d => d.binIndex))
-      .range([0, width - (margin.left + margin.right)])
+      .range([0, plotWidth])
 
     const xBandwidth = xScale.bandwidth()
 
@@ -91,7 +92,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
         .range([plotHeight, 0])
     }
 
-    const maxNumLabels = Math.floor((width - (margin.left + margin.right)) / 20)
+    const maxNumLabels = Math.floor(plotWidth / 20)
 
     const labelInterval = Math.max(Math.round(nBins / maxNumLabels), 1)
 
@@ -100,7 +101,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
         <svg height={height} width={width}>
           <AxisBottom
             label="Repeats"
-            labelOffset={binSize === 1 ? 10 : 35}
+            labelOffset={binSize === 1 ? 10 : 40}
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
@@ -133,6 +134,7 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
           />
           <AxisLeft
             label="Alleles"
+            labelOffset={40}
             labelProps={labelProps}
             left={margin.left}
             scale={yScale}
