@@ -10,12 +10,12 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
 
+import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatRepeatCountsPlot from './ShortTandemRepeatRepeatCountsPlot'
 import ShortTandemRepeatRepeatCooccurrencePlot from './ShortTandemRepeatRepeatCooccurrencePlot'
-import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
 
 const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
@@ -35,15 +35,6 @@ const FlexWrapper = styled.div`
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
-  )
-  const [selectedAdjacentRepeatRepeatUnits, setSelectedAdjacentRepeatRepeatUnits] = useState(
-    shortTandemRepeat.adjacent_repeats.reduce(
-      (acc, adjacentRepeat) => ({
-        [adjacentRepeat.id]:
-          adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : '',
-      }),
-      {}
-    )
   )
 
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
@@ -181,113 +172,15 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           <h2>Adjacent Repeats</h2>
           {shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
             return (
-              <section key={adjacentRepeat.id} style={{ marginBottom: '2em' }}>
-                <h3>{adjacentRepeat.id}</h3>
-                <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
-
-                <h4>Repeat Counts</h4>
-                <ShortTandemRepeatRepeatCountsPlot
-                  maxRepeats={
-                    adjacentRepeat.repeat_counts.total[
-                      adjacentRepeat.repeat_counts.total.length - 1
-                    ][0]
-                  }
-                  repeats={
-                    // eslint-disable-next-line no-nested-ternary
-                    selectedPopulationId === ''
-                      ? selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                        ? adjacentRepeat.repeat_counts.repeat_units.find(
-                            repeatUnit =>
-                              repeatUnit.repeat_unit ===
-                              selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                          ).repeats
-                        : adjacentRepeat.repeat_counts.total
-                      : (selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                          ? adjacentRepeat.repeat_counts.repeat_units.find(
-                              repeatUnit =>
-                                repeatUnit.repeat_unit ===
-                                selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]
-                            )
-                          : adjacentRepeat.repeat_counts
-                        ).populations.find(pop => pop.id === selectedPopulationId).repeats
-                  }
-                  repeatUnit={
-                    selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id] ||
-                    adjacentRepeat.reference_repeat_unit
-                  }
-                  scaleType={selectedScaleType}
-                />
-                <FlexWrapper>
-                  <ShortTandemRepeatPopulationOptions
-                    id={`${adjacentRepeat.id}-repeat-counts`}
-                    populationIds={populationIds}
-                    selectedPopulationId={selectedPopulationId}
-                    onSelectPopulationId={setSelectedPopulationId}
-                  />
-
-                  <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}>
-                    Repeat unit:{' '}
-                    <Select
-                      id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}
-                      value={selectedAdjacentRepeatRepeatUnits[adjacentRepeat.id]}
-                      onChange={e => {
-                        setSelectedAdjacentRepeatRepeatUnits(
-                          prevSelectedAdjacentRepeatRepeatUnits => ({
-                            ...prevSelectedAdjacentRepeatRepeatUnits,
-                            [adjacentRepeat.id]: e.target.value,
-                          })
-                        )
-                      }}
-                    >
-                      {adjacentRepeat.repeat_units.length > 1 && <option value="">All</option>}
-                      {adjacentRepeat.repeat_units.map(repeatUnit => (
-                        <option key={repeatUnit} value={repeatUnit}>
-                          {repeatUnit}
-                        </option>
-                      ))}
-                    </Select>
-                  </label>
-
-                  <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
-                    Scale:{' '}
-                    <Select
-                      id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
-                      value={selectedScaleType}
-                      onChange={e => {
-                        setSelectedScaleType(e.target.value)
-                      }}
-                    >
-                      <option value="linear">Linear</option>
-                      <option value="log">Log</option>
-                    </Select>
-                  </label>
-                </FlexWrapper>
-
-                <h4>Repeat Count Co-occurrence</h4>
-                <ShortTandemRepeatRepeatCooccurrencePlot
-                  maxRepeats={[
-                    max(adjacentRepeat.repeat_cooccurrence.total, d => d[0]),
-                    max(adjacentRepeat.repeat_cooccurrence.total, d => d[1]),
-                  ]}
-                  repeatCooccurrence={
-                    // eslint-disable-next-line no-nested-ternary
-                    selectedPopulationId === ''
-                      ? adjacentRepeat.repeat_cooccurrence.total
-                      : adjacentRepeat.repeat_cooccurrence.populations.find(
-                          pop => pop.id === selectedPopulationId
-                        ).repeats
-                  }
-                />
-
-                <FlexWrapper>
-                  <ShortTandemRepeatPopulationOptions
-                    id={`${adjacentRepeat.id}-repeat-cooccurrence`}
-                    populationIds={populationIds}
-                    selectedPopulationId={selectedPopulationId}
-                    onSelectPopulationId={setSelectedPopulationId}
-                  />
-                </FlexWrapper>
-              </section>
+              <ShortTandemRepeatAdjacentRepeat
+                key={adjacentRepeat.id}
+                adjacentRepeat={adjacentRepeat}
+                populationIds={populationIds}
+                selectedPopulationId={selectedPopulationId}
+                onSelectPopulationId={setSelectedPopulationId}
+                selectedScaleType={selectedScaleType}
+                onSelectScaleType={setSelectedScaleType}
+              />
             )
           })}
         </section>
