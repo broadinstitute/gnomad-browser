@@ -40,12 +40,30 @@ type ShortTandemRepeatRepeatCounts {
   repeat_units: [ShortTandemRepeatRepeatCountsRepeatUnit!]!
 }
 
+type ShortTandemRepeatRepeatCooccurrencePopulation {
+  id: String!
+  repeats: [[Int!]!]!
+}
+
+type ShortTandemRepeatRepeatCooccurrenceRepeatUnit {
+  repeat_units: [String!]!
+  repeats: [[Int!]!]!
+  populations: [ShortTandemRepeatRepeatCooccurrencePopulation!]!
+}
+
+type ShortTandemRepeatRepeatCooccurrence {
+  total: [[Int!]!]!
+  populations: [ShortTandemRepeatRepeatCooccurrencePopulation!]!
+  repeat_units: [ShortTandemRepeatRepeatCooccurrenceRepeatUnit!]!
+}
+
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
   repeat_units: [String!]!
   repeat_counts: ShortTandemRepeatRepeatCounts!
+  repeat_cooccurrence: ShortTandemRepeatRepeatCooccurrence!
 }
 
 type ShortTandemRepeat {
@@ -68,5 +86,6 @@ type ShortTandemRepeatDetails {
   reference_repeat_unit: String!
   repeat_units: [ShortTandemRepeatRepeatUnit!]!
   repeat_counts: ShortTandemRepeatRepeatCounts!
+  repeat_cooccurrence: ShortTandemRepeatRepeatCooccurrence!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }
