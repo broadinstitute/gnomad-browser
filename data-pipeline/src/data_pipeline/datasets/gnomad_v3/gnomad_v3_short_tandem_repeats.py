@@ -173,7 +173,7 @@ def _prepare_repeat_units(locus):
             }
             for repeat_unit in repeat_units
         ],
-        key=lambda r: r["repeat_unit"],
+        key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
     )
 
 
@@ -320,7 +320,12 @@ def _prepare_repeat_cooccurrence_repeat_units(locus):
             }
             for repeat_unit_pair in repeat_unit_pairs
         ],
-        key=lambda r: tuple(r["repeat_units"]),
+        key=lambda r: (
+            len(r["repeat_units"][0]),
+            len(r["repeat_units"][1]),
+            r["repeat_units"][0],
+            r["repeat_units"][1],
+        ),
     )
 
 
@@ -355,7 +360,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     }
                     for repeat_unit in set(k.split("/")[2] for k in locus["AlleleCountHistogram"].keys())
                 ),
-                key=lambda r: r["repeat_unit"],
+                key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
             ),
             "repeat_counts": {
                 "total": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
@@ -377,7 +382,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         },
                         "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
                         "repeat_units": sorted(
-                            set(k.split("/")[2] for k in adjacent_repeat["AlleleCountHistogram"].keys())
+                            set(k.split("/")[2] for k in adjacent_repeat["AlleleCountHistogram"].keys()),
+                            key=lambda repeat_unit: (len(repeat_unit), repeat_unit),
                         ),
                         "repeat_counts": {
                             "total": _prepare_histogram(_get_total_histogram(adjacent_repeat["AlleleCountHistogram"])),
