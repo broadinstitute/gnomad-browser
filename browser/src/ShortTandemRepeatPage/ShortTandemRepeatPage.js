@@ -126,9 +126,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               setSelectedRepeatUnit(e.target.value)
             }}
           >
-            <option value="" disabled={shortTandemRepeat.repeat_units.length === 1}>
-              All
-            </option>
+            {shortTandemRepeat.repeat_units.length > 1 && <option value="">All</option>}
             {shortTandemRepeat.repeat_units.map(repeatUnit => (
               <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                 {repeatUnit.repeat_unit}
@@ -240,9 +238,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                         )
                       }}
                     >
-                      <option value="" disabled={adjacentRepeat.repeat_units.length === 1}>
-                        All
-                      </option>
+                      {adjacentRepeat.repeat_units.length > 1 && <option value="">All</option>}
                       {adjacentRepeat.repeat_units.map(repeatUnit => (
                         <option key={repeatUnit} value={repeatUnit}>
                           {repeatUnit}
