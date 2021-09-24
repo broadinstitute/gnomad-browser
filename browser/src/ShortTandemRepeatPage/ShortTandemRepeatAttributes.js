@@ -3,6 +3,7 @@ import React from 'react'
 import { ExternalLink } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
+import InlineList from '../InlineList'
 import Link from '../Link'
 
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
@@ -26,6 +27,14 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
           {shortTandemRepeat.reference_region.chrom}-{shortTandemRepeat.reference_region.start}-
           {shortTandemRepeat.reference_region.stop}
         </Link>
+      </AttributeList.Item>
+      <AttributeList.Item label="Repeat units">
+        <InlineList
+          items={shortTandemRepeat.repeat_units.map(repeatUnit => (
+            <span>{repeatUnit.repeat_unit}</span>
+          ))}
+          label="Repeat units"
+        />
       </AttributeList.Item>
       <AttributeList.Item label="Inheritance mode">
         {shortTandemRepeat.inheritance_mode}
