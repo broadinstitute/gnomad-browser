@@ -30,6 +30,27 @@ export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
     ).isRequired,
     repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
   }).isRequired,
+  repeat_cooccurrence: PropTypes.shape({
+    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    populations: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      })
+    ).isRequired,
+    repeat_units: PropTypes.arrayOf(
+      PropTypes.shape({
+        repeat_units: PropTypes.arrayOf(PropTypes.string).isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        populations: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+          })
+        ).isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 })
 
 export const ShortTandemRepeatPropType = PropTypes.shape({
@@ -68,6 +89,27 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
       })
     ).isRequired,
     repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
+  }).isRequired,
+  repeat_cooccurrence: PropTypes.shape({
+    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    populations: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      })
+    ).isRequired,
+    repeat_units: PropTypes.arrayOf(
+      PropTypes.shape({
+        repeat_units: PropTypes.arrayOf(PropTypes.string).isRequired,
+        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        populations: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+          })
+        ).isRequired,
+      })
+    ).isRequired,
   }).isRequired,
   adjacent_repeats: PropTypes.arrayOf(ShortTandemRepeatAdjacentRepeatPropType).isRequired,
 })
