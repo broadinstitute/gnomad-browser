@@ -1,3 +1,4 @@
+import { max } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -13,6 +14,7 @@ import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatRepeatCountsPlot from './ShortTandemRepeatRepeatCountsPlot'
+import ShortTandemRepeatRepeatCooccurrencePlot from './ShortTandemRepeatRepeatCooccurrencePlot'
 import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
 
 const ResponsiveSection = styled.section`
@@ -108,7 +110,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
       />
       <FlexWrapper>
         <ShortTandemRepeatPopulationOptions
-          id={shortTandemRepeat.id}
+          id={`${shortTandemRepeat.id}-repeat-counts`}
           populationIds={populationIds}
           selectedPopulationId={selectedPopulationId}
           onSelectPopulationId={setSelectedPopulationId}
@@ -147,6 +149,30 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             <option value="log">Log</option>
           </Select>
         </label>
+      </FlexWrapper>
+
+      <ShortTandemRepeatRepeatCooccurrencePlot
+        maxRepeats={[
+          max(shortTandemRepeat.repeat_cooccurrence.total, d => d[0]),
+          max(shortTandemRepeat.repeat_cooccurrence.total, d => d[1]),
+        ]}
+        repeatCooccurrence={
+          // eslint-disable-next-line no-nested-ternary
+          selectedPopulationId === ''
+            ? shortTandemRepeat.repeat_cooccurrence.total
+            : shortTandemRepeat.repeat_cooccurrence.populations.find(
+                pop => pop.id === selectedPopulationId
+              ).repeats
+        }
+      />
+
+      <FlexWrapper>
+        <ShortTandemRepeatPopulationOptions
+          id={`${shortTandemRepeat.id}-repeat-cooccurrence`}
+          populationIds={populationIds}
+          selectedPopulationId={selectedPopulationId}
+          onSelectPopulationId={setSelectedPopulationId}
+        />
       </FlexWrapper>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
@@ -190,7 +216,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 />
                 <FlexWrapper>
                   <ShortTandemRepeatPopulationOptions
-                    id={adjacentRepeat.id}
+                    id={`${adjacentRepeat.id}-repeat-counts`}
                     populationIds={populationIds}
                     selectedPopulationId={selectedPopulationId}
                     onSelectPopulationId={setSelectedPopulationId}
@@ -234,6 +260,30 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                       <option value="log">Log</option>
                     </Select>
                   </label>
+                </FlexWrapper>
+
+                <ShortTandemRepeatRepeatCooccurrencePlot
+                  maxRepeats={[
+                    max(adjacentRepeat.repeat_cooccurrence.total, d => d[0]),
+                    max(adjacentRepeat.repeat_cooccurrence.total, d => d[1]),
+                  ]}
+                  repeatCooccurrence={
+                    // eslint-disable-next-line no-nested-ternary
+                    selectedPopulationId === ''
+                      ? adjacentRepeat.repeat_cooccurrence.total
+                      : adjacentRepeat.repeat_cooccurrence.populations.find(
+                          pop => pop.id === selectedPopulationId
+                        ).repeats
+                  }
+                />
+
+                <FlexWrapper>
+                  <ShortTandemRepeatPopulationOptions
+                    id={`${adjacentRepeat.id}-repeat-cooccurrence`}
+                    populationIds={populationIds}
+                    selectedPopulationId={selectedPopulationId}
+                    onSelectPopulationId={setSelectedPopulationId}
+                  />
                 </FlexWrapper>
               </section>
             )
@@ -289,6 +339,21 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         }
       }
     }
+    repeat_cooccurrence {
+      total
+      populations {
+        id
+        repeats
+      }
+      repeat_units {
+        repeat_units
+        repeats
+        populations {
+          id
+          repeats
+        }
+      }
+    }
     stripy_id
     adjacent_repeats {
       id
@@ -307,6 +372,21 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         }
         repeat_units {
           repeat_unit
+          repeats
+          populations {
+            id
+            repeats
+          }
+        }
+      }
+      repeat_cooccurrence {
+        total
+        populations {
+          id
+          repeats
+        }
+        repeat_units {
+          repeat_units
           repeats
           populations {
             id
