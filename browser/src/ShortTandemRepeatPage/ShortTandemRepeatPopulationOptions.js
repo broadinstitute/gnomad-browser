@@ -1,9 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+
+const Wrapper = styled.div`
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    label:first-child {
+      margin-bottom: 1em;
+    }
+  }
+`
 
 const ShortTandemRepeatPopulationOptions = ({
   id,
@@ -24,7 +37,7 @@ const ShortTandemRepeatPopulationOptions = ({
   }
 
   return (
-    <div>
+    <Wrapper>
       <label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
         Population:{' '}
         <Select
@@ -63,7 +76,7 @@ const ShortTandemRepeatPopulationOptions = ({
           <option value="XY">XY</option>
         </Select>
       </label>
-    </div>
+    </Wrapper>
   )
 }
 
