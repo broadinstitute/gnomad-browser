@@ -9,6 +9,7 @@ import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
+import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
@@ -162,7 +163,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         thresholds={plotThresholds}
         scaleType={selectedScaleType}
       />
-      <FlexWrapper>
+      <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${shortTandemRepeat.id}-repeat-counts`}
           populationIds={populationIds}
@@ -226,7 +227,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             <option value="log">Log</option>
           </Select>
         </label>
-      </FlexWrapper>
+      </ControlSection>
 
       <h2>Repeat Count Co-occurrence</h2>
       <ShortTandemRepeatRepeatCooccurrencePlot
@@ -254,7 +255,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         thresholds={plotThresholds}
       />
 
-      <FlexWrapper>
+      <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${shortTandemRepeat.id}-repeat-cooccurrence`}
           populationIds={populationIds}
@@ -286,7 +287,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             })}
           </Select>
         </label>
-      </FlexWrapper>
+      </ControlSection>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginTop: '2em' }}>

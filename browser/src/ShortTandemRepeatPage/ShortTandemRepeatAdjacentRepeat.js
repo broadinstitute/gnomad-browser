@@ -1,22 +1,16 @@
 import { max } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
+
+import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatRepeatCountsPlot from './ShortTandemRepeatRepeatCountsPlot'
 import ShortTandemRepeatRepeatCooccurrencePlot from './ShortTandemRepeatRepeatCooccurrencePlot'
 import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
-
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  width: 100%;
-`
 
 const ShortTandemRepeatAdjacentRepeat = ({
   adjacentRepeat,
@@ -64,7 +58,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
         repeatUnit={selectedRepeatUnit || adjacentRepeat.reference_repeat_unit}
         scaleType={selectedScaleType}
       />
-      <FlexWrapper>
+      <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-repeat-counts`}
           populationIds={populationIds}
@@ -103,7 +97,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
             <option value="log">Log</option>
           </Select>
         </label>
-      </FlexWrapper>
+      </ControlSection>
 
       <h4>Repeat Count Co-occurrence</h4>
       <ShortTandemRepeatRepeatCooccurrencePlot
@@ -130,7 +124,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
         }
       />
 
-      <FlexWrapper>
+      <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-repeat-cooccurrence`}
           populationIds={populationIds}
@@ -162,7 +156,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
             })}
           </Select>
         </label>
-      </FlexWrapper>
+      </ControlSection>
     </section>
   )
 }
