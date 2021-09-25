@@ -431,7 +431,7 @@ const ShortTandemRepeatPageContainer = ({ datasetId, strId }) => {
         }}
         selectedDataset={datasetId}
       >
-        Short Tandem Repeat: {strId}
+        Short Tandem Repeat: <span>{strId}</span>
       </GnomadPageHeading>
       <Query
         query={query}
