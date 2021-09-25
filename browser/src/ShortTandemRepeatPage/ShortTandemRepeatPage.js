@@ -32,6 +32,60 @@ const FlexWrapper = styled.div`
   width: 100%;
 `
 
+const sumRepeats = repeats => {
+  const nByKey = repeats.flat().reduce((acc, d) => {
+    const key = d.slice(0, d.length - 1).join('/')
+    return {
+      ...acc,
+      [key]: (acc[key] || 0) + d[d.length - 1],
+    }
+  }, {})
+  return Object.entries(nByKey).map(([key, n]) => [...key.split('/').map(Number), n])
+}
+
+const getRepeatCountRepeats = ({ shortTandemRepeat, selectedRepeatUnit, selectedPopulationId }) => {
+  if (selectedRepeatUnit) {
+    if (selectedRepeatUnit.startsWith('classification')) {
+      const selectedClassification = selectedRepeatUnit.slice(15)
+
+      const repeatUnitClassification = shortTandemRepeat.repeat_units.reduce(
+        (acc, repeatUnit) => ({
+          ...acc,
+          [repeatUnit.repeat_unit]: repeatUnit.classification,
+        }),
+        {}
+      )
+
+      const repeatUnits = shortTandemRepeat.repeat_counts.repeat_units.filter(
+        r => repeatUnitClassification[r.repeat_unit] === selectedClassification
+      )
+
+      const repeats = repeatUnits.map(
+        selectedPopulationId
+          ? r => r.populations.find(pop => pop.id === selectedPopulationId).repeats
+          : r => r.repeats
+      )
+
+      return sumRepeats(repeats)
+    }
+
+    const repeatUnit = shortTandemRepeat.repeat_counts.repeat_units.find(
+      r => r.repeat_unit === selectedRepeatUnit
+    )
+    if (selectedPopulationId) {
+      return repeatUnit.populations.find(pop => pop.id === selectedPopulationId).repeats
+    }
+    return repeatUnit.repeats
+  }
+
+  if (selectedPopulationId) {
+    return shortTandemRepeat.repeat_counts.populations.find(pop => pop.id === selectedPopulationId)
+      .repeats
+  }
+
+  return shortTandemRepeat.repeat_counts.total
+}
+
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
@@ -62,6 +116,14 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
     })
   }
 
+  const repeatUnitsByClassification = {}
+  shortTandemRepeat.repeat_units.forEach(repeatUnit => {
+    if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
+      repeatUnitsByClassification[repeatUnit.classification] = []
+    }
+    repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
+  })
+
   return (
     <>
       <FlexWrapper style={{ marginBottom: '2em' }}>
@@ -87,22 +149,16 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         maxRepeats={
           shortTandemRepeat.repeat_counts.total[shortTandemRepeat.repeat_counts.total.length - 1][0]
         }
-        repeats={
-          // eslint-disable-next-line no-nested-ternary
-          selectedPopulationId === ''
+        repeats={getRepeatCountRepeats({
+          shortTandemRepeat,
+          selectedPopulationId,
+          selectedRepeatUnit,
+        })}
+        repeatUnit={
+          selectedRepeatUnit && !selectedRepeatUnit.startsWith('classification')
             ? selectedRepeatUnit
-              ? shortTandemRepeat.repeat_counts.repeat_units.find(
-                  repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
-                ).repeats
-              : shortTandemRepeat.repeat_counts.total
-            : (selectedRepeatUnit
-                ? shortTandemRepeat.repeat_counts.repeat_units.find(
-                    repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
-                  )
-                : shortTandemRepeat.repeat_counts
-              ).populations.find(pop => pop.id === selectedPopulationId).repeats
+            : shortTandemRepeat.reference_repeat_unit
         }
-        repeatUnit={selectedRepeatUnit || shortTandemRepeat.reference_repeat_unit}
         thresholds={plotThresholds}
         scaleType={selectedScaleType}
       />
@@ -123,12 +179,37 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
               setSelectedRepeatUnit(e.target.value)
             }}
           >
-            {shortTandemRepeat.repeat_units.length > 1 && <option value="">All</option>}
-            {shortTandemRepeat.repeat_units.map(repeatUnit => (
-              <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                {repeatUnit.repeat_unit}
-              </option>
-            ))}
+            {shortTandemRepeat.repeat_units.length === 1 ? (
+              <>
+                {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                  <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                    {repeatUnit.repeat_unit}
+                  </option>
+                ))}
+              </>
+            ) : (
+              <>
+                <option value="">All</option>
+                {Object.keys(repeatUnitsByClassification).length > 1 && (
+                  <optgroup label="By classification">
+                    {['pathogenic', 'benign', 'unknown']
+                      .filter(classification => repeatUnitsByClassification[classification])
+                      .map(classification => (
+                        <option key={classification} value={`classification/${classification}`}>
+                          All {classification}
+                        </option>
+                      ))}
+                  </optgroup>
+                )}
+                <optgroup label="Individual">
+                  {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                    <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                      {repeatUnit.repeat_unit}
+                    </option>
+                  ))}
+                </optgroup>
+              </>
+            )}
           </Select>
         </label>
 
