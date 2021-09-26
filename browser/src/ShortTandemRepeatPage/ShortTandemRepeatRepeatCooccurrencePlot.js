@@ -23,7 +23,7 @@ const labelProps = {
 
 const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
   ({ maxRepeats, repeatCooccurrence, size: { width }, thresholds }) => {
-    const height = 300
+    const height = Math.min(width, 500)
 
     const margin = {
       bottom: 75,
