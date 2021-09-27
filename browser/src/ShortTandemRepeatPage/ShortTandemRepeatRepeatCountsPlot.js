@@ -134,6 +134,19 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
         ]
       : []
 
+    let readLengthX
+    if (repeatUnitLength !== null) {
+      const readLengthInRepeats = 150 / repeatUnitLength
+      if (readLengthInRepeats <= maxRepeats) {
+        const readLengthBinIndex = Math.floor(readLengthInRepeats / binSize)
+        // Read length line should be drawn at the center of the range for its value.
+        readLengthX =
+          xScale(readLengthBinIndex) +
+          ((readLengthInRepeats - readLengthBinIndex * binSize) / binSize) * xBandwidth +
+          xBandwidth / binSize / 2
+      }
+    }
+
     return (
       <GraphWrapper>
         <svg height={height} width={width}>
@@ -307,6 +320,30 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                   </React.Fragment>
                 )
               })}
+
+            {readLengthX && (
+              <>
+                <line
+                  x1={readLengthX}
+                  y1={margin.top}
+                  x2={readLengthX}
+                  y2={margin.top + plotHeight}
+                  stroke="#333"
+                  strokeDasharray="1 5"
+                />
+                <text
+                  x={readLengthX}
+                  y={margin.top}
+                  dy="-0.5em"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform={`rotate(-90 ${readLengthX}, ${margin.top})`}
+                  pointerEvents="none"
+                >
+                  Read length (150 bp)
+                </text>
+              </>
+            )}
           </g>
         </svg>
       </GraphWrapper>
