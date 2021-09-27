@@ -1,4 +1,4 @@
-import { max, mean } from 'd3-array'
+import { max } from 'd3-array'
 import { scaleBand, scaleLinear, scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
@@ -43,7 +43,15 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, repeatUnitLength, size: { width }, scaleType, thresholds }) => {
+  ({
+    maxRepeats,
+    repeats,
+    repeatUnitLength,
+    size: { width },
+    scaleType,
+    normalThreshold,
+    pathogenicThreshold,
+  }) => {
     const height = 300
 
     const margin = {
@@ -95,6 +103,36 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
     const maxNumLabels = Math.floor(plotWidth / 20)
 
     const labelInterval = Math.max(Math.round(nBins / maxNumLabels), 1)
+
+    const ranges = pathogenicThreshold
+      ? [
+          ...(normalThreshold !== null
+            ? [
+                {
+                  start: 0,
+                  stop: normalThreshold + 1,
+                  label: 'Normal',
+                },
+                {
+                  start: normalThreshold + 1,
+                  stop: pathogenicThreshold,
+                  label: 'Unknown',
+                },
+              ]
+            : [
+                {
+                  start: 0,
+                  stop: pathogenicThreshold,
+                  label: 'Unknown',
+                },
+              ]),
+          {
+            start: pathogenicThreshold,
+            stop: Infinity,
+            label: 'Pathogenic',
+          },
+        ]
+      : []
 
     return (
       <GraphWrapper>
@@ -196,80 +234,79 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
-            {
-              (repeatUnitLength === null
-                ? thresholds
-                : [
-                    ...thresholds,
-                    {
-                      value: 150 / repeatUnitLength,
-                      label: 'Read length (150 bp)',
-                    },
-                  ]
-              )
-                .filter(threshold => threshold.value <= maxRepeats)
-                .sort(
-                  mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
-                    ? (t1, t2) => t1.value - t2.value
-                    : (t1, t2) => t2.value - t1.value
+            {ranges
+              .filter(range => range.start !== range.stop)
+              .filter(range => range.start <= maxRepeats)
+              .map((range, rangeIndex) => {
+                const startBinIndex = Math.floor(range.start / binSize)
+                const startX =
+                  xScale(startBinIndex) +
+                  ((range.start - startBinIndex * binSize) / binSize) * xBandwidth
+
+                let stopX
+                if (range.stop <= maxRepeats) {
+                  const stopBinIndex = Math.floor(range.stop / binSize)
+                  stopX =
+                    xScale(stopBinIndex) +
+                    ((range.stop - stopBinIndex * binSize) / binSize) * xBandwidth
+                } else {
+                  stopX = plotWidth
+                }
+
+                let labelPosition = (startX + stopX) / 2
+                let labelAnchor = 'middle'
+                if (rangeIndex === 0 && stopX < 50) {
+                  labelPosition = stopX - 5
+                  labelAnchor = 'end'
+                }
+                if (rangeIndex === ranges.length - 1 && plotWidth - startX < 60) {
+                  labelPosition = startX + 5
+                  labelAnchor = 'start'
+                }
+
+                return (
+                  <React.Fragment key={range.label}>
+                    {range.start !== 0 && (
+                      <line
+                        x1={startX}
+                        y1={margin.top - 10}
+                        x2={startX}
+                        y2={margin.top + plotHeight}
+                        stroke="#333"
+                        strokeDasharray="3 3"
+                      />
+                    )}
+                    <path
+                      d={`M ${startX + 1} ${margin.top - 6} L ${startX + 5} ${margin.top - 9} L ${
+                        startX + 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <line
+                      x1={startX + 1}
+                      y1={margin.top - 6}
+                      x2={stopX - 1}
+                      y2={margin.top - 6}
+                      stroke="#333"
+                    />
+                    <path
+                      d={`M ${stopX - 1} ${margin.top - 6} L ${stopX - 5} ${margin.top - 9} L ${
+                        stopX - 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <text
+                      x={labelPosition}
+                      y={margin.top - 6}
+                      dy="-0.5em"
+                      fontSize={10}
+                      textAnchor={labelAnchor}
+                    >
+                      {range.label}
+                    </text>
+                  </React.Fragment>
                 )
-                .reduce(
-                  (acc, threshold) => {
-                    const labelWidth = 100
-
-                    const binIndex = Math.floor(threshold.value / binSize)
-                    const positionWithBin = (threshold.value - binIndex * binSize) / binSize
-                    // Read length line should be drawn at the center of the range for its value.
-                    // Other thresholds are drawn at the left edge since they delimit a range greater than or equal to the threshold value.
-                    const thresholdX =
-                      xScale(binIndex) +
-                      positionWithBin * xBandwidth +
-                      (threshold.label === 'Read length (150 bp)' ? xBandwidth / binSize / 2 : 0)
-
-                    const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
-
-                    const yOffset =
-                      Math.abs(thresholdX - acc.previousX) > labelWidth
-                        ? 0
-                        : acc.previousYOffset + 12
-
-                    const element = (
-                      <g key={threshold.label}>
-                        <line
-                          x1={thresholdX}
-                          y1={yOffset + 2}
-                          x2={thresholdX}
-                          y2={height - margin.bottom}
-                          stroke="#333"
-                          strokeDasharray="3 3"
-                        />
-                        <text
-                          x={thresholdX}
-                          y={yOffset}
-                          dx={labelAnchor === 'end' ? -5 : 5}
-                          dy="0.75em"
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor={labelAnchor}
-                        >
-                          {threshold.label}
-                        </text>
-                      </g>
-                    )
-
-                    return {
-                      previousX: thresholdX,
-                      previousYOffset: yOffset,
-                      elements: [element, ...acc.elements],
-                    }
-                  },
-                  {
-                    previousX: Infinity,
-                    previousYOffset: 0,
-                    elements: [],
-                  }
-                ).elements
-            }
+              })}
           </g>
         </svg>
       </GraphWrapper>
@@ -284,17 +321,14 @@ ShortTandemRepeatRepeatCountsPlot.propTypes = {
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   repeatUnitLength: PropTypes.number,
   scaleType: PropTypes.oneOf(['linear', 'log']),
-  thresholds: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
-    })
-  ),
+  normalThreshold: PropTypes.number,
+  pathogenicThreshold: PropTypes.number,
 }
 
 ShortTandemRepeatRepeatCountsPlot.defaultProps = {
   scaleType: 'linear',
-  thresholds: [],
+  normalThreshold: null,
+  pathogenicThreshold: null,
 }
 
 export default ShortTandemRepeatRepeatCountsPlot

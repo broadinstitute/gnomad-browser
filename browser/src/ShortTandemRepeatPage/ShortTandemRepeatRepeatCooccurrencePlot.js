@@ -1,4 +1,4 @@
-import { max, mean } from 'd3-array'
+import { max } from 'd3-array'
 import { scaleBand, scaleLog } from 'd3-scale'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -22,7 +22,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
-  ({ maxRepeats, repeatCooccurrence, size: { width }, thresholds }) => {
+  ({ maxRepeats, repeatCooccurrence, size: { width }, normalThreshold, pathogenicThreshold }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -105,6 +105,37 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
       .domain([1, max(repeatCooccurrence, d => d[2])])
       .range([0.1, 1])
 
+    const ranges =
+      pathogenicThreshold !== null
+        ? [
+            ...(normalThreshold !== null
+              ? [
+                  {
+                    start: 0,
+                    stop: normalThreshold + 1,
+                    label: 'Normal',
+                  },
+                  {
+                    start: normalThreshold + 1,
+                    stop: pathogenicThreshold,
+                    label: 'Unknown',
+                  },
+                ]
+              : [
+                  {
+                    start: 0,
+                    stop: pathogenicThreshold,
+                    label: 'Unknown',
+                  },
+                ]),
+            {
+              start: pathogenicThreshold,
+              stop: Infinity,
+              label: 'Pathogenic',
+            },
+          ]
+        : []
+
     return (
       <GraphWrapper>
         <svg height={height} width={width}>
@@ -184,98 +215,143 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
-            {
-              thresholds
-                .filter(threshold => threshold.value <= maxRepeats[0])
-                .sort(
-                  mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
-                    ? (t1, t2) => t1.value - t2.value
-                    : (t1, t2) => t2.value - t1.value
+            {ranges
+              .filter(range => range.start !== range.stop)
+              .filter(range => range.start <= maxRepeats[0])
+              .map((range, rangeIndex) => {
+                const startBinIndex = Math.floor(range.start / xBinSize)
+                const startX =
+                  xScale(startBinIndex) +
+                  ((range.start - startBinIndex * xBinSize) / xBinSize) * xBandwidth
+
+                let stopX
+                if (range.stop <= maxRepeats[0]) {
+                  const stopBinIndex = Math.floor(range.stop / xBinSize)
+                  stopX =
+                    xScale(stopBinIndex) +
+                    ((range.stop - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
+                } else {
+                  stopX = plotWidth
+                }
+
+                let labelPosition = (startX + stopX) / 2
+                let labelAnchor = 'middle'
+                if (rangeIndex === 0 && stopX < 50) {
+                  labelPosition = stopX - 5
+                  labelAnchor = 'end'
+                }
+                if (rangeIndex === ranges.length - 1 && plotWidth - startX < 60) {
+                  labelPosition = startX + 5
+                  labelAnchor = 'start'
+                }
+
+                return (
+                  <React.Fragment key={range.label}>
+                    {range.start !== 0 && (
+                      <line
+                        x1={startX}
+                        y1={margin.top - 10}
+                        x2={startX}
+                        y2={margin.top + plotHeight}
+                        stroke="#333"
+                        strokeDasharray="3 3"
+                      />
+                    )}
+                    <path
+                      d={`M ${startX + 1} ${margin.top - 6} L ${startX + 5} ${margin.top - 9} L ${
+                        startX + 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <line
+                      x1={startX + 1}
+                      y1={margin.top - 6}
+                      x2={stopX - 1}
+                      y2={margin.top - 6}
+                      stroke="#333"
+                    />
+                    <path
+                      d={`M ${stopX - 1} ${margin.top - 6} L ${stopX - 5} ${margin.top - 9} L ${
+                        stopX - 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <text
+                      x={labelPosition}
+                      y={margin.top - 6}
+                      dy="-0.5em"
+                      fontSize={10}
+                      textAnchor={labelAnchor}
+                    >
+                      {range.label}
+                    </text>
+                  </React.Fragment>
                 )
-                .reduce(
-                  (acc, threshold) => {
-                    const labelWidth = 100
-
-                    const binIndex = Math.floor(threshold.value / xBinSize)
-                    const positionWithBin = (threshold.value - binIndex * xBinSize) / xBinSize
-                    const thresholdX = xScale(binIndex) + positionWithBin * xBandwidth
-
-                    const labelAnchor = thresholdX >= labelWidth ? 'end' : 'start'
-
-                    const yOffset =
-                      Math.abs(thresholdX - acc.previousX) > labelWidth
-                        ? 0
-                        : acc.previousYOffset + 12
-
-                    const element = (
-                      <g key={threshold.label}>
-                        <line
-                          x1={thresholdX}
-                          y1={yOffset + 2}
-                          x2={thresholdX}
-                          y2={height - margin.bottom}
-                          stroke="#333"
-                          strokeDasharray="3 3"
-                        />
-                        <text
-                          x={thresholdX}
-                          y={yOffset}
-                          dx={labelAnchor === 'end' ? -5 : 5}
-                          dy="0.75em"
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor={labelAnchor}
-                        >
-                          {threshold.label}
-                        </text>
-                      </g>
-                    )
-
-                    return {
-                      previousX: thresholdX,
-                      previousYOffset: yOffset,
-                      elements: [element, ...acc.elements],
-                    }
-                  },
-                  {
-                    previousX: Infinity,
-                    previousYOffset: 0,
-                    elements: [],
-                  }
-                ).elements
-            }
+              })}
           </g>
 
           <g transform={`translate(${margin.left}, ${margin.top})`}>
-            {thresholds
-              .filter(threshold => threshold.value <= maxRepeats[1])
-              .map((threshold, i) => {
-                const binIndex = Math.floor(threshold.value / yBinSize)
-                const positionWithBin = (threshold.value - binIndex * yBinSize) / yBinSize
-                const thresholdY = yScale(binIndex) + (1 - positionWithBin) * yBandwidth
+            {ranges
+              .filter(range => range.start !== range.stop)
+              .filter(range => range.start <= maxRepeats[1])
+              .map(range => {
+                const startBinIndex = Math.floor(range.start / yBinSize)
+                const startY =
+                  yScale(startBinIndex) +
+                  (1 - (range.start - startBinIndex * yBinSize) / yBinSize) * yBandwidth
+
+                let stopY
+                if (range.stop <= maxRepeats[1]) {
+                  const stopBinIndex = Math.floor(range.stop / yBinSize)
+                  stopY =
+                    yScale(stopBinIndex) +
+                    (1 - (range.stop - stopBinIndex * yBinSize) / yBinSize) * yBandwidth
+                } else {
+                  stopY = 0
+                }
 
                 return (
-                  <g key={threshold.label}>
+                  <React.Fragment key={range.label}>
+                    {range.start !== 0 && (
+                      <line
+                        x1={0}
+                        y1={startY}
+                        x2={plotWidth + 10}
+                        y2={startY}
+                        stroke="#333"
+                        strokeDasharray="3 3"
+                      />
+                    )}
+                    <path
+                      d={`M ${plotWidth + 6} ${stopY + 1} L ${plotWidth + 3} ${stopY + 5} L ${
+                        plotWidth + 9
+                      } ${stopY + 5} Z`}
+                      fill="#333"
+                    />
                     <line
-                      x1={0}
-                      y1={thresholdY}
-                      x2={plotWidth}
-                      y2={thresholdY}
+                      x1={plotWidth + 6}
+                      y1={startY - 1}
+                      x2={plotWidth + 6}
+                      y2={stopY + 1}
                       stroke="#333"
-                      strokeDasharray="3 3"
+                    />
+                    <path
+                      d={`M ${plotWidth + 6} ${startY - 1} L ${plotWidth + 3} ${startY - 5} L ${
+                        plotWidth + 9
+                      } ${startY - 5} Z`}
+                      fill="#333"
                     />
                     <text
-                      x={plotWidth}
-                      y={thresholdY}
-                      dy={i % 2 === 0 ? '1.1em' : '-0.5em'}
-                      fill="#000"
+                      x={plotWidth + 2}
+                      y={(startY + stopY) / 2}
+                      dy="0.33em"
                       fontSize={10}
                       textAnchor="end"
                       pointerEvents="none"
                     >
-                      {threshold.label}
+                      {range.label}
                     </text>
-                  </g>
+                  </React.Fragment>
                 )
               })}
           </g>
@@ -290,16 +366,13 @@ ShortTandemRepeatRepeatCooccurrencePlot.displayName = 'ShortTandemRepeatRepeatCo
 ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   repeatCooccurrence: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  thresholds: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
-    })
-  ),
+  normalThreshold: PropTypes.number,
+  pathogenicThreshold: PropTypes.number,
 }
 
 ShortTandemRepeatRepeatCooccurrencePlot.defaultProps = {
-  thresholds: [],
+  normalThreshold: null,
+  pathogenicThreshold: null,
 }
 
 export default ShortTandemRepeatRepeatCooccurrencePlot
