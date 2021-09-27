@@ -176,7 +176,13 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             ? selectedRepeatUnit.length
             : null
         }
-        ranges={plotRanges}
+        ranges={
+          selectedRepeatUnit === '' ||
+          selectedRepeatUnit === 'classification/pathogenic' ||
+          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+            ? plotRanges
+            : []
+        }
         scaleType={selectedScaleType}
       />
       <ControlSection>
@@ -268,7 +274,22 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 : shortTandemRepeat.repeat_cooccurrence
               ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        ranges={plotRanges}
+        xRanges={
+          selectedCooccurrenceRepeatUnits === '' ||
+          (repeatUnitsByClassification.pathogenic || []).includes(
+            selectedCooccurrenceRepeatUnits.split(' / ')[0]
+          )
+            ? plotRanges
+            : []
+        }
+        yRanges={
+          selectedCooccurrenceRepeatUnits === '' ||
+          (repeatUnitsByClassification.pathogenic || []).includes(
+            selectedCooccurrenceRepeatUnits.split(' / ')[1]
+          )
+            ? plotRanges
+            : []
+        }
       />
 
       <ControlSection>
