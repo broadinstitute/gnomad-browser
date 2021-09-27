@@ -15,8 +15,8 @@ import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
-import ShortTandemRepeatRepeatCountsPlot from './ShortTandemRepeatRepeatCountsPlot'
-import ShortTandemRepeatRepeatCooccurrencePlot from './ShortTandemRepeatRepeatCooccurrencePlot'
+import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
 
 const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
@@ -33,8 +33,8 @@ const FlexWrapper = styled.div`
   width: 100%;
 `
 
-const sumRepeats = repeats => {
-  const nByKey = repeats.flat().reduce((acc, d) => {
+const sumDistributions = distributions => {
+  const nByKey = distributions.flat().reduce((acc, d) => {
     const key = d.slice(0, d.length - 1).join('/')
     return {
       ...acc,
@@ -44,7 +44,11 @@ const sumRepeats = repeats => {
   return Object.entries(nByKey).map(([key, n]) => [...key.split('/').map(Number), n])
 }
 
-const getRepeatCountRepeats = ({ shortTandemRepeat, selectedRepeatUnit, selectedPopulationId }) => {
+const getAlleleSizeDistribution = ({
+  shortTandemRepeat,
+  selectedRepeatUnit,
+  selectedPopulationId,
+}) => {
   if (selectedRepeatUnit) {
     if (selectedRepeatUnit.startsWith('classification')) {
       const selectedClassification = selectedRepeatUnit.slice(15)
@@ -57,34 +61,35 @@ const getRepeatCountRepeats = ({ shortTandemRepeat, selectedRepeatUnit, selected
         {}
       )
 
-      const repeatUnits = shortTandemRepeat.repeat_counts.repeat_units.filter(
+      const repeatUnits = shortTandemRepeat.allele_size_distribution.repeat_units.filter(
         r => repeatUnitClassification[r.repeat_unit] === selectedClassification
       )
 
-      const repeats = repeatUnits.map(
+      const distributions = repeatUnits.map(
         selectedPopulationId
-          ? r => r.populations.find(pop => pop.id === selectedPopulationId).repeats
-          : r => r.repeats
+          ? r => r.populations.find(pop => pop.id === selectedPopulationId).distribution
+          : r => r.distribution
       )
 
-      return sumRepeats(repeats)
+      return sumDistributions(distributions)
     }
 
-    const repeatUnit = shortTandemRepeat.repeat_counts.repeat_units.find(
+    const repeatUnit = shortTandemRepeat.allele_size_distribution.repeat_units.find(
       r => r.repeat_unit === selectedRepeatUnit
     )
     if (selectedPopulationId) {
-      return repeatUnit.populations.find(pop => pop.id === selectedPopulationId).repeats
+      return repeatUnit.populations.find(pop => pop.id === selectedPopulationId).distribution
     }
-    return repeatUnit.repeats
+    return repeatUnit.distribution
   }
 
   if (selectedPopulationId) {
-    return shortTandemRepeat.repeat_counts.populations.find(pop => pop.id === selectedPopulationId)
-      .repeats
+    return shortTandemRepeat.allele_size_distribution.populations.find(
+      pop => pop.id === selectedPopulationId
+    ).distribution
   }
 
-  return shortTandemRepeat.repeat_counts.total
+  return shortTandemRepeat.allele_size_distribution.distribution
 }
 
 const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
@@ -95,13 +100,16 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
   const [selectedScaleType, setSelectedScaleType] = useState('linear')
 
-  const [selectedCooccurrenceRepeatUnits, setSelectedCooccurrenceRepeatUnits] = useState(
-    shortTandemRepeat.repeat_cooccurrence.repeat_units.length === 1
-      ? shortTandemRepeat.repeat_cooccurrence.repeat_units[0].repeat_units.join(' / ')
+  const [
+    selectedGenotypeDistributionRepeatUnits,
+    setSelectedGenotypeDistributionRepeatUnits,
+  ] = useState(
+    shortTandemRepeat.genotype_distribution.repeat_units.length === 1
+      ? shortTandemRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
       : ''
   )
 
-  const populationIds = shortTandemRepeat.repeat_counts.populations.map(pop => pop.id)
+  const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
   const repeatUnitsByClassification = {}
   shortTandemRepeat.repeat_units.forEach(repeatUnit => {
@@ -161,12 +169,14 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         )}
       </FlexWrapper>
 
-      <h2>Repeat Counts</h2>
-      <ShortTandemRepeatRepeatCountsPlot
+      <h2>Allele Size Distribution</h2>
+      <ShortTandemRepeatAlleleSizeDistributionPlot
         maxRepeats={
-          shortTandemRepeat.repeat_counts.total[shortTandemRepeat.repeat_counts.total.length - 1][0]
+          shortTandemRepeat.allele_size_distribution.distribution[
+            shortTandemRepeat.allele_size_distribution.distribution.length - 1
+          ][0]
         }
-        repeats={getRepeatCountRepeats({
+        alleleSizeDistribution={getAlleleSizeDistribution({
           shortTandemRepeat,
           selectedPopulationId,
           selectedRepeatUnit,
@@ -236,10 +246,12 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           </Select>
         </label>
 
-        <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}>
+        <label
+          htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
+        >
           Scale:{' '}
           <Select
-            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-counts-scale`}
+            id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
             value={selectedScaleType}
             onChange={e => {
               setSelectedScaleType(e.target.value)
@@ -251,41 +263,42 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         </label>
       </ControlSection>
 
-      <h2>Repeat Count Co-occurrence</h2>
-      <ShortTandemRepeatRepeatCooccurrencePlot
+      <h2>Genotype Distribution</h2>
+      <ShortTandemRepeatGenotypeDistributionPlot
         maxRepeats={[
-          max(shortTandemRepeat.repeat_cooccurrence.total, d => d[0]),
-          max(shortTandemRepeat.repeat_cooccurrence.total, d => d[1]),
+          max(shortTandemRepeat.genotype_distribution.distribution, d => d[0]),
+          max(shortTandemRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        repeatCooccurrence={
+        genotypeDistribution={
           // eslint-disable-next-line no-nested-ternary
           selectedPopulationId === ''
-            ? selectedCooccurrenceRepeatUnits
-              ? shortTandemRepeat.repeat_cooccurrence.repeat_units.find(
+            ? selectedGenotypeDistributionRepeatUnits
+              ? shortTandemRepeat.genotype_distribution.repeat_units.find(
                   repeatUnit =>
-                    repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
-                ).repeats
-              : shortTandemRepeat.repeat_cooccurrence.total
-            : (selectedCooccurrenceRepeatUnits
-                ? shortTandemRepeat.repeat_cooccurrence.repeat_units.find(
+                    repeatUnit.repeat_units.join(' / ') === selectedGenotypeDistributionRepeatUnits
+                ).distribution
+              : shortTandemRepeat.genotype_distribution.distribution
+            : (selectedGenotypeDistributionRepeatUnits
+                ? shortTandemRepeat.genotype_distribution.repeat_units.find(
                     repeatUnit =>
-                      repeatUnit.repeat_units.join(' / ') === selectedCooccurrenceRepeatUnits
+                      repeatUnit.repeat_units.join(' / ') ===
+                      selectedGenotypeDistributionRepeatUnits
                   )
-                : shortTandemRepeat.repeat_cooccurrence
-              ).populations.find(pop => pop.id === selectedPopulationId).repeats
+                : shortTandemRepeat.genotype_distribution
+              ).populations.find(pop => pop.id === selectedPopulationId).distribution
         }
         xRanges={
-          selectedCooccurrenceRepeatUnits === '' ||
+          selectedGenotypeDistributionRepeatUnits === '' ||
           (repeatUnitsByClassification.pathogenic || []).includes(
-            selectedCooccurrenceRepeatUnits.split(' / ')[0]
+            selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
           )
             ? plotRanges
             : []
         }
         yRanges={
-          selectedCooccurrenceRepeatUnits === '' ||
+          selectedGenotypeDistributionRepeatUnits === '' ||
           (repeatUnitsByClassification.pathogenic || []).includes(
-            selectedCooccurrenceRepeatUnits.split(' / ')[1]
+            selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
           )
             ? plotRanges
             : []
@@ -294,27 +307,27 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
 
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
-          id={`${shortTandemRepeat.id}-repeat-cooccurrence`}
+          id={`${shortTandemRepeat.id}-genotype-distribution`}
           populationIds={populationIds}
           selectedPopulationId={selectedPopulationId}
           onSelectPopulationId={setSelectedPopulationId}
         />
 
         <label
-          htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-cooccurrence-repeat-units`}
+          htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-repeat-units`}
         >
           Repeat units:{' '}
           <Select
-            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-cooccurrence-repeat-units`}
-            value={selectedCooccurrenceRepeatUnits}
+            id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-repeat-units`}
+            value={selectedGenotypeDistributionRepeatUnits}
             onChange={e => {
-              setSelectedCooccurrenceRepeatUnits(e.target.value)
+              setSelectedGenotypeDistributionRepeatUnits(e.target.value)
             }}
           >
-            {shortTandemRepeat.repeat_cooccurrence.repeat_units.length > 1 && (
+            {shortTandemRepeat.genotype_distribution.repeat_units.length > 1 && (
               <option value="">All</option>
             )}
-            {shortTandemRepeat.repeat_cooccurrence.repeat_units.map(repeatUnit => {
+            {shortTandemRepeat.genotype_distribution.repeat_units.map(repeatUnit => {
               const value = repeatUnit.repeat_units.join(' / ')
               return (
                 <option key={value} value={value}>
@@ -378,33 +391,33 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       repeat_unit
       classification
     }
-    repeat_counts {
-      total
+    allele_size_distribution {
+      distribution
       populations {
         id
-        repeats
+        distribution
       }
       repeat_units {
         repeat_unit
-        repeats
+        distribution
         populations {
           id
-          repeats
+          distribution
         }
       }
     }
-    repeat_cooccurrence {
-      total
+    genotype_distribution {
+      distribution
       populations {
         id
-        repeats
+        distribution
       }
       repeat_units {
         repeat_units
-        repeats
+        distribution
         populations {
           id
-          repeats
+          distribution
         }
       }
     }
@@ -418,33 +431,33 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       }
       reference_repeat_unit
       repeat_units
-      repeat_counts {
-        total
+      allele_size_distribution {
+        distribution
         populations {
           id
-          repeats
+          distribution
         }
         repeat_units {
           repeat_unit
-          repeats
+          distribution
           populations {
             id
-            repeats
+            distribution
           }
         }
       }
-      repeat_cooccurrence {
-        total
+      genotype_distribution {
+        distribution
         populations {
           id
-          repeats
+          distribution
         }
         repeat_units {
           repeat_units
-          repeats
+          distribution
           populations {
             id
-            repeats
+            distribution
           }
         }
       }
