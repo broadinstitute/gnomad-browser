@@ -43,7 +43,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, repeatUnit, size: { width }, scaleType, thresholds }) => {
+  ({ maxRepeats, repeats, repeatUnitLength, size: { width }, scaleType, thresholds }) => {
     const height = 300
 
     const margin = {
@@ -197,13 +197,16 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
 
           <g transform={`translate(${margin.left}, 0)`}>
             {
-              [
-                ...thresholds,
-                {
-                  value: 150 / repeatUnit.length,
-                  label: 'Read length (150 bp)',
-                },
-              ]
+              (repeatUnitLength === null
+                ? thresholds
+                : [
+                    ...thresholds,
+                    {
+                      value: 150 / repeatUnitLength,
+                      label: 'Read length (150 bp)',
+                    },
+                  ]
+              )
                 .filter(threshold => threshold.value <= maxRepeats)
                 .sort(
                   mean(thresholds.map(threshold => threshold.value)) < maxRepeats / 2
@@ -279,7 +282,7 @@ ShortTandemRepeatRepeatCountsPlot.displayName = 'ShortTandemRepeatRepeatCountsPl
 ShortTandemRepeatRepeatCountsPlot.propTypes = {
   maxRepeats: PropTypes.number.isRequired,
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  repeatUnit: PropTypes.string.isRequired,
+  repeatUnitLength: PropTypes.number,
   scaleType: PropTypes.oneOf(['linear', 'log']),
   thresholds: PropTypes.arrayOf(
     PropTypes.shape({

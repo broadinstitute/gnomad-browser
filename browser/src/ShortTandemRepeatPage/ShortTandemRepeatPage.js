@@ -155,10 +155,10 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           selectedPopulationId,
           selectedRepeatUnit,
         })}
-        repeatUnit={
+        repeatUnitLength={
           selectedRepeatUnit && !selectedRepeatUnit.startsWith('classification')
-            ? selectedRepeatUnit
-            : shortTandemRepeat.reference_repeat_unit
+            ? selectedRepeatUnit.length
+            : null
         }
         thresholds={plotThresholds}
         scaleType={selectedScaleType}
