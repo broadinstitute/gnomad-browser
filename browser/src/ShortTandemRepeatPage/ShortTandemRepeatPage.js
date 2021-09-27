@@ -103,20 +103,6 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
 
   const populationIds = shortTandemRepeat.repeat_counts.populations.map(pop => pop.id)
 
-  const plotThresholds = []
-  if (shortTandemRepeat.associated_disease.normal_threshold !== null) {
-    plotThresholds.push({
-      label: 'Normal threshold',
-      value: shortTandemRepeat.associated_disease.normal_threshold + 1,
-    })
-  }
-  if (shortTandemRepeat.associated_disease.pathogenic_threshold !== null) {
-    plotThresholds.push({
-      label: 'Pathogenic threshold',
-      value: shortTandemRepeat.associated_disease.pathogenic_threshold,
-    })
-  }
-
   const repeatUnitsByClassification = {}
   shortTandemRepeat.repeat_units.forEach(repeatUnit => {
     if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
@@ -160,7 +146,8 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             ? selectedRepeatUnit.length
             : null
         }
-        thresholds={plotThresholds}
+        normalThreshold={shortTandemRepeat.associated_disease.normal_threshold}
+        pathogenicThreshold={shortTandemRepeat.associated_disease.pathogenic_threshold}
         scaleType={selectedScaleType}
       />
       <ControlSection>
@@ -252,7 +239,8 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 : shortTandemRepeat.repeat_cooccurrence
               ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        thresholds={plotThresholds}
+        normalThreshold={shortTandemRepeat.associated_disease.normal_threshold}
+        pathogenicThreshold={shortTandemRepeat.associated_disease.pathogenic_threshold}
       />
 
       <ControlSection>
