@@ -42,8 +42,15 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({ maxRepeats, repeats, repeatUnitLength, size: { width }, scaleType, ranges }) => {
+const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
+  ({
+    maxRepeats,
+    alleleSizeDistribution,
+    repeatUnitLength,
+    size: { width },
+    scaleType,
+    ranges,
+  }) => {
     const height = 300
 
     const margin = {
@@ -66,13 +73,13 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
         count: 0,
       }))
 
-      repeats.forEach(([repeatCount, nAlleles]) => {
+      alleleSizeDistribution.forEach(([repeatCount, nAlleles]) => {
         const binIndex = Math.floor(repeatCount / binSize)
         d[binIndex].count += nAlleles
       })
 
       return d
-    }, [repeats, nBins, binSize])
+    }, [alleleSizeDistribution, nBins, binSize])
 
     const xScale = scaleBand()
       .domain(data.map(d => d.binIndex))
@@ -313,11 +320,12 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
   }
 )
 
-ShortTandemRepeatRepeatCountsPlot.displayName = 'ShortTandemRepeatRepeatCountsPlot'
+ShortTandemRepeatAlleleSizeDistributionPlot.displayName =
+  'ShortTandemRepeatAlleleSizeDistributionPlot'
 
-ShortTandemRepeatRepeatCountsPlot.propTypes = {
+ShortTandemRepeatAlleleSizeDistributionPlot.propTypes = {
   maxRepeats: PropTypes.number.isRequired,
-  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  alleleSizeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   repeatUnitLength: PropTypes.number,
   scaleType: PropTypes.oneOf(['linear', 'log']),
   ranges: PropTypes.arrayOf(
@@ -329,9 +337,9 @@ ShortTandemRepeatRepeatCountsPlot.propTypes = {
   ),
 }
 
-ShortTandemRepeatRepeatCountsPlot.defaultProps = {
+ShortTandemRepeatAlleleSizeDistributionPlot.defaultProps = {
   scaleType: 'linear',
   ranges: [],
 }
 
-export default ShortTandemRepeatRepeatCountsPlot
+export default ShortTandemRepeatAlleleSizeDistributionPlot

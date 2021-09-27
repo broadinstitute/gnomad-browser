@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 
 const ShortTandemRepeatRepeatUnitPropType = PropTypes.shape({
   repeat_unit: PropTypes.string.isRequired,
-  repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   populations: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+      distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     })
   ).isRequired,
 })
@@ -20,32 +20,32 @@ export const ShortTandemRepeatAdjacentRepeatPropType = PropTypes.shape({
   }).isRequired,
   reference_repeat_unit: PropTypes.string.isRequired,
   repeat_units: PropTypes.arrayOf(PropTypes.string).isRequired,
-  repeat_counts: PropTypes.shape({
-    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  allele_size_distribution: PropTypes.shape({
+    distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     populations: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
       })
     ).isRequired,
     repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
   }).isRequired,
-  repeat_cooccurrence: PropTypes.shape({
-    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  genotype_distribution: PropTypes.shape({
+    distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     populations: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
       })
     ).isRequired,
     repeat_units: PropTypes.arrayOf(
       PropTypes.shape({
         repeat_units: PropTypes.arrayOf(PropTypes.string).isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
         populations: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.string.isRequired,
-            repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+            distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
           })
         ).isRequired,
       })
@@ -80,32 +80,32 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
       classification: PropTypes.string.isRequired,
     })
   ).isRequired,
-  repeat_counts: PropTypes.shape({
-    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  allele_size_distribution: PropTypes.shape({
+    distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     populations: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
       })
     ).isRequired,
     repeat_units: PropTypes.arrayOf(ShortTandemRepeatRepeatUnitPropType).isRequired,
   }).isRequired,
-  repeat_cooccurrence: PropTypes.shape({
-    total: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  genotype_distribution: PropTypes.shape({
+    distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     populations: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
       })
     ).isRequired,
     repeat_units: PropTypes.arrayOf(
       PropTypes.shape({
         repeat_units: PropTypes.arrayOf(PropTypes.string).isRequired,
-        repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+        distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
         populations: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.string.isRequired,
-            repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+            distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
           })
         ).isRequired,
       })

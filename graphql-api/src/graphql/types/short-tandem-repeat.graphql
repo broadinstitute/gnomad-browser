@@ -23,38 +23,38 @@ type ShortTandemRepeatRepeatUnit {
   classification: String!
 }
 
-type ShortTandemRepeatRepeatCountsPopulation {
+type ShortTandemRepeatAlleleSizeDistributionPopulation {
   id: String!
-  repeats: [[Int!]!]!
+  distribution: [[Int!]!]!
 }
 
-type ShortTandemRepeatRepeatCountsRepeatUnit {
+type ShortTandemRepeatAlleleSizeDistributionRepeatUnit {
   repeat_unit: String!
-  repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
+  distribution: [[Int!]!]!
+  populations: [ShortTandemRepeatAlleleSizeDistributionPopulation!]!
 }
 
-type ShortTandemRepeatRepeatCounts {
-  total: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCountsPopulation!]!
-  repeat_units: [ShortTandemRepeatRepeatCountsRepeatUnit!]!
+type ShortTandemRepeatAlleleSizeDistribution {
+  distribution: [[Int!]!]!
+  populations: [ShortTandemRepeatAlleleSizeDistributionPopulation!]!
+  repeat_units: [ShortTandemRepeatAlleleSizeDistributionRepeatUnit!]!
 }
 
-type ShortTandemRepeatRepeatCooccurrencePopulation {
+type ShortTandemRepeatGenotypeDistributionPopulation {
   id: String!
-  repeats: [[Int!]!]!
+  distribution: [[Int!]!]!
 }
 
-type ShortTandemRepeatRepeatCooccurrenceRepeatUnit {
+type ShortTandemRepeatGenotypeDistributionRepeatUnit {
   repeat_units: [String!]!
-  repeats: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCooccurrencePopulation!]!
+  distribution: [[Int!]!]!
+  populations: [ShortTandemRepeatGenotypeDistributionPopulation!]!
 }
 
-type ShortTandemRepeatRepeatCooccurrence {
-  total: [[Int!]!]!
-  populations: [ShortTandemRepeatRepeatCooccurrencePopulation!]!
-  repeat_units: [ShortTandemRepeatRepeatCooccurrenceRepeatUnit!]!
+type ShortTandemRepeatGenotypeDistribution {
+  distribution: [[Int!]!]!
+  populations: [ShortTandemRepeatGenotypeDistributionPopulation!]!
+  repeat_units: [ShortTandemRepeatGenotypeDistributionRepeatUnit!]!
 }
 
 type ShortTandemRepeatAdjacentRepeat {
@@ -62,8 +62,8 @@ type ShortTandemRepeatAdjacentRepeat {
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
   repeat_units: [String!]!
-  repeat_counts: ShortTandemRepeatRepeatCounts!
-  repeat_cooccurrence: ShortTandemRepeatRepeatCooccurrence!
+  allele_size_distribution: ShortTandemRepeatAlleleSizeDistribution!
+  genotype_distribution: ShortTandemRepeatGenotypeDistribution!
 }
 
 type ShortTandemRepeat {
@@ -85,7 +85,7 @@ type ShortTandemRepeatDetails {
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
   repeat_units: [ShortTandemRepeatRepeatUnit!]!
-  repeat_counts: ShortTandemRepeatRepeatCounts!
-  repeat_cooccurrence: ShortTandemRepeatRepeatCooccurrence!
+  allele_size_distribution: ShortTandemRepeatAlleleSizeDistribution!
+  genotype_distribution: ShortTandemRepeatGenotypeDistribution!
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }

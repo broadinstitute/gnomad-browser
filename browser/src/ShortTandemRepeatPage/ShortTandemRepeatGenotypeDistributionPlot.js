@@ -21,8 +21,8 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
-  ({ maxRepeats, repeatCooccurrence, size: { width }, xRanges, yRanges }) => {
+const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
+  ({ maxRepeats, genotypeDistribution, size: { width }, xRanges, yRanges }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -62,7 +62,7 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
       }
     })
 
-    repeatCooccurrence.forEach(([repeats1, repeats2, nAlleles]) => {
+    genotypeDistribution.forEach(([repeats1, repeats2, nAlleles]) => {
       const xBinIndex = Math.floor(repeats1 / xBinSize)
       const yBinIndex = Math.floor(repeats2 / yBinSize)
       data[xBinIndex * yNumBins + yBinIndex].count += nAlleles
@@ -102,7 +102,7 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
     }
 
     const opacityScale = scaleLog()
-      .domain([1, max(repeatCooccurrence, d => d[2])])
+      .domain([1, max(genotypeDistribution, d => d[2])])
       .range([0.1, 1])
 
     return (
@@ -330,11 +330,12 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
   }
 )
 
-ShortTandemRepeatRepeatCooccurrencePlot.displayName = 'ShortTandemRepeatRepeatCooccurrencePlot'
+ShortTandemRepeatRepeatGenotypeDistributionPlot.displayName =
+  'ShortTandemRepeatRepeatGenotypeDistributionPlot'
 
-ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
+ShortTandemRepeatRepeatGenotypeDistributionPlot.propTypes = {
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
-  repeatCooccurrence: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  genotypeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   xRanges: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -351,9 +352,9 @@ ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
   ),
 }
 
-ShortTandemRepeatRepeatCooccurrencePlot.defaultProps = {
+ShortTandemRepeatRepeatGenotypeDistributionPlot.defaultProps = {
   xRanges: [],
   yRanges: [],
 }
 
-export default ShortTandemRepeatRepeatCooccurrencePlot
+export default ShortTandemRepeatRepeatGenotypeDistributionPlot
