@@ -22,7 +22,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
-  ({ maxRepeats, repeatCooccurrence, size: { width }, ranges }) => {
+  ({ maxRepeats, repeatCooccurrence, size: { width }, xRanges, yRanges }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -184,7 +184,7 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
-            {ranges
+            {xRanges
               .filter(range => range.start !== range.stop)
               .filter(range => range.start <= maxRepeats[0])
               .map((range, rangeIndex) => {
@@ -209,7 +209,7 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
                   labelPosition = stopX - 5
                   labelAnchor = 'end'
                 }
-                if (rangeIndex === ranges.length - 1 && plotWidth - startX < 60) {
+                if (rangeIndex === xRanges.length - 1 && plotWidth - startX < 60) {
                   labelPosition = startX + 5
                   labelAnchor = 'start'
                 }
@@ -260,7 +260,7 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
           </g>
 
           <g transform={`translate(${margin.left}, ${margin.top})`}>
-            {ranges
+            {yRanges
               .filter(range => range.start !== range.stop)
               .filter(range => range.start <= maxRepeats[1])
               .map(range => {
@@ -335,7 +335,14 @@ ShortTandemRepeatRepeatCooccurrencePlot.displayName = 'ShortTandemRepeatRepeatCo
 ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   repeatCooccurrence: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  ranges: PropTypes.arrayOf(
+  xRanges: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
+  yRanges: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
       stop: PropTypes.number.isRequired,
@@ -345,7 +352,8 @@ ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
 }
 
 ShortTandemRepeatRepeatCooccurrencePlot.defaultProps = {
-  ranges: [],
+  xRanges: [],
+  yRanges: [],
 }
 
 export default ShortTandemRepeatRepeatCooccurrencePlot
