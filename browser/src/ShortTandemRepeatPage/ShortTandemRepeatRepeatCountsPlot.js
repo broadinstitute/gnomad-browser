@@ -43,15 +43,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCountsPlot = withSize()(
-  ({
-    maxRepeats,
-    repeats,
-    repeatUnitLength,
-    size: { width },
-    scaleType,
-    normalThreshold,
-    pathogenicThreshold,
-  }) => {
+  ({ maxRepeats, repeats, repeatUnitLength, size: { width }, scaleType, ranges }) => {
     const height = 300
 
     const margin = {
@@ -103,36 +95,6 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
     const maxNumLabels = Math.floor(plotWidth / 20)
 
     const labelInterval = Math.max(Math.round(nBins / maxNumLabels), 1)
-
-    const ranges = pathogenicThreshold
-      ? [
-          ...(normalThreshold !== null
-            ? [
-                {
-                  start: 0,
-                  stop: normalThreshold + 1,
-                  label: 'Normal',
-                },
-                {
-                  start: normalThreshold + 1,
-                  stop: pathogenicThreshold,
-                  label: 'Intermediate',
-                },
-              ]
-            : [
-                {
-                  start: 0,
-                  stop: pathogenicThreshold,
-                  label: 'Intermediate',
-                },
-              ]),
-          {
-            start: pathogenicThreshold,
-            stop: Infinity,
-            label: 'Pathogenic',
-          },
-        ]
-      : []
 
     let readLengthX
     if (repeatUnitLength !== null) {
@@ -358,14 +320,18 @@ ShortTandemRepeatRepeatCountsPlot.propTypes = {
   repeats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   repeatUnitLength: PropTypes.number,
   scaleType: PropTypes.oneOf(['linear', 'log']),
-  normalThreshold: PropTypes.number,
-  pathogenicThreshold: PropTypes.number,
+  ranges: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
 }
 
 ShortTandemRepeatRepeatCountsPlot.defaultProps = {
   scaleType: 'linear',
-  normalThreshold: null,
-  pathogenicThreshold: null,
+  ranges: [],
 }
 
 export default ShortTandemRepeatRepeatCountsPlot
