@@ -116,14 +116,14 @@ const ShortTandemRepeatRepeatCountsPlot = withSize()(
                 {
                   start: normalThreshold + 1,
                   stop: pathogenicThreshold,
-                  label: 'Unknown',
+                  label: 'Intermediate',
                 },
               ]
             : [
                 {
                   start: 0,
                   stop: pathogenicThreshold,
-                  label: 'Unknown',
+                  label: 'Intermediate',
                 },
               ]),
           {
