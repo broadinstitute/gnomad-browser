@@ -22,7 +22,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
-  ({ maxRepeats, repeatCooccurrence, size: { width }, normalThreshold, pathogenicThreshold }) => {
+  ({ maxRepeats, repeatCooccurrence, size: { width }, ranges }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -104,37 +104,6 @@ const ShortTandemRepeatRepeatCooccurrencePlot = withSize()(
     const opacityScale = scaleLog()
       .domain([1, max(repeatCooccurrence, d => d[2])])
       .range([0.1, 1])
-
-    const ranges =
-      pathogenicThreshold !== null
-        ? [
-            ...(normalThreshold !== null
-              ? [
-                  {
-                    start: 0,
-                    stop: normalThreshold + 1,
-                    label: 'Normal',
-                  },
-                  {
-                    start: normalThreshold + 1,
-                    stop: pathogenicThreshold,
-                    label: 'Intermediate',
-                  },
-                ]
-              : [
-                  {
-                    start: 0,
-                    stop: pathogenicThreshold,
-                    label: 'Intermediate',
-                  },
-                ]),
-            {
-              start: pathogenicThreshold,
-              stop: Infinity,
-              label: 'Pathogenic',
-            },
-          ]
-        : []
 
     return (
       <GraphWrapper>
@@ -366,13 +335,17 @@ ShortTandemRepeatRepeatCooccurrencePlot.displayName = 'ShortTandemRepeatRepeatCo
 ShortTandemRepeatRepeatCooccurrencePlot.propTypes = {
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   repeatCooccurrence: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  normalThreshold: PropTypes.number,
-  pathogenicThreshold: PropTypes.number,
+  ranges: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
 }
 
 ShortTandemRepeatRepeatCooccurrencePlot.defaultProps = {
-  normalThreshold: null,
-  pathogenicThreshold: null,
+  ranges: [],
 }
 
 export default ShortTandemRepeatRepeatCooccurrencePlot

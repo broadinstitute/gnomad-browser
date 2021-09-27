@@ -111,6 +111,36 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
     repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
+  const plotRanges = shortTandemRepeat.associated_disease.pathogenic_threshold
+    ? [
+        ...(shortTandemRepeat.associated_disease.normal_threshold !== null
+          ? [
+              {
+                start: 0,
+                stop: shortTandemRepeat.associated_disease.normal_threshold + 1,
+                label: 'Normal',
+              },
+              {
+                start: shortTandemRepeat.associated_disease.normal_threshold + 1,
+                stop: shortTandemRepeat.associated_disease.pathogenic_threshold,
+                label: 'Intermediate',
+              },
+            ]
+          : [
+              {
+                start: 0,
+                stop: shortTandemRepeat.associated_disease.pathogenic_threshold,
+                label: 'Intermediate',
+              },
+            ]),
+        {
+          start: shortTandemRepeat.associated_disease.pathogenic_threshold,
+          stop: Infinity,
+          label: 'Pathogenic',
+        },
+      ]
+    : []
+
   return (
     <>
       <FlexWrapper style={{ marginBottom: '2em' }}>
@@ -146,8 +176,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
             ? selectedRepeatUnit.length
             : null
         }
-        normalThreshold={shortTandemRepeat.associated_disease.normal_threshold}
-        pathogenicThreshold={shortTandemRepeat.associated_disease.pathogenic_threshold}
+        ranges={plotRanges}
         scaleType={selectedScaleType}
       />
       <ControlSection>
@@ -239,8 +268,7 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
                 : shortTandemRepeat.repeat_cooccurrence
               ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        normalThreshold={shortTandemRepeat.associated_disease.normal_threshold}
-        pathogenicThreshold={shortTandemRepeat.associated_disease.pathogenic_threshold}
+        ranges={plotRanges}
       />
 
       <ControlSection>
