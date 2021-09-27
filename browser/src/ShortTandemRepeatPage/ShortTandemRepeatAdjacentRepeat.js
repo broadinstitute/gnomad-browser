@@ -55,7 +55,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
                 : adjacentRepeat.repeat_counts
               ).populations.find(pop => pop.id === selectedPopulationId).repeats
         }
-        repeatUnit={selectedRepeatUnit || adjacentRepeat.reference_repeat_unit}
+        repeatUnitLength={selectedRepeatUnit ? selectedRepeatUnit.length : null}
         scaleType={selectedScaleType}
       />
       <ControlSection>
