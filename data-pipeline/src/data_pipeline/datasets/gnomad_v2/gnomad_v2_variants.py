@@ -37,12 +37,6 @@ def population_frequencies_expression(ds, freq_index_dict, subset):
         for sub_pop_id in SUBPOPULATIONS.get(pop_id, []):
             # Genomes do not have EAS sub-population data
             if f"{subset}_{pop_id}_{sub_pop_id}" not in freq_index_dict:
-                populations.append(
-                    hl.struct(
-                        id=f"{pop_id}_{sub_pop_id}", ac=0, an=0, hemizygote_count=hl.null(hl.tint), homozygote_count=0,
-                    )
-                )
-
                 continue
 
             populations.append(
