@@ -141,6 +141,13 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           quality_metrics: formatVariantQualityMetrics(variant.genome.quality_metrics),
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
+          // Remove EAS sub-continental populations, which were not computed for genomes
+          // TODO: Remove this after variants are reloaded
+          // See https://github.com/broadinstitute/gnomad-browser/issues/759
+          populations: variant.genome.freq[genomeSubset].populations.filter(
+            (pop) =>
+              !(pop.id.startsWith('eas_') && !(pop.id.endsWith('XX') || pop.id.endsWith('XY')))
+          ),
         }
       : null,
     flags,
