@@ -1,3 +1,5 @@
+const { isVariantId } = require('@gnomad/identifiers')
+
 const LIFTOVER_INDEX = 'liftover'
 
 const fetchLiftoverVariantsBySource = async (esClient, variantId, referenceGenome) => {
@@ -17,7 +19,9 @@ const fetchLiftoverVariantsBySource = async (esClient, variantId, referenceGenom
     size: 100,
   })
 
-  return response.body.hits.hits.map((hit) => hit._source)
+  return response.body.hits.hits
+    .map((hit) => hit._source)
+    .filter((doc) => isVariantId(doc.liftover.variant_id))
 }
 
 const fetchLiftoverVariantsByTarget = async (esClient, variantId, referenceGenome) => {
@@ -37,7 +41,9 @@ const fetchLiftoverVariantsByTarget = async (esClient, variantId, referenceGenom
     size: 100,
   })
 
-  return response.body.hits.hits.map((hit) => hit._source)
+  return response.body.hits.hits
+    .map((hit) => hit._source)
+    .filter((doc) => isVariantId(doc.liftover.variant_id))
 }
 
 module.exports = {
