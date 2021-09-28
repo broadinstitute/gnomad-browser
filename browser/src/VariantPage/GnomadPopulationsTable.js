@@ -96,6 +96,7 @@ const nestPopulations = populations => {
 
 export class GnomadPopulationsTable extends Component {
   static propTypes = {
+    datasetId: PropTypes.string.isRequired,
     exomePopulations: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -133,7 +134,13 @@ export class GnomadPopulationsTable extends Component {
   }
 
   render() {
-    const { exomePopulations, genomePopulations, showHemizygotes, showHomozygotes } = this.props
+    const {
+      datasetId,
+      exomePopulations,
+      genomePopulations,
+      showHemizygotes,
+      showHomozygotes,
+    } = this.props
     const { includeExomes, includeGenomes } = this.state
 
     let includedPopulations = []
@@ -144,7 +151,33 @@ export class GnomadPopulationsTable extends Component {
       includedPopulations = includedPopulations.concat(genomePopulations)
     }
 
-    const populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
+    let populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
+    if (datasetId.startsWith('gnomad_r2_1') && includeGenomes) {
+      populations = populations.map(pop => {
+        if (pop.id === 'eas') {
+          // If the variant is only present in genomes, sub-continental populations won't be present at all.
+          if (pop.subpopulations.length === 2) {
+            ;['jpn', 'kor', 'oea'].forEach(subPopId => {
+              pop.subpopulations.push({
+                id: `eas_${subPopId}`,
+                name: GNOMAD_POPULATION_NAMES[`eas_${subPopId}`],
+                ac: 0,
+                an: 0,
+                ac_hemi: 0,
+                ac_hom: 0,
+              })
+            })
+          }
+
+          pop.subpopulations.forEach(subPop => {
+            if (!(subPop.id.endsWith('XX') || subPop.id.endsWith('XY'))) {
+              subPop.name += ' *' // eslint-disable-line no-param-reassign
+            }
+          })
+        }
+        return pop
+      })
+    }
 
     return (
       <>
@@ -153,6 +186,12 @@ export class GnomadPopulationsTable extends Component {
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
+        {datasetId.startsWith('gnomad_r2_1') && includeGenomes && (
+          <p>
+            * Allele frequencies for some sub-continental populations were not computed for genome
+            samples.
+          </p>
+        )}
         {showHemizygotes && <p>Hemizygote counts are not available for subpopulations.</p>}
         <ControlSection>
           Include:
