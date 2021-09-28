@@ -313,9 +313,9 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
                     <text
                       x={plotWidth + 2}
                       y={(startY + stopY) / 2}
-                      dy="0.33em"
                       fontSize={10}
-                      textAnchor="end"
+                      textAnchor="middle"
+                      transform={`rotate(-90, ${plotWidth + 2}, ${(startY + stopY) / 2})`}
                       pointerEvents="none"
                     >
                       {range.label}
