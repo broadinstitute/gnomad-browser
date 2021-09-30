@@ -22,6 +22,8 @@ Data preparation for the gnomAD browser is split into multiple pipelines:
 - gnomad_v2_coverage
 - gnomad_v2_variants
 - gnomad_v2_lof_curation_results
+- gnomad_v2_variant_cooccurrence
+- liftover
 - gnomad_sv_v2
 - gnomad_v3_coverage
 - gnomad_v3_variants
