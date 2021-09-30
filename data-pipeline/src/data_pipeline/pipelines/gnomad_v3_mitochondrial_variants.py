@@ -25,10 +25,16 @@ pipeline.add_task(
     "/mitochondria/mitochondrial_variants_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("prepare_mitochondrial_variants"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch38_transcripts"),
-        "mane_transcripts_path": genes_pipeline.get_task("import_mane_select_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
+        "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"variants": "annotate_mitochondrial_variant_transcript_consequences"})
 
 ###############################################
 # Run

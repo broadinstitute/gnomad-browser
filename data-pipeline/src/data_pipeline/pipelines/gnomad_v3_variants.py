@@ -22,10 +22,16 @@ pipeline.add_task(
     "/gnomad_v3/gnomad_v3_variants_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("prepare_gnomad_v3_variants"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch38_transcripts"),
-        "mane_transcripts_path": genes_pipeline.get_task("import_mane_select_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
+        "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"variants": "annotate_gnomad_v3_transcript_consequences"})
 
 ###############################################
 # Run

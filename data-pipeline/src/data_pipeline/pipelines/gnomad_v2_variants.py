@@ -84,8 +84,16 @@ pipeline.add_task(
     "/gnomad_v2/gnomad_v2_variants_annotated_2.ht",
     {
         "variants_path": pipeline.get_task("annotate_gnomad_v2_variants_with_mnvs"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch37"),
     },
+)
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs(
+    {"multinucleotide_variants": "prepare_gnomad_v2_mnvs", "variants": "annotate_gnomad_v2_transcript_consequences"}
 )
 
 ###############################################

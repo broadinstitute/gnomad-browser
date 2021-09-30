@@ -279,6 +279,25 @@ pipeline.add_task(
     },
 )
 
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs(
+    {
+        "genes_grch37": "annotate_grch37_genes_step_4",
+        "genes_grch38": "annotate_grch38_genes_step_3",
+        "base_transcripts_grch37": "extract_grch37_transcripts",
+        "base_transcripts_grch38": "extract_grch38_transcripts",
+        "transcripts_grch37": "annotate_grch37_transcripts",
+        "transcripts_grch38": "extract_grch38_transcripts",
+        "mane_select_transcripts": "import_mane_select_transcripts",
+    }
+)
+
+###############################################
+# Run
+###############################################
 
 if __name__ == "__main__":
     run_pipeline(pipeline)

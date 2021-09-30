@@ -20,6 +20,14 @@ pipeline.add_task(
 )
 
 ###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs(
+    {"exome_coverage": "prepare_gnomad_v2_exome_coverage", "genome_coverage": "prepare_gnomad_v2_genome_coverage"}
+)
+
+###############################################
 # Run
 ###############################################
 

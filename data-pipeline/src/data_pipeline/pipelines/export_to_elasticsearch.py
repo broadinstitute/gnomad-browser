@@ -61,7 +61,7 @@ DATASETS_CONFIG = {
     # Genes
     ##############################################################################################################
     "genes_grch37": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch37_genes_step_4").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_output("genes_grch37").get_output_path()),
         "args": {
             "index": "genes_grch37",
             "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
@@ -70,7 +70,7 @@ DATASETS_CONFIG = {
         },
     },
     "genes_grch38": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch38_genes_step_3").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_output("genes_grch38").get_output_path()),
         "args": {
             "index": "genes_grch38",
             "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
@@ -82,7 +82,7 @@ DATASETS_CONFIG = {
     # Transcripts
     ##############################################################################################################
     "transcripts_grch37": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("annotate_grch37_transcripts").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_output("transcripts_grch37").get_output_path()),
         "args": {
             "index": "transcripts_grch37",
             "index_fields": ["transcript_id"],
@@ -91,7 +91,7 @@ DATASETS_CONFIG = {
         },
     },
     "transcripts_grch38": {
-        "get_table": lambda: hl.read_table(genes_pipeline.get_task("extract_grch38_transcripts").get_output_path()),
+        "get_table": lambda: hl.read_table(genes_pipeline.get_output("transcripts_grch38").get_output_path()),
         "args": {
             "index": "transcripts_grch38",
             "index_fields": ["transcript_id"],
@@ -104,11 +104,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "gnomad_v3_variants": {
         "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(
-                    gnomad_v3_variants_pipeline.get_task("annotate_gnomad_v3_transcript_consequences").get_output_path()
-                )
-            )
+            add_variant_document_id(hl.read_table(gnomad_v3_variants_pipeline.get_output("variants").get_output_path()))
         ),
         "args": {
             "index": "gnomad_v3_variants",
@@ -127,7 +123,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v3_genome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v3_coverage_pipeline.get_task("prepare_gnomad_v3_coverage").get_output_path())
+            hl.read_table(gnomad_v3_coverage_pipeline.get_output("genome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
@@ -137,11 +133,7 @@ DATASETS_CONFIG = {
     "gnomad_v3_mitochondrial_variants": {
         "get_table": lambda: subset_table(
             add_variant_document_id(
-                hl.read_table(
-                    gnomad_v3_mitochondrial_variants_pipeline.get_task(
-                        "annotate_mitochondrial_variant_transcript_consequences"
-                    ).get_output_path()
-                )
+                hl.read_table(gnomad_v3_mitochondrial_variants_pipeline.get_output("variants").get_output_path())
             )
         ),
         "args": {
@@ -161,9 +153,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v3_mitochondrial_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(
-                gnomad_v3_mitochondrial_coverage_pipeline.get_task("prepare_mitochondrial_coverage").get_output_path()
-            )
+            hl.read_table(gnomad_v3_mitochondrial_coverage_pipeline.get_output("coverage").get_output_path())
         ),
         "args": {
             "index": "gnomad_v3_mitochondrial_coverage",
@@ -176,9 +166,7 @@ DATASETS_CONFIG = {
     # gnomAD SV v2
     ##############################################################################################################
     "gnomad_structural_variants_v2": {
-        "get_table": lambda: hl.read_table(
-            gnomad_sv_v2_pipeline.get_task("prepare_structural_variants").get_output_path()
-        ),
+        "get_table": lambda: hl.read_table(gnomad_sv_v2_pipeline.get_output("structural_variants").get_output_path()),
         "args": {
             "index": "gnomad_structural_variants_v2",
             "index_fields": ["variant_id", "xpos", "xend", "xpos2", "xend2", "genes"],
@@ -192,11 +180,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "gnomad_v2_variants": {
         "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(
-                    gnomad_v2_variants_pipeline.get_task("annotate_gnomad_v2_transcript_consequences").get_output_path()
-                )
-            )
+            add_variant_document_id(hl.read_table(gnomad_v2_variants_pipeline.get_output("variants").get_output_path()))
         ),
         "args": {
             "index": "gnomad_v2_variants",
@@ -215,19 +199,19 @@ DATASETS_CONFIG = {
     },
     "gnomad_v2_exome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v2_coverage_pipeline.get_task("prepare_gnomad_v2_exome_coverage").get_output_path())
+            hl.read_table(gnomad_v2_coverage_pipeline.get_output("exome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v2_exome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_genome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v2_coverage_pipeline.get_task("prepare_gnomad_v2_genome_coverage").get_output_path())
+            hl.read_table(gnomad_v2_coverage_pipeline.get_output("genome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v2_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     "gnomad_v2_mnvs": {
         "get_table": lambda: hl.read_table(
-            gnomad_v2_variants_pipeline.get_task("prepare_gnomad_v2_mnvs").get_output_path()
+            gnomad_v2_variants_pipeline.get_output("multinucleotide_variants").get_output_path()
         ),
         "args": {
             "index": "gnomad_v2_mnvs",
@@ -239,11 +223,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v2_lof_curation_results": {
         "get_table": lambda: add_variant_document_id(
-            hl.read_table(
-                gnomad_v2_lof_curation_results_pipeline.get_task(
-                    "prepare_gnomad_v2_lof_curation_results"
-                ).get_output_path()
-            )
+            hl.read_table(gnomad_v2_lof_curation_results_pipeline.get_output("lof_curation_results").get_output_path())
         ),
         "args": {
             "index": "gnomad_v2_lof_curation_results",
@@ -255,7 +235,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v2_variant_cooccurrence": {
         "get_table": lambda: hl.read_table(
-            gnomad_v2_variant_cooccurrence_pipeline.get_task("prepare_variant_cooccurrence").get_output_path()
+            gnomad_v2_variant_cooccurrence_pipeline.get_output("variant_cooccurrence").get_output_path()
         ).add_index(name="document_id"),
         "args": {
             "index": "gnomad_v2_variant_cooccurrence",
@@ -270,11 +250,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "exac_variants": {
         "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(
-                    exac_variants_pipeline.get_task("annotate_exac_transcript_consequences").get_output_path()
-                )
-            )
+            add_variant_document_id(hl.read_table(exac_variants_pipeline.get_output("variants").get_output_path()))
         ),
         "args": {
             "index": "exac_variants",
@@ -293,7 +269,7 @@ DATASETS_CONFIG = {
     },
     "exac_exome_coverage": {
         "get_table": lambda: subset_table(
-            hl.read_table(exac_coverage_pipeline.get_task("import_exac_coverage").get_output_path())
+            hl.read_table(exac_coverage_pipeline.get_output("exome_coverage").get_output_path())
         ),
         "args": {"index": "exac_exome_coverage", "id_field": "xpos", "num_shards": 16, "block_size": 10_000},
     },
@@ -302,11 +278,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "clinvar_grch38_variants": {
         "get_table": lambda: truncate_clinvar_variant_ids(
-            subset_table(
-                hl.read_table(
-                    clinvar_grch38_pipeline.get_task("annotate_clinvar_grch38_variants_in_gnomad").get_output_path()
-                )
-            )
+            subset_table(hl.read_table(clinvar_grch38_pipeline.get_output("clinvar_variants").get_output_path()))
         ),
         "args": {
             "index": "clinvar_grch38_variants",
@@ -325,11 +297,7 @@ DATASETS_CONFIG = {
     },
     "clinvar_grch37_variants": {
         "get_table": lambda: truncate_clinvar_variant_ids(
-            subset_table(
-                hl.read_table(
-                    clinvar_grch37_pipeline.get_task("annotate_clinvar_grch37_variants_in_gnomad").get_output_path()
-                )
-            )
+            subset_table(hl.read_table(clinvar_grch37_pipeline.get_output("clinvar_variants").get_output_path()))
         ),
         "args": {
             "index": "clinvar_grch37_variants",
@@ -351,7 +319,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "liftover": {
         "get_table": lambda: add_liftover_document_id(
-            hl.read_table(liftover_pipeline.get_task("prepare_liftover").get_output_path())
+            hl.read_table(liftover_pipeline.get_output("liftover").get_output_path())
         ),
         "args": {
             "index": "liftover",

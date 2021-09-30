@@ -49,7 +49,7 @@ pipeline.add_task(
     "/clinvar/clinvar_grch37_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("vep_clinvar_grch37_variants"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch37"),
     },
 )
 
@@ -63,6 +63,12 @@ pipeline.add_task(
         "gnomad_genome_variants_path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"clinvar_variants": "annotate_clinvar_grch37_variants_in_gnomad"})
 
 ###############################################
 # Run

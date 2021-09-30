@@ -11,7 +11,7 @@ pipeline.add_task(
     "prepare_gnomad_v2_lof_curation_results",
     import_gnomad_v2_lof_curation_results,
     "/gnomad_v2/gnomad_v2_lof_curation_results.ht",
-    {"genes_path": genes_pipeline.get_task("prepare_grch37_genes")},
+    {"genes_path": genes_pipeline.get_output("genes_grch37")},
     {
         # If a result for a variant/gene pair is present in more than one file, the result in the first file in this list takes precedence.
         "curation_result_paths": [
@@ -27,6 +27,12 @@ pipeline.add_task(
         ]
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"lof_curation_results": "prepare_gnomad_v2_lof_curation_results"})
 
 ###############################################
 # Run

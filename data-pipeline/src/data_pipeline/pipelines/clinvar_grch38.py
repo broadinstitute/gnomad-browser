@@ -48,8 +48,8 @@ pipeline.add_task(
     "/clinvar/clinvar_grch38_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("vep_clinvar_grch38_variants"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch38_transcripts"),
-        "mane_transcripts_path": genes_pipeline.get_task("import_mane_select_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
+        "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
     },
 )
 
@@ -63,6 +63,12 @@ pipeline.add_task(
         "gnomad_mitochondrial_variants_path": "gs://gcp-public-data--gnomad/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht",
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"clinvar_variants": "annotate_clinvar_grch38_variants_in_gnomad"})
 
 ###############################################
 # Run
