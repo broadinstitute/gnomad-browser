@@ -77,6 +77,7 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
 
     if mane_transcripts_path:
         mane_transcripts = hl.read_table(mane_transcripts_path)
+        mane_transcripts_version = hl.eval(mane_transcripts.globals.version)
 
         mane_transcripts = hl.dict([(row.gene_id, row.drop("gene_id")) for row in mane_transcripts.collect()])
 
@@ -128,6 +129,9 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
             ),
         )
 
+        ds = ds.annotate(transcript_consequences=transcript_consequences).drop("vep")
+        ds = ds.annotate_globals(mane_transcripts_version=mane_transcripts_version)
+
     else:
         transcript_consequences = hl.sorted(
             transcript_consequences,
@@ -138,6 +142,6 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
             ),
         )
 
-    ds = ds.annotate(transcript_consequences=transcript_consequences).drop("vep")
+        ds = ds.annotate(transcript_consequences=transcript_consequences).drop("vep")
 
     return ds

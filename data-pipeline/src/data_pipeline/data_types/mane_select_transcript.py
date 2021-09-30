@@ -1,8 +1,15 @@
+import re
+
 import hail as hl
 
 
 def import_mane_select_transcripts(path):
+    filename = path.split("/")[-1]
+    version = re.search(r"v(\d+(\.\d+)+?)", filename).group(1)
+
     ds = hl.import_table(path, force=True)
+
+    ds = ds.annotate_globals(version=version)
 
     ds = ds.select(
         gene_id=ds.Ensembl_Gene.split("\\.")[0],
