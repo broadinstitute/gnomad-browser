@@ -1,6 +1,6 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
-from data_pipeline.data_types.variant import annotate_transcript_consequences
+from data_pipeline.data_types.variant import annotate_variants, annotate_transcript_consequences
 
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_mnvs import (
     prepare_gnomad_v2_mnvs,
@@ -9,6 +9,7 @@ from data_pipeline.datasets.gnomad_v2.gnomad_v2_mnvs import (
 )
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_variants import prepare_gnomad_v2_variants
 
+from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as coverage_pipeline
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
 
@@ -69,11 +70,22 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    "annotate_gnomad_v2_variants_with_mnvs",
-    annotate_variants_with_mnvs,
+    "annotate_gnomad_v2_variants",
+    annotate_variants,
     "/gnomad_v2/gnomad_v2_variants_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("prepare_gnomad_v2_variants"),
+        "exome_coverage_path": coverage_pipeline.get_output("exome_coverage"),
+        "genome_coverage_path": coverage_pipeline.get_output("genome_coverage"),
+    },
+)
+
+pipeline.add_task(
+    "annotate_gnomad_v2_variants_with_mnvs",
+    annotate_variants_with_mnvs,
+    "/gnomad_v2/gnomad_v2_variants_annotated_2.ht",
+    {
+        "variants_path": pipeline.get_task("annotate_gnomad_v2_variants"),
         "mnvs_path": pipeline.get_task("prepare_gnomad_v2_mnvs"),
     },
 )
@@ -81,7 +93,7 @@ pipeline.add_task(
 pipeline.add_task(
     "annotate_gnomad_v2_transcript_consequences",
     annotate_transcript_consequences,
-    "/gnomad_v2/gnomad_v2_variants_annotated_2.ht",
+    "/gnomad_v2/gnomad_v2_variants_annotated_3.ht",
     {
         "variants_path": pipeline.get_task("annotate_gnomad_v2_variants_with_mnvs"),
         "transcripts_path": genes_pipeline.get_output("base_transcripts_grch37"),
