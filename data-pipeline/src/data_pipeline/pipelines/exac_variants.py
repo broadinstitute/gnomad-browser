@@ -22,9 +22,15 @@ pipeline.add_task(
     "/exac/exac_variants_annotated_1.ht",
     {
         "variants_path": pipeline.get_task("import_exac_vcf"),
-        "transcripts_path": genes_pipeline.get_task("extract_grch37_transcripts"),
+        "transcripts_path": genes_pipeline.get_output("base_transcripts_grch37"),
     },
 )
+
+###############################################
+# Outputs
+###############################################
+
+pipeline.set_outputs({"variants": "annotate_exac_transcript_consequences"})
 
 ###############################################
 # Run

@@ -135,6 +135,7 @@ class Task:
 class Pipeline:
     def __init__(self):
         self._tasks = OrderedDict()
+        self._outputs = {}
 
     def add_task(self, name, *args, **kwargs):
         task = Task(name, *args, **kwargs)
@@ -158,6 +159,16 @@ class Pipeline:
     def run(self, force_tasks=None):
         for task_name, task in self._tasks.items():
             task.run(force=force_tasks and task_name in force_tasks)
+
+    def set_outputs(self, outputs):
+        for output_name, task_name in outputs.items():
+            assert task_name in self._tasks, f"Unable to set output '{output_name}', no task named '{task_name}'"
+
+        self._outputs = outputs
+
+    def get_output(self, output_name):
+        task_name = self._outputs[output_name]
+        return self._tasks[task_name]
 
 
 def run_pipeline(pipeline):
