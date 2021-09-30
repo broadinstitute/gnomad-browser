@@ -31,6 +31,7 @@ Data preparation for the gnomAD browser is split into multiple pipelines:
 - gnomad_v3_mitochondrial_variants
 
 The genes pipeline must be run first. The others can be run in any order.
+Within a dataset, the coverage pipeline needs to be run before the variants pipeline.
 
 The genes pipeline shuffles a lot and thus should not be run on clusters with preemptible workers.
 
