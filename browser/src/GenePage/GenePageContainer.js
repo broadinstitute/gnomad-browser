@@ -11,7 +11,7 @@ import GeneNotFound from './GeneNotFound'
 import GenePage from './GenePage'
 
 const query = `
-query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $datasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
@@ -209,7 +209,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
       obs_exp
       chisq_diff_null
     }
-    short_tandem_repeats(dataset: $datasetId) @include(if: $includeShortTandemRepeats) {
+    short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
     }
   }
@@ -219,9 +219,9 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }) => {
   const variables = {
     [geneIdOrSymbol.startsWith('ENSG') ? 'geneId' : 'geneSymbol']: geneIdOrSymbol,
-    datasetId,
     referenceGenome: referenceGenomeForDataset(datasetId),
-    includeShortTandemRepeats: datasetId === 'gnomad_r3',
+    shortTandemRepeatDatasetId: 'gnomad_r3',
+    includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
   }
 
   return (
