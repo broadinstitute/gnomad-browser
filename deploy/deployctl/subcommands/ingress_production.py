@@ -79,6 +79,7 @@ def apply_ingress(browser_deployment: str = None, reads_deployment: str = None) 
     apply_services(browser_deployment, reads_deployment)
 
     if input("Apply changes to production ingress (y/n) ").lower() == "y":
+        kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.frontendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.ingress.yaml")])
 
 
