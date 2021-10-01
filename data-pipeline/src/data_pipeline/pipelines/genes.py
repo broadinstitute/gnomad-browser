@@ -192,10 +192,14 @@ def annotate_with_preferred_transcript(table_path):
 
     if "mane_select_transcript" in ds.row:
         preferred_transcript_id = hl.or_else(ds.mane_select_transcript.ensembl_id, ds.canonical_transcript_id)
+        preferred_transcript_source = "mane_select"
     else:
         preferred_transcript_id = ds.canonical_transcript_id
+        preferred_transcript_source = "ensembl_canonical"
 
-    return ds.annotate(preferred_transcript_id=preferred_transcript_id)
+    return ds.annotate(
+        preferred_transcript_id=preferred_transcript_id, preferred_transcript_source=preferred_transcript_source
+    )
 
 
 pipeline.add_task(
