@@ -44,12 +44,19 @@ def manifests_directory() -> str:
     return os.path.realpath(os.path.join(os.path.dirname(__file__), "../../manifests/ingress"))
 
 
-def describe_services() -> None:
+def get_current_browser_deployment() -> str:
     browser_manifest = json.loads(kubectl(["get", "service", "gnomad-browser", "--output=json"]))
-    reads_manifest = json.loads(kubectl(["get", "service", "gnomad-reads", "--output=json"]))
+    return browser_manifest["spec"]["selector"]["deployment"]
 
-    browser_deployment = browser_manifest["spec"]["selector"]["deployment"]
-    reads_deployment = reads_manifest["spec"]["selector"]["deployment"]
+
+def get_current_reads_deployment() -> str:
+    reads_manifest = json.loads(kubectl(["get", "service", "gnomad-reads", "--output=json"]))
+    return reads_manifest["spec"]["selector"]["deployment"]
+
+
+def describe_services() -> None:
+    browser_deployment = get_current_browser_deployment()
+    reads_deployment = get_current_reads_deployment()
 
     print("active browser deployment:", browser_deployment)
     print("active reads deployment:", reads_deployment)
@@ -60,13 +67,19 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
         if not k8s_deployment_exists(f"gnomad-browser-{browser_deployment}"):
             raise RuntimeError(f"browser deployment {browser_deployment} not found")
     else:
-        browser_deployment = get_most_recent_k8s_deployment("component=gnomad-browser")[len("gnomad-browser-") :]
+        try:
+            browser_deployment = get_current_browser_deployment()
+        except Exception:
+            browser_deployment = get_most_recent_k8s_deployment("component=gnomad-browser")[len("gnomad-browser-") :]
 
     if reads_deployment:
         if not k8s_deployment_exists(f"gnomad-reads-{reads_deployment}"):
             raise RuntimeError(f"reads deployment {reads_deployment} not found")
     else:
-        reads_deployment = get_most_recent_k8s_deployment("component=gnomad-reads")[len("gnomad-reads-") :]
+        try:
+            reads_deployment = get_current_reads_deployment()
+        except Exception:
+            reads_deployment = get_most_recent_k8s_deployment("component=gnomad-reads")[len("gnomad-reads-") :]
 
     manifest = SERVICES_MANIFEST_TEMPLATE.format(
         browser_deployment=browser_deployment, reads_deployment=reads_deployment
