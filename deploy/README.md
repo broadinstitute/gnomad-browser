@@ -23,6 +23,7 @@ Select a GCP project and zone to use.
 ```
 ./deployctl config set project $PROJECT
 ./deployctl config set zone $ZONE
+./deployctl config set domain $DOMAIN
 ```
 
 To see other available configuration options, run `./deployctl config list`.
