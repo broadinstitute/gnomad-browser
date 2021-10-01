@@ -1,9 +1,0 @@
-apiVersion: networking.gke.io/v1beta1
-kind: ManagedCertificate
-metadata:
-  name: gnomad
-  labels:
-    tier: production
-spec:
-  domains:
-    - gnomad.broadinstitute.org

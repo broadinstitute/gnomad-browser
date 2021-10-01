@@ -11,6 +11,7 @@ _CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../de
 class Configuration:
     project: str = None
     zone: str = "us-central1-a"
+    domain: str = None
     environment_tag: str = None
     authorized_networks: str = "0.0.0.0/0"
     data_pipeline_output: str = None

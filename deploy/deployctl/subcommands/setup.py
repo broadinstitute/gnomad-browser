@@ -116,6 +116,11 @@ def create_ip_address() -> None:
     gcloud(["compute", "addresses", "create", config.ip_address_name, "--global"])
 
 
+def create_ssl_certificate() -> None:
+    # Create a managed SSL certificate.
+    gcloud(["compute", "ssl-certificates", "create", "gnomad-browser-cert", f"--domains={config.domain}", "--global"])
+
+
 def create_cluster_service_account() -> None:
     # Create a least privilege service account for cluster nodes
     # https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa
@@ -275,6 +280,10 @@ def main(argv: typing.List[str]) -> None:
         print("project configuration is required", file=sys.stderr)
         sys.exit(1)
 
+    if not config.domain:
+        print("domain configuration is required", file=sys.stderr)
+        sys.exit(1)
+
     print("This will create the following resources:")
     print(f"- VPC network '{config.network_name}'")
     print(f"- IP address '{config.ip_address_name}'")
@@ -291,6 +300,9 @@ def main(argv: typing.List[str]) -> None:
 
         print("Reserving IP address...")
         create_ip_address()
+
+        print("Creating SSL certificate...")
+        create_ssl_certificate()
 
         print("Creating service account...")
         create_cluster_service_account()
