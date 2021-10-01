@@ -40,7 +40,7 @@ spec:
 
 INGRESS_MANIFEST_TEMPLATE = """---
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gnomad-ingress-demo-{name}
@@ -51,17 +51,26 @@ spec:
     - http:
         paths:
           - path: /reads
+            pathType: ImplementationSpecific
             backend:
-              serviceName: gnomad-reads-demo-{name}
-              servicePort: 80
+              service:
+                name: gnomad-reads-demo-{name}
+                port:
+                  number: 80
           - path: /reads/*
+            pathType: ImplementationSpecific
             backend:
-              serviceName: gnomad-reads-demo-{name}
-              servicePort: 80
+              service:
+                name: gnomad-reads-demo-{name}
+                port:
+                  number: 80
           - path:
+            pathType: ImplementationSpecific
             backend:
-              serviceName: gnomad-browser-demo-{name}
-              servicePort: 80
+              service:
+                name: gnomad-browser-demo-{name}
+                port:
+                  number: 80
 """
 
 
