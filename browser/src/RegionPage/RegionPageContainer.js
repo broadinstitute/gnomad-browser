@@ -10,7 +10,7 @@ import Query from '../Query'
 import RegionPage from './RegionPage'
 
 const query = `
-  query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $datasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+  query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       genes {
         gene_id
@@ -31,7 +31,7 @@ const query = `
           }
         }
       }
-      short_tandem_repeats(dataset: $datasetId) @include(if: $includeShortTandemRepeats) {
+      short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
         id
       }
     }
@@ -60,8 +60,8 @@ const RegionPageContainer = ({ datasetId, regionId }) => {
         start,
         stop,
         referenceGenome,
-        datasetId,
-        includeShortTandemRepeats: datasetId === 'gnomad_r3',
+        includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
+        shortTandemRepeatDatasetId: 'gnomad_r3',
       }}
       loadingMessage="Loading region"
       errorMessage="Unable to load region"
