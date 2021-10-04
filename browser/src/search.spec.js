@@ -91,4 +91,14 @@ describe('fetchSearchResults', () => {
       },
     ])
   })
+
+  it('should return a link to variant co-occurrence for two variant IDs', async () => {
+    expect(await fetchSearchResults('gnomad_r2_1', '1-55505647-G-T and 1-55523855-G-A')).toEqual([
+      {
+        label: '1-55505647-G-T and 1-55523855-G-A co-occurrence',
+        value:
+          '/variant-cooccurrence?dataset=gnomad_r2_1&variant=1-55505647-G-T&variant=1-55523855-G-A',
+      },
+    ])
+  })
 })

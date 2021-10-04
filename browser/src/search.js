@@ -161,6 +161,23 @@ export const fetchSearchResults = (dataset, query) => {
       })
   }
 
+  // ==============================================================================================
+  // Variant co-occurrence
+  // ==============================================================================================
+  if (/.+\s+AND\s+.+/.test(upperCaseQuery)) {
+    const parts = upperCaseQuery.split(/\s+AND\s+/, 2)
+    if (isVariantId(parts[0]) && isVariantId(parts[1])) {
+      const variantOneId = normalizeVariantId(parts[0])
+      const variantTwoId = normalizeVariantId(parts[1])
+      return Promise.resolve([
+        {
+          label: `${variantOneId} and ${variantTwoId} co-occurrence`,
+          value: `/variant-cooccurrence?dataset=${dataset}&variant=${variantOneId}&variant=${variantTwoId}`,
+        },
+      ])
+    }
+  }
+
   return Promise.resolve([])
 }
 
