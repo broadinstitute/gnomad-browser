@@ -92,12 +92,7 @@ export default withRouter(props => {
           fetchSearchResults={query => fetchSearchResults(searchDataset, query)}
           placeholder={placeholder}
           onSelect={url => {
-            const parsedUrl = queryString.parseUrl(url)
-            const nextParams = { dataset: searchDataset }
-            history.push({
-              pathname: parsedUrl.url,
-              search: queryString.stringify(nextParams),
-            })
+            history.push(url)
           }}
         />
       </span>
