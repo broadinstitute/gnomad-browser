@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GnomadHeading = props => (
+const GnomadLogo = props => (
   <svg {...props} viewBox="0 0 599.7 215.78">
     <title>gnomAD</title>
     <path
@@ -14,4 +14,4 @@ const GnomadHeading = props => (
   </svg>
 )
 
-export default GnomadHeading
+export default GnomadLogo
