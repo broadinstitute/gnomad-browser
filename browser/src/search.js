@@ -121,43 +121,47 @@ export const fetchSearchResults = (dataset, query) => {
   // Gene symbol
   // ==============================================================================================
 
-  return fetch('/api/', {
-    body: JSON.stringify({
-      query: `
-        query GeneSearch($query: String!, $referenceGenome: ReferenceGenomeId!) {
-          gene_search(query: $query, reference_genome: $referenceGenome) {
-            ensembl_id
-            symbol
+  if (/^[A-Z][A-Z0-9]*$/.test(upperCaseQuery)) {
+    return fetch('/api/', {
+      body: JSON.stringify({
+        query: `
+          query GeneSearch($query: String!, $referenceGenome: ReferenceGenomeId!) {
+            gene_search(query: $query, reference_genome: $referenceGenome) {
+              ensembl_id
+              symbol
+            }
           }
-        }
-      `,
-      variables: { query, referenceGenome: referenceGenomeForDataset(dataset) },
-    }),
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then(response => response.json())
-    .then(response => {
-      if (!response.data.gene_search) {
-        throw new Error('Unable to retrieve search results')
-      }
-
-      const genes = response.data.gene_search
-
-      const geneSymbolCounts = {}
-      genes.forEach(gene => {
-        if (geneSymbolCounts[gene.symbol] === undefined) {
-          geneSymbolCounts[gene.symbol] = 0
-        }
-        geneSymbolCounts[gene.symbol] += 1
-      })
-
-      return genes.map(gene => ({
-        label:
-          geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
-        value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
-      }))
+        `,
+        variables: { query, referenceGenome: referenceGenomeForDataset(dataset) },
+      }),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     })
+      .then(response => response.json())
+      .then(response => {
+        if (!response.data.gene_search) {
+          throw new Error('Unable to retrieve search results')
+        }
+
+        const genes = response.data.gene_search
+
+        const geneSymbolCounts = {}
+        genes.forEach(gene => {
+          if (geneSymbolCounts[gene.symbol] === undefined) {
+            geneSymbolCounts[gene.symbol] = 0
+          }
+          geneSymbolCounts[gene.symbol] += 1
+        })
+
+        return genes.map(gene => ({
+          label:
+            geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
+          value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
+        }))
+      })
+  }
+
+  return Promise.resolve([])
 }
 
 export const fetchVariantSearchResults = (datasetId, query) => {
