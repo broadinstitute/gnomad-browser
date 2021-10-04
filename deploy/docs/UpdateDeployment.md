@@ -2,7 +2,7 @@
 
 ## Updating browser deployment
 
-- Follow steps above to create a new browser deployment.
+- Follow steps to [create a new browser deployment](./NewDeployment.md#create-browser-deployment).
 
 - Switch over to the new deployment. This updates the `gnomad-browser` service's selector to point to the new deployment.
 
@@ -18,7 +18,7 @@
 
 ## Updating reads deployment
 
-- Follow steps above to create a new reads deployment.
+- Follow steps to [create a new reads deployment](./NewDeployment.md#create-reads-deployment).
 
 - Switch over to the new deployment. This updates the `gnomad-reads` service's selector to point to the new deployment.
 
