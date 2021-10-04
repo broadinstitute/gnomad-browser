@@ -103,10 +103,10 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 ### Create ingress
 
-- Create NodePort services for browser and reads, certificate, and Ingress.
+- Create NodePort services for browser and reads, Ingress, and FrontendConfig.
 
-  The SSL certificate can only be provisioned after DNS records for gnomad.broadinstitute.org are configured to
-  point to the load balancer's IP address.
+  The SSL certificate created by `deployctl setup` will only be provisioned after DNS records
+  for gnomad.broadinstitute.org are configured to point to the load balancer's IP address.
 
   See https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs for more information.
 
