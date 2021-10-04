@@ -12,5 +12,4 @@
 !browser/src
 !browser/webpack.config.js
 !dataset-metadata
-!deploy/dockerfiles/browser/browser-base.nginx.conf
 !deploy/dockerfiles/browser/browser.nginx.conf

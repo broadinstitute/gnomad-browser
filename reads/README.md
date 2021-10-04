@@ -83,6 +83,6 @@ tabix -p bed /path/to/gencode.bed.bgz
 
 - Add volume configuration to [reads deployment](../deploy/manifests/reads/base/reads.deployment.yaml)
 
-- Add location directives to [nginx configuration](../deploy/dockerfiles/reads/reads-base.nginx.conf).
+- Add location directives to [nginx configuration](../deploy/dockerfiles/reads/reads.nginx.conf).
 
 - Update API environment variables in [reads deployment](../deploy/manifests/reads/base/reads.deployment.yaml).
