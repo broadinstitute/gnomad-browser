@@ -8,12 +8,9 @@ import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import Link from './Link'
 import Searchbox from './Searchbox'
-import GnomadHeading from './GnomadHeading'
+import GnomadLogo from './GnomadLogo'
 
 const HomePage = styled(InfoPage)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   max-width: 740px;
   margin-top: 90px;
 `
@@ -23,10 +20,10 @@ const HeadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 `
 
-const SubHeading = styled.h2`
+const Heading = styled.h1`
   padding-top: 0;
   padding-bottom: 0;
   font-size: 1.2em;
@@ -39,73 +36,108 @@ export default () => (
   <HomePage>
     <DocumentTitle />
     <HeadingContainer>
-      <GnomadHeading width="60%" />
-      <SubHeading>genome aggregation database</SubHeading>
-      <Searchbox width="100%" />
-      <p>
-        Please note that gnomAD v2.1.1 and v3.1.1 have substantially different but overlapping
-        sample compositions and are on different genome builds. For more information, see{' '}
-        <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
-          &quot;Should I switch to the latest version of gnomAD?&quot;
-        </Link>
-      </p>
-      <figure style={{ margin: '1em 0' }}>
-        <figcaption>Examples</figcaption>
-        <List>
-          <ListItem>
-            Gene:{' '}
-            <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
-              PCSK9
-            </Link>
-          </ListItem>
-          <ListItem>
-            Transcript:{' '}
-            <Link preserveSelectedDataset={false} to="/transcript/ENST00000302118">
-              ENST00000302118
-            </Link>
-          </ListItem>
-          <ListItem>
-            gnomAD v2.1.1 variant:{' '}
-            <Link
-              preserveSelectedDataset={false}
-              to={{
-                pathname: '/variant/1-55516888-G-GA',
-                search: queryString.stringify({ dataset: 'gnomad_r2_1' }),
-              }}
-            >
-              1-55516888-G-GA
-            </Link>
-          </ListItem>
-          <ListItem>
-            gnomAD v3.1.1 variant:{' '}
-            <Link
-              preserveSelectedDataset={false}
-              to={{
-                pathname: '/variant/1-55051215-G-GA',
-                search: queryString.stringify({ dataset: 'gnomad_r3' }),
-              }}
-            >
-              1-55051215-G-GA
-            </Link>
-          </ListItem>
-          <ListItem>
-            Variant co-occurrence:{' '}
-            <Link
-              preserveSelectedDataset={false}
-              to={{
-                pathname: '/variant-cooccurrence',
-                search: queryString.stringify({
-                  dataset: 'gnomad_r2_1',
-                  variant: ['1-55505647-G-T', '1-55523855-G-A'],
-                }),
-              }}
-            >
-              1-55505647-G-T and 1-55523855-G-A
-            </Link>
-          </ListItem>
-        </List>
-      </figure>
+      <GnomadLogo width="60%" />
+      <Heading>Genome Aggregation Database</Heading>
     </HeadingContainer>
+
+    <Searchbox width="100%" />
+
+    <div
+      style={{
+        height: '1em',
+        borderBottom: '1px solid #666',
+        margin: '1em 0 2em',
+        textAlign: 'center',
+      }}
+    >
+      <span
+        style={{
+          position: 'relative',
+          top: '0.5em',
+          padding: '0 0.5em',
+          background: '#fafafa',
+        }}
+      >
+        Or
+      </span>
+    </div>
+
+    <List style={{ marginBottom: '2em' }}>
+      <ListItem>
+        <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
+      </ListItem>
+      <ListItem>
+        <Link to="/downloads">Download gnomAD data</Link>
+      </ListItem>
+      <ListItem>
+        <Link to="/publications">Read gnomAD publications</Link>
+      </ListItem>
+    </List>
+
+    <p>
+      Please note that gnomAD v2.1.1 and v3.1.1 have substantially different but overlapping sample
+      compositions and are on different genome builds. For more information, see{' '}
+      <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
+        &quot;Should I switch to the latest version of gnomAD?&quot;
+      </Link>
+    </p>
+
+    <h2 style={{ fontSize: '1em' }}>Examples</h2>
+    <List>
+      <ListItem>
+        Gene:{' '}
+        <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
+          PCSK9
+        </Link>
+      </ListItem>
+      <ListItem>
+        Transcript:{' '}
+        <Link preserveSelectedDataset={false} to="/transcript/ENST00000302118">
+          ENST00000302118
+        </Link>
+      </ListItem>
+      <ListItem>
+        gnomAD v2.1.1 variant:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/variant/1-55516888-G-GA',
+            search: queryString.stringify({ dataset: 'gnomad_r2_1' }),
+          }}
+        >
+          1-55516888-G-GA
+        </Link>
+      </ListItem>
+      <ListItem>
+        gnomAD v3.1.1 variant:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/variant/1-55051215-G-GA',
+            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+          }}
+        >
+          1-55051215-G-GA
+        </Link>
+      </ListItem>
+      <ListItem>
+        Variant co-occurrence:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/variant-cooccurrence',
+            search: queryString.stringify({
+              dataset: 'gnomad_r2_1',
+              variant: ['1-55505647-G-T', '1-55523855-G-A'],
+            }),
+          }}
+        >
+          1-55505647-G-T and 1-55523855-G-A
+        </Link>
+      </ListItem>
+    </List>
+
+    <h2>About gnomAD</h2>
 
     <p>
       The{' '}
