@@ -8,6 +8,8 @@ import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import { useWindowSize } from '../windowSize'
+
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
 import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
@@ -42,7 +44,7 @@ const RegionControlsWrapper = styled.div`
 `
 
 // eslint-disable-next-line no-shadow
-const RegionPage = ({ datasetId, region, width }) => {
+const RegionPage = ({ datasetId, region }) => {
   const { chrom, start, stop } = region
 
   const regionViewerRegions = [
@@ -54,10 +56,11 @@ const RegionPage = ({ datasetId, region, width }) => {
     },
   ]
 
-  const smallScreen = width < 900
+  const { width: windowWidth } = useWindowSize()
+  const isSmallScreen = windowWidth < 900
 
   // Subtract 30px for padding on Page component
-  const regionViewerWidth = width - 30
+  const regionViewerWidth = windowWidth - 30
 
   return (
     <TrackPage>
@@ -90,7 +93,7 @@ const RegionPage = ({ datasetId, region, width }) => {
         leftPanelWidth={115}
         padding={0}
         regions={regionViewerRegions}
-        rightPanelWidth={smallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
         {region.chrom === 'M' ? (
@@ -136,7 +139,6 @@ RegionPage.propTypes = {
     stop: PropTypes.number.isRequired,
     genes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default RegionPage

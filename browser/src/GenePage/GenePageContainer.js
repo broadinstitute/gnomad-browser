@@ -6,12 +6,9 @@ import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
-import { withWindowSize } from '../windowSize'
 
 import GeneNotFound from './GeneNotFound'
 import GenePage from './GenePage'
-
-const AutosizedGenePage = withWindowSize(GenePage)
 
 const query = `
 query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!) {
@@ -256,9 +253,7 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }) => {
           )
         }
 
-        return (
-          <AutosizedGenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
-        )
+        return <GenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
       }}
     </BaseQuery>
   )
