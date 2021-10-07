@@ -1,5 +1,5 @@
 import { symbol, symbolCircle, symbolCross, symbolDiamond, symbolTriangle } from 'd3-shape'
-import debounce from 'lodash.debounce'
+import { debounce } from 'lodash-es'
 import PropTypes from 'prop-types'
 import React, { useCallback, useMemo, useState } from 'react'
 

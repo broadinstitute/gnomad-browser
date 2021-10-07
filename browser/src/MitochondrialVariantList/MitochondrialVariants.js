@@ -1,4 +1,4 @@
-import throttle from 'lodash.throttle'
+import { throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
