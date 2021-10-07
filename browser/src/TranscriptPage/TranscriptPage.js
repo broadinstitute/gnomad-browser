@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { RegionViewer } from '@gnomad/region-viewer'
@@ -108,13 +107,6 @@ const transcriptFeatureAttributes = {
 
 const TranscriptPage = ({ datasetId, transcript, width }) => {
   const [includeUTRs, setIncludeUTRs] = useState(false)
-
-  const { gene } = transcript
-
-  // Cannot query structural variants by transcript, redirect to gene page
-  if (datasetId.startsWith('gnomad_sv')) {
-    return <Redirect to={`/gene/${gene.gene_id}?dataset=${datasetId}`} />
-  }
 
   const smallScreen = width < 900
 

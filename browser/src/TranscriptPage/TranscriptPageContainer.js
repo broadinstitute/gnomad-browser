@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
@@ -96,7 +97,14 @@ const TranscriptPageContainer = ({ datasetId, transcriptId }) => (
     success={data => data.transcript}
   >
     {({ data }) => {
-      return <AutosizedTranscriptPage datasetId={datasetId} transcript={data.transcript} />
+      const { transcript } = data
+
+      // Cannot query structural variants by transcript, redirect to gene page
+      if (datasetId.startsWith('gnomad_sv')) {
+        return <Redirect to={`/gene/${transcript.gene.gene_id}?dataset=${datasetId}`} />
+      }
+
+      return <AutosizedTranscriptPage datasetId={datasetId} transcript={transcript} />
     }}
   </Query>
 )
