@@ -1,7 +1,7 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { RegionViewer, Track } from '@gnomad/region-viewer'
@@ -153,307 +153,295 @@ const transcriptFeatureAttributes = {
   },
 }
 
-class GenePage extends Component {
-  static propTypes = {
-    datasetId: PropTypes.string.isRequired,
-    gene: PropTypes.shape({
-      gene_id: PropTypes.string.isRequired,
-      gene_version: PropTypes.string.isRequired,
-      reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
-      symbol: PropTypes.string.isRequired,
-      name: PropTypes.string,
-      chrom: PropTypes.string.isRequired,
-      strand: PropTypes.oneOf(['+', '-']).isRequired,
-      start: PropTypes.number.isRequired,
-      stop: PropTypes.number.isRequired,
-      exons: PropTypes.arrayOf(
-        PropTypes.shape({
-          feature_type: PropTypes.string.isRequired,
-          start: PropTypes.number.isRequired,
-          stop: PropTypes.number.isRequired,
-        })
-      ).isRequired,
-      transcripts: PropTypes.arrayOf(
-        PropTypes.shape({
-          transcript_id: PropTypes.string.isRequired,
-          transcript_version: PropTypes.string.isRequired,
-          exons: PropTypes.arrayOf(
-            PropTypes.shape({
-              feature_type: PropTypes.string.isRequired,
-              start: PropTypes.number.isRequired,
-              stop: PropTypes.number.isRequired,
-            })
-          ).isRequired,
-        })
-      ).isRequired,
-      canonical_transcript_id: PropTypes.string,
-      mane_select_transcript: PropTypes.shape({
-        ensembl_id: PropTypes.string.isRequired,
-        ensembl_version: PropTypes.string.isRequired,
-        refseq_id: PropTypes.string.isRequired,
-        refseq_version: PropTypes.string.isRequired,
-      }),
-      pext: PropTypes.shape({
-        regions: PropTypes.arrayOf(
-          PropTypes.shape({
-            start: PropTypes.number.isRequired,
-            stop: PropTypes.number.isRequired,
-            mean: PropTypes.number.isRequired,
-            tissues: PropTypes.objectOf(PropTypes.number).isRequired,
-          })
-        ).isRequired,
-        flags: PropTypes.arrayOf(PropTypes.string).isRequired,
-      }),
-      // eslint-disable-next-line react/forbid-prop-types
-      exac_regional_missense_constraint_regions: PropTypes.any,
-    }).isRequired,
-    geneId: PropTypes.string.isRequired,
-    width: PropTypes.number.isRequired,
-  }
+const GenePage = ({ datasetId, gene, geneId, width }) => {
+  const hasCDS = gene.exons.some(exon => exon.feature_type === 'CDS')
 
-  constructor(props) {
-    super(props)
+  const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
+  const [includeUTRs, setIncludeUTRs] = useState(false)
+  const [showTranscripts, setShowTranscripts] = useState(false)
 
-    const { gene } = props
-    const hasCDS = gene.exons.some(exon => exon.feature_type === 'CDS')
+  const smallScreen = width < 900
 
-    this.state = {
-      includeNonCodingTranscripts: !hasCDS,
-      includeUTRs: false,
-      showTranscripts: false,
-    }
-  }
+  // Subtract 30px for padding on Page component
+  const regionViewerWidth = width - 30
 
-  render() {
-    const { datasetId, gene, geneId, width } = this.props
-    const { includeUTRs, includeNonCodingTranscripts, showTranscripts } = this.state
+  const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
+  const hasCodingExons = cdsCompositeExons.length > 0
+  const hasUTRs = gene.exons.some(exon => exon.feature_type === 'UTR')
+  const hasNonCodingTranscripts = gene.transcripts.some(
+    tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
+  )
 
-    const smallScreen = width < 900
+  const regionViewerRegions = datasetId.startsWith('gnomad_sv')
+    ? [
+        {
+          feature_type: 'region',
+          chrom: gene.chrom,
+          start: gene.start,
+          stop: gene.stop,
+        },
+      ]
+    : gene.exons.filter(
+        exon =>
+          exon.feature_type === 'CDS' ||
+          (exon.feature_type === 'UTR' && includeUTRs) ||
+          (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+      )
 
-    // Subtract 30px for padding on Page component
-    const regionViewerWidth = width - 30
+  const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
-    const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
-    const hasCodingExons = cdsCompositeExons.length > 0
-    const hasUTRs = gene.exons.some(exon => exon.feature_type === 'UTR')
-    const hasNonCodingTranscripts = gene.transcripts.some(
-      tx => !tx.exons.some(exon => exon.feature_type === 'CDS')
-    )
+  return (
+    <TrackPage>
+      <TrackPageSection>
+        <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} />
+        <GnomadPageHeading
+          selectedDataset={datasetId}
+          datasetOptions={{
+            includeShortVariants: true,
+            includeStructuralVariants: gene.chrom !== 'M',
+            includeExac: gene.chrom !== 'M',
+            includeGnomad2: gene.chrom !== 'M',
+            includeGnomad3: true,
+            includeGnomad3Subsets: gene.chrom !== 'M',
+          }}
+        >
+          {gene.symbol} <GeneName>{gene.name}</GeneName>
+        </GnomadPageHeading>
+        <GeneInfoColumnWrapper>
+          <div style={{ maxWidth: '50%' }}>
+            <GeneInfo gene={gene} />
+            <GeneFlags gene={gene} />
+          </div>
+          <div>
+            <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
+            <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
+          </div>
+        </GeneInfoColumnWrapper>
+      </TrackPageSection>
+      <RegionViewer
+        leftPanelWidth={115}
+        width={regionViewerWidth}
+        padding={75}
+        regions={regionViewerRegions}
+        rightPanelWidth={smallScreen ? 0 : 80}
+      >
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {datasetId.startsWith('gnomad_sv') ? (
+          <RegionCoverageTrack
+            chrom={gene.chrom}
+            datasetId={datasetId}
+            includeExomeCoverage={false}
+            start={gene.start}
+            stop={gene.stop}
+          />
+        ) : gene.chrom === 'M' ? (
+          <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
+        ) : (
+          <GeneCoverageTrack
+            datasetId={datasetId}
+            geneId={geneId}
+            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+          />
+        )}
 
-    const regionViewerRegions = datasetId.startsWith('gnomad_sv')
-      ? [
-          {
-            feature_type: 'region',
-            chrom: gene.chrom,
-            start: gene.start,
-            stop: gene.stop,
-          },
-        ]
-      : gene.exons.filter(
-          exon =>
-            exon.feature_type === 'CDS' ||
-            (exon.feature_type === 'UTR' && includeUTRs) ||
-            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-        )
+        <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
+          Include:
+          <Legend>
+            <LegendItemWrapper>
+              <Label htmlFor="include-cds-regions">
+                <CheckboxInput
+                  checked={hasCodingExons}
+                  disabled
+                  id="include-cds-regions"
+                  onChange={() => {}}
+                />
+                Coding regions (CDS)
+                <LegendSwatch
+                  color={transcriptFeatureAttributes.CDS.fill}
+                  height={transcriptFeatureAttributes.CDS.height}
+                />
+              </Label>
+            </LegendItemWrapper>
 
-    const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
+            <LegendItemWrapper>
+              <Label htmlFor="include-utr-regions">
+                <CheckboxInput
+                  checked={includeUTRs}
+                  disabled={!hasUTRs}
+                  id="include-utr-regions"
+                  onChange={e => {
+                    setIncludeUTRs(e.target.checked)
+                  }}
+                />
+                Untranslated regions (UTRs)
+                <LegendSwatch
+                  color={transcriptFeatureAttributes.UTR.fill}
+                  height={transcriptFeatureAttributes.UTR.height}
+                />
+              </Label>
+            </LegendItemWrapper>
 
-    return (
-      <TrackPage>
-        <TrackPageSection>
-          <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} />
-          <GnomadPageHeading
-            selectedDataset={datasetId}
-            datasetOptions={{
-              includeShortVariants: true,
-              includeStructuralVariants: gene.chrom !== 'M',
-              includeExac: gene.chrom !== 'M',
-              includeGnomad2: gene.chrom !== 'M',
-              includeGnomad3: true,
-              includeGnomad3Subsets: gene.chrom !== 'M',
+            <LegendItemWrapper>
+              <Label htmlFor="include-nc-transcripts">
+                <CheckboxInput
+                  checked={includeNonCodingTranscripts}
+                  disabled={!hasNonCodingTranscripts || (!hasCodingExons && !hasUTRs)}
+                  id="include-nc-transcripts"
+                  onChange={e => {
+                    setIncludeNonCodingTranscripts(e.target.checked)
+                  }}
+                />
+                Non-coding transcripts
+                <LegendSwatch
+                  color={transcriptFeatureAttributes.exon.fill}
+                  height={transcriptFeatureAttributes.exon.height}
+                />
+              </Label>
+            </LegendItemWrapper>
+          </Legend>
+        </ControlPanel>
+
+        <TrackWrapper>
+          <Track
+            renderLeftPanel={() => {
+              return (
+                <ToggleTranscriptsPanel width={width}>
+                  <Button
+                    onClick={() => {
+                      setShowTranscripts(prevShowTranscripts => !prevShowTranscripts)
+                    }}
+                  >
+                    {showTranscripts ? 'Hide' : 'Show'} transcripts
+                  </Button>
+                  <img
+                    alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
+                    src={gene.strand === '-' ? LeftArrow : RightArrow}
+                    height={20}
+                    width={20}
+                  />
+                </ToggleTranscriptsPanel>
+              )
             }}
           >
-            {gene.symbol} <GeneName>{gene.name}</GeneName>
-          </GnomadPageHeading>
-          <GeneInfoColumnWrapper>
-            <div style={{ maxWidth: '50%' }}>
-              <GeneInfo gene={gene} />
-              <GeneFlags gene={gene} />
-            </div>
-            <div>
-              <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
-              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
-            </div>
-          </GeneInfoColumnWrapper>
-        </TrackPageSection>
-        <RegionViewer
-          leftPanelWidth={115}
-          width={regionViewerWidth}
-          padding={75}
-          regions={regionViewerRegions}
-          rightPanelWidth={smallScreen ? 0 : 80}
-        >
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {datasetId.startsWith('gnomad_sv') ? (
-            <RegionCoverageTrack
-              chrom={gene.chrom}
-              datasetId={datasetId}
-              includeExomeCoverage={false}
-              start={gene.start}
-              stop={gene.stop}
-            />
-          ) : gene.chrom === 'M' ? (
-            <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
-          ) : (
-            <GeneCoverageTrack
-              datasetId={datasetId}
-              geneId={geneId}
-              includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
-            />
-          )}
+            {({ scalePosition, width: trackWidth }) => (
+              <CompositeTranscriptPlotWrapper>
+                <TranscriptPlot
+                  height={20}
+                  scalePosition={scalePosition}
+                  showNonCodingExons={includeNonCodingTranscripts}
+                  showUTRs={includeUTRs}
+                  transcript={{ exons: gene.exons }}
+                  width={trackWidth}
+                />
+              </CompositeTranscriptPlotWrapper>
+            )}
+          </Track>
+        </TrackWrapper>
 
-          <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
-            Include:
-            <Legend>
-              <LegendItemWrapper>
-                <Label htmlFor="include-cds-regions">
-                  <CheckboxInput
-                    checked={hasCodingExons}
-                    disabled
-                    id="include-cds-regions"
-                    onChange={() => {}}
-                  />
-                  Coding regions (CDS)
-                  <LegendSwatch
-                    color={transcriptFeatureAttributes.CDS.fill}
-                    height={transcriptFeatureAttributes.CDS.height}
-                  />
-                </Label>
-              </LegendItemWrapper>
-
-              <LegendItemWrapper>
-                <Label htmlFor="include-utr-regions">
-                  <CheckboxInput
-                    checked={includeUTRs}
-                    disabled={!hasUTRs}
-                    id="include-utr-regions"
-                    onChange={e => {
-                      this.setState({ includeUTRs: e.target.checked })
-                    }}
-                  />
-                  Untranslated regions (UTRs)
-                  <LegendSwatch
-                    color={transcriptFeatureAttributes.UTR.fill}
-                    height={transcriptFeatureAttributes.UTR.height}
-                  />
-                </Label>
-              </LegendItemWrapper>
-
-              <LegendItemWrapper>
-                <Label htmlFor="include-nc-transcripts">
-                  <CheckboxInput
-                    checked={includeNonCodingTranscripts}
-                    disabled={!hasNonCodingTranscripts || (!hasCodingExons && !hasUTRs)}
-                    id="include-nc-transcripts"
-                    onChange={e => {
-                      this.setState({ includeNonCodingTranscripts: e.target.checked })
-                    }}
-                  />
-                  Non-coding transcripts
-                  <LegendSwatch
-                    color={transcriptFeatureAttributes.exon.fill}
-                    height={transcriptFeatureAttributes.exon.height}
-                  />
-                </Label>
-              </LegendItemWrapper>
-            </Legend>
-          </ControlPanel>
-
+        {showTranscripts && (
           <TrackWrapper>
-            <Track
-              renderLeftPanel={() => {
-                return (
-                  <ToggleTranscriptsPanel width={width}>
-                    <Button
-                      onClick={() => {
-                        this.setState(state => ({ showTranscripts: !state.showTranscripts }))
-                      }}
-                    >
-                      {showTranscripts ? 'Hide' : 'Show'} transcripts
-                    </Button>
-                    <img
-                      alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
-                      src={gene.strand === '-' ? LeftArrow : RightArrow}
-                      height={20}
-                      width={20}
-                    />
-                  </ToggleTranscriptsPanel>
-                )
-              }}
-            >
-              {({ scalePosition, width: trackWidth }) => (
-                <CompositeTranscriptPlotWrapper>
-                  <TranscriptPlot
-                    height={20}
-                    scalePosition={scalePosition}
-                    showNonCodingExons={includeNonCodingTranscripts}
-                    showUTRs={includeUTRs}
-                    transcript={{ exons: gene.exons }}
-                    width={trackWidth}
-                  />
-                </CompositeTranscriptPlotWrapper>
-              )}
-            </Track>
-          </TrackWrapper>
-
-          {showTranscripts && (
-            <TrackWrapper>
-              <GeneTranscriptsTrack
-                datasetId={datasetId}
-                gene={gene}
-                includeNonCodingTranscripts={includeNonCodingTranscripts}
-                includeUTRs={includeUTRs}
-                preferredTranscriptId={preferredTranscriptId}
-                preferredTranscriptDescription={preferredTranscriptDescription}
-              />
-            </TrackWrapper>
-          )}
-
-          {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
-            <TissueExpressionTrack
-              exons={cdsCompositeExons}
-              expressionRegions={gene.pext.regions}
-              flags={gene.pext.flags}
-              transcripts={gene.transcripts}
-              preferredTranscriptId={preferredTranscriptId}
-              preferredTranscriptDescription={preferredTranscriptDescription}
-            />
-          )}
-
-          {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
-            <RegionalConstraintTrack
-              height={15}
-              regions={gene.exac_regional_missense_constraint_regions}
-            />
-          )}
-
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {datasetId.startsWith('gnomad_sv') ? (
-            <StructuralVariantsInGene datasetId={datasetId} gene={gene} />
-          ) : gene.chrom === 'M' ? (
-            <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} />
-          ) : (
-            <VariantsInGene
+            <GeneTranscriptsTrack
               datasetId={datasetId}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
+              preferredTranscriptId={preferredTranscriptId}
+              preferredTranscriptDescription={preferredTranscriptDescription}
             />
-          )}
-        </RegionViewer>
-      </TrackPage>
-    )
-  }
+          </TrackWrapper>
+        )}
+
+        {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
+          <TissueExpressionTrack
+            exons={cdsCompositeExons}
+            expressionRegions={gene.pext.regions}
+            flags={gene.pext.flags}
+            transcripts={gene.transcripts}
+            preferredTranscriptId={preferredTranscriptId}
+            preferredTranscriptDescription={preferredTranscriptDescription}
+          />
+        )}
+
+        {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
+          <RegionalConstraintTrack
+            height={15}
+            regions={gene.exac_regional_missense_constraint_regions}
+          />
+        )}
+
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {datasetId.startsWith('gnomad_sv') ? (
+          <StructuralVariantsInGene datasetId={datasetId} gene={gene} />
+        ) : gene.chrom === 'M' ? (
+          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} />
+        ) : (
+          <VariantsInGene
+            datasetId={datasetId}
+            gene={gene}
+            includeNonCodingTranscripts={includeNonCodingTranscripts}
+            includeUTRs={includeUTRs}
+          />
+        )}
+      </RegionViewer>
+    </TrackPage>
+  )
+}
+
+GenePage.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  gene: PropTypes.shape({
+    gene_id: PropTypes.string.isRequired,
+    gene_version: PropTypes.string.isRequired,
+    reference_genome: PropTypes.oneOf(['GRCh37', 'GRCh38']).isRequired,
+    symbol: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    chrom: PropTypes.string.isRequired,
+    strand: PropTypes.oneOf(['+', '-']).isRequired,
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+    exons: PropTypes.arrayOf(
+      PropTypes.shape({
+        feature_type: PropTypes.string.isRequired,
+        start: PropTypes.number.isRequired,
+        stop: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+    transcripts: PropTypes.arrayOf(
+      PropTypes.shape({
+        transcript_id: PropTypes.string.isRequired,
+        transcript_version: PropTypes.string.isRequired,
+        exons: PropTypes.arrayOf(
+          PropTypes.shape({
+            feature_type: PropTypes.string.isRequired,
+            start: PropTypes.number.isRequired,
+            stop: PropTypes.number.isRequired,
+          })
+        ).isRequired,
+      })
+    ).isRequired,
+    canonical_transcript_id: PropTypes.string,
+    mane_select_transcript: PropTypes.shape({
+      ensembl_id: PropTypes.string.isRequired,
+      ensembl_version: PropTypes.string.isRequired,
+      refseq_id: PropTypes.string.isRequired,
+      refseq_version: PropTypes.string.isRequired,
+    }),
+    pext: PropTypes.shape({
+      regions: PropTypes.arrayOf(
+        PropTypes.shape({
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+          mean: PropTypes.number.isRequired,
+          tissues: PropTypes.objectOf(PropTypes.number).isRequired,
+        })
+      ).isRequired,
+      flags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }),
+    // eslint-disable-next-line react/forbid-prop-types
+    exac_regional_missense_constraint_regions: PropTypes.any,
+  }).isRequired,
+  geneId: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
 }
 
 export default GenePage
