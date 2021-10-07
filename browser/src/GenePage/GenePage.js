@@ -16,6 +16,7 @@ import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import { useWindowSize } from '../windowSize'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
@@ -153,17 +154,18 @@ const transcriptFeatureAttributes = {
   },
 }
 
-const GenePage = ({ datasetId, gene, geneId, width }) => {
+const GenePage = ({ datasetId, gene, geneId }) => {
   const hasCDS = gene.exons.some(exon => exon.feature_type === 'CDS')
 
   const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
   const [includeUTRs, setIncludeUTRs] = useState(false)
   const [showTranscripts, setShowTranscripts] = useState(false)
 
-  const smallScreen = width < 900
+  const { width: windowWidth } = useWindowSize()
+  const isSmallScreen = windowWidth < 900
 
   // Subtract 30px for padding on Page component
-  const regionViewerWidth = width - 30
+  const regionViewerWidth = windowWidth - 30
 
   const cdsCompositeExons = gene.exons.filter(exon => exon.feature_type === 'CDS')
   const hasCodingExons = cdsCompositeExons.length > 0
@@ -223,7 +225,7 @@ const GenePage = ({ datasetId, gene, geneId, width }) => {
         width={regionViewerWidth}
         padding={75}
         regions={regionViewerRegions}
-        rightPanelWidth={smallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : 80}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
@@ -244,7 +246,7 @@ const GenePage = ({ datasetId, gene, geneId, width }) => {
           />
         )}
 
-        <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
+        <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (isSmallScreen ? 0 : 80)}>
           Include:
           <Legend>
             <LegendItemWrapper>
@@ -305,7 +307,7 @@ const GenePage = ({ datasetId, gene, geneId, width }) => {
           <Track
             renderLeftPanel={() => {
               return (
-                <ToggleTranscriptsPanel width={width}>
+                <ToggleTranscriptsPanel>
                   <Button
                     onClick={() => {
                       setShowTranscripts(prevShowTranscripts => !prevShowTranscripts)
@@ -441,7 +443,6 @@ GenePage.propTypes = {
     exac_regional_missense_constraint_regions: PropTypes.any,
   }).isRequired,
   geneId: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default GenePage

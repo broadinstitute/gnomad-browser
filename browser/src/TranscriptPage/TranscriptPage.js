@@ -11,6 +11,7 @@ import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { TrackPage, TrackPageSection } from '../TrackPage'
+import { useWindowSize } from '../windowSize'
 
 import MitochondrialTranscriptCoverageTrack from './MitochondrialTranscriptCoverageTrack'
 import MitochondrialVariantsInTranscript from './MitochondrialVariantsInTranscript'
@@ -105,13 +106,14 @@ const transcriptFeatureAttributes = {
   },
 }
 
-const TranscriptPage = ({ datasetId, transcript, width }) => {
+const TranscriptPage = ({ datasetId, transcript }) => {
   const [includeUTRs, setIncludeUTRs] = useState(false)
 
-  const smallScreen = width < 900
+  const { width: windowWidth } = useWindowSize()
+  const isSmallScreen = windowWidth < 900
 
   // Subtract 30px for padding on Page component
-  const regionViewerWidth = width - 30
+  const regionViewerWidth = windowWidth - 30
 
   const cdsCompositeExons = transcript.exons.filter(exon => exon.feature_type === 'CDS')
   const hasCodingExons = cdsCompositeExons.length > 0
@@ -159,7 +161,7 @@ const TranscriptPage = ({ datasetId, transcript, width }) => {
         width={regionViewerWidth}
         padding={75}
         regions={regionViewerRegions}
-        rightPanelWidth={smallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : 80}
       >
         {transcript.chrom === 'M' ? (
           <MitochondrialTranscriptCoverageTrack
@@ -174,7 +176,7 @@ const TranscriptPage = ({ datasetId, transcript, width }) => {
           />
         )}
 
-        <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (smallScreen ? 0 : 160)}>
+        <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (isSmallScreen ? 0 : 80)}>
           Include:
           <Legend>
             <LegendItemWrapper>
@@ -287,7 +289,6 @@ TranscriptPage.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
-  width: PropTypes.number.isRequired,
 }
 
 export default TranscriptPage

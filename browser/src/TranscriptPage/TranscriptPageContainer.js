@@ -4,10 +4,7 @@ import { Redirect } from 'react-router-dom'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
-import { withWindowSize } from '../windowSize'
 import TranscriptPage from './TranscriptPage'
-
-const AutosizedTranscriptPage = withWindowSize(TranscriptPage)
 
 const query = `
 query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
@@ -104,7 +101,7 @@ const TranscriptPageContainer = ({ datasetId, transcriptId }) => (
         return <Redirect to={`/gene/${transcript.gene.gene_id}?dataset=${datasetId}`} />
       }
 
-      return <AutosizedTranscriptPage datasetId={datasetId} transcript={transcript} />
+      return <TranscriptPage datasetId={datasetId} transcript={transcript} />
     }}
   </Query>
 )

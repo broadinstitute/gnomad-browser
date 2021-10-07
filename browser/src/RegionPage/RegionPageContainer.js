@@ -7,10 +7,7 @@ import { Page, PageHeading } from '@gnomad/ui'
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
-import { withWindowSize } from '../windowSize'
 import RegionPage from './RegionPage'
-
-const AutosizedRegionPage = withWindowSize(RegionPage)
 
 const query = `
   query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
@@ -62,7 +59,7 @@ const RegionPageContainer = ({ datasetId, regionId }) => {
     >
       {({ data }) => {
         return (
-          <AutosizedRegionPage
+          <RegionPage
             datasetId={datasetId}
             region={{
               ...data.region,
