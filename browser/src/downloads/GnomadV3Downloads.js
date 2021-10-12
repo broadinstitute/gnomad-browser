@@ -85,6 +85,9 @@ export default () => (
         <ListItem>
           <Link href="#v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</Link>
         </ListItem>
+        <ListItem>
+          <Link href="#v3-ancestry-classification">Ancestry classification</Link>
+        </ListItem>
       </List>
     </section>
 
@@ -233,6 +236,30 @@ export default () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
             size="1 MiB"
             md5="45a91b22ddc3c1176c103d4afee080f5"
+            includeAzure={false}
+          />
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v3-ancestry-classification">Ancestry classification</SectionTitle>
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label="Principal component analysis (PCA) variant loadings"
+            path="/release/3.1/pca/gnomad.v3.1.pca_loadings.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="Random forest (RF) model"
+            path="/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>

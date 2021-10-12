@@ -179,6 +179,9 @@ export default () => (
           <Link href="#v2-linkage-disequilibrium">Linkage disequilibrium</Link>
         </ListItem>
         <ListItem>
+          <Link href="#v2-ancestry-classification">Ancestry classification</Link>
+        </ListItem>
+        <ListItem>
           <Link href="#v2-resources">Resources</Link>
         </ListItem>
       </List>
@@ -583,6 +586,30 @@ export default () => (
     <section>
       <SectionTitle id="v2-linkage-disequilibrium">Linkage disequilibrium</SectionTitle>
       <LDFiles />
+    </section>
+
+    <section>
+      <SectionTitle id="v2-ancestry-classification">Ancestry classification</SectionTitle>
+      <FileList>
+        <ListItem>
+          <GetUrlButtons
+            label="Principal component analysis (PCA) variant loadings"
+            path="/release/2.1/pca/gnomad.r2.1.pca_loadings.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="Random forest (RF) model"
+            path="/release/2.1/pca/gnomad.r2.1.RF_fit.pkl"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+      </FileList>
     </section>
 
     <section>
