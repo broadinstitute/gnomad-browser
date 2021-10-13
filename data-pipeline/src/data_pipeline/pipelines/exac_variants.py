@@ -24,6 +24,7 @@ pipeline.add_task(
     {
         "variants_path": pipeline.get_task("import_exac_vcf"),
         "exome_coverage_path": coverage_pipeline.get_output("exome_coverage"),
+        "caids_path": "gs://gnomad-browser-data-pipeline/caids/exac_caids.ht",
     },
 )
 
