@@ -113,15 +113,27 @@ pipeline.add_task(
 # Tissue expression
 ###############################################
 
+pipeline.add_download_task(
+    "download_gtex_v7_tpm_data",
+    "https://storage.googleapis.com/gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+    "/external_sources/gtex/v7/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+)
+
+pipeline.add_download_task(
+    "download_gtex_v7_sample_attributes",
+    "https://storage.googleapis.com/gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
+    "/external_sources/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
+)
+
 pipeline.add_task(
     "prepare_gtex_v7_expression_data",
     prepare_gtex_expression_data,
     "/gtex/gtex_v7_tissue_expression.ht",
     {
-        "transcript_tpms_path": "gs://gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
-        "sample_annotations_path": "gs://gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
-        "tmp_path": "/tmp",
+        "transcript_tpms_path": pipeline.get_task("download_gtex_v7_tpm_data"),
+        "sample_annotations_path": pipeline.get_task("download_gtex_v7_sample_attributes"),
     },
+    {"tmp_path": "/tmp"},
 )
 
 pipeline.add_task(
