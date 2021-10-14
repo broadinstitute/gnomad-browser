@@ -278,5 +278,5 @@ This dataset includes genomes from the Human Genome Diversity Project (HGDP) and
 ### Additional annotations found on the variant annotation HT:
 These annotations are not present on the dense MT because all LowQual variants and variants in centromeres and telomeres are filtered.
 
-AS_lowqual: Whether the variant falls below a low quality threshold and was excluded from the gnomAD dataset. We recommend filtering all such variants. This is similar to the GATK LowQual filter, but is allele-specific. GATK computes this annotation at the site level, which uses the least stringent prior for mixed sites.
-telomere_or_centromere: Whether the variant falls within a telomere or centromere region. These variants were excluded from the gnomAD dataset. We recommend filtering all such variants.
+* AS_lowqual: Whether the variant falls below a low quality threshold and was excluded from the gnomAD dataset. We recommend filtering all such variants. This is similar to the GATK LowQual filter, but is allele-specific. GATK computes this annotation at the site level, which uses the least stringent prior for mixed sites.
+* telomere_or_centromere: Whether the variant falls within a telomere or centromere region. These variants were excluded from the gnomAD dataset. We recommend filtering all such variants.
