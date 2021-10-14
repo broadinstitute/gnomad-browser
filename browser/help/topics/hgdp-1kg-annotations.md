@@ -243,7 +243,7 @@ This dataset includes genomes from the Human Genome Diversity Project (HGDP) and
   * mills: Indel is present in the Mills and Devine data.
   * monoallelic: All samples are homozygous alternate for the variant.
   * InbreedingCoeff: Inbreeding coefficient, the excess heterozygosity at a variant site, computed as 1 - (the number of heterozygous genotypes)/(the number of heterozygous genotypes expected under Hardy-Weinberg equilibrium).
-* vep: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://uswest.ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+* vep: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
 * vqsr: VQSR related variant annotations.
   * AS_VQSLOD: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
   * AS_culprit: Allele-specific worst-performing annotation in the VQSR Gaussian mixture model.
