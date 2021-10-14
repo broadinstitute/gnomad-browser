@@ -121,7 +121,7 @@ export const fetchSearchResults = (dataset, query) => {
   // Gene symbol
   // ==============================================================================================
 
-  if (/^[A-Z][A-Z0-9]*$/.test(upperCaseQuery)) {
+  if (/^[A-Z][A-Z0-9-]*$/.test(upperCaseQuery)) {
     return fetch('/api/', {
       body: JSON.stringify({
         query: `
