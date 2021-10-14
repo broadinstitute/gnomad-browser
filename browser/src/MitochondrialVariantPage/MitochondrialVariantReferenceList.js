@@ -52,6 +52,16 @@ const MitochondrialVariantReferenceList = ({ variant }) => {
       <ListItem>
         <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
+      {/* Show MitoVisualize links only for RNA gene variants */}
+      {(variant.transcript_consequences || []).some(
+        csq => csq.gene_symbol.startsWith('MT-T') || csq.gene_symbol.startsWith('MT-R')
+      ) && (
+        <ListItem>
+          <ExternalLink href={`https://www.mitovisualize.org/variant/${variant.variant_id}`}>
+            MitoVisualize
+          </ExternalLink>
+        </ListItem>
+      )}
       {variant.clinvar && (
         <ListItem>
           <ExternalLink
