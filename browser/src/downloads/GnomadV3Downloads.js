@@ -244,6 +244,15 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-ancestry-classification">Ancestry classification</SectionTitle>
+      <p>
+        For more information about these files, see our blog post on{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
+          using the gnomAD ancestry principal components analysis loadings and random forest
+          classifier on your dataset
+        </ExternalLink>
+        .
+      </p>
+
       <FileList>
         <ListItem>
           <GetUrlButtons
