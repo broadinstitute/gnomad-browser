@@ -1,4 +1,5 @@
 import datetime
+import re
 from functools import reduce
 
 import elasticsearch
@@ -133,15 +134,32 @@ def export_table_to_elasticsearch(
     }
 
     es_client = elasticsearch.Elasticsearch(host, port=9200, http_auth=auth)
+    cluster_name = es_client.cluster.health()["cluster_name"]
 
     index = f"{index}-{export_time.strftime('%Y-%m-%d--%H-%M')}"
 
     if es_client.indices.exists(index=index):
         es_client.indices.delete(index=index)
 
-    # TODO: Automatically set shard allocation based on available nodes.
-    # If temporary ingest nodes are present, use them. Otherwise, use existing permanent data nodes.
     es_client.indices.create(index=index, body=request_body)
+
+    # Automatically set shard allocation based on available nodes.
+    # If temporary ingest nodes are present, use them. Otherwise, use existing permanent data nodes.
+    nodes = es_client.cat.nodes(format="json", h="name")
+    node_names = [node["name"] for node in nodes]
+    node_sets = set(re.sub(r"-[0-9]+$", "", node_name[len(f"{cluster_name}-es-") :]) for node_name in node_names)
+
+    if "ingest" in node_sets:
+        es_client.indices.put_settings(
+            index=index, body={"index.routing.allocation.require._name": f"{cluster_name}-es-ingest-*"}
+        )
+    else:
+        data_node_sets = [node_set for node_set in node_sets if node_set.startswith("data-")]
+        if len(data_node_sets) == 1:
+            es_client.indices.put_settings(
+                index=index,
+                body={"index.routing.allocation.require._name": f"{cluster_name}-es-{data_node_sets[0]}-*"},
+            )
 
     elasticsearch_config = {"es.write.operation": "index"}
 
