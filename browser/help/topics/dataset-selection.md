@@ -7,14 +7,14 @@ The data selection drop-down specifies which dataset is displayed on the page. C
 
 ### Short variants
 
-#### gnomAD v3.1.1
+#### gnomAD v3.1.2
 
-+ gnomAD v3.1.1
-+ gnomAD v3.1.1 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study.
-+ gnomAD v3.1.1 (non-neuro): Only samples that were not collected as part of a neurologic or psychiatric case/control study, or samples collected as part of a neurologic or psychiatric case/control study but designated as controls.
-+ gnomAD v3.1.1 (non-v2): Only samples that are new to the v3 or v3.1 release and not included in gnomAD v2.
-+ gnomAD v3.1.1 (non-TOPMed): Only samples that are not present in the Trans-Omics for Precision Medicine (TOPMed)/BRAVO release. The allele counts in this subset can thus be added to those of BRAVO to enable federated use of both datasets.
-+ gnomAD v3.1.1 (controls/biobanks): Only samples collected specifically as controls for disease studies, or samples belonging to biobanks (e.g. BioMe, Genizon)  or general population studies (e.g., 1000 Genomes, HGDP, PAGE).
++ gnomAD v3.1.2
++ gnomAD v3.1.2 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study.
++ gnomAD v3.1.2 (non-neuro): Only samples that were not collected as part of a neurologic or psychiatric case/control study, or samples collected as part of a neurologic or psychiatric case/control study but designated as controls.
++ gnomAD v3.1.2 (non-v2): Only samples that are new to the v3 or v3.1 release and not included in gnomAD v2.
++ gnomAD v3.1.2 (non-TOPMed): Only samples that are not present in the Trans-Omics for Precision Medicine (TOPMed)/BRAVO release. The allele counts in this subset can thus be added to those of BRAVO to enable federated use of both datasets.
++ gnomAD v3.1.2 (controls/biobanks): Only samples collected specifically as controls for disease studies, or samples belonging to biobanks (e.g. BioMe, Genizon)  or general population studies (e.g., 1000 Genomes, HGDP, PAGE).
 
 #### gnomAD v2.1.1
 
