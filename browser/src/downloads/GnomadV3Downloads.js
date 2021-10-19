@@ -111,7 +111,6 @@ export default () => (
           <GetUrlButtons
             label="Sites Hail Table"
             path="/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"
-            includeAzure={false}
           />
         </ListItem>
         {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -121,8 +120,6 @@ export default () => (
               path={`/release/3.1.1/vcf/genomes/gnomad.genomes.v3.1.1.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         ))}
@@ -172,7 +169,6 @@ export default () => (
           <GetUrlButtons
             label="Hail MatrixTable"
             path="/release/3.1/mt/genomes/gnomad.genomes.v3.1.hgdp_1kg_subset_dense.mt"
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
@@ -207,9 +203,8 @@ export default () => (
         <ListItem>
           <GetUrlButtons
             label="chrM sites Hail Table"
-            gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht"
-            includeAzure={false}
+            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
         <ListItem>
@@ -219,15 +214,13 @@ export default () => (
             size="4.77 MiB"
             md5="fbdf6807628c13b5379b359f12a39c61"
             includeGCP={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
             label="chrM coverage Hail Table"
-            gcsBucket="gnomad-public-requester-pays"
             path="/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
-            includeAzure={false}
+            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
         <ListItem>
@@ -236,7 +229,6 @@ export default () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv"
             size="1 MiB"
             md5="45a91b22ddc3c1176c103d4afee080f5"
-            includeAzure={false}
           />
         </ListItem>
       </FileList>

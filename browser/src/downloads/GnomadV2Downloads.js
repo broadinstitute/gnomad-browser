@@ -537,14 +537,12 @@ export default () => (
           <GenericDownloadLinks
             label="Haploinsufficient genes LoF curation results"
             path="/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv"
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GenericDownloadLinks
             label="Metabolic conditions genes LoF curation results"
             path="/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv"
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
@@ -576,8 +574,6 @@ export default () => (
             label="Variant co-occurrence Hail Table"
             path="/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
       </FileList>
