@@ -91,11 +91,28 @@ const renderDownloadOptions = elements => {
     .slice(1)
 }
 
-export const GetUrlButtons = ({ gcsBucket, label, path, includeGCP, includeAWS, includeAzure }) => {
+export const GetUrlButtons = ({
+  gcsBucket,
+  label,
+  path,
+  size,
+  md5,
+  includeGCP,
+  includeAWS,
+  includeAzure,
+}) => {
   return (
     <>
       <span>{label}</span>
       <br />
+      {size && md5 && (
+        <>
+          <span>
+            {size}, MD5:&nbsp;{md5}
+          </span>
+          <br />
+        </>
+      )}
       Show URL for{' '}
       {renderDownloadOptions([
         includeGCP && (
@@ -180,6 +197,8 @@ GetUrlButtons.propTypes = {
   gcsBucket: PropTypes.string,
   label: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  md5: PropTypes.string,
   includeGCP: PropTypes.bool,
   includeAWS: PropTypes.bool,
   includeAzure: PropTypes.bool,
@@ -187,6 +206,8 @@ GetUrlButtons.propTypes = {
 
 GetUrlButtons.defaultProps = {
   gcsBucket: 'gcp-public-data--gnomad',
+  size: undefined,
+  md5: undefined,
   includeGCP: true,
   includeAWS: true,
   includeAzure: true,
