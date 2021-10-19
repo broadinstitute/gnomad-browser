@@ -11,6 +11,8 @@ def import_mane_select_transcripts(path):
 
     ds = ds.annotate_globals(version=version)
 
+    ds = ds.filter(ds.MANE_status == "MANE Select")
+
     ds = ds.select(
         gene_id=ds.Ensembl_Gene.split("\\.")[0],
         matched_gene_version=ds.Ensembl_Gene.split("\\.")[1],

@@ -71,21 +71,19 @@ pipeline.add_task(
 
 # Note: MANE Select transcripts are used to sort variant transcript consequences.
 # Updating this file without reloading variants may result in an unexpected order of transcript consequences for some variants.
-MANE_SELECT_TRANSCRIPTS_URL = (
+MANE_TRANSCRIPTS_URL = (
     "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.95/MANE.GRCh38.v0.95.summary.txt.gz"
 )
 
 pipeline.add_download_task(
-    "download_mane_select_transcripts",
-    MANE_SELECT_TRANSCRIPTS_URL,
-    "/external_sources/" + MANE_SELECT_TRANSCRIPTS_URL.split("/")[-1],
+    "download_mane_transcripts", MANE_TRANSCRIPTS_URL, "/external_sources/" + MANE_TRANSCRIPTS_URL.split("/")[-1],
 )
 
 pipeline.add_task(
     "import_mane_select_transcripts",
     import_mane_select_transcripts,
     "/genes/mane_select_transcripts.ht",
-    {"path": pipeline.get_task("download_mane_select_transcripts")},
+    {"path": pipeline.get_task("download_mane_transcripts")},
 )
 
 ###############################################
