@@ -1,4 +1,5 @@
 import datetime
+import json
 import re
 from functools import reduce
 
@@ -81,10 +82,6 @@ def elasticsearch_mapping_for_table(table, disable_fields=None, override_types=N
     return mapping
 
 
-def struct_to_dict(struct):
-    return {k: dict(struct_to_dict(v)) if isinstance(v, hl.utils.Struct) else v for k, v in struct.items()}
-
-
 def get_index_fields(table, index_fields):
     def _get_index_field(field):
         field_expr = reduce(getattr, field.split("."), table)
@@ -113,7 +110,7 @@ def export_table_to_elasticsearch(
     else:
         mapping = elasticsearch_mapping_for_table(table)
 
-    mapping["_meta"] = struct_to_dict(hl.eval(table.globals))
+    mapping["_meta"] = json.loads(hl.eval(hl.json(table.globals)))
 
     # Hard code type name for all indices
     # TODO: Mapping types are removed in ES 7
