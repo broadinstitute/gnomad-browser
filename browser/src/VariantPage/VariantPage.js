@@ -200,6 +200,9 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
         popmax
         popmax_population
       }
+      coverage {
+        mean
+      }
       filters
       populations {
         id
@@ -273,6 +276,9 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
       faf95 {
         popmax
         popmax_population
+      }
+      coverage {
+        mean
       }
       filters
       populations {

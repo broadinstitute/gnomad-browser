@@ -11,6 +11,13 @@ module.exports = {
     rsids: (obj) => (obj.rsids || []).filter((rsid) => rsid !== null),
   },
   VariantDetails: {
+    // Add coverage to exome/genome fields.
+    exome: (variant) => {
+      return variant.exome ? { ...variant.exome, coverage: variant.coverage.exome } : null
+    },
+    genome: (variant) => {
+      return variant.genome ? { ...variant.genome, coverage: variant.coverage.genome } : null
+    },
     // Workaround for #743 (https://github.com/broadinstitute/gnomad-browser/issues/743)
     // gnomAD v2/ExAC variants with no rsID have a set containing null in the rsids field.
     rsids: (obj) => (obj.rsids || []).filter((rsid) => rsid !== null),

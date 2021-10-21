@@ -152,6 +152,9 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
   const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
   const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
 
+  const exomeCoverage = isPresentInExome ? (variant.exome.coverage || {}).mean : undefined
+  const genomeCoverage = isPresentInGenome ? (variant.genome.coverage || {}).mean : undefined
+
   // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
   // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
   const datasetSampleCounts = sampleCounts[datasetId]
@@ -297,6 +300,21 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
               {showTotal && <td>{totalHemizygoteCount}</td>}
             </tr>
           )}
+          <tr>
+            <th scope="row">Mean depth of coverage</th>
+            {showExomes && (
+              <td>
+                {isPresentInExome && (exomeCoverage !== undefined ? exomeCoverage.toFixed(1) : '–')}
+              </td>
+            )}
+            {showGenomes && (
+              <td>
+                {isPresentInGenome &&
+                  (genomeCoverage !== undefined ? genomeCoverage.toFixed(1) : '–')}
+              </td>
+            )}
+            {showTotal && <td />}
+          </tr>
         </tbody>
       </Table>
       {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && (
@@ -336,6 +354,9 @@ GnomadVariantOccurrenceTable.propTypes = {
       an: PropTypes.number.isRequired,
       ac_hom: PropTypes.number.isRequired,
       ac_hemi: PropTypes.number,
+      coverage: PropTypes.shape({
+        mean: PropTypes.number,
+      }),
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
@@ -351,6 +372,9 @@ GnomadVariantOccurrenceTable.propTypes = {
       an: PropTypes.number.isRequired,
       ac_hom: PropTypes.number.isRequired,
       ac_hemi: PropTypes.number,
+      coverage: PropTypes.shape({
+        mean: PropTypes.number,
+      }),
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
