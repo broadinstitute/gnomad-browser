@@ -87,7 +87,7 @@ const limitedElastic = {
         throw new Error('Elasticsearch search timed out')
       }
       // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.failed > 0) {
+      if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch search partially failed')
       }
       return response
@@ -98,7 +98,7 @@ const limitedElastic = {
         throw new Error('Elasticsearch scroll timed out')
       }
       // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.failed > 0) {
+      if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch scroll partially failed')
       }
       return response
@@ -106,7 +106,7 @@ const limitedElastic = {
   count: (...args) =>
     scheduleElasticsearchRequest(() => elastic.count(...args)).then((response) => {
       // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.failed > 0) {
+      if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch count partially failed')
       }
       return response
