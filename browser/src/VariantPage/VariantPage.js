@@ -183,6 +183,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     pos
     ref
     alt
+    caid
     colocated_variants
     multi_nucleotide_variants {
       combined_variant_id

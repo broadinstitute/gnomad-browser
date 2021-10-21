@@ -50,6 +50,15 @@ export const ReferenceList = ({ variant }) => {
           </ExternalLink>
         </ListItem>
       )}
+      {variant.caid && (
+        <ListItem>
+          <ExternalLink
+            href={`https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=${variant.caid}`}
+          >
+            ClinGen Allele Registry ({variant.caid})
+          </ExternalLink>
+        </ListItem>
+      )}
     </List>
   )
 }
@@ -61,6 +70,7 @@ ReferenceList.propTypes = {
     chrom: PropTypes.string.isRequired,
     pos: PropTypes.number.isRequired,
     ref: PropTypes.string.isRequired,
+    caid: PropTypes.string,
     rsids: PropTypes.arrayOf(PropTypes.string),
     clinvar: PropTypes.shape({
       clinvar_variation_id: PropTypes.string.isRequired,

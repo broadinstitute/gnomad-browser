@@ -194,6 +194,7 @@ type VariantDetails {
   pos: Int!
   ref: String!
   alt: String!
+  caid: String
   rsids: [String!]
   colocated_variants: [String!]!
   lof_curations: [LoFCuration!]
