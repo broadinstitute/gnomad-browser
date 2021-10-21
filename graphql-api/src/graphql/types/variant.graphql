@@ -150,6 +150,20 @@ type Variant {
   hgvs: String
 }
 
+type Coverage {
+  mean: Float
+  median: Float
+  over_1: Float
+  over_5: Float
+  over_10: Float
+  over_15: Float
+  over_20: Float
+  over_25: Float
+  over_30: Float
+  over_50: Float
+  over_100: Float
+}
+
 type VariantDetailsSequencingTypeData {
   ac: Int
   an: Int
@@ -157,6 +171,7 @@ type VariantDetailsSequencingTypeData {
   hemizygote_count: Int
   faf95: VariantFilteringAlleleFrequency
   faf99: VariantFilteringAlleleFrequency
+  coverage: Coverage
   filters: [String!]
   populations: [VariantPopulation]
   age_distribution: VariantAgeDistribution
