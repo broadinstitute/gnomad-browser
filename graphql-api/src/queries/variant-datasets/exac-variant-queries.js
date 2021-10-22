@@ -160,6 +160,7 @@ const fetchVariantsByGene = async (esClient, gene) => {
     _source: [
       'value.exome',
       'value.alt',
+      'value.caid',
       'value.chrom',
       'value.flags',
       'value.pos',
@@ -209,6 +210,7 @@ const fetchVariantsByRegion = async (esClient, region) => {
     _source: [
       'value.exome',
       'value.alt',
+      'value.caid',
       'value.chrom',
       'value.flags',
       'value.pos',
@@ -298,6 +300,7 @@ const fetchVariantsByTranscript = async (esClient, transcript) => {
     _source: [
       'value.exome',
       'value.alt',
+      'value.caid',
       'value.chrom',
       'value.flags',
       'value.pos',
