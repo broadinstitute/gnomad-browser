@@ -160,8 +160,35 @@ export default () => (
       <FileList>
         <ListItem>
           <GetUrlButtons
-            label="Hail MatrixTable"
+            label="Dense Hail MatrixTable"
             path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_dense.mt"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="Sparse Hail MatrixTable"
+            path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sparse.mt"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="Variant annotations Hail Table"
+            path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_variant_annotations.ht"
+            gcsBucket="gnomad-public-requester-pays"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GetUrlButtons
+            label="Sample metadata Hail Table"
+            path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.ht"
             gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
