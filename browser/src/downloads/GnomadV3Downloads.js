@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
 
 import {
   FileList,
@@ -93,6 +93,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-variants">Variants</SectionTitle>
+      <p>
+        <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
+          gnomAD v3.1.2 blog post
+        </ExternalLink>
+        .
+      </p>
       <p>
         The variant dataset files below contain all subsets (non-cancer, non-neuro, non-v2,
         non-TOPMed, controls/biobanks, 1KG, and HGDP).
