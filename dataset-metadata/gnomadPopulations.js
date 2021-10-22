@@ -1,5 +1,5 @@
 const GNOMAD_POPULATION_NAMES = {
-  afr: 'African/African-American',
+  afr: 'African/African American',
   ami: 'Amish',
   amr: 'Latino/Admixed American',
   asj: 'Ashkenazi Jewish',

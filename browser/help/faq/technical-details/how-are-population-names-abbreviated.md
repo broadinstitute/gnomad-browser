@@ -4,7 +4,7 @@ question: 'How are population names abbreviated?'
 
 Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
 
-- afr: African/African-American
+- afr: African/African American
 - ami: Amish
 - amr: Latino/Admixed American
 - asj: Ashkenazi Jewish
