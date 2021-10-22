@@ -164,6 +164,11 @@ type Coverage {
   over_100: Float
 }
 
+type VariantCoverage {
+  exome: Coverage
+  genome: Coverage
+}
+
 type VariantDetailsSequencingTypeData {
   ac: Int
   an: Int
@@ -212,6 +217,7 @@ type VariantDetails {
   caid: String
   rsids: [String!]
   colocated_variants: [String!]!
+  coverage: VariantCoverage!
   lof_curations: [LoFCuration!]
   multi_nucleotide_variants: [MultiNucleotideVariantSummary!]
   exome: VariantDetailsSequencingTypeData
