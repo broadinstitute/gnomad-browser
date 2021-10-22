@@ -142,7 +142,7 @@ def export_table_to_elasticsearch(
 
     # Automatically set shard allocation based on available nodes.
     # If temporary ingest nodes are present, use them. Otherwise, use existing permanent data nodes.
-    nodes = es_client.cat.nodes(format="json", h="name")
+    nodes = es_client.cat.nodes(format="json", h="name")  # pylint: disable=unexpected-keyword-arg
     node_names = [node["name"] for node in nodes]
     node_sets = set(re.sub(r"-[0-9]+$", "", node_name[len(f"{cluster_name}-es-") :]) for node_name in node_names)
 
