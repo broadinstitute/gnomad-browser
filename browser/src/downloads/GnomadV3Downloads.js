@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, Link as StyledLink, List, ListItem } from '@gnomad/ui'
+
+import Link from '../Link'
 
 import {
   FileList,
@@ -74,19 +76,19 @@ export default () => (
       <h2>Summary</h2>
       <List>
         <ListItem>
-          <Link href="#v3-variants">Variants</Link>
+          <StyledLink href="#v3-variants">Variants</StyledLink>
         </ListItem>
         <ListItem>
-          <Link href="#v3-coverage">Coverage</Link>
+          <StyledLink href="#v3-coverage">Coverage</StyledLink>
         </ListItem>
         <ListItem>
-          <Link href="#v3-hgdp-1kg">HGDP + 1KG callset</Link>
+          <StyledLink href="#v3-hgdp-1kg">HGDP + 1KG callset</StyledLink>
         </ListItem>
         <ListItem>
-          <Link href="#v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</Link>
+          <StyledLink href="#v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</StyledLink>
         </ListItem>
         <ListItem>
-          <Link href="#v3-ancestry-classification">Ancestry classification</Link>
+          <StyledLink href="#v3-ancestry-classification">Ancestry classification</StyledLink>
         </ListItem>
       </List>
     </section>
@@ -155,12 +157,16 @@ export default () => (
     <section>
       <SectionTitle id="v3-hgdp-1kg">HGDP + 1KG callset</SectionTitle>
       <p>
-        These files contain individual genotypes for all samples in the HGDP and 1KG subsets. See
-        the{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#the-gnomad-hgdp-and-1000-genomes-callset">
-          gnomAD v3.1 blog post
+        These files contain individual genotypes for all samples in the HGDP and 1KG subsets. For
+        more information, see the{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
+          gnomAD v3.1.2 blog post
         </ExternalLink>{' '}
-        for more information.
+        and the{' '}
+        <Link to="/help/hgdp-1kg-annotations">
+          HGDP + 1KG dense MatrixTable annotation descriptions
+        </Link>
+        .
       </p>
 
       <h3>Genomes</h3>
