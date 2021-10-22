@@ -176,7 +176,6 @@ type VariantDetailsSequencingTypeData {
   hemizygote_count: Int
   faf95: VariantFilteringAlleleFrequency
   faf99: VariantFilteringAlleleFrequency
-  coverage: Coverage
   filters: [String!]
   populations: [VariantPopulation]
   age_distribution: VariantAgeDistribution
