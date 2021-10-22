@@ -36,6 +36,8 @@ const ExacVariantOccurrenceTable = ({ variant }) => {
   // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
   const hasLowAlleleNumber = variant.exome.an < sampleCounts.exac.total
 
+  const coverage = (variant.coverage.exome || { mean: null }).mean
+
   return (
     <div>
       <Table>
@@ -83,6 +85,10 @@ const ExacVariantOccurrenceTable = ({ variant }) => {
               <td>{variant.exome.ac_hemi}</td>
             </tr>
           )}
+          <tr>
+            <th scope="row">Mean depth of coverage</th>
+            <td>{coverage !== null ? coverage.toFixed(1) : '–'}</td>
+          </tr>
         </tbody>
       </Table>
       {hasLowAlleleNumber && (
@@ -98,6 +104,11 @@ const ExacVariantOccurrenceTable = ({ variant }) => {
 ExacVariantOccurrenceTable.propTypes = {
   variant: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
+    coverage: PropTypes.shape({
+      exome: PropTypes.shape({
+        mean: PropTypes.number,
+      }),
+    }).isRequired,
     exome: PropTypes.shape({
       filters: PropTypes.arrayOf(PropTypes.string).isRequired,
       ac: PropTypes.number.isRequired,

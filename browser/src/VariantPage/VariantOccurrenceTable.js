@@ -152,8 +152,8 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
   const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
   const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
 
-  const exomeCoverage = isPresentInExome ? (variant.exome.coverage || {}).mean : undefined
-  const genomeCoverage = isPresentInGenome ? (variant.genome.coverage || {}).mean : undefined
+  const exomeCoverage = (variant.coverage.exome || { mean: null }).mean
+  const genomeCoverage = (variant.coverage.genome || { mean: null }).mean
 
   // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
   // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
@@ -302,17 +302,8 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
           )}
           <tr>
             <th scope="row">Mean depth of coverage</th>
-            {showExomes && (
-              <td>
-                {isPresentInExome && (exomeCoverage !== undefined ? exomeCoverage.toFixed(1) : '–')}
-              </td>
-            )}
-            {showGenomes && (
-              <td>
-                {isPresentInGenome &&
-                  (genomeCoverage !== undefined ? genomeCoverage.toFixed(1) : '–')}
-              </td>
-            )}
+            {showExomes && <td>{exomeCoverage !== null ? exomeCoverage.toFixed(1) : '–'}</td>}
+            {showGenomes && <td>{genomeCoverage !== null ? genomeCoverage.toFixed(1) : '–'}</td>}
             {showTotal && <td />}
           </tr>
         </tbody>
@@ -349,14 +340,19 @@ GnomadVariantOccurrenceTable.propTypes = {
   showGenomes: PropTypes.bool,
   variant: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
+    coverage: PropTypes.shape({
+      exome: PropTypes.shape({
+        mean: PropTypes.number,
+      }),
+      genome: PropTypes.shape({
+        mean: PropTypes.number,
+      }),
+    }).isRequired,
     exome: PropTypes.shape({
       ac: PropTypes.number.isRequired,
       an: PropTypes.number.isRequired,
       ac_hom: PropTypes.number.isRequired,
       ac_hemi: PropTypes.number,
-      coverage: PropTypes.shape({
-        mean: PropTypes.number,
-      }),
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,
@@ -372,9 +368,6 @@ GnomadVariantOccurrenceTable.propTypes = {
       an: PropTypes.number.isRequired,
       ac_hom: PropTypes.number.isRequired,
       ac_hemi: PropTypes.number,
-      coverage: PropTypes.shape({
-        mean: PropTypes.number,
-      }),
       faf95: PropTypes.shape({
         popmax: PropTypes.number,
         popmax_population: PropTypes.string,

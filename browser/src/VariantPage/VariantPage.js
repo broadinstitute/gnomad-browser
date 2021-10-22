@@ -185,6 +185,14 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
     alt
     caid
     colocated_variants
+    coverage {
+      exome {
+        mean
+      }
+      genome {
+        mean
+      }
+    }
     multi_nucleotide_variants {
       combined_variant_id
       changes_amino_acids
@@ -199,9 +207,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
       faf95 {
         popmax
         popmax_population
-      }
-      coverage {
-        mean
       }
       filters
       populations {
@@ -276,9 +281,6 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
       faf95 {
         popmax
         popmax_population
-      }
-      coverage {
-        mean
       }
       filters
       populations {
