@@ -4,11 +4,18 @@ type ShortTandemRepeatGene {
   region: String!
 }
 
+type ShortTandemRepeatAssociatedDiseaseRepeatSizeClassification {
+  classification: String!
+  min: Int
+  max: Int
+}
+
 type ShortTandemRepeatAssociatedDisease {
   name: String!
+  symbol: String!
   omim_id: String
-  normal_threshold: Int
-  pathogenic_threshold: Int
+  inheritance_mode: String!
+  repeat_size_classifications: [ShortTandemRepeatAssociatedDiseaseRepeatSizeClassification!]!
 }
 
 type ShortTandemRepeatReferenceRegion {
@@ -69,8 +76,7 @@ type ShortTandemRepeatAdjacentRepeat {
 type ShortTandemRepeat {
   id: String!
   gene: ShortTandemRepeatGene!
-  inheritance_mode: String!
-  associated_disease: ShortTandemRepeatAssociatedDisease!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
   stripy_id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!
@@ -79,8 +85,7 @@ type ShortTandemRepeat {
 type ShortTandemRepeatDetails {
   id: String!
   gene: ShortTandemRepeatGene!
-  inheritance_mode: String!
-  associated_disease: ShortTandemRepeatAssociatedDisease!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
   stripy_id: String
   reference_region: ShortTandemRepeatReferenceRegion!
   reference_repeat_unit: String!

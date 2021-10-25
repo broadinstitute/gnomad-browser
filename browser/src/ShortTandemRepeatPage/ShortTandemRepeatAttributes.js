@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { ExternalLink } from '@gnomad/ui'
-
 import AttributeList from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
@@ -102,30 +100,6 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
         </Link>
       </AttributeList.Item>
       <ShortTandemRepeatRepeatUnits shortTandemRepeat={shortTandemRepeat} />
-      <AttributeList.Item label="Inheritance mode">
-        {shortTandemRepeat.inheritance_mode}
-      </AttributeList.Item>
-      <AttributeList.Item label="Associated disease">
-        {shortTandemRepeat.associated_disease.omim_id ? (
-          <ExternalLink
-            href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
-          >
-            {shortTandemRepeat.associated_disease.name}
-          </ExternalLink>
-        ) : (
-          shortTandemRepeat.associated_disease.name
-        )}
-      </AttributeList.Item>
-      {shortTandemRepeat.associated_disease.normal_threshold !== null && (
-        <AttributeList.Item label="Normal range">
-          &le; {shortTandemRepeat.associated_disease.normal_threshold} repeats
-        </AttributeList.Item>
-      )}
-      {shortTandemRepeat.associated_disease.pathogenic_threshold !== null && (
-        <AttributeList.Item label="Pathogenic range">
-          &ge; {shortTandemRepeat.associated_disease.pathogenic_threshold} repeats
-        </AttributeList.Item>
-      )}
     </AttributeList>
   )
 }

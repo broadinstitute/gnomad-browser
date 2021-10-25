@@ -21,7 +21,7 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
             <th scope="col">Reference repeat unit</th>
             <th scope="col">Region</th>
             <th scope="col">Inheritance mode</th>
-            <th scope="col">Associated disease</th>
+            <th scope="col">Associated disease(s)</th>
           </tr>
         </thead>
         <tbody>
@@ -35,17 +35,30 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }) => {
                 </th>
                 <td style={{ minWidth: '18ch' }}>{shortTandemRepeat.reference_repeat_unit}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.gene.region}</td>
-                <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.inheritance_mode}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>
+                  {Array.from(
+                    new Set(
+                      shortTandemRepeat.associated_diseases.map(disease => disease.inheritance_mode)
+                    )
+                  ).join(', ')}
+                </td>
                 <td style={{ minWidth: '30ch' }}>
-                  {shortTandemRepeat.associated_disease.omim_id ? (
-                    <ExternalLink
-                      href={`https://omim.org/entry/${shortTandemRepeat.associated_disease.omim_id}`}
-                    >
-                      {shortTandemRepeat.associated_disease.name}
-                    </ExternalLink>
-                  ) : (
-                    shortTandemRepeat.associated_disease.name
-                  )}
+                  {shortTandemRepeat.associated_diseases
+                    .map(disease => {
+                      return (
+                        <React.Fragment key={disease.name}>
+                          {disease.omim_id ? (
+                            <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
+                              {disease.name}
+                            </ExternalLink>
+                          ) : (
+                            disease.name
+                          )}
+                        </React.Fragment>
+                      )
+                    })
+                    .flatMap(el => [', ', el])
+                    .slice(1)}
                 </td>
               </tr>
             )
@@ -66,11 +79,14 @@ ShortTandemRepeatsPage.propTypes = {
         region: PropTypes.string.isRequired,
       }).isRequired,
       reference_repeat_unit: PropTypes.string.isRequired,
-      associated_disease: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        omim_id: PropTypes.string,
-      }).isRequired,
-      inheritance_mode: PropTypes.string.isRequired,
+      associated_diseases: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          symbol: PropTypes.string.isRequired,
+          omim_id: PropTypes.string,
+          inheritance_mode: PropTypes.string.isRequired,
+        })
+      ).isRequired,
     })
   ).isRequired,
 }
@@ -85,11 +101,12 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
       region
     }
     reference_repeat_unit
-    associated_disease {
+    associated_diseases {
       name
+      symbol
       omim_id
+      inheritance_mode
     }
-    inheritance_mode
   }
 }
 `
