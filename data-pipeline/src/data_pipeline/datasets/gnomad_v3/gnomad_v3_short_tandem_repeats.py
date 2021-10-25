@@ -329,6 +329,29 @@ def _prepare_genotype_distribution_repeat_units(locus):
     )
 
 
+def _prepare_disease_repeat_size_classifications(disease):
+    ranges = []
+
+    if "NormalMax" in disease:
+        ranges.append({"classification": "Normal", "min": None, "max": disease["NormalMax"]})
+
+    if "IntermediateRange" in disease:
+        [intermediate_min, intermediate_max] = [int(n) for n in disease["IntermediateRange"].split("-")]
+        ranges.append({"classification": "Intermediate", "min": intermediate_min, "max": intermediate_max})
+
+    ranges.append({"classification": "Pathogenic", "min": disease["PathogenicMin"], "max": None})
+
+    return ranges
+
+
+INHERITANCE_MODES = {
+    "AD": "Autosomal dominant",
+    "AR": "Autosomal recessive",
+    "XD": "X-linked dominant",
+    "XR": "X-linked recessive",
+}
+
+
 def prepare_gnomad_v3_short_tandem_repeats(path):
     with hl.hadoop_open(path) as input_file:
         data = json.load(input_file)
@@ -337,15 +360,18 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         {
             "id": locus["LocusId"],
             "gene": {"ensembl_id": locus["GeneId"], "symbol": locus["GeneName"], "region": locus["GeneRegion"]},
-            "inheritance_mode": locus["InheritanceMode"],
-            "associated_disease": {
-                # ’ characters get garbled somewhere in ES or ES-Hadoop
-                "name": locus["Disease"].replace("’", "'"),
-                "omim_id": locus["OMIMDiseaseLink"].split("/")[-1] if locus["OMIMDiseaseLink"] else None,
-                "normal_threshold": int(locus["NormalMax"]) if locus["NormalMax"] is not None else None,
-                "pathogenic_threshold": int(locus["PathogenicMin"]) if locus["PathogenicMin"] is not None else None,
-            },
-            "stripy_id": locus["STRipyLink"].split("/")[-1] if "STRipyLink" in locus else None,
+            "associated_diseases": [
+                {
+                    # ’ characters get garbled somewhere in ES or ES-Hadoop
+                    "name": disease["Name"].replace("’", "'"),
+                    "symbol": disease["Symbol"],
+                    "omim_id": disease.get("OMIM", None),
+                    "inheritance_mode": INHERITANCE_MODES[disease["Inheritance"]],
+                    "repeat_size_classifications": _prepare_disease_repeat_size_classifications(disease),
+                }
+                for disease in locus["Diseases"]
+            ],
+            "stripy_id": locus["STRipyName"] if "STRipyName" in locus else None,
             "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
             "repeat_units": sorted(
@@ -415,9 +441,14 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         hl.tstruct(
             id=hl.tstr,
             gene=hl.tstruct(ensembl_id=hl.tstr, symbol=hl.tstr, region=hl.tstr),
-            inheritance_mode=hl.tstr,
-            associated_disease=hl.tstruct(
-                name=hl.tstr, omim_id=hl.tstr, normal_threshold=hl.tint, pathogenic_threshold=hl.tint
+            associated_diseases=hl.tarray(
+                hl.tstruct(
+                    name=hl.tstr,
+                    symbol=hl.tstr,
+                    omim_id=hl.tstr,
+                    inheritance_mode=hl.tstr,
+                    repeat_size_classifications=hl.tarray(hl.tstruct(classification=hl.tstr, min=hl.tint, max=hl.tint)),
+                )
             ),
             reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
             reference_repeat_unit=hl.tstr,

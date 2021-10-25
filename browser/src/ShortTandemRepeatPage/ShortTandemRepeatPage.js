@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
+import { BaseTable, ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
+import TableWrapper from '../TableWrapper'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
@@ -119,35 +120,15 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
     repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
-  const plotRanges = shortTandemRepeat.associated_disease.pathogenic_threshold
-    ? [
-        ...(shortTandemRepeat.associated_disease.normal_threshold !== null
-          ? [
-              {
-                start: 0,
-                stop: shortTandemRepeat.associated_disease.normal_threshold + 1,
-                label: 'Normal',
-              },
-              {
-                start: shortTandemRepeat.associated_disease.normal_threshold + 1,
-                stop: shortTandemRepeat.associated_disease.pathogenic_threshold,
-                label: 'Intermediate',
-              },
-            ]
-          : [
-              {
-                start: 0,
-                stop: shortTandemRepeat.associated_disease.pathogenic_threshold,
-                label: 'Intermediate',
-              },
-            ]),
-        {
-          start: shortTandemRepeat.associated_disease.pathogenic_threshold,
-          stop: Infinity,
-          label: 'Pathogenic',
-        },
-      ]
-    : []
+  const plotRanges = shortTandemRepeat.associated_diseases[0].repeat_size_classifications.map(
+    classification => {
+      return {
+        label: classification.classification,
+        start: classification.min !== null ? classification.min : 0,
+        stop: classification.max !== null ? classification.max + 1 : Infinity,
+      }
+    }
+  )
 
   return (
     <>
@@ -168,6 +149,52 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           </ResponsiveSection>
         )}
       </FlexWrapper>
+
+      <section style={{ marginBottom: '2em' }}>
+        <h2>Associated Diseases</h2>
+        <TableWrapper>
+          <BaseTable style={{ minWidth: '100%' }}>
+            <thead>
+              <tr>
+                <th scope="col">Disease</th>
+                <th scope="col">OMIM</th>
+                <th scope="col">Inheritance</th>
+                <th scope="col">Ranges of repeats</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shortTandemRepeat.associated_diseases.map(disease => {
+                return (
+                  <tr key={disease.name}>
+                    <th scope="row">{disease.name}</th>
+                    <td>
+                      {disease.omim_id && (
+                        <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
+                          {disease.omim_id}
+                        </ExternalLink>
+                      )}
+                    </td>
+                    <td>{disease.inheritance_mode}</td>
+                    <td>
+                      {disease.repeat_size_classifications
+                        .map(classification => {
+                          if (classification.min === null) {
+                            return `${classification.classification} ≤ ${classification.max}`
+                          }
+                          if (classification.max === null) {
+                            return `${classification.classification} ≥ ${classification.min}`
+                          }
+                          return `${classification.classification} ${classification.min} - ${classification.max}`
+                        })
+                        .join(', ')}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </BaseTable>
+        </TableWrapper>
+      </section>
 
       <h2>Allele Size Distribution</h2>
       <ShortTandemRepeatAlleleSizeDistributionPlot
@@ -374,12 +401,16 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
       symbol
       region
     }
-    inheritance_mode
-    associated_disease {
+    associated_diseases {
       name
+      symbol
       omim_id
-      normal_threshold
-      pathogenic_threshold
+      inheritance_mode
+      repeat_size_classifications {
+        classification
+        min
+        max
+      }
     }
     reference_region {
       chrom

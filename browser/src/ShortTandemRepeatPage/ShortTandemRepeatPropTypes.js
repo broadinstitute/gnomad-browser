@@ -60,13 +60,21 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
     symbol: PropTypes.string.isRequired,
     region: PropTypes.string.isRequired,
   }).isRequired,
-  inheritance_mode: PropTypes.string.isRequired,
-  associated_disease: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    omim_id: PropTypes.string,
-    normal_threshold: PropTypes.number,
-    pathogenic_threshold: PropTypes.number,
-  }).isRequired,
+  associated_diseases: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
+      omim_id: PropTypes.string,
+      inheritance_mode: PropTypes.string.isRequired,
+      repeat_size_classifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          classification: PropTypes.string.isRequired,
+          min: PropTypes.number,
+          max: PropTypes.number,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
   stripy_id: PropTypes.string,
   reference_region: PropTypes.shape({
     chrom: PropTypes.string.isRequired,
