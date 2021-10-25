@@ -99,6 +99,12 @@ const resolveVariantSearch = async (obj, args, ctx) => {
     })
   }
 
+  if (/^CA[0-9]+$/i.test(query)) {
+    return fetchMatchingVariants(ctx.esClient, dataset, {
+      caid: query.toUpperCase(),
+    })
+  }
+
   if (/^[0-9]+$/.test(query)) {
     const clinvarVariant = await fetchClinvarVariantByClinvarVariationId(
       ctx.esClient,

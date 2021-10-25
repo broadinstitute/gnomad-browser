@@ -49,6 +49,16 @@ export const fetchSearchResults = (dataset, query) => {
       ])
     }
 
+    if (/^CA[0-9]+$/i.test(query)) {
+      const caid = query.toUpperCase()
+      return Promise.resolve([
+        {
+          label: caid,
+          value: `/variant/${caid}?dataset=${dataset}`,
+        },
+      ])
+    }
+
     if (/^[0-9]+$/.test(query)) {
       const clinvarVariationId = query
       return Promise.resolve([
