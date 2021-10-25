@@ -184,7 +184,7 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     "gnomad_v3_short_tandem_repeats": {
         "get_table": lambda: hl.read_table(
-            gnomad_v3_short_tandem_repeats_pipeline.get_task("prepare_short_tandem_repeats").get_output_path()
+            gnomad_v3_short_tandem_repeats_pipeline.get_output("short_tandem_repeats").get_output_path()
         ),
         "args": {
             "index": "gnomad_v3_short_tandem_repeats",
