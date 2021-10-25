@@ -23,15 +23,14 @@ Then move ES shards from temporary pods onto permanent pods.
 - Add temporary pods to Elasticsearch cluster.
 
   ```
-  ./deployctl elasticsearch apply --n-data-pods=2 --n-ingest-pods=48
+  ./deployctl elasticsearch apply --n-ingest-pods=48
   ```
 
-  The number of ingest pods can vary. Very large numbers of ingest pods may require adjusting the maximum nodes
-  setting for the `elasticsearch-data` node pool's autoscaler.
+  The number of ingest pods should match the number of nodes in the `es-ingest` node pool.
 
   Watch pods' readiness with `kubectl get pods -w`.
 
-- Create a Dataproc cluster and load a Hail table.
+- Create a Dataproc cluster and load a Hail table. The number of workers in the cluster should match the number of ingest pods.
 
   ```
   ./deployctl dataproc-cluster start es --num-preemptible-workers 48
@@ -43,10 +42,11 @@ Then move ES shards from temporary pods onto permanent pods.
   Add up the values in the `store.size` column output from the [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html).
 
 - Edit the `volumeClaimTemplates` section of the `data` node set in elasticsearch.yaml.jinja2 accordingly. Keep in mind
-  that the storage request there is per-pod. If necessary, add permanent data pods to the cluster.
+  that the storage request there is per-pod. If necessary, add permanent data pods to the cluster. Resize the `es-data`
+  node pool if necessary.
 
   ```
-  ./deployctl elasticsearch apply --n-data-pods=3 --n-ingest-pods=48
+  ./deployctl elasticsearch apply --n-ingest-pods=48
   ```
 
 - Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
@@ -67,7 +67,7 @@ Then move ES shards from temporary pods onto permanent pods.
 - Remove ingest pods.
 
   ```
-  ./deployctl elasticsearch apply --n-data-pods=3 --n-ingest-pods=0
+  ./deployctl elasticsearch apply --n-ingest-pods=0
   ```
 
 - Delete node pool.
@@ -77,6 +77,8 @@ Then move ES shards from temporary pods onto permanent pods.
     --cluster $GKE_CLUSTER_NAME \
     --zone $ZONE
   ```
+
+- Update relevant [Elasticsearch index aliases](./ElasticsearchIndexAliases.md) and [clear caches](./RedisCache.md).
 
 ## References
 
