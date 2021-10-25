@@ -114,7 +114,7 @@ const VariantPageRouter = ({ datasetId, variantId }) => {
     return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
   }
 
-  if (isRsId(variantId) || /^[0-9]+$/.test(variantId)) {
+  if (isRsId(variantId) || /^CA[0-9]+$/i.test(variantId) || /^[0-9]+$/.test(variantId)) {
     return <VariantSearchPage datasetId={datasetId} query={variantId} />
   }
 

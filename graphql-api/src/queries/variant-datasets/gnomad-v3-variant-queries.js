@@ -388,9 +388,15 @@ const fetchVariantsByTranscript = async (esClient, transcript, subset) => {
 // Search
 // ================================================================================================
 
-const fetchMatchingVariants = async (esClient, { rsid = null, variantId = null }, subset) => {
+const fetchMatchingVariants = async (
+  esClient,
+  { caid = null, rsid = null, variantId = null },
+  subset
+) => {
   let query
-  if (rsid) {
+  if (caid) {
+    query = { term: { caid } }
+  } else if (rsid) {
     query = { term: { rsids: rsid } }
   } else if (variantId) {
     query = { term: { variant_id: variantId } }
