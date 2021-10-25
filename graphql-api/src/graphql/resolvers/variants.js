@@ -100,18 +100,17 @@ const resolveVariantSearch = async (obj, args, ctx) => {
   }
 
   if (/^[0-9]+$/.test(query)) {
-    try {
-      const clinvarVariant = await fetchClinvarVariantByClinvarVariationId(
-        ctx.esClient,
-        DATASET_REFERENCE_GENOMES[dataset],
-        query
-      )
-      return fetchMatchingVariants(ctx.esClient, dataset, {
-        variantId: clinvarVariant.variant_id,
-      })
-    } catch (err) {
+    const clinvarVariant = await fetchClinvarVariantByClinvarVariationId(
+      ctx.esClient,
+      DATASET_REFERENCE_GENOMES[dataset],
+      query
+    )
+    if (!clinvarVariant) {
       return []
     }
+    return fetchMatchingVariants(ctx.esClient, dataset, {
+      variantId: clinvarVariant.variant_id,
+    })
   }
 
   throw new UserVisibleError(
