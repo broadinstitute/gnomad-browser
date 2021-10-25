@@ -60,7 +60,9 @@ const VariantCooccurrenceSummaryTable = ({
       <thead>
         <tr>
           <th scope="col">Population</th>
-          <th scope="col">Samples consistent with variants appearing on different haplotypes</th>
+          <th scope="col">
+            Samples consistent with variants appearing in isolation or on different haplotypes
+          </th>
           <th scope="col">Samples consistent with variants appearing on the same haplotype</th>
           <th scope="col">Samples consistent with either co-occurrence pattern</th>
           <th scope="col">Likely co&#x2011;occurrence pattern</th>
