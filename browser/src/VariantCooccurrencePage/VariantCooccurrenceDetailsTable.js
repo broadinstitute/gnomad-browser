@@ -147,7 +147,7 @@ const VariantCooccurrenceDetailsTable = ({ variantIds, genotypeCounts }) => {
       </Table>
       <p>
         <LegendSwatch color={DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR} /> Samples consistent with
-        variants appearing on different haplotypes.
+        variants appearing in isolation or on different haplotypes.
         <br />
         <LegendSwatch color={SAME_HAPLOTYPE_HIGHLIGHT_COLOR} /> Samples consistent with variants
         appearing on the same haplotype.
