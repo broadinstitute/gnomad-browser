@@ -21,8 +21,8 @@ const Wrapper = styled.div`
   }
 `
 
-const ControlSection = ({ children }) => (
-  <Wrapper>
+const ControlSection = ({ children, ...otherProps }) => (
+  <Wrapper {...otherProps}>
     {React.Children.map(children, child => (
       <ControlWrapper>{child}</ControlWrapper>
     ))}

@@ -110,6 +110,10 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
       : ''
   )
 
+  const [selectedDisease, setSelectedDisease] = useState(
+    shortTandemRepeat.associated_diseases[0].name
+  )
+
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
   const repeatUnitsByClassification = {}
@@ -120,15 +124,15 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
     repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
-  const plotRanges = shortTandemRepeat.associated_diseases[0].repeat_size_classifications.map(
-    classification => {
+  const plotRanges = shortTandemRepeat.associated_diseases
+    .find(disease => disease.name === selectedDisease)
+    .repeat_size_classifications.map(classification => {
       return {
         label: classification.classification,
         start: classification.min !== null ? classification.min : 0,
         stop: classification.max !== null ? classification.max + 1 : Infinity,
       }
-    }
-  )
+    })
 
   return (
     <>
@@ -290,6 +294,31 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
         </label>
       </ControlSection>
 
+      {shortTandemRepeat.associated_diseases.length > 1 && (
+        <ControlSection style={{ marginTop: '1em' }}>
+          <label
+            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
+          >
+            Show ranges for{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
+              value={selectedDisease}
+              onChange={e => {
+                setSelectedDisease(e.target.value)
+              }}
+            >
+              {shortTandemRepeat.associated_diseases.map(disease => {
+                return (
+                  <option key={disease.name} value={disease.name}>
+                    {disease.name}
+                  </option>
+                )
+              })}
+            </Select>
+          </label>
+        </ControlSection>
+      )}
+
       <h2>Genotype Distribution</h2>
       <ShortTandemRepeatGenotypeDistributionPlot
         maxRepeats={[
@@ -365,6 +394,31 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           </Select>
         </label>
       </ControlSection>
+
+      {shortTandemRepeat.associated_diseases.length > 1 && (
+        <ControlSection style={{ marginTop: '1em' }}>
+          <label
+            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
+          >
+            Show ranges for{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
+              value={selectedDisease}
+              onChange={e => {
+                setSelectedDisease(e.target.value)
+              }}
+            >
+              {shortTandemRepeat.associated_diseases.map(disease => {
+                return (
+                  <option key={disease.name} value={disease.name}>
+                    {disease.name}
+                  </option>
+                )
+              })}
+            </Select>
+          </label>
+        </ControlSection>
+      )}
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginTop: '2em' }}>
