@@ -6,11 +6,8 @@ const LOF_CONSEQUENCE_TERMS = new Set([
   'frameshift_variant',
 ])
 
-// "NC" was removed from the data pipeline some time ago, but some ExAC variants still have it.
 const isLofOnNonCodingTranscript = (transcriptConsequence) =>
-  (LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) &&
-    !transcriptConsequence.lof) ||
-  transcriptConsequence.lof === 'NC'
+  LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) && !transcriptConsequence.lof
 
 const getFlagsForGeneContext = (variant, geneId) => {
   const flags = variant.flags || []
