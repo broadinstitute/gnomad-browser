@@ -438,6 +438,13 @@ const VariantCoocurrencePage = ({ datasetId }) => {
       </GnomadPageHeading>
       {datasetId === 'gnomad_r2_1' ? (
         <>
+          <p>
+            For more information about co-occurrence data and how to use this tool, see our{' '}
+            <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
+              &ldquo;Variant Co-Occurrence (Phasing) Information in gnomAD&rdquo; blog post
+            </ExternalLink>
+            .
+          </p>
           <Section style={{ marginBottom: '2em' }}>
             <h2>Select a variant pair</h2>
             <p>Co-occurrence is available for coding and UTR variants that:</p>
