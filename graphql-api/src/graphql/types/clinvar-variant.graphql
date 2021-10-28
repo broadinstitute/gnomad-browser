@@ -34,7 +34,7 @@ type ClinVarCondition {
 }
 
 type ClinVarSubmission {
-  clinical_significance: String!
+  clinical_significance: String
   last_evaluated: String
   review_status: String!
   submitter_name: String!

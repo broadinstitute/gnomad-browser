@@ -32,7 +32,7 @@ const SubmissionsList = ({ submissions }) => (
               .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ', ', el]), [])}
           </AttributeList.Item>
           <AttributeList.Item label="Clinical significance">
-            {submission.clinical_significance}
+            {submission.clinical_significance || '–'}
           </AttributeList.Item>
           <AttributeList.Item label="Review status">{submission.review_status}</AttributeList.Item>
           <AttributeList.Item label="Last evaluated">
@@ -47,7 +47,7 @@ const SubmissionsList = ({ submissions }) => (
 SubmissionsList.propTypes = {
   submissions: PropTypes.arrayOf(
     PropTypes.shape({
-      clinical_significance: PropTypes.string.isRequired,
+      clinical_significance: PropTypes.string,
       conditions: PropTypes.arrayOf(
         PropTypes.shape({
           medgen_id: PropTypes.string,
