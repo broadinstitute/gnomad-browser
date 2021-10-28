@@ -72,6 +72,29 @@ export default () => (
       The gnomAD v3.1.2 data set contains 76,156 whole genomes (and no exomes), all mapped to the
       GRCh38 reference sequence.
     </p>
+
+    <div
+      style={{
+        padding: '0 1em',
+        border: '2px solid #1173bb',
+        background: '#1173bb0f',
+        borderRadius: '0.5em',
+      }}
+    >
+      <p>
+        <Badge level="info">Note</Badge> The links for gnomAD v3.1.2 data files below point to a{' '}
+        <ExternalLink href="https://cloud.google.com/storage/docs/requester-pays">
+          requester pays
+        </ExternalLink>{' '}
+        Google Cloud Storage bucket. These files will soon also be made available through cloud
+        providers&apos; open datasets programs, the same as other gnomAD data (see our{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-10-open-access-to-gnomad-data-on-multiple-cloud-providers/">
+          &ldquo;Open access to gnomAD data on multiple cloud providers&rdquo; blog post
+        </ExternalLink>{' '}
+        for more information).
+      </p>
+    </div>
+
     <section>
       <h2>Summary</h2>
       <List>
