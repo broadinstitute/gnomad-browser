@@ -109,7 +109,7 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
       <GraphWrapper>
         <svg height={height} width={width}>
           <AxisBottom
-            label="Repeats"
+            label="Repeats in allele 1"
             labelOffset={xBinSize === 1 ? 10 : 40}
             labelProps={labelProps}
             left={margin.left}
@@ -142,7 +142,7 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
             top={height - margin.bottom}
           />
           <AxisLeft
-            label="Repeats"
+            label="Repeats in allele 2"
             labelOffset={60}
             labelProps={labelProps}
             left={margin.left}
