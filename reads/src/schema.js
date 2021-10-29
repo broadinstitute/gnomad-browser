@@ -5,17 +5,27 @@ const {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
+  GraphQLInt,
+  GraphQLInputObjectType,
 } = require('graphql')
 
-const datasets = require('./datasets')
+const { variantDatasets, shortTandemRepeatDatasets } = require('./datasets')
 const { UserVisibleError } = require('./errors')
 const logger = require('./logging')
 const resolveReadsLegacy = require('./resolveReadsLegacy')
 const resolveReads = require('./resolveReads')
+const {
+  resolveShortTandemRepeatNumReads,
+  resolveShortTandemRepeatReads,
+} = require('./resolveShortTandemRepeatReads')
+
+const allDatasetIds = Array.from(
+  new Set([...Object.keys(variantDatasets), ...Object.keys(shortTandemRepeatDatasets)])
+)
 
 const DatasetArgumentType = new GraphQLEnumType({
   name: 'DatasetId',
-  values: Object.keys(datasets).reduce((values, datasetId) => ({ ...values, [datasetId]: {} }), {}),
+  values: allDatasetIds.reduce((values, datasetId) => ({ ...values, [datasetId]: {} }), {}),
 })
 
 const ReadType = new GraphQLObjectType({
@@ -35,7 +45,7 @@ const VariantReadsType = new GraphQLObjectType({
       type: new GraphQLList(ReadType),
       resolve: async obj => {
         const { dataset, variantId } = obj
-        const config = datasets[dataset].exomes
+        const config = variantDatasets[dataset].exomes
         if (!config) {
           return null
         }
@@ -53,7 +63,7 @@ const VariantReadsType = new GraphQLObjectType({
       type: new GraphQLList(ReadType),
       resolve: async obj => {
         const { dataset, variantId } = obj
-        const config = datasets[dataset].genomes
+        const config = variantDatasets[dataset].genomes
         if (!config) {
           return null
         }
@@ -67,6 +77,79 @@ const VariantReadsType = new GraphQLObjectType({
         }
       },
     },
+  },
+})
+
+const ShortTandemRepeatReadRepeatSizeConfidenceIntervalType = new GraphQLObjectType({
+  name: 'ShortTandemRepeatReadRepeatSizeConfidenceInterval',
+  fields: {
+    upper: { type: new GraphQLNonNull(GraphQLInt) },
+    lower: { type: new GraphQLNonNull(GraphQLInt) },
+  },
+})
+
+const ShortTandemRepeatReadAlleleType = new GraphQLObjectType({
+  name: 'ShortTandemRepeatReadAllele',
+  fields: {
+    repeat_unit: { type: new GraphQLNonNull(GraphQLString) },
+    repeats: { type: new GraphQLNonNull(GraphQLInt) },
+    repeats_confidence_interval: {
+      type: new GraphQLNonNull(ShortTandemRepeatReadRepeatSizeConfidenceIntervalType),
+    },
+  },
+})
+
+const ShortTandemRepeatReadType = new GraphQLObjectType({
+  name: 'ShortTandemRepeatRead',
+  fields: {
+    alleles: { type: new GraphQLNonNull(new GraphQLList(ShortTandemRepeatReadAlleleType)) },
+    population: { type: new GraphQLNonNull(GraphQLString) },
+    sex: { type: new GraphQLNonNull(GraphQLString) },
+    path: { type: new GraphQLNonNull(GraphQLString) },
+  },
+})
+
+const ShortTandemRepeatReadsType = new GraphQLObjectType({
+  name: 'ShortTandemRepeatReads',
+  fields: {
+    num_reads: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: obj => {
+        const { dataset } = obj
+        const config = shortTandemRepeatDatasets[dataset]
+        return resolveShortTandemRepeatNumReads(config, obj)
+      },
+    },
+    reads: {
+      type: new GraphQLNonNull(new GraphQLList(ShortTandemRepeatReadType)),
+      args: {
+        limit: { type: GraphQLInt },
+        offset: { type: GraphQLInt },
+      },
+      resolve: (obj, args) => {
+        const { dataset } = obj
+        const config = shortTandemRepeatDatasets[dataset]
+        return resolveShortTandemRepeatReads(config, obj, args)
+      },
+    },
+  },
+})
+
+const ShortTandemRepeatReadsAlleleFilterType = new GraphQLInputObjectType({
+  name: 'ShortTandemRepeatReadsAlleleFilterType',
+  fields: {
+    repeat_unit: { type: GraphQLString },
+    min_repeats: { type: GraphQLInt },
+    max_repeats: { type: GraphQLInt },
+  },
+})
+
+const ShortTandemRepeatReadsFilterType = new GraphQLInputObjectType({
+  name: 'ShortTandemRepeatReadsFilter',
+  fields: {
+    population: { type: GraphQLString },
+    sex: { type: GraphQLString },
+    alleles: { type: new GraphQLList(new GraphQLNonNull(ShortTandemRepeatReadsAlleleFilterType)) },
   },
 })
 
@@ -107,6 +190,10 @@ const RootType = new GraphQLObjectType({
           throw new UserVisibleError(`Invalid variant ID: "${variantId}"`)
         }
 
+        if (!variantDatasets[dataset]) {
+          throw new UserVisibleError(`Reads are not available for "${dataset}" dataset`)
+        }
+
         const [chrom, pos, ref, alt] = variantId.split('-')
         return {
           dataset,
@@ -116,6 +203,24 @@ const RootType = new GraphQLObjectType({
           ref,
           alt,
         }
+      },
+    },
+    short_tandem_repeat_reads: {
+      type: new GraphQLNonNull(ShortTandemRepeatReadsType),
+      args: {
+        dataset: { type: new GraphQLNonNull(DatasetArgumentType) },
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        filter: { type: ShortTandemRepeatReadsFilterType },
+      },
+      resolve: (obj, args) => {
+        const { dataset } = args
+        if (!shortTandemRepeatDatasets[dataset]) {
+          throw new UserVisibleError(
+            `Short tandem repeat reads are not available for "${dataset}" dataset`
+          )
+        }
+
+        return args
       },
     },
   },
