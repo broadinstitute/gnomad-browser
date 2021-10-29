@@ -1,4 +1,4 @@
-const datasets = {
+const variantDatasets = {
   gnomad_r3: {
     genomes: {
       readsDirectory: '/readviz/datasets/gnomad_r3_1',
@@ -27,4 +27,11 @@ const datasets = {
   },
 }
 
-module.exports = datasets
+const shortTandemRepeatDatasets = {
+  gnomad_r3: {
+    dbPath: '',
+    publicPath: '',
+  },
+}
+
+module.exports = { variantDatasets, shortTandemRepeatDatasets }
