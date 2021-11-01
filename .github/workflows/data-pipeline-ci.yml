@@ -30,6 +30,7 @@ jobs:
         run: |
           pip install wheel
           pip install -r requirements-dev.txt
+          pip install hail
           pip install -r data-pipeline/requirements.txt
       - name: Check formatting
         run: black --check data-pipeline/src/data_pipeline
