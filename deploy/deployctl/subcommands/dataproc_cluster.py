@@ -1,9 +1,13 @@
 import argparse
+import os
 import subprocess
 import sys
 import typing
 
 from deployctl.config import config
+
+
+DATA_PIPELINE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data-pipeline"))
 
 
 def list_clusters() -> None:
@@ -19,6 +23,9 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
     if not config.project:
         raise RuntimeError("project configuration is required")
 
+    with open(os.path.join(DATA_PIPELINE_DIRECTORY, "requirements.txt")) as requirements_file:
+        requirements = [line.strip() for line in requirements_file.readlines()]
+
     subprocess.check_output(
         [
             "hailctl",
@@ -31,7 +38,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             f"--subnet={config.network_name}-dataproc",
             "--tags=dataproc-node",
             "--max-idle=1h",
-            "--packages=elasticsearch~=6.8",
+            f"--packages={','.join(requirements)}",
             "--requester-pays-allow-buckets=gnomad-public-requester-pays",
             f"--service-account=gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
             # Required to access Secret Manager
