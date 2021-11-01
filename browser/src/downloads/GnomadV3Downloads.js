@@ -73,28 +73,6 @@ export default () => (
       GRCh38 reference sequence.
     </p>
 
-    <div
-      style={{
-        padding: '0 1em',
-        border: '2px solid #1173bb',
-        background: '#1173bb0f',
-        borderRadius: '0.5em',
-      }}
-    >
-      <p>
-        <Badge level="info">Note</Badge> The links for gnomAD v3.1.2 data files below point to a{' '}
-        <ExternalLink href="https://cloud.google.com/storage/docs/requester-pays">
-          requester pays
-        </ExternalLink>{' '}
-        Google Cloud Storage bucket. These files will soon also be made available through cloud
-        providers&apos; open datasets programs, the same as other gnomAD data (see our{' '}
-        <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-10-open-access-to-gnomad-data-on-multiple-cloud-providers/">
-          &ldquo;Open access to gnomAD data on multiple cloud providers&rdquo; blog post
-        </ExternalLink>{' '}
-        for more information).
-      </p>
-    </div>
-
     <section>
       <h2>Summary</h2>
       <List>
@@ -136,17 +114,15 @@ export default () => (
           <GetUrlButtons
             label="Sites Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.sites.ht"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
         {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
           <ListItem key={chrom}>
-            <GetUrlButtons
+            <IndexedFileDownloadLinks
               label={`chr${chrom} sites VCF`}
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.sites.chr${chrom}.vcf.bgz`}
-              gcsBucket="gnomad-public-requester-pays"
               size={size}
               md5={md5}
               includeAWS={false}
@@ -198,7 +174,6 @@ export default () => (
           <GetUrlButtons
             label="Dense Hail MatrixTable"
             path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_dense.mt"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
@@ -207,7 +182,6 @@ export default () => (
           <GetUrlButtons
             label="Sparse Hail MatrixTable"
             path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sparse.mt"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
@@ -216,7 +190,6 @@ export default () => (
           <GetUrlButtons
             label="Variant annotations Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_variant_annotations.ht"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
@@ -225,26 +198,23 @@ export default () => (
           <GetUrlButtons
             label="Sample metadata Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.ht"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
         <ListItem>
-          <GetUrlButtons
+          <GenericDownloadLinks
             label="Sample metadata TSV"
             path="/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.tsv.bgz"
-            gcsBucket="gnomad-public-requester-pays"
             includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
         {hgdpAnd1kgChromosomeVcfs.map(({ chrom, size, md5 }) => (
           <ListItem key={chrom}>
-            <GetUrlButtons
+            <IndexedFileDownloadLinks
               label={`chr${chrom} VCF`}
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_tgp.chr${chrom}.vcf.bgz`}
-              gcsBucket="gnomad-public-requester-pays"
               size={size}
               md5={md5}
               includeAWS={false}
