@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
+import { BaseTable, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -18,6 +18,7 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatReads from './ShortTandemRepeatReads'
 
 const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
@@ -93,7 +94,7 @@ const getAlleleSizeDistribution = ({
   return shortTandemRepeat.allele_size_distribution.distribution
 }
 
-const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
+const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
   )
@@ -113,6 +114,8 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
   const [selectedDisease, setSelectedDisease] = useState(
     shortTandemRepeat.associated_diseases[0].name
   )
+
+  const [isReadDataModalOpen, setIsReadDataModalOpen] = useState(false)
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
@@ -438,11 +441,36 @@ const ShortTandemRepeatPage = ({ shortTandemRepeat }) => {
           })}
         </section>
       )}
+
+      <section style={{ marginTop: '2em' }}>
+        <h2>Read Data</h2>
+        <Button
+          onClick={() => {
+            setIsReadDataModalOpen(true)
+          }}
+        >
+          View read data
+        </Button>
+      </section>
+
+      {isReadDataModalOpen && (
+        <Modal
+          initialFocusOnButton={false}
+          onRequestClose={() => {
+            setIsReadDataModalOpen(false)
+          }}
+          size="xlarge"
+          title={`${shortTandemRepeat.id} Read Data`}
+        >
+          <ShortTandemRepeatReads datasetId={datasetId} shortTandemRepeat={shortTandemRepeat} />
+        </Modal>
+      )}
     </>
   )
 }
 
 ShortTandemRepeatPage.propTypes = {
+  datasetId: PropTypes.string.isRequired,
   shortTandemRepeat: ShortTandemRepeatPropType.isRequired,
 }
 
@@ -579,7 +607,12 @@ const ShortTandemRepeatPageContainer = ({ datasetId, strId }) => {
         success={data => data.short_tandem_repeat}
       >
         {({ data }) => {
-          return <ShortTandemRepeatPage shortTandemRepeat={data.short_tandem_repeat} />
+          return (
+            <ShortTandemRepeatPage
+              datasetId={datasetId}
+              shortTandemRepeat={data.short_tandem_repeat}
+            />
+          )
         }}
       </Query>
     </Page>
