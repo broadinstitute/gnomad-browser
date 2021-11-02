@@ -29,8 +29,8 @@ const variantDatasets = {
 
 const shortTandemRepeatDatasets = {
   gnomad_r3: {
-    dbPath: '',
-    publicPath: '',
+    dbPath: '/readviz/datasets/gnomad_r3_short_tandem_repeats/str_reads.db',
+    publicPath: '/reads/gnomad_r3/short_tandem_repeats',
   },
 }
 
