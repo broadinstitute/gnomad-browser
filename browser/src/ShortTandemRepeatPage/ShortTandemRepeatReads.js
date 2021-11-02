@@ -367,6 +367,19 @@ ShortTandemRepeatReadsFilterControl.propTypes = {
   onChange: PropTypes.func.isRequired,
 }
 
+const getFilterDescription = filter => {
+  if (!filter.population && !filter.sex) {
+    return 'all'
+  }
+  if (filter.population && !filter.sex) {
+    return GNOMAD_POPULATION_NAMES[filter.population]
+  }
+  if (!filter.population && filter.sex) {
+    return filter.sex
+  }
+  return `${GNOMAD_POPULATION_NAMES[filter.population]} ${filter.sex}`
+}
+
 const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, initialFilter }) => {
   const [filter, setFilter] = useState(
     initialFilter || {
@@ -378,7 +391,8 @@ const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, initialFilter })
 
   return (
     <>
-      <h3>Filter reads</h3>
+      <p>Currently showing reads for {getFilterDescription(filter)} samples.</p>
+      <h3>Select samples</h3>
       <ShortTandemRepeatReadsFilterControl
         defaultValue={
           initialFilter || {
