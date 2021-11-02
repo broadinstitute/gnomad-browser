@@ -94,6 +94,21 @@ const getAlleleSizeDistribution = ({
   return shortTandemRepeat.allele_size_distribution.distribution
 }
 
+const parseCombinedPopulationId = combinedPopulationId => {
+  let population
+  let sex
+  if (combinedPopulationId.includes('_')) {
+    ;[population, sex] = combinedPopulationId.split('_')
+  } else if (combinedPopulationId === 'XX' || combinedPopulationId === 'XY') {
+    population = null
+    sex = combinedPopulationId
+  } else {
+    population = combinedPopulationId
+    sex = null
+  }
+  return { population, sex }
+}
+
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
@@ -462,7 +477,13 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           size="xlarge"
           title={`${shortTandemRepeat.id} Read Data`}
         >
-          <ShortTandemRepeatReads datasetId={datasetId} shortTandemRepeat={shortTandemRepeat} />
+          <ShortTandemRepeatReads
+            datasetId={datasetId}
+            shortTandemRepeat={shortTandemRepeat}
+            initialFilter={{
+              ...parseCombinedPopulationId(selectedPopulationId),
+            }}
+          />
         </Modal>
       )}
     </>
