@@ -49,18 +49,20 @@ tabix -p bed /path/to/gencode.bed.bgz
     --zone <zone>
   ```
 
-- SSH into the compute instance and resize the disk's filesystem to match its size.
-  https://cloud.google.com/compute/docs/disks/add-persistent-disk#resize_partitions
-
-  ```
-  sudo resize2fs /dev/disk/by-id/reads-disk
-  ```
+- SSH into the compute instance.
 
 - [Mount the disk](https://cloud.google.com/compute/docs/disks/add-persistent-disk#formatting).
 
   ```
   sudo mkdir -p /mnt/disks/reads
   sudo mount -o discard,defaults /dev/disk/by-id/google-reads-disk /mnt/disks/reads
+  ```
+
+- Resize the disk's filesystem to match its size.
+  https://cloud.google.com/compute/docs/disks/add-persistent-disk#resize_partitions
+
+  ```
+  sudo resize2fs /dev/disk/by-id/google-reads-disk
   ```
 
 - Copy reads onto the new disk.
