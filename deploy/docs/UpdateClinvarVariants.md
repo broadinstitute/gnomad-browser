@@ -70,3 +70,5 @@
    Delete cache keys matching `clinvar_variants:*`.
 
 6. Delete old Elasticsearch indices
+
+7. [Create an Elasticsearch snapshot](./ElasticsearchSnapshots.md)
