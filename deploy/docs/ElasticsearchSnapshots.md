@@ -35,17 +35,29 @@ curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT 'http://localhost:9200/_snapshot
 ### List all snapshots in repository
 
 ```
-curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/_all
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/_all | jq ".snapshots[].snapshot"
 ```
 
 ### Get snapshot status
 
 ```
-curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/<snapshot-name>
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/<snapshot-name> | jq ".snapshots[0]"
+```
+
+To see more details about snapshot size and individual indices/shards, use:
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/<snapshot-name>/_status | jq ".snapshots[0]"
 ```
 
 ### Restore a snapshot
 
 ```
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPOST http://localhost:9200/_snapshot/backups/<snapshot-name>/_restore
+```
+
+### Delete a snapshot
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XDELETE http://localhost:9200/_snapshot/backups/<snapshot-name>
 ```
