@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
+import { BaseTable, Button, ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -130,7 +130,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
     shortTandemRepeat.associated_diseases[0].name
   )
 
-  const [isReadDataModalOpen, setIsReadDataModalOpen] = useState(false)
+  const [showReadData, setShowReadData] = useState(false)
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
@@ -171,7 +171,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </ResponsiveSection>
         )}
       </FlexWrapper>
-
       <section style={{ marginBottom: '2em' }}>
         <h2>Associated Diseases</h2>
         <TableWrapper>
@@ -217,7 +216,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </BaseTable>
         </TableWrapper>
       </section>
-
       <h2>Allele Size Distribution</h2>
       <ShortTandemRepeatAlleleSizeDistributionPlot
         maxRepeats={
@@ -311,7 +309,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </Select>
         </label>
       </ControlSection>
-
       {shortTandemRepeat.associated_diseases.length > 1 && (
         <ControlSection style={{ marginTop: '1em' }}>
           <label
@@ -336,7 +333,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </label>
         </ControlSection>
       )}
-
       <h2>Genotype Distribution</h2>
       <ShortTandemRepeatGenotypeDistributionPlot
         maxRepeats={[
@@ -378,7 +374,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             : []
         }
       />
-
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${shortTandemRepeat.id}-genotype-distribution`}
@@ -412,7 +407,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </Select>
         </label>
       </ControlSection>
-
       {shortTandemRepeat.associated_diseases.length > 1 && (
         <ControlSection style={{ marginTop: '1em' }}>
           <label
@@ -437,7 +431,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </label>
         </ControlSection>
       )}
-
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginTop: '2em' }}>
           <h2>Adjacent Repeats</h2>
@@ -459,33 +452,34 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
 
       <section style={{ marginTop: '2em' }}>
         <h2>Read Data</h2>
-        <Button
-          onClick={() => {
-            setIsReadDataModalOpen(true)
-          }}
-        >
-          View read data
-        </Button>
-      </section>
-
-      {isReadDataModalOpen && (
-        <Modal
-          initialFocusOnButton={false}
-          onRequestClose={() => {
-            setIsReadDataModalOpen(false)
-          }}
-          size="xlarge"
-          title={`${shortTandemRepeat.id} Read Data`}
-        >
-          <ShortTandemRepeatReads
-            datasetId={datasetId}
-            shortTandemRepeat={shortTandemRepeat}
-            initialFilter={{
-              ...parseCombinedPopulationId(selectedPopulationId),
+        {showReadData ? (
+          <>
+            <ControlSection style={{ marginBottom: '1em' }}>
+              <ShortTandemRepeatPopulationOptions
+                id={`${shortTandemRepeat.id}-read-data`}
+                populationIds={populationIds}
+                selectedPopulationId={selectedPopulationId}
+                onSelectPopulationId={setSelectedPopulationId}
+              />
+            </ControlSection>
+            <ShortTandemRepeatReads
+              datasetId={datasetId}
+              shortTandemRepeat={shortTandemRepeat}
+              filter={{
+                ...parseCombinedPopulationId(selectedPopulationId),
+              }}
+            />
+          </>
+        ) : (
+          <Button
+            onClick={() => {
+              setShowReadData(true)
             }}
-          />
-        </Modal>
-      )}
+          >
+            Show read data
+          </Button>
+        )}
+      </section>
     </>
   )
 }

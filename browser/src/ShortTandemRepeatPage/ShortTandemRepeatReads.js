@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Input, PrimaryButton, Select } from '@gnomad/ui'
+import { Button, Input } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -67,17 +67,54 @@ ShortTandemRepeatRead.propTypes = {
   }).isRequired,
 }
 
-const ShortTandemRepeatsReadFilterPropType = PropTypes.shape({
-  population: PropTypes.string,
-  sex: PropTypes.string,
-  alleles: PropTypes.arrayOf(
-    PropTypes.shape({
-      repeat_unit: PropTypes.string,
-      min_repeats: PropTypes.number,
-      max_repeat: PropTypes.number,
-    })
-  ),
-})
+const ShortTandemRepeatReadContainer = ({ fetchRead, readIndex }) => {
+  const fetchReadMemoized = useCallback(() => fetchRead(readIndex), [fetchRead, readIndex])
+  const { isLoading, response: read, error } = useRequest(fetchReadMemoized)
+
+  if (isLoading) {
+    return (
+      <Delayed>
+        <StatusMessage>Loading read...</StatusMessage>
+      </Delayed>
+    )
+  }
+
+  if (error) {
+    return <StatusMessage>Unable to load read</StatusMessage>
+  }
+
+  return <ShortTandemRepeatRead read={read} />
+}
+
+ShortTandemRepeatReadContainer.propTypes = {
+  fetchRead: PropTypes.func.isRequired,
+  readIndex: PropTypes.number.isRequired,
+}
+
+const fetchNumReads = ({ datasetId, shortTandemRepeatId, filter }) => {
+  return fetch('/reads/', {
+    body: JSON.stringify({
+      query: `
+        query GetShortTandemRepeatNumReads($shortTandemRepeatId: String!, $datasetId: DatasetId!, $filter: ShortTandemRepeatReadsFilter) {
+          short_tandem_repeat_reads(id: $shortTandemRepeatId, dataset: $datasetId, filter: $filter) {
+            num_reads
+          }
+        }
+      `,
+      variables: {
+        datasetId,
+        shortTandemRepeatId,
+        filter,
+      },
+    }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(response => response.data.short_tandem_repeat_reads.num_reads)
+}
 
 const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }) => {
   return fetch('/reads/', {
@@ -118,108 +155,57 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }) =
     .then(response => response.data.short_tandem_repeat_reads.reads)
 }
 
-const ReadsList = styled.ul`
-  padding: 0;
-  margin: 0 0 1em;
-  list-style-type: none;
-
-  li {
-    padding: 0.5em 0;
-    border-bottom: 1px solid #e2e2e2;
-  }
-`
-
-const ShortTandemRepeatReadsPage = ({
-  datasetId,
-  shortTandemRepeatId,
-  filter,
-  pageIndex,
-  pageSize,
-}) => {
-  const fetchReadsMemoized = useCallback(
-    () =>
-      fetchReads({
-        datasetId,
-        shortTandemRepeatId,
-        filter,
-        limit: pageSize,
-        offset: pageIndex * pageSize,
-      }),
-    [datasetId, shortTandemRepeatId, filter, pageSize, pageIndex]
-  )
-  const { isLoading, response: reads, error } = useRequest(fetchReadsMemoized)
-
-  if (isLoading) {
-    return (
-      <Delayed>
-        <StatusMessage>Loading read data...</StatusMessage>
-      </Delayed>
-    )
-  }
-
-  if (error) {
-    return <StatusMessage>Unable to load read data</StatusMessage>
-  }
-
-  return (
-    <ReadsList>
-      {reads.map(read => (
-        <li key={read.path}>
-          <ShortTandemRepeatRead read={read} />
-        </li>
-      ))}
-    </ReadsList>
-  )
-}
-
-ShortTandemRepeatReadsPage.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  shortTandemRepeatId: PropTypes.string.isRequired,
-  filter: ShortTandemRepeatsReadFilterPropType.isRequired,
-  pageIndex: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
-}
-
-const fetchNumReads = ({ datasetId, shortTandemRepeatId, filter }) => {
-  return fetch('/reads/', {
-    body: JSON.stringify({
-      query: `
-        query GetShortTandemRepeatNumReads($shortTandemRepeatId: String!, $datasetId: DatasetId!, $filter: ShortTandemRepeatReadsFilter) {
-          short_tandem_repeat_reads(id: $shortTandemRepeatId, dataset: $datasetId, filter: $filter) {
-            num_reads
-          }
-        }
-      `,
-      variables: {
-        datasetId,
-        shortTandemRepeatId,
-        filter,
-      },
-    }),
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(response => response.data.short_tandem_repeat_reads.num_reads)
-}
-
-const ShortTandemRepeatReadsPages = ({ datasetId, shortTandemRepeatId, filter }) => {
+const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, filter }) => {
   const fetchNumReadsMemoized = useCallback(
-    () => fetchNumReads({ datasetId, shortTandemRepeatId, filter }),
-    [datasetId, shortTandemRepeatId, filter]
+    () => fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }),
+    [datasetId, shortTandemRepeat, filter]
   )
   const { isLoading, response: numReads, error } = useRequest(fetchNumReadsMemoized)
 
-  const [pageIndex, setPageIndex] = useState(0)
+  const readsStore = useRef(new Map())
+  const [readIndex, setReadIndex] = useState(0)
+
   useEffect(() => {
-    setPageIndex(0)
-  }, [shortTandemRepeatId, filter])
+    readsStore.current.clear()
+    setReadIndex(0)
+  }, [shortTandemRepeat, filter])
 
-  const pageSize = 5
+  const fetchRead = useMemo(() => {
+    let timer = null
+    return readIndexToFetch => {
+      const storedRead = readsStore.current.get(readIndexToFetch)
+      if (storedRead) {
+        return Promise.resolve(storedRead)
+      }
 
-  const numPages = Math.ceil(numReads / pageSize)
+      const numReadsToFetch = 50
+      return new Promise((resolve, reject) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          const readsPromise = fetchReads({
+            datasetId,
+            shortTandemRepeatId: shortTandemRepeat.id,
+            filter,
+            limit: numReadsToFetch,
+            offset: readIndexToFetch,
+          }).then(null, reject)
+
+          Array.from(new Array(numReadsToFetch)).forEach((_, i) => {
+            readsStore.current.set(
+              readIndexToFetch + i,
+              readsPromise.then(fetchedReads => {
+                const read = i < fetchedReads.length ? fetchedReads[i] : null
+                readsStore.current.set(readIndexToFetch + i, read)
+                return read
+              })
+            )
+          })
+
+          resolve(readsStore.current.get(readIndexToFetch))
+        }, 150)
+      })
+    }
+  }, [datasetId, shortTandemRepeat, filter])
 
   if (isLoading) {
     return (
@@ -235,180 +221,45 @@ const ShortTandemRepeatReadsPages = ({ datasetId, shortTandemRepeatId, filter })
 
   return (
     <>
-      <div style={{ minHeight: pageSize * 500 }}>
-        <ShortTandemRepeatReadsPage
-          datasetId={datasetId}
-          shortTandemRepeatId={shortTandemRepeatId}
-          filter={filter}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-        />
-      </div>
-      <ControlSection>
+      <ControlSection style={{ marginBottom: '1em' }}>
         <Button
           onClick={() => {
-            if (pageIndex > 0) {
-              setPageIndex(previousPageIndex => previousPageIndex - 1)
+            if (readIndex > 0) {
+              setReadIndex(previousReadIndex => previousReadIndex - 1)
             }
           }}
         >
-          Previous page
+          Previous sample
         </Button>
         <span>
-          Showing page{' '}
+          Showing sample{' '}
           <Input
             type="number"
-            value={pageIndex + 1}
+            value={readIndex + 1}
             min={1}
-            max={numPages}
+            max={numReads}
             onChange={e => {
-              setPageIndex(Math.max(0, Math.min(numPages - 1, Number(e.target.value) - 1)))
+              setReadIndex(Math.max(0, Math.min(numReads - 1, Number(e.target.value) - 1)))
             }}
             style={{ width: '10ch' }}
           />{' '}
-          of {numPages.toLocaleString()}
+          of {numReads.toLocaleString()}
         </span>
 
         <Button
           onClick={() => {
-            if (pageIndex < numPages - 1) {
-              setPageIndex(previousPageIndex => previousPageIndex + 1)
+            if (readIndex < numReads - 1) {
+              setReadIndex(previousReadIndex => previousReadIndex + 1)
             }
           }}
         >
-          Next page
+          Next sample
         </Button>
       </ControlSection>
-    </>
-  )
-}
 
-ShortTandemRepeatReadsPages.propTypes = {
-  datasetId: PropTypes.string.isRequired,
-  shortTandemRepeatId: PropTypes.string.isRequired,
-  filter: ShortTandemRepeatsReadFilterPropType.isRequired,
-}
-
-const SubmitButton = styled(PrimaryButton).attrs({ type: 'submit' })``
-
-const ShortTandemRepeatReadsFilterControl = ({ defaultValue, value, onChange }) => {
-  const [filter, setFilter] = useState(value)
-
-  return (
-    <form
-      onSubmit={e => {
-        e.preventDefault()
-        onChange(filter)
-      }}
-      style={{ borderBottom: '1px solid #e2e2e2', marginBottom: '1em' }}
-    >
-      <div style={{ marginBottom: '1em' }}>
-        <label htmlFor="short-tandem-repeat-reads-filter-population">
-          Population:{' '}
-          <Select
-            id="short-tandem-repeat-reads-filter-population"
-            value={filter.population || ''}
-            onChange={e => {
-              setFilter({
-                ...filter,
-                population: e.target.value || null,
-              })
-            }}
-          >
-            <option value="">Global</option>
-            {Object.keys(GNOMAD_POPULATION_NAMES)
-              .filter(popId => !popId.includes('_'))
-              .sort((pop1Id, pop2Id) =>
-                GNOMAD_POPULATION_NAMES[pop1Id].localeCompare(GNOMAD_POPULATION_NAMES[pop2Id])
-              )
-              .map(popId => (
-                <option key={popId} value={popId}>
-                  {GNOMAD_POPULATION_NAMES[popId]}
-                </option>
-              ))}
-          </Select>
-        </label>{' '}
-        <label htmlFor="short-tandem-repeat-reads-filter-sex">
-          Sex:{' '}
-          <Select
-            id="short-tandem-repeat-reads-filter-sex"
-            value={filter.sex || ''}
-            onChange={e => {
-              setFilter({
-                ...filter,
-                sex: e.target.value || null,
-              })
-            }}
-          >
-            <option value="">All</option>
-            <option value="XX">XX</option>
-            <option value="XY">XY</option>
-          </Select>
-        </label>
+      <div style={{ minHeight: 800 }}>
+        <ShortTandemRepeatReadContainer fetchRead={fetchRead} readIndex={readIndex} />
       </div>
-      <div style={{ marginBottom: '1em' }}>
-        <SubmitButton>Apply</SubmitButton>{' '}
-        <Button
-          onClick={() => {
-            setFilter(defaultValue)
-            onChange(defaultValue)
-          }}
-        >
-          Reset
-        </Button>
-      </div>
-    </form>
-  )
-}
-
-ShortTandemRepeatReadsFilterControl.propTypes = {
-  defaultValue: ShortTandemRepeatsReadFilterPropType.isRequired,
-  value: ShortTandemRepeatsReadFilterPropType.isRequired,
-  onChange: PropTypes.func.isRequired,
-}
-
-const getFilterDescription = filter => {
-  if (!filter.population && !filter.sex) {
-    return 'all'
-  }
-  if (filter.population && !filter.sex) {
-    return GNOMAD_POPULATION_NAMES[filter.population]
-  }
-  if (!filter.population && filter.sex) {
-    return filter.sex
-  }
-  return `${GNOMAD_POPULATION_NAMES[filter.population]} ${filter.sex}`
-}
-
-const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, initialFilter }) => {
-  const [filter, setFilter] = useState(
-    initialFilter || {
-      population: null,
-      sex: null,
-      alleles: [],
-    }
-  )
-
-  return (
-    <>
-      <p>Currently showing reads for {getFilterDescription(filter)} samples.</p>
-      <h3>Select samples</h3>
-      <ShortTandemRepeatReadsFilterControl
-        defaultValue={
-          initialFilter || {
-            population: null,
-            sex: null,
-            alleles: [],
-          }
-        }
-        value={filter}
-        onChange={setFilter}
-      />
-      <ShortTandemRepeatReadsPages
-        datasetId={datasetId}
-        shortTandemRepeatId={shortTandemRepeat.id}
-        filter={filter}
-      />
     </>
   )
 }
@@ -416,11 +267,17 @@ const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, initialFilter })
 ShortTandemRepeatReads.propTypes = {
   datasetId: PropTypes.string.isRequired,
   shortTandemRepeat: ShortTandemRepeatPropType.isRequired,
-  initialFilter: ShortTandemRepeatsReadFilterPropType,
-}
-
-ShortTandemRepeatReads.defaultProps = {
-  initialFilter: undefined,
+  filter: PropTypes.shape({
+    population: PropTypes.string,
+    sex: PropTypes.string,
+    alleles: PropTypes.arrayOf(
+      PropTypes.shape({
+        repeat_unit: PropTypes.string,
+        min_repeats: PropTypes.number,
+        max_repeat: PropTypes.number,
+      })
+    ),
+  }).isRequired,
 }
 
 export default ShortTandemRepeatReads
