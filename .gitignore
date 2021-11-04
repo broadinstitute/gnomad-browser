@@ -6,6 +6,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# pyenv
+.python-version
+
 # Logs
 yarn-debug.log*
 yarn-error.log*
