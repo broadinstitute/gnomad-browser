@@ -32,14 +32,14 @@ const ShortTandemRepeatRead = ({ read }) => {
         </AttributeList.Item>
         <AttributeList.Item label="Sex">{read.sex}</AttributeList.Item>
         <AttributeList.Item label="Allele 1">
-          {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} (
+          {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
           {read.alleles[0].repeats_confidence_interval.lower}-
-          {read.alleles[0].repeats_confidence_interval.upper}) times
+          {read.alleles[0].repeats_confidence_interval.upper} confidence interval
         </AttributeList.Item>
         <AttributeList.Item label="Allele 2">
-          {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} (
+          {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
           {read.alleles[1].repeats_confidence_interval.lower}-
-          {read.alleles[1].repeats_confidence_interval.upper}) times
+          {read.alleles[1].repeats_confidence_interval.upper} confidence interval
         </AttributeList.Item>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
