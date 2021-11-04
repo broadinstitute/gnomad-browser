@@ -184,6 +184,18 @@ def _prepare_genotype_distribution_histogram(histogram):
     )
 
 
+def _filter_genotype_distribution_histogram(histogram, repeat_units=None, population=None, sex=None):
+    predicates = []
+    if repeat_units:
+        predicates.append(lambda key: key.split("/", maxsplit=2)[2] == repeat_units)
+    if population:
+        predicates.append(lambda key: key.split("/")[0] == population)
+    if sex:
+        predicates.append(lambda key: key.split("/")[1] == sex)
+
+    return {k: v for k, v in histogram.items() if all(predicate(k) for predicate in predicates)}
+
+
 def _prepare_genotype_distribution_populations(locus):
     populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountScatterPlot"].keys()))
 
@@ -195,11 +207,9 @@ def _prepare_genotype_distribution_populations(locus):
                         "id": population,
                         "distribution": _prepare_genotype_distribution_histogram(
                             _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountScatterPlot"].items()
-                                    if k.split("/")[0] == population
-                                }
+                                _filter_genotype_distribution_histogram(
+                                    locus["AlleleCountScatterPlot"], population=population
+                                )
                             )
                         ),
                     },
@@ -207,11 +217,9 @@ def _prepare_genotype_distribution_populations(locus):
                         "id": f"{population}_XX",
                         "distribution": _prepare_genotype_distribution_histogram(
                             _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountScatterPlot"].items()
-                                    if k.split("/")[0] == population and k.split("/")[1] == "XX"
-                                }
+                                _filter_genotype_distribution_histogram(
+                                    locus["AlleleCountScatterPlot"], population=population, sex="XX"
+                                )
                             )
                         ),
                     },
@@ -219,11 +227,9 @@ def _prepare_genotype_distribution_populations(locus):
                         "id": f"{population}_XY",
                         "distribution": _prepare_genotype_distribution_histogram(
                             _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountScatterPlot"].items()
-                                    if k.split("/")[0] == population and k.split("/")[1] == "XY"
-                                }
+                                _filter_genotype_distribution_histogram(
+                                    locus["AlleleCountScatterPlot"], population=population, sex="XY"
+                                )
                             )
                         ),
                     },
@@ -236,7 +242,7 @@ def _prepare_genotype_distribution_populations(locus):
                 "id": sex,
                 "distribution": _prepare_genotype_distribution_histogram(
                     _get_total_histogram(
-                        {k: v for k, v in locus["AlleleCountScatterPlot"].items() if k.split("/")[1] == sex}
+                        _filter_genotype_distribution_histogram(locus["AlleleCountScatterPlot"], sex=sex)
                     )
                 ),
             }
@@ -258,11 +264,9 @@ def _prepare_genotype_distribution_repeat_units(locus):
                 "repeat_units": repeat_unit_pair.split("/"),
                 "distribution": _prepare_genotype_distribution_histogram(
                     _get_total_histogram(
-                        {
-                            k: v
-                            for k, v in locus["AlleleCountScatterPlot"].items()
-                            if k.split("/", maxsplit=2)[2] == repeat_unit_pair
-                        }
+                        _filter_genotype_distribution_histogram(
+                            locus["AlleleCountScatterPlot"], repeat_units=repeat_unit_pair
+                        )
                     )
                 ),
                 "populations": sorted(
@@ -273,25 +277,38 @@ def _prepare_genotype_distribution_repeat_units(locus):
                                     "id": population,
                                     "distribution": _prepare_genotype_distribution_histogram(
                                         _get_total_histogram(
-                                            {
-                                                k: v
-                                                for k, v in locus["AlleleCountScatterPlot"].items()
-                                                if k.split("/", maxsplit=2)[2] == repeat_unit_pair
-                                                and k.split("/")[0] == population
-                                            }
+                                            _filter_genotype_distribution_histogram(
+                                                locus["AlleleCountScatterPlot"],
+                                                repeat_units=repeat_unit_pair,
+                                                population=population,
+                                            )
                                         )
                                     ),
                                 },
                                 {
                                     "id": f"{population}_XX",
                                     "distribution": _prepare_genotype_distribution_histogram(
-                                        locus["AlleleCountScatterPlot"].get(f"{population}/XX/{repeat_unit_pair}", {})
+                                        _get_total_histogram(
+                                            _filter_genotype_distribution_histogram(
+                                                locus["AlleleCountScatterPlot"],
+                                                repeat_units=repeat_unit_pair,
+                                                population=population,
+                                                sex="XX",
+                                            )
+                                        )
                                     ),
                                 },
                                 {
                                     "id": f"{population}_XY",
                                     "distribution": _prepare_genotype_distribution_histogram(
-                                        locus["AlleleCountScatterPlot"].get(f"{population}/XY/{repeat_unit_pair}", {})
+                                        _get_total_histogram(
+                                            _filter_genotype_distribution_histogram(
+                                                locus["AlleleCountScatterPlot"],
+                                                repeat_units=repeat_unit_pair,
+                                                population=population,
+                                                sex="XY",
+                                            )
+                                        )
                                     ),
                                 },
                             ]
@@ -303,11 +320,9 @@ def _prepare_genotype_distribution_repeat_units(locus):
                             "id": sex,
                             "distribution": _prepare_genotype_distribution_histogram(
                                 _get_total_histogram(
-                                    {
-                                        k: v
-                                        for k, v in locus["AlleleCountScatterPlot"].items()
-                                        if k.split("/", maxsplit=2)[2] == repeat_unit_pair and k.split("/")[1] == sex
-                                    }
+                                    _filter_genotype_distribution_histogram(
+                                        locus["AlleleCountScatterPlot"], repeat_units=repeat_unit_pair, sex=sex
+                                    )
                                 )
                             ),
                         }
