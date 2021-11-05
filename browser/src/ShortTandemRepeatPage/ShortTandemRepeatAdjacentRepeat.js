@@ -2,7 +2,7 @@ import { max } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 
-import { Select } from '@gnomad/ui'
+import { Modal, Select } from '@gnomad/ui'
 
 import ControlSection from '../VariantPage/ControlSection'
 
@@ -10,6 +10,7 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
 import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
 import {
@@ -38,6 +39,13 @@ const ShortTandemRepeatAdjacentRepeat = ({
       ? adjacentRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
       : ''
   )
+
+  const selectedGenotypeDistribution = getSelectedGenotypeDistribution(adjacentRepeat, {
+    selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+    selectedPopulationId,
+  })
+
+  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
   return (
     <section style={{ marginBottom: '2em' }}>
@@ -110,10 +118,12 @@ const ShortTandemRepeatAdjacentRepeat = ({
           max(adjacentRepeat.genotype_distribution.distribution, d => d[0]),
           max(adjacentRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
-          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-          selectedPopulationId,
-        })}
+        genotypeDistribution={selectedGenotypeDistribution}
+        onSelectBin={bin => {
+          if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
+            setSelectedGenotypeDistributionBin(bin)
+          }
+        }}
       />
 
       <ControlSection>
@@ -130,6 +140,22 @@ const ShortTandemRepeatAdjacentRepeat = ({
           onChange={setSelectedGenotypeDistributionRepeatUnits}
         />
       </ControlSection>
+
+      {selectedGenotypeDistributionBin && (
+        <Modal
+          title={selectedGenotypeDistributionBin.label}
+          size="large"
+          initialFocusOnButton={false}
+          onRequestClose={() => {
+            setSelectedGenotypeDistributionBin(null)
+          }}
+        >
+          <ShortTandemRepeatGenotypeDistributionBinDetails
+            genotypeDistribution={selectedGenotypeDistribution}
+            bin={selectedGenotypeDistributionBin}
+          />
+        </Modal>
+      )}
     </section>
   )
 }
