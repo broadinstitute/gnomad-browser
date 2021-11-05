@@ -160,30 +160,32 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
           />
 
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {data.map(d => {
-              return (
-                <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
-                  <TooltipAnchor
-                    tooltip={
-                      <>
-                        {d.label}
-                        <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
-                      </>
-                    }
-                  >
-                    <rect
-                      x={xScale(d.xBinIndex)}
-                      y={yScale(d.yBinIndex)}
-                      width={xBandwidth}
-                      height={yBandwidth}
-                      fill="#73ab3d"
-                      opacity={d.count === 0 ? 0 : opacityScale(d.count)}
-                      stroke="#333"
-                    />
-                  </TooltipAnchor>
-                </React.Fragment>
-              )
-            })}
+            {data
+              .filter(d => d.count !== 0)
+              .map(d => {
+                return (
+                  <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
+                    <TooltipAnchor
+                      tooltip={
+                        <>
+                          {d.label}
+                          <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
+                        </>
+                      }
+                    >
+                      <rect
+                        x={xScale(d.xBinIndex)}
+                        y={yScale(d.yBinIndex)}
+                        width={xBandwidth}
+                        height={yBandwidth}
+                        fill="#73ab3d"
+                        opacity={d.count === 0 ? 0 : opacityScale(d.count)}
+                        stroke="#333"
+                      />
+                    </TooltipAnchor>
+                  </React.Fragment>
+                )
+              })}
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
