@@ -22,7 +22,7 @@ const labelProps = {
 }
 
 const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
-  ({ maxRepeats, genotypeDistribution, size: { width }, xRanges, yRanges }) => {
+  ({ axisLabels, maxRepeats, genotypeDistribution, size: { width }, xRanges, yRanges }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -55,7 +55,7 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
           : `${yBinIndex * yBinSize} - ${yBinIndex * yBinSize + yBinSize - 1}`
 
       return {
-        label: `${xLabel} repeats / ${yLabel} repeats`,
+        label: `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
         xBinIndex,
         yBinIndex,
         count: 0,
@@ -109,7 +109,7 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
       <GraphWrapper>
         <svg height={height} width={width}>
           <AxisBottom
-            label="Repeats in allele 1"
+            label={`Repeats in ${axisLabels[0]}`}
             labelOffset={xBinSize === 1 ? 10 : 40}
             labelProps={labelProps}
             left={margin.left}
@@ -142,7 +142,7 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
             top={height - margin.bottom}
           />
           <AxisLeft
-            label="Repeats in allele 2"
+            label={`Repeats in ${axisLabels[1]}`}
             labelOffset={60}
             labelProps={labelProps}
             left={margin.left}
@@ -164,9 +164,12 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
               return (
                 <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
                   <TooltipAnchor
-                    tooltip={`${d.label}: ${d.count.toLocaleString()} individual${
-                      d.count === 1 ? '' : 's'
-                    }`}
+                    tooltip={
+                      <>
+                        {d.label}
+                        <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
+                      </>
+                    }
                   >
                     <rect
                       x={xScale(d.xBinIndex)}
@@ -334,6 +337,7 @@ ShortTandemRepeatRepeatGenotypeDistributionPlot.displayName =
   'ShortTandemRepeatRepeatGenotypeDistributionPlot'
 
 ShortTandemRepeatRepeatGenotypeDistributionPlot.propTypes = {
+  axisLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   genotypeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   xRanges: PropTypes.arrayOf(
