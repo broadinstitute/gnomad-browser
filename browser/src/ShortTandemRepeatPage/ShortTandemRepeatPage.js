@@ -335,6 +335,18 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       )}
       <h2>Genotype Distribution</h2>
       <ShortTandemRepeatGenotypeDistributionPlot
+        axisLabels={(() => {
+          if (selectedGenotypeDistributionRepeatUnits) {
+            const repeatUnits = selectedGenotypeDistributionRepeatUnits.split(' / ')
+            if (repeatUnits[0] === repeatUnits[1]) {
+              return shortTandemRepeat.genotype_distribution.repeat_units.length === 1
+                ? ['longer allele', 'shorter allele']
+                : [`longer ${repeatUnits[0]} allele`, `shorter ${repeatUnits[1]} allele`]
+            }
+            return repeatUnits.map(repeatUnit => `${repeatUnit} allele`)
+          }
+          return ['longer allele', 'shorter allele']
+        })()}
         maxRepeats={[
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[0]),
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[1]),
