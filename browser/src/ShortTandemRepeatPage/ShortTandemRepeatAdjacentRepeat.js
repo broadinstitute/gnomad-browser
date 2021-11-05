@@ -83,7 +83,9 @@ const ShortTandemRepeatAdjacentRepeat = ({
             {adjacentRepeat.repeat_units.length > 1 && <option value="">All</option>}
             {adjacentRepeat.repeat_units.map(repeatUnit => (
               <option key={repeatUnit} value={repeatUnit}>
-                {repeatUnit}
+                {repeatUnit === adjacentRepeat.reference_repeat_unit
+                  ? `${repeatUnit} (reference)`
+                  : repeatUnit}
               </option>
             ))}
           </Select>
@@ -164,11 +166,17 @@ const ShortTandemRepeatAdjacentRepeat = ({
             {adjacentRepeat.genotype_distribution.repeat_units.length > 1 && (
               <option value="">All</option>
             )}
-            {adjacentRepeat.genotype_distribution.repeat_units.map(repeatUnit => {
-              const value = repeatUnit.repeat_units.join(' / ')
+            {adjacentRepeat.genotype_distribution.repeat_units.map(repeatUnitDistribution => {
+              const value = repeatUnitDistribution.repeat_units.join(' / ')
               return (
                 <option key={value} value={value}>
-                  {value}
+                  {repeatUnitDistribution.repeat_units
+                    .map(repeatUnit =>
+                      repeatUnit === adjacentRepeat.reference_repeat_unit
+                        ? `${repeatUnit} (reference)`
+                        : repeatUnit
+                    )
+                    .join(' / ')}
                 </option>
               )
             })}
