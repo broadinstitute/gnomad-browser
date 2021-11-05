@@ -217,7 +217,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
             {xRanges
               .filter(range => range.start !== range.stop)
               .filter(range => range.start <= maxRepeats[0])
-              .map((range, rangeIndex) => {
+              .map((range, rangeIndex, ranges) => {
                 const startBinIndex = Math.floor(range.start / xBinSize)
                 const startX =
                   xScale(startBinIndex) +
@@ -246,11 +246,22 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 && (
+                    {range.start !== 0 &&
+                      (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
+                        <line
+                          x1={startX}
+                          y1={margin.top - 10}
+                          x2={startX}
+                          y2={margin.top + plotHeight}
+                          stroke="#333"
+                          strokeDasharray="3 3"
+                        />
+                      )}
+                    {stopX !== plotWidth && (
                       <line
-                        x1={startX}
+                        x1={stopX}
                         y1={margin.top - 10}
-                        x2={startX}
+                        x2={stopX}
                         y2={margin.top + plotHeight}
                         stroke="#333"
                         strokeDasharray="3 3"
@@ -293,7 +304,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
             {yRanges
               .filter(range => range.start !== range.stop)
               .filter(range => range.start <= maxRepeats[1])
-              .map(range => {
+              .map((range, rangeIndex, ranges) => {
                 const startBinIndex = Math.floor(range.start / yBinSize)
                 const startY =
                   yScale(startBinIndex) +
@@ -311,12 +322,23 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 && (
+                    {range.start !== 0 &&
+                      (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
+                        <line
+                          x1={0}
+                          y1={startY}
+                          x2={plotWidth + 10}
+                          y2={startY}
+                          stroke="#333"
+                          strokeDasharray="3 3"
+                        />
+                      )}
+                    {stopY !== 0 && (
                       <line
                         x1={0}
-                        y1={startY}
+                        y1={stopY}
                         x2={plotWidth + 10}
-                        y2={startY}
+                        y2={stopY}
                         stroke="#333"
                         strokeDasharray="3 3"
                       />

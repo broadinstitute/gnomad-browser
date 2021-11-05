@@ -248,11 +248,22 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 && (
+                    {range.start !== 0 &&
+                      (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
+                        <line
+                          x1={startX}
+                          y1={margin.top - 10}
+                          x2={startX}
+                          y2={margin.top + plotHeight}
+                          stroke="#333"
+                          strokeDasharray="3 3"
+                        />
+                      )}
+                    {stopX !== plotWidth && (
                       <line
-                        x1={startX}
+                        x1={stopX}
                         y1={margin.top - 10}
-                        x2={startX}
+                        x2={stopX}
                         y2={margin.top + plotHeight}
                         stroke="#333"
                         strokeDasharray="3 3"
