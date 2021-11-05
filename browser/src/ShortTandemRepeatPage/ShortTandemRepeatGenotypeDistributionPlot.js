@@ -21,7 +21,7 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
+const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
   ({ axisLabels, maxRepeats, genotypeDistribution, size: { width }, xRanges, yRanges }) => {
     const height = Math.min(width, 500)
 
@@ -335,10 +335,9 @@ const ShortTandemRepeatRepeatGenotypeDistributionPlot = withSize()(
   }
 )
 
-ShortTandemRepeatRepeatGenotypeDistributionPlot.displayName =
-  'ShortTandemRepeatRepeatGenotypeDistributionPlot'
+ShortTandemRepeatGenotypeDistributionPlot.displayName = 'ShortTandemRepeatGenotypeDistributionPlot'
 
-ShortTandemRepeatRepeatGenotypeDistributionPlot.propTypes = {
+ShortTandemRepeatGenotypeDistributionPlot.propTypes = {
   axisLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
   genotypeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
@@ -358,9 +357,9 @@ ShortTandemRepeatRepeatGenotypeDistributionPlot.propTypes = {
   ),
 }
 
-ShortTandemRepeatRepeatGenotypeDistributionPlot.defaultProps = {
+ShortTandemRepeatGenotypeDistributionPlot.defaultProps = {
   xRanges: [],
   yRanges: [],
 }
 
-export default ShortTandemRepeatRepeatGenotypeDistributionPlot
+export default ShortTandemRepeatGenotypeDistributionPlot
