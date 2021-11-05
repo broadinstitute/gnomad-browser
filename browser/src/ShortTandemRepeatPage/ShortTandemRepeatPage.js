@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, Button, ExternalLink, List, ListItem, Page, Select } from '@gnomad/ui'
+import { BaseTable, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -18,6 +18,7 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
 import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatReads from './ShortTandemRepeatReads'
 import {
@@ -98,6 +99,13 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         stop: classification.max !== null ? classification.max + 1 : Infinity,
       }
     })
+
+  const selectedGenotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeat, {
+    selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+    selectedPopulationId,
+  })
+
+  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
   return (
     <>
@@ -281,6 +289,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </label>
         </ControlSection>
       )}
+
       <h2>Genotype Distribution</h2>
       <ShortTandemRepeatGenotypeDistributionPlot
         axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
@@ -290,10 +299,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[0]),
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
-          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-          selectedPopulationId,
-        })}
+        genotypeDistribution={selectedGenotypeDistribution}
         xRanges={
           selectedGenotypeDistributionRepeatUnits === '' ||
           (repeatUnitsByClassification.pathogenic || []).includes(
@@ -310,6 +316,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             ? plotRanges
             : []
         }
+        onSelectBin={bin => {
+          if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
+            setSelectedGenotypeDistributionBin(bin)
+          }
+        }}
       />
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
@@ -348,6 +359,22 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             </Select>
           </label>
         </ControlSection>
+      )}
+
+      {selectedGenotypeDistributionBin && (
+        <Modal
+          title={selectedGenotypeDistributionBin.label}
+          size="large"
+          initialFocusOnButton={false}
+          onRequestClose={() => {
+            setSelectedGenotypeDistributionBin(null)
+          }}
+        >
+          <ShortTandemRepeatGenotypeDistributionBinDetails
+            genotypeDistribution={selectedGenotypeDistribution}
+            bin={selectedGenotypeDistributionBin}
+          />
+        </Modal>
       )}
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (

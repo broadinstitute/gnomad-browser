@@ -22,7 +22,15 @@ const labelProps = {
 }
 
 const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
-  ({ axisLabels, maxRepeats, genotypeDistribution, size: { width }, xRanges, yRanges }) => {
+  ({
+    axisLabels,
+    maxRepeats,
+    genotypeDistribution,
+    size: { width },
+    xRanges,
+    yRanges,
+    onSelectBin,
+  }) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -45,6 +53,15 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       const xBinIndex = Math.floor(n / yNumBins)
       const yBinIndex = n % yNumBins
 
+      const xRange =
+        xBinSize === 1
+          ? [xBinIndex, xBinIndex]
+          : [xBinIndex * xBinSize, xBinIndex * xBinSize + xBinSize - 1]
+      const yRange =
+        yBinSize === 1
+          ? [yBinIndex, yBinIndex]
+          : [yBinIndex * yBinSize, yBinIndex * yBinSize + yBinSize - 1]
+
       const xLabel =
         xBinSize === 1
           ? `${xBinIndex}`
@@ -58,6 +75,8 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
         label: `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
         xBinIndex,
         yBinIndex,
+        xRange,
+        yRange,
         count: 0,
       }
     })
@@ -170,6 +189,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                         <>
                           {d.label}
                           <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
+                          {(d.xRange[0] !== d.xRange[1] || d.yRange[0] !== d.yRange[1]) && (
+                            <p style={{ marginBottom: 0 }}>Click for details</p>
+                          )}
                         </>
                       }
                     >
@@ -181,6 +203,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                         fill="#73ab3d"
                         opacity={d.count === 0 ? 0 : opacityScale(d.count)}
                         stroke="#333"
+                        onClick={() => {
+                          onSelectBin(d)
+                        }}
                       />
                     </TooltipAnchor>
                   </React.Fragment>
@@ -355,11 +380,13 @@ ShortTandemRepeatGenotypeDistributionPlot.propTypes = {
       label: PropTypes.string.isRequired,
     })
   ),
+  onSelectBin: PropTypes.func,
 }
 
 ShortTandemRepeatGenotypeDistributionPlot.defaultProps = {
   xRanges: [],
   yRanges: [],
+  onSelectBin: () => {},
 }
 
 export default ShortTandemRepeatGenotypeDistributionPlot
