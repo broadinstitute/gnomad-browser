@@ -284,7 +284,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                 <optgroup label="Individual">
                   {shortTandemRepeat.repeat_units.map(repeatUnit => (
                     <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                      {repeatUnit.repeat_unit}
+                      {repeatUnit.repeat_unit === shortTandemRepeat.reference_repeat_unit
+                        ? `${repeatUnit.repeat_unit} (reference)`
+                        : repeatUnit.repeat_unit}
                     </option>
                   ))}
                 </optgroup>
@@ -408,11 +410,17 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             {shortTandemRepeat.genotype_distribution.repeat_units.length > 1 && (
               <option value="">All</option>
             )}
-            {shortTandemRepeat.genotype_distribution.repeat_units.map(repeatUnit => {
-              const value = repeatUnit.repeat_units.join(' / ')
+            {shortTandemRepeat.genotype_distribution.repeat_units.map(repeatUnitDistribution => {
+              const value = repeatUnitDistribution.repeat_units.join(' / ')
               return (
                 <option key={value} value={value}>
-                  {value}
+                  {repeatUnitDistribution.repeat_units
+                    .map(repeatUnit =>
+                      repeatUnit === shortTandemRepeat.reference_repeat_unit
+                        ? `${repeatUnit} (reference)`
+                        : repeatUnit
+                    )
+                    .join(' / ')}
                 </option>
               )
             })}
