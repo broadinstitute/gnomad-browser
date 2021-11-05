@@ -187,13 +187,30 @@ def _prepare_genotype_distribution_histogram(histogram):
 def _filter_genotype_distribution_histogram(histogram, repeat_units=None, population=None, sex=None):
     predicates = []
     if repeat_units:
-        predicates.append(lambda key: key.split("/", maxsplit=2)[2] == repeat_units)
+        predicates.append(
+            lambda key: tuple(sorted(key.split("/")[2:4])) in (repeat_units, tuple(reversed(repeat_units)))
+        )
     if population:
         predicates.append(lambda key: key.split("/")[0] == population)
     if sex:
         predicates.append(lambda key: key.split("/")[1] == sex)
 
-    return {k: v for k, v in histogram.items() if all(predicate(k) for predicate in predicates)}
+    filtered_histogram = {k: v for k, v in histogram.items() if all(predicate(k) for predicate in predicates)}
+
+    if not repeat_units:
+        return filtered_histogram
+
+    return dict(
+        itertools.chain(
+            ((k, v) for k, v in filtered_histogram.items() if tuple(k.split("/")[2:4]) == repeat_units),
+            (
+                (f"{k}-reversed", {"/".join(reversed(vk.split("/"))): vv for vk, vv in v.items()})
+                for k, v in filtered_histogram.items()
+                if tuple(k.split("/")[2:4]) == tuple(reversed(repeat_units))
+                and tuple(k.split("/")[2:4]) != repeat_units
+            ),
+        )
+    )
 
 
 def _prepare_genotype_distribution_populations(locus):
@@ -255,13 +272,15 @@ def _prepare_genotype_distribution_populations(locus):
 
 
 def _prepare_genotype_distribution_repeat_units(locus):
-    repeat_unit_pairs = sorted(set(key.split("/", maxsplit=2)[2] for key in locus["AlleleCountScatterPlot"].keys()))
+    repeat_unit_pairs = sorted(
+        set(tuple(sorted(key.split("/")[2:4])) for key in locus["AlleleCountScatterPlot"].keys())
+    )
     populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountScatterPlot"].keys()))
 
     distributions = sorted(
         [
             {
-                "repeat_units": repeat_unit_pair.split("/"),
+                "repeat_units": list(repeat_unit_pair),
                 "distribution": _prepare_genotype_distribution_histogram(
                     _get_total_histogram(
                         _filter_genotype_distribution_histogram(
