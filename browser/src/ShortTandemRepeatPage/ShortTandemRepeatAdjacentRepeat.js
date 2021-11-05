@@ -10,7 +10,13 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatAdjacentRepeatAttributes from './ShortTandemRepeatAdjacentRepeatAttributes'
+import {
+  getSelectedAlleleSizeDistribution,
+  getSelectedGenotypeDistribution,
+  getGenotypeDistributionPlotAxisLabels,
+} from './shortTandemRepeatHelpers'
 
 const ShortTandemRepeatAdjacentRepeat = ({
   adjacentRepeat,
@@ -45,21 +51,10 @@ const ShortTandemRepeatAdjacentRepeat = ({
             adjacentRepeat.allele_size_distribution.distribution.length - 1
           ][0]
         }
-        alleleSizeDistribution={
-          // eslint-disable-next-line no-nested-ternary
-          selectedPopulationId === ''
-            ? selectedRepeatUnit
-              ? adjacentRepeat.allele_size_distribution.repeat_units.find(
-                  repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
-                ).distribution
-              : adjacentRepeat.allele_size_distribution.distribution
-            : (selectedRepeatUnit
-                ? adjacentRepeat.allele_size_distribution.repeat_units.find(
-                    repeatUnit => repeatUnit.repeat_unit === selectedRepeatUnit
-                  )
-                : adjacentRepeat.allele_size_distribution
-              ).populations.find(pop => pop.id === selectedPopulationId).distribution
-        }
+        alleleSizeDistribution={getSelectedAlleleSizeDistribution(adjacentRepeat, {
+          selectedPopulationId,
+          selectedRepeatUnit,
+        })}
         repeatUnitLength={selectedRepeatUnit ? selectedRepeatUnit.length : null}
         scaleType={selectedScaleType}
       />
@@ -108,40 +103,17 @@ const ShortTandemRepeatAdjacentRepeat = ({
 
       <h4>Genotype Distribution</h4>
       <ShortTandemRepeatGenotypeDistributionPlot
-        axisLabels={(() => {
-          if (selectedGenotypeDistributionRepeatUnits) {
-            const repeatUnits = selectedGenotypeDistributionRepeatUnits.split(' / ')
-            if (repeatUnits[0] === repeatUnits[1]) {
-              return adjacentRepeat.genotype_distribution.repeat_units.length === 1
-                ? ['longer allele', 'shorter allele']
-                : [`longer ${repeatUnits[0]} allele`, `shorter ${repeatUnits[1]} allele`]
-            }
-            return repeatUnits.map(repeatUnit => `${repeatUnit} allele`)
-          }
-          return ['longer allele', 'shorter allele']
-        })()}
+        axisLabels={getGenotypeDistributionPlotAxisLabels(adjacentRepeat, {
+          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+        })}
         maxRepeats={[
           max(adjacentRepeat.genotype_distribution.distribution, d => d[0]),
           max(adjacentRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        genotypeDistribution={
-          // eslint-disable-next-line no-nested-ternary
-          selectedPopulationId === ''
-            ? selectedGenotypeDistributionRepeatUnits
-              ? adjacentRepeat.genotype_distribution.repeat_units.find(
-                  repeatUnit =>
-                    repeatUnit.repeat_units.join(' / ') === selectedGenotypeDistributionRepeatUnits
-                ).distribution
-              : adjacentRepeat.genotype_distribution.distribution
-            : (selectedGenotypeDistributionRepeatUnits
-                ? adjacentRepeat.genotype_distribution.repeat_units.find(
-                    repeatUnit =>
-                      repeatUnit.repeat_units.join(' / ') ===
-                      selectedGenotypeDistributionRepeatUnits
-                  )
-                : adjacentRepeat.genotype_distribution
-              ).populations.find(pop => pop.id === selectedPopulationId).distribution
-        }
+        genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
+          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+          selectedPopulationId,
+        })}
       />
 
       <ControlSection>
@@ -152,36 +124,11 @@ const ShortTandemRepeatAdjacentRepeat = ({
           onSelectPopulationId={onSelectPopulationId}
         />
 
-        <label
-          htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-genotype-distribution-repeat-units`}
-        >
-          Repeat units:{' '}
-          <Select
-            id={`short-tandem-repeat-${adjacentRepeat.id}-genotype-distribution-repeat-units`}
-            value={selectedGenotypeDistributionRepeatUnits}
-            onChange={e => {
-              setSelectedGenotypeDistributionRepeatUnits(e.target.value)
-            }}
-          >
-            {adjacentRepeat.genotype_distribution.repeat_units.length > 1 && (
-              <option value="">All</option>
-            )}
-            {adjacentRepeat.genotype_distribution.repeat_units.map(repeatUnitDistribution => {
-              const value = repeatUnitDistribution.repeat_units.join(' / ')
-              return (
-                <option key={value} value={value}>
-                  {repeatUnitDistribution.repeat_units
-                    .map(repeatUnit =>
-                      repeatUnit === adjacentRepeat.reference_repeat_unit
-                        ? `${repeatUnit} (reference)`
-                        : repeatUnit
-                    )
-                    .join(' / ')}
-                </option>
-              )
-            })}
-          </Select>
-        </label>
+        <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
+          shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
+          value={selectedGenotypeDistributionRepeatUnits}
+          onChange={setSelectedGenotypeDistributionRepeatUnits}
+        />
       </ControlSection>
     </section>
   )
