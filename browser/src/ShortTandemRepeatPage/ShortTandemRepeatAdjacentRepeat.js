@@ -40,11 +40,6 @@ const ShortTandemRepeatAdjacentRepeat = ({
       : ''
   )
 
-  const selectedGenotypeDistribution = getSelectedGenotypeDistribution(adjacentRepeat, {
-    selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-    selectedPopulationId,
-  })
-
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
   return (
@@ -118,7 +113,10 @@ const ShortTandemRepeatAdjacentRepeat = ({
           max(adjacentRepeat.genotype_distribution.distribution, d => d[0]),
           max(adjacentRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        genotypeDistribution={selectedGenotypeDistribution}
+        genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
+          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+          selectedPopulationId,
+        })}
         onSelectBin={bin => {
           if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
             setSelectedGenotypeDistributionBin(bin)
@@ -151,7 +149,9 @@ const ShortTandemRepeatAdjacentRepeat = ({
           }}
         >
           <ShortTandemRepeatGenotypeDistributionBinDetails
-            genotypeDistribution={selectedGenotypeDistribution}
+            shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
+            selectedPopulationId={selectedPopulationId}
+            selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
           />
         </Modal>

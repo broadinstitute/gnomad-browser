@@ -3,7 +3,23 @@ import React from 'react'
 
 import { List, ListItem } from '@gnomad/ui'
 
-const ShortTandemRepeatGenotypeDistributionBinDetails = ({ genotypeDistribution, bin }) => {
+import {
+  ShortTandemRepeatPropType,
+  ShortTandemRepeatAdjacentRepeatPropType,
+} from './ShortTandemRepeatPropTypes'
+import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
+
+const ShortTandemRepeatGenotypeDistributionBinDetails = ({
+  shortTandemRepeatOrAdjacentRepeat,
+  selectedPopulationId,
+  selectedRepeatUnits,
+  bin,
+}) => {
+  const genotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
+    selectedPopulationId,
+    selectedRepeatUnits,
+  })
+
   return (
     <List>
       {genotypeDistribution
@@ -24,7 +40,12 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({ genotypeDistribution,
 }
 
 ShortTandemRepeatGenotypeDistributionBinDetails.propTypes = {
-  genotypeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  shortTandemRepeatOrAdjacentRepeat: PropTypes.oneOfType([
+    ShortTandemRepeatPropType,
+    ShortTandemRepeatAdjacentRepeatPropType,
+  ]).isRequired,
+  selectedPopulationId: PropTypes.string.isRequired,
+  selectedRepeatUnits: PropTypes.string.isRequired,
   bin: PropTypes.shape({
     label: PropTypes.string.isRequired,
     xRange: PropTypes.arrayOf(PropTypes.number).isRequired,
