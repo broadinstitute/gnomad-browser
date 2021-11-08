@@ -100,11 +100,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       }
     })
 
-  const selectedGenotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeat, {
-    selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-    selectedPopulationId,
-  })
-
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
   return (
@@ -299,7 +294,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[0]),
           max(shortTandemRepeat.genotype_distribution.distribution, d => d[1]),
         ]}
-        genotypeDistribution={selectedGenotypeDistribution}
+        genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
+          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+          selectedPopulationId,
+        })}
         xRanges={
           selectedGenotypeDistributionRepeatUnits === '' ||
           (repeatUnitsByClassification.pathogenic || []).includes(
@@ -371,7 +369,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           }}
         >
           <ShortTandemRepeatGenotypeDistributionBinDetails
-            genotypeDistribution={selectedGenotypeDistribution}
+            shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
+            selectedPopulationId={selectedPopulationId}
+            selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
           />
         </Modal>
