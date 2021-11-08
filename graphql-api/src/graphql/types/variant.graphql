@@ -10,6 +10,12 @@ type VariantPopulation {
   ac_hemi: Int
 }
 
+type VariantLocalAncestryPopulation {
+  id: String!
+  ac: Int!
+  an: Int!
+}
+
 type VariantAlleleBalance {
   alt: Histogram
 }
@@ -178,6 +184,7 @@ type VariantDetailsSequencingTypeData {
   faf99: VariantFilteringAlleleFrequency
   filters: [String!]
   populations: [VariantPopulation]
+  local_ancestry_populations: [VariantLocalAncestryPopulation]!
   age_distribution: VariantAgeDistribution
   quality_metrics: VariantQualityMetrics
 

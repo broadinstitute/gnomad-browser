@@ -4,6 +4,7 @@ const { isRsId } = require('@gnomad/identifiers')
 
 const { UserVisibleError } = require('../../errors')
 
+const { fetchLocalAncestryPopulationsByVariant } = require('../local-ancestry-queries')
 const { fetchAllSearchResults } = require('../helpers/elasticsearch-helpers')
 const { mergeOverlappingRegions } = require('../helpers/region-helpers')
 
@@ -134,6 +135,11 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
     })
   }
 
+  const localAncestryPopulations =
+    subset === 'all'
+      ? await fetchLocalAncestryPopulationsByVariant(esClient, 'gnomad_r3', variant.variant_id)
+      : { genome: null }
+
   return {
     ...variant,
     reference_genome: 'GRCh38',
@@ -167,6 +173,7 @@ const fetchVariantById = async (esClient, variantIdOrRsid, subset) => {
           Number.isFinite(m.value)
         ),
       },
+      local_ancestry_populations: localAncestryPopulations.genome,
     },
     flags,
     // TODO: Include RefSeq transcripts once the browser supports them.
