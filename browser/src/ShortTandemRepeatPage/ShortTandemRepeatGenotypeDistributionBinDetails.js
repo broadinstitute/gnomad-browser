@@ -20,22 +20,61 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
     selectedRepeatUnits,
   })
 
+  const isInBin = d =>
+    bin.xRange[0] <= d[0] && d[0] <= bin.xRange[1] && bin.yRange[0] <= d[1] && d[1] <= bin.yRange[1]
+
   return (
-    <List>
-      {genotypeDistribution
-        .filter(
-          d =>
-            bin.xRange[0] <= d[0] &&
-            d[0] <= bin.xRange[1] &&
-            bin.yRange[0] <= d[1] &&
-            d[1] <= bin.yRange[1]
-        )
-        .map(([x, y, n]) => (
+    <>
+      <List>
+        {genotypeDistribution.filter(isInBin).map(([x, y, n]) => (
           <ListItem key={`${x}/${y}`}>
             {x} repeats / {y} repeats: {n} individuals
           </ListItem>
         ))}
-    </List>
+      </List>
+      {!selectedRepeatUnits && (
+        <>
+          <h3>Repeat Units</h3>
+          <List>
+            {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units
+              .map(repeatUnitsDistribution => repeatUnitsDistribution.repeat_units)
+              .map(repeatUnits => ({
+                repeatUnits,
+                distribution: getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
+                  selectedPopulationId,
+                  selectedRepeatUnits: repeatUnits.join(' / '),
+                }),
+              }))
+              .flatMap(({ repeatUnits, distribution }) => [
+                {
+                  repeatUnits,
+                  distribution: distribution.filter(d => d[0] >= d[1]).filter(isInBin),
+                },
+                {
+                  repeatUnits: [...repeatUnits].reverse(),
+                  distribution: distribution
+                    .filter(d => d[0] < d[1])
+                    .map(d => [d[1], d[0], d[2]])
+                    .filter(isInBin),
+                },
+              ])
+              .filter(({ distribution }) => distribution.length > 0)
+              .map(({ repeatUnits, distribution }) => (
+                <ListItem key={repeatUnits.join('/')}>
+                  {repeatUnits.join(' / ')}
+                  <List>
+                    {distribution.map(([x, y, n]) => (
+                      <ListItem key={`${x}/${y}`}>
+                        {x} repeats / {y} repeats: {n} individuals
+                      </ListItem>
+                    ))}
+                  </List>
+                </ListItem>
+              ))}
+          </List>
+        </>
+      )}
+    </>
   )
 }
 
