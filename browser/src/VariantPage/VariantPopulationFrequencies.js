@@ -5,6 +5,7 @@ import { Tabs } from '@gnomad/ui'
 
 import TableWrapper from '../TableWrapper'
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
+import LocalAncestryPopulationsTable from './LocalAncestryPopulationsTable'
 import HGDPPopulationsTable from './HGDPPopulationsTable'
 import TGPPopulationsTable from './TGPPopulationsTable'
 
@@ -19,6 +20,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
     const tgpPopulations = variant.genome.populations
       .filter(pop => pop.id.startsWith('1kg:'))
       .map(pop => ({ ...pop, id: pop.id.slice(4) })) // Remove 1kg: prefix
+
+    const localAncestryPopulations = variant.genome.local_ancestry_populations
 
     return (
       <Tabs
@@ -85,6 +88,25 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
               )
             },
           },
+          {
+            id: 'local-ancestry',
+            label: 'Local Ancestry',
+            render: () => {
+              if (datasetId !== 'gnomad_r3') {
+                return <p>Local ancestry is not available for subsets of gnomAD v3.</p>
+              }
+
+              if (localAncestryPopulations.length === 0) {
+                return <p>Local ancestry is not available for this variant.</p>
+              }
+
+              return (
+                <TableWrapper>
+                  <LocalAncestryPopulationsTable populations={localAncestryPopulations} />
+                </TableWrapper>
+              )
+            },
+          },
         ]}
       />
     )
@@ -108,9 +130,11 @@ VariantPopulationFrequencies.propTypes = {
     chrom: PropTypes.string.isRequired,
     exome: PropTypes.shape({
       populations: PropTypes.arrayOf(PropTypes.object).isRequired,
+      local_ancestry_populations: PropTypes.arrayOf(PropTypes.object),
     }),
     genome: PropTypes.shape({
       populations: PropTypes.arrayOf(PropTypes.object).isRequired,
+      local_ancestry_populations: PropTypes.arrayOf(PropTypes.object),
     }),
   }).isRequired,
 }

@@ -175,7 +175,7 @@ VariantPageContent.propTypes = {
 }
 
 const variantQuery = `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
+query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
@@ -215,6 +215,11 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
         an
         ac_hemi
         ac_hom
+      }
+      local_ancestry_populations @include(if: $includeLocalAncestry) {
+        id
+        ac
+        an
       }
       age_distribution {
         het {
@@ -289,6 +294,11 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
         an
         ac_hemi
         ac_hom
+      }
+      local_ancestry_populations @include(if: $includeLocalAncestry) {
+        id
+        ac
+        an
       }
       age_distribution {
         het {
@@ -432,6 +442,7 @@ const VariantPage = ({ datasetId, variantId }) => {
         query={variantQuery}
         variables={{
           datasetId,
+          includeLocalAncestry: datasetId === 'gnomad_r3',
           includeLiftoverAsSource: datasetId.startsWith('gnomad_r2_1'),
           includeLiftoverAsTarget: datasetId.startsWith('gnomad_r3'),
           referenceGenome: referenceGenomeForDataset(datasetId),
