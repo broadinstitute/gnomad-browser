@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Input } from '@gnomad/ui'
+import { Button, Input, Select } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -280,4 +280,168 @@ ShortTandemRepeatReads.propTypes = {
   }).isRequired,
 }
 
-export default ShortTandemRepeatReads
+const ShortTandemRepeatReadsAllelesFilterControlsWrapper = styled.div`
+  margin-bottom: 1em;
+`
+
+const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
+  margin-bottom: 0.5em;
+
+  input {
+    display: inline-block;
+    width: 12ch;
+  }
+`
+
+const ShortTandemRepeatReadsAllelesFilterControls = ({ shortTandemRepeat, value, onChange }) => {
+  const maxNumRepeats =
+    shortTandemRepeat.allele_size_distribution.distribution[
+      shortTandemRepeat.allele_size_distribution.distribution.length - 1
+    ][0]
+
+  return (
+    <ShortTandemRepeatReadsAllelesFilterControlsWrapper>
+      {[0, 1].map(alleleIndex => (
+        <ShortTandemRepeatReadsAllelesFilterControlWrapper key={`${alleleIndex}`}>
+          Allele {alleleIndex + 1}: {/* eslint-disable jsx-a11y/label-has-associated-control */}
+          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
+            Repeat unit{' '}
+            <Select
+              id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
+              value={value[alleleIndex].repeat_unit || ''}
+              onChange={e => {
+                const newRepeatUnit = e.target.value
+                onChange(
+                  value.map((v, i) =>
+                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+                  )
+                )
+              }}
+            >
+              <option value="">Any</option>
+              {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                  {repeatUnit.repeat_unit}
+                </option>
+              ))}
+            </Select>
+          </label>{' '}
+          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
+            Min repeats{' '}
+            <Input
+              type="number"
+              id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}
+              min={0}
+              max={maxNumRepeats}
+              value={value[alleleIndex].min_repeats}
+              onChange={e => {
+                const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
+                onChange(
+                  value.map((v, i) =>
+                    i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
+                  )
+                )
+              }}
+            />
+          </label>{' '}
+          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
+            Max repeats{' '}
+            <Input
+              type="number"
+              id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}
+              min={0}
+              max={maxNumRepeats}
+              value={value[alleleIndex].max_repeats}
+              onChange={e => {
+                const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
+                onChange(
+                  value.map((v, i) =>
+                    i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
+                  )
+                )
+              }}
+            />
+          </label>
+          {/* eslint-enable jsx-a11y/label-has-associated-control */}
+        </ShortTandemRepeatReadsAllelesFilterControlWrapper>
+      ))}
+    </ShortTandemRepeatReadsAllelesFilterControlsWrapper>
+  )
+}
+
+ShortTandemRepeatReadsAllelesFilterControls.propTypes = {
+  shortTandemRepeat: ShortTandemRepeatPropType.isRequired,
+  value: PropTypes.arrayOf(
+    PropTypes.shape({
+      repeat_unit: PropTypes.string,
+      min_repeats: PropTypes.number,
+      max_repeats: PropTypes.number,
+    })
+  ).isRequired,
+  onChange: PropTypes.func.isRequired,
+}
+
+const ShortTandemRepeatReadsContainer = ({ datasetId, shortTandemRepeat, filter: baseFilter }) => {
+  const maxNumRepeats =
+    shortTandemRepeat.allele_size_distribution.distribution[
+      shortTandemRepeat.allele_size_distribution.distribution.length - 1
+    ][0]
+
+  const [filter, setFilter] = useState({
+    ...baseFilter,
+    alleles: [
+      {
+        repeat_unit: null,
+        min_repeats: 0,
+        max_repeats: maxNumRepeats,
+      },
+      {
+        repeat_unit: null,
+        min_repeats: 0,
+        max_repeats: maxNumRepeats,
+      },
+    ],
+  })
+
+  if (baseFilter.population !== filter.population || baseFilter.sex !== filter.sex) {
+    setFilter({
+      ...filter,
+      ...baseFilter,
+    })
+  }
+
+  return (
+    <>
+      <ShortTandemRepeatReadsAllelesFilterControls
+        shortTandemRepeat={shortTandemRepeat}
+        value={filter.alleles}
+        onChange={newAllelesFilter => {
+          setFilter(prevFilter => ({ ...prevFilter, alleles: newAllelesFilter }))
+        }}
+      />
+      <ShortTandemRepeatReads
+        datasetId={datasetId}
+        shortTandemRepeat={shortTandemRepeat}
+        filter={filter}
+      />
+    </>
+  )
+}
+
+ShortTandemRepeatReadsContainer.propTypes = {
+  datasetId: PropTypes.string.isRequired,
+  shortTandemRepeat: ShortTandemRepeatPropType.isRequired,
+  filter: PropTypes.shape({
+    population: PropTypes.string,
+    sex: PropTypes.string,
+    alleles: PropTypes.arrayOf(
+      PropTypes.shape({
+        repeat_unit: PropTypes.string,
+        min_repeats: PropTypes.number,
+        max_repeats: PropTypes.number,
+      })
+    ),
+  }).isRequired,
+}
+
+export default ShortTandemRepeatReadsContainer
