@@ -156,10 +156,18 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }) =
 }
 
 const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, filter }) => {
-  const fetchNumReadsMemoized = useCallback(
-    () => fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }),
-    [datasetId, shortTandemRepeat, filter]
-  )
+  const fetchReadsTimer = useRef(null)
+  const fetchNumReadsMemoized = useCallback(() => {
+    clearTimeout(fetchReadsTimer.current)
+    return new Promise((resolve, reject) => {
+      fetchReadsTimer.current = setTimeout(() => {
+        fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }).then(
+          resolve,
+          reject
+        )
+      }, 300)
+    })
+  }, [datasetId, shortTandemRepeat, filter])
   const { isLoading, response: numReads, error } = useRequest(fetchNumReadsMemoized)
 
   const readsStore = useRef(new Map())
