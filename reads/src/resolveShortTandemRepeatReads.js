@@ -95,7 +95,7 @@ const buildWhere = ({ id, filter }) => {
           .map(w => w.replace(/ALLELE_INDEX/g, '1'))
           .join('AND ')
 
-        where += ` AND ((${allelesFilterWhereForTwoAlleles}) AND \`n_alleles\` = 2) OR ((${allelesFilterWhereForOneAllele}) AND \`n_alleles\` = 1)`
+        where += ` AND (((${allelesFilterWhereForTwoAlleles}) AND \`n_alleles\` = 2) OR ((${allelesFilterWhereForOneAllele}) AND \`n_alleles\` = 1))`
       }
       Object.assign(params, allelesFilterParams)
     }
