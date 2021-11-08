@@ -67,9 +67,14 @@ export const getSelectedGenotypeDistribution = (
       )
     : shortTandemRepeatOrAdjacentRepeat.genotype_distribution
 
-  return selectedPopulationId === ''
-    ? baseDistribution.distribution
-    : baseDistribution.populations.find(pop => pop.id === selectedPopulationId).distribution
+  const selectedDistribution =
+    selectedPopulationId === ''
+      ? baseDistribution.distribution
+      : baseDistribution.populations.find(pop => pop.id === selectedPopulationId).distribution
+
+  return selectedRepeatUnits
+    ? selectedDistribution
+    : selectedDistribution.map(d => (d[0] >= d[1] ? d : [d[1], d[0], d[2]]))
 }
 
 export const getGenotypeDistributionPlotAxisLabels = (

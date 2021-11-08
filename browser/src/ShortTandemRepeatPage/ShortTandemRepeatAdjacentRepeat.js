@@ -1,4 +1,4 @@
-import { max } from 'd3-array'
+import { max, min } from 'd3-array'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 
@@ -110,8 +110,8 @@ const ShortTandemRepeatAdjacentRepeat = ({
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
         })}
         maxRepeats={[
-          max(adjacentRepeat.genotype_distribution.distribution, d => d[0]),
-          max(adjacentRepeat.genotype_distribution.distribution, d => d[1]),
+          max(adjacentRepeat.genotype_distribution.distribution, d => max(d.slice(0, 2))),
+          max(adjacentRepeat.genotype_distribution.distribution, d => min(d.slice(0, 2))),
         ]}
         genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
