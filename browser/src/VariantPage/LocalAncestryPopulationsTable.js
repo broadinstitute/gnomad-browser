@@ -54,6 +54,7 @@ const LocalAncestryPopulationsTable = ({ populations }) => {
     <div>
       <PopulationsTable
         populations={renderedPopulations}
+        initiallyExpandRows
         showHemizygotes={false}
         showHomozygotes={false}
       />

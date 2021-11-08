@@ -68,18 +68,27 @@ export class PopulationsTable extends Component {
     ).isRequired,
     showHemizygotes: PropTypes.bool,
     showHomozygotes: PropTypes.bool,
+    initiallyExpandRows: PropTypes.bool,
   }
 
   static defaultProps = {
     columnLabels: {},
     showHemizygotes: true,
     showHomozygotes: true,
+    initiallyExpandRows: false,
   }
 
-  state = {
-    sortBy: 'af',
-    sortAscending: false,
-    expandedPopulations: {},
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      sortBy: 'af',
+      sortAscending: false,
+      expandedPopulations: props.populations.reduce(
+        (acc, pop) => ({ ...acc, [pop.name]: props.initiallyExpandRows }),
+        {}
+      ),
+    }
   }
 
   setSortBy(sortBy) {
