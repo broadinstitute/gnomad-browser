@@ -72,9 +72,10 @@ export const getSelectedGenotypeDistribution = (
       ? baseDistribution.distribution
       : baseDistribution.populations.find(pop => pop.id === selectedPopulationId).distribution
 
-  return selectedRepeatUnits
-    ? selectedDistribution
-    : selectedDistribution.map(d => (d[0] >= d[1] ? d : [d[1], d[0], d[2]]))
+  return !selectedRepeatUnits ||
+    selectedRepeatUnits.split(' / ')[0] === selectedRepeatUnits.split(' / ')[1]
+    ? selectedDistribution.map(d => (d[0] >= d[1] ? d : [d[1], d[0], d[2]]))
+    : selectedDistribution
 }
 
 export const getGenotypeDistributionPlotAxisLabels = (
