@@ -330,7 +330,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({ shortTandemRepeat, value,
                 )
               }}
             >
-              <option value="">Any</option>
+              {shortTandemRepeat.repeat_units.length > 1 && <option value="">Any</option>}
               {shortTandemRepeat.repeat_units.map(repeatUnit => (
                 <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                   {repeatUnit.repeat_unit}
@@ -403,12 +403,18 @@ const ShortTandemRepeatReadsContainer = ({ datasetId, shortTandemRepeat, filter:
     ...baseFilter,
     alleles: [
       {
-        repeat_unit: null,
+        repeat_unit:
+          shortTandemRepeat.repeat_units.length > 1
+            ? null
+            : shortTandemRepeat.repeat_units[0].repeat_unit,
         min_repeats: 0,
         max_repeats: maxNumRepeats,
       },
       {
-        repeat_unit: null,
+        repeat_unit:
+          shortTandemRepeat.repeat_units.length > 1
+            ? null
+            : shortTandemRepeat.repeat_units[0].repeat_unit,
         min_repeats: 0,
         max_repeats: maxNumRepeats,
       },
