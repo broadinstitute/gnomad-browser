@@ -89,23 +89,24 @@ const VariantPageContent = ({ datasetId, variant }) => {
         <h2>
           Population Frequencies <InfoButton topic="ancestry" />
         </h2>
-        {datasetId.startsWith('gnomad_r3') && (
-          <div
-            style={{
-              padding: '0 1em',
-              border: '2px solid #1173bb',
-              background: '#1173bb0f',
-              borderRadius: '0.5em',
-              marginBottom: '1em',
-            }}
-          >
-            <p>
-              <Badge level="info">NEW</Badge> Local ancestry is now available for gnomAD v3. Select
-              the &ldquo;Local Ancestry&rdquo; tab below to view data. See our blog post for more
-              information.
-            </p>
-          </div>
-        )}
+        {datasetId.startsWith('gnomad_r3') &&
+          (variant.genome.local_ancestry_populations || []).length > 0 && (
+            <div
+              style={{
+                padding: '0 1em',
+                border: '2px solid #1173bb',
+                background: '#1173bb0f',
+                borderRadius: '0.5em',
+                marginBottom: '1em',
+              }}
+            >
+              <p>
+                <Badge level="info">NEW</Badge> Local ancestry is now available for gnomAD v3.
+                Select the &ldquo;Local Ancestry&rdquo; tab below to view data. See our blog post
+                for more information.
+              </p>
+            </div>
+          )}
         <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
       </Section>
 
