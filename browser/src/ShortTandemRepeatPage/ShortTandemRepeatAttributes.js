@@ -7,17 +7,6 @@ import Link from '../Link'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 
 const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
-  if (shortTandemRepeat.repeat_units.length === 1) {
-    return (
-      <AttributeList.Item label="Repeat unit">
-        {shortTandemRepeat.repeat_units[0].repeat_unit} (
-        {shortTandemRepeat.repeat_units[0].classification.charAt(0).toUpperCase() +
-          shortTandemRepeat.repeat_units[0].classification.slice(1)}
-        )
-      </AttributeList.Item>
-    )
-  }
-
   const repeatUnitsByClassification = {}
   shortTandemRepeat.repeat_units.forEach(repeatUnit => {
     if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
@@ -31,7 +20,11 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
       <AttributeList.Item label="Repeat units">
         <InlineList
           items={repeatUnitsByClassification.unknown.map(repeatUnit => (
-            <span>{repeatUnit}</span>
+            <span>
+              {repeatUnit === shortTandemRepeat.reference_repeat_unit
+                ? `${repeatUnit} (reference)`
+                : repeatUnit}
+            </span>
           ))}
           label="Repeat units"
         />
@@ -45,7 +38,11 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
         <AttributeList.Item label="Pathogenic repeat units">
           <InlineList
             items={repeatUnitsByClassification.pathogenic.map(repeatUnit => (
-              <span>{repeatUnit}</span>
+              <span>
+                {repeatUnit === shortTandemRepeat.reference_repeat_unit
+                  ? `${repeatUnit} (reference)`
+                  : repeatUnit}
+              </span>
             ))}
             label="Pathogenic repeat units"
           />
@@ -55,7 +52,11 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
         <AttributeList.Item label="Benign repeat units">
           <InlineList
             items={repeatUnitsByClassification.benign.map(repeatUnit => (
-              <span>{repeatUnit}</span>
+              <span>
+                {repeatUnit === shortTandemRepeat.reference_repeat_unit
+                  ? `${repeatUnit} (reference)`
+                  : repeatUnit}
+              </span>
             ))}
             label="Benign repeat units"
           />
@@ -65,7 +66,11 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
         <AttributeList.Item label="Other repeat units">
           <InlineList
             items={repeatUnitsByClassification.unknown.map(repeatUnit => (
-              <span>{repeatUnit}</span>
+              <span>
+                {repeatUnit === shortTandemRepeat.reference_repeat_unit
+                  ? `${repeatUnit} (reference)`
+                  : repeatUnit}
+              </span>
             ))}
             label="Other repeat units"
           />
@@ -88,9 +93,6 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }) => {
         </Link>
       </AttributeList.Item>
       <AttributeList.Item label="Gene region">{shortTandemRepeat.gene.region}</AttributeList.Item>
-      <AttributeList.Item label="Reference repeat unit">
-        {shortTandemRepeat.reference_repeat_unit}
-      </AttributeList.Item>
       <AttributeList.Item label="Reference region">
         <Link
           to={`/region/${shortTandemRepeat.reference_region.chrom}-${shortTandemRepeat.reference_region.start}-${shortTandemRepeat.reference_region.stop}`}
