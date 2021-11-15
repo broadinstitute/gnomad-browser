@@ -9,9 +9,6 @@ import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatProp
 const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }) => {
   return (
     <AttributeList>
-      <AttributeList.Item label="Reference repeat unit">
-        {adjacentRepeat.reference_repeat_unit}
-      </AttributeList.Item>
       <AttributeList.Item label="Reference region">
         <Link
           to={`/region/${adjacentRepeat.reference_region.chrom}-${adjacentRepeat.reference_region.start}-${adjacentRepeat.reference_region.stop}`}
@@ -23,7 +20,11 @@ const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }) => {
       <AttributeList.Item label="Repeat units">
         <InlineList
           items={adjacentRepeat.repeat_units.map(repeatUnit => (
-            <span>{repeatUnit}</span>
+            <span>
+              {repeatUnit === adjacentRepeat.reference_repeat_unit
+                ? `${repeatUnit} (reference)`
+                : repeatUnit}
+            </span>
           ))}
           label="Repeat units"
         />
