@@ -550,8 +550,6 @@ export default () => (
             label="gnomAD addendum LoF curation results"
             path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
@@ -559,7 +557,6 @@ export default () => (
             label="NSD1 LoF curation results"
             path="/truth-sets/source/lof-curation/NSD1_curation_results.csv"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
@@ -600,9 +597,6 @@ export default () => (
           <GetUrlButtons
             label="Principal component analysis (PCA) variant loadings"
             path="/release/2.1/pca/gnomad.r2.1.pca_loadings.ht"
-            gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
@@ -610,8 +604,6 @@ export default () => (
             label="Random forest (RF) model"
             path="/release/2.1/pca/gnomad.r2.1.RF_fit.pkl"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
       </FileList>
