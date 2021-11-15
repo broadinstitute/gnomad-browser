@@ -227,6 +227,10 @@ const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, filter }) => {
     return <StatusMessage>Unable to load read data</StatusMessage>
   }
 
+  if (numReads === 0) {
+    return <StatusMessage>No matching reads found</StatusMessage>
+  }
+
   return (
     <>
       <ControlSection style={{ marginBottom: '1em' }}>
