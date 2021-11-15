@@ -114,8 +114,6 @@ export default () => (
           <GetUrlButtons
             label="Sites Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.sites.ht"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -125,8 +123,6 @@ export default () => (
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         ))}
@@ -174,40 +170,30 @@ export default () => (
           <GetUrlButtons
             label="Dense Hail MatrixTable"
             path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_dense.mt"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
             label="Sparse Hail MatrixTable"
             path="/release/3.1.2/mt/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sparse.mt"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
             label="Variant annotations Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_variant_annotations.ht"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
             label="Sample metadata Hail Table"
             path="/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.ht"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
           <GenericDownloadLinks
             label="Sample metadata TSV"
             path="/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.tsv.bgz"
-            includeAWS={false}
-            includeAzure={false}
           />
         </ListItem>
         {hgdpAnd1kgChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -286,7 +272,6 @@ export default () => (
             label="Principal component analysis (PCA) variant loadings"
             path="/release/3.1/pca/gnomad.v3.1.pca_loadings.ht"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
@@ -295,7 +280,6 @@ export default () => (
             label="Random forest (RF) model"
             path="/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
             gcsBucket="gnomad-public-requester-pays"
-            includeAWS={false}
             includeAzure={false}
           />
         </ListItem>
