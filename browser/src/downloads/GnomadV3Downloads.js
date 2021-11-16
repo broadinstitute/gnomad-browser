@@ -272,7 +272,6 @@ export default () => (
             label="Principal component analysis (PCA) variant loadings"
             path="/release/3.1/pca/gnomad.v3.1.pca_loadings.ht"
             gcsBucket="gnomad-public-requester-pays"
-            includeAzure={false}
           />
         </ListItem>
         <ListItem>
@@ -280,7 +279,6 @@ export default () => (
             label="Random forest (RF) model"
             path="/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
             gcsBucket="gnomad-public-requester-pays"
-            includeAzure={false}
           />
         </ListItem>
       </FileList>
