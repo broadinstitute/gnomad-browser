@@ -557,7 +557,6 @@ export default () => (
             label="NSD1 LoF curation results"
             path="/truth-sets/source/lof-curation/NSD1_curation_results.csv"
             gcsBucket="gnomad-public-requester-pays"
-            includeAzure={false}
           />
         </ListItem>
       </FileList>
