@@ -13,6 +13,7 @@ import TableWrapper from '../TableWrapper'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
+import ShortTandemRepeatAgeDistributionPlot from './ShortTandemRepeatAgeDistributionPlot'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
@@ -377,6 +378,16 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         </Modal>
       )}
 
+      <h2>Age Distribution</h2>
+      <ShortTandemRepeatAgeDistributionPlot
+        ageDistribution={shortTandemRepeat.age_distribution}
+        maxRepeats={
+          shortTandemRepeat.allele_size_distribution.distribution[
+            shortTandemRepeat.allele_size_distribution.distribution.length - 1
+          ][0]
+        }
+      />
+
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginTop: '2em' }}>
           <h2>Adjacent Repeats</h2>
@@ -494,6 +505,10 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
           distribution
         }
       }
+    }
+    age_distribution {
+      age_range
+      distribution
     }
     stripy_id
     adjacent_repeats {
