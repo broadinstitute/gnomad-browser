@@ -228,7 +228,7 @@ const ShortTandemRepeatReads = ({ datasetId, shortTandemRepeat, filter }) => {
   }
 
   if (numReads === 0) {
-    return <StatusMessage>No matching reads found</StatusMessage>
+    return <StatusMessage>No matching samples found</StatusMessage>
   }
 
   return (
