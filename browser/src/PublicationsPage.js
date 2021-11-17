@@ -27,6 +27,29 @@ export default () => (
     <List>
       <ListItem>
         <Citation>
+          Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson, M.,
+          Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G.,
+          O’Donnell-Luria, A. Variant interpretation using population databases: lessons from
+          gnomAD. <em>arXiv</em> 2107.11458 [q-bio.GN] (2021).{' '}
+          <ExternalLink href="https://arxiv.org/abs/2107.11458">
+            https://arxiv.org/abs/2107.11458
+          </ExternalLink>
+        </Citation>
+      </ListItem>
+      <ListItem>
+        <Citation>
+          Laricchia, K. M., Lake, N. J., Watts, N. A., Shand, M., Haessly, A., Gauthier, L. D.,
+          Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database
+          (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G., Lek, M., Mootha, V. K.,
+          Calvo, S. E. Mitochondrial DNA variation across 56,434 individuals in gnomAD.{' '}
+          <em>bioRxiv</em> 2021.07.23.453510 (2021).{' '}
+          <ExternalLink href="https://doi.org/10.1101/2021.07.23.453510">
+            https://doi.org/10.1101/2021.07.23.453510
+          </ExternalLink>
+        </Citation>
+      </ListItem>
+      <ListItem>
+        <Citation>
           Karczewski, K. J., Francioli, L. C., Tiao, G., Cummings, B. B., Alföldi, J., Wang, Q.,
           Collins, R. L., Laricchia, K. M., Ganna, A., Birnbaum, D. P., Gauthier, L. D., Brand, H.,
           Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G.,
