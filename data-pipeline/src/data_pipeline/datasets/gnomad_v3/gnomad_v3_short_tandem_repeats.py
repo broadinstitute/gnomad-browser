@@ -193,6 +193,37 @@ def _prepare_allele_size_distribution_repeat_units(locus):
     return [distribution for distribution in distributions if distribution["distribution"]]
 
 
+def _prepare_age_distribution(locus):
+    age_bins = [
+        ("<20", None, 20),
+        ("20-25", 20, 25),
+        ("25-30", 25, 30),
+        ("30-35", 30, 35),
+        ("35-40", 35, 40),
+        ("40-45", 40, 45),
+        ("45-50", 45, 50),
+        ("50-55", 50, 55),
+        ("55-60", 55, 60),
+        ("60-65", 60, 65),
+        ("65-70", 65, 70),
+        ("70-75", 70, 75),
+        ("75-80", 75, 80),
+        (">80", 80, None),
+    ]
+
+    return [
+        {
+            "age_range": [min_age, max_age],
+            "distribution": _prepare_histogram(
+                _get_total_histogram(
+                    {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == age_key}
+                )
+            ),
+        }
+        for age_key, min_age, max_age in age_bins
+    ]
+
+
 def _prepare_genotype_distribution_histogram(histogram):
     return sorted(
         ([*(int(n) for n in n_repeats.split("/")), n_samples] for n_repeats, n_samples in histogram.items()),
@@ -450,6 +481,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 "populations": _prepare_genotype_distribution_populations(locus),
                 "repeat_units": _prepare_genotype_distribution_repeat_units(locus),
             },
+            "age_distribution": _prepare_age_distribution(locus),
             "adjacent_repeats": sorted(
                 [
                     {
@@ -477,6 +509,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                             "populations": _prepare_genotype_distribution_populations(adjacent_repeat),
                             "repeat_units": _prepare_genotype_distribution_repeat_units(adjacent_repeat),
                         },
+                        "age_distribution": _prepare_age_distribution(adjacent_repeat),
                     }
                     for adjacent_repeat_id, adjacent_repeat in locus.get("AdjacentRepeats", {}).items()
                 ],
@@ -525,6 +558,9 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     )
                 ),
             ),
+            age_distribution=hl.tarray(
+                hl.tstruct(age_range=hl.tarray(hl.tint), distribution=hl.tarray(hl.tarray(hl.tint)))
+            ),
             stripy_id=hl.tstr,
             adjacent_repeats=hl.tarray(
                 hl.tstruct(
@@ -557,6 +593,9 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                                 ),
                             )
                         ),
+                    ),
+                    age_distribution=hl.tarray(
+                        hl.tstruct(age_range=hl.tarray(hl.tint), distribution=hl.tarray(hl.tarray(hl.tint)))
                     ),
                 )
             ),
