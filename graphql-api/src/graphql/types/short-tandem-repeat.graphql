@@ -64,6 +64,11 @@ type ShortTandemRepeatGenotypeDistribution {
   repeat_units: [ShortTandemRepeatGenotypeDistributionRepeatUnit!]!
 }
 
+type ShortTandemRepeatAgeDistributionBin {
+  age_range: [Int]!
+  distribution: [[Int!]!]!
+}
+
 type ShortTandemRepeatAdjacentRepeat {
   id: String!
   reference_region: ShortTandemRepeatReferenceRegion!
@@ -71,6 +76,7 @@ type ShortTandemRepeatAdjacentRepeat {
   repeat_units: [String!]!
   allele_size_distribution: ShortTandemRepeatAlleleSizeDistribution!
   genotype_distribution: ShortTandemRepeatGenotypeDistribution!
+  age_distribution: [ShortTandemRepeatAgeDistributionBin!]
 }
 
 type ShortTandemRepeat {
@@ -92,5 +98,6 @@ type ShortTandemRepeatDetails {
   repeat_units: [ShortTandemRepeatRepeatUnit!]!
   allele_size_distribution: ShortTandemRepeatAlleleSizeDistribution!
   genotype_distribution: ShortTandemRepeatGenotypeDistribution!
+  age_distribution: [ShortTandemRepeatAgeDistributionBin!]
   adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }
