@@ -17,16 +17,17 @@ const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }) => {
           {adjacentRepeat.reference_region.stop}
         </Link>
       </AttributeList.Item>
-      <AttributeList.Item label="Repeat units">
+      <AttributeList.Item label={`Repeat unit${adjacentRepeat.repeat_units.length > 1 ? 's' : ''}`}>
         <InlineList
           items={adjacentRepeat.repeat_units.map(repeatUnit => (
             <span>
-              {repeatUnit === adjacentRepeat.reference_repeat_unit
+              {repeatUnit === adjacentRepeat.reference_repeat_unit &&
+              adjacentRepeat.repeat_units.length > 1
                 ? `${repeatUnit} (reference)`
                 : repeatUnit}
             </span>
           ))}
-          label="Repeat units"
+          label={`Repeat unit${adjacentRepeat.repeat_units.length > 1 ? 's' : ''}`}
         />
       </AttributeList.Item>
     </AttributeList>
