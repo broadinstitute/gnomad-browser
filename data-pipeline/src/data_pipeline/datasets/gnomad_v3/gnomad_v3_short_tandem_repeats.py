@@ -198,11 +198,7 @@ def _prepare_age_distribution(locus):
     return [
         {
             "age_range": [min_age, max_age],
-            "distribution": _prepare_histogram(
-                _get_total_histogram(
-                    {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == age_key}
-                )
-            ),
+            "distribution": _prepare_histogram(locus["AgeDistribution"].get(age_key, {})),
         }
         for age_key, min_age, max_age in age_bins
     ]
