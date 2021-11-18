@@ -31,6 +31,9 @@ const ShortTandemRepeatRead = ({ read }) => {
           {GNOMAD_POPULATION_NAMES[read.population]}
         </AttributeList.Item>
         <AttributeList.Item label="Sex">{read.sex}</AttributeList.Item>
+        <AttributeList.Item label="Age">
+          {read.age || 'Not available for this sample'}
+        </AttributeList.Item>
         <AttributeList.Item label="Allele 1">
           {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
           {read.alleles[0].repeats_confidence_interval.lower}-
@@ -63,6 +66,7 @@ ShortTandemRepeatRead.propTypes = {
     ).isRequired,
     population: PropTypes.string.isRequired,
     sex: PropTypes.string.isRequired,
+    age: PropTypes.string,
     path: PropTypes.string.isRequired,
   }).isRequired,
 }
@@ -133,6 +137,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }) =
               }
               population
               sex
+              age
               path
             }
           }
