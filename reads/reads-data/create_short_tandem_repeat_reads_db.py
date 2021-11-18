@@ -36,6 +36,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             `allele_2_repeats_ci_upper` integer,
             `population` text,
             `sex` text,
+            `age` text,
             `filename` text
         )
         """
@@ -43,7 +44,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
 
     db.execute("CREATE INDEX `id_idx` ON `reads` (`id`)")
 
-    def _format_read(read, locus):
+    def _format_read(read, index, locus):
         # Hemizygotes have only one allele and only one value in Genotype/GenotypeConfidenceInterval
         if "/" in read["Genotype"]:
             n_alleles = 2
@@ -64,7 +65,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
 
         return {
             "id": locus,
-            "order": read["Order"],
+            "order": index,
             "n_alleles": n_alleles,
             "allele_1_repeat_unit": allele_1_repeat_unit,
             "allele_2_repeat_unit": allele_2_repeat_unit,
@@ -76,6 +77,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             "allele_2_repeats_ci_upper": allele_2_ci_upper,
             "population": read["Population"],
             "sex": read["Sex"],
+            "age": None if read["Age"] == "age-not-available" else read["Age"],
             "filename": read["ReadvizFilename"],
         }
 
@@ -96,10 +98,11 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
                 :allele_2_repeats_ci_upper,
                 :population,
                 :sex,
+                :age,
                 :filename
             )
             """,
-            (_format_read(read, locus) for read in reads),
+            (_format_read(read, index, locus) for index, read in enumerate(reads)),
         )
         db.commit()
 

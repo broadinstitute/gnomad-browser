@@ -105,6 +105,7 @@ const ShortTandemRepeatReadType = new GraphQLObjectType({
     alleles: { type: new GraphQLNonNull(new GraphQLList(ShortTandemRepeatReadAlleleType)) },
     population: { type: new GraphQLNonNull(GraphQLString) },
     sex: { type: new GraphQLNonNull(GraphQLString) },
+    age: { type: GraphQLString },
     path: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
