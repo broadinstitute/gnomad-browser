@@ -97,6 +97,30 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
+        gnomAD v3.1.2 variant:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/variant/1-55051215-G-GA',
+            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+          }}
+        >
+          1-55051215-G-GA
+        </Link>
+      </ListItem>
+      <ListItem>
+        gnomAD v3 mitochondrial variant:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/variant/M-8602-T-C',
+            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+          }}
+        >
+          M-8602-T-C
+        </Link>
+      </ListItem>
+      <ListItem>
         gnomAD v2.1.1 variant:{' '}
         <Link
           preserveSelectedDataset={false}
@@ -109,15 +133,15 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
-        gnomAD v3.1.2 variant:{' '}
+        gnomAD v2 structural variant:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
-            pathname: '/variant/1-55051215-G-GA',
-            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+            pathname: '/variant/DUP_2_5708',
+            search: queryString.stringify({ dataset: 'gnomad_sv_r2_1' }),
           }}
         >
-          1-55051215-G-GA
+          DUP_2_5708
         </Link>
       </ListItem>
       <ListItem>
