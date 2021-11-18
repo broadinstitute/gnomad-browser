@@ -7,7 +7,10 @@ import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailProp
 
 const MitochondrialVariantAttributeList = ({ variant }) => (
   <AttributeList style={{ marginTop: '1.25em' }}>
-    <AttributeList.Item label="Filter">
+    <AttributeList.Item
+      label="Filters"
+      tooltip="Quality control filters that this variant failed (if any)"
+    >
       {variant.filters.length ? (
         variant.filters.map(f => (
           <Badge key={f} level="warning">
