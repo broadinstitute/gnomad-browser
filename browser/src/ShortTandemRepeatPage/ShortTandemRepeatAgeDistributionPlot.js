@@ -34,7 +34,7 @@ const ageRangeLabel = ageRange => {
 }
 
 const ShortTandemRepeatAgeDistributionPlot = withSize()(
-  ({ ageDistribution, maxRepeats, size: { width } }) => {
+  ({ ageDistribution, maxRepeats, ranges, size: { width } }) => {
     const height = Math.min(width, 300)
 
     const margin = {
@@ -197,6 +197,93 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
                 )
               })}
           </g>
+
+          <g transform={`translate(${margin.left}, 0)`}>
+            {ranges
+              .filter(range => range.start !== range.stop)
+              .filter(range => range.start <= maxRepeats)
+              .map((range, rangeIndex) => {
+                const startBinIndex = Math.floor(range.start / xBinSize)
+                const startX =
+                  xScale(startBinIndex) +
+                  ((range.start - startBinIndex * xBinSize) / xBinSize) * xBandwidth
+
+                let stopX
+                if (range.stop <= maxRepeats) {
+                  const stopBinIndex = Math.floor(range.stop / xBinSize)
+                  stopX =
+                    xScale(stopBinIndex) +
+                    ((range.stop - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
+                } else {
+                  stopX = plotWidth
+                }
+
+                let labelPosition = (startX + stopX) / 2
+                let labelAnchor = 'middle'
+                if (rangeIndex === 0 && stopX < 50) {
+                  labelPosition = stopX - 5
+                  labelAnchor = 'end'
+                }
+                if (rangeIndex === ranges.length - 1 && plotWidth - startX < 60) {
+                  labelPosition = startX + 5
+                  labelAnchor = 'start'
+                }
+
+                return (
+                  <React.Fragment key={range.label}>
+                    {range.start !== 0 &&
+                      (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
+                        <line
+                          x1={startX}
+                          y1={margin.top - 10}
+                          x2={startX}
+                          y2={margin.top + plotHeight}
+                          stroke="#333"
+                          strokeDasharray="3 3"
+                        />
+                      )}
+                    {stopX !== plotWidth && (
+                      <line
+                        x1={stopX}
+                        y1={margin.top - 10}
+                        x2={stopX}
+                        y2={margin.top + plotHeight}
+                        stroke="#333"
+                        strokeDasharray="3 3"
+                      />
+                    )}
+                    <path
+                      d={`M ${startX + 1} ${margin.top - 6} L ${startX + 5} ${margin.top - 9} L ${
+                        startX + 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <line
+                      x1={startX + 1}
+                      y1={margin.top - 6}
+                      x2={stopX - 1}
+                      y2={margin.top - 6}
+                      stroke="#333"
+                    />
+                    <path
+                      d={`M ${stopX - 1} ${margin.top - 6} L ${stopX - 5} ${margin.top - 9} L ${
+                        stopX - 5
+                      } ${margin.top - 3} Z`}
+                      fill="#333"
+                    />
+                    <text
+                      x={labelPosition}
+                      y={margin.top - 6}
+                      dy="-0.5em"
+                      fontSize={10}
+                      textAnchor={labelAnchor}
+                    >
+                      {range.label}
+                    </text>
+                  </React.Fragment>
+                )
+              })}
+          </g>
         </svg>
       </GraphWrapper>
     )
@@ -213,6 +300,13 @@ ShortTandemRepeatAgeDistributionPlot.propTypes = {
     })
   ),
   maxRepeats: PropTypes.number.isRequired,
+  ranges: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ),
 }
 
 export default ShortTandemRepeatAgeDistributionPlot

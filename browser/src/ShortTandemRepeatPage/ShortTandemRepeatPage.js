@@ -386,6 +386,13 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             shortTandemRepeat.allele_size_distribution.distribution.length - 1
           ][0]
         }
+        ranges={
+          selectedRepeatUnit === '' ||
+          selectedRepeatUnit === 'classification/pathogenic' ||
+          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+            ? plotRanges
+            : []
+        }
       />
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
