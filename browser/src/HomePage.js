@@ -137,6 +137,34 @@ export default () => (
       </ListItem>
     </List>
 
+    <h2>New to gnomAD?</h2>
+    <p>
+      Check out these resources to learn about gnomAD and how to use it for variant interpretation.
+    </p>
+    <List>
+      <ListItem>
+        <ExternalLink href="https://arxiv.org/abs/2107.11458">
+          <em>Variant interpretation using population databases: lessons from gnomAD.</em> arXiv{' '}
+          2107.11458 [q-bio.GN] (2021).
+        </ExternalLink>
+      </ListItem>
+      <ListItem>
+        <ExternalLink href="https://www.broadinstitute.org/videos/mpg-primer-using-gnomad-tips-and-tricks">
+          Using gnomAD - tips and tricks (video)
+        </ExternalLink>
+      </ListItem>
+      <ListItem>
+        <ExternalLink href="https://www.broadinstitute.org/videos/gnomad-using-large-genomic-data-sets-interpret-human-genetic-variation">
+          gnomAD: Using large genomic data sets to interpret human genetic variation (video)
+        </ExternalLink>
+      </ListItem>
+      <ListItem>
+        <ExternalLink href="https://rarediseasegenomics.org/blog/six-lessons-for-variant-interpretation">
+          Six lessons for variant interpretation
+        </ExternalLink>
+      </ListItem>
+    </List>
+
     <h2>About gnomAD</h2>
 
     <p>
