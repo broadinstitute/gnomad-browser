@@ -215,19 +215,31 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
             {showTotal && <th scope="col">Total</th>}
           </tr>
           <tr>
-            <th scope="row">Filter</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Quality control filters that this variant failed (if any)">
+                <TooltipHint>Filters</TooltipHint>
+              </TooltipAnchor>
+            </th>
             {showExomes && <td>{renderGnomadVariantFlag(variant, 'exome')}</td>}
             {showGenomes && <td>{renderGnomadVariantFlag(variant, 'genome')}</td>}
             {showTotal && <td />}
           </tr>
           <tr>
-            <th scope="row">Allele Count</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Alternate allele count in high quality genotypes">
+                <TooltipHint>Allele Count</TooltipHint>
+              </TooltipAnchor>
+            </th>
             {showExomes && <td>{isPresentInExome && exomeAlleleCount}</td>}
             {showGenomes && <td>{isPresentInGenome && genomeAlleleCount}</td>}
             {showTotal && <td>{totalAlleleCount}</td>}
           </tr>
           <tr>
-            <th scope="row">Allele Number</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Total number of called high quality genotypes">
+                <TooltipHint>Allele Number</TooltipHint>
+              </TooltipAnchor>
+            </th>
             {showExomes && (
               <td>
                 {isPresentInExome && exomeAlleleNumber}
@@ -248,7 +260,11 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
             )}
           </tr>
           <tr>
-            <th scope="row">Allele Frequency</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Alternate allele frequency in high quality genotypes">
+                <TooltipHint>Allele Frequency</TooltipHint>
+              </TooltipAnchor>
+            </th>
             {showExomes && <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>}
             {showGenomes && <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>}
             {showTotal && <td>{totalAlleleFrequency.toPrecision(4)}</td>}
@@ -271,7 +287,11 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
           </tr>
           {variant.chrom !== 'Y' && (
             <tr>
-              <th scope="row">Number of homozygotes</th>
+              <th scope="row">
+                <TooltipAnchor tooltip="Number of individuals homozygous for alternate allele">
+                  <TooltipHint>Number of homozygotes</TooltipHint>
+                </TooltipAnchor>
+              </th>
               {showExomes && (
                 <td>
                   {isPresentInExome && exomeHomozygoteCount}
@@ -294,14 +314,22 @@ export const GnomadVariantOccurrenceTable = ({ datasetId, showExomes, showGenome
           )}
           {(variant.chrom === 'X' || variant.chrom === 'Y') && (
             <tr>
-              <th scope="row">Number of hemizygotes</th>
+              <th scope="row">
+                <TooltipAnchor tooltip="Number of individuals hemizygous for alternate allele">
+                  <TooltipHint>Number of hemizygotes</TooltipHint>
+                </TooltipAnchor>
+              </th>
               {showExomes && <td>{isPresentInExome && exomeHemizygoteCount}</td>}
               {showGenomes && <td>{isPresentInGenome && genomeHemizygoteCount}</td>}
               {showTotal && <td>{totalHemizygoteCount}</td>}
             </tr>
           )}
           <tr>
-            <th scope="row">Mean depth of coverage</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Mean depth of coverage at this variant's locus">
+                <TooltipHint>Mean depth of coverage</TooltipHint>
+              </TooltipAnchor>
+            </th>
             {showExomes && <td>{exomeCoverage !== null ? exomeCoverage.toFixed(1) : '–'}</td>}
             {showGenomes && <td>{genomeCoverage !== null ? genomeCoverage.toFixed(1) : '–'}</td>}
             {showTotal && <td />}

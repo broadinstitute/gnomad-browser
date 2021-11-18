@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge } from '@gnomad/ui'
+import { Badge, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
@@ -47,7 +47,11 @@ const ExacVariantOccurrenceTable = ({ variant }) => {
             <th scope="col">Exomes</th>
           </tr>
           <tr>
-            <th scope="row">Filter</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Quality control filters that this variant failed (if any)">
+                <TooltipHint>Filters</TooltipHint>
+              </TooltipAnchor>
+            </th>
             <td>
               {variant.exome.filters.length === 0 ? (
                 <Badge level="success">Pass</Badge>
@@ -57,36 +61,60 @@ const ExacVariantOccurrenceTable = ({ variant }) => {
             </td>
           </tr>
           <tr>
-            <th scope="row">Allele Count</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Alternate allele count in high quality genotypes">
+                <TooltipHint>Allele Count</TooltipHint>
+              </TooltipAnchor>
+            </th>
             <td>{variant.exome.ac}</td>
           </tr>
           <tr>
-            <th scope="row">Allele Number</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Total number of called high quality genotypes">
+                <TooltipHint>Allele Number</TooltipHint>
+              </TooltipAnchor>
+            </th>
             <td>
               {variant.exome.an}
               {hasLowAlleleNumber && ' *'}
             </td>
           </tr>
           <tr>
-            <th scope="row">Allele Frequency</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Alternate allele frequency in high quality genotypes">
+                <TooltipHint>Allele Frequency</TooltipHint>
+              </TooltipAnchor>
+            </th>
             <td>
               {variant.exome.an === 0 ? 0 : (variant.exome.ac / variant.exome.an).toPrecision(4)}
             </td>
           </tr>
           {variant.chrom !== 'Y' && (
             <tr>
-              <th scope="row">Number of homozygotes</th>
+              <th scope="row">
+                <TooltipAnchor tooltip="Number of individuals homozygous for alternate allele">
+                  <TooltipHint>Number of homozygotes</TooltipHint>
+                </TooltipAnchor>
+              </th>
               <td>{variant.exome.ac_hom}</td>
             </tr>
           )}
           {(variant.chrom === 'X' || variant.chrom === 'Y') && (
             <tr>
-              <th scope="row">Number of hemizygotes</th>
+              <th scope="row">
+                <TooltipAnchor tooltip="Number of individuals hemizygous for alternate allele">
+                  <TooltipHint>Number of hemizygotes</TooltipHint>
+                </TooltipAnchor>
+              </th>
               <td>{variant.exome.ac_hemi}</td>
             </tr>
           )}
           <tr>
-            <th scope="row">Mean depth of coverage</th>
+            <th scope="row">
+              <TooltipAnchor tooltip="Mean depth of coverage at this variant's locus">
+                <TooltipHint>Mean depth of coverage</TooltipHint>
+              </TooltipAnchor>
+            </th>
             <td>{coverage !== null ? coverage.toFixed(1) : '–'}</td>
           </tr>
         </tbody>
