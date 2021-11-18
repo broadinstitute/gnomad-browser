@@ -107,7 +107,7 @@ def _prepare_allele_size_distribution_populations(locus):
 
 
 def _prepare_allele_size_distribution_repeat_units(locus):
-    repeat_units = sorted(set(key.split("/")[3] for key in locus["AlleleCountHistogram"].keys()))
+    repeat_units = sorted(set(key.split("/")[2] for key in locus["AlleleCountHistogram"].keys()))
     populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
 
     distributions = sorted(
@@ -116,7 +116,7 @@ def _prepare_allele_size_distribution_repeat_units(locus):
                 "repeat_unit": repeat_unit,
                 "distribution": _prepare_histogram(
                     _get_total_histogram(
-                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[3] == repeat_unit}
+                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == repeat_unit}
                     )
                 ),
                 "populations": sorted(
@@ -130,7 +130,7 @@ def _prepare_allele_size_distribution_repeat_units(locus):
                                             {
                                                 k: v
                                                 for k, v in locus["AlleleCountHistogram"].items()
-                                                if k.split("/")[3] == repeat_unit and k.split("/")[0] == population
+                                                if k.split("/")[2] == repeat_unit and k.split("/")[0] == population
                                             }
                                         )
                                     ),
@@ -138,29 +138,13 @@ def _prepare_allele_size_distribution_repeat_units(locus):
                                 {
                                     "id": f"{population}_XX",
                                     "distribution": _prepare_histogram(
-                                        _get_total_histogram(
-                                            {
-                                                k: v
-                                                for k, v in locus["AlleleCountHistogram"].items()
-                                                if k.split("/")[3] == repeat_unit
-                                                and k.split("/")[0] == population
-                                                and k.split("/")[1] == "XX"
-                                            }
-                                        )
+                                        locus["AlleleCountHistogram"].get(f"{population}/XX/{repeat_unit}", {})
                                     ),
                                 },
                                 {
                                     "id": f"{population}_XY",
                                     "distribution": _prepare_histogram(
-                                        _get_total_histogram(
-                                            {
-                                                k: v
-                                                for k, v in locus["AlleleCountHistogram"].items()
-                                                if k.split("/")[3] == repeat_unit
-                                                and k.split("/")[0] == population
-                                                and k.split("/")[1] == "XY"
-                                            }
-                                        )
+                                        locus["AlleleCountHistogram"].get(f"{population}/XY/{repeat_unit}", {})
                                     ),
                                 },
                             ]
@@ -175,7 +159,7 @@ def _prepare_allele_size_distribution_repeat_units(locus):
                                     {
                                         k: v
                                         for k, v in locus["AlleleCountHistogram"].items()
-                                        if k.split("/")[3] == repeat_unit and k.split("/")[1] == sex
+                                        if k.split("/")[2] == repeat_unit and k.split("/")[1] == sex
                                     }
                                 )
                             ),
@@ -235,7 +219,7 @@ def _filter_genotype_distribution_histogram(histogram, repeat_units=None, popula
     predicates = []
     if repeat_units:
         predicates.append(
-            lambda key: tuple(sorted(key.split("/")[3:5])) in (repeat_units, tuple(reversed(repeat_units)))
+            lambda key: tuple(sorted(key.split("/")[2:4])) in (repeat_units, tuple(reversed(repeat_units)))
         )
     if population:
         predicates.append(lambda key: key.split("/")[0] == population)
@@ -249,12 +233,12 @@ def _filter_genotype_distribution_histogram(histogram, repeat_units=None, popula
 
     return dict(
         itertools.chain(
-            ((k, v) for k, v in filtered_histogram.items() if tuple(k.split("/")[3:5]) == repeat_units),
+            ((k, v) for k, v in filtered_histogram.items() if tuple(k.split("/")[2:4]) == repeat_units),
             (
                 (f"{k}-reversed", {"/".join(reversed(vk.split("/"))): vv for vk, vv in v.items()})
                 for k, v in filtered_histogram.items()
-                if tuple(k.split("/")[3:5]) == tuple(reversed(repeat_units))
-                and tuple(k.split("/")[3:5]) != repeat_units
+                if tuple(k.split("/")[2:4]) == tuple(reversed(repeat_units))
+                and tuple(k.split("/")[2:4]) != repeat_units
             ),
         )
     )
@@ -320,7 +304,7 @@ def _prepare_genotype_distribution_populations(locus):
 
 def _prepare_genotype_distribution_repeat_units(locus):
     repeat_unit_pairs = sorted(
-        set(tuple(sorted(key.split("/")[3:5])) for key in locus["AlleleCountScatterPlot"].keys())
+        set(tuple(sorted(key.split("/")[2:4])) for key in locus["AlleleCountScatterPlot"].keys())
     )
     populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountScatterPlot"].keys()))
 
@@ -465,7 +449,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         if "RepeatUnitClassification" in locus
                         else "pathogenic",
                     }
-                    for repeat_unit in set(k.split("/")[3] for k in locus["AlleleCountHistogram"].keys())
+                    for repeat_unit in set(k.split("/")[2] for k in locus["AlleleCountHistogram"].keys())
                 ),
                 key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
             ),
@@ -492,7 +476,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         },
                         "reference_repeat_unit": adjacent_repeat["ReferenceRepeatUnit"],
                         "repeat_units": sorted(
-                            set(k.split("/")[3] for k in adjacent_repeat["AlleleCountHistogram"].keys()),
+                            set(k.split("/")[2] for k in adjacent_repeat["AlleleCountHistogram"].keys()),
                             key=lambda repeat_unit: (len(repeat_unit), repeat_unit),
                         ),
                         "allele_size_distribution": {
