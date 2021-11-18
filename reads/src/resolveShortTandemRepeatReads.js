@@ -8,7 +8,7 @@ const buildWhere = ({ id, filter }) => {
     ':id': id,
   }
 
-  let where = '`id` = :id'
+  let where = '`id` = :id AND `filename` IS NOT NULL'
 
   if (filter) {
     if (filter.population) {
@@ -147,6 +147,7 @@ const resolveShortTandemRepeatReads = async (
       \`allele_2_repeats_ci_upper\`,
       \`population\`,
       \`sex\`,
+      \`age\`,
       \`filename\`
     FROM
       \`reads\`
@@ -202,6 +203,7 @@ const resolveShortTandemRepeatReads = async (
             ],
       population: row.population,
       sex: row.sex,
+      age: row.age,
       path: `${publicPath}/${id}/${row.filename}`,
     }
   })
