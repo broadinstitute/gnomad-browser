@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TextButton } from '@gnomad/ui'
+import { BaseTable, TextButton, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 const Table = styled(BaseTable)`
   min-width: 100%;
@@ -99,7 +99,7 @@ export class PopulationsTable extends Component {
     }))
   }
 
-  renderColumnHeader(key, label, props = {}) {
+  renderColumnHeader({ key, label, tooltip = null, props = {} }) {
     const { sortAscending, sortBy } = this.state
     let ariaSortAttr = 'none'
     if (sortBy === key) {
@@ -109,7 +109,13 @@ export class PopulationsTable extends Component {
     return (
       <th {...props} aria-sort={ariaSortAttr} scope="col">
         <button type="button" onClick={() => this.setSortBy(key)}>
-          {label}
+          {tooltip ? (
+            <TooltipAnchor tooltip={tooltip}>
+              <TooltipHint>{label}</TooltipHint>
+            </TooltipAnchor>
+          ) : (
+            label
+          )}
         </button>
       </th>
     )
@@ -213,23 +219,48 @@ export class PopulationsTable extends Component {
       <Table>
         <thead>
           <tr>
-            {this.renderColumnHeader('name', 'Population', { colSpan: 2 })}
-            {this.renderColumnHeader('ac', columnLabels.ac || 'Allele Count', {
-              className: 'right-align',
+            {this.renderColumnHeader({ key: 'name', label: 'Population', props: { colSpan: 2 } })}
+            {this.renderColumnHeader({
+              key: 'ac',
+              label: columnLabels.ac || 'Allele Count',
+              tooltip: 'Alternate allele count in high quality genotypes',
+              props: {
+                className: 'right-align',
+              },
             })}
-            {this.renderColumnHeader('an', columnLabels.an || 'Allele Number', {
-              className: 'right-align',
+            {this.renderColumnHeader({
+              key: 'an',
+              label: columnLabels.an || 'Allele Number',
+              tooltip: 'Total number of called high quality genotypes',
+              props: {
+                className: 'right-align',
+              },
             })}
             {showHomozygotes &&
-              this.renderColumnHeader('ac_hom', 'Number of Homozygotes', {
-                className: 'right-align',
+              this.renderColumnHeader({
+                key: 'ac_hom',
+                label: 'Number of Homozygotes',
+                tooltip: 'Number of individuals homozygous for alternate allele',
+                props: {
+                  className: 'right-align',
+                },
               })}
             {showHemizygotes &&
-              this.renderColumnHeader('ac_hemi', 'Number of Hemizygotes', {
-                className: 'right-align',
+              this.renderColumnHeader({
+                key: 'ac_hemi',
+                label: 'Number of Hemizygotes',
+                tooltip: 'Number of individuals hemizygous for alternate allele',
+                props: {
+                  className: 'right-align',
+                },
               })}
-            {this.renderColumnHeader('af', columnLabels.af || 'Allele Frequency', {
-              style: { paddingLeft: '25px' },
+            {this.renderColumnHeader({
+              key: 'af',
+              label: columnLabels.af || 'Allele Frequency',
+              tooltip: 'Alternate allele frequency in high quality genotypes',
+              props: {
+                style: { paddingLeft: '25px' },
+              },
             })}
           </tr>
         </thead>
