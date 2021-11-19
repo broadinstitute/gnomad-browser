@@ -54,7 +54,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const height = 300
 
     const margin = {
-      bottom: 75,
+      bottom: 65,
       left: 60,
       right: 10,
       top: 20,
@@ -118,10 +118,10 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
-        <svg height={height} width={width}>
+        <svg height={binSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
             label="Repeats"
-            labelOffset={binSize === 1 ? 10 : 40}
+            labelOffset={binSize === 1 ? 10 : 30}
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
