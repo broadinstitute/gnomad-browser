@@ -30,7 +30,8 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
               <option key={optionValue} value={optionValue}>
                 {repeatUnitDistribution.repeat_units
                   .map(repeatUnit =>
-                    repeatUnit === shortTandemRepeatOrAdjacentRepeat.reference_repeat_unit
+                    repeatUnit === shortTandemRepeatOrAdjacentRepeat.reference_repeat_unit &&
+                    shortTandemRepeatOrAdjacentRepeat.repeat_units.length > 1
                       ? `${repeatUnit} (reference)`
                       : repeatUnit
                   )
@@ -55,6 +56,7 @@ ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect.propTypes = {
         })
       ).isRequired,
     }).isRequired,
+    repeat_units: PropTypes.arrayOf(PropTypes.any).isRequired,
   }).isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

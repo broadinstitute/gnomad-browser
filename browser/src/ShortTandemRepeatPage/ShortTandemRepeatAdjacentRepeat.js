@@ -81,7 +81,8 @@ const ShortTandemRepeatAdjacentRepeat = ({
             {adjacentRepeat.repeat_units.length > 1 && <option value="">All</option>}
             {adjacentRepeat.repeat_units.map(repeatUnit => (
               <option key={repeatUnit} value={repeatUnit}>
-                {repeatUnit === adjacentRepeat.reference_repeat_unit
+                {repeatUnit === adjacentRepeat.reference_repeat_unit &&
+                adjacentRepeat.repeat_units.length > 1
                   ? `${repeatUnit} (reference)`
                   : repeatUnit}
               </option>
