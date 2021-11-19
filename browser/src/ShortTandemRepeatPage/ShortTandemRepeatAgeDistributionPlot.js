@@ -38,7 +38,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
     const height = Math.min(width, 300)
 
     const margin = {
-      bottom: 75,
+      bottom: 65,
       left: 60,
       right: 10,
       top: 20,
@@ -117,10 +117,10 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
-        <svg height={height} width={width}>
+        <svg height={xBinSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
             label="Repeats"
-            labelOffset={xBinSize === 1 ? 10 : 40}
+            labelOffset={xBinSize === 1 ? 10 : 30}
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}

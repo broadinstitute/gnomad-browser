@@ -43,11 +43,11 @@ const ShortTandemRepeatAdjacentRepeat = ({
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
   return (
-    <section style={{ marginBottom: '2em' }}>
+    <section style={{ marginBottom: '3em' }}>
       <h3>{adjacentRepeat.id}</h3>
       <ShortTandemRepeatAdjacentRepeatAttributes adjacentRepeat={adjacentRepeat} />
 
-      <h4>Allele Size Distribution</h4>
+      <h4 style={{ marginBottom: '0.66em' }}>Allele Size Distribution</h4>
       <ShortTandemRepeatAlleleSizeDistributionPlot
         maxRepeats={
           adjacentRepeat.allele_size_distribution.distribution[
@@ -104,7 +104,7 @@ const ShortTandemRepeatAdjacentRepeat = ({
         </label>
       </ControlSection>
 
-      <h4>Genotype Distribution</h4>
+      <h4 style={{ marginBottom: '0.66em' }}>Genotype Distribution</h4>
       <ShortTandemRepeatGenotypeDistributionPlot
         axisLabels={getGenotypeDistributionPlotAxisLabels(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,

@@ -105,7 +105,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
 
   return (
     <>
-      <FlexWrapper style={{ marginBottom: '2em' }}>
+      <FlexWrapper style={{ marginBottom: '3em' }}>
         <ResponsiveSection>
           <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
         </ResponsiveSection>
@@ -122,7 +122,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </ResponsiveSection>
         )}
       </FlexWrapper>
-      <section style={{ marginBottom: '2em' }}>
+      <section style={{ marginBottom: '3em' }}>
         <h2>Associated Diseases</h2>
         <TableWrapper>
           <BaseTable style={{ minWidth: '100%' }}>
@@ -167,198 +167,203 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </BaseTable>
         </TableWrapper>
       </section>
-      <h2>Allele Size Distribution</h2>
-      <ShortTandemRepeatAlleleSizeDistributionPlot
-        maxRepeats={
-          shortTandemRepeat.allele_size_distribution.distribution[
-            shortTandemRepeat.allele_size_distribution.distribution.length - 1
-          ][0]
-        }
-        alleleSizeDistribution={getSelectedAlleleSizeDistribution(shortTandemRepeat, {
-          selectedPopulationId,
-          selectedRepeatUnit,
-        })}
-        repeatUnitLength={
-          selectedRepeatUnit && !selectedRepeatUnit.startsWith('classification')
-            ? selectedRepeatUnit.length
-            : null
-        }
-        ranges={
-          selectedRepeatUnit === '' ||
-          selectedRepeatUnit === 'classification/pathogenic' ||
-          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
-            ? plotRanges
-            : []
-        }
-        scaleType={selectedScaleType}
-      />
-      <ControlSection>
-        <ShortTandemRepeatPopulationOptions
-          id={`${shortTandemRepeat.id}-repeat-counts`}
-          populationIds={populationIds}
-          selectedPopulationId={selectedPopulationId}
-          onSelectPopulationId={setSelectedPopulationId}
-        />
 
-        <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
-          Repeat unit:{' '}
-          <Select
-            id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
-            value={selectedRepeatUnit}
-            onChange={e => {
-              setSelectedRepeatUnit(e.target.value)
-            }}
-          >
-            {shortTandemRepeat.repeat_units.length === 1 ? (
-              <>
-                {shortTandemRepeat.repeat_units.map(repeatUnit => (
-                  <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                    {repeatUnit.repeat_unit}
-                  </option>
-                ))}
-              </>
-            ) : (
-              <>
-                <option value="">All</option>
-                {Object.keys(repeatUnitsByClassification).length > 1 && (
-                  <optgroup label="By classification">
-                    {['pathogenic', 'benign', 'unknown']
-                      .filter(classification => repeatUnitsByClassification[classification])
-                      .map(classification => (
-                        <option key={classification} value={`classification/${classification}`}>
-                          All {classification}
-                        </option>
-                      ))}
-                  </optgroup>
-                )}
-                <optgroup label="Individual">
+      <section style={{ marginBottom: '3em' }}>
+        <h2>Allele Size Distribution</h2>
+        <ShortTandemRepeatAlleleSizeDistributionPlot
+          maxRepeats={
+            shortTandemRepeat.allele_size_distribution.distribution[
+              shortTandemRepeat.allele_size_distribution.distribution.length - 1
+            ][0]
+          }
+          alleleSizeDistribution={getSelectedAlleleSizeDistribution(shortTandemRepeat, {
+            selectedPopulationId,
+            selectedRepeatUnit,
+          })}
+          repeatUnitLength={
+            selectedRepeatUnit && !selectedRepeatUnit.startsWith('classification')
+              ? selectedRepeatUnit.length
+              : null
+          }
+          ranges={
+            selectedRepeatUnit === '' ||
+            selectedRepeatUnit === 'classification/pathogenic' ||
+            (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+              ? plotRanges
+              : []
+          }
+          scaleType={selectedScaleType}
+        />
+        <ControlSection style={{ marginTop: '0.5em' }}>
+          <ShortTandemRepeatPopulationOptions
+            id={`${shortTandemRepeat.id}-repeat-counts`}
+            populationIds={populationIds}
+            selectedPopulationId={selectedPopulationId}
+            onSelectPopulationId={setSelectedPopulationId}
+          />
+
+          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
+            Repeat unit:{' '}
+            <Select
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
+              value={selectedRepeatUnit}
+              onChange={e => {
+                setSelectedRepeatUnit(e.target.value)
+              }}
+            >
+              {shortTandemRepeat.repeat_units.length === 1 ? (
+                <>
                   {shortTandemRepeat.repeat_units.map(repeatUnit => (
                     <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                      {repeatUnit.repeat_unit === shortTandemRepeat.reference_repeat_unit
-                        ? `${repeatUnit.repeat_unit} (reference)`
-                        : repeatUnit.repeat_unit}
+                      {repeatUnit.repeat_unit}
                     </option>
                   ))}
-                </optgroup>
-              </>
-            )}
-          </Select>
-        </label>
+                </>
+              ) : (
+                <>
+                  <option value="">All</option>
+                  {Object.keys(repeatUnitsByClassification).length > 1 && (
+                    <optgroup label="By classification">
+                      {['pathogenic', 'benign', 'unknown']
+                        .filter(classification => repeatUnitsByClassification[classification])
+                        .map(classification => (
+                          <option key={classification} value={`classification/${classification}`}>
+                            All {classification}
+                          </option>
+                        ))}
+                    </optgroup>
+                  )}
+                  <optgroup label="Individual">
+                    {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                      <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
+                        {repeatUnit.repeat_unit === shortTandemRepeat.reference_repeat_unit
+                          ? `${repeatUnit.repeat_unit} (reference)`
+                          : repeatUnit.repeat_unit}
+                      </option>
+                    ))}
+                  </optgroup>
+                </>
+              )}
+            </Select>
+          </label>
 
-        <label
-          htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
-        >
-          Scale:{' '}
-          <Select
-            id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
-            value={selectedScaleType}
-            onChange={e => {
-              setSelectedScaleType(e.target.value)
-            }}
-          >
-            <option value="linear">Linear</option>
-            <option value="log">Log</option>
-          </Select>
-        </label>
-      </ControlSection>
-      {shortTandemRepeat.associated_diseases.length > 1 && (
-        <ControlSection style={{ marginTop: '1em' }}>
           <label
-            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
+            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
           >
-            Show ranges for{' '}
+            Scale:{' '}
             <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
-              value={selectedDisease}
+              id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
+              value={selectedScaleType}
               onChange={e => {
-                setSelectedDisease(e.target.value)
+                setSelectedScaleType(e.target.value)
               }}
             >
-              {shortTandemRepeat.associated_diseases.map(disease => {
-                return (
-                  <option key={disease.name} value={disease.name}>
-                    {disease.name}
-                  </option>
-                )
-              })}
+              <option value="linear">Linear</option>
+              <option value="log">Log</option>
             </Select>
           </label>
         </ControlSection>
-      )}
+        {shortTandemRepeat.associated_diseases.length > 1 && (
+          <ControlSection style={{ marginTop: '1em' }}>
+            <label
+              htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
+            >
+              Show ranges for{' '}
+              <Select
+                id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
+                value={selectedDisease}
+                onChange={e => {
+                  setSelectedDisease(e.target.value)
+                }}
+              >
+                {shortTandemRepeat.associated_diseases.map(disease => {
+                  return (
+                    <option key={disease.name} value={disease.name}>
+                      {disease.name}
+                    </option>
+                  )
+                })}
+              </Select>
+            </label>
+          </ControlSection>
+        )}
+      </section>
 
-      <h2>Genotype Distribution</h2>
-      <ShortTandemRepeatGenotypeDistributionPlot
-        axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
-          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-        })}
-        maxRepeats={[
-          max(shortTandemRepeat.genotype_distribution.distribution, d => max(d.slice(0, 2))),
-          max(shortTandemRepeat.genotype_distribution.distribution, d => min(d.slice(0, 2))),
-        ]}
-        genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
-          selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-          selectedPopulationId,
-        })}
-        xRanges={
-          selectedGenotypeDistributionRepeatUnits === '' ||
-          (repeatUnitsByClassification.pathogenic || []).includes(
-            selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
-          )
-            ? plotRanges
-            : []
-        }
-        yRanges={
-          selectedGenotypeDistributionRepeatUnits === '' ||
-          (repeatUnitsByClassification.pathogenic || []).includes(
-            selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
-          )
-            ? plotRanges
-            : []
-        }
-        onSelectBin={bin => {
-          if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
-            setSelectedGenotypeDistributionBin(bin)
+      <section style={{ marginBottom: '3em' }}>
+        <h2>Genotype Distribution</h2>
+        <ShortTandemRepeatGenotypeDistributionPlot
+          axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
+            selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+          })}
+          maxRepeats={[
+            max(shortTandemRepeat.genotype_distribution.distribution, d => max(d.slice(0, 2))),
+            max(shortTandemRepeat.genotype_distribution.distribution, d => min(d.slice(0, 2))),
+          ]}
+          genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
+            selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+            selectedPopulationId,
+          })}
+          xRanges={
+            selectedGenotypeDistributionRepeatUnits === '' ||
+            (repeatUnitsByClassification.pathogenic || []).includes(
+              selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
+            )
+              ? plotRanges
+              : []
           }
-        }}
-      />
-      <ControlSection>
-        <ShortTandemRepeatPopulationOptions
-          id={`${shortTandemRepeat.id}-genotype-distribution`}
-          populationIds={populationIds}
-          selectedPopulationId={selectedPopulationId}
-          onSelectPopulationId={setSelectedPopulationId}
+          yRanges={
+            selectedGenotypeDistributionRepeatUnits === '' ||
+            (repeatUnitsByClassification.pathogenic || []).includes(
+              selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
+            )
+              ? plotRanges
+              : []
+          }
+          onSelectBin={bin => {
+            if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
+              setSelectedGenotypeDistributionBin(bin)
+            }
+          }}
         />
+        <ControlSection style={{ marginTop: '0.5em' }}>
+          <ShortTandemRepeatPopulationOptions
+            id={`${shortTandemRepeat.id}-genotype-distribution`}
+            populationIds={populationIds}
+            selectedPopulationId={selectedPopulationId}
+            onSelectPopulationId={setSelectedPopulationId}
+          />
 
-        <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
-          shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
-          value={selectedGenotypeDistributionRepeatUnits}
-          onChange={setSelectedGenotypeDistributionRepeatUnits}
-        />
-      </ControlSection>
-      {shortTandemRepeat.associated_diseases.length > 1 && (
-        <ControlSection style={{ marginTop: '1em' }}>
-          <label
-            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
-          >
-            Show ranges for{' '}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
-              value={selectedDisease}
-              onChange={e => {
-                setSelectedDisease(e.target.value)
-              }}
-            >
-              {shortTandemRepeat.associated_diseases.map(disease => {
-                return (
-                  <option key={disease.name} value={disease.name}>
-                    {disease.name}
-                  </option>
-                )
-              })}
-            </Select>
-          </label>
+          <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
+            shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
+            value={selectedGenotypeDistributionRepeatUnits}
+            onChange={setSelectedGenotypeDistributionRepeatUnits}
+          />
         </ControlSection>
-      )}
+        {shortTandemRepeat.associated_diseases.length > 1 && (
+          <ControlSection style={{ marginTop: '1em' }}>
+            <label
+              htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
+            >
+              Show ranges for{' '}
+              <Select
+                id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
+                value={selectedDisease}
+                onChange={e => {
+                  setSelectedDisease(e.target.value)
+                }}
+              >
+                {shortTandemRepeat.associated_diseases.map(disease => {
+                  return (
+                    <option key={disease.name} value={disease.name}>
+                      {disease.name}
+                    </option>
+                  )
+                })}
+              </Select>
+            </label>
+          </ControlSection>
+        )}
+      </section>
 
       {selectedGenotypeDistributionBin && (
         <Modal
@@ -378,25 +383,27 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         </Modal>
       )}
 
-      <h2>Age Distribution</h2>
-      <ShortTandemRepeatAgeDistributionPlot
-        ageDistribution={shortTandemRepeat.age_distribution}
-        maxRepeats={
-          shortTandemRepeat.allele_size_distribution.distribution[
-            shortTandemRepeat.allele_size_distribution.distribution.length - 1
-          ][0]
-        }
-        ranges={
-          selectedRepeatUnit === '' ||
-          selectedRepeatUnit === 'classification/pathogenic' ||
-          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
-            ? plotRanges
-            : []
-        }
-      />
+      <section style={{ marginBottom: '3em' }}>
+        <h2>Age Distribution</h2>
+        <ShortTandemRepeatAgeDistributionPlot
+          ageDistribution={shortTandemRepeat.age_distribution}
+          maxRepeats={
+            shortTandemRepeat.allele_size_distribution.distribution[
+              shortTandemRepeat.allele_size_distribution.distribution.length - 1
+            ][0]
+          }
+          ranges={
+            selectedRepeatUnit === '' ||
+            selectedRepeatUnit === 'classification/pathogenic' ||
+            (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+              ? plotRanges
+              : []
+          }
+        />
+      </section>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
-        <section style={{ marginTop: '2em' }}>
+        <section style={{ marginBottom: '3em' }}>
           <h2>Adjacent Repeats</h2>
           {shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
             return (
@@ -414,7 +421,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         </section>
       )}
 
-      <section style={{ marginTop: '2em' }}>
+      <section>
         <h2>Read Data</h2>
         {showReadData ? (
           <>
