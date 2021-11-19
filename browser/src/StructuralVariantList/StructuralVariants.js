@@ -118,10 +118,13 @@ class StructuralVariants extends Component {
     const defaultSortKey = 'pos'
     const defaultSortOrder = 'ascending'
 
-    const renderedVariants = sortVariants(filterStructuralVariants(props.variants, defaultFilter), {
-      sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder,
-    })
+    const renderedVariants = sortVariants(
+      filterStructuralVariants(props.variants, defaultFilter, renderedTableColumns),
+      {
+        sortKey: defaultSortKey,
+        sortOrder: defaultSortOrder,
+      }
+    )
 
     this.state = {
       filter: defaultFilter,
@@ -140,11 +143,14 @@ class StructuralVariants extends Component {
   onFilter = newFilter => {
     this.setState(state => {
       const { variants } = this.props
-      const { sortKey, sortOrder } = state
-      const renderedVariants = sortVariants(filterStructuralVariants(variants, newFilter), {
-        sortKey,
-        sortOrder,
-      })
+      const { renderedTableColumns, sortKey, sortOrder } = state
+      const renderedVariants = sortVariants(
+        filterStructuralVariants(variants, newFilter, renderedTableColumns),
+        {
+          sortKey,
+          sortOrder,
+        }
+      )
       return {
         filter: newFilter,
         renderedVariants,
