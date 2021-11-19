@@ -79,6 +79,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
     shortTandemRepeat.associated_diseases[0].name
   )
 
+  const [showAdjacentRepeats, setShowAdjacentRepeats] = useState(false)
   const [showReadData, setShowReadData] = useState(false)
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
@@ -405,19 +406,30 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginBottom: '3em' }}>
           <h2>Adjacent Repeats</h2>
-          {shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
-            return (
-              <ShortTandemRepeatAdjacentRepeat
-                key={adjacentRepeat.id}
-                adjacentRepeat={adjacentRepeat}
-                populationIds={populationIds}
-                selectedPopulationId={selectedPopulationId}
-                onSelectPopulationId={setSelectedPopulationId}
-                selectedScaleType={selectedScaleType}
-                onSelectScaleType={setSelectedScaleType}
-              />
-            )
-          })}
+          {showAdjacentRepeats ? (
+            shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
+              return (
+                <ShortTandemRepeatAdjacentRepeat
+                  key={adjacentRepeat.id}
+                  adjacentRepeat={adjacentRepeat}
+                  populationIds={populationIds}
+                  selectedPopulationId={selectedPopulationId}
+                  onSelectPopulationId={setSelectedPopulationId}
+                  selectedScaleType={selectedScaleType}
+                  onSelectScaleType={setSelectedScaleType}
+                />
+              )
+            })
+          ) : (
+            <Button
+              onClick={() => {
+                setShowAdjacentRepeats(true)
+              }}
+            >
+              Show {shortTandemRepeat.adjacent_repeats.length} adjacent repeat
+              {shortTandemRepeat.adjacent_repeats.length > 1 && 's'}
+            </Button>
+          )}
         </section>
       )}
 
