@@ -203,8 +203,6 @@ export default () => (
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_tgp.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         ))}
