@@ -100,8 +100,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }) => {
                 return (
                   <p>
                     Local ancestry is not available for this variant. Local ancestry is only
-                    available for variants with high bi-allelic call rates and with an allele
-                    frequency &gte; 0.1% within the Latino/Admixed American gnomAD population.
+                    available for bi-allelic variants with high call rates and with an allele
+                    frequency &gt; 0.1% within the Latino/Admixed American gnomAD population.
                   </p>
                 )
               }
