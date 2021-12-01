@@ -5,7 +5,7 @@ import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
-const StructuralVariantsInGene = ({ datasetId, gene, ...rest }) => {
+const StructuralVariantsInGene = ({ datasetId, gene, visibleRegions, ...rest }) => {
   const query = `
     query StructuralVariantsInGene($datasetId: StructuralVariantDatasetId!, $geneId: String!, $referenceGenome: ReferenceGenomeId!) {
       gene(gene_id: $geneId, reference_genome: $referenceGenome) {
@@ -48,7 +48,13 @@ const StructuralVariantsInGene = ({ datasetId, gene, ...rest }) => {
             {...rest}
             context={gene}
             exportFileName={`gnomad_structural_variants_${gene.gene_id}`}
-            variants={data.gene.structural_variants}
+            variants={data.gene.structural_variants.filter(variant =>
+              visibleRegions.some(
+                ({ start, stop }) =>
+                  (variant.pos <= stop && variant.end >= start) ||
+                  (variant.pos2 <= stop && variant.end2 >= start)
+              )
+            )}
           />
         )
       }}
@@ -62,6 +68,9 @@ StructuralVariantsInGene.propTypes = {
     chrom: PropTypes.string.isRequired,
     gene_id: PropTypes.string.isRequired,
   }).isRequired,
+  visibleRegions: PropTypes.arrayOf(
+    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
+  ).isRequired,
 }
 
 export default StructuralVariantsInGene

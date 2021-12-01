@@ -5,7 +5,7 @@ import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
-const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
+const StructuralVariantsInRegion = ({ datasetId, region, visibleRegions, ...rest }) => {
   const query = `
     query StructuralVariantsInRegion($datasetId: StructuralVariantDatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
       region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
@@ -52,7 +52,13 @@ const StructuralVariantsInRegion = ({ datasetId, region, ...rest }) => {
             {...rest}
             context={region}
             exportFileName={`gnomad_structural_variants_${regionId}`}
-            variants={data.region.structural_variants}
+            variants={data.region.structural_variants.filter(variant =>
+              visibleRegions.some(
+                ({ start, stop }) =>
+                  (variant.pos <= stop && variant.end >= start) ||
+                  (variant.pos2 <= stop && variant.end2 >= start)
+              )
+            )}
           />
         )
       }}
@@ -67,6 +73,9 @@ StructuralVariantsInRegion.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
   }).isRequired,
+  visibleRegions: PropTypes.arrayOf(
+    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
+  ).isRequired,
 }
 
 export default StructuralVariantsInRegion
