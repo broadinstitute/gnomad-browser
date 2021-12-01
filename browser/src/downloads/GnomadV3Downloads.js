@@ -287,6 +287,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
+      <p>
+        For more information about these files, see our blog post on{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
+          local ancestry inference for Latino/Admixed American samples in gnomAD
+        </ExternalLink>
+        .
+      </p>
 
       <FileList>
         <ListItem>

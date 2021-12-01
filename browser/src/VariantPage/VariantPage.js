@@ -102,7 +102,10 @@ const VariantPageContent = ({ datasetId, variant }) => {
             >
               <p>
                 <Badge level="info">NEW</Badge> Local ancestry is now available for gnomAD v3.
-                Select the &ldquo;Local Ancestry&rdquo; tab below to view data. See our blog post
+                Select the &ldquo;Local Ancestry&rdquo; tab below to view data. See our blog post on{' '}
+                <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
+                  local ancestry inference for Latino/Admixed American samples in gnomAD
+                </ExternalLink>{' '}
                 for more information.
               </p>
             </div>
