@@ -2,14 +2,13 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@gnomad/region-viewer'
-
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
+import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -121,12 +120,17 @@ const TranscriptPage = ({ datasetId, transcript }) => {
 
   const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')
 
-  const regionViewerRegions = transcript.exons.filter(
-    exon =>
-      exon.feature_type === 'CDS' ||
-      (exon.feature_type === 'UTR' && includeUTRs) ||
-      (exon.feature_type === 'exon' && !isCodingTranscript)
-  )
+  const regionViewerRegions = transcript.exons
+    .filter(
+      exon =>
+        exon.feature_type === 'CDS' ||
+        (exon.feature_type === 'UTR' && includeUTRs) ||
+        (exon.feature_type === 'exon' && !isCodingTranscript)
+    )
+    .map(exon => ({
+      start: Math.max(1, exon.start - 75),
+      stop: exon.stop + 75,
+    }))
 
   return (
     <TrackPage>
@@ -159,7 +163,6 @@ const TranscriptPage = ({ datasetId, transcript }) => {
       <RegionViewer
         leftPanelWidth={115}
         width={regionViewerWidth}
-        padding={75}
         regions={regionViewerRegions}
         rightPanelWidth={isSmallScreen ? 0 : 80}
       >
