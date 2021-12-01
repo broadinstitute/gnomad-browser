@@ -91,6 +91,9 @@ export default () => (
         <ListItem>
           <StyledLink href="#v3-ancestry-classification">Ancestry classification</StyledLink>
         </ListItem>
+        <ListItem>
+          <StyledLink href="#v3-local-ancestry">Local ancestry</StyledLink>
+        </ListItem>
       </List>
     </section>
 
@@ -277,6 +280,20 @@ export default () => (
             label="Random forest (RF) model"
             path="/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
             gcsBucket="gnomad-public-requester-pays"
+          />
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
+
+      <FileList>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Sites VCF"
+            path="/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
+            includeGCP={false}
           />
         </ListItem>
       </FileList>
