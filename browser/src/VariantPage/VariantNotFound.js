@@ -3,9 +3,10 @@ import React from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 
-import { RegionViewer, PositionAxisTrack } from '@gnomad/region-viewer'
+import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
+import RegionViewer from '../RegionViewer/RegionViewer'
 import Link from '../Link'
 import StatusMessage from '../StatusMessage'
 
@@ -24,9 +25,7 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
 
   const regionViewerRegions = [
     {
-      feature_type: 'region',
-      chrom,
-      start: pos - 20,
+      start: Math.max(1, pos - 20),
       stop: pos + 20,
     },
   ]
@@ -39,7 +38,7 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
         <br />
         <Link to={`/region/${redirectRegion}`}>View surrounding region</Link>
       </StatusMessage>
-      <RegionViewer padding={0} regions={regionViewerRegions} rightPanelWidth={0} width={width}>
+      <RegionViewer regions={regionViewerRegions} rightPanelWidth={0} width={width}>
         <RegionCoverageTrack
           datasetId={datasetId}
           chrom={chrom}

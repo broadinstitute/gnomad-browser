@@ -1000,44 +1000,44 @@
     unist-util-visit "^1.4.0"
     yaml "^1.4.0"
 
-"@gnomad/region-viewer@^1.0.0||^2.0.0", "@gnomad/region-viewer@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-2.0.0.tgz#06108b0a1f51a1bf5312e075e9487fe3c8bf6516"
-  integrity sha512-lk07Ux/6zdX02yEnFMancBUFOgIapDtDOqO+OXwW0PzbjLtq6mLUt0wQOCaZb17+BM9D66RTYmEOCG2Cd2MNHw==
+"@gnomad/region-viewer@^1.0.0||^2.0.0||^3.0.0", "@gnomad/region-viewer@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/region-viewer/-/region-viewer-3.0.0.tgz#a8c3d1ed8ba1cac94565868bedcb1c14d91c9f6f"
+  integrity sha512-ZS8GXyczL0KqkvV22ztlU3UEHt166tHZBIZBWwWqypsTRr/fIb6UfjF3LZUh4Ut3TLLsA5nRdUXSLkZkRtg3dQ==
   dependencies:
     prop-types "^15.7.2"
 
-"@gnomad/track-genes@^2.0.1":
+"@gnomad/track-genes@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-2.0.2.tgz#4589e6ce34a1454896d13ac93a7b6dfe945d180b"
+  integrity sha512-JU9k2IzCWx/h2tT3cxz+o0hFjlmZefBHZF/W9omYRo/YJijC3meJhAJByEMgOLBRIBhvZfpUV3d0C/EhazxnvA==
+  dependencies:
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0||^3.0.0"
+    prop-types "^15.7.2"
+
+"@gnomad/track-regions@^1.0.0", "@gnomad/track-regions@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-regions/-/track-regions-1.0.2.tgz#92889e19461008857fc26c0a533b9a06d8cfff82"
+  integrity sha512-vw0sumvjI69NLslihk8Mvjq1CzsqOdWmrIOsW3L+B507njvhk09p6O4gPweQJDD9E3Cc4G+PQu+fXnq3yyzQ6Q==
+  dependencies:
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0||^3.0.0"
+    prop-types "^15.7.2"
+
+"@gnomad/track-transcripts@^2.0.1":
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-genes/-/track-genes-2.0.1.tgz#811df17f12b0cd42bd32631c2f3fd6a9da53b46c"
-  integrity sha512-+bJIOT/A8OVxuwE49ZmcThEF+aamR4uUmSryfAub+ow+z9+LMTsHfNUyqzaXGSw+46B+NmrD045PHDMH/bd2FA==
+  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-2.0.1.tgz#1d09c3c0fbad2c9d552ed22c7e6da7d96292f5e7"
+  integrity sha512-sAKF7EPclCg9cPsTCIf2nJxzGlPKkHimYMv5UIRrg2/gbjR8EI9Dv89KrF/D6W5rMmeriupRz126CDNXoRBWMQ==
   dependencies:
-    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
-    prop-types "^15.7.2"
-
-"@gnomad/track-regions@^1.0.0", "@gnomad/track-regions@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-regions/-/track-regions-1.0.1.tgz#6631a009e7dc8981d6e7f04e10845ed57e259516"
-  integrity sha512-fE6JoltyXKBG+kI5RJABo9gAwZfAzG4zVcxj8b65fzw6t/uPjttit+NAVB8IgSuUYbLgMgmswv25sQNAP2YmFA==
-  dependencies:
-    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
-    prop-types "^15.7.2"
-
-"@gnomad/track-transcripts@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-transcripts/-/track-transcripts-2.0.0.tgz#539c34df53f7fdf404bb9d522d436077119937aa"
-  integrity sha512-mErP1dXDsAXNKV7nGOJQAgWQqXd9dhHARpjDXsjOjJ4imkSymbhwaY1Cy0dyooDiAswUvd6/qYoTu6o7jxcXlA==
-  dependencies:
-    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0||^3.0.0"
     "@gnomad/track-regions" "^1.0.0"
     prop-types "^15.7.2"
 
-"@gnomad/track-variants@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@gnomad/track-variants/-/track-variants-1.0.1.tgz#7e5d4bf9af2a8b0cbdb369c256973ff34187bfb7"
-  integrity sha512-RvzHSfLQKBZvPzVXfGH4gHdCUJav2e8gQt97NnIWO4yvqpM7+mqA3tIuAAIrvb8OoHDfFbaYH6ZDBAIdZSPqVQ==
+"@gnomad/track-variants@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@gnomad/track-variants/-/track-variants-1.0.2.tgz#ca90064f7aa82794985392669b41b575f6ce483c"
+  integrity sha512-5++GPmFaAxw73b5fuJR4UJJWhCXgEdabRwYFhLgwvhH0/1flJgwVXUxsoyTFsOiBtDoVWj90/bf7NCCXghV9Rg==
   dependencies:
-    "@gnomad/region-viewer" "^1.0.0||^2.0.0"
+    "@gnomad/region-viewer" "^1.0.0||^2.0.0||^3.0.0"
     d3-scale "^2.2.2"
     prop-types "^15.7.2"
 

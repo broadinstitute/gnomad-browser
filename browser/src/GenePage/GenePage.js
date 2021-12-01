@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer, Track } from '@gnomad/region-viewer'
+import { Track } from '@gnomad/region-viewer'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Button } from '@gnomad/ui'
 
@@ -15,6 +15,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
+import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -177,18 +178,21 @@ const GenePage = ({ datasetId, gene, geneId }) => {
   const regionViewerRegions = datasetId.startsWith('gnomad_sv')
     ? [
         {
-          feature_type: 'region',
-          chrom: gene.chrom,
-          start: gene.start,
-          stop: gene.stop,
+          start: Math.max(1, gene.start - 75),
+          stop: gene.stop + 75,
         },
       ]
-    : gene.exons.filter(
-        exon =>
-          exon.feature_type === 'CDS' ||
-          (exon.feature_type === 'UTR' && includeUTRs) ||
-          (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-      )
+    : gene.exons
+        .filter(
+          exon =>
+            exon.feature_type === 'CDS' ||
+            (exon.feature_type === 'UTR' && includeUTRs) ||
+            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+        )
+        .map(exon => ({
+          start: Math.max(1, exon.start - 75),
+          stop: exon.stop + 75,
+        }))
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
@@ -223,7 +227,6 @@ const GenePage = ({ datasetId, gene, geneId }) => {
       <RegionViewer
         leftPanelWidth={115}
         width={regionViewerWidth}
-        padding={75}
         regions={regionViewerRegions}
         rightPanelWidth={isSmallScreen ? 0 : 80}
       >

@@ -2,11 +2,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { RegionViewer } from '@gnomad/region-viewer'
-
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -49,8 +48,6 @@ const RegionPage = ({ datasetId, region }) => {
 
   const regionViewerRegions = [
     {
-      feature_type: 'region',
-      chrom,
       start,
       stop,
     },
@@ -91,7 +88,6 @@ const RegionPage = ({ datasetId, region }) => {
       </TrackPageSection>
       <RegionViewer
         leftPanelWidth={115}
-        padding={0}
         regions={regionViewerRegions}
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
