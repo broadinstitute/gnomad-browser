@@ -239,12 +239,17 @@ const TranscriptPage = ({ datasetId, transcript }) => {
         </div>
 
         {transcript.chrom === 'M' ? (
-          <MitochondrialVariantsInTranscript datasetId={datasetId} transcript={transcript} />
+          <MitochondrialVariantsInTranscript
+            datasetId={datasetId}
+            transcript={transcript}
+            visibleRegions={regionViewerRegions}
+          />
         ) : (
           <VariantsInTranscript
             datasetId={datasetId}
             includeUTRs={includeUTRs}
             transcript={transcript}
+            visibleRegions={regionViewerRegions}
           />
         )}
       </RegionViewer>

@@ -5,11 +5,19 @@ import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
+import filterVariantsInRegions from '../RegionViewer/filterVariantsInRegions'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 
-const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, region, variants }) => {
+const VariantsInRegion = ({
+  clinvarReleaseDate,
+  clinvarVariants,
+  datasetId,
+  region,
+  variants,
+  visibleRegions,
+}) => {
   const datasetLabel = labelForDataset(datasetId)
 
   return (
@@ -22,7 +30,7 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
           <ClinvarVariantTrack
             referenceGenome={referenceGenomeForDataset(datasetId)}
             transcripts={region.genes.flatMap(gene => gene.transcripts)}
-            variants={clinvarVariants}
+            variants={filterVariantsInRegions(clinvarVariants, visibleRegions)}
           />
           <TrackPageSection as="p">
             Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
@@ -38,7 +46,7 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
         context={region}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-        variants={variants}
+        variants={filterVariantsInRegions(variants, visibleRegions)}
       />
     </>
   )
@@ -59,6 +67,9 @@ VariantsInRegion.propTypes = {
     ).isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  visibleRegions: PropTypes.arrayOf(
+    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
+  ).isRequired,
 }
 
 VariantsInRegion.defaultProps = {

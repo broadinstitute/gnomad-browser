@@ -376,15 +376,24 @@ const GenePage = ({ datasetId, gene, geneId }) => {
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
-          <StructuralVariantsInGene datasetId={datasetId} gene={gene} />
+          <StructuralVariantsInGene
+            datasetId={datasetId}
+            gene={gene}
+            visibleRegions={regionViewerRegions}
+          />
         ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} />
+          <MitochondrialVariantsInGene
+            datasetId={datasetId}
+            gene={gene}
+            visibleRegions={regionViewerRegions}
+          />
         ) : (
           <VariantsInGene
             datasetId={datasetId}
             gene={gene}
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
+            visibleRegions={regionViewerRegions}
           />
         )}
       </RegionViewer>
