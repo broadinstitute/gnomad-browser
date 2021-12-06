@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
@@ -63,30 +63,21 @@ const sortVariants = (variants, { sortKey, sortOrder }) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-class StructuralVariants extends Component {
-  static propTypes = {
-    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    exportFileName: PropTypes.string.isRequired,
-    variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
-  }
+const StructuralVariants = ({ context, exportFileName, variants }) => {
+  const table = useRef(null)
+  const tracks = useRef(null)
 
-  constructor(props) {
-    super(props)
-
-    this.tracks = React.createRef()
-
-    this.table = React.createRef()
-
-    let selectedColumns
+  const [selectedColumns, setSelectedColumns] = useState(() => {
     try {
-      selectedColumns =
-        userPreferences.getPreference('structuralVariantTableColumns') || DEFAULT_COLUMNS
+      return userPreferences.getPreference('structuralVariantTableColumns') || DEFAULT_COLUMNS
     } catch (error) {
-      selectedColumns = DEFAULT_COLUMNS
+      return DEFAULT_COLUMNS
     }
+  })
 
-    const columnsForContext = getColumnsForContext(props.context)
-    const renderedTableColumns = ['variant_id', ...selectedColumns]
+  const renderedTableColumns = useMemo(() => {
+    const columnsForContext = getColumnsForContext(context)
+    return ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -94,296 +85,239 @@ class StructuralVariants extends Component {
         isSortable: Boolean(column.compareFunction),
         tooltip: column.description,
       }))
+  }, [context, selectedColumns])
 
-    const defaultFilter = {
-      includeConsequenceCategories: {
-        lof: true,
-        dup_lof: true,
-        copy_gain: true,
-        other: true,
-      },
-      includeTypes: {
-        DEL: true,
-        DUP: true,
-        MCNV: true,
-        INS: true,
-        INV: true,
-        CPX: true,
-        OTH: true,
-      },
-      includeFilteredVariants: false,
-      searchText: '',
-    }
+  const [filter, setFilter] = useState({
+    includeConsequenceCategories: {
+      lof: true,
+      dup_lof: true,
+      copy_gain: true,
+      other: true,
+    },
+    includeTypes: {
+      DEL: true,
+      DUP: true,
+      MCNV: true,
+      INS: true,
+      INV: true,
+      CPX: true,
+      OTH: true,
+    },
+    includeFilteredVariants: false,
+    searchText: '',
+  })
 
-    const defaultSortKey = 'pos'
-    const defaultSortOrder = 'ascending'
+  const [sortState, setSortState] = useState({
+    sortKey: 'variant_id',
+    sortOrder: 'ascending',
+  })
+  const { sortKey, sortOrder } = sortState
 
-    const renderedVariants = sortVariants(
-      filterStructuralVariants(props.variants, defaultFilter, renderedTableColumns),
-      {
-        sortKey: defaultSortKey,
-        sortOrder: defaultSortOrder,
-      }
-    )
-
-    this.state = {
-      filter: defaultFilter,
-      highlightedVariantTrack: null,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal: false,
-      shouldHighlightTableRow: () => false,
-      sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder,
-      colorKey: 'consequence',
-    }
-  }
-
-  onFilter = newFilter => {
-    this.setState(state => {
-      const { variants } = this.props
-      const { renderedTableColumns, sortKey, sortOrder } = state
-      const renderedVariants = sortVariants(
-        filterStructuralVariants(variants, newFilter, renderedTableColumns),
-        {
-          sortKey,
-          sortOrder,
+  const setSortKey = useCallback(newSortKey => {
+    setSortState(prevSortState => {
+      if (newSortKey === prevSortState.sortKey) {
+        return {
+          sortKey: newSortKey,
+          sortOrder: prevSortState.sortOrder === 'ascending' ? 'descending' : 'ascending',
         }
-      )
-      return {
-        filter: newFilter,
-        renderedVariants,
       }
-    })
-  }
-
-  onSort = newSortKey => {
-    this.setState(state => {
-      const { renderedVariants, sortKey } = state
-
-      let newSortOrder = 'descending'
-      if (newSortKey === sortKey) {
-        newSortOrder = state.sortOrder === 'ascending' ? 'descending' : 'ascending'
-      }
-
-      // Since the filter hasn't changed, sort the currently rendered variants instead
-      // of filtering the input variants.
-      const sortedVariants = sortVariants(renderedVariants, {
-        sortKey: newSortKey,
-        sortOrder: newSortOrder,
-      })
 
       return {
-        renderedVariants: sortedVariants,
         sortKey: newSortKey,
-        sortOrder: newSortOrder,
+        sortOrder: 'descending',
       }
     })
-  }
+  }, [])
 
-  onHoverVariantInTable = variantId => {
-    this.setState({ highlightedVariantTrack: variantId })
-  }
+  const filteredVariants = useMemo(
+    () => filterStructuralVariants(variants, filter, renderedTableColumns),
+    [variants, filter, renderedTableColumns]
+  )
+  const renderedVariants = useMemo(() => sortVariants(filteredVariants, sortState), [
+    filteredVariants,
+    sortState,
+  ])
 
-  onHoverVariantInTracks = variantId => {
-    this.setState({
-      highlightedVariantTrack: variantId,
-      shouldHighlightTableRow: variantId
-        ? variant => variant.variant_id === variantId
-        : () => false,
-    })
-  }
+  const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
+  const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
+  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
-  onScrollTable = ({ scrollOffset, scrollUpdateWasRequested }) => {
-    if (this.tracks.current && !scrollUpdateWasRequested) {
-      this.tracks.current.scrollTo(Math.round(scrollOffset * (TRACK_HEIGHT / TABLE_ROW_HEIGHT)))
+  const shouldHighlightTableRow = useCallback(
+    variant => {
+      return variant.variant_id === variantHoveredInTrack
+    },
+    [variantHoveredInTrack]
+  )
+
+  const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
+    if (tracks.current && !scrollUpdateWasRequested) {
+      tracks.current.scrollTo(Math.round(scrollOffset * (TRACK_HEIGHT / TABLE_ROW_HEIGHT)))
     }
-  }
+  }, [])
 
-  onScrollTracks = ({ scrollOffset, scrollUpdateWasRequested }) => {
-    if (this.table.current && !scrollUpdateWasRequested) {
-      this.table.current.scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
+  const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
+    if (table.current && !scrollUpdateWasRequested) {
+      table.current.scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
     }
-  }
+  }, [])
 
-  trackColor = variant => {
-    const { colorKey } = this.state
-    if (colorKey === 'type') {
-      return svTypeColors[variant.type] || svTypeColors.OTH
-    }
-    return variant.consequence
-      ? svConsequenceCategoryColors[svConsequenceCategories[variant.consequence]]
-      : svConsequenceCategoryColors.other
-  }
-
-  render() {
-    const { context, exportFileName, variants } = this.props
-    const {
-      filter,
-      highlightedVariantTrack,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal,
-      shouldHighlightTableRow,
-      sortKey,
-      sortOrder,
-      colorKey,
-    } = this.state
-
-    if (variants.length === 0) {
-      return <StatusMessage>No variants found</StatusMessage>
-    }
-
-    const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
-
-    // pos/end and pos2/end2 coordinates are based on the chromosome which they are located on.
-    // If that chromosome is not the same as the one that the region viewer's coordinates
-    // are based on, then offset the positions so that they are based on the
-    // region viewer's coordinate system.
-    const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(context.chrom)
-    const positionCorrectedVariants = renderedVariants.map(variant => {
-      const copy = { ...variant }
-
-      // This can only happen when chrom2/pos2/end2 is non-null
-      if (variant.chrom2) {
-        const chromIndex = HUMAN_CHROMOSOMES.indexOf(variant.chrom)
-        const endChromIndex = HUMAN_CHROMOSOMES.indexOf(variant.chrom2)
-
-        copy.pos += (chromIndex - currentChromIndex) * 1e9
-        copy.end += (chromIndex - currentChromIndex) * 1e9
-
-        copy.pos2 += (endChromIndex - currentChromIndex) * 1e9
-        copy.end2 += (endChromIndex - currentChromIndex) * 1e9
+  const [colorKey, setColorKey] = useState('consequence')
+  const trackColor = useCallback(
+    variant => {
+      if (colorKey === 'type') {
+        return svTypeColors[variant.type] || svTypeColors.OTH
       }
+      return variant.consequence
+        ? svConsequenceCategoryColors[svConsequenceCategories[variant.consequence]]
+        : svConsequenceCategoryColors.other
+    },
+    [colorKey]
+  )
 
-      return copy
-    })
+  if (variants.length === 0) {
+    return <StatusMessage>No variants found</StatusMessage>
+  }
 
-    return (
-      <div>
-        <ControlWrapper>
-          <span style={{ marginRight: '0.5em' }}>Color variants by</span>
-          <SegmentedControl
-            id="sv-color-key"
-            options={[
-              { label: 'Consequence', value: 'consequence' },
-              { label: 'Class', value: 'type' },
-            ]}
-            value={colorKey}
-            onChange={value => {
-              this.setState({ colorKey: value })
-            }}
-          />
-        </ControlWrapper>
+  const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
+
+  // pos/end and pos2/end2 coordinates are based on the chromosome which they are located on.
+  // If that chromosome is not the same as the one that the region viewer's coordinates
+  // are based on, then offset the positions so that they are based on the
+  // region viewer's coordinate system.
+  const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(context.chrom) // eslint-disable-line react/destructuring-assignment
+  const positionCorrectedVariants = renderedVariants.map(variant => {
+    const copy = { ...variant }
+
+    // This can only happen when chrom2/pos2/end2 is non-null
+    if (variant.chrom2) {
+      const chromIndex = HUMAN_CHROMOSOMES.indexOf(variant.chrom)
+      const endChromIndex = HUMAN_CHROMOSOMES.indexOf(variant.chrom2)
+
+      copy.pos += (chromIndex - currentChromIndex) * 1e9
+      copy.end += (chromIndex - currentChromIndex) * 1e9
+
+      copy.pos2 += (endChromIndex - currentChromIndex) * 1e9
+      copy.end2 += (endChromIndex - currentChromIndex) * 1e9
+    }
+
+    return copy
+  })
+
+  return (
+    <div>
+      <ControlWrapper>
+        <span style={{ marginRight: '0.5em' }}>Color variants by</span>
+        <SegmentedControl
+          id="sv-color-key"
+          options={[
+            { label: 'Consequence', value: 'consequence' },
+            { label: 'Class', value: 'type' },
+          ]}
+          value={colorKey}
+          onChange={setColorKey}
+        />
+      </ControlWrapper>
+      <Wrapper>
+        <StructuralVariantTracks
+          ref={tracks}
+          highlightedVariant={variantHoveredInTable}
+          numTracksRendered={numRowsRendered}
+          onHover={setVariantHoveredInTrack}
+          onScroll={onScrollTracks}
+          trackColor={trackColor}
+          trackHeight={TRACK_HEIGHT}
+          variants={positionCorrectedVariants}
+        />
+      </Wrapper>
+      <Wrapper>
+        <PositionAxisTrack />
+      </Wrapper>
+      <TrackPageSection style={{ fontSize: '14px' }}>
         <Wrapper>
-          <StructuralVariantTracks
-            ref={this.tracks}
-            highlightedVariant={highlightedVariantTrack}
-            numTracksRendered={numRowsRendered}
-            onHover={this.onHoverVariantInTracks}
-            onScroll={this.onScrollTracks}
-            trackColor={this.trackColor}
-            trackHeight={TRACK_HEIGHT}
-            variants={positionCorrectedVariants}
+          <StructuralVariantFilterControls
+            colorKey={colorKey}
+            value={filter}
+            onChange={setFilter}
           />
-        </Wrapper>
-        <Wrapper>
-          <PositionAxisTrack />
-        </Wrapper>
-        <TrackPageSection style={{ fontSize: '14px' }}>
-          <Wrapper>
-            <StructuralVariantFilterControls
-              colorKey={colorKey}
-              value={filter}
-              onChange={this.onFilter}
+          <div>
+            <ExportStructuralVariantsButton
+              exportFileName={exportFileName}
+              variants={renderedVariants}
             />
-            <div>
-              <ExportStructuralVariantsButton
-                exportFileName={exportFileName}
-                variants={renderedVariants}
-              />
 
-              <Button
-                onClick={() => {
-                  this.setState({ showTableConfigurationModal: true })
-                }}
-                style={{ marginLeft: '1ch' }}
-              >
-                Configure table
-              </Button>
-            </div>
-          </Wrapper>
-          <Wrapper
-            style={{
-              // Keep the height of the table section constant when filtering variants, avoid layout shift
-              minHeight: 40 + TABLE_ROW_HEIGHT * Math.min(variants.length, NUM_ROWS_RENDERED),
-            }}
-          >
-            {renderedVariants.length ? (
-              <StructuralVariantsTable
-                ref={this.table}
-                cellData={{
-                  colorKey,
-                  highlightWords: filter.searchText.split(',').map(s => s.trim()),
-                }}
-                columns={renderedTableColumns}
-                numRowsRendered={numRowsRendered}
-                onHoverVariant={this.onHoverVariantInTable}
-                onRequestSort={this.onSort}
-                onScroll={this.onScrollTable}
-                rowHeight={TABLE_ROW_HEIGHT}
-                shouldHighlightRow={shouldHighlightTableRow}
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                variants={renderedVariants}
-              />
-            ) : (
-              <StatusMessage>No matching variants</StatusMessage>
-            )}
-          </Wrapper>
-        </TrackPageSection>
+            <Button
+              onClick={() => {
+                setShowTableConfigurationModal(true)
+              }}
+              style={{ marginLeft: '1ch' }}
+            >
+              Configure table
+            </Button>
+          </div>
+        </Wrapper>
+        <Wrapper
+          style={{
+            // Keep the height of the table section constant when filtering variants, avoid layout shift
+            minHeight: 40 + TABLE_ROW_HEIGHT * Math.min(variants.length, NUM_ROWS_RENDERED),
+          }}
+        >
+          {renderedVariants.length ? (
+            <StructuralVariantsTable
+              ref={table}
+              cellData={{
+                colorKey,
+                highlightWords: filter.searchText.split(',').map(s => s.trim()),
+              }}
+              columns={renderedTableColumns}
+              numRowsRendered={numRowsRendered}
+              onHoverVariant={setVariantHoveredInTable}
+              onRequestSort={setSortKey}
+              onScroll={onScrollTable}
+              rowHeight={TABLE_ROW_HEIGHT}
+              shouldHighlightRow={shouldHighlightTableRow}
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+              variants={renderedVariants}
+            />
+          ) : (
+            <StatusMessage>No matching variants</StatusMessage>
+          )}
+        </Wrapper>
+      </TrackPageSection>
 
-        {showTableConfigurationModal && (
-          <VariantTableConfigurationModal
-            availableColumns={structuralVariantTableColumns}
-            context={context}
-            defaultColumns={DEFAULT_COLUMNS}
-            selectedColumns={selectedColumns}
-            onCancel={() => {
-              this.setState({ showTableConfigurationModal: false })
-            }}
-            onSave={newSelectedColumns => {
-              const columnsForContext = getColumnsForContext(context)
-              this.setState({
-                renderedTableColumns: ['variant_id', ...newSelectedColumns]
-                  .map(columnKey => columnsForContext[columnKey])
-                  .filter(Boolean)
-                  .map(column => ({
-                    ...column,
-                    isSortable: Boolean(column.compareFunction),
-                    tooltip: column.description,
-                  })),
-                selectedColumns: newSelectedColumns,
-                showTableConfigurationModal: false,
-              })
+      {showTableConfigurationModal && (
+        <VariantTableConfigurationModal
+          availableColumns={structuralVariantTableColumns}
+          context={context}
+          defaultColumns={DEFAULT_COLUMNS}
+          selectedColumns={selectedColumns}
+          onCancel={() => {
+            setShowTableConfigurationModal(false)
+          }}
+          onSave={newSelectedColumns => {
+            setSelectedColumns(newSelectedColumns)
+            setShowTableConfigurationModal(false)
 
-              userPreferences
-                .savePreference('structuralVariantTableColumns', newSelectedColumns)
-                .then(null, error => {
-                  showNotification({
-                    title: 'Error',
-                    message: error.message,
-                    status: 'error',
-                  })
+            userPreferences
+              .savePreference('structuralVariantTableColumns', newSelectedColumns)
+              .then(null, error => {
+                showNotification({
+                  title: 'Error',
+                  message: error.message,
+                  status: 'error',
                 })
-            }}
-          />
-        )}
-      </div>
-    )
-  }
+              })
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+StructuralVariants.propTypes = {
+  context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  exportFileName: PropTypes.string.isRequired,
+  variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
 }
 
 export default StructuralVariants
