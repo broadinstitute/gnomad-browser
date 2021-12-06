@@ -1,6 +1,6 @@
 import { throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
-import React, { Component, createRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
@@ -41,41 +41,33 @@ const sortVariants = (variants, { sortKey, sortOrder }) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-class Variants extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    clinvarReleaseDate: PropTypes.string.isRequired,
-    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    datasetId: PropTypes.string.isRequired,
-    exportFileName: PropTypes.string,
-    variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
+const Variants = ({
+  children,
+  clinvarReleaseDate,
+  context,
+  datasetId,
+  exportFileName,
+  variants,
+}) => {
+  const table = useRef(null)
 
-  static defaultProps = {
-    children: undefined,
-    exportFileName: 'variants',
-  }
+  const [selectedColumns, setSelectedColumns] = useState(() => {
+    try {
+      return userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
+    } catch (error) {
+      return DEFAULT_COLUMNS
+    }
+  })
 
-  constructor(props) {
-    super(props)
-
-    this.table = createRef()
-
-    const columnsForContext = getColumnsForContext(props.context)
+  const renderedTableColumns = useMemo(() => {
+    const columnsForContext = getColumnsForContext(context)
     if (columnsForContext.clinical_significance) {
       columnsForContext.clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
-        props.clinvarReleaseDate
+        clinvarReleaseDate
       )} release`
     }
 
-    let selectedColumns
-    try {
-      selectedColumns = userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
-    } catch (error) {
-      selectedColumns = DEFAULT_COLUMNS
-    }
-
-    const renderedTableColumns = ['variant_id', ...selectedColumns]
+    return ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -83,271 +75,229 @@ class Variants extends Component {
         isSortable: Boolean(column.compareFunction),
         tooltip: column.description,
       }))
+  }, [clinvarReleaseDate, context, selectedColumns])
 
-    const defaultFilter = {
-      includeCategories: {
-        lof: true,
-        missense: true,
-        synonymous: true,
-        other: true,
-      },
-      includeFilteredVariants: false,
-      includeSNVs: true,
-      includeIndels: true,
-      includeExomes: true,
-      includeGenomes: true,
-      searchText: '',
-    }
+  const [filter, setFilter] = useState({
+    includeCategories: {
+      lof: true,
+      missense: true,
+      synonymous: true,
+      other: true,
+    },
+    includeFilteredVariants: false,
+    includeSNVs: true,
+    includeIndels: true,
+    includeExomes: true,
+    includeGenomes: true,
+    searchText: '',
+  })
 
-    const defaultSortKey = 'variant_id'
-    const defaultSortOrder = 'ascending'
+  const [sortState, setSortState] = useState({
+    sortKey: 'variant_id',
+    sortOrder: 'ascending',
+  })
+  const { sortKey, sortOrder } = sortState
 
-    const renderedVariants = sortVariants(
-      mergeExomeAndGenomeData(filterVariants(props.variants, defaultFilter, renderedTableColumns)),
-      {
-        sortKey: defaultSortKey,
-        sortOrder: defaultSortOrder,
-      }
-    )
-
-    this.state = {
-      filter: defaultFilter,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal: false,
-      sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder,
-      variantHoveredInTable: null,
-      variantHoveredInTrack: null,
-      visibleVariantWindow: [0, 19],
-    }
-  }
-
-  onFilter = newFilter => {
-    this.setState(state => {
-      const { variants } = this.props
-      const { renderedTableColumns, sortKey, sortOrder } = state
-      const renderedVariants = sortVariants(
-        mergeExomeAndGenomeData(filterVariants(variants, newFilter, renderedTableColumns)),
-        {
-          sortKey,
-          sortOrder,
+  const setSortKey = useCallback(newSortKey => {
+    setSortState(prevSortState => {
+      if (newSortKey === prevSortState.sortKey) {
+        return {
+          sortKey: newSortKey,
+          sortOrder: prevSortState.sortOrder === 'ascending' ? 'descending' : 'ascending',
         }
-      )
-      return {
-        filter: newFilter,
-        renderedVariants,
       }
-    })
-  }
-
-  onSort = newSortKey => {
-    this.setState(state => {
-      const { renderedVariants, sortKey } = state
-
-      let newSortOrder = 'descending'
-      if (newSortKey === sortKey) {
-        newSortOrder = state.sortOrder === 'ascending' ? 'descending' : 'ascending'
-      }
-
-      // Since the filter hasn't changed, sort the currently rendered variants instead
-      // of filtering the input variants.
-      const sortedVariants = sortVariants(renderedVariants, {
-        sortKey: newSortKey,
-        sortOrder: newSortOrder,
-      })
 
       return {
-        renderedVariants: sortedVariants,
         sortKey: newSortKey,
-        sortOrder: newSortOrder,
+        sortOrder: 'descending',
       }
     })
-  }
+  }, [])
 
-  onHoverVariantInTable = variantId => {
-    this.setState({ variantHoveredInTable: variantId })
-  }
+  const filteredVariants = useMemo(() => {
+    return mergeExomeAndGenomeData(filterVariants(variants, filter, renderedTableColumns))
+  }, [variants, filter, renderedTableColumns])
 
-  onHoverVariantsInTrack = throttle(variants => {
-    this.setState({
-      variantHoveredInTrack: variants.length > 0 ? variants[0].variant_id : null,
-    })
-  }, 100)
+  const renderedVariants = useMemo(() => {
+    return sortVariants(filteredVariants, sortState)
+  }, [filteredVariants, sortState])
 
-  onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
-    this.setState({ visibleVariantWindow: [startIndex, stopIndex] })
-  }, 100)
+  const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
+  const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
+  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
+  const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
 
-  onNavigatorClick = position => {
-    const { renderedVariants } = this.state
-    const sortedVariants = sortVariants(renderedVariants, {
+  const onHoverVariantsInTrack = useMemo(
+    () =>
+      throttle(hoveredVariants => {
+        setVariantHoveredInTrack(hoveredVariants.length > 0 ? hoveredVariants[0].variant_id : null)
+      }, 100),
+    []
+  )
+
+  const onVisibleRowsChange = useMemo(
+    () =>
+      throttle(({ startIndex, stopIndex }) => {
+        setVisibleVariantWindow([startIndex, stopIndex])
+      }, 100),
+    []
+  )
+
+  const [positionLastClicked, setPositionLastClicked] = useState(null)
+  const onNavigatorClick = useCallback(position => {
+    setSortState({
       sortKey: 'variant_id',
       sortOrder: 'ascending',
     })
+    setPositionLastClicked(position)
+  }, [])
+
+  useEffect(() => {
+    if (positionLastClicked === null) {
+      return
+    }
 
     let index
-    if (sortedVariants.length === 0 || position < sortedVariants[0].pos) {
+    if (renderedVariants.length === 0 || positionLastClicked < renderedVariants[0].pos) {
       index = 0
     }
 
-    index = sortedVariants.findIndex(
+    index = renderedVariants.findIndex(
       (variant, i) =>
-        sortedVariants[i + 1] && position >= variant.pos && position <= sortedVariants[i + 1].pos
+        renderedVariants[i + 1] &&
+        positionLastClicked >= variant.pos &&
+        positionLastClicked <= renderedVariants[i + 1].pos
     )
 
     if (index === -1) {
-      index = sortedVariants.length - 1
+      index = renderedVariants.length - 1
     }
 
-    this.setState(
-      {
-        renderedVariants: sortedVariants,
-        sortKey: 'variant_id',
-        sortOrder: 'ascending',
-      },
-      () => {
-        this.table.current.scrollToDataRow(index)
-      }
+    table.current.scrollToDataRow(index)
+  }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const datasetLabel = labelForDataset(datasetId)
+
+  if (variants.length === 0) {
+    return (
+      <>
+        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+        <TrackPageSection>
+          <p>No gnomAD variants found.</p>
+        </TrackPageSection>
+      </>
     )
   }
 
-  render() {
-    const { children, context, datasetId, exportFileName, variants } = this.props
-    const {
-      filter,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal,
-      sortKey,
-      sortOrder,
-      variantHoveredInTable,
-      variantHoveredInTrack,
-      visibleVariantWindow,
-    } = this.state
+  return (
+    <div>
+      <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+      <Cursor onClick={onNavigatorClick}>
+        <VariantTrack
+          title={`${datasetLabel} variants (${renderedVariants.length})`}
+          variants={renderedVariants}
+        />
 
-    const datasetLabel = labelForDataset(datasetId)
+        <VariantTrack
+          title="Viewing in table"
+          variants={renderedVariants
+            .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+            .map(variant => ({
+              ...variant,
+              isHighlighted: variant.variant_id === variantHoveredInTable,
+            }))}
+          onHoverVariants={onHoverVariantsInTrack}
+        />
+      </Cursor>
 
-    if (variants.length === 0) {
-      return (
-        <>
-          <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
-          <TrackPageSection>
-            <p>No gnomAD variants found.</p>
-          </TrackPageSection>
-        </>
-      )
-    }
+      <PositionAxisTrack />
 
-    return (
-      <div>
-        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
-        <Cursor onClick={this.onNavigatorClick}>
-          <VariantTrack
-            title={`${datasetLabel} variants (${renderedVariants.length})`}
+      <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
+        <VariantFilterControls onChange={setFilter} value={filter} />
+        <div>
+          <ExportVariantsButton
+            datasetId={datasetId}
+            exportFileName={exportFileName}
             variants={renderedVariants}
           />
 
-          <VariantTrack
-            title="Viewing in table"
-            variants={renderedVariants
-              .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-              .map(variant => ({
-                ...variant,
-                isHighlighted: variant.variant_id === variantHoveredInTable,
-              }))}
-            onHoverVariants={this.onHoverVariantsInTrack}
-          />
-        </Cursor>
+          <Button
+            onClick={() => {
+              setShowTableConfigurationModal(true)
+            }}
+            style={{ marginLeft: '1ch' }}
+          >
+            Configure table
+          </Button>
+        </div>
+        {children}
 
-        <PositionAxisTrack />
-
-        <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
-          <VariantFilterControls onChange={this.onFilter} value={filter} />
-          <div>
-            <ExportVariantsButton
-              datasetId={datasetId}
-              exportFileName={exportFileName}
+        <div
+          style={{
+            // Keep the height of the table section constant when filtering variants, avoid layout shift
+            minHeight: '540px',
+          }}
+        >
+          {renderedVariants.length ? (
+            <VariantTable
+              ref={table}
+              columns={renderedTableColumns}
+              highlightText={filter.searchText}
+              highlightedVariantId={variantHoveredInTrack}
+              onHoverVariant={setVariantHoveredInTable}
+              onRequestSort={setSortKey}
+              onVisibleRowsChange={onVisibleRowsChange}
+              sortKey={sortKey}
+              sortOrder={sortOrder}
               variants={renderedVariants}
             />
+          ) : (
+            <StatusMessage>No matching variants</StatusMessage>
+          )}
+        </div>
+      </TrackPageSection>
 
-            <Button
-              onClick={() => {
-                this.setState({ showTableConfigurationModal: true })
-              }}
-              style={{ marginLeft: '1ch' }}
-            >
-              Configure table
-            </Button>
-          </div>
-          {children}
+      {showTableConfigurationModal && (
+        <VariantTableConfigurationModal
+          availableColumns={variantTableColumns}
+          context={context}
+          defaultColumns={DEFAULT_COLUMNS}
+          selectedColumns={selectedColumns}
+          onCancel={() => {
+            setShowTableConfigurationModal(false)
+          }}
+          onSave={newSelectedColumns => {
+            setSelectedColumns(newSelectedColumns)
+            setShowTableConfigurationModal(false)
 
-          <div
-            style={{
-              // Keep the height of the table section constant when filtering variants, avoid layout shift
-              minHeight: '540px',
-            }}
-          >
-            {renderedVariants.length ? (
-              <VariantTable
-                ref={this.table}
-                columns={renderedTableColumns}
-                highlightText={filter.searchText}
-                highlightedVariantId={variantHoveredInTrack}
-                onHoverVariant={this.onHoverVariantInTable}
-                onRequestSort={this.onSort}
-                onVisibleRowsChange={this.onVisibleRowsChange}
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                variants={renderedVariants}
-              />
-            ) : (
-              <StatusMessage>No matching variants</StatusMessage>
-            )}
-          </div>
-        </TrackPageSection>
-
-        {showTableConfigurationModal && (
-          <VariantTableConfigurationModal
-            availableColumns={variantTableColumns}
-            context={context}
-            defaultColumns={DEFAULT_COLUMNS}
-            selectedColumns={selectedColumns}
-            onCancel={() => {
-              this.setState({ showTableConfigurationModal: false })
-            }}
-            onSave={newSelectedColumns => {
-              const columnsForContext = getColumnsForContext(context)
-              this.setState({
-                renderedTableColumns: ['variant_id', ...newSelectedColumns]
-                  .map(columnKey => columnsForContext[columnKey])
-                  .filter(Boolean)
-                  .map(column => ({
-                    ...column,
-                    isSortable: Boolean(column.compareFunction),
-                    tooltip: column.description,
-                  })),
-                selectedColumns: newSelectedColumns,
-                showTableConfigurationModal: false,
-              })
-
-              userPreferences
-                .savePreference('variantTableColumns', newSelectedColumns)
-                .then(null, error => {
-                  showNotification({
-                    title: 'Error',
-                    message: error.message,
-                    status: 'error',
-                  })
+            userPreferences
+              .savePreference('variantTableColumns', newSelectedColumns)
+              .then(null, error => {
+                showNotification({
+                  title: 'Error',
+                  message: error.message,
+                  status: 'error',
                 })
-            }}
-          />
-        )}
-      </div>
-    )
-  }
+              })
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+Variants.propTypes = {
+  children: PropTypes.node,
+  clinvarReleaseDate: PropTypes.string.isRequired,
+  context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  datasetId: PropTypes.string.isRequired,
+  exportFileName: PropTypes.string,
+  variants: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
+
+Variants.defaultProps = {
+  children: undefined,
+  exportFileName: 'variants',
 }
 
 export default Variants

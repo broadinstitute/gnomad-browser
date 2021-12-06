@@ -1,6 +1,6 @@
 import { throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
@@ -49,37 +49,26 @@ const sortMitochondrialVariants = (variants, { sortKey, sortOrder }) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-class MitochondrialVariants extends Component {
-  static propTypes = {
-    clinvarReleaseDate: PropTypes.string.isRequired,
-    context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    exportFileName: PropTypes.string.isRequired,
-    variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
-  }
+const MitochondrialVariants = ({ clinvarReleaseDate, context, exportFileName, variants }) => {
+  const table = useRef(null)
 
-  constructor(props) {
-    super(props)
-
-    this.tracks = React.createRef()
-
-    this.table = React.createRef()
-
-    let selectedColumns
+  const [selectedColumns, setSelectedColumns] = useState(() => {
     try {
-      selectedColumns =
-        userPreferences.getPreference('mitochondrialVariantTableColumns') || DEFAULT_COLUMNS
+      return userPreferences.getPreference('mitochondrialVariantTableColumns') || DEFAULT_COLUMNS
     } catch (error) {
-      selectedColumns = DEFAULT_COLUMNS
+      return DEFAULT_COLUMNS
     }
+  })
 
-    const columnsForContext = getColumnsForContext(props.context)
+  const renderedTableColumns = useMemo(() => {
+    const columnsForContext = getColumnsForContext(context)
     if (columnsForContext.clinical_significance) {
       columnsForContext.clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
-        props.clinvarReleaseDate
+        clinvarReleaseDate
       )} release`
     }
 
-    const renderedTableColumns = ['variant_id', ...selectedColumns]
+    return ['variant_id', ...selectedColumns]
       .map(columnKey => columnsForContext[columnKey])
       .filter(Boolean)
       .map(column => ({
@@ -87,269 +76,222 @@ class MitochondrialVariants extends Component {
         isSortable: Boolean(column.compareFunction),
         tooltip: column.description,
       }))
+  }, [clinvarReleaseDate, context, selectedColumns])
 
-    const defaultFilter = {
-      includeCategories: {
-        lof: true,
-        missense: true,
-        synonymous: true,
-        other: true,
-      },
-      includeFilteredVariants: false,
-      searchText: '',
-    }
+  const [filter, setFilter] = useState({
+    includeCategories: {
+      lof: true,
+      missense: true,
+      synonymous: true,
+      other: true,
+    },
+    includeFilteredVariants: false,
+    searchText: '',
+  })
 
-    const defaultSortKey = 'variant_id'
-    const defaultSortOrder = 'ascending'
+  const [sortState, setSortState] = useState({
+    sortKey: 'variant_id',
+    sortOrder: 'ascending',
+  })
+  const { sortKey, sortOrder } = sortState
 
-    const renderedVariants = sortMitochondrialVariants(
-      filterMitochondrialVariants(props.variants, defaultFilter, renderedTableColumns),
-      {
-        sortKey: defaultSortKey,
-        sortOrder: defaultSortOrder,
-      }
-    )
-
-    this.state = {
-      filter: defaultFilter,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal: false,
-      sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder,
-      variantHoveredInTable: null,
-      variantHoveredInTrack: null,
-      visibleVariantWindow: [0, 19],
-    }
-  }
-
-  onFilter = newFilter => {
-    this.setState(state => {
-      const { variants } = this.props
-      const { renderedTableColumns, sortKey, sortOrder } = state
-      const renderedVariants = sortMitochondrialVariants(
-        filterMitochondrialVariants(variants, newFilter, renderedTableColumns),
-        {
-          sortKey,
-          sortOrder,
+  const setSortKey = useCallback(newSortKey => {
+    setSortState(prevSortState => {
+      if (newSortKey === prevSortState.sortKey) {
+        return {
+          sortKey: newSortKey,
+          sortOrder: prevSortState.sortOrder === 'ascending' ? 'descending' : 'ascending',
         }
-      )
-      return {
-        filter: newFilter,
-        renderedVariants,
       }
-    })
-  }
-
-  onSort = newSortKey => {
-    this.setState(state => {
-      const { renderedVariants, sortKey } = state
-
-      let newSortOrder = 'descending'
-      if (newSortKey === sortKey) {
-        newSortOrder = state.sortOrder === 'ascending' ? 'descending' : 'ascending'
-      }
-
-      // Since the filter hasn't changed, sort the currently rendered variants instead
-      // of filtering the input variants.
-      const sortedVariants = sortMitochondrialVariants(renderedVariants, {
-        sortKey: newSortKey,
-        sortOrder: newSortOrder,
-      })
 
       return {
-        renderedVariants: sortedVariants,
         sortKey: newSortKey,
-        sortOrder: newSortOrder,
+        sortOrder: 'descending',
       }
     })
-  }
+  }, [])
 
-  onHoverVariantInTable = variantId => {
-    this.setState({ variantHoveredInTable: variantId })
-  }
+  const filteredVariants = useMemo(
+    () => filterMitochondrialVariants(variants, filter, renderedTableColumns),
+    [variants, filter, renderedTableColumns]
+  )
+  const renderedVariants = useMemo(() => sortMitochondrialVariants(filteredVariants, sortState), [
+    filteredVariants,
+    sortState,
+  ])
 
-  onHoverVariantsInTrack = throttle(variants => {
-    this.setState({
-      variantHoveredInTrack: variants.length > 0 ? variants[0].variant_id : null,
-    })
-  }, 100)
+  const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
+  const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
+  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
+  const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
 
-  onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
-    this.setState({ visibleVariantWindow: [startIndex, stopIndex] })
-  }, 100)
+  const shouldHighlightTableRow = useCallback(
+    variant => {
+      return variant.variant_id === variantHoveredInTrack
+    },
+    [variantHoveredInTrack]
+  )
 
-  onNavigatorClick = position => {
-    const { renderedVariants } = this.state
-    const sortedVariants = sortMitochondrialVariants(renderedVariants, {
+  const onHoverVariantsInTrack = useMemo(
+    () =>
+      throttle(hoveredVariants => {
+        setVariantHoveredInTrack(hoveredVariants.length > 0 ? hoveredVariants[0].variant_id : null)
+      }, 100),
+    []
+  )
+
+  const onVisibleRowsChange = useMemo(
+    () =>
+      throttle(({ startIndex, stopIndex }) => {
+        setVisibleVariantWindow([startIndex, stopIndex])
+      }, 100),
+    []
+  )
+
+  const [positionLastClicked, setPositionLastClicked] = useState(null)
+  const onNavigatorClick = useCallback(position => {
+    setSortState({
       sortKey: 'variant_id',
       sortOrder: 'ascending',
     })
+    setPositionLastClicked(position)
+  }, [])
+
+  useEffect(() => {
+    if (positionLastClicked === null) {
+      return
+    }
 
     let index
-    if (sortedVariants.length === 0 || position < sortedVariants[0].pos) {
+    if (renderedVariants.length === 0 || positionLastClicked < renderedVariants[0].pos) {
       index = 0
     }
 
-    index = sortedVariants.findIndex(
+    index = renderedVariants.findIndex(
       (variant, i) =>
-        sortedVariants[i + 1] && position >= variant.pos && position <= sortedVariants[i + 1].pos
+        renderedVariants[i + 1] &&
+        positionLastClicked >= variant.pos &&
+        positionLastClicked <= renderedVariants[i + 1].pos
     )
 
     if (index === -1) {
-      index = sortedVariants.length - 1
+      index = renderedVariants.length - 1
     }
 
-    this.setState(
-      {
-        renderedVariants: sortedVariants,
-        sortKey: 'variant_id',
-        sortOrder: 'ascending',
-      },
-      () => {
-        if (this.table.current) {
-          this.table.current.scrollToDataRow(index)
-        }
-      }
+    table.current.scrollToDataRow(index)
+  }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (variants.length === 0) {
+    return (
+      <>
+        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+        <TrackPageSection>
+          <p>No gnomAD variants found.</p>
+        </TrackPageSection>
+      </>
     )
   }
 
-  shouldHighlightTableRow = variant => {
-    const { variantHoveredInTrack } = this.state
-    return variant.variant_id === variantHoveredInTrack
-  }
+  const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
 
-  render() {
-    const { context, exportFileName, variants } = this.props
-    const {
-      filter,
-      renderedTableColumns,
-      renderedVariants,
-      selectedColumns,
-      showTableConfigurationModal,
-      sortKey,
-      sortOrder,
-      variantHoveredInTable,
-      visibleVariantWindow,
-    } = this.state
+  return (
+    <div>
+      <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+      <Wrapper>
+        <Cursor onClick={onNavigatorClick}>
+          <VariantTrack
+            title={`gnomAD variants\n(${renderedVariants.length})`}
+            variants={renderedVariants.map(variant => ({
+              ...variant,
+              allele_freq: variant.af,
+            }))}
+          />
 
-    if (variants.length === 0) {
-      return (
-        <>
-          <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
-          <TrackPageSection>
-            <p>No gnomAD variants found.</p>
-          </TrackPageSection>
-        </>
-      )
-    }
-
-    const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
-
-    return (
-      <div>
-        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
-        <Wrapper>
-          <Cursor onClick={this.onNavigatorClick}>
-            <VariantTrack
-              title={`gnomAD variants\n(${renderedVariants.length})`}
-              variants={renderedVariants.map(variant => ({
+          <VariantTrack
+            title="Viewing in table"
+            variants={renderedVariants
+              .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+              .map(variant => ({
                 ...variant,
                 allele_freq: variant.af,
+                isHighlighted: variant.variant_id === variantHoveredInTable,
               }))}
-            />
-
-            <VariantTrack
-              title="Viewing in table"
-              variants={renderedVariants
-                .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-                .map(variant => ({
-                  ...variant,
-                  allele_freq: variant.af,
-                  isHighlighted: variant.variant_id === variantHoveredInTable,
-                }))}
-              onHoverVariants={this.onHoverVariantsInTrack}
-            />
-          </Cursor>
-          <PositionAxisTrack />
-        </Wrapper>
-        <TrackPageSection style={{ fontSize: '14px' }}>
-          <Wrapper>
-            <MitochondrialVariantFilterControls value={filter} onChange={this.onFilter} />
-            <div>
-              <ExportMitochondrialVariantsButton
-                exportFileName={exportFileName}
-                includeGene={context.gene_id === undefined && context.transcript_id === undefined}
-                variants={renderedVariants}
-              />
-            </div>
-          </Wrapper>
-          <Wrapper
-            style={{
-              // Keep the height of the table section constant when filtering variants, avoid layout shift
-              minHeight: 55 + 25 * Math.min(variants.length, NUM_ROWS_RENDERED),
-            }}
-          >
-            {renderedVariants.length ? (
-              <MitochondrialVariantsTable
-                ref={this.table}
-                columns={renderedTableColumns}
-                highlightText={filter.searchText}
-                numRowsRendered={numRowsRendered}
-                shouldHighlightRow={this.shouldHighlightTableRow}
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                variants={renderedVariants}
-                onHoverVariant={this.onHoverVariantInTable}
-                onRequestSort={this.onSort}
-                onVisibleRowsChange={this.onVisibleRowsChange}
-              />
-            ) : (
-              <StatusMessage>No matching variants</StatusMessage>
-            )}
-          </Wrapper>
-        </TrackPageSection>
-
-        {showTableConfigurationModal && (
-          <VariantTableConfigurationModal
-            availableColumns={mitochondrialVariantTableColumns}
-            context={context}
-            defaultColumns={DEFAULT_COLUMNS}
-            selectedColumns={selectedColumns}
-            onCancel={() => {
-              this.setState({ showTableConfigurationModal: false })
-            }}
-            onSave={newSelectedColumns => {
-              const columnsForContext = getColumnsForContext(context)
-              this.setState({
-                renderedTableColumns: ['variant_id', ...newSelectedColumns]
-                  .map(columnKey => columnsForContext[columnKey])
-                  .filter(Boolean)
-                  .map(column => ({
-                    ...column,
-                    isSortable: Boolean(column.compareFunction),
-                    tooltip: column.description,
-                  })),
-                selectedColumns: newSelectedColumns,
-                showTableConfigurationModal: false,
-              })
-
-              userPreferences
-                .savePreference('mitochondrialVariantTableColumns', newSelectedColumns)
-                .then(null, error => {
-                  showNotification({
-                    title: 'Error',
-                    message: error.message,
-                    status: 'error',
-                  })
-                })
-            }}
+            onHoverVariants={onHoverVariantsInTrack}
           />
-        )}
-      </div>
-    )
-  }
+        </Cursor>
+        <PositionAxisTrack />
+      </Wrapper>
+      <TrackPageSection style={{ fontSize: '14px' }}>
+        <Wrapper>
+          <MitochondrialVariantFilterControls value={filter} onChange={setFilter} />
+          <div>
+            <ExportMitochondrialVariantsButton
+              exportFileName={exportFileName}
+              includeGene={context.gene_id === undefined && context.transcript_id === undefined} // eslint-disable-line react/destructuring-assignment
+              variants={renderedVariants}
+            />
+          </div>
+        </Wrapper>
+        <Wrapper
+          style={{
+            // Keep the height of the table section constant when filtering variants, avoid layout shift
+            minHeight: 55 + 25 * Math.min(variants.length, NUM_ROWS_RENDERED),
+          }}
+        >
+          {renderedVariants.length ? (
+            <MitochondrialVariantsTable
+              ref={table}
+              columns={renderedTableColumns}
+              highlightText={filter.searchText}
+              numRowsRendered={numRowsRendered}
+              shouldHighlightRow={shouldHighlightTableRow}
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+              variants={renderedVariants}
+              onHoverVariant={setVariantHoveredInTable}
+              onRequestSort={setSortKey}
+              onVisibleRowsChange={onVisibleRowsChange}
+            />
+          ) : (
+            <StatusMessage>No matching variants</StatusMessage>
+          )}
+        </Wrapper>
+      </TrackPageSection>
+
+      {showTableConfigurationModal && (
+        <VariantTableConfigurationModal
+          availableColumns={mitochondrialVariantTableColumns}
+          context={context}
+          defaultColumns={DEFAULT_COLUMNS}
+          selectedColumns={selectedColumns}
+          onCancel={() => {
+            setShowTableConfigurationModal(false)
+          }}
+          onSave={newSelectedColumns => {
+            setSelectedColumns(newSelectedColumns)
+            setShowTableConfigurationModal(false)
+
+            userPreferences
+              .savePreference('mitochondrialVariantTableColumns', newSelectedColumns)
+              .then(null, error => {
+                showNotification({
+                  title: 'Error',
+                  message: error.message,
+                  status: 'error',
+                })
+              })
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+MitochondrialVariants.propTypes = {
+  clinvarReleaseDate: PropTypes.string.isRequired,
+  context: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  exportFileName: PropTypes.string.isRequired,
+  variants: PropTypes.arrayOf(StructrualVariantPropType).isRequired,
 }
 
 export default MitochondrialVariants
