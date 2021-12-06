@@ -15,7 +15,8 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
-import RegionViewer from '../RegionViewer/RegionViewer'
+import getVisibleRegions from '../RegionViewer/getVisibleRegions'
+import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -194,6 +195,13 @@ const GenePage = ({ datasetId, gene, geneId }) => {
           stop: exon.stop + 75,
         }))
 
+  const [zoomRegion, setZoomRegion] = useState({
+    start: regionViewerRegions[0].start,
+    stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
+  })
+
+  const visibleRegions = getVisibleRegions(regionViewerRegions, zoomRegion)
+
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
   return (
@@ -229,6 +237,19 @@ const GenePage = ({ datasetId, gene, geneId }) => {
         width={regionViewerWidth}
         regions={regionViewerRegions}
         rightPanelWidth={isSmallScreen ? 0 : 80}
+        renderOverview={({ scalePosition, width: overviewWidth }) => (
+          <TranscriptPlot
+            height={10}
+            scalePosition={scalePosition}
+            showNonCodingExons={includeNonCodingTranscripts}
+            showUTRs={includeUTRs}
+            transcript={{ exons: gene.exons }}
+            width={overviewWidth}
+          />
+        )}
+        zoomDisabled={datasetId.startsWith('gnomad_sv')}
+        zoomRegion={zoomRegion}
+        onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
@@ -379,13 +400,13 @@ const GenePage = ({ datasetId, gene, geneId }) => {
           <StructuralVariantsInGene
             datasetId={datasetId}
             gene={gene}
-            visibleRegions={regionViewerRegions}
+            visibleRegions={visibleRegions}
           />
         ) : gene.chrom === 'M' ? (
           <MitochondrialVariantsInGene
             datasetId={datasetId}
             gene={gene}
-            visibleRegions={regionViewerRegions}
+            visibleRegions={visibleRegions}
           />
         ) : (
           <VariantsInGene
@@ -393,7 +414,7 @@ const GenePage = ({ datasetId, gene, geneId }) => {
             gene={gene}
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
-            visibleRegions={regionViewerRegions}
+            visibleRegions={visibleRegions}
           />
         )}
       </RegionViewer>
