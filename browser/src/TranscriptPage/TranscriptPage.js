@@ -2,13 +2,16 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+import { TranscriptPlot } from '@gnomad/track-transcripts'
+
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import RegionViewer from '../RegionViewer/RegionViewer'
+import getVisibleRegions from '../RegionViewer/getVisibleRegions'
+import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -132,6 +135,13 @@ const TranscriptPage = ({ datasetId, transcript }) => {
       stop: exon.stop + 75,
     }))
 
+  const [zoomRegion, setZoomRegion] = useState({
+    start: regionViewerRegions[0].start,
+    stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
+  })
+
+  const visibleRegions = getVisibleRegions(regionViewerRegions, zoomRegion)
+
   return (
     <TrackPage>
       <TrackPageSection>
@@ -165,6 +175,18 @@ const TranscriptPage = ({ datasetId, transcript }) => {
         width={regionViewerWidth}
         regions={regionViewerRegions}
         rightPanelWidth={isSmallScreen ? 0 : 80}
+        renderOverview={({ scalePosition, width: overviewWidth }) => (
+          <TranscriptPlot
+            height={10}
+            scalePosition={scalePosition}
+            showNonCodingExons
+            showUTRs={includeUTRs}
+            transcript={transcript}
+            width={overviewWidth}
+          />
+        )}
+        zoomRegion={zoomRegion}
+        onChangeZoomRegion={setZoomRegion}
       >
         {transcript.chrom === 'M' ? (
           <MitochondrialTranscriptCoverageTrack
@@ -242,14 +264,14 @@ const TranscriptPage = ({ datasetId, transcript }) => {
           <MitochondrialVariantsInTranscript
             datasetId={datasetId}
             transcript={transcript}
-            visibleRegions={regionViewerRegions}
+            visibleRegions={visibleRegions}
           />
         ) : (
           <VariantsInTranscript
             datasetId={datasetId}
             includeUTRs={includeUTRs}
             transcript={transcript}
-            visibleRegions={regionViewerRegions}
+            visibleRegions={visibleRegions}
           />
         )}
       </RegionViewer>
