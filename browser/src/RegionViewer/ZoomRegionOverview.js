@@ -43,6 +43,14 @@ const SliderThumb = styled.div`
   text-align: center;
 `
 
+const SliderTrack = styled.div`
+  top: 9px;
+  height: 4px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: ${props => (props.index === 1 ? '#428bca' : '#f8f9fa')};
+`
+
 const ZoomRegionOverview = ({
   readOnly,
   regions,
@@ -84,6 +92,7 @@ const ZoomRegionOverview = ({
                       <img src={GripLines} alt="" aria-hidden="true" width={16} height={16} />
                     </SliderThumb>
                   )}
+                  renderTrack={(props, state) => <SliderTrack {...props} index={state.index} />}
                   onChange={value => {
                     onChangeZoomRegion({
                       start: scalePosition.invert(value[0]),
