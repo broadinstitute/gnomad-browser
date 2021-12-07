@@ -19,6 +19,7 @@ const ZoomControlsWrapper = styled.div`
 `
 
 const ZoomableRegionViewer = ({
+  contextType,
   regions,
   renderOverview,
   zoomDisabled,
@@ -59,7 +60,7 @@ const ZoomableRegionViewer = ({
                   })
                 }}
               >
-                View full region
+                View full {contextType}
               </Button>
             </div>
 
@@ -72,7 +73,7 @@ const ZoomableRegionViewer = ({
           </ZoomControlsWrapper>
         ) : (
           <>
-            Viewing full region.{' '}
+            Viewing full {contextType}.{' '}
             <Button
               onClick={() => {
                 setIsSelectRegionModalOpen(true)
@@ -101,6 +102,7 @@ const ZoomableRegionViewer = ({
 }
 
 ZoomableRegionViewer.propTypes = {
+  contextType: PropTypes.oneOf(['gene', 'transcript', 'region']),
   regions: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -117,6 +119,7 @@ ZoomableRegionViewer.propTypes = {
 }
 
 ZoomableRegionViewer.defaultProps = {
+  contextType: 'region',
   zoomDisabled: false,
   onChangeZoomRegion: () => {},
 }

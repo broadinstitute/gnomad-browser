@@ -233,6 +233,7 @@ const GenePage = ({ datasetId, gene, geneId }) => {
         </GeneInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
+        contextType="gene"
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
