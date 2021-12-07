@@ -41,6 +41,10 @@ const ZoomRegionFormModal = ({
       }
       onRequestClose={onRequestClose}
     >
+      <p>
+        All tracks (coverage, transcripts, ClinVar and gnomAD variants, etc.) and the variants table
+        will show data only from the selected region.
+      </p>
       <ZoomRegionForm
         ref={formRef}
         defaultZoomRegion={defaultZoomRegion}
