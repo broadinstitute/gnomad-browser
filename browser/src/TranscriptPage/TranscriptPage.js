@@ -171,6 +171,7 @@ const TranscriptPage = ({ datasetId, transcript }) => {
         </TranscriptInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
+        contextType="transcript"
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
