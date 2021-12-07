@@ -1,5 +1,6 @@
+import { throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { Component } from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
 import GripLines from '@fortawesome/fontawesome-free/svgs/solid/grip-lines-vertical.svg'
@@ -7,6 +8,53 @@ import GripLines from '@fortawesome/fontawesome-free/svgs/solid/grip-lines-verti
 import { Track } from '@gnomad/region-viewer'
 
 import AutosizedRegionViewer from './AutosizedRegionViewer'
+
+const draggable = C => {
+  class DraggableComponent extends Component {
+    static displayName = `Draggable(${C.displayName || C.name || 'Component'})`
+
+    static propTypes = {
+      onDrag: PropTypes.func.isRequired,
+    }
+
+    constructor(props) {
+      super(props)
+      this.dragStart = null
+    }
+
+    onMouseDown = e => {
+      this.dragStart = e.clientX
+      document.addEventListener('mouseup', this.onMouseUp)
+      document.addEventListener('mousemove', this.onMouseMove)
+    }
+
+    onMouseUp = () => {
+      this.dragStart = null
+      document.removeEventListener('mouseup', this.onMouseUp)
+      document.removeEventListener('mousemove', this.onMouseMove)
+    }
+
+    onMouseMove = throttle(e => {
+      const { onDrag } = this.props
+      if (this.dragStart !== null) {
+        onDrag(e.clientX - this.dragStart)
+        this.dragStart = e.clientX
+      }
+    }, 16)
+
+    render() {
+      const { onDrag, ...otherProps } = this.props
+      return (
+        <C
+          {...otherProps}
+          onMouseDown={this.onMouseDown}
+          style={{ ...otherProps.style, cursor: 'grab' }}
+        />
+      )
+    }
+  }
+  return DraggableComponent
+}
 
 const OverviewWrapper = styled.div`
   position: relative;
@@ -22,6 +70,8 @@ const ZoomRegionOverlay = styled.div`
   border: 1px solid #333;
   background: rgba(0, 0, 0, 0.1);
 `
+
+const DraggableZoomRegionOverlay = draggable(ZoomRegionOverlay)
 
 const StyledSlider = styled(ReactSlider)`
   width: 100%;
@@ -69,12 +119,33 @@ const ZoomRegionOverview = ({
             <>
               <OverviewWrapper>
                 {renderOverview({ scalePosition, width, ...otherArgs })}
-                <ZoomRegionOverlay
-                  style={{
-                    left: `${zoomRegionStartX}px`,
-                    width: `${zoomRegionStopX - zoomRegionStartX}px`,
-                  }}
-                />
+                {readOnly ? (
+                  <ZoomRegionOverlay
+                    style={{
+                      left: `${zoomRegionStartX}px`,
+                      width: `${zoomRegionStopX - zoomRegionStartX}px`,
+                    }}
+                  />
+                ) : (
+                  <DraggableZoomRegionOverlay
+                    onDrag={offset => {
+                      onChangeZoomRegion({
+                        start: Math.max(
+                          regions[0].start,
+                          scalePosition.invert(zoomRegionStartX + offset)
+                        ),
+                        stop: Math.min(
+                          regions[regions.length - 1].stop,
+                          scalePosition.invert(zoomRegionStopX + offset)
+                        ),
+                      })
+                    }}
+                    style={{
+                      left: `${zoomRegionStartX}px`,
+                      width: `${zoomRegionStopX - zoomRegionStartX}px`,
+                    }}
+                  />
+                )}
               </OverviewWrapper>
 
               {!readOnly && (
