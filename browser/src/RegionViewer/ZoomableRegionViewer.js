@@ -65,10 +65,12 @@ const ZoomableRegionViewer = ({
             </div>
 
             <ZoomRegionOverview
+              readOnly={false}
               regions={regions}
               renderOverview={renderOverview}
               zoomRegion={zoomRegion}
               onChangeZoomRegion={onChangeZoomRegion}
+              onChangeZoomRegionDebounceDelay={150}
             />
           </ZoomControlsWrapper>
         ) : (
