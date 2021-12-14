@@ -180,18 +180,18 @@ const Variants = ({
 
   if (variants.length === 0) {
     return (
-      <>
-        <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
-        <TrackPageSection>
-          <p>No gnomAD variants found.</p>
-        </TrackPageSection>
-      </>
+      <TrackPageSection>
+        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        <p>No gnomAD variants found.</p>
+      </TrackPageSection>
     )
   }
 
   return (
     <div>
-      <h2 style={{ margin: '2em 0 0.25em 115px' }}>gnomAD variants</h2>
+      <TrackPageSection>
+        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+      </TrackPageSection>
       <Cursor onClick={onNavigatorClick}>
         <VariantTrack
           title={`${datasetLabel} variants (${renderedVariants.length})`}
