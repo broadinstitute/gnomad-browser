@@ -8,6 +8,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
+import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 
@@ -25,7 +26,9 @@ const VariantsInTranscript = ({
 
   return (
     <>
-      <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+      <TrackPageSection>
+        <h2>ClinVar variants</h2>
+      </TrackPageSection>
       {clinvarVariants.length > 0 ? (
         <>
           <ClinvarVariantTrack
@@ -33,13 +36,13 @@ const VariantsInTranscript = ({
             transcripts={[transcript]}
             variants={clinvarVariants}
           />
-          <p style={{ marginLeft: '115px' }}>
+          <TrackPageSection as="p">
             Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
             release.
-          </p>
+          </TrackPageSection>
         </>
       ) : (
-        <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this transcript.</p>
+        <TrackPageSection as="p">No ClinVar variants found in this transcript.</TrackPageSection>
       )}
 
       <Variants

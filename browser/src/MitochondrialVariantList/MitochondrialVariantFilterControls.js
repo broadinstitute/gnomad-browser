@@ -20,7 +20,11 @@ const SettingsWrapper = styled.div`
 
   @media (max-width: 700px) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+
+    > * {
+      margin-bottom: 1em;
+    }
   }
 `
 

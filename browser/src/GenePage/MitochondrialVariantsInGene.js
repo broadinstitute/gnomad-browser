@@ -7,6 +7,7 @@ import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
+import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
@@ -109,7 +110,9 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
 
         return (
           <>
-            <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+            <TrackPageSection>
+              <h2>ClinVar variants</h2>
+            </TrackPageSection>
             {data.gene.clinvar_variants.length > 0 ? (
               <>
                 <ClinvarVariantTrack
@@ -117,13 +120,13 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, ...rest }) => {
                   transcripts={gene.transcripts}
                   variants={data.gene.clinvar_variants}
                 />
-                <p style={{ marginLeft: '115px' }}>
+                <TrackPageSection as="p" style={{ margin: 0 }}>
                   Data displayed here is from ClinVar&apos;s{' '}
                   {formatClinvarDate(data.meta.clinvar_release_date)} release.
-                </p>
+                </TrackPageSection>
               </>
             ) : (
-              <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this gene.</p>
+              <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
             )}
 
             <MitochondrialVariants

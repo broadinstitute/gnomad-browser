@@ -5,6 +5,7 @@ import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
+import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 
@@ -13,7 +14,9 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
 
   return (
     <>
-      <h2 style={{ marginLeft: '115px' }}>ClinVar variants</h2>
+      <TrackPageSection>
+        <h2>ClinVar variants</h2>
+      </TrackPageSection>
       {clinvarVariants.length > 0 ? (
         <>
           <ClinvarVariantTrack
@@ -21,13 +24,13 @@ const VariantsInRegion = ({ clinvarReleaseDate, clinvarVariants, datasetId, regi
             transcripts={region.genes.flatMap(gene => gene.transcripts)}
             variants={clinvarVariants}
           />
-          <p style={{ marginLeft: '115px' }}>
+          <TrackPageSection as="p">
             Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
             release.
-          </p>
+          </TrackPageSection>
         </>
       ) : (
-        <p style={{ margin: '0 0 0 115px' }}>No ClinVar variants found in this region.</p>
+        <TrackPageSection as="p">No ClinVar variants found in this region.</TrackPageSection>
       )}
 
       <Variants

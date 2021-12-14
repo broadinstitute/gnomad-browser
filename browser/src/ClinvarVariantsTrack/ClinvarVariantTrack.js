@@ -6,6 +6,7 @@ import { Track } from '@gnomad/region-viewer'
 import { Button, CategoryFilterControl, Checkbox, Modal } from '@gnomad/ui'
 
 import InfoButton from '../help/InfoButton'
+import { TrackPageSection } from '../TrackPage'
 import {
   VEP_CONSEQUENCE_CATEGORIES,
   VEP_CONSEQUENCE_CATEGORY_LABELS,
@@ -36,6 +37,11 @@ const ControlRow = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 const TitlePanel = styled.div`
@@ -47,6 +53,9 @@ const TitlePanel = styled.div`
 `
 
 const ConsequenceCategoryFiltersWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+
   input[type='checkbox'] {
     position: relative;
     top: 2px;
@@ -59,6 +68,14 @@ const ConsequenceCategoryFiltersWrapper = styled.div`
       margin-left: 0;
     }
   }
+
+  @media (max-width: 600px) {
+    margin-bottom: 0.5em;
+  }
+`
+
+const ConsequenceCategoryFilter = styled.div`
+  margin-right: 1ch;
 `
 
 const SelectCategoryButton = styled(Button)`
@@ -107,79 +124,79 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }) => {
 
   return (
     <>
+      <TrackPageSection>
+        <TopPanel>
+          <ControlRow>
+            <div>
+              <CategoryFilterControl
+                categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
+                  id: category,
+                  label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
+                  color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
+                }))}
+                categorySelections={includedClinicalSignificanceCategories}
+                id="clinvar-track-included-categories"
+                onChange={setIncludedClinicalSignificanceCategories}
+              />{' '}
+              <InfoButton topic="clinvar-variant-categories" />
+            </div>
+          </ControlRow>
+          <ControlRow>
+            <ConsequenceCategoryFiltersWrapper>
+              {VEP_CONSEQUENCE_CATEGORIES.map(category => (
+                <ConsequenceCategoryFilter key={category}>
+                  <Checkbox
+                    id={`clinvar-track-include-${category}`}
+                    label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
+                    checked={includedConsequenceCategories[category]}
+                    onChange={value => {
+                      setIncludedConsequenceCategories({
+                        ...includedConsequenceCategories,
+                        [category]: value,
+                      })
+                    }}
+                  />{' '}
+                  <SelectCategoryButton
+                    onClick={() => {
+                      setIncludedConsequenceCategories({
+                        ...VEP_CONSEQUENCE_CATEGORIES.reduce(
+                          (acc, c) => ({
+                            ...acc,
+                            [c]: c === category,
+                          }),
+                          {}
+                        ),
+                      })
+                    }}
+                  >
+                    only
+                  </SelectCategoryButton>
+                </ConsequenceCategoryFilter>
+              ))}
+            </ConsequenceCategoryFiltersWrapper>
+
+            <Button
+              onClick={() => {
+                setIsExpanded(!isExpanded)
+              }}
+              style={{ flexShrink: 0 }}
+            >
+              {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
+            </Button>
+          </ControlRow>
+          <ControlRow>
+            <Checkbox
+              id="clinvar-track-in-gnomad"
+              label="Only show ClinVar variants that are in gnomAD"
+              checked={showOnlyGnomad}
+              onChange={setShowOnlyGnomad}
+            />
+          </ControlRow>
+        </TopPanel>
+      </TrackPageSection>
       <Track
         renderLeftPanel={() => (
           <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
-        )}
-        renderTopPanel={() => (
-          <TopPanel>
-            <ControlRow>
-              <div>
-                <CategoryFilterControl
-                  categories={CLINICAL_SIGNIFICANCE_CATEGORIES.map(category => ({
-                    id: category,
-                    label: CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category],
-                    color: CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category],
-                  }))}
-                  categorySelections={includedClinicalSignificanceCategories}
-                  id="clinvar-track-included-categories"
-                  onChange={setIncludedClinicalSignificanceCategories}
-                />{' '}
-                <InfoButton topic="clinvar-variant-categories" />
-              </div>
-            </ControlRow>
-            <ControlRow>
-              <ConsequenceCategoryFiltersWrapper>
-                {VEP_CONSEQUENCE_CATEGORIES.map(category => (
-                  <React.Fragment key={category}>
-                    <Checkbox
-                      id={`clinvar-track-include-${category}`}
-                      label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
-                      checked={includedConsequenceCategories[category]}
-                      onChange={value => {
-                        setIncludedConsequenceCategories({
-                          ...includedConsequenceCategories,
-                          [category]: value,
-                        })
-                      }}
-                    />{' '}
-                    <SelectCategoryButton
-                      onClick={() => {
-                        setIncludedConsequenceCategories({
-                          ...VEP_CONSEQUENCE_CATEGORIES.reduce(
-                            (acc, c) => ({
-                              ...acc,
-                              [c]: c === category,
-                            }),
-                            {}
-                          ),
-                        })
-                      }}
-                    >
-                      only
-                    </SelectCategoryButton>
-                  </React.Fragment>
-                ))}
-              </ConsequenceCategoryFiltersWrapper>
-
-              <Button
-                onClick={() => {
-                  setIsExpanded(!isExpanded)
-                }}
-                style={{ flexShrink: 0 }}
-              >
-                {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
-              </Button>
-            </ControlRow>
-            <ControlRow>
-              <Checkbox
-                id="clinvar-track-in-gnomad"
-                label="Only show ClinVar variants that are in gnomAD"
-                checked={showOnlyGnomad}
-                onChange={setShowOnlyGnomad}
-              />
-            </ControlRow>
-          </TopPanel>
         )}
       >
         {({ scalePosition, width }) => {

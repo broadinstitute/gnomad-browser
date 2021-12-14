@@ -23,7 +23,7 @@ const SettingsWrapper = styled.div`
 
   @media (max-width: 700px) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 `
 
@@ -33,14 +33,8 @@ const ConsequenceFiltersWrapper = styled.div`
 
 const CheckboxFiltersWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-flow: row wrap;
   margin-bottom: 1em;
-
-  @media (max-width: 700px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `
 
 const CheckboxSection = styled.div`
@@ -48,10 +42,6 @@ const CheckboxSection = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-right: 2em;
-
-  @media (max-width: 700px) {
-    margin-right: 0;
-  }
 `
 
 const SearchWrapper = styled.div`
