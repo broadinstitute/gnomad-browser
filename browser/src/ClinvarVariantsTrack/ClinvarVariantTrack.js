@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
-import { Button, CategoryFilterControl, Checkbox, Modal } from '@gnomad/ui'
+import { Button, Checkbox, Modal } from '@gnomad/ui'
 
+import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
 import { TrackPageSection } from '../TrackPage'
 import {

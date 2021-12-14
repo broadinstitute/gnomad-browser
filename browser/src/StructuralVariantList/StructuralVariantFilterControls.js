@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { Checkbox, CategoryFilterControl, SearchInput } from '@gnomad/ui'
+import { Checkbox, SearchInput } from '@gnomad/ui'
 
+import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
 
 import {
@@ -23,32 +24,6 @@ const CategoryFiltersWrapper = styled.div`
 
   @media (max-width: 700px) {
     align-items: center;
-  }
-
-  #sv-consequence-category-filter,
-  #sv-type-category-filter {
-    margin-bottom: 1em;
-
-    @media (max-width: 1200px) {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-around;
-
-      .category {
-        border-radius: 0.5em;
-        margin: 0.25em;
-      }
-    }
-
-    @media (max-width: 700px) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .category {
-        margin-bottom: 0.5em;
-      }
-    }
   }
 `
 
@@ -83,7 +58,6 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
         categories={['lof', 'dup_lof', 'copy_gain', 'other'].map(category => ({
           id: category,
           label: svConsequenceCategoryLabels[category],
-          className: 'category',
           color: colorKey === 'consequence' ? svConsequenceCategoryColors[category] : 'gray',
         }))}
         categorySelections={value.includeConsequenceCategories}
@@ -100,7 +74,6 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }) => (
         categories={svTypes.map(type => ({
           id: type,
           label: type,
-          className: 'category',
           color: colorKey === 'type' ? svTypeColors[type] : 'gray',
         }))}
         categorySelections={value.includeTypes}
