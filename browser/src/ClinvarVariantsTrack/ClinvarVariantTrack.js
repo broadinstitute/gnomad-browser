@@ -174,6 +174,22 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }) => {
                   </SelectCategoryButton>
                 </ConsequenceCategoryFilter>
               ))}
+              <SelectCategoryButton
+                style={{ marginLeft: '0.5em' }}
+                onClick={() => {
+                  setIncludedConsequenceCategories({
+                    ...VEP_CONSEQUENCE_CATEGORIES.reduce(
+                      (acc, c) => ({
+                        ...acc,
+                        [c]: true,
+                      }),
+                      {}
+                    ),
+                  })
+                }}
+              >
+                all
+              </SelectCategoryButton>
             </ConsequenceCategoryFiltersWrapper>
 
             <Button
