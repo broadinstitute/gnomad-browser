@@ -50,7 +50,7 @@ const ZoomableRegionViewer = ({
                   setIsSelectRegionModalOpen(true)
                 }}
               >
-                Zoom in on different regions
+                Select different regions
               </Button>{' '}
               <Button
                 onClick={() => {
