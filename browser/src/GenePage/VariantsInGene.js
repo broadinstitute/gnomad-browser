@@ -8,7 +8,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInRegions from '../RegionViewer/filterVariantsInRegions'
+import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
@@ -59,7 +59,7 @@ const VariantsInGene = ({
   includeNonCodingTranscripts,
   includeUTRs,
   variants,
-  visibleRegions,
+  zoomRegion,
 }) => {
   const datasetLabel = labelForDataset(datasetId)
 
@@ -75,7 +75,7 @@ const VariantsInGene = ({
           <ClinvarVariantTrack
             referenceGenome={referenceGenomeForDataset(datasetId)}
             transcripts={gene.transcripts}
-            variants={filterVariantsInRegions(clinvarVariants, visibleRegions)}
+            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
           />
           <TrackPageSection as="p">
             Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
@@ -91,7 +91,7 @@ const VariantsInGene = ({
         context={gene}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filterVariantsInRegions(variants, visibleRegions)}
+        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       >
         <p>
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
@@ -163,9 +163,10 @@ VariantsInGene.propTypes = {
   includeNonCodingTranscripts: PropTypes.bool.isRequired,
   includeUTRs: PropTypes.bool.isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  visibleRegions: PropTypes.arrayOf(
-    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
-  ).isRequired,
+  zoomRegion: PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 VariantsInGene.defaultProps = {

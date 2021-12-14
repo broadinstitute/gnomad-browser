@@ -6,7 +6,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInRegions from '../RegionViewer/filterVariantsInRegions'
+import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
@@ -67,7 +67,7 @@ query MitochondrialVariantsInGene($geneId: String!, $datasetId: DatasetId!, $ref
 }
 `
 
-const MitochondrialVariantsInGene = ({ datasetId, gene, visibleRegions, ...rest }) => {
+const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }) => {
   if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
     return (
       <StatusMessage>
@@ -119,7 +119,7 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, visibleRegions, ...rest 
                 <ClinvarVariantTrack
                   referenceGenome={referenceGenomeForDataset(datasetId)}
                   transcripts={gene.transcripts}
-                  variants={filterVariantsInRegions(data.gene.clinvar_variants, visibleRegions)}
+                  variants={filterVariantsInZoomRegion(data.gene.clinvar_variants, zoomRegion)}
                 />
                 <TrackPageSection as="p" style={{ margin: 0 }}>
                   Data displayed here is from ClinVar&apos;s{' '}
@@ -136,12 +136,12 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, visibleRegions, ...rest 
               context={gene}
               datasetId={datasetId}
               exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
-              variants={filterVariantsInRegions(
+              variants={filterVariantsInZoomRegion(
                 annotateVariantsWithClinvar(
                   data.gene.mitochondrial_variants,
                   data.gene.clinvar_variants
                 ),
-                visibleRegions
+                zoomRegion
               )}
             />
           </>
@@ -157,9 +157,10 @@ MitochondrialVariantsInGene.propTypes = {
     gene_id: PropTypes.string.isRequired,
     transcripts: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
-  visibleRegions: PropTypes.arrayOf(
-    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
-  ).isRequired,
+  zoomRegion: PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default MitochondrialVariantsInGene

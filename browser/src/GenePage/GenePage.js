@@ -15,7 +15,6 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
-import getVisibleRegions from '../RegionViewer/getVisibleRegions'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -199,8 +198,6 @@ const GenePage = ({ datasetId, gene, geneId }) => {
     start: regionViewerRegions[0].start,
     stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
   })
-
-  const visibleRegions = getVisibleRegions(regionViewerRegions, zoomRegion)
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
@@ -398,24 +395,16 @@ const GenePage = ({ datasetId, gene, geneId }) => {
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
-          <StructuralVariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            visibleRegions={visibleRegions}
-          />
+          <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            visibleRegions={visibleRegions}
-          />
+          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : (
           <VariantsInGene
             datasetId={datasetId}
             gene={gene}
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
-            visibleRegions={visibleRegions}
+            zoomRegion={zoomRegion}
           />
         )}
       </RegionViewer>

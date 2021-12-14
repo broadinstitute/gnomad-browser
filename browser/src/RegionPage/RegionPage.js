@@ -46,13 +46,6 @@ const RegionControlsWrapper = styled.div`
 const RegionPage = ({ datasetId, region }) => {
   const { chrom, start, stop } = region
 
-  const regionViewerRegions = [
-    {
-      start,
-      stop,
-    },
-  ]
-
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
 
@@ -88,7 +81,7 @@ const RegionPage = ({ datasetId, region }) => {
       </TrackPageSection>
       <RegionViewer
         leftPanelWidth={115}
-        regions={regionViewerRegions}
+        regions={[region]}
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
@@ -115,23 +108,15 @@ const RegionPage = ({ datasetId, region }) => {
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
-          <StructuralVariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            visibleRegions={regionViewerRegions}
-          />
+          <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
         ) : region.chrom === 'M' ? (
           <MitochondrialVariantsInRegion
             datasetId={datasetId}
             region={region}
-            visibleRegions={regionViewerRegions}
+            zoomRegion={region}
           />
         ) : (
-          <VariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            visibleRegions={regionViewerRegions}
-          />
+          <VariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
         )}
       </RegionViewer>
     </TrackPage>

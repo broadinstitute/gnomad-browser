@@ -6,7 +6,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInRegions from '../RegionViewer/filterVariantsInRegions'
+import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
@@ -67,7 +67,7 @@ query MitochondrialVariantsInRegion($start: Int!, $stop: Int!, $datasetId: Datas
 }
 `
 
-const MitochondrialVariantsInRegion = ({ datasetId, region, visibleRegions, ...rest }) => {
+const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }) => {
   const regionId = `${region.chrom}-${region.start}-${region.stop}`
   if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
     return (
@@ -121,7 +121,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, visibleRegions, ...r
                 <ClinvarVariantTrack
                   referenceGenome={referenceGenomeForDataset(datasetId)}
                   transcripts={region.genes.flatMap(gene => gene.transcripts)}
-                  variants={filterVariantsInRegions(data.region.clinvar_variants, visibleRegions)}
+                  variants={filterVariantsInZoomRegion(data.region.clinvar_variants, zoomRegion)}
                 />
                 <TrackPageSection as="p">
                   Data displayed here is from ClinVar&apos;s{' '}
@@ -138,12 +138,12 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, visibleRegions, ...r
               context={region}
               datasetId={datasetId}
               exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
-              variants={filterVariantsInRegions(
+              variants={filterVariantsInZoomRegion(
                 annotateVariantsWithClinvar(
                   data.region.mitochondrial_variants,
                   data.region.clinvar_variants
                 ),
-                visibleRegions
+                zoomRegion
               )}
             />
           </>
@@ -165,9 +165,10 @@ MitochondrialVariantsInRegion.propTypes = {
       })
     ).isRequired,
   }).isRequired,
-  visibleRegions: PropTypes.arrayOf(
-    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
-  ).isRequired,
+  zoomRegion: PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default MitochondrialVariantsInRegion
