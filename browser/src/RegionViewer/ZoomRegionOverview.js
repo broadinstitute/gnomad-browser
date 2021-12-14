@@ -1,6 +1,6 @@
-import { throttle } from 'lodash-es'
+import { debounce, throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
 import GripLines from '@fortawesome/fontawesome-free/svgs/solid/grip-lines-vertical.svg'
@@ -105,9 +105,26 @@ const ZoomRegionOverview = ({
   readOnly,
   regions,
   renderOverview,
-  zoomRegion,
-  onChangeZoomRegion,
+  zoomRegion: initialZoomRegion,
+  onChangeZoomRegion: onChangeZoomRegionCallback,
+  onChangeZoomRegionDebounceDelay,
 }) => {
+  const [zoomRegion, setZoomRegion] = useState(initialZoomRegion)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedOnChangeZoomRegionCallback = useCallback(
+    debounce(onChangeZoomRegionCallback, onChangeZoomRegionDebounceDelay),
+    [onChangeZoomRegionDebounceDelay]
+  )
+
+  const onChangeZoomRegion = useCallback(
+    newZoomRegion => {
+      setZoomRegion(newZoomRegion)
+      debouncedOnChangeZoomRegionCallback(newZoomRegion)
+    },
+    [debouncedOnChangeZoomRegionCallback]
+  )
+
   return (
     <AutosizedRegionViewer regions={regions} leftPanelWidth={0} rightPanelWidth={0}>
       <Track>
@@ -194,11 +211,13 @@ ZoomRegionOverview.propTypes = {
     stop: PropTypes.number.isRequired,
   }).isRequired,
   onChangeZoomRegion: PropTypes.func,
+  onChangeZoomRegionDebounceDelay: PropTypes.number,
 }
 
 ZoomRegionOverview.defaultProps = {
   readOnly: true,
   onChangeZoomRegion: () => {},
+  onChangeZoomRegionDebounceDelay: 0,
 }
 
 export default ZoomRegionOverview
