@@ -10,7 +10,6 @@ import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
-import getVisibleRegions from '../RegionViewer/getVisibleRegions'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -140,8 +139,6 @@ const TranscriptPage = ({ datasetId, transcript }) => {
     stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
   })
 
-  const visibleRegions = getVisibleRegions(regionViewerRegions, zoomRegion)
-
   return (
     <TrackPage>
       <TrackPageSection>
@@ -265,14 +262,14 @@ const TranscriptPage = ({ datasetId, transcript }) => {
           <MitochondrialVariantsInTranscript
             datasetId={datasetId}
             transcript={transcript}
-            visibleRegions={visibleRegions}
+            zoomRegion={zoomRegion}
           />
         ) : (
           <VariantsInTranscript
             datasetId={datasetId}
             includeUTRs={includeUTRs}
             transcript={transcript}
-            visibleRegions={visibleRegions}
+            zoomRegion={zoomRegion}
           />
         )}
       </RegionViewer>

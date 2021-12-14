@@ -8,7 +8,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset, referenceGenomeForDataset } from '../datasets'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInRegions from '../RegionViewer/filterVariantsInRegions'
+import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
@@ -20,7 +20,7 @@ const VariantsInTranscript = ({
   includeUTRs,
   transcript,
   variants,
-  visibleRegions,
+  zoomRegion,
 }) => {
   const isCodingTranscript = transcript.exons.some(exon => exon.feature_type === 'CDS')
 
@@ -36,7 +36,7 @@ const VariantsInTranscript = ({
           <ClinvarVariantTrack
             referenceGenome={referenceGenomeForDataset(datasetId)}
             transcripts={[transcript]}
-            variants={filterVariantsInRegions(clinvarVariants, visibleRegions)}
+            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
           />
           <TrackPageSection as="p">
             Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
@@ -52,7 +52,7 @@ const VariantsInTranscript = ({
         context={transcript}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
-        variants={filterVariantsInRegions(variants, visibleRegions)}
+        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       >
         {isCodingTranscript ? (
           <p>
@@ -100,9 +100,10 @@ VariantsInTranscript.propTypes = {
     ).isRequired,
   }).isRequired,
   variants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  visibleRegions: PropTypes.arrayOf(
-    PropTypes.shape({ start: PropTypes.number.isRequired, stop: PropTypes.number.isRequired })
-  ).isRequired,
+  zoomRegion: PropTypes.shape({
+    start: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 VariantsInTranscript.defaultProps = {
