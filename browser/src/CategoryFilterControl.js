@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const Button = styled.button`
+import { Button } from '@gnomad/ui'
+
+const CategoryButton = styled.button`
   box-sizing: border-box;
   width: 35px;
   height: 20px;
@@ -78,7 +80,7 @@ const CategoryWrapper = styled.span`
     border-bottom-left-radius: 0.5em;
   }
 
-  &:last-child {
+  &:nth-last-child(2) {
     border-top-right-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
   }
@@ -99,20 +101,31 @@ const Label = styled.label`
 
 const LabelText = styled.span`
   padding: 0.375em 0.75em;
+  line-height: 1.15em;
+`
+
+const SelectAllButton = styled(Button)`
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0 0.5em;
 `
 
 const Wrapper = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: center;
   margin-bottom: 1em;
 
   @media (max-width: ${props => `${props.breakpoint}px`}) {
-    display: inline-flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-
     ${CategoryWrapper} {
       border-radius: 0.5em;
       margin: 0 0.5em 0.5em 0;
+    }
+
+    ${SelectAllButton} {
+      margin: 0 0.5em 0.5em;
     }
   }
 `
@@ -144,7 +157,7 @@ const CategoryFilterControl = ({
           </CheckboxIcon>
           <LabelText>{category.label}</LabelText>
         </Label>
-        <Button
+        <CategoryButton
           onClick={() =>
             onChange(
               categories.reduce(
@@ -158,9 +171,25 @@ const CategoryFilterControl = ({
           }
         >
           only
-        </Button>
+        </CategoryButton>
       </CategoryWrapper>
     ))}
+
+    <SelectAllButton
+      onClick={() =>
+        onChange(
+          categories.reduce(
+            (acc, cat) => ({
+              ...acc,
+              [cat.id]: true,
+            }),
+            {}
+          )
+        )
+      }
+    >
+      all
+    </SelectAllButton>
   </Wrapper>
 )
 
