@@ -78,7 +78,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }) => {
       ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
       <GnomadConstraintTable constraint={gnomadConstraint} />
       {isGene && (
-        <p>
+        <p style={{ marginBottom: 0 }}>
           Constraint metrics based on {transcriptDescription} transcript (
           <Link to={`/transcript/${transcriptId}`}>
             {transcriptId}.{transcriptVersion}
