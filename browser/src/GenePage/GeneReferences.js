@@ -14,6 +14,7 @@ const GeneReferences = ({ gene }) => {
     start,
     stop,
     hgnc_id: hgncId,
+    ncbi_id: ncbiId,
     omim_id: omimId,
   } = gene
 
@@ -90,6 +91,22 @@ const GeneReferences = ({ gene }) => {
                 </ListItem>
               </>
             )}
+            {ncbiId && (
+              <>
+                <ListItem>
+                  <ExternalLink href={`https://www.ncbi.nlm.nih.gov/gene/?term=${ncbiId}`}>
+                    NCBI
+                  </ExternalLink>
+                </ListItem>
+                <ListItem>
+                  <ExternalLink
+                    href={`https://www.ncbi.nlm.nih.gov/genome/gdv/browser/gene/?id=${ncbiId}`}
+                  >
+                    NCBI Genome Data Viewer
+                  </ExternalLink>
+                </ListItem>
+              </>
+            )}
           </List>
         </Modal>
       )}
@@ -106,6 +123,7 @@ GeneReferences.propTypes = {
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
     hgnc_id: PropTypes.string,
+    ncbi_id: PropTypes.string,
     omim_id: PropTypes.string,
   }).isRequired,
 }

@@ -27,6 +27,7 @@ query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGeno
       refseq_version
     }
     hgnc_id
+    ncbi_id
     omim_id
     chrom
     start

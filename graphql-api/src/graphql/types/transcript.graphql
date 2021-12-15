@@ -4,6 +4,7 @@ type TranscriptGene {
   gene_version: String!
   symbol: String !
   hgnc_id: String
+  ncbi_id: String
   omim_id: String
   name: String
   chrom: String!
