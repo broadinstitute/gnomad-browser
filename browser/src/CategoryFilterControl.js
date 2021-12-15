@@ -116,7 +116,6 @@ const Wrapper = styled.div`
   display: inline-flex;
   flex-flow: row wrap;
   align-items: center;
-  margin-bottom: 1em;
 
   @media (max-width: ${props => `${props.breakpoint}px`}) {
     ${CategoryWrapper} {
