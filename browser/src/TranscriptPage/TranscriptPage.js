@@ -25,6 +25,7 @@ const TranscriptInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 1em;
 
   @media (max-width: 1200px) {
     flex-direction: column;
