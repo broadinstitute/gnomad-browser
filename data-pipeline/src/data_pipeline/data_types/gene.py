@@ -208,9 +208,9 @@ def import_hgnc(path):
         previous_symbols=ds["Previous symbols"],
         alias_symbols=ds["Alias symbols"],
         omim_id=ds["OMIM ID(supplied by OMIM)"],
-        gene_id=hl.or_else(ds["Ensembl gene ID"], ds["Ensembl ID(supplied by Ensembl)"]),
+        ensembl_id=hl.or_else(ds["Ensembl gene ID"], ds["Ensembl ID(supplied by Ensembl)"]),
+        ncbi_id=hl.or_else(ds["NCBI Gene ID"], ds["NCBI Gene ID(supplied by NCBI)"]),
     )
-    ds = ds.filter(hl.is_defined(ds.gene_id)).key_by("gene_id")
 
     ds = ds.annotate(
         previous_symbols=hl.set(ds.previous_symbols.split(",").map(lambda s: s.strip())),
@@ -224,6 +224,7 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
     genes = import_gencode(gencode_path, reference_genome)
 
     hgnc = import_hgnc(hgnc_path)
+    hgnc = hgnc.filter(hl.is_defined(hgnc.ensembl_id)).key_by("ensembl_id")
     genes = genes.annotate(**hgnc[genes.gene_id])
     # If a symbol was not present in HGNC data, use the symbol from GENCODE
     genes = genes.annotate(symbol=hl.or_else(genes.symbol, genes.gencode_symbol))
