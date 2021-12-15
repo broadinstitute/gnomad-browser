@@ -1,6 +1,6 @@
 import { debounce, throttle } from 'lodash-es'
 import PropTypes from 'prop-types'
-import React, { Component, useCallback, useState } from 'react'
+import React, { Component, forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
 import GripLines from '@fortawesome/fontawesome-free/svgs/solid/grip-lines-vertical.svg'
@@ -101,101 +101,114 @@ const SliderTrack = styled.div`
   background: ${props => (props.index === 1 ? '#428bca' : '#f8f9fa')};
 `
 
-const ZoomRegionOverview = ({
-  readOnly,
-  regions,
-  renderOverview,
-  zoomRegion: initialZoomRegion,
-  onChangeZoomRegion: onChangeZoomRegionCallback,
-  onChangeZoomRegionDebounceDelay,
-}) => {
-  const [zoomRegion, setZoomRegion] = useState(initialZoomRegion)
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedOnChangeZoomRegionCallback = useCallback(
-    debounce(onChangeZoomRegionCallback, onChangeZoomRegionDebounceDelay),
-    [onChangeZoomRegionDebounceDelay]
-  )
-
-  const onChangeZoomRegion = useCallback(
-    newZoomRegion => {
-      setZoomRegion(newZoomRegion)
-      debouncedOnChangeZoomRegionCallback(newZoomRegion)
+const ZoomRegionOverview = forwardRef(
+  (
+    {
+      readOnly,
+      regions,
+      renderOverview,
+      zoomRegion: initialZoomRegion,
+      onChangeZoomRegion: onChangeZoomRegionCallback,
+      onChangeZoomRegionDebounceDelay,
     },
-    [debouncedOnChangeZoomRegionCallback]
-  )
+    ref
+  ) => {
+    const [zoomRegion, setZoomRegion] = useState(initialZoomRegion)
 
-  return (
-    <AutosizedRegionViewer regions={regions} leftPanelWidth={0} rightPanelWidth={0}>
-      <Track>
-        {({ scalePosition, width, ...otherArgs }) => {
-          const zoomRegionStartX = scalePosition(zoomRegion.start)
-          const zoomRegionStopX = scalePosition(zoomRegion.stop)
+    useImperativeHandle(
+      ref,
+      () => ({
+        setZoomRegion,
+      }),
+      []
+    )
 
-          return (
-            <>
-              <OverviewWrapper>
-                {renderOverview({ scalePosition, width, ...otherArgs })}
-                {readOnly ? (
-                  <ZoomRegionOverlay
-                    style={{
-                      left: `${zoomRegionStartX}px`,
-                      width: `${zoomRegionStopX - zoomRegionStartX}px`,
-                    }}
-                  />
-                ) : (
-                  <DraggableZoomRegionOverlay
-                    onDrag={offset => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedOnChangeZoomRegionCallback = useCallback(
+      debounce(onChangeZoomRegionCallback, onChangeZoomRegionDebounceDelay),
+      [onChangeZoomRegionDebounceDelay]
+    )
+
+    const onChangeZoomRegion = useCallback(
+      newZoomRegion => {
+        setZoomRegion(newZoomRegion)
+        debouncedOnChangeZoomRegionCallback(newZoomRegion)
+      },
+      [debouncedOnChangeZoomRegionCallback]
+    )
+
+    return (
+      <AutosizedRegionViewer regions={regions} leftPanelWidth={0} rightPanelWidth={0}>
+        <Track>
+          {({ scalePosition, width, ...otherArgs }) => {
+            const zoomRegionStartX = scalePosition(zoomRegion.start)
+            const zoomRegionStopX = scalePosition(zoomRegion.stop)
+
+            return (
+              <>
+                <OverviewWrapper>
+                  {renderOverview({ scalePosition, width, ...otherArgs })}
+                  {readOnly ? (
+                    <ZoomRegionOverlay
+                      style={{
+                        left: `${zoomRegionStartX}px`,
+                        width: `${zoomRegionStopX - zoomRegionStartX}px`,
+                      }}
+                    />
+                  ) : (
+                    <DraggableZoomRegionOverlay
+                      onDrag={offset => {
+                        onChangeZoomRegion({
+                          start: Math.max(
+                            regions[0].start,
+                            scalePosition.invert(zoomRegionStartX + offset)
+                          ),
+                          stop: Math.min(
+                            regions[regions.length - 1].stop,
+                            scalePosition.invert(zoomRegionStopX + offset)
+                          ),
+                        })
+                      }}
+                      style={{
+                        left: `${zoomRegionStartX}px`,
+                        width: `${zoomRegionStopX - zoomRegionStartX}px`,
+                      }}
+                    />
+                  )}
+                </OverviewWrapper>
+
+                {!readOnly && (
+                  <StyledSlider
+                    ariaLabel={['Start position of zoom window', 'Stop position of zoom window']}
+                    ariaValuetext={state =>
+                      state.value.map(n => scalePosition.invert(n).toLocaleString()).join(' to ')
+                    }
+                    min={0}
+                    max={width}
+                    value={[zoomRegionStartX, zoomRegionStopX]}
+                    minDistance={1}
+                    renderThumb={props => (
+                      <SliderThumb {...props}>
+                        <img src={GripLines} alt="" aria-hidden="true" width={16} height={16} />
+                      </SliderThumb>
+                    )}
+                    renderTrack={(props, state) => <SliderTrack {...props} index={state.index} />}
+                    onChange={value => {
                       onChangeZoomRegion({
-                        start: Math.max(
-                          regions[0].start,
-                          scalePosition.invert(zoomRegionStartX + offset)
-                        ),
-                        stop: Math.min(
-                          regions[regions.length - 1].stop,
-                          scalePosition.invert(zoomRegionStopX + offset)
-                        ),
+                        start: scalePosition.invert(value[0]),
+                        stop: scalePosition.invert(value[1]),
                       })
-                    }}
-                    style={{
-                      left: `${zoomRegionStartX}px`,
-                      width: `${zoomRegionStopX - zoomRegionStartX}px`,
                     }}
                   />
                 )}
-              </OverviewWrapper>
-
-              {!readOnly && (
-                <StyledSlider
-                  ariaLabel={['Start position of zoom window', 'Stop position of zoom window']}
-                  ariaValuetext={state =>
-                    state.value.map(n => scalePosition.invert(n).toLocaleString()).join(' to ')
-                  }
-                  min={0}
-                  max={width}
-                  value={[zoomRegionStartX, zoomRegionStopX]}
-                  minDistance={1}
-                  renderThumb={props => (
-                    <SliderThumb {...props}>
-                      <img src={GripLines} alt="" aria-hidden="true" width={16} height={16} />
-                    </SliderThumb>
-                  )}
-                  renderTrack={(props, state) => <SliderTrack {...props} index={state.index} />}
-                  onChange={value => {
-                    onChangeZoomRegion({
-                      start: scalePosition.invert(value[0]),
-                      stop: scalePosition.invert(value[1]),
-                    })
-                  }}
-                />
-              )}
-            </>
-          )
-        }}
-      </Track>
-    </AutosizedRegionViewer>
-  )
-}
+              </>
+            )
+          }}
+        </Track>
+      </AutosizedRegionViewer>
+    )
+  }
+)
 
 ZoomRegionOverview.propTypes = {
   readOnly: PropTypes.bool,
