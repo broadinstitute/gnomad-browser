@@ -35,7 +35,8 @@ const ZoomableRegionViewer = ({
   ])
 
   const isZoomed =
-    zoomRegion.start > regions[0].start || zoomRegion.stop < regions[regions.length - 1].stop
+    zoomRegion &&
+    (zoomRegion.start > regions[0].start || zoomRegion.stop < regions[regions.length - 1].stop)
 
   const [isSelectRegionModalOpen, setIsSelectRegionModalOpen] = useState(false)
 
@@ -56,10 +57,7 @@ const ZoomableRegionViewer = ({
               </Button>{' '}
               <Button
                 onClick={() => {
-                  onChangeZoomRegion({
-                    start: regions[0].start,
-                    stop: regions[regions.length - 1].stop,
-                  })
+                  onChangeZoomRegion(null)
                 }}
               >
                 View full {contextType}
@@ -124,13 +122,14 @@ ZoomableRegionViewer.propTypes = {
   zoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
   onChangeZoomRegion: PropTypes.func,
 }
 
 ZoomableRegionViewer.defaultProps = {
   contextType: 'region',
   zoomDisabled: false,
+  zoomRegion: null,
   onChangeZoomRegion: () => {},
 }
 

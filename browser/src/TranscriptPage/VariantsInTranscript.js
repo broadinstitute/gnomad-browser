@@ -103,11 +103,12 @@ VariantsInTranscript.propTypes = {
   zoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
 }
 
 VariantsInTranscript.defaultProps = {
   clinvarVariants: null,
+  zoomRegion: null,
 }
 
 const query = `

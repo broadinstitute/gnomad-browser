@@ -70,11 +70,12 @@ VariantsInRegion.propTypes = {
   zoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
 }
 
 VariantsInRegion.defaultProps = {
   clinvarVariants: null,
+  zoomRegion: null,
 }
 
 const query = `
