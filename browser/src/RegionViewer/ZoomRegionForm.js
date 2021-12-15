@@ -76,11 +76,20 @@ const ZoomRegionForm = forwardRef(
     const isStopPositionValid = stopPositionValidationError === null
     const isValid = isStartPositionValid && isStopPositionValid
 
+    const submit = useCallback(() => {
+      if (isValid) {
+        onSubmit(
+          zoomRegion.start > regionViewerRegions[0].start ||
+            zoomRegion.stop < regionViewerRegions[regionViewerRegions.length - 1].stop
+            ? zoomRegion
+            : null
+        )
+      }
+    }, [isValid, regionViewerRegions, zoomRegion, onSubmit])
+
     useImperativeHandle(ref, () => ({
       submit: () => {
-        if (isValid) {
-          onSubmit(zoomRegion)
-        }
+        submit()
       },
     }))
 
@@ -89,9 +98,7 @@ const ZoomRegionForm = forwardRef(
         ref={ref}
         onSubmit={e => {
           e.preventDefault()
-          if (isValid) {
-            onSubmit(zoomRegion)
-          }
+          submit()
         }}
       >
         <RegionControlsWrapper>
