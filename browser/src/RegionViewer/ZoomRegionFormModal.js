@@ -63,7 +63,7 @@ ZoomRegionFormModal.propTypes = {
   defaultZoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
   regionViewerRegions: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -73,6 +73,10 @@ ZoomRegionFormModal.propTypes = {
   renderOverview: PropTypes.func.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
+}
+
+ZoomRegionFormModal.defaultProps = {
+  defaultZoomRegion: null,
 }
 
 export default ZoomRegionFormModal

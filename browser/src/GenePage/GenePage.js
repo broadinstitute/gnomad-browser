@@ -194,10 +194,7 @@ const GenePage = ({ datasetId, gene, geneId }) => {
           stop: exon.stop + 75,
         }))
 
-  const [zoomRegion, setZoomRegion] = useState({
-    start: regionViewerRegions[0].start,
-    stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
-  })
+  const [zoomRegion, setZoomRegion] = useState(null)
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 

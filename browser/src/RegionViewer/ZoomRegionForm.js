@@ -32,7 +32,12 @@ const RegionControlsWrapper = styled(Wrapper)`
 
 const ZoomRegionForm = forwardRef(
   ({ defaultZoomRegion, regionViewerRegions, renderOverview, onSubmit }, ref) => {
-    const [zoomRegion, setZoomRegion] = useState(defaultZoomRegion)
+    const [zoomRegion, setZoomRegion] = useState(
+      defaultZoomRegion || {
+        start: regionViewerRegions[0].start,
+        stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
+      }
+    )
 
     const size = zoomRegion.stop - zoomRegion.start + 1
 
@@ -178,7 +183,7 @@ ZoomRegionForm.propTypes = {
   defaultZoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
   regionViewerRegions: PropTypes.arrayOf(
     PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -187,6 +192,10 @@ ZoomRegionForm.propTypes = {
   ).isRequired,
   renderOverview: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+}
+
+ZoomRegionForm.defaultProps = {
+  defaultZoomRegion: null,
 }
 
 export default ZoomRegionForm

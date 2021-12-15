@@ -1,4 +1,8 @@
 const getVisibleRegions = (regions, clipRegion) => {
+  if (!clipRegion) {
+    return regions
+  }
+
   const visibleRegion = []
 
   for (let i = 0; i < regions.length; i += 1) {

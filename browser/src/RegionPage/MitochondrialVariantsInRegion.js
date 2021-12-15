@@ -168,7 +168,11 @@ MitochondrialVariantsInRegion.propTypes = {
   zoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
+}
+
+MitochondrialVariantsInRegion.defaultProps = {
+  zoomRegion: null,
 }
 
 export default MitochondrialVariantsInRegion

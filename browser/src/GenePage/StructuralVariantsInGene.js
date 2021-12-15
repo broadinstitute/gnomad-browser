@@ -3,6 +3,7 @@ import React from 'react'
 
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
+import { filterStructuralVariantsInZoomRegion } from '../RegionViewer/filterVariantsInZoomRegion'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
 
 const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }) => {
@@ -48,10 +49,9 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }) => {
             {...rest}
             context={gene}
             exportFileName={`gnomad_structural_variants_${gene.gene_id}`}
-            variants={data.gene.structural_variants.filter(
-              variant =>
-                (variant.pos <= zoomRegion.stop && variant.end >= zoomRegion.start) ||
-                (variant.pos2 <= zoomRegion.stop && variant.end2 >= zoomRegion.start)
+            variants={filterStructuralVariantsInZoomRegion(
+              data.gene.structural_variants,
+              zoomRegion
             )}
           />
         )
@@ -69,7 +69,11 @@ StructuralVariantsInGene.propTypes = {
   zoomRegion: PropTypes.shape({
     start: PropTypes.number.isRequired,
     stop: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
+}
+
+StructuralVariantsInGene.defaultProps = {
+  zoomRegion: null,
 }
 
 export default StructuralVariantsInGene
