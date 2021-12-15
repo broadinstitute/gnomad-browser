@@ -6,6 +6,7 @@
     "url": "https://github.com/broadinstitute/gnomad-browser.git"
   },
   "scripts": {
+    "format": "prettier --write './**/*.js'",
     "lint:css": "stylelint './**/*.js'",
     "lint:js": "eslint .",
     "test": "jest"
