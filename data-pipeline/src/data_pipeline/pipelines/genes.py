@@ -37,9 +37,22 @@ pipeline.add_download_task(
     "download_gencode_v35_gtf", GENCODE_V35_URL, "/external_sources/" + GENCODE_V35_URL.split("/")[-1]
 )
 
+HGNC_COLUMNS = [
+    "gd_hgnc_id",
+    "gd_app_sym",
+    "gd_app_name",
+    "gd_prev_sym",
+    "gd_aliases",
+    "gd_pub_eg_id",
+    "gd_pub_ensembl_id",
+    "md_eg_id",
+    "md_ensembl_id",
+    "md_mim_id",
+]
+
 pipeline.add_download_task(
-    "download_hgnc_names",
-    "https://www.genenames.org/cgi-bin/download/custom?col=gd_hgnc_id&col=gd_app_sym&col=gd_app_name&col=gd_prev_sym&col=gd_aliases&col=gd_pub_ensembl_id&col=md_ensembl_id&col=md_mim_id&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",
+    "download_hgnc",
+    f"https://www.genenames.org/cgi-bin/download/custom?{'&'.join('col=' + column for column in HGNC_COLUMNS)}&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",
     "/external_sources/hgnc.tsv",
 )
 
@@ -47,10 +60,7 @@ pipeline.add_task(
     "prepare_grch37_genes",
     prepare_genes,
     "/genes/genes_grch37_base.ht",
-    {
-        "gencode_path": pipeline.get_task("download_gencode_v19_gtf"),
-        "hgnc_path": pipeline.get_task("download_hgnc_names"),
-    },
+    {"gencode_path": pipeline.get_task("download_gencode_v19_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
     {"reference_genome": "GRCh37"},
 )
 
@@ -58,10 +68,7 @@ pipeline.add_task(
     "prepare_grch38_genes",
     prepare_genes,
     "/genes/genes_grch38_base.ht",
-    {
-        "gencode_path": pipeline.get_task("download_gencode_v35_gtf"),
-        "hgnc_path": pipeline.get_task("download_hgnc_names"),
-    },
+    {"gencode_path": pipeline.get_task("download_gencode_v35_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
     {"reference_genome": "GRCh38"},
 )
 
