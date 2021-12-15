@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Button, Input } from '@gnomad/ui'
@@ -32,12 +32,20 @@ const RegionControlsWrapper = styled(Wrapper)`
 
 const ZoomRegionForm = forwardRef(
   ({ defaultZoomRegion, regionViewerRegions, renderOverview, onSubmit }, ref) => {
-    const [zoomRegion, setZoomRegion] = useState(
+    const overviewRef = useRef(null)
+
+    const [zoomRegion, _setZoomRegion] = useState(
       defaultZoomRegion || {
         start: regionViewerRegions[0].start,
         stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
       }
     )
+    const setZoomRegion = useCallback(newZoomRegion => {
+      _setZoomRegion(newZoomRegion)
+      if (overviewRef.current) {
+        overviewRef.current.setZoomRegion(newZoomRegion)
+      }
+    }, [])
 
     const size = zoomRegion.stop - zoomRegion.start + 1
 
@@ -167,6 +175,7 @@ const ZoomRegionForm = forwardRef(
 
         <div style={{ marginTop: '1em' }}>
           <ZoomRegionOverview
+            ref={overviewRef}
             readOnly={false}
             regions={regionViewerRegions}
             renderOverview={renderOverview}
