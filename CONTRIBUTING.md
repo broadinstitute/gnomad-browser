@@ -2,29 +2,49 @@
 
 ## Setting up a development environment
 
-- Install [Docker](https://www.docker.com/).
-
-- Install development dependencies.
-
-  ```
-  pip install requirements-dev.txt
-  ```
+- Install [Docker](https://www.docker.com/)
 
 - Install and configure [git-secrets](https://github.com/awslabs/git-secrets).
 
-- Install [pre-commit](https://pre-commit.com/) hooks.
+- Install [pre-commit](https://pre-commit.com/) and configure hooks.
 
   ```
-  python3 -m pre_commit install
+  pre-commit install
+  ```
+
+This should be enough to use the Docker Compose development environment. However, installing dependencies may be required if not using Docker Compose or for some editor integrations.
+
+- For browser/API development, install [Node.js](https://nodejs.org/), [Yarn (v1)](https://classic.yarnpkg.com/), and dependencies.
+
+  ```
+  yarn
+  ```
+
+- For data pipeline development, install [Python](https://www.python.org/), dependencies, and development tools.
+
+  ```
+  pip install hail
+  pip install -r data-pipeline/requirements.txt
+
+  pip install -r requirements-dev.txt
   ```
 
 ## Browser
 
-The production API can be used for browser development. To start a local instance of only the browser, use:
+The production API can be used for browser development. To start a local instance of only the browser...
 
-```
-./development/env.sh browser up
-```
+- with Docker
+
+  ```
+  ./development/env.sh browser up
+  ```
+
+- without Docker:
+
+  ```
+  cd browser
+  ./start.sh
+  ```
 
 ## API
 
@@ -39,10 +59,52 @@ Because of the size of the gnomAD database, API development is usually done usin
   ./deployctl config set zone $ZONE
   ```
 
-- Start a local instance of the API and browser.
+- Start a local instance of the API...
 
-  ```
-  ./development/env.sh up
-  ```
+  - with Docker:
 
-  The [Docker Compose configuration](development/api.docker-compose.yaml) could be modified to run Elasticsearch locally.
+    ```
+    ./development/env.sh api up
+    ```
+
+    or use `./development/env.sh up` to start both the API and browser
+
+  - without Docker:
+
+    ```
+    cd graphql-api
+    ELASTICSEARCH_USERNAME=elastic ELASTICSEARCH_PASSWORD=$(../deployctl elasticsearch get-password) ./start.sh
+    ```
+
+The [Docker Compose configuration](development/api.docker-compose.yaml) could be modified to run Elasticsearch locally.
+
+## Data pipeline
+
+See [data-pipeline/README.md](./data-pipeline/README.md).
+
+## Conventions
+
+All code should formatted using either [Prettier](https://prettier.io/) for JavaScript or [Black](https://black.readthedocs.io/) for Python. To run these formatters, use:
+
+- Prettier: `yarn run format`
+- Black: `black .`
+
+If pre-commit hooks are installed, formatters will be automatically run on each commit.
+
+Some other conventions are enforced using [ESLint](https://eslint.org/) for JavaScript, [Stylelint](https://stylelint.io/) for CSS (and styled-components styles), and [Pylint](https://pylint.org/) for Python. To run these linters use:
+
+- ESLint: `yarn run lint:js`
+- Stylelint: `yarn run lint:css`
+- Pylint: `pylint data-pipeline/src/data_pipeline`
+
+## Tests
+
+[Jest](https://jestjs.io/) is used for JavaScript unit tests. Jest is configured to look for files named `*.spec.js` in the browser and graphql-api directories.
+
+To run all tests, use:
+
+```
+yarn test
+```
+
+To run only tests for one component, use `yarn test --projects browser` or `yarn test --projects graphql-api`.

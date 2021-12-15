@@ -27,6 +27,7 @@ Data preparation for the gnomAD browser is split into multiple pipelines:
 - gnomad_sv_v2
 - gnomad_v3_coverage
 - gnomad_v3_variants
+- gnomad_v3_local_ancestry
 - gnomad_v3_mitochondrial_coverage
 - gnomad_v3_mitochondrial_variants
 
