@@ -69,7 +69,7 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
     else:
         try:
             browser_deployment = get_current_browser_deployment()
-        except Exception:
+        except Exception:  # pylint: disable=broad-except; FIXME: Use a more specific exception class
             browser_deployment = get_most_recent_k8s_deployment("component=gnomad-browser")[len("gnomad-browser-") :]
 
     if reads_deployment:
@@ -78,7 +78,7 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
     else:
         try:
             reads_deployment = get_current_reads_deployment()
-        except Exception:
+        except Exception:  # pylint: disable=broad-except; FIXME: Use a more specific exception class
             reads_deployment = get_most_recent_k8s_deployment("component=gnomad-reads")[len("gnomad-reads-") :]
 
     manifest = SERVICES_MANIFEST_TEMPLATE.format(

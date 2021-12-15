@@ -86,6 +86,8 @@ def import_mnv_file(path, **kwargs):
     ds = ds.annotate(ref=ds.variant_id.split("-")[2], alt=ds.variant_id.split("-")[3])
 
     ds = ds.annotate(snp1_copy=ds.snp1, snp2_copy=ds.snp2)
+
+    # pylint: disable=cell-var-from-loop
     ds = ds.transmute(
         constituent_snvs=[
             hl.bind(
@@ -269,6 +271,8 @@ def import_three_bp_mnv_file(path, **kwargs):
     ds = ds.transmute(ref=ds.alleles[0], alt=ds.alleles[1])
 
     ds = ds.annotate(snp1_copy=ds.snp1, snp2_copy=ds.snp2, snp3_copy=ds.snp3)
+
+    # pylint: disable=cell-var-from-loop
     ds = ds.transmute(
         constituent_snvs=[
             hl.bind(

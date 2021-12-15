@@ -34,4 +34,4 @@ jobs:
       - name: Check formatting
         run: black --check deploy/deployctl
       - name: Run Pylint
-        run: pylint --disable=R,C,W deploy/deployctl
+        run: pylint --disable=fixme deploy/deployctl

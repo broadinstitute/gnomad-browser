@@ -1,2 +1,21 @@
 [tool.black]
 line-length = 120
+
+[tool.pylint.basic]
+# ds: frequently used name for a variable containing a Hail table
+good-names = [
+  "ds",
+]
+
+[tool.pylint.messages_control]
+disable = [
+  # Ignore refactor and convention categories
+  "R",
+  "C",
+]
+
+[tool.pylint.miscellaneous]
+notes = [
+  "FIXME",
+  "TODO",
+]
