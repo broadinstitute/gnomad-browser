@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Button } from '@gnomad/ui'
@@ -27,6 +27,8 @@ const ZoomableRegionViewer = ({
   onChangeZoomRegion,
   ...otherProps
 }) => {
+  const overviewRef = useRef(null)
+
   const visibleRegions = useMemo(() => getVisibleRegions(regions, zoomRegion), [
     regions,
     zoomRegion,
@@ -65,6 +67,7 @@ const ZoomableRegionViewer = ({
             </div>
 
             <ZoomRegionOverview
+              ref={overviewRef}
               readOnly={false}
               regions={regions}
               renderOverview={renderOverview}
@@ -96,7 +99,12 @@ const ZoomableRegionViewer = ({
           onRequestClose={() => {
             setIsSelectRegionModalOpen(false)
           }}
-          onSubmitForm={onChangeZoomRegion}
+          onSubmitForm={newZoomRegion => {
+            if (overviewRef.current) {
+              overviewRef.current.setZoomRegion(newZoomRegion)
+            }
+            onChangeZoomRegion(newZoomRegion)
+          }}
         />
       )}
     </>
