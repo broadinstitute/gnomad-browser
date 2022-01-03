@@ -29,10 +29,10 @@ export default () => (
         <Citation>
           Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson, M.,
           Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G.,
-          O’Donnell-Luria, A. Variant interpretation using population databases: lessons from
-          gnomAD. <em>arXiv</em> 2107.11458 [q-bio.GN] (2021).{' '}
-          <ExternalLink href="https://arxiv.org/abs/2107.11458">
-            https://arxiv.org/abs/2107.11458
+          O’Donnell-Luria, A. Variant interpretation using population databases: Lessons from
+          gnomAD. <em>Human Mutation</em> 1-19 (2021).{' '}
+          <ExternalLink href="https://doi.org/10.1002/humu.24309">
+            https://doi.org/10.1002/humu.24309
           </ExternalLink>
         </Citation>
       </ListItem>
