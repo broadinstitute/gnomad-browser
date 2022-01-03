@@ -3,6 +3,8 @@ import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { ExternalLink } from '@gnomad/ui'
+
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -69,7 +71,12 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = null
+const BANNER_CONTENT = (
+  <>
+    We&apos;re hiring!{' '}
+    <ExternalLink href="https://broad.io/gnomad-cs">https://broad.io/gnomad-cs</ExternalLink>
+  </>
+)
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
