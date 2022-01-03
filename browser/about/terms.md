@@ -6,6 +6,8 @@ This data set has been subjected to extensive quality control, but variant calli
 
 The data released by gnomAD are available free of restrictions under the [Creative Commons Zero Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/). This means that you can use it for any purpose without legally having to give attribution. However, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible. Attribution supports future efforts to release other data. It also reduces the amount of "orphaned data", helping retain links to authoritative sources.
 
+Screenshots of the website may also be used without restriction. As with any use of gnomAD data, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible.
+
 ## Citation in publications
 
 We request that any use of data obtained from the gnomAD browser cite [the gnomAD flagship paper](https://broad.io/gnomad_lof) and any online resources that include the data set provide a link to the browser.
