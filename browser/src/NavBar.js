@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -6,7 +6,7 @@ import { Button } from '@gnomad/ui'
 
 import Searchbox from './Searchbox'
 
-const NavBarWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -79,95 +79,66 @@ const Menu = styled.ul`
   }
 `
 
-const OuterWrapper = styled.div`
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+const NavBar = () => {
+  const [isMenuExpanded, setIsMenuExpanded] = useState(false)
+  const toggleMenu = useCallback(() => {
+    setIsMenuExpanded(previousValue => !previousValue)
+  }, [])
+  const closeMenu = useCallback(() => {
+    setIsMenuExpanded(false)
+  }, [])
 
-  @media print {
-    display: none;
-  }
-`
-
-// const Notice = styled.div`
-//   padding: 0.75em 0.5em;
-//   background: rgb(17, 115, 187);
-//   color: white;
-//   text-align: center;
-//
-//   a {
-//     color: white;
-//   }
-// `
-
-class NavBar extends Component {
-  state = {
-    isExpanded: false,
-  }
-
-  toggleMenu = () => {
-    this.setState(state => ({ ...state, isExpanded: !state.isExpanded }))
-  }
-
-  closeMenu = () => {
-    this.setState({ isExpanded: false })
-  }
-
-  render() {
-    const { isExpanded } = this.state
-    return (
-      <OuterWrapper>
-        <NavBarWrapper>
-          <LogoWrapper>
-            <Link to="/" onClick={this.closeMenu}>
-              <Logo>gnomAD browser</Logo>
-            </Link>
-            <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
-          </LogoWrapper>
-          <Searchbox id="navbar-search" placeholder="Search" width="360px" />
-          <Menu isExpanded={isExpanded}>
-            <li>
-              <Link to="/about" onClick={this.closeMenu}>
-                About
-              </Link>
-            </li>
-            <li>
-              {/* a instead of Link because the blog is a separate application */}
-              <a href="/news/">News</a>
-            </li>
-            <li>
-              <Link to="/downloads" onClick={this.closeMenu}>
-                Downloads
-              </Link>
-            </li>
-            <li>
-              <Link to="/terms" onClick={this.closeMenu}>
-                Terms
-              </Link>
-            </li>
-            <li>
-              <Link to="/publications" onClick={this.closeMenu}>
-                Publications
-              </Link>
-            </li>
-            <li>
-              <Link to="/feedback" onClick={this.closeMenu}>
-                Feedback
-              </Link>
-            </li>
-            <li>
-              {/* a instead of Link because the blog is a separate application */}
-              <a href="/news/changelog/">Changelog</a>
-            </li>
-            <li>
-              <Link to="/help" onClick={this.closeMenu}>
-                Help
-              </Link>
-            </li>
-          </Menu>
-        </NavBarWrapper>
-        {/* <Notice></Notice> */}
-      </OuterWrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <LogoWrapper>
+        <Link to="/" onClick={closeMenu}>
+          <Logo>gnomAD browser</Logo>
+        </Link>
+        <ToggleMenuButton onClick={toggleMenu}>☰</ToggleMenuButton>
+      </LogoWrapper>
+      <Searchbox id="navbar-search" placeholder="Search" width="360px" />
+      <Menu isExpanded={isMenuExpanded}>
+        <li>
+          <Link to="/about" onClick={closeMenu}>
+            About
+          </Link>
+        </li>
+        <li>
+          {/* a instead of Link because the blog is a separate application */}
+          <a href="/news/">News</a>
+        </li>
+        <li>
+          <Link to="/downloads" onClick={closeMenu}>
+            Downloads
+          </Link>
+        </li>
+        <li>
+          <Link to="/terms" onClick={closeMenu}>
+            Terms
+          </Link>
+        </li>
+        <li>
+          <Link to="/publications" onClick={closeMenu}>
+            Publications
+          </Link>
+        </li>
+        <li>
+          <Link to="/feedback" onClick={closeMenu}>
+            Feedback
+          </Link>
+        </li>
+        <li>
+          {/* a instead of Link because the blog is a separate application */}
+          <a href="/news/changelog/">Changelog</a>
+        </li>
+        <li>
+          <Link to="/help" onClick={closeMenu}>
+            Help
+          </Link>
+        </li>
+      </Menu>
+    </Wrapper>
+  )
 }
 
 export default NavBar

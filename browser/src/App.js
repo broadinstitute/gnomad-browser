@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
@@ -49,6 +50,27 @@ const GoogleAnalytics = () => {
   return null
 }
 
+const TopBarWrapper = styled.div`
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  @media print {
+    display: none;
+  }
+`
+
+const Banner = styled.div`
+  padding: 0.75em 0.5em;
+  background: rgb(17, 115, 187);
+  color: #fff;
+  text-align: center;
+
+  a {
+    color: #fff !important;
+  }
+`
+
+const BANNER_CONTENT = null
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -91,7 +113,10 @@ const App = () => {
           </Delayed>
         ) : (
           <Suspense fallback={null}>
-            <NavBar />
+            <TopBarWrapper>
+              <NavBar />
+              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+            </TopBarWrapper>
             <Notifications />
 
             <Suspense fallback={<PageLoading />}>
