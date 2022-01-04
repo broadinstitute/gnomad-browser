@@ -445,7 +445,10 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         if "RepeatUnitClassification" in locus
                         else "pathogenic",
                     }
-                    for repeat_unit in set(k.split("/")[3] for k in locus["AlleleCountHistogram"].keys())
+                    for repeat_unit in (
+                        set(k.split("/")[3] for k in locus["AlleleCountHistogram"].keys())
+                        | set(locus.get("RepeatUnitClassification", {}).keys())
+                    )
                 ),
                 key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
             ),
