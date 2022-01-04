@@ -108,3 +108,12 @@ yarn test
 ```
 
 To run only tests for one component, use `yarn test --projects browser` or `yarn test --projects graphql-api`.
+
+## Updating dependencies
+
+Images for the Docker Compose development environment need to be rebuilt after updating dependencies.
+
+```
+./development/env.sh build browser
+./development/env.sh build api
+```
