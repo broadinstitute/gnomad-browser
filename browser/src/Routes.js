@@ -10,7 +10,7 @@ import DocumentTitle from './DocumentTitle'
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
 const FeedbackPage = lazy(() => import('./FeedbackPage'))
-const DownloadsPage = lazy(() => import('./downloads/DownloadsPage'))
+const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
