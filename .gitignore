@@ -20,3 +20,6 @@ browser/build.env
 
 # Build outputs
 browser/dist
+
+# Hail logs
+hail-*.log
