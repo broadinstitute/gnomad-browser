@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 
-# Get file size and MD5 hash for a file in a Google Storage bucket.
+"""
+Use this script to get sizes and MD5 hashes for objects listed on the downloads page.
+
+Usage:
+
+./get_object_metadata.py gs://bucket/file_1 gs://bucket/file_2 ...
+"""
 
 import argparse
 import base64
@@ -12,7 +18,7 @@ ONE_GIBIBYTE = 2 ** 30
 ONE_MEBIBYTE = 2 ** 20
 
 
-def fetch_metadata(url):
+def fetch_object_metadata(url):
     output = subprocess.check_output(["gsutil", "stat", url]).decode("utf8")
 
     info = {}
@@ -39,11 +45,11 @@ def fetch_metadata(url):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("url", nargs="+")
+    parser.add_argument("urls", metavar="url", nargs="+")
     args = parser.parse_args()
 
-    for url in args.url:
-        info = fetch_metadata(url)
+    for url in args.urls:
+        info = fetch_object_metadata(url)
         print(json.dumps(info))
 
 
