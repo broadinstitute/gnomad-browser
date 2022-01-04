@@ -60,7 +60,9 @@ const parseCombinedPopulationId = combinedPopulationId => {
 
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
-    shortTandemRepeat.repeat_units.length === 1 ? shortTandemRepeat.repeat_units[0].repeat_unit : ''
+    shortTandemRepeat.allele_size_distribution.repeat_units.length === 1
+      ? shortTandemRepeat.allele_size_distribution.repeat_units[0].repeat_unit
+      : ''
   )
 
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
@@ -84,12 +86,17 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
+  // This uses repeat units from shortTandemRepeat.allele_size_distribution.repeat_units because
+  // shortTandemRepeat.repeat_units may include repeat units that do not appear in gnomAD.
   const repeatUnitsByClassification = {}
-  shortTandemRepeat.repeat_units.forEach(repeatUnit => {
-    if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
-      repeatUnitsByClassification[repeatUnit.classification] = []
+  shortTandemRepeat.allele_size_distribution.repeat_units.forEach(({ repeat_unit: repeatUnit }) => {
+    const { classification } = shortTandemRepeat.repeat_units.find(
+      r => r.repeat_unit === repeatUnit
+    )
+    if (repeatUnitsByClassification[classification] === undefined) {
+      repeatUnitsByClassification[classification] = []
     }
-    repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
+    repeatUnitsByClassification[classification].push(repeatUnit)
   })
 
   const plotRanges = shortTandemRepeat.associated_diseases
@@ -212,9 +219,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                 setSelectedRepeatUnit(e.target.value)
               }}
             >
-              {shortTandemRepeat.repeat_units.length === 1 ? (
+              {shortTandemRepeat.allele_size_distribution.repeat_units.length === 1 ? (
                 <>
-                  {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                  {shortTandemRepeat.allele_size_distribution.repeat_units.map(repeatUnit => (
                     <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                       {repeatUnit.repeat_unit}
                     </option>
@@ -235,7 +242,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                     </optgroup>
                   )}
                   <optgroup label="Individual">
-                    {shortTandemRepeat.repeat_units.map(repeatUnit => (
+                    {shortTandemRepeat.allele_size_distribution.repeat_units.map(repeatUnit => (
                       <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
                         {repeatUnit.repeat_unit === shortTandemRepeat.reference_repeat_unit
                           ? `${repeatUnit.repeat_unit} (reference)`
