@@ -109,6 +109,7 @@ const variantTableColumns = [
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
         >
           <Highlighter
+            autoEscape
             searchWords={highlightWords}
             textToHighlight={variant.clinical_significance || ''}
           />
@@ -130,7 +131,11 @@ const variantTableColumns = [
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
-        <Highlighter searchWords={highlightWords} textToHighlight={getConsequenceName(row[key])} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={getConsequenceName(row[key])}
+        />
       </Cell>
     ),
   },
@@ -188,7 +193,7 @@ const variantTableColumns = [
     getSearchTerms: variant => [variant.hgvs],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
+        <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
       </Cell>
     ),
   },
@@ -205,7 +210,11 @@ const variantTableColumns = [
     getSearchTerms: variant => [variant.hgvsc],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsc || ''} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={variant.hgvsc || ''}
+        />
       </Cell>
     ),
   },
@@ -222,7 +231,11 @@ const variantTableColumns = [
     getSearchTerms: variant => [variant.hgvsp],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsp || ''} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={variant.hgvsp || ''}
+        />
       </Cell>
     ),
   },
@@ -286,6 +299,7 @@ const variantTableColumns = [
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter
+          autoEscape
           searchWords={highlightWords}
           textToHighlight={(variant.rsids || []).join(', ')}
         />
@@ -336,7 +350,7 @@ const variantTableColumns = [
     render: (row, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${row.variant_id}`}>
-          <Highlighter searchWords={highlightWords} textToHighlight={row.variant_id} />
+          <Highlighter autoEscape searchWords={highlightWords} textToHighlight={row.variant_id} />
         </Link>
       </Cell>
     ),
@@ -377,7 +391,7 @@ export const getColumnsForContext = context => {
 
     columns.hgvs.render = (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
+        <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
         {primaryTranscriptId && variant.transcript_id !== primaryTranscriptId && ' †'}
       </Cell>
     )

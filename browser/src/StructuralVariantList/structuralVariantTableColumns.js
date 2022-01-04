@@ -28,7 +28,7 @@ const renderConsequence = (variant, key, { colorKey, highlightWords }) => {
           color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
         />
       )}
-      <Highlighter searchWords={highlightWords} textToHighlight={renderedConsequence} />
+      <Highlighter autoEscape searchWords={highlightWords} textToHighlight={renderedConsequence} />
     </Cell>
   )
 }
@@ -39,6 +39,7 @@ const renderType = (variant, key, { colorKey, highlightWords }) => (
       <VariantCategoryMarker color={svTypeColors[variant.type] || svTypeColors.OTH} />
     )}
     <Highlighter
+      autoEscape
       searchWords={highlightWords}
       textToHighlight={svTypeLabels[variant.type] || variant.type}
     />
@@ -160,7 +161,11 @@ const structuralVariantTableColumns = [
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
-          <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
+          <Highlighter
+            autoEscape
+            searchWords={highlightWords}
+            textToHighlight={variant.variant_id}
+          />
         </Link>
       </Cell>
     ),
