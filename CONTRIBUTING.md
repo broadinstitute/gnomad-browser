@@ -1,5 +1,7 @@
 # Contributing
 
+See [development/docs](./development/docs) for more information.
+
 ## Setting up a development environment
 
 - Install [Docker](https://www.docker.com/)
