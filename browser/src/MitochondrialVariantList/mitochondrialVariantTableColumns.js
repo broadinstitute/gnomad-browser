@@ -108,6 +108,7 @@ const mitochondrialVariantTableColumns = [
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
         >
           <Highlighter
+            autoEscape
             searchWords={highlightWords}
             textToHighlight={variant.clinical_significance || ''}
           />
@@ -129,7 +130,11 @@ const mitochondrialVariantTableColumns = [
     render: (row, key, { highlightWords }) => (
       <Cell>
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
-        <Highlighter searchWords={highlightWords} textToHighlight={getConsequenceName(row[key])} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={getConsequenceName(row[key])}
+        />
       </Cell>
     ),
   },
@@ -174,6 +179,7 @@ const mitochondrialVariantTableColumns = [
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Highlighter
+          autoEscape
           searchWords={highlightWords}
           textToHighlight={variant.hgvsp || variant.hgvsc || ''}
         />
@@ -193,7 +199,11 @@ const mitochondrialVariantTableColumns = [
     getSearchTerms: variant => [variant.hgvsc],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsc || ''} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={variant.hgvsc || ''}
+        />
       </Cell>
     ),
   },
@@ -210,7 +220,11 @@ const mitochondrialVariantTableColumns = [
     getSearchTerms: variant => [variant.hgvsp],
     render: (variant, key, { highlightWords }) => (
       <Cell>
-        <Highlighter searchWords={highlightWords} textToHighlight={variant.hgvsp || ''} />
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={variant.hgvsp || ''}
+        />
       </Cell>
     ),
   },
@@ -246,7 +260,11 @@ const mitochondrialVariantTableColumns = [
     render: (variant, key, { highlightWords }) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
-          <Highlighter searchWords={highlightWords} textToHighlight={variant.variant_id} />
+          <Highlighter
+            autoEscape
+            searchWords={highlightWords}
+            textToHighlight={variant.variant_id}
+          />
         </Link>
       </Cell>
     ),
