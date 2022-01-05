@@ -3,7 +3,17 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
+import {
+  Badge,
+  BaseTable,
+  Button,
+  ExternalLink,
+  List,
+  ListItem,
+  Modal,
+  Page,
+  Select,
+} from '@gnomad/ui'
 
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -120,6 +130,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       <FlexWrapper style={{ marginBottom: '3em' }}>
         <ResponsiveSection>
           <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
+          {!allRepeatUnitsArePathogenic && (
+            <p style={{ marginBottom: 0 }}>
+              <Badge level="info">Note</Badge> This locus has both pathogenic and non-pathogenic
+              repeat units.
+            </p>
+          )}
         </ResponsiveSection>
         {shortTandemRepeat.stripy_id && (
           <ResponsiveSection>
@@ -299,6 +315,17 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             </label>
           </ControlSection>
         )}
+
+        {!(
+          (selectedRepeatUnit === '' && allRepeatUnitsArePathogenic) ||
+          selectedRepeatUnit === 'classification/pathogenic' ||
+          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+        ) && (
+          <p style={{ marginBottom: 0 }}>
+            <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
+            &ldquo;Repeat unit&rdquo; menu to view specific repeat units.
+          </p>
+        )}
       </section>
 
       <section style={{ marginBottom: '3em' }}>
@@ -375,6 +402,18 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             </label>
           </ControlSection>
         )}
+
+        {((selectedGenotypeDistributionRepeatUnits === '' && !allRepeatUnitsArePathogenic) ||
+          !selectedGenotypeDistributionRepeatUnits
+            .split(' / ')
+            .every(repeatUnit =>
+              (repeatUnitsByClassification.pathogenic || []).includes(repeatUnit)
+            )) && (
+          <p style={{ marginBottom: 0 }}>
+            <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
+            &ldquo;Repeat units&rdquo; menu to view specific repeat units.
+          </p>
+        )}
       </section>
 
       {selectedGenotypeDistributionBin && (
@@ -406,6 +445,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           }
           ranges={allRepeatUnitsArePathogenic ? plotRanges : []}
         />
+        {!allRepeatUnitsArePathogenic && (
+          <p style={{ marginBottom: 0 }}>
+            <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units.
+          </p>
+        )}
       </section>
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
