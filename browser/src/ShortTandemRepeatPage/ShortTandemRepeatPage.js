@@ -251,25 +251,36 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                 <>
                   <option value="">All</option>
                   {Object.keys(repeatUnitsByClassification).length > 1 && (
-                    <optgroup label="By classification">
-                      {['pathogenic', 'benign', 'unknown']
-                        .filter(classification => repeatUnitsByClassification[classification])
-                        .map(classification => (
-                          <option key={classification} value={`classification/${classification}`}>
-                            All {classification}
+                    <>
+                      <optgroup label="Grouped by classification">
+                        {['pathogenic', 'benign', 'unknown']
+                          .filter(classification => repeatUnitsByClassification[classification])
+                          .map(classification => (
+                            <option key={classification} value={`classification/${classification}`}>
+                              All {classification}
+                            </option>
+                          ))}
+                      </optgroup>
+                    </>
+                  )}
+                  {['pathogenic', 'benign', 'unknown']
+                    .filter(classification => repeatUnitsByClassification[classification])
+                    .map(classification => (
+                      <optgroup
+                        key={classification}
+                        label={`${classification.charAt(0).toUpperCase()}${classification.slice(
+                          1
+                        )}`}
+                      >
+                        {repeatUnitsByClassification[classification].map(repeatUnit => (
+                          <option key={repeatUnit} value={repeatUnit}>
+                            {repeatUnit === shortTandemRepeat.reference_repeat_unit
+                              ? `${repeatUnit} (reference)`
+                              : repeatUnit}
                           </option>
                         ))}
-                    </optgroup>
-                  )}
-                  <optgroup label="Individual">
-                    {shortTandemRepeat.allele_size_distribution.repeat_units.map(repeatUnit => (
-                      <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                        {repeatUnit.repeat_unit === shortTandemRepeat.reference_repeat_unit
-                          ? `${repeatUnit.repeat_unit} (reference)`
-                          : repeatUnit.repeat_unit}
-                      </option>
+                      </optgroup>
                     ))}
-                  </optgroup>
                 </>
               )}
             </Select>
