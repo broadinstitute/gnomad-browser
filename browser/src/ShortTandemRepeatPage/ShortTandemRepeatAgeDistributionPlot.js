@@ -309,4 +309,8 @@ ShortTandemRepeatAgeDistributionPlot.propTypes = {
   ),
 }
 
+ShortTandemRepeatAgeDistributionPlot.defaultProps = {
+  ranges: [],
+}
+
 export default ShortTandemRepeatAgeDistributionPlot

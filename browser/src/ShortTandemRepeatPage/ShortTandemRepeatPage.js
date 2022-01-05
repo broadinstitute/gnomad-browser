@@ -99,6 +99,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
     repeatUnitsByClassification[classification].push(repeatUnit)
   })
 
+  const allRepeatUnitsArePathogenic = Object.keys(repeatUnitsByClassification)
+    .filter(classification => classification !== 'pathogenic')
+    .every(classification => (repeatUnitsByClassification[classification] || []).length === 0)
+
   const plotRanges = shortTandemRepeat.associated_diseases
     .find(disease => disease.name === selectedDisease)
     .repeat_size_classifications.map(classification => {
@@ -194,7 +198,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               : null
           }
           ranges={
-            selectedRepeatUnit === '' ||
+            (selectedRepeatUnit === '' && allRepeatUnitsArePathogenic) ||
             selectedRepeatUnit === 'classification/pathogenic' ||
             (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
               ? plotRanges
@@ -312,7 +316,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             selectedPopulationId,
           })}
           xRanges={
-            selectedGenotypeDistributionRepeatUnits === '' ||
+            (selectedGenotypeDistributionRepeatUnits === '' && allRepeatUnitsArePathogenic) ||
             (repeatUnitsByClassification.pathogenic || []).includes(
               selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
             )
@@ -320,7 +324,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               : []
           }
           yRanges={
-            selectedGenotypeDistributionRepeatUnits === '' ||
+            (selectedGenotypeDistributionRepeatUnits === '' && allRepeatUnitsArePathogenic) ||
             (repeatUnitsByClassification.pathogenic || []).includes(
               selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
             )
@@ -400,7 +404,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               shortTandemRepeat.allele_size_distribution.distribution.length - 1
             ][0]
           }
-          ranges={plotRanges}
+          ranges={allRepeatUnitsArePathogenic ? plotRanges : []}
         />
       </section>
 
