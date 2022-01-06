@@ -32,34 +32,36 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
         {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units.length > 1 && (
           <option value="">All</option>
         )}
-        {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units.map(
-          repeatUnitDistribution => {
-            const optionValue = repeatUnitDistribution.repeat_units.join(' / ')
-            return (
-              <option key={optionValue} value={optionValue}>
-                {repeatUnitDistribution.repeat_units
-                  .map(repeatUnit => {
-                    const notes = []
-                    if (repeatUnitClassifications[repeatUnit]) {
-                      notes.push(repeatUnitClassifications[repeatUnit])
-                    }
-                    if (repeatUnit === shortTandemRepeatOrAdjacentRepeat.reference_repeat_unit) {
-                      notes.push('reference')
-                    }
+        <optgroup label="Repeat unit pairs (only pairs found in gnomAD are listed here)">
+          {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units.map(
+            repeatUnitDistribution => {
+              const optionValue = repeatUnitDistribution.repeat_units.join(' / ')
+              return (
+                <option key={optionValue} value={optionValue}>
+                  {repeatUnitDistribution.repeat_units
+                    .map(repeatUnit => {
+                      const notes = []
+                      if (repeatUnitClassifications[repeatUnit]) {
+                        notes.push(repeatUnitClassifications[repeatUnit])
+                      }
+                      if (repeatUnit === shortTandemRepeatOrAdjacentRepeat.reference_repeat_unit) {
+                        notes.push('reference')
+                      }
 
-                    if (
-                      shortTandemRepeatOrAdjacentRepeat.repeat_units.length > 1 &&
-                      notes.length > 0
-                    ) {
-                      return `${repeatUnit} (${notes.join(', ')})`
-                    }
-                    return repeatUnit
-                  })
-                  .join(' / ')}
-              </option>
-            )
-          }
-        )}
+                      if (
+                        shortTandemRepeatOrAdjacentRepeat.repeat_units.length > 1 &&
+                        notes.length > 0
+                      ) {
+                        return `${repeatUnit} (${notes.join(', ')})`
+                      }
+                      return repeatUnit
+                    })
+                    .join(' / ')}
+                </option>
+              )
+            }
+          )}
+        </optgroup>
       </Select>
     </label>
   )
