@@ -4,8 +4,32 @@ import styled from 'styled-components'
 
 import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
-import { getConsequenceRank } from '../vepConsequences'
 import VariantLiftover from './VariantLiftover'
+
+const CODING_AND_UTR_VEP_CONSEQUENCES = new Set([
+  'transcript_ablation',
+  'splice_acceptor_variant',
+  'splice_donor_variant',
+  'stop_gained',
+  'frameshift_variant',
+  'stop_lost',
+  'start_lost',
+  'initiator_codon_variant',
+  'transcript_amplification',
+  'inframe_insertion',
+  'inframe_deletion',
+  'missense_variant',
+  'protein_altering_variant',
+  'splice_region_variant',
+  'incomplete_terminal_codon_variant',
+  'start_retained_variant',
+  'stop_retained_variant',
+  'synonymous_variant',
+  'coding_sequence_variant',
+  'mature_miRNA_variant',
+  '5_prime_UTR_variant',
+  '3_prime_UTR_variant',
+])
 
 const isVariantEligibleForCooccurrence = (variant, datasetId) => {
   if (datasetId !== 'gnomad_r2_1') {
@@ -13,11 +37,13 @@ const isVariantEligibleForCooccurrence = (variant, datasetId) => {
   }
 
   const exomeAC = ((variant.exome || {}).ac || 0) / ((variant.exome || {}).an || 1)
-  const majorConsequenceRank = Math.min(
-    ...variant.transcript_consequences.map(csq => getConsequenceRank(csq.major_consequence))
-  )
 
-  return exomeAC <= 0.05 && majorConsequenceRank <= getConsequenceRank('3_prime_UTR_variant')
+  return (
+    exomeAC <= 0.05 &&
+    variant.transcript_consequences.some(csq =>
+      CODING_AND_UTR_VEP_CONSEQUENCES.has(csq.major_consequence)
+    )
+  )
 }
 
 const Wrapper = styled.div`
