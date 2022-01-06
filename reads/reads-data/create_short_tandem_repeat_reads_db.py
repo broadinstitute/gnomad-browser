@@ -77,7 +77,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             "allele_2_repeats_ci_upper": allele_2_ci_upper,
             "population": read["Population"],
             "sex": read["Sex"],
-            "age": None if read["Age"] == "age-not-available" else read["Age"],
+            "age": None if read["Age"] == "age_not_available" else read["Age"],
             "filename": read["ReadvizFilename"],
         }
 
