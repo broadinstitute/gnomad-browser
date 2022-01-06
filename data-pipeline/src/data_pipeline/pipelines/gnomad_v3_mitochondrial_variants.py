@@ -14,7 +14,7 @@ pipeline.add_task(
     prepare_mitochondrial_variants,
     "/mitochondria/mitochondrial_variants_base.ht",
     {
-        "path": "gs://gnomad-public-requester-pays/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht",
+        "path": "gs://gcp-public-data--gnomad/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht",
         "mnvs_path": "gs://gnomad-browser-data-pipeline/mt_mnvs.tsv",
     },
 )
