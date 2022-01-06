@@ -157,6 +157,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             labelOffset={40}
             labelProps={labelProps}
             left={margin.left}
+            numTicks={scaleType === 'log' ? 10 : Math.min(10, yScale.domain()[1])}
             scale={yScale}
             stroke="#333"
             tickFormat={
