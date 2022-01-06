@@ -96,22 +96,37 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map(pop => pop.id)
 
-  // This uses repeat units from shortTandemRepeat.allele_size_distribution.repeat_units because
-  // shortTandemRepeat.repeat_units may include repeat units that do not appear in gnomAD.
-  const repeatUnitsByClassification = {}
-  shortTandemRepeat.allele_size_distribution.repeat_units.forEach(({ repeat_unit: repeatUnit }) => {
-    const { classification } = shortTandemRepeat.repeat_units.find(
-      r => r.repeat_unit === repeatUnit
-    )
-    if (repeatUnitsByClassification[classification] === undefined) {
-      repeatUnitsByClassification[classification] = []
+  const allRepeatUnitsByClassification = {}
+  shortTandemRepeat.repeat_units.forEach(repeatUnit => {
+    if (allRepeatUnitsByClassification[repeatUnit.classification] === undefined) {
+      allRepeatUnitsByClassification[repeatUnit.classification] = []
     }
-    repeatUnitsByClassification[classification].push(repeatUnit)
+    allRepeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
-  const allRepeatUnitsArePathogenic = Object.keys(repeatUnitsByClassification)
+  // This uses repeat units from shortTandemRepeat.allele_size_distribution.repeat_units because
+  // shortTandemRepeat.repeat_units may include repeat units that do not appear in gnomAD.
+  const repeatUnitsFoundInGnomad = new Set(
+    shortTandemRepeat.allele_size_distribution.repeat_units.map(
+      repeatUnit => repeatUnit.repeat_unit
+    )
+  )
+
+  const repeatUnitsFoundInGnomadByClassification = {}
+  Object.keys(allRepeatUnitsByClassification).forEach(classification => {
+    repeatUnitsFoundInGnomadByClassification[classification] = allRepeatUnitsByClassification[
+      classification
+    ].filter(repeatUnit => repeatUnitsFoundInGnomad.has(repeatUnit))
+  })
+
+  const allRepeatUnitsFoundInGnomadArePathogenic = Object.keys(
+    repeatUnitsFoundInGnomadByClassification
+  )
     .filter(classification => classification !== 'pathogenic')
-    .every(classification => (repeatUnitsByClassification[classification] || []).length === 0)
+    .every(
+      classification =>
+        (repeatUnitsFoundInGnomadByClassification[classification] || []).length === 0
+    )
 
   const plotRanges = shortTandemRepeat.associated_diseases
     .find(disease => disease.name === selectedDisease)
@@ -130,7 +145,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       <FlexWrapper style={{ marginBottom: '3em' }}>
         <ResponsiveSection>
           <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
-          {!allRepeatUnitsArePathogenic && (
+          {!allRepeatUnitsFoundInGnomadArePathogenic && (
             <p style={{ marginBottom: 0 }}>
               <Badge level="info">Note</Badge> This locus has both pathogenic and non-pathogenic
               repeat units.
@@ -214,9 +229,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               : null
           }
           ranges={
-            (selectedRepeatUnit === '' && allRepeatUnitsArePathogenic) ||
+            (selectedRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
             selectedRepeatUnit === 'classification/pathogenic' ||
-            (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+            (repeatUnitsFoundInGnomadByClassification.pathogenic || []).includes(selectedRepeatUnit)
               ? plotRanges
               : []
           }
@@ -250,21 +265,33 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               ) : (
                 <>
                   <option value="">All</option>
-                  {Object.keys(repeatUnitsByClassification).length > 1 && (
+                  {Object.keys(allRepeatUnitsByClassification).length > 1 && (
                     <>
                       <optgroup label="Grouped by classification">
-                        {['pathogenic', 'benign', 'unknown']
-                          .filter(classification => repeatUnitsByClassification[classification])
-                          .map(classification => (
-                            <option key={classification} value={`classification/${classification}`}>
-                              All {classification}
+                        {['pathogenic', 'benign', 'unknown'].map(classification => {
+                          const foundInGnomad =
+                            (repeatUnitsFoundInGnomadByClassification[classification] || [])
+                              .length > 0
+                          return (
+                            <option
+                              key={classification}
+                              value={`classification/${classification}`}
+                              disabled={!foundInGnomad}
+                            >
+                              {foundInGnomad
+                                ? `All ${classification}`
+                                : `All ${classification} (not found in gnomAD)`}
                             </option>
-                          ))}
+                          )
+                        })}
                       </optgroup>
                     </>
                   )}
                   {['pathogenic', 'benign', 'unknown']
-                    .filter(classification => repeatUnitsByClassification[classification])
+                    .filter(
+                      classification =>
+                        (allRepeatUnitsByClassification[classification] || []).length > 0
+                    )
                     .map(classification => (
                       <optgroup
                         key={classification}
@@ -272,13 +299,22 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                           1
                         )}`}
                       >
-                        {repeatUnitsByClassification[classification].map(repeatUnit => (
-                          <option key={repeatUnit} value={repeatUnit}>
-                            {repeatUnit === shortTandemRepeat.reference_repeat_unit
-                              ? `${repeatUnit} (reference)`
-                              : repeatUnit}
-                          </option>
-                        ))}
+                        {allRepeatUnitsByClassification[classification].map(repeatUnit => {
+                          const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
+                          const notes = []
+                          if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
+                            notes.push('reference')
+                          }
+                          if (!foundInGnomad) {
+                            notes.push('not found in gnomAD')
+                          }
+                          return (
+                            <option key={repeatUnit} value={repeatUnit} disabled={!foundInGnomad}>
+                              {repeatUnit}
+                              {notes.length > 0 && ` (${notes.join(', ')})`}
+                            </option>
+                          )
+                        })}
                       </optgroup>
                     ))}
                 </>
@@ -328,9 +364,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         )}
 
         {!(
-          (selectedRepeatUnit === '' && allRepeatUnitsArePathogenic) ||
+          (selectedRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
           selectedRepeatUnit === 'classification/pathogenic' ||
-          (repeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
+          (allRepeatUnitsByClassification.pathogenic || []).includes(selectedRepeatUnit)
         ) && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
@@ -354,16 +390,18 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
             selectedPopulationId,
           })}
           xRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' && allRepeatUnitsArePathogenic) ||
-            (repeatUnitsByClassification.pathogenic || []).includes(
+            (selectedGenotypeDistributionRepeatUnits === '' &&
+              allRepeatUnitsFoundInGnomadArePathogenic) ||
+            (allRepeatUnitsByClassification.pathogenic || []).includes(
               selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
             )
               ? plotRanges
               : []
           }
           yRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' && allRepeatUnitsArePathogenic) ||
-            (repeatUnitsByClassification.pathogenic || []).includes(
+            (selectedGenotypeDistributionRepeatUnits === '' &&
+              allRepeatUnitsFoundInGnomadArePathogenic) ||
+            (allRepeatUnitsByClassification.pathogenic || []).includes(
               selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
             )
               ? plotRanges
@@ -414,11 +452,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
           </ControlSection>
         )}
 
-        {((selectedGenotypeDistributionRepeatUnits === '' && !allRepeatUnitsArePathogenic) ||
+        {((selectedGenotypeDistributionRepeatUnits === '' &&
+          !allRepeatUnitsFoundInGnomadArePathogenic) ||
           !selectedGenotypeDistributionRepeatUnits
             .split(' / ')
             .every(repeatUnit =>
-              (repeatUnitsByClassification.pathogenic || []).includes(repeatUnit)
+              (allRepeatUnitsByClassification.pathogenic || []).includes(repeatUnit)
             )) && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
@@ -454,9 +493,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
               shortTandemRepeat.allele_size_distribution.distribution.length - 1
             ][0]
           }
-          ranges={allRepeatUnitsArePathogenic ? plotRanges : []}
+          ranges={allRepeatUnitsFoundInGnomadArePathogenic ? plotRanges : []}
         />
-        {!allRepeatUnitsArePathogenic && (
+        {!allRepeatUnitsFoundInGnomadArePathogenic && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units.
           </p>
