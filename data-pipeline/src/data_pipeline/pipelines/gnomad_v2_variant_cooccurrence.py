@@ -13,7 +13,7 @@ pipeline.add_task(
     "prepare_variant_cooccurrence",
     prepare_variant_cooccurrence,
     "/gnomad_v2/variant_cooccurrence.ht",
-    {"path": "gs://gnomad-public-requester-pays/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"},
 )
 
 ###############################################

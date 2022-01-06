@@ -14,7 +14,7 @@ pipeline.add_task(
     prepare_local_ancestry,
     "/gnomad_v3/local_ancestry.ht",
     {
-        "path": "gs://gnomad-public-requester-pays/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
+        "path": "gs://gcp-public-data--gnomad/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
     },
 )
 

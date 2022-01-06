@@ -67,8 +67,8 @@ pipeline.add_task(
     prepare_gnomad_v2_liftover,
     "/liftover.ht",
     {
-        "gnomad_v2_liftover_exomes_path": "gs://gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht",
-        "gnomad_v2_liftover_genomes_path": "gs://gnomad-public-requester-pays/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht",
+        "gnomad_v2_liftover_exomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht",
+        "gnomad_v2_liftover_genomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht",
         "gnomad_v3_variants_path": "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht",
     },
 )
