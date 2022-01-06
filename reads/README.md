@@ -36,10 +36,12 @@ tabix -p bed /path/to/gencode.bed.bgz
 - [Create a new disk from the snapshot](https://cloud.google.com/compute/docs/disks/restore-and-delete-snapshots).
   The new disk should be large enough to contain the existing data and the new reads.
 
-- Create a compute instance and attach the new disk.
+- Create a compute instance and attach the new disk. A larger machine type may be useful for `gsutil` parallelization.
 
   ```
-  gcloud compute instances create <instance-name> --zone <zone>
+  gcloud compute instances create <instance-name> \
+    --machine-type e2-standard-8 \
+    --zone <zone> --machine-type
 
   gcloud compute instances attach-disk <instance-name> \
     --disk <new-disk-name> \
