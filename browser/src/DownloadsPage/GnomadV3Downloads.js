@@ -226,7 +226,6 @@ export default () => (
           <GetUrlButtons
             label="chrM sites Hail Table"
             path="/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht"
-            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
         <ListItem>
@@ -235,14 +234,12 @@ export default () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="4.77 MiB"
             md5="fbdf6807628c13b5379b359f12a39c61"
-            includeGCP={false}
           />
         </ListItem>
         <ListItem>
           <GetUrlButtons
             label="chrM coverage Hail Table"
             path="/release/3.1/coverage/genomes/gnomad.genomes.v3.1.chrM.coverage.ht"
-            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
         <ListItem>
@@ -272,14 +269,12 @@ export default () => (
           <GetUrlButtons
             label="Principal component analysis (PCA) variant loadings"
             path="/release/3.1/pca/gnomad.v3.1.pca_loadings.ht"
-            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
         <ListItem>
-          <GetUrlButtons
+          <GenericDownloadLinks
             label="Random forest (RF) model"
             path="/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
-            gcsBucket="gnomad-public-requester-pays"
           />
         </ListItem>
       </FileList>
@@ -300,7 +295,6 @@ export default () => (
           <GenericDownloadLinks
             label="Sites VCF"
             path="/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
-            includeGCP={false}
           />
         </ListItem>
       </FileList>
