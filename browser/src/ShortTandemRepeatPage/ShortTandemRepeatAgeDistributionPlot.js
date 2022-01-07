@@ -153,7 +153,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
           />
           <AxisLeft
             label="Age"
-            labelOffset={60}
+            labelOffset={42}
             labelProps={labelProps}
             left={margin.left}
             scale={yScale}
