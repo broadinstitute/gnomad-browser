@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 
-import { Modal } from '@gnomad/ui'
+import { ExternalLink, Modal } from '@gnomad/ui'
 
 import Delayed from '../Delayed'
 
@@ -35,6 +35,10 @@ const HelpTopicModal = ({ topicId, ...otherProps }) => {
 
   return (
     <Modal {...otherProps} size="large" title={title}>
+      <p style={{ marginTop: 0, fontSize: '16px' }}>
+        <ExternalLink href={`/help/${topicId}`}>View this information in a new tab.</ExternalLink>
+      </p>
+
       {content}
     </Modal>
   )
