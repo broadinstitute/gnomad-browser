@@ -34,6 +34,9 @@ const ShortTandemRepeatRead = ({ read }) => {
         <AttributeList.Item label="Age">
           {read.age || 'Not available for this sample'}
         </AttributeList.Item>
+        <AttributeList.Item label="PCR protocol">
+          {read.pcr_protocol.replace('pcr', 'PCR').split('_').join(' ')}
+        </AttributeList.Item>
         <AttributeList.Item label="Allele 1">
           {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
           {read.alleles[0].repeats_confidence_interval.lower}-
@@ -67,6 +70,7 @@ ShortTandemRepeatRead.propTypes = {
     population: PropTypes.string.isRequired,
     sex: PropTypes.string.isRequired,
     age: PropTypes.string,
+    pcr_protocol: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
   }).isRequired,
 }
@@ -138,6 +142,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }) =
               population
               sex
               age
+              pcr_protocol
               path
             }
           }
