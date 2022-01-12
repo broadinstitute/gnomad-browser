@@ -69,6 +69,7 @@ def create_network() -> None:
             "create",
             f"{config.network_name}-nat",
             f"--router={config.network_name}-nat-router",
+            f"--region={config.region}",
             "--auto-allocate-nat-external-ips",
             "--nat-all-subnet-ip-ranges",
             "--enable-logging",
