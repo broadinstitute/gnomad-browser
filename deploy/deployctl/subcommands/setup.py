@@ -466,7 +466,7 @@ def main(argv: typing.List[str]) -> None:
                     "add-iam-policy-binding",
                     config.project,
                     f"--member=serviceAccount:gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com",
-                    "--role=roles/roles/serviceusage.serviceUsageConsumer",
+                    "--role=roles/serviceusage.serviceUsageConsumer",
                 ],
                 stdout=subprocess.DEVNULL,
             )
