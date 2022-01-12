@@ -37,6 +37,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             `population` text,
             `sex` text,
             `age` text,
+            `pcr_protocol` text,
             `filename` text
         )
         """
@@ -78,6 +79,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             "population": read["Population"],
             "sex": read["Sex"],
             "age": None if read["Age"] == "age_not_available" else read["Age"],
+            "pcr_protocol": read["PcrProtocol"],
             "filename": read["ReadvizFilename"],
         }
 
@@ -99,6 +101,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
                 :population,
                 :sex,
                 :age,
+                :pcr_protocol,
                 :filename
             )
             """,

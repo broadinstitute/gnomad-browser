@@ -106,6 +106,7 @@ const ShortTandemRepeatReadType = new GraphQLObjectType({
     population: { type: new GraphQLNonNull(GraphQLString) },
     sex: { type: new GraphQLNonNull(GraphQLString) },
     age: { type: GraphQLString },
+    pcr_protocol: { type: new GraphQLNonNull(GraphQLString) },
     path: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
