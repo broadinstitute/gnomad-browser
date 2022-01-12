@@ -18,6 +18,7 @@ import {
 import { labelForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import Link from '../Link'
 import Query from '../Query'
 import TableWrapper from '../TableWrapper'
 import ControlSection from '../VariantPage/ControlSection'
@@ -162,6 +163,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
                 </ExternalLink>
               </ListItem>
             </List>
+            <h2>Related Features</h2>
+            <p>
+              <Link to="/short-tandem-repeats">All pathogenic short tandem repeats</Link>
+            </p>
           </ResponsiveSection>
         )}
       </FlexWrapper>
