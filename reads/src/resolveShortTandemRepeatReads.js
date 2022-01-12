@@ -148,6 +148,7 @@ const resolveShortTandemRepeatReads = async (
       \`population\`,
       \`sex\`,
       \`age\`,
+      \`pcr_protocol\`,
       \`filename\`
     FROM
       \`reads\`
@@ -204,6 +205,7 @@ const resolveShortTandemRepeatReads = async (
       population: row.population,
       sex: row.sex,
       age: row.age,
+      pcr_protocol: row.pcr_protocol,
       path: `${publicPath}/${id}/${row.filename}`,
     }
   })
