@@ -28,6 +28,23 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 ### Create browser deployment
 
+- Configure browser build.
+
+  All values are optional.
+
+  Providing a value for `GA_TRACKING_ID` causes the browser to use Google Analytics.
+
+  The `REPORT_VARIANT_*` options control the URL for the "Report an issue with this variant" link on the variant page.
+
+  ```
+  cat <<EOF > browser/build.env
+  GA_TRACKING_ID=
+  REPORT_VARIANT_URL=
+  REPORT_VARIANT_VARIANT_ID_PARAMETER=
+  REPORT_VARIANT_DATASET_PARAMETER=
+  EOF
+  ```
+
 - Build Docker images and push to GCR.
 
   ```
