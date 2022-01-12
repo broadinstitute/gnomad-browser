@@ -49,7 +49,9 @@ const ShortTandemRepeatRead = ({ read }) => {
         </AttributeList.Item>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
-        <ShortTandemRepeatReadImage alt="Reads for short tandem repeat" src={read.path} />
+        <a href={read.path} target="_blank" rel="noopener noreferrer">
+          <ShortTandemRepeatReadImage alt="Reads for short tandem repeat" src={read.path} />
+        </a>
       </ShortTandemRepeatReadImageWrapper>
     </div>
   )
