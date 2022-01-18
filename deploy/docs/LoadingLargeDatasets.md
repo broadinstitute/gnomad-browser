@@ -41,8 +41,9 @@ Then move ES shards from temporary pods onto permanent pods.
 - Look at the total size of all indices in Elasticsearch to see how much storage will be required for permanent pods.
   Add up the values in the `store.size` column output from the [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html).
 
-- Edit the `volumeClaimTemplates` section of the `data` node set in elasticsearch.yaml.jinja2 accordingly. Keep in mind
-  that the storage request there is per-pod. If necessary, add permanent data pods to the cluster. Resize the `es-data`
+- Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and add a new persistent data node set.
+  Set the storage request in the `volumeClaimTemplates` section of the new node set based on the total size of all indices.
+  Keep in mind that the storage request there is per-pod. If necessary, add permanent data pods to the cluster. Resize the `es-data`
   node pool if necessary.
 
   ```
@@ -50,11 +51,11 @@ Then move ES shards from temporary pods onto permanent pods.
   ```
 
 - Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
-  on new indices to move data from temporary pods to permanent data pods.
+  on new indices to move shards to the new node set. Do this for any newly loaded indices as well as any pre-existing indices that will be kept.
 
   ```
   curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
-  {"index.routing.allocation.require._name": "gnomad-es-data-*"}
+  {"index.routing.allocation.require._name": "gnomad-es-data-blue"}
   EOF
   ```
 
@@ -70,12 +71,20 @@ Then move ES shards from temporary pods onto permanent pods.
   ./deployctl elasticsearch apply --n-ingest-pods=0
   ```
 
-- Delete node pool.
+- Delete ingest node pool.
 
   ```
   gcloud container node-pools delete es-ingest \
     --cluster $GKE_CLUSTER_NAME \
     --zone $ZONE
+  ```
+
+- Delete any unused indices.
+
+- Edit elasticsearch.yaml.jinja2 and remove the old persistent data node set. Apply changes. Resize the `es-data` node pool if necessary.
+
+  ```
+  ./deployctl elasticsearch apply
   ```
 
 - Update relevant [Elasticsearch index aliases](./ElasticsearchIndexAliases.md) and [clear caches](./RedisCache.md).
