@@ -6,4 +6,4 @@ The gnomAD v2 call set contains fewer whole genomes than v3.1, but also contains
 
 Another consideration when choosing which dataset to use is the ancestry of the samples you are interested in. gnomAD v3.1 contains a substantially larger number of African American samples than v2 (exomes and genomes combined) and provides allele frequencies in the Amish population for the first time. gnomAD v3.1 also has a fully genotyped callset available from the Human Genome Diversity Project and 1000 Genomes Project, representing > 60 distinct populations.
 
-Finally, gnomAD v3.1 was mapped to GRCh38, so if your data is also on this build it probably makes sense to switch to v3.1. There is also a [liftover version of gnomAD v2.1.1](/downloads#v2-liftover-variants) onto GRCh38 available. We plan to produce a larger GRCh38 aligned exome callset in 2021.
+Finally, gnomAD v3.1 was mapped to GRCh38, so if your data is also on this build it probably makes sense to switch to v3.1. There is also a [liftover version of gnomAD v2.1.1](/downloads#v2-liftover-variants) onto GRCh38 available. We plan to produce a larger GRCh38 aligned exome callset in 2022.
