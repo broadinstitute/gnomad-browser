@@ -21,6 +21,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import Query from '../Query'
 import TableWrapper from '../TableWrapper'
+import InfoButton from '../help/InfoButton'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
@@ -171,7 +172,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
         )}
       </FlexWrapper>
       <section style={{ marginBottom: '3em' }}>
-        <h2>Associated Diseases</h2>
+        <h2>
+          Associated Diseases <InfoButton topic="str-associated-diseases" />
+        </h2>
         <TableWrapper>
           <BaseTable style={{ minWidth: '100%' }}>
             <thead>
@@ -217,7 +220,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       </section>
 
       <section style={{ marginBottom: '3em' }}>
-        <h2>Allele Size Distribution</h2>
+        <h2>
+          Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
+        </h2>
         <ShortTandemRepeatAlleleSizeDistributionPlot
           maxRepeats={
             shortTandemRepeat.allele_size_distribution.distribution[
@@ -381,7 +386,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       </section>
 
       <section style={{ marginBottom: '3em' }}>
-        <h2>Genotype Distribution</h2>
+        <h2>
+          Genotype Distribution <InfoButton topic="str-genotype-distribution" />
+        </h2>
         <ShortTandemRepeatGenotypeDistributionPlot
           axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
             selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
@@ -490,7 +497,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       )}
 
       <section style={{ marginBottom: '3em' }}>
-        <h2>Age Distribution</h2>
+        <h2>
+          Age Distribution <InfoButton topic="str-age-distribution" />
+        </h2>
         <ShortTandemRepeatAgeDistributionPlot
           ageDistribution={shortTandemRepeat.age_distribution}
           maxRepeats={
@@ -509,7 +518,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
 
       {shortTandemRepeat.adjacent_repeats.length > 0 && (
         <section style={{ marginBottom: '3em' }}>
-          <h2>Adjacent Repeats</h2>
+          <h2>
+            Adjacent Repeats <InfoButton topic="str-adjacent-repeats" />
+          </h2>
           {showAdjacentRepeats ? (
             shortTandemRepeat.adjacent_repeats.map(adjacentRepeat => {
               return (
@@ -538,7 +549,16 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }) => {
       )}
 
       <section>
-        <h2>Read Data</h2>
+        <h2>
+          Read Data{' '}
+          <InfoButton
+            topic={
+              shortTandemRepeat.allele_size_distribution.repeat_units.length > 1
+                ? 'str-read-data-multiple-repeat-units'
+                : 'str-read-data'
+            }
+          />
+        </h2>
         {showReadData ? (
           <>
             <ControlSection style={{ marginBottom: '1em' }}>

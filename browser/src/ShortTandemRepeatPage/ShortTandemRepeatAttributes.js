@@ -42,6 +42,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
           label={`Pathogenic repeat unit${
             repeatUnitsByClassification.pathogenic.length > 1 ? 's' : ''
           }`}
+          tooltip="These repeat units have been reported in the literature as pathogenic when they expand beyond a certain threshold."
         >
           <InlineList
             items={repeatUnitsByClassification.pathogenic.map(repeatUnit => (
@@ -61,6 +62,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
       {repeatUnitsByClassification.benign && (
         <AttributeList.Item
           label={`Benign repeat unit${repeatUnitsByClassification.benign.length > 1 ? 's' : ''}`}
+          tooltip="These repeat units are regarded in the literature as benign, even when expanded."
         >
           <InlineList
             items={repeatUnitsByClassification.benign.map(repeatUnit => (
@@ -78,6 +80,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }) => {
       {repeatUnitsByClassification.unknown && (
         <AttributeList.Item
           label={`Other repeat unit${repeatUnitsByClassification.unknown.length > 1 ? 's' : ''}`}
+          tooltip="These are the other repeat units detected at this locus within gnomAD samples by the call_non_ref_pathogenic_motifs.py script."
         >
           <InlineList
             items={repeatUnitsByClassification.unknown.map(repeatUnit => (
