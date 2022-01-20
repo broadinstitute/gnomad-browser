@@ -429,6 +429,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     "omim_id": disease.get("OMIM", None),
                     "inheritance_mode": INHERITANCE_MODES[disease["Inheritance"]],
                     "repeat_size_classifications": _prepare_disease_repeat_size_classifications(disease),
+                    "notes": disease.get("Note", None),
                 }
                 for disease in locus["Diseases"]
             ],
@@ -514,6 +515,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     omim_id=hl.tstr,
                     inheritance_mode=hl.tstr,
                     repeat_size_classifications=hl.tarray(hl.tstruct(classification=hl.tstr, min=hl.tint, max=hl.tint)),
+                    notes=hl.tstr,
                 )
             ),
             reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),

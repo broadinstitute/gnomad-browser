@@ -16,6 +16,7 @@ type ShortTandemRepeatAssociatedDisease {
   omim_id: String
   inheritance_mode: String!
   repeat_size_classifications: [ShortTandemRepeatAssociatedDiseaseRepeatSizeClassification!]!
+  notes: String
 }
 
 type ShortTandemRepeatReferenceRegion {
