@@ -43,9 +43,15 @@ const ShortTandemRepeatRead = ({ read }) => {
           {read.alleles[0].repeats_confidence_interval.upper} confidence interval
         </AttributeList.Item>
         <AttributeList.Item label="Allele 2">
-          {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
-          {read.alleles[1].repeats_confidence_interval.lower}-
-          {read.alleles[1].repeats_confidence_interval.upper} confidence interval
+          {read.alleles.length > 1 ? (
+            <>
+              {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
+              {read.alleles[1].repeats_confidence_interval.lower}-
+              {read.alleles[1].repeats_confidence_interval.upper} confidence interval
+            </>
+          ) : (
+            'None'
+          )}
         </AttributeList.Item>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
