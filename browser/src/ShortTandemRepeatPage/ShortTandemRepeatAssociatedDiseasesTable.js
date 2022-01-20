@@ -5,6 +5,7 @@ import { BaseTable, ExternalLink } from '@gnomad/ui'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 
 const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }) => {
+  const hasNotes = shortTandemRepeat.associated_diseases.some(disease => disease.notes)
   return (
     <BaseTable style={{ minWidth: '100%' }}>
       <thead>
@@ -13,6 +14,7 @@ const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }) => {
           <th scope="col">OMIM</th>
           <th scope="col">Inheritance</th>
           <th scope="col">Ranges of repeats</th>
+          {hasNotes && <th scope="col">Notes</th>}
         </tr>
       </thead>
       <tbody>
@@ -41,6 +43,7 @@ const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }) => {
                   })
                   .join(', ')}
               </td>
+              {hasNotes && <td>{disease.notes}</td>}
             </tr>
           )
         })}

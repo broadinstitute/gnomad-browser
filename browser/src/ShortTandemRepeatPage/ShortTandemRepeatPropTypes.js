@@ -73,6 +73,7 @@ export const ShortTandemRepeatPropType = PropTypes.shape({
           max: PropTypes.number,
         })
       ).isRequired,
+      notes: PropTypes.string,
     })
   ).isRequired,
   stripy_id: PropTypes.string,

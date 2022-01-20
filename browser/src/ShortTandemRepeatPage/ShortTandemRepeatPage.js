@@ -567,6 +567,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
         min
         max
       }
+      notes
     }
     reference_region {
       chrom
