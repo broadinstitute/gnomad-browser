@@ -1,16 +1,18 @@
 steps:
 - name: 'gcr.io/kaniko-project/executor:latest'
   args:
-  - "--destination=gcr.io/$PROJECT_ID/gnomad-blog:$COMMIT_SHA"
-  - "--dockerfile=deploy/dockerfiles/blog/blog.dockerfile"
-  - "--cache=true"
-  - "--cache-ttl=168h"
+    - "--destination=gcr.io/$PROJECT_ID/gnomad-blog:$COMMIT_SHA"
+    - "--destination=gcr.io/$PROJECT_ID/gnomad-blog:latest"
+    - "--dockerfile=deploy/dockerfiles/blog/blog.dockerfile"
+    - "--cache=true"
+    - "--cache-ttl=168h"
 - name: 'gcr.io/kaniko-project/executor:latest'
   args:
-  - "--destination=gcr.io/$PROJECT_ID/gnomad-blog-auth:$COMMIT_SHA"
-  - "--dockerfile=deploy/dockerfiles/blog/auth.dockerfile"
-  - "--cache=true"
-  - "--cache-ttl=168h"
+    - "--destination=gcr.io/$PROJECT_ID/gnomad-blog-auth:$COMMIT_SHA"
+    - "--destination=gcr.io/$PROJECT_ID/gnomad-blog-auth:latest"
+    - "--dockerfile=deploy/dockerfiles/blog/auth.dockerfile"
+    - "--cache=true"
+    - "--cache-ttl=168h"
   waitFor: ['-'] # this tells cloudbuild to run this step concurrently with the blog build
 
 timeout: 1800s

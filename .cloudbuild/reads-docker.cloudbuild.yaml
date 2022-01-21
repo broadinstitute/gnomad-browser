@@ -1,16 +1,18 @@
 steps:
-- name: 'gcr.io/kaniko-project/executor:latest'
-  args:
-  - "--destination=gcr.io/$PROJECT_ID/reads-server:$COMMIT_SHA"
-  - "--dockerfile=deploy/dockerfiles/reads/reads-server.dockerfile"
-  - "--cache=true"
-  - "--cache-ttl=168h"
-- name: 'gcr.io/kaniko-project/executor:latest'
-  args:
-  - "--destination=gcr.io/$PROJECT_ID/reads-api:$COMMIT_SHA"
-  - "--dockerfile=deploy/dockerfiles/reads/reads-api.dockerfile"
-  - "--cache=true"
-  - "--cache-ttl=168h"
-  waitFor: ['-'] # this tells cloudbuild to run this step concurrently with the server build
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      - '--destination=gcr.io/$PROJECT_ID/reads-server:$COMMIT_SHA'
+      - '--destination=gcr.io/$PROJECT_ID/reads-server:latest'
+      - '--dockerfile=deploy/dockerfiles/reads/reads-server.dockerfile'
+      - '--cache=true'
+      - '--cache-ttl=168h'
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      - '--destination=gcr.io/$PROJECT_ID/reads-api:$COMMIT_SHA'
+      - '--destination=gcr.io/$PROJECT_ID/reads-api:latest'
+      - '--dockerfile=deploy/dockerfiles/reads/reads-api.dockerfile'
+      - '--cache=true'
+      - '--cache-ttl=168h'
+    waitFor: ['-'] # this tells cloudbuild to run this step concurrently with the server build
 
 timeout: 1800s
