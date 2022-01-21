@@ -9,7 +9,7 @@ pipeline.add_task(
     "prepare_short_tandem_repeats",
     prepare_gnomad_v3_short_tandem_repeats,
     "/gnomad_v3/gnomad_v3_short_tandem_repeats.ht",
-    {"path": "gs://gnomad-browser/STRs/gnomAD_v3_STR_data.json.gz"},
+    {"path": "gs://gcp-public-data--gnomad/release/3.1.3/json/gnomAD_STR_distributions__2022_01_20.json.gz"},
 )
 
 ###############################################
