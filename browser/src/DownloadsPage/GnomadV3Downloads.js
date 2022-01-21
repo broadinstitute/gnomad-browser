@@ -309,6 +309,14 @@ export default () => (
       <FileList>
         <ListItem>
           <GenericDownloadLinks
+            label="README"
+            path="/release/3.1.3/tsv/README.txt"
+            includeGCP={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
             label="Genotypes (TSV)"
             path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2022_01_20.tsv.gz"
             includeGCP={false}
