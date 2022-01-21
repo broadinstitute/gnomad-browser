@@ -305,6 +305,13 @@ export default () => (
 
     <section>
       <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
+      <p>
+        For more information about these files, see our blog post on{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
+          the addition of short tandem repeat calls to gnomAD
+        </ExternalLink>
+        .
+      </p>
 
       <FileList>
         <ListItem>
