@@ -121,6 +121,18 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
+        gnomAD v3 short tandem repeat locus:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: 'short-tandem-repeat/DMD',
+            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+          }}
+        >
+          DMD
+        </Link>
+      </ListItem>
+      <ListItem>
         gnomAD v2.1.1 variant:{' '}
         <Link
           preserveSelectedDataset={false}
