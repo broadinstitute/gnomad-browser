@@ -1,0 +1,16 @@
+steps:
+- name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+  - "--destination=gcr.io/$PROJECT_ID/gnomad-browser:$COMMIT_SHA"
+  - "--dockerfile=deploy/dockerfiles/browser/browser.dockerfile"
+  - "--cache=true"
+  - "--cache-ttl=168h"
+- name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+  - "--destination=gcr.io/exac-gnomad/gnomad-api:$COMMIT_SHA"
+  - "--dockerfile=deploy/dockerfiles/browser/api.dockerfile"
+  - "--cache=true"
+  - "--cache-ttl=168h"
+  waitFor: ['-'] # this tells cloudbuild to run this step concurrently with the browser build
+
+timeout: 1800s
