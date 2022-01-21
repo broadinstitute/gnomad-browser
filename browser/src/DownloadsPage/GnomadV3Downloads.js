@@ -94,6 +94,9 @@ export default () => (
         <ListItem>
           <StyledLink href="#v3-local-ancestry">Local ancestry</StyledLink>
         </ListItem>
+        <ListItem>
+          <StyledLink href="#v3-short-tandem-repeats">Short tandem repeats</StyledLink>
+        </ListItem>
       </List>
     </section>
 
@@ -295,6 +298,29 @@ export default () => (
           <GenericDownloadLinks
             label="Sites VCF"
             path="/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
+          />
+        </ListItem>
+      </FileList>
+    </section>
+
+    <section>
+      <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
+
+      <FileList>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Genotypes (TSV)"
+            path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2022_01_20.tsv.gz"
+            includeGCP={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        <ListItem>
+          <GenericDownloadLinks
+            label="Distributions (JSON)"
+            path="/release/3.1.3/json/gnomAD_STR_distributions__2022_01_20.json.gz"
+            includeGCP={false}
+            includeAzure={false}
           />
         </ListItem>
       </FileList>
