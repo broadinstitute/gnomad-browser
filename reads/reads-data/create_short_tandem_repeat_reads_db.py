@@ -1,23 +1,31 @@
 import argparse
+import csv
 import gzip
-import json
 import os
 import sqlite3
+from collections import defaultdict
 
 
 def create_short_tandem_repeat_reads_db(input_path, output_path):
+    if os.path.exists(output_path):
+        raise Exception(f"{output_path} already exists")
+
     if input_path.startswith("gs://"):
         import hail as hl
 
         open_file = hl.hadoop_open
     else:
-        open_file = gzip.open if input_path.endswith(".gz") else open
+        open_file = lambda path: gzip.open(path, "rt") if input_path.endswith(".gz") else open
 
+    reads_data = defaultdict(list)
     with open_file(input_path) as input_file:
-        reads_data = json.load(input_file)
+        reader = csv.DictReader(input_file, delimiter="\t")
+        for row in reader:
+            reads_data[row["Id"]].append(row)
 
-    if os.path.exists(output_path):
-        raise Exception(f"{output_path} already exists")
+    reads_data = {
+        locus: [read for read in reads if read["IsAdjacentRepeat"] != "True"] for locus, reads in reads_data.items()
+    }
 
     db = sqlite3.connect(output_path)
     db.execute(
@@ -49,20 +57,22 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
         # Hemizygotes have only one allele and only one value in Genotype/GenotypeConfidenceInterval
         if "/" in read["Genotype"]:
             n_alleles = 2
-            allele_1_repeat_unit = read["Allele1Motif"]
-            allele_2_repeat_unit = read["Allele2Motif"]
             allele_1_repeats, allele_2_repeats = map(int, read["Genotype"].split("/"))
             allele_1_ci, allele_2_ci = read["GenotypeConfidenceInterval"].split("/")
             allele_1_ci_lower, allele_1_ci_upper = map(int, allele_1_ci.split("-"))
             allele_2_ci_lower, allele_2_ci_upper = map(int, allele_2_ci.split("-"))
         else:
             n_alleles = 1
-            allele_1_repeat_unit = read["Allele1Motif"]
-            allele_2_repeat_unit = None
             allele_1_repeats = int(read["Genotype"])
             allele_2_repeats = None
             allele_1_ci_lower, allele_1_ci_upper = map(int, read["GenotypeConfidenceInterval"].split("-"))
             allele_2_ci_lower = allele_2_ci_upper = None
+
+        if "/" in read["Motif"]:
+            allele_1_repeat_unit, allele_2_repeat_unit = read["Motif"].split("/")
+        else:
+            allele_1_repeat_unit = read["Motif"]
+            allele_2_repeat_unit = read["Motif"]
 
         return {
             "id": locus,
@@ -80,7 +90,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
             "sex": read["Sex"],
             "age": None if read["Age"] == "age_not_available" else read["Age"],
             "pcr_protocol": read["PcrProtocol"],
-            "filename": read["ReadvizFilename"],
+            "filename": read["ReadvizFilename"] or None,
         }
 
     for locus, reads in reads_data.items():
@@ -114,7 +124,7 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("input_path", help="Path to STR readviz paths JSON file")
+    parser.add_argument("input_path", help="Path to STR readviz paths TSV file")
     parser.add_argument("output_path", help="Destination for SQLite database")
     args = parser.parse_args()
     create_short_tandem_repeat_reads_db(**vars(args))
