@@ -3,6 +3,8 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
+import GenebassLink from './GenebassLink'
+
 export const ReferenceList = ({ variant }) => {
   const ucscReferenceGenomeId = variant.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
   const { chrom, pos, ref } = variant
@@ -59,6 +61,16 @@ export const ReferenceList = ({ variant }) => {
           </ExternalLink>
         </ListItem>
       )}
+      {variant.reference_genome === 'GRCh38' && (
+        <ListItem>
+          <ExternalLink
+            href={`https://primad.basespace.illumina.com/variant/${variant.variant_id}`}
+          >
+            primAD
+          </ExternalLink>
+        </ListItem>
+      )}
+      {variant.reference_genome === 'GRCh38' && <GenebassLink variantId={variant.variant_id} />}
     </List>
   )
 }

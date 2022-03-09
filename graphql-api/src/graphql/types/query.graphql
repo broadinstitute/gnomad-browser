@@ -21,4 +21,6 @@ type Query{
     short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
 
     meta: BrowserMetadata!
+
+    genebass_variant(variantId: String!): GenebassVariant
 }

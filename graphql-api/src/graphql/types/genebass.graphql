@@ -1,0 +1,11 @@
+type GenebassPhenotype {
+  pval: Float!
+  beta: Float!
+  analysis_id: String!
+}
+
+type GenebassVariant {
+  gene_id: String
+  phenotypes: [GenebassPhenotype]
+}
+
