@@ -68,7 +68,8 @@
         "can-i-filter-out-a-particular-cohort-for-my-analysis",
         "how-do-i-query-a-batch-of-variants-do-you-have-an-api",
         "when-are-exomes-going-to-be-available-on-grch38",
-        "how-do-i-download-the-data"
+        "how-do-i-download-the-data",
+        "how-do-i-access-the-gnomad-hail-table-frequency-annotation"
       ]
     },
     {
