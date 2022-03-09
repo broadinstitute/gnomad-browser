@@ -120,11 +120,11 @@ The available v2.1 grouping combinations within the 'freq' array annotation are 
 
 To access the 'freq' array using the 'freq_index_dict', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes of XX individuals (sex: female<sup>2</sup>) labeled as AFR (pop: AFR) in the entire callset (subset: gnomad) for gnomAD v2.1.1 genomes:
 ```
-	# Load the v2.1.1 public release HT
-	from gnomad.resources.grch37.gnomad import public_release
-	ht = public_release(“genomes”).ht()
+    # Load the v2.1.1 public release HT
+    from gnomad.resources.grch37.gnomad import public_release
+    ht = public_release(“genomes”).ht()
 
-	# Use the key 'gnomad_afr_female' to retrieve the index of this group's frequency data in 'freq'
+    # Use the key 'gnomad_afr_female' to retrieve the index of this group's frequency data in 'freq'
     ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['gnomad_afr_female']])
 ```
 The above example will retrieve the entire frequency struct for each variant. To grab a certain statistic, such as AC, specify the statistic after the value:
@@ -151,12 +151,12 @@ The available v3 grouping combinations within the 'freq' array annotation are li
 To access the 'freq' array using the 'freq_index_dict', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) labeled as AFR (pop: AFR) in gnomAD v3.1.2:
 
 ```
-	# Load the v3.1.2 public release HT
-	from gnomad.resources.grch38.gnomad import public_release
-	ht = public_release(“genomes”).ht()
+    # Load the v3.1.2 public release HT
+    from gnomad.resources.grch38.gnomad import public_release
+    ht = public_release(“genomes”).ht()
 
-	# Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
-    ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr-XX-adj']])
+    # Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
+    ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr-XX-adj']])  
 ```
 
 The above example will retrieve the entire frequency struct for each variant. To grab a certain statistic, such as AC, specify the statistic after the value:
