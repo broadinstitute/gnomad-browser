@@ -73,8 +73,10 @@ const Banner = styled.div`
 
 const BANNER_CONTENT = (
   <>
-    We&apos;re hiring!{' '}
-    <ExternalLink href="https://broad.io/gnomad-cs">https://broad.io/gnomad-cs</ExternalLink>
+    We&apos;re hiring! {' • '}
+    <ExternalLink href="https://broad.io/gnomad-cs">Computational scientist</ExternalLink>
+    {' • '}
+    <ExternalLink href="https://broad.io/cq7dw8">Frontend developer</ExternalLink>
   </>
 )
 
