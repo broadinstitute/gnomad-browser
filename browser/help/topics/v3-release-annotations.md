@@ -68,7 +68,7 @@ The gnomAD v3 Hail Table annotations are defined below:
         * **bin_freq**: Bin frequencies for the histogram of AB in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
         * **n_smaller**: Count of AB values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
         * **n_larger**: Count of AB values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
-* **popmax**: Allele frequency information (AC, AN, AF, homozygote count) for the outbred population with maximum allele frequency. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and Other (oth) populations.
+* **popmax**: Allele frequency information (AC, AN, AF, homozygote count) for the outbred population with maximum allele frequency. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Other" (oth) populations.
     * **AC**: Alternate allele count in the population with the maximum allele frequency.
     * **AF**: Maximum alternate allele frequency, (AC/AN), across populations in gnomAD.
     * **AN**: Total number of alleles in the population with the maximum allele frequency.
