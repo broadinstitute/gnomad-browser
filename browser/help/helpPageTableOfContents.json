@@ -11,7 +11,8 @@
     "regional-constraint",
     "sv-overview",
     "hgdp-1kg-annotations",
-    "v3-ht-annotations"
+    "v3-ht-annotations",
+    "popmax",
   ],
   "faq": [
     {
