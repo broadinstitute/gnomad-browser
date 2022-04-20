@@ -1,6 +1,6 @@
 ---
 id: popmax
-title: 'Population maximum'
+title: 'Population maximum allele frequency'
 ---
 
 This annotation contains allele frequency information (AC, AN, AF, homozygote count) for the outbred population with the highest frequency. 
