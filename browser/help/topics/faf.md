@@ -10,3 +10,7 @@ See http://cardiodb.org/allelefrequencyapp/ and [Whiffin _et al._ 2017](https://
 
 On the browser, this annotation is available on the variant page and gives the 95%.
 In the VCF and Hail tables, this annotation is computed globally and for each population separately and two thresholds are available for each population: 95% CI and 99% CI.
+
+This calculation only includes non-bottlenecked populations.
+For gnomAD v2, popmax filtering allele frequency excludes Ashkenazi Jewish (asj), European Finnish (fin), and "Other" (oth) populations.
+For gnomAD v3, popmax filtering allele frequency excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Other" (oth) populations.
