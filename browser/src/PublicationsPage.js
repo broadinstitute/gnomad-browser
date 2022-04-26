@@ -27,6 +27,22 @@ export default () => (
     <List>
       <ListItem>
         <Citation>
+          Chen, S., Francioli, L. C., Goodrich, J. K., Collins, R. L., Wang, Q., Alföldi, J., Watts,
+          N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W.,
+          Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N.,
+          Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V.,
+          Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts,
+          K., gnomAD Project Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A.
+          R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M., MacArthur, D. G. &
+          Karczewski, K. J. A genome-wide mutational constraint map quantified from variation in
+          76,156 human genomes. <em>bioRxiv</em> 2022.03.20.485034 (2022).{' '}
+          <ExternalLink href="https://doi.org/10.1101/2022.03.20.485034">
+            https://doi.org/10.1101/2022.03.20.485034
+          </ExternalLink>
+        </Citation>
+      </ListItem>
+      <ListItem>
+        <Citation>
           Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson, M.,
           Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G.,
           O’Donnell-Luria, A. Variant interpretation using population databases: Lessons from
