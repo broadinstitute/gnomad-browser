@@ -217,8 +217,12 @@ export default () => (
       The v2.1.1 data set (GRCh37/hg19) provided on this website spans 125,748 exome sequences and
       15,708 whole-genome sequences from unrelated individuals sequenced as part of various
       disease-specific and population genetic studies. The v3.1.2 data set (GRCh38) spans 76,156
-      genomes, selected as in v2. The gnomAD Principal Investigators and groups that have
-      contributed data to the current release are listed{' '}
+      genomes{' '}
+      <ExternalLink href="https://gnomad.broadinstitute.org/help/what-populations-are-represented-in-the-gnomad-data">
+        of diverse ancestries
+      </ExternalLink>
+      , selected as in v2. The gnomAD Principal Investigators and groups that have contributed data
+      to the current release are listed{' '}
       <Link preserveSelectedDataset={false} to="/about">
         here
       </Link>
