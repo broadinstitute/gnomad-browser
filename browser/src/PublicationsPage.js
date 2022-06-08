@@ -58,9 +58,9 @@ export default () => (
           Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database
           (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G., Lek, M., Mootha, V. K.,
           Calvo, S. E. Mitochondrial DNA variation across 56,434 individuals in gnomAD.{' '}
-          <em>bioRxiv</em> 2021.07.23.453510 (2021).{' '}
-          <ExternalLink href="https://doi.org/10.1101/2021.07.23.453510">
-            https://doi.org/10.1101/2021.07.23.453510
+          <em>Genome Res.</em> 32, 569–582 (2022).{' '}
+          <ExternalLink href="https://doi.org/10.1101/gr.276013.121">
+            https://doi.org/10.1101/gr.276013.121
           </ExternalLink>
         </Citation>
       </ListItem>
