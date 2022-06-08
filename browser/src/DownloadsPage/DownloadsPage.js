@@ -77,7 +77,7 @@ const DownloadsPage = ({ location }) => {
       <p>
         In addition to the files listed below,{' '}
         <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
-        <ExternalLink href="https://support.terra.bio/hc/en-us/articles/360051719372-A-demo-workspace-for-working-with-gnomAD-data-in-Terra">
+        <ExternalLink href="https://terra.bio/a-demo-workspace-for-working-with-gnomad-data-in-terra/">
           a demo workspace for working with gnomAD data
         </ExternalLink>
         .
