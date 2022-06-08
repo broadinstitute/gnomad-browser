@@ -121,7 +121,11 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
-        gnomAD v3 short tandem repeat locus:{' '}
+        gnomAD v3{' '}
+        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
+          short tandem repeat
+        </ExternalLink>{' '}
+        locus:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
