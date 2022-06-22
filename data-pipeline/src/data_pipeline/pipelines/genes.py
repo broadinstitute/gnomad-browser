@@ -19,6 +19,7 @@ from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad_v2_constraint
 
+print(f"2 + 2 = {2 + 2}")
 
 pipeline = Pipeline()
 
