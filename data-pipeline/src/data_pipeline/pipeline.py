@@ -23,8 +23,14 @@ class GoogleCloudStorageFileSystem:
         return hl.hadoop_exists(path)
 
     def modified_time(self, path):  # pylint: disable=no-self-use
+        # The Hail docs say that stat["modification_time"] should be a string,
+        # but in the case of Google Cloud Storage, it returns an epoch timestamp
+        # as an int. There is a Google Cloud Storage filesystem in the Hail
+        # backend, but no Python bindings for it as of yet; when those bindings
+        # exist, we should probably use that filesystem here instead of a
+        # generic Hadoop FS.
         stat = hl.hadoop_stat(path)
-        return datetime.datetime.strptime(stat["modification_time"], "%a %b %d %H:%M:%S %Z %Y")
+        return stat["modification_time"]
 
 
 class LocalFileSystem:
