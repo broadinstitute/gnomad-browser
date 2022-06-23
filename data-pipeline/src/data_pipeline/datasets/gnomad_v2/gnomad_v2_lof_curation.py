@@ -78,7 +78,10 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
 
     ds = hl.import_table("/tmp/import_temp.tsv")
 
-    ds = ds.transmute(locus=hl.locus(ds.chrom, hl.int(ds.position)), alleles=[ds.ref, ds.alt],)
+    ds = ds.transmute(
+        locus=hl.locus(ds.chrom, hl.int(ds.position)),
+        alleles=[ds.ref, ds.alt],
+    )
 
     ds = ds.annotate(
         genes=ds.genes.split(","),

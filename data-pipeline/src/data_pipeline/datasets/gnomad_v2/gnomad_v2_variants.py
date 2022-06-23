@@ -165,7 +165,8 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                             hl.array(
                                 [
                                     hl.struct(
-                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf95, population=pop_id,
+                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf95,
+                                        population=pop_id,
                                     )
                                     for pop_id in (
                                         ["afr", "amr", "eas", "nfe"] + (["sas"] if exome_or_genome == "exome" else [])
@@ -176,8 +177,14 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                         ),
                         lambda fafs: hl.if_else(
                             hl.len(fafs) > 0,
-                            hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population,),
-                            hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr),),
+                            hl.struct(
+                                popmax=fafs[0].faf,
+                                popmax_population=fafs[0].population,
+                            ),
+                            hl.struct(
+                                popmax=hl.null(hl.tfloat),
+                                popmax_population=hl.null(hl.tstr),
+                            ),
                         ),
                     ),
                     faf99=hl.rbind(
@@ -185,7 +192,8 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                             hl.array(
                                 [
                                     hl.struct(
-                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf99, population=pop_id,
+                                        faf=ds.faf[g.faf_index_dict[f"{subset}_{pop_id}"]].faf99,
+                                        population=pop_id,
                                     )
                                     for pop_id in (
                                         ["afr", "amr", "eas", "nfe"] + (["sas"] if exome_or_genome == "exome" else [])
@@ -196,8 +204,14 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
                         ),
                         lambda fafs: hl.if_else(
                             hl.len(fafs) > 0,
-                            hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population,),
-                            hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr),),
+                            hl.struct(
+                                popmax=fafs[0].faf,
+                                popmax_population=fafs[0].population,
+                            ),
+                            hl.struct(
+                                popmax=hl.null(hl.tfloat),
+                                popmax_population=hl.null(hl.tstr),
+                            ),
                         ),
                     ),
                 )
@@ -219,7 +233,10 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
     ds = ds.transmute(
         age_distribution=hl.struct(
             **{
-                subset: hl.struct(het=ds.age_hist_het[index], hom=ds.age_hist_hom[index],)
+                subset: hl.struct(
+                    het=ds.age_hist_het[index],
+                    hom=ds.age_hist_hom[index],
+                )
                 for subset, index in g.age_index_dict.items()
             },
         )

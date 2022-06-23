@@ -94,7 +94,15 @@ def get_index_fields(table, index_fields):
 
 
 def export_table_to_elasticsearch(
-    table, host, index, *, auth=None, block_size=5000, id_field=None, index_fields=None, num_shards=1,
+    table,
+    host,
+    index,
+    *,
+    auth=None,
+    block_size=5000,
+    id_field=None,
+    index_fields=None,
+    num_shards=1,
 ):
     export_time = datetime.datetime.utcnow()
 

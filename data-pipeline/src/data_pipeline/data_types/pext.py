@@ -171,7 +171,9 @@ def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
     low_max_pext_genes = low_max_pext_genes.aggregate(hl.agg.collect_as_set(low_max_pext_genes.ensg))
     ds = ds.annotate(
         flags=hl.if_else(
-            hl.set(low_max_pext_genes).contains(ds.gene_id), hl.literal(["low_max_pext"]), hl.empty_array(hl.tstr),
+            hl.set(low_max_pext_genes).contains(ds.gene_id),
+            hl.literal(["low_max_pext"]),
+            hl.empty_array(hl.tstr),
         )
     )
 

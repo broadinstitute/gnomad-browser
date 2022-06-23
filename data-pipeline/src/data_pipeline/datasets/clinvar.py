@@ -140,7 +140,9 @@ def _parse_variant(variant_element):
     evaluated_dates = [date for date in evaluated_dates if date]
     if evaluated_dates:
         variant["last_evaluated"] = sorted(
-            evaluated_dates, key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"), reverse=True,
+            evaluated_dates,
+            key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"),
+            reverse=True,
         )[0]
 
     submission_elements = variant_element.findall("./InterpretedRecord/ClinicalAssertionList/ClinicalAssertion")
@@ -197,7 +199,8 @@ def import_clinvar_xml(clinvar_xml_path):
                         pass
                     except Exception:
                         print(
-                            f"Failed to parse variant {element.attrib['VariationID']}", file=sys.stderr,
+                            f"Failed to parse variant {element.attrib['VariationID']}",
+                            file=sys.stderr,
                         )
                         raise
 

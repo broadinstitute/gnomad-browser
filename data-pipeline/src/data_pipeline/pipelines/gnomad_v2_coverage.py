@@ -16,7 +16,9 @@ pipeline.add_task(
     "prepare_gnomad_v2_genome_coverage",
     prepare_coverage,
     "/gnomad_v2/gnomad_v2_genome_coverage.ht",
-    {"coverage_path": "gs://gcp-public-data--gnomad/release/2.1/coverage/genomes/gnomad.genomes.r2.1.coverage.ht",},
+    {
+        "coverage_path": "gs://gcp-public-data--gnomad/release/2.1/coverage/genomes/gnomad.genomes.r2.1.coverage.ht",
+    },
 )
 
 ###############################################
