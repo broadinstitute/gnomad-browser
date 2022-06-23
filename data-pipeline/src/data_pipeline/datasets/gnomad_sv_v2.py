@@ -163,7 +163,8 @@ def import_structural_variants(vcf_path):
                 ds.type == "MCNV",
                 ds.freq.populations.map(
                     lambda pop: pop.annotate(
-                        ac=sum_mcnv_ac_or_af(ds.alts, pop.ac), af=sum_mcnv_ac_or_af(ds.alts, pop.af),
+                        ac=sum_mcnv_ac_or_af(ds.alts, pop.ac),
+                        af=sum_mcnv_ac_or_af(ds.alts, pop.af),
                     )
                 ),
                 ds.freq.populations.map(lambda pop: pop.annotate(ac=pop.ac[0], af=pop.af[0])),
@@ -250,7 +251,10 @@ def annotate_with_histograms(ds, histograms):
     )
 
     histograms = histograms.transmute(
-        age_distribution=hl.struct(het=histograms.age_hist_het, hom=histograms.age_hist_hom,),
+        age_distribution=hl.struct(
+            het=histograms.age_hist_het,
+            hom=histograms.age_hist_hom,
+        ),
         genotype_quality=hl.struct(all=histograms.gq_hist_all, alt=histograms.gq_hist_alt),
     )
 

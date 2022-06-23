@@ -84,7 +84,9 @@ MANE_TRANSCRIPTS_URL = (
 )
 
 pipeline.add_download_task(
-    "download_mane_transcripts", MANE_TRANSCRIPTS_URL, "/external_sources/" + MANE_TRANSCRIPTS_URL.split("/")[-1],
+    "download_mane_transcripts",
+    MANE_TRANSCRIPTS_URL,
+    "/external_sources/" + MANE_TRANSCRIPTS_URL.split("/")[-1],
 )
 
 pipeline.add_task(

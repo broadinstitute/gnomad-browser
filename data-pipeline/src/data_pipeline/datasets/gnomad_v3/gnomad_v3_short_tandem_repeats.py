@@ -18,7 +18,8 @@ def _parse_region_id(region_id):
 
 def _prepare_histogram(histogram):
     return sorted(
-        ([int(n_repeats), n_samples] for n_repeats, n_samples in histogram.items()), key=lambda value: value[0],
+        ([int(n_repeats), n_samples] for n_repeats, n_samples in histogram.items()),
+        key=lambda value: value[0],
     )
 
 

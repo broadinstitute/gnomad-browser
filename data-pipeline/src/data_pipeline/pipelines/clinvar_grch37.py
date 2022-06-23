@@ -17,7 +17,9 @@ from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 pipeline = Pipeline()
 
 pipeline.add_download_task(
-    "download_clinvar_xml", CLINVAR_XML_URL, "/external_sources/clinvar.xml.gz",
+    "download_clinvar_xml",
+    CLINVAR_XML_URL,
+    "/external_sources/clinvar.xml.gz",
 )
 
 pipeline.add_task(

@@ -15,7 +15,9 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, 
 
     # Import data
     ds = hl.import_matrix_table(
-        tmp_transcript_tpms_path, row_fields={"transcript_id": hl.tstr, "gene_id": hl.tstr}, entry_type=hl.tfloat,
+        tmp_transcript_tpms_path,
+        row_fields={"transcript_id": hl.tstr, "gene_id": hl.tstr},
+        entry_type=hl.tfloat,
     )
     ds = ds.rename({"col_id": "sample_id"})
     ds = ds.repartition(1000, shuffle=True)
