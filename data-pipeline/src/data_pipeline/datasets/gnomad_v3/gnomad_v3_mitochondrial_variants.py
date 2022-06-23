@@ -36,7 +36,8 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
         genotype_quality_metrics=[hl.struct(name="Depth", alt=ds.dp_hist_alt, all=ds.dp_hist_all)],
         genotype_quality_filters=[
             hl.struct(
-                name="Base Quality", filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.base_qual_hist),
+                name="Base Quality",
+                filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.base_qual_hist),
             ),
             hl.struct(
                 name="Contamination",
@@ -50,7 +51,8 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
             ),
             hl.struct(name="Position", filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.position_hist)),
             hl.struct(
-                name="Strand Bias", filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.strand_bias_hist),
+                name="Strand Bias",
+                filtered=hl.struct(bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.strand_bias_hist),
             ),
             hl.struct(
                 name="Weak Evidence",
@@ -80,7 +82,10 @@ def prepare_mitochondrial_variants(path, mnvs_path=None):
                     ac_het=ds.pop_AC_het[pop_index],
                     ac_hom=ds.pop_AC_hom[pop_index],
                     heteroplasmy_distribution=hl.struct(
-                        bin_edges=ds.hl_hist.bin_edges, bin_freq=ds.pop_hl_hist[pop_index], n_smaller=0, n_larger=0,
+                        bin_edges=ds.hl_hist.bin_edges,
+                        bin_freq=ds.pop_hl_hist[pop_index],
+                        n_smaller=0,
+                        n_larger=0,
                     ),
                 )
             ),

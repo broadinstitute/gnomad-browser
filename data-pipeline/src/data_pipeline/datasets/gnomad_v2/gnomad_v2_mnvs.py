@@ -81,7 +81,11 @@ def import_mnv_file(path, **kwargs):
 
     ds = ds.transmute(locus=hl.locus(ds["locus.contig"], ds["locus.position"]))
 
-    ds = ds.transmute(chrom=normalized_contig(ds.locus.contig), pos=ds.locus.position, xpos=x_position(ds.locus),)
+    ds = ds.transmute(
+        chrom=normalized_contig(ds.locus.contig),
+        pos=ds.locus.position,
+        xpos=x_position(ds.locus),
+    )
 
     ds = ds.annotate(ref=ds.variant_id.split("-")[2], alt=ds.variant_id.split("-")[3])
 
@@ -100,13 +104,17 @@ def import_mnv_file(path, **kwargs):
                     exome=hl.or_missing(
                         hl.is_defined(ds[f"AN_{snp}_ex"]),
                         hl.struct(
-                            filters=ds[f"filter_{snp}_ex"], ac=ds[f"AC_{snp}_ex"], an=hl.int(ds[f"AN_{snp}_ex"]),
+                            filters=ds[f"filter_{snp}_ex"],
+                            ac=ds[f"AC_{snp}_ex"],
+                            an=hl.int(ds[f"AN_{snp}_ex"]),
                         ),
                     ),
                     genome=hl.or_missing(
                         hl.is_defined(ds[f"AN_{snp}_gen"]),
                         hl.struct(
-                            filters=ds[f"filter_{snp}_gen"], ac=ds[f"AC_{snp}_gen"], an=hl.int(ds[f"AN_{snp}_gen"]),
+                            filters=ds[f"filter_{snp}_gen"],
+                            ac=ds[f"AC_{snp}_gen"],
+                            an=hl.int(ds[f"AN_{snp}_gen"]),
                         ),
                     ),
                 ),
@@ -128,10 +136,12 @@ def import_mnv_file(path, **kwargs):
         ac=ds.AC_mnv,
         ac_hom=ds.n_homhom,
         exome=hl.or_missing(
-            ds.mnv_in_exome, hl.struct(n_individuals=ds.n_indv_ex, ac=ds.AC_mnv_ex, ac_hom=ds.n_homhom_ex),
+            ds.mnv_in_exome,
+            hl.struct(n_individuals=ds.n_indv_ex, ac=ds.AC_mnv_ex, ac_hom=ds.n_homhom_ex),
         ),
         genome=hl.or_missing(
-            ds.mnv_in_genome, hl.struct(n_individuals=ds.n_indv_gen, ac=ds.AC_mnv_gen, ac_hom=ds.n_homhom_gen),
+            ds.mnv_in_genome,
+            hl.struct(n_individuals=ds.n_indv_gen, ac=ds.AC_mnv_gen, ac_hom=ds.n_homhom_gen),
         ),
     )
 
@@ -167,7 +177,12 @@ def import_mnv_file(path, **kwargs):
     ds = ds.join(consequences)
 
     # Sort consequences by severity
-    ds = ds.annotate(consequences=hl.sorted(ds.consequences, key=lambda c: consequence_term_rank(c.consequence),))
+    ds = ds.annotate(
+        consequences=hl.sorted(
+            ds.consequences,
+            key=lambda c: consequence_term_rank(c.consequence),
+        )
+    )
 
     ds = ds.annotate(
         changes_amino_acids_for_snvs=hl.literal([0, 1])
@@ -266,7 +281,11 @@ def import_three_bp_mnv_file(path, **kwargs):
 
     ds = ds.rename({"tnv": "variant_id"})
 
-    ds = ds.transmute(chrom=normalized_contig(ds.locus.contig), pos=ds.locus.position, xpos=x_position(ds.locus),)
+    ds = ds.transmute(
+        chrom=normalized_contig(ds.locus.contig),
+        pos=ds.locus.position,
+        xpos=x_position(ds.locus),
+    )
 
     ds = ds.transmute(ref=ds.alleles[0], alt=ds.alleles[1])
 
@@ -317,10 +336,16 @@ def import_three_bp_mnv_file(path, **kwargs):
         ac=ds.AC_tnv,
         ac_hom=ds.n_tnv_hom,
         exome=hl.or_missing(
-            ds.mnv_in_exome, hl.struct(n_individuals=ds.n_indv_tnv_ex, ac=ds.AC_tnv_ex, ac_hom=ds.n_tnv_hom_ex),
+            ds.mnv_in_exome,
+            hl.struct(n_individuals=ds.n_indv_tnv_ex, ac=ds.AC_tnv_ex, ac_hom=ds.n_tnv_hom_ex),
         ),
         genome=hl.or_missing(
-            ds.mnv_in_genome, hl.struct(n_individuals=ds.n_indv_tnv_gen, ac=ds.AC_tnv_gen, ac_hom=ds.n_tnv_hom_gen,),
+            ds.mnv_in_genome,
+            hl.struct(
+                n_individuals=ds.n_indv_tnv_gen,
+                ac=ds.AC_tnv_gen,
+                ac_hom=ds.n_tnv_hom_gen,
+            ),
         ),
     )
 
@@ -353,7 +378,16 @@ def import_three_bp_mnv_file(path, **kwargs):
         *list(
             f"snp{pair}_mnv_{field}"
             for pair, field in itertools.product(
-                ["12", "23", "13"], ["cons", "codons", "amino_acids", "lof", "categ", "n_indv_ex", "n_indv_gen",],
+                ["12", "23", "13"],
+                [
+                    "cons",
+                    "codons",
+                    "amino_acids",
+                    "lof",
+                    "categ",
+                    "n_indv_ex",
+                    "n_indv_gen",
+                ],
             )
         )
     )
@@ -365,7 +399,12 @@ def import_three_bp_mnv_file(path, **kwargs):
     ds = ds.join(consequences)
 
     # Sort consequences by severity
-    ds = ds.annotate(consequences=hl.sorted(ds.consequences, key=lambda c: consequence_term_rank(c.consequence),))
+    ds = ds.annotate(
+        consequences=hl.sorted(
+            ds.consequences,
+            key=lambda c: consequence_term_rank(c.consequence),
+        )
+    )
 
     ds = ds.annotate(
         changes_amino_acids_for_snvs=hl.literal([0, 1, 2])
@@ -387,7 +426,13 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
     snp12_components = mnvs_3bp.select(
         component_mnv=hl.bind(
             lambda snv1, snv2: hl.delimit(
-                [snv1.chrom, hl.str(snv1.pos), snv1.ref + snv2.ref, snv1.alt + snv2.alt,], "-",
+                [
+                    snv1.chrom,
+                    hl.str(snv1.pos),
+                    snv1.ref + snv2.ref,
+                    snv1.alt + snv2.alt,
+                ],
+                "-",
             ),
             mnvs_3bp.constituent_snvs[0],
             mnvs_3bp.constituent_snvs[1],
@@ -402,7 +447,13 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
     snp23_components = mnvs_3bp.select(
         component_mnv=hl.bind(
             lambda snv2, snv3: hl.delimit(
-                [snv2.chrom, hl.str(snv2.pos), snv2.ref + snv3.ref, snv2.alt + snv3.alt,], "-",
+                [
+                    snv2.chrom,
+                    hl.str(snv2.pos),
+                    snv2.ref + snv3.ref,
+                    snv2.alt + snv3.alt,
+                ],
+                "-",
             ),
             mnvs_3bp.constituent_snvs[1],
             mnvs_3bp.constituent_snvs[2],
@@ -417,7 +468,13 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
     snp13_components = mnvs_3bp.select(
         component_mnv=hl.bind(
             lambda snv1, snv2, snv3: hl.delimit(
-                [snv1.chrom, hl.str(snv1.pos), snv1.ref + snv2.ref + snv3.ref, snv1.alt + snv2.ref + snv3.alt,], "-",
+                [
+                    snv1.chrom,
+                    hl.str(snv1.pos),
+                    snv1.ref + snv2.ref + snv3.ref,
+                    snv1.alt + snv2.ref + snv3.alt,
+                ],
+                "-",
             ),
             mnvs_3bp.constituent_snvs[0],
             mnvs_3bp.constituent_snvs[1],
@@ -466,7 +523,12 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
 def annotate_variants_with_mnvs(variants_path, mnvs_path):
     ds = hl.read_table(mnvs_path)
 
-    ds = ds.select("changes_amino_acids_for_snvs", "constituent_snvs", "constituent_snv_ids", "n_individuals",)
+    ds = ds.select(
+        "changes_amino_acids_for_snvs",
+        "constituent_snvs",
+        "constituent_snv_ids",
+        "n_individuals",
+    )
 
     ds = ds.explode(ds.constituent_snvs, "snv")
     ds = ds.annotate(

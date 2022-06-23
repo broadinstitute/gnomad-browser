@@ -65,7 +65,8 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
             (row.transcript_id, row.transcript_info)
             for row in transcripts.select(
                 transcript_info=hl.struct(
-                    transcript_version=transcripts.transcript_version, gene_version=transcripts.gene.gene_version,
+                    transcript_version=transcripts.transcript_version,
+                    gene_version=transcripts.gene.gene_version,
                 )
             ).collect()
         ]

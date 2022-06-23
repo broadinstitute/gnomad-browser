@@ -6,7 +6,9 @@ from data_pipeline.datasets.exac.exac_coverage import import_exac_coverage
 pipeline = Pipeline()
 
 pipeline.add_task(
-    "import_exac_coverage", import_exac_coverage, "/exac/exac_coverage.ht",
+    "import_exac_coverage",
+    import_exac_coverage,
+    "/exac/exac_coverage.ht",
 )
 
 ###############################################
