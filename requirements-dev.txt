@@ -1,2 +1,2 @@
-black==19.10b0  # This should be kept in sync with the version in .pre-commit-config.yaml
+black==22.3.0  # This should be kept in sync with the version in .pre-commit-config.yaml
 pylint==2.6.0
