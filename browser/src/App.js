@@ -75,8 +75,6 @@ const BANNER_CONTENT = (
   <>
     We&apos;re hiring! {' • '}
     <ExternalLink href="https://broad.io/gnomad-cs">Computational scientist</ExternalLink>
-    {' • '}
-    <ExternalLink href="https://broad.io/cq7dw8">Frontend developer</ExternalLink>
   </>
 )
 
