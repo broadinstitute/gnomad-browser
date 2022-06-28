@@ -25,9 +25,7 @@ This should be enough to use the Docker Compose development environment. However
 - For data pipeline development, install [Python](https://www.python.org/), dependencies, and development tools.
 
   ```
-  pip install hail
   pip install -r data-pipeline/requirements.txt
-
   pip install -r requirements-dev.txt
   ```
 
