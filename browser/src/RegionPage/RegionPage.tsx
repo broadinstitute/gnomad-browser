@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -45,7 +45,7 @@ const RegionControlsWrapper = styled.div`
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   region: {
     reference_genome: 'GRCh37' | 'GRCh38'
     chrom: string

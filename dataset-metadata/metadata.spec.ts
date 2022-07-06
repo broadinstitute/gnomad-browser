@@ -1,5 +1,5 @@
 import { describe, test, expect } from '@jest/globals'
-import { isSubset, labelForDataset } from './metadata'
+import { DatasetId, isSubset, labelForDataset } from './metadata'
 
 describe.each([
   ['exac', false],
@@ -17,7 +17,7 @@ describe.each([
   ['gnomad_sv_r2_1', false],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
-])('isSubset(%s)', (datasetId, expectedResult) => {
+] as [DatasetId, boolean][])('isSubset(%s)', (datasetId, expectedResult) => {
   const verb = expectedResult ? 'is' : 'is not'
   test(`${datasetId} ${verb} a subset`, () => expect(isSubset(datasetId)).toEqual(expectedResult))
 })
@@ -38,7 +38,7 @@ describe.each([
   ['gnomad_sv_r2_1', 'gnomAD SVs v2.1'],
   ['gnomad_sv_r2_1_controls', 'gnomAD SVs v2.1 (controls)'],
   ['gnomad_sv_r2_1_non_neuro', 'gnomAD SVs v2.1 (non-neuro)'],
-])('labelForDataset(%s)', (datasetId, expectedResult) => {
+] as [DatasetId, string][])('labelForDataset(%s)', (datasetId, expectedResult) => {
   test(`Label for ${datasetId} is "${expectedResult}"`, () =>
     expect(labelForDataset(datasetId)).toEqual(expectedResult))
 })

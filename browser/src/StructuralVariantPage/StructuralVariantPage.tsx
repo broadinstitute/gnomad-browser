@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ExternalLink, Page } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -33,7 +33,7 @@ const ResponsiveSection = styled.section`
 `
 
 type StructuralVariantPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: StructuralVariantDetailPropType
 }
 
@@ -115,7 +115,7 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
 )
 
 type ConnectedStructuralVariantPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 
