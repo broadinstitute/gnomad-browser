@@ -12,7 +12,8 @@ import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { labelForDataset } from '../datasets'
+import { labelForDataset } from '../../../dataset-metadata/metadata'
+
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'

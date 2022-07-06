@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
 import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
-import { labelForDataset } from './datasets'
+import { labelForDataset } from '../../dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
 import useRequest from './useRequest'

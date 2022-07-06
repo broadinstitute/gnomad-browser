@@ -3,7 +3,7 @@ import React from 'react'
 
 import { parseVariantId } from '@gnomad/identifiers'
 
-import { labelForDataset } from '../datasets'
+import { labelForDataset } from '../../../dataset-metadata/metadata'
 import Link from '../Link'
 
 type Props = {

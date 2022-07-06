@@ -3,7 +3,9 @@ import styled from 'styled-components'
 
 import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
-import { labelForDataset, referenceGenomeForDataset } from '../datasets'
+import { labelForDataset } from '../../../dataset-metadata/metadata'
+
+import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'

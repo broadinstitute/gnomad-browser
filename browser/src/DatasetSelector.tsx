@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
-import { labelForDataset } from './datasets'
+import { labelForDataset } from '../../dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
