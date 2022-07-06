@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -22,7 +22,7 @@ query ${operationName}($start: Int!, $stop: Int!, $datasetId: DatasetId!, $refer
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   start: number
   stop: number
 }

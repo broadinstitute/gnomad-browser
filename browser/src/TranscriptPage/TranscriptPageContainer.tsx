@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
+import { DatasetId } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import TranscriptPage from './TranscriptPage'
@@ -86,7 +87,7 @@ query ${operationName}($transcriptId: String!, $referenceGenome: ReferenceGenome
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   transcriptId: string
 }
 

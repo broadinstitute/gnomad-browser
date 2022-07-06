@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
-import { isSubset } from '../../../dataset-metadata/metadata'
+import { DatasetId, isSubset } from '../../../dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
@@ -65,7 +65,7 @@ const ReadDataPropType: PropTypes.Requireable<ReadDataPropType> = PropTypes.shap
 })
 
 type OwnReadDataProps = {
-  datasetId: string
+  datasetId: DatasetId
   referenceGenome: 'GRCh37' | 'GRCh38'
   chrom: string
   start: number
@@ -415,7 +415,7 @@ const interleaveReads = (allVariantReads: any) => {
 }
 
 type ReadDataContainerProps = {
-  datasetId: string
+  datasetId: DatasetId
   variantIds: string[]
 }
 

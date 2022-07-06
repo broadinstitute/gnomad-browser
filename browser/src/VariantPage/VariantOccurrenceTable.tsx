@@ -7,7 +7,7 @@ import { Badge, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import QCFilter from '../QCFilter'
@@ -102,7 +102,7 @@ FilteringAlleleFrequency.defaultProps = {
 }
 
 type LowAlleleNumberWarningProps = {
-  datasetId: string
+  datasetId: DatasetId
   hasLowAlleleNumberInExomes: boolean
   hasLowAlleleNumberInGenomes: boolean
 }
@@ -137,7 +137,7 @@ const LowAlleleNumberWarning = ({
 }
 
 type OwnGnomadVariantOccurrenceTableProps = {
-  datasetId: string
+  datasetId: DatasetId
   showExomes?: boolean
   showGenomes?: boolean
   variant: {

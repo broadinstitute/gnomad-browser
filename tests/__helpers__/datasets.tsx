@@ -1,6 +1,9 @@
 import { describe } from '@jest/globals'
-import { allDatasetIds } from '../../dataset-metadata/metadata'
+import { allDatasetIds, DatasetId } from '../../dataset-metadata/metadata'
 
-export const forAllDatasets = (contextDescription: string, tests: (datasetId: string) => void) => {
+export const forAllDatasets = (
+  contextDescription: string,
+  tests: (datasetId: DatasetId) => void
+) => {
   describe.each(allDatasetIds)(contextDescription, tests)
 }

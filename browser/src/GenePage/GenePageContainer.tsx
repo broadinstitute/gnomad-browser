@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { DatasetId } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
@@ -217,7 +218,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   geneIdOrSymbol: string
 }
 
