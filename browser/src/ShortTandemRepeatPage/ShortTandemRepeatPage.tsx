@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -61,7 +61,7 @@ const parseCombinedPopulationId = (combinedPopulationId: any) => {
 }
 
 type ShortTandemRepeatPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   shortTandemRepeat: ShortTandemRepeatPropType
 }
 
@@ -682,7 +682,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
 `
 
 type ShortTandemRepeatPageContainerProps = {
-  datasetId: string
+  datasetId: DatasetId
   strId: string
 }
 

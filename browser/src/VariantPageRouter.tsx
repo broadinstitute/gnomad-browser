@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
 import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
-import { labelForDataset } from '../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
 import useRequest from './useRequest'
@@ -20,7 +20,7 @@ const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/Structu
 const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
 
 type VariantSearchProps = {
-  datasetId: string
+  datasetId: DatasetId
   query: string
 }
 
@@ -73,7 +73,7 @@ const VariantSearch = ({ datasetId, query }: VariantSearchProps) => {
 }
 
 type VariantSearchPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   query: string
 }
 
@@ -98,7 +98,7 @@ const VariantSearchPage = ({ datasetId, query }: VariantSearchPageProps) => {
 }
 
 type VariantPageRouterProps = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 
@@ -109,7 +109,7 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
 
   if (isVariantId(variantId)) {
     const normalizedVariantId = normalizeVariantId(variantId).replace(/^MT/, 'M')
-    const [chrom, pos, ref, alt] = normalizedVariantId.split('-') // eslint-disable-line no-unused-vars
+    const [chrom, _pos, ref, alt] = normalizedVariantId.split('-')
     if (ref.length === alt.length && ref.length > 1) {
       return <MNVPage datasetId={datasetId} variantId={normalizedVariantId} />
     }

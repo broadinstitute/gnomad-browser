@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, Page } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
@@ -49,7 +49,7 @@ const FlexWrapper = styled.div`
 `
 
 type VariantPageContentProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: {
     variant_id: string
     chrom: string
@@ -463,7 +463,7 @@ query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenom
 `
 
 type VariantPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 

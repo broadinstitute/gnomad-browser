@@ -3,6 +3,7 @@ import React from 'react'
 import { isRegionId, parseRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
+import { DatasetId } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
@@ -38,7 +39,7 @@ const query = `
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   regionId: string
 }
 

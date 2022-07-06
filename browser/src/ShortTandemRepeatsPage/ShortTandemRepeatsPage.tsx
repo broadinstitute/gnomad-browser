@@ -2,7 +2,7 @@ import React from 'react'
 
 import { BaseTable, ExternalLink, Page } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -111,7 +111,7 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
 `
 
 type ShortTandemRepeatsPageContainerProps = {
-  datasetId: string
+  datasetId: DatasetId
 }
 
 const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageContainerProps) => {

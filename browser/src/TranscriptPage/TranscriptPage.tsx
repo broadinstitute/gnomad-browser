@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -109,7 +109,7 @@ const transcriptFeatureAttributes = {
 }
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   transcript: {
     transcript_id: string
     transcript_version: string

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 import { referenceGenomeForDataset } from '../datasets'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -21,7 +21,7 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   transcriptId: string
 }
 
