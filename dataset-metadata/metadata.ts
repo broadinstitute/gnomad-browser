@@ -14,15 +14,38 @@ export const datasetLabels = {
   gnomad_sv_r2_1: 'gnomAD SVs v2.1',
   gnomad_sv_r2_1_controls: 'gnomAD SVs v2.1 (controls)',
   gnomad_sv_r2_1_non_neuro: 'gnomAD SVs v2.1 (non-neuro)',
-}
+} as const
+export type DatasetId = keyof typeof datasetLabels
 
-// @ts-expect-error
-export const labelForDataset = (datasetId) => datasetLabels[datasetId] || 'Unknown'
+export const allDatasetIds = Object.getOwnPropertyNames(datasetLabels) as DatasetId[]
 
-export const allDatasetIds = Object.keys(datasetLabels)
-
-const fullDatasetIds = Object.getOwnPropertyNames(datasetLabels).filter(
+const fullDatasetIds = allDatasetIds.filter(
   (datasetId) => datasetId === 'exac' || datasetId.match(/_r\d+(_\d+)*$/)
 )
 
-export const isSubset = (datasetId: string) => !fullDatasetIds.includes(datasetId)
+export type DatasetMetadata = {
+  label: string
+  isSubset: boolean
+}
+
+const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
+  label: datasetLabels[datasetId],
+  isSubset: !fullDatasetIds.includes(datasetId),
+})
+
+const metadata = allDatasetIds.reduce(
+  (result, datasetId) => ({ ...result, [datasetId]: metadataForDataset(datasetId) }),
+  {} as Record<DatasetId, DatasetMetadata>
+)
+
+const getMetadata = <T extends keyof DatasetMetadata>(
+  datasetId: DatasetId,
+  fieldName: T
+): DatasetMetadata[T] => {
+  const foundMetadata = metadata[datasetId]
+  return foundMetadata[fieldName]
+}
+
+export const isSubset = (datasetId: DatasetId) => getMetadata(datasetId, 'isSubset')
+
+export const labelForDataset = (datasetId: DatasetId) => getMetadata(datasetId, 'label')

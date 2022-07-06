@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 
 import { referenceGenomeForDataset } from '../datasets'
 import DocumentTitle from '../DocumentTitle'
@@ -68,7 +68,7 @@ const VariantId = styled.span`
 `
 
 type MitochondrialVariantPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: MitochondrialVariantDetailPropType
 }
 
@@ -311,7 +311,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
 `
 
 type ConnectedMitochondrialVariantPageProps = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 

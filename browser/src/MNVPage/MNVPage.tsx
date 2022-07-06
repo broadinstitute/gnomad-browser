@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
-import { labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
@@ -39,7 +39,7 @@ const Column = styled.div`
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 
