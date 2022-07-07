@@ -9,7 +9,11 @@ import styled from 'styled-components'
 
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
-import { labelForDataset, hasShortVariants } from '../../dataset-metadata/metadata'
+import {
+  labelForDataset,
+  hasShortVariants,
+  hasStructuralVariants,
+} from '../../dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -543,20 +547,20 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   if (includeStructuralVariants) {
-    const topLevelStructuralVariantDataset = selectedDataset.startsWith('gnomad_sv')
+    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
       ? selectedDataset
       : 'gnomad_sv_r2_1'
 
     datasets.push(
       {
         id: 'current_sv_dataset',
-        isActive: selectedDataset.startsWith('gnomad_sv'),
+        isActive: hasStructuralVariants(selectedDataset),
         label: labelForDataset(topLevelStructuralVariantDataset),
         url: datasetLink(topLevelStructuralVariantDataset),
       },
       {
         id: 'other_structural_variant',
-        isActive: selectedDataset.startsWith('gnomad_sv'),
+        isActive: hasStructuralVariants(selectedDataset),
         label: 'More datasets',
         children: [
           {
