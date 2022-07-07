@@ -19,6 +19,8 @@ export type DatasetId = keyof typeof datasetLabels
 
 export const allDatasetIds = Object.getOwnPropertyNames(datasetLabels) as DatasetId[]
 
+// Regex below matches, e.g., gnomad_r1_2_3_4, but not gnomad_r1_2_3_4_foo
+
 const fullDatasetIds = allDatasetIds.filter(
   (datasetId) => datasetId === 'exac' || datasetId.match(/_r\d+(_\d+)*$/)
 )
