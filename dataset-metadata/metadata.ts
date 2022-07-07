@@ -28,11 +28,13 @@ const fullDatasetIds = allDatasetIds.filter(
 export type DatasetMetadata = {
   label: string
   isSubset: boolean
+  hasShortVariants: boolean
 }
 
 const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   label: datasetLabels[datasetId],
   isSubset: !fullDatasetIds.includes(datasetId),
+  hasShortVariants: !datasetId.startsWith('gnomad_sv'),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -51,3 +53,5 @@ const getMetadata = <T extends keyof DatasetMetadata>(
 export const isSubset = (datasetId: DatasetId) => getMetadata(datasetId, 'isSubset')
 
 export const labelForDataset = (datasetId: DatasetId) => getMetadata(datasetId, 'label')
+
+export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')

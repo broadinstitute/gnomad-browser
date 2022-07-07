@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
-import { labelForDataset } from '../../dataset-metadata/metadata'
+import { labelForDataset, hasShortVariants } from '../../dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -421,7 +421,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   })
 
   const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
-  const topLevelShortVariantDataset = selectedDataset.startsWith('gnomad_sv')
+  const topLevelShortVariantDataset = hasShortVariants(selectedDataset)
     ? defaultTopLevelShortVariantDataset
     : selectedDataset
 
@@ -431,13 +431,13 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: !selectedDataset.startsWith('gnomad_sv'),
+        isActive: hasShortVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: !selectedDataset.startsWith('gnomad_sv'),
+        isActive: hasShortVariants(selectedDataset),
         label: 'More datasets',
         children: [] as { id: string; label: string; url: string; description: string }[],
       },

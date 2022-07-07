@@ -157,12 +157,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=exac"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      ExAC v1.0
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -1151,12 +1151,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1_controls"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1 (controls)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -1648,12 +1648,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1_non_cancer"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1 (non-cancer)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -2145,12 +2145,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1_non_neuro"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1 (non-neuro)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -2642,12 +2642,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1_non_topmed"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1 (non-TOPMed)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -3139,12 +3139,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -3636,12 +3636,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3_controls_and_biobanks"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2 (controls/biobanks)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -4133,12 +4133,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3_non_cancer"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2 (non-cancer)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -4630,12 +4630,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3_non_neuro"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2 (non-neuro)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -5127,12 +5127,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3_non_topmed"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2 (non-TOPMed)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -5624,12 +5624,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3_non_v2"
+      href="/?dataset=gnomad_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2 (non-v2)
+      gnomAD v2.1.1
     </a>
   </li>
   <li
@@ -6121,12 +6121,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1"
+      href="/?dataset=gnomad_sv_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1
+      gnomAD SVs v2.1
     </a>
   </li>
   <li
@@ -6618,12 +6618,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1"
+      href="/?dataset=gnomad_sv_r2_1_controls"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1
+      gnomAD SVs v2.1 (controls)
     </a>
   </li>
   <li
@@ -7115,12 +7115,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r2_1"
+      href="/?dataset=gnomad_sv_r2_1_non_neuro"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v2.1.1
+      gnomAD SVs v2.1 (non-neuro)
     </a>
   </li>
   <li
