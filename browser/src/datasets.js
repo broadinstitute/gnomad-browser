@@ -24,6 +24,8 @@ const datasetLabels = {
   gnomad_sv_r2_1_non_neuro: 'gnomAD SVs v2.1 (non-neuro)',
 }
 
+export const allDatasetIds = Object.keys(datasetLabels)
+
 export const labelForDataset = datasetId => datasetLabels[datasetId] || 'Unknown'
 
 export const isSubset = datasetId =>
