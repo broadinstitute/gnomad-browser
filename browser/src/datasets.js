@@ -6,7 +6,7 @@ export const referenceGenomeForDataset = datasetId => {
   return 'GRCh37'
 }
 
-const datasetLabels = {
+export const datasetLabels = {
   exac: 'ExAC v1.0',
   gnomad_r2_1: 'gnomAD v2.1.1',
   gnomad_r2_1_controls: 'gnomAD v2.1.1 (controls)',
@@ -27,8 +27,3 @@ const datasetLabels = {
 export const allDatasetIds = Object.keys(datasetLabels)
 
 export const labelForDataset = datasetId => datasetLabels[datasetId] || 'Unknown'
-
-export const isSubset = datasetId =>
-  (datasetId.startsWith('gnomad_r2') && datasetId !== 'gnomad_r2_1') ||
-  (datasetId.startsWith('gnomad_sv_r2_1') && datasetId !== 'gnomad_sv_r2_1') ||
-  (datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3')
