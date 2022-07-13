@@ -75,19 +75,21 @@ class IGVBrowser extends Component {
       promisified: true,
     }
 
-    igv.createBrowser(this.el, browserConfig).then(browser => {
-      if (this.mounted === false) {
-        igv.removeBrowser(browser)
-        return
-      }
+    igv
+      .createBrowser(this.el, browserConfig)
+      .then(browser => {
+        if (this.mounted === false) {
+          igv.removeBrowser(browser)
+          return
+        }
 
-      this.browser = browser
+        this.browser = browser
 
-      const resetButton = document.createElement('i')
-      resetButton.className = 'igv-app-icon'
-      resetButton.innerText = '⟲'
-      resetButton.title = 'Reset'
-      resetButton.style.cssText = `
+        const resetButton = document.createElement('i')
+        resetButton.className = 'igv-app-icon'
+        resetButton.innerText = '⟲'
+        resetButton.title = 'Reset'
+        resetButton.style.cssText = `
         position: relative;
         top: -1px;
         font-style: normal;
@@ -95,14 +97,15 @@ class IGVBrowser extends Component {
         font-weight: bold;
         margin: 0 10px;
       `
-      resetButton.addEventListener('click', () => {
-        browser.search(config.locus)
+        resetButton.addEventListener('click', () => {
+          browser.search(config.locus)
+        })
+
+        this.el.querySelector('.igv-search-container').appendChild(resetButton)
+
+        onCreateBrowser(browser)
       })
-
-      this.el.querySelector('.igv-search-container').appendChild(resetButton)
-
-      onCreateBrowser(browser)
-    })
+      .catch(reason => console.error(`failed to create IGV browser: "${reason}"`)) // eslint-disable-line no-console
   }
 
   componentWillUnmount() {

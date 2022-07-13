@@ -16,6 +16,11 @@ module.exports = {
       testEnvironment: 'node',
       testMatch: ['<rootDir>/graphql-api/**/*.spec.js'],
     },
+    {
+      displayName: 'dataset-metadata',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/dataset-metadata/**/*.spec.js'],
+    },
   ],
   roots: ['<rootDir>', '<rootDir>/tests'],
 }

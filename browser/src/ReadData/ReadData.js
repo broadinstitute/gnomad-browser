@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
-import { isSubset } from '../datasets'
+import { isSubset } from '../../../dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
