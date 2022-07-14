@@ -17,8 +17,11 @@ about: Report a bug or unexpected behavior
 ### What you did:
 <!-- What you were doing. Include a link to the page you were viewing. -->
 
-### What happened:
-<!--
+### What you expected to see after you did that:
+<!-- What would have been on the screen after your interaction, if everything had gone according to your expectations. -->
+
+### What you actually saw after you did that:
+<!-- What was actually on the screen after your interaction, focusing on the difference between that and the expected state above. -->
 
 Any of the following information will be helpful:
 
