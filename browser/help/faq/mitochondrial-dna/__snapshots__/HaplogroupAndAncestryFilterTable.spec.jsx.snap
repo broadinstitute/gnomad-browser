@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`has no unexpected changes 1`] = `
+Array [
+  <select
+    className="Select-sc-1lkyg9e-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupOrAncestrySelector-dzc7cx-1 gKNBxc"
+    id="haplogroup-selected"
+    onChange={[Function]}
+    value="All"
+  >
+    <optgroup
+      label="Haplogroup"
+    >
+      <option
+        value="All"
+      >
+        All Haplogroups
+      </option>
+      <option
+        value="A"
+      >
+        A
+      </option>
+      <option
+        value="B"
+      >
+        B
+      </option>
+      <option
+        value="C"
+      >
+        C
+      </option>
+      <option
+        value="D"
+      >
+        D
+      </option>
+      <option
+        value="E"
+      >
+        E
+      </option>
+      <option
+        value="F"
+      >
+        F
+      </option>
+      <option
+        value="G"
+      >
+        G
+      </option>
+      <option
+        value="H"
+      >
+        H
+      </option>
+      <option
+        value="HV"
+      >
+        HV
+      </option>
+      <option
+        value="I"
+      >
+        I
+      </option>
+      <option
+        value="J"
+      >
+        J
+      </option>
+      <option
+        value="K"
+      >
+        K
+      </option>
+      <option
+        value="L0"
+      >
+        L0
+      </option>
+      <option
+        value="L1"
+      >
+        L1
+      </option>
+      <option
+        value="L2"
+      >
+        L2
+      </option>
+      <option
+        value="L3"
+      >
+        L3
+      </option>
+      <option
+        value="L4"
+      >
+        L4
+      </option>
+      <option
+        value="L5"
+      >
+        L5
+      </option>
+      <option
+        value="M"
+      >
+        M
+      </option>
+      <option
+        value="N"
+      >
+        N
+      </option>
+      <option
+        value="P"
+      >
+        P
+      </option>
+      <option
+        value="R"
+      >
+        R
+      </option>
+      <option
+        value="T"
+      >
+        T
+      </option>
+      <option
+        value="U"
+      >
+        U
+      </option>
+      <option
+        value="V"
+      >
+        V
+      </option>
+      <option
+        value="W"
+      >
+        W
+      </option>
+      <option
+        value="X"
+      >
+        X
+      </option>
+      <option
+        value="Y"
+      >
+        Y
+      </option>
+      <option
+        value="Z"
+      >
+        Z
+      </option>
+    </optgroup>
+  </select>,
+  <select
+    className="Select-sc-1lkyg9e-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupOrAncestrySelector-dzc7cx-1 gKNBxc"
+    id="ancestry-selected"
+    onChange={[Function]}
+    value="All"
+  >
+    <optgroup
+      label="Ancestry"
+    >
+      <option
+        value="All"
+      >
+        All Ancestries
+      </option>
+      <option
+        value="African/African American"
+      >
+        African/African American
+      </option>
+      <option
+        value="Amish"
+      >
+        Amish
+      </option>
+      <option
+        value="Latino/Admixed American"
+      >
+        Latino/Admixed American
+      </option>
+      <option
+        value="Ashkenazi Jewish"
+      >
+        Ashkenazi Jewish
+      </option>
+      <option
+        value="East Asian"
+      >
+        East Asian
+      </option>
+      <option
+        value="European (Finnish)"
+      >
+        European (Finnish)
+      </option>
+      <option
+        value="Middle Eastern"
+      >
+        Middle Eastern
+      </option>
+      <option
+        value="European (non-Finnish)"
+      >
+        European (non-Finnish)
+      </option>
+      <option
+        value="South Asian"
+      >
+        South Asian
+      </option>
+      <option
+        value="Other"
+      >
+        Other
+      </option>
+    </optgroup>
+  </select>,
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupAndAncestryBaseTable-dzc7cx-0 bWKGZn"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Haplogroup
+        </th>
+        <th
+          scope="col"
+        >
+          Population
+        </th>
+        <th
+          scope="col"
+        >
+          Number of Samples
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+    <tfoot>
+      <tr>
+        <th
+          scope="row"
+        >
+          Haplogroup: 
+          All
+        </th>
+        <th>
+          Ancestry: 
+          All
+        </th>
+        <td>
+          Samples:
+           
+          0
+        </td>
+      </tr>
+    </tfoot>
+  </table>,
+]
+`;
