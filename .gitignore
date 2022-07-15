@@ -23,3 +23,6 @@ browser/dist
 
 # Hail logs
 hail-*.log
+
+# macOS Finder Info
+**/.DS_Store
