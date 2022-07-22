@@ -10,7 +10,7 @@ class UserVisibleError extends Error {
   }
 }
 
-const formatError = error => {
+const formatError = (error) => {
   // graphql-js doesn't distinguish between different error types, so this is the
   // only way to determine what errors come from query validation (and thus should
   // be shown to the user)

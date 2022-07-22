@@ -21,7 +21,7 @@ const resolveReads = async ({ readsDirectory, publicPath, meta }, { alt, chrom, 
   )
   await db.close()
 
-  return rows.map(row => ({
+  return rows.map((row) => ({
     bamPath: `${publicPath}/${row.combined_bamout_id}.bam`,
     category: ZYGOSITY_CATEGORIES[row.zygosity - 1],
     indexPath: `${publicPath}/${row.combined_bamout_id}.bai`,

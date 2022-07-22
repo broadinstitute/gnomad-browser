@@ -8,7 +8,7 @@ const schema = require('./schema')
 // The behavior of Express' trust proxy setting varies based on the type of the argument.
 // Parse the environment variable string into the appropriate type.
 // https://expressjs.com/en/guide/behind-proxies.html
-const parseProxyConfig = config => {
+const parseProxyConfig = (config) => {
   if (config.toLowerCase() === 'true') {
     return true
   }

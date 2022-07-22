@@ -1,8 +1,11 @@
-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+;<OpenSearchDescription
+  xmlns="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:moz="http://www.mozilla.org/2006/browser/search/"
+>
   <ShortName>gnomAD</ShortName>
   <Description>Search by gene, region, or variant</Description>
   <Url type="text/html" method="get" template="https://gnomad.broadinstitute.org/awesome">
-    <Param name="query" value="{searchTerms}"/>
+    <Param name="query" value="{searchTerms}" />
   </Url>
   <InputEncoding>UTF-8</InputEncoding>
 </OpenSearchDescription>

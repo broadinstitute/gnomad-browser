@@ -2,8 +2,30 @@
 
 exports[`has no unexpected changes 1`] = `
 Array [
-  <select
-    className="Select-sc-1lkyg9e-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupOrAncestrySelector-dzc7cx-1 gKNBxc"
+  .c0 {
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 1em;
+  line-height: 1.25;
+  margin: 1em 1em 0 0;
+}
+
+.c0:focus {
+  outline: none;
+  border-color: rgb(70,130,180);
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+<select
+    className="c0"
     id="haplogroup-selected"
     onChange={[Function]}
     value="All"
@@ -163,8 +185,30 @@ Array [
       </option>
     </optgroup>
   </select>,
-  <select
-    className="Select-sc-1lkyg9e-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupOrAncestrySelector-dzc7cx-1 gKNBxc"
+  .c0 {
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 1em;
+  line-height: 1.25;
+  margin: 1em 1em 0 0;
+}
+
+.c0:focus {
+  outline: none;
+  border-color: rgb(70,130,180);
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+<select
+    className="c0"
     id="ancestry-selected"
     onChange={[Function]}
     value="All"
@@ -229,8 +273,69 @@ Array [
       </option>
     </optgroup>
   </select>,
-  <table
-    className="Table__BaseTable-sc-7fgtt2-0 how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population__HaplogroupAndAncestryBaseTable-dzc7cx-0 bWKGZn"
+  .c0 {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.c0 td,
+.c0 th {
+  padding: 0.5em 10px 0.5em 0;
+  text-align: left;
+}
+
+.c0 thead td,
+.c0 thead th {
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.c0 thead td[aria-sort='ascending'],
+.c0 thead th[aria-sort='ascending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+
+.c0 thead td[aria-sort='descending'],
+.c0 thead th[aria-sort='descending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+
+.c0 thead td button,
+.c0 thead th button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 tbody td,
+.c0 tbody th {
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+}
+
+.c0 tfoot td,
+.c0 tfoot th {
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.c0 td {
+  text-align: right;
+}
+
+<table
+    className="c0"
   >
     <thead>
       <tr>
