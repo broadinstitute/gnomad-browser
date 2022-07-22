@@ -1,0 +1,8 @@
+- **Grace Tiao**
+- **Katherine Chao**
+- Julia Goodrich
+- Kristen Laricchia
+- Wenhan Lu
+- Tim Poterba
+- Chris Vittal
+- Mike Wilson
