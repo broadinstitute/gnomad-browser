@@ -7,7 +7,7 @@
   },
   "scripts": {
     "format": "prettier --write './**/src/**/*.(js|ts|jsx|tsx)'",
-    "lint:css": "stylelint './**/*.js'",
+    "lint:css": "stylelint './**/src/**/*.(js|ts|jsx|tsx)'",
     "lint:js": "eslint .",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
