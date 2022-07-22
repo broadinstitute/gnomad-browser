@@ -1,17 +1,12 @@
+- **Sarah E. Calvo**
+- **Nicole Lake**
 - Eric Banks
 - David Benjamin
-- Sarah E. Calvo
 - James Emery
 - Kiran Garimella
 - Laura Gauthier
 - Andrea Haessly
-- Nicole Lake
-- Kristen Laricchia
 - Monkol Lek
-- Daniel MacArthur
 - Vamsi K. Mootha
 - Sebastian Schoenherr
 - Megan Shand
-- Jose Soto
-- Grace Tiao
-- Nick Watts

@@ -26,3 +26,6 @@ hail-*.log
 
 # macOS Finder Info
 **/.DS_Store
+
+# vscode settings
+**/.vscode/

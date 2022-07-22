@@ -235,7 +235,7 @@ export default () => (
     <p>
       All data here are released for the benefit of the wider biomedical community, without
       restriction on use - see the{' '}
-      <Link preserveSelectedDataset={false} to="/terms">
+      <Link preserveSelectedDataset={false} to="/policies">
         terms of use
       </Link>
       . Sign up for our{' '}

@@ -1,4 +1,5 @@
+- **Matthew Solomonson**
+- Phil Darnowski
+- Riley Grant
 - Konrad Karczewski
-- Matthew Solomonson
-- Nick Watts
 - Ben Weisburd
