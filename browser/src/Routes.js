@@ -9,6 +9,7 @@ import DocumentTitle from './DocumentTitle'
 
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
+const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
 const FeedbackPage = lazy(() => import('./FeedbackPage'))
 const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
@@ -16,7 +17,7 @@ const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))
 const PublicationsPage = lazy(() => import('./PublicationsPage'))
-const TermsPage = lazy(() => import('./TermsPage'))
+const PoliciesPage = lazy(() => import('./PoliciesPage'))
 
 const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
 const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
@@ -142,9 +143,13 @@ const Routes = () => {
 
       <Route exact path="/about" component={AboutPage} />
 
+      <Route exact path="/team" component={TeamPage} />
+
       <Route exact path="/downloads" component={DownloadsPage} />
 
-      <Route exact path="/terms" component={TermsPage} />
+      <Redirect from="/terms" to="/policies" />
+
+      <Route exact path="/policies" component={PoliciesPage} />
 
       <Route exact path="/publications" component={PublicationsPage} />
 

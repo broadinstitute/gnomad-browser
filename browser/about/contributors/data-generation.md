@@ -1,12 +1,9 @@
 - **Eric Banks**
+- Sam Bryant
 - Louis Bergelson
 - Kristian Cibulskis
 - Miguel Covarrubias
-- Yossi Farjoun
 - Laura Gauthier
-- Jeff Gentry
-- Thibault Jeandet
-- Diane Kaplan
 - Trevyn Langsford
 - Christopher Llanwarne
 - Ruchi Munshi
@@ -14,10 +11,7 @@
 - Nikelle Petrillo
 - David Roazen
 - Valentin Ruano-Rubio
-- Nareh Sahakian
 - Megan Shand
 - Jonn Smith
-- Jose Soto
 - Kathleen Tibbetts
 - Charlotte Tolonen
-- Gordon Wade
