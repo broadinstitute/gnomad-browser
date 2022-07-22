@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-
 // Workaround for https://github.com/babel/babel/issues/10965
 const browserslist = fs
   .readFileSync(path.resolve(__dirname, 'browser/.browserslistrc'), { encoding: 'utf8' })
@@ -9,6 +8,7 @@ const browserslist = fs
 
 module.exports = {
   presets: [
+    ['@babel/preset-typescript'],
     [
       '@babel/preset-env',
       {
@@ -26,11 +26,7 @@ module.exports = {
       },
     ],
   ],
-  plugins: [
-    '@babel/plugin-proposal-class-properties',
-    'react-hot-loader/babel',
-    'styled-components',
-  ],
+  plugins: ['@babel/plugin-proposal-class-properties', 'styled-components'],
   env: {
     test: {
       plugins: ['@babel/plugin-transform-runtime'],

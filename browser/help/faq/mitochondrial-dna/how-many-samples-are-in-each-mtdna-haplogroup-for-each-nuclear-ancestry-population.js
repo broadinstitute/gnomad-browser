@@ -5,7 +5,7 @@ import { BaseTable, Select } from '@gnomad/ui'
 
 import rawHaplogroupAndAncestryData from './how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population.json'
 
-const haplogroupAndAncestryData = rawHaplogroupAndAncestryData.data.map(row => {
+const haplogroupAndAncestryData = rawHaplogroupAndAncestryData.data.map((row) => {
   const [haplogroup, ancestry, n] = row.split(' ')
   return { haplogroup, ancestry, n }
 })
@@ -85,7 +85,7 @@ const HaplogroupAndAncestryFilterTable = () => {
   ]
 
   useEffect(() => {
-    const newFilteredData = haplogroupAndAncestryData.filter(row => {
+    const newFilteredData = haplogroupAndAncestryData.filter((row) => {
       return (
         (row.haplogroup === haplogroupSelected || haplogroupSelected === 'All') &&
         (codeToHaplogroupName[row.ancestry] === ancestrySelected || ancestrySelected === 'All')
@@ -99,7 +99,7 @@ const HaplogroupAndAncestryFilterTable = () => {
       <HaplogroupOrAncestrySelector
         id="haplogroup-selected"
         value={haplogroupSelected}
-        onChange={e => {
+        onChange={(e) => {
           setHaplogroupSelected(e.target.value)
         }}
       >
@@ -107,7 +107,7 @@ const HaplogroupAndAncestryFilterTable = () => {
           <option value="All" key="All">
             All Haplogroups
           </option>
-          {haplogroupOptions.map(haplogroup => (
+          {haplogroupOptions.map((haplogroup) => (
             <option value={haplogroup} key={haplogroup}>
               {haplogroup}
             </option>
@@ -118,7 +118,7 @@ const HaplogroupAndAncestryFilterTable = () => {
       <HaplogroupOrAncestrySelector
         id="ancestry-selected"
         value={ancestrySelected}
-        onChange={e => {
+        onChange={(e) => {
           setAncestrySelected(e.target.value)
         }}
       >
@@ -126,7 +126,7 @@ const HaplogroupAndAncestryFilterTable = () => {
           <option value="All" key="All">
             All Ancestries
           </option>
-          {ancestryOptions.map(ancestry => (
+          {ancestryOptions.map((ancestry) => (
             <option value={ancestry} key={ancestry}>
               {ancestry}
             </option>
@@ -144,7 +144,7 @@ const HaplogroupAndAncestryFilterTable = () => {
         </thead>
 
         <tbody>
-          {filteredData.map(row => {
+          {filteredData.map((row) => {
             return (
               <tr key={row.haplogroup + row.ancestry}>
                 <th scope="row">{row.haplogroup}</th>

@@ -26,10 +26,10 @@ const buildWhere = ({ id, filter }) => {
         throw new UserVisibleError('Invalid alleles filter')
       }
 
-      filter.alleles.forEach(alleleFilter => {
+      filter.alleles.forEach((alleleFilter) => {
         if (
           [alleleFilter.repeat_unit, alleleFilter.min_repeats, alleleFilter.max_repeats].every(
-            f => !f
+            (f) => !f
           )
         ) {
           throw new UserVisibleError('Invalid alleles filter')
@@ -70,7 +70,7 @@ const buildWhere = ({ id, filter }) => {
       if (filter.alleles.length === 1) {
         // If one allele filter is provided, check if either of the sample's alleles matches the filter.
         const allelesFilterWhere = [1, 2]
-          .map(alleleIndex => allelesFilterWheres[0].replace(/ALLELE_INDEX/g, alleleIndex))
+          .map((alleleIndex) => allelesFilterWheres[0].replace(/ALLELE_INDEX/g, alleleIndex))
           .join(' OR ')
         where += ` AND (${allelesFilterWhere})`
       } else if (filter.alleles.length === 2) {
@@ -83,16 +83,16 @@ const buildWhere = ({ id, filter }) => {
           [1, 2],
           [2, 1],
         ]
-          .map(alleleIndices =>
+          .map((alleleIndices) =>
             alleleIndices
               .map((alleleIndex, i) => allelesFilterWheres[i].replace(/ALLELE_INDEX/g, alleleIndex))
               .join(' AND ')
           )
-          .map(c => `(${c})`)
+          .map((c) => `(${c})`)
           .join(' OR ')
 
         const allelesFilterWhereForOneAllele = allelesFilterWheres
-          .map(w => w.replace(/ALLELE_INDEX/g, '1'))
+          .map((w) => w.replace(/ALLELE_INDEX/g, '1'))
           .join('AND ')
 
         where += ` AND (((${allelesFilterWhereForTwoAlleles}) AND \`n_alleles\` = 2) OR ((${allelesFilterWhereForOneAllele}) AND \`n_alleles\` = 1))`
@@ -170,7 +170,7 @@ const resolveShortTandemRepeatReads = async (
   const rows = await db.all(query, params)
   await db.close()
 
-  return rows.map(row => {
+  return rows.map((row) => {
     return {
       alleles:
         row.n_alleles === 2

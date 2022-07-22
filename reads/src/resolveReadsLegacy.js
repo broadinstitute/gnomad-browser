@@ -35,7 +35,7 @@ const resolveReadsLegacy = async ({ readsDirectory, publicPath }, { alt, chrom, 
 
   // eslint-disable-next-line no-restricted-syntax
   for (const category of ['het', 'hom', 'hemi']) {
-    const row = rows.find(r => r.het_or_hom_or_hemi === category)
+    const row = rows.find((r) => r.het_or_hom_or_hemi === category)
     if (row) {
       for (let i = 0; i < row.n_available_samples; i += 1) {
         reads.push({
