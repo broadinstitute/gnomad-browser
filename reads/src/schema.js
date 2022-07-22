@@ -43,7 +43,7 @@ const VariantReadsType = new GraphQLObjectType({
   fields: {
     exome: {
       type: new GraphQLList(ReadType),
-      resolve: async obj => {
+      resolve: async (obj) => {
         const { dataset, variantId } = obj
         const config = variantDatasets[dataset].exomes
         if (!config) {
@@ -61,7 +61,7 @@ const VariantReadsType = new GraphQLObjectType({
     },
     genome: {
       type: new GraphQLList(ReadType),
-      resolve: async obj => {
+      resolve: async (obj) => {
         const { dataset, variantId } = obj
         const config = variantDatasets[dataset].genomes
         if (!config) {
@@ -116,7 +116,7 @@ const ShortTandemRepeatReadsType = new GraphQLObjectType({
   fields: {
     num_reads: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: obj => {
+      resolve: (obj) => {
         const { dataset } = obj
         const config = shortTandemRepeatDatasets[dataset]
         return resolveShortTandemRepeatNumReads(config, obj)
@@ -157,7 +157,7 @@ const ShortTandemRepeatReadsFilterType = new GraphQLInputObjectType({
 
 const VARIANT_ID_REGEX = /^(\d+|X|Y)-([1-9][0-9]*)-([ACGT]+)-([ACGT]+)$/
 
-const isVariantId = str => {
+const isVariantId = (str) => {
   const match = VARIANT_ID_REGEX.exec(str)
   if (!match) {
     return false
