@@ -1,0 +1,2437 @@
+{
+  "data": {
+    "variant": {
+      "variant_id": "1-55046549-C-G",
+      "reference_genome": "GRCh38",
+      "chrom": "1",
+      "pos": 55046549,
+      "ref": "C",
+      "alt": "G",
+      "caid": "CA23156",
+      "colocated_variants": [
+        "1-55046549-C-T"
+      ],
+      "coverage": {
+        "exome": null,
+        "genome": {
+          "mean": 30.696521714875455
+        }
+      },
+      "multi_nucleotide_variants": null,
+      "exome": null,
+      "genome": {
+        "ac": 125,
+        "an": 152188,
+        "ac_hemi": 0,
+        "ac_hom": 0,
+        "faf95": {
+          "popmax": 0.002473470000000001,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "populations": [
+          {
+            "id": "oth",
+            "ac": 2,
+            "an": 2090,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XX",
+            "ac": 0,
+            "an": 1032,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XY",
+            "ac": 2,
+            "an": 1058,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr",
+            "ac": 3,
+            "an": 15290,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XX",
+            "ac": 0,
+            "an": 6790,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XY",
+            "ac": 3,
+            "an": 8500,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin",
+            "ac": 0,
+            "an": 10624,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XX",
+            "ac": 0,
+            "an": 2572,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XY",
+            "ac": 0,
+            "an": 8052,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "ami",
+            "ac": 0,
+            "an": 912,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "ami_XX",
+            "ac": 0,
+            "an": 470,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "ami_XY",
+            "ac": 0,
+            "an": 442,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas",
+            "ac": 0,
+            "an": 5180,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XX",
+            "ac": 0,
+            "an": 2276,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XY",
+            "ac": 0,
+            "an": 2904,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "mid",
+            "ac": 0,
+            "an": 316,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "mid_XX",
+            "ac": 0,
+            "an": 164,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "mid_XY",
+            "ac": 0,
+            "an": 152,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr",
+            "ac": 120,
+            "an": 41452,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XX",
+            "ac": 67,
+            "an": 22150,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XY",
+            "ac": 53,
+            "an": 19302,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas",
+            "ac": 0,
+            "an": 4828,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XX",
+            "ac": 0,
+            "an": 1162,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XY",
+            "ac": 0,
+            "an": 3666,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj",
+            "ac": 0,
+            "an": 3468,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XX",
+            "ac": 0,
+            "an": 1864,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XY",
+            "ac": 0,
+            "an": 1604,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe",
+            "ac": 0,
+            "an": 68028,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XX",
+            "ac": 0,
+            "an": 39352,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XY",
+            "ac": 0,
+            "an": 28676,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XX",
+            "ac": 67,
+            "an": 77832,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XY",
+            "ac": 58,
+            "an": 74356,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:japanese",
+            "ac": 0,
+            "an": 56,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:japanese_XX",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:japanese_XY",
+            "ac": 0,
+            "an": 40,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:adygei",
+            "ac": 0,
+            "an": 30,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:adygei_XX",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:adygei_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:orcadian",
+            "ac": 0,
+            "an": 30,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:orcadian_XX",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:orcadian_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yakut",
+            "ac": 0,
+            "an": 48,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yakut_XX",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yakut_XY",
+            "ac": 0,
+            "an": 34,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:han",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:han_XX",
+            "ac": 0,
+            "an": 40,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:han_XY",
+            "ac": 0,
+            "an": 44,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:uygur",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:uygur_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:uygur_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:miaozu",
+            "ac": 0,
+            "an": 20,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:miaozu_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:miaozu_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:balochi",
+            "ac": 0,
+            "an": 42,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:balochi_XX",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:balochi_XY",
+            "ac": 0,
+            "an": 42,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mongola",
+            "ac": 0,
+            "an": 20,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mongola_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mongola_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bedouin",
+            "ac": 0,
+            "an": 92,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bedouin_XX",
+            "ac": 0,
+            "an": 38,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bedouin_XY",
+            "ac": 0,
+            "an": 54,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:russian",
+            "ac": 0,
+            "an": 50,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:russian_XX",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:russian_XY",
+            "ac": 0,
+            "an": 32,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:daur",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:daur_XX",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:daur_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pima",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pima_XX",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pima_XY",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hezhen",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hezhen_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hezhen_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sindhi",
+            "ac": 0,
+            "an": 40,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sindhi_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sindhi_XY",
+            "ac": 0,
+            "an": 32,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yizu",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yizu_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yizu_XY",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:oroqen",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:oroqen_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:oroqen_XY",
+            "ac": 0,
+            "an": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tu",
+            "ac": 0,
+            "an": 20,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tu_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tu_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tuscan",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tuscan_XX",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tuscan_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:palestinian",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:palestinian_XX",
+            "ac": 0,
+            "an": 58,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:palestinian_XY",
+            "ac": 0,
+            "an": 26,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tujia",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tujia_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:tujia_XY",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:druze",
+            "ac": 0,
+            "an": 80,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:druze_XX",
+            "ac": 0,
+            "an": 58,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:druze_XY",
+            "ac": 0,
+            "an": 22,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pathan",
+            "ac": 0,
+            "an": 42,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pathan_XX",
+            "ac": 0,
+            "an": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:pathan_XY",
+            "ac": 0,
+            "an": 32,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:basque",
+            "ac": 0,
+            "an": 44,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:basque_XX",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:basque_XY",
+            "ac": 0,
+            "an": 30,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:makrani",
+            "ac": 0,
+            "an": 48,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:makrani_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:makrani_XY",
+            "ac": 0,
+            "an": 40,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:italian",
+            "ac": 0,
+            "an": 22,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:italian_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:italian_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:naxi",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:naxi_XX",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:naxi_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:lahu",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:lahu_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:lahu_XY",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sardinian",
+            "ac": 0,
+            "an": 52,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sardinian_XX",
+            "ac": 0,
+            "an": 24,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:sardinian_XY",
+            "ac": 0,
+            "an": 28,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:karitiana",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:karitiana_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:karitiana_XY",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mozabite",
+            "ac": 0,
+            "an": 52,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mozabite_XX",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mozabite_XY",
+            "ac": 0,
+            "an": 36,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yoruba",
+            "ac": 0,
+            "an": 38,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yoruba_XX",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:yoruba_XY",
+            "ac": 0,
+            "an": 22,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:dai",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:dai_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:dai_XY",
+            "ac": 0,
+            "an": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:cambodian",
+            "ac": 0,
+            "an": 20,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:cambodian_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:cambodian_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:french",
+            "ac": 0,
+            "an": 54,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:french_XX",
+            "ac": 0,
+            "an": 32,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:french_XY",
+            "ac": 0,
+            "an": 22,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantusafrica",
+            "ac": 1,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantusafrica_XX",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantusafrica_XY",
+            "ac": 1,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mandenka",
+            "ac": 0,
+            "an": 42,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mandenka_XX",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:mandenka_XY",
+            "ac": 0,
+            "an": 28,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:surui",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:surui_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:surui_XY",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:brahui",
+            "ac": 0,
+            "an": 44,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:brahui_XX",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:brahui_XY",
+            "ac": 0,
+            "an": 44,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hazara",
+            "ac": 0,
+            "an": 38,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hazara_XX",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:hazara_XY",
+            "ac": 0,
+            "an": 38,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:kalash",
+            "ac": 0,
+            "an": 34,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:kalash_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:kalash_XY",
+            "ac": 0,
+            "an": 28,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:xibo",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:xibo_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:xibo_XY",
+            "ac": 0,
+            "an": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:colombian",
+            "ac": 0,
+            "an": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:colombian_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:colombian_XY",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantukenya",
+            "ac": 0,
+            "an": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantukenya_XX",
+            "ac": 0,
+            "an": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:bantukenya_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:she",
+            "ac": 0,
+            "an": 18,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:she_XX",
+            "ac": 0,
+            "an": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:she_XY",
+            "ac": 0,
+            "an": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:burusho",
+            "ac": 0,
+            "an": 44,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:burusho_XX",
+            "ac": 0,
+            "an": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:burusho_XY",
+            "ac": 0,
+            "an": 36,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:maya",
+            "ac": 0,
+            "an": 42,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:maya_XX",
+            "ac": 0,
+            "an": 38,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:maya_XY",
+            "ac": 0,
+            "an": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:XX",
+            "ac": 0,
+            "an": 568,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "hgdp:XY",
+            "ac": 1,
+            "an": 992,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:esn",
+            "ac": 4,
+            "an": 208,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:esn_XX",
+            "ac": 1,
+            "an": 96,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:esn_XY",
+            "ac": 3,
+            "an": 112,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pur",
+            "ac": 1,
+            "an": 198,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pur_XX",
+            "ac": 0,
+            "an": 94,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pur_XY",
+            "ac": 1,
+            "an": 104,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pjl",
+            "ac": 0,
+            "an": 204,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pjl_XX",
+            "ac": 0,
+            "an": 98,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pjl_XY",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:clm",
+            "ac": 0,
+            "an": 190,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:clm_XX",
+            "ac": 0,
+            "an": 100,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:clm_XY",
+            "ac": 0,
+            "an": 90,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:jpt",
+            "ac": 0,
+            "an": 204,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:jpt_XX",
+            "ac": 0,
+            "an": 92,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:jpt_XY",
+            "ac": 0,
+            "an": 112,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chb",
+            "ac": 0,
+            "an": 204,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chb_XX",
+            "ac": 0,
+            "an": 114,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chb_XY",
+            "ac": 0,
+            "an": 90,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:stu",
+            "ac": 0,
+            "an": 204,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:stu_XX",
+            "ac": 0,
+            "an": 92,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:stu_XY",
+            "ac": 0,
+            "an": 112,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:itu",
+            "ac": 0,
+            "an": 204,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:itu_XX",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:itu_XY",
+            "ac": 0,
+            "an": 120,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:tsi",
+            "ac": 0,
+            "an": 206,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:tsi_XX",
+            "ac": 0,
+            "an": 100,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:tsi_XY",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:mxl",
+            "ac": 0,
+            "an": 126,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:mxl_XX",
+            "ac": 0,
+            "an": 64,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:mxl_XY",
+            "ac": 0,
+            "an": 62,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ceu",
+            "ac": 0,
+            "an": 238,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ceu_XX",
+            "ac": 0,
+            "an": 120,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ceu_XY",
+            "ac": 0,
+            "an": 118,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:msl",
+            "ac": 0,
+            "an": 168,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:msl_XX",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:msl_XY",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:beb",
+            "ac": 0,
+            "an": 200,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:beb_XX",
+            "ac": 0,
+            "an": 104,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:beb_XY",
+            "ac": 0,
+            "an": 96,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:yri",
+            "ac": 2,
+            "an": 234,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:yri_XX",
+            "ac": 2,
+            "an": 116,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:yri_XY",
+            "ac": 0,
+            "an": 118,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:fin",
+            "ac": 0,
+            "an": 196,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:fin_XX",
+            "ac": 0,
+            "an": 120,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:fin_XY",
+            "ac": 0,
+            "an": 76,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:khv",
+            "ac": 0,
+            "an": 202,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:khv_XX",
+            "ac": 0,
+            "an": 108,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:khv_XY",
+            "ac": 0,
+            "an": 94,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:cdx",
+            "ac": 0,
+            "an": 182,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:cdx_XX",
+            "ac": 0,
+            "an": 96,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:cdx_XY",
+            "ac": 0,
+            "an": 86,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:lwk",
+            "ac": 0,
+            "an": 132,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:lwk_XX",
+            "ac": 0,
+            "an": 76,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:lwk_XY",
+            "ac": 0,
+            "an": 56,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:acb",
+            "ac": 0,
+            "an": 184,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:acb_XX",
+            "ac": 0,
+            "an": 94,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:acb_XY",
+            "ac": 0,
+            "an": 90,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:asw",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:asw_XX",
+            "ac": 0,
+            "an": 58,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:asw_XY",
+            "ac": 0,
+            "an": 48,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ibs",
+            "ac": 0,
+            "an": 214,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ibs_XX",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:ibs_XY",
+            "ac": 0,
+            "an": 108,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gbr",
+            "ac": 0,
+            "an": 180,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gbr_XX",
+            "ac": 0,
+            "an": 88,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gbr_XY",
+            "ac": 0,
+            "an": 92,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pel",
+            "ac": 0,
+            "an": 172,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pel_XX",
+            "ac": 0,
+            "an": 88,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:pel_XY",
+            "ac": 0,
+            "an": 84,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gih",
+            "ac": 0,
+            "an": 202,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gih_XX",
+            "ac": 0,
+            "an": 92,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gih_XY",
+            "ac": 0,
+            "an": 110,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chs",
+            "ac": 0,
+            "an": 210,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chs_XX",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:chs_XY",
+            "ac": 0,
+            "an": 104,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gwd",
+            "ac": 0,
+            "an": 232,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gwd_XX",
+            "ac": 0,
+            "an": 116,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:gwd_XY",
+            "ac": 0,
+            "an": 116,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:XX",
+            "ac": 3,
+            "an": 2506,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "1kg:XY",
+            "ac": 4,
+            "an": 2494,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          }
+        ],
+        "local_ancestry_populations": [],
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              1,
+              5,
+              1,
+              3,
+              5,
+              9,
+              3,
+              4,
+              4,
+              1
+            ],
+            "n_smaller": 5,
+            "n_larger": 1
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_smaller": 0,
+            "n_larger": 0
+          }
+        },
+        "quality_metrics": {
+          "allele_balance": {
+            "alt": {
+              "bin_edges": [
+                0,
+                0.05,
+                0.1,
+                0.15,
+                0.2,
+                0.25,
+                0.3,
+                0.35,
+                0.4,
+                0.45,
+                0.5,
+                0.55,
+                0.6,
+                0.65,
+                0.7,
+                0.75,
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                4,
+                6,
+                8,
+                28,
+                19,
+                29,
+                17,
+                9,
+                2,
+                2,
+                0,
+                1,
+                0,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                283,
+                2962,
+                8821,
+                15857,
+                29058,
+                14746,
+                2862,
+                724,
+                329,
+                208,
+                115,
+                56,
+                26,
+                15,
+                10,
+                7,
+                4,
+                1
+              ],
+              "n_smaller": 0,
+              "n_larger": 10
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                2,
+                12,
+                29,
+                28,
+                18,
+                17,
+                12,
+                3,
+                2,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                16377,
+                14268,
+                10647,
+                8149,
+                7500,
+                5452,
+                3830,
+                3249,
+                2127,
+                1416,
+                1030,
+                648,
+                414,
+                283,
+                179,
+                525
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                124
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "SiteQuality",
+              "value": 97107
+            },
+            {
+              "metric": "InbreedingCoeff",
+              "value": -0.0008215904235839844
+            },
+            {
+              "metric": "AS_FS",
+              "value": 1.446491199829931e-15
+            },
+            {
+              "metric": "AS_MQ",
+              "value": 59.996606965042155
+            },
+            {
+              "metric": "AS_MQRankSum",
+              "value": 0.031
+            },
+            {
+              "metric": "AS_pab_max",
+              "value": 1
+            },
+            {
+              "metric": "AS_QUALapprox",
+              "value": 96494
+            },
+            {
+              "metric": "AS_QD",
+              "value": 13.316864013671875
+            },
+            {
+              "metric": "AS_ReadPosRankSum",
+              "value": 0.275
+            },
+            {
+              "metric": "AS_SOR",
+              "value": 0.6981983214022174
+            },
+            {
+              "metric": "AS_VarDP",
+              "value": 7246
+            },
+            {
+              "metric": "AS_VQSLOD",
+              "value": 21.3784
+            }
+          ]
+        }
+      },
+      "flags": [],
+      "lof_curations": null,
+      "rsids": [
+        "rs67608943"
+      ],
+      "transcript_consequences": [
+        {
+          "domains": [
+            "ENSP_mappings:2p4e",
+            "ENSP_mappings:2pmw",
+            "ENSP_mappings:2qtw",
+            "ENSP_mappings:2w2m",
+            "ENSP_mappings:2w2n",
+            "ENSP_mappings:2w2o",
+            "ENSP_mappings:2w2p",
+            "ENSP_mappings:2w2q",
+            "ENSP_mappings:2xtj",
+            "ENSP_mappings:3bps",
+            "ENSP_mappings:3gcw",
+            "ENSP_mappings:3gcx",
+            "ENSP_mappings:3h42",
+            "ENSP_mappings:3m0c",
+            "ENSP_mappings:3p5b",
+            "ENSP_mappings:3p5c",
+            "ENSP_mappings:3sqo",
+            "ENSP_mappings:4k8r",
+            "ENSP_mappings:4ne9",
+            "ENSP_mappings:4nmx",
+            "ENSP_mappings:4ov6",
+            "ENSP_mappings:5oca",
+            "ENSP_mappings:5vl7",
+            "ENSP_mappings:5vla",
+            "ENSP_mappings:5vlh",
+            "ENSP_mappings:5vlk",
+            "ENSP_mappings:5vll",
+            "ENSP_mappings:5vlp",
+            "ENSP_mappings:6f5g",
+            "ENSP_mappings:6u26",
+            "ENSP_mappings:6u2f",
+            "ENSP_mappings:6u2n",
+            "ENSP_mappings:6u2p",
+            "ENSP_mappings:6u36",
+            "ENSP_mappings:6u38",
+            "ENSP_mappings:6u3i",
+            "ENSP_mappings:6u3x",
+            "Gene3D:3",
+            "PANTHER:PTHR43806",
+            "Pfam:PF05922",
+            "Superfamily:SSF54897"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_version": "11",
+          "gene_symbol": "PCSK9",
+          "hgvs": "p.Tyr142Ter",
+          "hgvsc": "c.426C>G",
+          "hgvsp": "p.Tyr142Ter",
+          "is_canonical": true,
+          "is_mane_select": true,
+          "is_mane_select_version": true,
+          "lof": "HC",
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "stop_gained",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "domains": [
+            "PANTHER:PTHR43806"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_version": "11",
+          "gene_symbol": "PCSK9",
+          "hgvs": "p.Tyr17Ter",
+          "hgvsc": "c.51C>G",
+          "hgvsp": "p.Tyr17Ter",
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": "HC",
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "stop_gained",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000673903",
+          "transcript_version": "1"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_version": "11",
+          "gene_symbol": "PCSK9",
+          "hgvs": "p.Tyr142Ter",
+          "hgvsc": "c.426C>G",
+          "hgvsp": "p.Tyr142Ter",
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": null,
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "stop_gained",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000673726",
+          "transcript_version": "1"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_version": "11",
+          "gene_symbol": "PCSK9",
+          "hgvs": "n.96C>G",
+          "hgvsc": "n.96C>G",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": null,
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "non_coding_transcript_exon_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000673662",
+          "transcript_version": "1"
+        }
+      ],
+      "in_silico_predictors": [
+        {
+          "id": "cadd",
+          "value": "37.0",
+          "flags": []
+        },
+        {
+          "id": "splice_ai",
+          "value": "0.0400 (acceptor_gain)",
+          "flags": []
+        }
+      ]
+    },
+    "clinvar_variant": {
+      "clinical_significance": "Conflicting interpretations of pathogenicity",
+      "clinvar_variation_id": "2876",
+      "gold_stars": 1,
+      "last_evaluated": "2021-09-24",
+      "review_status": "criteria provided, conflicting interpretations",
+      "submissions": [
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "not provided",
+              "medgen_id": "CN517202"
+            }
+          ],
+          "last_evaluated": "2018-10-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Invitae"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia 3",
+              "medgen_id": "C1863551"
+            }
+          ],
+          "last_evaluated": "2020-11-21",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Invitae"
+        },
+        {
+          "clinical_significance": "Benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia",
+              "medgen_id": "C0020445"
+            }
+          ],
+          "last_evaluated": "2017-05-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Color Health, Inc"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "name": "not specified",
+              "medgen_id": "CN169374"
+            }
+          ],
+          "last_evaluated": "2021-09-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Women's Health and Genetics/Laboratory Corporation of America, LabCorp"
+        },
+        {
+          "clinical_significance": "association",
+          "conditions": [
+            {
+              "name": "Low density lipoprotein cholesterol level quantitative trait locus 1",
+              "medgen_id": "C3276239"
+            }
+          ],
+          "last_evaluated": "2006-03-23",
+          "review_status": "no assertion criteria provided",
+          "submitter_name": "OMIM"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia 3",
+              "medgen_id": "C1863551"
+            }
+          ],
+          "last_evaluated": "2018-01-23",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Illumina Clinical Services Laboratory,Illumina"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "name": "not provided",
+              "medgen_id": "CN517202"
+            }
+          ],
+          "last_evaluated": "2020-03-27",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "GeneDx"
+        }
+      ]
+    },
+    "liftover_sources": [
+      {
+        "source": {
+          "variant_id": "1-55512222-C-G",
+          "reference_genome": "GRCh37"
+        },
+        "datasets": [
+          "gnomad_r2_1",
+          "gnomad_r3"
+        ]
+      }
+    ],
+    "meta": {
+      "clinvar_release_date": "2022-01-04"
+    }
+  }
+}

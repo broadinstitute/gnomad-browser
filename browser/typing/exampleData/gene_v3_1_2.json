@@ -1,0 +1,520 @@
+{
+  {
+    "data": {
+      "gene": {
+        "reference_genome": "GRCh38",
+        "gene_id": "ENSG00000169174",
+        "gene_version": "11",
+        "symbol": "PCSK9",
+        "gencode_symbol": "PCSK9",
+        "name": "proprotein convertase subtilisin/kexin type 9",
+        "canonical_transcript_id": "ENST00000302118",
+        "mane_select_transcript": {
+          "ensembl_id": "ENST00000302118",
+          "ensembl_version": "5",
+          "refseq_id": "NM_174936",
+          "refseq_version": "4"
+        },
+        "hgnc_id": "HGNC:20001",
+        "ncbi_id": "255738",
+        "omim_id": "607786",
+        "chrom": "1",
+        "start": 55039447,
+        "stop": 55064852,
+        "strand": "+",
+        "exons": [
+          {
+            "feature_type": "CDS",
+            "start": 55039838,
+            "stop": 55040044
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55043843,
+            "stop": 55044034
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55046523,
+            "stop": 55046646
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55051343,
+            "stop": 55051431
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55052278,
+            "stop": 55052411
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55052650,
+            "stop": 55052791
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55055993,
+            "stop": 55056189
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55057331,
+            "stop": 55057514
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55058036,
+            "stop": 55058209
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55058499,
+            "stop": 55058647
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55059486,
+            "stop": 55059663
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55061265,
+            "stop": 55061350
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55061375,
+            "stop": 55061556
+          },
+          {
+            "feature_type": "CDS",
+            "start": 55063369,
+            "stop": 55063581
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55039447,
+            "stop": 55039837
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55040295,
+            "stop": 55040403
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55043843,
+            "stop": 55044010
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55051432,
+            "stop": 55051453
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55052278,
+            "stop": 55052411
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55052650,
+            "stop": 55052694
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55061351,
+            "stop": 55061556
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55063369,
+            "stop": 55063528
+          },
+          {
+            "feature_type": "UTR",
+            "start": 55063582,
+            "stop": 55064852
+          },
+          {
+            "feature_type": "exon",
+            "start": 55043966,
+            "stop": 55044034
+          },
+          {
+            "feature_type": "exon",
+            "start": 55046523,
+            "stop": 55046646
+          },
+          {
+            "feature_type": "exon",
+            "start": 55046923,
+            "stop": 55047332
+          },
+          {
+            "feature_type": "exon",
+            "start": 55050934,
+            "stop": 55052411
+          },
+          {
+            "feature_type": "exon",
+            "start": 55052650,
+            "stop": 55052791
+          },
+          {
+            "feature_type": "exon",
+            "start": 55055993,
+            "stop": 55056189
+          },
+          {
+            "feature_type": "exon",
+            "start": 55057428,
+            "stop": 55057514
+          },
+          {
+            "feature_type": "exon",
+            "start": 55058036,
+            "stop": 55058209
+          },
+          {
+            "feature_type": "exon",
+            "start": 55058499,
+            "stop": 55058647
+          },
+          {
+            "feature_type": "exon",
+            "start": 55061375,
+            "stop": 55061556
+          },
+          {
+            "feature_type": "exon",
+            "start": 55063369,
+            "stop": 55064850
+          }
+        ],
+        "flags": [],
+        "gnomad_constraint": null,
+        "exac_constraint": null,
+        "transcripts": [
+          {
+            "transcript_id": "ENST00000673662",
+            "transcript_version": "1",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "exon",
+                "start": 55043966,
+                "stop": 55044034
+              },
+              {
+                "feature_type": "exon",
+                "start": 55046523,
+                "stop": 55046646
+              },
+              {
+                "feature_type": "exon",
+                "start": 55046923,
+                "stop": 55047332
+              }
+            ],
+            "gtex_tissue_expression": null
+          },
+          {
+            "transcript_id": "ENST00000673726",
+            "transcript_version": "1",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "UTR",
+                "start": 55039447,
+                "stop": 55039837
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55039838,
+                "stop": 55040044
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55043843,
+                "stop": 55044034
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55046523,
+                "stop": 55046646
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55051343,
+                "stop": 55051431
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55051432,
+                "stop": 55051453
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55052278,
+                "stop": 55052411
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55052650,
+                "stop": 55052694
+              }
+            ],
+            "gtex_tissue_expression": null
+          },
+          {
+            "transcript_id": "ENST00000490692",
+            "transcript_version": "1",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "exon",
+                "start": 55050934,
+                "stop": 55052411
+              },
+              {
+                "feature_type": "exon",
+                "start": 55052650,
+                "stop": 55052791
+              },
+              {
+                "feature_type": "exon",
+                "start": 55055993,
+                "stop": 55056189
+              },
+              {
+                "feature_type": "exon",
+                "start": 55057428,
+                "stop": 55057514
+              },
+              {
+                "feature_type": "exon",
+                "start": 55058036,
+                "stop": 55058209
+              },
+              {
+                "feature_type": "exon",
+                "start": 55058499,
+                "stop": 55058647
+              },
+              {
+                "feature_type": "exon",
+                "start": 55061375,
+                "stop": 55061556
+              },
+              {
+                "feature_type": "exon",
+                "start": 55063369,
+                "stop": 55064850
+              }
+            ],
+            "gtex_tissue_expression": null
+          },
+          {
+            "transcript_id": "ENST00000673903",
+            "transcript_version": "1",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "UTR",
+                "start": 55040295,
+                "stop": 55040403
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55043843,
+                "stop": 55044010
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55044011,
+                "stop": 55044034
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55046523,
+                "stop": 55046646
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55052278,
+                "stop": 55052411
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55052650,
+                "stop": 55052791
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55055993,
+                "stop": 55056189
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55057331,
+                "stop": 55057514
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55058036,
+                "stop": 55058209
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55058499,
+                "stop": 55058647
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55059486,
+                "stop": 55059663
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55061375,
+                "stop": 55061556
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55063369,
+                "stop": 55063581
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55063582,
+                "stop": 55064797
+              }
+            ],
+            "gtex_tissue_expression": null
+          },
+          {
+            "transcript_id": "ENST00000673913",
+            "transcript_version": "1",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "CDS",
+                "start": 55058116,
+                "stop": 55058209
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55058499,
+                "stop": 55058647
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55059486,
+                "stop": 55059663
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55061265,
+                "stop": 55061350
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55061351,
+                "stop": 55061556
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55063369,
+                "stop": 55063528
+              }
+            ],
+            "gtex_tissue_expression": null
+          },
+          {
+            "transcript_id": "ENST00000302118",
+            "transcript_version": "5",
+            "strand": "+",
+            "exons": [
+              {
+                "feature_type": "UTR",
+                "start": 55039548,
+                "stop": 55039837
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55039838,
+                "stop": 55040044
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55043843,
+                "stop": 55044034
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55046523,
+                "stop": 55046646
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55052278,
+                "stop": 55052411
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55052650,
+                "stop": 55052791
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55055993,
+                "stop": 55056189
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55057331,
+                "stop": 55057514
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55058036,
+                "stop": 55058209
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55058499,
+                "stop": 55058647
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55059486,
+                "stop": 55059663
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55061375,
+                "stop": 55061556
+              },
+              {
+                "feature_type": "CDS",
+                "start": 55063369,
+                "stop": 55063581
+              },
+              {
+                "feature_type": "UTR",
+                "start": 55063582,
+                "stop": 55064852
+              }
+            ],
+            "gtex_tissue_expression": null
+          }
+        ],
+        "pext": null,
+        "exac_regional_missense_constraint_regions": null,
+        "short_tandem_repeats": []
+      }
+    }
+  }

@@ -1,0 +1,1456 @@
+{
+  "data": {
+    "variant": {
+      "variant_id": "1-55512222-C-G",
+      "reference_genome": "GRCh37",
+      "chrom": "1",
+      "pos": 55512222,
+      "ref": "C",
+      "alt": "G",
+      "caid": "CA23156",
+      "colocated_variants": [],
+      "coverage": {
+        "exome": {
+          "mean": 93.32148507541399
+        },
+        "genome": {
+          "mean": 32.535394629780306
+        }
+      },
+      "multi_nucleotide_variants": null,
+      "exome": {
+        "ac": 47,
+        "an": 251492,
+        "ac_hemi": 0,
+        "ac_hom": 0,
+        "faf95": {
+          "popmax": 0.002072100000000005,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "populations": [
+          {
+            "id": "afr",
+            "ac": 44,
+            "an": 16256,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XX",
+            "ac": 32,
+            "an": 10070,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XY",
+            "ac": 12,
+            "an": 6186,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr",
+            "ac": 3,
+            "an": 34592,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XX",
+            "ac": 3,
+            "an": 20270,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XY",
+            "ac": 0,
+            "an": 14322,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj",
+            "ac": 0,
+            "an": 10080,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XX",
+            "ac": 0,
+            "an": 4900,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XY",
+            "ac": 0,
+            "an": 5180,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas",
+            "ac": 0,
+            "an": 18394,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_jpn",
+            "ac": 0,
+            "an": 152,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_kor",
+            "ac": 0,
+            "an": 3818,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_oea",
+            "ac": 0,
+            "an": 14424,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XX",
+            "ac": 0,
+            "an": 9328,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XY",
+            "ac": 0,
+            "an": 9066,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin",
+            "ac": 0,
+            "an": 21646,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XX",
+            "ac": 0,
+            "an": 10372,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XY",
+            "ac": 0,
+            "an": 11274,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe",
+            "ac": 0,
+            "an": 113768,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_bgr",
+            "ac": 0,
+            "an": 2670,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_est",
+            "ac": 0,
+            "an": 242,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_nwe",
+            "ac": 0,
+            "an": 42222,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_onf",
+            "ac": 0,
+            "an": 30998,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_seu",
+            "ac": 0,
+            "an": 11504,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_swe",
+            "ac": 0,
+            "an": 26132,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XX",
+            "ac": 0,
+            "an": 50158,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XY",
+            "ac": 0,
+            "an": 63610,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth",
+            "ac": 0,
+            "an": 6140,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XX",
+            "ac": 0,
+            "an": 2928,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XY",
+            "ac": 0,
+            "an": 3212,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas",
+            "ac": 0,
+            "an": 30616,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XX",
+            "ac": 0,
+            "an": 7544,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XY",
+            "ac": 0,
+            "an": 23072,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XX",
+            "ac": 35,
+            "an": 115570,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XY",
+            "ac": 12,
+            "an": 135922,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          }
+        ],
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              2,
+              0,
+              0,
+              3,
+              6,
+              6,
+              4,
+              5,
+              3,
+              3
+            ],
+            "n_smaller": 1,
+            "n_larger": 1
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_smaller": 0,
+            "n_larger": 0
+          }
+        },
+        "quality_metrics": {
+          "allele_balance": {
+            "alt": {
+              "bin_edges": [
+                0,
+                0.05,
+                0.1,
+                0.15,
+                0.2,
+                0.25,
+                0.3,
+                0.35,
+                0.4,
+                0.45,
+                0.5,
+                0.55,
+                0.6,
+                0.65,
+                0.7,
+                0.75,
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                12,
+                18,
+                11,
+                4,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                1,
+                24,
+                113,
+                339,
+                638,
+                2229,
+                15284,
+                36900,
+                23223,
+                10791,
+                7444,
+                6092,
+                5018,
+                4282,
+                3406,
+                2712,
+                2070,
+                1505,
+                1267
+              ],
+              "n_smaller": 0,
+              "n_larger": 2410
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                2,
+                0,
+                0,
+                0,
+                2,
+                3,
+                3,
+                2,
+                3,
+                6
+              ],
+              "n_smaller": 0,
+              "n_larger": 26
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                1,
+                4,
+                4,
+                12,
+                25,
+                16,
+                58,
+                64,
+                50,
+                253,
+                77,
+                273,
+                112,
+                555,
+                69,
+                711,
+                123464
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                47
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "BaseQRankSum",
+              "value": 0.473
+            },
+            {
+              "metric": "ClippingRankSum",
+              "value": 0.14
+            },
+            {
+              "metric": "DP",
+              "value": 10686126
+            },
+            {
+              "metric": "FS",
+              "value": 0
+            },
+            {
+              "metric": "InbreedingCoeff",
+              "value": 0.0001
+            },
+            {
+              "metric": "MQ",
+              "value": 59.47
+            },
+            {
+              "metric": "MQRankSum",
+              "value": -0.188
+            },
+            {
+              "metric": "pab_max",
+              "value": 1
+            },
+            {
+              "metric": "QD",
+              "value": 13.69
+            },
+            {
+              "metric": "ReadPosRankSum",
+              "value": 0.161
+            },
+            {
+              "metric": "RF",
+              "value": 0.857348374183475
+            },
+            {
+              "metric": "SiteQuality",
+              "value": 136885.61
+            },
+            {
+              "metric": "SOR",
+              "value": 0.683
+            },
+            {
+              "metric": "VQSLOD",
+              "value": 3.33
+            },
+            {
+              "metric": "VQSR_NEGATIVE_TRAIN_SITE",
+              "value": null
+            },
+            {
+              "metric": "VQSR_POSITIVE_TRAIN_SITE",
+              "value": 1
+            }
+          ]
+        }
+      },
+      "genome": {
+        "ac": 15,
+        "an": 31364,
+        "ac_hemi": 0,
+        "ac_hom": 0,
+        "faf95": {
+          "popmax": 0.0010625599999999967,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "populations": [
+          {
+            "id": "afr",
+            "ac": 15,
+            "an": 8700,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XX",
+            "ac": 4,
+            "an": 3678,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "afr_XY",
+            "ac": 11,
+            "an": 5022,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr",
+            "ac": 0,
+            "an": 848,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XX",
+            "ac": 0,
+            "an": 414,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "amr_XY",
+            "ac": 0,
+            "an": 434,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj",
+            "ac": 0,
+            "an": 290,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XX",
+            "ac": 0,
+            "an": 80,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "asj_XY",
+            "ac": 0,
+            "an": 210,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas",
+            "ac": 0,
+            "an": 1556,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XX",
+            "ac": 0,
+            "an": 534,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "eas_XY",
+            "ac": 0,
+            "an": 1022,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin",
+            "ac": 0,
+            "an": 3472,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XX",
+            "ac": 0,
+            "an": 1844,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "fin_XY",
+            "ac": 0,
+            "an": 1628,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe",
+            "ac": 0,
+            "an": 15414,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_est",
+            "ac": 0,
+            "an": 4574,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_nwe",
+            "ac": 0,
+            "an": 8598,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_onf",
+            "ac": 0,
+            "an": 2136,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_seu",
+            "ac": 0,
+            "an": 106,
+            "ac_hemi": null,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XX",
+            "ac": 0,
+            "an": 6798,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "nfe_XY",
+            "ac": 0,
+            "an": 8616,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth",
+            "ac": 0,
+            "an": 1084,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XX",
+            "ac": 0,
+            "an": 558,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "oth_XY",
+            "ac": 0,
+            "an": 526,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XX",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "sas_XY",
+            "ac": 0,
+            "an": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XX",
+            "ac": 4,
+            "an": 13906,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          },
+          {
+            "id": "XY",
+            "ac": 11,
+            "an": 17458,
+            "ac_hemi": 0,
+            "ac_hom": 0
+          }
+        ],
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_smaller": 4,
+            "n_larger": 0
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_smaller": 0,
+            "n_larger": 0
+          }
+        },
+        "quality_metrics": {
+          "allele_balance": {
+            "alt": {
+              "bin_edges": [
+                0,
+                0.05,
+                0.1,
+                0.15,
+                0.2,
+                0.25,
+                0.3,
+                0.35,
+                0.4,
+                0.45,
+                0.5,
+                0.55,
+                0.6,
+                0.65,
+                0.7,
+                0.75,
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                1,
+                1,
+                2,
+                3,
+                3,
+                3,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                21,
+                152,
+                918,
+                2599,
+                3137,
+                3499,
+                4077,
+                1049,
+                176,
+                45,
+                13,
+                3,
+                4,
+                5,
+                6,
+                2,
+                1,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 1
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                2,
+                6,
+                5,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                2,
+                1,
+                5,
+                14,
+                14,
+                56,
+                113,
+                112,
+                350,
+                565,
+                403,
+                1566,
+                500,
+                1376,
+                678,
+                1790,
+                245,
+                1743,
+                6175
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                15
+              ],
+              "n_smaller": 0,
+              "n_larger": 0
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "BaseQRankSum",
+              "value": 0.755
+            },
+            {
+              "metric": "ClippingRankSum",
+              "value": 0.036
+            },
+            {
+              "metric": "DP",
+              "value": 651975
+            },
+            {
+              "metric": "FS",
+              "value": 2.428
+            },
+            {
+              "metric": "InbreedingCoeff",
+              "value": -0.0005
+            },
+            {
+              "metric": "MQ",
+              "value": 60
+            },
+            {
+              "metric": "MQRankSum",
+              "value": -0.276
+            },
+            {
+              "metric": "pab_max",
+              "value": 1
+            },
+            {
+              "metric": "QD",
+              "value": 11.75
+            },
+            {
+              "metric": "ReadPosRankSum",
+              "value": 0.524
+            },
+            {
+              "metric": "RF",
+              "value": 0.964521067700421
+            },
+            {
+              "metric": "SiteQuality",
+              "value": 7710.029999999999
+            },
+            {
+              "metric": "SOR",
+              "value": 0.685
+            },
+            {
+              "metric": "VQSLOD",
+              "value": 15.92
+            },
+            {
+              "metric": "VQSR_NEGATIVE_TRAIN_SITE",
+              "value": null
+            },
+            {
+              "metric": "VQSR_POSITIVE_TRAIN_SITE",
+              "value": 1
+            }
+          ]
+        }
+      },
+      "flags": [],
+      "lof_curations": [
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "verdict": "LoF",
+          "flags": [],
+          "project": "metabolic_conditions_genes"
+        }
+      ],
+      "rsids": [
+        "rs67608943"
+      ],
+      "transcript_consequences": [
+        {
+          "domains": [
+            "Gene3D:3",
+            "Pfam_domain:PF05922",
+            "Superfamily_domains:SSF54897",
+            "hmmpanther:PTHR10795"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_version": "9",
+          "gene_symbol": "PCSK9",
+          "hgvs": "p.Tyr142Ter",
+          "hgvsc": "c.426C>G",
+          "hgvsp": "p.Tyr142Ter",
+          "is_canonical": true,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": "HC",
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "stop_gained",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "domains": [
+            "Gene3D:3",
+            "Pfam_domain:PF05922",
+            "Superfamily_domains:SSF54897",
+            "hmmpanther:PTHR10795"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_version": "9",
+          "gene_symbol": "PCSK9",
+          "hgvs": "p.Tyr142Ter",
+          "hgvsc": "c.426C>G",
+          "hgvsp": "p.Tyr142Ter",
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": "HC",
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "stop_gained",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000452118",
+          "transcript_version": "2"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_version": "9",
+          "gene_symbol": "PCSK9",
+          "hgvs": "c.-77-5729C>G",
+          "hgvsc": "c.-77-5729C>G",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_flags": null,
+          "lof_filter": null,
+          "major_consequence": "intron_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000543384",
+          "transcript_version": "1"
+        }
+      ],
+      "in_silico_predictors": null
+    },
+    "clinvar_variant": {
+      "clinical_significance": "Conflicting interpretations of pathogenicity",
+      "clinvar_variation_id": "2876",
+      "gold_stars": 1,
+      "last_evaluated": "2021-09-24",
+      "review_status": "criteria provided, conflicting interpretations",
+      "submissions": [
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "not provided",
+              "medgen_id": "CN517202"
+            }
+          ],
+          "last_evaluated": "2018-10-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Invitae"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia 3",
+              "medgen_id": "C1863551"
+            }
+          ],
+          "last_evaluated": "2020-11-21",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Invitae"
+        },
+        {
+          "clinical_significance": "Benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia",
+              "medgen_id": "C0020445"
+            }
+          ],
+          "last_evaluated": "2017-05-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Color Health, Inc"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "name": "not specified",
+              "medgen_id": "CN169374"
+            }
+          ],
+          "last_evaluated": "2021-09-24",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Women's Health and Genetics/Laboratory Corporation of America, LabCorp"
+        },
+        {
+          "clinical_significance": "association",
+          "conditions": [
+            {
+              "name": "Low density lipoprotein cholesterol level quantitative trait locus 1",
+              "medgen_id": "C3276239"
+            }
+          ],
+          "last_evaluated": "2006-03-23",
+          "review_status": "no assertion criteria provided",
+          "submitter_name": "OMIM"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "name": "Familial hypercholesterolemia 3",
+              "medgen_id": "C1863551"
+            }
+          ],
+          "last_evaluated": "2018-01-23",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Illumina Clinical Services Laboratory,Illumina"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "name": "not provided",
+              "medgen_id": "CN517202"
+            }
+          ],
+          "last_evaluated": "2020-03-27",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "GeneDx"
+        }
+      ]
+    },
+    "liftover": [
+      {
+        "liftover": {
+          "variant_id": "1-55046549-C-G",
+          "reference_genome": "GRCh38"
+        },
+        "datasets": [
+          "gnomad_r2_1",
+          "gnomad_r3"
+        ]
+      }
+    ],
+    "meta": {
+      "clinvar_release_date": "2022-01-04"
+    }
+  }
+}
