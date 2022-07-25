@@ -102,6 +102,11 @@ const DownloadsPage = ({ location }) => {
         .
       </p>
 
+      <em>
+        Please note, this BigQuery dataset is maintained entirely by Google. The gnomAD team has no
+        ability to provide a consistent experience in BigQuery.
+      </em>
+
       <h3>Registry of Open Data on AWS</h3>
 
       <p>
