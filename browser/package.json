@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "./build.sh",
-    "start": "./start.sh"
+    "start": "./start.sh",
+    "download-schema": "yarn apollo service:download --endpoint=https://gnomad.broadinstitute.org/api graphql-schema.json",
+    "generate-types": "yarn apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "files": [
     "dist"
@@ -46,5 +48,11 @@
     "react-window": "^1.7.1",
     "styled-components": "^4.2.0",
     "whatwg-fetch": "^3.5.0"
+  },
+  "volta": {
+    "node": "14.20.0"
+  },
+  "devDependencies": {
+    "apollo": "^2.34.0"
   }
 }
