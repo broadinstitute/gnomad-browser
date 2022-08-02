@@ -1,4 +1,4 @@
-FROM node:14.15.2-alpine as build
+FROM --platform=linux/amd64 node:14.15.2-alpine as build
 
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -28,7 +28,7 @@ RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)
   | xargs -I{} -n1 sh -c 'gzip -9 -c "$1" > "$1".gz; MTIME=$(date -R -r "$1" +"%Y-%m-%d %H:%M:%S"); touch -d "$MTIME" "$1.gz"' -- {}
 
 ###############################################################################
-FROM nginx:stable-alpine
+FROM --platform=linux/amd64 nginx:stable-alpine
 
 COPY --from=build /home/node/app/browser/dist/public /usr/share/nginx/html
 
