@@ -9,7 +9,8 @@
     "format": "prettier --write './**/*.js'",
     "lint:css": "stylelint './**/*.js'",
     "lint:js": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "engines": {
     "node": ">=14.15.2 <15.0.0"
