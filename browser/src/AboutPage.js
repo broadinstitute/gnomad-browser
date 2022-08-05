@@ -69,20 +69,10 @@ export default () => (
     <DocumentTitle title="About gnomAD" />
     <PageHeading id="about-gnomad">About gnomAD</PageHeading>
 
+    {/* Import about blurb from .md file */}
     <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
 
-    <SectionHeader>Funding</SectionHeader>
-    <CreditsSection width="70%">
-      <FundingSources
-        aria-labelledby="funding"
-        dangerouslySetInnerHTML={{ __html: fundingSources.html }}
-      />
-      <p>
-        The vast majority of the data storage, computing resources, and human effort used to
-        generate this call set were donated by the Broad Institute
-      </p>
-    </CreditsSection>
-
+    {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
     <SectionHeader>Data Contributors</SectionHeader>
     <Credits>
       <CreditsSection width="45%">
@@ -100,5 +90,18 @@ export default () => (
         />
       </CreditsSection>
     </Credits>
+
+    {/* Funding Section */}
+    <SectionHeader>Funding</SectionHeader>
+    <CreditsSection width="70%">
+      <FundingSources
+        aria-labelledby="funding"
+        dangerouslySetInnerHTML={{ __html: fundingSources.html }}
+      />
+      <p>
+        The vast majority of the data storage, computing resources, and human effort used to
+        generate this call set were donated by the Broad Institute
+      </p>
+    </CreditsSection>
   </InfoPage>
 )
