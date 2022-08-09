@@ -28,7 +28,7 @@ const helpTopics = `
   const topics = [${helpTopicFiles.map((_, i) => `topic${i}`).join(',')}];
 `
 
-const faqFiles = glob.sync(`${path.resolve(__dirname, '../help/faq')}/**/*.@(js|md)`, {
+const faqFiles = glob.sync(`${path.resolve(__dirname, '../help/faq')}/**/*.@(js|tsx|md)`, {
   matchBase: true,
   absolute: true,
 })
@@ -36,8 +36,8 @@ const faqFiles = glob.sync(`${path.resolve(__dirname, '../help/faq')}/**/*.@(js|
 const faqImports = faqFiles
   .map((f, i) => {
     const importPath = path.relative(path.dirname(OUTPUT_PATH), f)
-    if (f.endsWith('.js')) {
-      return `import * as faqEntry${i} from '${importPath.replace(/\.js$/, '')}'`
+    if (f.endsWith('.js') || f.endsWith('.tsx')) {
+      return `import * as faqEntry${i} from '${importPath.replace(/\.(js|tsx)$/, '')}'`
     }
 
     return `import faqEntry${i} from '${importPath}'`
@@ -47,7 +47,7 @@ const faqImports = faqFiles
 const faqEntries = `
   const faqEntries = [${faqFiles
     .map((f, i) => {
-      const id = path.basename(f).replace(/\.(js|md)$/, '')
+      const id = path.basename(f).replace(/\.(js|tsx|md)$/, '')
       return `{id: '${id}', ...faqEntry${i}}`
     })
     .join(',')}];
