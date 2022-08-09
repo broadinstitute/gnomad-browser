@@ -8,7 +8,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'func-names': ['warn', 'as-needed'],
-    'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx', 'ts', '.tsx'] }],
     'import/prefer-default-export': 0,
     // https://github.com/airbnb/javascript/blob/6d05dd898acfec3299cc2be8b6188be542824965/packages/eslint-config-airbnb/rules/react.js#L489
     'react/static-property-placement': ['error', 'static public field'],
