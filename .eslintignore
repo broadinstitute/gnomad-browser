@@ -2,3 +2,6 @@ node_modules
 
 browser/dist
 browser/src/help/helpTopics.js
+
+# Ignore Cypress tests
+**/*.cy.ts

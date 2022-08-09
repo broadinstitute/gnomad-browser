@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "./build.sh",
-    "start": "./start.sh"
+    "start": "./start.sh",
+    "cypress:open": "cypress open"
   },
   "files": [
     "dist"
@@ -48,6 +49,7 @@
     "whatwg-fetch": "^3.5.0"
   },
   "devDependencies": {
+    "cypress": "^10.4.0",
     "jest-styled-components": "^6.0.0",
     "ts-migrate": "^0.1.30",
     "typescript": "^4.7.4"
