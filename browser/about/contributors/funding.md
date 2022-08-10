@@ -3,7 +3,7 @@
 - NIH/NHGRI U24HG011450<br/>(MPIs: Rehm and Daly)
 - NIH/NHGRI U01HG011755<br/>(MPIs: O’Donnell-Luria, Rehm and Talkowski)
 - NIMH MH115957<br/>(PI: Talkowski)
-- NIHCHD HD081256<br/>(PI: Talkowski)
+- NICHD HD081256<br/>(PI: Talkowski)
 - Broad Institute contributes data storage, computing resources, and human effort
 
 <br/>
