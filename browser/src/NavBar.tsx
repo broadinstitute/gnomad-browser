@@ -109,9 +109,12 @@ const NavBar = () => {
             Team
           </Link>
         </li>
+        {/* two <a> tags instead of <Link>s because the blog is a separate application */}
         <li>
-          {/* a instead of Link because the blog is a separate application */}
-          <a href="/news/">News</a>
+          <a href="https://gnomad.broadinstitute.org/news/">News</a>
+        </li>
+        <li>
+          <a href="https://gnomad.broadinstitute.org/news/changelog/">Changelog</a>
         </li>
         <li>
           <Link to="/downloads" onClick={closeMenu}>
@@ -132,10 +135,6 @@ const NavBar = () => {
           <Link to="/feedback" onClick={closeMenu}>
             Feedback
           </Link>
-        </li>
-        <li>
-          {/* a instead of Link because the blog is a separate application */}
-          <a href="/news/changelog/">Changelog</a>
         </li>
         <li>
           <Link to="/help" onClick={closeMenu}>
