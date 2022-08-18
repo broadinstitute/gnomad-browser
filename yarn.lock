@@ -1178,10 +1178,10 @@
   resolved "https://registry.yarnpkg.com/@gnomad/identifiers/-/identifiers-2.3.2.tgz#7893a9f557c6b76a1c622d7038a8fca39060c1d7"
   integrity sha512-nYBBaBWDRhzGtLDe5/FR0lnEJnXoPPqxfjtS8B/ze5k6scwimmhGqpFk14XAnwFgM+qLR4Lih/T7PvoBkNW5cA==
 
-"@gnomad/markdown-loader@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@gnomad/markdown-loader/-/markdown-loader-1.0.0.tgz#3a63090bf493f0ea7f92b1db7389987b31320651"
-  integrity sha512-lkLMzwxT8UsFa2sqoDg1bVoQ3kcNkbx0PMDKRTKBM2Pgn/Dnk/TenrjGARogcLWRFEb7EOLegs7anpJY+VRfjg==
+"@gnomad/markdown-loader@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@gnomad/markdown-loader/-/markdown-loader-1.1.0.tgz#8a0724112bfe9e6a0e6c7fd469f5aab974ada359"
+  integrity sha512-CK7YqyT6bvaxCYLgtj7vL9/sjmjxBSPblmnXGT44zbwFz1yrSoOytndOqk8/StDI58zC/QnDMqMyvuopsfMeYg==
   dependencies:
     loader-utils "^2.0.0"
     remark "^10.0.1"
