@@ -91,7 +91,7 @@ export default () => (
     <List>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        Gene:
+        Gene:{' '}
         <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
           PCSK9
         </Link>
@@ -136,7 +136,7 @@ export default () => (
         <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
           short tandem repeat
         </ExternalLink>{' '}
-        locus:
+        locus:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
@@ -231,7 +231,7 @@ export default () => (
     <h2>About gnomAD</h2>
 
     <p>
-      The
+      The{' '}
       <Link preserveSelectedDataset={false} to="/about">
         Genome Aggregation Database
       </Link>{' '}
