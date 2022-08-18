@@ -6,6 +6,9 @@ import { PageHeading } from '@gnomad/ui'
 // JSON containing information for all members with bios and headshots
 import teamMembers from './TeamMembers.json'
 
+// use Webpack Context to dynamically import all headshots
+import headshotImages from './headshotLoader'
+
 // Members of the "Staff" section
 // @ts-expect-error
 import websiteStaff from '../../about/contributors/website.md'
@@ -68,25 +71,6 @@ const ResponsiveColumn = styled.div`
   }
 `
 
-// use webpack's context to dynamically load every headshot from the folder
-// @ts-expect-error
-const importAllHeadshots = (webpackContext) => {
-  const headshots = {}
-
-  // @ts-expect-error
-  webpackContext.keys().forEach((key) => {
-    // @ts-expect-error
-    headshots[key.replace('./', '')] = webpackContext(key).default
-  })
-
-  return headshots
-}
-
-const headshotImages = importAllHeadshots(
-  // @ts-expect-error
-  require.context('../../about/contributors/headshots', false, /\.(png|jpe?g|svg)$/)
-)
-
 // Component to be used for a TeamCard, only used on this page
 // @ts-expect-error
 const TeamCard = ({ title, description, headshotSource }) => {
@@ -95,7 +79,7 @@ const TeamCard = ({ title, description, headshotSource }) => {
       <Row>
         <ImageColumn>
           <Headshot
-            alt="headshot"
+            alt={`Headshot of ${title}`}
             src={
               // @ts-expect-error
               headshotImages[headshotSource]
@@ -171,7 +155,6 @@ export default () => (
     >
       The gnomAD Team
     </PageHeading>
-    {/* TODO: remove this team wrapper if on final wording there's no landing blurb */}
     <Team>
       <TeamSection>
         <h2>gnomAD Steering Committee</h2>
@@ -219,6 +202,7 @@ export default () => (
           {teamMembers.scientificAdvisoryBoard.map((advisoryBoardMember) => {
             return (
               <TeamCard
+                key={advisoryBoardMember.name}
                 title={advisoryBoardMember.name}
                 description={advisoryBoardMember.bio}
                 headshotSource={advisoryBoardMember.headshotSource}
