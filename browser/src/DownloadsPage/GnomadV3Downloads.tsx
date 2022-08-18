@@ -184,7 +184,7 @@ export default () => (
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
           gnomAD v3.1.2 blog post
         </ExternalLink>{' '}
-        and the
+        and the{' '}
         <Link to="/help/hgdp-1kg-annotations">
           HGDP + 1KG dense MatrixTable annotation descriptions
         </Link>

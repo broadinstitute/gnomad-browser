@@ -171,7 +171,7 @@ const DownloadsPage = ({ location }: Props) => {
       <h3>Downloads</h3>
 
       <p>
-        See
+        See{' '}
         <Link to="/help/whats-the-difference-between-gnomad-v2-and-v3">
           &ldquo;What&apos;s the difference between gnomAD v2 and v3?&rdquo;
         </Link>{' '}

@@ -1,5 +1,5 @@
 ---
-id: mt-haplogroup-frequencies
+id: haplogroup-frequencies
 title: 'Haplogroup Frequencies'
 ---
 

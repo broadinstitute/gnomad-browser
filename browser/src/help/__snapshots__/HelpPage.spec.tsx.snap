@@ -1,0 +1,4934 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help Page has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c9 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c10 {
+  margin-bottom: 0.5em;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c6 {
+  margin: 0;
+}
+
+.c8 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.25em;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  background-image: none;
+}
+
+.c8:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c13 {
+  position: absolute;
+  -webkit-transform: translate(-15px,calc(50% - 0.5em));
+  -ms-transform: translate(-15px,calc(50% - 0.5em));
+  transform: translate(-15px,calc(50% - 0.5em));
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 15px;
+  height: 1em;
+  visibility: hidden;
+  vertical-align: middle;
+}
+
+.c11 {
+  position: relative;
+}
+
+.c11:hover .c12 {
+  visibility: visible;
+}
+
+.c3 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited,
+.c3:active {
+  color: #1173bb;
+}
+
+.c3:focus,
+.c3:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c25 {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.c25 td,
+.c25 th {
+  padding: 0.5em 10px 0.5em 0;
+  text-align: left;
+}
+
+.c25 thead td,
+.c25 thead th {
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.c25 thead td[aria-sort='ascending'],
+.c25 thead th[aria-sort='ascending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+
+.c25 thead td[aria-sort='descending'],
+.c25 thead th[aria-sort='descending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+
+.c25 thead td button,
+.c25 thead th button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c25 tbody td,
+.c25 tbody th {
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+}
+
+.c25 tfoot td,
+.c25 tfoot th {
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.c25 td {
+  text-align: right;
+}
+
+.c24 {
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 1em;
+  line-height: 1.25;
+  margin: 1em 1em 0 0;
+}
+
+.c24:focus {
+  outline: none;
+  border-color: rgb(70,130,180);
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c23 {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1em;
+}
+
+.c23 td,
+.c23 th {
+  padding: 0.5em 10px 0.5em 0;
+  text-align: left;
+}
+
+.c23 thead td,
+.c23 thead th {
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.c23 thead td[aria-sort='ascending'],
+.c23 thead th[aria-sort='ascending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+
+.c23 thead td[aria-sort='descending'],
+.c23 thead th[aria-sort='descending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+
+.c23 thead td button,
+.c23 thead th button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c23 tbody td,
+.c23 tbody th {
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+}
+
+.c23 tfoot td,
+.c23 tfoot th {
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.c23 td {
+  text-align: right;
+}
+
+.c21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c22 {
+  width: calc(50% - 15px);
+}
+
+.c19 {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.c20 {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c20 td,
+.c20 th {
+  padding: 0.5em 10px 0.5em 0;
+  text-align: left;
+}
+
+.c20 thead td,
+.c20 thead th {
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.c20 thead td[aria-sort='ascending'],
+.c20 thead th[aria-sort='ascending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+
+.c20 thead td[aria-sort='descending'],
+.c20 thead th[aria-sort='descending'] {
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+
+.c20 thead td button,
+.c20 thead th button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c20 tbody td,
+.c20 tbody th {
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+}
+
+.c20 tfoot td,
+.c20 tfoot th {
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.c20 td {
+  text-align: right;
+}
+
+.c20 tbody tr:last-child th,
+.c20 tbody tr:last-child td {
+  border-bottom-color: #000;
+}
+
+.c18 {
+  font-size: 16px;
+}
+
+.c18 h1,
+.c18 h2,
+.c18 h3 {
+  font-weight: bold;
+}
+
+.c18 h1 {
+  font-size: 2em;
+}
+
+.c18 h2 {
+  font-size: 1.5em;
+}
+
+.c18 p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.c18 a {
+  color: #428bca;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c18 img {
+  max-width: 100%;
+}
+
+.c18 blockquote {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.c18 ol,
+.c18 ul {
+  padding-left: 20px;
+  margin: 1em 0;
+}
+
+.c18 li {
+  margin-bottom: 0.5em;
+}
+
+.c18 table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c18 td {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+  text-align: left;
+}
+
+.c18 th {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-weight: bold;
+}
+
+.c14 {
+  margin-bottom: 0.5em;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1680px;
+  padding-right: 240px;
+  margin: 0 auto 40px;
+}
+
+.c1 {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 240px;
+  height: 100%;
+  padding: 15px;
+}
+
+.c1 ul {
+  padding-left: 20px;
+  line-height: 1.5;
+}
+
+.c1 ul ul {
+  margin: 0.5em 0;
+}
+
+.c4 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.c7 {
+  font-size: 16px;
+}
+
+.c7 p {
+  margin-bottom: 1em;
+  line-height: 1.4;
+}
+
+.c16 {
+  padding-left: 0;
+  list-style-type: none;
+  margin-bottom: 1em;
+}
+
+.c16 summary {
+  padding: 0.25em;
+  cursor: pointer;
+}
+
+.c16 summary h4 {
+  display: inline;
+  font-weight: normal;
+}
+
+.c16 details[open] summary h4 {
+  font-weight: bold;
+}
+
+.c17 {
+  padding-left: 10px;
+  border-left: 1px solid #999;
+}
+
+.c15 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 12px;
+}
+
+.c15:active,
+.c15:hover {
+  background-color: #cbd3da;
+}
+
+.c15:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c15:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c15 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+@media (max-width:900px) {
+  .c5 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: none;
+  }
+}
+
+@media (max-width:900px) {
+  .c6 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media (max-width:700px) {
+  .c21 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (max-width:700px) {
+  .c22 {
+    width: 100%;
+  }
+}
+
+@media (max-width:1280px) {
+  .c0 {
+    padding-right: 0;
+  }
+}
+
+@media (max-width:1000px) {
+  .c1 {
+    display: none;
+  }
+}
+
+<div
+  className="c0"
+>
+  <section
+    className="c1"
+  >
+    <h2>
+      Table of contents
+    </h2>
+    <ul>
+      <li>
+        <a
+          className="c2"
+          href="#search"
+        >
+          Search
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/dataset-selection"
+          onClick={[Function]}
+        >
+          dataset-selection
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/variant-qc"
+          onClick={[Function]}
+        >
+          variant-qc
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/ancestry"
+          onClick={[Function]}
+        >
+          ancestry
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/relatedness-filtering"
+          onClick={[Function]}
+        >
+          relatedness-filtering
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/vep"
+          onClick={[Function]}
+        >
+          vep
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/faf"
+          onClick={[Function]}
+        >
+          faf
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/constraint"
+          onClick={[Function]}
+        >
+          constraint
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/pext"
+          onClick={[Function]}
+        >
+          pext
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/regional-constraint"
+          onClick={[Function]}
+        >
+          regional-constraint
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/sv-overview"
+          onClick={[Function]}
+        >
+          sv-overview
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/hgdp-1kg-annotations"
+          onClick={[Function]}
+        >
+          hgdp-1kg-annotations
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/v3-ht-annotations"
+          onClick={[Function]}
+        >
+          v3-ht-annotations
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
+          href="/help/popmax"
+          onClick={[Function]}
+        >
+          popmax
+        </a>
+      </li>
+      <li>
+        <a
+          className="c2"
+          href="#frequently-asked-questions"
+        >
+          Frequently asked questions
+        </a>
+        <ul>
+          <li>
+            <a
+              className="c2"
+              href="#general"
+            >
+              General
+            </a>
+          </li>
+          <li>
+            <a
+              className="c2"
+              href="#constraint"
+            >
+              Constraint
+            </a>
+          </li>
+          <li>
+            <a
+              className="c2"
+              href="#technical-details"
+            >
+              Technical details
+            </a>
+          </li>
+          <li>
+            <a
+              className="c2"
+              href="#coverage"
+            >
+              Coverage
+            </a>
+          </li>
+          <li>
+            <a
+              className="c2"
+              href="#mitochondrial-dna"
+            >
+              Mitochondrial DNA
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+  <div
+    className="c4"
+  >
+    <div
+      className="c5"
+    >
+      <h1
+        className="c6"
+      >
+        gnomAD Help
+      </h1>
+    </div>
+    <div
+      className="c7"
+    >
+      <section
+        id="search"
+      >
+        <label
+          htmlFor="help-search"
+          style={
+            Object {
+              "border": "0",
+              "clip": "rect(0 0 0 0)",
+              "height": "1px",
+              "margin": "-1px",
+              "overflow": "hidden",
+              "padding": "0",
+              "position": "absolute",
+              "whiteSpace": "nowrap",
+              "width": "1px",
+            }
+          }
+        >
+          Search gnomAD help
+        </label>
+        <div
+          style={
+            Object {
+              "display": "inline-block",
+              "width": "100%",
+            }
+          }
+        >
+          <input
+            aria-autocomplete="list"
+            aria-expanded={false}
+            autoComplete="off"
+            className="c8"
+            data-testid="searchbox-input"
+            id="help-search"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            placeholder="Search"
+            role="combobox"
+            value=""
+          />
+        </div>
+      </section>
+      <section>
+        <ul
+          className="c9"
+        >
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/dataset-selection"
+              onClick={[Function]}
+            >
+              dataset-selection
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/variant-qc"
+              onClick={[Function]}
+            >
+              variant-qc
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/ancestry"
+              onClick={[Function]}
+            >
+              ancestry
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/relatedness-filtering"
+              onClick={[Function]}
+            >
+              relatedness-filtering
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/vep"
+              onClick={[Function]}
+            >
+              vep
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/faf"
+              onClick={[Function]}
+            >
+              faf
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/constraint"
+              onClick={[Function]}
+            >
+              constraint
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/pext"
+              onClick={[Function]}
+            >
+              pext
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/regional-constraint"
+              onClick={[Function]}
+            >
+              regional-constraint
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/sv-overview"
+              onClick={[Function]}
+            >
+              sv-overview
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/hgdp-1kg-annotations"
+              onClick={[Function]}
+            >
+              hgdp-1kg-annotations
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/v3-ht-annotations"
+              onClick={[Function]}
+            >
+              v3-ht-annotations
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/popmax"
+              onClick={[Function]}
+            >
+              popmax
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <span
+          className="c11"
+        >
+          <h2
+            className=""
+          >
+            <a
+              aria-hidden="true"
+              className="c12 c13"
+              href="#frequently-asked-questions"
+              id="frequently-asked-questions"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Frequently asked questions
+          </h2>
+        </span>
+        <div>
+          <span
+            className="c11"
+          >
+            <h3
+              className="c14"
+            >
+              <a
+                aria-hidden="true"
+                className="c12 c13"
+                href="#general"
+                id="general"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  height={12}
+                  src="test-file-stub"
+                  width={12}
+                />
+              </a>
+              General
+            </h3>
+          </span>
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Show all answers in this section
+          </button>
+           
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Hide all answers in this section
+          </button>
+          <ul
+            className="c16"
+          >
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    whats-the-difference-between-gnomad-v2-and-v3.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: \\"What's the difference between gnomAD v2 and v3?\\"
+---
+
+The gnomAD v2.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence. The gnomAD v3.1 data set contains 76,156 whole genomes (and no exomes), all mapped to the GRCh38 reference sequence. Most of the genomes from v2 are included in v3.1.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-the-restrictions-on-data-usage.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are the restrictions on data usage?'
+---
+
+These usage guidelines are based on goodwill. They are not a legal contract, but we request that you follow these guidelines if you use our data.
+
+There are no restrictions or embargoes on the publication of results derived from the gnomAD database. However, we encourage people to [check with the consortium](mailto:gnomad@broadinstitute.org) before embarking on large-scale analyses, to see if we already have something currently underway that overlaps with your plans.
+
+The data released by gnomAD are available free of restrictions under the [Creative Commons Zero Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/) . This means that you can use it for any purpose without legally having to give attribution. However, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible. Attribution supports future efforts to release other data. It also reduces the amount of \\"orphaned data\\", helping retain links to authoritative sources.
+
+Screenshots of the website may also be used without restriction. As with any use of gnomAD data, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-should-i-cite-discoveries-made-using-gnomad-data.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How should I cite discoveries made using gnomAD data?'
+---
+
+Please [cite the gnomAD flagship paper](https://www.nature.com/articles/s41586-020-2308-7#citeas) in papers that make use of gnomAD data, and provide a link to the browser if you build online resources that include the data set.
+
+There is no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work.
+
+[Download citation](https://citation-needed.springer.com/v2/references/10.1038/s41586-020-2308-7?format=refman&flavour=citation)
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    i-have-identified-a-rare-variant-what-phenotype-data-are-available.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'I have identified a rare variant in gnomAD that I believe is associated with a specific clinical phenotype. What phenotype data are available for these individuals?'
+---
+
+Most of the individuals who have contributed data to gnomAD were not fully consented for phenotype data sharing, and unfortunately at this time we are typically unable to provide any information about the clinical status of variant carriers. We have made every effort to exclude individuals with severe pediatric diseases from the gnomAD data set, and certainly do not expect our data set to be *enriched* for such individuals, but we typically cannot rule out the possibility that some of our participants do actually have your disease of interest.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    can-i-get-access-to-individual-level-genotype-data-from-gnomad.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Can I get access to individual-level genotype data from gnomAD?'
+---
+
+Many of the samples in gnomAD have individual-level sequencing data deposited in [dbGaP](https://www.ncbi.nlm.nih.gov/gap), and these can be accessed by [applying through that repository](https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?page=login). However, many other samples come from unpublished cohorts or from samples not in dbGaP. There is not currently any mechanism to systematically obtain individual-level genotype data from the database as a whole. A fully genotyped callset from the Human Genome Diversity Project and 1000 Genomes Project is available as part of gnomad v3.1.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    can-i-contribute-data-to-gnomad.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Can I contribute data to gnomAD?'
+---
+
+Please [contact us](mailto:gnomad@broadinstitute.org) if you are a study investigator and are interested in contributing exome/genome sequencing data to the gnomAD resource. We are particularly interested in increasing the diversity included in gnomAD to improve the resource. However, please be aware that there are a number of challenges associated with incorporating external datasets into gnomAD. To produce the high quality, unified gnomAD dataset, we are unable to directly add externally generated VCFs to the gnomAD dataset and need to process all CRAM/BAM files in a uniform manner at the Broad Institute. This requires data reprocessing, including regulatory review, transfer of raw data to the Broad Institute, remapping of raw data, and generation of a VCF. We have limited funding for data reprocessing for including externally sequenced samples in gnomAD and therefore we prioritize the most valuable datasets for reprocessing.
+
+Please also note that given the importance of gnomAD to the clinical genetics community to diagnose patients with monogenic disease, we do not include individuals recruited for severe pediatric disease (e.g., cystic fibrosis and autism) as well as their first-degree relatives, allowing the database to largely represent the general population.
+
+All investigators who contribute data to gnomAD join the gnomAD Consortium. See our [Memorandum of Understanding](/mou) for more details on Consortium membership.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-is-a-particular-variant-found-in-some-versions-of-exac-gnomad-but-not-others.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why is a particular variant found in some versions of ExAC/gnomAD but not others?'
+---
+
+Likely because of differences between the projects in sample inclusion and variant quality control.
+
+Sample QC: Not all data from previous call sets is included in each gnomAD release. Most of the samples from prior releases are included during the initial joint calling; however, we make changes to our sample QC process in each release, which always results in the removal of some samples that previously passed. For instance, approximately 10% of the samples in ExAC are missing from gnomAD v2, so we expect some variants in ExAC, particularly those that were found at low frequencies, to be absent in gnomAD v2.
+
+Variant QC: Some variants present in previous releases may now be filtered because we used new filtering strategies. In particular, starting with gnomAD, we filter each allele separately whereas variant QC was done at the site-level (chromosome, position) in ExAC. We also continuously work on improving our filtering strategy: for instance, we used a combination of a random forest classifier and hard filters (only high-confidence genotypes, inbreeding coefficient >= 0.3) for gnomAD v2 rather than the standard GATK site-level Variant Quality Score Recalibration (VQSR) used for ExAC.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    where-can-i-find-more-details-on-the-qc-pipeline.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Where can I find more details on the QC pipeline?'
+---
+
+More details on our QC process can be found in our blog posts:
+
+- [\\"gnomAD v3.1\\"](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/)
+- [\\"gnomAD v3.0\\"](https://gnomad.broadinstitute.org/news/2019-10-gnomad-v3-0/)
+- [\\"gnomAD v2.1\\"](https://gnomad.broadinstitute.org/news/2018-10-gnomad-v2-1/)
+- [\\"The genome Aggregation Database (gnomAD)\\"](https://gnomad.broadinstitute.org/news/2017-02-the-genome-aggregation-database/)
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    should-i-switch-to-the-latest-version-of-gnomad.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Should I switch to the latest version of gnomAD?'
+---
+
+The gnomAD v2 call set contains fewer whole genomes than v3.1, but also contains a very large number of exomes that substantially increase its power as a reference in coding regions. Therefore gnomAD v2 is still our recommended dataset for most coding regions analyses. However, gnomAD v3.1 represents a very large increase in the number of genomes, and will therefore be a much better resource if your primary interest is in non-coding regions or if your coding region of interest is poorly captured in the gnomAD exomes (this can be assessed from the coverage plots in the browser). Most of the genomes from v2.1.1 are included in v3.1 and therefore these should not be considered as independent sample sets.
+
+Another consideration when choosing which dataset to use is the ancestry of the samples you are interested in. gnomAD v3.1 contains a substantially larger number of African American samples than v2 (exomes and genomes combined) and provides allele frequencies in the Amish population for the first time. gnomAD v3.1 also has a fully genotyped callset available from the Human Genome Diversity Project and 1000 Genomes Project, representing > 60 distinct populations.
+
+Finally, gnomAD v3.1 was mapped to GRCh38, so if your data is also on this build it probably makes sense to switch to v3.1. There is also a [liftover version of gnomAD v2.1.1](/downloads#v2-liftover-variants) onto GRCh38 available. We plan to produce a larger GRCh38 aligned exome callset in 2022.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-evaluate-variants-in-a-gene-that-has-a-pseudogene.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How do I evaluate variants in a gene that has a pseudogene? Were any steps taken to distinguish the gene from the pseudogene?'
+---
+
+Short read sequencing can produce mapping issues when a gene has a highly homologous pseudogene. Many variants in such genes (e.g. [PRSS1](/gene/ENSG00000204983)) will be filtered due to low mapping quality or deviation from Hardy-Weinberg equilibrium; the remaining variants should be interpreted with caution. The gnomAD pipeline does not apply any special filters to regions with a highly similar pseudogene.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-you-pronounce-gnomad.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How do you pronounce gnomAD?'
+---
+
+ˈnōˌmad
+
+<audio controls>
+   <source src=\\"https://ssl.gstatic.com/dictionary/static/sounds/20160317/nomad--_us_1.mp3\\" />
+   Your browser does not support the audio element.
+</audio>
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <span
+            className="c11"
+          >
+            <h3
+              className="c14"
+            >
+              <a
+                aria-hidden="true"
+                className="c12 c13"
+                href="#constraint"
+                id="constraint"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  height={12}
+                  src="test-file-stub"
+                  width={12}
+                />
+              </a>
+              Constraint
+            </h3>
+          </span>
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Show all answers in this section
+          </button>
+           
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Hide all answers in this section
+          </button>
+          <ul
+            className="c16"
+          >
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-was-the-expected-number-of-variants-determined.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How was the expected number of variants determined?'
+---
+
+We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the [gnomAD flagship paper](\\"https://broad.io/gnomad_lof). Note that the expected variant counts for bases with a median depth <1 were removed from the totals.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    which-variants-are-included-in-the-observed-counts.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Which variants are included in the observed counts?'
+---
+
+We included single nucleotide changes that occurred in the canonical transcript that were found at a frequency of < 0.1%, passed all filters, and at sites with a median depth >= 1. The counts represent the number of unique variants and not the allele count of these variants.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-are-there-fewer-variants-in-the-constraint-table-than-on-the-gene-page.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why are there fewer variants in the constraint table than displayed on the gene page?'
+---
+
+We only included variants that were found in the canonical transcript of the gene. On the gene page, variants found in all transcripts are displayed. Additionally, both observed and expected variant counts were removed for sites with a median depth < 1.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-is-included-in-lof.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What is included in pLoF?'
+---
+
+Nonsense, splice acceptor, and splice donor variants caused by single nucleotide changes.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why are constraint metrics missing for this gene or annotated with a note?'
+---
+
+Genes that were outliers in certain assessments will not have constraint metrics or will be flagged with a note warning of various error modes. Please note that these assessments were applied to the canonical transcripts of the genes. If a gene was not annotated as a protein-coding gene in GENCODE v19, we did not calculate constraint. The following list describes the reason names given in the constraint_flag column of the [constraint files](/downloads#v2-constraint):
+
+- no_variants: Zero observed synonymous, missense, pLoF variants
+- no_exp_lof: Zero expected pLoF variants
+- lof_too_many: More pLoF variants than expected
+- no_exp_mis: Zero expected missense variants
+- mis_too_many: More missense variants than expected
+- no_exp_syn: Zero expected synonymous variants
+- syn_outlier: More or fewer synonymous variants than expected
+
+
+Possible reasons that one might observe the deviations listed above include mismapped reads due to homologous regions or poor quality sequencing data.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-is-a-loeuf-score.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What is a LOEUF score?'
+---
+
+LOEUF stands for the \\"loss-of-function observed/expected upper bound fraction.\\" It is a conservative estimate of the observed/expected ratio, based on the upper bound of a Poisson-derived confidence interval around the ratio. Low LOEUF scores indicate strong selection against predicted loss-of-function (pLoF) variation in a given gene, while high LOEUF scores suggest a relatively higher tolerance to inactivation. Its advantage over pLI is that it can be used as a continuous value rather than a dichotomous scale (e.g. pLI > 0.9) - if such a single cutoff is still desired, pLI is a perfectly fine metric to use. At large sample sizes, the observed/expected ratio will be a more appropriate measure for selection, but at the moment, LOEUF provides a good compromise of point estimate and significance measure.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-you-pronounce-loeuf.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How do you pronounce LOEUF?'
+---
+
+LOEUF is pronounced like its French-inspired name \\"l'œuf\\". Another accepted pronunciation is \\"luff\\".
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-the-fields-included-in-constraint-files.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are the fields included in constraint files?'
+---
+
+Descriptions of the fields in these files can be found in the Supplementary Dataset 11 section on pages 74-77 of the [Supplementary Information](https://www.nature.com/articles/s41586-020-2308-7#Sec12) of [*The mutational constraint spectrum quantified from variation in 141,456 humans.* Nature 581, 434–443 (2020)](https://doi.org/10.1038/s41586-020-2308-7).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <span
+            className="c11"
+          >
+            <h3
+              className="c14"
+            >
+              <a
+                aria-hidden="true"
+                className="c12 c13"
+                href="#technical-details"
+                id="technical-details"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  height={12}
+                  src="test-file-stub"
+                  width={12}
+                />
+              </a>
+              Technical details
+            </h3>
+          </span>
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Show all answers in this section
+          </button>
+           
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Hide all answers in this section
+          </button>
+          <ul
+            className="c16"
+          >
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-genome-build-is-the-gnomad-data-based-on.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What genome build is the gnomAD data based on?'
+---
+
+gnomAD v2 is based on [GRCh37/hg19](ftp://ftp.broadinstitute.org/pub/seq/references/Homo_sapiens_assembly19.fasta). gnomAD v3 is based on GRCh38.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-version-of-gencode-was-used-to-annotate-variants.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What version of GENCODE was used to annotate variants?'
+---
+
+gnomAD v3.1 uses version 35 (annotated with VEP version 101). For v3.0 we used version 29 (annotated with VEP version 95) and for v2, version 19 (annotated with VEP version 85).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    are-all-the-individuals-in-1000-genomes-included.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Are all the individuals in 1000 Genomes included?'
+---
+
+The majority of samples from the 1000 Genomes Project for which *exome sequencing* is available were included in v2. Whole genome sequencing from 3,202 subjects from the 1000 Genomes Project was included in gnomAD v3.1, though some were filtered out by our QC pipeline. A [fully genotyped callset containing individual genotypes for these data](/downloads#v3-hgdp-1kg) is available.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    are-all-the-individuals-in-the-exome-variant-server-included.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Are all the individuals in the Exome Variant Server included?'
+---
+
+No. We were not given permission from NHLBI to include individuals from several of the cohorts included in the NHLBI's Exome Sequencing Project. As a result, genuine rare variants that are present in the [Exome Variant Server](https://evs.gs.washington.edu/EVS/) may not be observed in gnomAD.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    do-the-cancer-samples-in-the-database-include-tumor-exomes.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Do the cancer samples in the database include tumor exomes, or is this from germline samples only?'
+---
+
+All of the \\"cancer\\" samples in the current release of ExAC are blood (\\"germline\\") samples from TCGA. We excluded any sample labeled as tumor. However, note that some sample/label swaps may have occurred in TCGA; in addition, it is possible that in some patients the blood samples are contaminated by circulating tumor cells.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    What populations are represented in the gnomAD data?
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div>
+                    <h4>
+                      gnomAD v3
+                    </h4>
+                    <div
+                      className="c19"
+                    >
+                      <table
+                        className="c20"
+                      >
+                        <thead>
+                          <tr>
+                            <th
+                              rowSpan={2}
+                              scope="col"
+                            >
+                              Population
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              overall
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              controls/biobanks
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              non-cancer
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              non-neuro
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              non-TOPMed
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              non-v2
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              African/African American
+                            </th>
+                            <td>
+                              20,744
+                            </td>
+                            <td>
+                              4,554
+                            </td>
+                            <td>
+                              20,583
+                            </td>
+                            <td>
+                              16,253
+                            </td>
+                            <td>
+                              12,431
+                            </td>
+                            <td>
+                              14,377
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Amish
+                            </th>
+                            <td>
+                              456
+                            </td>
+                            <td>
+                              30
+                            </td>
+                            <td>
+                              456
+                            </td>
+                            <td>
+                              431
+                            </td>
+                            <td>
+                              56
+                            </td>
+                            <td>
+                              455
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Latino/Admixed American
+                            </th>
+                            <td>
+                              7,647
+                            </td>
+                            <td>
+                              2,345
+                            </td>
+                            <td>
+                              7,553
+                            </td>
+                            <td>
+                              7,424
+                            </td>
+                            <td>
+                              6,460
+                            </td>
+                            <td>
+                              6,878
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Ashkenazi Jewish
+                            </th>
+                            <td>
+                              1,736
+                            </td>
+                            <td>
+                              68
+                            </td>
+                            <td>
+                              1,651
+                            </td>
+                            <td>
+                              1,694
+                            </td>
+                            <td>
+                              499
+                            </td>
+                            <td>
+                              1,538
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              East Asian
+                            </th>
+                            <td>
+                              2,604
+                            </td>
+                            <td>
+                              1,215
+                            </td>
+                            <td>
+                              2,486
+                            </td>
+                            <td>
+                              2,604
+                            </td>
+                            <td>
+                              1,883
+                            </td>
+                            <td>
+                              1,414
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              European (Finnish)
+                            </th>
+                            <td>
+                              5,316
+                            </td>
+                            <td>
+                              2,750
+                            </td>
+                            <td>
+                              5,316
+                            </td>
+                            <td>
+                              3,495
+                            </td>
+                            <td>
+                              5,270
+                            </td>
+                            <td>
+                              3,662
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Middle Eastern
+                            </th>
+                            <td>
+                              158
+                            </td>
+                            <td>
+                              123
+                            </td>
+                            <td>
+                              152
+                            </td>
+                            <td>
+                              155
+                            </td>
+                            <td>
+                              136
+                            </td>
+                            <td>
+                              154
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              European (non-Finnish)
+                            </th>
+                            <td>
+                              34,029
+                            </td>
+                            <td>
+                              3,427
+                            </td>
+                            <td>
+                              32,411
+                            </td>
+                            <td>
+                              31,966
+                            </td>
+                            <td>
+                              10,533
+                            </td>
+                            <td>
+                              25,988
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              South Asian
+                            </th>
+                            <td>
+                              2,419
+                            </td>
+                            <td>
+                              1,558
+                            </td>
+                            <td>
+                              2,403
+                            </td>
+                            <td>
+                              2,418
+                            </td>
+                            <td>
+                              2,405
+                            </td>
+                            <td>
+                              1,946
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Other
+                            </th>
+                            <td>
+                              1,047
+                            </td>
+                            <td>
+                              395
+                            </td>
+                            <td>
+                              1,012
+                            </td>
+                            <td>
+                              1,002
+                            </td>
+                            <td>
+                              760
+                            </td>
+                            <td>
+                              932
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              XX
+                            </th>
+                            <td>
+                              38,947
+                            </td>
+                            <td>
+                              6,717
+                            </td>
+                            <td>
+                              38,060
+                            </td>
+                            <td>
+                              35,271
+                            </td>
+                            <td>
+                              16,438
+                            </td>
+                            <td>
+                              30,110
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              XY
+                            </th>
+                            <td>
+                              37,209
+                            </td>
+                            <td>
+                              9,748
+                            </td>
+                            <td>
+                              35,963
+                            </td>
+                            <td>
+                              32,171
+                            </td>
+                            <td>
+                              23,995
+                            </td>
+                            <td>
+                              27,234
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Total
+                            </th>
+                            <td>
+                              76,156
+                            </td>
+                            <td>
+                              16,465
+                            </td>
+                            <td>
+                              74,023
+                            </td>
+                            <td>
+                              67,442
+                            </td>
+                            <td>
+                              40,433
+                            </td>
+                            <td>
+                              57,344
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <h4>
+                      gnomAD v2
+                    </h4>
+                    <div
+                      className="c19"
+                    >
+                      <table
+                        className="c20"
+                      >
+                        <thead>
+                          <tr>
+                            <th
+                              rowSpan={2}
+                              scope="col"
+                            >
+                              Population
+                            </th>
+                            <th
+                              colSpan={2}
+                              scope="col"
+                            >
+                              overall
+                            </th>
+                            <th
+                              colSpan={2}
+                              scope="col"
+                            >
+                              controls
+                            </th>
+                            <th
+                              colSpan={2}
+                              scope="col"
+                            >
+                              non-cancer
+                            </th>
+                            <th
+                              colSpan={2}
+                              scope="col"
+                            >
+                              non-neuro
+                            </th>
+                            <th
+                              colSpan={2}
+                              scope="col"
+                            >
+                              non-TOPMed
+                            </th>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="col"
+                            >
+                              exomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              genomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              exomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              genomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              exomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              genomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              exomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              genomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              exomes
+                            </th>
+                            <th
+                              scope="col"
+                            >
+                              genomes
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              African/African American
+                            </th>
+                            <td>
+                              8,128
+                            </td>
+                            <td>
+                              4,359
+                            </td>
+                            <td>
+                              3,582
+                            </td>
+                            <td>
+                              1,287
+                            </td>
+                            <td>
+                              7,451
+                            </td>
+                            <td>
+                              4,359
+                            </td>
+                            <td>
+                              8,109
+                            </td>
+                            <td>
+                              1,694
+                            </td>
+                            <td>
+                              6,013
+                            </td>
+                            <td>
+                              4,278
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Amish
+                            </th>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                              0
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Latino/Admixed American
+                            </th>
+                            <td>
+                              17,296
+                            </td>
+                            <td>
+                              424
+                            </td>
+                            <td>
+                              8,556
+                            </td>
+                            <td>
+                              123
+                            </td>
+                            <td>
+                              17,130
+                            </td>
+                            <td>
+                              424
+                            </td>
+                            <td>
+                              15,262
+                            </td>
+                            <td>
+                              277
+                            </td>
+                            <td>
+                              17,229
+                            </td>
+                            <td>
+                              405
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Ashkenazi Jewish
+                            </th>
+                            <td>
+                              5,040
+                            </td>
+                            <td>
+                              145
+                            </td>
+                            <td>
+                              1,160
+                            </td>
+                            <td>
+                              19
+                            </td>
+                            <td>
+                              4,786
+                            </td>
+                            <td>
+                              145
+                            </td>
+                            <td>
+                              3,106
+                            </td>
+                            <td>
+                              123
+                            </td>
+                            <td>
+                              4,999
+                            </td>
+                            <td>
+                              69
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              East Asian
+                            </th>
+                            <td>
+                              9,197
+                            </td>
+                            <td>
+                              780
+                            </td>
+                            <td>
+                              4,523
+                            </td>
+                            <td>
+                              458
+                            </td>
+                            <td>
+                              8,846
+                            </td>
+                            <td>
+                              780
+                            </td>
+                            <td>
+                              6,708
+                            </td>
+                            <td>
+                              780
+                            </td>
+                            <td>
+                              9,195
+                            </td>
+                            <td>
+                              761
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              European (Finnish)
+                            </th>
+                            <td>
+                              10,824
+                            </td>
+                            <td>
+                              1,738
+                            </td>
+                            <td>
+                              6,697
+                            </td>
+                            <td>
+                              581
+                            </td>
+                            <td>
+                              10,816
+                            </td>
+                            <td>
+                              1,738
+                            </td>
+                            <td>
+                              8,367
+                            </td>
+                            <td>
+                              582
+                            </td>
+                            <td>
+                              10,823
+                            </td>
+                            <td>
+                              1,738
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              European (non-Finnish)
+                            </th>
+                            <td>
+                              56,885
+                            </td>
+                            <td>
+                              7,718
+                            </td>
+                            <td>
+                              21,384
+                            </td>
+                            <td>
+                              2,762
+                            </td>
+                            <td>
+                              51,377
+                            </td>
+                            <td>
+                              7,718
+                            </td>
+                            <td>
+                              44,779
+                            </td>
+                            <td>
+                              6,813
+                            </td>
+                            <td>
+                              55,840
+                            </td>
+                            <td>
+                              5,547
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              South Asian
+                            </th>
+                            <td>
+                              15,308
+                            </td>
+                            <td>
+                              *
+                            </td>
+                            <td>
+                              7,845
+                            </td>
+                            <td>
+                              *
+                            </td>
+                            <td>
+                              15,263
+                            </td>
+                            <td>
+                              *
+                            </td>
+                            <td>
+                              15,304
+                            </td>
+                            <td>
+                              *
+                            </td>
+                            <td>
+                              15,308
+                            </td>
+                            <td>
+                              *
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Other
+                            </th>
+                            <td>
+                              3,070
+                            </td>
+                            <td>
+                              544
+                            </td>
+                            <td>
+                              957
+                            </td>
+                            <td>
+                              212
+                            </td>
+                            <td>
+                              2,810
+                            </td>
+                            <td>
+                              544
+                            </td>
+                            <td>
+                              2,433
+                            </td>
+                            <td>
+                              367
+                            </td>
+                            <td>
+                              3,032
+                            </td>
+                            <td>
+                              506
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              XX
+                            </th>
+                            <td>
+                              57,787
+                            </td>
+                            <td>
+                              6,967
+                            </td>
+                            <td>
+                              25,645
+                            </td>
+                            <td>
+                              2,508
+                            </td>
+                            <td>
+                              53,850
+                            </td>
+                            <td>
+                              6,967
+                            </td>
+                            <td>
+                              47,831
+                            </td>
+                            <td>
+                              4,799
+                            </td>
+                            <td>
+                              55,662
+                            </td>
+                            <td>
+                              6,299
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              XY
+                            </th>
+                            <td>
+                              67,961
+                            </td>
+                            <td>
+                              8,741
+                            </td>
+                            <td>
+                              29,059
+                            </td>
+                            <td>
+                              2,934
+                            </td>
+                            <td>
+                              64,629
+                            </td>
+                            <td>
+                              8,741
+                            </td>
+                            <td>
+                              56,237
+                            </td>
+                            <td>
+                              5,837
+                            </td>
+                            <td>
+                              66,777
+                            </td>
+                            <td>
+                              7,005
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th
+                              scope="row"
+                            >
+                              Total
+                            </th>
+                            <td>
+                              125,748
+                            </td>
+                            <td>
+                              15,708
+                            </td>
+                            <td>
+                              54,704
+                            </td>
+                            <td>
+                              5,442
+                            </td>
+                            <td>
+                              118,479
+                            </td>
+                            <td>
+                              15,708
+                            </td>
+                            <td>
+                              104,068
+                            </td>
+                            <td>
+                              10,636
+                            </td>
+                            <td>
+                              122,439
+                            </td>
+                            <td>
+                              13,304
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <p>
+                      * For v2 genomes, we have a total of only 31 South Asian samples so they are grouped with Other.
+                    </p>
+                  </div>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-ethnicities-are-represented-in-the-other-population.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What ethnicities are represented in the \\"other\\" population?'
+---
+
+Individuals were classified as \\"other\\" if they did not unambiguously cluster with the major populations (i.e. afr, ami, amr, asj, eas, fin, mid, nfe, sas) in a principal component analysis (PCA).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-are-population-names-abbreviated.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How are population names abbreviated?'
+---
+
+Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
+
+- afr: African/African American
+- ami: Amish
+- amr: Latino/Admixed American
+- asj: Ashkenazi Jewish
+- eas: East Asian
+  - jpn: Japanese
+  - kor: Korean
+  - oea: Other East Asian
+- fin: European (Finnish)
+- mid: Middle Eastern
+- nfe: European (non-Finnish)
+  - bgr: Bulgarian
+  - est: Estonian
+  - nwe: North-western European
+  - onf: Other non-Finnish European
+  - seu: Southern European
+  - swe: Swedish
+- oth: Other
+- sas: South Asian
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    What is the age distribution in gnomAD?
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <p>
+                    For gnomAD v3, the age distribution is:
+                  </p>
+                  <div
+                    className="c21"
+                  >
+                    <div
+                      className="c22"
+                    >
+                      <div
+                        style={
+                          Object {
+                            "height": "100%",
+                            "width": "100%",
+                          }
+                        }
+                      />
+                    </div>
+                  </div>
+                  <p>
+                    For gnomAD v2, the age distribution is:
+                  </p>
+                  <div
+                    className="c21"
+                  >
+                    <div
+                      className="c22"
+                    >
+                      <p>
+                        Exomes
+                      </p>
+                      <div
+                        style={
+                          Object {
+                            "height": "100%",
+                            "width": "100%",
+                          }
+                        }
+                      />
+                    </div>
+                    <div
+                      className="c22"
+                    >
+                      <p>
+                        Genomes
+                      </p>
+                      <div
+                        style={
+                          Object {
+                            "height": "100%",
+                            "width": "100%",
+                          }
+                        }
+                      />
+                    </div>
+                  </div>
+                  <p>
+                    Please note that cohorts vary in how they report age (some report the age at diagnosis, others report the age of last visit, etc), so the ages associated with the gnomAD data can be thought of as the last known age of the individual. Information on age was not available for all samples. We have age data for 85,462 exome samples and 11,242 genome samples.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-is-sex-determined-for-gnomad-samples.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How is sex determined for gnomAD samples?'
+---
+
+Please note that as of v3.1, we have changed the labels we use to classify individuals by chromosomal sex from \\"male\\" and \\"female\\" to \\"XY\\" and \\"XX\\", respectively. While we have always used the terms \\"male\\" and \\"female\\" to refer to an individual's chromosomal sex and not to gender, we recognize that this terminology is overloaded and could cause confusion to users. We also note that the terms \\"male\\" and \\"female,\\" when referring to chromosomal sex, can be applied to individuals with sex chromosomal aneuploidies, such as 47,XYY or 45,X. Since we remove samples with sex chromosomal aneuploidies from gnomAD during the QC process, we felt the most straightforward sex classification labels were \\"XX\\" and \\"XY\\". These changes are now reflected in both the v3.1 download files and in the browser.
+
+We used a combination of X-chromosome homozygosity (F-stat, [impute_sex function in Hail](https://hail.is/docs/0.2/methods/genetics.html?highlight=impute_sex#hail.methods.impute_sex) ) and X and Y chromosomes normalized coverage to assign sex for each gnomAD sample. Note that we used different combination of metrics (mostly due to their availability) for the different gnomAD datasets (see below for details). The F-stat was computed for each sample using high-confidence QC SNVs (bi-allelic SNVs, LD-pruned to r<sup>2</sup> < 0.1, with allele frequency > 0.1% and call rate > 99%) on non-pseudoautosomal regions (non-PAR) of the X chromosome. The normalized coverage was computed as the mean coverage on sex chromosomes / mean coverage on chromosome 20. The exact metrics and threshold used for sex assignment were as follows:
+
+- Genomes (gnomAD v3.1):
+
+  - XY: normalized X coverage < 1.29 & normalized Y coverage > 0.1 & normalized Y coverage < 1.16
+  - XX: normalized X coverage > 1.45 & normalized X coverage < 2.4 & normalized Y coverage < 0.1
+  - Instead of using F-stat as a hardfilter, a rough cutoff of 0.5 was used to separate the XX and XY. The final X and Y ploidy cutoffs are determined from the means and standard deviations of those XX and XY distributions.
+
+- Genomes (gnomAD v3.0):
+
+  - Males: chromosome X (non-PAR) F-stat > 0.2 & 0.5 < normalized X coverage > 1.4 & 1.2 < normalized Y coverage > 0.15
+  - Females: chromosome X (non-PAR) F-stat < -0.2 & 1.4 < normalized X coverage > 2.25 & normalized X coverage < 0.1
+
+- Exomes (gnomAD v2):
+
+  - Males: chromosome X (non-PAR) F-stat > 0.6 & normalized Y chromosome coverage >= 0.1
+  - Females: chromosome X (non-PAR) F-stat < 0.5 & normalized Y chromosome coverage < 0.1
+
+- Genomes (gnomAD v2):
+
+  - Males: chromosome X (non-PAR) F-stat > 0.8
+  - Females: chromosome X (non-PAR) F-stat < 0.5
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-is-ancestry-determined-for-gnomad-samples.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How is ancestry determined for gnomAD samples?'
+---
+
+See [ancestry documentation](/help/ancestry).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-many-xx-xy-have-this-variant-can-it-be-assumed-that-hemizygous-variants-come-only-from-males.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How many XX/XY individuals have this variant? Can it be assumed that hemizygous variants come only from XY individuals?'
+---
+
+Sex for genomes was determined by X heterozygosity. Sex for exomes was based on both X heterozygosity and Y coverage. Information on allele frequency for males and females for each variant is provided in the population frequencies table on the browser and in the INFO fields of our VCF files (example: AC_male, AC_female, AF_female, AC_fin_male in releases prior to v3.0; AC-XY, AC-XX, AF-XX, AC-fin-XY for release v3.1 and later). If a variant is on the X chromosome, it can be assumed that hemizygous variants come from males and homozygous variants in non-PAR regions come from females.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    are-there-related-individuals-in-gnomad.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Are there related individuals in gnomAD?'
+---
+
+Pairwise relatedness between samples was determined using [Hail's pc_relate](https://hail.is/docs/0.2/methods/genetics.html?highlight=pc_relate#hail.methods.pc_relate). We removed duplicate samples, first degree relatives, and second degree relatives to minimize inflation of rare variant frequencies. We always prioritize samples with higher quality metrics. In gnomAD v2, this was done on exomes and genomes combined, prioritizing genomes over exomes when selecting which individuals to include.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-doesnt-the-amino-acid-position-and-consequence-on-the-gene-page-match-what-i-expect-for-my-transcript.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: \\"Why doesn't the amino acid position and consequence on the gene page match what I expect for my transcript and how does gnomAD choose which transcript to use for annotating variants?\\"
+---
+
+The gene page summarizes the most severe functional consequence and protein-level change regardless of the transcript. gnomAD v3.1 uses the MANE Select transcript as the primary transcript for annotating HGVS nomenclature/consequence, if the severity of the functional consequences are equivalent across transcripts. MANE stands for Matched Annotation from NCBI and EMBL-EBI and MANE Select identifies one high-quality representative transcript per protein-coding gene that is well-supported by experimental data and represents the biology of the gene. More background on the MANE project can be found [here](https://www.ncbi.nlm.nih.gov/refseq/MANE/). If no MANE Select transcript exists, the Ensembl canonical transcript is selected. A \\"†\\" denotes a consequence that is for a non-MANE Select transcript (or non-canonical transcript if no MANE Select exists). On the gene page you can select which transcript you would like to view. The MANE Select transcript (or canonical if no MANE Select exists) is marked by \\"\\\\*\\". Please note that v2 still uses the canonical transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts are annotated using GENCODE v35 for gnomAD v3.1 and GENCODE v19 for v2. Please note, the browser represents transcript versions from GENCODE v35, which may differ from more recent versions selected by the MANE Select project. Please check the version number listed by the \\"MANE Select transcript\\" attribute at the top of the gene summary page and check if it is the same or different from the version listed in the browser's \\"Show Transcript\\" list to be warned of possible discrepancies. These issues will be fixed in gnomAD v4 which will be a larger exome dataset on GRCh38 and MANE Select, sourced by Ensembl directly, will be used throughout the database where available.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-is-a-transcript-shown-in-the-browser-not-the-correct-length-and-or-appears-to-be-annotated-incorrectly.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why is a transcript shown in the browser not the correct length and/or appears to be annotated incorrectly?'
+---
+
+Our transcript annotations are based on GENCODE v35 for gnomAD v3.1, GENCODE v29 for gnomAD v3 and GENCODE v19 for v2. Annotations may have changed depending on the version of GENCODE used (such as changing from a non-coding to a protein-coding gene, or having a different transcript length).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-do-the-flags-on-the-browser-mean.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What do the flags on the browser mean?'
+---
+
+Flags that will appear on variant pages:
+
+- AC0: The allele count is zero after filtering out low-confidence genotypes (GQ < 20; DP < 10; and AB < 0.2 for het calls)
+
+- AS-VQSR (gnomAD v3 only): Failed GATK Allele-Specific Variant Quality Recalibration (AS-VQSR)
+
+- InbreedingCoeff: The Inbreeding Coefficient is < -0.3
+
+- RF (gnomAD v2 only): Failed random forest filtering thresholds of 0.055 for exome SNVs, 0.206 for exome indels, 0.263 for genome SNVs, and 0.222 for genome indels
+
+Flags that will appear in the variant table on gene/region pages:
+
+- MNV: Multinucleotide variant: the variant is found in phase with another variant, altering its functional interpretation
+
+- LCR: Found in a low complexity region: these regions were identified with the [symmetric DUST algorithm](https://www.ncbi.nlm.nih.gov/pubmed/16796549) at a score threshold of 30 and provided by Heng Li
+
+- LC pLoF: Low-confidence pLoF, variant determined by [LOFTEE](https://github.com/konradjk/loftee) to be likely not LoF for the transcript
+
+- pLoF Flag: Flagged by [LOFTEE](https://github.com/konradjk/loftee), a warning provided by LOFTEE to use caution when interpreting the transcript or variant
+
+- NC Transcript: Marked in a putative LoF category by VEP (essential splice, stop-gained, or frameshift) but appears on a non-protein-coding transcript
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-is-this-variant-linked-to-the-wrong-dbsnp-rsid.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why is this variant linked to the wrong dbSNP rsID?'
+---
+
+First, we do not continuously update the dbSNP rsIDs displayed in the browser, so there will be some differences the databases and dbSNP depending on versions been used. The dbSNP version used are:
+
+- ExAC: dbSNP version 141
+- gnomAD v2: dbSNP version 147
+- gnomAD v3: dbSNP version 151
+- gnomAD v3.1: dbSNP version 154
+
+Several other classes of problem relates to fundamental issues with dbSNP. We generally suggest not using these identifiers at all; if a user is interested in a particular variant we encourage searching for it by chromosome, position, and allele rather than rsID.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    i-can-find-my-variant-of-interest-by-searching-for-the-particular-variant-but-why-doesnt-it-show-up-in-the-variant-table-when-I-type-the-gene-into-the-search-bar.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: \\"I can find my variant of interest by searching for the particular variant, but why doesn't it show up in the variant table when I type the gene into the search bar?\\"
+---
+
+A gene search in the new browser will return variants in the CDS regions of the gene or within 75 base pairs of a CDS region. This behavior means that not all intronic or UTR variants will appear when doing a gene search or downloading the CSV tables, leading to fewer variants being displayed on the browser than what is present in the downloadable VCFs (which will contain all variants). You can also do a region search (example: [https://gnomad.broadinstitute.org/region/1-55510000-55512000](/region/1-55510000-55512000)) to bring up intronic variants. We are working on an option to include UTR variants in the results.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why are some variants depleted for homozygotes/out of Hardy-Weinberg Equilibrium (HWE)?'
+---
+
+It has recently come to our attention that prior to v3.1 a number of genotypes with a high proportion of alternate allele reads (Allele Balance; AB >= 90%) were being called as heterozygous when they may be homozygous. This deflates the number of reported homozygotes, and is especially apparent at common variants and more so for long insertions and deletions. This will affect frequency estimates and especially the calculation of Hardy-Weinberg Equilibrium. Use caution when interpreting the frequencies of these variants. See our [preprint](https://doi.org/10.1101/784157) for more details.
+
+The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward. However, for v3.1, the majority of variant calls were already generated using an uncorrected version of HaplotypeCaller. We therefore made an adjustment to heterozygous genotypes with highly skewed allele balance (>0.9) at common variant sites (>0.01 AF), setting these genotypes to homozygous alternate genotypes. This change is reflected in the aggregate allele frequencies, allele numbers, and allele counts displayed on the browser as well as in the genotype data released for the gnomAD HGDP and 1000 Genomes callset.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    can-i-filter-out-a-particular-cohort-for-my-analysis.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Can I filter out a particular cohort for my analysis?'
+---
+
+Unfortunately, for many reasons (including consent and data usage restrictions) we cannot provide the information required for such filtering. The only subsets we provide are controls, non-cancer, non-neuro, and non-TOPMed.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-i-query-a-batch-of-variants-do-you-have-an-api.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How do I query a batch of variants? Do you have an API?'
+---
+
+We currently do not have a way to submit batch queries on the browser, but we are actively working on developing an API for gnomAD. If you would like to learn about GraphQL, which we will use to work with the API, an overview can be found at [https://graphql.org](https://graphql.org).You can also obtain information on all variants from the VCFs and Hail Tables available on our [downloads page](/downloads).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    when-are-exomes-going-to-be-available-on-grch38.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'When are exomes going to be available on GRCh38?'
+---
+
+This is to come in 2022 with gnomAD v4! At this time, we have GRCh38 lifted-over versions of the gnomAD v2 datasets available on our downloads page. However, note that these are imperfect and contain a number of known issues. For example, some variants cannot be lifted-over and in some cases, multiple variants map to the same position in GRCh38.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-i-download-the-data.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How do I download the data?'
+---
+
+Please visit our [downloads page](/downloads).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-do-i-access-the-gnomad-hail-table-frequency-annotation.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: How do I access the gnomAD Hail Table frequency annotation?
+---
+
+All of gnomAD's release Hail Tables have a 'freq' row annotation containing allele frequency information aggregated by certain sample groupings within the dataset. Each element of this 'freq' array annotation contains the alternate allele count (AC), alternate allele frequency (AF), total number of alleles (AN), and the count of homozygous alternate individuals (homozygote_count) per group. 
+
+To access the frequency data contained in the 'freq' array for a specific group of samples, use the 'freq_index_dict' global annotation. The 'freq_index_dict' global annotation is a dictionary keyed by sample grouping combinations (described in the table below), whose values are the combination's index in the 'freq' array. The groupings and their available options by version are listed in the table below.  
+
+<table>
+  <tr>
+   <td>Category
+   </td>
+   <td>Definition
+   </td>
+   <td>2.1 Options
+   </td>
+   <td>3.1 Options
+   </td>
+  </tr>
+  <tr>
+   <td>group
+   </td>
+   <td>Genotype's filter
+   </td>
+   <td>raw
+   </td>
+   <td>adj<sup>1</sup>, raw
+   </td>
+  </tr>
+  <tr>
+   <td>sex
+   </td>
+   <td>Inferred sex/sex karyotype<sup>2</sup>
+   </td>
+   <td>female, male
+   </td>
+   <td>XX, XY
+   </td>
+  </tr>
+  <tr>
+   <td>subset
+   </td>
+   <td>Sample subsets within release
+   </td>
+   <td>gnomad, controls, non_neuro, non_topmed, non_cancer(exomes only)
+   </td>
+   <td>non_v2, non_topmed, non_neuro, non_cancer, controls_and_biobanks
+   </td>
+  </tr>
+  <tr>
+   <td>pop
+   </td>
+   <td>gnomAD inferred global ancestry
+   </td>
+   <td>afr, ami, amr, asj, eas, fin, nfe, oth, sas
+   </td>
+   <td>afr, ami, amr, asj, eas, fin, mid, nfe, oth, sas
+   </td>
+  </tr>
+  <tr>
+   <td>subpops
+   </td>
+   <td>gnomAD inferred sub-continental ancestries
+   </td>
+   <td><span style=\\"text-decoration:underline;\\">Exomes</span>
+<p>
+<em>nfe options</em>: bgr, est, nwe, onf, seu, swe
+<p>
+<em>eas options</em>: kor, jpn, oea
+<p>
+<span style=\\"text-decoration:underline;\\">Genomes</span> 
+<p>
+<em>nfe options</em>: est, nwe, seu, onf
+   </td>
+   <td>N/A
+   </td>
+  </tr>
+  <tr>
+   <td>pop (1KG subset only)
+   </td>
+   <td>The 1KG project's population labels
+   </td>
+   <td>N/A
+   </td>
+   <td>acb, asw, beb, cdx, ceu, chb, chs, clm, esn, fin, gbr, gih, gwd, ibs, itu, jpt, khv, lwk, msl, mxl, pel, pjl, pur, stu, tsi, yri
+   </td>
+  </tr>
+  <tr>
+   <td>pop (HGDP subset only)
+   </td>
+   <td>The HGDP's population labels
+   </td>
+   <td>N/A
+   </td>
+   <td>adygei, balochi, bantukenya, bantusafrica, basque, bedouin, biakapygmy, brahui, burusho, cambodian, colombian, dai, daur, druze, french, han, hazara, hezhen, italian, japanese, kalash, karitiana, lahu, makrani, mandenka, maya, mbutipygmy, melanesian, miaozu, mongola, mozabite, naxi, orcadian, oroqen, palestinian, papuan, pathan, pima, russian, san, sardinian, she, sindhi, surui, tu, tujia, tuscan, uygur, xibo, yakut, yizu, yoruba
+   </td>
+  </tr>
+  <tr>
+   <td>downsampling 
+   </td>
+   <td>Downsampled sample counts
+   </td>
+   <td>N/A
+   </td>
+   <td>10, 20, 50, 100, 158, 200, 456, 500, 1000, 1047, 1736, 2000, 2419, 2604, 5000, 5316, 7647, 10000, 15000, 20000, 25000, 30000, 34029 40000, 50000, 60000, 70000, 75000
+   </td>
+  </tr>
+</table>
+
+
+### **Version 2.1 sample grouping combinations and 'freq' array access**
+
+The available v2.1 grouping combinations within the 'freq' array annotation are listed below. To access the full callset's data, use “gnomad” as the subset. Raw frequency information is only available for subsets; adj<sup>1</sup> frequency information is provided for all other combinations and does not need to be specified.
+
+* subset, e.g. “gnomad”
+* subset_group, e.g. “controls_raw”
+* subset_pop, e.g. “gnomad_afr”
+* subset_pop_subpop, e.g. “non_topmed_eas_jpn”
+* subset_pop_sex, e.g. “non_neuro_nfe_female”
+
+To access the 'freq' array using the 'freq_index_dict', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes of XX individuals (sex: female<sup>2</sup>) labeled as AFR (pop: AFR) in the entire callset (subset: gnomad) for gnomAD v2.1.1 genomes:
+\`\`\`
+    # Load the v2.1.1 public release HT
+    from gnomad.resources.grch37.gnomad import public_release
+    ht = public_release(“genomes”).ht()
+
+    # Use the key 'gnomad_afr_female' to retrieve the index of this group's frequency data in 'freq'
+    ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['gnomad_afr_female']])
+\`\`\`
+The above example will retrieve the entire frequency struct for each variant. To grab a certain statistic, such as AC, specify the statistic after the value:
+\`\`\`
+    ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['gnomad_afr_female']].AC)
+\`\`\`
+This same approach can be applied to the filtering allele frequency (FAF) array, 'faf', by using the 'faf_index_dict'. 
+
+
+### **Version 3.1 sample grouping combinations and 'freq' array access**
+
+The available v3 grouping combinations within the 'freq' array annotation are listed below. Unlike v2.1, adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main callset and subsets.
+
+* group, e.g. “adj”, “raw” 
+* sex-group, e.g. “XX-adj”
+* subset-group, e.g. “non_v2-raw”
+* pop-group,  e.g. “afr-adj” 
+* pop-sex-group, e.g. “ami-XX-adj”
+* downsampling<sup>3</sup>-group-pop, e.g. “200-adj-eas”, 
+* subset-pop<sup>4</sup>-group, e.g. “non_topmed-sas-adj” 
+* subset-sex-group, e.g. “non_cancer-XY-adj”
+* subset-pop<sup>4</sup>-sex-group, e.g. “'controls_and_biobanks-mid-XX-adj”, 
+
+To access the 'freq' array using the 'freq_index_dict', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) labeled as AFR (pop: AFR) in gnomAD v3.1.2:
+
+\`\`\`
+    # Load the v3.1.2 public release HT
+    from gnomad.resources.grch38.gnomad import public_release
+    ht = public_release(“genomes”).ht()
+
+    # Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
+    ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr-XX-adj']])  
+\`\`\`
+
+The above example will retrieve the entire frequency struct for each variant. To grab a certain statistic, such as AC, specify the statistic after the value:
+
+\`\`\`
+    ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['afr-XX-adj']].AC)
+\`\`\`
+
+This same approach can be applied to the filtering allele frequency (FAF) array, 'faf', by using the 'faf_index_dict'.  
+  
+  
+<sup>1</sup> Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.  
+<sup>2</sup> The labels we use to classify individuals by chromosomal sex changed from “male” and “female” to “XY” and “XX.” More details available in this [blog post](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#tweaks-and-updates).  
+<sup>3</sup> Some downsamplings exceed population counts and thus are not available for those populations.  
+<sup>4</sup> For HGDP and 1KG subsets, project specified populations are available in place of gnomAD inferred global populations.  The HGDP populations are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG populations are described [here](https://www.internationalgenome.org/category/population).  
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <span
+            className="c11"
+          >
+            <h3
+              className="c14"
+            >
+              <a
+                aria-hidden="true"
+                className="c12 c13"
+                href="#coverage"
+                id="coverage"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  height={12}
+                  src="test-file-stub"
+                  width={12}
+                />
+              </a>
+              Coverage
+            </h3>
+          </span>
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Show all answers in this section
+          </button>
+           
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Hide all answers in this section
+          </button>
+          <ul
+            className="c16"
+          >
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-was-coverage-calculated.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How was coverage calculated?'
+---
+
+#### gnomAD v3.0
+
+Coverage was computed using all 71,702 gnomAD v3.0 samples from their GVCFs . The gVCFs were produced using a 3-bin blocking scheme:
+
+- No coverage
+- Reference genotype quality < Q20
+- Reference genotype quality >= Q20
+
+The coverage was binned by quality using the thresholds above and the median coverage value for each of the resulting coverage blocks was used to compute the coverage metrics presented in the browser.
+
+Coverage was computed for all callable bases in the genome (all non-N bases, minus telomeres and centromeres).
+
+#### gnomAD v2
+
+Coverage was calculated separately for exomes and genomes on a ~10% subset of the samples using the [samtools](https://www.htslib.org/) depth tool. The base quality threshold was set to 10 for the -q option and the mapping quality threshold set to 20 for the -Q option. It is calculated per base of the respective calling intervals, includes sites with zero depth (-a flag), and is capped at 100x for a given sample and base pair. Mean coverage is then plotted on the browser. The numbers in columns over_1, over_5, over_10, etc of our downloadable coverage files refer to the fraction of samples with a depth of coverage of at least 1 read, 5 reads, 10 reads, etc. for the given chromosome and position.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    is-my-variant-missing-because-it-was-not-called-in-any-of-the-samples-or-did-the-site-just-lack-coverage.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Is my variant missing because it was not called in any of the samples or did the site just lack coverage?'
+---
+
+The best way to tell if a variant is missing because of a lack of coverage vs missing because it is actually absent in all gnomAD samples is to check the coverage at that base position. You can obtain coverage files from our downloads page. If you are using the browser, a region search will still display coverage plots for zero-variant sites, which can help distinguish between sites that lack variants and sites that could not be called because of a lack of coverage.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-does-a-variant-show-a-large-drop-in-an-compared-to-surrounding-variants-in-gnomad-v2.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why does a variant show a large drop in AN compared to surrounding variants in gnomAD v2?'
+---
+
+Sometimes a large apparent drop in AN can occur because a variant was called in only genome samples. If surrounding variants were called in exomes or both exomes and genomes, the AN values for these variants are higher, making it appear that there is a sudden drop and rise in AN. Although the AN is likely consistently high across the given region for exomes, if we only have explicit variant calls for the genome data, we can only speak to our reference confidence for those samples.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-your-calling-intervals-what-intervals-are-used-for-the-genomes-coding-only-files.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are your calling intervals? What intervals are used for the genomes coding-only files?'
+---
+
+The calling intervals for our exomes include the bait-covered regions ±50 bp. The following exome calling intervals were used to generate the genome coding-only files in gnomAD v2.
+
+- [Exome calling regions](https://storage.googleapis.com/gcp-public-data--gnomad/intervals/exome_calling_regions.v1.interval_list)
+- [Genome calling regions](https://storage.googleapis.com/gcp-public-data--gnomad/intervals/hg19-v0-wgs_evaluation_regions.v1.interval_list)
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <span
+            className="c11"
+          >
+            <h3
+              className="c14"
+            >
+              <a
+                aria-hidden="true"
+                className="c12 c13"
+                href="#mitochondrial-dna"
+                id="mitochondrial-dna"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  height={12}
+                  src="test-file-stub"
+                  width={12}
+                />
+              </a>
+              Mitochondrial DNA
+            </h3>
+          </span>
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Show all answers in this section
+          </button>
+           
+          <button
+            className="c15"
+            onClick={[Function]}
+            type="button"
+          >
+            Hide all answers in this section
+          </button>
+          <ul
+            className="c16"
+          >
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    how-are-variants-called-on-the-mitochondrial-dna.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'How are variants called on the mitochondrial DNA (mtDNA)?'
+---
+
+Mitochondrial DNA variants are called using a specialized GATK pipeline that addresses challenges specific to the mtDNA. Homoplasmic and heteroplasmic variants are called using the GATK MuTect2 variant caller in a special \\"mitochondrial mode\\", with extensive filtering of samples and variants as described in our [\\"gnomAD v3.1 Mitochondrial DNA Variants\\" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-is-the-total-allele-number-lower-for-mtdna-versus-nuclear-variants.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why is the total allele number lower for mtDNA versus nuclear variants?'
+---
+
+The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples passed mitochondrial-specific filters. Samples were excluded if they showed (i) low mtDNA molecules per cell (as these samples have excess heteroplasmic variants likely due to misalignment of nuclear sequences of mitochondrial origin, NUMTs); or (ii) high mtDNA molecules per cell to exclude cell lines (as these samples have excess numbers of heteroplasmic variants likely due to mutation / selection during cell culture); or (iii) mitochondrial contamination exceeding 2% (problematic for calling heteroplasmic variants). We note that samples with low overall contamination may show high mtDNA contamination, e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line with 1000 mtDNA molecules/cell. See our [\\"gnomAD v3.1 Mitochondrial DNA Variants\\" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/) for details.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-numts-and-why-are-they-problematic.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are NUMTs and why are they problematic?'
+---
+
+Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtDNA that have integrated into the nuclear genome over the course of human evolution. Many ancient NUMTs are part of the reference human genome assembly; however, hundreds of polymorphic NUMTs exist that are present only in some individuals. Reads derived from NUMTs (particularly polymorphic NUMTs) often mis-align to the mtDNA and conversely, reads genuinely arising from the mtDNA genome can mis-align to the NUMTs in the reference genome. NUMTs present problems for calling variants in the mtDNA because reads that mis-align to the mtDNA will often generate false positive calls. For example, in a sample with 30x autosomal coverage and 1500x mtDNA coverage, a homozygous NUMT that mis-aligns to the mtDNA can result in false positive calls at 2% apparent heteroplasmy (30/1530 reads). Other bases in the same NUMT can cause a truly homoplasmic mtDNA allele to be falsely called at 98% heteroplasmy (with the 2% REF alleles deriving from the NUMT mis-alignment). This is one reason why we call all variants 95-100% heteroplasmy as \\"homoplasmic or near-homoplasmic\\" -- since the REF alleles could be derived from NUMTs or from sequencing errors. NUMTs are a larger problem for samples with few mtDNA molecules/cell, which is why we exclude samples with < 50 mtDNA copies/cell.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    why-are-no-variants-reported-below-10-percent-heteroplasmy.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Why are no variants reported below 10% heteroplasmy?'
+---
+
+In gnomAD v3.1 we chose to filter out variants with heteroplasmy below 10%, since low heteroplasmy variants are enriched for sequencing/PCR errors, mis-alignment of NUMTs, and contamination. We anticipate that future releases may include lower heteroplasmy variants as we continue to improve our variant filters and quality control.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-haplogroups.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are haplogroups?'
+---
+
+mtDNA does not recombine and is inherited maternally. mtDNA sequences have historically been grouped together based on sequence similarity into \\"haplogroups.\\". There are over 5000 haplogroups from diverse populations available in the [Phylotree](https://www.phylotree.org/) database. Each gnomAD sample is assigned to a specific haplogroup via [Haplogrep](https://github.com/seppinho/haplogrep-cmd).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-is-a-haplogroup-defining-variant.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What is a haplogroup-defining variant?'
+---
+
+Variants that are homoplasmic in any of the ~5000 haplogroups in the [Phylotree](https://www.phylotree.org/) database are termed \\"haplogroup-defining\\".
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-haplogroup-specific-frequencies.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are haplogroup-specific frequencies?'
+---
+
+For each variant, we report the overall population frequency across all gnomAD samples as well as frequencies within all individuals of a given haplogroup (top-level haplogroups only, nomenclature is per van Oven et al Human Mutation 2009). We note more specific haplogroups cannot be reported due to data use restrictions. Variants are displayed relative to the GRCh38 reference genome, which contains the rCRS mitochondrial sequence which belongs to haplogroup H2a2a1 (within the top-level haplogroup H).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-nuclear-ancestral-populations-are-represented.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What nuclear ancestral populations are represented?'
+---
+
+We report allele frequencies by mitochondrial haplogroup as well as by [inferred nuclear ancestry](/help/what-populations-are-represented-in-the-gnomad-data).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    What is the distribution of haplogroups in gnomAD v3.1?
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <h4>
+                    N lineages ("Eurasian")
+                  </h4>
+                  <table
+                    className="c23"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                        >
+                          Haplogroup
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Number of samples
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Percent of total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          H
+                        </th>
+                        <td>
+                          14784
+                        </td>
+                        <td>
+                          26%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          U
+                        </th>
+                        <td>
+                          6037
+                        </td>
+                        <td>
+                          11%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          J
+                        </th>
+                        <td>
+                          3144
+                        </td>
+                        <td>
+                          6%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          T
+                        </th>
+                        <td>
+                          3080
+                        </td>
+                        <td>
+                          5%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          K
+                        </th>
+                        <td>
+                          2732
+                        </td>
+                        <td>
+                          5%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          A
+                        </th>
+                        <td>
+                          2680
+                        </td>
+                        <td>
+                          5%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          B
+                        </th>
+                        <td>
+                          1537
+                        </td>
+                        <td>
+                          3%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          V
+                        </th>
+                        <td>
+                          1234
+                        </td>
+                        <td>
+                          2%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          I
+                        </th>
+                        <td>
+                          934
+                        </td>
+                        <td>
+                          2%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          W
+                        </th>
+                        <td>
+                          819
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          HV
+                        </th>
+                        <td>
+                          701
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          X
+                        </th>
+                        <td>
+                          546
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          R
+                        </th>
+                        <td>
+                          393
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          N
+                        </th>
+                        <td>
+                          366
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          F
+                        </th>
+                        <td>
+                          282
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          Y
+                        </th>
+                        <td>
+                          12
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          P 
+                        </th>
+                        <td>
+                          7
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          S 
+                        </th>
+                        <td>
+                          0
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          O 
+                        </th>
+                        <td>
+                          0
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          All N lineages
+                        </th>
+                        <td>
+                          39288
+                        </td>
+                        <td>
+                          70%
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  <h4>
+                    L lineages ("African")
+                  </h4>
+                  <table
+                    className="c23"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                        >
+                          Haplogroup
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Number of samples
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Percent of total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L3
+                        </th>
+                        <td>
+                          5672
+                        </td>
+                        <td>
+                          10%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L2
+                        </th>
+                        <td>
+                          4724
+                        </td>
+                        <td>
+                          8%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L1
+                        </th>
+                        <td>
+                          2977
+                        </td>
+                        <td>
+                          5%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L0
+                        </th>
+                        <td>
+                          663
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L4
+                        </th>
+                        <td>
+                          126
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L5
+                        </th>
+                        <td>
+                          1
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          L6
+                        </th>
+                        <td>
+                          0
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          All L lineages
+                        </th>
+                        <td>
+                          14163
+                        </td>
+                        <td>
+                          25%
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  <h4>
+                    M lineages ("Asian")
+                  </h4>
+                  <table
+                    className="c23"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                        >
+                          Haplogroup
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Number of samples
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Percent of total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          M
+                        </th>
+                        <td>
+                          1298
+                        </td>
+                        <td>
+                          2%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          C
+                        </th>
+                        <td>
+                          868
+                        </td>
+                        <td>
+                          2%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          D
+                        </th>
+                        <td>
+                          603
+                        </td>
+                        <td>
+                          1%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          G
+                        </th>
+                        <td>
+                          91
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          Z
+                        </th>
+                        <td>
+                          89
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          E
+                        </th>
+                        <td>
+                          34
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          Q
+                        </th>
+                        <td>
+                          0
+                        </td>
+                        <td>
+                          0%
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          All M lineages
+                        </th>
+                        <td>
+                          2983
+                        </td>
+                        <td>
+                          5%
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    How many samples are in each mtDNA haplogroup, for each nuclear ancestry population?
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <select
+                    className="c24"
+                    id="haplogroup-selected"
+                    onChange={[Function]}
+                    value="All"
+                  >
+                    <optgroup
+                      label="Haplogroup"
+                    >
+                      <option
+                        value="All"
+                      >
+                        All Haplogroups
+                      </option>
+                      <option
+                        value="A"
+                      >
+                        A
+                      </option>
+                      <option
+                        value="B"
+                      >
+                        B
+                      </option>
+                      <option
+                        value="C"
+                      >
+                        C
+                      </option>
+                      <option
+                        value="D"
+                      >
+                        D
+                      </option>
+                      <option
+                        value="E"
+                      >
+                        E
+                      </option>
+                      <option
+                        value="F"
+                      >
+                        F
+                      </option>
+                      <option
+                        value="G"
+                      >
+                        G
+                      </option>
+                      <option
+                        value="H"
+                      >
+                        H
+                      </option>
+                      <option
+                        value="HV"
+                      >
+                        HV
+                      </option>
+                      <option
+                        value="I"
+                      >
+                        I
+                      </option>
+                      <option
+                        value="J"
+                      >
+                        J
+                      </option>
+                      <option
+                        value="K"
+                      >
+                        K
+                      </option>
+                      <option
+                        value="L0"
+                      >
+                        L0
+                      </option>
+                      <option
+                        value="L1"
+                      >
+                        L1
+                      </option>
+                      <option
+                        value="L2"
+                      >
+                        L2
+                      </option>
+                      <option
+                        value="L3"
+                      >
+                        L3
+                      </option>
+                      <option
+                        value="L4"
+                      >
+                        L4
+                      </option>
+                      <option
+                        value="L5"
+                      >
+                        L5
+                      </option>
+                      <option
+                        value="M"
+                      >
+                        M
+                      </option>
+                      <option
+                        value="N"
+                      >
+                        N
+                      </option>
+                      <option
+                        value="P"
+                      >
+                        P
+                      </option>
+                      <option
+                        value="R"
+                      >
+                        R
+                      </option>
+                      <option
+                        value="T"
+                      >
+                        T
+                      </option>
+                      <option
+                        value="U"
+                      >
+                        U
+                      </option>
+                      <option
+                        value="V"
+                      >
+                        V
+                      </option>
+                      <option
+                        value="W"
+                      >
+                        W
+                      </option>
+                      <option
+                        value="X"
+                      >
+                        X
+                      </option>
+                      <option
+                        value="Y"
+                      >
+                        Y
+                      </option>
+                      <option
+                        value="Z"
+                      >
+                        Z
+                      </option>
+                    </optgroup>
+                  </select>
+                  <select
+                    className="c24"
+                    id="ancestry-selected"
+                    onChange={[Function]}
+                    value="All"
+                  >
+                    <optgroup
+                      label="Ancestry"
+                    >
+                      <option
+                        value="All"
+                      >
+                        All Ancestries
+                      </option>
+                      <option
+                        value="African/African American"
+                      >
+                        African/African American
+                      </option>
+                      <option
+                        value="Amish"
+                      >
+                        Amish
+                      </option>
+                      <option
+                        value="Latino/Admixed American"
+                      >
+                        Latino/Admixed American
+                      </option>
+                      <option
+                        value="Ashkenazi Jewish"
+                      >
+                        Ashkenazi Jewish
+                      </option>
+                      <option
+                        value="East Asian"
+                      >
+                        East Asian
+                      </option>
+                      <option
+                        value="European (Finnish)"
+                      >
+                        European (Finnish)
+                      </option>
+                      <option
+                        value="Middle Eastern"
+                      >
+                        Middle Eastern
+                      </option>
+                      <option
+                        value="European (non-Finnish)"
+                      >
+                        European (non-Finnish)
+                      </option>
+                      <option
+                        value="South Asian"
+                      >
+                        South Asian
+                      </option>
+                      <option
+                        value="Other"
+                      >
+                        Other
+                      </option>
+                    </optgroup>
+                  </select>
+                  <table
+                    className="c25"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                        >
+                          Haplogroup
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Population
+                        </th>
+                        <th
+                          scope="col"
+                        >
+                          Number of Samples
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody />
+                    <tfoot>
+                      <tr>
+                        <th
+                          scope="row"
+                        >
+                          Haplogroup: 
+                          All
+                        </th>
+                        <th>
+                          Ancestry: 
+                          All
+                        </th>
+                        <td>
+                          Samples:
+                           
+                          0
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-are-the-meanings-of-the-mitochondrial-specific-filters-and-flags.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'What are the meanings of the mitochondrial-specific filters and flags?'
+---
+
+Mitochondrial variants were subjected to mitochondrial-specific filters and flags. Filters are used to exclude specific genotypes, variants, or sites from population counts. Genotype filters exclude alleles in individual samples (e.g. poor base quality or low heteroplasmy in that sample), whereas variant filters exclude the allele in all individuals for a given variant, and site filters exclude all variants at a given position (eg all indel and SNP variants overlapping chrM:310). Flags are warnings applied to PASS variants to aid interpretation. The number of filtered genotypes is reported in the excluded allele count (\\"excluded_AC\\"), and a histogram is available on variant pages to view the counts of specific filters across different heteroplasmy levels, but these genotypes are not used for allele count and allele frequency calculations.
+
+- artifact_prone_site (site-level filter): This is one of 6 specific mtDNA positions (301, 302, 310, 316, 3107, 16182) where sequence context makes it difficult to distinguish true variants from technical artifacts, and therefore all variants overlapping these sites are filtered out. The homopolymer tracts at location chrM:300-317 (AAACCCCCCCTCCCCCGC) cause Illumina sequencing errors in all samples and cause (i) a large coverage dip in this region, (ii) reads with many apparent indels near position chrM:310T, and (iii) apparent substitutions of chrM:301A→C, chrM:302A→C, chrM:310T→C, and chrM:316G→C. Similarly, homopolymer tracts at location chrM:16180-16193 (AAAACCCCCTCCCC) cause errors and apparent indels at position chrM:16182. The reference genome contains \\"N\\" at position chrM:3107, which causes misalignment of many reads.
+
+- indel_stack (variant filter): Similar to artifact-prone sites, certain indels create a homopolymer tract that causes a drop in coverage and technical sequencing artifacts in multiple individuals. For example, an individual with an insertion at position chrM:5892 would typically show multiple alternate alleles (e.g., REF=T, ALT= TC, TCC, TCCC, TCCCCC, TCCCCC, TCCCCCCCC), which represents a multi-allelic call in this sample. Indels that are only present within multi-allelic calls across all samples in the callset are filtered out using this flag. For example, of the 182 different indel variants observed at position chrM:5892, 102 are only detected within multi-allelic calls and are filtered out as indel_stack, whereas alternate variants such as chrM:5892T→TC and chrM:5892T→TCC are not always in multi-allelic calls and will pass filters.
+
+- npg (variant filter): No sample had a pass genotype for the variant (no pass genotype).
+
+- common_low_heteroplasmy (variant warning flag): This flag is present if the variant is found at an overall frequency of .001 across all samples with a PASS genotype and heteroplasmy level > 0% and < 50% (includes variants < 1% heteroplasmy which are subsequently filtered). This flag indicates that low-heteroplasmy alleles at these variants are likely to be enriched for sequencing errors and NUMT misalignments (which are common across samples), however homoplasmic alleles at these variants will be high quality and can be trusted.
+
+- base_qual (genotype filter): Median base quality for alternate allele was below minimum (using default of 20 for \\"min-median-base-quality\\" parameter)
+
+- heteroplasmy_below_min_het_threshold (genotype filter): Heteroplasmy level was below 10% in this sample
+
+- position (genotype filter): Median distance of variant allele from end of reads was below minimum (using default of 1 for \\"min-median-read-position\\" parameter)
+
+- strand_bias (genotype filter): Evidence for alternate allele comes from one read direction only
+
+- weak_evidence (genotype filter): Mutation does not meet likelihood threshold
+
+- contamination (genotype filter): Fails MuTect2 contamination filter based on [Haplocheck](https://github.com/genepi/haplocheck) (does not take into account the freemix value or our internal algorithm for calculating contamination)
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    can-i-download-all-the-mtdna-variants.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "---
+question: 'Can I download all the mtDNA variants?'
+---
+
+Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF format or a text file summary. Files are listed on the [downloads page](/downloads#v3-mitochondrial-dna).
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
