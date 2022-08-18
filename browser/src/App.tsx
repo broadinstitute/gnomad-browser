@@ -71,13 +71,7 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = (
-  <>
-    We&apos;re hiring! {' • '}
-    {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-    <ExternalLink href="https://broad.io/gnomad-cs">Computational scientist</ExternalLink>
-  </>
-)
+const BANNER_CONTENT = null
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
