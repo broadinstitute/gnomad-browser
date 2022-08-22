@@ -3,7 +3,6 @@ import 'jest-styled-components'
 
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { createBrowserHistory } from 'history'
 
 import { readsApiOutputFactory, exomeReadApiOutputFactory } from '../__factories__/ReadData'
 import ReadDataContainer from './ReadData'
