@@ -5,6 +5,6 @@ set -eu
 PROJECT_DIR=$(dirname "$0")
 cd $PROJECT_DIR
 
-./build/buildHelp.js
+yarn run ts-node ./build/buildHelp.ts
 
 yarn run webpack

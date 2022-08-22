@@ -8,13 +8,22 @@ const prettier = require('prettier')
 
 const OUTPUT_PATH = path.resolve(__dirname, '../src/help/helpTopics.js')
 
-const helpTopicFiles = glob.sync(`${path.resolve(__dirname, '../help/topics')}/**/*.md`, {
-  matchBase: true,
-  absolute: true,
-})
+const sourceFilePaths = (subsectionName: string, filenamePattern: string) => {
+  const subsectionPath = path.resolve(__dirname, `../help/${subsectionName}`)
+  const globPattern = `${subsectionPath}/**/${filenamePattern}`
+  return glob
+    .sync(globPattern, {
+      matchBase: true,
+      absolute: true,
+    })
+    .filter((sourceFilePath: string) => !sourceFilePath.match(/\.spec\./))
+}
+
+const helpTopicFiles = sourceFilePaths('topics', '*.md')
+const faqFiles = sourceFilePaths('faq', '*.@(js|tsx|md)')
 
 const helpImports = helpTopicFiles
-  .map((f, i) => {
+  .map((f: string, i: number) => {
     let importPath = path.relative(path.dirname(OUTPUT_PATH), f)
     if (!importPath.startsWith('.')) {
       importPath = `./${importPath}`
@@ -25,16 +34,11 @@ const helpImports = helpTopicFiles
   .join(';')
 
 const helpTopics = `
-  const topics = [${helpTopicFiles.map((_, i) => `topic${i}`).join(',')}];
+  const topics = [${helpTopicFiles.map((_: any, i: number) => `topic${i}`).join(',')}];
 `
 
-const faqFiles = glob.sync(`${path.resolve(__dirname, '../help/faq')}/**/*.@(js|tsx|md)`, {
-  matchBase: true,
-  absolute: true,
-})
-
 const faqImports = faqFiles
-  .map((f, i) => {
+  .map((f: string, i: number) => {
     const importPath = path.relative(path.dirname(OUTPUT_PATH), f)
     if (f.endsWith('.js') || f.endsWith('.tsx')) {
       return `import * as faqEntry${i} from '${importPath.replace(/\.(js|tsx)$/, '')}'`
@@ -46,7 +50,7 @@ const faqImports = faqFiles
 
 const faqEntries = `
   const faqEntries = [${faqFiles
-    .map((f, i) => {
+    .map((f: string, i: number) => {
       const id = path.basename(f).replace(/\.(js|tsx|md)$/, '')
       return `{id: '${id}', ...faqEntry${i}}`
     })
