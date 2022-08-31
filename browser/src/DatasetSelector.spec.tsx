@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals'
+import { expect, test } from '@jest/globals'
 import 'jest-styled-components'
 
 import React from 'react'
@@ -7,9 +7,9 @@ import renderer from 'react-test-renderer'
 import { createBrowserHistory } from 'history'
 import DatasetSelector from './DatasetSelector'
 
-import { allDatasetIds } from './datasets'
+import { forAllDatasets } from '../../tests/__helpers__/datasets'
 
-describe.each(allDatasetIds)('DataSelector with "%s" dataset selected', (datasetId: any) => {
+forAllDatasets('DataSelector with "%s" dataset selected', (datasetId) => {
   test('has no unexpected changes', () => {
     const tree = renderer.create(
       <Router history={createBrowserHistory()}>
