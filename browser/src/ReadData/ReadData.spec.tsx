@@ -1,4 +1,4 @@
-import { jest, describe, expect, test } from '@jest/globals'
+import { jest, expect, test } from '@jest/globals'
 import 'jest-styled-components'
 
 import React from 'react'
@@ -8,7 +8,7 @@ import { createBrowserHistory } from 'history'
 
 import { readsApiOutputFactory, exomeReadApiOutputFactory } from '../__factories__/ReadData'
 import ReadDataContainer from './ReadData'
-import { allDatasetIds } from '../datasets'
+import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 
 const variantId = '123-45-A-G'
 
@@ -39,7 +39,7 @@ jest.mock('../Query', () => ({
 
 jest.mock('./IGVBrowser', () => () => null)
 
-describe.each(allDatasetIds)('ReadData with "%s" dataset selected', (datasetId: any) => {
+forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
   test('has no unexpected changes', () => {
     const tree = renderer.create(
       <Router history={createBrowserHistory()}>
