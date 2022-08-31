@@ -18,6 +18,8 @@ export const datasetLabels = {
 
 export const labelForDataset = (datasetId) => datasetLabels[datasetId] || 'Unknown'
 
+export const allDatasetIds = Object.keys(datasetLabels)
+
 const fullDatasetIds = Object.getOwnPropertyNames(datasetLabels).filter(
   (datasetId) => datasetId === 'exac' || datasetId.match(/_r\d+(_\d+)*$/)
 )
