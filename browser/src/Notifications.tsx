@@ -22,6 +22,8 @@ const STATUS_COLOR = {
   error: '#DD2C00',
 }
 
+type Status = 'success' | 'info' | 'warning' | 'error'
+
 const Notification = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,10 +36,7 @@ const Notification = styled.div`
   margin-bottom: 1rem;
   background: linear-gradient(
     to right,
-    ${(props: any) =>
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        STATUS_COLOR[props.status]}
-      10px,
+    ${(props: { status: Status }) => STATUS_COLOR[props.status]} 10px,
     #fafafa 10px
   );
   box-shadow: 2px 2px 5px #3338;
@@ -105,7 +104,6 @@ class Notifications extends Component<{}, State> {
           {notifications.map((notification) => {
             const { id, title, message, status } = notification
             return (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
               <Notification key={id} status={status}>
                 <strong>{title}</strong>
                 {message}

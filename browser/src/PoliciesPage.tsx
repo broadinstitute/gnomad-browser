@@ -3,8 +3,11 @@ import styled from 'styled-components'
 
 import { PageHeading } from '@gnomad/ui'
 
+// @ts-expect-error
 import termsContent from '../about/policies/terms.md'
+// @ts-expect-error
 import privacyPolicy from '../about/policies/policies_gnomAD_privacy_DRAFT.pdf'
+// @ts-expect-error
 import policiesContent from '../about/policies/policies.md'
 
 import DocumentTitle from './DocumentTitle'

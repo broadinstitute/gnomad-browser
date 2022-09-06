@@ -195,7 +195,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -212,7 +212,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -229,7 +229,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -246,7 +246,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -263,7 +263,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -280,7 +280,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -297,7 +297,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -314,7 +314,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -331,7 +331,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -348,7 +348,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -365,7 +365,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -382,7 +382,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -443,7 +443,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -460,7 +460,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -477,7 +477,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -692,7 +692,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -709,7 +709,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -726,7 +726,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -743,7 +743,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -760,7 +760,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -777,7 +777,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -794,7 +794,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -811,7 +811,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -828,7 +828,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -845,7 +845,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -862,7 +862,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -879,7 +879,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -940,7 +940,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -957,7 +957,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -974,7 +974,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -1189,7 +1189,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -1206,7 +1206,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -1223,7 +1223,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -1240,7 +1240,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -1257,7 +1257,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -1274,7 +1274,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -1291,7 +1291,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -1308,7 +1308,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -1325,7 +1325,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -1342,7 +1342,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -1359,7 +1359,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -1376,7 +1376,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -1437,7 +1437,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -1454,7 +1454,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -1471,7 +1471,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -1686,7 +1686,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -1703,7 +1703,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -1720,7 +1720,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -1737,7 +1737,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -1754,7 +1754,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -1771,7 +1771,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -1788,7 +1788,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -1805,7 +1805,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -1822,7 +1822,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -1839,7 +1839,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -1856,7 +1856,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -1873,7 +1873,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -1934,7 +1934,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -1951,7 +1951,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -1968,7 +1968,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -2183,7 +2183,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -2200,7 +2200,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -2217,7 +2217,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -2234,7 +2234,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -2251,7 +2251,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -2268,7 +2268,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -2285,7 +2285,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -2302,7 +2302,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -2319,7 +2319,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -2336,7 +2336,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -2353,7 +2353,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -2370,7 +2370,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -2431,7 +2431,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -2448,7 +2448,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -2465,7 +2465,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -2680,7 +2680,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -2697,7 +2697,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -2714,7 +2714,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -2731,7 +2731,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -2748,7 +2748,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -2765,7 +2765,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -2782,7 +2782,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -2799,7 +2799,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -2816,7 +2816,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -2833,7 +2833,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -2850,7 +2850,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -2867,7 +2867,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -2928,7 +2928,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -2945,7 +2945,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -2962,7 +2962,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -3177,7 +3177,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -3194,7 +3194,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -3211,7 +3211,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -3228,7 +3228,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -3245,7 +3245,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -3262,7 +3262,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -3279,7 +3279,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -3296,7 +3296,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -3313,7 +3313,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -3330,7 +3330,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -3347,7 +3347,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -3364,7 +3364,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -3425,7 +3425,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -3442,7 +3442,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -3459,7 +3459,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -3674,7 +3674,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -3691,7 +3691,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -3708,7 +3708,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -3725,7 +3725,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -3742,7 +3742,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -3759,7 +3759,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -3776,7 +3776,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -3793,7 +3793,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -3810,7 +3810,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -3827,7 +3827,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -3844,7 +3844,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -3861,7 +3861,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -3922,7 +3922,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -3939,7 +3939,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -3956,7 +3956,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -4171,7 +4171,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -4188,7 +4188,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -4205,7 +4205,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -4222,7 +4222,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -4239,7 +4239,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -4256,7 +4256,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -4273,7 +4273,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -4290,7 +4290,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -4307,7 +4307,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -4324,7 +4324,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -4341,7 +4341,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -4358,7 +4358,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -4419,7 +4419,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -4436,7 +4436,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -4453,7 +4453,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -4668,7 +4668,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -4685,7 +4685,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -4702,7 +4702,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -4719,7 +4719,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -4736,7 +4736,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -4753,7 +4753,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -4770,7 +4770,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -4787,7 +4787,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -4804,7 +4804,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -4821,7 +4821,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -4838,7 +4838,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -4855,7 +4855,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -4916,7 +4916,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -4933,7 +4933,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -4950,7 +4950,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -5165,7 +5165,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -5182,7 +5182,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -5199,7 +5199,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -5216,7 +5216,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -5233,7 +5233,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -5250,7 +5250,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -5267,7 +5267,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -5284,7 +5284,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -5301,7 +5301,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -5318,7 +5318,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -5335,7 +5335,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -5352,7 +5352,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -5413,7 +5413,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -5430,7 +5430,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -5447,7 +5447,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -5662,7 +5662,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -5679,7 +5679,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -5696,7 +5696,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -5713,7 +5713,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -5730,7 +5730,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -5747,7 +5747,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -5764,7 +5764,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -5781,7 +5781,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -5798,7 +5798,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -5815,7 +5815,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -5832,7 +5832,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -5849,7 +5849,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -5910,7 +5910,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -5927,7 +5927,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -5944,7 +5944,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -6159,7 +6159,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -6176,7 +6176,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -6193,7 +6193,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -6210,7 +6210,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -6227,7 +6227,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -6244,7 +6244,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -6261,7 +6261,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -6278,7 +6278,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -6295,7 +6295,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -6312,7 +6312,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -6329,7 +6329,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -6346,7 +6346,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -6407,7 +6407,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -6424,7 +6424,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -6441,7 +6441,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -6656,7 +6656,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -6673,7 +6673,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -6690,7 +6690,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -6707,7 +6707,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -6724,7 +6724,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -6741,7 +6741,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -6758,7 +6758,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -6775,7 +6775,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -6792,7 +6792,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -6809,7 +6809,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -6826,7 +6826,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -6843,7 +6843,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -6904,7 +6904,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -6921,7 +6921,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -6938,7 +6938,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}
@@ -7153,7 +7153,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3"
           href="/?dataset=gnomad_r3"
           onBlur={[Function]}
@@ -7170,7 +7170,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_cancer"
           href="/?dataset=gnomad_r3_non_cancer"
           onBlur={[Function]}
@@ -7187,7 +7187,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_neuro"
           href="/?dataset=gnomad_r3_non_neuro"
           onBlur={[Function]}
@@ -7204,7 +7204,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_v2"
           href="/?dataset=gnomad_r3_non_v2"
           onBlur={[Function]}
@@ -7221,7 +7221,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_non_topmed"
           href="/?dataset=gnomad_r3_non_topmed"
           onBlur={[Function]}
@@ -7238,7 +7238,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r3_controls_and_biobanks"
           href="/?dataset=gnomad_r3_controls_and_biobanks"
           onBlur={[Function]}
@@ -7255,7 +7255,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1"
           href="/?dataset=gnomad_r2_1"
           onBlur={[Function]}
@@ -7272,7 +7272,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_topmed"
           href="/?dataset=gnomad_r2_1_non_topmed"
           onBlur={[Function]}
@@ -7289,7 +7289,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_cancer"
           href="/?dataset=gnomad_r2_1_non_cancer"
           onBlur={[Function]}
@@ -7306,7 +7306,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_non_neuro"
           href="/?dataset=gnomad_r2_1_non_neuro"
           onBlur={[Function]}
@@ -7323,7 +7323,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_r2_1_controls"
           href="/?dataset=gnomad_r2_1_controls"
           onBlur={[Function]}
@@ -7340,7 +7340,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="exac"
           href="/?dataset=exac"
           onBlur={[Function]}
@@ -7401,7 +7401,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
     >
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1"
           href="/?dataset=gnomad_sv_r2_1"
           onBlur={[Function]}
@@ -7418,7 +7418,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_non_neuro"
           href="/?dataset=gnomad_sv_r2_1_non_neuro"
           onBlur={[Function]}
@@ -7435,7 +7435,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
       </li>
       <li>
         <a
-          className="-Link c6"
+          className="c6"
           data-item="gnomad_sv_r2_1_controls"
           href="/?dataset=gnomad_sv_r2_1_controls"
           onBlur={[Function]}

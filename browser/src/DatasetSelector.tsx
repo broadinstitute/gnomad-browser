@@ -439,20 +439,16 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         id: 'other_short_variant',
         isActive: !selectedDataset.startsWith('gnomad_sv'),
         label: 'More datasets',
-        children: [],
+        children: [] as { id: string; label: string; url: string; description: string }[],
       },
     ]
 
     if (includeGnomad3) {
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         id: 'gnomad_r3',
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         label: labelForDataset('gnomad_r3'),
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         url: datasetLink('gnomad_r3'),
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
       })
     }
@@ -461,13 +457,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
-          // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
           id: 'gnomad_r3_non_cancer',
-          // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
           label: labelForDataset('gnomad_r3_non_cancer'),
-          // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
           url: datasetLink('gnomad_r3_non_cancer'),
-          // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
           description: `${sampleCounts.gnomad_r3_non_cancer.total.toLocaleString()} samples`,
         },
         {
@@ -500,13 +492,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     if (includeGnomad2) {
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         id: 'gnomad_r2_1',
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         label: labelForDataset('gnomad_r2_1'),
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         url: datasetLink('gnomad_r2_1'),
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
       })
     }
@@ -515,13 +503,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
-          // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
           id: 'gnomad_r2_1_non_topmed',
-          // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
           label: labelForDataset('gnomad_r2_1_non_topmed'),
-          // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
           url: datasetLink('gnomad_r2_1_non_topmed'),
-          // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
           description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
         },
         {
@@ -548,13 +532,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     if (includeExac) {
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         id: 'exac',
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         label: labelForDataset('exac'),
-        // @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
         url: datasetLink('exac'),
-        // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
       })
     }
