@@ -7,7 +7,6 @@ import { AxisBottom, AxisLeft } from '@vx/axis'
 
 import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import gnomadV3MitochondrialVariantSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantSiteQualityMetricDistributions.json'
 
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
@@ -265,10 +264,14 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
   ).value
 
   const binEdges =
+    // @ts-expect-error
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_edges
   const binValues = [
+    // @ts-expect-error
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_smaller || 0,
+    // @ts-expect-error
     ...gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_freq,
+    // @ts-expect-error
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_larger || 0,
   ]
 

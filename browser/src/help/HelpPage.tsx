@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 import { Button, Link as BaseLink, List, ListItem, PageHeading, Searchbox } from '@gnomad/ui'
 
-// @ts-expect-error TS(2732) FIXME: Cannot find module '../../help/helpPageTableOfCont... Remove this comment to see the full error message
 import tableOfContents from '../../help/helpPageTableOfContents.json'
 
 import { withAnchor } from '../AnchorLink'

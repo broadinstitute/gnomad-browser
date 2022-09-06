@@ -7,19 +7,29 @@ import { PageHeading } from '@gnomad/ui'
 import teamMembers from './TeamMembers.json'
 
 // Members of the "Staff" section
+// @ts-expect-error
 import websiteStaff from '../../about/contributors/website.md'
+// @ts-expect-error
 import productionStaff from '../../about/contributors/production.md'
+// @ts-expect-error
 import operationsStaff from '../../about/contributors/operations.md'
 
 // Members of the "Contributors" section
+// @ts-expect-error
 import dataGenerationContributors from '../../about/contributors/data-generation.md'
+// @ts-expect-error
 import productionAndAnalysisContributors from '../../about/contributors/production-and-analysis.md'
+// @ts-expect-error
 import structuralVariantsContributors from '../../about/contributors/structural-variation.md'
+// @ts-expect-error
 import mitochondrialVariantsContributors from '../../about/contributors/mitochondrial-variation.md'
+// @ts-expect-error
 import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
+// @ts-expect-error
 import ethicsContributors from '../../about/contributors/ethics.md'
 
 // Members of the 'Alumni' Section
+// @ts-expect-error
 import alumni from '../../about/contributors/alumni.md'
 
 import DocumentTitle from '../DocumentTitle'
@@ -59,10 +69,13 @@ const ResponsiveColumn = styled.div`
 `
 
 // use webpack's context to dynamically load every headshot from the folder
+// @ts-expect-error
 const importAllHeadshots = (webpackContext) => {
   const headshots = {}
 
+  // @ts-expect-error
   webpackContext.keys().forEach((key) => {
+    // @ts-expect-error
     headshots[key.replace('./', '')] = webpackContext(key).default
   })
 
@@ -70,16 +83,24 @@ const importAllHeadshots = (webpackContext) => {
 }
 
 const headshotImages = importAllHeadshots(
+  // @ts-expect-error
   require.context('../../about/contributors/headshots', false, /\.(png|jpe?g|svg)$/)
 )
 
 // Component to be used for a TeamCard, only used on this page
+// @ts-expect-error
 const TeamCard = ({ title, description, headshotSource }) => {
   return (
     <TeamHeadshotAndDescription>
       <Row>
         <ImageColumn>
-          <Headshot alt="headshot" src={headshotImages[headshotSource]} />
+          <Headshot
+            alt="headshot"
+            src={
+              // @ts-expect-error
+              headshotImages[headshotSource]
+            }
+          />
         </ImageColumn>
         <TextColumn>
           <TextTitle>{title} </TextTitle>
@@ -143,8 +164,13 @@ const Contributors = styled.div`
 export default () => (
   <InfoPage>
     <DocumentTitle title="The gnomAD Team" />
-    <PageHeading id="the-gnomad-team">The gnomAD Team</PageHeading>
-
+    // @ts-expect-error
+    <PageHeading
+      // @ts-expect-error
+      id="the-gnomad-team"
+    >
+      The gnomAD Team
+    </PageHeading>
     {/* TODO: remove this team wrapper if on final wording there's no landing blurb */}
     <Team>
       <TeamSection>

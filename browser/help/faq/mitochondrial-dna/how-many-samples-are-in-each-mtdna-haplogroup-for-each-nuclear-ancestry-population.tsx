@@ -3,25 +3,12 @@ import styled from 'styled-components'
 
 import { BaseTable, Select } from '@gnomad/ui'
 
-import rawHaplogroupAndAncestryData from './how-many-samples-are-in-each-mtdna-haplogroup-for-each-nuclear-ancestry-population.json'
-
-const haplogroupAndAncestryData = rawHaplogroupAndAncestryData.data.map((row) => {
-  const [haplogroup, ancestry, n] = row.split(' ')
-  return { haplogroup, ancestry, n }
-})
-
-const codeToHaplogroupName = {
-  afr: 'African/African American',
-  ami: 'Amish',
-  amr: 'Latino/Admixed American',
-  asj: 'Ashkenazi Jewish',
-  eas: 'East Asian',
-  fin: 'European (Finnish)',
-  mid: 'Middle Eastern',
-  nfe: 'European (non-Finnish)',
-  oth: 'Other',
-  sas: 'South Asian',
-}
+import haplogroupAndAncestryData, {
+  AncestryName,
+  codeToAncestryName,
+  haplogroups,
+  MtdnaHaplogroupSampleCount,
+} from './mtdnaHaplogroupPerNuclearAncestryPopulationData'
 
 const HaplogroupAndAncestryBaseTable = styled(BaseTable)`
   margin-top: 1em;
@@ -39,39 +26,9 @@ const HaplogroupOrAncestrySelector = styled(Select)`
 const HaplogroupAndAncestryFilterTable = () => {
   const [haplogroupSelected, setHaplogroupSelected] = useState('All')
   const [ancestrySelected, setAncestrySelected] = useState('All')
-  const [filteredData, setFilteredData] = useState([])
-  const haplogroupOptions = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'HV',
-    'I',
-    'J',
-    'K',
-    'L0',
-    'L1',
-    'L2',
-    'L3',
-    'L4',
-    'L5',
-    'M',
-    'N',
-    'P',
-    'R',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-  ]
-  const ancestryOptions = [
+  const [filteredData, setFilteredData] = useState<MtdnaHaplogroupSampleCount[]>([])
+
+  const ancestryOptions: AncestryName[] = [
     'African/African American',
     'Amish',
     'Latino/Admixed American',
@@ -88,7 +45,7 @@ const HaplogroupAndAncestryFilterTable = () => {
     const newFilteredData = haplogroupAndAncestryData.filter((row) => {
       return (
         (row.haplogroup === haplogroupSelected || haplogroupSelected === 'All') &&
-        (codeToHaplogroupName[row.ancestry] === ancestrySelected || ancestrySelected === 'All')
+        (codeToAncestryName[row.ancestry] === ancestrySelected || ancestrySelected === 'All')
       )
     })
     setFilteredData(newFilteredData)
@@ -107,7 +64,7 @@ const HaplogroupAndAncestryFilterTable = () => {
           <option value="All" key="All">
             All Haplogroups
           </option>
-          {haplogroupOptions.map((haplogroup) => (
+          {haplogroups.map((haplogroup) => (
             <option value={haplogroup} key={haplogroup}>
               {haplogroup}
             </option>
@@ -148,7 +105,7 @@ const HaplogroupAndAncestryFilterTable = () => {
             return (
               <tr key={row.haplogroup + row.ancestry}>
                 <th scope="row">{row.haplogroup}</th>
-                <th>{codeToHaplogroupName[row.ancestry]}</th>
+                <th>{codeToAncestryName[row.ancestry]}</th>
                 <td>{row.n}</td>
               </tr>
             )
@@ -162,7 +119,7 @@ const HaplogroupAndAncestryFilterTable = () => {
             <td>
               Samples:{' '}
               {filteredData.reduce((acc, row) => {
-                return acc + parseInt(row.n, 10)
+                return acc + row.n
               }, 0)}
             </td>
           </tr>

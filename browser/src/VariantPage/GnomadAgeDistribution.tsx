@@ -5,9 +5,7 @@ import styled from 'styled-components'
 
 import { Checkbox, Select } from '@gnomad/ui'
 
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import gnomadV2AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v2/ageDistribution.json'
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3/ageDistribution.json'
 
 import Legend, { StripedSwatch } from '../Legend'
@@ -86,9 +84,11 @@ const prepareOverallData = ({ datasetId, includeExomes, includeGenomes }: any) =
     return null
   }
 
+  // @ts-expect-error
   const nBins = (overallAgeDistribution.exome || overallAgeDistribution.genome).bin_freq.length
 
   const exomeData =
+    // @ts-expect-error
     includeExomes && overallAgeDistribution.exome ? overallAgeDistribution.exome : null
   const genomeData =
     includeGenomes && overallAgeDistribution.genome ? overallAgeDistribution.genome : null
