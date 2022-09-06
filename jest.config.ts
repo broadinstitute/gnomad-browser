@@ -1,7 +1,6 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-  preset: 'ts-jest',
   projects: [
     {
       displayName: 'browser',
@@ -12,20 +11,20 @@ module.exports = {
       testMatch: ['<rootDir>/browser/**/*.spec.(js|jsx|ts|tsx)'],
       setupFilesAfterEnv: ['@testing-library/jest-dom'],
       testEnvironment: 'jsdom',
+      preset: 'ts-jest',
     },
     {
       displayName: 'graphql-api',
       testEnvironment: 'node',
       testMatch: ['<rootDir>/graphql-api/**/*.spec.(js|jsx|ts|tsx)'],
+      preset: 'ts-jest',
     },
     {
       displayName: 'dataset-metadata',
       testEnvironment: 'node',
       testMatch: ['<rootDir>/dataset-metadata/**/*.spec.(js|jsx|ts|tsx)'],
+      preset: 'ts-jest',
     },
   ],
   roots: ['<rootDir>', '<rootDir>/tests'],
-  transform: {
-    '.': 'ts-jest',
-  },
 }

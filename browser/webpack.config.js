@@ -49,12 +49,20 @@ const config = {
       {
         test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            rootMode: 'upward',
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              rootMode: 'upward',
+            },
           },
-        },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.build.json',
+            },
+          },
+        ],
       },
       {
         test: /\.(pdf|gif|jpg|png|svg)$/,
@@ -69,14 +77,6 @@ const config = {
         test: /\.md$/,
         use: {
           loader: '@gnomad/markdown-loader',
-        },
-      },
-      {
-        test: /\.(j|t)sx?$/,
-        include: [],
-        exclude: /node_modules/,
-        use: {
-          loader: 'ts-loader',
         },
       },
     ],

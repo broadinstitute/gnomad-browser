@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import overallAgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantAgeDistribution.json'
 
 import Legend, { StripedSwatch } from '../Legend'

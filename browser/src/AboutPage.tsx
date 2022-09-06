@@ -2,9 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { PageHeading } from '@gnomad/ui'
 
+// @ts-expect-error
 import aboutContent from '../about/about.md'
+// @ts-expect-error
 import contributingProjectsList from '../about/contributors/contributing-projects.md'
+// @ts-expect-error
 import fundingSources from '../about/contributors/funding.md'
+// @ts-expect-error
 import dataContributorsList from '../about/contributors/data-contributors.md'
 
 import DocumentTitle from './DocumentTitle'
@@ -28,7 +32,12 @@ const SectionHeader = styled.h2`
 `
 
 const CreditsSection = styled.div`
-  width: calc(${(props) => props.width} - 15px);
+  width: calc(
+    ${(props) =>
+        // @ts-expect-error
+
+        props.width} - 15px
+  );
 
   @media (max-width: 992px) {
     width: 100%;
@@ -67,7 +76,13 @@ const FundingSources = styled(Contributors)`
 export default () => (
   <InfoPage>
     <DocumentTitle title="About gnomAD" />
-    <PageHeading id="about-gnomad">About gnomAD</PageHeading>
+    <PageHeading
+      // @ts-expect-error
+
+      id="about-gnomad"
+    >
+      About gnomAD
+    </PageHeading>
 
     {/* Import about blurb from .md file */}
     <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
@@ -75,14 +90,22 @@ export default () => (
     {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
     <SectionHeader>Data Contributors</SectionHeader>
     <Credits>
-      <CreditsSection width="45%">
+      <CreditsSection
+        // @ts-expect-error
+
+        width="45%"
+      >
         <h3 id="principal-investigators">Data Contributors</h3>
         <PrincipalInvestigators
           aria-labelledby="principal-investigators"
           dangerouslySetInnerHTML={{ __html: dataContributorsList.html }}
         />
       </CreditsSection>
-      <CreditsSection width="45%">
+      <CreditsSection
+        // @ts-expect-error
+
+        width="45%"
+      >
         <h3 id="contributing-projects">Contributing projects</h3>
         <Contributors
           aria-labelledby="contributing-projects"
@@ -93,7 +116,10 @@ export default () => (
 
     {/* Funding Section */}
     <SectionHeader>Funding</SectionHeader>
-    <CreditsSection width="70%">
+    <CreditsSection
+      // @ts-expect-error
+      width="70%"
+    >
       <FundingSources
         aria-labelledby="funding"
         dangerouslySetInnerHTML={{ __html: fundingSources.html }}

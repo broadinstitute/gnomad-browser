@@ -7,11 +7,8 @@ import { AxisBottom, AxisLeft, AxisRight } from '@vx/axis'
 
 import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import exacSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/exac/siteQualityMetricDistributions.json'
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import gnomadV2SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v2/siteQualityMetricDistributions.json'
-// @ts-expect-error TS(2732) FIXME: Cannot find module '@gnomad/dataset-metadata/datas... Remove this comment to see the full error message
 import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3/siteQualityMetricDistributions.json'
 
 import Legend from '../Legend'
@@ -146,8 +143,10 @@ const prepareDataGnomadV3 = ({ metric, variant }: any) => {
   }
 
   const histogram = gnomadV3SiteQualityMetricDistributions.find((m: any) => m.metric === key)
+  // @ts-expect-error
   const binEdges = histogram.bin_edges
 
+  // @ts-expect-error
   const genomeBinValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
 
   return { binEdges, genomeBinValues, genomeMetricValue, description }
@@ -178,14 +177,17 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       let afBinLabel
       if (ac === 1) {
         afBinHistogram =
+          // @ts-expect-error
           gnomadV2SiteQualityMetricDistributions[sequencingType].siteQuality.singleton
         afBinLabel = `singleton ${sequencingType} variants`
       } else if (ac === 2) {
         afBinHistogram =
+          // @ts-expect-error
           gnomadV2SiteQualityMetricDistributions[sequencingType].siteQuality.doubleton
         afBinLabel = `doubleton ${sequencingType} variants`
       } else {
         const af = an === 0 ? 0 : ac / an
+        // @ts-expect-error
         const afBin = gnomadV2SiteQualityMetricDistributions[
           sequencingType
         ].siteQuality.af_bins.find(
@@ -243,9 +245,11 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       }.`
     }
   } else {
+    // @ts-expect-error
     const exomeHistogram = gnomadV2SiteQualityMetricDistributions.exome.otherMetrics.find(
       (m: any) => m.metric === metric
     ).histogram
+    // @ts-expect-error
     const genomeHistogram = gnomadV2SiteQualityMetricDistributions.genome.otherMetrics.find(
       (m: any) => m.metric === metric
     ).histogram
@@ -305,20 +309,25 @@ const prepareDataExac = ({ metric, variant }: any) => {
       const afBin = exacSiteQualityMetricDistributions.exome.siteQuality.af_bins.find(
         (bin: any) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
       )
+      // @ts-expect-error
       histogram = afBin.histogram
       description = `This is the site quality distribution for all variants with ${
+        // @ts-expect-error
         afBin.min_af
+        // @ts-expect-error
       } <= AF ${afBin.max_af === 1 ? '<=' : '<'} ${afBin.max_af}.`
     }
     binEdges = histogram.bin_edges.map((edge: any) => Math.log10(edge))
   } else {
+    // @ts-expect-error
     histogram = exacSiteQualityMetricDistributions.exome.otherMetrics.find(
       (m: any) => m.metric === metric
     ).histogram
     binEdges =
       metric === 'DP'
         ? histogram.bin_edges.map((edge: any) => Math.log10(edge))
-        : histogram.binEdges
+        : // @ts-expect-error
+          histogram.binEdges
     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     description = qualityMetricDescriptions[metric]
   }
