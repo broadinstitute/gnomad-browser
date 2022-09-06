@@ -2,13 +2,13 @@ import { jest, expect, test } from '@jest/globals'
 import 'jest-styled-components'
 
 import React from 'react'
-import { Router } from 'react-router'
 import renderer from 'react-test-renderer'
 import { createBrowserHistory } from 'history'
 
 import { readsApiOutputFactory, exomeReadApiOutputFactory } from '../__factories__/ReadData'
 import ReadDataContainer from './ReadData'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
+import { withDummyRouter } from '../../../tests/__helpers__/router'
 
 const variantId = '123-45-A-G'
 
@@ -42,9 +42,7 @@ jest.mock('./IGVBrowser', () => () => null)
 forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
   test('has no unexpected changes', () => {
     const tree = renderer.create(
-      <Router history={createBrowserHistory()}>
-        <ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />
-      </Router>
+      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
     )
     expect(tree).toMatchSnapshot()
   })
