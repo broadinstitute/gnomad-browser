@@ -8,8 +8,9 @@ import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import RegionPage from './RegionPage'
 
+const operationName = 'Region'
 const query = `
-  query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+  query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       genes {
         gene_id
@@ -59,6 +60,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{
         chrom,

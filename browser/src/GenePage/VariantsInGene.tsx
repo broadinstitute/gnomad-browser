@@ -173,8 +173,9 @@ VariantsInGene.defaultProps = {
   zoomRegion: null,
 }
 
+const operationName = 'VariantsInGene'
 const query = `
-query VariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -300,6 +301,7 @@ const ConnectedVariantsInGene = ({
   ...otherProps
 }: ConnectedVariantsInGeneProps) => (
   <Query
+    operationName={operationName}
     query={query}
     variables={{
       datasetId,

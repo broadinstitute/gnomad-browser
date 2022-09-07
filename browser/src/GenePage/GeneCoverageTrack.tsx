@@ -6,8 +6,9 @@ import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 
+const operationName = 'GeneCoverage'
 const coverageQuery = `
-query GeneCoverage($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     coverage(dataset: $datasetId) {
       exome @include(if: $includeExomeCoverage) {
@@ -62,6 +63,7 @@ const GeneCoverageTrack = ({
 }: Props) => {
   return (
     <Query
+      operationName={operationName}
       query={coverageQuery}
       variables={{
         geneId,

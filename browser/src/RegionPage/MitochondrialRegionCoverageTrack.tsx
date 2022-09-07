@@ -6,8 +6,9 @@ import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
+const operationName = 'MitochondrialCoverageInRegion'
 const query = `
-query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   region(chrom: "M", start: $start, stop: $stop, reference_genome: $referenceGenome) {
     mitochondrial_coverage(dataset: $datasetId) {
       pos
@@ -37,6 +38,7 @@ const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => 
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{ datasetId, start, stop, referenceGenome: referenceGenomeForDataset(datasetId) }}
       loadingMessage="Loading coverage"

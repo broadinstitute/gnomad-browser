@@ -5,8 +5,9 @@ import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
+const operationName = 'GeneSearch'
 const geneSearchQuery = `
-query GeneSearch($query: String!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($query: String!, $referenceGenome: ReferenceGenomeId!) {
   gene_search(query: $query, reference_genome: $referenceGenome) {
     ensembl_id
     symbol
@@ -27,6 +28,7 @@ const GeneNotFound = ({ datasetId, geneIdOrSymbol }: Props) => {
       <StatusMessage>Gene not found</StatusMessage>
       {!isGeneId && (
         <Query
+          operationName={operationName}
           query={geneSearchQuery}
           variables={{
             query: geneIdOrSymbol.slice(0, 2),

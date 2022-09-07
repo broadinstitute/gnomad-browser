@@ -38,6 +38,7 @@ const cancelable = (promise: any) => {
 }
 
 type OwnBaseQueryProps = {
+  operationName: string
   query: string
   url?: string
   variables?: any
@@ -50,6 +51,7 @@ type BaseQueryProps = OwnBaseQueryProps & typeof BaseQuery.defaultProps
 export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   static defaultProps = {
     url: '/api/',
+    operationName: '',
     variables: {},
   }
 
@@ -69,7 +71,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   componentDidUpdate(prevProps: BaseQueryProps) {
-    const { query, variables } = this.props
+    const { operationName, query, variables } = this.props
     if (query !== prevProps.query || !areVariablesEqual(variables, prevProps.variables)) {
       this.loadData()
     }
@@ -80,7 +82,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   loadData() {
-    const { query, url, variables } = this.props
+    const { operationName, query, url, variables } = this.props
 
     this.setState({
       loading: true,
@@ -95,6 +97,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
     this.currentRequest = cancelable(
       fetch(url, {
         body: JSON.stringify({
+          operationName,
           query,
           variables,
         }),
@@ -142,6 +145,7 @@ type OwnQueryProps = {
   errorMessage?: string
   loadingMessage?: string
   loadingPlaceholderHeight?: number
+  operationName: string
   query: string
   success?: (...args: any[]) => any
   url?: string
@@ -157,6 +161,7 @@ const Query = ({
   errorMessage,
   loadingMessage,
   loadingPlaceholderHeight,
+  operationName,
   query,
   success,
   url,
@@ -164,7 +169,7 @@ const Query = ({
 }: QueryProps) => {
   return (
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-    <BaseQuery query={query} url={url} variables={variables}>
+    <BaseQuery operationName={operationName} query={query} url={url} variables={variables}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (
@@ -203,6 +208,7 @@ Query.defaultProps = {
   success: () => true,
   url: '/api/',
   variables: {},
+  operatioName: '',
 }
 
 export default Query

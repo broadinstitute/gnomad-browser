@@ -12,8 +12,9 @@ import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
+const operationName = 'MitochondrialVariantsInGene'
 const query = `
-query MitochondrialVariantsInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -99,6 +100,7 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{
         datasetId,

@@ -239,8 +239,9 @@ const ClinvarVariantDetails = ({
   )
 }
 
+const operationName = 'ClinVarVariant'
 const query = `
-query ClinVarVariant($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($variantId: String!, $referenceGenome: ReferenceGenomeId!) {
   clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
     clinical_significance
     clinvar_variation_id
@@ -289,6 +290,7 @@ const ClinvarVariantDetailsContainer = ({
 }: ClinvarVariantDetailsContainerProps) => {
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{ referenceGenome, variantId }}
       loadingMessage="Loading variant data"

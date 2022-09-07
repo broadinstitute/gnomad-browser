@@ -7,8 +7,9 @@ import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
+const operationName = 'MitochondrialCoverageInGene'
 const query = `
-query MitochondrialCoverageInGene($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     mitochondrial_coverage(dataset: $datasetId) {
       pos
