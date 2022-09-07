@@ -12,8 +12,9 @@ import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
+const operationName = 'MitochondrialVariantsInTranscript'
 const query = `
-query MitochondrialVariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -106,6 +107,7 @@ const MitochondrialVariantsInTranscript = ({
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{
         datasetId,

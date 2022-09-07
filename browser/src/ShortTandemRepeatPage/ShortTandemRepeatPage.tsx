@@ -571,8 +571,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   )
 }
 
+const operationName = 'ShortTandemRepeat'
 const query = `
-query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
+query ${operationName}($strId: String!, $datasetId: DatasetId!) {
   short_tandem_repeat(id: $strId, dataset: $datasetId) {
     id
     gene {
@@ -708,6 +709,7 @@ const ShortTandemRepeatPageContainer = ({
         Short Tandem Repeat: <span>{strId}</span>
       </GnomadPageHeading>
       <Query
+        operationName={operationName}
         query={query}
         variables={{
           datasetId,

@@ -6,8 +6,9 @@ import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
+const operationName = 'MitochondrialCoverageInTranscript'
 const query = `
-query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     mitochondrial_coverage(dataset: $datasetId) {
       pos
@@ -36,6 +37,7 @@ const MitochondrialTranscriptCoverageTrack = ({ datasetId, transcriptId }: Props
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{ transcriptId, datasetId, referenceGenome: referenceGenomeForDataset(datasetId) }}
       loadingMessage="Loading coverage"

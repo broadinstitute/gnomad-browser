@@ -186,8 +186,9 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
   </Page>
 )
 
+const operationName = 'MitochondrialVariant'
 const variantQuery = `
-query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -333,6 +334,7 @@ const ConnectedMitochondrialVariantPage = ({
 
   return (
     <Query
+      operationName={operationName}
       query={variantQuery}
       variables={{ datasetId, variantId, referenceGenome: referenceGenomeForDataset(datasetId) }}
       loadingMessage="Loading variant"

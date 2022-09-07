@@ -6,8 +6,9 @@ import CoverageTrack from '../CoverageTrack'
 import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 
+const operationName = 'RegionCoverage'
 const coverageQuery = `
-query RegionCoverage($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
+query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
   region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
     coverage(dataset: $datasetId) {
       exome @include(if: $includeExomeCoverage) {
@@ -66,6 +67,7 @@ const RegionCoverageTrack = ({
 }: Props) => {
   return (
     <Query
+      operationName={operationName}
       query={coverageQuery}
       variables={{
         chrom,

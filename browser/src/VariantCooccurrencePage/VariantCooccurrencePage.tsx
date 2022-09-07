@@ -229,8 +229,9 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   )
 }
 
+const operationName = 'VariantCooccurrence'
 const query = `
-query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: String, $datasetId: DatasetId!) {
+query ${operationName}($variants: [String!]!, $variant1: String!, $variant2: String, $datasetId: DatasetId!) {
   variant_cooccurrence(variants: $variants, dataset: $datasetId) {
     variant_ids
     genotype_counts
@@ -325,6 +326,7 @@ const VariantCoocurrenceContainer = ({
     <Query
       errorMessage="Unable to load co-occurrence"
       loadingMessage="Loading co-occurrence"
+      operationName={operationName}
       query={query}
       variables={{
         variants: variantIds,

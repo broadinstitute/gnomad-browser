@@ -9,8 +9,9 @@ import StatusMessage from '../StatusMessage'
 import GeneNotFound from './GeneNotFound'
 import GenePage from './GenePage'
 
+const operationName = 'Gene'
 const query = `
-query Gene($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
@@ -230,7 +231,7 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
 
   return (
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-    <BaseQuery query={query} variables={variables}>
+    <BaseQuery operationName={operationName} query={query} variables={variables}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (

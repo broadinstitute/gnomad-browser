@@ -5,8 +5,9 @@ import { referenceGenomeForDataset } from '../datasets'
 import Query from '../Query'
 import TranscriptPage from './TranscriptPage'
 
+const operationName = 'Transcript'
 const query = `
-query Transcript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($transcriptId: String!, $referenceGenome: ReferenceGenomeId!) {
   transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
     reference_genome
     transcript_id
@@ -91,6 +92,7 @@ type Props = {
 
 const TranscriptPageContainer = ({ datasetId, transcriptId }: Props) => (
   <Query
+    operationName={operationName}
     query={query}
     variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
     loadingMessage="Loading transcript"

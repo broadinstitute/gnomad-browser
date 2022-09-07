@@ -123,8 +123,9 @@ const ConnectedStructuralVariantPage = ({
   datasetId,
   variantId,
 }: ConnectedStructuralVariantPageProps) => {
+  const operationName = 'StructuralVariant'
   const query = `
-    query StructuralVariant($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
+    query ${operationName}($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
       structural_variant(dataset: $datasetId, variantId: $variantId) {
         age_distribution {
           het {
@@ -194,6 +195,7 @@ const ConnectedStructuralVariantPage = ({
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{ datasetId, variantId }}
       loadingMessage="Loading variant"
