@@ -22,8 +22,9 @@ type Props = OwnProps & typeof StructuralVariantsInGene.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'StructuralVariantsInGene' implicitly has type 'an... Remove this comment to see the full error message
 const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Props) => {
+  const operationName = 'StructuralVariantsInGene'
   const query = `
-    query StructuralVariantsInGene($datasetId: StructuralVariantDatasetId!, $geneId: String!, $referenceGenome: ReferenceGenomeId!) {
+    query ${operationName}($datasetId: StructuralVariantDatasetId!, $geneId: String!, $referenceGenome: ReferenceGenomeId!) {
       gene(gene_id: $geneId, reference_genome: $referenceGenome) {
         structural_variants(dataset: $datasetId) {
           ac
@@ -48,6 +49,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{
         datasetId,

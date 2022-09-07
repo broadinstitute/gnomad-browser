@@ -114,8 +114,9 @@ VariantsInTranscript.defaultProps = {
   zoomRegion: null,
 }
 
+const operationName = 'VariantsInTranscript'
 const query = `
-query VariantsInTranscript($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -206,6 +207,7 @@ const ConnectedVariantsInTranscript = ({
   ...otherProps
 }: ConnectedVariantsInTranscriptProps) => (
   <Query
+    operationName={operationName}
     query={query}
     variables={{
       datasetId,

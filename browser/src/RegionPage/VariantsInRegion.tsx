@@ -80,6 +80,7 @@ VariantsInRegion.defaultProps = {
   zoomRegion: null,
 }
 
+const operationName = 'VariantInRegion'
 const query = `
 query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
@@ -176,6 +177,7 @@ type ConnectedVariantsInRegionProps = {
 
 const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInRegionProps) => (
   <Query
+    operationName={operationName}
     query={query}
     variables={{
       datasetId,
