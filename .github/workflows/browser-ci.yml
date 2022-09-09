@@ -32,8 +32,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile --non-interactive --no-progress
       - name: Run ESLint
-        run: yarn run eslint browser
+        run: yarn run eslint .
       - name: Run stylelint
-        run: yarn run stylelint 'browser/**/*.js'
+        run: yarn run stylelint './**/*.(js|jsx|ts|tsx)'
       - name: Run tests
-        run: yarn run jest --selectProjects browser
+        run: yarn run jest
