@@ -1,8 +1,3 @@
-/*import exacSampleCounts from './datasets/exac/sampleCounts'
-import gnomadV2SampleCounts from './datasets/gnomad-v2/sampleCounts'
-import gnomadV3SampleCounts from './datasets/gnomad-v3/sampleCounts'
-import gnomadSvV2SampleCounts from './datasets/gnomad-sv-v2/sampleCounts'*/
-
 const exacSampleCounts = require('./datasets/exac/sampleCounts')
 const {
   subsets: gnomadV2SubsetSampleCounts,
