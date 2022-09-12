@@ -79,10 +79,10 @@ Graph.defaultProps = {
   color: undefined,
 }
 
-const renderOEMetrics = (constraint: any, category: any, highlightColor: any) => {
-  const value = constraint[`oe_${category}`]
-  const lower = constraint[`oe_${category}_lower`]
-  const upper = constraint[`oe_${category}_upper`]
+const renderOEMetrics = (constraint: GnomadConstraint, category: ConstraintFieldWithOEMetrics, highlightColor: string | null) => {
+  const value = constraint[`oe_${category}` as OEMetricField]
+  const lower = constraint[`oe_${category}_lower` as OEMetricField]
+  const upper = constraint[`oe_${category}_upper` as OEMetricField]
 
   return (
     <OEMetrics>
@@ -95,7 +95,7 @@ const renderOEMetrics = (constraint: any, category: any, highlightColor: any) =>
             precision: 2,
             tooltipPrecision: 3,
             highlightColor,
-            formatTooltip: category === 'lof' ? (n) => `LOEUF = ${n}` : (n) => n,
+            formatTooltip: category === 'lof' ? (n) => `LOEUF = ${n}` : (n) => `${n}`,
           })}
           )
         </React.Fragment>
@@ -126,41 +126,43 @@ const CONSTRAINT_FLAG_DESCRIPTIONS = {
   syn_outlier: 'More or fewer synonymous variants than expected',
 }
 
+export type GnomadConstraint = {
+  exp_lof: number
+  exp_mis: number
+  exp_syn: number
+  obs_lof?: number
+  obs_mis?: number
+  obs_syn?: number
+  oe_lof: number
+  oe_lof_lower: number
+  oe_lof_upper: number
+  oe_mis: number
+  oe_mis_lower: number
+  oe_mis_upper: number
+  oe_syn: number
+  oe_syn_lower: number
+  oe_syn_upper: number
+  lof_z?: number
+  mis_z: number
+  syn_z: number
+  pLI: number
+  flags?: string[]
+}
+
+type ConstraintFieldWithOEMetrics = 'lof' | 'mis' | 'syn'
+type OEMetricField = `oe_${ConstraintFieldWithOEMetrics}` | `oe_${ConstraintFieldWithOEMetrics}_lower` | `oe_${ConstraintFieldWithOEMetrics}_upper`
+
 type GnomadConstraintTableProps = {
-  constraint: {
-    exp_lof?: number
-    exp_mis?: number
-    exp_syn?: number
-    obs_lof?: number
-    obs_mis?: number
-    obs_syn?: number
-    oe_lof?: number
-    oe_lof_lower?: number
-    oe_lof_upper?: number
-    oe_mis?: number
-    oe_mis_lower?: number
-    oe_mis_upper?: number
-    oe_syn?: number
-    oe_syn_lower?: number
-    oe_syn_upper?: number
-    lof_z?: number
-    mis_z?: number
-    syn_z?: number
-    pLI?: number
-    flags?: string[]
-  }
+  constraint: GnomadConstraint
 }
 
 const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
   let lofHighlightColor = null
   if (constraint.oe_lof_upper !== null) {
-    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     if (constraint.oe_lof_upper < 0.33) {
       lofHighlightColor = '#ff2600'
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     } else if (constraint.oe_lof_upper < 0.66) {
       lofHighlightColor = '#ff9300'
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     } else if (constraint.oe_lof_upper < 1) {
       lofHighlightColor = '#ffc000'
     }
@@ -202,7 +204,6 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
               {renderRoundedNumber(constraint.syn_z, {
                 precision: 2,
                 tooltipPrecision: 3,
-                // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'nu... Remove this comment to see the full error message
                 highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
               })}
               <br />
@@ -221,7 +222,6 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
               {renderRoundedNumber(constraint.mis_z, {
                 precision: 2,
                 tooltipPrecision: 3,
-                // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'nu... Remove this comment to see the full error message
                 highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
               })}
               <br />

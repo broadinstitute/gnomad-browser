@@ -2,37 +2,41 @@ import React from 'react'
 
 import Link from '../Link'
 
-import ExacConstraintTable from './ExacConstraintTable'
-import GnomadConstraintTable from './GnomadConstraintTable'
+import ExacConstraintTable, { ExacConstraint } from './ExacConstraintTable'
+import GnomadConstraintTable, { GnomadConstraint } from './GnomadConstraintTable'
+
+import { DatasetId, hasConstraints } from '../../../dataset-metadata/metadata'
+
+export type Gene = {
+  chrom: string
+  canonical_transcript_id: string | null
+  mane_select_transcript?: {
+    ensembl_id: string
+    ensembl_version: string
+  }
+  transcripts: {
+    transcript_id: string
+    transcript_version: string
+  }[]
+  gnomad_constraint?: GnomadConstraint
+  exac_constraint?: ExacConstraint
+}
+
+export type Transcript = {
+  transcript_id: string
+  transcript_version: string
+  chrom: string
+  gnomad_constraint?: GnomadConstraint
+  exac_constraint?: ExacConstraint
+}
 
 type Props = {
-  datasetId: string
-  geneOrTranscript:
-    | {
-        chrom: string
-        canonical_transcript_id?: string
-        mane_select_transcript?: {
-          ensembl_id: string
-          ensembl_version: string
-        }
-        transcripts: {
-          transcript_id: string
-          transcript_version: string
-        }[]
-        gnomad_constraint?: any
-        exac_constraint?: any
-      }
-    | {
-        transcript_id: string
-        transcript_version: string
-        chrom: string
-        gnomad_constraint?: any
-        exac_constraint?: any
-      }
+  datasetId: DatasetId
+  geneOrTranscript: Gene | Transcript
 }
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (!hasConstraints(datasetId)) {
     return <p>Constraint not yet available for gnomAD v3.</p>
   }
 
