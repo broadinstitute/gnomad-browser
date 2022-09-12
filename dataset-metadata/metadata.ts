@@ -30,17 +30,19 @@ export type DatasetMetadata = {
   isSubset: boolean
   hasShortVariants: boolean
   hasStructuralVariants: boolean
+  hasConstraints: boolean
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
   datasetId.startsWith('gnomad_sv')
 )
 
-const metadataForDataset = (datasetId: DatasetId) => ({
+const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   label: datasetLabels[datasetId],
   isSubset: !fullDatasetIds.includes(datasetId),
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
+  hasConstraints: !datasetId.startsWith('gnomad_r3'),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -59,6 +61,8 @@ const getMetadata = <T extends keyof DatasetMetadata>(
 export const isSubset = (datasetId: DatasetId) => getMetadata(datasetId, 'isSubset')
 
 export const labelForDataset = (datasetId: DatasetId) => getMetadata(datasetId, 'label')
+
+export const hasConstraints = (datsetId: DatasetId) => getMetadata(datsetId, 'hasConstraints')
 
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
 

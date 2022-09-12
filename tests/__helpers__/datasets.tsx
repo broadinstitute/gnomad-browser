@@ -7,3 +7,14 @@ export const forAllDatasets = (
 ) => {
   describe.each(allDatasetIds)(contextDescription, tests)
 }
+
+export const forAllDatasetsExcept = (
+  datasetIdsToExclude: DatasetId[],
+  contextDescription: string,
+  tests: (datasetId: DatasetId) => void
+) => {
+  const datasetsStillIncluded = allDatasetIds.filter(
+    (datasetId) => !datasetIdsToExclude.includes(datasetId)
+  )
+  describe.each(datasetsStillIncluded)(contextDescription, tests)
+}

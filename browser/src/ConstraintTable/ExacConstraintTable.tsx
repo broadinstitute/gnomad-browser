@@ -4,18 +4,20 @@ import { BaseTable } from '@gnomad/ui'
 
 import { renderRoundedNumber } from './constraintMetrics'
 
+export type ExacConstraint = {
+  exp_syn: number
+  obs_syn: number
+  syn_z: number
+  exp_mis: number
+  obs_mis: number
+  mis_z: number
+  exp_lof: number
+  obs_lof: number
+  pLI: number
+}
+
 type Props = {
-  constraint: {
-    exp_syn: number
-    obs_syn: number
-    syn_z: number
-    exp_mis: number
-    obs_mis: number
-    mis_z: number
-    exp_lof: number
-    obs_lof: number
-    pLI: number
-  }
+  constraint: ExacConstraint
 }
 
 const ExacConstraintTable = ({ constraint }: Props) => (
@@ -39,7 +41,6 @@ const ExacConstraintTable = ({ constraint }: Props) => (
           {renderRoundedNumber(constraint.syn_z, {
             precision: 2,
             tooltipPrecision: 3,
-            // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'nu... Remove this comment to see the full error message
             highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
           })}
         </td>
@@ -53,7 +54,6 @@ const ExacConstraintTable = ({ constraint }: Props) => (
           {renderRoundedNumber(constraint.mis_z, {
             precision: 2,
             tooltipPrecision: 3,
-            // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'nu... Remove this comment to see the full error message
             highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
           })}
         </td>
@@ -67,7 +67,6 @@ const ExacConstraintTable = ({ constraint }: Props) => (
           {renderRoundedNumber(constraint.pLI, {
             precision: 2,
             tooltipPrecision: 3,
-            // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'nu... Remove this comment to see the full error message
             highlightColor: constraint.pLI > 0.9 ? '#ff9300' : null,
           })}
         </td>
