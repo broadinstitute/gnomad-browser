@@ -13,14 +13,19 @@ const ConstraintHighlight = styled.span`
 `
 
 export const renderRoundedNumber = (
-  num: any,
-  { precision = 1, tooltipPrecision = 3, highlightColor = null, formatTooltip = (n: any) => n } = {}
+  num: number | null,
+  {
+    precision = 1 as number,
+    tooltipPrecision = 3,
+    highlightColor = null as string | null,
+    formatTooltip = ((n) => `${n}`) as (n: number) => string,
+  } = {}
 ) => {
   if (num === null) {
     return '—'
   }
 
-  const roundedNumber = Number(num.toFixed(precision)).toString()
+  const roundedNumber = num.toFixed(precision).toString()
   return (
     // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message
     <TooltipAnchor tooltip={formatTooltip(num.toFixed(tooltipPrecision))}>

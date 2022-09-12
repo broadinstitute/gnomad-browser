@@ -187,7 +187,7 @@ type Props = {
         stop: number
       }[]
     }[]
-    canonical_transcript_id?: string
+    canonical_transcript_id: string | null
     mane_select_transcript?: {
       ensembl_id: string
       ensembl_version: string
