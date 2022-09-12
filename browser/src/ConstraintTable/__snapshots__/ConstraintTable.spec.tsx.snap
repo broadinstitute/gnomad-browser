@@ -1,0 +1,805 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConstraintTable with "exac" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "exac" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+  <p
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<React.Fragment>
+  <p>
+    Constraint is based on the full gnomAD dataset, not the selected subset.
+  </p>
+  <GnomadConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  gene
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not available for this 
+  transcript
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  genes
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial 
+  transcripts
+</p>
+`;
+
+exports[`ConstraintTable with exac dataset and gene with available constraints has no unexpected changes 1`] = `
+<React.Fragment>
+  <ExacConstraintTable
+    constraint={Object {}}
+  />
+  <p>
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <withRouter()
+      preserveSelectedDataset={true}
+      to="/transcript/undefined"
+    >
+      .
+    </withRouter()>
+    ).
+  </p>
+</React.Fragment>
+`;
+
+exports[`ConstraintTable with exac dataset and transcript with available constraints has no unexpected changes 1`] = `
+<React.Fragment>
+  <ExacConstraintTable
+    constraint={Object {}}
+  />
+</React.Fragment>
+`;
