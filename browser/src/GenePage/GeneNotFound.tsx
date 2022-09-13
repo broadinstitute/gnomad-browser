@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -16,7 +16,7 @@ query ${operationName}($query: String!, $referenceGenome: ReferenceGenomeId!) {
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   geneIdOrSymbol: string
 }
 
@@ -32,7 +32,7 @@ const GeneNotFound = ({ datasetId, geneIdOrSymbol }: Props) => {
           query={geneSearchQuery}
           variables={{
             query: geneIdOrSymbol.slice(0, 2),
-            referenceGenome: referenceGenomeForDataset(datasetId),
+            referenceGenome: referenceGenome(datasetId),
           }}
           loadingMessage={null}
           errorMessage={null}

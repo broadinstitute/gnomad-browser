@@ -4,8 +4,7 @@ import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -53,7 +52,7 @@ const TranscriptsModal = ({ gene, onRequestClose }: TranscriptsModalProps) => (
 type OwnVariantsInGeneProps = {
   clinvarReleaseDate: string
   clinvarVariants?: any[]
-  datasetId: string
+  datasetId: DatasetId
   gene: {
     gene_id: string
     symbol: string
@@ -110,7 +109,7 @@ const VariantsInGene = ({
       {clinvarVariants.length > 0 ? (
         <>
           <ClinvarVariantTrack
-            referenceGenome={referenceGenomeForDataset(datasetId)}
+            referenceGenome={referenceGenome(datasetId)}
             transcripts={gene.transcripts}
             variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
           />
@@ -279,7 +278,7 @@ const annotateVariantsWithPext = (variants: any, pext: any) => {
 }
 
 type ConnectedVariantsInGeneProps = {
-  datasetId: string
+  datasetId: DatasetId
   gene: {
     gene_id: string
     pext?: {
@@ -306,7 +305,7 @@ const ConnectedVariantsInGene = ({
     variables={{
       datasetId,
       geneId: gene.gene_id,
-      referenceGenome: referenceGenomeForDataset(datasetId),
+      referenceGenome: referenceGenome(datasetId),
     }}
     loadingMessage="Loading variants"
     errorMessage="Unable to load variants"

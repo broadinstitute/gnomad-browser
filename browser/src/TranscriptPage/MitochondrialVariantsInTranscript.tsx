@@ -2,8 +2,7 @@ import React from 'react'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome, labelForDataset } from '../../../dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -112,7 +111,7 @@ const MitochondrialVariantsInTranscript = ({
       variables={{
         datasetId,
         transcriptId: transcript.transcript_id,
-        referenceGenome: referenceGenomeForDataset(datasetId),
+        referenceGenome: referenceGenome(datasetId),
       }}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
@@ -142,7 +141,7 @@ const MitochondrialVariantsInTranscript = ({
             {data.transcript.clinvar_variants.length > 0 ? (
               <>
                 <ClinvarVariantTrack
-                  referenceGenome={referenceGenomeForDataset(datasetId)}
+                  referenceGenome={referenceGenome(datasetId)}
                   transcripts={[transcript]}
                   variants={filterVariantsInZoomRegion(
                     data.transcript.clinvar_variants,

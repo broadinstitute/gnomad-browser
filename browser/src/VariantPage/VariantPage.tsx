@@ -3,8 +3,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { DatasetId, labelForDataset, referenceGenome } from '../../../dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -481,7 +480,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
           includeLocalAncestry: datasetId === 'gnomad_r3',
           includeLiftoverAsSource: datasetId.startsWith('gnomad_r2_1'),
           includeLiftoverAsTarget: datasetId.startsWith('gnomad_r3'),
-          referenceGenome: referenceGenomeForDataset(datasetId),
+          referenceGenome: referenceGenome(datasetId),
           variantId,
         }}
       >

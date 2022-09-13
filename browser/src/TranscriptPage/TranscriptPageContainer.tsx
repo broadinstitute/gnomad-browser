@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { DatasetId } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import TranscriptPage from './TranscriptPage'
 
@@ -95,7 +95,7 @@ const TranscriptPageContainer = ({ datasetId, transcriptId }: Props) => (
   <Query
     operationName={operationName}
     query={query}
-    variables={{ transcriptId, referenceGenome: referenceGenomeForDataset(datasetId) }}
+    variables={{ transcriptId, referenceGenome: referenceGenome(datasetId) }}
     loadingMessage="Loading transcript"
     errorMessage="Unable to load transcript"
     success={(data: any) => data.transcript}
