@@ -4,7 +4,7 @@ import { isRegionId, parseRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import { DatasetId } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import RegionPage from './RegionPage'
@@ -57,7 +57,6 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
   }
 
   const { chrom, start, stop } = parseRegionId(regionId)
-  const referenceGenome = referenceGenomeForDataset(datasetId)
 
   return (
     <Query
@@ -67,7 +66,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
         chrom,
         start,
         stop,
-        referenceGenome,
+        referenceGenome: referenceGenome(datasetId),
         includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
         shortTandemRepeatDatasetId: 'gnomad_r3',
       }}
@@ -81,7 +80,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
             datasetId={datasetId}
             region={{
               ...data.region,
-              reference_genome: referenceGenome,
+              reference_genome: referenceGenome(datasetId),
               chrom: chrom === 'MT' ? 'M' : chrom,
               start,
               stop,

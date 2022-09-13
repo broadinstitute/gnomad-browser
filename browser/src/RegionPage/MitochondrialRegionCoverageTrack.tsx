@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -40,7 +40,7 @@ const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => 
     <Query
       operationName={operationName}
       query={query}
-      variables={{ datasetId, start, stop, referenceGenome: referenceGenomeForDataset(datasetId) }}
+      variables={{ datasetId, start, stop, referenceGenome: referenceGenome(datasetId) }}
       loadingMessage="Loading coverage"
       loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"

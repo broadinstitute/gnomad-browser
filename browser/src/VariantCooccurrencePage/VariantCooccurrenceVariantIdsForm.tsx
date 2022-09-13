@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { isVariantId } from '@gnomad/identifiers'
 import { Input, PrimaryButton } from '@gnomad/ui'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '../../../dataset-metadata/metadata'
 
 const InputGroup = styled.div`
   margin-bottom: 1em;
@@ -76,9 +76,7 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }
           <Input
             aria-describedby={isVariant1Invalid ? 'cooccurrence-variant1-error' : undefined}
             id="cooccurrence-variant1"
-            placeholder={`chromosome-position-reference-alternate (${referenceGenomeForDataset(
-              datasetId
-            )})`}
+            placeholder={`chromosome-position-reference-alternate (${referenceGenome(datasetId)})`}
             required
             value={variant1Id}
             onChange={(e: any) => {
@@ -100,9 +98,7 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }
           <Input
             aria-describedby={isVariant2Invalid ? 'cooccurrence-variant2-error' : undefined}
             id="cooccurrence-variant2"
-            placeholder={`chromosome-position-reference-alternate (${referenceGenomeForDataset(
-              datasetId
-            )})`}
+            placeholder={`chromosome-position-reference-alternate (${referenceGenome(datasetId)})`}
             required
             value={variant2Id}
             onChange={(e: any) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import { filterStructuralVariantsInZoomRegion } from '../RegionViewer/filterVariantsInZoomRegion'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
@@ -54,7 +54,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       variables={{
         datasetId,
         geneId: gene.gene_id,
-        referenceGenome: referenceGenomeForDataset(datasetId),
+        referenceGenome: referenceGenome(datasetId),
       }}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
