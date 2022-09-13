@@ -37,3 +37,5 @@ jobs:
         run: yarn run stylelint './**/*.(js|jsx|ts|tsx)'
       - name: Run tests
         run: yarn run jest
+      - name: Verify clean build
+        run: cd browser && yarn build
