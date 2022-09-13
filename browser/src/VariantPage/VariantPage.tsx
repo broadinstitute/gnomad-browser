@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset, referenceGenome } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'

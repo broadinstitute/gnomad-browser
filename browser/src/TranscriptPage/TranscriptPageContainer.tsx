@@ -1,8 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { DatasetId } from '../../../dataset-metadata/metadata'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import TranscriptPage from './TranscriptPage'
 

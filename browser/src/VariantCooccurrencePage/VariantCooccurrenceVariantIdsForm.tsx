@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { isVariantId } from '@gnomad/identifiers'
 import { Input, PrimaryButton } from '@gnomad/ui'
 
-import { referenceGenome } from '../../../dataset-metadata/metadata'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const InputGroup = styled.div`
   margin-bottom: 1em;

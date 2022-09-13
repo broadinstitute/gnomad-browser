@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
-import { DatasetId, referenceGenome } from '../../../dataset-metadata/metadata'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const TitleWrapper = styled.span`
   display: inline-flex;

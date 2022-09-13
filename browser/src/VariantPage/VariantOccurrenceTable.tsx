@@ -7,7 +7,7 @@ import { Badge, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
-import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import QCFilter from '../QCFilter'
