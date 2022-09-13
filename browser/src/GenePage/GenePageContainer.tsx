@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DatasetId } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import { BaseQuery } from '../Query'
@@ -225,7 +225,7 @@ type Props = {
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   const variables = {
     [geneIdOrSymbol.startsWith('ENSG') ? 'geneId' : 'geneSymbol']: geneIdOrSymbol,
-    referenceGenome: referenceGenomeForDataset(datasetId),
+    referenceGenome: referenceGenome(datasetId),
     shortTandemRepeatDatasetId: 'gnomad_r3',
     includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
   }

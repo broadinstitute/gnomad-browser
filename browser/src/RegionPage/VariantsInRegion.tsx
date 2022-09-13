@@ -2,8 +2,7 @@ import React from 'react'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenomeForDataset } from '../datasets'
+import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -13,7 +12,7 @@ import Variants from '../VariantList/Variants'
 type OwnVariantsInRegionProps = {
   clinvarReleaseDate: string
   clinvarVariants?: any[]
-  datasetId: string
+  datasetId: DatasetId
   region: {
     chrom: string
     start: number
@@ -51,7 +50,7 @@ const VariantsInRegion = ({
       {clinvarVariants.length > 0 ? (
         <>
           <ClinvarVariantTrack
-            referenceGenome={referenceGenomeForDataset(datasetId)}
+            referenceGenome={referenceGenome(datasetId)}
             transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
             variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
           />
@@ -167,7 +166,7 @@ query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: Da
 }`
 
 type ConnectedVariantsInRegionProps = {
-  datasetId: string
+  datasetId: DatasetId
   region: {
     chrom: string
     start: number
@@ -184,7 +183,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInReg
       chrom: region.chrom,
       start: region.start,
       stop: region.stop,
-      referenceGenome: referenceGenomeForDataset(datasetId),
+      referenceGenome: referenceGenome(datasetId),
     }}
     loadingMessage="Loading variants"
     errorMessage="Unable to load variants"

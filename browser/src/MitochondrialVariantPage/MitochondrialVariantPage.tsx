@@ -5,7 +5,7 @@ import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
@@ -336,7 +336,7 @@ const ConnectedMitochondrialVariantPage = ({
     <Query
       operationName={operationName}
       query={variantQuery}
-      variables={{ datasetId, variantId, referenceGenome: referenceGenomeForDataset(datasetId) }}
+      variables={{ datasetId, variantId, referenceGenome: referenceGenome(datasetId) }}
       loadingMessage="Loading variant"
       errorMessage="Unable to load variant"
       success={(data: any) => data.mitochondrial_variant}

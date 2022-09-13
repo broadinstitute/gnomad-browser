@@ -1,3 +1,5 @@
+export type ReferenceGenome = 'GRCh37' | 'GRCh38'
+
 export const datasetLabels = {
   exac: 'ExAC v1.0',
   gnomad_r2_1: 'gnomAD v2.1.1',
@@ -31,6 +33,7 @@ export type DatasetMetadata = {
   hasShortVariants: boolean
   hasStructuralVariants: boolean
   hasConstraints: boolean
+  referenceGenome: ReferenceGenome
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -43,6 +46,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasConstraints: !datasetId.startsWith('gnomad_r3'),
+  referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
 })
 
 const metadata = allDatasetIds.reduce(
@@ -68,3 +72,5 @@ export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId,
 
 export const hasStructuralVariants = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasStructuralVariants')
+
+export const referenceGenome = (datasetId: DatasetId) => getMetadata(datasetId, 'referenceGenome')

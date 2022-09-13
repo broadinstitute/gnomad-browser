@@ -6,6 +6,8 @@ import {
   hasStructuralVariants,
   isSubset,
   labelForDataset,
+  ReferenceGenome,
+  referenceGenome,
 } from './metadata'
 
 describe.each([
@@ -114,4 +116,25 @@ describe.each([
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} constraints`, () =>
     expect(hasConstraints(datasetId)).toEqual(expectedResult))
+})
+
+describe.each([
+  ['exac', 'GRCh37'],
+  ['gnomad_r2_1', 'GRCh37'],
+  ['gnomad_r2_1_controls', 'GRCh37'],
+  ['gnomad_r2_1_non_cancer', 'GRCh37'],
+  ['gnomad_r2_1_non_neuro', 'GRCh37'],
+  ['gnomad_r2_1_non_topmed', 'GRCh37'],
+  ['gnomad_r3', 'GRCh38'],
+  ['gnomad_r3_controls_and_biobanks', 'GRCh38'],
+  ['gnomad_r3_non_cancer', 'GRCh38'],
+  ['gnomad_r3_non_neuro', 'GRCh38'],
+  ['gnomad_r3_non_topmed', 'GRCh38'],
+  ['gnomad_r3_non_v2', 'GRCh38'],
+  ['gnomad_sv_r2_1', 'GRCh37'],
+  ['gnomad_sv_r2_1_controls', 'GRCh37'],
+  ['gnomad_sv_r2_1_non_neuro', 'GRCh37'],
+] as [DatasetId, ReferenceGenome][])('referenceGenome(%s)', (datasetId, expectedResult) => {
+  test(`${datasetId} uses reference genome ${expectedResult}`, () =>
+    expect(referenceGenome(datasetId)).toEqual(expectedResult))
 })

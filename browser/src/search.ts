@@ -6,7 +6,7 @@ import {
   isRsId,
 } from '@gnomad/identifiers'
 
-import { referenceGenomeForDataset } from './datasets'
+import { referenceGenome } from '../../dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
 export const fetchSearchResults = (dataset: any, query: any) => {
@@ -142,7 +142,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
             }
           }
         `,
-        variables: { query, referenceGenome: referenceGenomeForDataset(dataset) },
+        variables: { query, referenceGenome: referenceGenome(dataset) },
       }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

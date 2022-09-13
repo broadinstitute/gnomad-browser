@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
-import { referenceGenomeForDataset } from '../datasets'
+import { DatasetId, referenceGenome } from '../../../dataset-metadata/metadata'
 
 const TitleWrapper = styled.span`
   display: inline-flex;
@@ -50,7 +50,7 @@ const TitleAlleles = styled.span`
 `
 
 type Props = {
-  datasetId: string
+  datasetId: DatasetId
   variantId: string
 }
 
@@ -87,7 +87,7 @@ const VariantPageTitle = ({ datasetId, variantId }: Props) => {
         </VariantIdWrapper>
       </TooltipAnchor>
       <Separator> </Separator>
-      <span>({referenceGenomeForDataset(datasetId)})</span>
+      <span>({referenceGenome(datasetId)})</span>
     </TitleWrapper>
   )
 }
