@@ -6,7 +6,7 @@ import {
   isRsId,
 } from '@gnomad/identifiers'
 
-import { referenceGenome } from '../../dataset-metadata/metadata'
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
 export const fetchSearchResults = (dataset: any, query: any) => {

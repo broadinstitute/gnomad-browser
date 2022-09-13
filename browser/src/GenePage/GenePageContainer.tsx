@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { DatasetId } from '../../../dataset-metadata/metadata'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import { BaseQuery } from '../Query'

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'

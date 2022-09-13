@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
