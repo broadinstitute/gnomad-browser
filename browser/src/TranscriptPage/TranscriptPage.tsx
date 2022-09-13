@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { DatasetId, labelForDataset } from '../../../dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'

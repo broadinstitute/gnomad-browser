@@ -13,7 +13,7 @@ import {
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
-} from '../../dataset-metadata/metadata'
+} from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;

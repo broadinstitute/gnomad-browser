@@ -5,7 +5,7 @@ import Link from '../Link'
 import ExacConstraintTable, { ExacConstraint } from './ExacConstraintTable'
 import GnomadConstraintTable, { GnomadConstraint } from './GnomadConstraintTable'
 
-import { DatasetId, hasConstraints } from '../../../dataset-metadata/metadata'
+import { DatasetId, hasConstraints } from '@gnomad/dataset-metadata/metadata'
 
 export type Gene = {
   chrom: string
