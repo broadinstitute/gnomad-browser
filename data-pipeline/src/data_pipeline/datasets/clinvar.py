@@ -105,8 +105,18 @@ def _parse_variant(variant_element):
     location_elements = variant_element.findall("./InterpretedRecord/SimpleAllele/Location/SequenceLocation")
     for element in location_elements:
         try:
+            chromosome = element.attrib["Chr"]
+            # A release in August 2022 introduced several Variants with a Chromosome of 'Un'
+            #   which caused failure of this pipeline when compared to the reference genome
+            if chromosome == "Un":
+                variant["locations"] = {}
+                allele_element = variant_element.findall("./InterpretedRecord/SimpleAllele")
+                print(
+                    f'Skipping variant with Allele ID: {allele_element.attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'
+                )
+                break
             variant["locations"][element.attrib["Assembly"]] = {
-                "locus": element.attrib["Chr"] + ":" + element.attrib["positionVCF"],
+                "locus": chromosome + ":" + element.attrib["positionVCF"],
                 "alleles": [element.attrib["referenceAlleleVCF"], element.attrib["alternateAlleleVCF"]],
             }
         except KeyError:
