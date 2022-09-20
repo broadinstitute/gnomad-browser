@@ -5,7 +5,12 @@ import styled from 'styled-components'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasExomeCoverage,
+  labelForDataset,
+  ReferenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -108,42 +113,49 @@ const transcriptFeatureAttributes = {
   },
 }
 
-type Props = {
-  datasetId: DatasetId
-  transcript: {
-    transcript_id: string
-    transcript_version: string
-    reference_genome: 'GRCh37' | 'GRCh38'
-    chrom: string
+type Strand = '+' | '-'
+
+export type Transcript = {
+  transcript_id: string
+  transcript_version: string
+  reference_genome: ReferenceGenome
+  chrom: string
+  start: number
+  stop: number
+  strand: Strand
+  exons: {
+    feature_type: string
     start: number
     stop: number
-    strand: '+' | '-'
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
-    }[]
-    gene: {
-      gene_id: string
-      gene_version: string
-      reference_genome: 'GRCh37' | 'GRCh38'
-      symbol: string
-      name?: string
-      strand: '+' | '-'
-      exons: {
-        feature_type: string
-        start: number
-        stop: number
-      }[]
-      canonical_transcript_id?: string
-      mane_select_transcript?: {
-        ensembl_id: string
-        ensembl_version: string
-        refseq_id: string
-        refseq_version: string
-      }
-    }
+  }[]
+  gene: Gene
+}
+
+export type Gene = {
+  gene_id: string
+  gene_version: string
+  reference_genome: ReferenceGenome
+  symbol: string
+  name?: string
+  strand: Strand
+  exons: {
+    feature_type: string
+    start: number
+    stop: number
+  }[]
+  canonical_transcript_id?: string
+  mane_select_transcript?: {
+    ensembl_id: string
+    ensembl_version: string
+    refseq_id: string
+    refseq_version: string
   }
+  flags: string[]
+}
+
+type Props = {
+  datasetId: DatasetId
+  transcript: Transcript
 }
 
 const TranscriptPage = ({ datasetId, transcript }: Props) => {
@@ -195,7 +207,6 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
         <TranscriptInfoColumnWrapper>
           <div style={{ maxWidth: '50%' }}>
             <TranscriptInfo transcript={transcript} />
-            {/* @ts-expect-error TS(2741) FIXME: Property 'flags' is missing in type '{ gene_id: st... Remove this comment to see the full error message */}
             <GeneFlags gene={transcript.gene} />
           </div>
           <div>
@@ -232,7 +243,7 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
           <TranscriptCoverageTrack
             datasetId={datasetId}
             transcriptId={transcript.transcript_id}
-            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+            includeExomeCoverage={hasExomeCoverage(datasetId)}
           />
         )}
 

@@ -12,7 +12,12 @@ import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasExomeCoverage,
+  labelForDataset,
+  ReferenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -161,55 +166,57 @@ const transcriptFeatureAttributes = {
   },
 }
 
-type Props = {
-  datasetId: DatasetId
-  gene: {
-    gene_id: string
-    gene_version: string
-    reference_genome: 'GRCh37' | 'GRCh38'
-    symbol: string
-    name?: string
-    chrom: string
-    strand: '+' | '-'
+export type Gene = {
+  gene_id: string
+  gene_version: string
+  reference_genome: ReferenceGenome
+  symbol: string
+  name?: string
+  chrom: string
+  strand: '+' | '-'
+  start: number
+  stop: number
+  exons: {
+    feature_type: string
     start: number
     stop: number
+  }[]
+  transcripts: {
+    transcript_id: string
+    transcript_version: string
     exons: {
       feature_type: string
       start: number
       stop: number
     }[]
-    transcripts: {
-      transcript_id: string
-      transcript_version: string
-      exons: {
-        feature_type: string
-        start: number
-        stop: number
-      }[]
-    }[]
-    canonical_transcript_id: string | null
-    mane_select_transcript?: {
-      ensembl_id: string
-      ensembl_version: string
-      refseq_id: string
-      refseq_version: string
-    }
-    pext?: {
-      regions: {
-        start: number
-        stop: number
-        mean: number
-        tissues: {
-          [key: string]: number
-        }
-      }[]
-      flags: string[]
-    }
-    short_tandem_repeats?: {
-      id: string
-    }[]
-    exac_regional_missense_constraint_regions?: any
+  }[]
+  canonical_transcript_id: string | null
+  mane_select_transcript?: {
+    ensembl_id: string
+    ensembl_version: string
+    refseq_id: string
+    refseq_version: string
   }
+  pext?: {
+    regions: {
+      start: number
+      stop: number
+      mean: number
+      tissues: {
+        [key: string]: number
+      }
+    }[]
+    flags: string[]
+  }
+  short_tandem_repeats?: {
+    id: string
+  }[]
+  exac_regional_missense_constraint_regions?: any
+}
+
+type Props = {
+  datasetId: DatasetId
+  gene: Gene
   geneId: string
 }
 
@@ -330,7 +337,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <GeneCoverageTrack
             datasetId={datasetId}
             geneId={geneId}
-            includeExomeCoverage={!datasetId.startsWith('gnomad_r3')}
+            includeExomeCoverage={hasExomeCoverage(datasetId)}
           />
         )}
 

@@ -2,9 +2,9 @@ import React from 'react'
 
 import { Button } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-const exportVariantsToCsv = (variants: any, datasetId: any, baseFileName: any) => {
+const exportVariantsToCsv = (variants: Variant[], datasetId: any, baseFileName: any) => {
   const DEFAULT_COLUMNS = [
     {
       label: 'Chromosome',
@@ -117,9 +117,8 @@ const exportVariantsToCsv = (variants: any, datasetId: any, baseFileName: any) =
 
   const datasetPopulations = variants[0].populations.map((pop: any) => pop.id)
   let populationColumns: any = []
-  datasetPopulations.forEach((popId: any, popIndex: any) => {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    const popName = GNOMAD_POPULATION_NAMES[popId.toLowerCase()]
+  datasetPopulations.forEach((popId: PopulationId, popIndex: number) => {
+    const popName = GNOMAD_POPULATION_NAMES[popId]
     populationColumns = populationColumns.concat([
       {
         label: `Allele Count ${popName}`,
@@ -188,37 +187,39 @@ const exportVariantsToCsv = (variants: any, datasetId: any, baseFileName: any) =
   link.click()
 }
 
+type Variant = {
+  ac: number
+  ac_hemi: number
+  ac_hom: number
+  an: number
+  af: number
+  consequence?: string
+  flags: string[]
+  hgvs?: string
+  hgvsc?: string
+  hgvsp?: string
+  populations: {
+    id: PopulationId
+    ac: number
+    an: number
+    ac_hemi?: number
+    ac_hom: number
+  }[]
+  pos: number
+  rsids?: string[]
+  variant_id: string
+  exome?: {
+    filters: string[]
+  }
+  genome?: {
+    filters: string[]
+  }
+}
+
 type Props = {
   datasetId: string
   exportFileName: string
-  variants: {
-    ac: number
-    ac_hemi: number
-    ac_hom: number
-    an: number
-    af: number
-    consequence?: string
-    flags: string[]
-    hgvs?: string
-    hgvsc?: string
-    hgvsp?: string
-    populations: {
-      id: string
-      ac: number
-      an: number
-      ac_hemi?: number
-      ac_hom: number
-    }[]
-    pos: number
-    rsids?: string[]
-    variant_id: string
-    exome?: {
-      filters: string[]
-    }
-    genome?: {
-      filters: string[]
-    }
-  }[]
+  variants: Variant[]
 }
 
 const ExportVariantsButton = ({ datasetId, exportFileName, variants, ...rest }: Props) => (
