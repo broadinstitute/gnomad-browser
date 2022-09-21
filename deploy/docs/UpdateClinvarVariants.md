@@ -63,12 +63,53 @@
 
 4. [Update Elasticsearch index aliases](./ElasticsearchIndexAliases.md)
 
-   Update `clinvar_grch37_variants` and `clinvar_grch38_variants` aliases with new indices.
+   Follow the steps in [ElasticsearchConnection.md](./ElasticsearchConnection.md) for accessing the Elasticsearch API.
+
+   Step 3 loads the new indices into Elasticsearch with a descriptive name including a timestamp.
+
+   Replace the `clinvar_grch37_variants` and `clinvar_grch38_variants` aliases with the new indices.
+
+   Lookup the names of all the indices that exist
+
+   ```
+   curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_cat/indices
+   ```
+
+   Replace an older index associated with an alias with a newer one
+
+   ```
+   curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPOST http://localhost:9200/_aliases --header "Content-Type: application/json" --data @- <<EOF
+   {
+      "actions": [
+         {"remove": {"index": "clinvar_grch37_variants-<previous_timestamp>", "alias": "clinvar_grch37_variants"}},
+         {"add": {"index": "clinvar_grch37_variants-<new_timestamp>", "alias": "clinvar_grch37_variants"}}
+      ]
+   }
+   EOF
+   ```
 
 5. [Clear Redis cache](./RedisCache.md)
 
+   Start a shell in the Redis pod.
+
    Delete cache keys matching `clinvar_variants:*`.
+
+   ```
+   redis-cli -n 1 --scan --pattern 'clinvar_variants:*' | xargs redis-cli -n 1 del
+   ```
 
 6. Delete old Elasticsearch indices
 
+   Remove the specified index
+
+   ```
+   curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XDELETE "http://localhost:9200/<index_name>-<previous_timestamp>"
+   ```
+
 7. [Create an Elasticsearch snapshot](./ElasticsearchSnapshots.md)
+
+   Create a snapshot with the current date
+
+   ```
+   curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT 'http://localhost:9200/_snapshot/backups/%3Csnapshot-%7Bnow%7BYYYY.MM.dd.HH.mm%7D%7D%3E'
+   ```
