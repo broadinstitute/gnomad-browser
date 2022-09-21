@@ -46,7 +46,7 @@
 - Specify the service account when creating the Dataproc cluster. The secret value can be accessed from the Dataproc cluster using:
 
   ```
-  gcloud secrets versions access latest --secret=gnomad-elasticsearch-password"
+  gcloud secrets versions access latest --secret="gnomad-elasticsearch-password"
   ```
 
 - Make a request.
