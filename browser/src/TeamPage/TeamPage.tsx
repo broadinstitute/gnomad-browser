@@ -164,7 +164,7 @@ const Contributors = styled.div`
 export default () => (
   <InfoPage>
     <DocumentTitle title="The gnomAD Team" />
-    // @ts-expect-error
+    {/* // @ts-expect-error */}
     <PageHeading
       // @ts-expect-error
       id="the-gnomad-team"
