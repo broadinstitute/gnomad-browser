@@ -49,7 +49,7 @@ spec:
             resources:
               requests:
                 storage: 100Gi
-    - name: coordinating
+    - name: coordinating-nodes
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.master: false
@@ -77,6 +77,16 @@ spec:
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: standard
+            resources:
+              requests:
+                storage: 20Gi
     - name: data-green
       count: 2
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
