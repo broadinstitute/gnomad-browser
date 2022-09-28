@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { GeneMetadata } from '../types'
+
 import { ExternalLink } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
@@ -51,16 +53,7 @@ type TranscriptInfoProps = {
     chrom: string
     start: number
     stop: number
-    gene: {
-      gene_id: string
-      gene_version: string
-      symbol: string
-      mane_select_transcript?: {
-        ensembl_id: string
-        ensembl_version: string
-      }
-      canonical_transcript_id?: string
-    }
+    gene: GeneMetadata
   }
 }
 

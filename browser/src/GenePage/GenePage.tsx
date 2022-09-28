@@ -1,3 +1,5 @@
+import { Gene } from '../types'
+
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
@@ -12,12 +14,7 @@ import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import {
-  DatasetId,
-  hasExomeCoverage,
-  labelForDataset,
-  ReferenceGenome,
-} from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -166,54 +163,6 @@ const transcriptFeatureAttributes = {
   },
 }
 
-export type Gene = {
-  gene_id: string
-  gene_version: string
-  reference_genome: ReferenceGenome
-  symbol: string
-  name?: string
-  chrom: string
-  strand: '+' | '-'
-  start: number
-  stop: number
-  exons: {
-    feature_type: string
-    start: number
-    stop: number
-  }[]
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
-    }[]
-  }[]
-  canonical_transcript_id: string | null
-  mane_select_transcript?: {
-    ensembl_id: string
-    ensembl_version: string
-    refseq_id: string
-    refseq_version: string
-  }
-  pext?: {
-    regions: {
-      start: number
-      stop: number
-      mean: number
-      tissues: {
-        [key: string]: number
-      }
-    }[]
-    flags: string[]
-  }
-  short_tandem_repeats?: {
-    id: string
-  }[]
-  exac_regional_missense_constraint_regions?: any
-}
-
 type Props = {
   datasetId: DatasetId
   gene: Gene
@@ -284,7 +233,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <div style={{ maxWidth: '50%' }}>
             {/* @ts-expect-error TS(2741) FIXME: Property 'gencode_symbol' is missing in type '{ ge... Remove this comment to see the full error message */}
             <GeneInfo gene={gene} />
-            {/* @ts-expect-error TS(2741) FIXME: Property 'flags' is missing in type '{ gene_id: st... Remove this comment to see the full error message */}
             <GeneFlags gene={gene} />
             {gene.short_tandem_repeats && gene.short_tandem_repeats.length > 0 && (
               <p>

@@ -16,14 +16,16 @@ exports[`ConstraintTable with "exac" dataset selected with a minimal transcript 
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -401,10 +403,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -791,14 +793,16 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal tran
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -1179,10 +1183,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -1574,14 +1578,16 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a min
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -1962,10 +1968,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -2357,14 +2363,16 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -2745,10 +2753,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -3140,14 +3148,16 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -3528,10 +3538,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -3923,14 +3933,16 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -4524,10 +4536,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -4914,14 +4926,16 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal t
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -5302,10 +5316,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -5697,14 +5711,16 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -6085,10 +6101,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
@@ -6480,14 +6496,16 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   genes
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial 
+  Constraint is not available for mitochondrial
+   
   transcripts
 </p>
 `;
@@ -6620,10 +6638,10 @@ Array [
      transcript (
     <a
       className="Link-sc-14lgydv-0-Link jBvaYQ"
-      href="/transcript/EN1010"
+      href="/transcript/transcript-999"
       onClick={[Function]}
     >
-      EN1010
+      transcript-999
       .
       12.34.5
     </a>
