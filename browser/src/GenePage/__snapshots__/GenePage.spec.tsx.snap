@@ -16,7 +16,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -443,7 +443,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -487,7 +487,15 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -515,7 +523,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -784,7 +792,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -1211,7 +1219,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -1255,7 +1263,15 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -1283,7 +1299,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1552,7 +1568,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -1979,7 +1995,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -2023,7 +2039,15 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -2051,7 +2075,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2320,7 +2344,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -2747,7 +2771,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -2791,7 +2815,15 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -2819,7 +2851,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3088,7 +3120,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -3515,7 +3547,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -3559,7 +3591,15 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -3587,7 +3627,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3856,7 +3896,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -4283,7 +4323,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -4327,7 +4367,15 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -4355,7 +4403,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -4624,7 +4672,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -5051,7 +5099,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -5095,7 +5143,15 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -5123,7 +5179,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -5391,7 +5447,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -5818,7 +5874,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -5862,7 +5918,15 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -5890,7 +5954,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -6158,7 +6222,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -6585,7 +6649,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -6629,7 +6693,15 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -6657,7 +6729,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -6925,7 +6997,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -7352,7 +7424,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -7396,7 +7468,15 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -7424,7 +7504,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -7692,7 +7772,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -8119,7 +8199,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -8163,7 +8243,15 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -8191,7 +8279,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -8459,7 +8547,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -8886,7 +8974,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -8930,7 +9018,15 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -8958,7 +9054,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -9226,7 +9322,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -9653,7 +9749,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -9697,7 +9793,15 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -9725,7 +9829,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -9983,7 +10087,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -10410,7 +10514,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -10454,7 +10558,15 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -10482,7 +10594,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -10740,7 +10852,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
         <h1
           className="sc-jzJRlG dBmcHI"
         >
-          DUMMYGENE
+          FAKEGENE
            
           <span
             className="sc-hrWEMg fBzazM"
@@ -11167,7 +11279,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
               Ensembl gene ID
             </dt>
             <dd>
-              dummy_gene
+              dummy_gene-1
               .
               5.6.7.8
             </dd>
@@ -11211,7 +11323,15 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
               </button>
             </dt>
             <dd>
-              Not available
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
             </dd>
           </div>
           <div>
@@ -11239,7 +11359,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
             <dd>
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
