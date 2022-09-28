@@ -1,34 +1,17 @@
 import React from 'react'
-import { Factory } from 'fishery' // eslint-disable-line import/no-extraneous-dependencies
+import { Factory } from 'fishery'
+import geneFactory from '../__factories__/Gene'
+import transcriptFactory from '../__factories__/Transcript'
 
 import { describe, expect } from '@jest/globals'
 import renderer from 'react-test-renderer'
+
 import { forAllDatasets, forAllDatasetsExcept } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
-import ConstraintTable, { Gene, Transcript } from './ConstraintTable'
+import ConstraintTable from './ConstraintTable'
 import { ExacConstraint } from './ExacConstraintTable'
 import { GnomadConstraint } from './GnomadConstraintTable'
-
-const transcriptFactory = Factory.define<Transcript>(() => ({
-  transcript_id: 'dummy_transcript',
-  transcript_version: '12.34.5',
-  chrom: '13',
-}))
-
-const geneFactory = Factory.define<Gene>(({ params }) => {
-  const { canonical_transcript_id = 'EN1010' } = params
-  const transcripts =
-    canonical_transcript_id !== null
-      ? [transcriptFactory.build({ transcript_id: canonical_transcript_id })]
-      : []
-
-  return {
-    chrom: '13',
-    canonical_transcript_id,
-    transcripts,
-  }
-})
 
 const exacConstraintFactory = Factory.define<ExacConstraint>(() => ({
   exp_lof: 0.123,

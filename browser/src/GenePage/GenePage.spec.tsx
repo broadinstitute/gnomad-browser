@@ -1,28 +1,13 @@
 import { jest, describe, expect } from '@jest/globals'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { Factory } from 'fishery'
 
-import GenePage, { Gene } from './GenePage'
+import geneFactory from '../__factories__/Gene'
+import GenePage from './GenePage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
-
-const geneFactory = Factory.define<Gene>(() => ({
-  gene_id: 'dummy_gene',
-  gene_version: '5.6.7.8',
-  reference_genome: 'GRCh37',
-  symbol: 'DUMMYGENE',
-  chrom: '13',
-  strand: '+',
-  exons: [],
-  flags: [],
-  start: 123,
-  stop: 321,
-  transcripts: [],
-  canonical_transcript_id: null,
-}))
 
 forAllDatasets('GenePage with dataset "%s"', (datasetId) => {
   const fetch = jest.fn(() => {

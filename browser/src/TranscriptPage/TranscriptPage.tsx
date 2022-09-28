@@ -4,13 +4,11 @@ import styled from 'styled-components'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 
+import { Transcript } from '../types'
+
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import {
-  DatasetId,
-  hasExomeCoverage,
-  labelForDataset,
-  ReferenceGenome,
-} from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -111,46 +109,6 @@ const transcriptFeatureAttributes = {
     fill: '#424242',
     height: 4,
   },
-}
-
-type Strand = '+' | '-'
-
-export type Transcript = {
-  transcript_id: string
-  transcript_version: string
-  reference_genome: ReferenceGenome
-  chrom: string
-  start: number
-  stop: number
-  strand: Strand
-  exons: {
-    feature_type: string
-    start: number
-    stop: number
-  }[]
-  gene: Gene
-}
-
-export type Gene = {
-  gene_id: string
-  gene_version: string
-  reference_genome: ReferenceGenome
-  symbol: string
-  name?: string
-  strand: Strand
-  exons: {
-    feature_type: string
-    start: number
-    stop: number
-  }[]
-  canonical_transcript_id?: string
-  mane_select_transcript?: {
-    ensembl_id: string
-    ensembl_version: string
-    refseq_id: string
-    refseq_version: string
-  }
-  flags: string[]
 }
 
 type Props = {

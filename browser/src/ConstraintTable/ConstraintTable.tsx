@@ -1,38 +1,60 @@
 import React from 'react'
 
+import { Gene, Transcript } from '../types'
+
 import Link from '../Link'
 
-import ExacConstraintTable, { ExacConstraint } from './ExacConstraintTable'
-import GnomadConstraintTable, { GnomadConstraint } from './GnomadConstraintTable'
+import ExacConstraintTable from './ExacConstraintTable'
+import GnomadConstraintTable from './GnomadConstraintTable'
 
 import { DatasetId, hasConstraints } from '@gnomad/dataset-metadata/metadata'
-
-export type Gene = {
-  chrom: string
-  canonical_transcript_id: string | null
-  mane_select_transcript?: {
-    ensembl_id: string
-    ensembl_version: string
-  }
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-  }[]
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
-}
-
-export type Transcript = {
-  transcript_id: string
-  transcript_version: string
-  chrom: string
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
-}
 
 type Props = {
   datasetId: DatasetId
   geneOrTranscript: Gene | Transcript
+}
+
+const isGene = (geneOrTranscript: Gene | Transcript): geneOrTranscript is Gene =>
+  (geneOrTranscript as any).transcript_id === undefined
+
+const transcriptDetails = (
+  geneOrTranscript: Gene | Transcript
+): {
+  transcriptId: string | null
+  transcriptVersion: string | null
+  transcriptDescription: string | null
+} => {
+  let transcriptId: string | null
+  let transcriptVersion
+  let transcriptDescription = null
+  if (isGene(geneOrTranscript)) {
+    if (geneOrTranscript.mane_select_transcript) {
+      const maneSelectTranscript = geneOrTranscript.mane_select_transcript
+      transcriptId = maneSelectTranscript.ensembl_id
+      const matchingTranscript = geneOrTranscript.transcripts.find(
+        (transcript) => transcript.transcript_id === maneSelectTranscript.ensembl_id
+      )!
+      transcriptVersion = matchingTranscript.transcript_version
+      transcriptDescription =
+        transcriptVersion === maneSelectTranscript.ensembl_version
+          ? 'MANE Select'
+          : 'a version of MANE Select'
+    } else {
+      transcriptId = geneOrTranscript.canonical_transcript_id
+      const canonicalTranscript = transcriptId
+        ? geneOrTranscript.transcripts.find(
+            (transcript) => transcript.transcript_id === transcriptId
+          )
+        : null
+      transcriptVersion = canonicalTranscript ? canonicalTranscript.transcript_version : null
+      transcriptDescription = 'Ensembl canonical'
+    }
+  } else {
+    transcriptId = geneOrTranscript.transcript_id
+    transcriptVersion = geneOrTranscript.transcript_version
+  }
+
+  return { transcriptId, transcriptVersion, transcriptDescription }
 }
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
@@ -40,51 +62,32 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
     return <p>Constraint not yet available for gnomAD v3.</p>
   }
 
-  const isGene = (geneOrTranscript as any).transcript_id === undefined
-
-  let transcriptId: any
-  let transcriptVersion
-  let transcriptDescription
-  if (isGene) {
-    if ((geneOrTranscript as any).mane_select_transcript) {
-      transcriptId = (geneOrTranscript as any).mane_select_transcript.ensembl_id
-      transcriptVersion = (geneOrTranscript as any).transcripts.find(
-        (transcript: any) =>
-          transcript.transcript_id === (geneOrTranscript as any).mane_select_transcript.ensembl_id
-      ).transcript_version
-      transcriptDescription =
-        transcriptVersion === (geneOrTranscript as any).mane_select_transcript.ensembl_version
-          ? 'MANE Select'
-          : 'a version of MANE Select'
-    } else {
-      transcriptId = (geneOrTranscript as any).canonical_transcript_id
-      transcriptVersion = transcriptId
-        ? (geneOrTranscript as any).transcripts.find(
-            (transcript: any) => transcript.transcript_id === transcriptId
-          ).transcript_version
-        : null
-      transcriptDescription = 'Ensembl canonical'
-    }
-  } else {
-    transcriptId = (geneOrTranscript as any).transcript_id
-    transcriptVersion = (geneOrTranscript as any).transcript_version
-  }
+  const { transcriptId, transcriptVersion, transcriptDescription } = transcriptDetails(
+    geneOrTranscript
+  )
 
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
   const exacConstraint = geneOrTranscript.exac_constraint
 
   if (geneOrTranscript.chrom === 'M') {
-    return <p>Constraint is not available for mitochondrial {isGene ? 'genes' : 'transcripts'}</p>
+    return (
+      <p>
+        Constraint is not available for mitochondrial{' '}
+        {isGene(geneOrTranscript) ? 'genes' : 'transcripts'}
+      </p>
+    )
   }
 
   if (datasetId === 'exac') {
     if (!exacConstraint) {
-      return <p>Constraint not available for this {isGene ? 'gene' : 'transcript'}</p>
+      return (
+        <p>Constraint not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}</p>
+      )
     }
     return (
       <>
         <ExacConstraintTable constraint={exacConstraint} />
-        {isGene && (
+        {isGene(geneOrTranscript) && (
           <p>
             Constraint metrics based on {transcriptDescription} transcript (
             <Link to={`/transcript/${transcriptId}`}>
@@ -98,7 +101,9 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   }
 
   if (!gnomadConstraint) {
-    return <p>Constraint not available for this {isGene ? 'gene' : 'transcript'}</p>
+    return (
+      <p>Constraint not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}</p>
+    )
   }
 
   return (
@@ -107,7 +112,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
         datasetId.includes(subset)
       ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
       <GnomadConstraintTable constraint={gnomadConstraint} />
-      {isGene && (
+      {isGene(geneOrTranscript) && (
         <p style={{ marginBottom: 0 }}>
           Constraint metrics based on {transcriptDescription} transcript (
           <Link to={`/transcript/${transcriptId}`}>

@@ -4,21 +4,14 @@ import renderer from 'react-test-renderer'
 
 import { Factory } from 'fishery'
 
-import TranscriptPage, { Gene, Transcript } from './TranscriptPage'
+import { Gene, Transcript } from '../types'
+import TranscriptPage from './TranscriptPage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
-const geneFactory = Factory.define<Gene>(() => ({
-  gene_id: 'dummy_gene',
-  gene_version: '5.6.7.8',
-  reference_genome: 'GRCh37',
-  symbol: 'DUMMYGENE',
-  strand: '+',
-  exons: [],
-  flags: [],
-}))
+import geneFactory from '../__factories__/Gene'
 
 const transcriptFactory = Factory.define<Transcript>(({ params }) => {
   const { reference_genome = 'GRCh37', strand = '+' } = params
