@@ -35,10 +35,10 @@ jobs:
         run: yarn run eslint .
       - name: Run stylelint
         run: yarn run stylelint './**/*.(js|jsx|ts|tsx)'
-      - name: Run Jest tests
-        run: yarn run jest
       - name: Verify clean build
         run: cd browser && yarn build
+      - name: Run Jest tests
+        run: yarn run jest
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         with:
