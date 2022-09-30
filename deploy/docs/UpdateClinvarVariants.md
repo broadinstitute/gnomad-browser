@@ -24,7 +24,7 @@
 
       ```
       ./deployctl dataproc-cluster start vep101 \
-         --init=gs://gnomad-browser-data-pipeline/init-vep101.sh \
+         --init=gs://gcp-public-data--gnomad/resources/vep/v101/init-vep101.sh \
          --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
          --master-machine-type n1-highmem-8 \
          --worker-machine-type n1-highmem-8 \
