@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renderRoundedNumber allows for arbitrary formatting of tooltip 1`] = `
+<TooltipAnchor
+  tooltip="I AM A ROUND NUMBER AS FOLLOWS: \\"1.200\\" THANK YOU FOR YOUR TIME"
+  tooltipComponent={[Function]}
+>
+  <TooltipHint>
+    1.2
+  </TooltipHint>
+</TooltipAnchor>
+`;
+
+exports[`renderRoundedNumber trims zeros when necessary 1`] = `
+<TooltipAnchor
+  tooltip="1.200"
+  tooltipComponent={[Function]}
+>
+  <TooltipHint>
+    1.2
+  </TooltipHint>
+</TooltipAnchor>
+`;
+
+exports[`renderRoundedNumber uses proper highlight color 1`] = `
+<TooltipAnchor
+  tooltip="1.200"
+  tooltipComponent={[Function]}
+>
+  <styled.span
+    highlightColor="#ABCDEF"
+  >
+    1.2
+  </styled.span>
+</TooltipAnchor>
+`;
