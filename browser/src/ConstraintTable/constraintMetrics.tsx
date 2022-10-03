@@ -25,7 +25,7 @@ export const renderRoundedNumber = (
     return '—'
   }
 
-  const roundedNumber = num.toFixed(precision).toString()
+  const roundedNumber = Number(num.toFixed(precision)).toString()
   return (
     // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message
     <TooltipAnchor tooltip={formatTooltip(num.toFixed(tooltipPrecision))}>
