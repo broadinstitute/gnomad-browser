@@ -91,6 +91,9 @@ const config = {
     new CopyWebpackPlugin({
       patterns: [path.resolve(__dirname, './src/opensearch.xml')],
     }),
+    new CopyWebpackPlugin({
+      patterns: [path.resolve(__dirname, './src/robots.txt')],
+    }),
     new EnvironmentPlugin({
       REPORT_VARIANT_URL: null,
       REPORT_VARIANT_VARIANT_ID_PARAMETER: null,
