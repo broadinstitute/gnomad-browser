@@ -208,7 +208,7 @@ Query.defaultProps = {
   success: () => true,
   url: '/api/',
   variables: {},
-  operatioName: null,
+  operationName: null,
 }
 
 export default Query
