@@ -24,6 +24,9 @@ from data_pipeline.pipelines.gnomad_v2_variant_cooccurrence import pipeline as g
 from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
 from data_pipeline.pipelines.gnomad_v3_local_ancestry import pipeline as gnomad_v3_local_ancestry_pipeline
+from data_pipeline.pipelines.gnomad_v3_genomic_constraint_regions import (
+    pipeline as gnomad_v3_genomic_constraint_regions_pipeline,
+)
 from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
 from data_pipeline.pipelines.gnomad_v3_mitochondrial_variants import (
     pipeline as gnomad_v3_mitochondrial_variants_pipeline,
@@ -360,6 +363,22 @@ DATASETS_CONFIG = {
             "id_field": "document_id",
             "num_shards": 8,
             "block_size": 1_000,
+        },
+    },
+    ##############################################################################################################
+    # Genomic / Non Coding Constraints
+    ##############################################################################################################
+    "gnomad_v3_genomic_constraint_regions": {
+        "get_table": lambda: subset_table(
+            hl.read_table(
+                gnomad_v3_genomic_constraint_regions_pipeline.get_output(
+                    "gnomad_v3_genomic_constraint_regions"
+                ).get_output_path()
+            )
+        ),
+        "args": {
+            "index": "gnomad_v3_genomic_constraint_regions",
+            "id_field": "element_id",
         },
     },
 }
