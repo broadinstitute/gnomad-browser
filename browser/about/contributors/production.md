@@ -1,6 +1,6 @@
 - **Grace Tiao**
 - **Katherine Chao**
-- Julia Goodrich
+- **Julia Goodrich**
 - Kristen Laricchia
 - Wenhan Lu
 - Tim Poterba
