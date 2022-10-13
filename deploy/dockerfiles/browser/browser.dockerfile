@@ -16,6 +16,8 @@ RUN yarn install --production false --frozen-lockfile && yarn cache clean
 
 # Copy source
 COPY --chown=node:node babel.config.js .
+COPY --chown=node:node tsconfig.json .
+COPY --chown=node:node tsconfig.build.json .
 COPY --chown=node:node dataset-metadata dataset-metadata
 COPY --chown=node:node browser browser
 
