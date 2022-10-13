@@ -7,6 +7,7 @@ import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
+import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -20,6 +21,8 @@ import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
+
+import { hasNonCodingConstraints } from '@gnomad/dataset-metadata/metadata'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
@@ -44,6 +47,13 @@ const RegionControlsWrapper = styled.div`
   }
 `
 
+type NonCodingConstraint = {
+  start: number
+  stop: number
+  oe: number
+  z: number
+}
+
 type Props = {
   datasetId: DatasetId
   region: {
@@ -55,6 +65,7 @@ type Props = {
     short_tandem_repeats?: {
       id: string
     }[]
+    non_coding_constraints: NonCodingConstraint[] | null
   }
 }
 
@@ -67,6 +78,15 @@ const RegionPage = ({ datasetId, region }: Props) => {
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
+
+  const nccToRegion = (ncc: NonCodingConstraint) => {
+    return {
+      start: ncc.start,
+      stop: ncc.stop,
+      z: ncc.z,
+      obs_exp: ncc.oe,
+    }
+  }
 
   return (
     <TrackPage>
@@ -133,6 +153,20 @@ const RegionPage = ({ datasetId, region }: Props) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
+
+        {hasNonCodingConstraints(datasetId) && (
+          <>
+            <RegionalGenomicConstraintTrack
+              start={region.start}
+              stop={region.stop}
+              regions={
+                region.non_coding_constraints !== null
+                  ? region.non_coding_constraints.map(nccToRegion)
+                  : null
+              }
+            />
+          </>
+        )}
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
