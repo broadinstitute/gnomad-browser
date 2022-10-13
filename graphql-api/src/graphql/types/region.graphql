@@ -26,6 +26,7 @@ type Region {
   stop: Int!
 
   genes: [RegionGene!]! @cost(value: 5)
+  non_coding_constraints: [NonCodingConstraintRegion!] @cost(value: 3)
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
