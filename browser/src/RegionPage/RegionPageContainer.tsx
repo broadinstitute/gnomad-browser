@@ -31,6 +31,12 @@ const query = `
           }
         }
       }
+      non_coding_constraints {
+        start
+        stop
+        oe
+        z
+      }
       short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
         id
       }
