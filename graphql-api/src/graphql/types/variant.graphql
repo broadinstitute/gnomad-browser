@@ -116,6 +116,19 @@ type VariantSequencingTypeData {
   ac_hemi: Int
 }
 
+type NonCodingConstraintRegion {
+  chrom: String!
+  start: Int!
+  stop: Int!
+  element_id: String!
+  possible: Float!
+  observed: Float!
+  expected: Float!
+  oe: Float!
+  z: Float!
+  coding_prop: Float!
+}
+
 type Variant {
   variant_id: String!
   reference_genome: ReferenceGenomeId!
@@ -201,9 +214,9 @@ type VariantDetailsSequencingTypeData {
 }
 
 type MultiNucleotideVariantSummary {
-  combined_variant_id: String!,
+  combined_variant_id: String!
   changes_amino_acids: Boolean!
-  n_individuals: Int!,
+  n_individuals: Int!
   other_constituent_snvs: [String!]!
 }
 
@@ -231,6 +244,8 @@ type VariantDetails {
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
+
+  non_coding_constraint: NonCodingConstraintRegion
 
   # Deprecated - use rsids
   rsid: String
