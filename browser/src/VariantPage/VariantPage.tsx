@@ -3,12 +3,18 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasNonCodingConstraints,
+  labelForDataset,
+  referenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { BaseQuery } from '../Query'
+import Link from '../Link'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
@@ -21,6 +27,7 @@ import VariantGenotypeQualityMetrics from './VariantGenotypeQualityMetrics'
 import VariantNotFound from './VariantNotFound'
 import { GnomadVariantOccurrenceTable } from './VariantOccurrenceTable'
 import VariantInSilicoPredictors from './VariantInSilicoPredictors'
+import GnomadNonCodingConstraintTableVariant from '../ConstraintTable/GnomadNonCodingConstraintTableVariant'
 import VariantLoFCurationResults from './VariantLoFCurationResults'
 import VariantPageTitle from './VariantPageTitle'
 import VariantPopulationFrequencies from './VariantPopulationFrequencies'
@@ -47,6 +54,16 @@ const FlexWrapper = styled.div`
   width: 100%;
 `
 
+export type NonCodingConstraint = {
+  start: number
+  stop: number
+  possible: number
+  observed: number
+  expected: number
+  oe: number
+  z: number
+}
+
 type VariantPageContentProps = {
   datasetId: DatasetId
   variant: {
@@ -58,6 +75,7 @@ type VariantPageContentProps = {
     genome?: any
     lof_curations?: any[]
     in_silico_predictors?: any[]
+    non_coding_constraint: NonCodingConstraint | null
     transcript_consequences?: any[]
   }
 }
@@ -152,13 +170,25 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
         </Section>
       )}
 
-      {variant.in_silico_predictors && variant.in_silico_predictors.length && (
-        <Section>
-          <h2>In Silico Predictors</h2>
-          {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
-          <VariantInSilicoPredictors variant={variant} />
-        </Section>
-      )}
+      <FlexWrapper>
+        {variant.in_silico_predictors && variant.in_silico_predictors.length && (
+          <ResponsiveSection>
+            <h2>In Silico Predictors</h2>
+            {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
+            <VariantInSilicoPredictors variant={variant} />
+          </ResponsiveSection>
+        )}
+        {hasNonCodingConstraints(datasetId) && (
+          <ResponsiveSection>
+            <h2>Genomic Constraint of Surrounding 1kb Region</h2>
+            <GnomadNonCodingConstraintTableVariant
+              variantId={variant.variant_id}
+              chrom={variant.chrom}
+              nonCodingConstraint={variant.non_coding_constraint}
+            />
+          </ResponsiveSection>
+        )}
+      </FlexWrapper>
 
       {variant.clinvar && (
         <Section>
@@ -419,6 +449,15 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
       id
       value
       flags
+    }
+    non_coding_constraint {
+      start
+      stop
+      possible
+      observed
+      expected
+      oe
+      z
     }
   }
 
