@@ -11,8 +11,9 @@ const {
   fetchVariantsByTranscript,
   fetchMatchingVariants,
 } = require('../../queries/variant-queries')
+const { fetchNccConstraintRegionById } = require('../../queries/genomic-constraint-queries')
 
-const resolveVariant = (obj, args, ctx) => {
+const resolveVariant = async (obj, args, ctx) => {
   if (!(args.rsid || args.variantId)) {
     throw new UserVisibleError('One of "rsid" or "variantId" is required')
   }
@@ -40,7 +41,12 @@ const resolveVariant = (obj, args, ctx) => {
     throw new UserVisibleError('Dataset is required')
   }
 
-  return fetchVariantById(ctx.esClient, dataset, variantId)
+  const variant = await fetchVariantById(ctx.esClient, dataset, variantId)
+  const posRounded = Math.floor(variant.pos / 1000) * 1000
+  const variantNCCId = `chr${variant.chrom}-${posRounded}-${posRounded + 1000}`
+  const variantNCC = await fetchNccConstraintRegionById(ctx.esClient, variantNCCId)
+  variant.non_coding_constraint = variantNCC
+  return variant
 }
 
 const resolveVariantsInGene = (obj, args, ctx) => {

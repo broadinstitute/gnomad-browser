@@ -112,6 +112,7 @@ const limitedElastic = {
       return response
     }),
   get: (...args) => scheduleElasticsearchRequest(() => elastic.get(...args)),
+  mget: (...args) => scheduleElasticsearchRequest(() => elastic.mget(...args)),
 }
 
 module.exports = {
