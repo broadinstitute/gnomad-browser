@@ -81,7 +81,7 @@ VariantsInRegion.defaultProps = {
 
 const operationName = 'VariantInRegion'
 const query = `
-query VariantInRegion($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
