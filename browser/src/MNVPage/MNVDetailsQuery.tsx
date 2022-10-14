@@ -2,8 +2,9 @@ import React from 'react'
 
 import { BaseQuery } from '../Query'
 
+const operationName = 'MultiNucleotideVariant'
 const query = `
-query MultiNucleotideVariant($variantId: String!, $datasetId: DatasetId!) {
+query ${operationName}($variantId: String!, $datasetId: DatasetId!) {
   multiNucleotideVariant(variant_id: $variantId, dataset: $datasetId) {
     variant_id
     chrom
@@ -66,7 +67,7 @@ type Props = {
 
 const MNVDetailsQuery = ({ children, datasetId, variantId }: Props) => (
   // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-  <BaseQuery query={query} variables={{ datasetId, variantId }}>
+  <BaseQuery operationName={operationName} query={query} variables={{ datasetId, variantId }}>
     {children}
   </BaseQuery>
 )

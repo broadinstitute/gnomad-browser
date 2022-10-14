@@ -90,8 +90,9 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
   )
 }
 
+const operationName = 'ShortTandemRepeats'
 const query = `
-query ShortTandemRepeats($datasetId: DatasetId!) {
+query ${operationName}($datasetId: DatasetId!) {
   short_tandem_repeats(dataset: $datasetId) {
     id
     gene {
@@ -134,6 +135,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
       </GnomadPageHeading>
       {datasetId === 'gnomad_r3' ? (
         <Query
+          operationName={operationName}
           query={query}
           variables={{ datasetId }}
           loadingMessage="Loading short tandem repeats"

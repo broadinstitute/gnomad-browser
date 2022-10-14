@@ -37,6 +37,7 @@ const MitochondrialGeneCoverageTrack = ({ datasetId, geneId }: Props) => {
 
   return (
     <Query
+      operationName={operationName}
       query={query}
       variables={{ geneId, datasetId, referenceGenome: referenceGenome(datasetId) }}
       loadingMessage="Loading coverage"
