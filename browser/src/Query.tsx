@@ -38,7 +38,7 @@ const cancelable = (promise: any) => {
 }
 
 type OwnBaseQueryProps = {
-  operationName: string
+  operationName: string | null
   query: string
   url?: string
   variables?: any
@@ -51,7 +51,7 @@ type BaseQueryProps = OwnBaseQueryProps & typeof BaseQuery.defaultProps
 export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   static defaultProps = {
     url: '/api/',
-    operationName: '',
+    operationName: null,
     variables: {},
   }
 
@@ -97,7 +97,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
     this.currentRequest = cancelable(
       fetch(url, {
         body: JSON.stringify({
-          operationName,
+          // operationName,
           query,
           variables,
         }),
@@ -145,7 +145,7 @@ type OwnQueryProps = {
   errorMessage?: string
   loadingMessage?: string
   loadingPlaceholderHeight?: number
-  operationName: string
+  operationName: string | null
   query: string
   success?: (...args: any[]) => any
   url?: string
@@ -208,7 +208,7 @@ Query.defaultProps = {
   success: () => true,
   url: '/api/',
   variables: {},
-  operatioName: '',
+  operatioName: null,
 }
 
 export default Query

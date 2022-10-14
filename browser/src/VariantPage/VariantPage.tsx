@@ -202,8 +202,9 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
   )
 }
 
+const operationName = 'GnomadVariant'
 const variantQuery = `
-query GnomadVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
+query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
@@ -471,9 +472,10 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
-      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <BaseQuery
         key={datasetId}
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        operationName={operationName}
         query={variantQuery}
         variables={{
           datasetId,
