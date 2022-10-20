@@ -11,6 +11,7 @@ import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
 import ExacDownloads from './ExacDownloads'
+import ResearchDownloads from './ResearchDownloads'
 
 const CodeBlock = styled.code`
   display: inline-block;
@@ -181,22 +182,27 @@ const DownloadsPage = ({ location }: Props) => {
           {
             id: 'v2',
             label: 'gnomAD v2',
-            render: () => <GnomadV2Downloads />,
+            render: GnomadV2Downloads,
           },
           {
             id: 'v2-liftover',
             label: 'gnomAD v2 liftover',
-            render: () => <GnomadV2LiftoverDownloads />,
+            render: GnomadV2LiftoverDownloads,
           },
           {
             id: 'v3',
             label: 'gnomAD v3',
-            render: () => <GnomadV3Downloads />,
+            render: GnomadV3Downloads,
           },
           {
             id: 'exac',
             label: 'ExAC',
-            render: () => <ExacDownloads />,
+            render: ExacDownloads,
+          },
+          {
+            id: 'research',
+            label: 'Research',
+            render: ResearchDownloads,
           },
         ]}
         onChange={setActiveTab}
