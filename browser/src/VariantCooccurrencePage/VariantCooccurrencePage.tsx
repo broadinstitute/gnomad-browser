@@ -339,7 +339,6 @@ const VariantCoocurrenceContainer = ({
       {({ data }: any) => {
         const genesInCommon = [data.variant1, data.variant2]
           .map((v) => new Set(v.transcript_consequences.map((csq: any) => csq.gene_id)))
-          // @ts-expect-error TS(2802) FIXME: Type 'Set<unknown>' can only be iterated through w... Remove this comment to see the full error message
           .reduce((acc, genes) => new Set([...acc].filter((geneId) => genes.has(geneId))))
 
         // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
