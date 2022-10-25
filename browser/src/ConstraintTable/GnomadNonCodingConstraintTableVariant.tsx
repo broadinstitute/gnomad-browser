@@ -6,7 +6,6 @@ import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 import Link from '../Link'
 
 import { NonCodingConstraint } from '../VariantPage/VariantPage'
-
 import { renderRoundedNumber } from './constraintMetrics'
 
 const Table = styled(BaseTable)`
@@ -51,7 +50,7 @@ const GnomadNonCodingConstraintTableVariant = ({
       <div>
         <p>{`Genomic constraint values displayed are for the region: ${chrom}-${nonCodingConstraint.start}-${nonCodingConstraint.stop}`}</p>
         <p>
-          <a href={'https://gnomad.broadinstitute.org/news/2022-10-24-the-addition-of-a-genomic-constraint-metric-to-gnomad/'}>Read more</a> about this constraint.
+          <a href={'https://gnomad.broadinstitute.org/news/2022-10-the-addition-of-a-genomic-constraint-metric-to-gnomad/'}>Read more</a> about this constraint.
         </p>
       </div>
       <Table>
@@ -97,13 +96,12 @@ const GnomadNonCodingConstraintTableVariant = ({
         </tbody>
       </Table>
       <ViewSurroundingRegion>
-        <p>{`View the genomic constraint values for the ${
-          (regionBuffer * 2) / 1000
-        }kb region surrounding this variant`}</p>
         <p>
+          {`View the genomic constraint values for the ${
+            (regionBuffer * 2) / 1000
+          }kb region surrounding this variant: `}
           <Link
-            to={`/region/${surroundingLocation}?variant=${variantId}&dataset=gnomad_r3`}
-            preserveSelectedDataset={false}
+            to={{ pathname: `/region/${surroundingLocation}`, search: `variant=${variantId}`}}
           >
             {surroundingLocation}
           </Link>

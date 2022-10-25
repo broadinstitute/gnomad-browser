@@ -13,7 +13,7 @@ const ResearchDownloads = () => {
         accompanying README file explaining what it contains.
       </p>
       <section>
-        <SectionTitle id="v3-genomic-constraint">Non-coding and Genomic constraint</SectionTitle>
+        <SectionTitle id="research-genomic-constraint">Genomic constraint</SectionTitle>
         <p>For more information about these files, see the README included in the download.</p>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -29,9 +29,9 @@ const ResearchDownloads = () => {
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
-              label="Non coding constraint for gene tissue enhancers"
+              label="Raw genomic constraint by 1kb regions"
               gcsBucket="gnomad-nc-constraint-v31-paper"
-              path="/download_files/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
+              path="/download_files/constraint_z_genome_1kb.raw.download.txt.gz"
               includeAWS={false}
               includeAzure={false}
             />
@@ -39,7 +39,7 @@ const ResearchDownloads = () => {
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
-              label="QCd genomic constraint by 1kb regions"
+              label="QCed genomic constraint by 1kb regions"
               gcsBucket="gnomad-nc-constraint-v31-paper"
               path="/download_files/constraint_z_genome_1kb.qc.download.txt.gz"
               includeAWS={false}
@@ -49,9 +49,9 @@ const ResearchDownloads = () => {
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
-              label="Raw genomic constraint by 1kb regions"
+              label="Non-coding constraint for gene tissue enhancers"
               gcsBucket="gnomad-nc-constraint-v31-paper"
-              path="/download_files/constraint_z_genome_1kb.raw.download.txt.gz"
+              path="/download_files/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
               includeAWS={false}
               includeAzure={false}
             />
