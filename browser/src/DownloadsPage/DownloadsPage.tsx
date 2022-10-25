@@ -49,6 +49,8 @@ const DownloadsPage = ({ location }: Props) => {
       setActiveTab('v3')
     } else if (location.hash.startsWith('#exac-')) {
       setActiveTab('exac')
+    } else if (location.hash.startsWith('#research-')) {
+      setActiveTab('research')
     }
   }, [location.hash])
 

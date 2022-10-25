@@ -134,7 +134,7 @@ const RegionTooltip = ({ region }: RegionTooltipProps) => (
       <dd>{renderNumber(region.z)}</dd>
     </div>
     <div>
-      <dt>O/E:</dt>
+      <dt>o/e:</dt>
       <dd>{renderNumber(region.obs_exp)}</dd>
     </div>
   </RegionAttributeList>
@@ -276,7 +276,7 @@ const RegionalGenomicConstraintTrack = ({
                           fill={regionColor(region)}
                           stroke="black"
                         />
-                        {regionWidth > 30 && (
+                        {regionWidth > 32 && (
                           <text x={(startX + stopX) / 2} y={30} dy="0.33em" textAnchor="middle">
                             {region.z.toFixed(2)}
                           </text>
