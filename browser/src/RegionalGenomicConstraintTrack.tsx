@@ -8,6 +8,9 @@ import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import Link from './Link'
 
+// @ts-expect-error
+import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
+
 import InfoButton from './help/InfoButton'
 
 const Wrapper = styled.div`
@@ -40,24 +43,15 @@ const RegionAttributeList = styled.dl`
   }
 `
 
-function regionColor(region: any) {
+export function regionColor(region: any) {
   // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
-  // https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=4
   let color
-  if (region.z > 2.5) {
+  if (region.z > 4.0) {
     color = '#f03b20'
-  } else if (region.z > 1.2) {
-    color = '#feb24c'
-  } else if (region.z > 0.6) {
+  } else if (region.z > 2.18) {
     color = '#ffeda0'
-  } else if (region.z > -0.6) {
-    color = '#e2e2e2'
-  } else if (region.z > -1.2) {
-    color = '#bdc9e1'
-  } else if (region.z > -2.5) {
-    color = '#74a9cf'
   } else {
-    color = '#0570b0'
+    color = '#e2e2e2'
   }
   return color
 }
@@ -71,7 +65,13 @@ const LegendWrapper = styled.div`
   }
 `
 
-const Legend = () => {
+const LegendTooltip = () => (
+  <>
+    {`The Z score ranges from -10 to 10. Z >= 2.18 (yellow) and Z >= 4.0 (red) represent the top 10% and top 1% of constrained non-coding regions, respectively.`}
+  </>
+)
+
+export const Legend = () => {
   const currentParams = queryString.parse(location.search)
 
   return (
@@ -79,38 +79,33 @@ const Legend = () => {
       {currentParams.variant && (
         <>
           <span>Selected Variant</span>
-          <svg width={30} height={25}>
+          <svg width={40} height={25}>
             <rect x={10} y={0} width={2} height={20} fill="#000" />
           </svg>
         </>
       )}
-      <span>Z Score</span>
-      <svg width={185} height={25}>
-        <rect x={10} y={0} width={25} height={10} stroke="#000" fill="#0570b0" />
-        <rect x={35} y={0} width={25} height={10} stroke="#000" fill="#74a9cf" />
-        <rect x={60} y={0} width={25} height={10} stroke="#000" fill="#bdc9e1" />
-        <rect x={85} y={0} width={25} height={10} stroke="#000" fill="#e2e2e2" />
-        <rect x={110} y={0} width={25} height={10} stroke="#000" fill="#ffeda0" />
-        <rect x={135} y={0} width={25} height={10} stroke="#000" fill="#feb24c" />
-        <rect x={160} y={0} width={25} height={10} stroke="#000" fill="#f03b20" />
-
-        <text x={35} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          -2.5
+      <span>
+        Z Score{' '}
+        <TooltipAnchor key={`Legend`} tooltipComponent={LegendTooltip}>
+          <img src={QuestionMarkIcon} height={'12'} alt="" aria-hidden="true" />
+        </TooltipAnchor>
+      </span>
+      <svg width={330} height={25}>
+        <text x={15} y={-4} fontSize="10" dy="1.2em">
+          not constrained
         </text>
-        <text x={60} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          -1.2
+        <rect x={95} y={0} width={40} height={10} stroke="#000" fill="#e2e2e2" />
+        <rect x={135} y={0} width={40} height={10} stroke="#000" fill="#ffeda0" />
+        <rect x={175} y={0} width={40} height={10} stroke="#000" fill="#f03b20" />
+        <text x={220} y={-4} fontSize="10" dy="1.2em">
+          constrained
         </text>
-        <text x={85} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          -0.6
-        </text>
-        <text x={110} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          0.6
-        </text>
+        <text x={110} y={10} fontSize="10" dy="1.2em" textAnchor="middle"></text>
         <text x={135} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          1.2
+          2.18
         </text>
-        <text x={160} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          2.5
+        <text x={175} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
+          4.0
         </text>
       </svg>
     </LegendWrapper>
