@@ -8,9 +8,13 @@ import Link from '../Link'
 import { NonCodingConstraint } from '../VariantPage/VariantPage'
 import { renderRoundedNumber } from './constraintMetrics'
 
+import { regionColor } from '../RegionalGenomicConstraintTrack'
+import { Legend } from '../RegionalGenomicConstraintTrack'
+
 const Table = styled(BaseTable)`
   width: 100%;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 
   @media (max-width: 600px) {
     td,
@@ -50,7 +54,14 @@ const GnomadNonCodingConstraintTableVariant = ({
       <div>
         <p>{`Genomic constraint values displayed are for the region: ${chrom}-${nonCodingConstraint.start}-${nonCodingConstraint.stop}`}</p>
         <p>
-          <a href={'https://gnomad.broadinstitute.org/news/2022-10-the-addition-of-a-genomic-constraint-metric-to-gnomad/'}>Read more</a> about this constraint.
+          <a
+            href={
+              'https://gnomad.broadinstitute.org/news/2022-10-the-addition-of-a-genomic-constraint-metric-to-gnomad/'
+            }
+          >
+            Read more
+          </a>{' '}
+          about this constraint.
         </p>
       </div>
       <Table>
@@ -58,7 +69,7 @@ const GnomadNonCodingConstraintTableVariant = ({
           <tr>
             <th scope="col">
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="The expected number of variants is predicted using an improved mutional model that takes into account both local sequence context and a variety of genomic features.">
+              <TooltipAnchor tooltip="The expected number of variants is predicted using an improved mutational model that takes into account both local sequence context and a variety of genomic features.">
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Expected</TooltipHint>
               </TooltipAnchor>
@@ -82,7 +93,7 @@ const GnomadNonCodingConstraintTableVariant = ({
               {renderRoundedNumber(nonCodingConstraint.z, {
                 precision: 2,
                 tooltipPrecision: 3,
-                highlightColor: null,
+                highlightColor: regionColor(nonCodingConstraint),
               })}
               <br />
               o/e ={' '}
@@ -95,6 +106,7 @@ const GnomadNonCodingConstraintTableVariant = ({
           </tr>
         </tbody>
       </Table>
+      <Legend />
       <ViewSurroundingRegion>
         <p>
           {`View the genomic constraint values for the ${
