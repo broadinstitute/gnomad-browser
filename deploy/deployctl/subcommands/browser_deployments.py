@@ -93,7 +93,7 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
 
         kustomization_file.write(kustomization)
 
-    print(f"configured deployment '{name}'")
+    print(f"configured local deployment manifest '{name}'")
 
 
 def apply_deployment(name: str) -> None:
@@ -103,6 +103,8 @@ def apply_deployment(name: str) -> None:
         raise RuntimeError(f"no configuration for deployment '{name}'")
 
     kubectl(["apply", "-k", deployment_directory])
+
+    print(f"applied deployment '{name}' to new pods in the cluster")
 
 
 def delete_deployment(name: str, clean: bool = False) -> None:
@@ -116,11 +118,15 @@ def delete_deployment(name: str, clean: bool = False) -> None:
         create_deployment(name)
         delete_deployment(name, clean=True)
 
+    print(f"deleted deployment '{name}'s corresponding pods from the cluster")
+
 
 def clean_deployment(name: str) -> None:
     deployment_directory = os.path.join(deployments_directory(), name)
     os.remove(os.path.join(deployment_directory, "kustomization.yaml"))
     os.rmdir(deployment_directory)
+
+    print(f"removed local deployment manifest '{name}'")
 
 
 def main(argv: typing.List[str]) -> None:
