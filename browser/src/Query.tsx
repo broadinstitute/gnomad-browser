@@ -97,7 +97,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
     this.currentRequest = cancelable(
       fetch(url, {
         body: JSON.stringify({
-          // operationName,
+          operationName,
           query,
           variables,
         }),
