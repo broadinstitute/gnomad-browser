@@ -130,6 +130,8 @@ def apply_ingress(name: str, browser_deployment: str = None, reads_deployment: s
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
+    print(f"applied ingress to deployment '{name}'")
+
 
 def delete_ingress_and_services(name: str) -> None:
     kubectl(["delete", f"ingress/gnomad-ingress-demo-{name}"])
