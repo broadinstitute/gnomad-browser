@@ -119,6 +119,7 @@ module.exports = ({ context }) =>
         createError: queryComplexityCreateError,
         onComplete: (cost) => {
           request.graphqlQueryCost = cost
+          request.graphqlParams = requestParams
         },
       }),
     ],
