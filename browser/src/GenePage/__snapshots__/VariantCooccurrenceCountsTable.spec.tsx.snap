@@ -1,0 +1,1987 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VariantCooccurrenceCountsTable fills in missing data with zeroes 1`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="4"
+          >
+            Individuals with 
+            <strong>
+              two heterozygous
+            </strong>
+             rare variants 
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              (number predicted in 
+              <i>
+                trans
+              </i>
+              )
+            </span>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="3"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + pLoF
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse + missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse + synonymous or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button
+      class="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VariantCooccurrenceCountsTable__ModeToggle-sc-64zbq9-1 gdedLW"
+      type="button"
+    >
+      expand
+    </button>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="4"
+          >
+            Individuals with 
+            <strong>
+              homozygous
+            </strong>
+             rare variants
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="3"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse
+            </span>
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`VariantCooccurrenceCountsTable fills in missing data with zeroes 2`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="6"
+          >
+            Individuals with 
+            <strong>
+              two heterozygous
+            </strong>
+             rare variants 
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              (number predicted in 
+              <i>
+                trans
+              </i>
+              )
+            </span>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="5"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 2%
+          </th>
+          <th>
+            ≤ 1.5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + pLoF
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse + missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse + synonymous or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              0 (0)
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button
+      class="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VariantCooccurrenceCountsTable__ModeToggle-sc-64zbq9-1 gdedLW"
+      type="button"
+    >
+      collapse
+    </button>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`VariantCooccurrenceCountsTable renders correct data into correct table cells in both regular and extended mode 1`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="4"
+          >
+            Individuals with 
+            <strong>
+              two heterozygous
+            </strong>
+             rare variants 
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              (number predicted in 
+              <i>
+                trans
+              </i>
+              )
+            </span>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="3"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + pLoF
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              28512 (14859)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              28524 (14863)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              16027 (8917)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              17591 (1669)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              17603 (1673)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              40907 (19183)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42889 (18949)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42901 (18953)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42749 (13007)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              34432 (13475)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              34444 (13479)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              21947 (7533)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse + missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              18922 (3251)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              18934 (3255)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42238 (20765)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse + synonymous or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47943 (18569)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47955 (18573)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47803 (12627)
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button
+      class="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VariantCooccurrenceCountsTable__ModeToggle-sc-64zbq9-1 gdedLW"
+      type="button"
+    >
+      expand
+    </button>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+        <col
+          style="width: 15%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="4"
+          >
+            Individuals with 
+            <strong>
+              homozygous
+            </strong>
+             rare variants
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="3"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF
+            </span>
+          </td>
+          <td>
+            20287
+          </td>
+          <td>
+            20291
+          </td>
+          <td>
+            23379
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse
+            </span>
+          </td>
+          <td>
+            44405
+          </td>
+          <td>
+            44409
+          </td>
+          <td>
+            1819
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse
+            </span>
+          </td>
+          <td>
+            13167
+          </td>
+          <td>
+            13171
+          </td>
+          <td>
+            16259
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse
+            </span>
+          </td>
+          <td>
+            13501
+          </td>
+          <td>
+            13505
+          </td>
+          <td>
+            16593
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse
+            </span>
+          </td>
+          <td>
+            14048
+          </td>
+          <td>
+            14052
+          </td>
+          <td>
+            17140
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse
+            </span>
+          </td>
+          <td>
+            4233
+          </td>
+          <td>
+            4237
+          </td>
+          <td>
+            7325
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`VariantCooccurrenceCountsTable renders correct data into correct table cells in both regular and extended mode 2`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 VariantCooccurrenceCountsTable__Table-sc-64zbq9-0 bqCaTV"
+    >
+      <colgroup>
+        <col
+          style="width: 45%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+        <col
+          style="width: 9%;"
+        />
+      </colgroup>
+      <thead>
+        <tr>
+          <th
+            colspan="6"
+          >
+            Individuals with 
+            <strong>
+              two heterozygous
+            </strong>
+             rare variants 
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              (number predicted in 
+              <i>
+                trans
+              </i>
+              )
+            </span>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Consequence
+          </th>
+          <th
+            colspan="5"
+          >
+            Allele frequency
+          </th>
+        </tr>
+        <tr>
+          <th />
+          <th>
+            ≤ 5%
+          </th>
+          <th>
+            ≤ 2%
+          </th>
+          <th>
+            ≤ 1.5%
+          </th>
+          <th>
+            ≤ 1%
+          </th>
+          <th>
+            ≤ 0.5%
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + pLoF
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              28512 (14859)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              28521 (14862)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              16072 (8932)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              28524 (14863)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              16027 (8917)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              36537 (4029)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              36546 (4032)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              59898 (21558)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              36549 (4033)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              59853 (21543)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              48989 (9463)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              48998 (9466)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              36549 (3536)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              49001 (9467)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              36504 (3521)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              pLoF + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              44984 (6769)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              44993 (6772)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              32544 (842)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              44996 (6773)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              32499 (827)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + strong missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              17591 (1669)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              17600 (1672)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              40952 (19198)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              17603 (1673)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              40907 (19183)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              30647 (569)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              30656 (572)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              54008 (18098)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              30659 (573)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              53963 (18083)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              strong missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              41424 (10489)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              41433 (10492)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              41329 (4562)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              41436 (10493)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              41284 (4547)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              moderate missense or worse + moderate missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42889 (18949)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42898 (18952)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42794 (13022)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42901 (18953)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42749 (13007)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              weak missense or worse + weak missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              34432 (13475)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              34441 (13478)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              21992 (7548)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              34444 (13479)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              21947 (7533)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              missense or worse + missense or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              18922 (3251)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              18931 (3254)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42283 (20780)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              18934 (3255)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              42238 (20765)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              synonymous or worse + synonymous or worse
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47943 (18569)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47952 (18572)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47848 (12642)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47955 (18573)
+            </span>
+          </td>
+          <td>
+            <span
+              class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+            >
+              47803 (12627)
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button
+      class="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VariantCooccurrenceCountsTable__ModeToggle-sc-64zbq9-1 gdedLW"
+      type="button"
+    >
+      collapse
+    </button>
+  </div>
+</DocumentFragment>
+`;

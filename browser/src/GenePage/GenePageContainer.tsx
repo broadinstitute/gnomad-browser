@@ -7,9 +7,20 @@ import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 import GeneNotFound from './GeneNotFound'
-import GenePage from './GenePage'
+import GenePage, { Gene } from './GenePage'
+import {
+  HeterozygousVariantCooccurrenceSeverity,
+  HeterozygousVariantCooccurrenceAfCutoff,
+  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HeterozygousCountCellSchema,
+  HomozygousVariantCooccurrenceSeverity,
+  HomozygousVariantCooccurrenceAfCutoff,
+  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HomozygousCountCellSchema,
+} from './VariantCooccurrenceCountsTable'
 
 const operationName = 'Gene'
+
 const query = `
 query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
@@ -212,6 +223,23 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
     }
+    heterozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+        two_het_total
+	in_cis
+	in_trans
+	unphased
+      }
+    }
+    homozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+	hom_total
+      }
+    }
   }
 }
 `
@@ -219,6 +247,53 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
 type Props = {
   datasetId: DatasetId
   geneIdOrSymbol: string
+}
+
+interface UnrolledVariantCooccurrenceCounts {
+  heterozygous_variant_cooccurrence_counts: {
+    csq: HeterozygousVariantCooccurrenceSeverity
+    af_cutoff: HeterozygousVariantCooccurrenceAfCutoff
+    data: HeterozygousCountCellSchema
+  }[]
+  homozygous_variant_cooccurrence_counts: {
+    csq: HomozygousVariantCooccurrenceSeverity
+    af_cutoff: HomozygousVariantCooccurrenceAfCutoff
+    data: HomozygousCountCellSchema
+  }[]
+}
+
+type RolledUpVariantCooccurrenceCounts = {
+  heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
+}
+
+const rollUpVariantCooccurrenceCounts = (
+  unrolledGene: UnrolledVariantCooccurrenceCounts
+): RolledUpVariantCooccurrenceCounts => {
+  let heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
+  let homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
+
+  unrolledGene.heterozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
+    const severity = unrolledGeneCount['csq']
+    const afCutoff = unrolledGeneCount['af_cutoff']
+    const data = unrolledGeneCount['data']
+
+    heterozygous_variant_cooccurrence_counts[severity] =
+      heterozygous_variant_cooccurrence_counts[severity] || {}
+    heterozygous_variant_cooccurrence_counts[severity]![afCutoff] = data
+  })
+
+  unrolledGene.homozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
+    const severity = unrolledGeneCount['csq']
+    const afCutoff = unrolledGeneCount['af_cutoff']
+    const data = unrolledGeneCount['data']
+
+    homozygous_variant_cooccurrence_counts[severity] =
+      homozygous_variant_cooccurrence_counts[severity] || {}
+    homozygous_variant_cooccurrence_counts[severity]![afCutoff] = data
+  })
+
+  return { heterozygous_variant_cooccurrence_counts, homozygous_variant_cooccurrence_counts }
 }
 
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
@@ -263,7 +338,9 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
           )
         }
 
-        return <GenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
+        const rolledUpCounts = rollUpVariantCooccurrenceCounts(data.gene)
+        const gene: Gene = { ...data.gene, ...rolledUpCounts }
+        return <GenePage datasetId={datasetId} gene={gene} geneId={data.gene.gene_id} />
       }}
     </BaseQuery>
   )

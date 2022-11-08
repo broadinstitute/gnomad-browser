@@ -1,7 +1,7 @@
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
 import { hideVisually } from 'polished'
-import React, { useState } from 'react'
+import React, { useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 
 import HelpTopicModal from './HelpTopicModal'
@@ -38,8 +38,9 @@ const InfoButton = ({ topic: topicId, ...otherProps }: Props) => {
     <>
       <Button
         {...otherProps}
-        onClick={() => {
+        onClick={(event: MouseEvent) => {
           setIsModalOpen(true)
+          event.stopPropagation()
         }}
       >
         <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
@@ -50,7 +51,8 @@ const InfoButton = ({ topic: topicId, ...otherProps }: Props) => {
           // @ts-expect-error TS(2322) FIXME: Type '{ initialFocusOnButton: boolean; topicId: st... Remove this comment to see the full error message
           initialFocusOnButton={false}
           topicId={topicId}
-          onRequestClose={() => {
+          onRequestClose={(event: MouseEvent) => {
+            event.stopPropagation()
             setIsModalOpen(false)
           }}
         />
