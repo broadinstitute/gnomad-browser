@@ -198,9 +198,10 @@ const RegionalGenomicConstraintTrack = ({
               <PlotWrapper>
                 <svg height={height} width={width}>
                   <text x={width / 2} y={height / 2} dy="0.33rem" textAnchor="middle">
-                    {`The genomic constraint track is only displayed for regions with a size of ${
+                    {(stop - start > returnConstraintsThreshold) && `The genomic constraint track is only displayed for regions with a size of ${
                       returnConstraintsThreshold / 1000
                     }kb or smaller. Zoom in or adjust the region to see this track.`}
+                    {(stop - start <= returnConstraintsThreshold) && `There is no genomic constraint data for this region`}
                   </text>
                 </svg>
               </PlotWrapper>
