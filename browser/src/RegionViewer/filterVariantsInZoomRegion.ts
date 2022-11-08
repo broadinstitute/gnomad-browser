@@ -1,4 +1,4 @@
-import { sortedIndexBy } from 'lodash-es'
+import { sortedIndexBy, sortedLastIndexBy } from 'lodash-es'
 
 const filterVariantsInZoomRegion = (variants: any, zoomRegion: any) => {
   if (!zoomRegion) {
@@ -6,7 +6,7 @@ const filterVariantsInZoomRegion = (variants: any, zoomRegion: any) => {
   }
   const { start, stop } = zoomRegion
   const startIndex = sortedIndexBy(variants, { pos: start }, (variant: any) => variant.pos)
-  const stopIndex = sortedIndexBy(variants, { pos: stop }, (variant: any) => variant.pos)
+  const stopIndex = sortedLastIndexBy(variants, { pos: stop }, (variant: any) => variant.pos)
   return variants.slice(startIndex, stopIndex + 1)
 }
 
