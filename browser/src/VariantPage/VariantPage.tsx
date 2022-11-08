@@ -34,6 +34,7 @@ import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const Section = styled.section`
   width: 100%;
@@ -62,6 +63,181 @@ export type NonCodingConstraint = {
   expected: number
   oe: number
   z: number
+}
+
+export type StructuralVariant = {
+  id: string
+  ac: number
+  an: number
+  homozygote_count: number | null
+  hemizygote_count: number | null
+  ac_hemi: number | null
+  ac_hom: number | null
+}
+
+export type ClinvarVariant = {
+  clinical_significance: string
+  clinvar_variation_id: string
+  gold_stars: number
+  last_evaluated?: string
+  release_date: string
+  review_status: string
+  submissions: {
+    clinical_significance: string
+    conditions?: {
+      medgen_id?: string
+      name: string
+    }[]
+    last_evaluated?: string
+    review_status: string
+    submitter_name: string
+  }[]
+}
+
+export type Histogram = {
+  bin_edges: number[]
+  bin_freq: number[]
+  n_smaller: number | null
+  n_larger: number | null
+}
+
+export type Population = {
+  id: string
+  ac: number
+  an: number
+  ac_hemi: number | null
+  ac_hom: number
+}
+
+export type LocalAncestryPopulation = {
+  id: string
+  ac: number
+  an: number
+}
+
+export type AgeDistribution = {
+  het: Histogram
+  hom: Histogram
+}
+
+export type SiteQualityMetric = {
+  metric: string
+  value: number | null
+}
+
+export type VariantQualityMetrics = {
+  allele_balance: {
+    alt: Histogram
+  }
+  genotype_depth: {
+    all: Histogram
+    alt: Histogram
+  }
+  genotype_quality: {
+    all: Histogram
+    alt: Histogram
+  }
+  site_quality_metrics: SiteQualityMetric[]
+}
+
+export type Faf95 = {
+  popmax: number
+  popmax_population: string
+}
+
+export type SequencingType = {
+  ac: number
+  an: number
+  ac_hemi: number | null
+  ac_hom: number
+  faf95: Faf95
+  filters: string[]
+  populations: Population[]
+  local_ancestry_populations: LocalAncestryPopulation[]
+  age_distribution: AgeDistribution | null
+  quality_metrics: VariantQualityMetrics
+}
+
+export type LofCuration = {
+  gene_id: string
+  gene_version: string
+  gene_symbol: string | null
+  verdict: string
+  flags: string[]
+  project: string
+}
+
+export type InSilicoPredictor = {
+  id: string
+  value: string
+  flags: string[]
+}
+
+export type TranscriptConsequence = {
+  consequence_terms: string[]
+  domains: string[]
+  gene_id: string
+  gene_version: string | null
+  gene_symbol: string | null
+  hgvs: string | null
+  hgvsc: string | null
+  hgvsp: string | null
+  is_canonical: boolean | null
+  is_mane_select: boolean | null
+  is_mane_select_version: boolean | null
+  lof: string | null
+  lof_flags: string | null
+  lof_filter: string | null
+  major_consequence: string | null
+  polyphen_prediction: string | null
+  refseq_id: string | null
+  refseq_version: string | null
+  sift_prediction: string | null
+  transcript_id: string
+  transcript_version: string
+
+  canonical: boolean | null
+}
+
+export type Coverage = {
+  pos: number
+  mean: number | null
+  median: number | null
+  over_1: number | null
+  over_5: number | null
+  over_10: number | null
+  over_15: number | null
+  over_20: number | null
+  over_25: number | null
+  over_30: number | null
+  over_50: number | null
+  over_100: number | null
+}
+
+export type Variant = {
+  variant_id: string
+  reference_genome: ReferenceGenome
+  colocated_variants: string[] | null
+  chrom: string
+  pos: number
+  ref: string
+  alt: string
+  flags: string[] | null
+  clinvar: ClinvarVariant | null
+  exome: SequencingType | null
+  genome: SequencingType | null
+  lof_curations: LofCuration[] | null
+  in_silico_predictors: InSilicoPredictor[] | null
+  transcript_consequences: TranscriptConsequence[] | null
+  liftover: any[] | null
+  liftover_sources: any[] | null
+  multi_nucleotide_variants?: any[]
+  caid: string | null
+  rsids: string[] | null
+  coverage: {
+    exome: Coverage | null
+    genome: Coverage | null
+  }
 }
 
 type VariantPageContentProps = {

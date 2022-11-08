@@ -2,7 +2,7 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState } from 'react'
+import React, { useState, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -12,6 +12,10 @@ import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
+import VariantCooccurrenceCountsTable, {
+  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
+} from './VariantCooccurrenceCountsTable'
 import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
@@ -38,6 +42,7 @@ import VariantsInGene from './VariantsInGene'
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
+import { Variant, ClinvarVariant, StructuralVariant } from '../VariantPage/VariantPage'
 
 export type Strand = '+' | '-'
 
@@ -94,6 +99,11 @@ export type Gene = GeneMetadata & {
     id: string
   }[]
   exac_regional_missense_constraint_regions?: any
+  variants: Variant[]
+  structural_variants: StructuralVariant[]
+  clinvar_variants: ClinvarVariant[]
+  homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
+  heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
 }
 
 const GeneName = styled.span`
@@ -118,6 +128,22 @@ const GeneInfoColumnWrapper = styled.div`
   /* Matches responsive styles in AttributeList */
   @media (max-width: 600px) {
     align-items: stretch;
+  }
+`
+
+const GeneInfoColumn = styled.div`
+  width: 40%;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+`
+
+const ConstraintOrCooccurrenceColumn = styled.div`
+  width: 55%;
+
+  @media (max-width: 1200px) {
+    width: 100%;
   }
 `
 
@@ -174,6 +200,34 @@ const LegendSwatch = styled.span`
     height: ${(props: any) => props.height}px;
     background: ${(props: any) => props.color};
   }
+`
+
+type TableName = 'constraint' | 'cooccurrence'
+
+type TableSelectorProps = {
+  ownTableName: TableName
+  selectedTableName: TableName
+  setSelectedTableName: Dispatch<SetStateAction<TableName>>
+}
+
+const BaseTableSelector = styled.div<TableSelectorProps>
+const TableSelector = BaseTableSelector.attrs(
+  ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
+    onClick: () => setSelectedTableName(ownTableName),
+  })
+)`
+  border: 1px solid black;
+  border-radius: 0.5em;
+  cursor: pointer;
+  margin-right: 0.5em;
+  padding: 0.25em;
+
+  background-color: ${({ ownTableName, selectedTableName }: TableSelectorProps) =>
+    ownTableName === selectedTableName ? '#cbd3da' : 'transparent'};
+`
+
+const TableSelectorWrapper = styled.div`
+  display: flex;
 `
 
 const TrackWrapper = styled.div`
@@ -234,6 +288,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
   const [includeUTRs, setIncludeUTRs] = useState(false)
   const [showTranscripts, setShowTranscripts] = useState(false)
+  const [selectedTableName, setSelectedTableName] = useState<TableName>('constraint')
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
@@ -289,7 +344,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           {gene.symbol} <GeneName>{gene.name}</GeneName>
         </GnomadPageHeading>
         <GeneInfoColumnWrapper>
-          <div style={{ maxWidth: '50%' }}>
+          <GeneInfoColumn>
             {/* @ts-expect-error TS(2741) FIXME: Property 'gencode_symbol' is missing in type '{ ge... Remove this comment to see the full error message */}
             <GeneInfo gene={gene} />
             <GeneFlags gene={gene} />
@@ -302,11 +357,37 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 .
               </p>
             )}
-          </div>
-          <div>
-            <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
-            <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
-          </div>
+          </GeneInfoColumn>
+          <ConstraintOrCooccurrenceColumn>
+            <TableSelectorWrapper>
+              <TableSelector
+                selectedTableName={selectedTableName}
+                ownTableName="constraint"
+                setSelectedTableName={setSelectedTableName}
+              >
+                Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}
+              </TableSelector>
+              <TableSelector
+                selectedTableName={selectedTableName}
+                setSelectedTableName={setSelectedTableName}
+                ownTableName="cooccurrence"
+              >
+                Variant co-occurrence <InfoButton topic="variant-cooccurrence" />
+              </TableSelector>
+            </TableSelectorWrapper>
+            {selectedTableName === 'constraint' ? (
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
+            ) : (
+              <VariantCooccurrenceCountsTable
+                heterozygous_variant_cooccurrence_counts={
+                  gene.heterozygous_variant_cooccurrence_counts!
+                }
+                homozygous_variant_cooccurrence_counts={
+                  gene.homozygous_variant_cooccurrence_counts!
+                }
+              />
+            )}
+          </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer

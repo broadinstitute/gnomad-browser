@@ -87,6 +87,8 @@ export default (props: any) => {
           if (isRelativeLink) {
             e.preventDefault()
             history.push(e.target.getAttribute('href'))
+          } else {
+            e.stopPropagation()
           }
         }
       }}
