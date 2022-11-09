@@ -1,4 +1,4 @@
-# gnomAD browser
+# gnomAD Browser
 
 JavaScript tools for exploring genomic data.
 
