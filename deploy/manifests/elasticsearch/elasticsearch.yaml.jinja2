@@ -49,13 +49,23 @@ spec:
             resources:
               requests:
                 storage: 100Gi
-    - name: coordinating
+    - name: coordinating-nodes
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.master: false
         node.data: false
         node.ingest: false
         node.ml: false
+      volumeClaimTemplates:
+      - metadata:
+          name: elasticsearch-data
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: standard
       podTemplate:
         metadata:
           labels:
