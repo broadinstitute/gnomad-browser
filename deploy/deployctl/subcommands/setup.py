@@ -210,7 +210,7 @@ def create_cluster() -> None:
             f"--zone={config.zone}",
             "--release-channel=stable",
             "--enable-autorepair",
-            "--enable-autoupgrade",
+            "--cluster-version=1.21.14-gke.3000",
             "--maintenance-window=7:00",
             f"--service-account={config.gke_service_account_full_name}",
             f"--network={config.network_name}",
