@@ -401,7 +401,7 @@ def main(argv: typing.List[str]) -> None:
                     "iam",
                     "ch",
                     f"serviceAccount:gnomad-es-snapshots@{config.project}.iam.gserviceaccount.com:roles/storage.admin",
-                    "gs://gnomad-browser-elasticsearch-snapshots",  # TODO: The bucket to use for snapshots should be configurable
+                    config.data_snapshot_bucket,
                 ],
                 stdout=subprocess.DEVNULL,
             )
@@ -491,8 +491,7 @@ def main(argv: typing.List[str]) -> None:
                     "iam",
                     "ch",
                     f"serviceAccount:gnomad-data-pipeline@{config.project}.iam.gserviceaccount.com:roles/storage.admin",
-                    # TODO: This should use the same configuration as data pipeline output.
-                    "gs://gnomad-browser-data-pipeline",
+                    config.data_pipeline_output,
                 ],
                 stdout=subprocess.DEVNULL,
             )
