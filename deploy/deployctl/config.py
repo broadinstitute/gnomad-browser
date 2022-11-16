@@ -14,7 +14,8 @@ class Configuration:
     domain: str = None
     environment_tag: str = None
     authorized_networks: str = "0.0.0.0/0"
-    data_pipeline_output: str = None
+    data_pipeline_output: str = "gs://gnomad-browser-data-pipeline"
+    data_snapshot_bucket: str = "gs://gnomad-browser-elasticsearch-snapshots"
 
     def __init__(self, config_path):
         self._config_path = config_path
