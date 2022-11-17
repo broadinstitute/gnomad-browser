@@ -62,12 +62,14 @@ app.use(function requestLogMiddleware(request, response, next) {
             : undefined,
         protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
       },
-      graphqlRequest: {
-        graphqlQueryOperationName: request.graphqlParams.operationName,
-        graphqlQueryString: request.graphqlParams.query,
-        graphqlQueryVariables: request.graphqlParams.variables,
-        graphqlQueryCost: request.graphqlQueryCost,
-      },
+      graphqlRequest: request.graphqlParams
+        ? {
+            graphqlQueryOperationName: request.graphqlParams.operationName,
+            graphqlQueryString: request.graphqlParams.query,
+            graphqlQueryVariables: request.graphqlParams.variables,
+            graphqlQueryCost: request.graphqlQueryCost,
+          }
+        : undefined,
     })
   })
 
