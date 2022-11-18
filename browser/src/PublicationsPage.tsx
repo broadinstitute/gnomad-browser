@@ -17,7 +17,7 @@ export default () => (
     <PageHeading>Publications</PageHeading>
     <p>
       This page lists publications by the gnomAD group. For information on how to cite gnomAD data,
-      see
+      see{' '}
       <Link to="/help/how-should-i-cite-discoveries-made-using-gnomad-data">
         &ldquo;How should I cite discoveries made using gnomAD data&rdquo;
       </Link>
