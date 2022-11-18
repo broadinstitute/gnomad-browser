@@ -1,5 +1,23 @@
 import PropTypes from 'prop-types'
 
+type ClinvarVariant = {
+  clinical_significance: string
+  clinvar_variation_id: string
+  gold_stars: number
+  last_evaluated: string
+  review_status: string
+  submissions: {
+    clinical_significance: string
+    conditions: {
+      name: string
+      medgen_id: string
+    }[]
+    last_evaluated: string
+    review_status: string
+    submitter_name: string
+  }
+}
+
 type MitochondrialVariantDetailPropType = {
   alt: string
   an: number
@@ -26,6 +44,8 @@ type MitochondrialVariantDetailPropType = {
   ref: string
   reference_genome: string
   variant_id: string
+  rsids?: string[]
+  clinvar: ClinvarVariant
 }
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ alt: Validator<stri... Remove this comment to see the full error message
