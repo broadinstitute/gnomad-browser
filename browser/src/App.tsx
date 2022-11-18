@@ -71,7 +71,7 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = `gnomAD will be undergoing maintenance on November 18th between 3-4PM EST. Search may be unavailable during that time.`
+const BANNER_CONTENT = null
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
