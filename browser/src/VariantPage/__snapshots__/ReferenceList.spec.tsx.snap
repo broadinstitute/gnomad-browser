@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReferenceLists ClinVar external link is formatted as single hyperlink with the given clinvar id 1`] = `
+<List__ListItem>
+  <Link__ExternalLink
+    href="https://www.ncbi.nlm.nih.gov/clinvar/variation/12345/"
+  >
+    ClinVar (
+    12345
+    )
+  </Link__ExternalLink>
+</List__ListItem>
+`;
+
+exports[`ReferenceLists NCBI external link is formatted as multiple comma seperated hyperlinks if the given array contains more than 1 rsid 1`] = `
+<React.Fragment>
+  <List__ListItem>
+    dbSNP (
+     
+    <Link__ExternalLink
+      href="https://www.ncbi.nlm.nih.gov/snp/rs12345"
+    >
+      rs12345
+    </Link__ExternalLink>
+    , 
+    <Link__ExternalLink
+      href="https://www.ncbi.nlm.nih.gov/snp/rs23456"
+    >
+      rs23456
+    </Link__ExternalLink>
+    , 
+    <Link__ExternalLink
+      href="https://www.ncbi.nlm.nih.gov/snp/rs34567"
+    >
+      rs34567
+    </Link__ExternalLink>
+    )
+  </List__ListItem>
+</React.Fragment>
+`;
+
+exports[`ReferenceLists NCBI external link is formatted as single hyperlink if the given array only contains 1 rsid 1`] = `
+<React.Fragment>
+  <List__ListItem>
+    <Link__ExternalLink
+      href="http://www.ncbi.nlm.nih.gov/snp/rs12345"
+    >
+      dbSNP (
+      rs12345
+      )
+    </Link__ExternalLink>
+  </List__ListItem>
+</React.Fragment>
+`;
