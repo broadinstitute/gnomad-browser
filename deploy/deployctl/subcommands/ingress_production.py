@@ -87,6 +87,8 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
+    print(f"Updated production ingresses. browser: '{browser_deployment}', reads: '{reads_deployment}' ")
+
 
 def apply_ingress(browser_deployment: str = None, reads_deployment: str = None) -> None:
     apply_services(browser_deployment, reads_deployment)
