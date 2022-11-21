@@ -335,7 +335,8 @@ def main(argv: typing.List[str]) -> None:
 
         # Install Elastic Cloud on Kubernetes operator
         # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-overview.html
-        kubectl(["apply", "-f", "https://download.elastic.co/downloads/eck/1.2.1/all-in-one.yaml"])
+        kubectl(["create", "-f", "https://download.elastic.co/downloads/eck/2.5.0/crds.yaml"])
+        kubectl(["apply", "-f", "https://download.elastic.co/downloads/eck/2.5.0/operator.yaml"])
 
         # Configure firewall rule for ECK admission webhook
         # https://github.com/elastic/cloud-on-k8s/issues/1437
