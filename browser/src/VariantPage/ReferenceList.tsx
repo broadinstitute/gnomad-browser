@@ -17,7 +17,7 @@ type Props = {
   }
 }
 
-export const ncbiReference = (variantRsids: string[]) => {
+export const NcbiReference = (variantRsids: string[]) => {
   return (
     <>
       {variantRsids.length === 1 && (
@@ -49,7 +49,7 @@ export const ncbiReference = (variantRsids: string[]) => {
   )
 }
 
-export const clinvarReference = (variantClinvarVariationId: string) => {
+export const ClinvarReference = (variantClinvarVariationId: string) => {
   return (
     // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
     <ListItem>
@@ -73,7 +73,7 @@ export const ReferenceList = ({ variant }: Props) => {
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <List>
-      {variant.rsids && ncbiReference(variant.rsids)}
+      {variant.rsids && NcbiReference(variant.rsids)}
 
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
@@ -81,7 +81,7 @@ export const ReferenceList = ({ variant }: Props) => {
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
 
-      {variant.clinvar && clinvarReference(variant.clinvar.clinvar_variation_id)}
+      {variant.clinvar && ClinvarReference(variant.clinvar.clinvar_variation_id)}
 
       {variant.caid && (
         // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
