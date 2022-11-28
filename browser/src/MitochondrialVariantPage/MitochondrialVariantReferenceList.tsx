@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
-import { ncbiReference, clinvarReference } from '../VariantPage/ReferenceList'
+import { NcbiReference, ClinvarReference } from '../VariantPage/ReferenceList'
 
 import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 
@@ -25,7 +25,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <List>
-      {variant.rsids && ncbiReference(variant.rsids)}
+      {variant.rsids && NcbiReference(variant.rsids)}
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -53,7 +53,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
           </ExternalLink>
         </ListItem>
       )}
-      {variant.clinvar && clinvarReference(variant.clinvar.clinvar_variation_id)}
+      {variant.clinvar && ClinvarReference(variant.clinvar.clinvar_variation_id)}
     </List>
   )
 }
