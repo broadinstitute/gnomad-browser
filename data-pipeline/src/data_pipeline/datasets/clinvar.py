@@ -112,7 +112,7 @@ def _parse_variant(variant_element):
                 variant["locations"] = {}
                 allele_element = variant_element.findall("./InterpretedRecord/SimpleAllele")
                 print(
-                    f'Skipping variant with Allele ID: {allele_element.attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'
+                    f' Skipping variant with Allele ID: {allele_element[0].attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'
                 )
                 break
             variant["locations"][element.attrib["Assembly"]] = {
