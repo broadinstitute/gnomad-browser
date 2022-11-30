@@ -18,6 +18,29 @@ type ManeSelectTranscript {
   refseq_version: String!
 }
 
+type HeterozygousVariantCooccurrenceCountsData {
+  in_cis: Int!
+  in_trans: Int!
+  unphased: Int!
+  two_het_total: Int!
+}
+
+type HomozygousVariantCooccurrenceCountsData {
+  hom_total: Int!
+}
+
+type HeterozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HeterozygousVariantCooccurrenceCountsData!
+}
+
+type HomozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HomozygousVariantCooccurrenceCountsData!
+}
+
 type Gene {
   reference_genome: ReferenceGenomeId!
   gene_id: String!
@@ -55,6 +78,9 @@ type Gene {
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
+  heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
+    @cost(value: 5)
+  homozygous_variant_cooccurrence_counts: [HomozygousVariantCooccurrenceCounts!]! @cost(value: 5)
 }
 
 type GeneSearchResult {
